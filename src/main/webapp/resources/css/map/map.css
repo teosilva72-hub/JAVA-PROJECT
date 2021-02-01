@@ -863,6 +863,10 @@ input[type="number"] {
 
 /* MODAL SIZE EQUIP */
 
+#szselect {
+	z-index: 99999;
+}
+
 #moddialog {
 	position: fixed;
 	right: 20px;
@@ -870,6 +874,10 @@ input[type="number"] {
 }
 
 #modheaderpad {
+	padding: 0;
+}
+
+#modborderpad {
 	padding: 0;
 }
 
@@ -896,7 +904,7 @@ input[type="number"] {
 .bar {
   position: relative;
   width: 80%;
-  margin: 50px auto;
+  margin: 20px auto;
   border: 1px black solid;
   border-radius: 100%;
 }
