@@ -1,3 +1,3 @@
 # Tracevia Application
 
-Tracevia Application Software S/A
+Tracevia Application Software
