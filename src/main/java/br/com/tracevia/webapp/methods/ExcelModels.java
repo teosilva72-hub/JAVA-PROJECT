@@ -45,13 +45,13 @@ public class ExcelModels {
 	Cell[] headerCells;
 	Cell[][] cellData;
 	
-	LocaleUtil localeDirections, localeExcel;
+	LocaleUtil localeDirections, localeExcel, localeSat;
 	
 	public static XSSFWorkbook workbook;
 	
 	//Standard Model
 	CellStyle headerStyle, leftAlignStyle, boldRightAlignStyle, standardStyle, datePeriodStyle, tableHeaderStyle, dateHourStyle, boldCenterStyle, centerAlignStyle,
-	backgroundColorHeader, backgroundColorSubHeader, backgroundColorSubHeader2, backgroundColorBody, backgroundColorBody2;
+	backgroundColorHeader, backgroundColorSubHeader, backgroundColorSubHeader2, backgroundColorBody, backgroundColorBody2, styleThead;
 	
 	Font standardFont, boldFont, titleFont, headerFont, fontCountFlowBackground, fontCountFlowBody, fontCountFlowBody2;
 		
@@ -76,6 +76,9 @@ public class ExcelModels {
 		
 		localeExcel = new LocaleUtil();		
 		localeExcel.getResourceBundle(LocaleUtil.LABELS_EXCEL);
+		
+		localeSat = new LocaleUtil();
+		localeSat.getResourceBundle(LocaleUtil.LABELS_SAT);
 		
 		localeDirections = new LocaleUtil();		
 		localeDirections.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
@@ -246,6 +249,9 @@ public class ExcelModels {
 			centerAlignStyle = spreadSheet.createStyle(workbook, standardFont, IndexedColors.WHITE);
 			spreadSheet.addStyleHorizontalAlignment(workbook, centerAlignStyle, HorizontalAlignment.CENTER);
 			
+			styleThead = spreadSheet.createStyle(workbook, standardFont, IndexedColors.WHITE);
+			spreadSheet.addStyleHorizontalAlignment(workbook, styleThead, HorizontalAlignment.CENTER);
+						
 		}
 	  
 	//STYLES COUNT FLOW	
@@ -442,6 +448,10 @@ public class ExcelModels {
 		spreadSheet.applyBorderAllStyle(datePeriodStyle, BorderStyle.THIN);		
 		spreadSheet.applyBorderAllStyle(dateHourStyle, BorderStyle.THIN);
 		spreadSheet.applyBorderAllStyle(standardStyle, BorderStyle.THIN);
+		
+		spreadSheet.applyBorderLeftStyle(styleThead, BorderStyle.THIN);
+		spreadSheet.applyBorderRightStyle(styleThead, BorderStyle.THIN);
+		spreadSheet.applyBorderTopStyle(styleThead, BorderStyle.THIN);
 		
 	}		
 	
@@ -1459,6 +1469,8 @@ public class ExcelModels {
 		int dir1Pos = 0;
 		int dir2Pos = 0;
 		int total = 0;	
+		int headerPos1 = 0;
+		int headerPos2 = 0;
 			
 		int rowHeaderDir1 = 0; 
 		int rowDataDir1 = 0;
@@ -1482,15 +1494,17 @@ public class ExcelModels {
 		   registerLength = registers;
 		   total = (rowMax + 1);
 		   cellMinCol = 1;
-		   
-		   dir1Pos = (total + 2);		   
-		   rowHeaderDir1 = (dir1Pos + 2);
+		   		  
+		   dir1Pos = (total + 2);
+		   headerPos1 = (dir1Pos + 2);
+		   rowHeaderDir1 = (dir1Pos + 3);
 		   rowDataDir1 = (rowHeaderDir1 + 1);
 		   rowMaxDir1 =  (rowDataDir1 + registers); 
 		   totalDir1 = (rowMaxDir1 + 1);
 		   
 		   dir2Pos = (totalDir1 + 2);
-		   rowHeaderDir2 = (dir2Pos + 2);
+		   headerPos2 = (dir2Pos + 2);
+		   rowHeaderDir2 = (dir2Pos + 3);
 		   rowDataDir2 = (rowHeaderDir2 + 1);
 		   rowMaxDir2 = (rowDataDir2 + registers); 
 		   totalDir2 = (rowMaxDir2 + 1);
@@ -1585,24 +1599,31 @@ public class ExcelModels {
 			spreadSheet.setStyle(sheet, row, 9,  boldCenterStyle, 1);
 			spreadSheet.setStyle(sheet, row, 9, centerAlignStyle, 2);
 			
-			//HEADER
+			//HEADER			
 			
-			
+			///////////////////////
 			//SUB HEADER
+			//////////////////////
 			
-			spreadSheet.createRow(sheet, row, 12);
+			spreadSheet.createRow(sheet, row, 11);
 			
-			spreadSheet.createCell(sheet, row, 12, 2, "1");
-			spreadSheet.createCell(sheet, row, 12, 6, "2");
-			spreadSheet.createCell(sheet, row, 12, 15, "3");
+			spreadSheet.createCell(sheet, row, 11, 2, localeSat.getStringKey("sat_reports_header_lights"));
+			spreadSheet.createCell(sheet, row, 11, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+			spreadSheet.createCell(sheet, row, 11, 15, localeSat.getStringKey("sat_reports_header_buses"));
+			spreadSheet.createCell(sheet, row, 11, 19, "");
 			
-			spreadSheet.setStyle(sheet, row, 12, standardStyle, 2);			
-			spreadSheet.setStyle(sheet, row, 12, standardStyle, 6);
-			spreadSheet.setStyle(sheet, row, 12, standardStyle, 15);
-											
+			spreadSheet.setStyle(sheet, row, 11, standardStyle, 2);			
+			spreadSheet.setStyle(sheet, row, 11, standardStyle, 6);
+			spreadSheet.setStyle(sheet, row, 11, standardStyle, 15);
+			spreadSheet.setStyle(sheet, row, 11, standardStyle, 19);
+														
 			sheet.addMergedRegion(CellRangeAddress.valueOf("C12:F12"));
 			sheet.addMergedRegion(CellRangeAddress.valueOf("G12:O12"));	
-			sheet.addMergedRegion(CellRangeAddress.valueOf("P12:T12"));			
+			sheet.addMergedRegion(CellRangeAddress.valueOf("P12:T12"));		
+			
+            ///////////////////////
+	        //SUB HEADER
+	        //////////////////////
 						
 			// BODY
 		   spreadSheet.createRow(sheet, row, 12);
@@ -1625,13 +1646,38 @@ public class ExcelModels {
 		   spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol);
 		   
 		   /* SECOND GROUP DATA */
-				   	   
+		   				   	   
 		   spreadSheet.createRow(sheet, row, dir1Pos);	
 		   spreadSheet.createCell(sheet, row, dir1Pos, 7, localeExcel.getStringKey("excel_report_consultation_direction"));
 		   spreadSheet.createCell(sheet, row, dir1Pos, 8, direction1 );
 		
 		   spreadSheet.setStyle(sheet, row, dir1Pos,  boldCenterStyle, 7);		
 		   spreadSheet.setStyle(sheet, row, dir1Pos, centerAlignStyle, 8);
+		   
+		   ///////////////////////
+		   //HEADER 2
+		   /////////////////////
+		   
+		   spreadSheet.createRow(sheet, row, headerPos1);
+			
+				spreadSheet.createCell(sheet, row, headerPos1, 2, localeSat.getStringKey("sat_reports_header_lights"));
+				spreadSheet.createCell(sheet, row, headerPos1, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+				spreadSheet.createCell(sheet, row, headerPos1, 15, localeSat.getStringKey("sat_reports_header_buses"));
+				spreadSheet.createCell(sheet, row, headerPos1, 19, "");
+				
+				spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 2);			
+				spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 6);
+				spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 15);
+				spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 19);
+															
+				sheet.addMergedRegion(CellRangeAddress.valueOf("C"+(headerPos1+1)+":F"+(headerPos1+1)+""));
+				sheet.addMergedRegion(CellRangeAddress.valueOf("G"+(headerPos1+1)+":O"+(headerPos1+1)+""));	
+				sheet.addMergedRegion(CellRangeAddress.valueOf("P"+(headerPos1+1)+":T"+(headerPos1+1)+""));	
+				
+				 ///////////////////////
+				 //HEADER 2
+				 /////////////////////
+				   
 							
 			spreadSheet.createRow(sheet, row, rowHeaderDir1);
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
@@ -1658,6 +1704,31 @@ public class ExcelModels {
 			
 			 spreadSheet.setStyle(sheet, row, dir2Pos,  boldCenterStyle, 7);		
 			 spreadSheet.setStyle(sheet, row, dir2Pos, centerAlignStyle, 8);
+			 
+			  ///////////////////////
+			   //HEADER 3
+			   /////////////////////
+			   
+			   spreadSheet.createRow(sheet, row, headerPos2);
+				
+					spreadSheet.createCell(sheet, row, headerPos2, 2, localeSat.getStringKey("sat_reports_header_lights"));
+					spreadSheet.createCell(sheet, row, headerPos2, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+					spreadSheet.createCell(sheet, row, headerPos2, 15, localeSat.getStringKey("sat_reports_header_buses"));
+					spreadSheet.createCell(sheet, row, headerPos2, 19, "");
+					
+					spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 2);			
+					spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 6);
+					spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 15);
+					spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 19);
+																
+					sheet.addMergedRegion(CellRangeAddress.valueOf("C"+(headerPos2+1)+":F"+(headerPos2+1)+""));
+					sheet.addMergedRegion(CellRangeAddress.valueOf("G"+(headerPos2+1)+":O"+(headerPos2+1)+""));	
+					sheet.addMergedRegion(CellRangeAddress.valueOf("P"+(headerPos2+1)+":T"+(headerPos2+1)+""));	
+					
+			     ///////////////////////
+				  //HEADER 3
+				 /////////////////////
+					   
 								
 		     spreadSheet.createRow(sheet, row, rowHeaderDir2);
 		     spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
@@ -1683,14 +1754,16 @@ public class ExcelModels {
 		  registerLength = range;
 		  cellMinCol = 2;
 				   
-		   dir1Pos = (total + 2);		   
-		   rowHeaderDir1 = (dir1Pos + 2);
+		   dir1Pos = (total + 2);
+		   headerPos1 = (dir1Pos + 2);
+		   rowHeaderDir1 = (dir1Pos + 3);
 		   rowDataDir1 = (rowHeaderDir1 + 1);
 		   rowMaxDir1 =  (rowDataDir1 + range); 
 		   totalDir1 = (rowMaxDir1 + 1);
 		   
 		   dir2Pos = (totalDir1 + 2);
-		   rowHeaderDir2 = (dir2Pos + 2);
+		   headerPos2 = (dir2Pos + 2);
+		   rowHeaderDir2 = (dir2Pos + 3);
 		   rowDataDir2 = (rowHeaderDir2 + 1);
 		   rowMaxDir2 = (rowDataDir2 + range); 
 		   totalDir2 = (rowMaxDir2 + 1);
@@ -1793,12 +1866,36 @@ public class ExcelModels {
 	  spreadSheet.setStyle(sheet, row, 9, centerAlignStyle, 2);
 	
 	   //HEADER
+	  
+		///////////////////////
+		//SUB HEADER
+		//////////////////////
+		
+		spreadSheet.createRow(sheet, row, 11);
+		
+		spreadSheet.createCell(sheet, row, 11, 2, localeSat.getStringKey("sat_reports_header_lights"));
+		spreadSheet.createCell(sheet, row, 11, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+		spreadSheet.createCell(sheet, row, 11, 15, localeSat.getStringKey("sat_reports_header_buses"));
+		spreadSheet.createCell(sheet, row, 11, 19, "");
+		
+		spreadSheet.setStyle(sheet, row, 11, standardStyle, 2);			
+		spreadSheet.setStyle(sheet, row, 11, standardStyle, 6);
+		spreadSheet.setStyle(sheet, row, 11, standardStyle, 15);
+		spreadSheet.setStyle(sheet, row, 11, standardStyle, 19);
+													
+		sheet.addMergedRegion(CellRangeAddress.valueOf("C12:F12"));
+		sheet.addMergedRegion(CellRangeAddress.valueOf("G12:O12"));	
+		sheet.addMergedRegion(CellRangeAddress.valueOf("P12:T12"));		
+		
+      ///////////////////////
+      //SUB HEADER
+      //////////////////////
 	
 	   // BODY
 	  
-	   spreadSheet.createRow(sheet, row, 11);
-	   spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
-	   spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
+	   spreadSheet.createRow(sheet, row, 12);
+	   spreadSheet.createHeaderCells(sheet, row, 12, headerCells, columnsHeader);
+	   spreadSheet.setStyleHeaderBody(sheet, row, 12, headerCells, length, tableHeaderStyle);
 	   
 	   /* FIRST GROUP DATA */
 
@@ -1823,6 +1920,31 @@ public class ExcelModels {
 	
 	   spreadSheet.setStyle(sheet, row, dir1Pos,  boldCenterStyle, 7);		
 	   spreadSheet.setStyle(sheet, row, dir1Pos, centerAlignStyle, 8);
+	   
+	   ///////////////////////
+	   //HEADER 2
+	   /////////////////////
+	   
+	   spreadSheet.createRow(sheet, row, headerPos1);
+		
+			spreadSheet.createCell(sheet, row, headerPos1, 2, localeSat.getStringKey("sat_reports_header_lights"));
+			spreadSheet.createCell(sheet, row, headerPos1, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+			spreadSheet.createCell(sheet, row, headerPos1, 15, localeSat.getStringKey("sat_reports_header_buses"));
+			spreadSheet.createCell(sheet, row, headerPos1, 19, "");
+			
+			spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 2);			
+			spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 6);
+			spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 15);
+			spreadSheet.setStyle(sheet, row, headerPos1, standardStyle, 19);
+														
+			sheet.addMergedRegion(CellRangeAddress.valueOf("C"+(headerPos1+1)+":F"+(headerPos1+1)+""));
+			sheet.addMergedRegion(CellRangeAddress.valueOf("G"+(headerPos1+1)+":O"+(headerPos1+1)+""));	
+			sheet.addMergedRegion(CellRangeAddress.valueOf("P"+(headerPos1+1)+":T"+(headerPos1+1)+""));	
+			
+			 ///////////////////////
+			 //HEADER 2
+			 /////////////////////
+			   
 						
 	   spreadSheet.createRow(sheet, row, rowHeaderDir1);
 	   spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
@@ -1849,6 +1971,30 @@ public class ExcelModels {
 		
 	   spreadSheet.setStyle(sheet, row, dir2Pos,  boldCenterStyle, 7);		
 	   spreadSheet.setStyle(sheet, row, dir2Pos, centerAlignStyle, 8);
+	   
+	   ///////////////////////
+	   //HEADER 3
+	   /////////////////////
+	   
+	   spreadSheet.createRow(sheet, row, headerPos2);
+		
+			spreadSheet.createCell(sheet, row, headerPos2, 2, localeSat.getStringKey("sat_reports_header_lights"));
+			spreadSheet.createCell(sheet, row, headerPos2, 6, localeSat.getStringKey("sat_reports_header_trucks"));
+			spreadSheet.createCell(sheet, row, headerPos2, 15, localeSat.getStringKey("sat_reports_header_buses"));
+			spreadSheet.createCell(sheet, row, headerPos2, 19, "");
+			
+			spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 2);			
+			spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 6);
+			spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 15);
+			spreadSheet.setStyle(sheet, row, headerPos2, standardStyle, 19);
+														
+			sheet.addMergedRegion(CellRangeAddress.valueOf("C"+(headerPos2+1)+":F"+(headerPos2+1)+""));
+			sheet.addMergedRegion(CellRangeAddress.valueOf("G"+(headerPos2+1)+":O"+(headerPos2+1)+""));	
+			sheet.addMergedRegion(CellRangeAddress.valueOf("P"+(headerPos2+1)+":T"+(headerPos2+1)+""));	
+			
+	     ///////////////////////
+		  //HEADER 3
+		 /////////////////////
 							
 	   spreadSheet.createRow(sheet, row, rowHeaderDir2);
 	   spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);

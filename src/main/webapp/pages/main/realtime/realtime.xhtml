@@ -357,38 +357,38 @@
         <c:forEach items="#{satLinearView.satList}" var="item" varStatus="loop">	  
 	    <div id="sat#{item.equip_id}" class="equip-box-sat">
 		  	   		   
-	    <table id="sat#{item.table_id}" class="table-sat">
+	    <table id="satTab#{item.equip_id}" class="table-sat">
 	        <tbody>
 	           <tr>
-				  <th id="satName#{item.table_id}" class="satName" colspan="2" >#{item.nome} - #{item.km}</th>
+				  <th id="satName#{item.equip_id}" class="satName" colspan="2" >#{item.nome} - #{item.km}</th>
 				</tr>
 				 <tr>
 					<td>
 					<span><i class="fas fa-car sat-cars" title="#{realtimeLabels.realtime_sat_cars_icon_title}" ></i></span>
-					#{satView.satListValues.get(loop.index).quantidadeS1}
+					#{satLinearView.satListValues.get(loop.index).quantidadeS1}
 					</td>										
 					<td>
 					<span><i class="fas fa-tachometer-alt sat-speed" title="km/h" ></i></span>					
-				    #{satView.satListValues.get(loop.index).velocidadeS1}
+				    #{satLinearView.satListValues.get(loop.index).velocidadeS1}
 					</td>
 				 </tr>
 				<tr>
 					<td>
 					<span><i class="fas fa-car sat-cars" title="#{realtimeLabels.realtime_sat_speed_icon_title}" ></i></span>					
-				     #{satView.satListValues.get(loop.index).quantidadeS2}
+				     #{satLinearView.satListValues.get(loop.index).quantidadeS2}
 					</td>					
 					<td>
 					<span><i class="fas fa-tachometer-alt sat-speed" title="km/h" ></i></span>					
-				     #{satView.satListValues.get(loop.index).velocidadeS2}
+				     #{satLinearView.satListValues.get(loop.index).velocidadeS2}
 					</td>
 				 </tr>				
 				 </tbody>
 			</table>
 			<div id="fluxos"> 
-				<div id="img2FluxoTab#{item.table_id}" 
+				<div id="img2FluxoTab#{item.equip_id}" 
 					style="margin: 3px;" >
 				</div>
-				<div id="img1FluxoTab#{item.table_id}" 
+				<div id="img1FluxoTab#{item.equip_id}" 
 					style="margin: 3.2px;" >
 				</div>
 			</div>				
@@ -397,8 +397,8 @@
     <script>
     
     //DRAW AND SET SAT DEFINITIONS    
-    drawSat('sat#{item.equip_id}', 'sat#{item.table_id}', #{satView.satStatus.get(loop.index).status}, #{satView.satListValues.get(loop.index).velocidadeS1},
-    	#{satView.satListValues.get(loop.index).velocidadeS2}, 'fluxos', 'img1FluxoTab#{item.table_id}', 'img2FluxoTab#{item.table_id}', 'satName#{item.table_id}', 
+    drawSat('sat#{item.equip_id}', 'satTab#{item.equip_id}', #{satLinearView.satStatus.get(loop.index).status}, #{satLinearView.satListValues.get(loop.index).velocidadeS1},
+    	#{satLinearView.satListValues.get(loop.index).velocidadeS2}, 'fluxos', 'img1FluxoTab#{item.equip_id}', 'img2FluxoTab#{item.equip_id}', 'satName#{item.equip_id}', 
     	#{item.linearPosX}, #{item.linearPosY}, #{item.width});   
    
     </script>   

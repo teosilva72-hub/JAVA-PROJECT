@@ -1967,12 +1967,12 @@ public class SatReportsController {
 				if(type.equals("12")) {
 
 					//File name
-					fileName = localeLabel.getStringKey("ccr_reports_all_class_title")+tm.periodName(satReport.getPeriod());
-					excel_title = localeLabel.getStringKey("ccr_reports_all_class_excel_title"); // File Title
+					fileName = localeLabel.getStringKey("ccr_reports_all_class_excel_title")+tm.periodName(satReport.getPeriod());
+					excel_title = localeLabel.getStringKey("ccr_reports_all_class_title"); // File Title
 
 					countMergeHeader = new String[] {"A1:B4", "C1:L4", "M1:O4"}; // Merge Cells
 
-					col = new int[] {3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}; //Col size
+					col = new int[] {3500, 3500, 3500, 3500, 4500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}; //Col size
 
 					colStartDate = 12; colEndDate = 14; //Col start & end date
 					

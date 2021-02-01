@@ -522,7 +522,10 @@ public class EquipmentsDAO {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
 
-			String sql = "SELECT name, city, road, km, number_lanes, dir_lane1 FROM sat_equipment WHERE equip_id = '"+ equip_id + "' AND visible = 1";
+			String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes, st.dir_lane1 FROM sat_equipment st "
+					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
+					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+					+ "WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -530,12 +533,12 @@ public class EquipmentsDAO {
 			if (rs != null) {
 				while (rs.next()) {
 
-					eq.setNome(rs.getString("name"));
-					eq.setCidade(rs.getString("city"));
-					eq.setEstrada(rs.getString("road"));
-					eq.setKm(rs.getString("km"));
-					eq.setNumFaixas(rs.getInt("number_lanes"));		
-					eq.setFaixa1(rs.getString("dir_lane1"));
+					eq.setNome(rs.getString(1));
+					eq.setCidade(rs.getString(2));
+					eq.setEstrada(rs.getString(3));
+					eq.setKm(rs.getString(4));
+					eq.setNumFaixas(rs.getInt(5));		
+					eq.setFaixa1(rs.getString(6));
 					
 				}
 			}

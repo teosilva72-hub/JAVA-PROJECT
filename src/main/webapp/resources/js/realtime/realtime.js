@@ -334,7 +334,7 @@ function drawDMS(dms_id, dms_name_id, dms_msg_id, posX, posY, width, height){
 	document.getElementById(fluxos).style.width = width + "px"; 
 	
 	//altura	 
-	document.getElementById(sat_id).style.height = (width * 1.25)  + "px"; 
+	document.getElementById(sat_id).style.height = (width * 1.5)  + "px"; 
 	
 	//fluxos div
 	document.getElementById(fluxos).style.width =  (width * 0.95)  + "px"; 	
@@ -351,7 +351,7 @@ function drawDMS(dms_id, dms_name_id, dms_msg_id, posX, posY, width, height){
 	document.getElementById(fluxo_img1).style.marginTop =  7 +"px"; 
 				
    //Table Definitions
-    var tabSat = document.getElementById(sat_tab);      
+   /* var tabSat = document.getElementById(sat_tab);      
 	       
 		   var trSat = tabSat.getElementsByTagName("tr");		    
 		   var tdSat = null;
@@ -363,10 +363,10 @@ function drawDMS(dms_id, dms_name_id, dms_msg_id, posX, posY, width, height){
 		        for (var n=0; n < tdSat.length; n++)
 		        {		        	
 		        	tdSat[n].style.height = ((width * 0.6  ) / 2) + "px";  			        	
-		        	tdSat[n].style.width = (width / 4) + "px";
+		        	tdSat[n].style.width = (width / 6) + "px";
 		            
 		        }
-		    } 	
+		    } 	*/
 		    
 		    //Header Color Status	
 		    

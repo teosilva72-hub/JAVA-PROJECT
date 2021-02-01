@@ -318,6 +318,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaSul.jpg";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.png";
 		}
 
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tracevia.getConcessionaire())) {
