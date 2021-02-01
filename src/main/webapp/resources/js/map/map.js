@@ -141,30 +141,9 @@ $(function () {
 		$('zoomIn').click(function () { zoomInFactor(toDrag, 0.01) })
 		$('zoomOut').click(function () { zoomInFactor(toDrag, 0.01) })
 	})
-
-	//Equipments change sizes
-
-	$('.input-group .button-plus, .input-group .button-minus').click(function () {
-		let button = $(this)
-		let input = $(this).parent().find('input');
-		let step = Number(`${button.val()}${input.attr('step')}`)
-		let currentVal = Number(input.val());
-		let min = input.attr('min')
-		let max = input.attr('max')
-
-		console.log(step, currentVal)
-
-		if (!isNaN(currentVal)) {
-			input.val(Math.max(min, Math.min(max, currentVal + step))).trigger('change');
-		} else {
-			input.val(1);
-		}
-	});
 	
 	//Equipments change sizes END
-	
-	
-	
+
 	$('#coefSize').change(function () {
 		resizeEquip($('[scroll-zoom]'))
 	})
@@ -250,55 +229,67 @@ function barResize(){
 	    let offSetLeft = size.offset().left
 	    let pos = clientX - offSetLeft
 		width = size.width()
+		input = size.find('input')
 	    let por = Math.min(1, Math.max(0, pos / width))
 	    let newVal = por * (max - min) + min
 	    
-	    size.children().first().css("left", `${por * 100}%`).find('input').val(newVal).trigger("change")
+	    size.children().first().css("left", `${por * 100}%`).find('input').attr('value', newVal).trigger("change")
 	
 	    $(document).on('touchmove mousemove', function(e) {
 	        clientX = (e.touches || [e])[0].clientX
 			offSetLeft = size.offset().left
 	        pos = clientX - offSetLeft
+			input = size.find('input')
 	        por = Math.min(1, Math.max(0, pos / width))
 	        newVal = por * (max - min) + min
-console.log(newVal)
-	 		input.val(newVal).trigger('change').parent().css('left', `${por * 100}%`)
+	 		input.attr('value', newVal).trigger('change').parent().css('left', `${por * 100}%`)
 	    }).on("mouseup touchend", () => {
 	        $(document).off("touchmove mousemove")
 	    })
 	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
+	
+	input.change(function () {
+		resizeEquip($(`${input.attr("from")}`))
+	})
 }
 
 // SIZE BAR EQUIPMENTS END
 
-// Scale equips
+// SCALE EQUIPS
 
-function resizeEquip(container) {
-	container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-		let scale = Number(equip.attr('item-width')) / equip.width()
-		equip.css('transform', `scale(${scale * (Number($('#coefSize').val()) || 1)})`)
-	})
-}
-
-function posEquip(equip) {
-	let zoomTarget = equip.closest('[scroll-zoom]').children().first()
-	let zoomTargetImg = zoomTarget.find('img')
-	let pos = {
-		x: Number(equip.attr('posX')),
-		y: Number(equip.attr('posY'))
+	//RESIZE EQUIPMENT
+	function resizeEquip(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = Number(equip.attr('item-width')) / equip.width()
+			
+			equip.css('transform', `scale(${scale * (Number($('#bar-size').val()) || 1)})`)
+		})
 	}
-
-	pos.centX = pos.x / widthMax
-	pos.centY = pos.y / heightMax
-
-	//Pos X and Pos Y
-	equip.css({
-		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
-	});
-}
-
+	
+	//RESIZE EQUIPMENT END
+	
+	// EQUIPMENT POSITION
+	function posEquip(equip) {
+		let zoomTarget = equip.closest('[scroll-zoom]').children().first()
+		let zoomTargetImg = zoomTarget.find('img')
+		let pos = {
+			x: Number(equip.attr('posX')),
+			y: Number(equip.attr('posY'))
+		}
+	
+		pos.centX = pos.x / widthMax
+		pos.centY = pos.y / heightMax
+	
+		//Pos X and Pos Y
+		equip.css({
+			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
+			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
+		});
+	}
+	// EQUIPMENT POSITION END
+	
+// SCALE EQUIPS END
 
 //MAP MOVE CURSOR
 function mapMove(ele) {
@@ -351,226 +342,6 @@ function mapMove(ele) {
 		.css('cursor', 'grab')
 		.on('dragstart', function () { return false })
 		.mousedown(mouseDownHandler)
-}
-
-// /* COPIED BY REALTIME JS */
-
-// $(document).ready(function() {  
-//     $('#btnLayers').removeClass('hidden').addClass('show');  
-//     $('#btnEquips').removeClass('hidden').addClass('show');  
-// });
-
-function drawGenericEquipments(equip_id, table_id, posX, posY, width, factor) {
-	// let equip = document.getElementById(equip_id)
-	// let posXCent = posX / 1380
-
-	// //Pos X and Pos Y
-	// equip.style.left = posXCent * document.body.clientWidth + "px";
-	// equip.style.top = posY + "px";
-
-
-
-	// * Wequip_idth	  
-	// equip.style.width = width + "px"; 
-
-	// * Height 
-	// equip.style.height = (width * 1.3) + "px"; 
-
-	// * Table td congi
-	// var generic_tabHeader = document.getElementById(table_id);			  
-	// var generic_tr = generic_tabHeader.getElementsByTagName("tr");		    
-	// var generic_td = null;
-
-	// generic_td = generic_tr[0].getElementsByTagName("td");
-	// generic_td[0].style.height = ((width * 1.3) * 0.2) +"px";
-	// generic_td[0].style.width = (width * 0.8) + "px";	
-
-	// generic_td[1].style.height = ((width * 1.3) * 0.2) +"px";
-	// generic_td[1].style.width = (width * 0.2) + "px";	
-
-	// * Table fit font on header
-	// generic_tabHeader.style.fontSize = calculateFontSize(generic_tabHeader.offsetWidth, generic_tabHeader.offsetHeight, generic_tabHeader.innerHTML, factor) + "pt"; 
-
-}
-
-// * FONT SIZING
-
-//FONT SIZE FUNCTION
-function calculateFontSize(width, height, content, factor) {
-
-	// var area = width * height ;
-	// var contentLength = content.length;
-
-	// return  Math.sqrt(area/contentLength) * factor; //this provides the font-size in pixels.
-}
-
-/* FONT SIZING */
-
-//SAT DEFINITIONS
-
-//DRAW DMS
-function drawDMS(dms_id, dms_name_id, dms_msg_id, posX, posY, width, height) {
-	// let dms = document.getElementById(dms_id)
-
-	//  //solution for IDENTIFY MICROSOFT IE 
-	// var isIE = /*@cc_on!@*/false || !!document.documentMode;	
-
-	//  // Definição das posições
-	// dms.style.left = posX + "px";
-	// dms.style.top = posY + "px";
-
-	//  //Comprimento		  
-	// dms.style.width = width + "px";	
-
-	//  //Altura
-	// dms.style.height = height + 17  + "px";   
-
-	//  //DEFINE FROM MSG_ID
-	// var dmsTab = document.getElementById(dms_msg_id);      
-
-	// var tr = dmsTab.getElementsByTagName("tr");		    
-	// var td = null;
-
-	// for (var i=0; i < tr.length; i++)
-	// {
-	// 	td = tr[i].getElementsByTagName("td");
-
-	// 	for (var n=0; n < td.length; n++) {
-	// 		td[n].style.height = ((height * 0.65) / 3) +"px";
-	// 		td[n].style.width = ((width * 0.74) /12) + "px";
-
-	// 		td[n].style.lineHeight = ((height * 0.65) / 3) +"px";		            
-	// 		td[n].style.overflow = "hidden";
-	// 	}
-	// } 	
-
-	//  // Border Right
-	// dms.style.borderRight = ((height * 0.74) / 9) + "px solid #00FA9A";
-
-	//  // SET MESSAGES SQUARE FONT 
-	// dmsTab.style.fontSize = calculateFontSize(dmsTab.offsetWidth, dmsTab.offsetHeight, dmsTab.innerHTML, 7) + "pt";	
-
-	//  // SET HEADER FONT
-	//  //DEFINE FROM NAME_ID
-	// var dmsHeader = document.getElementById(dms_name_id);		    
-	// dmsHeader.style.fontSize = calculateFontSize(dmsHeader.offsetWidth, dmsHeader.offsetHeight, dmsHeader.innerHTML, 1.5) + "px";	
-
-}
-
-//DRAW SAT
-
-function drawSat(sat_id, sat_tab, sat_status, sat_speed1, sat_speed2, fluxos, fluxo_img1, fluxo_img2, satName,
-	posX, posY, width) {
-	// let sat = document.getElementById(sat_id)
-	// let fluxo = document.getElementById(fluxos)
-	// let img1 = document.getElementById(fluxo_img1)
-	// let img2 = document.getElementById(fluxo_img2)
-	// let name = document.getElementById(satName)
-
-	// //Position
-	// sat.style.left = posX + "px";
-	// sat.style.top = posY + "px";
-
-	// //Comprimento		  
-	// sat.style.width = width + "px"; 
-	// fluxo.style.width = width + "px"; 
-
-	// //altura	 
-	// sat.style.height = (width * 1.25)  + "px"; 
-
-	// //fluxos div
-	// fluxo.style.width =  (width * 0.95)  + "px"; 	
-	// fluxo.style.height =  ((width * 0.63) / 2)  + "px"; 	
-	// fluxo.style.marginTop = 12 + "px"; 
-	// fluxo.style.border=  "1px solid transparent"; 
-
-	// //fluxos sub divs
-	// img1.style.height = img2.style.height = (width * 0.10)  + "px";	
-	// img1.style.border = img2.style.border = "1px solid transparent"; 
-
-	// img1.style.marginTop =  7 +"px"; 
-
-	// //Table Definitions
-	// var tabSat = document.getElementById(sat_tab);      
-
-	// 	   var trSat = tabSat.getElementsByTagName("tr");		    
-	// 	   var tdSat = null;
-
-	// 	    for (var i=0; i < trSat.length; i++)
-	// 	    {
-	// 	        tdSat = trSat[i].getElementsByTagName("td");
-
-	// 	        for (var n=0; n < tdSat.length; n++)
-	// 	        {		        	
-	// 	        	tdSat[n].style.height = ((width * 0.6  ) / 2) + "px";  			        	
-	// 	        	tdSat[n].style.width = (width / 4) + "px";
-
-	// 	        }
-	// 	    } 	
-
-	// 	    * Header Color Status	
-
-	// 	    * Green Color > indica que o equipamento está conectado
-	// 		if(sat_status > 7) {
-	// 			name.style.backgroundColor = '#00FF00';
-	// 			name.style.color = 'black';
-
-	// 		* SeaGreen Color > indica que o equipamento está com perca de pacotes
-	// 		} else if(sat_status > 0 && sat_status < 8 ) {
-	// 			name.style.backgroundColor = '#00FF7F';
-	// 			name.style.color = 'black';
-	// 		}	
-	// 	    * Red Color > indica que o equipamento está sem comunicação
-	// 		else {		 
-	// 			name.style.backgroundColor = '#FF0000';
-	// 		    name.style.color = 'white';	     
-	// 		}
-
-
-	// 		* VELOCIDADE SENTIDO 1
-	// 		if( sat_speed1 != 0) {
-	// 			if(sat_speed1 > 0 && sat_speed1 < 31){
-	// 				img1.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_red.png')";
-	// 				img1.style.animation = 'myMove 150s linear infinite';				
-	// 			}
-	// 			else if(sat_speed1 > 30 && sat_speed1 < 61){
-	// 				img1.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')";
-	// 				img1.style.animation = 'myMove 60s linear infinite';		
-	// 			}
-	// 			else if(sat_speed1 > 60){
-	// 				img1.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_green.png')";
-	// 				img1.style.animation = 'myMove 20s linear infinite';			 
-	// 			}		
-	// 		}	
-	// 		else {
-	// 			img1.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')";
-	// 			img1.style.animation = 'myMove 500s linear infinite';	
-	// 		}
-
-	// 		* VELOCIDADE SENTIDO 2
-	// 		if( sat_speed2 != 0){
-	// 			if(sat_speed2 > 0 && sat_speed2 < 31){
-	// 				img2.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_red.png')";
-	// 				img2.style.animation = 'myMove 150s linear infinite';
-	// 				img2.style.animationDirection = "reverse";
-	// 			}
-	// 			else if(sat_speed2 > 30 && sat_speed2 < 61){
-	// 				img2.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')";
-	// 				img2.style.animation = 'myMove 60s linear infinite';	
-	// 				img2.style.animationDirection = "reverse";
-	// 			}
-	// 			else if(sat_speed2 > 60){
-	// 				img2.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_green.png')";
-	// 				img2.style.animation = 'myMove 20s linear infinite';
-	// 				img2.style.animationDirection = "reverse";
-	// 			}		
-	// 		}	  
-	// 		    else {
-	// 				img2.style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')";
-	// 				img2.style.animation = 'myMove 500s linear infinite';	
-	// 				img2.style.animationDirection = "reverse";
-	// 		    }
-
 }
 
 //TODO: ZOOM VARS // compartilhar escala

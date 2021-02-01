@@ -720,7 +720,11 @@
 		<h:outputScript name="dashboard-right.js" library="js/dashboard" />			
 		<h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />	
 		<h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
-		<h:outputScript name="dataTables.select.min.js" library="js/datatables" />			
+    <h:outputScript name="dataTables.select.min.js" library="js/datatables" />			
+    
+    <script>
+    	$("#j_idt33").slimScroll({height: window.innerHeight - 150})
+    </script>
 	  		
 		<!-- Import JavaScript from another pages -->
 		<ui:insert name="jscript"></ui:insert>
