@@ -1,0 +1,287 @@
+
+/*
+ * General styles
+ */
+
+body, html{    
+ 	background-color:  #FFFFFF; 	
+ 	 
+}
+
+body{
+	overflow-y: hidden;
+}
+
+.main{
+ 	margin-top: 25px; 	
+}
+
+.title { 
+	font-size: 24px;	
+	font-weight: 400;
+	color: black;	
+}
+
+.users-form-divide{
+	background: black;
+	padding-bottom: 1.5px;
+	margin-bottom: 5px;
+}
+
+#register-form, #update-form{
+	margin-top: 5%;	
+}
+
+
+.form-group{
+	margin-bottom: 10px;
+}
+
+input,
+input::-webkit-input-placeholder {   
+    display:flex;
+    flex-grow:1;
+}
+.col-sm-9{
+	margin-left: -3.75%;
+}
+.col-sm-6{
+	margin-left: -3.75%;
+}
+
+/* CONTEUDO PRINCIPAL QUE ENCAPSULA O FORM */
+.form-container{
+ background-color: #212121; 
+ border: 1px solid #212121; 
+  /* shadows and rounded borders */
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin-left: 25%;
+  margin-top: 1%;
+   
+}
+
+/* CONTEUDO DO FORM */
+.form-box{
+ 	margin-top: 30px;
+ 	margin: 0 auto;
+ 	max-width: 520px;
+    padding: 40px 40px;
+    background-color:#E8E8E8;
+}
+
+.form-box .form-group input, .ui-select-level{	
+	height: 40px;
+	border: 1px solid #555;
+	border-radius: 5px;
+	outline: none;
+	background: white;
+	padding-left: 25px;		
+	}	
+
+.form-box .button[type="submit"]{
+	border: none;
+	cursor: pointer;
+	width: 150px;
+	height: 40px;
+	border-radius: 5px;	
+	text-align: center;		
+}
+
+.fa, .fas, .far{
+	font-size: 18px !important;
+	color: white;
+}
+ 
+.badge-icon, .keyboard-icon, .briefcase-icon, .envelope-icon, .user-icon,
+.user-lock-icon {
+ margin-top: 8px;
+ font-size: 24px;
+ color:#fff;
+}
+
+.input-group-addon{
+	background: #212121;
+	color: #fff;
+	width: 40px;
+	height: auto;	
+}
+
+
+.square-user {
+    position: absolute;    
+    top: 14px; 
+    left: 34px;	
+    width: 12px;
+    height: 12px;
+    border-top: 1px solid rgba(0,0,0,.15);
+    border-left: 1px solid rgba(0,0,0,.15);
+    background-color: #212121;
+    transform: rotate(45deg);
+	z-index: 9999;
+}
+
+/*Radio Button*/
+
+#radio-status .status{
+ width: 100%;
+ border: none;
+}
+
+.status label{  
+ margin-top: 0px;
+ margin-left: 5px; 
+ color: black;
+}
+
+.status td {    
+  float: left;    
+}
+.status td input {
+  float: left;
+  margin-left: 36px;  
+  margin-top: 4%;    
+}
+/*Radio Button*/
+
+/*Buttons DIV*/
+
+#buttons-action{
+	position: relative;
+	margin-left: 0px;
+	width: 100%;
+	border: none;
+	margin-bottom: 15px;
+}
+
+/*buttons*/
+#btn-register{margin-left: 40px;}
+#btn-limpar{margin-left: 22px; }
+
+.btn-dark{
+	width: 100px;
+}
+
+/*Using Jquery Validation*/
+
+/*Error Label Class*/
+label.error{	
+  position: absolute;
+  color: #dc4535;
+  font-size: 12px;
+  border: none; 
+}
+
+/*Error Label Ids*/
+
+label#userId-error, label#fullname-error, label#jobPosition-error,
+label#email-error, label#username-error, label#permissions-error{
+	margin-top: -15px;
+	margin-left: 10%;	
+}
+
+label#permissions-error{	
+	margin-top: -15px;
+	margin-left: 10%;	
+}
+
+/*Error Label Ids*/
+
+.groupFieldsUser{
+	border: none;
+	width: 40%;	
+	margin-left: 30%;
+	margin-top: 60px;
+	border-radius: 15px;		
+}
+
+/*Title DIV*/
+.titleFieldsUser{
+	position: absolute;	
+	border: none;
+	width: 25%;
+	margin-top: 0px;
+	margin-left: 2.5%;
+}
+
+.titleGroupHr{
+	background: black;
+	padding-bottom: 0.75px;
+	margin-bottom: 5px;	
+	margin-bottom: 15px;
+	width: 90%;
+	margin-left: 4%;
+}
+
+/*Title DIV*/
+.input-fields, .select-fields{
+	position: relative;	
+	border: none;
+	height: 65px;	
+}
+	
+.input-fields input, .select-fields select{
+width: 100%;
+height: 40px;
+margin-bottom: 20px;
+border: 1px solid #767676;
+border-radius: 25px;
+outline: none;
+background: white;
+padding-left: 45px;	
+	
+}	
+	
+.input-fields input:focus, 
+.select-fields select:focus
+{
+   border-bottom: 2px solid   #1C86EE; /*#dc3545*/
+   box-shadow: 2px 2px 2px  #1C86EE;
+}
+	
+.input-fields span, .select-fields span{
+	position: absolute;
+	top: 8px;
+	padding-left: 45px;
+	color: #292525;
+	height: 40px;
+	}
+	
+.invalid
+{
+    border:1px solid red !important;
+    -moz-box-shadow: 0 0 3px red;
+    -webkit-box-shadow: 0 0 3px red;
+    box-shadow: 0 0 3px red;  
+    border-radius:5px; 
+    -moz-border-radius:5px;  
+    border-bottom: 2px solid   #dc4535 !important; /*#dc3545*/
+    box-shadow: 2px 2px 2px  #dc4535 !important;
+     /* background: url(/Tracevia/resources/icons/validation-icons/error.png) no-repeat right;*/
+}
+
+.valid
+{    
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+     box-shadow: none; 
+    /* background: url(/Tracevia/resources/icons/validation-icons/success.png) no-repeat right;*/
+}	
+
+/*inputs width*/
+#userId{width: 35%;  margin-left: 5%;}
+#fullname, #jobPosition, #email{width: 80%; margin-left: 5%;}
+#username{width: 60%;  margin-left: 5%;}
+#permissions{width: 60%;  margin-left: 5%;}
+
+.form-input input.error {
+    color: #dc4535;
+    border: 1px solid red;
+     border-bottom: 2px solid   #dc4535 !important; /*#dc3545*/
+    box-shadow: 2px 2px 2px  #dc4535 !important;
+}

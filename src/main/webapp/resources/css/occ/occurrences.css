@@ -1,0 +1,409 @@
+body{
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+#tabelaOculta{
+	width: 100%;	
+}
+.testeTable{
+	margin-top: 100000vh;
+}
+@media(min-height:800px){
+	.colEsquerda{
+	height: 500px;
+	}	
+
+}
+.hidden{
+    display: none;
+}
+.confAlert{
+	height: 25px;
+	background-color: black;
+}
+.confTextAlert{
+	margin-top: -7px;
+	color: white;
+	font-size: 10pt;
+	text-align: center;
+}
+.conteudo{
+	margin-top: -25px;
+}
+.corCamposInput{
+	padding: 0;
+    background-color:  rgba(128, 128, 128, 0.363);	
+    border-radius: 10px;
+    height: 30%;
+}
+
+.form-row{
+	width: 90%;
+	margin-left: 5%;
+	margin-top: -10px;
+}
+
+.form-group label{
+	font-size: 9pt;
+}
+
+/*Inicio do design dos elementos inputs e textarea*/
+.inputDesign{
+	height: 32px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: white;
+	-webkit-box-shadow: 1px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.55);
+     box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.55);
+}
+.love{
+	border: solid 2px red;
+}
+.textareaDesign{
+	height: 30px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	background: white;
+	-webkit-box-shadow: 1px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.55);
+     box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.55);
+     cursor: pointer;
+}
+.form-control:focus{
+  border-bottom: 2px solid #1C86EE; /*#dc3545*/
+  box-shadow: 2px 2px 2px #1C86EE;
+}
+.colDireita{
+	border: solid red 2px blue;
+}
+/*Fim do design dos elementos inputs e textarea*/
+@media (max-height: 768px){
+	#tab1{
+		height: 490px;
+	}
+	#tab2{
+		height: 490px;
+	}
+	#tab3{
+		height: 490px;
+		
+	}
+	.btnConf{
+		font-size: 10pt;
+	}
+}
+@media (min-height: 768px){
+	#tab1{
+		height: 800px;
+	}
+	#tab2{
+		height: 780px;
+	}
+	#tab3{
+		height: 800px;
+	}
+}
+#tab1{
+	margin-top: -5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: ridge 5px black;
+	border-radius: 10px;
+	background-color: #FFFAFA;
+	color: black;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55); 
+}
+#tab2{
+	margin-top: -5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: ridge 5px black;
+	border-radius: 10px;
+	background-color: #FFFAFA;
+	color: black;
+	display: none;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55); 
+}
+#tab3{
+	margin-top: -5px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: ridge 5px black;
+	border-radius: 10px;
+	background-color: #FFFAFA;
+	color: black;
+    display: none;
+    -webkit-box-shadow: 5px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55); 
+}
+
+.btnConf{
+	background-color: black;
+	color: white;
+	margin-top: 15px;
+	 border-bottom-width: 0;
+	border-radius: 15px;
+	transition: 0.3s;
+	font-weight: bold;
+	-webkit-box-shadow: 0px 9px -10px 0px rgba(0,0,0,0.55);
+	border: solid #1C86EE 1px;
+	
+}
+
+.btnConf:hover{
+
+	color: white;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55); 
+}
+
+/*Bootstap secondary Button*/
+.btnConf:disabled
+{
+ color: #fff;
+ background-color: red;
+ border-color: #6c757d;
+}
+
+/*Bootstap Primary Button*/
+.btnConf:enabled:hover
+{
+  color: #fff;    
+  background-color: black;
+  border: solid black 1px;
+}
+
+#add-campo{
+	position: relative;
+	top: -40px;
+}
+input{
+	cursor: pointer;
+}
+select{
+	cursor: pointer;
+	height: 30px;
+}
+.inpFile{
+	position: relative;
+	top: -10px;
+	width: 100%;
+	cursor: pointer;
+}
+.borderBtn{
+	height: 70px;
+	background-color: #FFFAFA;
+	border: ridge 5px black;
+	border-radius: 10px;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55); 
+}
+.btnModal{
+	background-color: black;
+	color: white;
+}
+.btnModal:hover{
+	background-color: rgba(255,193, 7, 1);
+	color: black;
+}
+.modal-content{
+	background-color: #FFFAFA;
+	color: black;
+}
+/*Style Table*/
+/* TABLE SELECTED */
+.table-striped > tbody > tr.selected > td {
+background: #A9D0F5; /*#A9D0F5*/
+color: #000;
+}
+tr{
+	
+cursor: pointer;
+}
+/*Animação da tela de abertura*/
+
+/* ini: Preloader */
+ 
+#preloader {
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: yellow; /* cor do background que vai ocupar o body */
+    z-index:999; /* z-index para jogar para frente e sobrepor tudo */
+}
+#preloader .inner {
+    position: absolute;
+    top: 50%; /* centralizar a parte interna do preload (onde fica a animação)*/
+    left: 50%;
+    transform: translate(-50%, -50%);  
+}
+.bolas > div {
+  display: inline-block;
+  background-color: black;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  margin: 3px;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  animation-name: animarBola;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+   
+}
+.bolas > div:nth-child(1) {
+    animation-duration:0.75s ;
+    animation-delay: 0;
+}
+.bolas > div:nth-child(2) {
+    animation-duration: 0.75s ;
+    animation-delay: 0.12s;
+}
+.bolas > div:nth-child(3) {
+    animation-duration: 0.75s  ;
+    animation-delay: 0.24s;
+}
+ 
+@keyframes animarBola {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+  16% {
+    -webkit-transform: scale(0.1);
+    transform: scale(0.1);
+    opacity: 0.7;
+  }
+  33% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1; 
+  } 
+}
+/*TESTE INPUT FILE*/
+ input[type="file"]{
+	display: block;
+}
+.imageThumb {
+	max-height: 75px;
+	border: 2px solid;
+	padding: 1px;
+	cursor: pointer;
+}
+.pip {
+	display: inline-block;
+	margin: 10px 10px 0 0;
+}
+.remove {
+	display: block;
+	background: #444;
+	border: 1px solid black;
+	color: white;
+	text-align: center;
+	cursor: pointer;
+}
+.remove:hover {
+	background: white;
+	color: black;
+}
+/*//////////////////////////*/
+
+.iconeListYes{
+	color: green;
+}
+.iconeListNot{
+	color: red;
+}
+.borderInput{
+	border: solid 2px red;
+}
+.errorInputs{
+	font-size: 10pt;
+	margin-top: 5px;
+	color: red;
+}
+.validatorFile{
+	font-size: 10pt;
+	margin-top: -2px;
+	color: red;
+	display: none;
+}
+
+#btnUpload:hover{
+	background-color: blue;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+}
+.trash:hover{
+	color: red;
+	transition-duration: 1.2s;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+}
+.fa-cloud-download-alt:hover{
+	color: red;
+	transition-duration: 1.2s;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+}
+#selectedId{
+	width: 50px;
+	border: 0;
+}
+
+.btnFile{
+	width: 200px;
+}
+.btnDeleteFile{
+	border: 0;
+}
+
+#selectedId{
+	color: red;
+	font-size: 12pt;
+	max-width: 100%;
+}
+.linkFile{
+	text-decoration: none;
+	padding: 10px;
+	color: black;
+}
+.iconFile{
+	color: black;
+}
+.forEachFiles{
+	margin: 0;
+}
+#msgDelete, #msgDownload, #msgSave{
+	margin-top: -17px;
+	height: 23px;
+}
+.textMsgFile{
+	margin-top: -10px;
+	font-size: 12pt;
+}
+.imageFile{
+	border: solid 1px black;
+	width: 70px;
+	height: 70px;
+	object-fit: contain;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+  }

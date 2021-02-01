@@ -1,0 +1,568 @@
+body {
+	overflow-y: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+@media ( max-height : 768px) {
+	.jumbotron{
+		margin-top: -15px !important;
+		height: 550px !important;
+		overflow-y: auto;
+	}
+	.card {
+		width: 110% !important;
+		background-color: #A8A8A8;
+}
+}
+/*DIV das mensagens*/
+.message-content {
+	position: absolute;
+	border: 1px solid #A9A9A9;
+	border-radius: 5px;
+	width: 27%;
+	height: 250px;
+	margin-left: 9%;
+	margin-top: 10%;
+	background: #87CEEB; /*#F8F8FF;*/
+	float: left;
+}
+
+.ui-selectonemenu {
+	width: 100%;
+	margin-top: 1%;
+	margin-left: 5px;
+}
+
+/*CONTEUDO PRINCIPAL ACTIVATE*/
+
+
+.equip-content-2 {
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+}
+
+#message-block {
+	
+}
+
+/*CONTEUDO PRINCIPAL ACTIVATE*/
+.option {
+	border: 1px solid transparent;
+	width: 95%;
+	height: 100px;
+	margin-left: 2.5%;
+}
+
+.option-1 {
+	border: none;
+	width: 95%;
+	height: 100px;
+	margin-left: 2.5%;
+}
+
+.check-select {
+	float: left;
+	margin-top: 8%;
+	margin-left: 1.5%;
+	border: 1px solid transparent;
+	width: 25px;
+	height: 25px;	
+}
+
+.equip-info {
+	float: left;
+	position: relative;
+	border: 1px solid purple;
+	background: #222222;
+	box-shadow: 5px 5px 4px gray;
+	border-right: 6px solid #00FA9A;
+	width: 60%;
+	height: 82px;
+	margin: 2.5px;
+	margin-left: 8%;
+	opacity: 0.7;
+}
+
+.equip-info-2 {
+	position: relative;
+	border: none;
+	background: #222222;
+	box-shadow: 5px 5px 4px gray;
+	border-right: 6px solid #00FA9A;
+	width: 90%;
+	height: 82px;
+	margin: 2.5px;
+	margin-left: 4.5%;
+	opacity: 0.7;
+}
+
+.equip-info-updating {
+	position: relative;
+	border: none;
+	background: #222222;
+	box-shadow: 5px 5px 4px gray;
+	border-right: 6px solid #00BFFF;
+	width: 90%;
+	height: 82px;
+	margin: 2.5px;
+	margin-left: 8%;
+	opacity: 0.7;
+}
+
+.equip-info-updating-2 {
+	position: relative;
+	border: none;
+	background: #222222;
+	box-shadow: 5px 5px 4px gray;
+	border-right: 6px solid #FFFF00;
+	width: 90%;
+	height: 82px;
+	margin: 2.5px;
+	margin-left: 4.5%;
+	opacity: 0.7;
+}
+
+.equi-info-restore {
+	border-right: 6px solid #00FA9A;
+}
+
+/*Conteudo para o name - km info*/
+.name-block {
+	width: 100%;
+	height: 18px;
+	color: #FFF;
+	font-size: 12px;
+	margin-top: 0%;
+	text-align: center;
+	border: none;
+	float: left;
+}
+
+/* DIVs Abrangem nome e o km (Inside DIV name-block) */
+.name {
+	border: none;
+	width: 30%;
+	float: left;
+	margin-left: 20%;
+}
+
+.km {
+	border: none;
+	width: 30%;
+	float: right;
+	margin-right: 20%;
+}
+
+/*DIV Abrange table-img e table-message*/
+.equip-core {
+	border: none;
+	float: left;
+	width: 100%;
+	height: 65px;
+}
+
+/*table de imagem*/
+.table-img {
+	margin-top: 0%;
+	margin-left: 1%;
+	width: 60px;
+	height: 60px;
+	float: left;
+}
+
+/*table de mensagens*/
+.table-message {
+	margin-top: 0%;
+	margin-left: 0.75%;
+	width: 80%;
+	height: 60px;
+	float: left;
+}
+
+.table-message tbody td {
+	border: 1px solid black;
+	height: 15px;
+	width: 15px;
+	color: #FFFF00;
+	font-size: 10px;
+	text-align: center;
+}
+
+.table-img, .table-message {
+	border: 1px solid black;
+	background: #444444;
+}
+
+/*IMAGEM PMV*/
+.ui-graphic-image {
+	width: 100%;
+	height: 100%;
+}
+
+.ui-graphic-board {
+	width: 100%;
+	height: 58px;
+}
+
+/*IMAGEM PMV*/
+.ui-button {
+	width: 100px;
+	text-align: center;
+}
+
+.ui-dialog-titlebar {
+	background: #FFFF00;
+	color: #555;
+}
+
+.ui-dialog-title {
+	margin-left: 150px;
+}
+
+#messages-activate {
+	border: none;
+	border-radius: 10px;
+	width: 56%;
+	height: 390px;
+	float: left;
+	margin-top: 1.5%;
+	margin-left: 8%;
+	background: #FFE4C4;
+}
+
+#message-selected {
+	float: left;
+	border: 1px solid transparent;
+	width: 95%;
+	height: 100%;
+	margin-top: 2.5%;
+	margin-left: 2%;
+	background: #F5F5F5;
+	color: black;
+}
+
+#graphic {
+	float: left;
+	border: none;
+	width: 40%;
+	height: 70px;
+	margin-left: 2%;
+	margin-top: 1%;
+	opacity: 0.7;
+}
+
+#text {
+	float: left;
+	border: none;
+	width: 50%;
+	height: 70px;
+	margin-left: 1%;
+	margin-top: 1%;
+	font-size: 16px;
+}
+
+#row1, #row2, #row3 {
+	float: left;
+	margin-left: 4%;
+	margin-top: 0.5%;
+}
+
+/*DIV onde esta List Container*/
+#messages-list {
+	position: relative;
+	float: left;
+	border: 1px solid transparent;
+	width: 100%;
+	height: auto;
+	margin-top: 1.5%;
+	margin-left: 0%;
+	border-radius: 5px;
+}
+
+/*SELECTONELISTBOX - COMPONENTE*/
+#messages-list .ui-selectonelistbox {
+	margin-top: 2.5%;
+	margin-left: 2.5%;
+	width: 95%;
+	max-height: 250px;
+	height: auto;
+}
+
+/*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
+.ui-selectlistbox-listcontainer {
+	width: 100% !important;
+	height: 100% !important;
+}
+
+/* ITENS - SELECTONELISTBOX*/
+.ui-selectlistbox-item {
+	width: 100%;
+	height: 58px;
+}
+
+.ui-selectlistbox-listcontainer {
+	height: 232px !important;
+}
+
+.ui-selectlistbox-item {
+	
+}
+
+/* Plus Button - Selection Available Messages */
+
+/* HEADER OPTION */
+#header-option {
+	border: none;
+	height: 50px;
+	width: 61%;
+	margin-left: 2.5%;
+}
+
+#select-all {
+	border: none;
+	width: 20%;
+	height: 35px;
+	margin-left: 1.5%;
+	margin-top: 0.75%;
+	float: left;
+}
+
+.ui-checkbox-equip-all {
+	margin-top: 2%;
+	font-size: 16px;
+	border: none;
+}
+
+/* HEADER OPTION */
+
+/*Equips Content labels header*/
+.label-header-content, .label-header-content-2 {
+	font-size: 22px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+
+/*Equips Content labels header*/
+
+/* Buttons Selection */
+.buttons-action {
+	position: relative;
+	float: right;
+	border: none;
+	height: 140px;
+	width: 120px;
+	margin-top: 2.5%;
+	margin-right: 6%;
+}
+
+#btn-select, #btn-cancel, #btn-reset, #btn-apply {
+	margin-top: 5%;
+	margin-left: 14%;
+	width: 85px;
+	text-align: center;
+	color: #fff !important;
+}
+
+/* Buttons Selection */
+.fa-minus-square {
+	color: #343a40;
+}
+
+/*Bootstap secondary Button*/
+.icon:disabled {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+
+/*Bootstap Primary Button*/
+.icon:enabled {
+	color: #fff;
+	background-color: #343a40;
+	border-color: #343a40;
+}
+
+#btn-hide-list {
+	margin-top: 2.5%;
+}
+
+/*LABEL MESSAGE BLOCK DIV CONTENT*/
+#label-message-content {
+	margin-top: 2.5%;
+}
+
+/*LABEL MESSAGE BLOCK*/
+.label-message-block {
+	font-weight: bold;
+	font-size: 22px;
+	color: white;
+}
+
+/* DIV SELEÇÃO TIPO DE MENSAGEM */
+#selection-div {
+	float: left;
+	border: none;
+	width: 100%;
+	height: 48px;
+	background: transparent;
+}
+
+/* DIV SELECTONEMENU E BTN-PLUS */
+#type-list {
+	margin-left: 5%;
+	margin-top: 3%;
+}
+
+/* DIV SELEÇÃO TIPO DE MENSAGEM */
+
+/*Modal Changes*/
+.modal {
+	position: fixed;
+	margin-top: 6%;
+	margin-right: 0px;
+	margin-bottom: 0;
+	margin-left: 0;
+	z-index: 10040;
+	overflow: auto;
+	overflow-y: auto;
+	vertical-align: top;
+}
+/*Modal Changes*/
+.img-modal {
+	margin-left: 32.5%;
+}
+
+/*MUDANÇAS BOOTSTRAP*/
+.row {
+	width: 100%;
+	height: 100%;
+}
+
+.conteudo {
+	margin-top: -30px;
+}
+
+.card {
+	width: 100%;
+	background-color: #A8A8A8;
+	-webkit-box-shadow: 9px 7px 5px rgba(128,128,128, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(128,128,128, 0.77);
+	box-shadow: 9px 7px 5px rgba(128,128,128, 0.77);
+}
+
+.jumbotron {
+	margin-top: 10px;
+	width: 100%;
+	
+}
+
+.selecao {
+	display: none;
+}
+
+.confTop {
+	margin-top: -30px;
+}
+
+.form-control:focus {
+	border-bottom: 2px solid #1C86EE; /*#dc3545*/
+	box-shadow: 2px 2px 2px #1C86EE;
+}
+/*input design*/
+.inputDesign {
+	height: 32px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: white;
+	-webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
+}
+.confTop {
+	margin-top: -20px;
+}
+/*Animação da tela de abertura*/
+
+/* ini: Preloader */
+ 
+#preloader {
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: yellow; /* cor do background que vai ocupar o body */
+    z-index:999; /* z-index para jogar para frente e sobrepor tudo */
+}
+#preloader .inner {
+    position: absolute;
+    top: 50%; /* centralizar a parte interna do preload (onde fica a animação)*/
+    left: 50%;
+    transform: translate(-50%, -50%);  
+}
+.bolas > div {
+  display: inline-block;
+  background-color: black;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  margin: 3px;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  animation-name: animarBola;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+   
+}
+.bolas > div:nth-child(1) {
+    animation-duration:0.75s ;
+    animation-delay: 0;
+}
+.bolas > div:nth-child(2) {
+    animation-duration: 0.75s ;
+    animation-delay: 0.12s;
+}
+.bolas > div:nth-child(3) {
+    animation-duration: 0.75s  ;
+    animation-delay: 0.24s;
+}
+ 
+@keyframes animarBola {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+  }
+  16% {
+    -webkit-transform: scale(0.1);
+    transform: scale(0.1);
+    opacity: 0.7;
+  }
+  33% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    opacity: 1; 
+  } 
+}
+/*TESTE INPUT FILE*/
+
+/* PAGINATORS */
+
+.paginator{
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;	
+  margin-bottom: 1%;
+  margin-left: 0%;  
+}
+
+.page1{
+	position: absolute;
+	margin-left: 30px;
+	margin-top: 10px:
+}

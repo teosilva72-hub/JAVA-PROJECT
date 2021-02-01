@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"     
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">	
+	
+	<h:head>
+		
+	<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
+	<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />		
+	<h:outputStylesheet name="acess-denied.css" library="css/restricted" />
+	
+	</h:head>
+ 
+    <h:body>
+     <h:form>
+        <br /><br />
+    	<h1 class="ui-title">#{restrictedLabels.session_expired_title}</h1>
+    	<br />
+    	<h3 class="ui-title-desc">#{restrictedLabels.session_expired_label_message}</h3>       	
+    	    	
+    	<h:commandLink class="nav-link" action="#{navigationController.sendToDashboard}" value="" style="font-size: 28px; color:#000; margin-top: 5px; margin-left: 2%;" >
+          <i class="fas fa-arrow-circle-left"></i>                                    
+        </h:commandLink>	  	
+    	
+    	<br />
+    	    	    	
+    	<h:outputLabel class="ui-outpulabel-message"> #{restrictedLabels.session_expired_label_message2} <b class="ui-bold-login">#{restrictedLabels.session_expired_label_message3}</b> </h:outputLabel>
+    	
+    	</h:form>    	
+    </h:body>
+    
+    <h:outputScript name="popper.min.js" library="js/popper" />
+	<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+	<h:outputScript name="all.min.js" library="font-awesome/js" />	
+ 
+</html>

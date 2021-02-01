@@ -1,0 +1,595 @@
+body {
+	overflow-y: hidden;
+	width: 100%;
+	height: 100% !important;
+}
+
+/*Alert Message*/
+.ui-messages-grow {
+	-webkit-margin-top: 0px;
+	margin-top: 0x;
+}
+
+/*DIV PMV BOARD*/
+.pmv-board {
+	border: none;
+	margin-top: 1.5%;
+}
+
+/*DIV EQUIP PREVIEW*/
+.equip-info {
+	margin-top: 0%;
+	margin-left: 10%;
+	width: 80%;
+	height: 125px;
+	border: none;
+	background: #333333;
+	box-shadow: 5px 5px 4px gray;
+	border-right: 6px solid #00FA9A;
+}
+
+/*TABLES EQUIP PREVIEW*/
+@media ( max-width : 1366px) {
+	.equip-info {
+		width: 85%;
+		margin-left: 7.5%;
+	}
+	.jumbotron {
+		margin-top: -80px !important;
+	}
+	.confIcone{
+		margin-left: 150px !important;
+		font-size: 50pt !important;
+		margin-top: -50px !important;
+		z-index: 999;
+		position: absolute;
+	}
+	.boardDetails{
+		margin-top: 0 !important;
+		height: 550px !important;
+	}
+	.confBtn{
+		margin-left: 20% !important;
+		height: 28px;
+		font-size: 9pt !important;
+		margin-top: 10px !important;
+		text-align: center;
+	}
+	.ui-selectonelistbox {
+		height: 350px !important;
+		margin-top: 20px;
+	}
+	.inputDesign{
+		height: 25px !important;
+	}
+	.conf2Btn{
+		margin-top: 10px !important;
+	}
+	.equip-info {
+		margin-top: 0%;
+		margin-left: 0%;
+		width: 100%;
+		height: 115px;
+		border: none;
+		background: #333333;
+		box-shadow: 5px 5px 4px gray;
+		border-right: 6px solid #00FA9A;
+	}
+	#table-message {
+		position: absolute;
+		margin-top: 2%;
+		margin-left: 25%;
+		width: 65% !important;
+	}
+	.fa-keyboard, .fa-file-signature, .fa-key, .fa-th-large {
+	margin-top: 8px;
+	margin-left: 5px;
+	font-size: 18px !important;
+}
+}
+.jumbotron {
+	margin-top: -20px;
+	height: 100% !important;
+	width: 100% ;
+}
+
+.table-equip {
+	margin-top: 0%;
+	width: 50%;
+	height: auto;
+	background: #444444;
+}
+
+.table-equip tr, td {
+	border: 1px solid black;
+}
+
+.table-equip-img tr, td {
+	border: 1px solid black;
+}
+
+.table-equip td {
+	text-align: center;
+	text-indent: 5px;
+	border: 1px solid black;
+	height: 32px;
+	width: 32px;
+	color: #FFFF00;
+	font-size: 20px;
+}
+
+/*TABLES IMG EQUIP PREVIEW*/
+#table-img {
+	position: absolute;
+	margin-top: 2%;
+	margin-left: 2.5%;
+	width: 18%;
+	height: 97px;
+
+}
+
+/*TABLES IMG EQUIP PREVIEW*/
+
+/*TABLES MSG EQUIP PREVIEW*/
+#table-message {
+	position: absolute;
+	margin-top: 2%;
+	margin-left: 23%;
+	width: 50%;
+
+}
+/*TABLES MSG EQUIP PREVIEW*/
+
+/*PICTURE BOX GRAPHIC BOARD*/
+.ui-graphic-board {
+	width: 100%;
+	height: 95px;
+	margin-left: -5px !important;
+
+}
+
+/*TABLES EQUIP PREVIEW*/
+
+/*DIV EQUIP PREVIEW*/
+
+/*DIV das mensagens*/
+#message-edit-content {
+	position: relative;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	width: 36%;
+	height: 525px;
+	margin-left: 63.25%;
+	margin-top: 0%;
+	background: #F8F8FF;
+	overflow: hidden;
+	background: #B0E0E6;
+}
+
+.message-title-div {
+	text-align: center;
+	color: #000;
+}
+
+/*FIELDS DIV*/
+#picture-selection {
+	width: 100%;
+	height: auto;
+	margin-top: 5%;
+	border: 1px solid transparent;
+}
+
+#id-info {
+	border: none;
+	width: 100px;
+	height: 40px;
+	margin-left: 12%;
+	margin-top: 4%;
+}
+
+/* IMAGE DIV SELECTION */
+#image-content {
+	width: 15%;
+	border: 1px solid transparent;
+}
+
+#image-label {
+	width: 100%;
+	height: 20px;
+	border: none;
+	color: #fff;
+	background: #212121;
+	font-size: 12px;
+	text-align: center;
+}
+.selectType{
+	text-align-last: center;
+	margin-left: 20%;
+	text-align: center;
+	height: 33px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: white;
+	-webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
+}
+/* IMAGE DIV SELECTION */
+.form-group input, #type {
+	height: 40px;
+	border: 1px solid #555;
+	border-radius: 5px;
+	outline: none;
+	background: white;
+	padding-left: 45px;
+}
+
+/* INPUT ICONS */
+
+
+.fa-keyboard, .fa-file-signature, .fa-key, .fa-th-large {
+	margin-top: 8px;
+	margin-left: 5px;
+	font-size: 24px;
+}
+
+.fa-user, .fa-id-badge, .fa-traffic-light {
+	margin-top: 8px;
+	margin-left: 8px;
+	font-size: 24px;
+}
+
+/* INPUT ICONS */
+.picture-table {
+	width: 65%;
+}
+
+/*TEXT AREA COMPONENTS DIV's*/
+#id-div {
+	
+}
+
+#type-div {
+	margin-top: 0;
+}
+
+#name-div {
+	margin-top: 0;
+}
+
+#input-message-1 {
+	resize: none;
+}
+
+#input-message-2 {
+	resize: none;
+}
+
+#input-message-3 {
+	resize: none;
+}
+/*TEXT AREA COMPONENTS DIV's*/
+
+/*TEXT AREA COMPONENT INPUT */
+
+/*Input text changes*/
+.input-group .id {
+	padding-left: 20px;
+}
+
+.input-group .name {
+	padding-left: 15px;
+}
+
+.input-group .select {
+	padding-left: 15px;
+}
+
+.input-group .message-input {
+	padding-left: 20px;
+}
+
+/*Font Size and Height - Inputs*/
+.input-group input {
+	font-size: 14px;
+	height: 35px;
+}
+
+.select {
+	font-size: 14px;
+	height: 50px;
+}
+
+/*TEXT AREA COMPONENT INPUT */
+
+/*FIELDS DIV*/
+
+/*TEXT AREA DIV*/
+#text-area {
+	margin-top: 5%;
+	height: 50px;
+	width: 80%;
+	border: 1px solid transparent;
+	background: #A8A8A8
+}
+
+/*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
+#list-images {
+	margin-top: -40px;
+	display: none;
+	width: 100%;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	height: auto;
+	border: 1px solid transparent;
+}
+
+/*SELECTONELISTBOX - COMPONENTE*/
+.ui-selectonelistbox {
+	width: 50%;
+	border: solid 3px pink;
+	height: 500px;
+	background: transparent;
+	border: none;
+	margin-left: 25% !important;
+	margin-top: 10% !important;
+}
+
+/*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
+.ui-selectlistbox-listcontainer {
+	width: 100%;
+	height: 100% !important;
+}
+
+/* ITENS - SELECTONELISTBOX*/
+.ui-selectlistbox-item {
+	width: 100%;
+	height: 65px;
+}
+
+/*TEXT AREA DIV*/
+
+/*BOTÕES TEXT AREA DIV*/
+#actions {
+	position: relative;
+	float: left;
+	border: none;
+	width: 94%;
+	height: 50px;
+	margin-left: 3%;
+	margin-top: 0%;
+}
+
+.btn-available {
+	background-color: #A8A8A8 !important;
+	color: black !important;	
+}
+
+.btn:hover {
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(128, 128, 128, 0.77);
+	-moz-box-shadow: 0px 9px 10px 2px rgba(128, 128, 128, 0.77);
+	box-shadow: 0px 9px 10px 2px rgba(128, 128, 128, 0.77);
+}
+
+/*BOTÕES TEXT AREA DIV*/
+.message-bagde:hover {
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+	filter: drop-shadow(0px 0px 5px #333333)
+}
+
+.fa {
+	color: white;
+}
+
+.fa-hand-pointer {
+	font-size: 16px !important;
+}
+
+/* Botões da Tabela */
+.table {
+	margin-top: 0%;
+}
+
+#table-edit, #table-create, #table-delete, #table-refresh {
+	float: left;
+	margin-top: 0px;
+	border: none;
+}
+
+#table-refresh {
+	display: none;
+	width: 25px;
+	height: 30px;
+	margin-left: 8px;
+	margin-top: 6px;
+	border: none;
+}
+
+.close-link {
+	text-decoration: none;
+}
+
+.fa-times {
+	margin-left: 5px;
+	color: white;
+}
+
+#table-edit {
+	margin-left: 10px;
+}
+
+#table-create {
+	margin-left: 8px;
+}
+
+#table-delete {
+	margin-left: 8px;
+}
+
+/*BOTÕES NA TABELA*/
+
+/* TABLE ENTRIES */
+.dataTables_length {
+	margin-left: 35% !important;
+}
+
+/*DATATABLE MESSAGES*/
+.table-messages {
+	font-size: 9px !important;
+	font-weight: bold;
+	text-align: center !important;
+	margin-top: 1%;
+}
+
+.idColumn, .typeColumn, .nameColumn, .imageColumn 
+ .textColumn, .actionColumn {
+	vertical-align: middle !important;
+}
+
+.button-tb-select {
+	width: 40px;
+	height: 40px;
+}
+
+/* TABLE SELECTED */
+.table-striped>tbody>tr.selected>td {
+	background: #A9D0F5; /*#A9D0F5*/
+	color: #000;
+}
+
+/*DATATABLE MESSAGES*/
+/*EDIÇÃO FINAL */
+.boardDetails {
+	background-color: #A8A8A8;
+	width: 100%;
+	height: 750px;
+	border-radius: 5px;
+	-webkit-box-shadow: 9px 7px 5px rgba(128, 128, 128, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(128, 128, 128, 0.77);
+	box-shadow: 9px 7px 5px rgba(128, 128, 128, 0.77);
+	overflow-y: auto !important;
+}
+
+.tabelaDetails {
+	width: 100%;
+	height: 100%;
+}
+
+
+.formConteudo {
+	margin-top: 20px;
+}
+
+.confInput {
+	margin-top: 10px;
+}
+
+.linha2 {
+	margin-top: 20px;
+}
+
+.confIcone {
+	margin-left: 280%;
+	font-size: 60pt;
+	color: black;
+	margin-top: -60px;
+	text-decoration: none;
+
+}
+.confBtn{
+	width: 60%;
+	margin-left: 20%;
+	margin-top: 10px;
+}
+.conf2Btn{
+	margin-top: 10px;
+}
+.confIcone:hover {
+	font-size: 58pt;
+	color : yellow;
+	-webkit-box-shadow: 0px 9px 10px 2px;
+	-moz-box-shadow: 0px 9px 10px 2px;
+	box-shadow: 0px 9px 10px 2px;
+	color: yellow;
+	cursor: pointer;
+}
+.inputDesign {
+	margin-left: 20%;
+	text-align: center;
+	height: 29px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: white;
+	-webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
+}
+select{
+	text-align: center;
+}
+.inputDesign:focus {
+	border-bottom: 2px solid #1C86EE; /*#dc3545*/
+	box-shadow: 2px 2px 2px #1C86EE;
+}
+.trazerTable{
+	margin-top: 100000vh;
+}
+.iconeSpan{
+	margin-top: -3px;
+	position: absolute;
+	padding-left: 22%;
+	color: #292525;
+	height: 40px;
+	z-index: 999;
+}
+.btn-painel{
+	margin-top: 20px;
+}
+
+
+
+/* PAGINATORS */
+.paginators-content{	
+	border: 1px solid #555;
+	
+}
+
+.paginator{
+  width: 5%;
+  height: 15%;
+  font-size: 10px;	
+  margin-bottom: 1%;
+}
+
+.page1{
+	margin-left: 60%;
+}
+
+.page2, .page3, .page4, .page5{
+	margin-left: 0.5%;
+}
+
+/* TIMERS */
+
+.timer{
+  width: 12%;
+  font-size: 10px;	
+  margin-top: 1%;
+  
+}
+
+.timer1{
+	margin-left: 22%;
+}
+
+.timer2, .timer3, .timer4, .timer5{
+	margin-left: 1%;
+}
+
+

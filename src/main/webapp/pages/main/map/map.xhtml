@@ -1,0 +1,960 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/pages/main/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="head">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<h:outputStylesheet name=".css" library="css/commom" />
+		<h:outputStylesheet name="map.css" library="css/map" />
+		<h:outputStylesheet name="form-style.css" library="css/forms" />
+
+		<!-- Script -->
+		<h:outputScript name="map.js" library="js/map" />
+		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
+
+	</ui:define>
+
+	<ui:define name="main-content">
+
+		<!-- WEB ZOOM -->
+		<div class="map-options">
+
+			<button type="button" id="divide" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Divide Screen">
+				<span><i class="fas fa-object-group fa-2x"></i></span>
+			</button>
+
+			<button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom In">
+				<span><i class="fas fa-plus-square fa-2x"></i></span>
+			</button>
+
+			<button type="button" id="zoomOut" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom Out">
+				<span><i class="fas fa-minus-square fa-2x"></i></span>
+			</button>
+
+			<button type="button" id="fullbody" class="fullBodys" onclick="history.go(0)" data-toggle="tooltip"
+				data-placement="bottom" title="Return FullScreen">
+				<span> <i class="fas fa-undo fa-1x"></i></span>
+			</button>
+
+			<button type="button" id="addequip" class="add_equip" title="Add Equipment" data-toggle="modal"
+				data-target="#modaladd">Add</button>
+
+			<div class="input-group">
+				<button type="button" class="button-minus" value="-">-</button>
+				<input type="number" id="coefSize" name="quantity" class="quantity-field" step="0.3" value="1"
+					title="Equipments Size" min="0" max="3" />
+				<button type="button" class="button-plus" value="+">+</button>
+			</div>
+
+			<h:form id="real">
+
+				<h:inputHidden id="equipIdPos" value="#{equipsBean.equipId}" />
+				<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
+				<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
+				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
+				<h:commandButton id="savePos" class="btn btn-dark form-draw-button save_pos" value="Save Position"
+					action="#{equipsBean.definePosition}" title="Save Position">
+				</h:commandButton>
+
+				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-draw-button cancel_pos"
+					value="Cancel Position" onclick="closeDragElement();" title="Cancel Change Position">
+				</h:commandButton>
+
+			</h:form>
+		
+		</div>
+		
+		<!-- DropDown Equip Size Menu -->
+		<div class="dropleft">
+				
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"> Equip Size </button>
+				
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropall"> All </button>
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcftv" from="cftv"> CFTV </button>
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcolas" from="colas"> COLAS </button>
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcomms" from="comms"> COMMS </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropdai" from="dai"> DAI </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="droplpr" from="lpr"> LPR </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropmto" from="mto"> MTO </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="droppmv" from="pmv"> PMV </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropsat" from=""> SAT </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropsos" from="sos"> SOS </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropspeed" from="speed"> SPEED </button>	
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropwim" from="wim"> WIM </button>					
+				</div>
+		</div>
+		<!-- DropDown Equip Size Menu END -->	
+
+		<!-- WEB ZOOM DIVIDE -->
+		<div class="map-full-option" style="display: none;">
+
+			<button type="button" id="full" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Full Map View">
+				<span><i class="fas fa-expand fa-2x"></i></span>
+			</button>
+			<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom In">
+				<span><i class="fas fa-plus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom Out">
+				<span><i class="fas fa-minus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="fulldiv1" class="zoomFull"
+				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" data-toggle="tooltip"
+				data-placement="bottom" title="Fullscreen View">
+				<span> <i class="fas fa-expand-arrows-alt"></i></span>
+			</button>
+			<button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom In">
+				<span><i class="fas fa-plus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom Out">
+				<span><i class="fas fa-minus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="fulldiv2" class="zoomFull"
+				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
+				data-placement="bottom" title="Fullscreen View">
+				<span> <i class="fas fa-expand-arrows-alt"></i></span>
+			</button>
+			<button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom In">
+				<span><i class="fas fa-plus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+				title="Zoom Out">
+				<span><i class="fas fa-minus-square fa-1x"></i></span>
+			</button>
+			<button type="button" id="fulldiv3" class="zoomFull"
+				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
+				data-placement="bottom" title="Fullscreen View">
+				<span> <i class="fas fa-expand-arrows-alt"></i></span>
+			</button>
+		</div>
+
+		<div id="mapDivide" class="row" style="display: none">
+
+			<!-- Imagem 1 -->
+			<div class="squarebox" id="divs" scroll-zoom="0.5" max-scale="4">
+				<section id="zoomDivs1">
+					<h:graphicImage class="grid-img"
+						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" />
+				</section>
+			</div>
+			<!-- Imagem 2 -->
+			<div class="squarebox1" id="divs1" scroll-zoom="0.5" max-scale="4">
+				<section id="zoomDivs2">
+					<h:graphicImage class="grid-img"
+						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" />
+				</section>
+			</div>
+			<!-- Imagem 3 -->
+			<div class="squarebox2" id="divs2" scroll-zoom="0.5" max-scale="4">
+				<section id="zoomDivs3">
+					<h:graphicImage class="grid-img"
+						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" />
+				</section>
+			</div>
+
+		</div>
+
+		<!-- OVERFLOW -->
+
+		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
+
+			<!-- START SECTION -->
+			<div id="zoomtext" class="section">
+
+				<!-- MAP FRONT IMAGE -->
+
+				<h:graphicImage class="grab-map" width="100%" value="/resources/images/map/tuxpan/tuxpan.png" />
+
+			</div>
+
+			<!-- Label -->
+
+			<div id="labelPos">
+				<label id="posX"></label>
+				<label id="posY"></label>
+			</div>
+
+			<!-- Drag Items -->
+
+			<div class="draggable">
+
+				<c:forEach items="#{listEquips.equips}" var="loadItem">
+
+					<ui:fragment rendered="#{loadItem.val1}">
+						<ui:fragment rendered="#{loadItem.val2}">
+
+							<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
+
+								<c:choose>
+									<c:when test="#{item.table_id eq 'pmv'}">
+										<div id="#{item.table_id}#{item.equip_id}" class="equip-info"
+											posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}">
+
+											<!-- Table with DIV -->
+
+											<div class="container tableStyle card">
+												<div class="dms-name card-header py-0">
+													<div id="dmsTab#{item.equip_id}" class="text-center">
+														<p class="mb-0 text-white">#{item.nome} - #{item.km}</p>
+													</div>
+												</div>
+												<div class="row text-center card-body p-0">
+													<div id="child-img" class="col-2 padding-pmv">
+														<h:graphicImage
+															value="/resources/images/pictures/#{dmsMapView.image[loop.index]}"
+															styleClass="ui-graphic-image" />
+													</div>
+													<div id="child-msg" class="col-auto">
+														<div id="msg#{item.equip_id}" class="table-message">
+															<div class="row border-table-right">
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][0]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][1]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][2]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][3]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][4]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][5]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][6]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][7]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][8]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][9]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][0][10]}</div>
+																<div class="col-1 px-0 border-table r">
+																	#{dmsMapView.letter[loop.index][0][11]}</div>
+															</div>
+															<div class="row border-table-right">
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][0]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][1]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][2]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][3]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][4]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][5]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][6]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][7]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][8]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][9]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][10]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][1][11]}</div>
+															</div>
+															<div class="row border-table-right bottom">
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][0]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][1]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][2]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][3]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][4]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][5]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][6]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][7]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][8]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][9]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][10]}</div>
+																<div class="col-1 px-0 border-table">
+																	#{dmsMapView.letter[loop.index][2][11]}</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</c:when>
+									<c:when test="#{item.table_id eq 'sat'}">
+										<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
+											posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}"
+											posLinearX="#{item.linearPosX}"
+											status="#{satMapView.satStatus.get(loop.index).status}"
+											vel1="#{satMapView.satListValues.get(loop.index).velocidadeS1}"
+											vel2="#{satMapView.satListValues.get(loop.index).velocidadeS2}">
+
+											<div id="sat#{item.equip_id}" class="table-sat card border-dark">
+												<div class="sat-name card-header py-0 border-dark">
+													<div id="satTab#{item.equip_id}" class="text-center">
+														<p class="mb-0">#{item.nome} - #{item.km}</p>
+													</div>
+												</div>
+												<div class="row text-center card-body p-0 mx-0">
+													<div
+														class="col-5 padding-sat border-right border-bottom border-dark">
+														<i class="fas fa-car sat-cars"
+															title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
+														<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}</span>
+													</div>
+													<div class="col-7 padding-sat border-bottom border-dark">
+														<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
+														<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}km/h</span>
+													</div>
+													<div class="col-5 padding-sat border-right border-dark">
+														<i class="fas fa-car sat-cars"
+															title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
+														<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}</span>
+													</div>
+													<div class="col-7 padding-sat">
+														<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
+														<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}km/h</span>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
+											posY="#{item.mapPosY}" item-width="#{item.width}" class="equip-box">
+											<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
+												<p class="col-auto mb-0 pr-1">#{item.nome}</p>
+												<span id="#{item.table_id}Status1" class="equip-status"></span>
+												<p class="col-12 mb-0">#{item.km}</p>
+											</div>
+
+											<c:if test="#{item.table_id eq 'cftv'}">
+												<h:graphicImage class="equip-image"
+													value="/resources/images/equips/camera.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'colas'}">
+												<h:graphicImage class="equip-imageCAM"
+													value="/resources/images/equips/dai_lpr_colas.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'comms'}">
+												<h:graphicImage class="equip-imageCAM"
+													value="/resources/images/equips/dai_lpr_colas.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'dai'}">
+												<h:graphicImage class="equip-imageCAM"
+													value="/resources/images/equips/dai_lpr_colas.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'lpr'}">
+												<h:graphicImage class="equip-imageCAM"
+													value="/resources/images/equips/dai_lpr_colas.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'mto'}">
+												<h:graphicImage class="equip-imagePOST"
+													value="/resources/images/equips/metereologico.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'sos'}">
+												<h:graphicImage class="equip-image"
+													value="/resources/images/equips/sos.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'speed'}">
+												<h:graphicImage class="equip-imagePOST"
+													value="/resources/images/equips/speed.png" />
+											</c:if>
+											<c:if test="#{item.table_id eq 'wim'}">
+												<h:graphicImage class="equip-image"
+													value="/resources/images/equips/wim.png" />
+											</c:if>
+										</div>
+									</c:otherwise>
+								</c:choose>
+
+							</c:forEach>
+
+						</ui:fragment>
+					</ui:fragment>
+
+				</c:forEach>
+
+			</div>
+
+		</section>
+
+	</ui:define>
+
+	<ui:define name="modal-content">
+
+		<!-- Modal to Add Equipment -->
+
+		<div class="modal fade" id="modaladd" role="dialog">
+			<div class="modal-dialog">
+
+				<h:form class="modal-content" name="register-equip-form" id="register-equip-form">
+
+					<!-- Modal content-->
+
+					<div class="modal-content">
+						<div class="modal-header text-center">
+							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_creation_modal_title}</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+
+						</div>
+
+						<div class="modal-body">
+
+							<br />
+
+							<!-- EQUIPMENTS OPTIONS -->
+							<div class="form-row">
+								<div class="form-group col-md-4 input-field">
+									<span for="eqp" class="valid-icon-hidden"></span> <select name="equips" id="equips"
+										size="1">
+										<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
+										<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select>
+								</div>
+								<div>
+									<div class="error-label">
+										<label for="equips" class="error" id="equips-error"></label>
+									</div>
+								</div>
+
+							</div>
+
+							<!-- EQUIPMENTS OPTIONS -->
+
+						</div>
+
+						<div class="modal-body">
+
+							<!-- EQUIPMENT ID -->
+							<div class="form-row">
+								<div class="form-group col-md-4 input-field" id="contentEquipId">
+									<span><i class="fab fa-ideal"></i></span> <span class="valid-icon-hidden"></span>
+									<input requiredField="number" type="text" autocomplete="off" name="equipId"
+										id="equipId" placeholder="#{mapLabels.map_creation_input_equip_id}" />
+								</div>
+								<div class="error-label">
+									<label for="equipId" class="error" id="equipId-error"></label>
+								</div>
+
+								<!-- EQUIPMENT ID -->
+
+								<!-- EQUIPMENT NAME -->
+
+								<div class="form-group col-md-6 input-field">
+									<span><i class="fas fa-signature"></i></span> <span for="equipName"
+										class="valid-icon-hidden"></span> <input requiredField="" type="text"
+										autocomplete="off" name="equipName" id="equipdName"
+										placeholder="#{mapLabels.map_creation_input_name}" />
+									<div class="error-label">
+										<label for="equip
+											Name" class="error" id="equipName-error"></label>
+									</div>
+								</div>
+							</div>
+							<!-- EQUIPMENT NAME -->
+
+							<!-- CITY -->
+							<div class="form-row">
+								<div class="form-group col-md-6 input-field">
+									<div class="select-field">
+										<span><i class="fas fa-city"></i></span> <span for="cities"
+											class="valid-icon-hidden"></span> <select requiredField="" name="cities"
+											id="cities" size="1">
+											<option value="">#{mapLabels.map_creation_select_city}</option>
+											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
+												<option value="#{city.value}">#{city.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="cities" class="error" id="cities-error"></label>
+										</div>
+									</div>
+								</div>
+
+								<!-- CITY -->
+
+								<!-- ROAD -->
+
+								<div class="form-group col-md-6 input-field">
+									<div class="select-field">
+										<span><i class="fas fa-road"></i></span> <span for="roads"
+											class="valid-icon-hidden"></span> <select requiredField="" name="roads"
+											id="roads" size="1">
+											<option value="">#{mapLabels.map_creation_select_road}</option>
+											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
+												<option value="#{road.value}">#{road.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="road" class="error" id="road-error"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- ROAD -->
+
+							<!-- KM -->
+
+							<div class="form-row">
+								<div class="form-group col-md-4 input-field">
+									<span><i class="fas fa-sign"></i></span> <span for="km"
+										class="valid-icon-hidden"></span> <input requiredField="" type="text"
+										autocomplete="off" name="km" id="km"
+										placeholder="#{mapLabels.map_creation_input_km}" />
+									<div class="error-label">
+										<label for="km" class="error" id="km-error"></label>
+									</div>
+								</div>
+
+								<!-- KM -->
+
+								<!-- WIDTH -->
+
+								<div class="form-group col-md-6 input-field">
+									<span><i class="fas fa-arrows-alt-h"></i></span> <span for="width"
+										class="valid-icon-hidden"></span> <input requiredField="number" type="text"
+										autocomplete="off" name="width" id="width"
+										placeholder="#{mapLabels.map_creation_input_width}" />
+									<div class="error-label">
+										<label for="width" class="error" id="width-error"></label>
+									</div>
+								</div>
+							</div>
+							<!-- WIDTH -->
+
+						</div>
+
+						<!-- MODAL BUTTONS -->
+
+						<div class="modal-footer">
+
+							<h:commandButton value="#{mapLabels.map_creation_btn_save_equipment}" id="btn-form-send"
+								class="btn btn-dark form-draw-button" action="#{equipsBean.createEquipment}" onclick="history.go(0);">
+							</h:commandButton>
+
+							<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"
+								immediate="true" type="reset" class="btn btn-dark form-draw-button  reset-btn"
+								onclick="$('#modaladd').modal('hide');">
+								<f:ajax execute="@all" render="@none" />
+							</h:commandButton>
+
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+		<!-- Modal for Options -->
+
+		<div class="modal fade" id="OPmodal" role="dialog">
+			<div class="modal-dialog">
+				<!-- Modal Label-->
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+
+					</div>
+
+					<div class="modal-body">
+
+						<br />
+
+						<h:form id="form-modal-submit">
+
+							<!-- EQUIPMENTS OPTIONS -->
+							<div class="form-row">
+								<div class="form-group col-md-4">
+
+									<h:inputHidden id="equipCod" value="#{equipsBean.equipId}" />
+									<h:inputHidden id="equipTable" value="#{equipsBean.equipTable}" />
+									<h:commandButton value="#{mapLabels.map_creation_btn_edit_equipment}" id="editequip"
+										onclick="sendToBean()" class="btn btn-dark form-draw-button editbtn"
+										action="#{equipsBean.SearchEquipment}">
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target" value="#editmodal" />
+										<f:ajax execute="@form" render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
+								edit-equip-form:roads edit-equip-form:km edit-equip-form:width edit-equip-form:visible" />
+									</h:commandButton>
+								</div>
+								<div class="form-group col-md-4">
+									<h:inputHidden id="positionX" />
+									<h:inputHidden id="positionY" />
+									<h:commandButton value="#{mapLabels.map_creation_btn_move_equipment}" id="moveequip"
+										onclick="$('#OPmodal').modal('hide'); dragEquip();  "
+										class="btn btn-dark form-draw-button posbtn">
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+								</div>
+
+								<div class="form-group col-md-4">
+									<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}"
+										id="delequip" class="btn btn-dark form-draw-button delbtn">
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target" value="#deletemodal" />
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+								</div>
+							</div>
+						</h:form>
+						<!-- EQUIPMENTS OPTIONS -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal for editing-->
+
+		<div class="modal fade" id="editmodal" role="dialog">
+			<div class="modal-dialog">
+				<h:form class="modal-content" name="edit-equip-form" id="edit-equip-form">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header text-center">
+							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_edit_modal_title}</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+
+						</div>
+
+						<div class="modal-body">
+
+							<!-- EQUIPMENT ID -->
+							<div class="form-row">
+								<div class="form-group col-md-4 input-field" id="contentEquipId">
+									<span><i class="fab fa-ideal"></i></span> <span for="equipId"
+										class="valid-icon-hidden"></span>
+									<h:inputText value="#{equipsBean.equip.equip_id}" autocomplete="off" name="equipId"
+										id="equipId" p:requiredField="number"
+										placeholder="#{mapLabels.map_creation_input_equip_id}" />
+								</div>
+								<div class="error-label">
+									<label for="equipId" class="error" id="equipId-error"></label>
+								</div>
+
+								<!-- EQUIPMENT ID -->
+
+								<!-- EQUIPMENT NAME -->
+
+								<div class="form-group col-md-6 input-field">
+									<span><i class="fas fa-signature"></i></span> <span for="equipName"
+										class="valid-icon-hidden"></span>
+									<h:inputText autocomplete="off" name="equipName" id="equipName" p:requiredField=""
+										value="#{equipsBean.equip.nome}"
+										placeholder="#{mapLabels.map_creation_input_name}" />
+									<div class="error-label">
+										<label for="equip
+											Name" class="error" id="equipName-error"></label>
+									</div>
+								</div>
+							</div>
+							<!-- EQUIPMENT NAME -->
+
+							<!-- CITY -->
+							<h:outputLabel id="lbl" value="#{equipsBean.equip.cidade}"></h:outputLabel>
+							<div class="form-row">
+								<div class="form-group col-md-6 input-field">
+									<div class="select-field">
+										<span><i class="fas fa-city"></i></span> <span for="cities"
+											class="valid-icon-hidden"></span>
+										<h:selectOneMenu name="cities" id="cities" p:requiredField=""
+											value="#{equipsBean.equip.cidade}">
+											<f:selectItem itemLabel="#{mapLabels.map_creation_select_city}"
+												itemValue="" />
+											<f:selectItems value="#{equipsBean.cities}" />
+										</h:selectOneMenu>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="cities" class="error" id="cities-error"></label>
+										</div>
+									</div>
+								</div>
+
+								<!-- CITY -->
+
+								<!-- ROAD -->
+
+								<div class="form-group col-md-6 input-field">
+									<div class="select-field">
+										<span><i class="fas fa-road"></i></span> <span for="roads"
+											class="valid-icon-hidden"></span>
+										<h:selectOneMenu name="roads" id="roads" p:requiredField=""
+											value="#{equipsBean.equip.estrada}">
+											<f:selectItem itemLabel="#{mapLabels.map_creation_select_road}"
+												itemValue="" />
+											<f:selectItems value="#{equipsBean.roads}" />
+										</h:selectOneMenu>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="road" class="error" id="road-error"></label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- ROAD -->
+
+							<!-- KM -->
+
+							<div class="form-row">
+								<div class="form-group col-md-4 input-field">
+									<span><i class="fas fa-sign"></i></span> <span for="km"
+										class="valid-icon-hidden"></span>
+									<h:inputText value="#{equipsBean.equip.km}" autocomplete="off" name="km" id="km"
+										p:requiredField="" placeholder="#{mapLabels.map_creation_input_km}" />
+									<div class="error-label">
+										<label for="km" class="error" id="km-error"></label>
+									</div>
+								</div>
+
+								<!-- KM -->
+
+								<!-- WIDTH -->
+
+								<div class="form-group col-md-6 input-field">
+									<span><i class="fas fa-arrows-alt-h"></i></span> <span for="width"
+										class="valid-icon-hidden"></span>
+									<h:inputText value="#{equipsBean.equip.width}" p:requiredField="number"
+										autocomplete="off" name="width" id="width"
+										placeholder="#{mapLabels.map_creation_input_width}" />
+									<div class="error-label">
+										<label for="width" class="error" id="width-error"></label>
+									</div>
+								</div>
+							</div>
+							<!-- WIDTH -->
+
+						</div>
+
+						<!-- MODAL BUTTONS -->
+
+						<div class="modal-footer">
+							<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />
+							<h:commandButton value="#{mapLabels.map_creation_btn_save_equipment}" id="btn-form-send"
+								class="btn btn-dark form-draw-button" action="#{equipsBean.UpdateEquipment}"
+								type="submit" onclick="sendType();">
+							</h:commandButton>
+
+							<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"
+								immediate="true" type="reset" class="btn btn-dark form-draw-button  reset-btn"
+								onclick="$('#editmodal').modal('hide');">
+							</h:commandButton>
+
+						</div>
+
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+		<!-- Modal for delete-->
+
+		<div class="modal fade" id="deletemodal" role="dialog">
+			<div class="modal-dialog">
+				<h:form class="modal-content" id="delete-equip-form">
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header text-center">
+							<h4 class="modal-title w-100 font-weight-bold">#{map_option_confirm_title}</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+
+						</div>
+						<div class="modal-body"></div>
+
+						<div class="modal-footer">
+							<div class="form-row">
+								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}" />
+								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}" />
+								<h:commandButton value="#{mapLabels.map_creation_btn_yes_equipment}"
+									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"
+									action="#{equipsBean.DeleteEquipment}" onclick="history.go(0); deleteParameters();">
+									<f:ajax execute="@form" render="@form" />
+								</h:commandButton>
+
+								<h:commandButton value="#{mapLabels.map_creation_btn_no_equipment}"
+									id="btn-form-delete-no" immediate="true" type="reset"
+									class="btn btn-dark form-draw-button  reset-btn"
+									onclick="$('#deletemodal').modal('hide');">
+								</h:commandButton>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+		<!-- Modal Size Equipments -->
+		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog" id="moddialog">
+				<div class="modal-content modal-sm">
+					<div class="modal-header" id="modheaderpad">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body">
+						<img src="" class="imgSize"/>
+					</div>
+				</div>
+			</div>		
+		</div>	
+		<!-- Modal Size Equipments End -->		
+		
+	</ui:define>
+
+	<ui:define name="jscript">
+
+		<h:outputScript name="map.js" library="js/map" />
+		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
+
+		<!-- Mudança -->
+
+		<script>
+			var id, type, toDrag;
+
+			function sendToBean() {
+
+				document.getElementById('form-modal-submit:equipCod').value = id;
+				document.getElementById('form-modal-submit:equipTable').value = type;
+
+			}
+
+			function sendType() {
+				document.getElementById('edit-equip-form:equipTable1').value = type;
+			}
+
+			function deleteParameters() {
+				document.getElementById('delete-equip-form:equipDel').value = id;
+				document.getElementById('delete-equip-form:tableDel').value = type;
+			}
+
+
+			/////////////MAP/GRID HIDE AND SHOW
+
+			$("#divide").click(function () {
+				$(".overflow").hide();
+				$(".map-options").hide();
+				$(".map-full-option").show();
+				$("#mapDivide").show();
+
+			});
+
+			$("#full").click(function () {
+				$(".map-full-option").hide();
+				$("#mapDivide").hide();
+				$(".overflow").show();
+				$(".map-options").show();
+			});
+
+			$(".posbtn").click(function () {
+				$(".save_pos").show();
+				$(".cancel_pos").show();
+			});
+
+			$(".editbtn").click(function () {
+				$(".save_pos").hide();
+				$(".cancel_pos").hide();
+			});
+
+			$(".delbtn").click(function () {
+				$(".save_pos").hide();
+				$(".cancel_pos").hide();
+			});
+
+			$(".add_equip").click(function () {
+				$(".save_pos").hide();
+				$(".cancel_pos").hide();
+			});
+
+
+			///MAP/GRID HIDE AND SHOW END						
+
+			//EQUIPMENTS HIDE/SHOW
+
+			$("#moveequip").click(function () {
+				$('#OPmodal').modal('hide');
+			});
+
+
+			//ZOOM EVENT
+			document.getElementById("zoomIn").addEventListener("click", function () { zoomIn('zoomtext') }, false);
+			document.getElementById("zoomOut").addEventListener("click", function () { zoomOut('zoomtext') }, false);
+			document.getElementById("zoomIn1").addEventListener("click", function () { zoomIn('zoomDivs1') }, false);
+			document.getElementById("zoomOut1").addEventListener("click", function () { zoomOut('zoomDivs1') }, false);
+			document.getElementById("zoomIn2").addEventListener("click", function () { zoomIn('zoomDivs2') }, false);
+			document.getElementById("zoomOut2").addEventListener("click", function () { zoomOut('zoomDivs2') }, false);
+			document.getElementById("zoomIn3").addEventListener("click", function () { zoomIn('zoomDivs3') }, false);
+			document.getElementById("zoomOut3").addEventListener("click", function () { zoomOut('zoomDivs3') }, false);
+
+			//Coefficient Script
+			$(document).on('click', '.box-right-delivery button', function () {
+				var btn = $(this),
+					oldValue = btn.closest('.box-right-delivery').find('input').val().trim(),
+					newVal = 0;
+				if (btn.attr('data-dir') == 'up') {
+					newVal = parseInt(oldValue) + 1;
+				} else {
+					if (oldValue > 1) {
+						newVal = parseInt(oldValue) - 1;
+					} else {
+						newVal = 0;
+					}
+				}
+				btn.closest('.box-right-delivery').find('input').val(newVal);
+			});
+		//ZOOM EVENT
+		
+		// MODAL EQUIPMENT SIZE
+		$(".dprbtn").click(function(){
+			var url = $('.draggable').find("[id^=" + $(this).attr('from') + "] img").attr("src");
+			$("#sizeeqps img").attr("src", url);
+		});
+		// MODAL EQUIPMENT SIZE END
+		 	 
+
+		</script>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" > 
+
+<h:head>
+
+	<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
+	<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />	
+
+</h:head>
+
+<h:body>
+
+     
+      <ul class="list-unstyled components">
+                   
+            
+            <li class="nav-item" >
+                <a href="#modMenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
+                <i class="fas fa-th-list icon"></i><span class="text">Modulos</span></a>
+                
+                <ul class="collapse list-unstyled" id="modMenu">
+                    <li class="nav-item ml-2">
+                        <a class="nav-link" href="#cftvSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-video icon"></i><span class="text">CFTV</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="cftvSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#cftvSubCharts" data-toggle="collapse" aria-expanded="false">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						    
+						         <ul class="collapse list-unstyled ml-4" id="cftvSubCharts" >
+                                    <li class="nav-item" ><a class="nav-link" href="#cftvSubMenuCharts" data-toggle="collapse" aria-expanded="false">
+                                    <span class="text">Second level link</span></a>
+                                    
+                                       <ul class="collapse list-unstyled ml-4" id="cftvSubMenuCharts" >
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Third level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Third  level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Third  level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Third  level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Third  level link</span></a></li>
+                                  </ul>	                                  
+                                    
+                                    </li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                 </ul>					    
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#cftvSubReports" data-toggle="collapse" aria-expanded="false">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						   
+						          <ul class="collapse list-unstyled ml-4" id="cftvSubMenuReports" >
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                    <li class="nav-item" ><a class="nav-link" href="#"><span class="text">Second level link</span></a></li>
+                                  </ul>							    
+						     </li>
+					    </ul>
+				     </li>
+				     
+				      <li class="nav-item ml-2">
+                        <a class="nav-link" href="#metSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-cloud icon"></i><span class="text">EMT</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="metSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						     </li>
+					    </ul>
+				     </li>          
+				     
+				        <li class="nav-item ml-2">
+                        <a class="nav-link" href="#pmvSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-tv icon"></i><span class="text">PMV</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="pmvSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						     </li>
+					    </ul>
+				     </li>
+				     
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#pocSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-truck-moving icon"></i><span class="text">POC</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="pocSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						     </li>
+					    </ul>
+				     </li>
+				     
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hdd icon"></i><span class="text">SAT</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="satSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						     </li>
+					    </ul>
+				     </li>
+				     
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#sosSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-phone-square-alt icon"></i><span class="text">SOS</span></a>
+					        <ul class="collapse list-unstyled ml-3" id="sosSubmenu">
+						    <li class="nav-item"><a class="nav-link" href="#">
+						      <i class="fas fa-chart-pie icon icon-sub"></i><span class="text">Charts</span></a>
+						      </li>
+						      <li class="nav-item"><a class="nav-link" href="#">
+						    <i class="fas fa-file-excel icon icon-sub"></i><span class="text">Reports</span></a>
+						     </li>
+					    </ul>
+				     </li>                      
+                </ul>
+            </li>           
+           
+          
+            
+        </ul>
+          
+
+		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
+		<h:outputScript name="popper.min.js" library="js/popper" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+		<h:outputScript name="all.min.js" library="font-awesome/js" />
+		<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />
+		<h:outputScript name="jquery.slimscroll.min.js" library="js/jquery-slim-scroll" />
+		
+		
+</h:body>
+	
+</html>

@@ -1,0 +1,143 @@
+@charset "ISO-8859-1";
+
+/*****************************************************/
+/****************** FORM CLASSES ******************/
+/*****************************************************/
+
+/* custom style for types (input, select) */
+.input-field input, .select-field select, .checkbox-field select{
+	height: 40px;
+	border: 1px solid #343a40;
+	border-radius: 25px;
+	outline: none;
+	background: white;
+	padding-left: 45px;	
+}
+
+/* custom style for multiselect checkbox */
+.checkbox-field button {
+	height: 40px;
+	margin-bottom: 0px;
+	border: 1px solid #343a40;
+	border-radius: 25px;
+	outline: none;
+	background: white;
+	padding-left: 0px;
+}
+
+/* style for span multiselect checkbox */
+.checkbox-field span {
+	position: absolute;
+	margin-top: 8px;
+	padding-left: 20px;
+	color: #292525;
+	height: 40px;
+	z-index: 2222;
+}
+
+/* multilselect checkbox z-index to overlay span view */
+.multiselect-container {
+	z-index: 10030;
+}
+
+/* style for span to be inside fields */
+.input-field span, .select-field span {
+	position: absolute;
+	top: 7px;
+	margin-left: 10px;
+	padding-left: 4px;
+	color: #292525;
+	width: 25px;	
+	border: 1px solid transparent;	
+}
+
+/* style for fields (FOCUS) */
+.input-field input:focus, .select-field select:focus, .checkbox-field select:focus
+	.select-checkbox-menu button:focus {
+	border: 2px solid #1C86EE; /*#dc3545*/
+	box-shadow: 1px 1px 1px 1px #1C86EE;
+}
+
+/* Remove icon from periods select */
+ .select-field select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+  /* for IE */
+  appearance: none;
+}
+
+/* validation classes style */
+
+/* error class */
+.error {
+	color: #dc4535;
+}
+
+/* valid class*/
+.success {
+	color: #00CC00;
+}
+
+/* hidden icon fontawesome for validation (inside elements) */
+.valid-icon-hidden{ 
+  display: none;
+}
+
+/* visible icon fontawesome for validation (inside elements) */
+.valid-icon-visible{  
+  display: block;  
+}
+
+/* error label class */
+.error-label {
+	border: 1px solid transparent;
+	font-size: 12px;
+	height: 20px;
+	margin-top: -10px;
+	margin-left: 20px;
+}
+
+/* invalid class style */
+.invalid {
+	border: 1px solid red !important;
+	-moz-box-shadow: 0 0 3px red;
+	-webkit-box-shadow: 0 0 3px red;
+	box-shadow: 0 0 3px red;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-bottom: 2px solid #dc4535 !important; /*#dc3545*/
+	box-shadow: 2px 2px 2px #dc4535 !important;
+}
+
+/* valid class */
+.valid {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+/* style class for modal-footer buttons */
+.form-modal-draw-button {
+	margin-top: 1.25%;
+	border: none;
+	cursor: pointer;
+	width: 120px;
+	height: 40px;
+	border-radius: 5px;
+	text-align: center;
+}
+
+/* modal-footers button hover style */
+.form-modal-draw-button:hover {
+	background: #FF3030;
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}
+
+/*****************************************************/
+/****************** FORM CLASSES ******************/
+/*****************************************************/

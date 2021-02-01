@@ -1,0 +1,55 @@
+@charset "ISO-8859-1";
+
+body{
+	overflow-y: hidden;
+}
+
+.ui-title{
+	font-size: 36px;
+	font-family: Trebuchet MS, sans-serif;
+	margin-left: 1%;
+}
+
+.ui-title-desc{
+	color: red;
+	font-size: 18px;
+	font-family: Trebuchet MS, sans-serif;	
+	margin-left: 1%;
+}
+
+.ui-image-icon-homePage{
+	width: 4%;
+	margin-left: 48%;
+	margin-top: 15%;		
+}
+
+
+.ui-outpulabel-message{
+	font-size: 18px;
+	font-family: Trebuchet MS, sans-serif;
+	margin-left: 36%;
+		
+}
+
+.ui-bold-home{
+	font-weight: bold;
+	color: blue;
+	font-size: 18px;
+	font-family: Trebuchet MS, sans-serif;
+	
+}
+
+.denied-to-dash{	
+	font-size: 26px;
+	color: #000;	
+}
+
+.denied-to-dash:hover {
+	-webkit-transform: scale(1.2);
+	-moz-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	transform: scale(1.2);	
+}
+
+

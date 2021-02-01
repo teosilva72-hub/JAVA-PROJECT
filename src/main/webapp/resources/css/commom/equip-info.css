@@ -1,0 +1,55 @@
+@charset "ISO-8859-1";
+
+ /*info div*/ 
+  
+.info-bagde {
+position: relative;   
+top: 2px;  
+right: 6px; 
+background-color: #00BFFF; 
+color: #ffffff;
+text-align: center;
+line-height: 12px;
+min-width: 12px;
+min-height: 12px;
+display: block;
+border-radius: 100%; 
+float: right;   
+cursor: pointer;
+z-index: 3; 
+text-indent: 0px; 
+display: block;   
+text-decoration: none;
+}
+ 
+ .info-bagde:hover {
+ text-decoration: none;
+ background: #FFFF00;
+ color: #555;
+ }
+    
+ /* table information*/   
+/*  .table-info{  
+   text-align: center;  
+   width: 325px;
+   margin: 0 auto; /*centralizar tabela*/
+   
+ /* }*/
+  
+ /* .table-col1{
+  width: 25%;
+  border: 1px solid #A9A9A9;
+  font-weight: bold;
+  font-style: italic;
+  }
+  
+  .table-col2{
+  width: 25%;
+  border: 1px solid #A9A9A9; 
+  }
+  
+  .table-info th{ background: #696969; color: #FFFFFF;}
+  .table-col1{ background:  #FFFF00; color:#333333; }
+    
+*/
+    
