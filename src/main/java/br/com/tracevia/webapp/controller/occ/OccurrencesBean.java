@@ -817,9 +817,10 @@ public class OccurrencesBean {
 		return absoluteImage;
 		
 	}
-	public String caminhoImageUpdate(String myImg) throws Exception{
+	//Buscando imagem
+	public String getImageUpload(String myImg) throws Exception{
 		
-		//tratando imagem
+		//gerando o caminho onde se encontra a imagem
 		OccurrencesBean pegar= new OccurrencesBean();
 		int id = pegar.pegarId();
 		DateTimeApplication dddd = new DateTimeApplication();
@@ -833,7 +834,21 @@ public class OccurrencesBean {
 		return absoluteImage;
 		
 	}
-	
+public String caminhoImageUpdate(String myImg) throws Exception{
+		
+		//gerando o caminho onde se encontra a imagem
+		int id = getValue();
+		DateTimeApplication dddd = new DateTimeApplication();
+		LocalDate data = dddd.localeDate();
+		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/";
+			
+		absoluteImage = pathImage+imagePath+myImg;
+		
+		System.out.println("Testando aqui: "+ id);
+		
+		return absoluteImage;
+		
+	}
 	
 	public void deleteFileUpdate(String file) {
 		try {

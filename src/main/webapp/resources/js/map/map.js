@@ -8,6 +8,7 @@ $(function () {
 		ScrollZoom(map)
 		mapMove(map)
 	})
+	barResize()
 	//Scroll Zoom Map Full END
 
 	//Validate
@@ -159,9 +160,11 @@ $(function () {
 			input.val(1);
 		}
 	});
-
+	
 	//Equipments change sizes END
-
+	
+	
+	
 	$('#coefSize').change(function () {
 		resizeEquip($('[scroll-zoom]'))
 	})
@@ -230,6 +233,43 @@ function ScrollZoom(container) {
 		})
 	}
 }
+
+// SIZE BAR EQUIPMENTS
+
+function barResize(){
+
+	let size = $('.bar')
+	let input = size.find('input')
+	let min = Number(input.attr('min'))
+	let max = Number(input.attr('max'))
+	let value = Number(input.val())
+	let width = size.width()
+	
+	size.on('touchstart mousedown', function(e) {
+	    let clientX = (e.touches || [e])[0].clientX
+	    let offSetLeft = size.offset().left
+	    let pos = clientX - offSetLeft
+		width = size.width()
+	    let por = Math.min(1, Math.max(0, pos / width))
+	    let newVal = por * (max - min) + min
+	    
+	    size.children().first().css("left", `${por * 100}%`).find('input').val(newVal).trigger("change")
+	
+	    $(document).on('touchmove mousemove', function(e) {
+	        clientX = (e.touches || [e])[0].clientX
+			offSetLeft = size.offset().left
+	        pos = clientX - offSetLeft
+	        por = Math.min(1, Math.max(0, pos / width))
+	        newVal = por * (max - min) + min
+console.log(newVal)
+	 		input.val(newVal).trigger('change').parent().css('left', `${por * 100}%`)
+	    }).on("mouseup touchend", () => {
+	        $(document).off("touchmove mousemove")
+	    })
+	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
+}
+
+// SIZE BAR EQUIPMENTS END
 
 // Scale equips
 
@@ -659,3 +699,5 @@ function closeDragElement() {
 }
 
 //Drag/Drop Element END
+
+

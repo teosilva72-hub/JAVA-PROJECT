@@ -958,7 +958,7 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="forEachFiles">
-													<h:graphicImage class="imageFile" value="#{occurrencesBean.caminhoImage(item)}"></h:graphicImage>
+													<h:graphicImage class="imageFile" value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
 													<!-- name file -->
 													<h:outputText value="#{occLabels.occ_name_file} #{item}"></h:outputText>
 													<!-- Btn delete file -->
@@ -991,7 +991,7 @@
 											<div class="col-md-6">
 												<div class="forEachFiles">
 													<!-- image file -->
-													<h:graphicImage class="imageFile" value="" />
+													<h:graphicImage class="imageFile" value="#{occurrencesBean.caminhoImageUpdate(item)}" />
 													<!-- name file -->
 													#{occLabels.occ_name_file} #{item}
 													<!-- Link delete -->

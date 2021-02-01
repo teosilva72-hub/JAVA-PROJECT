@@ -893,4 +893,26 @@ input[type="number"] {
 	width: 80px;
 }
 
+.bar {
+  position: relative;
+  width: 80%;
+  margin: 50px auto;
+  border: 1px black solid;
+  border-radius: 100%;
+}
+
+.bar .bar-ball {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  border-radius: 100%;
+  cursor: grab;
+}
+
+.bar .bar-ball:active {
+  cursor: grabbing;
+}
+
 /* MODAL SIZE EQUIP END */
