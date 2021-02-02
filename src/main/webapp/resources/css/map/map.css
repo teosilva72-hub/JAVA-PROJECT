@@ -430,7 +430,6 @@ table {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
   margin-top: 20px;
-  margin-left: 200px;
   cursor: pointer;
 }
 
@@ -522,42 +521,42 @@ table {
 }
 
 #zoomIn1 {
-  margin-left: -4px;
-  margin-top: 55px;
+  margin-top: -60px;
+  position: fixed;
 }
 #zoomOut1 {
-  margin-left: -4px;
-  margin-top: 75px;
+  margin-top: -40px;
+  position: fixed;
 }
 #fulldiv1 {
-  margin-left: -4px;
-  margin-top: 100px;
+  margin-top: -20px;
+  position: fixed;
 }
 
 #zoomIn2 {
-  margin-left: -4px;
-  margin-top: 195px;
+  margin-top: -60px;
+  position: fixed;	
 }
 #zoomOut2 {
-  margin-left: -4px;
-  margin-top: 215px;
+  margin-top: -40px;
+  position: fixed;
 }
 #fulldiv2 {
-  margin-left: -4px;
-  margin-top: 240px;
+  margin-top: -20px;
+  position: fixed;
 }
 
 #zoomIn3 {
-  margin-left: -4px;
-  margin-top: 405px;
+  margin-top: -60px;
+  position: fixed;
 }
 #zoomOut3 {
-  margin-left: -4px;
-  margin-top: 425px;
+  margin-top: -40px;
+  position: fixed;
 }
 #fulldiv3 {
-  margin-left: -4px;
-  margin-top: 450px;
+  margin-top: -20px;
+  position: fixed;
 }
 
 /* MAP DIVISION/SHOW BUTTON */
@@ -645,7 +644,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
@@ -655,8 +654,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
-  margin-top: 10%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
@@ -666,7 +664,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
