@@ -37,6 +37,11 @@
 	  <ui:define name="main-content" >
 	 	
 	 <div class="table-container">
+	 
+	 <div class="text-dark text-center font-weight-bold report-title" >
+	 <h:outputText value="#{satLabels.sat_reports_name_period_flow}" />
+	 <hr></hr>
+	 </div>
 		 
     <h:dataTable id="vehicle-period-flow-table" value="#{satReportsBean.resultList}" var="period" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%" 
@@ -106,6 +111,19 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
+					
+					<div id="btn-excel">
+				<h:commandButton id="excel-act" value=""
+					disabled="#{satReportsBean.excelBool}"
+					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+			</div>
+			
 				</div>
 
 				<!-- MODAL CLEAR -->			
@@ -122,7 +140,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(1)}"
+									action="#{satReportsBean.resetFormValues(4)}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -144,18 +162,7 @@
 
 		<!-- EXCEL FORM -->
 		<h:form id="form-excel">
-			<div id="btn-excel">
-				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
-					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-			</div>
-
+			
 			<!-- MODAL DOWNLOAD -->			
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -171,7 +178,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<h:commandButton
+							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								action="#{satReportsBean.download}"
 								class="btn btn-dark form-draw-button" />

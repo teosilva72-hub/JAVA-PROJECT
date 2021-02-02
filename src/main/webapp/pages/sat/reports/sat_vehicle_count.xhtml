@@ -40,7 +40,12 @@
 
 		<div class="table-container">
 
-			<h:dataTable id="report-form-table"
+			<div class="text-dark text-center font-weight-bold report-title">
+				<h:outputText value="#{satLabels.sat_reports_name_count}" />
+				<hr></hr>
+			</div>
+
+			<h:dataTable id="vehicle-count-table"
 				value="#{satReportsBean.resultList}" var="count" autocomplete="off"
 				styleClass="table table-striped table-bordered table-dark custom-table"
 				cellspacing="0" width="100%" headerClass="custom-table-header">
@@ -86,6 +91,19 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
+					
+					<!-- BUTTON EXCEL DIV -->					
+				   <div id="btn-excel" >
+					<h:commandButton id="excel-act" value=""
+					disabled="#{satReportsBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+				   </div>
 				</div>
 
 				<!-- MODAL CLEAR -->			
@@ -124,18 +142,7 @@
 
 		<!-- EXCEL FORM -->
 		<h:form id="form-excel">
-			<div id="btn-excel">
-				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
-					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-			</div>
-
+		
 			<!-- MODAL DOWNLOAD -->			
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -151,7 +158,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<h:commandButton
+							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								action="#{satReportsBean.download}"
 								class="btn btn-dark form-draw-button" />

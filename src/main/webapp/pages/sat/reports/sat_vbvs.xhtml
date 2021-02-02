@@ -29,9 +29,14 @@
 	  	 	  	 
 	  	 <h:form name="vbv-form" id="vbv-form">
 	  	 	  	     
-             <div class="vbv-container">  
-             
-             <h4 class="vbv-title">#{satLabels.sat_reports_modal_title}</h4> 
+             <div class="vbv-container">
+
+				<div class="text-dark text-center font-weight-bold report-title">
+					<h:outputText value="#{satLabels.sat_reports_name_vbv}" />
+					<hr></hr>
+				</div>
+
+				<h4 class="vbv-title">#{satLabels.sat_reports_modal_title}</h4> 
                  <br/>                          
                         <div class="form-row vbv-field" id="vbv_equips">
 							<div class="form-group select-field">															

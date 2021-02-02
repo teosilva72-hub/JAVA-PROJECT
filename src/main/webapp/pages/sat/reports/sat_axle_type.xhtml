@@ -40,6 +40,11 @@
 	 
 	 <div class="table-container">
 	 
+	  <div class="text-dark text-center font-weight-bold report-title" >
+	 <h:outputText value="#{satLabels.sat_reports_name_axles}" />
+	 <hr></hr>
+	 </div>
+	 
 	  <h:dataTable id="vehicle-axle-table" value="#{satReportsBean.resultList}" var="axles" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%" 
      headerClass="custom-table-header">	
@@ -84,6 +89,20 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
+					
+					<!-- BUTTON EXCEL DIV -->					
+				   <div id="btn-excel" >
+					<h:commandButton id="excel-act" value=""
+					disabled="#{satReportsBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+				   </div>
+				   
 				</div>
 
 				<!-- MODAL CLEAR -->			
@@ -100,7 +119,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(1)}"
+									action="#{satReportsBean.resetFormValues(7)}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -122,18 +141,7 @@
 		
 		<!-- EXCEL FORM -->
 		<h:form id="form-excel">
-			<div id="btn-excel">
-				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
-					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-			</div>
-
+			
 			<!-- MODAL DOWNLOAD -->			
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -149,7 +157,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<h:commandButton
+							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								action="#{satReportsBean.download}"
 								class="btn btn-dark form-draw-button" />
@@ -191,7 +199,8 @@
 							<div class="form-group col-sm-12 select-field">
 								<span><i class="fas fa-hdd"></i></span> <span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip" id="equip" >
-										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
+										<option value="">#{satLabels.sat_reports_select_equipments}</option>
+										 <ui:repeat var="eqp" value="#{satReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
@@ -283,7 +292,7 @@
 							action="#{satReportsBean.resetFormValues}"
 							class="btn btn-dark form-modal-draw-button  reset-btn">
 							<f:ajax execute="@form"
-								render=":equips :axles :periods :dateStart :dateEnd" />
+								render=":equip :axles :periods :dateStart :dateEnd" />
 						</h:commandButton>
 					</div>
 				</h:form>
@@ -318,7 +327,7 @@
 	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
 	       
 	    //Validation Form
-	    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipment}', '' , '#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_select_axles}',
+	    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', '' , '#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_select_axles}',
 	    '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
 	    	 	   
 	    //Validate elements on change value
@@ -328,6 +337,13 @@
 	    validateOnChange('#periods');
 	    validateOnChange('#dateStart');
 	    validateOnChange('#dateEnd');
+	    
+	  //ResetValidation in case of action
+	     resetValidationForm5('.reset-btn', '#report-form', 'axles', '#{satLabels.sat_reports_select_axles}', axl, 'equips', 'periods', 'dateStart', 'dateEnd');
+	   
+	    //Reset Modal on Close if has valitation active
+	     resetOnModalClose5('#modalReportOptions', '#report-form', 'axles', '#{satLabels.sat_reports_select_axles}', axl, 'equips', 'periods', 'dateStart', 'dateEnd');
+	    	
 	    
 	  
 	    </script>

@@ -23,9 +23,7 @@ public class SatQueriesModels {
 	   public String SpeedMainQuery(String station_id, String[] vehicles) { 
 		   
 		   String query = null;
-		   
-		   if(vehicles.length == 4 || vehicles.length == 3) {
-			   
+		   		  			   
 		       query = "IFNULL(ROUND(COUNT(IF(st.speed < 50 AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '50km/70km',  " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90  AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '70km/90km', " + 
@@ -33,88 +31,7 @@ public class SatQueriesModels {
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
-		   
-		       }
-		   
-		   if(vehicles.length == 2) {			   
-			   
-			   if((vehicles[0].equals("1")) && (vehicles[1].equals("2"))) {
-				   
-				   query ="IFNULL(ROUND(COUNT(IF(speed < 50 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '50km/70km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '70km/90km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '90km/120km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '120km/150km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.classe IN('"+RoadConcessionaire.classLight+"', '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', st.speed , NULL)), 0),0) 'Total' ";
-				   				   
-			        } 					
-
- 				if((vehicles[0].equals("1")) && (vehicles[1].equals("3"))) {
- 					
- 					query = "IFNULL(ROUND(COUNT(IF(st.speed < 50 AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '50km/70km', " + 
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90  AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '70km/90km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '90km/120km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
- 					
- 				}
- 				
- 				if((vehicles[0].equals("2")) && (vehicles[1].equals("3"))) {
- 					
- 					query = "IFNULL(ROUND(COUNT(IF(st.speed < 50 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
- 		 					"IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '50km/70km', " + 
- 		 					"IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90  AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '70km/90km', " +
- 		 					"IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '90km/120km', " +
- 		 					"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
- 		 					"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
- 		 					"IFNULL(ROUND(COUNT(IF(st.classe <> '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
- 		 					
- 				   }		   
-			   
-		       }
-		   
-		   if(vehicles.length == 1) {	
-			   
-			   
-          if(vehicles[0].equals("1")) {
-				   
-				   query ="IFNULL(ROUND(COUNT(IF(st.speed < 50 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '50km/70km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '70km/90km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '90km/120km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0)  '120km/150km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
-				   "IFNULL(ROUND(COUNT(IF(st.classe = '"+RoadConcessionaire.classLight+"' AND eq.equip_id = '"+station_id+"', st.speed , NULL)), 0),0) 'Total' ";
-				   				   
-			        } 					
-
- 				if(vehicles[0].equals("2")) {
- 					
- 					query = "IFNULL(ROUND(COUNT(IF(st.speed < 50 AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '50km/70km', " + 
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90  AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '70km/90km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '90km/120km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
- 					"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
- 					"IFNULL(ROUND(COUNT(IF(st.classe = '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
- 					
- 				}
- 				
- 				if(vehicles[0].equals("3")) {
- 					
- 					query = "IFNULL(ROUND(COUNT(IF(st.speed < 50 AND st.classe <> '"+RoadConcessionaire.classLight+"'  AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'until 50km', " +
- 		 			"IFNULL(ROUND(COUNT(IF(st.speed >= 50 AND st.speed < 70 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '50km/70km', " + 
- 		 			"IFNULL(ROUND(COUNT(IF(st.speed >= 70 AND st.speed < 90  AND st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '70km/90km', " +
- 		 			"IFNULL(ROUND(COUNT(IF(st.speed >= 90 AND st.speed < 120 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '90km/120km', " +
- 		 			"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
- 		 			"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " +
- 		 			"IFNULL(ROUND(COUNT(IF(st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
- 		 					
- 				   }
-		       }
+		   		  
 		   
 		   return query;
 		   
