@@ -82,7 +82,7 @@ body {
 /* GRID CROPPED MAP */
 
 .grid-img {
-  width: 70%;
+  width: 80%;
   height: 100%;
 }
 
@@ -312,7 +312,7 @@ table {
   display: none;
   cursor: pointer;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 }
 
 .save_pos:hover {
@@ -496,9 +496,7 @@ table {
   margin-left: 190px;
   margin-top: 2px;
 }
-#savePos {
-  margin-left: 50px;
-}
+
 #cancelPos {
   margin-left: 15px;
 }
@@ -521,41 +519,50 @@ table {
 }
 
 #zoomIn1 {
-  margin-top: -60px;
+  margin-top: -100px;
+  margin-left: -130px;
   position: fixed;
 }
 #zoomOut1 {
-  margin-top: -40px;
+  margin-top: -80px;
+  margin-left: -130px;
   position: fixed;
 }
 #fulldiv1 {
-  margin-top: -20px;
+  margin-top: -50px;
+  margin-left: -130px;
   position: fixed;
 }
 
 #zoomIn2 {
-  margin-top: -60px;
+  margin-top: -160px;
+  margin-left: -130px;
   position: fixed;	
 }
 #zoomOut2 {
-  margin-top: -40px;
+  margin-top: -140px;
+  margin-left: -130px;
   position: fixed;
 }
 #fulldiv2 {
-  margin-top: -20px;
+  margin-top: -110px;
+  margin-left: -130px;
   position: fixed;
 }
 
 #zoomIn3 {
-  margin-top: -60px;
+  margin-top: -160px;
+  margin-left: -130px;
   position: fixed;
 }
 #zoomOut3 {
-  margin-top: -40px;
+  margin-top: -140px;
+  margin-left: -130px;
   position: fixed;
 }
 #fulldiv3 {
-  margin-top: -20px;
+  margin-top: -110px;
+  margin-left: -130px;
   position: fixed;
 }
 
