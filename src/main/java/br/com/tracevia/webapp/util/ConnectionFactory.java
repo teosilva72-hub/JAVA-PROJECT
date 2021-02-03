@@ -2,9 +2,6 @@ package br.com.tracevia.webapp.util;
 
 import java.sql.Connection;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.sql.*;
 
 public class ConnectionFactory {
@@ -24,11 +21,11 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_wim?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
 								
 			/*Class.forName("com.mysql.cj.jdbc.Driver");
 			    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/trcv_sat?useTimezone=true&serverTimezone=UTC"
-					+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); //Localhost Via Rondon */
+					+ "&autoReconnect=true&useSSL=false", "root", "well123"); //Localhost Via Rondon */
 			
 		  /*  Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://10.12.32.227:3306/test_wim?useTimezone=true&serverTimezone=UTC"
@@ -40,7 +37,7 @@ public class ConnectionFactory {
 		
 			/*Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/trcv_sat?useTimezone=true&serverTimezone=UTC"
-					+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18");  //Teste - Via Sul */
+					+ "&autoReconnect=true&useSSL=false", "root", "well123");  //Teste - Via Sul */
 						
 			return con;
 						
@@ -68,7 +65,7 @@ public static Connection connectToTraceviaApp() throws Exception {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_app?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver não encontrado: "+cfe.getMessage());
@@ -95,7 +92,7 @@ public static Connection connectToTraceviaApp() throws Exception {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_core?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver não encontrado: "+cfe.getMessage());
@@ -121,7 +118,7 @@ public static Connection connectToTraceviaApp() throws Exception {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection3 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_its?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver não encontrado: "+cfe.getMessage());

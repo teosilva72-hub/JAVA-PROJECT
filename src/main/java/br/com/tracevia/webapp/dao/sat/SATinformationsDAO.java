@@ -91,7 +91,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println(select);
+			System.out.println(select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -146,10 +146,12 @@ public class SATinformationsDAO {
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, currentDate);		
 			ps.setString(2, currentDateSub);
+			
+			System.out.println(currentDate+"\n"+currentDateSub);
 					
 			rs = ps.executeQuery();
 			
-			//System.out.println(select);
+			System.out.println(select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -159,7 +161,7 @@ public class SATinformationsDAO {
 					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
 					sat.setStatus(rs.getInt("STATUS"));	
 					
-					//System.out.println(sat.getStatus());
+					System.out.println(sat.getStatus());
 																		
 					list.add(sat);
 				}				
