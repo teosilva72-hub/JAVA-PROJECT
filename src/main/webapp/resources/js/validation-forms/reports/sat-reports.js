@@ -76,7 +76,8 @@
 		             greaterThan: startDate,	
                      dateITA: true,	           
 		             maxDate: true
-		           }, periods: {
+		           }, 
+                   periods: {
 		           required: true
 		           }, 
                    month: {
@@ -414,11 +415,13 @@ function resetOnModalClose5(modalId, form, elem1, elem1NonText, elem1Array,
 	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
 	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
 	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
            
        // Redefine values on click (Reset input and select)
         resetFieldValue('#'+elem1);
         resetFieldValue('#'+elem2); 
-        resetFieldValue('#'+elem3);      
+        resetFieldValue('#'+elem3); 
+        resetFieldValue('#'+elem4);     
 	     
     });
  } //End ResetValidationForm
@@ -549,4 +552,12 @@ function resetOnModalClose6(modalId, form, elem1, elem1NonText, elem1Array,
         resetFieldValue('#'+elem6);
     })
 } //Reset on Modal Close
+
+//Close download modal
+
+  $(function () {
+	    	$("[onclose='download']").click(function () {
+	    		$('#modalDownload').modal('hide')
+	    	})
+	    })
 	

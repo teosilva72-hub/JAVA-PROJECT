@@ -2027,16 +2027,18 @@ public class SatReportsController {
 		fileName = (String) externalContext.getSessionMap().get("fileName");
 
 		String name = fileName+"_"+currentDate;
-
+			
 		try {
 			model.download(ExcelModels.workbook, name);
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}
 		finally {
-			externalContext.getSessionMap().remove("xlsModel");
-			externalContext.getSessionMap().remove("current");
-			externalContext.getSessionMap().remove("fileName");
+			//externalContext.getSessionMap().remove("xlsModel");
+			//externalContext.getSessionMap().remove("current");
+			//externalContext.getSessionMap().remove("fileName");
+			
+			
 		}
 
 	}      
@@ -2104,11 +2106,20 @@ public class SatReportsController {
 	
 	//Form Reset
 	public void resetFormValues(String type) {
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();	
+		ExternalContext externalContext = facesContext.getExternalContext();
 
 		//Reset object => call on click reset button
 		satReport = new SatReports();
 
 		System.out.println("reset");
+		
+		externalContext.getSessionMap().remove("xlsModel");
+		externalContext.getSessionMap().remove("current");
+		externalContext.getSessionMap().remove("fileName");		
+		externalContext.getSessionMap().remove("fields");
+		externalContext.getSessionMap().remove("fieldsObject");
 
 		// Fields again
 		CreateFields(type);

@@ -23,11 +23,16 @@ body {
 }
 
 /* divs inside buttons div */
-#btn-reset, #btn-search {
+#btn-reset, #btn-search, #btn-excel {
 	border: 1px solid transparent;
 	height: 40px;
 	width: auto;
 	float: left;
+}
+
+#btn-excel{
+	width: 50px;
+	margin-left: 40%;	
 }
 
 /* div for reset button config */
@@ -99,15 +104,10 @@ body {
   display: none;
  }
 
-/* div Excel button */
-#btn-excel {
-	margin-top: 5px;
-	border: 1px solid transparent;
-}
-
 /* Excel image icon initial config */
 .fa-file-excel{
-	margin-left: 50%;   
+	margin-left: 25%;
+	margin-top: 3px;	  
 }
 
 /* Excel image icon enabled */
@@ -212,3 +212,19 @@ button.close{
 /*****************************************************/
 /****************** FORM CONTAINER ******************/
 /*****************************************************/
+
+
+.report-title{
+	position:absolute;
+	font-size: 16px;
+	width: 350px;
+	margin-top: 0.5%;
+}
+
+hr{
+	color: black;
+}
+
+#vehicle-count-table{
+	margin-top: 5%;
+}

@@ -54,26 +54,82 @@ public class SATBuildLinear {
 			List<SAT> satListValuesAux = new ArrayList<SAT>();
 			List<SAT> satListStatusAux = new ArrayList<SAT>();
 						
-		    SAT sat =  new SAT();	
-			
+		    SAT sat =  new SAT();			    
+		   			
 			// SAT STRUCTURE EQUIPMENTS
 			satList = sat.ListLinearEquipments("sat");	
 						
 			//SAT STATUS
 			satListStatusAux = satDAO.SATstatus15();
 			
-			if(!satListStatusAux.isEmpty()) 								
-				satStatus.addAll(satListStatusAux);			
-			
-			else intializeNullStatus(satList);
-								
+			if(!satListStatusAux.isEmpty()) { 
+				
+				for(int s = 0; s < satListStatusAux.size(); s++)	{	//FOR START	
+					
+					System.out.println(satList.get(s).getEquip_id());
+					System.out.println(satListStatusAux.get(s).getEquip_id());
+					
+					if(satListStatusAux.get(s).getEquip_id() == satList.get(s).getEquip_id()) {
+											
+						SAT satListObj = new SAT();
+											 
+						satListObj.setStatus(satListStatusAux.get(s).getStatus());
+												
+						satStatus.add(satListObj);
+					}
+					
+					else {
+						
+						SAT satListObj = new SAT();
+						 
+						satListObj.setEquip_id(satList.get(s).getEquip_id());
+						satListObj.setStatus(0);
+												
+						satStatus.add(satListObj);
+						
+					}
+					
+				} // FOR END
+				
+				
+			} else intializeNullStatus(satList); //CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS 
+											
 			//SAT VALUES
-			   satListValuesAux = satDAO.RealTimeSATinfo();
+			satListValuesAux = satDAO.RealTimeSATinfo();
 			
-			if(!satListValuesAux.isEmpty()) 								
-				satListValues.addAll(satListValuesAux);			
+			if(!satListValuesAux.isEmpty()) { 
+				
+				for(int s = 0; s < satListValuesAux.size(); s++)	{	//FOR START		
+									
+				if(satListValuesAux.get(s).getEquip_id() != 0 && satListValuesAux.get(s).getEquip_id() == satList.get(s).getEquip_id()) {
+										
+					SAT satListObj = new SAT();
+										 
+					satListObj.setQuantidadeS1(satListValuesAux.get(s).getQuantidadeS1());
+					satListObj.setQuantidadeS2(satListValuesAux.get(s).getQuantidadeS2());
+					satListObj.setVelocidadeS1(satListValuesAux.get(s).getVelocidadeS1());
+					satListObj.setVelocidadeS2(satListValuesAux.get(s).getVelocidadeS2());
+					
+					satListValues.add(satListObj);
+				}
+				
+				else {
+					
+					SAT satListObj = new SAT();
+					 
+					satListObj.setEquip_id(satList.get(s).getEquip_id());
+					satListObj.setQuantidadeS1(0);
+					satListObj.setQuantidadeS2(0);
+					satListObj.setVelocidadeS1(0);
+					satListObj.setVelocidadeS2(0);
+					
+					satListValues.add(satListObj);
+					
+				}
+				
+			} // FOR END
 			
-			else intializeNullList(satList);  
+			}else intializeNullList(satList);  //CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS 
 						
 			// Caso não tenha equipamentos faz nada
 												

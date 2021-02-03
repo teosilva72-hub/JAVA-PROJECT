@@ -39,7 +39,12 @@
 	 <ui:define name="main-content" >
 	 	
 	 <div class="table-container">
-		 
+	  
+	 <div class="text-dark text-center font-weight-bold report-title" >
+	 <h:outputText value="#{satLabels.sat_reports_name_speed}" />
+	 <hr></hr>
+	 </div>
+	 
     <h:dataTable id="vehicle-speed-table" value="#{satReportsBean.resultList}" var="speed" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%"	
      headerClass="custom-table-header" >
@@ -84,7 +89,20 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
-				</div>
+					
+				<div id="btn-excel">
+				<h:commandButton id="excel-act" value=""
+					disabled="#{satReportsBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+			</div>
+			
+		  </div>
 
 				<!-- MODAL CLEAR -->			
 				<div class="modal fade" id="modalClear" tabindex="-1"
@@ -100,7 +118,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(1)}"
+									action="#{satReportsBean.resetFormValues(8)}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -122,18 +140,7 @@
 
 		<!-- EXCEL FORM -->
 		<h:form id="form-excel">
-			<div id="btn-excel">
-				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
-					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-			</div>
-
+			
 			<!-- MODAL DOWNLOAD -->			
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -149,7 +156,7 @@
 							</p>
 						</div>
 						<div class="modal-footer">
-							<h:commandButton
+							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								action="#{satReportsBean.download}"
 								class="btn btn-dark form-draw-button" />
@@ -193,6 +200,7 @@
 								<span><i class="fas fa-hdd"></i></span> <span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip"
 										id="equip">
+										<option value="">#{satLabels.sat_reports_select_equipments}</option>
 										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
@@ -203,25 +211,7 @@
 									<label for="equip" class="error" id="equip-error"></label>
 								</div>
 						  </div>
-							
-							<!-- VEHICLES OPTIONS -->
-
-							<div class="form-row">
-							<div class="form-group col-sm-12 checkbox-field">
-									<span><i class="fas fa-car"></i></span> <span for="vehicles"
-										class="valid-icon-hidden"></span> <select name="vehicles"
-										id="vehicles" multiple="multiple">
-										<ui:repeat var="veh" value="#{satReportsBean.vehicles}"
-											varStatus="vehStatus">
-											<option value="#{veh.value}">#{veh.label}</option>
-										</ui:repeat>
-									</select>
-								</div>
-								<div class="error-label">
-									<label for="vehicles" class="error" id="vehicles-error"></label>
-								</div>
-							</div>
-
+														
 							<!-- PERIODS OPTIONS -->
 
 							<div class="form-row">
@@ -286,7 +276,7 @@
 							action="#{satReportsBean.resetFormValues}"
 							class="btn btn-dark form-modal-draw-button  reset-btn">
 							<f:ajax execute="@form"
-								render=":equips :vehicles :periods :dateStart :dateEnd" />
+								render=":equip :periods :dateStart :dateEnd" />
 						</h:commandButton>
 					</div>
 				</h:form>
@@ -301,52 +291,27 @@
 	  
 	  //Define Datepicker locale
 	  $('.datepicker').datepickerLocale('#{language.locale}');
-	    
-	  //Get equipments from backing bean
-	  //Create array
-	  var equip = new Array();
-	
-	  //Use facelets tag
-	  <ui:repeat value="#{satReportsBean.equipments}" var="eqp">
-	      equip.push(#{eqp.value}); // Fill array
-	  </ui:repeat>
-	    
-	  //Call method to set checkbox all checked
-	  checkedByDefault('#equips', equip);
-	  
-	    //Create array         
-	    var veh = [1, 2, 3, 4, 5]; 
-	  //Call method to set checkbox all checked
-	    checkedByDefault('#vehicles', veh);
-	        
-	    //Create / Define multiselect
-	    defineMultiselect('#equips', '#{satLabels.sat_reports_select_equipments}');
-	    defineMultiselect('#vehicles', '#{satLabels.sat_reports_select_vehicles}');
-	        
+	    		        
 	    //Validation Methods - needs to use
 	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}', 60);
 	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
 	       
-	    //Validation Form
-	    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', '#{requiredMessages.required_sat_reports_select_vehicles}',  '#{requiredMessages.required_sat_reports_select_periods}',
-	    '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
-	    	 	   
+	  //Validation Form
+	    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', '', '#{requiredMessages.required_sat_reports_select_periods}', '',
+	    '', '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
+	    
 	    //Validate elements on change value
 	    //In this case check if the element is valid
-	    validateOnChange('#equips');
-	    validateOnChange('#vehicles');
+	    validateOnChange('#equip');
 	    validateOnChange('#periods');
 	    validateOnChange('#dateStart');
 	    validateOnChange('#dateEnd');
 	    
 	    //ResetValidation in case of action
-	    resetValidationForm('.reset-btn', '#report-form', 'equips', '#{satLabels.sat_reports_select_equipments}', equip,
-	    	'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh, 'periods', 'dateStart', 'dateEnd');
+	    resetValidationForm4('.reset-btn', '#report-form', 'equip', 'periods', 'dateStart', 'dateEnd');
 	   
-	    //Reset Modal on Close if has valitation active
-	    resetOnModalClose('#modalReportOptions', '#report-form',  'equips', '#{satLabels.sat_reports_select_equipments}',equip,
-		    	'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh, 'periods', 'dateStart', 'dateEnd');
-	    
+	    //Reset Modal on Close if has valitation active	  
+	    resetOnModalClose4('#modalReportOptions', '#report-form',  'equip', 'periods', 'dateStart', 'dateEnd');
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->
