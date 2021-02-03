@@ -31,6 +31,8 @@ public class SATinformationsDAO {
 		
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		System.out.println(currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
