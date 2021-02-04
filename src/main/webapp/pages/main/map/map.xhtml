@@ -98,45 +98,6 @@
 				title="Full Map View">
 				<span><i class="fas fa-expand fa-2x"></i></span>
 			</button>
-			<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom In">
-				<span><i class="fas fa-plus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom Out">
-				<span><i class="fas fa-minus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="fulldiv1" class="zoomFull"
-				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" data-toggle="tooltip"
-				data-placement="bottom" title="Fullscreen View">
-				<span> <i class="fas fa-expand-arrows-alt"></i></span>
-			</button>
-			<button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom In">
-				<span><i class="fas fa-plus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom Out">
-				<span><i class="fas fa-minus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="fulldiv2" class="zoomFull"
-				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
-				data-placement="bottom" title="Fullscreen View">
-				<span> <i class="fas fa-expand-arrows-alt"></i></span>
-			</button>
-			<button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom In">
-				<span><i class="fas fa-plus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-				title="Zoom Out">
-				<span><i class="fas fa-minus-square fa-1x"></i></span>
-			</button>
-			<button type="button" id="fulldiv3" class="zoomFull"
-				target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
-				data-placement="bottom" title="Fullscreen View">
-				<span> <i class="fas fa-expand-arrows-alt"></i></span>
-			</button>
 		</div>
 
 		<div id="mapDivide" class="row" style="display: none">
@@ -147,6 +108,19 @@
 					<h:graphicImage class="grid-img"
 						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" />
 				</section>
+					<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+						title="Zoom In">
+						<span><i class="fas fa-plus-square fa-1x"></i></span>
+					</button>
+					<button type="button" id="zoomOut1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+						title="Zoom Out">
+						<span><i class="fas fa-minus-square fa-1x"></i></span>
+					</button>
+					<button type="button" id="fulldiv1" class="zoomFull"
+						target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" data-toggle="tooltip"
+						data-placement="bottom" title="Fullscreen View">
+						<span> <i class="fas fa-expand-arrows-alt"></i></span>
+					</button>
 			</div>
 			<!-- Imagem 2 -->
 			<div class="squarebox1" id="divs1" scroll-zoom="0.5" max-scale="4">
@@ -154,13 +128,38 @@
 					<h:graphicImage class="grid-img"
 						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" />
 				</section>
+				<button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom In">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="zoomOut2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom Out">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="fulldiv2" class="zoomFull"
+					target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
+					data-placement="bottom" title="Fullscreen View">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
 			</div>
 			<!-- Imagem 3 -->
 			<div class="squarebox2" id="divs2" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs3">
 					<h:graphicImage class="grid-img"
-						value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" />
+					value="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" />
 				</section>
+				<button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom In">
+					<span><i class="fas fa-plus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="zoomOut3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom Out">
+					<span><i class="fas fa-minus-square fa-1x"></i></span>
+				</button>
+				<button type="button" id="fulldiv3" class="zoomFull" target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
+					data-placement="bottom" title="Fullscreen View">
+					<span> <i class="fas fa-expand-arrows-alt"></i></span>
+				</button>
 			</div>
 
 		</div>
@@ -170,7 +169,7 @@
 		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
 
 			<!-- START SECTION -->
-			<div id="zoomtext" class="section">
+			<div id="zoomtext" scale="1" class="section">
 
 				<!-- MAP FRONT IMAGE -->
 

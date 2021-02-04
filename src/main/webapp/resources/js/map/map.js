@@ -200,7 +200,7 @@ function ScrollZoom(container) {
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
 			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
 
-		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -273,13 +273,14 @@ function barResize(){
 	function posEquip(equip) {
 		let zoomTarget = equip.closest('[scroll-zoom]').children().first()
 		let zoomTargetImg = zoomTarget.find('img')
+		let scale = Number(zoomTarget.attr('scale'))
 		let pos = {
 			x: Number(equip.attr('posX')),
 			y: Number(equip.attr('posY'))
 		}
 	
-		pos.centX = pos.x / widthMax
-		pos.centY = pos.y / heightMax
+		pos.centX = pos.x / widthMax * scale
+		pos.centY = pos.y / heightMax * scale
 	
 		//Pos X and Pos Y
 		equip.css({
