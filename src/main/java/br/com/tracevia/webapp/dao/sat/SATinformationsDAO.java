@@ -176,5 +176,116 @@ public class SATinformationsDAO {
 				
 		return list;		
 	}
+	
+public List<SAT> SATstatus15AAA() throws Exception {
+		
+		List<SAT> list = new ArrayList<SAT>();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null, currentDateSub = null;
+	
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//Obter datas formatadas para os dados
+		currentDateSub = dta.getCurrentDateSubDados15(calendar, minute);
+				
+		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM tracevia_app.sat_status s " +
+		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
+		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 " +
+		"GROUP BY s.EQ_ID " +
+		"ORDER BY s.EQ_ID ASC, s.DATA_HORA ASC ";
+				
+		    try {
+			
+			conn = ConnectionFactory.connectToTraceviaApp();
+			
+			ps = conn.prepareStatement(select);			
+			ps.setString(1, currentDate);		
+			ps.setString(2, currentDateSub);
+			
+			System.out.println(currentDate+"\n"+currentDateSub);
+					
+			rs = ps.executeQuery();
+			
+			System.out.println("30 min: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+
+					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
+					sat.setStatus(rs.getInt("STATUS"));	
+					
+					System.out.println(sat.getStatus());
+																		
+					list.add(sat);
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return list;		
+	}
+	
+	//FOR CCR
+	public SAT SATstatus15Before(int equip) throws Exception {
+		
+		SAT sat = new SAT();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null, currentDateSub = null;
+	
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//Obter datas formatadas para os dados
+		currentDateSub = dta.getCurrentDateSubDados15(calendar, minute);
+				
+		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM tracevia_app.sat_status s " +
+		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
+		"WHERE eq.equip_id = ? AND s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 ";
+						
+		    try {
+			
+			conn = ConnectionFactory.connectToTraceviaApp();
+			
+			ps = conn.prepareStatement(select);	
+			ps.setInt(1, equip);	
+			ps.setString(2, currentDate);		
+			ps.setString(3, currentDateSub);
+			
+			System.out.println("BEF: "+currentDate+"\nBEF: "+currentDateSub);
+					
+			rs = ps.executeQuery();
+			
+			System.out.println("15BEFORE: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
+					sat.setStatus(rs.getInt("STATUS"));	
+				
+				}		
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return sat;		
+	}
 		
 }

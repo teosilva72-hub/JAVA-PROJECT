@@ -45,6 +45,8 @@ public class SATBuildLinear {
 			
 			SATinformationsDAO satDAO = new SATinformationsDAO();
 			
+			boolean status15Before = false;
+			
 			//LISTAS
 			satList = new ArrayList<SAT>();
 			satListValues = new ArrayList<SAT>();
@@ -55,15 +57,59 @@ public class SATBuildLinear {
 			List<SAT> satListStatusAux = new ArrayList<SAT>();
 						
 		    SAT sat =  new SAT();			    
-		   			
-			// SAT STRUCTURE EQUIPMENTS
+		   		
+		    ///////////////////////////////
+			// SAT EQUIPMENTS
+		    //////////////////////////////		    
 			satList = sat.ListLinearEquipments("sat");	
-						
+			
+			/////////////////////////////
 			//SAT STATUS
+			///////////////////////////
+			
+			//PREENCHE LISTA COM DADOS DOS ULTIMOS 15 MINUTOS
 			satListStatusAux = satDAO.SATstatus15();
 			
-			if(!satListStatusAux.isEmpty()) { 
-				
+			//CASO NÃO ENCONTRE NENHUM DADO DO ULTIMOS 15 MINUTOS
+			//PREENCHE LISTA COM DADOS DOS 15 MINUTOS ANTERIORES
+			if(satListStatusAux.isEmpty()) {
+				satListStatusAux = satDAO.SATstatus15AAA();
+			    status15Before = true;
+			}
+			
+			//CASO HAJA DADOS DOS 15 MINUTOS ANTERIORES EXECUTA ESSE BLOCO
+			if(status15Before) {
+									
+					for(int s = 0; s < satList.size(); s++) { // FOR START	
+						
+						System.out.println(satList.get(s).getEquip_id());
+											
+						if(satListStatusAux.size() > 0) {
+																	
+							SAT satListObj = new SAT();
+												 
+							satListObj.setStatus(satListStatusAux.get(s).getStatus());
+													
+							satStatus.add(satListObj);
+							satListStatusAux.remove(s);
+						
+						}
+						
+						else {
+							
+							SAT satListObj = new SAT();
+							 
+							satListObj.setEquip_id(satList.get(s).getEquip_id());
+							satListObj.setStatus(0);
+													
+							satStatus.add(satListObj);
+							
+						}
+						
+					} // FOR END											
+			    
+			} else if(!status15Before){
+							
 				for(int s = 0; s < satList.size(); s++) { // FOR START	
 					
 					System.out.println(satList.get(s).getEquip_id());
@@ -86,20 +132,35 @@ public class SATBuildLinear {
 					else {
 						
 						SAT satListObj = new SAT();
-						 
-						satListObj.setEquip_id(satList.get(s).getEquip_id());
-						satListObj.setStatus(0);
-												
-						satStatus.add(satListObj);
 						
-					}
+						satListObj = satDAO.SATstatus15Before(satList.get(s).getEquip_id());
+						
+						if(satListObj != null)
+							satStatus.add(satListObj);	
+						
+						else {
+							
+							SAT satListObj1 = new SAT();
+							
+							satListObj1.setEquip_id(satList.get(s).getEquip_id());
+							satListObj1.setStatus(0);							
+						   
+							satStatus.add(satListObj1);	
+							
+						    }	   
 					
-				} // FOR END
+				} // FOR END								
+			}		
 				
-				
-			} else intializeNullStatus(satList); //CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS 
-											
+	     } else intializeNullStatus(satList); //CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS 
+						
+           ///////////////////////////
+           //SAT STATUS
+          /////////////////////////
+			
+			/////////////////////////
 			//SAT VALUES
+			////////////////////////
 			satListValuesAux = satDAO.RealTimeSATinfo();
 			
 			if(!satListValuesAux.isEmpty()) { 
@@ -136,6 +197,10 @@ public class SATBuildLinear {
 			} // FOR END
 			
 			}else intializeNullList(satList);  //CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS 
+			
+//            ///////////////////////
+//            //SAT VALUES
+//            //////////////////////
 						
 			// Caso não tenha equipamentos faz nada
 												

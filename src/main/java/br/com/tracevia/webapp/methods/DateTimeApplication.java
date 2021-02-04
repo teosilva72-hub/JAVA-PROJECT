@@ -179,6 +179,34 @@ public class DateTimeApplication {
 	   
 		}
 	
+public String getCurrentDateSubDados30(Calendar calendar, int minute) {
+		
+		dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_DATABASE);
+		
+		String currentDateSub = null;
+			
+	     //formatar os minutos para que nao ocorra inconsistencias
+		if(minute >= 0 && minute < 15)
+			 calendar.set(Calendar.MINUTE, 0);
+		
+		else if(minute >= 15 && minute < 30)
+			 calendar.set(Calendar.MINUTE, 15);
+		
+		else if(minute >= 30 && minute < 45)
+			 calendar.set(Calendar.MINUTE, 30);
+		
+		else calendar.set(Calendar.MINUTE, 45);
+						
+		calendar.add(Calendar.MINUTE, -1);				
+		calendar.add(Calendar.SECOND, 59);	
+
+	   //Data Atual com subtracao de minuto e segundo
+	   currentDateSub = dtFormatter.format(calendar.getTime());	
+	   
+	   return currentDateSub;
+	   
+		}
+	
 	
 	public Integer periodsRange(String period) {
 		
