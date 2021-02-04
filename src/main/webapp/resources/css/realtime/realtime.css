@@ -1,82 +1,83 @@
 @charset "ISO-8859-1";
 
-body{
-	overflow-y: hidden;
+body {
+  overflow-y: hidden;
 }
 
 /*Road Map Image for Background */
-.map-content{
- position: relative;
- border: 1px solid transparent;
- width: 200vw;
- height: 80vh;  
- cursor: grab;
- cursor: -webkit-grab;
- cursor: -moz-grab;
- position: relative;
+.map-content {
+  position: relative;
+  border: 1px solid transparent;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
 }
 
-.map-content:active{
- cursor: grabbing;
- cursor: -webkit-grabbing;
- cursor:-moz-grabbing;	
+.map-content:active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
 }
 
-.overflow{
-position: absolute;
-border: 1px solid transparent;
-overflow-x: hidden;
-overflow-y: scroll;
-width: 100%;
-height: 82.5%; 
-margin-top: -22px;
+/*
+.map-content img {
+	width: 100%;
+}
+*/
+
+.overflow {
+  position: relative;
+  border: 1px solid transparent;
+  overflow-x: hidden;
+  overflow-y: overlay;
+  width: 100%;
+  height: 100%;
 }
 
-#map{
- width: 250%;
- height:100%;	 
- margin-left: 0%; 
+#map {
+  width: 250%;
+  height: 100%;
+  margin-left: 0%;
 }
 
- #zoomtext {
-   transform: scale(1);
-   transition: transform 0.2s ease-in-out;
-   
- }
+#zoomtext {
+  transform: scale(1);
+  transition: transform 0.2s ease-in-out;
+}
 
 /* PMV USAGE*/
-.equip-info{
- position: absolute;
- background: #333333; 
- box-shadow: 5px 5px 4px gray;
- border-right: none;
- float: left;
- overflow: hidden; 
- z-index: 9999;
+.equip-info {
+  position: absolute;
+  background: #333333;
+  box-shadow: 5px 5px 4px gray;
+  border-right: none;
+  float: left;
+  overflow: hidden;
+  z-index: 9999;
 }
 
 /* EQUIPS WHIT IMAGE USAGE*/
-.equip-box{	
- position: absolute;
- background: transparent;  
- border-right: none;
- float: left;
- overflow: hidden; 
- border: 1px solid transparent;
- z-index: 9999; /* número máximo é 9999 */
+.equip-box {
+  position: absolute;
+  background: transparent;
+  border-right: none;
+  float: left;
+  overflow: hidden;
+  border: 1px solid transparent;
+  z-index: 9999; /* nï¿½mero mï¿½ximo ï¿½ 9999 */
 }
 
-/*Conteúdo interno dos equipamentos*/
-.equip-status{		
- width: 7px;
- height: 7px;
- background-color: #00ff0d;  
- border-radius: 50%;
- margin-top: -9.5px;	
- margin-left: 1px; 
-  
+/*Conteï¿½do interno dos equipamentos*/
+.equip-status {
+  width: 7px;
+  height: 7px;
+  background-color: #00ff0d;
+  border-radius: 50%;
+  margin-top: -9.5px;
+  margin-left: 1px;
 }
-
 
 /*
 .equip-graphic{
@@ -108,250 +109,258 @@ margin-top: -22px;
 /* EQUIPS WHIT IMAGE USAGE*/
 
 /*Nome do Equipamento*/
-.dms-name{
-width: 100%;
-height: auto;
-color: #FFF;
-margin-top: 0%;
-border: 1px solid transparent;
-float: left;
-font-weight: 400;
+.dms-name {
+  width: 100%;
+  height: auto;
+  color: #fff;
+  margin-top: 0%;
+  border: 1px solid transparent;
+  float: left;
+  font-weight: 400;
 }
 
-.dms-name .dms-header-table{
-width: 100%;
-background: transparent;
-text-align: center;	
-margin-left: 0.20px;
+.dms-name .dms-header-table {
+  width: 100%;
+  background: transparent;
+  text-align: center;
+  margin-left: 0.2px;
 }
 
-#child-img {	
-border: none;	
-float: left;
-width: 20%;
-height: 70%;
-margin-top: -0.5%;
-margin-left: 0.80%;
-padding-top: 0%;
+#child-img {
+  border: none;
+  float: left;
+  width: 20%;
+  height: 70%;
+  margin-top: -0.5%;
+  margin-left: 0.8%;
+  padding-top: 0%;
 }
 
-.ui-graphic-image{
-vertical-align:top;
-margin-top: 0%;
-width: 100%;
-height: 100%;
+.ui-graphic-image {
+  vertical-align: top;
+  margin-top: 0%;
+  width: 100%;
+  height: 100%;
 }
 
 /*table de mensagens*/
-#child-msg{ 
- border: 1px solid transparent;    
- float:left;
- width: 78%;
- height: 70%;
- margin-top: -0.5%;
- margin-left: 0.2%;
- padding-bottom: 3%; 
- background: #444444;
+#child-msg {
+  border: 1px solid transparent;
+  float: left;
+  width: 78%;
+  height: 70%;
+  margin-top: -0.5%;
+  margin-left: 0.2%;
+  padding-bottom: 3%;
+  background: #444444;
 }
 
- #child-msg .table-message td{
-   border: 1px solid #000;
-   overflow: hidden;
-   white-space: nowrap;
-   text-overflow: ellipsis; 
-   color: #FFFF00; 
-   text-align: center;    
- }  
- 
-#messages-selection{
-	width: auto;
-	height: auto !important;
-    margin-top: -5%;
-    color: #FFFF00;
+#child-msg .table-message td {
+  border: 1px solid #000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #ffff00;
+  text-align: center;
 }
 
-.ui-graphic-board1{
-	width: 100%;
-	height: 40px;	
+#messages-selection {
+  width: auto;
+  height: auto !important;
+  margin-top: -5%;
+  color: #ffff00;
 }
 
-.ui-dialog-titlebar{	
-	background: #FFFF00;
-	color: #555;	
+.ui-graphic-board1 {
+  width: 100%;
+  height: 40px;
 }
 
-.ui-dialog-title{
-	margin-left: 150px;
-} 
-.info-link1{
-	margin-top:0%;
-	background-color: #4CAF50 !important;
-	margin-right:89% !important;
+.ui-dialog-titlebar {
+  background: #ffff00;
+  color: #555;
 }
-.ui-datatable-scrollable-theadclone{
-	visibility: collapse;
+
+.ui-dialog-title {
+  margin-left: 150px;
+}
+.info-link1 {
+  margin-top: 0%;
+  background-color: #4caf50 !important;
+  margin-right: 89% !important;
+}
+.ui-datatable-scrollable-theadclone {
+  visibility: collapse;
 }
 .ui-datatable-scrollable-header {
-	background: #FFFF00;
-	color: #555;	
+  background: #ffff00;
+  color: #555;
 }
-.picture-box{
-height: 1% !important;	
-}
-
-.modal-footer{
-	margin-top: 32% !important;
+.picture-box {
+  height: 1% !important;
 }
 
-.ui-dialog {		
-    position: fixed;
-	text-align: center;
-	overflow-y: hidden !important;	
+.modal-footer {
+  margin-top: 32% !important;
 }
 
-.name .table-header{
-	margin: 0 auto;	
-	font-size: 10px;
+.ui-dialog {
+  position: fixed;
+  text-align: center;
+  overflow-y: hidden !important;
+}
+
+.name .table-header {
+  margin: 0 auto;
+  font-size: 10px;
 }
 
 /* GENERIC EQUIPMENTS  */
 
-.equip-name{	
+.equip-name {
   /* width: auto;
    height: auto; 
    margin-top: 1%;
    text-align: center;
    border: none;*/
-	position: relative;
-	margin-top: 0%;
-	overflow: hidden;
-	background: transparent;
-	color: black;
-	font-weight: bold;
-	width: 99%;
-	height: 20%;	
-	text-align: center;			
-	border: none;
-	margin: 0 auto; /* or margin: 0 auto 0 auto */ 
+  position: relative;
+  margin-top: 0%;
+  overflow: hidden;
+  background: transparent;
+  color: black;
+  font-weight: bold;
+  width: 99%;
+  height: 20%;
+  text-align: center;
+  border: none;
+  margin: 0 auto; /* or margin: 0 auto 0 auto */
 }
 
-.equip-graphic{	
-border: none;	
-float: left;
-width: 100%;
-height: 80%;
-margin-top: 0%;
-margin-left: 0%;
-padding-top: 0%;
-border: none;
-vertical-align: center;
+.equip-graphic {
+  border: none;
+  float: left;
+  width: 100%;
+  height: 80%;
+  margin-top: 0%;
+  margin-left: 0%;
+  padding-top: 0%;
+  border: none;
+  vertical-align: center;
 }
 
-.equip-graphic .equip-image{
-vertical-align: top;
-margin-top: 0%;
-width: 100%;
-height: 100%;
-border: none;
+.equip-graphic .equip-image {
+  vertical-align: top;
+  margin-top: 0%;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 /*GENERIC EQUIP CONF*/
-.generic-name{
-width: 100%;
-height: auto;
-color: #000;
-margin-top: 0%;
-border: none;
-float: left;
-font-weight: 400;
+.generic-name {
+  width: 100%;
+  height: auto;
+  color: #000;
+  margin-top: 0%;
+  border: none;
+  float: left;
+  font-weight: 400;
 }
 
-.table-generic{
-text-align: center;
-vertical-align: middle;
-white-space: normal-wrap;
-border: 1px solid transparent;
-width: 100%;
+.table-generic {
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal-wrap;
+  border: 1px solid transparent;
+  width: 100%;
 }
 
-.table-generic td{ 	
-	background : transparent;
+.table-generic td {
+  background: transparent;
 }
 
 /*GENERIC EQUIP CONF*/
 
 /*Mostrar/Esconder equipamentos no real time*/
-.show-equipments{
-	display: block;	
+.show-equipments {
+  display: block;
 }
 
-.hide-equipments{
-	display: none;	
+.hide-equipments {
+  display: none;
 }
 
 /* EQUIPS SATS*/
-.equip-box-sat{	
- position: absolute;
- background: transparent;  
- border-right: none;
- float: left;
- overflow: hidden; 
- border: none;
- z-index: 9999; /* número máximo é 9999 */
- border: none; 
+.equip-box-sat {
+  position: absolute;
+  z-index: 9999; /* nï¿½mero mï¿½ximo ï¿½ 9999 */
+  height: 75px;
 }
 
-.satName{
- font-size: 10px;
+.satName {
+  font-size: 10px;
 }
 
 /*Table Sat*/
-.table-sat{
-width: 95%;
-text-align: center;
-table-layout: auto !important;
-color: #212121;
-font-size: 10px;
-font-weight: bold;
--webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+.table-sat {
+  width: 95%;
+  text-align: center;
+  table-layout: auto !important;
+  color: #212121;
+  font-size: 10px;
+  font-weight: bold;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
-.table-sat tr, .table-sat td {
- border: 1px solid #363636;
- max-width:100%;
- white-space: nowrap;
+.table-sat tr,
+.table-sat td {
+  border: 1px solid #363636;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
-.sat-cars{
-float: left;
-font-size: 10px;
-/*color: #878d8d;*/
-margin-top: 3px;
-margin-left: 0.75px;
+.sat-cars {
+  float: left;
+  font-size: 10px;
+  /*color: #878d8d;*/
+  margin-top: 3px;
+  margin-left: 0.75px;
 }
 
-.sat-speed{
-float: left;
-font-size: 10px; 
-margin-top: 3.5px;
-margin-left: 0.75px;
-/*color: #878d8d;*/
-} 
+.sat-speed {
+  float: left;
+  font-size: 10px;
+  margin-top: 3.5px;
+  margin-left: 0.75px;
+  /*color: #878d8d;*/
+}
+
+.padding-sat {
+  padding: 0;
+  width: 45px;
+}
 
 /*REAL TIME SAT*/
 
 #fluxos {
-margin-top: 3px !important; 
-margin-left: 0px;
-opacity: 0.80;
-border: 1px solid transparent;
-}
-	
-#fluxos div {
-  height: 9px;	
+  margin-top: 3px !important;
+  margin-left: 0px;
+  opacity: 0.8;
+  border: 1px solid transparent;
 }
 
+#fluxos div {
+  height: 9px;
+}
+
+main > div:first-child {
+  width: 100%;
+  position: fixed;
+  top: 70px;
+  bottom: 50px;
+  padding: 0;
+}
 
 /*REAL TIME SAT*/
