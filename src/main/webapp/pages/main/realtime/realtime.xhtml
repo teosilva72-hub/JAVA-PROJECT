@@ -380,11 +380,7 @@
 					<ui:fragment rendered="#{loginAccount.load.rt_sat}">
 
 						<c:forEach items="#{satLinearView.satList}" var="item" varStatus="loop">
-							<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
-								posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.width}"
-								status="#{satMapView.satStatus.get(loop.index).status}"
-								vel1="#{satMapView.satListValues.get(loop.index).velocidadeS1}"
-								vel2="#{satMapView.satListValues.get(loop.index).velocidadeS2}">
+							<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" >
 
 								<div id="sat#{item.equip_id}" class="table-sat card border-dark">
 									<div id="satName#{item.equip_id}" class="satName card-header p-0 border-dark">
@@ -396,20 +392,20 @@
 										<div class="col-5 padding-sat border-right border-bottom border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
-											<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}</span>
 										</div>
 										<div class="col-7 padding-sat border-bottom border-dark">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}km/h</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}km/h</span>
 										</div>
 										<div class="col-5 padding-sat border-right border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
-											<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}</span>
 										</div>
 										<div class="col-7 padding-sat">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}km/h</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}km/h</span>
 										</div>
 									</div>
 

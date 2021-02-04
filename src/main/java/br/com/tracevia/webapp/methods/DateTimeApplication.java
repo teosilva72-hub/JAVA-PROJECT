@@ -187,15 +187,15 @@ public String getCurrentDateSubDados30(Calendar calendar, int minute) {
 			
 	     //formatar os minutos para que nao ocorra inconsistencias
 		if(minute >= 0 && minute < 15)
-			 calendar.set(Calendar.MINUTE, 0);
+			 calendar.set(Calendar.MINUTE, 45);
 		
-		else if(minute >= 15 && minute < 30)
-			 calendar.set(Calendar.MINUTE, 15);
+		else if(minute >= 15 && minute < 0)
+			 calendar.set(Calendar.MINUTE, 30);
 		
 		else if(minute >= 30 && minute < 45)
 			 calendar.set(Calendar.MINUTE, 30);
 		
-		else calendar.set(Calendar.MINUTE, 45);
+		else calendar.set(Calendar.MINUTE, 15);
 						
 		calendar.add(Calendar.MINUTE, -1);				
 		calendar.add(Calendar.SECOND, 59);	
