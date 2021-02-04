@@ -64,18 +64,23 @@ public class SATBuildLinear {
 			
 			if(!satListStatusAux.isEmpty()) { 
 				
-				for(int s = 0; s < satListStatusAux.size(); s++)	{	//FOR START	
+				for(int s = 0; s < satList.size(); s++) { // FOR START	
 					
 					System.out.println(satList.get(s).getEquip_id());
-					System.out.println(satListStatusAux.get(s).getEquip_id());
+					//System.out.println(satListStatusAux.get(s).getEquip_id());
 					
-					if(satListStatusAux.get(s).getEquip_id() == satList.get(s).getEquip_id()) {
-											
+					//if(satListStatusAux.contains(satList.get(s)))
+					//System.out.println(satListStatusAux.isEmpty());
+					
+					if(satListStatusAux.size() > 0) {
+																
 						SAT satListObj = new SAT();
 											 
 						satListObj.setStatus(satListStatusAux.get(s).getStatus());
 												
 						satStatus.add(satListObj);
+						satListStatusAux.remove(s);
+					
 					}
 					
 					else {
@@ -99,9 +104,9 @@ public class SATBuildLinear {
 			
 			if(!satListValuesAux.isEmpty()) { 
 				
-				for(int s = 0; s < satListValuesAux.size(); s++)	{	//FOR START		
+				for(int s = 0; s < satList.size(); s++)	{	//FOR START		
 									
-				if(satListValuesAux.get(s).getEquip_id() != 0 && satListValuesAux.get(s).getEquip_id() == satList.get(s).getEquip_id()) {
+				if(satListValuesAux.size() > 0) {
 										
 					SAT satListObj = new SAT();
 										 
@@ -111,6 +116,7 @@ public class SATBuildLinear {
 					satListObj.setVelocidadeS2(satListValuesAux.get(s).getVelocidadeS2());
 					
 					satListValues.add(satListObj);
+					satListValuesAux.remove(s);
 				}
 				
 				else {

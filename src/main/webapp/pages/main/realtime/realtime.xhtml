@@ -48,12 +48,12 @@
 	  
 	   <div class="equip-name">
 	   
-	     <table id="cftvName#{item.table_id}" class="table-generic">
+	     <table id="cftvName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>			
-				<td> <div id="cftvStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="cftvStatus#{item.equip_id}" class="equip-status"></div></td>
 				</tr>
 				</tbody>
 		</table>	      
@@ -68,7 +68,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC CFTV
-    drawGenericEquipments('cftv#{item.equip_id}', 'cftvName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
+    drawGenericEquipments('cftv#{item.equip_id}', 'cftvName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
        
      </script>  
     
@@ -85,12 +85,12 @@
 	
 	<div id="colas#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="colasName#{item.table_id}" class="table-generic">
+	     <table id="colasName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="colasStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="colasStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -107,7 +107,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC COLAS
-    drawGenericEquipments('colas#{item.equip_id}', 'colasName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3);
+    drawGenericEquipments('colas#{item.equip_id}', 'colasName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3);
     
     </script>    
        
@@ -123,12 +123,12 @@
 	
 	<div id="comms#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="commsName#{item.table_id}" class="table-generic">
+	     <table id="commsName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="commsStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="commsStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -145,7 +145,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC COMMS
-    drawGenericEquipments('comms#{item.equip_id}', 'commsName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
+    drawGenericEquipments('comms#{item.equip_id}', 'commsName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
     
     </script>    
        
@@ -162,12 +162,12 @@
 	
 	<div id="dai#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="daiName#{item.table_id}" class="table-generic">
+	     <table id="daiName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="daiStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="daiStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -184,7 +184,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC DAI
-    drawGenericEquipments('dai#{item.equip_id}', 'daiName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
+    drawGenericEquipments('dai#{item.equip_id}', 'daiName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
     
     </script>    
        
@@ -200,20 +200,20 @@
 	<c:forEach items="#{dmsLinearView.dmsList}" var="item" varStatus="loop">     		
          <div id="dms#{item.equip_id}" class="equip-info">  
          <div class="dms-name">       
-         <table id="dmsName#{item.table_id}" class="dms-header-table" >
+         <table id="dmsName#{item.equip_id}" class="dms-header-table" >
          <tr>
          <td>#{item.nome} </td>
          </tr>            
          </table>														
-		<!-- <a class="info-bagde" type="button" id="mi#{item.table_id}" onclick="PF('infoModal#{item.table_id}').show()"><b>i</b></a> 	-->		
-		<!-- <a class="info" type="button" id="update" onclick="PF('infoModal1#{item.table_id}').show()"><b>m</b></a>-->         
+		<!-- <a class="info-bagde" type="button" id="mi#{item.equip_id}" onclick="PF('infoModal#{item.equip_id}').show()"><b>i</b></a> 	-->		
+		<!-- <a class="info" type="button" id="update" onclick="PF('infoModal1#{item.equip_id}').show()"><b>m</b></a>-->         
          </div>                 
 			 <div id="child-img">		   
-			 <h:graphicImage id="img#{item.table_id}"
+			 <h:graphicImage id="img#{item.equip_id}"
 				value="/resources/images/pictures/#{dmsLinearView.image[loop.index]}" styleClass="ui-graphic-image" />					
 			</div>           	
 			 <div id="child-msg"> 		 							   	 
-			 <table id="msg#{item.table_id}" class="table-message"  >
+			 <table id="msg#{item.equip_id}" class="table-message"  >
 			 <tbody>
 			    <tr>			     
 					<td>#{dmsLinearView.letter[loop.index][0][0]}</td>
@@ -264,7 +264,7 @@
 	  <script>
 	 	  
 	  //DRAW AND DEFINE DMS   
-	    drawDMS('dms#{item.equip_id}', 'dmsName#{item.table_id}', 'msg#{item.table_id}', #{item.linearPosX},  #{item.linearPosY},  #{item.width},  #{item.height}, 7, 0.25);
+	    drawDMS('dms#{item.equip_id}', 'dmsName#{item.equip_id}', 'msg#{item.equip_id}', #{item.linearPosX},  #{item.linearPosY},  #{item.width},  #{item.height}, 7, 0.25);
 	    	   	   			 	 
 	</script>
 	 
@@ -280,12 +280,12 @@
 	
 	<div id="lpr#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="lprName#{item.table_id}" class="table-generic">
+	     <table id="lprName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="lprStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="lprStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -302,7 +302,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC LPR
-    drawGenericEquipments('lpr#{item.equip_id}', 'lprName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
+    drawGenericEquipments('lpr#{item.equip_id}', 'lprName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
     
     </script>    
        
@@ -321,12 +321,12 @@
 	  
 	   <div class="equip-name">
 	   
-	     <table id="mtoName#{item.table_id}" class="table-generic">
+	     <table id="mtoName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>			
-				<td> <div id="mtoStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="mtoStatus#{item.equip_id}" class="equip-status"></div></td>
 				</tr>
 				</tbody>
 		</table>	      
@@ -341,7 +341,7 @@
     <script>
     
     //DRAW AND DEFINE THE GENERIC MTO
-    drawGenericEquipments('mto#{item.equip_id}', 'mtoName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
+    drawGenericEquipments('mto#{item.equip_id}', 'mtoName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 2.5);
       	  
     </script>    
        
@@ -416,12 +416,12 @@
 	
 	<div id="sos#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="sosName#{item.table_id}" class="table-generic">
+	     <table id="sosName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="sosStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="sosStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -438,7 +438,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC SOS
-    drawGenericEquipments('sos#{item.equip_id}', 'sosName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
+    drawGenericEquipments('sos#{item.equip_id}', 'sosName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
     
     </script>    
        
@@ -454,12 +454,12 @@
 	
 	<div id="speed#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="speedName#{item.table_id}" class="table-generic">
+	     <table id="speedName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="speedStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="speedStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -476,7 +476,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC SPEED
-    drawGenericEquipments('speed#{item.equip_id}', 'speedName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3);
+    drawGenericEquipments('speed#{item.equip_id}', 'speedName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3);
     
     </script>    
        
@@ -492,12 +492,12 @@
 	
 	<div id="wim#{item.equip_id}" class="equip-box">		  
 	   <div class="equip-name">	   
-	     <table id="wimName#{item.table_id}" class="table-generic">
+	     <table id="wimName#{item.equip_id}" class="table-generic">
 				<tbody>
 				<tr>				
 				<td style="background: transparent;"><h:outputLabel value="#{item.nome}" />				
 				</td>
-				<td> <div id="wimStatus#{item.table_id}" class="equip-status"></div></td>
+				<td> <div id="wimStatus#{item.equip_id}" class="equip-status"></div></td>
 							
 				<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
 				</tr>
@@ -514,7 +514,7 @@
     <script>
 
     //DRAW AND DEFINE THE GENERIC WIM
-    drawGenericEquipments('wim#{item.equip_id}', 'wimName#{item.table_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
+    drawGenericEquipments('wim#{item.equip_id}', 'wimName#{item.equip_id}', #{item.linearPosX}, #{item.linearPosY}, #{item.width}, 3.5);
     
     </script>    
        
@@ -525,8 +525,7 @@
   <!-- MAP CONTENT --> 	
         	
   <div class="map-content" >
-   <h:graphicImage class="scaled" id="map"
-   value="#{loginAccount.linearMapUI}" />
+   <h:graphicImage class="scaled" id="map" value="#{loginAccount.linearMapUI}" />
   
    </div> 
 	
