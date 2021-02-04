@@ -422,57 +422,6 @@
 									</div>
 								</div>
 							</div>
-						</c:forEach>
-
-					</ui:fragment>
-				</ui:fragment>
-
-
-				<ui:fragment rendered="#{loginAccount.load.en_sat}">
-					<ui:fragment rendered="#{loginAccount.load.rt_sat}">
-
-						<c:forEach items="#{satLinearView.satList}" var="item" varStatus="loop">
-							<div id="sat#{item.equip_id}" class="equip-box-sat">
-
-								<table id="satTab#{item.equip_id}" class="table-sat">
-									<tbody>
-										<tr>
-											<th id="satName#{item.equip_id}" class="satName" colspan="2">#{item.nome} -
-												#{item.km}</th>
-										</tr>
-										<tr>
-											<td>
-												<span><i class="fas fa-car sat-cars"
-														title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i></span>
-												#{satLinearView.satListValues.get(loop.index).quantidadeS1}
-											</td>
-											<td>
-												<span><i class="fas fa-tachometer-alt sat-speed"
-														title="km/h"></i></span>
-												#{satLinearView.satListValues.get(loop.index).velocidadeS1}
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<span><i class="fas fa-car sat-cars"
-														title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i></span>
-												#{satLinearView.satListValues.get(loop.index).quantidadeS2}
-											</td>
-											<td>
-												<span><i class="fas fa-tachometer-alt sat-speed"
-														title="km/h"></i></span>
-												#{satLinearView.satListValues.get(loop.index).velocidadeS2}
-											</td>
-										</tr>
-									</tbody>
-								</table>
-								<div id="fluxos">
-									<div id="img1FluxoTab#{item.equip_id}" style="margin: 3px;">
-									</div>
-									<div id="img2FluxoTab#{item.equip_id}" style="margin: 3.2px;">
-									</div>
-								</div>
-							</div>
 
 							<script>
 
