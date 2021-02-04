@@ -1,0 +1,451 @@
+@charset "ISO-8859-1";@charset "ISO-8859-1";
+
+body {
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+/*Road Map Image for Background */
+
+.img > div {
+  margin: "auto";
+  position: "absolute";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.map-content {
+  position: relative;
+  border: 1px solid purple;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  transform: scale(0.23);
+  margin-left: -35%;
+  transition: transform 0.3s;
+}
+
+.map-content:active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+}
+
+.grab-map {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+  z-index: -1;
+}
+
+.grab-map:active {
+  cursor: grabbing;
+  cursor: -webkit-grabbing;
+  cursor: -moz-grabbing;
+}
+
+.overflow {
+  position: relative;
+  border: 1px solid transparent;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#map {
+  width: auto;
+  height: auto;
+  border: none;
+}
+
+#zoomtext {
+  transform: scale(1);
+  position: relative;
+}
+
+.section {
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  border: none;
+}
+
+/* GRID CROPPED MAP */
+
+.grid-img {
+  width: 80%;
+  height: 100%;
+}
+
+.grid-container {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+/* GENERIC EQUIPMENTS  */
+
+.equip-name {
+  /* width: auto;
+   height: auto; 
+   margin-top: 1%;
+   text-align: center;
+   border: none;*/
+  margin-top: 0%;
+  overflow: hidden;
+  background: transparent;
+  color: black;
+  font-weight: bold;
+  width: 99%;
+  height: 20%;
+  text-align: center;
+  border: none;
+  margin: 0 auto; /* or margin: 0 auto 0 auto */
+  font-size: 12px;
+}
+/* EQUIPS WITH IMAGE USAGE*/
+
+.equip-box {
+  position: absolute;
+  font-size: 5px;
+  background: transparent;
+  border-right: none;
+  float: left;
+  border: none;
+  width: 20px !important;
+  height: 35px !important;
+  z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
+}
+
+.equip-box-sat {
+  position: absolute;
+  height: 75px;
+}
+
+.equip-info {
+  position: absolute;
+  font-size: 5px;
+}
+
+.equip-info .tableStyle {
+  position: relative;
+  font-size: 10px;
+  width: 250px;
+  border: none;
+  background: #333333;
+  border-right: 6px solid #00fa9a;
+  border-radius: 0;
+}
+
+.border-table {
+  border-top-style: solid;
+  height: 17px;
+  border-left-style: solid;
+  background-color: #5d5d5d;
+  border-color: #000000;
+  border-width: 1px;
+}
+
+.border-table-right.bottom {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.border-table-right {
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.padding-pmv {
+  padding: 3px;
+}
+
+.card {
+  z-index: 9999;
+}
+
+.equip-image {
+  margin-top: -17%;
+  width: 70%;
+  height: 40%;
+  border: none;
+}
+
+.equip-imagePOST {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 100%;
+  height: 50%;
+  border: none;
+}
+
+.equip-imageCAM {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 80%;
+  height: 30%;
+  border: none;
+}
+
+.ui-graphic-image {
+  width: 52px;
+}
+
+.equip-graphic {
+  border: none;
+  float: left;
+  width: 100%;
+  height: 80%;
+  margin-top: 0%;
+  margin-left: 0%;
+  padding-top: 0%;
+  border: none;
+  vertical-align: center;
+  position: absolute;
+}
+
+.equip-graphic .equip-image {
+  vertical-align: top;
+  margin-top: 0%;
+  width: 20%;
+  height: 20%;
+  border: none;
+}
+
+/* TABLES MSG EQUIP PREVIEW */
+.table-message {
+  position: absolute;
+  margin-top: 10%;
+  margin-left: 65%;
+  width: 150px;
+  color: yellow;
+}
+/* TABLES MSG EQUIP PREVIEW */
+
+/* TABLES IMG EQUIP PREVIEW */
+.table-img {
+  position: absolute;
+  margin-top: 2%;
+  margin-left: 2.5%;
+  width: 18%;
+  height: 97px;
+}
+
+/* TABLES IMG EQUIP PREVIEW */
+
+/* TABLE GENERIC */
+.table-generic {
+  white-space: normal-wrap;
+  word-wrap: break-word;
+  width: 25%;
+  max-height: 3px;
+}
+table td {
+  height: 3px !important;
+  padding: 0px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: -5px;
+  margin: 0 0 0 0;
+}
+
+.equip-name label {
+  margin-top: -12.5px;
+  font-size: 5px;
+}
+
+/*INTERNAL CONTENT OF EQUIPMENT*/
+.equip-status {
+  height: 4px;
+  width: 4px;
+  background-color: #00ff0d;
+  border-radius: 50%;
+  margin-left: -2px;
+}
+
+.fa-circle {
+  color: #00ff0d;
+}
+
+/* MENU TEST */
+.factorMenu {
+  position: absolute;
+  display: block;
+  padding: 0.25rem 0.75rem;
+  line-height: inherit;
+  font-size: 28px;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 0.25rem;
+  color: rgba(0, 0, 0, 0.9);
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+  width: 44px;
+  height: 44px;
+}
+
+.factorMenu:hover {
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}
+
+.factorMenu:focus {
+  outline: 0;
+}
+
+/* RETURN FULLSCREEN MAP */
+.fullBodys {
+  position: absolute;
+  display: block;
+  padding: 0.25rem 0.75rem;
+  line-height: inherit;
+  font-size: 18px;
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 0.25rem;
+  color: rgba(0, 0, 0, 1);
+  -moz-transition: background-color 0.3s;
+  -o-transition: background-color 0.3s;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.fullBodys:focus {
+  outline: 0;
+  color: #555;
+}
+
+/* MAP OPTIONS DIV */
+.map-options {
+  position: absolute;
+  width: 700px;
+  height: 50px;
+  z-index: 9999;
+  margin-top: 1px;
+  margin-left: 5px;
+}
+
+#grabequips {
+  position: absolute;
+  z-index: 9;
+}
+
+/* MAP DIVISION/SHOW BUTTON */
+.MapDiv {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  color: #000000;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: 100;
+  padding: 10px;
+  background-color: rgba(254, 254, 255, 0.42);
+  border: solid #000000 1px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  margin-left: 10px;
+  margin-top: -10px;
+}
+
+.MapShow {
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  color: #000000;
+  font-family: Arial;
+  font-size: 15px;
+  font-weight: 100;
+  padding: 10px;
+  background-color: rgba(254, 254, 255, 0.42);
+  border: solid #000000 1px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.img-enlargeable > div {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+
+[id$="equipId"] {
+  width: 80%;
+}
+[id$="equipName"] {
+  width: 100%;
+}
+[id$="width"] {
+  width: 130%;
+}
+[id$="km"] {
+  width: 80%;
+}
+
+/* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
+#square-factor {
+  left: 8%;
+
+
+#labelPos {
+  position: fixed;
+  left: 30px;
+  bottom: 50px;
+}
+
+main > div:first-child {
+  width: 100%;
+  position: fixed;
+  top: 70px;
+  bottom: 50px;
+  padding: 0;
+}
+
+.draggable .equip-box,
+.draggable .equip-info {
+  transform: translate(-50%, -50%);
+}
+
+.dms-name {
+  margin-bottom: -5px;
+}
+
+.sat-name {
+  background-color: #00fa9a;
+}
+
+.padding-sat {
+  padding: 0;
+  width: 45px;
+}
+
+.imgSize {
+	width: 80px;
+}
+
