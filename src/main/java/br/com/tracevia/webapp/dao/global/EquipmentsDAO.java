@@ -202,7 +202,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, map_width, " +
-		   "map_posX, map_posY, position FROM "+modulo+"_equipment eq " +
+		   "map_posX, map_posY, linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 		   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 		   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 		   "WHERE visible = 1 ";
@@ -230,7 +230,10 @@ public class EquipmentsDAO {
 					equip.setWidth(rs.getInt(6));		
 					equip.setMapPosX(rs.getInt(7));
 					equip.setMapPosY(rs.getInt(8));
-					equip.setPosicao(rs.getString(9));
+					equip.setLinearPosX(rs.getInt(9));
+					System.out.println(rs.getInt(9));
+					equip.setLinearPosY(rs.getInt(10));
+					equip.setPosicao(rs.getString(11));
 					
 					/*if(dms.getPosicao().equals("horizontal")) {
 						dms.setHorizontal(true);
