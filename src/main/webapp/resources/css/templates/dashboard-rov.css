@@ -539,6 +539,13 @@ input.apple-switch:checked:before {
 
 /* NEW FUNCTION*/
 
+/* VOICE/CALL BOX */
+
+#call-box{
+	margin-left: 85%;
+	position: relative;
+}
+
 
 #navbarMaximizeMenu{
 	background: #fff;	
