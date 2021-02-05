@@ -81,8 +81,8 @@ public class SATinformationsDAO {
 	    "FROM tracevia_app.sat_dados_15 d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 15 MINUTE) AND eq.visible = 1 " +
-	    "GROUP BY d.DATA_HORA " +
-	    "ORDER BY d.NOME_ESTACAO ASC ";
+	    "GROUP BY d.NOME_ESTACAO " +
+	    "ORDER BY d.DATA_HORA ASC ";
 					
 	  try {
 			
@@ -182,8 +182,8 @@ public class SATinformationsDAO {
 	    "FROM tracevia_app.sat_dados_15 d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
-	    "GROUP BY d.DATA_HORA " +
-	    "ORDER BY d.NOME_ESTACAO ASC ";
+	    "GROUP BY d.NOME_ESTACAO " +
+	    "ORDER BY d.DATA_HORA ASC";
 					
 	  try {
 			
@@ -336,7 +336,7 @@ public class SATinformationsDAO {
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
 		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 15 MINUTE) AND ? AND eq.visible = 1 " +
 		"GROUP BY s.EQ_ID " +
-		"ORDER BY s.EQ_ID ASC, s.DATA_HORA ASC ";
+		"ORDER BY s.DATA_HORA ASC ";
 				
 		    try {
 			
@@ -394,7 +394,7 @@ public List<SAT> SATstatus15AAA() throws Exception {
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
 		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 " +
 		"GROUP BY s.EQ_ID " +
-		"ORDER BY s.EQ_ID ASC, s.DATA_HORA ASC ";
+		"ORDER BY s.DATA_HORA ASC ";
 				
 		    try {
 			
