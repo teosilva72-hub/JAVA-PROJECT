@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class CFTVDAO {
@@ -17,14 +18,6 @@ public class CFTVDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	public CFTVDAO() throws Exception {
-
-		try {
-			this.conn = ConnectionFactory.getConnection();	
-		} catch (Exception e) {
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	}
 	
 	
 	/*public ArrayList<CFTV> buildCFTVInterface() throws Exception {
@@ -36,7 +29,9 @@ public class CFTVDAO {
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						

@@ -115,14 +115,14 @@ public class LoginAccountBean {
 	   InMemoryAuthenticationUtil memoryUtil = new InMemoryAuthenticationUtil();
 	   EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
 	   MessagesUtil message = new MessagesUtil();
-	   
-	   LoginAccountDAO dao = new LoginAccountDAO();	   
+	   	     
 	   RoadConcessionaire roadConcessionaire = new RoadConcessionaire();
-	   
 	   FacesContext context = FacesContext.getCurrentInstance();
 	   
 	    //IF SUCCESS ON AUTH GET SERVER INFORMATION
 	    isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
+	    
+	    LoginAccountDAO dao = new LoginAccountDAO();	
 	  	    
 	    if(isName) {
 	   	 	   

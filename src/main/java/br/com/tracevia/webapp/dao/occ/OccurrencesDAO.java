@@ -20,7 +20,7 @@ public class OccurrencesDAO {
 	public OccurrencesDAO() throws Exception {
 		
 		try {
-			this.conn = ConnectionFactory.getConnection();
+			this.conn = ConnectionFactory.connectToTraceviaApp();
 		} catch (Exception e) {
 			throw new Exception("erro: \n" + e.getMessage());
 		}
@@ -31,9 +31,7 @@ public class OccurrencesDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	
-	
-	
+		
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 			
 		String occ_number = null;

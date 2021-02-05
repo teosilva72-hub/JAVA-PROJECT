@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class DMSDAO {
@@ -15,16 +16,7 @@ public class DMSDAO {
 	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
 	private ResultSet rs;
-
-	public DMSDAO() throws Exception {
-
-		try {
-			this.conn = ConnectionFactory.getConnection();	
-		} catch (Exception e) {
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	}
-	
+		
 	/*Quantidade de PMVs reigstrados na base de dados*/
 	
 	public Integer amountDMS() throws Exception {
@@ -35,7 +27,8 @@ public class DMSDAO {
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						
@@ -67,7 +60,8 @@ public class DMSDAO {
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						

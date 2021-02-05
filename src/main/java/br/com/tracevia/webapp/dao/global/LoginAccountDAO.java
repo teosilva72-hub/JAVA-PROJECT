@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -16,21 +18,7 @@ public class LoginAccountDAO {
 	private static final String EMAIL_PATTERN = 
 	"[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
 	private static final  String USER_PATTERN = "(^[a-zA-Z]+|^[a-zA-Z]+[0-9]+|^[a-zA-Z]+[0-9]+[a-zA-Z]+)$";	
-	
-	
-	public LoginAccountDAO() throws Exception {	
-
-		try {
-			
-			this.conn = ConnectionFactory.connectToTraceviaApp();	
-			
-		} catch (Exception e) {
-			
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	  }
-	
-		
+				
 	
 public boolean UserValidation(String userParam) throws Exception {
 	    
@@ -61,7 +49,7 @@ public boolean UserValidation(String userParam) throws Exception {
 		
 		try {
 			
-		conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 						
 		if(isEmail)		
 		ps = conn.prepareStatement(query);
@@ -106,7 +94,7 @@ public boolean UserValidation(String userParam) throws Exception {
 	 
 	try {
 		
-	conn = ConnectionFactory.connectToTraceviaApp();
+		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		
 	ps = conn.prepareStatement(query);					
     ps.setString(1, email);		
@@ -146,11 +134,8 @@ public boolean UserValidation(String userParam) throws Exception {
 	  if(username.matches(EMAIL_PATTERN)) 
 		  query += "WHERE r.email = ? AND r.password = ? ";
 		  
-		  if(username.matches(USER_PATTERN)) 
-			 query += "WHERE r.username = ? AND r.password = ? ";
-	  
-	  
-		  conn = ConnectionFactory.connectToTraceviaApp();
+	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  
 			ps = conn.prepareStatement(query);
 			ps.setString(1, username);	
 			ps.setString(2, password);
@@ -192,8 +177,9 @@ public boolean UserValidation(String userParam) throws Exception {
   		
   String sql = "UPDATE users_register SET  password = ? WHERE username = ? and user_id = ?";
 
-        conn = ConnectionFactory.connectToTraceviaApp();	
-         
+      
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+    
   		ps = conn.prepareStatement(sql);
   		
   		ps.setString(1, senha);	

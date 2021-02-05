@@ -26,6 +26,33 @@
 				}
 			}
 		</style>
+		
+		<script>
+		
+		////////////////////////////////////
+		//AUTO UPDATE PAGE INTERVAL
+		///////////////////////////////////
+		
+		setTimeout(() => {			
+			setInterval(() => {
+				
+			    var data = new Date();
+			    var n = data.getSeconds();
+			    var minute = data.getMinutes();
+			                          		
+			     if (minute == 15 || minute == 30 || minute == 45 || minute == 0) {         	        	
+			           if (n &lt; 4) 		        	   
+			            location.href = location.href.replace("#", "")
+			     }
+			     
+			}, 3000)
+		}, 4000)
+	
+		////////////////////////////////////
+		//AUTO UPDATE PAGE INTERVAL
+		///////////////////////////////////
+		
+		</script>
 
 	</ui:define>
 
@@ -396,7 +423,7 @@
 										</div>
 										<div class="col-7 padding-sat border-bottom border-dark">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}km/h</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}<span class="km"> km/h</span></span>
 										</div>
 										<div class="col-5 padding-sat border-right border-dark">
 											<i class="fas fa-car sat-cars"
@@ -405,7 +432,7 @@
 										</div>
 										<div class="col-7 padding-sat">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}km/h</span>
+											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}<span class="km"> km/h</span></span>
 										</div>
 									</div>
 

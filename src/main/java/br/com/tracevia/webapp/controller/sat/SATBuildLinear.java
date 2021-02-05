@@ -9,6 +9,7 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 @ManagedBean(name = "satLinearView")
@@ -38,6 +39,9 @@ public class SATBuildLinear {
 	}
 
 	public void CreateLinearEquipment() {
+		
+		
+		//System.out.println("CON: "+RoadConcessionaire.roadConcessionaire);
 
 		try {
 
@@ -75,7 +79,7 @@ public class SATBuildLinear {
 				// CASO N�O ENCONTRE NENHUM STATUS DO ULTIMOS 15 MINUTOS
 				// PREENCHE LISTA COM STATUS DOS 15 MINUTOS ANTERIORES
 				if (satListStatusAux.isEmpty()) {
-					satListStatusAux = satDAO.SATstatus15AAA();
+					satListStatusAux = satDAO.SATstatus30();
 					status15 = false;
 				}
 
@@ -318,6 +322,13 @@ public class SATBuildLinear {
 
 		}
 
+	}
+	
+	
+	public void populateCCRSAT() {
+		
+		
+		
 	}
 
 }

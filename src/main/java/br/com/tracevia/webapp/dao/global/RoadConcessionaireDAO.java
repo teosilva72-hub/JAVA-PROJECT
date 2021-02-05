@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
-
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.Modules;
-import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class RoadConcessionaireDAO {
@@ -24,7 +22,14 @@ public class RoadConcessionaireDAO {
 		
 		  String concessionarieName = "";
 		  
-		   conn = ConnectionFactory.connectToTraceviaApp();
+		 // if(serverAddress.equals("10.161.0.17"))
+			  if(serverAddress.equals("192.168.0.40"))
+	           conn = ConnectionFactory.connectToCCR();
+	    
+	    else if(serverAddress.equals("10.12.32.227"))
+	           conn = ConnectionFactory.connectToViaPaulista();
+	    
+	    else conn = ConnectionFactory.connectToTraceviaApp();
 		
            try {			
 			

@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.controller.sat.SatReportsController;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.VBV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.ConnectionFactory;
@@ -37,7 +39,7 @@ public class GlobalReportsDAO {
 	 */
 	
 	public String[][] ExecuteQuery(String procedure, String query, String startDate, String endDate) throws Exception {		
-				
+						
 		//Classe DateTimeApplication
 		DateTimeApplication dta = new DateTimeApplication();
 		
@@ -63,8 +65,8 @@ public class GlobalReportsDAO {
 		endDateFormatted += DateTimeApplication.HOUR_TIME_FORMAT_END_DATE;
 				        
 		try {
-			   //GET CONNECTION 
-			    conn = ConnectionFactory.connectToTraceviaApp();
+			   //GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			   // CHECK PROCEDURE EXECUTION FIRST
 				ps = conn.prepareStatement(procedure);			
@@ -128,9 +130,10 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 		String endDateFormatted = dta.StringDBDateFormat(endDate);
 				        
 		try {
-			   //GET CONNECTION 
-			    conn = ConnectionFactory.connectToTraceviaApp();
 			
+			 //GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    
 			   // CHECK PROCEDURE EXECUTION FIRST
 				ps = conn.prepareStatement(query);					
 				ps.setString(1, startDateFormatted);
@@ -165,8 +168,15 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 		String endDateFormatted = dta.StringDBDateFormat(endDate);
 				        
 		try {
-			   //GET CONNECTION 
-			    conn = ConnectionFactory.connectToTraceviaApp();
+			
+			 //GET CONNECTION			
+		    if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
+		           conn = ConnectionFactory.connectToCCR();
+		    
+		    else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
+		           conn = ConnectionFactory.connectToViaPaulista();
+		    
+		    else conn = ConnectionFactory.connectToTraceviaApp();
 																							
 				//EXECUTE QUERY				
 				ps = conn.prepareStatement(query);
