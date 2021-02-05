@@ -75,7 +75,7 @@
 	//Método para validação do Username
 	jQuery.validator.addMethod("validUser", function(value, element) { 
 	    var username = $('#username').val();
-	    var regex = new RegExp(/^[^0-9][^._]+$/); //Preenche alfabeto com caracteres acentuado e espaço branco
+	    var regex = new RegExp(/[^a-zA-Z0-9._]$/); //Preenche alfabeto com caracteres acentuado e espaço branco
 	    if(username.match(regex)){
 	    	
 	    $('#username').removeClass('valid').addClass('invalid');
