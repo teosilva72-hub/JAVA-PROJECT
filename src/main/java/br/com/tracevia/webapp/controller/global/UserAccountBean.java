@@ -120,7 +120,7 @@ public class UserAccountBean implements Serializable {
 				EmailUtil mail = new EmailUtil();
 				EmailModels cadMail = new EmailModels();
 				
-				if(user.getUserID() != "" && user.getName() != "" && user.getJob_position() != "" &&
+				if(user.getName() != "" && user.getJob_position() != "" &&
 						user.getEmail() != "" && user.getUsername() != "" && user.getPermission_id() != 0) {
 				
 				//Criar Senha

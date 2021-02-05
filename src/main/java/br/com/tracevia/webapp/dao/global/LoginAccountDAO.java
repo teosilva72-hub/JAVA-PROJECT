@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.poi.util.SystemOutLogger;
+
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -15,7 +17,7 @@ public class LoginAccountDAO {
 	private ResultSet rs;
 	private static final String EMAIL_PATTERN = 
 	"[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
-	private static final  String USER_PATTERN = "(^[a-zA-Z]+|^[a-zA-Z]+[0-9]+|^[a-zA-Z]+[0-9]+[a-zA-Z]+)$";	
+	private static final  String USER_PATTERN = "^([a-zA-Z]+[a-zA-Z0-9\\._]*[a-zA-Z0-9]+)$";	
 	
 	
 	public LoginAccountDAO() throws Exception {	
@@ -69,8 +71,10 @@ public boolean UserValidation(String userParam) throws Exception {
 		if(isUserName)	
 		ps = conn.prepareStatement(query1);
 						
-	    ps.setString(1, userParam);		
-		rs = ps.executeQuery();
+		if(isUserName || isEmail) {			
+			ps.setString(1, userParam);		
+			rs = ps.executeQuery();
+		}
 				
 		if (rs != null) {
 			   while (rs.next()) {
