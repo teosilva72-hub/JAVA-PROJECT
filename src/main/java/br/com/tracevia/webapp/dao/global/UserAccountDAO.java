@@ -19,8 +19,26 @@ public class UserAccountDAO {
 
 	private Connection conn;		
 	protected ConnectionFactory connection = new ConnectionFactory();
+<<<<<<< HEAD
 	private PreparedStatement ps;
 	private ResultSet rs;
+=======
+	private PreparedStatement ps, ps1;
+	private ResultSet rs, rs1;
+	private int id;
+	
+	public UserAccountDAO() throws Exception {	
+
+		try {
+			
+			this.conn = ConnectionFactory.connectToTraceviaApp();	
+			
+		} catch (Exception e) {
+			
+			throw new Exception("erro: \n" + e.getMessage());
+		}
+	  }
+>>>>>>> d4987ca47dc9f8e5be341013c9e529237d076a53
 
 	@SuppressWarnings("static-access")
 	public boolean cadastroUsuario(UserAccount user) throws Exception {
@@ -46,11 +64,35 @@ public class UserAccountDAO {
 			Date date = new Date();
 			DateFormat dtf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String dt_register = dtf.format(date);
+<<<<<<< HEAD
 
 			//Execute Register			
 			ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, Integer.parseInt(user.getUserID()));
+=======
+						
+			ps1 = conn.prepareStatement("SELECT Max(user_id) as user FROM users_register;");
+			rs1 = ps1.executeQuery();
+			
+			if (rs1 != null) {
+			    while (rs1.next()) {
+			    	
+			    	System.out.println(rs1);
+					System.out.println(rs1.getInt("user"));
+					id = rs1.getInt("user") + 1;
+			    
+			    }
+			  }
+			
+			
+			
+			
+            //Execute Register			
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+>>>>>>> d4987ca47dc9f8e5be341013c9e529237d076a53
 			ps.setString(2, dt_register);
 			ps.setString(3, user.getName());
 			ps.setString(4, user.getJob_position());
@@ -65,7 +107,7 @@ public class UserAccountDAO {
 			if(success > 0) {
 
 				ps = conn.prepareStatement(sql2);			
-				ps.setInt(1, Integer.parseInt(user.getUserID()));
+				ps.setInt(1, id);
 				ps.setInt(2, user.getPermission_id());
 				ps.setBoolean(3, user.isActiveStatus());
 

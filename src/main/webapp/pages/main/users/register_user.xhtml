@@ -75,8 +75,8 @@
 	//Método para validação do Username
 	jQuery.validator.addMethod("validUser", function(value, element) { 
 	    var username = $('#username').val();
-	    var regex = new RegExp(/^[^0-9][^._]+$/); //Preenche alfabeto com caracteres acentuado e espaço branco
-	    if(username.match(regex)){
+	    var regex = new RegExp(/^([a-zA-Z]+[a-zA-Z0-9\._]*[a-zA-Z0-9]+)$/); //Preenche alfabeto com caracteres acentuado e espaço branco
+	    if(!username.match(regex)){
 	    	
 	    $('#username').removeClass('valid').addClass('invalid');
 	     $('#username-error').parent().find('.error').fadeIn(500);		    
@@ -173,16 +173,7 @@
 	 </div>
 	  
 	  <div class="groupFieldsUser">	 
-	 	<div class="contentGroupUser">
-			<div class="input-fields" >
-			   <div  id="input-id"> 
-				  <span><i class="fas fa-id-badge" ></i></span>
-				     <h:inputText value="#{userAccount.user.userID}" autocomplete="off"
-					      id="userId"  p:type="text" p:placeholder="#{usersLabels.user_register_input_id_placeholder}"  />                                  									
-                          <label for="userId" class="error" id="userId-error"></label>                                         
-					</div>
-					</div>
-				</div>
+	 	
 				
 				<div class="contentGroupUser">
 					<div  class="input-fields" >
