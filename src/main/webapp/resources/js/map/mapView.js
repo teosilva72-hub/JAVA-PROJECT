@@ -44,78 +44,78 @@ $(function () {
 	//Validate End
 
 	//FULLSCREEN
-	// $('.zoomFull').addClass('img-enlargeable').click(function () {
-	//	var src = this.getAttribute('target');
-	//	var modal;
-	//	let pos = { top: 0, left: 0, x: 0, y: 0 }
-	//	let img = $('<img />').attr('src', src).addClass('box-img')
-	//	let frame = $('<div></div>').css({
-	//		width: '90%', height: '90%',
-	//		transform: 'translate(-50%, -50%)',
-	//		position: 'relative',
-	//		top: '50%', left: '50%',
-	//		overflow: 'hidden',
-	//	}).append(img)
+	$('.zoomFull').addClass('img-enlargeable').click(function () {
+		var src = this.getAttribute('target');
+		var modal;
+		let pos = { top: 0, left: 0, x: 0, y: 0 }
+		let img = $('<img />').attr('src', src).addClass('box-img')
+		let frame = $('<div></div>').css({
+			width: '90%', height: '90%',
+			transform: 'translate(-50%, -50%)',
+			position: 'relative',
+			top: '50%', left: '50%',
+			overflow: 'hidden',
+		}).append(img)
 
-	//	function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
+		function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
 
-	//	modal = $('<div></div>').css({
-	//		background: 'RGBA(0,0,0,1.0)',
-	//		width: '100%', height: '100%',
-	//		position: 'fixed',
-	//		zIndex: '10000',
-	//		top: '0', left: '0',
-	//	}).append(frame).click(function () { removeModal(); }).appendTo('body')
+		modal = $('<div></div>').css({
+			background: 'RGBA(0,0,0,1.0)',
+			width: '100%', height: '100%',
+			position: 'fixed',
+			zIndex: '10000',
+			top: '0', left: '0',
+		}).append(frame).click(function () { removeModal(); }).appendTo('body')
 		//Zoom
-	//	img.click(function (e) { e.stopPropagation() })
-	//		.on("dragstart", function () { return false })
-	//		.on("mousedown", function (down) {
-	//			if (down.target.hasAttribute("zoom")) {
-	//				pos = {
-	//					left: frame.scrollLeft(),
-	//					top: frame.scrollTop(),
-	//					x: down.clientX,
-	//					y: down.clientY,
-	//				};
-	//				img.on("mousemove", function (move) {
-	//					img.css({ "cursor": "grabbing" })
-	//						.off("mouseup").on("mouseup", function () {
-	//							img.css({ "cursor": "zoom-out" }).off("mousemove")
-	//						})
-	//					const dx = move.clientX - pos.x;
-	//					const dy = move.clientY - pos.y;
-	//					frame
-	//						.scrollTop(pos.top - dy)
-	//						.scrollLeft(pos.left - dx)
-	//				}).off("mouseup").on("mouseup", function () {
-	//					img.css({ "cursor": "zoom-in" }).off("mousemove")
-	//					this.toggleAttribute("zoom")
-	//				})
-	//			} else {
-	//				img.off("mouseup").on("mouseup", function (e) {
-	//					let click = {
-	//						top: (e.pageY - img.offset().top) / img.height(),
-	//						left: (e.pageX - img.offset().left) / img.width(),
-	//					}
-	//					this.toggleAttribute("zoom")
-	//					img.css({ "cursor": "zoom-out" })
-	//					frame
-	//						.scrollLeft(
-	//							click.left * e.target.scrollWidth - frame.width() / 2
-	//						).scrollTop(
-	//							click.top * e.target.scrollHeight - frame.height() / 2
+		img.click(function (e) { e.stopPropagation() })
+			.on("dragstart", function () { return false })
+			.on("mousedown", function (down) {
+				if (down.target.hasAttribute("zoom")) {
+					pos = {
+						left: frame.scrollLeft(),
+						top: frame.scrollTop(),
+						x: down.clientX,
+						y: down.clientY,
+					};
+					img.on("mousemove", function (move) {
+						img.css({ "cursor": "grabbing" })
+							.off("mouseup").on("mouseup", function () {
+								img.css({ "cursor": "zoom-out" }).off("mousemove")
+							})
+						const dx = move.clientX - pos.x;
+						const dy = move.clientY - pos.y;
+						frame
+							.scrollTop(pos.top - dy)
+							.scrollLeft(pos.left - dx)
+					}).off("mouseup").on("mouseup", function () {
+						img.css({ "cursor": "zoom-in" }).off("mousemove")
+						this.toggleAttribute("zoom")
+					})
+				} else {
+					img.off("mouseup").on("mouseup", function (e) {
+						let click = {
+							top: (e.pageY - img.offset().top) / img.height(),
+							left: (e.pageX - img.offset().left) / img.width(),
+						}
+						this.toggleAttribute("zoom")
+						img.css({ "cursor": "zoom-out" })
+						frame
+							.scrollLeft(
+								click.left * e.target.scrollWidth - frame.width() / 2
+							).scrollTop(
+								click.top * e.target.scrollHeight - frame.height() / 2
 
-	//						)
+							)
 
-	//				})
-	//			}
-	//		});
+					})
+				}
+			});
 
 		// handling ESC
-	//	$('body').on('keyup.modal-close', function (e) {
-	//		if (e.key === 'Escape') { removeModal(); }
-	//	});
-//	});
+		$('body').on('keyup.modal-close', function (e) {
+			if (e.key === 'Escape') { removeModal(); }
+		});
+	});
 	// FULLSCREEN END
 
 	// POS EQUIP
@@ -249,8 +249,7 @@ function barResize(){
 	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
 	
 	input.change(function () {
-		resizeEquip($(`${input.attr("from")}`).parent())
-		console.log($(`${input.attr("from")}`).parent())
+		resizeEquip($(`${input.attr("from")}`))
 	})
 }
 
@@ -474,25 +473,3 @@ function closeDragElement() {
 //Drag/Drop Element END
 
 
-// Map div Iframe Reload
-$(document).ready(function(){
-	$('#fulldiv1').click(function(){
-		$('#frame1').attr('src',$('#frame1').attr('src'));
-	return false;
-	});
-});
-
-$(document).ready(function(){
-	$('#fulldiv2').click(function(){
-		$('#frame2').attr('src',$('#frame2').attr('src'));
-	return false;
-	});
-});
-
-$(document).ready(function(){
-	$('#fulldiv3').click(function(){
-		$('#frame3').attr('src',$('#frame3').attr('src'));
-	return false;
-	});
-});
-// Map div Iframe Reload END

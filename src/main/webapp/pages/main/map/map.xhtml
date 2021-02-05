@@ -75,7 +75,7 @@
 				aria-expanded="false"> Equip Size </button>
 				
 				<div class="dropdown-menu" id="szselect" aria-labelledby="dropdownMenuButton">
-					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropall" from="equipAll"> #{mapLabels.map_size_select_all} </button>
+					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropall" from="draggable"> #{mapLabels.map_size_select_all} </button>
 					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcftv" from="cftv"> #{mapLabels.map_size_select_cftv} </button>
 					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcolas" from="colas"> #{mapLabels.map_size_select_colas} </button>
 					<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false" id="dropcomms" from="comms"> #{mapLabels.map_size_select_comms} </button>	
@@ -105,7 +105,7 @@
 			<!-- Imagem 1 -->
 			<div class="squarebox" id="divs" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs1">
-					<iframe class="grid-img"
+					<iframe class="grid-img" id="frame1"
 						src="http://localhost:8081/Tracevia/pages/main/map/mapView.xhtml" />
 				</section>
 					<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
@@ -116,8 +116,7 @@
 						title="Zoom Out">
 						<span><i class="fas fa-minus-square fa-1x"></i></span>
 					</button>
-					<button type="button" id="fulldiv1" class="zoomFull"
-						target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte1.png" data-toggle="tooltip"
+					<button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip"
 						data-placement="bottom" title="Fullscreen View">
 						<span> <i class="fas fa-expand-arrows-alt"></i></span>
 					</button>
@@ -125,7 +124,7 @@
 			<!-- Imagem 2 -->
 			<div class="squarebox1" id="divs1" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs2">
-					<iframe class="grid-img"
+					<iframe class="grid-img" id="frame2"
 						src="http://localhost:8081/Tracevia/pages/main/map/mapView.xhtml"/>
 				</section>
 				<button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
@@ -145,7 +144,7 @@
 			<!-- Imagem 3 -->
 			<div class="squarebox2" id="divs2" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs3">
-					<iframe class="grid-img"
+					<iframe class="grid-img" id="frame3"
 					src="http://localhost:8081/Tracevia/pages/main/map/mapView.xhtml"/>
 				</section>
 				<button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
@@ -193,13 +192,13 @@
 					<ui:fragment rendered="#{loadItem.val1}">
 						<ui:fragment rendered="#{loadItem.val2}">
 
-							<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
-							
-								<div id="#{item.table_id}">
+							<div>
+								
+								<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
 								
 									<c:choose>
 										<c:when test="#{item.table_id eq 'pmv'}">
-											<div id="#{item.table_id}#{item.equip_id}" class="equip-info"
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
 												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}">
 	
 												<!-- Table with DIV -->
@@ -304,7 +303,7 @@
 											</div>
 										</c:when>
 										<c:when test="#{item.table_id eq 'sat'}">
-											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark #{item.table_id}"
 												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}"
 												posLinearX="#{item.linearPosX}"
 												status="#{satMapView.satStatus.get(loop.index).status}"
@@ -344,7 +343,7 @@
 										</c:when>
 										<c:otherwise>
 											<div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-												posY="#{item.mapPosY}" item-width="#{item.width}" class="equip-box">
+												posY="#{item.mapPosY}" item-width="#{item.width}" class="equip-box #{item.table_id}">
 												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
 													<p class="col-auto mb-0 pr-1">#{item.nome}</p>
 													<span id="#{item.table_id}Status1" class="equip-status"></span>
@@ -391,9 +390,9 @@
 										</c:otherwise>
 									</c:choose>
 								
-								</div>
-
-							</c:forEach>
+								</c:forEach>
+							
+							</div>
 
 						</ui:fragment>
 					</ui:fragment>
@@ -962,7 +961,7 @@
 			var url = $('.draggable').find("[id^=" + $(this).attr('from') + "] img").attr("src") || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 			let modal = $("#sizeeqps")
 			modal.find("img").attr("src", url);
-			modal.find("#bar-size").attr("from", "#" + $(this).attr('from'))
+			modal.find("#bar-size").attr("from", "." + $(this).attr('from'))
 		});
 		// MODAL EQUIPMENT SIZE END
 		 	 

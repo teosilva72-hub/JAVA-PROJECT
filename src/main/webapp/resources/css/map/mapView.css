@@ -4,6 +4,7 @@ body {
   overflow-y: hidden;
   width: 100%;
   height: 100%;
+  margin: 0 0 0px !important; /* bottom = footer height */		
 }
 
 /*Road Map Image for Background */
@@ -77,22 +78,6 @@ body {
   height: 100%;
   transform-origin: 0 0;
   border: none;
-}
-
-/* GRID CROPPED MAP */
-
-.grid-img {
-  width: 80%;
-  height: 100%;
-}
-
-.grid-container {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
 }
 
 /* GENERIC EQUIPMENTS  */
@@ -411,7 +396,9 @@ table {
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
 #square-factor {
   left: 8%;
+} /* Mensagens */
 
+/* Alteração de Guilherme */
 
 #labelPos {
   position: fixed;
@@ -422,8 +409,8 @@ table {
 main > div:first-child {
   width: 100%;
   position: fixed;
-  top: 70px;
-  bottom: 50px;
+  top: 0;
+  bottom: 0;
   padding: 0;
 }
 
@@ -449,3 +436,4 @@ main > div:first-child {
 	width: 80px;
 }
 
+/* MODAL SIZE EQUIP END */

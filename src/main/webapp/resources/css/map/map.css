@@ -82,8 +82,8 @@ body {
 /* GRID CROPPED MAP */
 
 .grid-img {
-  width: 80%;
-  height: 100%;
+  width: 100%;
+  height: 190px;
 }
 
 .grid-container {
@@ -519,50 +519,50 @@ table {
 }
 
 #zoomIn1 {
-  margin-top: -100px;
-  margin-left: -130px;
+  margin-top: -120px;
+  margin-left: -60px;
   position: fixed;
 }
 #zoomOut1 {
-  margin-top: -80px;
-  margin-left: -130px;
+  margin-top: -100px;
+  margin-left: -60px;
   position: fixed;
 }
 #fulldiv1 {
-  margin-top: -50px;
-  margin-left: -130px;
+  margin-top: -80px;
+  margin-left: -60px;
   position: fixed;
 }
 
 #zoomIn2 {
   margin-top: -160px;
-  margin-left: -130px;
+  margin-left: -60px;
   position: fixed;	
 }
 #zoomOut2 {
   margin-top: -140px;
-  margin-left: -130px;
+  margin-left: -60px;
   position: fixed;
 }
 #fulldiv2 {
-  margin-top: -110px;
-  margin-left: -130px;
+  margin-top: -120px;
+  margin-left: -60px;
   position: fixed;
 }
 
 #zoomIn3 {
   margin-top: -160px;
-  margin-left: -130px;
+  margin-left: -60px;
   position: fixed;
 }
 #zoomOut3 {
   margin-top: -140px;
-  margin-left: -130px;
+  margin-left: -60px;
   position: fixed;
 }
 #fulldiv3 {
-  margin-top: -110px;
-  margin-left: -130px;
+  margin-top: -120px;
+  margin-left: -60px;
   position: fixed;
 }
 
@@ -640,7 +640,7 @@ img.box-img {
 }
 
 img.box-img[zoom] {
-  height: 200%;
+  height: 200%;	
   width: 200%;
   top: 100%;
   left: 100%;
@@ -649,7 +649,7 @@ img.box-img[zoom] {
 .squarebox {
   float: left;
   position: relative;
-  width: 100%;
+  width: 80%;
   height: 60%;
   left: 10%;
   background-size: cover;
@@ -659,7 +659,7 @@ img.box-img[zoom] {
 .squarebox1 {
   float: left;
   position: relative;
-  width: 100%;
+  width: 80%;
   height: 60%;
   left: 10%;
   background-size: cover;
@@ -669,7 +669,7 @@ img.box-img[zoom] {
 .squarebox2 {
   float: left;
   position: relative;
-  width: 100%%;
+  width: 80%;
   height: 60%;
   left: 10%;
   background-size: cover;
@@ -927,5 +927,6 @@ input[type="number"] {
 .bar .bar-ball:active {
   cursor: grabbing;
 }
+
 
 /* MODAL SIZE EQUIP END */
