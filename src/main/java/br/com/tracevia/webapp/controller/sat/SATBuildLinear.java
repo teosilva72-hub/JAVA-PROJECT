@@ -179,6 +179,8 @@ public class SATBuildLinear {
 					satListValuesAux = satDAO.RealTimeSATinfo15Before();
 					values15 = false;
 				}
+				
+				System.out.println(satListValuesAux.size());
 
 				// VERIFICA SE A LISTA CONTINUA VAZIA OU SE H� DADOS
 				if (!values15 && !satListValuesAux.isEmpty())
