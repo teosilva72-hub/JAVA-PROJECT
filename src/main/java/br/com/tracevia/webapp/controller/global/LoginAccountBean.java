@@ -122,7 +122,8 @@ public class LoginAccountBean {
 	    //IF SUCCESS ON AUTH GET SERVER INFORMATION
 	    isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
 	    
-	    LoginAccountDAO dao = new LoginAccountDAO();	
+	    //CHANGES
+	    LoginAccountDAO dao = new LoginAccountDAO();
 	  	    
 	    if(isName) {
 	   	 	   

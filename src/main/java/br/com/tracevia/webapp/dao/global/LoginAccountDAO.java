@@ -5,13 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-<<<<<<< HEAD
+
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-=======
+
 import org.apache.poi.util.SystemOutLogger;
 
->>>>>>> d4987ca47dc9f8e5be341013c9e529237d076a53
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -22,11 +21,11 @@ public class LoginAccountDAO {
 	private ResultSet rs;
 	private static final String EMAIL_PATTERN = 
 	"[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
-<<<<<<< HEAD
+
 	private static final  String USER_PATTERN = "(^[a-zA-Z]+|^[a-zA-Z]+[0-9]+|^[a-zA-Z]+[0-9]+[a-zA-Z]+)$";	
 				
-=======
-	private static final  String USER_PATTERN = "^([a-zA-Z]+[a-zA-Z0-9\\._]*[a-zA-Z0-9]+)$";	
+
+	//private static final  String USER_PATTERN = "^([a-zA-Z]+[a-zA-Z0-9\\._]*[a-zA-Z0-9]+)$";	
 	
 	
 	public LoginAccountDAO() throws Exception {	
@@ -41,8 +40,6 @@ public class LoginAccountDAO {
 		}
 	  }
 	
-		
->>>>>>> d4987ca47dc9f8e5be341013c9e529237d076a53
 	
 public boolean UserValidation(String userParam) throws Exception {
 	    
