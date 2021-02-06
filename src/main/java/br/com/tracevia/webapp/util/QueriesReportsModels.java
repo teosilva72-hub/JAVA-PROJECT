@@ -11,24 +11,14 @@ public class QueriesReportsModels {
 	/////////////////
 
 	//CRIAÇÃO DE PROCEDURES
-	private static final String CALL_PROCEDURE_05_MIN = "CALL tracevia_app.TemporaryDateTime05( ?, ?)";
-	private static final String CALL_PROCEDURE_06_MIN = "CALL tracevia_app.TemporaryDateTime06( ?, ?)";
-	private static final String CALL_PROCEDURE_10_MIN = "CALL tracevia_app.TemporaryDateTime10( ?, ?)";
-	private static final String CALL_PROCEDURE_15_MIN = "CALL tracevia_app.TemporaryDateTime15( ?, ?)";
-	private static final String CALL_PROCEDURE_30_MIN = "CALL tracevia_app.TemporaryDateTime30( ?, ?)";
-	private static final String CALL_PROCEDURE_01_HOUR = "CALL tracevia_app.TemporaryDateTimeHour( ?, ?)";
-	private static final String CALL_PROCEDURE_06_HOURS = "CALL tracevia_app.TemporaryDateTimeSixHours( ?, ?)";	
-	private static final String CALL_PROCEDURE_DAYS = "CALL tracevia_app.TemporaryDates( ?, ?)";
-
-	//CRIAÇÃO DE PROCEDURES
-	private static final String CALL_PROCEDURE_CCR_05_MIN = "CALL trcv_sat.TemporaryDateTime05( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_06_MIN = "CALL trcv_sat.TemporaryDateTime06( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_10_MIN = "CALL trcv_sat.TemporaryDateTime10( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_15_MIN = "CALL trcv_sat.TemporaryDateTime15( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_30_MIN = "CALL trcv_sat.TemporaryDateTime30( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_01_HOUR = "CALL trcv_sat.TemporaryDateTimeHour( ?, ?)";
-	private static final String CALL_PROCEDURE_CCR_06_HOURS = "CALL trcv_sat.TemporaryDateTimeSixHours( ?, ?)";	
-	private static final String CALL_PROCEDURE_CCR_DAYS = "CALL trcv_sat.TemporaryDates( ?, ?)";
+	private static final String CALL_PROCEDURE_05_MIN = "CALL TemporaryDateTime05( ?, ?)";
+	private static final String CALL_PROCEDURE_06_MIN = "CALL TemporaryDateTime06( ?, ?)";
+	private static final String CALL_PROCEDURE_10_MIN = "CALL TemporaryDateTime10( ?, ?)";
+	private static final String CALL_PROCEDURE_15_MIN = "CALL TemporaryDateTime15( ?, ?)";
+	private static final String CALL_PROCEDURE_30_MIN = "CALL TemporaryDateTime30( ?, ?)";
+	private static final String CALL_PROCEDURE_01_HOUR = "CALL TemporaryDateTimeHour( ?, ?)";
+	private static final String CALL_PROCEDURE_06_HOURS = "CALL TemporaryDateTimeSixHours( ?, ?)";	
+	private static final String CALL_PROCEDURE_DAYS = "CALL TemporaryDates( ?, ?)";
 
 	//CABEÇALHO QUERIES
 	private static final String QUERY_HEADER_05_MIN = "SELECT DATE_FORMAT(tmp.datetime_05, '%d/%m/%Y') AS data, " + 
@@ -77,8 +67,9 @@ public class QueriesReportsModels {
 
 	//LEFT JOIN TABLE REFERENCE
 	private static final String LEFT_JOIN_START_SAT = "LEFT JOIN sat_vbv AS st ";
-	private static final String LEFT_JOIN_START_SAT_LL = "LEFT JOIN sat_vbv_ll AS st ";
-	private static final String LEFT_JOIN_START_SAT_CCR = "LEFT JOIN sat_vbv_ccr AS st ";
+	private static final String LEFT_JOIN_START_TABLE_SAT = "LEFT JOIN tb_vbv AS st ";
+	private static final String LEFT_JOIN_START_SAT_TABLE_LL = "LEFT JOIN tb_vbv_ll AS st ";
+	private static final String LEFT_JOIN_START_SAT_TABLE_CCR = "LEFT JOIN tb_vbv_ccr AS st ";
 	private static final String LEFT_JOIN_START_MTO = "LEFT JOIN weather_station AS st ";
 
 	//LEFT JOIN SAT EQUIPMENT TABLE REFERENCE
@@ -225,45 +216,10 @@ public class QueriesReportsModels {
 		if(period.equals("24 hours") || period.equals("year") || period.equals("month"))
 			return CALL_PROCEDURE_DAYS;
 
-
-
 		return null;
 
 	}
-	
-	//METODO PARA SELECIONAR PROCEDURES FROM CCR TABLE
-		public String SelectProcedureByPeriodCCR(String period) {
-
-			if(period.equals("05 minutes"))
-				return CALL_PROCEDURE_CCR_05_MIN;
-
-			if(period.equals("06 minutes"))
-				return CALL_PROCEDURE_CCR_06_MIN;
-
-			if(period.equals("10 minutes"))
-				return CALL_PROCEDURE_CCR_10_MIN;
-
-			if(period.equals("15 minutes"))
-				return CALL_PROCEDURE_CCR_15_MIN;
-
-			if(period.equals("30 minutes"))
-				return CALL_PROCEDURE_CCR_30_MIN;
-
-			if(period.equals("01 hour"))
-				return CALL_PROCEDURE_CCR_01_HOUR;
-
-			if(period.equals("06 hours"))
-				return CALL_PROCEDURE_CCR_06_HOURS;
-
-			if(period.equals("24 hours") || period.equals("year") || period.equals("month"))
-				return CALL_PROCEDURE_CCR_DAYS;
-
-
-
-			return null;
-
-		}
-
+		
 	/**********************************************************************************************************/
 
 	//METODO PARA SELECIONAR O HEADER DA QUERY
@@ -378,18 +334,21 @@ public class QueriesReportsModels {
 	//METHOD LEFT JOIN TABLE
 	public String LeftJoinStart(String module) {
 
-		if(module.equals("sat"))
+		if(module.equals("sat_vbv"))
 			return LEFT_JOIN_START_SAT;
 
-		else if(module.equals("mto"))
+		if(module.equals("mto"))
 			return LEFT_JOIN_START_MTO;
+		
+		if(module.equals("tb_vbv"))
+			return LEFT_JOIN_START_TABLE_SAT;
 
-		if(module.equals("sat_ll"))
-			return LEFT_JOIN_START_SAT_LL;
+		if(module.equals("tb_vbv_ll"))
+			return LEFT_JOIN_START_SAT_TABLE_LL;
 
-		if(module.equals("sat_ccr"))
-			return LEFT_JOIN_START_SAT_CCR;
-
+		if(module.equals("tb_vbv_ccr"))
+			return LEFT_JOIN_START_SAT_TABLE_CCR;
+	
 		return null;
 	}
 
@@ -404,8 +363,6 @@ public class QueriesReportsModels {
 		else if(module.equals("mto"))
 			return LEFT_JOIN_END_MTO_EQUIP;
 
-		else if(module.equals("sat_ll"))
-			return LEFT_JOIN_END_MTO_EQUIP;
 		return null;
 	}
 

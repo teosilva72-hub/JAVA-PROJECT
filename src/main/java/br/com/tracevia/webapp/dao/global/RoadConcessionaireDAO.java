@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.cfg.servers.Servers;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -22,11 +23,12 @@ public class RoadConcessionaireDAO {
 		
 		  String concessionarieName = "";
 		  
-		 // if(serverAddress.equals("10.161.0.17"))
-			  if(serverAddress.equals("192.168.0.40"))
+		 // if(serverAddress.equals(Servers.ServersViaSul.getServer()))
+		     //if(serverAddress.equals("192.168.0.40")) 
+			  if(serverAddress.equals("192.168.1.140"))
 	           conn = ConnectionFactory.connectToCCR();
 	    
-	    else if(serverAddress.equals("10.12.32.227"))
+	    else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
 	           conn = ConnectionFactory.connectToViaPaulista();
 	    
 	    else conn = ConnectionFactory.connectToTraceviaApp();

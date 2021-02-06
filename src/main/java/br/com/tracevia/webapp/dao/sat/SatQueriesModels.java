@@ -2240,12 +2240,12 @@ public class SatQueriesModels {
                                                     
                           public String VBVs() { 
                         	  
-                        	  String query = "SELECT siteID, seqG, seqN, datetime_, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, " +
+                        	  String query = "SELECT siteID, seqG, seqN, data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, " +
                             		         "axl5W, axl6W, axl7W, axl8W, axl9W, axl2D, axl3D, axl4D, axl5D,  " +
                             		         "axl6D, axl7D, axl8D, axl9D, gross, temperature, speed, lane " +
                             		         "FROM sat_vbv " +
-                            		         "WHERE DATE(datetime_) BETWEEN ? AND ? AND siteID = ? " +
-                            		         "ORDER BY datetime_ ASC";
+                            		         "WHERE DATE(data) BETWEEN ? AND ? AND siteID = ? " +
+                            		         "ORDER BY data ASC";
                         	  
                         	  return query;
                         	  
@@ -2254,7 +2254,7 @@ public class SatQueriesModels {
                            public String VBVCount() { 
                         	  
                         	  String query = "SELECT COUNT(*) FROM sat_vbv " +                            		        
-                            		         "WHERE DATE(datetime_) BETWEEN ? AND ? AND siteID = ? ";                            		        
+                            		         "WHERE DATE(data) BETWEEN ? AND ? AND siteID = ? ";                            		        
                         	  
                         	  return query;
                         	  

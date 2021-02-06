@@ -52,40 +52,40 @@ public class EquipmentsDAO {
 		String query = null;
 		
 		if(mod.getModule().equals(ModulesEnum.CFTV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.cftv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM cftv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COLAS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.colas_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM colas_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COMMS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.comms_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM comms_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.DAI.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.dai_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM dai_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.LPR.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.lpr_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM lpr_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.MTO.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.mto_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM mto_equipment WHERE visible = 1";	
 			
 		else if(mod.getModule().equals(ModulesEnum.PMV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.pmv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM pmv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.sos_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM sos_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SPEED.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.speed_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM speed_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.VIDEOWALL.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.videowall_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM videowall_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.WIM.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.wim_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM wim_equipment WHERE visible = 1";	
 		
 		
 		try {			
@@ -136,7 +136,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
@@ -254,7 +254,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
@@ -311,7 +311,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, map_width, " +
-				   "map_posX, map_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "map_posX, map_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
@@ -368,7 +368,7 @@ public class EquipmentsDAO {
 
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
-		String sql = "SELECT equip_id, name FROM tracevia_app."+modulo+"_equipment WHERE visible = 1";
+		String sql = "SELECT equip_id, name FROM "+modulo+"_equipment WHERE visible = 1";
 				
 		try {
 			
@@ -411,7 +411,7 @@ public class EquipmentsDAO {
 
 			int lanesNumber = 0;
 
-			String sql = "SELECT number_lanes FROM tracevia_app."+modulo+"_equipment WHERE equip_id = ? AND visible = 1";
+			String sql = "SELECT number_lanes FROM "+modulo+"_equipment WHERE equip_id = ? AND visible = 1";
 					
 			try {
 				
@@ -450,7 +450,7 @@ public class EquipmentsDAO {
 			String sql = "";
 			
 			for(int i = 0; i < equips.length; i++)
-			    sql = "SELECT number_lanes FROM tracevia_app."+modulo+"_equipment WHERE equip_id = '"+equips[i]+"' AND visible = 1";
+			    sql = "SELECT number_lanes FROM "+modulo+"_equipment WHERE equip_id = '"+equips[i]+"' AND visible = 1";
 					
 			try {
 				
@@ -487,7 +487,7 @@ public class EquipmentsDAO {
 
 			String name = "";
 
-			String sql = "SELECT name FROM tracevia_app."+modulo+"_equipment WHERE equip_id = '"+equipId+"' AND visible = 1 ";
+			String sql = "SELECT name FROM "+modulo+"_equipment WHERE equip_id = '"+equipId+"' AND visible = 1 ";
 					
 			try {
 				

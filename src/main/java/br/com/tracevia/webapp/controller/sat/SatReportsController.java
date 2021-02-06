@@ -817,7 +817,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart("sat"),
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableVBV),
 				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
 
 		return query;
@@ -828,7 +828,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart("sat_ll"),
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableLL),
 				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
 
 		return query;
@@ -839,7 +839,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart("sat_ccr"),
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableCCR),
 				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
 
 		return query;
