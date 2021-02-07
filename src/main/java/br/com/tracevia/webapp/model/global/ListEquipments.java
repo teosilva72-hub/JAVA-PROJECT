@@ -7,6 +7,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
+
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
@@ -66,35 +68,35 @@ public class ListEquipments {
 	
 	public void CreateMapEquipment() {
 		equips = new ArrayList<listEquips>();
-		LoadStartupModules auth = new LoadStartupModules();
-		auth.startupComponents();
+		LoginAccountBean auth = new LoginAccountBean();
+		LoadStartupModules load = auth.getLoad();
 		
 		try {	
 			
 			try {
 					
 				CFTV cftv =  new CFTV();
-				equips.add(new listEquips(auth.isEn_cftv(), auth.isRt_cftv(), cftv.ListMapEquipments("cftv")));
+				equips.add(new listEquips(load.isEn_cftv(), load.isRt_cftv(), cftv.ListMapEquipments("cftv")));
 				Colas colas = new Colas();
-				equips.add(new listEquips(auth.isEn_colas(), auth.isRt_colas(), colas.ListMapEquipments("colas")));
+				equips.add(new listEquips(load.isEn_colas(), load.isRt_colas(), colas.ListMapEquipments("colas")));
 				COMMS comms = new COMMS();
-				equips.add(new listEquips(auth.isEn_comms(), auth.isRt_comms(), comms.ListMapEquipments("comms")));
+				equips.add(new listEquips(load.isEn_comms(), load.isRt_comms(), comms.ListMapEquipments("comms")));
 				DAI dai = new DAI();
-				equips.add(new listEquips(auth.isEn_dai(), auth.isRt_dai(), dai.ListMapEquipments("dai")));
+				equips.add(new listEquips(load.isEn_dai(), load.isRt_dai(), dai.ListMapEquipments("dai")));
 				DMS dms = new DMS();
-				equips.add(new listEquips(auth.isEn_pmv(), auth.isRt_pmv(), dms.ListMapDMSEquipments("pmv")));
+				equips.add(new listEquips(load.isEn_pmv(), load.isRt_pmv(), dms.ListMapDMSEquipments("pmv")));
 				LPR lpr =  new LPR();
-				equips.add(new listEquips(auth.isEn_lpr(), auth.isRt_lpr(), lpr.ListMapEquipments("lpr")));
+				equips.add(new listEquips(load.isEn_lpr(), load.isRt_lpr(), lpr.ListMapEquipments("lpr")));
 				MTO mto =  new MTO();
-				equips.add(new listEquips(auth.isEn_mto(), auth.isRt_mto(), mto.ListMapEquipments("mto")));
+				equips.add(new listEquips(load.isEn_mto(), load.isRt_mto(), mto.ListMapEquipments("mto")));
 				SAT sat = new SAT();
-				equips.add(new listEquips(auth.isEn_sat(), auth.isRt_sat(), sat.ListMapEquipments("sat")));
+				equips.add(new listEquips(load.isEn_sat(), load.isRt_sat(), sat.ListMapEquipments("sat")));
 				SOS sos = new SOS();
-				equips.add(new listEquips(auth.isEn_sos(), auth.isRt_sos(), sos.ListMapEquipments("sos")));
+				equips.add(new listEquips(load.isEn_sos(), load.isRt_sos(), sos.ListMapEquipments("sos")));
 				Speed speed =  new Speed();
-				equips.add(new listEquips(auth.isEn_speed(), auth.isRt_speed(), speed.ListMapEquipments("speed")));
+				equips.add(new listEquips(load.isEn_speed(), load.isRt_speed(), speed.ListMapEquipments("speed")));
 				WIM wim =  new WIM();
-				equips.add(new listEquips(auth.isEn_wim(), auth.isRt_wim(), wim.ListMapEquipments("wim")));
+				equips.add(new listEquips(load.isEn_wim(), load.isRt_wim(), wim.ListMapEquipments("wim")));
 					
             }catch(IndexOutOfBoundsException ex) {}
 		
