@@ -29,8 +29,7 @@
 	<h:outputScript name="jquery.validate.min.js" library="js/jquery-validation" />
 	<h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
 	<h:outputScript name="jquery-ui-1.12.1.js" library="js/jquery-ui" />	
-	<h:outputScript name="jquery.mask.js" library="js/jquery-mask" />
-	<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />						
+	<h:outputScript name="jquery.mask.js" library="js/jquery-mask" />					
 	
 	<script>
 	
@@ -119,7 +118,7 @@
       
        <ul class="navbar-nav ml-xl header-menu" id="call-box">
        	<li class="nav-item">
-       		<a class="nav-link p-0"
+       		<a type="button" class="btn btn-primary nav-link p-0"
        		href="#" id="navCall">
        		<i class="fas fa-phone-square"></i>
        		</a>
@@ -701,24 +700,38 @@
 
       </div>  
       
-      <!-- MODAL CALL/VOICE -->
-      <div class="modal" id="callmodal" tabindex="-1" aria-hidden="true">
-      		<div class="modal-dialog" id="call-log">
-				<div class="modal-content">
-					<div class="modal-header" id="call-headerpad">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="z-index:1000;">
-						<span aria-hidden="true">&times;</span></button>
-					</div>
-					<div class="modal-body">
-					</div>
-					<div class="modal-footer" id="call-footer">
-					</div>
-				</div>
-      		</div>
-      </div>
-       <!-- MODAL CALL/VOICE END-->
-      
       <ui:insert name="modal-content" ></ui:insert>
+      
+      <!-- TOAST CALL/VOICE -->
+      <div id="callmodal">
+	      <div class="toast hide" id="toastmodal" role="alert" data-autohide="false">
+	      		<div class="toast-dialog">
+					<h:form class="toast-content toast-sm">
+						<div class="toast-header" id="call-headerpad">
+							<button type="button" class="close" data-dismiss="toast" aria-label="Close">
+							<span aria-hidden="true">&times;</span></button>
+						</div>
+						<div class="toast-body">
+							<h:commandLink>
+	      						  <h:graphicImage title="Accept Call" class="acptcall" value="/resources/images/voice/accept-call.png"></h:graphicImage>
+	      				    </h:commandLink>
+	      						  <label> Accept Call </label>
+	      					<h:commandLink>
+	      						  <h:graphicImage title="Dismiss Call" class="dismisscall" value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
+	      				    </h:commandLink>
+	      						  <label> Dismiss Call </label>
+	      				    <h:commandLink>
+	      						  <h:graphicImage title="Call in wait" class="waitcall" value="/resources/images/voice/call-in-wait.png"></h:graphicImage>
+	      				    </h:commandLink>
+	      						  <label> Put Call in Wait </label>				
+						</div>
+						<div class="toast-footer" id="call-footer">
+						</div>
+					</h:form>
+	      		</div>
+	      </div>
+       <!-- TOAST CALL/VOICE END-->
+      </div>
       
       <!-- Footer -->
    <footer class=" page-footer font-small indigo" >
@@ -744,14 +757,11 @@
 		<h:outputScript name="dashboard-right.js" library="js/dashboard" />			
 		<h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />	
 		<h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
-    <h:outputScript name="dataTables.select.min.js" library="js/datatables" />			
+    	<h:outputScript name="dataTables.select.min.js" library="js/datatables" />	
+    	<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />			
     
     <script>
-    	
-    	$("#navCall").click(function (){
-    		$("#callmodal").show();
-    	});
-    	
+    	$("#navCall").click(() => $('#toastmodal').toast('show'));
     </script>
 	  		
 		<!-- Import JavaScript from another pages -->
