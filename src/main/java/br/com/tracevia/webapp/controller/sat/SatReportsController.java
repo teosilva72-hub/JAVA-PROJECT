@@ -78,6 +78,8 @@ public class SatReportsController {
 
 	EquipmentsDAO equipDAO;
 	ExcelModels model;
+	
+	String displayEquipInfo, displayDirection1, displayDirection2;
 
 	private boolean clearBool, excelBool;
 
@@ -212,6 +214,32 @@ public class SatReportsController {
 	public static void setFieldsNumber(int fieldsNumber) {
 		SatReportsController.fieldsNumber = fieldsNumber;
 	}	
+	
+	public String getDisplayEquipInfo() {
+		return displayEquipInfo;
+	}
+
+	public void setDisplayEquipInfo(String displayEquipInfo) {
+		this.displayEquipInfo = displayEquipInfo;
+	}
+	
+	
+	public String getDisplayDirection1() {
+		return displayDirection1;
+	}
+
+	public void setDisplayDirection1(String displayDirection1) {
+		this.displayDirection1 = displayDirection1;
+	}
+
+	public String getDisplayDirection2() {
+		return displayDirection2;
+	}
+
+	public void setDisplayDirection2(String displayDirection2) {
+		this.displayDirection2 = displayDirection2;
+	}
+	
 
 	///////////////////////////////////
 	//CONSTRUCTOR
@@ -340,6 +368,11 @@ public class SatReportsController {
 		//Disabled
 		clearBool = true;
 		excelBool = true;
+		
+		displayDirection1 = localeLabel.getStringKey("sat_reports_count_flow_sat_dir1");
+		displayDirection2 = localeLabel.getStringKey("sat_reports_count_flow_sat_dir2");
+		displayEquipInfo = localeLabel.getStringKey("sat_reports_count_flow_sat_desc");
+		
 	}
 
 	///////////////////////////////////
@@ -543,6 +576,8 @@ public class SatReportsController {
 			fieldObjectValues = new String[] {"date", "dateTime", "class1", "class2", "class3", "class4", "class5",  "class6",
 					"class7",  "class8",  "class9",  "class10",  "class11",  "class12",  "class13",  "class14",  "class15",  "class16",
 					"class17",  "class18",  "total"};
+			
+			
 		}
 
 
@@ -972,15 +1007,16 @@ public class SatReportsController {
 
 		/**** PESAGEM ****/
 		if(type.equals("5")) { 
-
-			//FLUXO POR PERIODO CONSTRUCTOR
-			weighingBuilder(satReport.classes.length);
 			
+			//FLUXO POR PERIODO CONSTRUCTOR		
+			 weighingBuilder(satReport.classes.length);
+			 
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
-			ReorderTableHeaderForWeighing(satReport.classes);  
-
+				if(satReport.classes.length < 13)
+				   ReorderTableHeaderForWeighing(satReport.classes);  
+			
 			// DRAW TABLE -- BUILD HEADER
-			drawTable(fields, fieldObjectValues);	
+			   drawTable(fields, fieldObjectValues);	
 
 		}  
 
@@ -991,6 +1027,7 @@ public class SatReportsController {
 			classesBuilder(satReport.classes.length);    
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
+			if(satReport.classes.length < 13)
 			ReorderTableHeaderForClasses(satReport.classes);
 
 			// DRAW TABLE -- BUILD HEADER
@@ -1005,6 +1042,7 @@ public class SatReportsController {
 			axlesBuilder(satReport.axles.length);
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE AXLES
+			if(satReport.classes.length < 9)
 			ReorderTableHeaderForAxles(satReport.axles);
 
 			// DRAW TABLE -- BUILD HEADER
@@ -1557,9 +1595,7 @@ public class SatReportsController {
 			model.StandardFonts();  //Set Font
 			model.StandardStyles(); //Set Style
 			model.StandardBorders(); // Set Borders
-			
-			System.out.println("RG: "+periodRange);
-
+						
 			//Chamada ao Método padrão do Excel
 			model.StandardExcelModel(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
@@ -1589,6 +1625,11 @@ public class SatReportsController {
 			//Directions
 			direction1 = tm.CheckDirection1(lane1);
 			direction2 = tm.CheckDirection2(lane1);
+			
+			//DISPLAY INFO ON TABLE
+			displayEquipInfo = equip+"  "+km+"  "+road;			
+			displayDirection1 = direction1;
+			displayDirection2 = direction2;
 
 			//Create Fieldds Method
 			CreateFields(type); 		

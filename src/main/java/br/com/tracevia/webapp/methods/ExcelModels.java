@@ -524,9 +524,7 @@ public class ExcelModels {
 			total = (rowMax + 1);			 
 			registerLength = registers;
 			cellMinCol = 1;
-
-			System.out.println("RG"+range);
-
+		
 			intervalDate = localeExcel.getStringKey("excel_report_from")+": " + startDate+ "\n"+localeExcel.getStringKey("excel_report_to")+": " + endDate;
 
 			String sheetName = sheetNameSingle(type, module);

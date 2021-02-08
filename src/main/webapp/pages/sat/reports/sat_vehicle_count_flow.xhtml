@@ -46,19 +46,19 @@
 			</div>
 	 
 	 <h:dataTable id="vehicle-count-flow-table" value="#{satReportsBean.resultList}" var="countFlow" autocomplete="off"				               
-     styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%" 
+     styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
      headerClass="custom-table-header">	
      
      <f:facet name="header">
       <tr>
-      <th colspan="2" class="custom-table-header" >#{satLabels.sat_reports_count_flow_sat_desc}</th>
+      <th colspan="2" class="custom-table-header" >#{satReportsBean.displayEquipInfo}</th>
       <th colspan="9" class="custom-table-header" >#{satLabels.sat_reports_count_flow_report_title}</th>
       </tr>      
       <tr>
         <th rowspan="2" class="custom-table-header" >#{satReportsBean.columns.get(0).field}</th>
         <th rowspan="2" class="custom-table-header" >#{satReportsBean.columns.get(1).field}</th>
-        <th colspan="3" class="custom-table-header" >#{satLabels.sat_reports_general_direction01}</th> <!-- SUB HEADER -->
-        <th colspan="3" class="custom-table-header" >#{satLabels.sat_reports_general_direction02}</th> <!-- SUB HEADER -->
+        <th colspan="3" class="custom-table-header" >#{satReportsBean.displayDirection1}</th> <!-- SUB HEADER -->
+        <th colspan="3" class="custom-table-header" >#{satReportsBean.displayDirection2}</th> <!-- SUB HEADER -->
         <th rowspan="2" class="custom-table-header" >#{satReportsBean.columns.get(8).field}</th>
       </tr>
       

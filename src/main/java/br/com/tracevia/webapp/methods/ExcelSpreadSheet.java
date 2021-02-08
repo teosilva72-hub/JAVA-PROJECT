@@ -201,7 +201,7 @@ public class ExcelSpreadSheet {
 					int rowLenght = startRow + endRow ;
 					int auxCol = colStart;
 					
-					System.out.println(maxCol);
+					///System.out.println(maxCol);
 									
 					for(int col = colStart; col < maxCol; col++) {
 					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
@@ -624,7 +624,7 @@ public class ExcelSpreadSheet {
 		      row = sheet.getRow(lin);		
 		        row.createCell(c);
 		        
-		        System.out.println(lin);
+		       // System.out.println(lin);
 	    }
 	  }
    }
@@ -912,11 +912,14 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		externalContext.setResponseContentType("application/vnd.ms-excel");
 		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".xlsx\"");
 
+		workbook.write(externalContext.getResponseOutputStream());
+		facesContext.responseComplete();
+		
 		OutputStream responseOutputStream = externalContext.getResponseOutputStream();     
 		
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();
+		//workbook.close();
 	   
 		
 	}
@@ -933,8 +936,8 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();
-	    workbook.dispose();
+		//workbook.close();
+	   // workbook.dispose();
 		
 	}
     
@@ -949,7 +952,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();   
+		//workbook.close();   
 		
 	}
     
@@ -962,17 +965,17 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     	    	    	    	    	
     	startColumn = 2; mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); 
     	
-    	System.out.println("COL: "+startColumn);
-    	System.out.println("LEH: "+length);
+    	//System.out.println("COL: "+startColumn);
+    	//System.out.println("LEH: "+length);
 				
-		System.out.println("ST: "+totalStartRow);
-		System.out.println("MX: "+rowMax);
+		//System.out.println("ST: "+totalStartRow);
+		//System.out.println("MX: "+rowMax);
 		
 		for(int col = startColumn; col <= length; col++) {
 			
 			String columnLetter = CellReference.convertNumToColString(col);
 			
-			System.out.println(columnLetter);
+			//System.out.println(columnLetter);
 			
 			 // for(int r = totalStartRow; r <= rowMax; r++) { 
 				

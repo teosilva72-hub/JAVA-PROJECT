@@ -138,7 +138,7 @@ public class EquipmentsDAO {
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
 				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
-				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
+				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
 		try {
 			

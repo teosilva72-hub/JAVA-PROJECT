@@ -445,7 +445,7 @@ public class SatReports {
 		}
 		
 		public Builder class6(int class6) {
-			this.class6 = class1;
+			this.class6 = class6;
 			return this;			
 		}
 		
