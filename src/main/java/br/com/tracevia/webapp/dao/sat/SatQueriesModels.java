@@ -32,8 +32,7 @@ public class SatQueriesModels {
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 120 AND st.speed < 150 AND eq.equip_id = '"+station_id+"' , 1, NULL)),0),0)  '120km/150km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed >= 150 AND eq.equip_id = '"+station_id+"' ,1, NULL)),0),0) 'above 150km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(eq.equip_id = '"+station_id+"'  , st.speed , NULL)), 0),0) 'Total'";
-		   		  
-		   
+		   		  		   
 		   return query;
 		   
 	   }
@@ -49,10 +48,6 @@ public class SatQueriesModels {
 		   		   
 		   String query = "";
 		   
-
-
-
-
 		   query += "IFNULL(ROUND(COUNT(IF((st.axlNumber = 0 OR st.axlNumber = 1 OR st.axlNumber = 2) AND eq.equip_id = '"+station_id+"', 1, NULL )), 0), 0) '2 AXLES', " +				
 				   "IFNULL(ROUND(COUNT(IF((st.axlNumber = 3) AND eq.equip_id = '"+station_id+"', st.axlNumber, NULL )), 0), 0) '3 AXLES', " +
 				   "IFNULL(ROUND(COUNT(IF((st.axlNumber = 4) AND eq.equip_id = '"+station_id+"', st.axlNumber, NULL )), 0), 0) '4 AXLES', " + 
@@ -302,7 +297,6 @@ public class SatQueriesModels {
    		   
 		   String query = "";
 		   
-		 
 						
 	query += "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+station_id+"', st.classe, NULL )), 0), 0) 'AUTOS', " +
 			 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+station_id+"', st.classe, NULL )), 0), 0) 'MOTO', " +
