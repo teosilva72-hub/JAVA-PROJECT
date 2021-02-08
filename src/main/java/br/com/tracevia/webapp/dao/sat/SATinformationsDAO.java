@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -86,7 +88,7 @@ public class SATinformationsDAO {
 					
 	  try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, currentDate);		
@@ -187,8 +189,8 @@ public class SATinformationsDAO {
 					
 	  try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, currentDate);		
 						
@@ -285,7 +287,7 @@ public class SATinformationsDAO {
 	  					
 	  try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);
 			ps.setInt(1, equip);	
@@ -340,8 +342,8 @@ public class SATinformationsDAO {
 				
 		    try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
-			
+		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, currentDate);		
 			ps.setString(2, currentDateSub);
@@ -374,7 +376,7 @@ public class SATinformationsDAO {
 		return list;		
 	}
 	
-public List<SAT> SATstatus15AAA() throws Exception {
+public List<SAT> SATstatus30() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -388,7 +390,7 @@ public List<SAT> SATstatus15AAA() throws Exception {
 		currentDate = dta.getCurrentDateDados15(calendar, minute);
 		
 		//Obter datas formatadas para os dados
-		currentDateSub = dta.getCurrentDateSubDados15(calendar, minute);
+		currentDateSub = dta.getCurrentDateSubDados30(calendar, minute);
 				
 		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM tracevia_app.sat_status s " +
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
@@ -398,7 +400,7 @@ public List<SAT> SATstatus15AAA() throws Exception {
 				
 		    try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, currentDate);		
@@ -447,7 +449,7 @@ public List<SAT> SATstatus15AAA() throws Exception {
 		currentDate = dta.getCurrentDateDados15(calendar, minute);
 		
 		//Obter datas formatadas para os dados
-		currentDateSub = dta.getCurrentDateSubDados15(calendar, minute);
+		currentDateSub = dta.getCurrentDateSubDados30(calendar, minute);
 				
 		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM tracevia_app.sat_status s " +
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
@@ -455,7 +457,7 @@ public List<SAT> SATstatus15AAA() throws Exception {
 						
 		    try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);	
 			ps.setInt(1, equip);	

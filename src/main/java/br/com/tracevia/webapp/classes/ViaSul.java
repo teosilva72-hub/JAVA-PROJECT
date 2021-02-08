@@ -47,7 +47,7 @@ public enum ViaSul {
 	NOT_ID_CLASS_7AXLES("7N"),   // Classe não identificada 7 Eixos
 	NOT_ID_CLASS_8AXLES("8N"),   // Classe não identificada 8 Eixos
 	NOT_ID_CLASS_9AXLES("9N"),   // Classe não identificada 9 Eixos
-	UNKNOWN_CLASS("0");         // Classe desconhecida
+	UNKNOWN_CLASS("UC");         // Classe desconhecida
 		
 	 private String selectClass; 	 
 	 

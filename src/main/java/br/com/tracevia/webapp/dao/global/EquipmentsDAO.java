@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
@@ -19,6 +20,7 @@ import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.Modules;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.lpr.LPR;
 import br.com.tracevia.webapp.model.mto.MTO;
@@ -34,19 +36,7 @@ public class EquipmentsDAO {
 	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
 	private ResultSet rs;
-
-	public EquipmentsDAO() throws Exception {
-
-		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();	
-			
-		} catch (Exception e) {
-			
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	}	
-		
 	/**
 	 * M�todo para criado para obter uma lista dos equipamentos metereol�gicos no sistema.	 
 	 * @param mod - parametro da classe Modules
@@ -62,46 +52,46 @@ public class EquipmentsDAO {
 		String query = null;
 		
 		if(mod.getModule().equals(ModulesEnum.CFTV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.cftv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM cftv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COLAS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.colas_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM colas_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COMMS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.comms_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM comms_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.DAI.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.dai_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM dai_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.LPR.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.lpr_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM lpr_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.MTO.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.mto_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM mto_equipment WHERE visible = 1";	
 			
 		else if(mod.getModule().equals(ModulesEnum.PMV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.pmv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM pmv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.sos_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM sos_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SPEED.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.speed_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM speed_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.VIDEOWALL.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.videowall_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM videowall_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.WIM.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM tracevia_app.wim_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, position FROM wim_equipment WHERE visible = 1";	
 		
 		
 		try {			
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
-						
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
 			
@@ -146,13 +136,14 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			
@@ -209,7 +200,8 @@ public class EquipmentsDAO {
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			
@@ -262,14 +254,15 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						
@@ -318,13 +311,16 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, map_width, " +
-				   "map_posX, map_posY, position FROM tracevia_app."+modulo+"_equipment eq " +
+				   "map_posX, map_posY, position FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 				   "WHERE visible = 1 ";
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			
+			 //GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						
@@ -372,11 +368,13 @@ public class EquipmentsDAO {
 
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
-		String sql = "SELECT equip_id, name FROM tracevia_app."+modulo+"_equipment WHERE visible = 1";
+		String sql = "SELECT equip_id, name FROM "+modulo+"_equipment WHERE visible = 1";
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			 //GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 						
@@ -413,11 +411,13 @@ public class EquipmentsDAO {
 
 			int lanesNumber = 0;
 
-			String sql = "SELECT number_lanes FROM tracevia_app."+modulo+"_equipment WHERE equip_id = ? AND visible = 1";
+			String sql = "SELECT number_lanes FROM "+modulo+"_equipment WHERE equip_id = ? AND visible = 1";
 					
 			try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+				 //GET CONNECTION			
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
 				ps = conn.prepareStatement(sql);
 				ps.setString( 1, equipID);
 				rs = ps.executeQuery();
@@ -450,11 +450,14 @@ public class EquipmentsDAO {
 			String sql = "";
 			
 			for(int i = 0; i < equips.length; i++)
-			    sql = "SELECT number_lanes FROM tracevia_app."+modulo+"_equipment WHERE equip_id = '"+equips[i]+"' AND visible = 1";
+			    sql = "SELECT number_lanes FROM "+modulo+"_equipment WHERE equip_id = '"+equips[i]+"' AND visible = 1";
 					
 			try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+				
+				 //GET CONNECTION			
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
 				ps = conn.prepareStatement(sql);			
 				rs = ps.executeQuery();
 							
@@ -484,11 +487,13 @@ public class EquipmentsDAO {
 
 			String name = "";
 
-			String sql = "SELECT name FROM tracevia_app."+modulo+"_equipment WHERE equip_id = '"+equipId+"' AND visible = 1 ";
+			String sql = "SELECT name FROM "+modulo+"_equipment WHERE equip_id = '"+equipId+"' AND visible = 1 ";
 					
 			try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+				 //GET CONNECTION			
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
 				ps = conn.prepareStatement(sql);
 				rs = ps.executeQuery();
 							
@@ -523,8 +528,9 @@ public class EquipmentsDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
-
+			 //GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes, st.dir_lane1 FROM sat_equipment st "
 					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
 					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
@@ -566,8 +572,8 @@ public class EquipmentsDAO {
 
 	try {
 
-		conn = ConnectionFactory.connectToTraceviaApp();
-
+		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
 		String sql = "SELECT name, city, road, km FROM "+module+"_equipment WHERE equip_id = '"+ equip_id + "' AND visible = 1";
 
 		ps = conn.prepareStatement(sql);
@@ -600,7 +606,8 @@ public class EquipmentsDAO {
 				
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();	
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			
@@ -650,7 +657,7 @@ public class EquipmentsDAO {
 
 		try {			
 		
-			conn = ConnectionFactory.connectToTraceviaApp();				
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);			
 			
 			sql = "SELECT equip_id, name FROM pmv_equipment WHERE visible = 1 ORDER BY name ASC";		
 			
@@ -687,7 +694,7 @@ public class EquipmentsDAO {
 
 				try {			
 				
-					conn = ConnectionFactory.connectToTraceviaApp();				
+					conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);			
 					
 					sql = "SELECT equip_id FROM pmv_equipment WHERE visible = 1 ORDER BY equip_id ASC";		
 					
@@ -724,7 +731,7 @@ public class EquipmentsDAO {
 
 				try {			
 				
-					conn = ConnectionFactory.connectToTraceviaApp();				
+					conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);			
 					
 					sql = "SELECT dir_lane1 FROM sat_equipment WHERE equip_id = ? AND visible = 1";		
 					
@@ -770,7 +777,7 @@ public class EquipmentsDAO {
           					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?)";
           	           
 
-          			conn = ConnectionFactory.connectToTraceviaApp();
+          			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
           			
                       //Execute Register			
           			ps = conn.prepareStatement(query);
@@ -826,7 +833,8 @@ public class EquipmentsDAO {
             	  
             	  String queryCftv = "UPDATE cftv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
             	              	  
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryCftv);
             	 
             	  ps.setString(1,  equip.getNome());
@@ -847,7 +855,8 @@ public class EquipmentsDAO {
 
             	  String queryColas= "UPDATE colas_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryColas);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -868,7 +877,8 @@ public class EquipmentsDAO {
 
             	  String queryCOMMS= "UPDATE comms_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryCOMMS);
 
             	  ps.setString(1,  equip.getNome());
@@ -889,7 +899,9 @@ public class EquipmentsDAO {
 
             	  String queryDAI= "UPDATE dai_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryDAI);
 
             	  ps.setString(1,  equip.getNome());
@@ -910,7 +922,9 @@ public class EquipmentsDAO {
 
             	  String queryLPR= "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	 
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryLPR);
 
             	  ps.setString(1,  equip.getNome());
@@ -932,7 +946,8 @@ public class EquipmentsDAO {
 
             	  String queryMTO= "UPDATE mto_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryMTO);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -953,7 +968,9 @@ public class EquipmentsDAO {
 
             	  String queryDMS= "UPDATE pmv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+          
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryDMS);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -974,7 +991,9 @@ public class EquipmentsDAO {
 
             	  String querySAT= "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(querySAT);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -995,7 +1014,8 @@ public class EquipmentsDAO {
 
             	  String querySOS= "UPDATE sos_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(querySOS);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -1016,7 +1036,8 @@ public class EquipmentsDAO {
 
             	  String querySpeed= "UPDATE speed_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(querySpeed);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -1037,7 +1058,8 @@ public class EquipmentsDAO {
 
             	  String queryWIM= "UPDATE wim_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
-            	  conn = ConnectionFactory.connectToTraceviaApp();
+            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            	  
             	  ps = conn.prepareStatement(queryWIM);
             	  
             	  ps.setString(1,  equip.getNome());
@@ -1091,7 +1113,8 @@ System.out.println(table);
   	  
   	  String queryCftv = "SELECT equip_id, name, city, road, km, map_width, visible FROM cftv_equipment WHERE equip_id = ? ";
   	              	  
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	
   	  ps = conn.prepareStatement(queryCftv);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1120,7 +1143,8 @@ System.out.println(table);
 
   	  String queryColas= "SELECT equip_id, name, city, road, km, map_width, visible FROM colas_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	
   	  ps = conn.prepareStatement(queryColas);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1149,7 +1173,8 @@ System.out.println(table);
 
   	  String queryCOMMS= "SELECT equip_id, name, city, road, km, map_width, visible FROM comms_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	
   	  ps = conn.prepareStatement(queryCOMMS);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1178,7 +1203,8 @@ System.out.println(table);
 
   	  String queryDAI= "SELECT equip_id, name, city, road, km, map_width, visible FROM dai_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	
   	  ps = conn.prepareStatement(queryDAI);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1207,7 +1233,7 @@ System.out.println(table);
 
   	  String queryLPR= "SELECT equip_id, name, city, road, km, map_width, visible FROM lpr_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryLPR);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1236,7 +1262,7 @@ System.out.println(table);
 
   	  String queryMTO= "SELECT equip_id, name, city, road, km, map_width, visible FROM mto_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryMTO);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1265,7 +1291,7 @@ System.out.println(table);
 
   	  String queryDMS= "SELECT equip_id, name, city, road, km, map_width, visible FROM pmv_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryDMS);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1294,7 +1320,7 @@ System.out.println(table);
 
   	  String querySAT= "SELECT equip_id, name, city, road, km, map_width, visible FROM sat_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(querySAT);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1323,7 +1349,7 @@ System.out.println(table);
 
   	  String querySOS= "SELECT equip_id, name, city, road, km, map_width, visible FROM sos_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(querySOS);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1352,7 +1378,7 @@ System.out.println(table);
 
   	  String querySpeed= "SELECT equip_id, name, city, road, km, map_width, visible FROM speed_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(querySpeed);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1381,7 +1407,7 @@ System.out.println(table);
 
   	  String queryWIM= "SELECT equip_id, name, city, road, km, map_width, visible FROM wim_equipment WHERE equip_id = ? ";
 
-  	  conn = ConnectionFactory.connectToTraceviaApp();
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryWIM);
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1439,7 +1465,7 @@ if(table.equals("cftv")) { // CFTV Definitions
     
   String queryCftv = "DELETE FROM cftv_equipment WHERE equip_id = ? ";
               	  
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryCftv);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1453,7 +1479,7 @@ if(table.equals("colas")) { // COLAS Definitions
 
   String queryColas= "DELETE FROM colas_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryColas);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1467,7 +1493,7 @@ if(table.equals("comms")) { // COMMS Definitions
 
   String queryCOMMS= "DELETE FROM comms_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryCOMMS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1481,7 +1507,7 @@ if(table.equals("dai")) { // DAI Definitions
 
   String queryDAI= "DELETE FROM dai_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryDAI);;
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1495,7 +1521,7 @@ if(table.equals("lpr")) { // LPR Definitions
 
   String queryLPR= "DELETE FROM lpr_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryLPR);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1509,7 +1535,7 @@ if(table.equals("mto")) { // MTO Definitions
 
   String queryMTO= "DELETE FROM mto_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryMTO);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1524,7 +1550,7 @@ if(table.equals("pmv")) { // PMV Definitions
 
   String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryDMS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1538,7 +1564,7 @@ if(table.equals("sat")) { // SAT Definitions
 
   String querySAT= "DELETE FROM sat_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySAT);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1552,7 +1578,7 @@ if(table.equals("sos")) { // SOS Definitions
 
   String querySOS= "DELETE FROM sos_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySOS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1566,7 +1592,7 @@ if(table.equals("speed")) { // SPEED Definitions
 
   String querySpeed= "DELETE FROM speed_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySpeed);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1580,7 +1606,7 @@ if(table.equals("wim")) { // WIM Definitions
 
   String queryWIM= "DELETE FROM wim_equipment WHERE equip_id = ?";
 
-  conn = ConnectionFactory.connectToTraceviaApp();
+  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryWIM);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
@@ -1625,7 +1651,7 @@ if(table.equals("cftv")) { // CFTV Definitions
  
 String queryCftv = "UPDATE cftv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ? ";
            	  
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryCftv);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1641,7 +1667,7 @@ if(table.equals("colas")) { // COLAS Definitions
 
 String queryColas= "UPDATE colas_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryColas);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1657,7 +1683,7 @@ if(table.equals("comms")) { // COMMS Definitions
 
 String queryCOMMS= "UPDATE comms_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryCOMMS);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1673,7 +1699,7 @@ if(table.equals("dai")) { // DAI Definitions
 
 String queryDAI= "UPDATE dai_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryDAI);;
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1689,7 +1715,7 @@ if(table.equals("lpr")) { // LPR Definitions
 
 String queryLPR= "UPDATE lpr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryLPR);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1705,7 +1731,7 @@ if(table.equals("mto")) { // MTO Definitions
 
 String queryMTO= "UPDATE mto_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryMTO);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1722,7 +1748,7 @@ if(table.equals("pmv")) { // PMV Definitions
 
 String queryDMS= "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryDMS);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1738,7 +1764,7 @@ if(table.equals("sat")) { // SAT Definitions
 
 String querySAT= "UPDATE sat_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(querySAT);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1754,7 +1780,7 @@ if(table.equals("sos")) { // SOS Definitions
 
 String querySOS= "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(querySOS);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1770,7 +1796,7 @@ if(table.equals("speed")) { // SPEED Definitions
 
 String querySpeed= "UPDATE speed_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(querySpeed);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
@@ -1786,7 +1812,7 @@ if(table.equals("wim")) { // WIM Definitions
 
 String queryWIM= "UPDATE wim_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
-conn = ConnectionFactory.connectToTraceviaApp();
+conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 ps = conn.prepareStatement(queryWIM);
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);

@@ -116,6 +116,15 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">    
       
+       <ul class="navbar-nav ml-xl header-menu" id="call-box">
+       	<li class="nav-item">
+       		<a class="nav-link p-0"
+       		href="#" id="navCall">
+       		<i class="fas fa-phone-square"></i>
+       		</a>
+       	</li>
+      </ul>
+      
        <ul class="navbar-nav ml-auto header-menu">
           <li class="nav-item dropdown">
             <a class="nav-link p-0"
@@ -271,7 +280,7 @@
         </div>
       </li> -->
       
-           <li class="nav-item dropdown">
+       <li class="nav-item dropdown">
               <a class="dropdown-item" href="#" data-target="#notif" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-fw fa-bell"></i>
               <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_messages}</span>
@@ -688,11 +697,25 @@
         </main>   
         <br/>
         <br/>
-        
-              
-             
-        
+
       </div>  
+      
+      <!-- MODAL CALL/VOICE -->
+      <div class="modal" id="callmodal" tabindex="-1" aria-hidden="true">
+      		<div class="modal-dialog" id="call-log">
+				<div class="modal-content">
+					<div class="modal-header" id="call-headerpad">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer" id="call-footer">
+					</div>
+				</div>
+      		</div>
+      </div>
+       <!-- MODAL CALL/VOICE END-->
       
       <ui:insert name="modal-content" ></ui:insert>
       
@@ -711,7 +734,7 @@
     <div class="overlay"></div>
       
     </div>   
-    	
+  
 		 
 		<h:outputScript name="popper.min.js" library="js/popper" />		
 		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
@@ -724,6 +747,7 @@
     
     <script>
     	$("#j_idt33").slimScroll({height: window.innerHeight - 150})
+    	
     </script>
 	  		
 		<!-- Import JavaScript from another pages -->

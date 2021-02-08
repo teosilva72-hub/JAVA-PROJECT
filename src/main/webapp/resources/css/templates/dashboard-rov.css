@@ -40,7 +40,7 @@ html {
     min-height: 100%;
 }
 body {
-    margin: 0 0 72px; /* bottom = footer height */
+    margin: 0 0 0; /* bottom = footer height */
     height: 100%;     
     overflow: hidden;
 }
@@ -538,6 +538,13 @@ input.apple-switch:checked:before {
 /*SHOW/HIDE ICONS EQUIPS MENU*/
 
 /* NEW FUNCTION*/
+
+/* VOICE/CALL BOX */
+
+#call-box{
+	margin-left: 85%;
+	position: relative;
+}
 
 
 #navbarMaximizeMenu{

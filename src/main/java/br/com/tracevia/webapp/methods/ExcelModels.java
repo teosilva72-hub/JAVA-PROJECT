@@ -1035,7 +1035,7 @@ public class ExcelModels {
 	
 	
 	public void ExcelModelDirections(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
-			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
+			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery, int iniDir1, int iniDir2 ) throws Exception {
 	
 		dta = new DateTimeApplication(); // Métodos Date and Time	
 		tm = new TranslationMethods();
@@ -1217,7 +1217,7 @@ public class ExcelModels {
 			
 			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
 			
-			spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, 2); // Preencher a colunas
+			spreadSheet.fillDataSingleDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, iniDir1); // Preencher a colunas
 		   				
 			spreadSheet.createCells(sheet, row, 0, length, rowMaxDir1, rowMaxDir1);			 
 			spreadSheet.getCell(sheet, row, rowMaxDir1, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1243,7 +1243,7 @@ public class ExcelModels {
 				
 			 spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
 				
-			 spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, 3); // Preencher a colunas
+			 spreadSheet.fillDataSingleDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, iniDir2); // Preencher a colunas
 			   				
 			 spreadSheet.createCells(sheet, row, 0, length, rowMaxDir2, rowMaxDir2);			 
 			 spreadSheet.getCell(sheet, row, rowMaxDir2, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1408,7 +1408,7 @@ public class ExcelModels {
 		
 	   spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
 		
-	   spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, 2); // Preencher a colunas
+	   spreadSheet.fillDataRangeDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, iniDir1); // Preencher a colunas
 	   			
 	   spreadSheet.createCells(sheet, row, 0, length, rowMaxDir1, rowMaxDir1);			 
 	   spreadSheet.getCell(sheet, row, rowMaxDir1, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1434,7 +1434,7 @@ public class ExcelModels {
 			
 	   spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
 				
-	   spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, 3); // Preencher a colunas
+	   spreadSheet.fillDataRangeDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, iniDir2); // Preencher a colunas
 	   
 	   spreadSheet.createCells(sheet, row, 0, length, rowMaxDir2, rowMaxDir2);			 
 	   spreadSheet.getCell(sheet, row, rowMaxDir2, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1450,7 +1450,7 @@ public class ExcelModels {
    }
 	
 	public void ExcelModelDirectionsSubHeader(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
-			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
+			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery, int iniDir1, int iniDir2) throws Exception {
 	
 		dta = new DateTimeApplication(); // Métodos Date and Time	
 		tm = new TranslationMethods();
@@ -1685,7 +1685,7 @@ public class ExcelModels {
 			
 			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
 			
-			spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, 2); // Preencher a colunas
+			spreadSheet.fillDataSingleDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, iniDir1); // Preencher a colunas
 		   				
 			spreadSheet.createCells(sheet, row, 0, length, rowMaxDir1, rowMaxDir1);			 
 			spreadSheet.getCell(sheet, row, rowMaxDir1, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1736,7 +1736,7 @@ public class ExcelModels {
 				
 			 spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
 				
-			 spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, 3); // Preencher a colunas
+			 spreadSheet.fillDataSingleDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, iniDir2); // Preencher a colunas
 			   				
 			 spreadSheet.createCells(sheet, row, 0, length, rowMaxDir2, rowMaxDir2);			 
 			 spreadSheet.getCell(sheet, row, rowMaxDir2, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -1952,7 +1952,7 @@ public class ExcelModels {
 		
 	   spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
 		
-	   spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, 2); // Preencher a colunas
+	   spreadSheet.fillDataRangeDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, iniDir1); // Preencher a colunas
 	   			
 	   spreadSheet.createCells(sheet, row, 0, length, rowMaxDir1, rowMaxDir1);			 
 	   spreadSheet.getCell(sheet, row, rowMaxDir1, 0, localeExcel.getStringKey("excel_report_excel_total"));
@@ -2002,7 +2002,7 @@ public class ExcelModels {
 			
 	   spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
 				
-	   spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, 3); // Preencher a colunas
+	   spreadSheet.fillDataRangeDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, iniDir2); // Preencher a colunas
 	   
 	   spreadSheet.createCells(sheet, row, 0, length, rowMaxDir2, rowMaxDir2);			 
 	   spreadSheet.getCell(sheet, row, rowMaxDir2, 0, localeExcel.getStringKey("excel_report_excel_total"));

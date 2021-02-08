@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"> 
+	
+<f:view locale="#{language.locale}">
+
+<h:head>
+
+  <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+	      
+     <h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />  
+	<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />	
+	<h:outputStylesheet name="dashboard-rov.css" library="css/templates" />
+	<h:outputStylesheet name="dataTables.bootstrap4.css" library="bootstrap/datatables" />
+	<h:outputStylesheet name="jquery-ui-1.12.1.css" library="css/jquery-ui" /> 
+	
+	<!-- USE JQUERY RESOURCES AND VALIDATION -->
+	<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
+	<h:outputScript name="jquery.validate.min.js" library="js/jquery-validation" />
+	<h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
+	<h:outputScript name="jquery-ui-1.12.1.js" library="js/jquery-ui" />	
+	<h:outputScript name="jquery.mask.js" library="js/jquery-mask" />
+							
+	<script>
+	
+	function sidenavAction() {		
+		 document.getElementById("sidenav2").style.display = "none";		
+		 document.getElementById("sidenav3").style.display = "none";
+		 document.getElementById("sidenav").style.display = "block";
+    }
+	
+	function sidenavAction2() {
+		document.getElementById("sidenav3").style.display = "none";		
+		document.getElementById("sidenav").style.display = "none";
+		document.getElementById("sidenav2").style.display = "block";	
+    }
+	
+	function sidenavAction3() {		
+		document.getElementById("sidenav").style.display = "none";		
+		document.getElementById("sidenav2").style.display = "none";
+		document.getElementById("sidenav3").style.display = "block";
+   }
+
+	   function clicked(id) {
+     	  var element = document.getElementById(id);        	  
+     	  if (element.style.display === "none") {
+     		  element.style.display = "block";
+     	  } else {
+     		  element.style.display = "none";
+     	  }
+      }
+
+      function toggleBtnEquips () {        	
+     	  $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
+     	};
+     	
+     	 	       	  
+     	/*  function reloadNotifications(){
+     		    var container = document.getElementById("testess");
+     		     container.innerHTML = " ";
+     		        		    
+     		   //this line is to watch the result in console , you can remove it later	
+     		   alert("Refreshed"); 
+     		}*/
+     	  
+     	   //Scroll stucked on Top  ==> FOR SCROLL
+     	/* function setTopo(){
+     	    $(window).scrollTop(0);
+     	}
+     	 //Call setTopo()
+     	$(window).bind('scroll', setTopo);*/
+          	  
+	</script>
+	
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<h:outputStylesheet name=".css" library="css/commom" />
+		<h:outputStylesheet name="mapView.css" library="css/map" />
+		<h:outputStylesheet name="form-style.css" library="css/forms" />
+
+		<!-- Script -->
+		
+
+</h:head>
+
+<h:body>	  
+        
+  <div class="content">
+  
+        <main>                     
+          <div class="container-fluid" >            
+                        
+           			<!-- OVERFLOW -->
+
+		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
+
+			<!-- START SECTION -->
+			<div id="zoomtext" scale="1" class="section">
+
+				<!-- MAP FRONT IMAGE -->
+
+				<h:graphicImage class="grab-map" width="100%" value="/resources/images/map/tuxpan/tuxpan.png" />
+
+			</div>
+
+			<!-- Label -->
+
+			<div id="labelPos">
+				<label id="posX"></label>
+				<label id="posY"></label>
+			</div>
+
+			<!-- Drag Items -->
+
+			<div class="draggable" id="equipAll">
+
+				<c:forEach items="#{listEquips.equips}" var="loadItem">
+
+					<ui:fragment rendered="#{loadItem.val1}">
+						<ui:fragment rendered="#{loadItem.val2}">
+
+							<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
+							
+								<div id="#{item.table_id}">
+								
+									<c:choose>
+										<c:when test="#{item.table_id eq 'pmv'}">
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-info"
+												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}">
+	
+												<!-- Table with DIV -->
+	
+												<div class="container tableStyle card">
+													<div class="dms-name card-header py-0">
+														<div id="dmsTab#{item.equip_id}" class="text-center">
+															<p class="mb-0 text-white">#{item.nome} - #{item.km}</p>
+														</div>
+													</div>
+													<div class="row text-center card-body p-0">
+														<div id="child-img" class="col-2 padding-pmv">
+															<h:graphicImage
+																value="/resources/images/pictures/#{dmsMapView.image[loop.index]}"
+																styleClass="ui-graphic-image" />
+														</div>
+														<div id="child-msg" class="col-auto">
+															<div id="msg#{item.equip_id}" class="table-message">
+																<div class="row border-table-right">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][0][10]}</div>
+																	<div class="col-1 px-0 border-table r">
+																		#{dmsMapView.letter[loop.index][0][11]}</div>
+																</div>
+																<div class="row border-table-right">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][10]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][1][11]}</div>
+																</div>
+																<div class="row border-table-right bottom">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][10]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsMapView.letter[loop.index][2][11]}</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+	
+											</div>
+										</c:when>
+										<c:when test="#{item.table_id eq 'sat'}">
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
+												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}"
+												posLinearX="#{item.linearPosX}"
+												status="#{satMapView.satStatus.get(loop.index).status}"
+												vel1="#{satMapView.satListValues.get(loop.index).velocidadeS1}"
+												vel2="#{satMapView.satListValues.get(loop.index).velocidadeS2}">
+	
+												<div id="sat#{item.equip_id}" class="table-sat card border-dark">
+													<div class="sat-name card-header py-0 border-dark">
+														<div id="satTab#{item.equip_id}" class="text-center">
+															<p class="mb-0">#{item.nome} - #{item.km}</p>
+														</div>
+													</div>
+													<div class="row text-center card-body p-0 mx-0">
+														<div
+															class="col-5 padding-sat border-right border-bottom border-dark">
+															<i class="fas fa-car sat-cars"
+																title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
+															<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}</span>
+														</div>
+														<div class="col-7 padding-sat border-bottom border-dark">
+															<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
+															<span>#{satMapView.satListValues.get(loop.index).quantidadeS1}km/h</span>
+														</div>
+														<div class="col-5 padding-sat border-right border-dark">
+															<i class="fas fa-car sat-cars"
+																title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
+															<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}</span>
+														</div>
+														<div class="col-7 padding-sat">
+															<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
+															<span>#{satMapView.satListValues.get(loop.index).quantidadeS2}km/h</span>
+														</div>
+													</div>
+	
+												</div>
+											</div>
+										</c:when>
+										<c:otherwise>
+											<div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
+												posY="#{item.mapPosY}" item-width="#{item.width}" class="equip-box">
+												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
+													<p class="col-auto mb-0 pr-1">#{item.nome}</p>
+													<span id="#{item.table_id}Status1" class="equip-status"></span>
+													<p class="col-12 mb-0">#{item.km}</p>
+												</div>
+	
+												<c:if test="#{item.table_id eq 'cftv'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/camera.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'colas'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'comms'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'dai'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'lpr'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'mto'}">
+													<h:graphicImage class="equip-imagePOST"
+														value="/resources/images/equips/metereologico.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'sos'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/sos.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'speed'}">
+													<h:graphicImage class="equip-imagePOST"
+														value="/resources/images/equips/speed.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'wim'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/wim.png" />
+												</c:if>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								
+								</div>
+
+							</c:forEach>
+
+						</ui:fragment>
+					</ui:fragment>
+
+				</c:forEach>
+
+			</div>
+
+		</section>
+
+           
+          </div>   
+        </main>   
+               
+        
+      </div>  
+    	
+		 
+		<h:outputScript name="popper.min.js" library="js/popper" />		
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+		<h:outputScript name="all.min.js" library="font-awesome/js" />		
+		<h:outputScript name="jquery.slimscroll.min.js" library="js/jquery-slim-scroll" />
+		<h:outputScript name="dashboard-right.js" library="js/dashboard" />			
+		<h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />	
+		<h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
+    <h:outputScript name="dataTables.select.min.js" library="js/datatables" />			
+    
+
+		<h:outputScript name="mapView.js" library="js/map" />
+		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
+		
+		<script>
+		// MODAL EQUIPMENT SIZE
+		$(".dprbtn").click(function(){
+			var url = $('.draggable').find("[id^=" + $(this).attr('from') + "] img").attr("src") || "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+			let modal = $("#sizeeqps")
+			modal.find("img").attr("src", url);
+			modal.find("#bar-size").attr("from", "#" + $(this).attr('from'))
+		});
+		// MODAL EQUIPMENT SIZE END
+		</script>
+		
+</h:body>
+</f:view>
+</html>

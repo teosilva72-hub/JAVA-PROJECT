@@ -21,11 +21,11 @@ body {
   cursor: -moz-grabbing;
 }
 
-/*
+
 .map-content img {
-	width: 100%;
+	width: 1362px;	
 }
-*/
+
 
 .overflow {
   position: relative;
@@ -345,7 +345,7 @@ body {
 /*REAL TIME SAT*/
 
 #fluxos {
-  margin-top: 3px !important;
+  margin-top: 0px !important;
   margin-left: 0px;
   opacity: 0.8;
   border: 1px solid transparent;
@@ -355,6 +355,9 @@ body {
   height: 9px;
 }
 
+.padding-sat .km {
+  font-size: 7px;
+}
 main > div:first-child {
   width: 100%;
   position: fixed;
