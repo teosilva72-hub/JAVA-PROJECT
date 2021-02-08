@@ -265,8 +265,7 @@ public class SatReportsController {
 		vehicles.add(new SelectItem(1, localeLabel.getStringKey("sat_reports_select_vehicles_light")));   
 		vehicles.add(new SelectItem(2, localeLabel.getStringKey("sat_reports_select_vehicles_motorcycle")));  
 		vehicles.add(new SelectItem(3, localeLabel.getStringKey("sat_reports_select_vehicles_heavy")));  
-		vehicles.add(new SelectItem(4, localeLabel.getStringKey("sat_reports_select_vehicles_long_heavy")));  
-
+		
 		/* VEHICLES CCR SELECTION */		
 		vehiclesCCR = new ArrayList<SelectItem>();	
 		vehiclesCCR.add(new SelectItem(1, localeLabel.getStringKey("sat_reports_select_vehicles_light")));   
@@ -393,12 +392,13 @@ public class SatReportsController {
 		if(type.equals("2")) {
 
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"), 
-					localeLabel.getStringKey("sat_reports_count_flow_lightVehicles"), localeLabel.getStringKey("sat_reports_count_flow_heavyVehicles"),
-					localeLabel.getStringKey("sat_reports_count_flow_motorcycleVehicles"), localeLabel.getStringKey("sat_reports_count_flow_lightVehicles"), 
-					localeLabel.getStringKey("sat_reports_count_flow_heavyVehicles"), localeLabel.getStringKey("sat_reports_count_flow_motorcycleVehicles"), localeLabel.getStringKey("sat_reports_general_total")};
+					localeLabel.getStringKey("sat_reports_count_flow_lightVehicles"), localeLabel.getStringKey("sat_reports_count_flow_motorcycleVehicles"), 
+					localeLabel.getStringKey("sat_reports_count_flow_heavyVehicles"), localeLabel.getStringKey("sat_reports_count_flow_lightVehicles"),  
+					localeLabel.getStringKey("sat_reports_count_flow_motorcycleVehicles"),	localeLabel.getStringKey("sat_reports_count_flow_heavyVehicles"), 
+					localeLabel.getStringKey("sat_reports_general_total")};
 
-			fieldObjectValues = new String[] { "date", "dateTime", "lightDir1", "heavyDir1",  "motoDir1",
-					"lightDir2", "heavyDir2", "motoDir2", "total"};
+			fieldObjectValues = new String[] { "date", "dateTime", "lightDir1", "motoDir1", "heavyDir1",
+					"lightDir2", "motoDir2", "heavyDir2", "total"};
 
 		}
 
@@ -872,12 +872,12 @@ public class SatReportsController {
 		switch(type) {
 
 		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments, satReport.vehicles)); break;
-		case "2": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment(), satReport.getPeriod(), lanes)); break;
+		case "2": query = BuildMainQuery(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment())); break;
 		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
 		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
 		case "5": query = BuildMainQuery(models, satModels.WeighingMainQuery(satReport.getEquipment(), satReport.classes)); ; break;
-		case "6": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.ClassTypeMainQuery(satReport.getEquipment(), satReport.classes, lanes)); ; break;
-		case "7": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.AxleTypeMainQuery(satReport.getEquipment(), satReport.axles, lanes)); ; break;
+		case "6": query = BuildMainQuery(models, satModels.ClassTypeMainQuery(satReport.getEquipment())); ; break;
+		case "7": query = BuildMainQuery(models, satModels.AxleTypeMainQuery(satReport.getEquipment())); ; break;
 		case "8": query = BuildMainQuery(models, satModels.SpeedMainQuery(satReport.getEquipment(), satReport.vehicles));  ; break; 
 		case "9": query = BuildMainQueryLL(models, satModels.CCRClasses(satReport.getEquipment()));  ; break;  
 		case "10": query = BuildMainQueryLL(models, satModels.CCRTipos(satReport.getEquipment()));  ; break;  	
@@ -1268,7 +1268,9 @@ public class SatReportsController {
 					fields[i+2] =  localeLabel.getStringKey("sat_reports_class_heavy_10_axles");
 					fieldObjectValues[i+2] = "class"+(i+1);
 				}  
-			}     		  
+				
+							
+			}
 		}
 	
 	//REORDENAR TABLE FRONT END - CONTAGEM VEÍCULOS
@@ -1439,8 +1441,7 @@ public class SatReportsController {
 		if(type.equals("2")) {    
 			fields = length;   
 			
-			System.out.println("LEN: "+length);
-		}
+	    }
 
 		/**** FLUXO MENSAL  ****/
 		if(type.equals("3")) {    		
@@ -1455,20 +1456,20 @@ public class SatReportsController {
 		/**** PESAGEM  ****/
 		if(type.equals("5")) {
 			
-			 fields = ( 2 + satReport.classes.length);
+			 fields = length;
 
 		}
 
 		/**** CLASS TYPE  ****/
 		if(type.equals("6")) {		
-			 fields = ( 3 + (satReport.classes.length * 3));
+			 fields = length + 28;
 
 		}
 
 		/**** AXLE TYPE ****/
 		if(type.equals("7")) {
 			
-			 fields = ( 3 + (satReport.axles.length * 3));
+			 fields = length + 20;
 
 		}
 
@@ -1485,17 +1486,17 @@ public class SatReportsController {
 
 		/**** CCR TYPE ****/
 		if(type.equals("10")) {
-			 fields = length;
+			 fields = length + 6;
 		}
 
 		/**** CCR SPEED ****/
 		if(type.equals("11")) {
-			fields = length;
+			fields = length + 14;
 		}
 
 		/**** CCR ALL CLASSES ****/
 		if(type.equals("12")) {
-			fields = (3 + 54);
+			fields = length + 38;
 
 		}
 
@@ -1753,7 +1754,10 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder Tables
-			ReorderTableHeaderForClasses(satReport.classes);    		
+			ReorderTableHeaderForClasses(satReport.classes); 
+			
+			//Colunas que iniciam Sentido 1 e Sentido 2
+			int iniDir1 = 15, iniDir2 = 29;
 
 			model.StandardFonts(); //Set Fonts
 			model.StandardStyles(); // Set Styles
@@ -1762,7 +1766,7 @@ public class SatReportsController {
 			//Excel Model with Directions
 			model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-					col, colStartDate, colEndDate, resultQuery);
+					col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);
 
 		}
 
@@ -1793,7 +1797,10 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder header
-			ReorderTableHeaderForAxles(satReport.axles);    		
+			ReorderTableHeaderForAxles(satReport.axles);  
+			
+			//Colunas que iniciam Sentido 1 e Sentido 2
+			int iniDir1 = 11, iniDir2 = 21;
 
 			model.StandardFonts(); //Set Font
 			model.StandardStyles(); // Set Styles
@@ -1802,7 +1809,7 @@ public class SatReportsController {
 			//Excel Model Directions
 			model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-					col, colStartDate, colEndDate, resultQuery);		  
+					col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);		  
 		} 	 
 
 		/**** SPEED ****/
@@ -1825,15 +1832,15 @@ public class SatReportsController {
 			//Equipment Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
 			lanes = String.valueOf(info.getNumFaixas()); city = info.getCidade();
-
+									
 			model.StandardFonts(); // Fonts
 			model.StandardStyles(); // Styles
 			model.StandardBorders(); // Borders
 
 			//Standard Excel Model
 			model.StandardExcelModel(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
-					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-					col, colStartDate, colEndDate, resultQuery);
+				RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
+				col, colStartDate, colEndDate, resultQuery);
 
 		}
 		
@@ -1849,9 +1856,12 @@ public class SatReportsController {
 
 			countMergeHeader = new String[] {"A1:B4", "C1:L4", "M1:O4"}; // Merge Cells
 
-			col = new int[] {3500, 3500, 3500, 3500, 3500, 3500, 3500, 350}; //Col size
+			col = new int[] {3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}; //Col size
 
 			colStartDate = 12; colEndDate = 14; //Col start & end date
+			
+			//Colunas que iniciam Sentido 1 e Sentido 2
+			int iniDir1 = 7, iniDir2 = 13;
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
@@ -1876,7 +1886,7 @@ public class SatReportsController {
 			//Excel Model with Directions
 			model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-					col, colStartDate, colEndDate, resultQuery);
+					col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2 );
 
 		}		
       			
@@ -1894,6 +1904,9 @@ public class SatReportsController {
 
 			colStartDate = 12; colEndDate = 14; //Col start & end date
 			
+			//Colunas que iniciam Sentido 1 e Sentido 2
+			int iniDir1 = 4, iniDir2 = 7;
+			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
 			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
@@ -1917,7 +1930,7 @@ public class SatReportsController {
 			//Excel Model with Directions
 			model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-					col, colStartDate, colEndDate, resultQuery);
+					col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);
 
 		}
 		
@@ -1948,8 +1961,8 @@ public class SatReportsController {
 					direction1 = tm.CheckDirection1(lane1);
 					direction2 = tm.CheckDirection2(lane1);
 
-					//Reorder Tables
-					//ReorderTableHeaderForClasses(satReport.classes);    		
+					//Colunas que iniciam Sentido 1 e Sentido 2
+					int iniDir1 = 8, iniDir2 = 15;		
 
 					model.StandardFonts(); //Set Fonts
 					model.StandardStyles(); // Set Styles
@@ -1957,8 +1970,8 @@ public class SatReportsController {
 
 					//Excel Model with Directions
 					model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
-							RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-							col, colStartDate, colEndDate, resultQuery);
+						RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
+						col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);
 
 				}
 				
@@ -1989,17 +2002,17 @@ public class SatReportsController {
 					direction1 = tm.CheckDirection1(lane1);
 					direction2 = tm.CheckDirection2(lane1);
 
-					//Reorder Tables
-					//ReorderTableHeaderForClasses(satReport.classes);    		
+					//Colunas que iniciam Sentido 1 e Sentido 2
+					int iniDir1 = 20, iniDir2 = 39;	  		
 
 					model.StandardFonts(); //Set Fonts
 					model.StandardStyles(); // Set Styles
 					model.StandardBorders(); //Set Borders
 
 					//Excel Model with Directions
-					model.ExcelModelDirectionsSubHeader(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
-							RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
-							col, colStartDate, colEndDate, resultQuery);
+				    model.ExcelModelDirectionsSubHeader(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
+					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
+					col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);
 
 				}
 				
@@ -3833,12 +3846,12 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 					.dateTime(resultQuery[1][k])   
-					.lightDir1(Integer.parseInt(resultQuery[2][k]))
-					.heavyDir1(Integer.parseInt(resultQuery[3][k]))
-					.motosDir1(Integer.parseInt(resultQuery[4][k]))		 				                	
-					.lightDir2(Integer.parseInt(resultQuery[5][k]))
-					.heavyDir2(Integer.parseInt(resultQuery[6][k]))
-					.motosDir2(Integer.parseInt(resultQuery[7][k]))
+					.lightDir1(Integer.parseInt(resultQuery[2][k]))					
+					.motosDir1(Integer.parseInt(resultQuery[3][k]))	
+					.heavyDir1(Integer.parseInt(resultQuery[4][k]))
+					.lightDir2(Integer.parseInt(resultQuery[5][k]))					
+					.motosDir2(Integer.parseInt(resultQuery[6][k]))
+					.heavyDir2(Integer.parseInt(resultQuery[7][k]))
 					.total(Integer.parseInt(resultQuery[8][k]))); 		 			 
 		}    			 
 
@@ -4115,7 +4128,7 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k]))  				                            	 				                 
-						.total(Integer.parseInt(resultQuery[5][k])));    				    				 
+						.total(Integer.parseInt(resultQuery[3][k])));    				    				 
 			}
 
 		} else if(classLength == 2) {
@@ -4125,8 +4138,8 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k]))  	 				                            		 				                 
-						.total(Integer.parseInt(resultQuery[8][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k]))  	 				                            		 				                 
+						.total(Integer.parseInt(resultQuery[4][k])));    				    				 
 			}
 
 		} else if(classLength == 3) {
@@ -4136,9 +4149,9 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k])) 	 	 				                           		 				                 
-						.total(Integer.parseInt(resultQuery[11][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k])) 	 	 				                           		 				                 
+						.total(Integer.parseInt(resultQuery[5][k])));    				    				 
 			}
 
 		} else if(classLength == 4) {
@@ -4148,10 +4161,10 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k])) 	 	 	 				                          		 				                 
-						.total(Integer.parseInt(resultQuery[14][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k])) 	 	 	 				                          		 				                 
+						.total(Integer.parseInt(resultQuery[6][k])));    				    				 
 			}
 
 		}else if(classLength == 5) {
@@ -4161,11 +4174,11 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k])) 	 	 	  				                              		 				                 
-						.total(Integer.parseInt(resultQuery[17][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k])) 	 	 	  				                              		 				                 
+						.total(Integer.parseInt(resultQuery[7][k])));    				    				 
 			}
 
 		} else if(classLength == 6) {
@@ -4175,12 +4188,12 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k])) 	 	 	  				                             		 				                 
-						.total(Integer.parseInt(resultQuery[20][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k])) 	 	 	  				                             		 				                 
+						.total(Integer.parseInt(resultQuery[8][k])));    				    				 
 			}
 
 		} else if(classLength == 7) {
@@ -4190,13 +4203,13 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k])) 	 	 	  				                              		 				                 
-						.total(Integer.parseInt(resultQuery[23][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k])) 	 	 	  				                              		 				                 
+						.total(Integer.parseInt(resultQuery[9][k])));    				    				 
 			}
 
 		} else if(classLength == 8) {
@@ -4206,14 +4219,14 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))  
-						.total(Integer.parseInt(resultQuery[26][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))  
+						.total(Integer.parseInt(resultQuery[10][k])));    				    				 
 			}
 
 		} else if(classLength == 9) {
@@ -4223,15 +4236,15 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[26][k])) 	 	 	  				                             		 				                 
-						.total(Integer.parseInt(resultQuery[29][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(Integer.parseInt(resultQuery[10][k])) 	 	 	  				                             		 				                 
+						.total(Integer.parseInt(resultQuery[11][k])));    				    				 
 			}
 
 		} else if(classLength == 10) {
@@ -4241,16 +4254,16 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[26][k]))
-						.class10(Integer.parseInt(resultQuery[29][k])) 	 	 	  				                            		 				                 
-						.total(Integer.parseInt(resultQuery[32][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(Integer.parseInt(resultQuery[10][k]))
+						.class10(Integer.parseInt(resultQuery[11][k])) 	 	 	  				                            		 				                 
+						.total(Integer.parseInt(resultQuery[12][k])));    				    				 
 			}
 
 		} else if(classLength == 11) {
@@ -4260,17 +4273,17 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[26][k]))
-						.class10(Integer.parseInt(resultQuery[29][k]))
-						.class11(Integer.parseInt(resultQuery[32][k])) 	 	 	  				                               		 				                 
-						.total(Integer.parseInt(resultQuery[35][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(Integer.parseInt(resultQuery[10][k]))
+						.class10(Integer.parseInt(resultQuery[11][k]))
+						.class11(Integer.parseInt(resultQuery[12][k])) 	 	 	  				                               		 				                 
+						.total(Integer.parseInt(resultQuery[13][k])));    				    				 
 			}
 
 		} else if(classLength == 12) {
@@ -4280,18 +4293,18 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[26][k]))
-						.class10(Integer.parseInt(resultQuery[29][k]))
-						.class11(Integer.parseInt(resultQuery[32][k]))
-						.class12(Integer.parseInt(resultQuery[35][k])) 	 	 	  				                           		 				                 
-						.total(Integer.parseInt(resultQuery[38][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(Integer.parseInt(resultQuery[10][k]))
+						.class10(Integer.parseInt(resultQuery[11][k]))
+						.class11(Integer.parseInt(resultQuery[12][k]))
+						.class12(Integer.parseInt(resultQuery[13][k])) 	 	 	  				                           		 				                 
+						.total(Integer.parseInt(resultQuery[14][k])));    				    				 
 			}
 
 		} else if(classLength == 13) {
@@ -4301,19 +4314,19 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
 						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[5][k])) 
-						.class3(Integer.parseInt(resultQuery[8][k]))
-						.class4(Integer.parseInt(resultQuery[11][k]))
-						.class5(Integer.parseInt(resultQuery[14][k]))
-						.class6(Integer.parseInt(resultQuery[17][k]))
-						.class7(Integer.parseInt(resultQuery[20][k]))
-						.class8(Integer.parseInt(resultQuery[23][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[26][k]))
-						.class10(Integer.parseInt(resultQuery[29][k]))
-						.class11(Integer.parseInt(resultQuery[32][k]))
-						.class12(Integer.parseInt(resultQuery[35][k]))
-						.class13(Integer.parseInt(resultQuery[38][k]))    		 				                 
-						.total(Integer.parseInt(resultQuery[41][k])));    				    				 
+						.class2(Integer.parseInt(resultQuery[3][k])) 
+						.class3(Integer.parseInt(resultQuery[4][k]))
+						.class4(Integer.parseInt(resultQuery[5][k]))
+						.class5(Integer.parseInt(resultQuery[6][k]))
+						.class6(Integer.parseInt(resultQuery[7][k]))
+						.class7(Integer.parseInt(resultQuery[8][k]))
+						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(Integer.parseInt(resultQuery[10][k]))
+						.class10(Integer.parseInt(resultQuery[11][k]))
+						.class11(Integer.parseInt(resultQuery[12][k]))
+						.class12(Integer.parseInt(resultQuery[13][k]))
+						.class13(Integer.parseInt(resultQuery[14][k]))    		 				                 
+						.total(Integer.parseInt(resultQuery[15][k])));    				    				 
 			}
 
 		}    		                  
@@ -4330,7 +4343,7 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 				                
-						.total(Integer.parseInt(resultQuery[5][k])));    				    				 
+						.total(Integer.parseInt(resultQuery[3][k])));    				    				 
 			}
 
 		} else if(axleLength == 2) {
@@ -4340,8 +4353,8 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.total(Integer.parseInt(resultQuery[8][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.total(Integer.parseInt(resultQuery[4][k])));
 			}
 
 		} else  if(axleLength == 3) {
@@ -4351,9 +4364,9 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.total(Integer.parseInt(resultQuery[11][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.total(Integer.parseInt(resultQuery[5][k])));
 			}
 
 		}else if(axleLength == 4) {
@@ -4363,10 +4376,10 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.total(Integer.parseInt(resultQuery[14][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.total(Integer.parseInt(resultQuery[6][k])));
 			}
 
 		}else if(axleLength == 5) {
@@ -4376,11 +4389,11 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])  
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.total(Integer.parseInt(resultQuery[17][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.total(Integer.parseInt(resultQuery[7][k])));
 
 			}
 
@@ -4391,12 +4404,12 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])    
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.axles6(Integer.parseInt(resultQuery[17][k]))			               
-						.total(Integer.parseInt(resultQuery[20][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.axles6(Integer.parseInt(resultQuery[7][k]))			               
+						.total(Integer.parseInt(resultQuery[8][k])));
 			}
 
 		}else if(axleLength == 7) {
@@ -4406,13 +4419,13 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.axles6(Integer.parseInt(resultQuery[17][k]))
-						.axles7(Integer.parseInt(resultQuery[20][k]))
-						.total(Integer.parseInt(resultQuery[23][k])));			              
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.axles6(Integer.parseInt(resultQuery[7][k]))
+						.axles7(Integer.parseInt(resultQuery[8][k]))
+						.total(Integer.parseInt(resultQuery[9][k])));			              
 			}
 
 		}else if(axleLength == 8) {
@@ -4422,14 +4435,14 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.axles6(Integer.parseInt(resultQuery[17][k]))
-						.axles7(Integer.parseInt(resultQuery[20][k]))
-						.axles8(Integer.parseInt(resultQuery[23][k]))
-						.total(Integer.parseInt(resultQuery[26][k])));			               
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.axles6(Integer.parseInt(resultQuery[7][k]))
+						.axles7(Integer.parseInt(resultQuery[8][k]))
+						.axles8(Integer.parseInt(resultQuery[9][k]))
+						.total(Integer.parseInt(resultQuery[10][k])));			               
 			}
 
 		} else if(axleLength == 9) {
@@ -4439,15 +4452,15 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.axles6(Integer.parseInt(resultQuery[17][k]))
-						.axles7(Integer.parseInt(resultQuery[20][k]))
-						.axles8(Integer.parseInt(resultQuery[23][k]))
-						.axles9(Integer.parseInt(resultQuery[26][k]))
-						.total(Integer.parseInt(resultQuery[29][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.axles6(Integer.parseInt(resultQuery[7][k]))
+						.axles7(Integer.parseInt(resultQuery[8][k]))
+						.axles8(Integer.parseInt(resultQuery[9][k]))
+						.axles9(Integer.parseInt(resultQuery[10][k]))
+						.total(Integer.parseInt(resultQuery[11][k])));
 			}    		
 
 		} else if(axleLength == 10) {
@@ -4457,16 +4470,16 @@ public class SatReportsController {
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
 						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[5][k]))
-						.axles3(Integer.parseInt(resultQuery[8][k]))
-						.axles4(Integer.parseInt(resultQuery[11][k]))
-						.axles5(Integer.parseInt(resultQuery[14][k]))
-						.axles6(Integer.parseInt(resultQuery[17][k]))
-						.axles7(Integer.parseInt(resultQuery[20][k]))
-						.axles8(Integer.parseInt(resultQuery[23][k]))
-						.axles9(Integer.parseInt(resultQuery[26][k]))
-						.axles10(Integer.parseInt(resultQuery[29][k]))
-						.total(Integer.parseInt(resultQuery[32][k])));
+						.axles2(Integer.parseInt(resultQuery[3][k]))
+						.axles3(Integer.parseInt(resultQuery[4][k]))
+						.axles4(Integer.parseInt(resultQuery[5][k]))
+						.axles5(Integer.parseInt(resultQuery[6][k]))
+						.axles6(Integer.parseInt(resultQuery[7][k]))
+						.axles7(Integer.parseInt(resultQuery[8][k]))
+						.axles8(Integer.parseInt(resultQuery[9][k]))
+						.axles9(Integer.parseInt(resultQuery[10][k]))
+						.axles10(Integer.parseInt(resultQuery[11][k]))
+						.total(Integer.parseInt(resultQuery[12][k])));
 			}    		
 		}  
 	}
@@ -4551,24 +4564,25 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.class2(Integer.parseInt(resultQuery[2][k]))    
-					.class3(Integer.parseInt(resultQuery[3][k]))
-					.class4(Integer.parseInt(resultQuery[4][k]))
-					.class5(Integer.parseInt(resultQuery[5][k]))
-					.class6(Integer.parseInt(resultQuery[6][k]))
-					.class7(Integer.parseInt(resultQuery[7][k]))
-					.class8(Integer.parseInt(resultQuery[8][k]))
-					.class9(Integer.parseInt(resultQuery[9][k]))
-					.class10(Integer.parseInt(resultQuery[10][k]))
-					.class11(Integer.parseInt(resultQuery[11][k]))
-					.class12(Integer.parseInt(resultQuery[12][k]))
-					.class13(Integer.parseInt(resultQuery[13][k]))
-					.class14(Integer.parseInt(resultQuery[14][k]))
-					.class15(Integer.parseInt(resultQuery[15][k]))
-					.class16(Integer.parseInt(resultQuery[16][k]))
-					.class17(Integer.parseInt(resultQuery[17][k]))
-					.class18(Integer.parseInt(resultQuery[18][k]))		                  				               
-					.total(Integer.parseInt(resultQuery[19][k])));    				    				 
+					.class1(Integer.parseInt(resultQuery[2][k]))    
+					.class2(Integer.parseInt(resultQuery[3][k]))    
+					.class3(Integer.parseInt(resultQuery[4][k]))
+					.class4(Integer.parseInt(resultQuery[5][k]))
+					.class5(Integer.parseInt(resultQuery[6][k]))
+					.class6(Integer.parseInt(resultQuery[7][k]))
+					.class7(Integer.parseInt(resultQuery[8][k]))
+					.class8(Integer.parseInt(resultQuery[9][k]))
+					.class9(Integer.parseInt(resultQuery[10][k]))
+					.class10(Integer.parseInt(resultQuery[11][k]))
+					.class11(Integer.parseInt(resultQuery[12][k]))
+					.class12(Integer.parseInt(resultQuery[13][k]))
+					.class13(Integer.parseInt(resultQuery[14][k]))
+					.class14(Integer.parseInt(resultQuery[15][k]))
+					.class15(Integer.parseInt(resultQuery[16][k]))
+					.class16(Integer.parseInt(resultQuery[17][k]))
+					.class17(Integer.parseInt(resultQuery[18][k]))
+					.class18(Integer.parseInt(resultQuery[19][k]))		                  				               
+					.total(Integer.parseInt(resultQuery[20][k])));    				    				 
 
 		}
 

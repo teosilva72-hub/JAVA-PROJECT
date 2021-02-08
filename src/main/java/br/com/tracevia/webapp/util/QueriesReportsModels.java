@@ -145,25 +145,25 @@ public class QueriesReportsModels {
 		private static final String LEFT_JOIN_CONDITION_MONTHS = "ON MONTH(st.data) = MONTH(tmp.date_) ";	
 
 		//QUERIES GROUP AND ORDER BY PERIODS		
-		private static final String GROUP_AND_ORDER_TABLE_05_MIN = "GROUP BY tmp.datetime_05, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(05*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_05_MIN = "GROUP BY tmp.datetime_05, sec_to_time(time_to_sec(tmp.datetime_05)- time_to_sec(tmp.datetime_05)%(05*60)) " +
 				"ORDER BY tmp.datetime_05 ASC ";
 
-		private static final String GROUP_AND_ORDER_TABLE_06_MIN = "GROUP BY tmp.datetime_06, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(06*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_06_MIN = "GROUP BY tmp.datetime_06, sec_to_time(time_to_sec(tmp.datetime_06)- time_to_sec(tmp.datetime_06)%(06*60)) " +
 				"ORDER BY tmp.datetime_06 ASC ";
 
-		private static final String GROUP_AND_ORDER_TABLE_10_MIN = "GROUP BY tmp.datetime_10, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(10*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_10_MIN = "GROUP BY tmp.datetime_10, sec_to_time(time_to_sec(tmp.datetime_10)- time_to_sec(tmp.datetime_10)%(10*60)) " +
 				"ORDER BY tmp.datetime_10 ASC ";
 
-		private static final String GROUP_AND_ORDER_TABLE_15_MIN = "GROUP BY tmp.datetime_15, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(15*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_15_MIN = "GROUP BY tmp.datetime_15, sec_to_time(time_to_sec(tmp.datetime_15)- time_to_sec(tmp.datetime_15)%(15*60)) " +
 				"ORDER BY tmp.datetime_15 ASC ";
 
-		private static final String GROUP_AND_ORDER_TABLE_30_MIN = "GROUP BY tmp.datetime_30, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(30*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_30_MIN = "GROUP BY tmp.datetime_30, sec_to_time(time_to_sec(tmp.datetime_30)- time_to_sec(tmp.datetime_30)%(30*60)) " +
 				"ORDER BY tmp.datetime_30 ASC ";
 
-		private static final String GROUP_AND_ORDER_TABLE_01_HOUR = "GROUP BY tmp.datetime_hour, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(60*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_01_HOUR = "GROUP BY tmp.datetime_hour, sec_to_time(time_to_sec(tmp.datetime_hour)- time_to_sec(tmp.datetime_hour)%(60*60)) " +
 				"ORDER BY tmp.datetime_hour ASC "; 
 
-		private static final String GROUP_AND_ORDER_TABLE_06_HOURS = "GROUP BY tmp.datetime_six_hours, sec_to_time(time_to_sec(st.data)- time_to_sec(st.data)%(360*60)) " +
+		private static final String GROUP_AND_ORDER_TABLE_06_HOURS = "GROUP BY tmp.datetime_six_hours, sec_to_time(time_to_sec(tmp.datetime_six_hours)- time_to_sec(tmp.datetime_six_hours)%(360*60)) " +
 				"ORDER BY tmp.datetime_six_hours ASC "; 
 
 		private static final String GROUP_AND_ORDER_TABLE_DAYS = "GROUP BY tmp.date_ " +

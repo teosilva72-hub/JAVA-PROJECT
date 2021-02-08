@@ -329,7 +329,7 @@ public class RoadConcessionaire {
 			classCCRTruck10Axles = ViaSul.CCR_TRUCK_10AXLES.getClasse();	
 			classCCRBus2Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
 			classCCRBus3Axles = ViaSul.CCR_BUS_3AXLES.getClasse();	
-			classCCRBus4Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
+			classCCRBus4Axles = ViaSul.CCR_BUS_4AXLES.getClasse();	
 			classCCRBus5Axles = ViaSul.CCR_BUS_5AXLES.getClasse();	
 			classCCRBus6Axles = ViaSul.CCR_BUS_6AXLES.getClasse();			
 			
