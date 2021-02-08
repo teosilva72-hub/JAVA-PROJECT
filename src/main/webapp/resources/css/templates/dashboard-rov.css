@@ -546,6 +546,39 @@ input.apple-switch:checked:before {
 	position: relative;
 }
 
+#callmodal {
+   position: absolute;
+   right: 10px;
+   bottom: 10px;
+   z-index: 10040;	
+}
+
+.acptcall {
+	display: block;
+	height: 30px;
+	width: 30px;
+    background-size: contain;
+    border: none;
+}
+
+.dismisscall {
+	display: block;
+	height: 30px;
+	width: 30px;
+    background-size: contain;
+    border: none;
+}
+
+.waitcall {
+	display: block;
+	height: 30px;
+	width: 30px;
+    background-size: contain;
+    border: none;
+}
+
+
+/* VOICE/CALL BOX END*/
 
 #navbarMaximizeMenu{
 	background: #fff;	

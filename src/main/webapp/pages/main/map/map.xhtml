@@ -187,7 +187,7 @@
 
 			<div class="draggable" id="equipAll">
 
-				<c:forEach items="#{listEquips.equips}" var="loadItem">
+				<c:forEach items="#{loginAccount.load.allEquips}" var="loadItem">
 
 					<ui:fragment rendered="#{loadItem.val1}">
 						<ui:fragment rendered="#{loadItem.val2}">
@@ -828,7 +828,7 @@
 			<div class="modal-dialog" id="moddialog">
 				<div class="modal-content modal-sm">
 					<div class="modal-header" id="modheaderpad">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<button type="button" class="close" data-dismiss="toast" aria-label="Close">
 						<span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
