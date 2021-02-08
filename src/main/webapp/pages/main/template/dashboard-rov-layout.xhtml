@@ -30,7 +30,8 @@
 	<h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
 	<h:outputScript name="jquery-ui-1.12.1.js" library="js/jquery-ui" />	
 	<h:outputScript name="jquery.mask.js" library="js/jquery-mask" />
-							
+	<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />						
+	
 	<script>
 	
 	function sidenavAction() {		
@@ -705,7 +706,7 @@
       		<div class="modal-dialog" id="call-log">
 				<div class="modal-content">
 					<div class="modal-header" id="call-headerpad">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="z-index:1000;">
 						<span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
@@ -747,6 +748,10 @@
     
     <script>
     	$("#j_idt33").slimScroll({height: window.innerHeight - 150})
+    	
+    	$("#navCall").click(function (){
+    		$("#callmodal").show();
+    	});
     	
     </script>
 	  		
