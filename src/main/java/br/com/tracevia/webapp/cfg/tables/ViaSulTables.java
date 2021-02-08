@@ -4,7 +4,9 @@ public enum ViaSulTables {
 	
 	ViaSulVBV("tb_vbv"),
 	ViaSulLL("tb_vbv_ll"),
-	ViaSulCCR("tb_vbv_ccr");
+	ViaSulCCR("tb_vbv_ccr"),
+	ViaSulDados15("tb_dados15"),
+	ViaSulStatus("tb_status");
 				
 	private String table; 	 
 	 	   

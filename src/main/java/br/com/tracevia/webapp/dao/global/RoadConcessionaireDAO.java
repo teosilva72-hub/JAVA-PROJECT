@@ -24,8 +24,8 @@ public class RoadConcessionaireDAO {
 		  String concessionarieName = "";
 		  
 		 // if(serverAddress.equals(Servers.ServersViaSul.getServer()))
-		     //if(serverAddress.equals("192.168.0.40")) 
-			  if(serverAddress.equals("192.168.3.140"))
+		     if(serverAddress.equals("192.168.0.40")) 
+			  //if(serverAddress.equals("192.168.3.140"))
 	           conn = ConnectionFactory.connectToCCR();
 	    
 	    else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))

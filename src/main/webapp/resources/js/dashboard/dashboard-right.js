@@ -5,9 +5,7 @@ $(document).ready(function() {
   });
 
   var adjustSidebar = function() {
-    $('.sidebar').slimScroll({
-      height: document.documentElement.clientHeight - $('.navbar').outerHeight()
-    });
+    $(".menu-mode > form").slimScroll({height: window.innerHeight - 150})
   };
 
   adjustSidebar();

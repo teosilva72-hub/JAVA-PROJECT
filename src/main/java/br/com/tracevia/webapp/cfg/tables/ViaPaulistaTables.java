@@ -2,9 +2,9 @@ package br.com.tracevia.webapp.cfg.tables;
 
 public enum ViaPaulistaTables {
 	
-		ViaPaulistaVBV("tb_vbv");
-		//ViaPaulistaLL("tb_vbv_ll"),
-		//ViaPaulistaCCR("tb_vbv_paulista");
+		ViaPaulistaVBV("tb_vbv"),
+	    ViaPaulistaDados15("tb_dados15"),
+	    ViaPaulistaStatus("tb_status");
 					
 		private String table; 	 
 		 	   
