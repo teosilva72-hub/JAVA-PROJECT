@@ -146,6 +146,8 @@ public class LoginAccountBean {
 			context.getExternalContext().getSessionMap().put("concessionaria", RoadConcessionaire.roadConcessionaire); 
 					  
 			load.startupComponents(); //Inicializar Componentes			
+			
+			//NOT IN USE 
 			mapUI = RoadConcessionaire.mapUI; // Load Map
 			linearMapUI = RoadConcessionaire.linearMapUI;
 									

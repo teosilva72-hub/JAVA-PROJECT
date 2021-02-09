@@ -19,8 +19,6 @@ public class LoadStartupModules {
 	private List<Equipments> cftv, colas, comms, dai, lpr, mto, pmv, sat, sos, speed, videowall, wim;
 	private boolean en_cftv, en_colas, en_comms, en_dai, en_lpr, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_wim;
 	private boolean rt_cftv, rt_colas, rt_comms, rt_dai, rt_lpr, rt_mto, rt_pmv, rt_sat, rt_sos, rt_speed, rt_videowall, rt_wim;
-	private List<listEquips> allEquips;
-	
 
 	public List<Modules> getModules() {
 		return modules;
@@ -418,86 +416,49 @@ public class LoadStartupModules {
 		videowall = new ArrayList<Equipments>();
 		wim = new ArrayList<Equipments>();
 		
-		allEquips = new ArrayList<listEquips>();
-		
 		EquipmentsDAO equipDAO = new EquipmentsDAO();
-							
+								
 		for(Modules mod: modules) {
 			
-			if(mod.getModule().equals(ModulesEnum.CFTV.getModule())) {
-				cftv.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_cftv = mod.isState();	
-				allEquips.add(new listEquips(en_cftv, rt_cftv, cftv));
-			}
+			if(mod.getModule().equals(ModulesEnum.CFTV.getModule()) && mod.isEnabled())			
+				en_cftv = mod.isEnabled();			
 			
-			if(mod.getModule().equals(ModulesEnum.COLAS.getModule())) {
-				colas.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_colas = mod.isState();
-				allEquips.add(new listEquips(en_colas, rt_colas, colas));
-			}
+			if(mod.getModule().equals(ModulesEnum.COLAS.getModule()) && mod.isEnabled()) 		
+				en_colas = mod.isEnabled();				
 
-			if(mod.getModule().equals(ModulesEnum.COMMS.getModule())) {
-				comms.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_comms = mod.isState();
-				allEquips.add(new listEquips(en_comms, rt_comms, comms));
-			}
+			if(mod.getModule().equals(ModulesEnum.COMMS.getModule()) && mod.isEnabled())			
+				en_comms = mod.isEnabled();
+						
+			if(mod.getModule().equals(ModulesEnum.DAI.getModule()) && mod.isEnabled())				
+				en_dai = mod.isEnabled();
+						
+			if(mod.getModule().equals(ModulesEnum.LPR.getModule()) && mod.isEnabled())				
+				en_lpr = mod.isEnabled();
 			
-			if(mod.getModule().equals(ModulesEnum.DAI.getModule())) {
-				dai.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_dai = mod.isState();
-				allEquips.add(new listEquips(en_dai, rt_dai, dai));
-			}
+			if(mod.getModule().equals(ModulesEnum.MTO.getModule()) && mod.isEnabled())				
+				en_mto = mod.isEnabled();
+		
+			if(mod.getModule().equals(ModulesEnum.OCC.getModule()) && mod.isEnabled())				
+				en_occ = mod.isEnabled();
 			
-			if(mod.getModule().equals(ModulesEnum.LPR.getModule())) {
-				lpr.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_lpr = mod.isState();
-				allEquips.add(new listEquips(en_lpr, rt_lpr, lpr));
-			}
-							
-			if(mod.getModule().equals(ModulesEnum.MTO.getModule())) {
-				mto.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_mto = mod.isState();
-				allEquips.add(new listEquips(en_mto, rt_mto, mto));
-			}
-			
-			if(mod.getModule().equals(ModulesEnum.OCC.getModule())) {				
-				en_occ = mod.isState();
-			}
 					
-			if(mod.getModule().equals(ModulesEnum.PMV.getModule())) {
-				pmv.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_pmv = mod.isState();
-				allEquips.add(new listEquips(en_pmv, rt_pmv, pmv));
-			}
+			if(mod.getModule().equals(ModulesEnum.PMV.getModule()) && mod.isEnabled())				
+				en_pmv = mod.isEnabled();
+					
+			if(mod.getModule().equals(ModulesEnum.SAT.getModule()) && mod.isEnabled())			
+				en_sat = mod.isEnabled();
 			
-			if(mod.getModule().equals(ModulesEnum.SAT.getModule())) {
-				sat.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_sat = mod.isState();
-				allEquips.add(new listEquips(en_sat, rt_sat, sat));
-			}
-			
-			if(mod.getModule().equals(ModulesEnum.SOS.getModule())) {
-			    sos.addAll(equipDAO.listEquipmentsAvailables(mod));	
-			    en_sos = mod.isState();
-			    allEquips.add(new listEquips(en_sos, rt_sos, sos));
-			}
-			
-			if(mod.getModule().equals(ModulesEnum.SPEED.getModule())) {
-				speed.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_speed = mod.isState();
-				allEquips.add(new listEquips(en_speed, rt_speed, speed));
-			}
-			
-			if(mod.getModule().equals(ModulesEnum.VIDEOWALL.getModule())) {
-				videowall.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_videowall = mod.isState();
-			}
-			
-			if(mod.getModule().equals(ModulesEnum.WIM.getModule())) {
-				wim.addAll(equipDAO.listEquipmentsAvailables(mod));
-				en_wim = mod.isState();
-				allEquips.add(new listEquips(en_wim, rt_wim, wim));
-			}						
+			if(mod.getModule().equals(ModulesEnum.SOS.getModule()) && mod.isEnabled())			  
+			    en_sos = mod.isEnabled();
+						
+			if(mod.getModule().equals(ModulesEnum.SPEED.getModule()) && mod.isEnabled()) 			
+				en_speed = mod.isEnabled();
+						
+			if(mod.getModule().equals(ModulesEnum.VIDEOWALL.getModule()) && mod.isEnabled())				
+				en_videowall = mod.isEnabled();
+						
+			if(mod.getModule().equals(ModulesEnum.WIM.getModule()) && mod.isEnabled())				
+				en_wim = mod.isEnabled();								
 		}	
 	}
 	
@@ -509,34 +470,6 @@ public class LoadStartupModules {
 		 		
 		//System.out.println("ID: "+valueChangeEvent.getComponent().getId());			
 		
-	}
-	
-	public class listEquips {
-		private boolean val1;
-		private boolean val2;
-		private List<Equipments> list;
-		
-		listEquips(boolean val1, boolean val2, List<Equipments> list) {
-			this.val1 = val1;
-			this.val2 = val2;
-			this.list = list;
-		}
-		
-		public boolean getVal1() {
-			return val1;
-		}
-		
-		public boolean getVal2() {
-			return val2;
-		}
+	}	
 
-		public List<Equipments> getList() {
-			return list;
-		}
-
-	}
-
-	public List<listEquips> getAllEquips() {
-		return allEquips;
-	}
 }

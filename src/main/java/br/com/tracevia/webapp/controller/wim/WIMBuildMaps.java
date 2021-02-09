@@ -10,9 +10,9 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
-@ManagedBean(name="wimMapView")
+@ManagedBean(name="wimLinearView")
 @ViewScoped
-public class WIMBuildMap {
+public class WIMBuildMaps {
 	
 	List<? extends Equipments> wimList;
 	
@@ -27,11 +27,11 @@ public class WIMBuildMap {
 	@PostConstruct
 	public void initalize() {
 		
-		CreateMapEquipment();
+		CreateLinearEquipment();
 		
 	}
 	
-	public void CreateMapEquipment() {
+	public void CreateLinearEquipment() {
 						
 		try {	
 		
@@ -40,7 +40,7 @@ public class WIMBuildMap {
 			wimList = new ArrayList<WIM>();
 			
 			WIM wim =  new WIM();						
-			wimList = wim.ListMapEquipments("wim");			
+			wimList = wim.listEquipments("wim");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.sos;
+package br.com.tracevia.webapp.controller.cftv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,21 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.sos.SOS;
 
-@ManagedBean(name="sosMapView")
+@ManagedBean(name="cftvMapView")
 @ViewScoped
-public class SOSBuildMap {
+public class CFTVBuildMaps {
 	
-	List<? extends Equipments> sosList; 
-		
-	public List<? extends Equipments> getSosList() {
-		return sosList;
+	List<? extends Equipments> cftvList; 
+	
+	public List<? extends Equipments> getCftvList() {
+		return cftvList;
 	}
 
-	public void setSosList(List<? extends Equipments> sosList) {
-		this.sosList = sosList;
+	public void setCftvList(List<? extends Equipments> cftvList) {
+		this.cftvList = cftvList;
 	}
 
 	@PostConstruct
@@ -32,15 +32,15 @@ public class SOSBuildMap {
 	}
 	
 	public void CreateMapEquipment() {
-						
+			
 		try {	
 		
 		try {
 			
-			sosList = new ArrayList<SOS>();
+			cftvList = new ArrayList<CFTV>();
 			
-			SOS sos = new SOS();					
-			sosList = sos.ListMapEquipments("sos");			
+			CFTV cftv =  new CFTV();						
+			cftvList = cftv.listEquipments("cftv");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

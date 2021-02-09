@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 
 @ManagedBean(name="lprLinearView")
 @ViewScoped
-public class LPRBuildLinear {
+public class LPRBuildMaps {
 	
 	List<? extends Equipments> lprList;
 
@@ -40,7 +40,7 @@ public class LPRBuildLinear {
 			lprList = new ArrayList<LPR>();
 			
 			LPR lpr =  new LPR();						
-			lprList = lpr.ListLinearEquipments("lpr");			
+			lprList = lpr.listEquipments("lpr");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

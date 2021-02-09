@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.speed.Speed;
 
 @ManagedBean(name="speedLinearView")
 @ViewScoped
-public class SpeedBuildLinear {
+public class SpeedBuildSpeed {
 	
 	List<? extends Equipments> speedList;
 
@@ -40,7 +40,7 @@ public class SpeedBuildLinear {
 			speedList = new ArrayList<Speed>();
 			
 			Speed speed =  new Speed();						
-			speedList = speed.ListLinearEquipments("speed");			
+			speedList = speed.listEquipments("speed");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

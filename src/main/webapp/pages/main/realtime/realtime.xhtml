@@ -72,342 +72,123 @@
 
 				<!-- Carrega os equipamentos -->
 
-				<!-- CFTV -->
-				<ui:fragment rendered="#{loginAccount.load.en_cftv}">
-					<ui:fragment rendered="#{loginAccount.load.rt_cftv}">
-
-						<c:forEach items="#{cftvLinearView.cftvList}" var="item" varStatus="loop">
-
-							<div id="cftv#{item.equip_id}" class="equip-box">
-
-
-								<div class="equip-name">
-
-									<table id="cftvName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="cftvStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image" value="/resources/images/equips/camera.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC CFTV
-								drawGenericEquipments('cftv#{item.equip_id}', 'cftvName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 2.5);
-
-							</script>
-
-						</c:forEach>
-
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- COLAS -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_colas}">
-					<ui:fragment rendered="#{loginAccount.load.rt_colas}">
-						<c:forEach items="#{colasLinearView.colasList}" var="item" varStatus="loop">
-
-							<div id="colas#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="colasName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="colasStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image"
-										value="/resources/images/equips/dai_lpr_colas.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC COLAS
-								drawGenericEquipments('colas#{item.equip_id}', 'colasName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- COMMS -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_comms}">
-					<ui:fragment rendered="#{loginAccount.load.rt_comms}">
-						<c:forEach items="#{commsLinearView.commsList}" var="item" varStatus="loop">
-
-							<div id="comms#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="commsName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="commsStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image"
-										value="/resources/images/equips/dai_lpr_colas.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC COMMS
-								drawGenericEquipments('comms#{item.equip_id}', 'commsName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 2.5);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-
-				<!-- DAI -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_dai}">
-					<ui:fragment rendered="#{loginAccount.load.rt_dai}">
-						<c:forEach items="#{daiLinearView.daiList}" var="item" varStatus="loop">
-
-							<div id="dai#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="daiName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="daiStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image"
-										value="/resources/images/equips/dai_lpr_colas.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC DAI
-								drawGenericEquipments('dai#{item.equip_id}', 'daiName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3.5);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- DMS  -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-					<ui:fragment rendered="#{loginAccount.load.rt_pmv}">
-
-						<c:forEach items="#{dmsLinearView.dmsList}" var="item" varStatus="loop">
-							<div id="dms#{item.equip_id}" class="equip-info">
-								<div class="dms-name">
-									<table id="dmsName#{item.table_id}" class="dms-header-table">
-										<tr>
-											<td>#{item.nome} </td>
-										</tr>
-									</table>
-									<!-- <a class="info-bagde" type="button" id="mi#{item.table_id}" onclick="PF('infoModal#{item.table_id}').show()"><b>i</b></a> 	-->
-									<!-- <a class="info" type="button" id="update" onclick="PF('infoModal1#{item.table_id}').show()"><b>m</b></a>-->
-								</div>
-								<div id="child-img">
-									<h:graphicImage id="img#{item.equip_id}"
-										value="/resources/images/pictures/#{dmsLinearView.image[loop.index]}"
-										styleClass="ui-graphic-image" />
-								</div>
-								<div id="child-msg">
-									<table id="msg#{item.table_id}" class="table-message">
-										<tbody>
-											<tr>
-												<td>#{dmsLinearView.letter[loop.index][0][0]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][1]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][2]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][3]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][4]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][5]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][6]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][7]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][8]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][9]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][10]}</td>
-												<td>#{dmsLinearView.letter[loop.index][0][11]}</td>
-											</tr>
-											<tr>
-												<td>#{dmsLinearView.letter[loop.index][1][0]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][1]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][2]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][3]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][4]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][5]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][6]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][7]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][8]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][9]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][10]}</td>
-												<td>#{dmsLinearView.letter[loop.index][1][11]}</td>
-											</tr>
-											<tr>
-												<td>#{dmsLinearView.letter[loop.index][2][0]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][1]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][2]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][3]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][4]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][5]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][6]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][7]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][8]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][9]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][10]}</td>
-												<td>#{dmsLinearView.letter[loop.index][2][11]}</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<script>
-
-								//DRAW AND DEFINE DMS   
-								drawDMS('dms#{item.equip_id}', 'dmsName#{item.table_id}', 'msg#{item.table_id}', #{ item.linearPosX },  #{ item.linearPosY },  #{ item.width },  #{ item.height }, 7, 0.25);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- LPR -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_lpr}">
-					<ui:fragment rendered="#{loginAccount.load.rt_lpr}">
-						<c:forEach items="#{lprLinearView.lprList}" var="item" varStatus="loop">
-
-							<div id="lpr#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="lprName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="lprStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image"
-										value="/resources/images/equips/dai_lpr_colas.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC LPR
-								drawGenericEquipments('lpr#{item.equip_id}', 'lprName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3.5);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- MTO -->
-				<ui:fragment rendered="#{loginAccount.load.en_mto}">
-
-					<ui:fragment rendered="#{loginAccount.load.rt_mto}">
-						<c:forEach items="#{mtoLinearView.mtoList}" var="item" varStatus="loop">
-
-							<div id="mto#{item.equip_id}" class="equip-box">
-
-
-								<div class="equip-name">
-
-									<table id="mtoName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="mtoStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image"
-										value="/resources/images/equips/metereologico.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC MTO
-								drawGenericEquipments('mto#{item.equip_id}', 'mtoName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 2.5);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- SAT -->
-				<ui:fragment rendered="#{loginAccount.load.en_sat}">
-					<ui:fragment rendered="#{loginAccount.load.rt_sat}">
-
-						<c:forEach items="#{satLinearView.satList}" var="item" varStatus="loop">
-							<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" >
+				<c:forEach items="#{listEquips.equips}" var="loadItem">
+
+					<ui:fragment rendered="#{loadItem.val1}">
+						<ui:fragment rendered="#{loadItem.val2}">
+
+							<div>
+								
+								<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
+								
+									<c:choose>
+										<c:when test="#{item.table_id eq 'pmv'}">
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
+												posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}">
+	
+												<!-- Table with DIV -->
+	
+												<div class="container tableStyle card">
+													<div class="dms-name card-header py-0">
+														<div id="dmsTab#{item.equip_id}" class="text-center">
+															<p class="mb-0 text-white">#{item.nome} - #{item.km}</p>
+														</div>
+													</div>
+													<div class="row text-center card-body p-0">
+														<div id="child-img" class="col-2 padding-pmv">
+															<h:graphicImage
+																value="/resources/images/pictures/#{dmsLinearView.image[loop.index]}"
+																styleClass="ui-graphic-image" />
+														</div>
+														<div id="child-msg" class="col-auto">
+															<div id="msg#{item.equip_id}" class="table-message">
+																<div class="row border-table-right">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][0][10]}</div>
+																	<div class="col-1 px-0 border-table r">
+																		#{dmsLinearView.letter[loop.index][0][11]}</div>
+																</div>
+																<div class="row border-table-right">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][10]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][1][11]}</div>
+																</div>
+																<div class="row border-table-right bottom">
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][0]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][1]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][2]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][3]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][4]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][5]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][6]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][7]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][8]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][9]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][10]}</div>
+																	<div class="col-1 px-0 border-table">
+																		#{dmsLinearView.letter[loop.index][2][11]}</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+	
+											</div>
+										</c:when>
+										<c:when test="#{item.table_id eq 'sat'}">
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" status="#{satLinearView.satStatus.get(loop.index).status}">
 
 								<div id="sat#{item.equip_id}" class="table-sat card border-dark">
 									<div id="satName#{item.equip_id}" class="satName card-header p-0 border-dark">
@@ -445,140 +226,64 @@
 									</div>
 								</div>
 							</div>
-
-							<script>
-
-								//DRAW AND SET SAT DEFINITIONS    
-								drawSat('sat#{item.equip_id}', 'satTab#{item.equip_id}', #{ satLinearView.satStatus.get(loop.index).status }, #{ satLinearView.satListValues.get(loop.index).velocidadeS1 },
-    	#{ satLinearView.satListValues.get(loop.index).velocidadeS2 }, 'fluxos', 'img1FluxoTab#{item.equip_id}', 'img2FluxoTab#{item.equip_id}', 'satName#{item.equip_id}', 
-    	#{ item.linearPosX }, #{ item.linearPosY }, #{ item.width });
-
-							</script>
-
-						</c:forEach>
-
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- SOS -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_sos}">
-					<ui:fragment rendered="#{loginAccount.load.rt_sos}">
-						<c:forEach items="#{sosLinearView.sosList}" var="item" varStatus="loop">
-
-							<div id="sos#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="sosName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="sosStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image" value="/resources/images/equips/sos.png" />
-								</div>
+										</c:when>
+										<c:otherwise>
+											<div id="#{item.table_id}#{item.equip_id}" posX="#{item.linearPosX}"
+												posY="#{item.linearPosY}" item-width="#{item.linearWidth}" class="equip-box #{item.table_id}">
+												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
+													<p class="col-auto mb-0 pr-1">#{item.nome}</p>
+													<span id="#{item.table_id}Status1" class="equip-status"></span>
+													<p class="col-12 mb-0">#{item.km}</p>
+												</div>
+	
+												<c:if test="#{item.table_id eq 'cftv'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/camera.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'colas'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'comms'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'dai'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'lpr'}">
+													<h:graphicImage class="equip-imageCAM"
+														value="/resources/images/equips/dai_lpr_colas.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'mto'}">
+													<h:graphicImage class="equip-imagePOST"
+														value="/resources/images/equips/metereologico.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'sos'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/sos.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'speed'}">
+													<h:graphicImage class="equip-imagePOST"
+														value="/resources/images/equips/speed.png" />
+												</c:if>
+												<c:if test="#{item.table_id eq 'wim'}">
+													<h:graphicImage class="equip-image"
+														value="/resources/images/equips/wim.png" />
+												</c:if>
+											</div>
+										</c:otherwise>
+									</c:choose>
+								
+								</c:forEach>
+							
 							</div>
 
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC SOS
-								drawGenericEquipments('sos#{item.equip_id}', 'sosName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3.5);
-
-							</script>
-
-						</c:forEach>
+						</ui:fragment>
 					</ui:fragment>
-				</ui:fragment>
-
-				<!-- SPEED -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_speed}">
-					<ui:fragment rendered="#{loginAccount.load.rt_speed}">
-						<c:forEach items="#{speedLinearView.speedList}" var="item" varStatus="loop">
-
-							<div id="speed#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="speedName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="speedStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image" value="/resources/images/equips/speed.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC SPEED
-								drawGenericEquipments('speed#{item.equip_id}', 'speedName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
-
-				<!-- WIM -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_wim}">
-					<ui:fragment rendered="#{loginAccount.load.rt_wim}">
-						<c:forEach items="#{wimLinearView.wimList}" var="item" varStatus="loop">
-
-							<div id="wim#{item.equip_id}" class="equip-box">
-								<div class="equip-name">
-									<table id="wimName#{item.table_id}" class="table-generic">
-										<tbody>
-											<tr>
-												<td style="background: transparent;">
-													<h:outputLabel value="#{item.nome}" />
-												</td>
-												<td>
-													<div id="wimStatus#{item.table_id}" class="equip-status"></div>
-												</td>
-
-												<!-- <td>  <h:graphicImage width="100%;" height="100%;" value="/resources/images/generic/status/status_green.png" /></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div class="equip-graphic">
-									<h:graphicImage class="equip-image" value="/resources/images/equips/wim.png" />
-								</div>
-							</div>
-
-							<script>
-
-								//DRAW AND DEFINE THE GENERIC WIM
-								drawGenericEquipments('wim#{item.equip_id}', 'wimName#{item.table_id}', #{ item.linearPosX }, #{ item.linearPosY }, #{ item.width }, 3.5);
-
-							</script>
-
-						</c:forEach>
-					</ui:fragment>
-				</ui:fragment>
+					
+				</c:forEach>
 
 
 
@@ -586,6 +291,11 @@
 
 			<!--Function -->
 			<script>
+			
+
+			//DRAW AND SET SAT DEFINITIONS    
+
+			
 					mapMove();
 			</script>
 

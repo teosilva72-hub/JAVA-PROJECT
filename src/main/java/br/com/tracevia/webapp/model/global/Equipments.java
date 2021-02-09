@@ -20,8 +20,9 @@ public class Equipments {
 	private int linearPosY;
 	private int mapPosX;
 	private int mapPosY;
-	private int width;
+	private int mapWidth;
 	private int height;	
+	private int linearWidth;
 	private int dlgPosX;
 	private int dlgPosY;
 	private int status;
@@ -29,7 +30,7 @@ public class Equipments {
 	private boolean visible;
 		
 	public Equipments(int equip_id, String table_id, String creation_date, String creation_username, String nome, String estrada, String cidade, String km, String posicao,
-	  int linearPosX, int linearPosY, int mapPosX, int mapPosY, int width, int height, int dlgPosX, int dlgPosY,
+	  int linearPosX, int linearPosY, int linearWidth, int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY,
 	  int status, boolean notificacao, boolean visible) {
 		
 		this.equip_id = equip_id;
@@ -43,9 +44,10 @@ public class Equipments {
 		this.posicao = posicao;
 		this.linearPosX = linearPosX;
 		this.linearPosY = linearPosY;
+		this.linearWidth = linearWidth;
 		this.mapPosX = mapPosX;
 		this.mapPosY = mapPosY;
-		this.width = width;
+		this.mapWidth = mapWidth;		
 		this.height = height;
 		this.dlgPosX = dlgPosX;
 		this.dlgPosY = dlgPosY;
@@ -160,12 +162,12 @@ public class Equipments {
 			this.mapPosY = mapPosY;
 		}
 
-		public int getWidth() {
-			return width;
+		public int getMapWidth() {
+			return mapWidth;
 		}
 
-		public void setWidth(int width) {
-			this.width = width;
+		public void setMapWidth(int mapWidth) {
+			this.mapWidth = mapWidth;
 		}
 
 		public int getHeight() {
@@ -216,45 +218,23 @@ public class Equipments {
 			this.visible = visible;
 		}
 
+		public int getLinearWidth() {
+			return linearWidth;
+		}
+
+		public void setLinearWidth(int linearWidth) {
+			this.linearWidth = linearWidth;
+		}
+
 		//Linear Generic equipments
-		public List<Equipments> ListLinearEquipments(String modulo) throws Exception {
+		public List<Equipments> listEquipments(String modulo) throws Exception {
 			
 			List<Equipments> lista = new ArrayList<Equipments>();	
 			EquipmentsDAO dao = new EquipmentsDAO();			
-			lista = dao.buildLinearEquipemnts(modulo);	
+			lista.addAll(dao.buildEquipmentsInterface(modulo));	
 			
 			return lista;
 		}
-		
-		//Linear DMS equipments
-       public List<Equipments> ListLinearDMSEquipments(String modulo) throws Exception {
 			
-			List<Equipments> lista = new ArrayList<Equipments>();	
-			EquipmentsDAO dao = new EquipmentsDAO();			
-			lista = dao.buildLinearDMSEquipments(modulo);	
-			
-			return lista;
-		}
-       
-       //Generic Map  equipments
-       public List<Equipments> ListMapEquipments(String modulo) throws Exception {
-			
-			List<Equipments> lista = new ArrayList<Equipments>();	
-			EquipmentsDAO dao = new EquipmentsDAO();			
-			lista = dao.buildMapEquipments(modulo);	
-			
-			return lista;
-		}
-		
-		//DMS Map equipments
-      public List<Equipments> ListMapDMSEquipments(String modulo) throws Exception {
-			
-			List<Equipments> lista = new ArrayList<Equipments>();	
-			EquipmentsDAO dao = new EquipmentsDAO();			
-			lista = dao.buildMapDMSEquipments(modulo);	
-			
-			return lista;
-		}
-		
 		
 }

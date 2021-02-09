@@ -10,9 +10,9 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.videowall.VIDEOWALL;
 
-@ManagedBean(name="videoWallMapView")
+@ManagedBean(name="videoWallLinearView")
 @ViewScoped
-public class VIDEOWALLBuildMap {
+public class VIDEOWALLBuildMaps {
 	
 	List<? extends Equipments> videoWallList;
 
@@ -27,11 +27,11 @@ public class VIDEOWALLBuildMap {
 	@PostConstruct
 	public void initalize() {
 		
-		CreateMapEquipment();
+		CreateLinearEquipment();
 		
 	}
 	
-	public void CreateMapEquipment() {
+	public void CreateLinearEquipment() {
 						
 		try {	
 		
@@ -40,7 +40,7 @@ public class VIDEOWALLBuildMap {
 			videoWallList = new ArrayList<VIDEOWALL>();
 			
 			VIDEOWALL video = new VIDEOWALL();						
-			videoWallList = video.ListMapEquipments("videowall");			
+			videoWallList = video.listEquipments("videowall");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

@@ -13,7 +13,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import br.com.tracevia.webapp.controller.sos.SOSBuildLinear;
+import br.com.tracevia.webapp.controller.sos.SOSBuildMaps;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -160,7 +160,7 @@ public class EquipmentsBean implements Serializable {
 	    equip.setKm(parameterMap.get("km"));
 	    
 	    //For Equipment Width
-	    equip.setWidth(Integer.parseInt(parameterMap.get("width")));
+	    equip.setMapWidth(Integer.parseInt(parameterMap.get("width")));
 	    	    
 	    EquipmentsDAO equipDAO = new EquipmentsDAO();
 	    
@@ -168,8 +168,8 @@ public class EquipmentsBean implements Serializable {
 	    
 	   boolean equipr = equipDAO.EquipRegisterMap(equip, table);
 	   			
-	   		if (equipr)
-	   			System.out.println("true");
+	   		//if (equipr)
+	   			//System.out.println("true");
 	   			
 	}
 	
@@ -182,8 +182,7 @@ public class EquipmentsBean implements Serializable {
 		 equip = new Equipments();
 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable);
-		
-		    
+				    
 		 System.out.println(equip.getCidade());
 	    //For Equipment ID
 	 

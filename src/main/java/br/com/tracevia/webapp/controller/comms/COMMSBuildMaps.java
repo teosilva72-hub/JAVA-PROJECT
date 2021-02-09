@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.wim;
+package br.com.tracevia.webapp.controller.comms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,23 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
-@ManagedBean(name="wimLinearView")
+
+@ManagedBean(name="commsLinearView")
 @ViewScoped
-public class WIMBuildLinear {
+public class COMMSBuildMaps {
 	
-	List<? extends Equipments> wimList;
-	
-	public List<? extends Equipments> getWimList() {
-		return wimList;
+	List<? extends Equipments> commsList;
+		
+	public List<? extends Equipments> getCommsList() {
+		return commsList;
 	}
 
-	public void setWimList(List<? extends Equipments> wimList) {
-		this.wimList = wimList;
+	public void setCommsList(List<? extends Equipments> commsList) {
+		this.commsList = commsList;
 	}
 
 	@PostConstruct
@@ -37,10 +39,10 @@ public class WIMBuildLinear {
 		
 		try {
 			
-			wimList = new ArrayList<WIM>();
+			commsList = new ArrayList<WIM>();
 			
-			WIM wim =  new WIM();						
-			wimList = wim.ListLinearEquipments("wim");			
+			COMMS comms = new COMMS();						
+			commsList = comms.listEquipments("comms");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

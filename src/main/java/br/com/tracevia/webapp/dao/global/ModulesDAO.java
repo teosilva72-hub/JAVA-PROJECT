@@ -50,6 +50,8 @@ public class ModulesDAO {
 			
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
+			
+			System.out.println(query);
 
 			if (rs != null) {
 				while (rs.next()) {			
@@ -57,7 +59,7 @@ public class ModulesDAO {
 				  Modules mod = new Modules();
 					
 				  mod.setModule(rs.getString("module"));		
-				  mod.setState(rs.getBoolean("enabled"));		
+				  mod.setEnabled(rs.getBoolean("enabled"));		
 				  modules.add(mod);
 				    
 				}

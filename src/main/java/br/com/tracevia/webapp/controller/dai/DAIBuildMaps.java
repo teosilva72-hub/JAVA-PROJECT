@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.cftv;
+package br.com.tracevia.webapp.controller.dai;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,21 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.cftv.CFTV;
+import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="cftvLinearView")
+@ManagedBean(name="daiLinearView")
 @ViewScoped
-public class CFTVBuildLinear {
+public class DAIBuildMaps {
 	
-	List<? extends Equipments> cftvList; 
+	List<? extends Equipments> daiList;
 	
-	public List<? extends Equipments> getCftvList() {
-		return cftvList;
+	public List<? extends Equipments> getDaiList() {
+		return daiList;
 	}
 
-	public void setCftvList(List<? extends Equipments> cftvList) {
-		this.cftvList = cftvList;
+	public void setDaiList(List<? extends Equipments> daiList) {
+		this.daiList = daiList;
 	}
 
 	@PostConstruct
@@ -32,15 +32,15 @@ public class CFTVBuildLinear {
 	}
 	
 	public void CreateLinearEquipment() {
-			
+						
 		try {	
 		
 		try {
 			
-			cftvList = new ArrayList<CFTV>();
+			daiList = new ArrayList<DAI>();
 			
-			CFTV cftv =  new CFTV();						
-			cftvList = cftv.ListLinearEquipments("cftv");			
+			DAI dai = new DAI();						
+			daiList = dai.listEquipments("dai");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

@@ -10,9 +10,9 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="colasLinearView")
+@ManagedBean(name="colasMapView")
 @ViewScoped
-public class ColasBuildLinear {
+public class ColasBuildMaps {
 	
 	List<? extends Equipments> colasList;
 
@@ -27,11 +27,11 @@ public class ColasBuildLinear {
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		CreateMapEquipment();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void CreateMapEquipment() {
 						
 		try {	
 		
@@ -40,7 +40,7 @@ public class ColasBuildLinear {
 			colasList = new ArrayList<Colas>();
 			
 			Colas colas = new Colas();						
-			colasList = colas.ListLinearEquipments("colas");			
+			colasList = colas.listEquipments("colas");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

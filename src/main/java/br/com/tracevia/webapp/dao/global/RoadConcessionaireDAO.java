@@ -39,7 +39,7 @@ public class RoadConcessionaireDAO {
 			String query = "SELECT road_concessionaire FROM server_config WHERE server_address = ? ";
 
 			ps = conn.prepareStatement(query);
-			ps.setNString(1, serverAddress);
+			ps.setString(1, serverAddress);
 			rs = ps.executeQuery();
 
 			if (rs != null) {

@@ -61,7 +61,7 @@ public class DMSBuildLinear {
 			MessagesDAO messageDao = new MessagesDAO();
 			
 			DMS dms = new DMS();
-			dmsList = dms.ListLinearDMSEquipments("pmv");			
+			dmsList = dms.listEquipments("pmv");			
 			
 			messagesDisplay = messageDao.selectActivesMessages();
 						

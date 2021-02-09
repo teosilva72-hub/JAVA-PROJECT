@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.mto;
+package br.com.tracevia.webapp.controller.sos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,20 +8,20 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.mto.MTO;
+import br.com.tracevia.webapp.model.sos.SOS;
 
-@ManagedBean(name="mtoLinearView")
+@ManagedBean(name="sosLinearView")
 @ViewScoped
-public class MTOBuildLinear {
-
-List<? extends Equipments> mtoList; 
+public class SOSBuildMaps {
 	
-	public List<? extends Equipments> getMtoList() {
-		return mtoList;
+	List<? extends Equipments> sosList; 
+		
+	public List<? extends Equipments> getSosList() {
+		return sosList;
 	}
 
-	public void setMtoList(List<? extends Equipments> mtoList) {
-		this.mtoList = mtoList;
+	public void setSosList(List<? extends Equipments> sosList) {
+		this.sosList = sosList;
 	}
 
 	@PostConstruct
@@ -37,14 +37,15 @@ List<? extends Equipments> mtoList;
 		
 		try {
 			
-			mtoList = new ArrayList<MTO>();
+			sosList = new ArrayList<SOS>();
 			
-			MTO mto =  new MTO();						
-			mtoList = mto.ListLinearEquipments("mto");			
+			SOS sos = new SOS();					
+			sosList = sos.listEquipments("sos");		
 				
             }catch(IndexOutOfBoundsException ex) {}
 		
 		}catch(Exception ex) {}		
 						
 	}
+
 }

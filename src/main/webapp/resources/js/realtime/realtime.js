@@ -2,34 +2,36 @@ $(function () {
 	$('#btnLayers').removeClass('hidden').addClass('show');
 	$('#btnEquips').removeClass('hidden').addClass('show');
 
-	// $('.equip-box, .equip-info, .equip-box-sat').each(function () {
-	// 	let equip = $(this)
+	 $('.equip-box, .equip-info, .equip-box-sat').each(function () {
+	 	let equip = $(this)
 
-	// 	posEquip(equip)
+	 	posEquip(equip)
 
-	// 	$(window).resize(function () {
-	// 		posEquip(equip)
-	// 	})
-	// })
+	 	$(window).resize(function () {
+	 		posEquip(equip)
+	 	})
+	 })
 });
 
-// function posEquip(equip) {
-// 	let zoomTarget = equip.closest('.overflow').children().first()
-// 	let zoomTargetImg = zoomTarget.find('img')
-// 	let pos = {
-// 		x: Number(equip.attr('posX')),
-// 		y: Number(equip.attr('posY'))
-// 	}
-
-// 	pos.centX = pos.x / 1000
-// 	pos.centY = pos.y / 1000
-
-// 	//Pos X and Pos Y
-// 	equip.css({
-// 		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-// 		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
-// 	});
-// }
+ function posEquip(equip) {
+ 	let zoomTarget = equip.closest('.overflow').children().first()
+ 	let zoomTargetImg = zoomTarget.find('img')
+ 	let pos = {
+ 		x: Number(equip.attr('posX')),
+		y: Number(equip.attr('posY'))
+	}
+	
+ 	equip.css({
+ 		left: pos.x,
+ 		top: pos.y
+	});
+	
+	if (equip.attr("class").includes('equip-box-sat')) {
+		drawSat(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, equip.attr('status'), equip.find('speed1').text(), equip.find('speed2').text(), 'fluxos', `img1FluxoTab${equip.attr('id').replace('sat', '')}`, `img2FluxoTab${equip.attr('id').replace('sat', '')}`, `satName${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')))
+	} else if (equip.attr("class").includes('equip-box')) {	
+		drawGenericEquipments(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')), 1)
+	}
+ }
 
 function drawGenericEquipments(equip_id, table_id, posX, posY, width, factor) {
 
@@ -44,7 +46,7 @@ function drawGenericEquipments(equip_id, table_id, posX, posY, width, factor) {
 	document.getElementById(equip_id).style.height = (width * 1.3) + "px";
 
 	//Table td congi
-	var generic_tabHeader = document.getElementById(table_id);
+	/*var generic_tabHeader = document.getElementById(table_id);
 	var generic_tr = generic_tabHeader.getElementsByTagName("tr");
 	var generic_td = null;
 
@@ -57,7 +59,7 @@ function drawGenericEquipments(equip_id, table_id, posX, posY, width, factor) {
 
 	//Table fit font on header
 	generic_tabHeader.style.fontSize = calculateFontGenericSizeHeader(generic_tabHeader.offsetWidth, generic_tabHeader.offsetHeight, generic_tabHeader.innerHTML, factor) + "pt";
-
+   */
 }
 
 /* FONT SIZING */

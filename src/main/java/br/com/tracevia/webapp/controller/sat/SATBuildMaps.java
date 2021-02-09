@@ -9,12 +9,13 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 @ManagedBean(name = "satLinearView")
 @ViewScoped
-public class SATBuildLinear {
+public class SATBuildMaps {
 
 	static List<? extends Equipments> satList;
 	List<SAT> satListValues, satStatus;
@@ -67,7 +68,7 @@ public class SATBuildLinear {
 				///////////////////////////////
 				// SAT EQUIPMENTS
 				//////////////////////////////
-				satList = sat.ListLinearEquipments("sat");
+				satList = sat.listEquipments("sat");
 
 				/////////////////////////////
 				// SAT STATUS

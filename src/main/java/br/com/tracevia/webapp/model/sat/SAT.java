@@ -19,15 +19,16 @@ public class SAT extends Equipments {
 	private String faixa7;
 	private String faixa8;
 	
-	
-
-	public SAT(int equip_id, String table_id, String creation_date, String creation_username, String nome, String estrada,
-			String cidade, String km, String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY,
-			int width, int height, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible,
-			int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2, String faixa1,
-			String faixa2, String faixa3, String faixa4, String faixa5, String faixa6, String faixa7, String faixa8) {
+	public SAT(int equip_id, String table_id, String creation_date, String creation_username, String nome,
+			String estrada, String cidade, String km, String posicao, int linearPosX, int linearPosY, int linearWidth,
+			int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY, int status,
+			boolean notificacao, boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2,
+			int velocidadeS2, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
+			String faixa7, String faixa8) {
 		super(equip_id, table_id, creation_date, creation_username, nome, estrada, cidade, km, posicao, linearPosX,
-				linearPosY, mapPosX, mapPosY, width, height, dlgPosX, dlgPosY, status, notificacao, visible);
+				linearPosY, linearWidth, mapPosX, mapPosY, mapWidth, height, dlgPosX, dlgPosY, status, notificacao,
+				visible);
+		
 		this.numFaixas = numFaixas;
 		this.quantidadeS1 = quantidadeS1;
 		this.velocidadeS1 = velocidadeS1;
