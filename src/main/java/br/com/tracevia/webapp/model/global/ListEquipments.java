@@ -40,24 +40,18 @@ public class ListEquipments {
 	}
 	
 	public class listEquips {
-		private boolean val1;
-		private boolean val2;
+		private boolean value;	
 		private List<Equipments> list;
 		
-		listEquips(boolean val1, boolean val2, List<Equipments> list) {
-			this.val1 = val1;
-			this.val2 = val2;
+		listEquips(boolean value, List<Equipments> list) {
+			this.value = value;			
 			this.list = list;
 		}
 		
-		public boolean getVal1() {
-			return val1;
+		public boolean getValue() {
+			return value;
 		}
-		
-		public boolean getVal2() {
-			return val2;
-		}
-
+			
 		public List<Equipments> getList() {
 			return list;
 		}
@@ -86,37 +80,37 @@ public class ListEquipments {
 				WIM wim =  new WIM();
 			
 				if(load.isEn_cftv())			
-				equips.add(new listEquips(load.isEn_cftv(), load.isRt_cftv(), cftv.listEquipments("cftv")));
+				equips.add(new listEquips(load.isEn_cftv(), cftv.listEquipments("cftv")));
 				
 				if(load.isEn_colas())
-				equips.add(new listEquips(load.isEn_colas(), load.isRt_colas(), colas.listEquipments("colas")));
+				equips.add(new listEquips(load.isEn_colas(), colas.listEquipments("colas")));
 				
 				if(load.isEn_comms())
-				equips.add(new listEquips(load.isEn_comms(), load.isRt_comms(), comms.listEquipments("comms")));
+				equips.add(new listEquips(load.isEn_comms(), comms.listEquipments("comms")));
 				
 				if(load.isEn_dai())
-				equips.add(new listEquips(load.isEn_dai(), load.isRt_dai(), dai.listEquipments("dai")));
+				equips.add(new listEquips(load.isEn_dai(), dai.listEquipments("dai")));
 				
 				if(load.isEn_pmv())
-				equips.add(new listEquips(load.isEn_pmv(), load.isRt_pmv(), dms.listEquipments("pmv")));
+				equips.add(new listEquips(load.isEn_pmv(), dms.listEquipments("pmv")));
 				
 				if(load.isEn_lpr())
-				equips.add(new listEquips(load.isEn_lpr(), load.isRt_lpr(), lpr.listEquipments("lpr")));
+				equips.add(new listEquips(load.isEn_lpr(), lpr.listEquipments("lpr")));
 				
 				if(load.isEn_mto())
-				equips.add(new listEquips(load.isEn_mto(), load.isRt_mto(), mto.listEquipments("mto")));
+				equips.add(new listEquips(load.isEn_mto(), mto.listEquipments("mto")));
 				
 				if(load.isEn_sat())
-				equips.add(new listEquips(load.isEn_sat(), load.isRt_sat(), sat.listEquipments("sat")));
+				equips.add(new listEquips(load.isEn_sat(), sat.listEquipments("sat")));
 				
 				if(load.isEn_sos())
-				equips.add(new listEquips(load.isEn_sos(), load.isRt_sos(), sos.listEquipments("sos")));
+				equips.add(new listEquips(load.isEn_sos(), sos.listEquipments("sos")));
 				
 				if(load.isEn_speed())
-				equips.add(new listEquips(load.isEn_speed(), load.isRt_speed(), speed.listEquipments("speed")));
+				equips.add(new listEquips(load.isEn_speed(), speed.listEquipments("speed")));
 				
 				if(load.isEn_wim())
-				equips.add(new listEquips(load.isEn_wim(), load.isRt_wim(), wim.listEquipments("wim")));
+				equips.add(new listEquips(load.isEn_wim(), wim.listEquipments("wim")));
 				
 					
             }catch(IndexOutOfBoundsException ex) {}
