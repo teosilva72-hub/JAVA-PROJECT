@@ -74,9 +74,8 @@
 
 				<c:forEach items="#{listEquips.equips}" var="loadItem">
 
-					<ui:fragment rendered="#{loadItem.val1}">
-						<ui:fragment rendered="#{loadItem.val2}">
-
+					<ui:fragment rendered="#{loadItem.value}">
+						
 							<div class="equipments">
 								
 								<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
@@ -280,7 +279,6 @@
 							
 							</div>
 
-						</ui:fragment>
 					</ui:fragment>
 					
 				</c:forEach>
