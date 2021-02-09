@@ -116,6 +116,15 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">    
       
+      <ul class="navbar-nav ml-xl header-menu" id="address-sos">
+      <li class="nav-item">
+      	<a type="button" class="btn btn-primary nav-link p-0"
+      	href='#' id="navListCall">
+      	<i class="fas fa-address-book"></i>
+      	</a>
+      </li>
+      </ul>
+      
        <ul class="navbar-nav ml-xl header-menu" id="call-box">
        	<li class="nav-item">
        		<a type="button" class="btn btn-primary nav-link p-0"
@@ -124,6 +133,8 @@
        		</a>
        	</li>
       </ul>
+      
+      
       
        <ul class="navbar-nav ml-auto header-menu">
           <li class="nav-item dropdown">
@@ -734,11 +745,13 @@
        <!-- TOAST ACCEPT/DIMISS CALL END -->
        
        <!--  TOAST CALL LIST -->
-        <div class="listcall">
-	       <div class="toast" id="list-toast" role="alert" data-autohide="false">
+       <div id="listcall">
+	       <div class="toast hide" id="list-toast" role="alert" data-autohide="false">
 	       	<div class="toast-dialog">
 	       		<div class="toast-content toast-sm">
 	       			<div class="toast-header">
+	       				<button type="button" class="close" data-dismiss="toast" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
 	       			</div>
 	       			<div class="toast-body">
 	       			</div>
@@ -750,8 +763,6 @@
 	   </div>
        <!--  TOAST CALL LIST END -->
 
-  
-      
       <!-- Footer -->
    <footer class=" page-footer font-small indigo" >
    
@@ -781,7 +792,7 @@
     
     <script>
     	$("#navCall").click(() => $('#toastvoice').toast('show'));
-    	
+		$("#navListCall").click(() => $('#list-toast').toast('show'));
     </script>
 	  		
 		<!-- Import JavaScript from another pages -->
