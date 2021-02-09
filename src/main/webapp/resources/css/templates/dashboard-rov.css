@@ -546,9 +546,16 @@ input.apple-switch:checked:before {
 	position: relative;
 }
 
-#callmodal {
+#calltoast {
    position: absolute;
    right: 10px;
+   bottom: 10px;
+   z-index: 10040;	
+}
+
+#listcall {
+   position: absolute;
+   right: 60px;
    bottom: 10px;
    z-index: 10040;	
 }

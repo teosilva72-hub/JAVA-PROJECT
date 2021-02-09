@@ -702,11 +702,11 @@
       
       <ui:insert name="modal-content" ></ui:insert>
       
-      <!-- TOAST CALL/VOICE -->
-      <div id="callmodal">
-	      <div class="toast hide" id="toastmodal" role="alert" data-autohide="false">
+     <!-- TOAST ACCEPT/DIMISS CALL -->
+      <div id="calltoast">
+	      <div class="toast hide" id="toastvoice" role="alert" data-autohide="false">
 	      		<div class="toast-dialog">
-					<h:form class="toast-content toast-sm">
+					<h:form class="toast-content toast-sm" id="callform">
 						<div class="toast-header" id="call-headerpad">
 							<button type="button" class="close" data-dismiss="toast" aria-label="Close">
 							<span aria-hidden="true">&times;</span></button>
@@ -717,7 +717,7 @@
 	      				    </h:commandLink>
 	      						  <label> Accept Call </label>
 	      					<h:commandLink>
-	      						  <h:graphicImage title="Dismiss Call" class="dismisscall" value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
+	      						  <h:graphicImage title="Dismiss Call" id="misscall" class="dismisscall" value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
 	      				    </h:commandLink>
 	      						  <label> Dismiss Call </label>
 	      				    <h:commandLink>
@@ -730,8 +730,27 @@
 					</h:form>
 	      		</div>
 	      </div>
-       <!-- TOAST CALL/VOICE END-->
-      </div>
+	   </div>
+       <!-- TOAST ACCEPT/DIMISS CALL END -->
+       
+       <!--  TOAST CALL LIST -->
+        <div class="listcall">
+	       <div class="toast" id="list-toast" role="alert" data-autohide="false">
+	       	<div class="toast-dialog">
+	       		<div class="toast-content toast-sm">
+	       			<div class="toast-header">
+	       			</div>
+	       			<div class="toast-body">
+	       			</div>
+	       			<div class="toast-footer">
+	       			</div>
+	       		</div>
+	       	</div>
+	       </div>
+	   </div>
+       <!--  TOAST CALL LIST END -->
+
+  
       
       <!-- Footer -->
    <footer class=" page-footer font-small indigo" >
@@ -761,7 +780,8 @@
     	<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />			
     
     <script>
-    	$("#navCall").click(() => $('#toastmodal').toast('show'));
+    	$("#navCall").click(() => $('#toastvoice').toast('show'));
+    	
     </script>
 	  		
 		<!-- Import JavaScript from another pages -->
