@@ -356,9 +356,7 @@
           <div class="module" id="#{item.module}">   		      
           <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">      
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_cftv}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-            <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">         
           </h:selectBooleanCheckbox>                
            </div>
            </div>                
@@ -368,9 +366,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">     
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_colas}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">    
           </h:selectBooleanCheckbox>         
           
            </div>
@@ -381,9 +377,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">     
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_comms}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">     
           </h:selectBooleanCheckbox>         
           
            </div>
@@ -394,9 +388,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">  
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_dai}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">    
           </h:selectBooleanCheckbox>            
            </div>
            </div>       
@@ -406,9 +398,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">       
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_lpr}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-          <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">    
           </h:selectBooleanCheckbox>            
            </div>
            </div>       
@@ -418,9 +408,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn"> 
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_mto}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">   
           </h:selectBooleanCheckbox>         
            </div>
            </div>  
@@ -430,9 +418,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">     
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_pmv}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-            <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">   
           </h:selectBooleanCheckbox>       
            </div>
            </div>  
@@ -442,9 +428,7 @@
           <div class="module" id="#{item.module}">   		      
           <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
           <div class="toggle-mod-btn">  
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_sat}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">         
           </h:selectBooleanCheckbox>        
            </div>
            </div>   
@@ -454,9 +438,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">  
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_sos}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">    
           </h:selectBooleanCheckbox>            
            </div>
            </div>
@@ -466,9 +448,7 @@
          <div class="module" id="#{item.module}">   		      
           <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
           <div class="toggle-mod-btn">       
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_speed}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-            <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">         
           </h:selectBooleanCheckbox>          
            </div>
            </div>         
@@ -478,9 +458,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">        
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_videowall}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-           <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">   
           </h:selectBooleanCheckbox>           
            </div>
            </div>     
@@ -490,9 +468,7 @@
           <div class="module" id="#{item.module}">   		      
            <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>   
            <div class="toggle-mod-btn">     
-           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" value ="#{loginAccount.load.rt_wim}" 
-           valueChangeListener="#{loginAccount.load.valueChangeListener}" >         
-            <f:ajax event="click" execute=":real" render=":real" />
+           <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}" p:checked="checked">   
           </h:selectBooleanCheckbox>         
            </div>
            </div>        
@@ -781,7 +757,9 @@
     
     <script>
     	$("#navCall").click(() => $('#toastvoice').toast('show'));
-    	
+    	$('[toggle]').click(function() {
+    		$('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
+    	})
     </script>
 	  		
 		<!-- Import JavaScript from another pages -->

@@ -9,6 +9,7 @@ $(function () {
 
 	 	$(window).resize(function () {
 	 		posEquip(equip)
+			resizeEquip($('#content'))
 	 	})
 	 })
 });
@@ -32,6 +33,18 @@ $(function () {
 		drawGenericEquipments(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')), 1)
 	}
  }
+
+ 	//RESIZE EQUIPMENT
+	 function resizeEquip(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = Number(equip.attr('item-width')) / equip.width()
+			
+			equip.css('transform', `scale(${scale})`)
+		})
+	}
+	
+	//RESIZE EQUIPMENT END
 
 function drawGenericEquipments(equip_id, table_id, posX, posY, width, factor) {
 

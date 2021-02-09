@@ -21,11 +21,9 @@ body {
   cursor: -moz-grabbing;
 }
 
-
 .map-content img {
-	width: 1362px;	
+  width: 1362px;
 }
-
 
 .overflow {
   position: relative;
@@ -50,12 +48,41 @@ body {
 /* PMV USAGE*/
 .equip-info {
   position: absolute;
+  font-size: 5px;
+}
+
+.equip-info .tableStyle {
+  position: relative;
+  font-size: 10px;
+  width: 250px;
+  border: none;
   background: #333333;
-  box-shadow: 5px 5px 4px gray;
-  border-right: none;
-  float: left;
-  overflow: hidden;
-  z-index: 9999;
+  border-right: 6px solid #00fa9a;
+  border-radius: 0;
+}
+.border-table {
+  border-top-style: solid;
+  height: 17px;
+  border-left-style: solid;
+  background-color: #5d5d5d;
+  border-color: #000000;
+  border-width: 1px;
+}
+
+.border-table-right.bottom {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.border-table-right {
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.padding-pmv {
+  padding: 3px;
 }
 
 /* EQUIPS WHIT IMAGE USAGE*/
