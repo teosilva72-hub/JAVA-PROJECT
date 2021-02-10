@@ -45,6 +45,10 @@ body {
     overflow: hidden;
 }
 
+#content {
+  margin-top: 10px;
+}
+
 footer {
     position: fixed;
     left: 0;
