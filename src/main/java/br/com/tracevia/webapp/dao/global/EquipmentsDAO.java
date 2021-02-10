@@ -226,7 +226,7 @@ public class EquipmentsDAO {
 					equip.setMapPosX(rs.getInt(7));
 					equip.setMapPosY(rs.getInt(8));
 					equip.setLinearPosX(rs.getInt(9));
-					System.out.println(rs.getInt(9));
+				//	System.out.println(rs.getInt(9));
 					equip.setLinearPosY(rs.getInt(10));
 					equip.setPosicao(rs.getString(11));
 					
@@ -1116,7 +1116,7 @@ public class EquipmentsDAO {
     
 public Equipments EquipSearchMap(int id, String table) throws Exception {    
     
-System.out.println(table);
+//System.out.println(table);
 	
    try { //GET SLQException
   	 

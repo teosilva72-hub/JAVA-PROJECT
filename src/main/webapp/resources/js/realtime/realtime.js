@@ -434,43 +434,43 @@ function drawSat(sat_id, sat_tab, sat_status, sat_speed1, sat_speed2, fluxos, fl
 	// VELOCIDADE SENTIDO 1
 	if (sat_speed1 != 0) {
 		if (sat_speed1 > 0 && sat_speed1 < 31) {
-			document.getElementById(fluxo_img1).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_red.png')";
+			document.getElementById(fluxo_img1).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir1_red.png')";
 			document.getElementById(fluxo_img1).style.animation = 'myMove 150s linear infinite';
 		}
 		else if (sat_speed1 > 30 && sat_speed1 < 61) {
-			document.getElementById(fluxo_img1).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')";
+			document.getElementById(fluxo_img1).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')";
 			document.getElementById(fluxo_img1).style.animation = 'myMove 60s linear infinite';
 		}
 		else if (sat_speed1 > 60) {
-			document.getElementById(fluxo_img1).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_green.png')";
+			document.getElementById(fluxo_img1).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir1_green.png')";
 			document.getElementById(fluxo_img1).style.animation = 'myMove 20s linear infinite';
 		}
 	}
 	else {
-		document.getElementById(fluxo_img1).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')";
+		document.getElementById(fluxo_img1).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')";
 		document.getElementById(fluxo_img1).style.animation = 'myMove 500s linear infinite';
 	}
 
 	//VELOCIDADE SENTIDO 2
 	if (sat_speed2 != 0) {
 		if (sat_speed2 > 0 && sat_speed2 < 31) {
-			document.getElementById(fluxo_img2).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_red.png')";
+			document.getElementById(fluxo_img2).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir2_red.png')";
 			document.getElementById(fluxo_img2).style.animation = 'myMove 150s linear infinite';
 			document.getElementById(fluxo_img2).style.animationDirection = "reverse";
 		}
 		else if (sat_speed2 > 30 && sat_speed2 < 61) {
-			document.getElementById(fluxo_img2).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')";
+			document.getElementById(fluxo_img2).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')";
 			document.getElementById(fluxo_img2).style.animation = 'myMove 60s linear infinite';
 			document.getElementById(fluxo_img2).style.animationDirection = "reverse";
 		}
 		else if (sat_speed2 > 60) {
-			document.getElementById(fluxo_img2).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_green.png')";
+			document.getElementById(fluxo_img2).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir2_green.png')";
 			document.getElementById(fluxo_img2).style.animation = 'myMove 20s linear infinite';
 			document.getElementById(fluxo_img2).style.animationDirection = "reverse";
 		}
 	}
 	else {
-		document.getElementById(fluxo_img2).style.background = "url('/Tracevia/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')";
+		document.getElementById(fluxo_img2).style.background = "url('/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')";
 		document.getElementById(fluxo_img2).style.animation = 'myMove 500s linear infinite';
 		document.getElementById(fluxo_img2).style.animationDirection = "reverse";
 	}
