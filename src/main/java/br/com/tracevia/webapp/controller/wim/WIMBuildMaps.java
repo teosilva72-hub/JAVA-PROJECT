@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
-@ManagedBean(name="wimLinearView")
+@ManagedBean(name="wimMapsView")
 @ViewScoped
 public class WIMBuildMaps {
 	

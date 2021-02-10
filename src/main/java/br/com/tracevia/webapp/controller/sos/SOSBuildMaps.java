@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.sos.SOS;
 
-@ManagedBean(name="sosLinearView")
+@ManagedBean(name="sosMapsView")
 @ViewScoped
 public class SOSBuildMaps {
 	

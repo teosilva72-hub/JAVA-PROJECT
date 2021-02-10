@@ -350,7 +350,7 @@
    		   		
    		<!-- <h:messages globalOnly="true" styleClass="feedback" /> -->
    		
-   		 <c:forEach items="#{loginAccount.load.modules}" var="item" varStatus="loop">	
+   		 <c:forEach items="#{listEquips.load.modules}" var="item" varStatus="loop">	
    		   			   		
    		  <c:if test = "${item.module == 'CFTV'}">  
           <div class="module" id="#{item.module}">   		      
@@ -496,7 +496,7 @@
    		   		
          <div class="equips-div">
          
-         <c:forEach items="#{loginAccount.load.modules}" var="item" varStatus="modLoop">
+         <c:forEach items="#{listEquips.load.modules}" var="item" varStatus="modLoop">
          
          <div class="content-module">         
          <a class="link-show-hide text-decoration-none"  onclick="clicked('div#{item.module}'); toggleBtnEquips.call(this);"><span><i class="text-black bg-warning fa fa-plus plusMinus" ></i></span></a>
@@ -505,7 +505,7 @@
    		 <div id="div#{item.module}" style="display:none;" >
    		 
    		 <c:if test = "${item.module == 'CFTV'}">     
-   		 <c:forEach items="#{loginAccount.load.cftv}" var="item" varStatus="cftvLoop">    		   		   		 
+   		 <c:forEach items="#{cftvMapsView.cftvList}" var="item" varStatus="cftvLoop">    		   		   		 
    		 <div class="equip-info-display">   		   		 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -516,7 +516,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'COLAS'}">     
-   		 <c:forEach items="#{loginAccount.load.colas}" var="item" varStatus="colasLoop">    		   		   		 
+   		 <c:forEach items="#{colasMapsView.colasList}" var="item" varStatus="colasLoop">    		   		   		 
    		 <div class="equip-info-display">   		   		 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -527,7 +527,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'COMMS'}">     
-   		 <c:forEach items="#{loginAccount.load.comms}" var="item" varStatus="commsLoop">    		   		   		 
+   		 <c:forEach items="#{commsMapsView.commsList}" var="item" varStatus="commsLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -538,7 +538,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'DAI'}">     
-   		 <c:forEach items="#{loginAccount.load.dai}" var="item" varStatus="daiLoop">    		   		   		 
+   		 <c:forEach items="#{daiMapsView.daiList}" var="item" varStatus="daiLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -549,7 +549,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'LPR'}">     
-   		 <c:forEach items="#{loginAccount.load.lpr}" var="item" varStatus="lprLoop">    		   		   		 
+   		 <c:forEach items="#{lprMapsView.lprList}" var="item" varStatus="lprLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -560,7 +560,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'MTO'}">     
-   		 <c:forEach items="#{loginAccount.load.mto}" var="item" varStatus="mtoLoop">    		   		   		 
+   		 <c:forEach items="#{mtoMapsView.mtoList}" var="item" varStatus="mtoLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -569,13 +569,9 @@
    		 </div>  	
    		 </c:forEach>	
    		 </c:if>
-   		 
-   		  <c:if test = "${item.module == 'CFTV'}">     
-   		  
-   		  </c:if>
-   		   		    		 
+   		    		    		   		    		 
    		 <c:if test = "${item.module == 'PMV'}">     
-   		 <c:forEach items="#{loginAccount.load.pmv}" var="item" varStatus="pmvLoop">    		   		   		 
+   		 <c:forEach items="#{dmsMapsView.dmsList}" var="item" varStatus="pmvLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -586,10 +582,10 @@
    		 </c:if>
    		 
    		 <c:if test = "${item.module == 'SAT'}">     
-   		 <c:forEach items="#{loginAccount.load.sat}" var="item" varStatus="satLoop">    		   		   		 
+   		 <c:forEach items="#{satMapsView.satList}" var="item" varStatus="satLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
-   		 <div id="status#{item.nome}" class="status-circle"></div>
+   		 <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
    		 <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; - &nbsp;&nbsp;#{item.km}</label>
    		 </div>     		  		 
    		 </div>  	
@@ -597,7 +593,7 @@
    		 </c:if>
    		 
    		 <c:if test = "${item.module == 'SOS'}">     
-   		 <c:forEach items="#{loginAccount.load.sos}" var="item" varStatus="sosLoop">    		   		   		 
+   		 <c:forEach items="#{sosMapsView.sosList}" var="item" varStatus="sosLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -608,7 +604,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'SPEED'}">     
-   		 <c:forEach items="#{loginAccount.load.speed}" var="item" varStatus="speedLoop">    		   		   		 
+   		 <c:forEach items="#{speedMapsView.speedList}" var="item" varStatus="speedLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -619,7 +615,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'VIDEOWALL'}">     
-   		 <c:forEach items="#{loginAccount.load.videowall}" var="item" varStatus="videowallLoop">    		   		   		 
+   		 <c:forEach items="#{videoWallMapsView.videoWallList}" var="item" varStatus="videowallLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -630,7 +626,7 @@
    		 </c:if>	
    		 
    		 <c:if test = "${item.module == 'WIM'}">     
-   		 <c:forEach items="#{loginAccount.load.wim}" var="item" varStatus="wimLoop">    		   		   		 
+   		 <c:forEach items="#{wimMapsView.wimList}" var="item" varStatus="wimLoop">    		   		   		 
    		 <div class="equip-info-display"> 
    		 <div class="info">
    		 <div id="status#{item.nome}" class="status-circle"></div>
@@ -647,12 +643,7 @@
         </div>     
     </div>          
          </div>
-         
-         <script>
-
-      
-       </script>
-        
+          
   <div class="content">
         <!--  <nav aria-label="breadcrumb" id="bread">
             <ol class="breadcrumb">

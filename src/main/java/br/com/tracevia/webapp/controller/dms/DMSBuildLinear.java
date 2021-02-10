@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="dmsLinearView")
+@ManagedBean(name="dmsMapsView")
 @ViewScoped
 public class DMSBuildLinear {
 	

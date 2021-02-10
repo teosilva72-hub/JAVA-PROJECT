@@ -445,11 +445,9 @@ line-height: 50px;
 }
 
 /*Conteúdo interno dos equipamentos*/
-.status-circle{	
+.fa-circle{	
   width: 10px;
-  height: 10px;
-  background-color: #00ff0d;  
-  border-radius: 50%;
+  height: 10px;  
   float: left;
   margin-top: 3.5%;	
   margin-left: 15%; 

@@ -413,18 +413,21 @@ function drawSat(sat_id, sat_tab, sat_status, sat_speed1, sat_speed2, fluxos, fl
 
 	//Green Color > indica que o equipamento está conectado
 	if (sat_status > 7) {
-		document.getElementById(satName).style.backgroundColor = '#00FF00';
+		document.getElementById(satName).style.backgroundColor = '#00FF0D';
 		document.getElementById(satName).style.color = 'black';
+		document.getElementById(`status${sat_id}`).style.color = '#00FF0D';	
 
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 	} else if (sat_status > 0 && sat_status < 8) {
 		document.getElementById(satName).style.backgroundColor = '#00FF7F';
 		document.getElementById(satName).style.color = 'black';
+		document.getElementById(`status${sat_id}`).style.color = '#00FF7F';	
 	}
 	//Red Color > indica que o equipamento está sem comunicação
 	else {
 		document.getElementById(satName).style.backgroundColor = '#FF0000';
 		document.getElementById(satName).style.color = 'white';
+		document.getElementById(`status${sat_id}`).style.color = '#FF0000';	
 	}
 
 

@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.lpr.LPR;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="lprLinearView")
+@ManagedBean(name="lprMapsView")
 @ViewScoped
 public class LPRBuildMaps {
 	

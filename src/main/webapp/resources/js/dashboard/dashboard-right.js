@@ -7,6 +7,7 @@ $(document).ready(function() {
 
   var adjustSidebar = function() {
     $(".menu-mode > form").slimScroll({height: window.innerHeight - 150})
+    $(".content-module").slimScroll({height: window.innerHeight - 150})
   };
 
   adjustSidebar();

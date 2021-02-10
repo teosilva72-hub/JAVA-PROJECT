@@ -187,7 +187,7 @@
 											</div>
 										</c:when>
 										<c:when test="#{item.table_id eq 'sat'}">
-											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" status="#{satLinearView.satStatus.get(loop.index).status}">
+											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" status="#{satMapsView.satStatus.get(loop.index).status}">
 
 								<div id="sat#{item.equip_id}" class="table-sat card border-dark">
 									<div id="satName#{item.equip_id}" class="satName card-header p-0 border-dark">
@@ -199,20 +199,20 @@
 										<div class="col-5 padding-sat border-right border-bottom border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}</span>
+											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS1}</span>
 										</div>
 										<div class="col-7 padding-sat border-bottom border-dark">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS1}<span class="km"> km/h</span></span>
+											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS1}<span class="km"> km/h</span></span>
 										</div>
 										<div class="col-5 padding-sat border-right border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}</span>
+											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS2}</span>
 										</div>
 										<div class="col-7 padding-sat">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satLinearView.satListValues.get(loop.index).quantidadeS2}<span class="km"> km/h</span></span>
+											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS2}<span class="km"> km/h</span></span>
 										</div>
 									</div>
 
