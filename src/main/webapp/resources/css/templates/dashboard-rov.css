@@ -226,7 +226,7 @@ footer {
 }
 
 .wrapper {
-  margin-top: 3.5rem;
+  margin-top: 70px;
   
 }
 
@@ -539,10 +539,6 @@ input.apple-switch:checked:before {
 
 /* VOICE/CALL BOX */
 
-#call-box{
-	margin-left: 85%;
-	position: relative;
-}
 
 #calltoast {
    position: absolute;
