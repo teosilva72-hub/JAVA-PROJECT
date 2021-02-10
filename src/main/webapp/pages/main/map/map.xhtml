@@ -198,7 +198,7 @@
 									<c:choose>
 										<c:when test="#{item.table_id eq 'pmv'}">
 											<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
-												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}">
+												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}">
 	
 												<!-- Table with DIV -->
 	
@@ -211,7 +211,7 @@
 													<div class="row text-center card-body p-0">
 														<div id="child-img" class="col-2 padding-pmv">
 															<h:graphicImage
-																value="/resources/images/pictures/#{dmsMapView.image[loop.index]}"
+																value="/resources/images/pictures/#{dmsLinearView.image[loop.index]}"
 																styleClass="ui-graphic-image" />
 														</div>
 														<div id="child-msg" class="col-auto">
@@ -303,7 +303,7 @@
 										</c:when>
 										<c:when test="#{item.table_id eq 'sat'}">
 											<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark #{item.table_id}"
-												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.width}"
+												posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}"
 												posLinearX="#{item.linearPosX}"
 												status="#{satMapView.satStatus.get(loop.index).status}"
 												vel1="#{satMapView.satListValues.get(loop.index).velocidadeS1}"
@@ -342,7 +342,7 @@
 										</c:when>
 										<c:otherwise>
 											<div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-												posY="#{item.mapPosY}" item-width="#{item.width}" class="equip-box #{item.table_id}">
+												posY="#{item.mapPosY}" item-width="#{item.mapWidth}" class="equip-box #{item.table_id}">
 												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
 													<p class="col-auto mb-0 pr-1">#{item.nome}</p>
 													<span id="#{item.table_id}Status1" class="equip-status"></span>
@@ -750,7 +750,7 @@
 								<div class="form-group col-md-6 input-field">
 									<span><i class="fas fa-arrows-alt-h"></i></span> <span for="width"
 										class="valid-icon-hidden"></span>
-									<h:inputText value="#{equipsBean.equip.width}" p:requiredField="number"
+									<h:inputText value="#{equipsBean.equip.mapWidth}" p:requiredField="number"
 										autocomplete="off" name="width" id="width"
 										placeholder="#{mapLabels.map_creation_input_width}" />
 									<div class="error-label">
