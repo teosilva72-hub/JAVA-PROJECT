@@ -565,6 +565,12 @@ input.apple-switch:checked:before {
    z-index: 10050;	
 }
 
+.input-list{
+	height: 20px;
+	width: 270px;
+}
+
+
 .acptcall {
 	display: block;
 	height: 30px;
