@@ -45,6 +45,10 @@ body {
     overflow: hidden;
 }
 
+#content {
+  margin-top: 10px;
+}
+
 footer {
     position: fixed;
     left: 0;
@@ -175,7 +179,7 @@ footer {
     height: 25px;  
 }
 
-/* Icone de alerta (3) - Notificações*/
+/* Icone de alerta (3) - Notificaï¿½ï¿½es*/
 
  .navbar-dropdown-bagde {
     position: relative;   
@@ -192,7 +196,7 @@ footer {
     float: right;   
 }
 
-/*Figura que representa qual item do dropdown está selecionado - Menu esquerdo*/
+/*Figura que representa qual item do dropdown estï¿½ selecionado - Menu esquerdo*/
 
 .square {
     position: absolute;    
@@ -205,20 +209,20 @@ footer {
     transform: rotate(45deg);
 }
 
-/*Figura que representa qual item do dropdown está selecionado - Menu esquerdo*/
+/*Figura que representa qual item do dropdown estï¿½ selecionado - Menu esquerdo*/
 #square-msg-left{ left: 6%; }  /* Mensagens */
-#square-notif-left{ left: 9%; }  /* Notificações */
+#square-notif-left{ left: 9%; }  /* Notificaï¿½ï¿½es */
 #square-profile-left{ left: 10%; }  /* Profile */
 #square-profile-maxsize-left{ left: 12.5%; } /* Profile Mobile */
 
 
-/*Figura que representa qual item do dropdown está selecionado - Menu direito*/
+/*Figura que representa qual item do dropdown estï¿½ selecionado - Menu direito*/
 #square-msg{ right: 7%; }  /* Mensagens */
-#square-notif{ right: 9%; }  /* Notificações */
+#square-notif{ right: 9%; }  /* Notificaï¿½ï¿½es */
 #square-profile{ right: 10%; }  /* Profile */
 #square-profile-maxsize{ right: 12%; } /* Profile Mobile */
 
-/*Figura que representa qual item do dropdown está selecionado*/
+/*Figura que representa qual item do dropdown estï¿½ selecionado*/
 
 /* Controlar font das mensagens zoom > 160%*/
 .text-font{
@@ -424,7 +428,7 @@ line-height: 50px;
 .plusMinus{
  margin-top: 5%;	
 }
-/*Label apos botâo*/
+/*Label apos botï¿½o*/
 .label-module{
 	font-size: 18px;
 	margin-left: 2.5%;
@@ -444,7 +448,7 @@ line-height: 50px;
 	background: #323232;	
 }
 
-/*Conteúdo interno dos equipamentos*/
+/*Conteï¿½do interno dos equipamentos*/
 .fa-circle{	
   width: 10px;
   height: 10px;  
@@ -539,10 +543,6 @@ input.apple-switch:checked:before {
 
 /* VOICE/CALL BOX */
 
-#call-box{
-	margin-left: 85%;
-	position: relative;
-}
 
 #calltoast {
    position: absolute;
@@ -555,7 +555,15 @@ input.apple-switch:checked:before {
    position: absolute;
    right: 60px;
    bottom: 10px;
-   z-index: 10040;	
+   z-index: 10050;	
+}
+
+.input-list{
+	height: 20px;
+	width: 270px;
+	padding: 0 !important;
+	margin-left: 14px;
+	border: 1px #828282;
 }
 
 .acptcall {
