@@ -1,0 +1,515 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="head">
+
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/pmv/available"
+			name="message-available.css" />
+		<!-- JAVASCRIPT -->
+		<h:outputScript name="msg-available.js" library="js/dms" />
+
+	</ui:define>
+
+	<ui:define name="main-content">
+		<!--Inicio da animação  -->
+
+		<!-- Final da animação -->
+		<div class="jumbotron bg-dark">
+			<!-- TABLE MESSAGES -->
+			<h:form id="message-display">
+				<div id="show">
+					<p:messages id="msgs" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</div>
+			</h:form>
+			<div class="row">
+				<!-- MESSAGE CONTENT BOX -->
+				<div class="col-4 boardDetails" id="hiddenPainel">
+					<div id="message-edit-content ">
+						<h:form id="content-form">
+							<!--  PMV BOARD -->
+							<div class="pmv-board ">
+								<h5 class="message-title-div ">#{dmsLabels.dms_available_messages_preview_title}</h5>
+								
+								<!-- PAGINATORS -->
+								
+								<h:commandButton class="paginator page1" value="1" />
+								<h:commandButton class="paginator page2" value="2" />
+								<h:commandButton class="paginator page3" value="3" />
+								<h:commandButton class="paginator page4" value="4" />
+								<h:commandButton class="paginator page5" value="5" />
+																														
+								<div class="equip-info ">
+									<table id="table-img" class="table-equip ">
+										<tr>
+											<td id="image-block" class="details1"><h:graphicImage
+													id="picture-box"
+													value="/resources/images/pictures/#{pmvMessage.image}"
+													styleClass="ui-graphic-board" /></td>
+										</tr>
+									</table>
+
+									<table id="table-message" class="table-equip ">
+										<tr>
+											<td><h:outputText id="box-1"
+													value="#{pmvMessage.chars1[0]}" /></td>
+											<td><h:outputText id="box-2"
+													value="#{pmvMessage.chars1[1]}" /></td>
+											<td><h:outputText id="box-3"
+													value="#{pmvMessage.chars1[2]}" /></td>
+											<td><h:outputText id="box-4"
+													value="#{pmvMessage.chars1[3]}" /></td>
+											<td><h:outputText id="box-5"
+													value="#{pmvMessage.chars1[4]}" /></td>
+											<td><h:outputText id="box-6"
+													value="#{pmvMessage.chars1[5]}" /></td>
+											<td><h:outputText id="box-7"
+													value="#{pmvMessage.chars1[6]}" /></td>
+											<td><h:outputText id="box-8"
+													value="#{pmvMessage.chars1[7]}" /></td>
+											<td><h:outputText id="box-9"
+													value="#{pmvMessage.chars1[8]}" /></td>
+											<td><h:outputText id="box-10"
+													value="#{pmvMessage.chars1[9]}" /></td>
+											<td><h:outputText id="box-11"
+													value="#{pmvMessage.chars1[10]}" /></td>
+											<td><h:outputText id="box-12"
+													value="#{pmvMessage.chars1[11]}" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText id="box-13"
+													value="#{pmvMessage.chars2[0]}" /></td>
+											<td><h:outputText id="box-14"
+													value="#{pmvMessage.chars2[1]}" /></td>
+											<td><h:outputText id="box-15"
+													value="#{pmvMessage.chars2[2]}" /></td>
+											<td><h:outputText id="box-16"
+													value="#{pmvMessage.chars2[3]}" /></td>
+											<td><h:outputText id="box-17"
+													value="#{pmvMessage.chars2[4]}" /></td>
+											<td><h:outputText id="box-18"
+													value="#{pmvMessage.chars2[5]}" /></td>
+											<td><h:outputText id="box-19"
+													value="#{pmvMessage.chars2[6]}" /></td>
+											<td><h:outputText id="box-20"
+													value="#{pmvMessage.chars2[7]}" /></td>
+											<td><h:outputText id="box-21"
+													value="#{pmvMessage.chars2[8]}" /></td>
+											<td><h:outputText id="box-22"
+													value="#{pmvMessage.chars2[9]}" /></td>
+											<td><h:outputText id="box-23"
+													value="#{pmvMessage.chars2[10]}" /></td>
+											<td><h:outputText id="box-24"
+													value="#{pmvMessage.chars2[11]}" /></td>
+										</tr>
+										<tr>
+											<td><h:outputText id="box-25"
+													value="#{pmvMessage.chars3[0]}" /></td>
+											<td><h:outputText id="box-26"
+													value="#{pmvMessage.chars3[1]}" /></td>
+											<td><h:outputText id="box-27"
+													value="#{pmvMessage.chars3[2]}" /></td>
+											<td><h:outputText id="box-28"
+													value="#{pmvMessage.chars3[3]}" /></td>
+											<td><h:outputText id="box-29"
+													value="#{pmvMessage.chars3[4]}" /></td>
+											<td><h:outputText id="box-30"
+													value="#{pmvMessage.chars3[5]}" /></td>
+											<td><h:outputText id="box-31"
+													value="#{pmvMessage.chars3[6]}" /></td>
+											<td><h:outputText id="box-32"
+													value="#{pmvMessage.chars3[7]}" /></td>
+											<td><h:outputText id="box-33"
+													value="#{pmvMessage.chars3[8]}" /></td>
+											<td><h:outputText id="box-34"
+													value="#{pmvMessage.chars3[9]}" /></td>
+											<td><h:outputText id="box-35"
+													value="#{pmvMessage.chars3[10]}" /></td>
+											<td><h:outputText id="box-36"
+													value="#{pmvMessage.chars3[11]}" /></td>
+										</tr>
+									</table>								
+								</div>
+								
+								<!-- TIMERS -->								
+								<h:inputText  class="timer timer1" title="for message 1" pt:placeholder="Timer 1" />
+								<h:inputText  class="timer timer2" title="for message 2" pt:placeholder="Timer 2" />
+								<h:inputText  class="timer timer3" title="for message 3" pt:placeholder="Timer 3" />
+								<h:inputText  class="timer timer4" title="for message 4" pt:placeholder="Timer 4" />
+								<h:inputText  class="timer timer5" title="for message 5" pt:placeholder="Timer 5" />
+															
+							</div>
+							<!-- Painel real -->
+							<div class="formConteudo">
+								<!-- select image -->
+								<div class="row linha1">
+									<div class="col-sm-12">
+										<div id="list-images">
+											<div id="select-image">
+												<p:selectOneListbox id="picture-id"
+													value="#{pmvMessage.picture}" effect="fade" var="p"
+													filter="false" class="listbox" filterMatchMode="startsWith"
+													onclick="returnDIV(); bloquerTable();">
+													<f:converter converterId="pictureConverter" />
+													<f:selectItems value="#{pmvMessage.pictures}" var="picture"
+														itemLabel="#{picture.image}" itemValue="#{picture}" />
+													<p:ajax event="change" update="picture-box "
+														listener="#{pmvMessage.loadPictureImage}" />
+													<p:column>
+														<h:graphicImage
+															value="/resources/images/pictures/#{p.image}" width="60"
+															height="60" />
+													</p:column>
+												</p:selectOneListbox>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-row linha2">
+									<div id="picture-selection">
+										<div class="col-sm-12">
+
+											<div id="image-content">
+												<div id="image-div">
+													<h:commandLink id="link-image"
+														disabled="#{pmvMessage.inputs}"
+														action="#{pmvMessage.imageState}">
+														<i class="fas fa-image fa-3x confIcone"
+															data-bs-toggle="tooltip" data-bs-placement="top"
+															title="Adicionar Icone"></i>
+														<f:ajax execute="@form" render=":picture-id" />
+													</h:commandLink>
+												</div>
+											</div>
+
+										</div>
+										<!-- id input -->
+										<div class="col-sm-10 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-key"></i></span>
+												<div class="input-group">
+
+													<h:inputText id="id-input"
+														class="form-control inputDesign id"
+														value="#{pmvMessage.idMessage}" disabled="true"
+														pt:type="text" name="id"
+														pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+												</div>
+											</div>
+										</div>
+										<!-- end id input -->
+										<!-- Type Select -->
+										<div class="col-sm-10 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
+												<div class="input-group">
+													<h:selectOneMenu class="form-control selectType"
+														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}"
+														id="tipo" name="tipo">
+														<f:selectItem itemLabel="Type" itemValue="Type" />
+														<f:selectItems value="#{pmvMessage.type}" />
+													</h:selectOneMenu>
+												</div>
+											</div>
+										</div>
+										<!-- End Type Select -->
+										<!-- input name -->
+										<div class="col-sm-10 confInput">
+											<div id="name-div">
+												<span class="iconeSpan"><i
+													class="fas fa-file-signature"></i></span>
+												<div class="input-group">
+													<h:inputText id="name-input"
+														class="form-control name inputDesign" pt:type="text"
+														name="name"
+														pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+														value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
+														maxlength="15" pt:autocomplete="off" />
+												</div>
+											</div>
+
+										</div>
+										<!-- end input name -->
+										<!-- message input -->
+										<div class="col-sm-10 confInput">
+											<div id="input-message-1">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+
+													<h:inputText id="message-box1"
+														class="form-control message-input inputDesign"
+														maxlength="12" autoResize="false" resizable="false"
+														disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message1}" pt:type="text"
+														name="message-1"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup"
+															update="box-1, box-2, box-3, box-4, box-5,
+		box-6, box-7, box-8, box-9, box-10, box-11, box-12"
+															listener="#{pmvMessage.messageRowOne}" />
+													</h:inputText>
+												</div>
+											</div>
+										</div>
+										<!-- end message input -->
+										<div class="col-sm-10 confInput">
+											<div id="input-message-2">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+
+													<h:inputText id="message-box2"
+														class="form-control message-input inputDesign"
+														maxlength="12" autoResize="false" resizable="false"
+														disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message2}" pt:type="text"
+														name="message-2"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup"
+															update="box-13, box-14, box-15, box-16, box-17,
+		box-18, box-19, box-20, box-21, box-22, box-23, box-24"
+															listener="#{pmvMessage.messageRowTwo}" />
+													</h:inputText>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-10 confInput">
+											<div id="input-message-3">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+
+													<h:inputText id="message-box3"
+														class="form-control message-input inputDesign"
+														maxlength="12" autoResize="false" resizable="false"
+														disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message3}" pt:type="text"
+														name="message-3"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup"
+															update="box-25, box-26, box-27, box-28, box-29,
+			box-30, box-31, box-32, box-33, box-34, box-35, box-36"
+															listener="#{pmvMessage.messageRowThree}" />
+													</h:inputText>
+												</div>
+											</div>
+										</div>
+										<div class="btn-painel">
+											<!-- button submit -->
+
+											<div id="col-sm-8">
+												<h:commandButton
+													value="#{dmsLabels.dms_available_messages_btn_save}"
+													id="btnCr1" action="#{pmvMessage.messageActions}"
+													disabled="#{pmvMessage.submit}" class="btn confBtn">
+												</h:commandButton>
+											</div>
+											<!-- button clear -->
+											<div id="col-sm-8">
+												<h:commandButton
+													value="#{dmsLabels.dms_available_messages_btn_cancel}"
+													action="#{pmvMessage.cleanSelection}" id="btnCr2"
+													class="btn  confBtn conf2Btn" process="@this"
+													disabled="#{pmvMessage.submit}"
+													onclick="showID(); returnDIV(); PF('bui').hide()">
+													<f:ajax render="@form" resetValues="true" />
+												</h:commandButton>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<!-- Final do painel real -->
+						</h:form>
+					</div>
+				</div>
+				<div class="col-8 tabelaDetails">
+
+					<div class="table-responsive-sm">
+						<h:form id="btn-form">
+							<div class="btnEstruta">
+								<div id="table-create">
+									<h:commandButton
+										value="#{dmsLabels.dms_available_messages_btn_create}"
+										id="btnCreate" action="#{pmvMessage.createMessage}"
+										onclick="bloquerTable();" disabled="#{pmvMessage.create}"
+										class="btn btn-available">
+										<f:ajax execute="@form" render=":content-form :btn-form" />
+									</h:commandButton>
+								</div>
+								<div id="table-edit">
+									<h:commandButton
+										value="#{dmsLabels.dms_available_messages_btn_edit}"
+										id="btnEdit" action="#{pmvMessage.editMessage}"
+										onclick="bloquerTable();" disabled="#{pmvMessage.editable}"
+										class="btn btn-available">
+										<f:ajax execute="@form" render=":content-form :btn-form" />
+									</h:commandButton>
+								</div>
+								<div id="table-delete">
+									<h:commandButton
+										value="#{dmsLabels.dms_available_messages_btn_delete}"
+										id="btnDelete" disabled="#{pmvMessage.delete}"
+										class="btn btn-available" immediate="true">
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target"
+											value="#deleteModal" />
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+								</div>
+							</div>
+						</h:form>
+						<!-- Tabela real -->
+						<div id="tabelaReal">
+							<h:dataTable id="message-table" value="#{pmvMessage.messages}"
+								var="msg"
+								styleClass="table table-sm table-striped table-hover table-dark custom-table"
+								cellspacing="0" width="100%" headerClass="custom-table-header"
+								rowClasses="custom-table-odd-row, custom-table-even-row"
+								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
+									<h:outputText value="#{msg.id_reg}"
+										style="vertical-align: middle; text-align: center;" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
+									<h:outputText value="#{(pmvMessage.translateType(msg.tipo))}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
+									<h:outputText value="#{msg.nome}" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
+									<h:graphicImage id="picture-table"
+										value="/resources/images/pictures/#{msg.imagem}" width="50"
+										height="50" style="margin-top: 5px;" />
+									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
+								</h:column>
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
+									<h:outputText value="#{msg.texto1}" />
+									<br />
+									<h:outputText value="#{msg.texto2}" />
+									<br />
+									<h:outputText value="#{msg.texto3}" />
+								</h:column>
+							</h:dataTable>
+						</div>
+						<!-- Tabela hidden -->
+						<div id="tabelaHidden" class="trazerTable">
+
+							<h:dataTable id="message-table-hidden"
+								disabled="#{pmvMessage.editable}" value="#{pmvMessage.messages}"
+								var="msg"
+								styleClass="table table-sm table-striped table-hover table-dark custom-table"
+								cellspacing="0" width="100%" headerClass="custom-table-header"
+								rowClasses="custom-table-odd-row, custom-table-even-row"
+								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
+									<h:outputText value="#{msg.id_reg}"
+										style="vertical-align: middle; text-align: center;" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
+									<h:outputText value="#{(pmvMessage.translateType(msg.tipo))}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
+									<h:outputText value="#{msg.nome}" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
+									<h:graphicImage id="picture-table"
+										value="/resources/images/pictures/#{msg.imagem}" width="50"
+										height="50" style="margin-top: 5px;" />
+									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
+								</h:column>
+
+								<h:column>
+									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
+									<h:outputText value="#{msg.texto1}" />
+									<br />
+									<h:outputText value="#{msg.texto2}" />
+									<br />
+									<h:outputText value="#{msg.texto3}" />
+								</h:column>
+							</h:dataTable>
+						</div>
+						<h:form id="formId">
+							<h:inputHidden id="idMessage" value="#{pmvMessage.rowKey}" />
+							<h:inputHidden id="checked" value="#{pmvMessage.selectedRow}" />
+							<h:commandButton id="hdnBtn" value="TESTE"
+								onclick=" getMessageId();"
+								actionListener="#{pmvMessage.getRowValue}" style="display:none;">
+								<f:ajax execute="@form" render=":btn-form" />
+							</h:commandButton>
+						</h:form>
+					</div>
+				</div>
+			</div>
+			<!-- DELETE DIALOG -->
+			<h:form id="dialog-form">
+				<div class="modal" id="deleteModal" tabindex="-1" role="dialog"
+					aria-labelledby="deleteModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">#{dmsLabels.user_delete_modal_title}</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>
+									#{dmsLabels.user_delete_modal_body} <span id="selectedId"></span>
+									?
+								</p>
+							</div>
+							<div class="modal-footer">
+								<div class="4submit-modal">
+									<h:commandButton value="#{dmsLabels.user_delete_modal_btn_yes}"
+										styleClass="btn btn-dark"
+										action="#{pmvMessage.deleteRegister}"
+										oncomplete="dialogHide();" />
+								</div>
+								<div class="cancel-modal">
+									<button type="button" class="btn btn-dark" data-dismiss="modal">#{dmsLabels.user_delete_modal_btn_no}</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<script>
+			listTable();
+			listTableHidden();
+			selectList();
+			getMessageId();
+			hideMsg();
+		</script>
+	</ui:define>
+
+</ui:composition>

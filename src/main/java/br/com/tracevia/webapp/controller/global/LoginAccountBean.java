@@ -151,7 +151,7 @@ public class LoginAccountBean {
 			mapUI = RoadConcessionaire.mapUI; // Load Map
 			linearMapUI = RoadConcessionaire.linearMapUI;
 									
-		    return "/pages/main/dashboard/dashboard.xhtml?faces-redirect=true"; 		    
+		    return "/dashboard/dashboard.xhtml?faces-redirect=true"; 		    
 		    
 		  } 
 		 	   
@@ -205,7 +205,7 @@ public void LogOut() {
 		new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
 		externalContext.getFlash().setKeepMessages(true);
 		context.getExternalContext().invalidateSession();
-		context.getExternalContext().redirect("${facesContext.externalContext.requestContextPath}/WebContent/RESOURCES/pages/login.xhtml");
+		context.getExternalContext().redirect("${facesContext.externalContext.requestContextPath}/login.xhtml");
 
 	} catch (IOException e) {
 
@@ -216,14 +216,14 @@ public void LogOut() {
 
 public String forgetPasswordRedirect() {	
 	
-	return "/pages/main/login/forget.xhtml?faces-redirect=true";
+	return "/forget.xhtml?faces-redirect=true";
 
 }
 public String forgetConfirmationRedirect() {		
-	return "/pages/main/login/forget-confirmation.xhtml?faces-redirect=true";
+	return "/forget-confirmation.xhtml?faces-redirect=true";
 }
 public String loginRedirect() {		
-	return "/pages/main/login/login.xhtml?faces-redirect=true";
+	return "/login.xhtml?faces-redirect=true";
 }
 
 
@@ -287,7 +287,7 @@ public boolean permissionAdminOrSuper(int roleID) {
 							
 		mail.sendEmail(user.getEmail(), assunto, mensagem);	
 		
-		return "/pages/main/login/forget-confirmation.xhtml?faces-redirect=true";
+		return "/forget-confirmation.xhtml?faces-redirect=true";
 					
 	    }else message.ErrorMessage(locale1.getStringKey("email_recovery_unsuccess_send_header"), locale1.getStringKey("email_recovery_unsuccess_send_body") ); 
 		

@@ -1,0 +1,177 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" template="/template/dashboard-rov-layout.xhtml">
+
+    <ui:define name="default-stylesheet">
+        <h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+        <h:outputStylesheet name="style.css" library="css/status" />
+    </ui:define>
+
+    <ui:define name="default-jquery" />
+
+    <ui:define name="default-content">
+        <div class="header bg-gradient">
+            <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <p>Tracevia</p>
+                    </div>
+                    <div class="col-sm-4 col-5 temp mt-2 ms-auto text-end">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                            class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                            <path d="M8 1.75a.25.25 0 0 1 .25.25v9.02a1.5 1.5 0 1 1-.5 0V2A.25.25 0 0 1 8 1.75z" />
+                            <path
+                                d="M6 2a2 2 0 1 1 4 0v7.627a3.5 3.5 0 1 1-4 0V2zm2-1a1 1 0 0 0-1 1v7.901a.5.5 0 0 1-.25.433A2.499 2.499 0 0 0 8 15a2.5 2.5 0 0 0 1.25-4.666.5.5 0 0 1-.25-.433V2a1 1 0 0 0-1-1z" />
+                        </svg>
+                        <span id="AIN5">0.0</span>º
+                    </div>
+                    <div class="col-2 col-sm-1 text-sm-end">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                            data-bs-target="#modalConfig">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                class="bi bi-gear" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-2 mt-3">
+                    <div class="col my-2">
+                        <div class="card bg-warning border-dark bg-gradient">
+                            <div class="card-header bg-gradient" data-bs-toggle="collapse"
+                                data-bs-target=".multi-collapse" aria-expanded="true" aria-controls="OUT1">Relay 1</div>
+                            <div class="card-body status collapse show rounded-bottom bg-gradient text-white multi-collapse"
+                                id="OUT1"><span>OFF</span></div>
+                        </div>
+                    </div>
+                    <div class="col my-2">
+                        <div class="card bg-warning border-dark bg-gradient">
+                            <div class="card-header bg-gradient" data-bs-toggle="collapse"
+                                data-bs-target=".multi-collapse" aria-expanded="true" aria-controls="OUT2">Relay 2</div>
+                            <div class="card-body status collapse show rounded-bottom bg-gradient text-white multi-collapse"
+                                id="OUT2"><span>OFF</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row row-cols-2 row-cols-md-2">
+                    <div class="col my-2">
+                        <div class="card bg-warning border-dark bg-gradient">
+                            <div class="card-header text-center">Cooler Fan 1</div>
+                            <div class="card-body bg-light position-relative vent-body">
+                                <svg class="vent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.065 476.065">
+                                    <path
+                                        d="M432.558,172.02C419.303,64.587,321.466-11.76,214.033,1.495S30.253,112.587,43.508,220.02
+                                           c11.008,89.222,81.303,159.517,170.525,170.525v37.52h-56c-13.255,0-24,10.745-24,24v24h208v-24c0-13.255-10.745-24-24-24h-56
+                                           v-37.52C369.466,377.29,445.813,279.453,432.558,172.02z M318.033,444.065c4.418,0,8,3.582,8,8v8h-176v-8c0-4.418,3.582-8,8-8
+                                           H318.033z M230.033,428.065v-32h16v32H230.033z M238.033,376.065c-99.411,0-180-80.589-180-180
+                                           c0.115-99.364,80.636-179.885,180-180c99.411,0,180,80.589,180,180S337.444,376.065,238.033,376.065z" />
+                                </svg>
+                                <svg class="vent" id="OUT1animate" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 -42 476.065 476.065">
+                                    <path
+                                        d="M406.033,212.065v-16c0-4.418-3.582-8-8-8h-93.536c39.8-27.832,49.502-82.658,21.67-122.458
+                                           c-16.467-23.548-43.4-37.565-72.134-37.542h-16c-4.418,0-8,3.582-8,8v93.536c-27.832-39.8-82.658-49.502-122.458-21.67
+                                           c-23.548,16.467-37.565,43.4-37.542,72.134v16c0,4.418,3.582,8,8,8h93.536c-23.465,16.478-37.463,43.328-37.536,72
+                                           c0.057,48.577,39.423,87.943,88,88h16c4.418,0,8-3.582,8-8v-93.536c27.832,39.8,82.658,49.502,122.458,21.67
+                                           C392.038,267.733,406.056,240.8,406.033,212.065z M246.033,44.065h8c39.764,0.055,71.955,32.336,71.9,72.1
+                                           c-0.043,31.17-20.138,58.772-49.788,68.388c-4.202-14.052-15.758-24.677-30.112-27.688V44.065z M86.033,188.065v-8
+                                           c0.073-39.764,32.368-71.94,72.133-71.867c31.148,0.057,58.727,20.138,68.347,49.763c-14.047,4.203-24.668,15.755-27.68,30.104
+                                           H86.033z M230.033,348.065h-8c-39.764-0.055-71.955-32.336-71.9-72.1c0.043-31.17,20.138-58.772,49.788-68.388
+                                           c4.202,14.052,15.758,24.677,30.112,27.688V348.065z M238.033,220.065c-13.255,0-24-10.745-24-24s10.745-24,24-24
+                                           s24,10.745,24,24S251.287,220.065,238.033,220.065z M317.9,283.932c-31.148-0.057-58.727-20.138-68.347-49.763
+                                           c14.047-4.203,24.668-15.755,27.68-30.104h112.8v8C389.959,251.83,357.664,284.006,317.9,283.932z" />
+                                </svg>
+
+                            </div>
+                            <div class="card-footer status bg-gradient text-white" id="OUT1status"><span>OFF</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col my-2">
+                        <div class="card bg-warning border-dark bg-gradient">
+                            <div class="card-header text-center">Cooler Fan 2</div>
+                            <div class="card-body bg-light bg position-relative vent-body">
+                                <svg class="vent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.065 476.065">
+                                    <path
+                                        d="M432.558,172.02C419.303,64.587,321.466-11.76,214.033,1.495S30.253,112.587,43.508,220.02
+                                           c11.008,89.222,81.303,159.517,170.525,170.525v37.52h-56c-13.255,0-24,10.745-24,24v24h208v-24c0-13.255-10.745-24-24-24h-56
+                                           v-37.52C369.466,377.29,445.813,279.453,432.558,172.02z M318.033,444.065c4.418,0,8,3.582,8,8v8h-176v-8c0-4.418,3.582-8,8-8
+                                           H318.033z M230.033,428.065v-32h16v32H230.033z M238.033,376.065c-99.411,0-180-80.589-180-180
+                                           c0.115-99.364,80.636-179.885,180-180c99.411,0,180,80.589,180,180S337.444,376.065,238.033,376.065z" />
+                                </svg>
+                                <svg class="vent" id="OUT2animate" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 -42 476.065 476.065">
+                                    <path
+                                        d="M406.033,212.065v-16c0-4.418-3.582-8-8-8h-93.536c39.8-27.832,49.502-82.658,21.67-122.458
+                                           c-16.467-23.548-43.4-37.565-72.134-37.542h-16c-4.418,0-8,3.582-8,8v93.536c-27.832-39.8-82.658-49.502-122.458-21.67
+                                           c-23.548,16.467-37.565,43.4-37.542,72.134v16c0,4.418,3.582,8,8,8h93.536c-23.465,16.478-37.463,43.328-37.536,72
+                                           c0.057,48.577,39.423,87.943,88,88h16c4.418,0,8-3.582,8-8v-93.536c27.832,39.8,82.658,49.502,122.458,21.67
+                                           C392.038,267.733,406.056,240.8,406.033,212.065z M246.033,44.065h8c39.764,0.055,71.955,32.336,71.9,72.1
+                                           c-0.043,31.17-20.138,58.772-49.788,68.388c-4.202-14.052-15.758-24.677-30.112-27.688V44.065z M86.033,188.065v-8
+                                           c0.073-39.764,32.368-71.94,72.133-71.867c31.148,0.057,58.727,20.138,68.347,49.763c-14.047,4.203-24.668,15.755-27.68,30.104
+                                           H86.033z M230.033,348.065h-8c-39.764-0.055-71.955-32.336-71.9-72.1c0.043-31.17,20.138-58.772,49.788-68.388
+                                           c4.202,14.052,15.758,24.677,30.112,27.688V348.065z M238.033,220.065c-13.255,0-24-10.745-24-24s10.745-24,24-24
+                                           s24,10.745,24,24S251.287,220.065,238.033,220.065z M317.9,283.932c-31.148-0.057-58.727-20.138-68.347-49.763
+                                           c14.047-4.203,24.668-15.755,27.68-30.104h112.8v8C389.959,251.83,357.664,284.006,317.9,283.932z" />
+                                </svg>
+
+                            </div>
+                            <div class="card-footer status bg-gradient text-white" id="OUT2status"><span>OFF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </ui:define>
+
+    <ui:define name="modal-content">
+        <div class="modal fade" id="modalConfig" tabindex="-1" aria-labelledby="modalConfig" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="configTitle">Config</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="config">
+                            <label for="tempMax" class="form-label">Max temperature: <span></span>º</label>
+                            <input type="range" class="form-range" name="tempMax" id="tempMax" max="30" min="18"
+                                step=".1" value="24" />
+                            <label for="tempMin" class="form-label">Min temperature: <span></span>º</label>
+                            <input type="range" class="form-range" name="tempMin" id="tempMin" max="30" min="18"
+                                step=".1" value="20" />
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="saveConfig"
+                            form="config">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="default-plugins">
+        <h:outputScript name="bootstrap-5.min.js" library="bootstrap/js" />
+        <h:outputScript name="main.js" library="js/status" />
+    </ui:define>
+
+    <ui:define name="jscript"></ui:define>
+
+</ui:composition>
