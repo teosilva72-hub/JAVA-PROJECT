@@ -326,7 +326,7 @@
           </h:selectBooleanCheckbox>                
            </div>
            </div>                
-         </c:if>
+           </c:if>
          
           <c:if test = "${item.module == 'COLAS'}">    
           <div class="module" id="#{item.module}">   		      
@@ -681,6 +681,7 @@
 	       	<div class="toast-dialog">
 	       		<div class="toast-content toast-sm">
 	       			<div class="toast-header">
+	       				<h4 class="modal-title w-100 font-weight-bold">#{dashboardLabels.dashboard_navbar_toast_calllist}</h4>
 	       				<button type="button" class="close" data-dismiss="toast" aria-label="Close">
 						<span aria-hidden="true">&times;</span></button>
 	       			</div>
@@ -701,7 +702,7 @@
        <!--  TOAST CALL LIST END -->
 
       <!-- Footer -->
-   <footer class=" page-footer font-small indigo" >
+   <footer class="page-footer font-small indigo" >
    
   <div class="footer-copyright text-center py-3 bg-mattBlackDark"> 
       <h:outputLabel p:value="© 2021 Tracevia Copyright: " />
@@ -779,7 +780,9 @@
 
 
       // Voice Menu Open
+        $("#navCall").click(() => $('#toastvoice').toast('show'));
 		$("#navListCall").click(() => $('#list-toast').toast('show'));
+	  // Voice Menu Open End
 
       // Visibility Equipments
     	$('[toggle]').click(function() {

@@ -568,8 +568,10 @@ input.apple-switch:checked:before {
 .input-list{
 	height: 20px;
 	width: 270px;
+	padding: 0 !important;
+	margin-left: 14px;
+	border: 1px #828282;
 }
-
 
 .acptcall {
 	display: block;
