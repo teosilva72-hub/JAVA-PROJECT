@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.speed.Speed;
 
-@ManagedBean(name="speedLinearView")
+@ManagedBean(name="speedMapsView")
 @ViewScoped
 public class SpeedBuildSpeed {
 	

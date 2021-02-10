@@ -32,13 +32,23 @@ public class ListEquipments {
 		this.equips = equips;
 	}
 	
+	LoadStartupModules load;
+	
 	@PostConstruct
 	public void initalize() {
 		
 		CreateMapEquipment();
 		
 	}
-	
+		
+	public LoadStartupModules getLoad() {
+		return load;
+	}
+
+	public void setLoad(LoadStartupModules load) {
+		this.load = load;
+	}
+
 	public class listEquips {
 		private boolean value;	
 		private List<Equipments> list;
@@ -60,9 +70,10 @@ public class ListEquipments {
 	
 	public void CreateMapEquipment() {
 		equips = new ArrayList<listEquips>();
-		LoadStartupModules load = new LoadStartupModules();
+		
+		load = new LoadStartupModules();
 		load.startupComponents();
-				
+						
 		try {	
 			
 			try {

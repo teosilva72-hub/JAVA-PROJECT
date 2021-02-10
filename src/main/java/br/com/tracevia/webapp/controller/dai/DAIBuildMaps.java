@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="daiLinearView")
+@ManagedBean(name="daiMapsView")
 @ViewScoped
 public class DAIBuildMaps {
 	

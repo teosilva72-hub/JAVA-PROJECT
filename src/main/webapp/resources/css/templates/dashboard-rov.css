@@ -226,7 +226,7 @@ footer {
 }
 
 .wrapper {
-  margin-top: 70px;
+  margin-top: 3.5rem;
   
 }
 
@@ -445,11 +445,9 @@ line-height: 50px;
 }
 
 /*Conte�do interno dos equipamentos*/
-.status-circle{	
+.fa-circle{	
   width: 10px;
-  height: 10px;
-  background-color: #00ff0d;  
-  border-radius: 50%;
+  height: 10px;  
   float: left;
   margin-top: 3.5%;	
   margin-left: 15%; 
@@ -542,12 +540,7 @@ input.apple-switch:checked:before {
 /* VOICE/CALL BOX */
 
 #call-box{
-	margin-left: 1%;
-	position: relative;
-}
-
-#address-sos{
-	margin-left: 80%;
+	margin-left: 85%;
 	position: relative;
 }
 
@@ -560,7 +553,7 @@ input.apple-switch:checked:before {
 
 #listcall {
    position: absolute;
-   right: 200px;
+   right: 60px;
    bottom: 10px;
    z-index: 10050;	
 }

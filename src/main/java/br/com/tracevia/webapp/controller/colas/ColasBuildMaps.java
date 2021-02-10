@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="colasMapView")
+@ManagedBean(name="colasMapsView")
 @ViewScoped
 public class ColasBuildMaps {
 	

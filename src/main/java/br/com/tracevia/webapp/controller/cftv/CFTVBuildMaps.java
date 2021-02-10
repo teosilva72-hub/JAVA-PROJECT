@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="cftvMapView")
+@ManagedBean(name="cftvMapsView")
 @ViewScoped
 public class CFTVBuildMaps {
 	

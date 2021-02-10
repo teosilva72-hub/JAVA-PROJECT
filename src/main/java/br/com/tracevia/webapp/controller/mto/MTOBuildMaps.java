@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.mto.MTO;
 
-@ManagedBean(name="mtoLinearView")
+@ManagedBean(name="mtoMapsView")
 @ViewScoped
 public class MTOBuildMaps {
 

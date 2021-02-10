@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
 
-@ManagedBean(name="commsLinearView")
+@ManagedBean(name="commsMapsView")
 @ViewScoped
 public class COMMSBuildMaps {
 	

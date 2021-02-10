@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.videowall.VIDEOWALL;
 
-@ManagedBean(name="videoWallLinearView")
+@ManagedBean(name="videoWallMapsView")
 @ViewScoped
 public class VIDEOWALLBuildMaps {
 	

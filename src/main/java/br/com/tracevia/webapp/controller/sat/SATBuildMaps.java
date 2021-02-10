@@ -9,11 +9,9 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.ListEquipments;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 
-@ManagedBean(name = "satLinearView")
+@ManagedBean(name = "satMapsView")
 @ViewScoped
 public class SATBuildMaps {
 
