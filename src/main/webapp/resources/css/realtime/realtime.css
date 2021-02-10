@@ -341,6 +341,10 @@ body {
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
+#content {
+	margin-top: 0px;
+}
+
 .table-sat tr,
 .table-sat td {
   border: 1px solid #363636;
@@ -385,6 +389,7 @@ body {
 .padding-sat .km {
   font-size: 7px;
 }
+
 main > div:first-child {
   width: 100%;
   position: fixed;

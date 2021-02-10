@@ -79,7 +79,7 @@ public class GlobalReportsDAO {
 				ps = conn.prepareStatement(query);
 				rs = ps.executeQuery();
 				
-				System.out.println("QUERY: "+query);			
+			//	System.out.println("QUERY: "+query);			
 								
 				//RESULT IN RESULTSET
 							
@@ -185,7 +185,7 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 				ps.setString(3, equip);				
 				rs = ps.executeQuery();
 				
-				System.out.println("QUERY: "+query);
+				//System.out.println("QUERY: "+query);
 				//RESULT IN RESULTSET
 				
 				if (rs != null) {

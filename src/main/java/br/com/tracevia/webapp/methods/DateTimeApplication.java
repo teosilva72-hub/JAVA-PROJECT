@@ -306,7 +306,7 @@ public String getCurrentDateSubDados30(Calendar calendar, int minute) {
 		  cal2.setTime (dt2);
 		        
 		  for (Calendar cal = cal1; cal.compareTo (cal2) <= 0; cal.add (Calendar.DATE, 1)) {
-		          System.out.println (fmt.format (cal.getTime()));
+		         // System.out.println (fmt.format (cal.getTime()));
 		          dateInterval[inc] = fmt.format (cal.getTime());
 		            
 		            inc++;
@@ -334,7 +334,7 @@ public String getCurrentDateSubDados30(Calendar calendar, int minute) {
 			  formatter.applyPattern(DATE_TIME_FORMAT_EXCEL_SHEET_NAME);
 			        
 			  for (Calendar cal = cal1; cal.compareTo (cal2) <= 0; cal.add (Calendar.DATE, 1)) {
-			            System.out.println (formatter.format (cal.getTime()));
+			            //System.out.println (formatter.format (cal.getTime()));
 			            dateInterval[inc] = formatter.format (cal.getTime());
 			            
 			            inc++;

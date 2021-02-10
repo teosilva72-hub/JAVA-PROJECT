@@ -698,9 +698,7 @@ public class SatQueriesModels {
      	 String query = "";
      	            	 
      	 query += PeriodFlowHeaderSelectQuery(period);
-     	 
-     	 System.out.println(stations.length);
-     	  
+     	      	     	  
      	 for(int st = 0; st < stations.length; st++) {
        	  
        	  if(lanes[st] == 2) {  

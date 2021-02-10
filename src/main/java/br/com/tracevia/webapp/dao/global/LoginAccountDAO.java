@@ -5,11 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-
-import org.apache.poi.util.SystemOutLogger;
-
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 

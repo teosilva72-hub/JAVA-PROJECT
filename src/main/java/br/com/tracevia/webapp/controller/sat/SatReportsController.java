@@ -733,12 +733,12 @@ public class SatReportsController {
 		//SELECIONA UMA PROCEDURE DE ACORDO COM PERÍODO SELECIONADO
 		procedure = models.SelectProcedureByPeriod(satReport.getPeriod());	
 
-		System.out.println(procedure); //debug
+		//System.out.println(procedure); //debug
 
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
 
-		System.out.println(query); //debug
+		//System.out.println(query); //debug
 
 		//EXECUÇÃO DA QUERY
 		resultQuery = dao.ExecuteQuery(procedure, query, satReport.getStartDate(), satReport.getEndDate());
@@ -2167,7 +2167,7 @@ public class SatReportsController {
 		//Reset object => call on click reset button
 		satReport = new SatReports();
 
-		System.out.println("reset");
+		//System.out.println("reset");
 		
 		externalContext.getSessionMap().remove("xlsModel");
 		externalContext.getSessionMap().remove("current");
