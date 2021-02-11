@@ -41,7 +41,7 @@
 			    var minute = data.getMinutes();
 			                          		
 			     if (minute == 15 || minute == 30 || minute == 45 || minute == 0) {         	        	
-			           if (n &lt; 4) 		        	   
+			           if (n &gt; 26 && n &lt; 30) 		        	   
 			            location.href = location.href.replace("#", "")
 			     }
 			     
@@ -199,20 +199,20 @@
 										<div class="col-5 padding-sat border-right border-bottom border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
-											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS1}</span>
+											<span id="qtd1">#{satMapsView.satListValues.get(loop.index).quantidadeS1}</span>
 										</div>
 										<div class="col-7 padding-sat border-bottom border-dark">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS1}<span class="km"> km/h</span></span>
+											<span id="speed1">#{satMapsView.satListValues.get(loop.index).velocidadeS1}</span><span class="km"> km/h</span>
 										</div>
 										<div class="col-5 padding-sat border-right border-dark">
 											<i class="fas fa-car sat-cars"
 												title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
-											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS2}</span>
+											<span id="qtd2">#{satMapsView.satListValues.get(loop.index).quantidadeS2}</span>
 										</div>
 										<div class="col-7 padding-sat">
 											<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
-											<span>#{satMapsView.satListValues.get(loop.index).quantidadeS2}<span class="km"> km/h</span></span>
+											<span id="speed2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span class="km"> km/h</span>
 										</div>
 									</div>
 
