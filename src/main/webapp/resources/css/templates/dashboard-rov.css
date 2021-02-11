@@ -553,7 +553,7 @@ input.apple-switch:checked:before {
 
 #listcall {
    position: absolute;
-   right: 60px;
+   right: 200px;
    bottom: 10px;
    z-index: 10050;	
 }
@@ -562,7 +562,8 @@ input.apple-switch:checked:before {
 	height: 20px;
 	width: 270px;
 	padding: 0 !important;
-	margin-left: 14px;
+	left: 50%;
+	right: 50%;
 	border: 1px #828282;
 }
 

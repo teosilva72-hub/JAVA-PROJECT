@@ -67,7 +67,7 @@
         </div>
 
 
-        <div class="col-3 collapse navbar-collapse ms-auto ml-auto" id="navbarSupportedContent">
+        <div class="col-3 collapse navbar-collapse ms-auto ml-auto justify-content-end" id="navbarSupportedContent">
 
           <ul class="navbar-nav header-menu" id="call-box">
             <li class="nav-item">
@@ -77,7 +77,15 @@
             </li>
           </ul>
 
-          <ul class="navbar-nav header-menu">
+		 <ul class="navbar-nav ml-xl header-menu" id="address-sos">
+			<li class="nav-item">
+				<a type="button" class="btn btn-primary nav-link p-0" href='#' id="navListCall">
+					<i class="fas fa-address-book"></i>
+				</a>
+			</li>
+		</ul>
+
+				<ul class="navbar-nav header-menu">
             <li class="nav-item dropdown">
               <a class="nav-link p-0" href="/dashboard/dashboard.xhtml" id="navbarHome"
                 title="#{dashboardLabels.dashboard_navbar_icon_home_title}">
@@ -564,7 +572,7 @@
                   </c:if>
 
                   <c:if test="${item.module == 'SOS'}">
-                    <c:forEach items="#{dmsMapsView.sosList}" var="item" varStatus="sosLoop">
+                    <c:forEach items="#{sosMapsView.sosList}" var="item" varStatus="sosLoop">
                       <div class="equip-info-display">
                         <div class="info">
                           <div id="status#{item.nome}" class="fas fa-circle"></div>
@@ -679,21 +687,31 @@
     <!-- TOAST ACCEPT/DIMISS CALL END -->
 
     <!--  TOAST CALL LIST -->
-    <div class="listcall">
-      <div class="toast" id="list-toast" role="alert" data-autohide="false">
-        <div class="toast-dialog">
-          <div class="toast-content toast-sm">
-            <div class="toast-header">
-            </div>
-            <div class="toast-body">
-            </div>
-            <div class="toast-footer">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--  TOAST CALL LIST END -->
+		<div id="listcall">
+			<div class="toast" id="list-toast" role="alert" data-autohide="false">
+				<div class="toast-dialog">
+					<div class="toast-content toast-sm" style="width:275px;">
+						<div class="toast-header">
+							<h4 class="modal-title w-100 font-weight-bold">#{dashboardLabels.dashboard_navbar_toast_calllist}</h4>
+							<button type="button" class="close" data-dismiss="toast"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div class="toast-body"></div>
+						<input class="input-list" id="call1" readonly=""></input>
+						<input class="input-list" id="call2" readonly=""></input>
+						<input class="input-list" id="call3" readonly=""></input>
+						<input class="input-list" id="call4" readonly=""></input>
+						<input class="input-list" id="call5" readonly=""></input>
+						<input class="input-list" id="call6" readonly=""></input>
+						<div class="toast-footer"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--  TOAST CALL LIST END -->
 
     <!-- Footer -->
     <footer class=" page-footer font-small indigo">
@@ -769,12 +787,16 @@
 
 
       // Voice Menu Open
+		$("#navCall").click(() => $('#toastvoice').toast('show'));
 		$("#navListCall").click(() => $('#list-toast').toast('show'));
-
+	  // Voice Menu Open End
+	  
       // Visibility Equipments
-      $('[toggle]').click(function () {
+      	$('[toggle]').click(function () {
         $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
-      })
+      	})
+      // Visibility Equipments End
+      
     </script>
 
     <!-- Import JavaScript from another pages -->
