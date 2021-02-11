@@ -20,6 +20,31 @@ function posEquip(equip) {
 		x: Number(equip.attr('posX')),
 		y: Number(equip.attr('posY'))
 	}
+	
+ 	equip.css({
+ 		left: pos.x,
+ 		top: pos.y
+	});
+	
+	if (equip.attr("class").includes('equip-box-sat')) {
+		drawSat(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, equip.attr('status'), Number(equip.find('#speed1').text()), Number(equip.find('#speed2').text()), 'fluxos', `img1FluxoTab${equip.attr('id').replace('sat', '')}`, `img2FluxoTab${equip.attr('id').replace('sat', '')}`, `satName${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')))
+		console.log(equip.find('#speed1').text())
+	} else if (equip.attr("class").includes('equip-box')) {	
+		drawGenericEquipments(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')), 1)
+	}
+ }
+
+ 	//RESIZE EQUIPMENT
+	 function resizeEquip(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = Number(equip.attr('item-width')) / equip.width()
+			
+			equip.css('transform', `scale(${scale})`)
+		})
+	}
+	
+	//RESIZE EQUIPMENT END
 
 	equip.css({
 		left: pos.x,
