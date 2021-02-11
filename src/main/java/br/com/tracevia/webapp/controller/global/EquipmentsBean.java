@@ -183,7 +183,7 @@ public class EquipmentsBean implements Serializable {
 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable);
 				    
-		 System.out.println(equip.getCidade());
+		 //System.out.println(equip.getCidade());
 	    //For Equipment ID
 	 
 	    
@@ -196,14 +196,14 @@ public class EquipmentsBean implements Serializable {
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
 		 
-		 System.out.println(equipTable);
+		// System.out.println(equipTable);
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
 		 update = dao.EquipUpdateMap(equip, equipTable);
 		
 		    
-		 System.out.println("UP"+update);
+		 //System.out.println("UP"+update);
 	    //For Equipment ID
 		
 	}
@@ -215,14 +215,14 @@ public class EquipmentsBean implements Serializable {
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
 		 
-		 System.out.println(equipTable);
+		 //System.out.println(equipTable);
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
 		 delete = dao.EquipDeleteMap(equipId, equipTable);
 		
 		    
-		 System.out.println("Deleted: "+delete);
+		// System.out.println("Deleted: "+delete);
 	   
 	
 	}
@@ -236,16 +236,16 @@ public class EquipmentsBean implements Serializable {
 		 int posY = getPositionY();
 		 String equipTable = getEquipTable();
 		 
-		 System.out.println("EQUIP: "+equipId);
-		 System.out.println("TABLE: "+equipTable);
-		 System.out.println("X: "+posX);
-		 System.out.println("Y: "+posY);
+		// System.out.println("EQUIP: "+equipId);
+		 ////System.out.println("TABLE: "+equipTable);
+		/// System.out.println("X: "+posX);
+		// System.out.println("Y: "+posY);
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();		
 		
 		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY);
 		 
-		 System.out.println("Positioned: "+position);
+		 //System.out.println("Positioned: "+position);
 		 
 		
 	}

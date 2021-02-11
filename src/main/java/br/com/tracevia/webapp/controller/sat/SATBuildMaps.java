@@ -91,7 +91,7 @@ public class SATBuildMaps {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
-						System.out.println(satList.get(s).getEquip_id());
+						//System.out.println(satList.get(s).getEquip_id());
 
 						SAT satListObj = new SAT();
 						pass = true;
@@ -123,7 +123,7 @@ public class SATBuildMaps {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
-						System.out.println(satList.get(s).getEquip_id());
+						//System.out.println(satList.get(s).getEquip_id());
 
 						SAT satListObj = new SAT();
 						pass = true;
@@ -183,7 +183,7 @@ public class SATBuildMaps {
 					values15 = false;
 				}
 				
-				System.out.println(satListValuesAux.size());
+				//System.out.println(satListValuesAux.size());
 
 				// VERIFICA SE A LISTA CONTINUA VAZIA OU SE H� DADOS
 				if (!values15 && !satListValuesAux.isEmpty())

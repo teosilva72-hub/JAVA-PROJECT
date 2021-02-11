@@ -58,6 +58,4 @@ simple.on('ringing', function() {
 //makes the call
 simple.call('');
 
-
-
 //SIP VOICE/CALL END
