@@ -11,7 +11,9 @@
         <h:outputStylesheet name="style.css" library="css/status" />
     </ui:define>
 
-    <ui:define name="default-jquery" />
+    <ui:define name="default-jquery">
+
+    </ui:define>
 
     <ui:define name="default-content">
         <div class="header bg-gradient">
@@ -21,8 +23,8 @@
                         <p>Tracevia</p>
                     </div>
                     <div class="col-sm-4 col-5 temp mt-2 ms-auto text-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
-                            class="bi bi-thermometer-half" viewBox="0 0 16 16">
+                        <svg width="40" height="40" fill="currentColor" class="bi bi-thermometer-half"
+                            viewBox="0 0 16 16">
                             <path d="M8 1.75a.25.25 0 0 1 .25.25v9.02a1.5 1.5 0 1 1-.5 0V2A.25.25 0 0 1 8 1.75z" />
                             <path
                                 d="M6 2a2 2 0 1 1 4 0v7.627a3.5 3.5 0 1 1-4 0V2zm2-1a1 1 0 0 0-1 1v7.901a.5.5 0 0 1-.25.433A2.499 2.499 0 0 0 8 15a2.5 2.5 0 0 0 1.25-4.666.5.5 0 0 1-.25-.433V2a1 1 0 0 0-1-1z" />
@@ -32,8 +34,7 @@
                     <div class="col-2 col-sm-1 text-sm-end">
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#modalConfig">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                class="bi bi-gear" viewBox="0 0 16 16">
+                            <svg width="20" height="20" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                                 <path
                                     d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
                                 <path
@@ -72,7 +73,7 @@
                         <div class="card bg-warning border-dark bg-gradient">
                             <div class="card-header text-center">Cooler Fan 1</div>
                             <div class="card-body bg-light position-relative vent-body">
-                                <svg class="vent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.065 476.065">
+                                <svg class="vent" viewBox="0 0 476.065 476.065">
                                     <path
                                         d="M432.558,172.02C419.303,64.587,321.466-11.76,214.033,1.495S30.253,112.587,43.508,220.02
                                            c11.008,89.222,81.303,159.517,170.525,170.525v37.52h-56c-13.255,0-24,10.745-24,24v24h208v-24c0-13.255-10.745-24-24-24h-56
@@ -80,8 +81,7 @@
                                            H318.033z M230.033,428.065v-32h16v32H230.033z M238.033,376.065c-99.411,0-180-80.589-180-180
                                            c0.115-99.364,80.636-179.885,180-180c99.411,0,180,80.589,180,180S337.444,376.065,238.033,376.065z" />
                                 </svg>
-                                <svg class="vent" id="OUT1animate" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 -42 476.065 476.065">
+                                <svg class="vent" id="OUT1animate" viewBox="0 -42 476.065 476.065">
                                     <path
                                         d="M406.033,212.065v-16c0-4.418-3.582-8-8-8h-93.536c39.8-27.832,49.502-82.658,21.67-122.458
                                            c-16.467-23.548-43.4-37.565-72.134-37.542h-16c-4.418,0-8,3.582-8,8v93.536c-27.832-39.8-82.658-49.502-122.458-21.67
@@ -105,7 +105,7 @@
                         <div class="card bg-warning border-dark bg-gradient">
                             <div class="card-header text-center">Cooler Fan 2</div>
                             <div class="card-body bg-light bg position-relative vent-body">
-                                <svg class="vent" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.065 476.065">
+                                <svg class="vent" viewBox="0 0 476.065 476.065">
                                     <path
                                         d="M432.558,172.02C419.303,64.587,321.466-11.76,214.033,1.495S30.253,112.587,43.508,220.02
                                            c11.008,89.222,81.303,159.517,170.525,170.525v37.52h-56c-13.255,0-24,10.745-24,24v24h208v-24c0-13.255-10.745-24-24-24h-56
@@ -113,8 +113,7 @@
                                            H318.033z M230.033,428.065v-32h16v32H230.033z M238.033,376.065c-99.411,0-180-80.589-180-180
                                            c0.115-99.364,80.636-179.885,180-180c99.411,0,180,80.589,180,180S337.444,376.065,238.033,376.065z" />
                                 </svg>
-                                <svg class="vent" id="OUT2animate" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 -42 476.065 476.065">
+                                <svg class="vent" id="OUT2animate" viewBox="0 -42 476.065 476.065">
                                     <path
                                         d="M406.033,212.065v-16c0-4.418-3.582-8-8-8h-93.536c39.8-27.832,49.502-82.658,21.67-122.458
                                            c-16.467-23.548-43.4-37.565-72.134-37.542h-16c-4.418,0-8,3.582-8,8v93.536c-27.832-39.8-82.658-49.502-122.458-21.67
@@ -172,6 +171,8 @@
         <h:outputScript name="main.js" library="js/status" />
     </ui:define>
 
-    <ui:define name="jscript"></ui:define>
+    <ui:define name="jscript">
+
+    </ui:define>
 
 </ui:composition>
