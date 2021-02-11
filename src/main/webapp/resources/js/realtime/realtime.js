@@ -28,7 +28,8 @@ $(function () {
 	});
 	
 	if (equip.attr("class").includes('equip-box-sat')) {
-		drawSat(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, equip.attr('status'), equip.find('speed1').text(), equip.find('speed2').text(), 'fluxos', `img1FluxoTab${equip.attr('id').replace('sat', '')}`, `img2FluxoTab${equip.attr('id').replace('sat', '')}`, `satName${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')))
+		drawSat(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, equip.attr('status'), Number(equip.find('#speed1').text()), Number(equip.find('#speed2').text()), 'fluxos', `img1FluxoTab${equip.attr('id').replace('sat', '')}`, `img2FluxoTab${equip.attr('id').replace('sat', '')}`, `satName${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')))
+		console.log(equip.find('#speed1').text())
 	} else if (equip.attr("class").includes('equip-box')) {	
 		drawGenericEquipments(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')), 1)
 	}

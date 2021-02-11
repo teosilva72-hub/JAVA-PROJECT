@@ -260,7 +260,7 @@ public class NavigationBean {
     
    public String sidebarSource() {
 	   
-	   sidebar_page = null;
+	   sidebar_page = "";
 	   	   	   
 	   FacesContext context = FacesContext.getCurrentInstance();		  
 	   int role = (int) context.getExternalContext().getSessionMap().get("nivel");
