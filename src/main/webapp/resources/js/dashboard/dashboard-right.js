@@ -46,33 +46,33 @@ var options = {
 
 
 //Accept a Call Button
-var startButton = document.getElementById('acptcall');
-startButton.addEventListener("click", function() {
-	simple.call();
-	alert("Call Started.");
-	}, false);
+	var startButton = document.getElementById('acptcall');
+	startButton.addEventListener("click", function() {
+		simple.call();
+		alert("Call Started.");
+		}, false);
 //Accept a Call Button End
 
 //Ending a Call Button
-var endButton = document.getElementById('misscall');
-endButton.addEventListener("click", function () {
-    simple.hangup();
-    alert("Call Ended.");
-	}, false);
+	var endButton = document.getElementById('misscall');
+	endButton.addEventListener("click", function () {
+	    simple.hangup();
+	    alert("Call Ended.");
+		}, false);
 //Ending a Call Button End
 
 //Placing a call on hold
-var holdButton = document.getElementById('holdcall');
-holdButton.addEventListener("click", function () {
-	simpleUser.hold();
-	alert("Call on Hold.")
-}, false);
-
-var unholdButton = document.getElementById('holdcallstop');
-unholdButton.addEventListener("click", function() {
-	simpleUser.unhold();
-	alert("Call Came Back.")
-}, false);
+	var holdButton = document.getElementById('holdcall');
+	holdButton.addEventListener("click", function () {
+		simpleUser.hold();
+		alert("Call on Hold.")
+	}, false);
+	
+	var unholdButton = document.getElementById('holdcallstop');
+	unholdButton.addEventListener("click", function() {
+		simpleUser.unhold();
+		alert("Call Came Back.")
+	}, false);
 //Placing a call on hold End
 
 //Answering a Call
@@ -91,4 +91,4 @@ unholdButton.addEventListener("click", function() {
 		//document.form.cor3.value = cor3;
 		//document.form.cor3.className = cor3 < comp ? 'red' : 'green';
 	//}
-// SIP BOOK-LIST END
+//SIP BOOK-LIST END
