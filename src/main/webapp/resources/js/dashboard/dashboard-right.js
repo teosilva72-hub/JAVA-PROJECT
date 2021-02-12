@@ -43,19 +43,52 @@ var options = {
  			  authorizationUser: 'test',
     		password: 'password',}
     };
-var simple = new SIP.Web.Simple(options);
 
+
+//Accept a Call Button
+var startButton = document.getElementById('acptcall');
+startButton.addEventListener("click", function() {
+	simple.call();
+	alert("Call Started.");
+	}, false);
+//Accept a Call Button End
+
+//Ending a Call Button
 var endButton = document.getElementById('misscall');
 endButton.addEventListener("click", function () {
     simple.hangup();
     alert("Call Ended.");
 	}, false);
+//Ending a Call Button End
 
-simple.on('ringing', function() {
-	simple.answer();
-});
-	
-//makes the call
-simple.call('');
+//Placing a call on hold
+var holdButton = document.getElementById('holdcall');
+holdButton.addEventListener("click", function () {
+	simpleUser.hold();
+	alert("Call on Hold.")
+}, false);
+
+var unholdButton = document.getElementById('holdcallstop');
+unholdButton.addEventListener("click", function() {
+	simpleUser.unhold();
+	alert("Call Came Back.")
+}, false);
+//Placing a call on hold End
+
+//Answering a Call
+
+//Answering a Call End
+
 
 //SIP VOICE/CALL END
+
+//SIP BOOK-LIST
+	//function color() {
+		//var color1 = parseInt(document.form.cor1.value) || 0;
+		//var color2 = parseInt(document.form.cor2.value) || 0;
+		//var comp = parseInt(document.form.comparar.value) || 0;
+		//var cor3 = cor1 + cor2;
+		//document.form.cor3.value = cor3;
+		//document.form.cor3.className = cor3 < comp ? 'red' : 'green';
+	//}
+// SIP BOOK-LIST END

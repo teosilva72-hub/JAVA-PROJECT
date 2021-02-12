@@ -71,7 +71,7 @@
 
           <ul class="navbar-nav header-menu" id="call-box">
             <li class="nav-item">
-              <a type="button" class="btn btn-primary nav-link p-0" href="#" id="navCall">
+              <a type="button" class="btn btn-primary nav-link p-0" href="" id="navCall">
                 <i class="fas fa-phone-square"></i>
               </a>
             </li>
@@ -79,7 +79,7 @@
 
           <ul class="navbar-nav ml-xl header-menu" id="address-sos">
             <li class="nav-item">
-              <a type="button" class="btn btn-primary nav-link p-0" href='#' id="navListCall">
+              <a type="button" class="btn btn-primary nav-link p-0" href='' id="navListCall">
                 <i class="fas fa-address-book"></i>
               </a>
             </li>
@@ -662,21 +662,16 @@
                 <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">
-              <h:commandLink>
                 <h:graphicImage title="Accept Call" class="acptcall" value="/resources/images/voice/accept-call.png">
                 </h:graphicImage>
-              </h:commandLink>
               <label> Accept Call </label>
-              <h:commandLink>
-                <h:graphicImage title="Dismiss Call" id="misscall" class="dismisscall"
-                  value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
-              </h:commandLink>
+                <h:graphicImage title="Dismiss Call" id="misscall" class="dismisscall" value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
               <label> Dismiss Call </label>
-              <h:commandLink>
-                <h:graphicImage title="Call in wait" class="waitcall" value="/resources/images/voice/call-in-wait.png">
+                <h:graphicImage title="Call on Hold" class="holdcall" id="holdingcall" value="/resources/images/voice/call-on-hold.png">
                 </h:graphicImage>
-              </h:commandLink>
-              <label> Put Call in Wait </label>
+                <h:graphicImage title="Call on Hold Stop" class="holdcallstop" id="callback" value="/resources/images/voice/call-on-hold-stop.png" style="display:none;">
+                </h:graphicImage>
+              <label> Put Call on Hold </label>
             </div>
             <div class="toast-footer" id="call-footer">
             </div>
@@ -783,19 +778,41 @@
       }
        //Call setTopo()
       $(window).bind('scroll', setTopo);*/
-
-
       // Voice Menu Open
-      $("#navCall").click(() => $('#toastvoice').toast('show'));
-      $("#navListCall").click(() => $('#list-toast').toast('show'));
-      // Voice Menu Open End
+$(function() {
 
+      $("[id$=holdingcall]").click(function(e) {
+    	  e.preventDefault();
+    	  e.stopPropagation();
+    	  $("[id$=callback]").show();
+    	  $("[id$=holdingcall]").hide();
+      });
+      
+      $("[id$=callback]").click(function(e) {
+    	  e.preventDefault();
+    	  e.stopPropagation();
+    	  $("[id$=holdingcall]").show();
+      	  $("[id$=callback]").hide();
+      });
+      
+      $("#navCall").on('click', function(e) {
+    	  e.preventDefault()
+    	  $('#toastvoice').toast('show');
+      });
+      
+      $("#navListCall").click(function(e) {
+    	  e.preventDefault()
+    	  $('#list-toast').toast('show');
+      });     
+})
+	  // Voice Menu Open End
+	   
       // Visibility Equipments
       $('[toggle]').click(function () {
         $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
       })
       // Visibility Equipments End
-
+	
     </script>
 
     <!-- Import JavaScript from another pages -->

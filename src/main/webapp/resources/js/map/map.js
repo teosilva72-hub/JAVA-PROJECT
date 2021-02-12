@@ -495,4 +495,7 @@ $(document).ready(function(){
 	return false;
 	});
 });
+
+
+
 // Map div Iframe Reload END
