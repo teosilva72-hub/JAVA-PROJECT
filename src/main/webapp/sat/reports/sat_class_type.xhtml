@@ -211,24 +211,7 @@
 									<label for="equip" class="error" id="equip-error"></label>
 								</div>
 						  </div>
-							
-							<!-- CLASSES OPTIONS -->
-
-							<div class="form-row">
-							<div class="form-group col-sm-12 checkbox-field">
-									<span><i class="fas fa-th-list"></i></span>
-									<span for="classes"	class="valid-icon-hidden"></span>
-									<select name="classes" id="classes" multiple="multiple"  >									    
-								   	   <ui:repeat var="cls"  value="#{satReportsBean.classes}"  varStatus="clsStatus" >
-								         <option value="#{cls.value}" > #{cls.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>												
-								</div>
-								<div class="error-label">
-									<label for="classes" class="error" id="classes-error"></label>
-								</div>
-							</div>
-
+														
 							<!-- PERIODS OPTIONS -->
 
 							<div class="form-row">

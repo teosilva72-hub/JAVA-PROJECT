@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.util;
 
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+
 public class QueriesReportsModels {
 
 	/**
@@ -20,40 +22,40 @@ public class QueriesReportsModels {
 	private static final String CALL_PROCEDURE_06_HOURS = "CALL TemporaryDateTimeSixHours( ?, ?)";	
 	private static final String CALL_PROCEDURE_DAYS = "CALL TemporaryDates( ?, ?)";
 
-	//CABEÇALHO QUERIES
-	private static final String QUERY_HEADER_05_MIN = "SELECT DATE_FORMAT(tmp.datetime_05, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_05) - TIME_TO_SEC(tmp.datetime_05)%(05*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_05) + 240 ) - TIME_TO_SEC(tmp.datetime_05)%(05*60))),'%H:%i')) AS intervals, ";
+ //CABEÇALHO QUERIES
+  private static final String QUERY_HEADER_05_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(05*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 240 ) - TIME_TO_SEC(data)%(05*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_06_MIN = "SELECT DATE_FORMAT(tmp.datetime_06, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_06) - TIME_TO_SEC(tmp.datetime_06)%(06*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_06) + 300 ) - TIME_TO_SEC(tmp.datetime_06)%(06*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_06_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(06*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 300 ) - TIME_TO_SEC(data)%(06*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_10_MIN = "SELECT DATE_FORMAT(tmp.datetime_10, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_10) - TIME_TO_SEC(tmp.datetime_10)%(10*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_10) + 540 ) - TIME_TO_SEC(tmp.datetime_10)%(10*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_10_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(10*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 540 ) - TIME_TO_SEC(data)%(10*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_15_MIN = "SELECT DATE_FORMAT(tmp.datetime_15, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_15) - TIME_TO_SEC(tmp.datetime_15)%(15*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_15) + 840 ) - TIME_TO_SEC(tmp.datetime_15)%(15*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_15_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(15*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 840 ) - TIME_TO_SEC(data)%(15*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_30_MIN = "SELECT DATE_FORMAT(tmp.datetime_30, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_30) - TIME_TO_SEC(tmp.datetime_30)%(30*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_30) + 1740 ) - TIME_TO_SEC(tmp.datetime_30)%(30*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_30_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(30*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 1740 ) - TIME_TO_SEC(data)%(30*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_01_HOUR = "SELECT DATE_FORMAT(tmp.datetime_hour, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_hour) - TIME_TO_SEC(tmp.datetime_hour)%(60*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_hour) + 3599 ) - TIME_TO_SEC(tmp.datetime_hour)%(60*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_01_HOUR = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(60*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 3599 ) - TIME_TO_SEC(data)%(60*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_06_HOURS = "SELECT DATE_FORMAT(tmp.datetime_six_hours, '%d/%m/%Y') AS data, " + 
-			"CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(tmp.datetime_six_hours) - TIME_TO_SEC(tmp.datetime_six_hours)%(360*60))),'%H:%i'), ' - '), " +
-			"DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(tmp.datetime_six_hours) + 21599 ) - TIME_TO_SEC(tmp.datetime_six_hours)%(360*60))),'%H:%i')) AS intervals, ";
+  private static final String QUERY_HEADER_06_HOURS = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(360*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 21599 ) - TIME_TO_SEC(data)%(360*60))),'%H:%i')) AS intervals, ";
 
-	private static final String QUERY_HEADER_DATE = "SELECT DATE_FORMAT(tmp.date_, '%d/%m/%Y') AS data, CONCAT('', ' ----- ') AS intervals, ";
+  private static final String QUERY_HEADER_DATE = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, CONCAT('', ' ----- ') AS intervals, ";
+ 
+  private static final String QUERY_HEADER_DAYS = "SELECT DATE_FORMAT(data, '%d') AS days, ";
 
-	private static final String QUERY_HEADER_DAYS = "SELECT DATE_FORMAT(tmp.date_, '%d') AS days, ";
-
-	private static final String QUERY_HEADER_MONTHS = "SELECT DATE_FORMAT(tmp.date_, '%M') AS month, ";
+  private static final String QUERY_HEADER_MONTHS = "SELECT DATE_FORMAT(data, '%M') AS month, ";
 
 	//FROM TABLES REFERENCE		
 	private static final String FROM_TABLE_05_MIN = " FROM temporarydatetime05 as tmp ";
@@ -64,6 +66,47 @@ public class QueriesReportsModels {
 	private static final String FROM_TABLE_01_HOUR = " FROM temporarydatetimehour as tmp ";
 	private static final String FROM_TABLE_06_HOURS = " FROM temporarydatetimesixhours as tmp ";
 	private static final String FROM_TABLE_DATE = " FROM temporarydates as tmp " ;
+	
+   //FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_06_MIN_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_10_MIN_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_15_MIN_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_30_MIN_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_01_HOUR_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_06_HOURS_LL = " FROM tb_vbv_ll st ";
+	private static final String FROM_TABLE_DATE_LL = " FROM tb_vbv_ll st " ;
+	
+    //FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_06_MIN_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_10_MIN_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_15_MIN_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_30_MIN_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_01_HOUR_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_06_HOURS_VBV = " FROM tb_vbv st ";
+	private static final String FROM_TABLE_DATE_VBV = " FROM tb_vbv st ";
+	
+	//FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_06_MIN_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_10_MIN_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_15_MIN_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_30_MIN_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_01_HOUR_CCR = " FROM tb_vbv_ccr st  ";
+	private static final String FROM_TABLE_06_HOURS_CCR = " FROM tb_vbv_ccr st ";
+	private static final String FROM_TABLE_DATE_CCR = " FROM tb_vbv_ccr st " ;
+	
+    //FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_06_MIN_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_10_MIN_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_15_MIN_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_30_MIN_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_01_HOUR_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_06_HOURS_SAT = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_DATE_SAT = " FROM sat_vbv st " ;
+
 
 	//LEFT JOIN TABLE REFERENCE
 	private static final String LEFT_JOIN_START_SAT = "LEFT JOIN sat_vbv AS st ";
@@ -75,7 +118,8 @@ public class QueriesReportsModels {
 	//LEFT JOIN SAT EQUIPMENT TABLE REFERENCE
 	private static final String LEFT_JOIN_END_SAT_EQUIP = "LEFT JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
 	private static final String LEFT_JOIN_END_MTO_EQUIP = "LEFT JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
-
+	private static final String INNER_JOIN_END_SAT_EQUIP = "INNER JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
+	
 	//LEFT JOIN PERIOD 05 MINUTES
 		private static final String LEFT_JOIN_CONDITION_05_MIN = "ON DATE(st.data) = DATE(tmp.datetime_05) AND HOUR(st.data) = HOUR(tmp.datetime_05) AND " +
 				"((MINUTE(st.data) >= 0 AND MINUTE(st.data) <= 4) = (MINUTE(tmp.datetime_05) = 0) AND " +
@@ -177,7 +221,43 @@ public class QueriesReportsModels {
 
 		private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR = "GROUP BY MONTH(tmp.date_) " +
 				"ORDER BY MONTH(tmp.date_) ASC";
+		
+		
+		//QUERIES GROUP AND ORDER BY PERIODSNEW SATS		
+		private static final String GROUP_AND_ORDER_TABLE_05_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
+				"ORDER BY DATE(data) ASC ";
 
+		private static final String GROUP_AND_ORDER_TABLE_06_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_AND_ORDER_TABLE_10_MIN_SAT= "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_AND_ORDER_TABLE_15_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_AND_ORDER_TABLE_30_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_AND_ORDER_TABLE_01_HOUR_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
+				"ORDER BY DATE(data) ASC "; 
+
+		private static final String GROUP_AND_ORDER_TABLE_06_HOURS_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
+				"ORDER BY DATE(data) ASC "; 
+
+		private static final String GROUP_AND_ORDER_TABLE_DAYS_SAT = "GROUP BY DAY(data) " +
+				"ORDER BY DAY(data) ASC";
+
+		private static final String GROUP_AND_ORDER_TABLE_DATE_SAT = "GROUP BY DATE(data) " +
+				"ORDER BY DATE(data) ASC";
+
+		private static final String GROUP_AND_ORDER_TABLE_MONTHS_SAT = "GROUP BY DAY(data) " +
+				"ORDER BY DAY(data) ASC";
+
+		private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_SAT = "GROUP BY MONTH(data) " +
+		       "ORDER BY MONTH(data) ASC";
+		
+				
 
 	///////////////////
 	//CONST
@@ -292,6 +372,137 @@ public class QueriesReportsModels {
 	}
 
 	/**********************************************************************************************************/
+	
+	
+	//TABLE FROM  METHOD SELECTION
+		public String QueryFromSatTable(String period, String table) {
+
+			if(period.equals("05 minutes")) {
+				if(table.equals("sat_vbv"))
+				   return FROM_TABLE_05_MIN_SAT;
+
+				   else if(table.equals("tb_vbv"))
+					 return FROM_TABLE_05_MIN_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_05_MIN_LL;
+						
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_05_MIN_CCR;
+			        }
+
+			if(period.equals("06 minutes")) {
+				
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_06_MIN_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_06_MIN_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_06_MIN_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_06_MIN_CCR;
+			}
+				
+
+			if(period.equals("10 minutes")) {				
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_10_MIN_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_10_MIN_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_10_MIN_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_10_MIN_CCR;
+			               }
+				
+
+			if(period.equals("15 minutes")) {
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_15_MIN_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_15_MIN_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_15_MIN_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_15_MIN_CCR;
+			}
+
+			if(period.equals("30 minutes")) {
+				
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_30_MIN_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_30_MIN_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_30_MIN_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_30_MIN_CCR;
+			}
+			
+
+			if(period.equals("01 hour")) {
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_01_HOUR_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_01_HOUR_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_01_HOUR_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_01_HOUR_CCR;
+				
+			       }
+				
+
+			if(period.equals("06 hours")) {				
+				if(table.equals("sat_vbv"))
+					   return FROM_TABLE_06_HOURS_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_06_HOURS_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_06_HOURS_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_06_HOURS_CCR;
+				
+			       }
+				
+
+			if(period.equals("24 hours") || period.equals("year") || period.equals("month")) {
+				  if(table.equals("sat_vbv"))
+					   return FROM_TABLE_DATE_SAT;
+
+					   else if(table.equals("tb_vbv"))
+						 return FROM_TABLE_DATE_VBV;
+						
+						else if(table.equals("tb_vbv_ll"))
+							 return FROM_TABLE_DATE_LL;
+							
+							else if(table.equals("tb_vbv_ccr"))
+								 return FROM_TABLE_DATE_CCR;
+								
+			     }
+			
+			return null;
+		}
+		
+		/**********************************************************************************************************/
 
 	//METHOD GROUP BY  AND ORDER BY
 	public String QueryGroupAndOrder(String period) {
@@ -330,6 +541,44 @@ public class QueriesReportsModels {
 	}
 
 	/**********************************************************************************************************/
+	
+	//METHOD GROUP BY  AND ORDER BY
+	public String QuerySatGroupAndOrder(String period) {
+
+		if(period.equals("05 minutes"))
+			return GROUP_AND_ORDER_TABLE_05_MIN_SAT;
+
+		if(period.equals("06 minutes"))
+			return GROUP_AND_ORDER_TABLE_06_MIN_SAT;
+
+		if(period.equals("10 minutes"))
+			return GROUP_AND_ORDER_TABLE_10_MIN_SAT;
+
+		if(period.equals("15 minutes"))
+			return GROUP_AND_ORDER_TABLE_15_MIN_SAT;
+
+		if(period.equals("30 minutes"))
+			return GROUP_AND_ORDER_TABLE_30_MIN_SAT;
+
+		if(period.equals("01 hour"))
+			return GROUP_AND_ORDER_TABLE_01_HOUR_SAT;
+
+		if(period.equals("06 hours"))
+			return GROUP_AND_ORDER_TABLE_06_HOURS_SAT;
+
+		if(period.equals("24 hours"))
+			return GROUP_AND_ORDER_TABLE_DATE_SAT;
+
+		if(period.equals("month"))
+			return GROUP_AND_ORDER_TABLE_MONTHS_SAT;
+
+		if(period.equals("year"))
+			return GROUP_AND_ORDER_TABLE_MONTH_YEAR_SAT;		
+
+		return null;
+	}
+	
+	/**********************************************************************************************************/
 
 	//METHOD LEFT JOIN TABLE
 	public String LeftJoinStart(String module) {
@@ -364,6 +613,11 @@ public class QueriesReportsModels {
 			return LEFT_JOIN_END_MTO_EQUIP;
 
 		return null;
+	}
+	
+	public String innerJoinSat() {
+		return INNER_JOIN_END_SAT_EQUIP;
+		
 	}
 
 	/**********************************************************************************************************/
@@ -432,5 +686,82 @@ public class QueriesReportsModels {
 	///////////////////
 	//BUILD QUERY
 	////////////////////
+	
+	///////// VEHICLE COUNT MODEL	
+	public String BuildQuery(String queryHeader, String queryMain, String queryFromTable, String whereClause, String whereVechiles, String queryGroupOrder) { 	   
+		return queryHeader.concat(queryMain).concat(queryFromTable).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
+	} 
+	
+  ///////// VEHICLE COUNT FLOW MODEL	
+   public String BuildQueryType2(String queryHeader, String queryMain, String queryFromTable, String innerJoin, String whereClause, String queryGroupOrder) { 	   
+	return queryHeader.concat(queryMain).concat(queryFromTable).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
+  } 
+   
+	
+   ///////// VEHICLE COUNT FLOW MODEL	
+    public String BuildQueryType3(String queryHeader, String queryMain, String queryFromTable, String whereClause, String queryGroupOrder) { 	   
+ 	return queryHeader.concat(queryMain).concat(queryFromTable).concat(whereClause).concat(queryGroupOrder); 	       
+   } 
+	
+	
+	
+	 public String whereClauseDate(String startDate, String endDate) {
+  	   
+  	   String query = "";
+  	   
+  	   query =" WHERE data between '"+startDate+"' AND '"+endDate+"' ";
+  	   
+  	   
+  	   return query;
+  	   
+     }
+     
+     
+       public String whereClauseEquipDate(String siteID, String startDate, String endDate) {
+  	   
+  	   String query = "";
+  	   
+  	   query =" WHERE siteID = '"+siteID+"' AND data between '"+startDate+"' AND '"+endDate+"' ";
+  	   
+  	   
+  	   return query;
+  	   
+     }
+     
+     
+     
+     
+     public String vehicleSelectionWhereClause(String[] vehicles) {
+  	   
+  	   String query ="";
+  	             	   
+  	   if(vehicles.length == 1) {
+  		   if(vehicles[0].equals("1"))
+  				query += " AND classe = '"+RoadConcessionaire.classLight+"' ";
+  		   
+  		   if(vehicles[0].equals("2"))
+ 				query += " AND classe = '"+RoadConcessionaire.classMotorcycle+"' ";
+  		   
+  		   if(vehicles[0].equals("3"))
+ 				query += " AND classe <> '"+RoadConcessionaire.classLight+"' AND classe <> '"+RoadConcessionaire.classMotorcycle+"' ";
+  		         		   
+  		   
+  	   }
+  		   
+  	  if(vehicles.length == 2) {
+  		  if(vehicles[0].equals("1") && vehicles[0].equals("2"))
+				   query += " AND classe = '"+RoadConcessionaire.classLight+"' AND classe = '"+RoadConcessionaire.classMotorcycle+"' ";
+		   
+  		  if(vehicles[0].equals("1") && vehicles[0].equals("3"))
+  			  query += " AND classe <> '"+RoadConcessionaire.classMotorcycle+"' ";
+  		  
+  		  if(vehicles[0].equals("2") && vehicles[0].equals("3"))
+  			  query += " AND classe <> '"+RoadConcessionaire.classLight+"' ";
+  	  }                			   
+  			   
+  	   
+  	   return query;
+     }
+     
 
 }

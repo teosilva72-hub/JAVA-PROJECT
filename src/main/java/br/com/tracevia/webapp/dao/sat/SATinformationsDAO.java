@@ -31,7 +31,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados30(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -81,7 +81,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 15 MINUTE) AND eq.visible = 1 " +
+	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC ";
 					
@@ -94,7 +94,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println(select);
+			System.out.println(select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -132,7 +132,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados30(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
