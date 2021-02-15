@@ -31,7 +31,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados30(calendar, minute);
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -94,7 +94,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			System.out.println(select);
+			//System.out.println(select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -121,7 +121,7 @@ public class SATinformationsDAO {
 	}
 	
 	
-	public List<SAT> RealTimeSATinfo15Before() throws Exception {
+	public List<SAT> RealTimeSATinfo45() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -132,7 +132,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados30(calendar, minute);
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -182,7 +182,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
+	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC";
 					
@@ -221,7 +221,7 @@ public class SATinformationsDAO {
 		
 	}
 	
-	public SAT RealTimeSATinfo15Data(int equip) throws Exception {
+	public SAT RealTimeSATinfo45Data(int equip) throws Exception {
 		
 		SAT sat = new SAT();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -282,7 +282,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 ";
+	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
 	  					
 	  try {
 			
@@ -321,68 +321,7 @@ public class SATinformationsDAO {
 	/// SAT STATUS
 	////////////////////////////////////
 		
-	public List<SAT> SATstatus15() throws Exception {
-		
-		List<SAT> list = new ArrayList<SAT>();
-		DateTimeApplication dta = new DateTimeApplication();
-		
-		String currentDate = null, currentDateSub = null;
-	
-		Calendar calendar = Calendar.getInstance();	
-		int minute = calendar.get(Calendar.MINUTE);
-		
-		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
-		
-		//Obter datas formatadas para os dados
-		currentDateSub = dta.getCurrentDateSubDados15(calendar, minute);
-		
-		//System.out.println(RoadConcessionaire.tableStatus);
-				
-		String select = "SELECT EQ_ID, SUM(ONLINE_STATUS) 'STATUS' FROM "+RoadConcessionaire.tableStatus+" s " +
-		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
-		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 15 MINUTE) AND ? AND eq.visible = 1 " +
-		"GROUP BY s.EQ_ID " +
-		"ORDER BY s.DATA_HORA ASC ";
-						
-		    try {
-			
-		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-						
-			ps = conn.prepareStatement(select);		
-			ps.setString(1, currentDate);		
-			ps.setString(2, currentDateSub);
-			
-			//System.out.println(select);
-			//System.out.println(currentDate+"\n"+currentDateSub);
-					
-			rs = ps.executeQuery();
-			
-			
-			
-			if (rs != null) {
-				while (rs.next()) {
-					
-					SAT sat = new SAT();
-
-					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
-					sat.setStatus(rs.getInt("STATUS"));	
-					
-					//System.out.println(sat.getStatus());
-																		
-					list.add(sat);
-				}				
-			 }			
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
-
-				
-		return list;		
-	}
-	
-public List<SAT> SATstatus30() throws Exception {
+	public List<SAT> SATstatus30() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -397,10 +336,67 @@ public List<SAT> SATstatus30() throws Exception {
 		
 		//Obter datas formatadas para os dados
 		currentDateSub = dta.getCurrentDateSubDados30(calendar, minute);
+								
+		String select = "SELECT EQ_ID, SUM(ONLINE_STATUS) 'STATUS' FROM "+RoadConcessionaire.tableStatus+" s " +
+		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
+		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 " +
+		"GROUP BY s.EQ_ID " +
+		"ORDER BY s.DATA_HORA ASC ";
+						
+		    try {
+			
+		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(select);		
+			ps.setString(1, currentDate);		
+			ps.setString(2, currentDateSub);
+			
+			//System.out.println("30Status: "+select);
+			//System.out.println("CUR: "+currentDate+"\nBEFORE: "+currentDateSub);
+					
+			rs = ps.executeQuery();
+			
+			//System.out.println("30MINSTT: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+
+					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
+					sat.setStatus(rs.getInt("STATUS"));	
+																							
+					list.add(sat);
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return list;		
+	}
+	
+public List<SAT> SATstatus45() throws Exception {
+		
+		List<SAT> list = new ArrayList<SAT>();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null, currentDateSub = null;
+	
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//Obter datas formatadas para os dados
+		currentDateSub = dta.getCurrentDateSubDados45(calendar, minute);
 				
 		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM "+RoadConcessionaire.tableStatus+" s " +
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
-		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 " +
+		"WHERE s.DATA_HORA between DATE_SUB( ? , INTERVAL 45 MINUTE) AND ? AND eq.visible = 1 " +
 		"GROUP BY s.EQ_ID " +
 		"ORDER BY s.DATA_HORA ASC ";
 				
@@ -412,11 +408,11 @@ public List<SAT> SATstatus30() throws Exception {
 			ps.setString(1, currentDate);		
 			ps.setString(2, currentDateSub);
 			
-			//System.out.println(currentDate+"\n"+currentDateSub);
+			//System.out.println("CUR: "+currentDate+"\nBEFORE: "+currentDateSub);
 					
 			rs = ps.executeQuery();
 			
-			//System.out.println("30 min: "+select);
+			//System.out.println("45 min: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -441,7 +437,7 @@ public List<SAT> SATstatus30() throws Exception {
 	}
 	
 	//FOR CCR
-	public SAT SATstatus15Before(int equip) throws Exception {
+	public SAT SATstatus45Stat(int equip) throws Exception {
 		
 		SAT sat = new SAT();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -455,26 +451,26 @@ public List<SAT> SATstatus30() throws Exception {
 		currentDate = dta.getCurrentDateDados15(calendar, minute);
 		
 		//Obter datas formatadas para os dados
-		currentDateSub = dta.getCurrentDateSubDados30(calendar, minute);
+		currentDateSub = dta.getCurrentDateSubDados45(calendar, minute);
 				
 		String select = "SELECT s.EQ_ID, SUM(s.ONLINE_STATUS) 'STATUS' FROM "+RoadConcessionaire.tableStatus+" s " +
 		"INNER JOIN sat_equipment eq on (eq.equip_id = s.EQ_ID) " +
-		"WHERE eq.equip_id = ? AND s.DATA_HORA between DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 ";
+		"WHERE eq.equip_id = ? AND s.DATA_HORA between DATE_SUB( ? , INTERVAL 45 MINUTE) AND ? AND eq.visible = 1 ";
 						
 		    try {
 			
-		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);	
 			ps.setInt(1, equip);	
 			ps.setString(2, currentDate);		
 			ps.setString(3, currentDateSub);
 			
-			//System.out.println("BEF: "+currentDate+"\nBEF: "+currentDateSub);
+		    //System.out.println("BEF: "+currentDate+"\nBEF: "+currentDateSub);
 					
 			rs = ps.executeQuery();
 			
-			//System.out.println("15BEFORE: "+select);
+			//System.out.println("45BEFORE: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {

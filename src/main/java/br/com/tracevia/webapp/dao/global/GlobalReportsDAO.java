@@ -10,7 +10,6 @@ import br.com.tracevia.webapp.controller.sat.SatReportsController;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.VBV;
-import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class GlobalReportsDAO {
@@ -20,8 +19,8 @@ public class GlobalReportsDAO {
 	 */
 	
 	private Connection conn;	
-	private PreparedStatement ps, ps1;
-	private ResultSet rs, rs1;
+	private PreparedStatement ps;
+	private ResultSet rs;
 	private String[][] result;
 			
 	 /* ************************** */
@@ -68,7 +67,7 @@ public class GlobalReportsDAO {
 				    					    	 
 				    	    result[col][lin] = rs.getString((col+1));
 				    	    				    	    
-				    	    System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  
+				    	   // System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  
 				    	 				      
 				        }
 				    				     
@@ -80,8 +79,7 @@ public class GlobalReportsDAO {
 
 		}finally 
 		{
-			ConnectionFactory.closeConnection(conn, ps, rs);
-			ConnectionFactory.closeConnection(conn, ps1, rs1);
+			ConnectionFactory.closeConnection(conn, ps, rs);			
 		}
 		
 		return result;		

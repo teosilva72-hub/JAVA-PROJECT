@@ -720,7 +720,7 @@ public class SatReportsController {
 			//RETORNA NÚMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
 			setNumRegisters(dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod())); 
 			
-			System.out.println(getNumRegisters());
+			//System.out.println(getNumRegisters());
 
 			//CONTAGEM DOS DIAS
 			daysCount = ((int) dta.diferencaDias(satReport.getStartDate(), satReport.getEndDate()) + 1);
@@ -755,7 +755,7 @@ public class SatReportsController {
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
 		
-		System.out.println(query); //debug
+		//System.out.println(query); //debug
 
 		//EXECUÇÃO DA QUERY
 		String[][] auxResult = dao.ExecuteQuery(query);
@@ -801,9 +801,7 @@ public class SatReportsController {
 		
 		 if(satReport.getPeriod().equals("24 hours"))
 		    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
-						
-		System.out.println("LIN"+lin+"\nCOL"+col);
-				
+												
 		for(int j = 0; j < lin; j++) {
 		   for(int i = 0; i < col; i++) {
 		
@@ -999,7 +997,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), "tb_vbv"),
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
 				models.whereClauseDate(start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
@@ -1010,7 +1008,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), "tb_vbv"),
+		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
 				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
@@ -1021,7 +1019,7 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQueryType3(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), "tb_vbv"),
+		query = models.BuildQueryType3(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
 				models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
@@ -1032,13 +1030,13 @@ public class SatReportsController {
 
 		String query = null;
 
-		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), "tb_vbv_ll"),
+		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableLL),
 				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
 	}
 	
-	/*** SAT_VBV_LL TABLE ***/
+	
 	public String BuildMainQueryLL(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
@@ -1048,19 +1046,11 @@ public class SatReportsController {
 
 		return query;
 	}
-
-	/*** SAT_VBV_CCR TABLE ***/
-	public String BuildMainQueryCCR(QueriesReportsModels models, String mainQuery) {    	 
-
-		String query = null;
-
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableCCR),
-				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
-
-		return query;
-	}
 	
 	/*** SAT_VBV_LL TABLE ***/
+
+		
+	/*** SAT_VBV_CCR TABLE ***/
 	public String BuildMainQueryCCRType2(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
@@ -1101,7 +1091,7 @@ public class SatReportsController {
 		case "2": query = BuildMainQueryType2(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment())); break;
 		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
 		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
-		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment(), satReport.classes)); ; break;
+		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment())); ; break;
 		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeMainQuery(satReport.getEquipment())); ; break;
 		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment())); ; break;
 		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()));  ; break; 
@@ -1200,7 +1190,7 @@ public class SatReportsController {
 		if(type.equals("5")) { 
 			
 			//FLUXO POR PERIODO CONSTRUCTOR		
-			 weighingBuilder(satReport.classes.length);
+			 weighingBuilder();
 			 
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
 			//if(satReport.classes.length < 13)
@@ -1215,7 +1205,7 @@ public class SatReportsController {
 		if(type.equals("6")) { 
 
 			//CLASS TYPE CONSTRUCTOR 
-			classesBuilder(satReport.classes.length);    
+			classesBuilder();    
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
 			//if(satReport.classes.length < 13)
@@ -1230,7 +1220,7 @@ public class SatReportsController {
 		if(type.equals("7")) {     		 
 
 			//AXLE TYPE CONSTRUCTOR
-			axlesBuilder(satReport.axles.length);
+			axlesBuilder();
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE AXLES
 			//if(satReport.axles.length < 9)
@@ -1797,7 +1787,7 @@ public class SatReportsController {
 		/**** COUNT VEHICLES PERIOD ****/
 		if(type.equals("2")) {
 
-			fileName = localeLabel.getStringKey("excel_report_vehicles_count_flow_file");
+			fileName = localeLabel.getStringKey("excel_report_vehicles_count_flow_file")+tm.periodName(satReport.getPeriod());
 			excel_title = localeLabel.getStringKey("excel_report_vehicles_count_flow_title");
 
 			countMergeHeader = new String[] {"A1:B1", "C1:I1", "C2:E2", "F2:H2", "A2:A3", "B2:B3", "I2:I3"}; // Define Merge columns
@@ -1946,7 +1936,7 @@ public class SatReportsController {
 			lanes = String.valueOf(info.getNumFaixas()); city = info.getCidade();
 
 			//Reorder Table
-			ReorderTableHeaderForWeighing(satReport.classes);    		
+			//ReorderTableHeaderForWeighing(satReport.classes);    		
 
 			model.StandardFonts(); //Set Font
 			model.StandardStyles(); //Set Style
@@ -1986,7 +1976,7 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder Tables
-			ReorderTableHeaderForClasses(satReport.classes); 
+			//ReorderTableHeaderForClasses(satReport.classes); 
 			
 			//Colunas que iniciam Sentido 1 e Sentido 2
 			int iniDir1 = 15, iniDir2 = 29;
@@ -2029,7 +2019,7 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder header
-			ReorderTableHeaderForAxles(satReport.axles);  
+			//ReorderTableHeaderForAxles(satReport.axles);  
 			
 			//Colunas que iniciam Sentido 1 e Sentido 2
 			int iniDir1 = 11, iniDir2 = 21;
@@ -4134,10 +4124,10 @@ public class SatReportsController {
 
 	/* WEIGHING -- TYPE = 5 */  
 
-	public void weighingBuilder(int classLength) {
+	public void weighingBuilder() {
 
 
-		if(classLength == 1) {
+		/*if(classLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
@@ -4323,9 +4313,9 @@ public class SatReportsController {
 
 			}
 
-		} else if(classLength == 13) {
+		} else if(classLength == 13) { */
 
-			for(int k = 0; k < getNumRegisters(); k++) {      
+			for(int k = 0; k < getNumRegisters(); k++) {  
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
@@ -4345,15 +4335,15 @@ public class SatReportsController {
 
 			}
 
-		}    		                  
+		//}    		                  
 	}
 
 	/* CLASS -- TYPE = 6 */ 
 
-	public void classesBuilder(int classLength) {
+	public void classesBuilder() {
 
 
-		if(classLength == 1) {
+		/*if(classLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
@@ -4539,7 +4529,7 @@ public class SatReportsController {
 						.total(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])));    				    				 
 			}
 
-		} else if(classLength == 13) {
+		} else if(classLength == 13) {*/
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
@@ -4559,16 +4549,16 @@ public class SatReportsController {
 						.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
 						.class13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))    		 				                 
 						.total(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k])));    				    				 
-			}
+			//}
 
 		}    		                  
 	}
 
 	/* AXLES -- TYPE = 7 */ 
 
-	public void axlesBuilder(int axleLength) {
+	public void axlesBuilder() {
 
-		if(axleLength == 1) {
+		/*if(axleLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
@@ -4695,7 +4685,7 @@ public class SatReportsController {
 						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));
 			}    		
 
-		} else if(axleLength == 10) {
+		} else if(axleLength == 10) {*/
 
 			for(int k = 0; k < getNumRegisters(); k++) {   
 
@@ -4709,10 +4699,9 @@ public class SatReportsController {
 						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
 						.axles7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
 						.axles8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
-						.axles9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
-						.axles10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
-						.total(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])));
-			}    		
+						.axles9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))						
+						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));
+			//}    		
 		}  
 	}
 

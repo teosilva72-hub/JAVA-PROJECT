@@ -30,8 +30,8 @@ function posEquip(equip) {
 		let sat_status = equip.attr('status')
 		let fluxo1 = equip.find('[id^=img1FluxoTab]')
 		let fluxo2 = fluxo1.next()
-		let speed1 = Number(equip.find('speed1').text())
-		let speed2 = Number(equip.find('speed2').text())
+		let speed1 = Number(equip.find('#speed1').text())
+		let speed2 = Number(equip.find('#speed2').text())
 		let fluxo = {
 			height: (width * 0.10) + "px",
 			border: "1px solid transparent",

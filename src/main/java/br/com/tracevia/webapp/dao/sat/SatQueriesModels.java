@@ -637,59 +637,28 @@ public class SatQueriesModels {
 	    * @param lanes - numero de faixas do equipamento
 	    * @return
 	    */
- public String WeighingMainQuery(String station_id, String[] classes) {
+ public String WeighingMainQuery(String station_id) {
    		   
 		   String query = "";
-		   
-			   for(int i = 0; i < classes.length; i++) {		
-										 
-						if(classes[i].equals("1"))
-							
-							query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.gross, NULL )), 0), 0) 'AUTOS' ";
-									 										
-						if(classes[i].equals("2"))
-							query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.gross, NULL )), 0), 0) 'TRUCK 2 AXLES' "; 
-								
-						if(classes[i].equals("3"))	
-							query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classSemiTrailer+"') , st.gross, NULL )), 0), 0) 'SEMITRAILER' ";
-								  
-						if(classes[i].equals("4"))
-							query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.gross, NULL )), 0), 0) 'TRUCK 3 AXLES' ";
-								
-						if(classes[i].equals("5"))
-							query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTrailer+"') , st.gross, NULL )), 0), 0) 'TRAILER' ";
-								
-			            if(classes[i].equals("6"))
-			            	query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.gross, NULL )), 0), 0) 'TRUCK 4 AXLES' ";
-								
-			            if(classes[i].equals("7"))
-			            	query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.gross, NULL )), 0), 0) 'TRUCK 5 AXLES' ";
-													
-			           if(classes[i].equals("8"))	
-			        	   query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.gross, NULL )), 0), 0) 'TRUCK 6 AXLES' ";
-								
-	                 if(classes[i].equals("10"))
-		            	   query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.gross, NULL )), 0), 0) 'TRUCK 7 AXLES' ";
-								
-	                  if(classes[i].equals("11"))
-		            	   query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.gross, NULL )), 0), 0) 'TRUCK 8 AXLES' ";
-																
-			           if(classes[i].equals("9"))
-			        	   query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classMotorcycle+"') , st.gross, NULL )), 0), 0) 'MOTO' ";
-							
-			           if(classes[i].equals("E9"))
-		            	   query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.gross, NULL )), 0), 0) 'TRUCK 9 AXLES' " ;
-												            	
-					   if(classes[i].equals("10N"))
-						   query +="IFNULL(ROUND(AVG(IF((st.classe='"+RoadConcessionaire.classTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.axlNumber > 10)) , st.gross, NULL )), 0), 0) 'TRUCK 10 AXLES' ";
-								        
-	                                if(classes[i] != classes[classes.length-1])                    				
-	                    				   query += ", ";									 
-							 }								   
-		   
-		                   //END METHOD		               
-		                   return query;    
-	                   } 	
+		    
+	      query += "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.gross, NULL )), 0), 0) 'AUTOS', " +
+	    "IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classMotorcycle+"') , st.gross, NULL )), 0), 0) 'MOTO', " +		
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTrailer+"') , st.gross, NULL )), 0), 0) 'TRAILER', " +	
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classSemiTrailer+"') , st.gross, NULL )), 0), 0) 'SEMITRAILER', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.gross, NULL )), 0), 0) 'TRUCK 2 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.gross, NULL )), 0), 0) 'TRUCK 3 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.gross, NULL )), 0), 0) 'TRUCK 4 AXLES', " +
+	   	"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.gross, NULL )), 0), 0) 'TRUCK 5 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.gross, NULL )), 0), 0) 'TRUCK 6 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.gross, NULL )), 0), 0) 'TRUCK 7 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.gross, NULL )), 0), 0) 'TRUCK 8 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe = '"+RoadConcessionaire.classTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.gross, NULL )), 0), 0) 'TRUCK 9 AXLES', " +
+		"IFNULL(ROUND(AVG(IF((st.classe='"+RoadConcessionaire.classTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.axlNumber > 10)) , st.gross, NULL )), 0), 0) 'TRUCK 10 AXLES' " ;
+						       
+         //END METHOD		          
+	      return query;    
+	       
+      } 	
  
 	   
 	   public String PeriodFlowMainQuery(String[] stations, String period, int[] lanes) {
