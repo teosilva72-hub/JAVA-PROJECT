@@ -93,6 +93,7 @@ var eventHandlers = {
 	}
 };
 //Register callbacks to desired call events end
+
 var options = {
 	'eventHandlers'   : eventHandlers,
 	'mediaConstraints': {'audio': true, 'video': true}
@@ -117,15 +118,15 @@ var eventHandlers = {
 var options = {
 	'eventHandlers': eventHandlers
 };
+
 coolPhone.sendMessage('sip:bob@example.com', text, options);
 // Register callbacks to desired message events end
 ////Instant messaging end
 
-
 //Accept a Call Button
 	var startButton = document.getElementById('acptcall');
 	startButton.addEventListener("click", function() {
-		simple.call();
+		ua.start();
 		alert("Call Started.");
 		}, false);
 //Accept a Call Button End
@@ -133,7 +134,7 @@ coolPhone.sendMessage('sip:bob@example.com', text, options);
 //Ending a Call Button
 	var endButton = document.getElementById('misscall');
 	endButton.addEventListener("click", function () {
-	    simple.hangup();
+	    ua.hangup();
 	    alert("Call Ended.");
 		}, false);
 //Ending a Call Button End
@@ -141,27 +142,25 @@ coolPhone.sendMessage('sip:bob@example.com', text, options);
 //Placing a call on hold
 	var holdButton = document.getElementById('holdcall');
 	holdButton.addEventListener("click", function () {
-		simpleUser.hold();
+		ua.hold();
 		alert("Call on Hold.")
 	}, false);
 	
 	var unholdButton = document.getElementById('holdcallstop');
 	unholdButton.addEventListener("click", function() {
-		simpleUser.unhold();
+		ua.unhold();
 		alert("Call Came Back.")
 	}, false);
 //Placing a call on hold End
 
 //Answering a Call
-
 	simple.on('ringing', function(){
-		simple.answer();
+		ua.answer();
 	});
-
 //Answering a Call End
 
-
 //////////////////////SIP VOICE/CALL END
+
 
 //SIP BOOK-LIST
 	//function color() {
