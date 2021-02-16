@@ -1,35 +1,37 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
-	xmlns:pf="http://primefaces.org/ui"
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-		
-	<ui:define name="head" >
-	
-	<h:outputStylesheet library="css/pmv/table" name="table-style.css"  />	
-	<h:outputStylesheet library="css/commom" name="commons.css"  />
-	<h:outputStylesheet library="css/users" name="panel-user.css"  /> 
-	  <h:outputScript name="panel-user-datatable.js" library="js/page-datatables" />		 
-	
-			
+
+	<ui:define name="head">
+
+		<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />
+		<h:outputStylesheet library="css/commom" name="commons.css" />
+		<h:outputStylesheet library="css/users" name="panel-user.css" />
+
+		<script type="text/javascript">
+
+			function resetTable() {
+				$('#user-table').DataTable().clear().draw();
+			}
+
+		</script>
+
 	</ui:define>
-	
-	 <ui:define name="main-content" >
-	 
-	  <div id="message-div">
-		<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />	 
-     </div>
-	  	      
-	  	<div class="container">		
-		<div id="tab-content">
-				
+
+	<ui:define name="main-content">
+
+		<div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
+
+		<div class="container">
+			<div id="tab-content">
+
 				<div id="tab-user">
 				<h:dataTable id="user-table"  value="#{userAccount.userDataModel}" var="user" autocomplete="off"				               
     			  styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
@@ -82,17 +84,9 @@
 								</h:commandLink>							
 								</h:form>
 							</div>
-							<div id="delete-link" >
-							    <h:form id="delete-form">
-								<h:commandLink action="#{userAccount.getRowValue}" value="" >
-								    <span><i class="fas fa-trash-alt trash-alt-icon"></i></span>
-									<f:setPropertyActionListener
-									target="#{userAccount.sendParametro}"  value="#{user.user_id}" />
-									<f:passThroughAttribute name="data-toggle" value="modal" />
-                                    <f:passThroughAttribute name="data-target" value="#deleteModal" />						    
-	                                <f:ajax execute="@form" render="@none" />
-								</h:commandLink>
-								</h:form>
+							<div class="cancel-modal">
+								<button type="button" class="btn btn-dark"
+									data-dismiss="modal">#{usersLabels.user_delete_modal_btn_no}</button>
 							</div>
 						</div>
 					
@@ -206,5 +200,9 @@
   
    <ui:define name="jscript">  
 	</ui:define>
-    
-</ui:composition>	
+
+	<ui:define name="jscript">
+		<h:outputScript name="panel-user-datatable.js" library="js/page-datatables" />
+	</ui:define>
+
+</ui:composition>
