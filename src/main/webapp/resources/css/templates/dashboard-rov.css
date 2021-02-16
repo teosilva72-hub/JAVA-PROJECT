@@ -624,3 +624,19 @@ input.apple-switch:checked:before {
 (min-width:200px){.navbar-expand-xl>.container,.navbar-expand-xl>.container-fluid,.navbar-expand-xl>.container-lg,.navbar-expand-xl>.container-md,.navbar-expand-xl>
 .container-sm,.navbar-expand-xl>.container-xl body{overflow: visible; }}
 
+/* Loading */
+
+.loading {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+}
+
+.loading-animation {
+  position: relative;
+  left: 50%;
+  top: 50%;
+}

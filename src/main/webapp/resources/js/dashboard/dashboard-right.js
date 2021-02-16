@@ -1,5 +1,5 @@
 // OVERLAY SIDE BAR
-$(document).ready(function() {
+$(function() {
   $('.sideMenuToggler').on('click', function() {
     $('.wrapper').toggleClass('active');
     $('.overlay').addClass('active');
@@ -14,6 +14,8 @@ $(document).ready(function() {
   $(window).resize(function() {
     adjustSidebar();
   });
+
+  $(".loading").hide()
 });
 
 $('#dismiss, .overlay').on('click', function () {
@@ -24,14 +26,15 @@ $('#dismiss, .overlay').on('click', function () {
 });
 // OVERLAY SIDE BAR END
 
+
 //////////////////////SIP VOICE/CALL
 
 //User Agent Configuration
-var socket = new JsSIP.WebSocketInterface('wss://sip.myhost.com');
+var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
 var configuration = {
 	sockets : [socket],
-	uri : 'sip:alice@example.com',
-	password : 'superpassword'
+	uri : 'sip:shesh_qlknu0@tryit.jssip.net',
+	password : 'test'
 };
 //User Agent Configuration end
 
@@ -41,7 +44,7 @@ var coolPhone = new JsSIP.UA(configuration);
 
 //WebSocket connection events
 coolPhone.on('connected', function(e){/* Your code here */});
-coolPhone.on('disconnected', function(e){ /* Your code here */});
+coolPhone.on('disconnected', function(e){/* Your code here */});
 //WebSocket connection events end
 
 //New incoming or outgoing call event
@@ -66,11 +69,11 @@ coolPhone.start();
 ////Making outbound calls
 //See JsSIP.UA.call() method definition.
 //Create our JsSIP instance and run it:
-var socket = new JsSIP.WebSocketInterface('wss://sip.myhost.com');
+var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
 var configuration = {
 	sockets : [ socket ],
-	uri	    : 'sip:alice@example.com',
-	password: 'superpassword'
+	uri	    : 'sip:shesh_qlknu0@tryit.jssip.net',
+	password: 'test'
 };
 
 var ua = new JsSIP.UA(configuration);
@@ -98,17 +101,17 @@ var options = {
 	'eventHandlers'   : eventHandlers,
 	'mediaConstraints': {'audio': true, 'video': true}
 };
-var session = ua.call('sip:bob@example.com', options);
+var session = ua.call('sip:example@example.com', options);
 ////Making outbound calls end
 
 ////Instant messaging
 //See JsSIP.UA.sendMessage() method definition.
 //Example 1
-var text = 'Hello Bob!';
-coolPhone.sendMessage('sip:bob@example.com', text);
+var text = 'Hello Example!';
+coolPhone.sendMessage('sip:example@example.com', text);
 
 //Example 2
-var text = 'Hello Bob!';
+var text = 'Hello Example!';
 
 // Register callbacks to desired message events
 var eventHandlers = {
@@ -119,43 +122,43 @@ var options = {
 	'eventHandlers': eventHandlers
 };
 
-coolPhone.sendMessage('sip:bob@example.com', text, options);
+coolPhone.sendMessage('sip:example@example.com', text, options);
 // Register callbacks to desired message events end
 ////Instant messaging end
 
 //Accept a Call Button
 	var startButton = document.getElementById('acptcall');
 	startButton.addEventListener("click", function() {
-		ua.start();
-		alert("Call Started.");
+		coolPhone.start();
+		alert("Call Started.")
 		}, false);
 //Accept a Call Button End
 
 //Ending a Call Button
 	var endButton = document.getElementById('misscall');
 	endButton.addEventListener("click", function () {
-	    ua.hangup();
-	    alert("Call Ended.");
+	    coolPhone.hangup();
+	    alert("Call Ended.")
 		}, false);
 //Ending a Call Button End
 
 //Placing a call on hold
 	var holdButton = document.getElementById('holdcall');
 	holdButton.addEventListener("click", function () {
-		ua.hold();
+		coolPhone.hold();
 		alert("Call on Hold.")
 	}, false);
 	
 	var unholdButton = document.getElementById('holdcallstop');
 	unholdButton.addEventListener("click", function() {
-		ua.unhold();
+		coolPhone.unhold();
 		alert("Call Came Back.")
 	}, false);
 //Placing a call on hold End
 
 //Answering a Call
-	simple.on('ringing', function(){
-		ua.answer();
+	coolPhone.on('ringing', function(){
+		coolPhone.answer()
 	});
 //Answering a Call End
 
