@@ -65,6 +65,7 @@ footer {
   bottom: 0;
   height: 50px;
   width: 100%;
+  z-index: 1030;
 }
 
 #navbarSupportedContent {
@@ -74,7 +75,8 @@ footer {
 }
 
 .header-menu {
-  margin: 5px;
+  margin: 2.5px;
+  border: none;
 }
 
 .header-menu > li > a {
@@ -672,10 +674,14 @@ input.apple-switch:checked:before {
   bottom: 0;
   right: 0;
   background-color: white;
+  z-index: 1000;
 }
 
 .loading-animation {
   position: relative;
   left: 50%;
   top: 50%;
+  height: 80px;
+  width: 80px;
+  transform: translate(-90%, -60%);
 }

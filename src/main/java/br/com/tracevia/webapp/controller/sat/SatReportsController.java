@@ -778,6 +778,7 @@ public class SatReportsController {
 		dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
 		
 		//PERIODOS
+		//NEW
 		if(satReport.getPeriod().equals("05 minutes"))			
 			 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
 					
