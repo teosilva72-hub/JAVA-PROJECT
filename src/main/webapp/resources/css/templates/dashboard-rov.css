@@ -575,6 +575,10 @@ input.apple-switch:checked:before {
     border: none;
 }
 
+.acptcall:hover {
+	cursor: pointer;
+}
+
 .dismisscall {
 	display: block;
 	height: 30px;
@@ -583,7 +587,11 @@ input.apple-switch:checked:before {
     border: none;
 }
 
-.waitcall {
+.dismisscall:hover {
+	cursor: pointer;
+}
+
+.holdcall {
 	display: block;
 	height: 30px;
 	width: 30px;
@@ -591,7 +599,21 @@ input.apple-switch:checked:before {
     border: none;
 }
 
+.holdcall:pointer {
+	cursor: pointer;
+}
 
+.holdcallstop {
+	display: block;
+	height: 30px;
+	width: 30px;
+	background-size: contain;
+	border: none;
+}
+
+.holdcallstop:pointer{
+	cursor:pointer;
+}
 /* VOICE/CALL BOX END*/
 
 #navbarMaximizeMenu{

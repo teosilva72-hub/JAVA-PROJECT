@@ -72,6 +72,9 @@ public class SatReportsController {
 
 	String procedure, query, queryCount, module, fileName, currentDate, direction1, direction2, directionLabel1, directionLabel2, 
 	directionValue1, directionValue2, equipId; 
+	
+	//Dates
+	String start, end;
 
 	BufferedWriter writer;  
 	ByteArrayOutputStream byteWriter; 
@@ -240,7 +243,6 @@ public class SatReportsController {
 		this.displayDirection2 = displayDirection2;
 	}
 	
-
 	///////////////////////////////////
 	//CONSTRUCTOR
 	///////////////////////////////// 
@@ -618,6 +620,8 @@ public class SatReportsController {
 		DateTimeApplication dta = new DateTimeApplication(); //DateTimeApsplication class
 
 		GlobalReportsDAO dao = new GlobalReportsDAO();	//GlobalReportsDAO
+		
+		String startDate = null, endDate = null, data_anterior = null;
 
 		/*** Obter parâmetros que vem no submit de cada pesquisa ***/
 
@@ -628,7 +632,7 @@ public class SatReportsController {
 		Map<String, String> parameterMap2 = (Map<String, String>) externalContext.getRequestParameterMap();
 
 		/**** Multiple Params ***/
-
+		
 		//param for equipments array
 		satReport.equipments = parameterMap.get("equips");
 
@@ -715,14 +719,25 @@ public class SatReportsController {
 
 			//RETORNA NÚMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
 			setNumRegisters(dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod())); 
+			
+			//System.out.println(getNumRegisters());
 
 			//CONTAGEM DOS DIAS
 			daysCount = ((int) dta.diferencaDias(satReport.getStartDate(), satReport.getEndDate()) + 1);
 
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
+			
+			
 
 		}
+		
+		startDate = dta.StringDBDateFormat(satReport.getStartDate());
+		endDate = dta.StringDBDateFormat(satReport.getEndDate());
+		data_anterior = startDate;
+				
+		start = dta.DateTimeToStringIni(startDate); 
+		end = dta.DateTimeToStringFim(endDate); 
 
 		/** TODO RELATÓRIO PASSA POR AQUI!!! **/
 
@@ -731,17 +746,147 @@ public class SatReportsController {
 		setFieldsNumber(fieldsNumber(type));
 
 		//SELECIONA UMA PROCEDURE DE ACORDO COM PERÍODO SELECIONADO
-		procedure = models.SelectProcedureByPeriod(satReport.getPeriod());	
+		//procedure = models.SelectProcedureByPeriod(satReport.getPeriod());	
+		
+		resultQuery = new String[getFieldsNumber()][getNumRegisters()];
 
 		//System.out.println(procedure); //debug
 
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
-
+		
 		//System.out.println(query); //debug
 
 		//EXECUÇÃO DA QUERY
-		resultQuery = dao.ExecuteQuery(procedure, query, satReport.getStartDate(), satReport.getEndDate());
+		String[][] auxResult = dao.ExecuteQuery(query);
+		
+		//// NEW METHOD
+		
+		int minuto = 0;
+		int iterator= 0;
+		int pos = 0;
+		int hr = 0;
+ 		
+		int lin = 0;
+		int col = 0;
+		int p = 0;
+		
+		lin = auxResult[0].length;
+		col = auxResult.length;
+		
+		//DATAS
+		dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
+		
+		//PERIODOS
+		if(satReport.getPeriod().equals("05 minutes"))			
+			 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
+					
+		if(satReport.getPeriod().equals("06 minutes"))			
+		     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
+		
+		if(satReport.getPeriod().equals("10 minutes"))		
+			dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
+		   			
+		if(satReport.getPeriod().equals("15 minutes"))		
+		    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
+		
+		if(satReport.getPeriod().equals("30 minutes"))		
+			dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
+			   		        			
+		if(satReport.getPeriod().equals("01 hour")) 	
+			dta.preencherHora(resultQuery, 1, getNumRegisters());
+		
+		if(satReport.getPeriod().equals("06 hours"))	
+		    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
+		
+		 if(satReport.getPeriod().equals("24 hours"))
+		    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
+												
+		for(int j = 0; j < lin; j++) {
+		   for(int i = 0; i < col; i++) {
+		
+	    //CASO NAO EXISTA >>>>>>> PULAR		   
+		if(auxResult[0][j] != null)	 {  
+		
+		if(satReport.getPeriod().equals("01 hour") || satReport.getPeriod().equals("06 hours"))
+			   hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
+			
+		else if(!satReport.getPeriod().equals("24 hours") && !satReport.getPeriod().equals("01 hour") && !satReport.getPeriod().equals("06 hours")) {
+			    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
+			    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));						
+			}
+		
+		  
+		//System.out.println(satReport.getStartDate());
+
+			// Restrição caso não haja dados nos primeiros registros
+			if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
+				
+				if(satReport.getPeriod().equals("24 hours"))
+					iterator = (int) dta.daysDifference(startDate, auxResult[0][j]);
+
+				else iterator = dta.daysDifference(startDate, auxResult[0][j], periodRange);	
+				
+				pos+= iterator;
+				startDate = null;
+
+			} else if (!auxResult[0][j].equals(data_anterior)) {								
+											
+				if(satReport.getPeriod().equals("24 hours"))
+					iterator = (int) dta.daysDifference(data_anterior, auxResult[0][j]);
+				   
+				else iterator = dta.daysDifference(data_anterior, auxResult[0][j], periodRange);	
+				
+				pos+= iterator;							
+			} 			
+			
+			data_anterior = auxResult[0][j];
+			
+			 if(satReport.getPeriod().equals("05 minutes"))	{
+				 p = dta.index05Minutes(hr, minuto);
+				 p = p + pos;
+			 }
+			 else if(satReport.getPeriod().equals("06 minutes")) {	
+					 p = dta.index06Minutes(hr, minuto);
+					 p = p + pos;
+			 }
+			 else if(satReport.getPeriod().equals("10 minutes")) {
+			    	 p = dta.index10Minutes(hr, minuto);
+			    	 p = p + pos;
+			 }
+			 else if(satReport.getPeriod().equals("15 minutes")) {	
+					 p = dta.index15Minutes(hr, minuto);
+			         p = p + pos;
+							
+			 }
+			 else if(satReport.getPeriod().equals("30 minutes")) {	
+					 p = dta.index30Minutes(hr, minuto);
+					 p = p + pos;
+			 }
+			 else if(satReport.getPeriod().equals("01 hour"))				
+				p = pos + hr;
+						
+			else if(satReport.getPeriod().equals("06 hours")) {
+				
+				p = dta.index06Hours(hr);				
+				p = pos + p;
+				
+			}
+			
+			else if(satReport.getPeriod().equals("24 hours"))
+				     p = pos;
+					
+								 
+			if(i != 0 && i != 1 )
+			    resultQuery[i][p] = auxResult[i][j];	 
+			
+			
+		   }
+		   }
+		}
+		
+		
+	   //// NEW METHOD
 
 		//CASO EXISTIR VALORES
 		if(resultQuery.length > 0) {
@@ -847,18 +992,51 @@ public class SatReportsController {
 	 * @return
 	 */
 
-	/*** SAT_VBV TABLE ***/
+	/*** TO COUNT VEHICLES ***/
 	public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableVBV),
-				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
+				models.whereClauseDate(start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	/*** TO COUNT FLOW VEHICLES ***/
+	public String BuildMainQueryType2(QueriesReportsModels models, String mainQuery) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
+				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	/*** TO WEIGHING VEHICLES ***/
+	public String BuildMainQueryType3(QueriesReportsModels models, String mainQuery) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryType3(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
+				models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
 	}
 
 	/*** SAT_VBV_LL TABLE ***/
+	public String BuildMainQueryLLType2(QueriesReportsModels models, String mainQuery) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableLL),
+				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	
 	public String BuildMainQueryLL(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
@@ -868,14 +1046,17 @@ public class SatReportsController {
 
 		return query;
 	}
+	
+	/*** SAT_VBV_LL TABLE ***/
 
+		
 	/*** SAT_VBV_CCR TABLE ***/
-	public String BuildMainQueryCCR(QueriesReportsModels models, String mainQuery) {    	 
+	public String BuildMainQueryCCRType2(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
 
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableCCR),
-				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
+		query = models.BuildQueryType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR),
+				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
 	}
@@ -906,18 +1087,18 @@ public class SatReportsController {
 
 		switch(type) {
 
-		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments, satReport.vehicles)); break;
-		case "2": query = BuildMainQuery(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment())); break;
+		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments)); break;
+		case "2": query = BuildMainQueryType2(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment())); break;
 		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
 		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
-		case "5": query = BuildMainQuery(models, satModels.WeighingMainQuery(satReport.getEquipment(), satReport.classes)); ; break;
-		case "6": query = BuildMainQuery(models, satModels.ClassTypeMainQuery(satReport.getEquipment())); ; break;
-		case "7": query = BuildMainQuery(models, satModels.AxleTypeMainQuery(satReport.getEquipment())); ; break;
-		case "8": query = BuildMainQuery(models, satModels.SpeedMainQuery(satReport.getEquipment(), satReport.vehicles));  ; break; 
-		case "9": query = BuildMainQueryLL(models, satModels.CCRClasses(satReport.getEquipment()));  ; break;  
-		case "10": query = BuildMainQueryLL(models, satModels.CCRTipos(satReport.getEquipment()));  ; break;  	
-		case "11": query = BuildMainQueryLL(models, satModels.CCRVelocidade(satReport.getEquipment()));  ; break;  
-		case "12": query = BuildMainQueryCCR(models, satModels.CCRAllClasses(satReport.getEquipment()));  ; break;  
+		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment())); ; break;
+		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeMainQuery(satReport.getEquipment())); ; break;
+		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment())); ; break;
+		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()));  ; break; 
+		case "9": query = BuildMainQueryLLType2(models, satModels.CCRClasses(satReport.getEquipment()));  ; break;  
+		case "10": query = BuildMainQueryLLType2(models, satModels.CCRTipos(satReport.getEquipment()));  ; break;  	
+		case "11": query = BuildMainQueryLLType2(models, satModels.CCRVelocidade(satReport.getEquipment()));  ; break;  
+		case "12": query = BuildMainQueryCCRType2(models, satModels.CCRAllClasses(satReport.getEquipment()));  ; break;  
 
 		default: query = null; break;
 
@@ -1009,11 +1190,11 @@ public class SatReportsController {
 		if(type.equals("5")) { 
 			
 			//FLUXO POR PERIODO CONSTRUCTOR		
-			 weighingBuilder(satReport.classes.length);
+			 weighingBuilder();
 			 
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
-				if(satReport.classes.length < 13)
-				   ReorderTableHeaderForWeighing(satReport.classes);  
+			//if(satReport.classes.length < 13)
+			//   ReorderTableHeaderForWeighing(satReport.classes);  
 			
 			// DRAW TABLE -- BUILD HEADER
 			   drawTable(fields, fieldObjectValues);	
@@ -1024,11 +1205,11 @@ public class SatReportsController {
 		if(type.equals("6")) { 
 
 			//CLASS TYPE CONSTRUCTOR 
-			classesBuilder(satReport.classes.length);    
+			classesBuilder();    
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
-			if(satReport.classes.length < 13)
-			ReorderTableHeaderForClasses(satReport.classes);
+			//if(satReport.classes.length < 13)
+			//ReorderTableHeaderForClasses(satReport.classes);
 
 			// DRAW TABLE -- BUILD HEADER
 			drawTable(fields, fieldObjectValues);	
@@ -1039,11 +1220,11 @@ public class SatReportsController {
 		if(type.equals("7")) {     		 
 
 			//AXLE TYPE CONSTRUCTOR
-			axlesBuilder(satReport.axles.length);
+			axlesBuilder();
 			
 			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE AXLES
-			if(satReport.classes.length < 9)
-			ReorderTableHeaderForAxles(satReport.axles);
+			//if(satReport.axles.length < 9)
+			//ReorderTableHeaderForAxles(satReport.axles);
 
 			// DRAW TABLE -- BUILD HEADER
 			drawTable(fields, fieldObjectValues);	
@@ -1606,7 +1787,7 @@ public class SatReportsController {
 		/**** COUNT VEHICLES PERIOD ****/
 		if(type.equals("2")) {
 
-			fileName = localeLabel.getStringKey("excel_report_vehicles_count_flow_file");
+			fileName = localeLabel.getStringKey("excel_report_vehicles_count_flow_file")+tm.periodName(satReport.getPeriod());
 			excel_title = localeLabel.getStringKey("excel_report_vehicles_count_flow_title");
 
 			countMergeHeader = new String[] {"A1:B1", "C1:I1", "C2:E2", "F2:H2", "A2:A3", "B2:B3", "I2:I3"}; // Define Merge columns
@@ -1755,7 +1936,7 @@ public class SatReportsController {
 			lanes = String.valueOf(info.getNumFaixas()); city = info.getCidade();
 
 			//Reorder Table
-			ReorderTableHeaderForWeighing(satReport.classes);    		
+			//ReorderTableHeaderForWeighing(satReport.classes);    		
 
 			model.StandardFonts(); //Set Font
 			model.StandardStyles(); //Set Style
@@ -1795,7 +1976,7 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder Tables
-			ReorderTableHeaderForClasses(satReport.classes); 
+			//ReorderTableHeaderForClasses(satReport.classes); 
 			
 			//Colunas que iniciam Sentido 1 e Sentido 2
 			int iniDir1 = 15, iniDir2 = 29;
@@ -1838,7 +2019,7 @@ public class SatReportsController {
 			direction2 = tm.CheckDirection2(lane1);
 
 			//Reorder header
-			ReorderTableHeaderForAxles(satReport.axles);  
+			//ReorderTableHeaderForAxles(satReport.axles);  
 			
 			//Colunas que iniciam Sentido 1 e Sentido 2
 			int iniDir1 = 11, iniDir2 = 21;
@@ -2204,8 +2385,8 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))    		 				               
-						.total(Integer.parseInt(resultQuery[3][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))    		 				               
+						.total(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));  
 
 			}; break;	
 
@@ -2214,9 +2395,9 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k])) 				               	              			               				               	 
-						.total(Integer.parseInt(resultQuery[4][k]))); 
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))				               	              			               				               	 
+						.total(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))); 
 
 			}; break;	
 		case 3:          			 
@@ -2224,10 +2405,10 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k])) 				              				              			               				               	 
-						.total(Integer.parseInt(resultQuery[5][k]))); 
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])) 				              				              			               				               	 
+						.total(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))); 
 
 			}; break;	
 		case 4:          			 
@@ -2235,11 +2416,11 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k])) 				               			              			               				               	 
-						.total(Integer.parseInt(resultQuery[6][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k])) 				               			              			               				               	 
+						.total(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])));   
 
 			}; break;	
 		case 5:          			 
@@ -2247,12 +2428,12 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k])) 				             			              			               				               	 
-						.total(Integer.parseInt(resultQuery[7][k]))); 
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])) 				             			              			               				               	 
+						.total(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))); 
 
 			}; break;	
 		case 6:          			 
@@ -2260,13 +2441,13 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k])) 				               				              			               				               	 
-						.total(Integer.parseInt(resultQuery[8][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])) 				               				              			               				               	 
+						.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));   
 
 			}; break;	
 		case 7:          			 
@@ -2274,14 +2455,14 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k])) 				                				              			               				               	 
-						.total(Integer.parseInt(resultQuery[9][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])) 				                				              			               				               	 
+						.total(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));  
 
 			}; break;	
 		case 8:          			 
@@ -2289,15 +2470,15 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k])) 				               			              			               				               	 
-						.total(Integer.parseInt(resultQuery[10][k]))); 
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])) 				               			              			               				               	 
+						.total(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))); 
 
 			}; break;	
 		case 9:          			 
@@ -2305,16 +2486,16 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k])) 				              				              			               				               	 
-						.total(Integer.parseInt(resultQuery[11][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k])) 				              				              			               				               	 
+						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));   
 
 			}; break;	
 		case 10:          			 
@@ -2322,17 +2503,17 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k])) 				                 				              			               				               	 
-						.total(Integer.parseInt(resultQuery[12][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])) 				                 				              			               				               	 
+						.total(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])));  
 
 			}; break;	
 		case 11:          			 
@@ -2340,18 +2521,18 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k])) 				              			              			               				               	 
-						.total(Integer.parseInt(resultQuery[13][k]))); 
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])) 				              			              			               				               	 
+						.total(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))); 
 
 			}; break;	
 		case 12:          			 
@@ -2359,19 +2540,19 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k])) 				              				              			               				               	 
-						.total(Integer.parseInt(resultQuery[14][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k])) 				              				              			               				               	 
+						.total(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])));   
 
 			}; break;	
 		case 13:          			 
@@ -2379,20 +2560,20 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k])) 				               			              			               				               	 
-						.total(Integer.parseInt(resultQuery[15][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])) 				               			              			               				               	 
+						.total(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k])));   
 
 			}; break;	
 		case 14:          			 
@@ -2400,21 +2581,21 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k])) 				               				              			               				               	 
-						.total(Integer.parseInt(resultQuery[16][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k])) 				               				              			               				               	 
+						.total(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k])));   
 
 			}; break;	
 		case 15:          			 
@@ -2422,22 +2603,22 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k])) 				              			               				               	 
-						.total(Integer.parseInt(resultQuery[17][k])));     
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k])) 				              			               				               	 
+						.total(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k])));     
 
 			}; break;	
 		case 16:          			 
@@ -2445,23 +2626,23 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k])) 				                			               				               	 
-						.total(Integer.parseInt(resultQuery[18][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k])) 				                			               				               	 
+						.total(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k])));    
 
 			}; break;	
 		case 17:          			 
@@ -2469,24 +2650,24 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k])) 				               				               	 
-						.total(Integer.parseInt(resultQuery[19][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k])) 				               				               	 
+						.total(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k])));    
 
 			}; break;	
 		case 18:          			 
@@ -2494,25 +2675,25 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k])) 				            			               	 
-						.total(Integer.parseInt(resultQuery[20][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k])) 				            			               	 
+						.total(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k])));   
 
 			}; break;	
 		case 19:          			 
@@ -2520,26 +2701,26 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k])) 				              			               	 
-						.total(Integer.parseInt(resultQuery[21][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k])) 				              			               	 
+						.total(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k])));  
 
 			}; break;	
 		case 20:          			 
@@ -2547,27 +2728,27 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k])) 				             			               	 
-						.total(Integer.parseInt(resultQuery[22][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k])) 				             			               	 
+						.total(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k])));   
 
 			}; break;	
 		case 21:          			 
@@ -2575,28 +2756,28 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k])) 				              			               	 
-						.total(Integer.parseInt(resultQuery[23][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k])) 				              			               	 
+						.total(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k])));   
 
 			}; break;	
 		case 22:          			 
@@ -2604,29 +2785,29 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k])) 				            				               	 
-						.total(Integer.parseInt(resultQuery[24][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k])) 				            				               	 
+						.total(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k])));    
 
 			}; break;	
 		case 23:          			 
@@ -2634,30 +2815,30 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k])) 				              				               	 
-						.total(Integer.parseInt(resultQuery[25][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k])) 				              				               	 
+						.total(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k])));    
 
 			}; break;	
 		case 24:          			 
@@ -2665,31 +2846,31 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k])) 				             				               	 
-						.total(Integer.parseInt(resultQuery[26][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k])) 				             				               	 
+						.total(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k])));  
 
 			}; break;	
 		case 25:          			 
@@ -2697,32 +2878,32 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k])) 				            		               	 
-						.total(Integer.parseInt(resultQuery[27][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k])) 				            		               	 
+						.total(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k])));   
 
 			}; break;	
 		case 26:          			 
@@ -2730,33 +2911,33 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k])) 				            				               	 
-						.total(Integer.parseInt(resultQuery[28][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k])) 				            				               	 
+						.total(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k])));  
 
 			}; break;	
 		case 27:          			 
@@ -2764,34 +2945,34 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k])) 				              			                			               	 
-						.total(Integer.parseInt(resultQuery[29][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k])) 				              			                			               	 
+						.total(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k])));   
 
 			}; break;	
 		case 28:          			 
@@ -2799,35 +2980,35 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k])) 				            			               	 
-						.total(Integer.parseInt(resultQuery[30][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k])) 				            			               	 
+						.total(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k])));  
 
 			}; break;	
 		case 29:          			 
@@ -2835,36 +3016,36 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))				               			            			               	 
-						.total(Integer.parseInt(resultQuery[31][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))				               			            			               	 
+						.total(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k])));   
 
 			}; break;	
 		case 30:          			 
@@ -2872,37 +3053,37 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k])) 				             				               	 
-						.total(Integer.parseInt(resultQuery[32][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k])) 				             				               	 
+						.total(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k])));    
 
 			}; break;	
 		case 31:          			 
@@ -2910,38 +3091,38 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))				               			               	 
-						.total(Integer.parseInt(resultQuery[33][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))				               			               	 
+						.total(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k])));    
 
 			}; break;	
 		case 32:          			 
@@ -2949,39 +3130,39 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k])) 				               			               	 
-						.total(Integer.parseInt(resultQuery[34][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k])) 				               			               	 
+						.total(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k])));    
 
 			}; break;	
 		case 33:          			 
@@ -2989,40 +3170,40 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k])) 				               			               	 
-						.total(Integer.parseInt(resultQuery[35][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k])) 				               			               	 
+						.total(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k])));   
 
 			}; break;	
 		case 34:          			 
@@ -3030,41 +3211,41 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))				         			               	 
-						.total(Integer.parseInt(resultQuery[36][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))				         			               	 
+						.total(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k])));  
 
 			}; break;	
 		case 35:          			 
@@ -3072,42 +3253,42 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k])) 				                			               	 
-						.total(Integer.parseInt(resultQuery[37][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k])) 				                			               	 
+						.total(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k])));   
 
 			}; break;	
 		case 36:          			 
@@ -3115,43 +3296,43 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k])) 				                				               	 
-						.total(Integer.parseInt(resultQuery[38][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k])) 				                				               	 
+						.total(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k])));   
 
 			}; break;	
 		case 37:          			 
@@ -3159,44 +3340,44 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))				             				               	 
-						.total(Integer.parseInt(resultQuery[39][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))				             				               	 
+						.total(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k])));  
 
 			}; break;	
 		case 38:          			 
@@ -3204,45 +3385,45 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))				             			               	 
-						.total(Integer.parseInt(resultQuery[40][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))				             			               	 
+						.total(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k])));  
 
 			}; break;	
 		case 39:          			 
@@ -3250,46 +3431,46 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))					             			               	 
-						.total(Integer.parseInt(resultQuery[41][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))					             			               	 
+						.total(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k])));    
 
 			}; break;	
 		case 40:          			 
@@ -3297,47 +3478,47 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))				                			               	 
-						.total(Integer.parseInt(resultQuery[42][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))				                			               	 
+						.total(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k])));   
 
 			}; break;	
 		case 41:          			 
@@ -3345,48 +3526,48 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))				               			               			               	 
-						.total(Integer.parseInt(resultQuery[43][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))				               			               			               	 
+						.total(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k])));  
 
 			}; break;	
 		case 42:          			 
@@ -3394,49 +3575,49 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k])) 				              			               	 
-						.total(Integer.parseInt(resultQuery[44][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k])) 				              			               	 
+						.total(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k])));    
 
 			}; break;	
 		case 43:          			 
@@ -3444,50 +3625,50 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k])) 				             			               	 
-						.total(Integer.parseInt(resultQuery[45][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k])) 				             			               	 
+						.total(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k])));    
 
 			}; break;	
 		case 44:          			 
@@ -3495,51 +3676,51 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))	 				          	 				               			               	 
-						.total(Integer.parseInt(resultQuery[46][k])));   
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))	 				          	 				               			               	 
+						.total(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k])));   
 
 			}; break;	
 		case 45:          			 
@@ -3547,52 +3728,52 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   				            
 						.dateTime(resultQuery[1][k])
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k])) 				              			               	 
-						.total(Integer.parseInt(resultQuery[47][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k])) 				              			               	 
+						.total(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k])));    
 
 			}; break;	
 		case 46:          			 
@@ -3600,53 +3781,53 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])							 
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k]))		 
-						.equip46(Integer.parseInt(resultQuery[47][k]))				               	 
-						.total(Integer.parseInt(resultQuery[48][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k]))		 
+						.equip46(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k]))				               	 
+						.total(resultQuery[48][k] == null? 0 : Integer.parseInt(resultQuery[48][k])));  
 
 			}; break;	
 		case 47:          			 
@@ -3654,54 +3835,54 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])							 
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k]))		 
-						.equip46(Integer.parseInt(resultQuery[47][k]))		 
-						.equip47(Integer.parseInt(resultQuery[48][k])) 				               	 
-						.total(Integer.parseInt(resultQuery[49][k])));    
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k]))		 
+						.equip46(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k]))		 
+						.equip47(resultQuery[48][k] == null? 0 : Integer.parseInt(resultQuery[48][k])) 				               	 
+						.total(resultQuery[49][k] == null? 0 : Integer.parseInt(resultQuery[49][k])));    
 
 			}; break;	
 		case 48:          			 
@@ -3709,55 +3890,55 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])  
 						.dateTime(resultQuery[1][k])							 
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k]))		 
-						.equip46(Integer.parseInt(resultQuery[47][k]))		 
-						.equip47(Integer.parseInt(resultQuery[48][k]))		 
-						.equip48(Integer.parseInt(resultQuery[49][k])) 				               		 
-						.total(Integer.parseInt(resultQuery[50][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k]))		 
+						.equip46(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k]))		 
+						.equip47(resultQuery[48][k] == null? 0 : Integer.parseInt(resultQuery[48][k]))		 
+						.equip48(resultQuery[49][k] == null? 0 : Integer.parseInt(resultQuery[49][k])) 				               		 
+						.total(resultQuery[50][k] == null? 0 : Integer.parseInt(resultQuery[50][k])));  
 
 			}; break;	
 		case 49:          			 
@@ -3765,56 +3946,56 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])							 
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k]))		 
-						.equip46(Integer.parseInt(resultQuery[47][k]))		 
-						.equip47(Integer.parseInt(resultQuery[48][k]))		 
-						.equip48(Integer.parseInt(resultQuery[49][k]))
-						.equip49(Integer.parseInt(resultQuery[50][k]))			              		 
-						.total(Integer.parseInt(resultQuery[51][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k]))		 
+						.equip46(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k]))		 
+						.equip47(resultQuery[48][k] == null? 0 : Integer.parseInt(resultQuery[48][k]))		 
+						.equip48(resultQuery[49][k] == null? 0 : Integer.parseInt(resultQuery[49][k]))
+						.equip49(resultQuery[50][k] == null? 0 : Integer.parseInt(resultQuery[50][k]))			              		 
+						.total(resultQuery[51][k] == null? 0 : Integer.parseInt(resultQuery[51][k])));  
 
 			}; break;	
 		case 50:          			 
@@ -3822,57 +4003,57 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])						 
-						.equip1(Integer.parseInt(resultQuery[2][k]))
-						.equip2(Integer.parseInt(resultQuery[3][k]))
-						.equip3(Integer.parseInt(resultQuery[4][k]))
-						.equip4(Integer.parseInt(resultQuery[5][k]))
-						.equip5(Integer.parseInt(resultQuery[6][k]))
-						.equip6(Integer.parseInt(resultQuery[7][k]))
-						.equip7(Integer.parseInt(resultQuery[8][k]))
-						.equip8(Integer.parseInt(resultQuery[9][k]))
-						.equip9(Integer.parseInt(resultQuery[10][k]))
-						.equip10(Integer.parseInt(resultQuery[11][k]))
-						.equip11(Integer.parseInt(resultQuery[12][k]))
-						.equip12(Integer.parseInt(resultQuery[13][k]))
-						.equip13(Integer.parseInt(resultQuery[14][k]))
-						.equip14(Integer.parseInt(resultQuery[15][k]))
-						.equip15(Integer.parseInt(resultQuery[16][k]))
-						.equip16(Integer.parseInt(resultQuery[17][k]))
-						.equip17(Integer.parseInt(resultQuery[18][k]))
-						.equip18(Integer.parseInt(resultQuery[19][k]))
-						.equip19(Integer.parseInt(resultQuery[20][k]))
-						.equip20(Integer.parseInt(resultQuery[21][k]))
-						.equip21(Integer.parseInt(resultQuery[22][k]))
-						.equip22(Integer.parseInt(resultQuery[23][k]))
-						.equip23(Integer.parseInt(resultQuery[24][k]))
-						.equip24(Integer.parseInt(resultQuery[25][k]))
-						.equip25(Integer.parseInt(resultQuery[26][k]))
-						.equip26(Integer.parseInt(resultQuery[27][k]))
-						.equip27(Integer.parseInt(resultQuery[28][k]))		 
-						.equip28(Integer.parseInt(resultQuery[29][k]))		 
-						.equip29(Integer.parseInt(resultQuery[30][k]))		 
-						.equip30(Integer.parseInt(resultQuery[31][k]))		 
-						.equip31(Integer.parseInt(resultQuery[32][k]))		 
-						.equip32(Integer.parseInt(resultQuery[33][k]))		 
-						.equip33(Integer.parseInt(resultQuery[34][k]))		 
-						.equip34(Integer.parseInt(resultQuery[35][k]))		 
-						.equip35(Integer.parseInt(resultQuery[36][k]))		 
-						.equip36(Integer.parseInt(resultQuery[37][k]))
-						.equip37(Integer.parseInt(resultQuery[38][k]))		 
-						.equip38(Integer.parseInt(resultQuery[39][k]))		 
-						.equip39(Integer.parseInt(resultQuery[40][k]))		 
-						.equip40(Integer.parseInt(resultQuery[41][k]))		 
-						.equip41(Integer.parseInt(resultQuery[42][k]))		 
-						.equip42(Integer.parseInt(resultQuery[43][k]))		 
-						.equip43(Integer.parseInt(resultQuery[44][k]))		 
-						.equip44(Integer.parseInt(resultQuery[45][k]))		 
-						.equip45(Integer.parseInt(resultQuery[46][k]))		 
-						.equip46(Integer.parseInt(resultQuery[47][k]))		 
-						.equip47(Integer.parseInt(resultQuery[48][k]))		 
-						.equip48(Integer.parseInt(resultQuery[49][k]))
-						.equip49(Integer.parseInt(resultQuery[50][k]))		 
-						.equip50(Integer.parseInt(resultQuery[51][k]))		 
-						.total(Integer.parseInt(resultQuery[52][k])));  
+						.equip1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+						.equip2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.equip3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.equip4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.equip5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.equip6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.equip7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.equip8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.equip9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.equip10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.equip11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.equip12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.equip13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+						.equip14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+						.equip15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+						.equip16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+						.equip17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+						.equip18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))
+						.equip19(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k]))
+						.equip20(resultQuery[21][k] == null? 0 : Integer.parseInt(resultQuery[21][k]))
+						.equip21(resultQuery[22][k] == null? 0 : Integer.parseInt(resultQuery[22][k]))
+						.equip22(resultQuery[23][k] == null? 0 : Integer.parseInt(resultQuery[23][k]))
+						.equip23(resultQuery[24][k] == null? 0 : Integer.parseInt(resultQuery[24][k]))
+						.equip24(resultQuery[25][k] == null? 0 : Integer.parseInt(resultQuery[25][k]))
+						.equip25(resultQuery[26][k] == null? 0 : Integer.parseInt(resultQuery[26][k]))
+						.equip26(resultQuery[27][k] == null? 0 : Integer.parseInt(resultQuery[27][k]))
+						.equip27(resultQuery[28][k] == null? 0 : Integer.parseInt(resultQuery[28][k]))		 
+						.equip28(resultQuery[29][k] == null? 0 : Integer.parseInt(resultQuery[29][k]))		 
+						.equip29(resultQuery[30][k] == null? 0 : Integer.parseInt(resultQuery[30][k]))		 
+						.equip30(resultQuery[31][k] == null? 0 : Integer.parseInt(resultQuery[31][k]))		 
+						.equip31(resultQuery[32][k] == null? 0 : Integer.parseInt(resultQuery[32][k]))		 
+						.equip32(resultQuery[33][k] == null? 0 : Integer.parseInt(resultQuery[33][k]))		 
+						.equip33(resultQuery[34][k] == null? 0 : Integer.parseInt(resultQuery[34][k]))		 
+						.equip34(resultQuery[35][k] == null? 0 : Integer.parseInt(resultQuery[35][k]))		 
+						.equip35(resultQuery[36][k] == null? 0 : Integer.parseInt(resultQuery[36][k]))		 
+						.equip36(resultQuery[37][k] == null? 0 : Integer.parseInt(resultQuery[37][k]))
+						.equip37(resultQuery[38][k] == null? 0 : Integer.parseInt(resultQuery[38][k]))		 
+						.equip38(resultQuery[39][k] == null? 0 : Integer.parseInt(resultQuery[39][k]))		 
+						.equip39(resultQuery[40][k] == null? 0 : Integer.parseInt(resultQuery[40][k]))		 
+						.equip40(resultQuery[41][k] == null? 0 : Integer.parseInt(resultQuery[41][k]))		 
+						.equip41(resultQuery[42][k] == null? 0 : Integer.parseInt(resultQuery[42][k]))		 
+						.equip42(resultQuery[43][k] == null? 0 : Integer.parseInt(resultQuery[43][k]))		 
+						.equip43(resultQuery[44][k] == null? 0 : Integer.parseInt(resultQuery[44][k]))		 
+						.equip44(resultQuery[45][k] == null? 0 : Integer.parseInt(resultQuery[45][k]))		 
+						.equip45(resultQuery[46][k] == null? 0 : Integer.parseInt(resultQuery[46][k]))		 
+						.equip46(resultQuery[47][k] == null? 0 : Integer.parseInt(resultQuery[47][k]))		 
+						.equip47(resultQuery[48][k] == null? 0 : Integer.parseInt(resultQuery[48][k]))		 
+						.equip48(resultQuery[49][k] == null? 0 : Integer.parseInt(resultQuery[49][k]))
+						.equip49(resultQuery[50][k] == null? 0 : Integer.parseInt(resultQuery[50][k]))		 
+						.equip50(resultQuery[51][k] == null? 0 : Integer.parseInt(resultQuery[51][k]))		 
+						.total(resultQuery[52][k] == null? 0 : Integer.parseInt(resultQuery[52][k])));  
 
 			}; break;	
 		}     			 
@@ -3887,13 +4068,13 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 					.dateTime(resultQuery[1][k])   
-					.lightDir1(Integer.parseInt(resultQuery[2][k]))					
-					.motosDir1(Integer.parseInt(resultQuery[3][k]))	
-					.heavyDir1(Integer.parseInt(resultQuery[4][k]))
-					.lightDir2(Integer.parseInt(resultQuery[5][k]))					
-					.motosDir2(Integer.parseInt(resultQuery[6][k]))
-					.heavyDir2(Integer.parseInt(resultQuery[7][k]))
-					.total(Integer.parseInt(resultQuery[8][k]))); 		 			 
+					.lightDir1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))					
+					.motosDir1(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))	
+					.heavyDir1(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+					.lightDir2(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))					
+					.motosDir2(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+					.heavyDir2(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))); 		 			 
 		}    			 
 
 	}
@@ -3906,14 +4087,14 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 					.dateTime(resultQuery[1][k])		 					            
-					.lightDir1(Integer.parseInt(resultQuery[2][k]))
-					.heavyDir1(Integer.parseInt(resultQuery[3][k]))
-					.motosDir1(Integer.parseInt(resultQuery[4][k]))	 		 				                
-					.lightDir2(Integer.parseInt(resultQuery[5][k]))
-					.heavyDir2(Integer.parseInt(resultQuery[6][k])) 
-					.motosDir2(Integer.parseInt(resultQuery[7][k]))
-					.speed1(Integer.parseInt(resultQuery[8][k]))
-					.speed2(Integer.parseInt(resultQuery[9][k])));	
+					.lightDir1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+					.heavyDir1(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+					.motosDir1(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))	 		 				                
+					.lightDir2(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+					.heavyDir2(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])) 
+					.motosDir2(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.speed1(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+					.speed2(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));	
 		}             
 
 	}
@@ -3928,31 +4109,31 @@ public class SatReportsController {
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 					.dateTime(resultQuery[1][k]) 
 					.equipment(resultQuery[6][k])		 					            
-					.lightDir1(Integer.parseInt(resultQuery[7][k]))
-					.heavyDir1(Integer.parseInt(resultQuery[8][k]))
-					.motosDir1(Integer.parseInt(resultQuery[9][k]))	
-					.total1(Integer.parseInt(resultQuery[10][k]))	
-					.speed1(Integer.parseInt(resultQuery[18][k]))		 				               
-					.lightDir2(Integer.parseInt(resultQuery[11][k]))
-					.heavyDir2(Integer.parseInt(resultQuery[12][k]))
-					.motosDir2(Integer.parseInt(resultQuery[13][k]))		 				            
-					.total2(Integer.parseInt(resultQuery[14][k])) 
-					.speed2(Integer.parseInt(resultQuery[22][k])));
+					.lightDir1(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.heavyDir1(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+					.motosDir1(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))	
+					.total1(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))	
+					.speed1(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))		 				               
+					.lightDir2(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+					.heavyDir2(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+					.motosDir2(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))		 				            
+					.total2(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])) 
+					.speed2(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k])));
 		}    	
 	}      
 
 	/* WEIGHING -- TYPE = 5 */  
 
-	public void weighingBuilder(int classLength) {
+	public void weighingBuilder() {
 
 
-		if(classLength == 1) {
+		/*if(classLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])));  				                            	 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])));  				                            	 				                 
 
 			}
 
@@ -3962,8 +4143,8 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])));				                            	 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));				                            	 				                 
 
 			}
 
@@ -3973,9 +4154,9 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k])));  	 				                           		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])));  	 				                           		 				                 
 
 			}
 
@@ -3985,10 +4166,10 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))); 		 				                			 				                          		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))); 		 				                			 				                          		 				                 
 
 			}
 
@@ -3998,11 +4179,11 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k])));                       				                              		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])));                       				                              		 				                 
 
 			}
 
@@ -4012,12 +4193,12 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k])));   
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])));   
 
 			}
 
@@ -4027,13 +4208,13 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))); 		 				                           			 	 	  				                              		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))); 		 				                           			 	 	  				                              		 				                 
 
 			}
 
@@ -4043,14 +4224,14 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k])));   		 				          
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));   		 				          
 
 			}
 
@@ -4060,15 +4241,15 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k])));
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k])));
 
 			}
 
@@ -4078,16 +4259,16 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k])));		 	 	  				                            		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));		 	 	  				                            		 				                 
 
 			}
 
@@ -4097,17 +4278,17 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k])));		 	 	  				                               		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])));		 	 	  				                               		 				                 
 
 			}
 
@@ -4117,59 +4298,59 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k]))
-						.class12(Integer.parseInt(resultQuery[13][k])));		 	 	  				                           		 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k])));		 	 	  				                           		 				                 
 
 			}
 
-		} else if(classLength == 13) {
+		} else if(classLength == 13) { */
 
-			for(int k = 0; k < getNumRegisters(); k++) {      
+			for(int k = 0; k < getNumRegisters(); k++) {  
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k]))
-						.class12(Integer.parseInt(resultQuery[13][k]))
-						.class13(Integer.parseInt(resultQuery[14][k])));	 	 				                 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.class13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])));	 	 				                 
 
 			}
 
-		}    		                  
+		//}    		                  
 	}
 
 	/* CLASS -- TYPE = 6 */ 
 
-	public void classesBuilder(int classLength) {
+	public void classesBuilder() {
 
 
-		if(classLength == 1) {
+		/*if(classLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k]))  				                            	 				                 
-						.total(Integer.parseInt(resultQuery[3][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  				                            	 				                 
+						.total(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));    				    				 
 			}
 
 		} else if(classLength == 2) {
@@ -4178,9 +4359,9 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k]))  	 				                            		 				                 
-						.total(Integer.parseInt(resultQuery[4][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))  	 				                            		 				                 
+						.total(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])));    				    				 
 			}
 
 		} else if(classLength == 3) {
@@ -4189,10 +4370,10 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k])) 	 	 				                           		 				                 
-						.total(Integer.parseInt(resultQuery[5][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])) 	 	 				                           		 				                 
+						.total(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k])));    				    				 
 			}
 
 		} else if(classLength == 4) {
@@ -4201,11 +4382,11 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k])) 	 	 	 				                          		 				                 
-						.total(Integer.parseInt(resultQuery[6][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k])) 	 	 	 				                          		 				                 
+						.total(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])));    				    				 
 			}
 
 		}else if(classLength == 5) {
@@ -4214,12 +4395,12 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k])) 	 	 	  				                              		 				                 
-						.total(Integer.parseInt(resultQuery[7][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])) 	 	 	  				                              		 				                 
+						.total(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])));    				    				 
 			}
 
 		} else if(classLength == 6) {
@@ -4228,13 +4409,13 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k])) 	 	 	  				                             		 				                 
-						.total(Integer.parseInt(resultQuery[8][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])) 	 	 	  				                             		 				                 
+						.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));    				    				 
 			}
 
 		} else if(classLength == 7) {
@@ -4243,14 +4424,14 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k])) 	 	 	  				                              		 				                 
-						.total(Integer.parseInt(resultQuery[9][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])) 	 	 	  				                              		 				                 
+						.total(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));    				    				 
 			}
 
 		} else if(classLength == 8) {
@@ -4259,15 +4440,15 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))  
-						.total(Integer.parseInt(resultQuery[10][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))  
+						.total(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k])));    				    				 
 			}
 
 		} else if(classLength == 9) {
@@ -4276,16 +4457,16 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k])) 	 	 	  				                             		 				                 
-						.total(Integer.parseInt(resultQuery[11][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k])) 	 	 	  				                             		 				                 
+						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));    				    				 
 			}
 
 		} else if(classLength == 10) {
@@ -4294,17 +4475,17 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k])) 	 	 	  				                            		 				                 
-						.total(Integer.parseInt(resultQuery[12][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])) 	 	 	  				                            		 				                 
+						.total(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])));    				    				 
 			}
 
 		} else if(classLength == 11) {
@@ -4313,18 +4494,18 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k])) 	 	 	  				                               		 				                 
-						.total(Integer.parseInt(resultQuery[13][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k])) 	 	 	  				                               		 				                 
+						.total(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k])));    				    				 
 			}
 
 		} else if(classLength == 12) {
@@ -4333,58 +4514,58 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k]))
-						.class12(Integer.parseInt(resultQuery[13][k])) 	 	 	  				                           		 				                 
-						.total(Integer.parseInt(resultQuery[14][k])));    				    				 
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k])) 	 	 	  				                           		 				                 
+						.total(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k])));    				    				 
 			}
 
-		} else if(classLength == 13) {
+		} else if(classLength == 13) {*/
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])  
-						.class1(Integer.parseInt(resultQuery[2][k])) 
-						.class2(Integer.parseInt(resultQuery[3][k])) 
-						.class3(Integer.parseInt(resultQuery[4][k]))
-						.class4(Integer.parseInt(resultQuery[5][k]))
-						.class5(Integer.parseInt(resultQuery[6][k]))
-						.class6(Integer.parseInt(resultQuery[7][k]))
-						.class7(Integer.parseInt(resultQuery[8][k]))
-						.class8(Integer.parseInt(resultQuery[9][k]))    		 				          
-						.class9(Integer.parseInt(resultQuery[10][k]))
-						.class10(Integer.parseInt(resultQuery[11][k]))
-						.class11(Integer.parseInt(resultQuery[12][k]))
-						.class12(Integer.parseInt(resultQuery[13][k]))
-						.class13(Integer.parseInt(resultQuery[14][k]))    		 				                 
-						.total(Integer.parseInt(resultQuery[15][k])));    				    				 
-			}
+						.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])) 
+						.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))    		 				          
+						.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+						.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+						.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+						.class13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))    		 				                 
+						.total(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k])));    				    				 
+			//}
 
 		}    		                  
 	}
 
 	/* AXLES -- TYPE = 7 */ 
 
-	public void axlesBuilder(int axleLength) {
+	public void axlesBuilder() {
 
-		if(axleLength == 1) {
+		/*if(axleLength == 1) {
 
 			for(int k = 0; k < getNumRegisters(); k++) {      
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 				                
-						.total(Integer.parseInt(resultQuery[3][k])));    				    				 
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 				                
+						.total(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));    				    				 
 			}
 
 		} else if(axleLength == 2) {
@@ -4393,9 +4574,9 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.total(Integer.parseInt(resultQuery[4][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.total(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])));
 			}
 
 		} else  if(axleLength == 3) {
@@ -4404,10 +4585,10 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.total(Integer.parseInt(resultQuery[5][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.total(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k])));
 			}
 
 		}else if(axleLength == 4) {
@@ -4416,11 +4597,11 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])   
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.total(Integer.parseInt(resultQuery[6][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.total(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k])));
 			}
 
 		}else if(axleLength == 5) {
@@ -4429,12 +4610,12 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])  
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.total(Integer.parseInt(resultQuery[7][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.total(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])));
 
 			}
 
@@ -4444,13 +4625,13 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])    
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.axles6(Integer.parseInt(resultQuery[7][k]))			               
-						.total(Integer.parseInt(resultQuery[8][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))			               
+						.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
 			}
 
 		}else if(axleLength == 7) {
@@ -4459,14 +4640,14 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.axles6(Integer.parseInt(resultQuery[7][k]))
-						.axles7(Integer.parseInt(resultQuery[8][k]))
-						.total(Integer.parseInt(resultQuery[9][k])));			              
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.axles7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.total(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));			              
 			}
 
 		}else if(axleLength == 8) {
@@ -4475,15 +4656,15 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k]) 
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.axles6(Integer.parseInt(resultQuery[7][k]))
-						.axles7(Integer.parseInt(resultQuery[8][k]))
-						.axles8(Integer.parseInt(resultQuery[9][k]))
-						.total(Integer.parseInt(resultQuery[10][k])));			               
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.axles7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.axles8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.total(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k])));			               
 			}
 
 		} else if(axleLength == 9) {
@@ -4492,36 +4673,35 @@ public class SatReportsController {
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.axles6(Integer.parseInt(resultQuery[7][k]))
-						.axles7(Integer.parseInt(resultQuery[8][k]))
-						.axles8(Integer.parseInt(resultQuery[9][k]))
-						.axles9(Integer.parseInt(resultQuery[10][k]))
-						.total(Integer.parseInt(resultQuery[11][k])));
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.axles7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.axles8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.axles9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));
 			}    		
 
-		} else if(axleLength == 10) {
+		} else if(axleLength == 10) {*/
 
 			for(int k = 0; k < getNumRegisters(); k++) {   
 
 				resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 						.dateTime(resultQuery[1][k])
-						.axles1(Integer.parseInt(resultQuery[2][k])) 
-						.axles2(Integer.parseInt(resultQuery[3][k]))
-						.axles3(Integer.parseInt(resultQuery[4][k]))
-						.axles4(Integer.parseInt(resultQuery[5][k]))
-						.axles5(Integer.parseInt(resultQuery[6][k]))
-						.axles6(Integer.parseInt(resultQuery[7][k]))
-						.axles7(Integer.parseInt(resultQuery[8][k]))
-						.axles8(Integer.parseInt(resultQuery[9][k]))
-						.axles9(Integer.parseInt(resultQuery[10][k]))
-						.axles10(Integer.parseInt(resultQuery[11][k]))
-						.total(Integer.parseInt(resultQuery[12][k])));
-			}    		
+						.axles1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])) 
+						.axles2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+						.axles3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+						.axles4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+						.axles5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+						.axles6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+						.axles7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+						.axles8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+						.axles9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))						
+						.total(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k])));
+			//}    		
 		}  
 	}
 
@@ -4533,13 +4713,13 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.speed50km(Integer.parseInt(resultQuery[2][k]))
-					.speed70km(Integer.parseInt(resultQuery[3][k]))
-					.speed90km(Integer.parseInt(resultQuery[4][k]))
-					.speed120km(Integer.parseInt(resultQuery[5][k]))
-					.speed150km(Integer.parseInt(resultQuery[6][k]))
-					.speed150Bigger(Integer.parseInt(resultQuery[7][k]))
-					.total(Integer.parseInt(resultQuery[8][k])));    				    				 
+					.speed50km(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+					.speed70km(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+					.speed90km(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+					.speed120km(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+					.speed150km(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+					.speed150Bigger(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));    				    				 
 		} 	 
 	}
 
@@ -4555,12 +4735,12 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.class1(Integer.parseInt(resultQuery[2][k]))
-					.class2(Integer.parseInt(resultQuery[3][k]))   
-					.class3(Integer.parseInt(resultQuery[4][k]))
-					.class4(Integer.parseInt(resultQuery[5][k]))
-					.class5(Integer.parseInt(resultQuery[6][k]))			                  				               
-					.total(Integer.parseInt(resultQuery[7][k])));    				    				 
+					.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+					.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))   
+					.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+					.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+					.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))			                  				               
+					.total(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k])));    				    				 
 		} 
 	}
 
@@ -4572,9 +4752,9 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.class1(Integer.parseInt(resultQuery[2][k]))
-					.class2(Integer.parseInt(resultQuery[3][k]))    				                  				               
-					.total(Integer.parseInt(resultQuery[4][k])));    				    				 
+					.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+					.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))    				                  				               
+					.total(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k])));    				    				 
 		} 
 
 	}
@@ -4587,13 +4767,13 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.speed50km(Integer.parseInt(resultQuery[2][k]))
-					.speed70km(Integer.parseInt(resultQuery[3][k]))
-					.speed90km(Integer.parseInt(resultQuery[4][k]))
-					.speed120km(Integer.parseInt(resultQuery[5][k]))
-					.speed150km(Integer.parseInt(resultQuery[6][k]))
-					.speed150Bigger(Integer.parseInt(resultQuery[7][k]))
-					.total(Integer.parseInt(resultQuery[8][k])));    				    				 
+					.speed50km(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+					.speed70km(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+					.speed90km(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+					.speed120km(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+					.speed150km(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+					.speed150Bigger(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.total(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));    				    				 
 		} 	 
 	}
 
@@ -4605,25 +4785,25 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[0][k])
 					.dateTime(resultQuery[1][k])
-					.class1(Integer.parseInt(resultQuery[2][k]))    
-					.class2(Integer.parseInt(resultQuery[3][k]))    
-					.class3(Integer.parseInt(resultQuery[4][k]))
-					.class4(Integer.parseInt(resultQuery[5][k]))
-					.class5(Integer.parseInt(resultQuery[6][k]))
-					.class6(Integer.parseInt(resultQuery[7][k]))
-					.class7(Integer.parseInt(resultQuery[8][k]))
-					.class8(Integer.parseInt(resultQuery[9][k]))
-					.class9(Integer.parseInt(resultQuery[10][k]))
-					.class10(Integer.parseInt(resultQuery[11][k]))
-					.class11(Integer.parseInt(resultQuery[12][k]))
-					.class12(Integer.parseInt(resultQuery[13][k]))
-					.class13(Integer.parseInt(resultQuery[14][k]))
-					.class14(Integer.parseInt(resultQuery[15][k]))
-					.class15(Integer.parseInt(resultQuery[16][k]))
-					.class16(Integer.parseInt(resultQuery[17][k]))
-					.class17(Integer.parseInt(resultQuery[18][k]))
-					.class18(Integer.parseInt(resultQuery[19][k]))		                  				               
-					.total(Integer.parseInt(resultQuery[20][k])));    				    				 
+					.class1(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))    
+					.class2(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))    
+					.class3(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+					.class4(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+					.class5(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+					.class6(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+					.class7(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+					.class8(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+					.class9(resultQuery[10][k] == null? 0 : Integer.parseInt(resultQuery[10][k]))
+					.class10(resultQuery[11][k] == null? 0 : Integer.parseInt(resultQuery[11][k]))
+					.class11(resultQuery[12][k] == null? 0 : Integer.parseInt(resultQuery[12][k]))
+					.class12(resultQuery[13][k] == null? 0 : Integer.parseInt(resultQuery[13][k]))
+					.class13(resultQuery[14][k] == null? 0 : Integer.parseInt(resultQuery[14][k]))
+					.class14(resultQuery[15][k] == null? 0 : Integer.parseInt(resultQuery[15][k]))
+					.class15(resultQuery[16][k] == null? 0 : Integer.parseInt(resultQuery[16][k]))
+					.class16(resultQuery[17][k] == null? 0 : Integer.parseInt(resultQuery[17][k]))
+					.class17(resultQuery[18][k] == null? 0 : Integer.parseInt(resultQuery[18][k]))
+					.class18(resultQuery[19][k] == null? 0 : Integer.parseInt(resultQuery[19][k]))		                  				               
+					.total(resultQuery[20][k] == null? 0 : Integer.parseInt(resultQuery[20][k])));    				    				 
 
 		}
 
@@ -4637,5 +4817,7 @@ public class SatReportsController {
 	
 	/**********************************************************************************************************/
 	/**********************************************************************************************************/
+	
+
 
 }

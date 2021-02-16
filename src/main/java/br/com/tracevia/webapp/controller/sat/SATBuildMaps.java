@@ -46,10 +46,10 @@ public class SATBuildMaps {
 
 			try {
 
-				SATinformationsDAO satDAO = new SATinformationsDAO();
-
-				boolean status15 = true, values15 = true, status15Before = false, values15Before = false;
-				boolean pass = true;
+				SATinformationsDAO satDAO = new SATinformationsDAO();  
+ 
+				boolean status30 = true, values30 = true, status45 = false, values45 = false;
+				boolean pass = true; 
 
 				// LISTAS
 				satList = new ArrayList<SAT>();
@@ -73,21 +73,21 @@ public class SATBuildMaps {
 				///////////////////////////
 
 				// PREENCHE LISTA COM STATUS DOS ULTIMOS 15 MINUTOS
-				satListStatusAux = satDAO.SATstatus15();
+				satListStatusAux = satDAO.SATstatus30();
 
 				// CASO N�O ENCONTRE NENHUM STATUS DO ULTIMOS 15 MINUTOS
 				// PREENCHE LISTA COM STATUS DOS 15 MINUTOS ANTERIORES
 				if (satListStatusAux.isEmpty()) {
-					satListStatusAux = satDAO.SATstatus30();
-					status15 = false;
+					satListStatusAux = satDAO.SATstatus45();
+					status30 = false;
 				}
 
 				// VERIFICA SE A LISTA CONTINUA VAZIA OU SE H� STATUS
-				if (!status15 && !satListStatusAux.isEmpty())
-					status15Before = true;
+				if (!status30 && !satListStatusAux.isEmpty())
+					status45 = true;
 
 				// CASO HAJA DADOS DOS 15 MINUTOS ANTERIORES EXECUTA ESSE BLOCO
-				if (status15Before) {
+				if (status45) {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
@@ -119,7 +119,7 @@ public class SATBuildMaps {
 						}
 					} // FOR END
 
-				} else if (status15) {
+				} else if (status30) {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
@@ -144,7 +144,7 @@ public class SATBuildMaps {
 
 						if (pass) {
 
-							satListObj = satDAO.SATstatus15Before(satList.get(s).getEquip_id());
+							satListObj = satDAO.SATstatus45Stat(satList.get(s).getEquip_id());
 
 							if (satListObj.getEquip_id() != 0)
 								satStatus.add(satListObj);
@@ -179,18 +179,18 @@ public class SATBuildMaps {
 				// CASO N�O ENCONTRE NENHUM DADO DO ULTIMOS 15 MINUTOS
 				// PREENCHE LISTA COM DADOS DOS 15 MINUTOS ANTERIORES
 				if (satListValuesAux.isEmpty()) {
-					satListValuesAux = satDAO.RealTimeSATinfo15Before();
-					values15 = false;
+					satListValuesAux = satDAO.RealTimeSATinfo45();
+					values30 = false;
 				}
 				
 				//System.out.println(satListValuesAux.size());
 
 				// VERIFICA SE A LISTA CONTINUA VAZIA OU SE H� DADOS
-				if (!values15 && !satListValuesAux.isEmpty())
-					values15Before = true;
+				if (!values30 && !satListValuesAux.isEmpty())
+					values45 = true;
 
 				// CASO HAJA DADOS DOS 15 MINUTOS ANTERIORES EXECUTA ESSE BLOCO
-				if (values15Before) {
+				if (values45) {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
@@ -226,7 +226,7 @@ public class SATBuildMaps {
 						}
 					} // FOR END
 
-				} else if (values15) {
+				} else if (values30) {
 
 					for (int s = 0; s < satList.size(); s++) { // FOR START
 
@@ -253,7 +253,7 @@ public class SATBuildMaps {
 
 						if (pass) {
 
-							satListObj = satDAO.RealTimeSATinfo15Data(satList.get(s).getEquip_id());
+							satListObj = satDAO.RealTimeSATinfo45Data(satList.get(s).getEquip_id());
 
 							if (satListObj.getEquip_id() != 0)
 								satListValues.add(satListObj);

@@ -70,7 +70,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][index].setCellValue(values[auxCol][index]); 
 					            	
-					            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -99,7 +99,7 @@ public class ExcelSpreadSheet {
 			            	if(col == 0 || col == 1)
 			            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 			            	
-			            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+			            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 			            				            			            			          			            
 			            }catch(NullPointerException ex) {
 			            	ex.printStackTrace();
@@ -155,7 +155,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -185,7 +185,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 1 || col == 2)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            						            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -220,7 +220,7 @@ public class ExcelSpreadSheet {
 					            	    
 					            		cells[col][lin].setCellValue((int) Double.parseDouble((values[auxCol][lin])));
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -283,7 +283,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -312,7 +312,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -346,7 +346,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -384,7 +384,7 @@ public class ExcelSpreadSheet {
 							            	if(col == 0 || col == 1)
 							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
 							            	
-							            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
 							            	
 							            }catch(NullPointerException ex) {
 							            	ex.printStackTrace();
@@ -415,7 +415,7 @@ public class ExcelSpreadSheet {
 							            	if(col == 0 || col == 1)
 							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
 							            	
-							            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
 							            	
 							            }catch(NullPointerException ex) {
 							            	ex.printStackTrace();
@@ -449,7 +449,7 @@ public class ExcelSpreadSheet {
 							            	if(col == 0 || col == 1)
 							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
 							            	
-							            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 							            	
 							            }catch(NullPointerException ex) {
 							            	ex.printStackTrace();

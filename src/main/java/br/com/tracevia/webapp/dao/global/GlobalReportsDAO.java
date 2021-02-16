@@ -10,7 +10,6 @@ import br.com.tracevia.webapp.controller.sat.SatReportsController;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.VBV;
-import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class GlobalReportsDAO {
@@ -22,6 +21,7 @@ public class GlobalReportsDAO {
 	private Connection conn;	
 	private PreparedStatement ps;
 	private ResultSet rs;
+	private String[][] result;
 			
 	 /* ************************** */
 	/* ***** GLOBAL REPORTS ***** */
@@ -38,43 +38,18 @@ public class GlobalReportsDAO {
 	 * @throws Exception
 	 */
 	
-	public String[][] ExecuteQuery(String procedure, String query, String startDate, String endDate) throws Exception {		
-						
-		//Classe DateTimeApplication
-		DateTimeApplication dta = new DateTimeApplication();
-		
+	public String[][] ExecuteQuery(String query) throws Exception {		
+			
 		//Parametros vindo do Bean
 		int registers = SatReportsController.getNumRegisters();
 		int fieldsNumber = SatReportsController.getFieldsNumber();
-		
-		//System.out.println("Fields: "+fieldsNumber);
-		
-		//System.out.println("REGI: "+registers); Works!!!
+			
+		result = new String[fieldsNumber][registers];
 				
-          // Matriz para alocar dados do ResultSet
-		 // fieldsNumber -> Campos de acordo com cada campo da query
-		// registers -> Números de registros ( periodo x ( qtde dias selecionados )
-		String[][] result = new String[fieldsNumber][registers];
-		
-		//Formatando datas
-		String startDateFormatted = dta.StringDBDateFormat(startDate);
-		String endDateFormatted = dta.StringDBDateFormat(endDate);
-				
-		//Adicionando horas, minutos e segundos
-		startDateFormatted += DateTimeApplication.HOUR_TIME_FORMAT_START_DATE;
-		endDateFormatted += DateTimeApplication.HOUR_TIME_FORMAT_END_DATE;
-				        
 		try {
 			   //GET CONNECTION			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			
-			   // CHECK PROCEDURE EXECUTION FIRST
-				ps = conn.prepareStatement(procedure);			
-				ps.setString(1, startDateFormatted);
-				ps.setString(2, endDateFormatted);
-
-				ps.executeUpdate();
-																			
+																						
 				//EXECUTE QUERY				
 				ps = conn.prepareStatement(query);
 				rs = ps.executeQuery();
@@ -92,7 +67,7 @@ public class GlobalReportsDAO {
 				    					    	 
 				    	    result[col][lin] = rs.getString((col+1));
 				    	    				    	    
-				    	    //System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  
+				    	   // System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  
 				    	 				      
 				        }
 				    				     
@@ -104,9 +79,9 @@ public class GlobalReportsDAO {
 
 		}finally 
 		{
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			ConnectionFactory.closeConnection(conn, ps, rs);			
 		}
-
+		
 		return result;		
 
 	}
