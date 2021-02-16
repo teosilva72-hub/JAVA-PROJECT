@@ -645,8 +645,8 @@
 
           </div>
         </main>
-        <br/>
-        <br/>
+        <br />
+        <br />
 
       </div>
     </ui:insert>
@@ -663,15 +663,18 @@
                 <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="toast-body">
-                <h:graphicImage title="Accept Call" class="acptcall" value="/resources/images/voice/accept-call.png">
-                </h:graphicImage>
+              <h:graphicImage title="Accept Call" class="acptcall" value="/resources/images/voice/accept-call.png">
+              </h:graphicImage>
               <label> Accept Call </label>
-                <h:graphicImage title="Dismiss Call" id="misscall" class="dismisscall" value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
+              <h:graphicImage title="Dismiss Call" id="misscall" class="dismisscall"
+                value="/resources/images/voice/dismiss-call.png"></h:graphicImage>
               <label> Dismiss Call </label>
-                <h:graphicImage title="Call on Hold" class="holdcall" id="holdingcall" value="/resources/images/voice/call-on-hold.png">
-                </h:graphicImage>
-                <h:graphicImage title="Call on Hold Stop" class="holdcallstop" id="callback" value="/resources/images/voice/call-on-hold-stop.png" style="display:none;">
-                </h:graphicImage>
+              <h:graphicImage title="Call on Hold" class="holdcall" id="holdingcall"
+                value="/resources/images/voice/call-on-hold.png">
+              </h:graphicImage>
+              <h:graphicImage title="Call on Hold Stop" class="holdcallstop" id="callback"
+                value="/resources/images/voice/call-on-hold-stop.png" style="display:none;">
+              </h:graphicImage>
               <label> Put Call on Hold </label>
             </div>
             <div class="toast-footer" id="call-footer">
@@ -707,7 +710,7 @@
       </div>
     </div>
     <!--  TOAST CALL LIST END -->
-    
+
     <!-- Loading -->
     <div class="loading">
       <div class="spinner-border loading-animation" role="status">
@@ -787,40 +790,40 @@
        //Call setTopo()
       $(window).bind('scroll', setTopo);*/
       // Voice Menu Open
-$(function() {
+      $(function () {
 
-      $("[id$=holdingcall]").click(function(e) {
-    	  e.preventDefault();
-    	  e.stopPropagation();
-    	  $("[id$=callback]").show();
-    	  $("[id$=holdingcall]").hide();
-      });
-      
-      $("[id$=callback]").click(function(e) {
-    	  e.preventDefault();
-    	  e.stopPropagation();
-    	  $("[id$=holdingcall]").show();
-      	  $("[id$=callback]").hide();
-      });
-      
-      $("#navCall").on('click', function(e) {
-    	  e.preventDefault()
-    	  $('#toastvoice').toast('show');
-      });
-      
-      $("#navListCall").click(function(e) {
-    	  e.preventDefault()
-    	  $('#list-toast').toast('show');
-      });     
-})
-	  // Voice Menu Open End
-	   
+        $("[id$=holdingcall]").click(function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $("[id$=callback]").show();
+          $("[id$=holdingcall]").hide();
+        });
+
+        $("[id$=callback]").click(function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $("[id$=holdingcall]").show();
+          $("[id$=callback]").hide();
+        });
+
+        $("#navCall").on('click', function (e) {
+          e.preventDefault()
+          $('#toastvoice').toast('show');
+        });
+
+        $("#navListCall").click(function (e) {
+          e.preventDefault()
+          $('#list-toast').toast('show');
+        });
+      })
+      // Voice Menu Open End
+
       // Visibility Equipments
       $('[toggle]').click(function () {
         $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
       })
       // Visibility Equipments End
-	
+
     </script>
 
     <!-- Import JavaScript from another pages -->

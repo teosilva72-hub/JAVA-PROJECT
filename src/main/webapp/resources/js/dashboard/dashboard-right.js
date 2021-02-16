@@ -1,17 +1,17 @@
 // OVERLAY SIDE BAR
-$(function() {
-  $('.sideMenuToggler').on('click', function() {
+$(function () {
+  $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
     $('.overlay').addClass('active');
   });
 
-  var adjustSidebar = function() {
-    $(".menu-mode > form").slimScroll({height: window.innerHeight - 150})
-    $(".content-module").slimScroll({height: window.innerHeight - 150})
+  var adjustSidebar = function () {
+    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 150 })
+    $(".content-module").slimScroll({ height: window.innerHeight - 150 })
   };
 
   adjustSidebar();
-  $(window).resize(function() {
+  $(window).resize(function () {
     adjustSidebar();
   });
 
@@ -19,10 +19,10 @@ $(function() {
 });
 
 $('#dismiss, .overlay').on('click', function () {
-    // hide sidebar
-    $('.wrapper').removeClass('active');
-    // hide overlay
-    $('.overlay').removeClass('active');
+  // hide sidebar
+  $('.wrapper').removeClass('active');
+  // hide overlay
+  $('.overlay').removeClass('active');
 });
 // OVERLAY SIDE BAR END
 
@@ -31,9 +31,9 @@ $('#dismiss, .overlay').on('click', function () {
 //User Agent Configuration
 var socket = new JsSIP.WebSocketInterface('wss://sip.myhost.com');
 var configuration = {
-	sockets : [socket],
-	uri : 'sip:alice@example.com',
-	password : 'superpassword'
+  sockets: [socket],
+  uri: 'sip:alice@example.com',
+  password: 'superpassword'
 };
 //User Agent Configuration end
 
@@ -42,22 +42,22 @@ var coolPhone = new JsSIP.UA(configuration);
 //User Agent Instance end
 
 //WebSocket connection events
-coolPhone.on('connected', function(e){/* Your code here */});
-coolPhone.on('disconnected', function(e){ /* Your code here */});
+coolPhone.on('connected', function (e) {/* Your code here */ });
+coolPhone.on('disconnected', function (e) { /* Your code here */ });
 //WebSocket connection events end
 
 //New incoming or outgoing call event
-coolPhone.on('newRTCSession', function(e){/* Your code here */});
+coolPhone.on('newRTCSession', function (e) {/* Your code here */ });
 //New incoming or outgoing call event end
 
 //New incoming or outgoing IM message event
-coolPhone.on('NewMessage', function(e){/* Your code here */});
+coolPhone.on('NewMessage', function (e) {/* Your code here */ });
 //New incoming or outgoing IM message event end
 
 //SIP registration events
-coolPhone.on('registered', function(e){/* Your code here */});
-coolPhone.on('unregistered', function(e){/* Your code here */});
-coolPhone.on('registrationFailed', function(e){/* Your code here */});
+coolPhone.on('registered', function (e) {/* Your code here */ });
+coolPhone.on('unregistered', function (e) {/* Your code here */ });
+coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
 //SIP registration events end
 
 //Starting the User Agent
@@ -70,9 +70,9 @@ coolPhone.start();
 //Create our JsSIP instance and run it:
 var socket = new JsSIP.WebSocketInterface('wss://sip.myhost.com');
 var configuration = {
-	sockets : [ socket ],
-	uri	    : 'sip:alice@example.com',
-	password: 'superpassword'
+  sockets: [socket],
+  uri: 'sip:alice@example.com',
+  password: 'superpassword'
 };
 
 var ua = new JsSIP.UA(configuration);
@@ -81,24 +81,24 @@ ua.start();
 //Create our JsSIP instance and run it end
 //Register callbacks to desired call events
 var eventHandlers = {
-	'progress' : function(e) {
-	console.log('call is in progress');
-	},
-	'failed'   : function(e) {
-	console.log('call failed with cause: ' + e.data.case);	
-	},
-	'ended'    : function(e) {
-	console.log('call ended with cause: ' + e.data.cause);	
-	},
-	'confirmed': function(e) {
-	console.log('call confirmed');
-	}
+  'progress': function (e) {
+    console.log('call is in progress');
+  },
+  'failed': function (e) {
+    console.log('call failed with cause: ' + e.data.case);
+  },
+  'ended': function (e) {
+    console.log('call ended with cause: ' + e.data.cause);
+  },
+  'confirmed': function (e) {
+    console.log('call confirmed');
+  }
 };
 //Register callbacks to desired call events end
 
 var options = {
-	'eventHandlers'   : eventHandlers,
-	'mediaConstraints': {'audio': true, 'video': true}
+  'eventHandlers': eventHandlers,
+  'mediaConstraints': { 'audio': true, 'video': true }
 };
 var session = ua.call('sip:bob@example.com', options);
 ////Making outbound calls end
@@ -114,11 +114,11 @@ var text = 'Hello Bob!';
 
 // Register callbacks to desired message events
 var eventHandlers = {
-	'succeded' : function(e){/* Your code here */},
-	'failed'   : function(e){/* Your code here */}
+  'succeded': function (e) {/* Your code here */ },
+  'failed': function (e) {/* Your code here */ }
 };
 var options = {
-	'eventHandlers': eventHandlers
+  'eventHandlers': eventHandlers
 };
 
 coolPhone.sendMessage('sip:bob@example.com', text, options);
@@ -126,39 +126,39 @@ coolPhone.sendMessage('sip:bob@example.com', text, options);
 ////Instant messaging end
 
 //Accept a Call Button
-	var startButton = document.getElementById('acptcall');
-	startButton.addEventListener("click", function() {
-		ua.start();
-		alert("Call Started.");
-		}, false);
+var startButton = document.getElementById('acptcall');
+startButton.addEventListener("click", function () {
+  ua.start();
+  alert("Call Started.");
+}, false);
 //Accept a Call Button End
 
 //Ending a Call Button
-	var endButton = document.getElementById('misscall');
-	endButton.addEventListener("click", function () {
-	    ua.hangup();
-	    alert("Call Ended.");
-		}, false);
+var endButton = document.getElementById('misscall');
+endButton.addEventListener("click", function () {
+  ua.hangup();
+  alert("Call Ended.");
+}, false);
 //Ending a Call Button End
 
 //Placing a call on hold
-	var holdButton = document.getElementById('holdcall');
-	holdButton.addEventListener("click", function () {
-		ua.hold();
-		alert("Call on Hold.")
-	}, false);
-	
-	var unholdButton = document.getElementById('holdcallstop');
-	unholdButton.addEventListener("click", function() {
-		ua.unhold();
-		alert("Call Came Back.")
-	}, false);
+var holdButton = document.getElementById('holdcall');
+holdButton.addEventListener("click", function () {
+  ua.hold();
+  alert("Call on Hold.")
+}, false);
+
+var unholdButton = document.getElementById('holdcallstop');
+unholdButton.addEventListener("click", function () {
+  ua.unhold();
+  alert("Call Came Back.")
+}, false);
 //Placing a call on hold End
 
 //Answering a Call
-	simple.on('ringing', function(){
-		ua.answer();
-	});
+simple.on('ringing', function () {
+  ua.answer();
+});
 //Answering a Call End
 
 //////////////////////SIP VOICE/CALL END

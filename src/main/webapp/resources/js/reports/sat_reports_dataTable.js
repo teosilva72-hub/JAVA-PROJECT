@@ -80,7 +80,7 @@ $(document).ready(function () {
     $('.dataTables_length').removeClass('bs-select');
 
     //CCR CLASSES
-    
+
     //Call Datatables jQuery plugin
     $('#ccr-tipo-table').DataTable({
         "scrollY": "50.3vh",
