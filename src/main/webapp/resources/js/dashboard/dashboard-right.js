@@ -1,5 +1,5 @@
 // OVERLAY SIDE BAR
-$(document).ready(function() {
+$(function() {
   $('.sideMenuToggler').on('click', function() {
     $('.wrapper').toggleClass('active');
     $('.overlay').addClass('active');
@@ -14,6 +14,8 @@ $(document).ready(function() {
   $(window).resize(function() {
     adjustSidebar();
   });
+
+  $(".loading").hide()
 });
 
 $('#dismiss, .overlay').on('click', function () {
