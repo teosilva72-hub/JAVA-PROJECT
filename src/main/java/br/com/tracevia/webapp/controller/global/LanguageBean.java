@@ -25,24 +25,33 @@ public class LanguageBean implements Serializable {
 	// private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
 	 private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");
 			
+	 //DEFAULT LANGUAGE
 	private Locale locale = Locale.getDefault();
 	  	
 	public Locale getLocale() {
 		return  (locale);
 	}
-		 	  	
-	 public void English(ActionEvent event) {	  
+			 	  	
+	 public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
+
+	public void English(ActionEvent event) {	  
 	   locale = ENGLISH;
+	   Locale.setDefault(locale);
 	   updateViewLocale();
 	 }
 	 
 	 public void Spanish(ActionEvent event) {
 		locale = SPANISH;
-		updateViewLocale();	  
+		Locale.setDefault(locale);
+		updateViewLocale();	
+		
 	}
 
 	 public void Portuguese(ActionEvent event) {
 		locale = PORTUGUESE_BRAZILIAN;
+		Locale.setDefault(locale);
 		updateViewLocale();
 	  
 	 }	 
