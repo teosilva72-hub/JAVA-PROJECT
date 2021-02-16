@@ -16,15 +16,9 @@
 	<h:outputStylesheet library="css/pmv/table" name="table-style.css"  />	
 	<h:outputStylesheet library="css/commom" name="commons.css"  />
 	<h:outputStylesheet library="css/users" name="panel-user.css"  /> 
+	  <h:outputScript name="panel-user-datatable.js" library="js/page-datatables" />		 
 	
-	<script type="text/javascript">
-	
-	function resetTable(){		 
-		  $('#user-table').DataTable().clear().draw();	
-	}
-	
-	</script>
-		
+			
 	</ui:define>
 	
 	 <ui:define name="main-content" >
@@ -38,12 +32,9 @@
 				
 				<div id="tab-user">
 				<h:dataTable id="user-table"  value="#{userAccount.userDataModel}" var="user" autocomplete="off"				               
-    			styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%"	
-    			headerClass="custom-table-header" 
-    			rowClasses="custom-table-odd-row, custom-table-even-row"    
-    			columnClasses="idColumn,  nameColumn, jobColumn, emailColumn, userColumn, permitionColumn, statusColumn, actionColumn" > 
-    		
-    			             		                                                                                                                        
+    			  styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
+                  headerClass="custom-table-header">	
+    		    			             		                                                                                                                        
                	<h:column>
 				 <f:facet name ="header">#{usersLabels.user_panel_table_col_id}</f:facet>
 					<h:outputText value="#{user.user_id}"/>
@@ -213,8 +204,7 @@
 		    		    
   </ui:define>
   
-   <ui:define name="jscript">
-    <h:outputScript name="panel-user-datatable.js" library="js/page-datatables" />	
+   <ui:define name="jscript">  
 	</ui:define>
     
 </ui:composition>	

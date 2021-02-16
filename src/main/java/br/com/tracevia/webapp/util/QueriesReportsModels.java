@@ -257,8 +257,14 @@ public class QueriesReportsModels {
 		private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_SAT = "GROUP BY MONTH(data) " +
 		       "ORDER BY MONTH(data) ASC";
 		
+		//INDEX
+		public static final String USE_INDEX_IDX_DATE_SITEID = "USE INDEX(idx_date_siteID) ";
+		
+		public static final String USE_INDEX_SITE_ID = "USE INDEX(siteID_data) ";
+		
+		public static final String USE_INDEX_IDX_SITEID_DATA = "USE INDEX(idx_siteID_data) ";
 				
-
+		
 	///////////////////
 	//CONST
 	/////////////////
@@ -659,7 +665,14 @@ public class QueriesReportsModels {
 
 	}
 
-	/**********************************************************************************************************/                      
+	/**********************************************************************************************************/
+	
+	public String useIndex(String index) {		 
+		 return index;
+		
+	}
+	
+	/**********************************************************************************************************/
 
 	/////////////////
 	//BUILD METHODS
@@ -679,30 +692,57 @@ public class QueriesReportsModels {
 	 * @param queryGroupOrder - Ordenação
 	 * @return query
 	 */
-	public String BuildQuery(String queryHeader, String queryMain, String queryFromTable, String leftJoinStart, String leftJoinCondition, String leftJoinEnd, String queryGroupOrder) { 	   
-		return queryHeader.concat(queryMain).concat(queryFromTable).concat(leftJoinStart).concat(leftJoinCondition).concat(leftJoinEnd).concat(queryGroupOrder); 	       
-	}    
+	//public String BuildQuery(String queryHeader, String queryMain, String queryFromTable, String leftJoinStart, String leftJoinCondition, String leftJoinEnd, String queryGroupOrder) { 	   
+	//	return queryHeader.concat(queryMain).concat(queryFromTable).concat(leftJoinStart).concat(leftJoinCondition).concat(leftJoinEnd).concat(queryGroupOrder); 	       
+	//}    
 
 	///////////////////
 	//BUILD QUERY
 	////////////////////
 	
-	///////// VEHICLE COUNT MODEL	
+      ///////////////////
+     // USE INDEX
+    //////////////////
+	
+	///////// WHERE CLAUSE WITH TWO PARAMETERS	
+	public String BuildQueryIndex(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String whereClause, String whereVechiles, String queryGroupOrder) { 	   
+		return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
+	} 
+	
+  ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
+   public String BuildQueryIndexType2(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String innerJoin, String whereClause, String queryGroupOrder) { 	   
+	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
+  } 
+   	
+   ///////// WHERE CLAUSE WITH ONE PARAMETER
+    public String BuildQueryIndexType3(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String whereClause, String queryGroupOrder) { 	   
+ 	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(whereClause).concat(queryGroupOrder); 	       
+   } 
+    
+    ///////////////////
+    // WITHOUT INDEX
+    //////////////////
+    
+
+	///////// WHERE CLAUSE WITH TWO PARAMETERS	
 	public String BuildQuery(String queryHeader, String queryMain, String queryFromTable, String whereClause, String whereVechiles, String queryGroupOrder) { 	   
 		return queryHeader.concat(queryMain).concat(queryFromTable).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
 	} 
 	
-  ///////// VEHICLE COUNT FLOW MODEL	
+  ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
    public String BuildQueryType2(String queryHeader, String queryMain, String queryFromTable, String innerJoin, String whereClause, String queryGroupOrder) { 	   
 	return queryHeader.concat(queryMain).concat(queryFromTable).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
   } 
-   
-	
-   ///////// VEHICLE COUNT FLOW MODEL	
+   	
+   ///////// WHERE CLAUSE WITH ONE PARAMETER
     public String BuildQueryType3(String queryHeader, String queryMain, String queryFromTable, String whereClause, String queryGroupOrder) { 	   
  	return queryHeader.concat(queryMain).concat(queryFromTable).concat(whereClause).concat(queryGroupOrder); 	       
    } 
 	
+    
+   ///////////////////
+   //BUILD QUERY
+   ////////////////////
 	
 	
 	 public String whereClauseDate(String startDate, String endDate) {
