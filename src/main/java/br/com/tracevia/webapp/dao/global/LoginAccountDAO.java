@@ -37,18 +37,18 @@ public class LoginAccountDAO {
 		String query = "", query1 = "";
 
 		if (userParam.matches(EMAIL_PATTERN)) {
-			query = "SELECT r.email FROM tracevia_app.users_permission_user pu "
+			query = "SELECT r.email FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
-					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE r.email = ? ";
+					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id WHERE r.email = ? ";
 
 			isEmail = true;
 
 		}
 
 		if (userParam.matches(USER_PATTERN)) {
-			query1 = "SELECT r.username FROM tracevia_app.users_permission_user pu "
+			query1 = "SELECT r.username FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
-					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE r.username = ? ";
+					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id WHERE r.username = ? ";
 
 			isUserName = true;
 
@@ -64,10 +64,9 @@ public class LoginAccountDAO {
 			if (isUserName)
 				ps = conn.prepareStatement(query1);
 
-			if (isUserName || isEmail) {
 				ps.setString(1, userParam);
 				rs = ps.executeQuery();
-			}
+			
 
 			if (rs != null) {
 				while (rs.next()) {
@@ -96,7 +95,7 @@ public class LoginAccountDAO {
 
 		String query = "";
 
-		query = "SELECT r.user_id, r.username, r.name FROM tracevia_app.users_permission_user pu "
+		query = "SELECT r.user_id, r.username, r.name FROM users_permission_user pu "
 				+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 				+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE r.email = ? ";
 
@@ -132,13 +131,15 @@ public class LoginAccountDAO {
 
 		try {
 
-			String query = "SELECT r.username, p.permission_id, pu.status FROM tracevia_app.users_permission_user pu "
+			String query = "SELECT r.username, p.permission_id, pu.status FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";
 
 			if (username.matches(EMAIL_PATTERN))
 				query += "WHERE r.email = ? AND r.password = ? ";
-
+			
+			else query += "WHERE r.username = ? AND r.password = ? ";
+			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(query);

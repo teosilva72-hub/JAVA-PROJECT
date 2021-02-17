@@ -727,8 +727,7 @@ public class SatReportsController {
 
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
-			
-			
+						
 
 		}
 		
@@ -816,8 +815,7 @@ public class SatReportsController {
 			    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 			    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));						
 			}
-		
-		  
+				  
 		//System.out.println(satReport.getStartDate());
 
 			// Restrição caso não haja dados nos primeiros registros
@@ -1204,9 +1202,9 @@ public class SatReportsController {
 
 			// COUNT VEHICLES CONSTRUCTOR
 			countVehiclesBuilder(satReport.equipments.length);
-
-			 ReorderTableHeaderForCountVehicles(satReport.equipments);
-			 
+				
+			ReorderTableHeaderForCountVehicles(satReport.equipments);
+		 
 			// DRAW TABLE -- BUILD HEADER
 			drawTable(fields, fieldObjectValues);
 
@@ -1554,24 +1552,40 @@ public class SatReportsController {
 		
 			fields = new String[(3 + equipments.length)];
 			fieldObjectValues = new String[(3 + equipments.length)];
-
+			
+			int equip = 0;
+			String[] satNames = new String[equipments.length];
+			
 			fields[0] = localeLabel.getStringKey("sat_reports_general_date");
 			fields[1] = localeLabel.getStringKey("sat_reports_general_datetime");
+			fields[equipments.length + 2] = localeLabel.getStringKey("sat_reports_general_total");
 			fieldObjectValues[0] = "date";
 			fieldObjectValues[1] = "dateTime";
-
-			for(int i = 0; i < equipments.length; i++) {
-
-				fields[i+2] =  listSats.get(i).getNome();
-				fieldObjectValues[i+2] = "eqp"+(i+1);
-					
-
-			fields[equipments.length + 2] = localeLabel.getStringKey("sat_reports_general_total");
 			fieldObjectValues[equipments.length + 2] = "total";  
 
-		}
-	}
-	
+			//VERIFICAR NOME DOS SATS DA LISTA COM OS SELECIONADOS
+			for(int i = 0; i < listSats.size(); i++) {
+				
+				for (int e = 0; e < equipments.length; e++) {
+					
+					equip = Integer.parseInt(equipments[e]);
+					
+					if (listSats.get(i).getEquip_id() == equip)
+				       satNames[e] = listSats.get(i).getNome(); 							     
+		         		     
+				}   
+			  }
+					
+			//PREENCHER VARIÁVEIS DOS SATS
+             for(int i = 0; i < equipments.length; i++) {	
+
+				fields[i+2] = satNames[i];
+				fieldObjectValues[i+2] = "eqp"+(i+1);
+					
+			}
+			
+			 
+	    }	
 		
 	//FOR VBV TEXT OUTPUT FILE
 	private void OutputVBVResult() throws IOException {
@@ -1828,7 +1842,7 @@ public class SatReportsController {
 
 			equip = " --- "; road = " --- "; km = " --- "; lanes = " --- "; city = " --- ";
 
-			ReorderTableHeaderForCountVehicles(satReport.equipments);    	//Reorder Table Header	
+			//ReorderTableHeaderForCountVehicles(satReport.equipments);    	//Reorder Table Header	
 
 			model.StandardFonts();  //Set Font
 			model.StandardStyles(); //Set Style

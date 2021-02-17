@@ -37,7 +37,7 @@ public class ControleDeAcesso implements Filter {
 		String resetConfirmationURI = request.getContextPath() + "/forget-confirmation.xhtml";
 		
 		String restrictedURI = request.getContextPath() + "/error/access-denied.xhtml";
-		//String expiredURI = request.getContextPath() + "/webapp/pages/main/error/session-expired.xhtml";
+		//String expiredURI = request.getContextPath() + "/error/session-expired.xhtml";
 			
 		boolean loggedIn = session != null && session.getAttribute("user") != null;	
 		boolean role = session.getAttribute("nivel") != null;

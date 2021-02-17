@@ -167,7 +167,7 @@ public class LoginAccountBean {
 	  
 	  login = new UserAccount();
 	  login = dao.loginValidation(user.getUsername(), encrypt.encryptPassword(user.getPassword()));
-		 
+	  		 
 	  if (login != null) {		  
 		  if(login.isActiveStatus() == true) {			  	
 			  			  
@@ -179,7 +179,7 @@ public class LoginAccountBean {
 			  mapUI = RoadConcessionaire.mapUI; // Load Map
 			  linearMapUI = RoadConcessionaire.linearMapUI;
 			  
-			  return "/pages/main/dashboard/dashboard.xhtml?faces-redirect=true"; 				 
+			  return "/dashboard/dashboard.xhtml?faces-redirect=true"; 				 
 		  
 		  }	message.ErrorMessage(locale.getStringKey("login_message_inactive_user"), "" );  
 		  

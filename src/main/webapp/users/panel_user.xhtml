@@ -18,6 +18,12 @@
 			function resetTable() {
 				$('#user-table').DataTable().clear().draw();
 			}
+			
+			$(function() {
+				setTimeout(function () {
+					$('#message-div').hide(); 		
+				}, 5000); 
+			});
 
 		</script>
 
@@ -84,9 +90,17 @@
 								</h:commandLink>							
 								</h:form>
 							</div>
-							<div class="cancel-modal">
-								<button type="button" class="btn btn-dark"
-									data-dismiss="modal">#{usersLabels.user_delete_modal_btn_no}</button>
+							<div id="delete-link" >
+							    <h:form id="delete-form">
+								<h:commandLink action="#{userAccount.getRowValue}" value="" >
+								    <span><i class="fas fa-trash-alt trash-alt-icon"></i></span>
+									<f:setPropertyActionListener
+									target="#{userAccount.sendParametro}"  value="#{user.user_id}" />
+									<f:passThroughAttribute name="data-toggle" value="modal" />
+                                    <f:passThroughAttribute name="data-target" value="#deleteModal" />						    
+	                                <f:ajax execute="@form" render="@none" />
+								</h:commandLink>
+								</h:form>
 							</div>
 						</div>
 					
