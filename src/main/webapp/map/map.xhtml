@@ -528,7 +528,7 @@
 								<div class="form-group col-md-4 input-field">
 									<span><i class="fas fa-sign"></i></span> <span for="km"
 										class="valid-icon-hidden"></span> <input requiredField="" type="text"
-										autocomplete="off" name="km" id="km"
+										autocomplete="off" name="km" id="km" class="km"
 										placeholder="#{mapLabels.map_creation_input_km}" />
 									<div class="error-label">
 										<label for="km" class="error" id="km-error"></label>
@@ -734,7 +734,7 @@
 								<div class="form-group col-md-4 input-field">
 									<span><i class="fas fa-sign"></i></span> <span for="km"
 										class="valid-icon-hidden"></span>
-									<h:inputText value="#{equipsBean.equip.km}" autocomplete="off" name="km" id="km"
+									<h:inputText value="#{equipsBean.equip.km}" autocomplete="off" name="km" id="km" class="km"
 										p:requiredField="" placeholder="#{mapLabels.map_creation_input_km}" />
 									<div class="error-label">
 										<label for="km" class="error" id="km-error"></label>
@@ -959,7 +959,13 @@
 			modal.find("#bar-size").attr("from", "." + $(this).attr('from'))
 		});
 		// MODAL EQUIPMENT SIZE END
-		 	 
+		
+		// KM MASK
+		$(document).ready(function () { 
+        var kmMask = $(".km");
+        kmMask.mask('000+000', {reverse: false});
+    });
+		//KM MASK END
 
 		</script>
 	</ui:define>
