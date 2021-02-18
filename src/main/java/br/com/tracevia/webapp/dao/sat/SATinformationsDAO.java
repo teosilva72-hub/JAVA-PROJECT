@@ -20,7 +20,7 @@ public class SATinformationsDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 		
-	public List<SAT> RealTimeSATinfo() throws Exception {
+	public List<SAT> dataInfo30() throws Exception {
 			
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -121,7 +121,7 @@ public class SATinformationsDAO {
 	}
 	
 	
-	public List<SAT> RealTimeSATinfo45() throws Exception {
+	public List<SAT> dataInfo45() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -221,7 +221,107 @@ public class SATinformationsDAO {
 		
 	}
 	
-	public SAT RealTimeSATinfo45Data(int equip) throws Exception {
+   public List<SAT> dataInfo08() throws Exception {
+		
+		List<SAT> list = new ArrayList<SAT>();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+					
+		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
+		
+		"CASE " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VOLUME_TOTAL_S1', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VOLUME_TOTAL_S2', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VEL_MEDIA_TOTAL_S1', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VEL_MEDIA_TOTAL_S2' " +
+				    
+	    "FROM "+RoadConcessionaire.tableDados15+" d " +
+	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
+	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 " +
+	    "GROUP BY d.NOME_ESTACAO " +
+	    "ORDER BY d.DATA_HORA ASC";
+					
+	  try {
+			
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  
+			ps = conn.prepareStatement(select);			
+			ps.setString(1, currentDate);		
+						
+			rs = ps.executeQuery();
+			
+			//System.out.println("30MINALL: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+
+					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
+					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
+					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));	
+					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));	
+					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));	
+															
+					list.add(sat);
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return list;
+		
+	}
+	
+	public SAT dataInfoByData45(int equip) throws Exception {
 		
 		SAT sat = new SAT();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -316,6 +416,371 @@ public class SATinformationsDAO {
 		return sat;
 		
 	}
+	
+     public SAT dataInfoByData08(int equip) throws Exception {
+		
+		SAT sat = new SAT();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+					
+		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
+		
+		"CASE " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VOLUME_TOTAL_S1', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VOLUME_TOTAL_S2', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VEL_MEDIA_TOTAL_S1', " +
+
+	    "CASE " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+
+	    "ELSE 0 " +
+	    "END 'VEL_MEDIA_TOTAL_S2' " +
+				    
+	    "FROM "+RoadConcessionaire.tableDados15+" d " +
+	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
+	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 ";
+	  					
+	  try {
+			
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);
+			ps.setInt(1, equip);	
+			ps.setString(2, currentDate);		
+						
+			rs = ps.executeQuery();
+			
+			//System.out.println("30MINSOL: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+				
+					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
+					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
+					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));	
+					sat.setQuantidadeS2(rs.getInt("VOLUME_TOTAL_S2"));	
+					sat.setVelocidadeS2(rs.getInt("VEL_MEDIA_TOTAL_S2"));	
+									
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return sat;
+		
+	}
+	
+	
+	/////////////////////////////////
+	//// SAT STATUS BY DATA
+    ////////////////////////////////
+	
+	public List<SAT> statusByData30() throws Exception {
+	
+	List<SAT> list = new ArrayList<SAT>();
+	DateTimeApplication dta = new DateTimeApplication();
+	
+	String currentDate = null;
+		
+	Calendar calendar = Calendar.getInstance();	
+	int minute = calendar.get(Calendar.MINUTE);
+	
+	//Obter datas formatadas para os dados
+	currentDate = dta.getCurrentDateDados15(calendar, minute);
+	
+	//System.out.println(currentDate);
+				
+	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+			       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+			       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
+			       "GROUP BY d.NOME_ESTACAO " +
+				   "ORDER BY d.DATA_HORA ASC";
+	
+	try {
+		
+		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);				
+			ps.setString(1, currentDate);		
+						
+			rs = ps.executeQuery();
+			
+			//System.out.println("STATUS30MINSQL: "+select);
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+
+					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));					
+					sat.setStatus(rs.getInt("STATUS"));	
+				
+					list.add(sat);
+													
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+	
+			return list;
+			
+      }
+	
+	public List<SAT> statusByData08() throws Exception {
+		
+		List<SAT> list = new ArrayList<SAT>();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+					
+		String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+				       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 " +
+				       "GROUP BY d.NOME_ESTACAO " +
+					   "ORDER BY d.DATA_HORA ASC";
+		
+		try {
+			
+			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(select);					
+				ps.setString(1, currentDate);		
+							
+				rs = ps.executeQuery();
+				
+				//System.out.println("STATUS08HSQL: "+select);
+				
+				if (rs != null) {
+					while (rs.next()) {
+						
+						SAT sat = new SAT();
+
+						sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));					
+						sat.setStatus(rs.getInt("STATUS"));	
+					
+						list.add(sat);
+														
+					}				
+				 }			
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+		
+				return list;
+				
+	      }
+	
+public List<SAT> statusByData45() throws Exception {
+		
+		List<SAT> list = new ArrayList<SAT>();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+					
+		String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+				       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 " +
+				       "GROUP BY d.NOME_ESTACAO " +
+					   "ORDER BY d.DATA_HORA ASC";
+		
+		try {
+			
+			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(select);					
+				ps.setString(1, currentDate);		
+							
+				rs = ps.executeQuery();
+				
+				//System.out.println("STATUS30MINSQL: "+select);
+				
+				if (rs != null) {
+					while (rs.next()) {
+						
+						SAT sat = new SAT();
+
+						sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));					
+						sat.setStatus(rs.getInt("STATUS"));	
+					
+						list.add(sat);
+														
+					}				
+				 }			
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+		
+				return list;
+				
+	      }
+	
+	//ONE TO ONE EQUIPMENT => 45 MINUTES
+    public SAT statusByData45(int equip) throws Exception {
+		
+		SAT sat = new SAT();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+		
+	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+			       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+			       "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
+			      	    	  					
+	  try {
+			
+		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);
+			ps.setInt(1, equip);	
+			ps.setString(2, currentDate);		
+						
+			rs = ps.executeQuery();
+						
+			if (rs != null) {
+				while (rs.next()) {
+				
+					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
+					sat.setStatus(rs.getInt("STATUS"));						
+														
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return sat;
+		
+	}	
+    
+    
+	//ONE TO ONE EQUIPMENT => 8 HOURS
+    public SAT statusByData08(int equip) throws Exception {
+		
+		SAT sat = new SAT();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		String currentDate = null;
+			
+		Calendar calendar = Calendar.getInstance();	
+		int minute = calendar.get(Calendar.MINUTE);
+		
+		//Obter datas formatadas para os dados
+		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		
+		//System.out.println(currentDate);
+		
+	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 ";
+			      	    	  					
+	  try {
+			
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);
+			ps.setInt(1, equip);	
+			ps.setString(2, currentDate);		
+						
+			rs = ps.executeQuery();
+						
+			if (rs != null) {
+				while (rs.next()) {
+				
+					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
+					sat.setStatus(rs.getInt("STATUS"));						
+														
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return sat;
+		
+	}	
+	
+	
+    /////////////////////////////////
+    //// SAT STATUS BY DATA
+    ////////////////////////////////
 	
 	//////////////////////////////////////
 	/// SAT STATUS
