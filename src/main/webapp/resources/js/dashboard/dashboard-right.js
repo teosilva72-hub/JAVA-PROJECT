@@ -30,11 +30,11 @@ $('#dismiss, .overlay').on('click', function () {
 //////////////////////SIP VOICE/CALL
 
 //User Agent Configuration
-var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
+var socket = new JsSIP.WebSocketInterface('wss://localhost:8081');
 var configuration = {
   sockets: [socket],
-  uri: 'sip:shesh_qlknu0@tryit.jssip.net',
-  password: 'test'
+  uri: 'sip:shesh@192.168.0.19',
+  password: 'shesh'
 };
 //User Agent Configuration end
 
@@ -66,65 +66,7 @@ coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
 coolPhone.start();
 //Starting the User Agent end
 
-////Making outbound calls
-//See JsSIP.UA.call() method definition.
-//Create our JsSIP instance and run it:
-var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
-var configuration = {
-  sockets: [socket],
-  uri: 'sip:shesh_qlknu0@tryit.jssip.net',
-  password: 'test'
-};
 
-var ua = new JsSIP.UA(configuration);
-
-ua.start();
-//Create our JsSIP instance and run it end
-//Register callbacks to desired call events
-var eventHandlers = {
-  'progress': function (e) {
-    console.log('call is in progress');
-  },
-  'failed': function (e) {
-    console.log('call failed with cause: ' + e.data.case);
-  },
-  'ended': function (e) {
-    console.log('call ended with cause: ' + e.data.cause);
-  },
-  'confirmed': function (e) {
-    console.log('call confirmed');
-  }
-};
-//Register callbacks to desired call events end
-
-var options = {
-  'eventHandlers': eventHandlers,
-  'mediaConstraints': { 'audio': true, 'video': true }
-};
-var session = ua.call('sip:example@example.com', options);
-////Making outbound calls end
-
-////Instant messaging
-//See JsSIP.UA.sendMessage() method definition.
-//Example 1
-var text = 'Hello Example!';
-coolPhone.sendMessage('sip:example@example.com', text);
-
-//Example 2
-var text = 'Hello Example!';
-
-// Register callbacks to desired message events
-var eventHandlers = {
-  'succeded': function (e) {/* Your code here */ },
-  'failed': function (e) {/* Your code here */ }
-};
-var options = {
-  'eventHandlers': eventHandlers
-};
-
-coolPhone.sendMessage('sip:example@example.com', text, options);
-// Register callbacks to desired message events end
-////Instant messaging end
 
 //Accept a Call Button
 var startButton = document.getElementById('acptcall');
