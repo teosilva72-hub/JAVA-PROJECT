@@ -105,7 +105,7 @@ public class NavigationBean {
    
    public String redirectToChangePassword() {
 		
-		navigation_page = "/users/reset_password.xhtml?faces-redirect=true";		
+		navigation_page = "/reset/reset_password.xhtml?faces-redirect=true";		
 		
 		return navigation_page;
 	}

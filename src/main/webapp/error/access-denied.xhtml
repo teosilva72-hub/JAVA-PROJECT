@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"     
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<ui:define name="head">
+	<h:outputStylesheet name="access-denied.css" library="css/access-denied" />
+	
+	</ui:define>
+  
+   
+	<ui:define name="main-content">
+   
+    	<h1 class="ui-title">#{accessDeniedLabels.title_access_denied}</h1>
+    	
+    	<h3 class="ui-title-desc">#{accessDeniedLabels.access_denied_message}</h3>       	
+    	    
+    	    
+	</ui:define>
+ 
+</ui:composition>

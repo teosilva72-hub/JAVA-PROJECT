@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
@@ -20,7 +19,7 @@ public class UserAccountDAO {
 	private Connection conn;
 	protected ConnectionFactory connection = new ConnectionFactory();
 
-	private PreparedStatement ps, ps1;
+	private PreparedStatement ps, ps1, ps2;
 	private ResultSet rs, rs1;
 	private int id;
 
@@ -48,7 +47,7 @@ public class UserAccountDAO {
 			String sql = "INSERT INTO users_register (user_id, date_register, name, job_position, email, username, password)"
 					+ " values  ( ?, ?, ?, ?, ?, ?, ?)";
 
-			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status)" + " values  ( ?, ?, ?)";
+			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status) values  ( ?, ?, ?)";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -61,8 +60,6 @@ public class UserAccountDAO {
 			// Execute Register
 			ps = conn.prepareStatement(sql);
 
-			ps.setInt(1, Integer.parseInt(user.getUserID()));
-
 			ps1 = conn.prepareStatement("SELECT Max(user_id) as user FROM users_register;");
 			rs1 = ps1.executeQuery();
 
@@ -72,13 +69,13 @@ public class UserAccountDAO {
 					id = rs1.getInt("user") + 1;
 
 				}
-			}
+			} else
+				id = 1;
 
 			// Execute Register
 			ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, id);
-
 			ps.setString(2, dt_register);
 			ps.setString(3, user.getName());
 			ps.setString(4, user.getJob_position());
@@ -92,12 +89,12 @@ public class UserAccountDAO {
 
 			if (success > 0) {
 
-				ps = conn.prepareStatement(sql2);
-				ps.setInt(1, id);
-				ps.setInt(2, user.getPermission_id());
-				ps.setBoolean(3, user.isActiveStatus());
+				ps2 = conn.prepareStatement(sql2);
+				ps2.setInt(1, id);
+				ps2.setInt(2, user.getPermission_id());
+				ps2.setBoolean(3, user.isActiveStatus());
 
-				int sucess2 = ps.executeUpdate();
+				int sucess2 = ps2.executeUpdate();
 
 				if (sucess2 > 0)
 					status = true;
@@ -110,6 +107,8 @@ public class UserAccountDAO {
 
 		} finally {
 			connection.closeConnection(conn, ps);
+			connection.closeConnection(conn, ps1, rs1);
+			connection.closeConnection(conn, ps2);			
 		}
 
 		return status;
@@ -125,7 +124,7 @@ public class UserAccountDAO {
 
 		try {
 
-			String sql = "UPDATE tracevia_app.users_register SET name = ?, job_position = ?, email = ?, username = ? "
+			String sql = "UPDATE users_register SET name = ?, job_position = ?, email = ?, username = ? "
 					+ "WHERE user_id = ? ";
 
 			String sql2 = "UPDATE users_permission_user SET permission_id = ?, status = ?  " + "WHERE user_id = ? ";
@@ -178,7 +177,7 @@ public class UserAccountDAO {
 
 		if (parametro.equals("Todos"))
 			sql = "SELECT r.user_id, r.date_register, r.name, r.job_position, r.email, r.username, p.permission_role, pu.status "
-					+ "FROM tracevia_app.users_permission_user pu "
+					+ "FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";
 		else {
@@ -188,7 +187,7 @@ public class UserAccountDAO {
 			isUserName = parametro.matches(regexNick);
 
 			sql = "SELECT r.user_id, r.date_register, r.name, r.job_position, r.email, r.username, p.permission_role, pu.status "
-					+ "FROM tracevia_app.users_permission_user pu "
+					+ "FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";
 
@@ -252,7 +251,7 @@ public class UserAccountDAO {
 		try {
 
 			String sql = "SELECT r.user_id, r.name, r.job_position, r.email, r.username, p.permission_id, pu.status "
-					+ "FROM tracevia_app.users_permission_user pu "
+					+ "FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE pu.user_id = ? ";
 
