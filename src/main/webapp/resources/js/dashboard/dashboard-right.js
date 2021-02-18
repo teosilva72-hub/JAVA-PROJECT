@@ -30,11 +30,11 @@ $('#dismiss, .overlay').on('click', function () {
 //////////////////////SIP VOICE/CALL
 
 //User Agent Configuration
-var socket = new JsSIP.WebSocketInterface('wss://localhost:8081');
+var socket = new JsSIP.WebSocketInterface('ws://192.168.0.5:8088/asterisk/ws');
 var configuration = {
   sockets: [socket],
-  uri: 'sip:shesh@192.168.0.19',
-  password: 'shesh'
+  uri: 'sip:123@192.168.0.5',
+  password: 'i68Oi68O'
 };
 //User Agent Configuration end
 
@@ -63,13 +63,13 @@ coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
 
 //Starting the User Agent
 //See JsSIP.UA.start() method definition.
-coolPhone.start();
+//coolPhone.start();
 //Starting the User Agent end
 
 
 
 //Accept a Call Button
-var startButton = document.getElementById('acptcall');
+var startButton = document.querySelector('.acptcall');
 startButton.addEventListener("click", function () {
   coolPhone.start();
   alert("Call Started.")
@@ -77,7 +77,7 @@ startButton.addEventListener("click", function () {
 //Accept a Call Button End
 
 //Ending a Call Button
-var endButton = document.getElementById('misscall');
+var endButton = document.querySelector('.dismisscall');
 endButton.addEventListener("click", function () {
   coolPhone.hangup();
   alert("Call Ended.")
@@ -85,13 +85,13 @@ endButton.addEventListener("click", function () {
 //Ending a Call Button End
 
 //Placing a call on hold
-var holdButton = document.getElementById('holdcall');
+var holdButton = document.querySelector('.holdcall');
 holdButton.addEventListener("click", function () {
   coolPhone.hold();
   alert("Call on Hold.")
 }, false);
 
-var unholdButton = document.getElementById('holdcallstop');
+var unholdButton = document.querySelector('.holdcallstop');
 unholdButton.addEventListener("click", function () {
   coolPhone.unhold();
   alert("Call Came Back.")
