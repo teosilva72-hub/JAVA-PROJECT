@@ -74,18 +74,21 @@ function posEquip(equip) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_red.png')",
 					animation: 'myMove 150s linear infinite',
+					'animation-direction': "reverse"
 				})
 			}
 			else if (speed1 > 30 && speed1 < 61) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')",
 					animation: 'myMove 60s linear infinite',
+					'animation-direction': "reverse"
 				})
 			}
 			else if (speed1 > 60) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_green.png')",
 					animation: 'myMove 20s linear infinite',
+					'animation-direction': "reverse"
 				})
 			}
 		}
@@ -93,6 +96,7 @@ function posEquip(equip) {
 			fluxo1.css({
 				background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')",
 				animation: 'myMove 500s linear infinite',
+				'animation-direction': "reverse"
 			})
 		}
 
@@ -101,30 +105,27 @@ function posEquip(equip) {
 			if (speed2 > 0 && speed2 < 31) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_red.png')",
-					animation: 'myMove 150s linear infinite',
-					'animation-direction': "reverse",
+					animation: 'myMove 150s linear infinite'				
 				})
 			}
 			else if (speed2 > 30 && speed2 < 61) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')",
-					animation: 'myMove 60s linear infinite',
-					'animation-direction': "reverse",
+					animation: 'myMove 60s linear infinite'				
 				})
 			}
 			else if (speed2 > 60) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_green.png')",
-					animation: 'myMove 20s linear infinite',
-					'animation-direction': "reverse",
+					animation: 'myMove 20s linear infinite'
+					
 				})
 			}
 		}
 		else {
 			fluxo2.css({
 				background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')",
-				animation: 'myMove 500s linear infinite',
-				'animation-direction': "reverse",
+				animation: 'myMove 500s linear infinite'				
 			})
 		}
 	} else if (equip.attr("class").includes('equip-box')) {

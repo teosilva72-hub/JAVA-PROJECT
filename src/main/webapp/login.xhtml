@@ -39,6 +39,12 @@
 	}
 	 //Call setTopo()
 	$(window).bind('scroll', setTopo);	 
+	 
+	$(function() {
+		setTimeout(function () {
+			$('#message-show').hide(); 		
+		}, 5000); 
+	});
   
 	</script>
 
@@ -118,7 +124,7 @@
 												<h:inputText id="username" class="form-control form-login"
 													p:type="text"
 													p:placeholder="#{loginLabels.login_auth_input_username_placeholder}"
-													value="#{loginAccount.user.username}" />
+													value="#{loginAccount.user.username}" p:autocomplete="off" />
 												<label for="username" class="error" id="username-error"></label>
 											</div>
 											<div class="col-12">
@@ -126,7 +132,7 @@
 												<h:inputSecret id="password" class="form-control form-login"
 													p:type="password"
 													p:placeholder="#{loginLabels.login_auth_input_password_placeholder}"
-													value="#{loginAccount.user.password}" />
+													value="#{loginAccount.user.password}" p:autocomplete="off" />
 												<label for="password" class="error" id="password-error"></label>
 											</div>
 											<div class="col-12">

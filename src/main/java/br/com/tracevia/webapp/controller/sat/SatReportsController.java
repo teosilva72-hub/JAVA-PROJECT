@@ -727,8 +727,7 @@ public class SatReportsController {
 
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
-			
-			
+						
 
 		}
 		
@@ -778,6 +777,7 @@ public class SatReportsController {
 		dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
 		
 		//PERIODOS
+		//NEW
 		if(satReport.getPeriod().equals("05 minutes"))			
 			 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
 					
@@ -815,8 +815,7 @@ public class SatReportsController {
 			    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 			    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));						
 			}
-		
-		  
+				  
 		//System.out.println(satReport.getStartDate());
 
 			// Restrição caso não haja dados nos primeiros registros
@@ -983,6 +982,10 @@ public class SatReportsController {
 	///////////////////////////////// 
 	
 	/////// BUILD QUERY MODEL 
+	
+     //////////////////////
+     //// WITHOUT INDEX
+     /////////////////////
 
 	/**
 	 * @author Wellington 10/09/2020
@@ -992,7 +995,69 @@ public class SatReportsController {
 	 * @return
 	 */
 
-	/*** TO COUNT VEHICLES ***/
+	/*** TO VBV USE WHERE CLAUSE WITH TWO PARAMETERS ***/
+	public String BuildMainQuery(QueriesReportsModels models, String mainQuery, String index) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryIndex(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV), models.useIndex(index),
+				models.whereClauseDate(start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	/*** TO COUNT FLOW VEHICLES ***/
+	public String BuildMainQueryType2(QueriesReportsModels models, String mainQuery, String index) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryIndexType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV), models.useIndex(index),
+				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	/*** TO WEIGHING VEHICLES ***/
+	public String BuildMainQueryType3(QueriesReportsModels models, String mainQuery, String index) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryIndexType3(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV), models.useIndex(index),
+			    models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+
+
+	/*** SAT_VBV_LL TABLE ***/
+	public String BuildMainQueryLLType2(QueriesReportsModels models, String mainQuery, String index) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryIndexType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableLL),
+				models.useIndex(index), models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	/*** SAT_VBV_CCR TABLE ***/
+	public String BuildMainQueryCCRType2(QueriesReportsModels models, String mainQuery, String index) {    	 
+
+		String query = null;
+
+		query = models.BuildQueryIndexType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR), models.useIndex(index),
+				models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+
+		return query;
+	}
+	
+	
+     //////////////////////
+     //// WITHOUT INDEX
+     /////////////////////
+	
+
+	/*** TO VBV USE WHERE CLAUSE WITH TWO PARAMETERS ***/
 	public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    	 
 
 		String query = null;
@@ -1020,7 +1085,7 @@ public class SatReportsController {
 		String query = null;
 
 		query = models.BuildQueryType3(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableVBV),
-				models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
+			    models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
 		return query;
 	}
@@ -1036,20 +1101,6 @@ public class SatReportsController {
 		return query;
 	}
 	
-	
-	public String BuildMainQueryLL(QueriesReportsModels models, String mainQuery) {    	 
-
-		String query = null;
-
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromTable(satReport.getPeriod()), models.LeftJoinStart(RoadConcessionaire.tableLL),
-				models.LeftJoinCondition(satReport.getPeriod()), models.LeftJoinEnd("sat"), models.QueryGroupAndOrder(satReport.getPeriod()));
-
-		return query;
-	}
-	
-	/*** SAT_VBV_LL TABLE ***/
-
-		
 	/*** SAT_VBV_CCR TABLE ***/
 	public String BuildMainQueryCCRType2(QueriesReportsModels models, String mainQuery) {    	 
 
@@ -1060,6 +1111,10 @@ public class SatReportsController {
 
 		return query;
 	}
+	
+	//////////////////////
+	//// WITHOUT INDEX
+	/////////////////////
 
      /////// BUILD QUERY MODEL
 
@@ -1087,18 +1142,18 @@ public class SatReportsController {
 
 		switch(type) {
 
-		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments)); break;
-		case "2": query = BuildMainQueryType2(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment())); break;
+		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments), QueriesReportsModels.USE_INDEX_IDX_DATE_SITEID); break;
+		case "2": query = BuildMainQueryType2(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_SITE_ID); break;
 		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
 		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
-		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment())); ; break;
-		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeMainQuery(satReport.getEquipment())); ; break;
-		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment())); ; break;
-		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()));  ; break; 
-		case "9": query = BuildMainQueryLLType2(models, satModels.CCRClasses(satReport.getEquipment()));  ; break;  
-		case "10": query = BuildMainQueryLLType2(models, satModels.CCRTipos(satReport.getEquipment()));  ; break;  	
-		case "11": query = BuildMainQueryLLType2(models, satModels.CCRVelocidade(satReport.getEquipment()));  ; break;  
-		case "12": query = BuildMainQueryCCRType2(models, satModels.CCRAllClasses(satReport.getEquipment()));  ; break;  
+		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_SITE_ID); ; break;
+		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_SITE_ID); ; break;
+		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_SITE_ID); ; break;
+		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_SITE_ID);  ; break; 
+		case "9": query = BuildMainQueryLLType2(models, satModels.CCRClasses(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
+		case "10": query = BuildMainQueryLLType2(models, satModels.CCRTipos(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  	
+		case "11": query = BuildMainQueryLLType2(models, satModels.CCRVelocidade(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
+		case "12": query = BuildMainQueryCCRType2(models, satModels.CCRAllClasses(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
 
 		default: query = null; break;
 
@@ -1147,9 +1202,9 @@ public class SatReportsController {
 
 			// COUNT VEHICLES CONSTRUCTOR
 			countVehiclesBuilder(satReport.equipments.length);
-
-			 ReorderTableHeaderForCountVehicles(satReport.equipments);
-			 
+				
+			ReorderTableHeaderForCountVehicles(satReport.equipments);
+		 
 			// DRAW TABLE -- BUILD HEADER
 			drawTable(fields, fieldObjectValues);
 
@@ -1497,24 +1552,40 @@ public class SatReportsController {
 		
 			fields = new String[(3 + equipments.length)];
 			fieldObjectValues = new String[(3 + equipments.length)];
-
+			
+			int equip = 0;
+			String[] satNames = new String[equipments.length];
+			
 			fields[0] = localeLabel.getStringKey("sat_reports_general_date");
 			fields[1] = localeLabel.getStringKey("sat_reports_general_datetime");
+			fields[equipments.length + 2] = localeLabel.getStringKey("sat_reports_general_total");
 			fieldObjectValues[0] = "date";
 			fieldObjectValues[1] = "dateTime";
-
-			for(int i = 0; i < equipments.length; i++) {
-
-				fields[i+2] =  listSats.get(i).getNome();
-				fieldObjectValues[i+2] = "eqp"+(i+1);
-					
-
-			fields[equipments.length + 2] = localeLabel.getStringKey("sat_reports_general_total");
 			fieldObjectValues[equipments.length + 2] = "total";  
 
-		}
-	}
-	
+			//VERIFICAR NOME DOS SATS DA LISTA COM OS SELECIONADOS
+			for(int i = 0; i < listSats.size(); i++) {
+				
+				for (int e = 0; e < equipments.length; e++) {
+					
+					equip = Integer.parseInt(equipments[e]);
+					
+					if (listSats.get(i).getEquip_id() == equip)
+				       satNames[e] = listSats.get(i).getNome(); 							     
+		         		     
+				}   
+			  }
+					
+			//PREENCHER VARIÁVEIS DOS SATS
+             for(int i = 0; i < equipments.length; i++) {	
+
+				fields[i+2] = satNames[i];
+				fieldObjectValues[i+2] = "eqp"+(i+1);
+					
+			}
+			
+			 
+	    }	
 		
 	//FOR VBV TEXT OUTPUT FILE
 	private void OutputVBVResult() throws IOException {
@@ -1771,7 +1842,7 @@ public class SatReportsController {
 
 			equip = " --- "; road = " --- "; km = " --- "; lanes = " --- "; city = " --- ";
 
-			ReorderTableHeaderForCountVehicles(satReport.equipments);    	//Reorder Table Header	
+			//ReorderTableHeaderForCountVehicles(satReport.equipments);    	//Reorder Table Header	
 
 			model.StandardFonts();  //Set Font
 			model.StandardStyles(); //Set Style

@@ -348,8 +348,8 @@ public class MtoReportsController {
 
 	   String query = null;
 
-	   query = models.BuildQuery(models.QueryHeader(mtoReport.getPeriod()), mainQuery, models.QueryFromTable(mtoReport.getPeriod()), models.LeftJoinStart("mto"),
-			   models.LeftJoinCondition(mtoReport.getPeriod()), models.LeftJoinEnd("mto"), models.QueryGroupAndOrder(mtoReport.getPeriod()));
+	 //  query = models.BuildQuery(models.QueryHeader(mtoReport.getPeriod()), mainQuery, models.QueryFromTable(mtoReport.getPeriod()), models.LeftJoinStart("mto"),
+		//	   models.LeftJoinCondition(mtoReport.getPeriod()), models.LeftJoinEnd("mto"), models.QueryGroupAndOrder(mtoReport.getPeriod()));
 
 	   return query;
    }

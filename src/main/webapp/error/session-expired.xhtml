@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"     
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+	<h:head>
+	<link	href="${facesContext.externalContext.requestContextPath}/RESOURCES/css/session-expired.css"
+			rel="stylesheet" type="text/css" />	
+	</h:head>
+ 
+    <h:body>
+     <h:form>
+ 
+    	<h1 class="ui-title">#{msgs.title_session_expired}</h1>
+    	
+    	<h3 class="ui-title-desc">#{msgs.session_expired_message}</h3>       	
+    	    	
+    	<a href="login.xhtml">
+    	 <h:graphicImage url="/RESOURCES/icons/page/voltar.png" id="img"
+				styleClass="ui-image-icon-back-to-login"></h:graphicImage></a>    	
+    	<br />
+    	<br />
+    	    	    	
+    	<h:outputLabel class="ui-outpulabel-message"> #{msgs.session_expired_message2} <b class="ui-bold-login">#{msgs.session_expired_message3}</b> </h:outputLabel>
+    	
+    	</h:form>    	
+    </h:body>
+ 
+</html>

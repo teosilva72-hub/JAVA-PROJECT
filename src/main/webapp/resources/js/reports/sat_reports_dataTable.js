@@ -1,12 +1,15 @@
 $(document).ready(function () {
     //Call Datatables jQuery plugin
-    $('#vehicle-count-table').DataTable({
+     $('#vehicle-count-table').DataTable({
         "scrollY": "50.3vh",
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
-    });
+        "bInfo": false,
+        "deferRender": true
+    })
+
+
     $('.dataTables_length').removeClass('bs-select');
 
     //Call Datatables jQuery plugin
@@ -15,7 +18,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -25,7 +29,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -35,7 +40,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -45,7 +51,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -55,7 +62,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -65,7 +73,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -75,19 +84,21 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
     //CCR CLASSES
-    
+
     //Call Datatables jQuery plugin
     $('#ccr-tipo-table').DataTable({
         "scrollY": "50.3vh",
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -97,7 +108,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -107,7 +119,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 
@@ -117,7 +130,8 @@ $(document).ready(function () {
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
-        "bInfo": false
+        "bInfo": false,
+        "deferRender": true
     });
     $('.dataTables_length').removeClass('bs-select');
 });
