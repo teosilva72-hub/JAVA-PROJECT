@@ -30,11 +30,11 @@ $('#dismiss, .overlay').on('click', function () {
 //////////////////////SIP VOICE/CALL
 
 //User Agent Configuration
-var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
+var socket = new JsSIP.WebSocketInterface('ws://192.168.0.5:8088/asterisk/ws');
 var configuration = {
   sockets: [socket],
-  uri: 'sip:shesh_qlknu0@tryit.jssip.net',
-  password: 'test'
+  uri: 'sip:123@192.168.0.5',
+  password: 'i68Oi68O'
 };
 //User Agent Configuration end
 
@@ -63,71 +63,13 @@ coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
 
 //Starting the User Agent
 //See JsSIP.UA.start() method definition.
-coolPhone.start();
+//coolPhone.start();
 //Starting the User Agent end
 
-////Making outbound calls
-//See JsSIP.UA.call() method definition.
-//Create our JsSIP instance and run it:
-var socket = new JsSIP.WebSocketInterface('wss://sip-ws.example.com');
-var configuration = {
-  sockets: [socket],
-  uri: 'sip:shesh_qlknu0@tryit.jssip.net',
-  password: 'test'
-};
 
-var ua = new JsSIP.UA(configuration);
-
-ua.start();
-//Create our JsSIP instance and run it end
-//Register callbacks to desired call events
-var eventHandlers = {
-  'progress': function (e) {
-    console.log('call is in progress');
-  },
-  'failed': function (e) {
-    console.log('call failed with cause: ' + e.data.case);
-  },
-  'ended': function (e) {
-    console.log('call ended with cause: ' + e.data.cause);
-  },
-  'confirmed': function (e) {
-    console.log('call confirmed');
-  }
-};
-//Register callbacks to desired call events end
-
-var options = {
-  'eventHandlers': eventHandlers,
-  'mediaConstraints': { 'audio': true, 'video': true }
-};
-var session = ua.call('sip:example@example.com', options);
-////Making outbound calls end
-
-////Instant messaging
-//See JsSIP.UA.sendMessage() method definition.
-//Example 1
-var text = 'Hello Example!';
-coolPhone.sendMessage('sip:example@example.com', text);
-
-//Example 2
-var text = 'Hello Example!';
-
-// Register callbacks to desired message events
-var eventHandlers = {
-  'succeded': function (e) {/* Your code here */ },
-  'failed': function (e) {/* Your code here */ }
-};
-var options = {
-  'eventHandlers': eventHandlers
-};
-
-coolPhone.sendMessage('sip:example@example.com', text, options);
-// Register callbacks to desired message events end
-////Instant messaging end
 
 //Accept a Call Button
-var startButton = document.getElementById('acptcall');
+var startButton = document.querySelector('.acptcall');
 startButton.addEventListener("click", function () {
   coolPhone.start();
   alert("Call Started.")
@@ -135,7 +77,7 @@ startButton.addEventListener("click", function () {
 //Accept a Call Button End
 
 //Ending a Call Button
-var endButton = document.getElementById('misscall');
+var endButton = document.querySelector('.dismisscall');
 endButton.addEventListener("click", function () {
   coolPhone.hangup();
   alert("Call Ended.")
@@ -143,13 +85,13 @@ endButton.addEventListener("click", function () {
 //Ending a Call Button End
 
 //Placing a call on hold
-var holdButton = document.getElementById('holdcall');
+var holdButton = document.querySelector('.holdcall');
 holdButton.addEventListener("click", function () {
   coolPhone.hold();
   alert("Call on Hold.")
 }, false);
 
-var unholdButton = document.getElementById('holdcallstop');
+var unholdButton = document.querySelector('.holdcallstop');
 unholdButton.addEventListener("click", function () {
   coolPhone.unhold();
   alert("Call Came Back.")

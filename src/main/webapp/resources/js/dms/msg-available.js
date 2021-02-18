@@ -63,7 +63,7 @@ function listTable(){
 	var table = $('#message-table').DataTable({
 		select : true,
 		"autoWidth" : true,
-		"scrollY" : "70vh",
+		"scrollY" : "65vh",
 		"scrollCollapse" : true,
 		"paging" : false,
 		"bInfo" : false,
@@ -94,7 +94,7 @@ function listTableHidden(){
 	var table = $('#message-table-hidden').DataTable({
 		select : false,
 		"autoWidth" : true,
-		"scrollY" : "70vh",
+		"scrollY" : "65vh",
 		"scrollCollapse" : true,
 		"paging" : false,
 		"bInfo" : false,
