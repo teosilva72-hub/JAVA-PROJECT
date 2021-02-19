@@ -23,11 +23,11 @@ function showID() {
 	// document.getElementById("space1").style.display = "none";				
 }
 function changeDIV() {
-	document.getElementById('picture-selection').style.display = "none";
+	document.getElementById('image-div').style.display = "none";
 	document.getElementById('list-images').style.display = "block";
 }
 function returnDIV() {
-	document.getElementById('picture-selection').style.display = "block";
+	document.getElementById('image-div').style.display = "block";
 	document.getElementById('list-images').style.display = "none";
 	
 }

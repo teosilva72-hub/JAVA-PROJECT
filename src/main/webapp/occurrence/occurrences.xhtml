@@ -7,9 +7,11 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
-	xmlns:pf="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
+	
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
 
@@ -24,6 +26,7 @@
 
 		<!-- Script -->
 		<h:outputScript name="occ.js" library="js/occ" />
+		<h:outputScript name="pdf.js" library="js/occ" />
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"
@@ -56,6 +59,79 @@
 														},
 														situacaoEvento : {
 															required : true
+														},
+														eventoKm : {
+															minlength : 1,
+															maxlength : 7
+														},
+														descricaoCausa : {
+															minlength : 1,
+															maxlength : 50
+														},
+														outrosEventos : {
+															minlength : 3,
+															maxlength : 50
+														},
+														tituloDescr : {
+															minlength : 4,
+															maxlength : 50
+														},
+														descricaoCausa2 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														descrDescr : {
+															minlength : 4,
+															maxlength : 50
+														},
+														envolvDescr2 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														envolvDescr : {
+															minlength : 4,
+															maxlength : 50
+														},
+														trasitoExtKm : {
+															minlength : 1,
+															maxlength : 7
+														},
+														danoDescr : {
+															minlength : 4,
+															maxlength : 50
+														},
+														acaoDescr : {
+															minlength : 4,
+															maxlength : 50
+														},
+														/*new inputs*/
+														damageAmount : {
+															minlength : 1,
+															maxlength : 10
+														},
+														acaoDescrOtro : {
+															minlength : 4,
+															maxlength : 50
+														},
+														danoDescr2 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														envolvDescr2 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														descrDescr1 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														descricaoCausa2 : {
+															minlength : 4,
+															maxlength : 50
+														},
+														descricaoCausa : {
+															minlength : 4,
+															maxlength : 50
 														}
 
 													},
@@ -82,8 +158,103 @@
 														causaProvavel : {
 															required : "#{occLabels.campo_obrigatorio}"
 														},
-														situacaoEvento : {
-															requerid : "#{occLabels.campo_obrigatorio}"
+														eventoKm : {
+															required : "#{occLabels.campo_obrigatorio}",
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														eventoRodovia : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														eventoEstado : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														eventoSentido : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														eventoFaixa : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														condLocal : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														condTrafego : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														detalCaract : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														interFaixa : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														sinalizacao : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														situacCond : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														tab1 : {
+															required : "#{occLabels.campo_obrigatorio}"
+														},
+														tituloDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														descrDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														envolvDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														procedimentoNome : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														procedimentoDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														trasitoExtKm : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														danoDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														acaoDescr : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														damageAmount : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														acaoDescrOtro : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														danoDescr2 : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														envolvDescr2 : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														descrDescr1 : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														descricaoCausa2 : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
+														},
+														descricaoCausa : {
+															minlength : "#{occLabels.occ_minLength}",
+															maxlength : "#{occLabels.occ_maxLength}"
 														}
 
 													},
@@ -176,6 +347,7 @@
 	</ui:define>
 	<ui:define name="main-content">
 		<!-- Inicio do conteudo do site -->
+
 		<section class="conteudo"> <!--Inicio da animação  -->
 		<div id="preloader" style="display: none;">
 			<div class="inner">
@@ -227,7 +399,6 @@
 								<h:outputText value="#{data.state_occurrences}"
 									style="font-size: 12px;" />
 							</h:column>
-
 							<!--<h:column>
 										<f:facet class="barraTable hidden" name="header">#{occLabels.occ_list_table_file}</f:facet>
 										<img><i class="fas fa-check fa-2x iconeListYes"></i></img>
@@ -288,16 +459,8 @@
 								onclick="getMessageId();"
 								actionListener="#{occurrencesBean.getRowValue}"
 								style="display:none;">
-								<f:ajax execute="@form"
-									render=":save :reset :new :edit :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial 
-										:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa 
-										:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :damageAmount :outrosEventos
-										:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoDescrOtro :danoDescr2 :actionDescr3 :actionDescr4
-										:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :descriptionBtn1 :descriptionBtn2
-										:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :acaoStatus :acaoData :descrDescr1 
-										:acaoDataFinal :acaoEndMinute :acaoHoraFinal :unityDamage :trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd
-										:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :listUpdate" />
-							</h:commandButton>
+								
+									</h:commandButton>
 						</h:form>
 					</div>
 					<!-- final da tabela oculta -->
@@ -383,45 +546,26 @@
 								<div class="modal-body">#{occLabels.msg_anular}</div>
 								<div class="modal-footer">
 									<button type="submit" class="btn btnConf" data-dismiss="modal">#{occLabels.btn_nao}</button>
-									<h:commandButton value="#{occLabels.btn_sim}"
-										onclick=" reload();" id="anularAtual"
+									<h:commandLink value="#{occLabels.btn_sim}"
+										onclick="resetForm(); reload();" id="anularAtual"
 										action="#{occurrencesBean.resetOccurrencesData}"
 										class="btn btnConf" />
 									<!-- BOTÃO ANULAR SIM OCULTO = RESET TABLE -->
 									<h:commandButton style="display: none;"
-										value="#{occLabels.btn_sim}" onclick="resetForm(); reload();"
-										id="anularAtualHidden"
+										value="#{occLabels.btn_sim}" type="reset"
+										id="anularAtualHidden" onclick=" reload(); "
 										action="#{occurrencesBean.resetOccurrencesData}"
 										class="btn btnConf" />
 								</div>
 							</div>
 						</div>
 					</div>
-					<!-- Final do modal anular -->
 					<!--  FINAL DOS MODAIS -->
+					<!-- Final do modal anular -->
 					<div class="borderBtn">
 						<div class="container">
 							<div class="row ">
-								<div class="col-md-6">
-									<!-- Botão form 1 -->
-									<div class="btn-group" role="group" aria-label="Basic example">
-										<button type="button" id="btn1" name="btn1"
-											style="backgrounf-color: red;" class="btn btnConf"
-											onclick="mostrarTab1();" data-toggle="tooltip"
-											data-placement="bottom" title="#{occLabels.msg_btn_form1}">#{occLabels.occ_titulo_formulario1}</button>
-										<!-- Botão form 2 -->
-										<button type="button" id="btn2" name="btn2"
-											class="btn btnConf" onclick="mostrarTab2();"
-											data-toggle="tooltip" data-placement="bottom"
-											title="#{occLabels.msg_btn_form2}">#{occLabels.occ_titulo_formulario2}</button>
-										<!-- Botão form 3 -->
-										<button type="button" id="btn3" name="btn3"
-											class="btn btnConf" onclick="mostrarTab3();"
-											data-toggle="tooltip" data-placement="bottom"
-											title="#{occLabels.msg_btn_form3}">#{occLabels.occ_titulo_formulario3}</button>
-									</div>
-								</div>
-								<div class="col-md-6" id="hiddenAnular">
+								<div class="col-md-5" id="hiddenAnular">
 									<!-- Botões de ações -->
 									<div class="btn-group confBtnSubmit" role="group"
 										aria-label="Basic example">
@@ -429,10 +573,10 @@
 										<!-- Botão alterar -->
 										<h:commandButton id="edit" class="btn btnConf"
 											disabled="#{occurrencesBean.edit}"
-											onclick="alterarBtn(); bloquerTable(); "
-											value="#{occLabels.btn_editar}"
-											action="#{occurrencesBean.listingUpdate}">
-											<!-- <f:ajax execute="@form"
+											value="#{occLabels.btn_editar}" onclick="bloquerTable();"
+											action="#{occurrencesBean.btnEdit}">
+											<!-- <f:ajax 
+											execute="@form"
 												render=":alterar :reset :new :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial :unityDamage 
 											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
 											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
@@ -440,9 +584,8 @@
 											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
 											    	:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :edit :myFile :acaoStatus :acaoData :acaoDataFinal
 											    	:trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd :descrDescr1 :descriptionBtn1 :descriptionBtn2
-											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload" /> -->
+											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :btnUpdate :myFile2" /> -->
 										</h:commandButton>
-
 										<!-- Botão editar -->
 										<h:commandButton id="alterar" class="btn btnConf"
 											disabled="#{occurrencesBean.alterar}"
@@ -467,7 +610,7 @@
 										<h:commandButton class="btn btnConf" id="new"
 											disabled="#{occurrencesBean.new_}"
 											action="#{occurrencesBean.btnEnable}"
-											value="#{occLabels.btn_novo}" onclick="bloquerTable();">
+											value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
 											<f:ajax execute="@form"
 												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
 											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
@@ -486,12 +629,62 @@
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
 												value="#modalAnular" />
-											<f:ajax render="@none" />
+											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<!-- Icon PDF -->
+								<div class="col-md-1" id="iconPdf" style="display: none;">
+
+									<h:commandLink class="btnPdf" id="pdfId"
+										action="#{occurrencesBean.downloadPdf}">
+										<i class="fas fa-file-pdf"></i>
+										<span class="text-pdf">#{occLabels.occ_download_file}</span>
+									</h:commandLink>
+								</div>
+								<div class="col-md-5" style="width: 50%;">
+									<!-- Botão form 1 -->
+									<div class="btn-group" role="group" aria-label="Basic example"
+										style="width: 100%;">
+										<button type="button" id="btn1" name="btn1"
+											class="btn btnConf" onclick="mostrarTab1();"
+											data-toggle="tooltip" data-placement="bottom"
+											title="#{occLabels.msg_btn_form1}">#{occLabels.occ_titulo_formulario1}</button>
+										<!-- Botão form 2 -->
+										<button type="button" id="btn2" name="btn2"
+											class="btn btnConf" onclick="mostrarTab2();"
+											data-toggle="tooltip" data-placement="bottom"
+											title="#{occLabels.msg_btn_form2}">#{occLabels.occ_titulo_formulario2}</button>
+										<!-- Botão form 3 -->
+										<button type="button" id="btn3" name="btn3"
+											class="btn btnConf" onclick="mostrarTab3();"
+											data-toggle="tooltip" data-placement="bottom"
+											title="#{occLabels.msg_btn_form3}">#{occLabels.occ_titulo_formulario3}</button>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+					<!-- alert msg delete, save and download -->
+					<!-- Arquivo salvo com sucesso -->
+					<div class="alert alert-success text-center" role="alert"
+						id="msgSave1" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_save_file_success}</p>
+					</div>
+					<!-- msg deletado com sucesso -->
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgDelete2" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_delete_success}</p>
+					</div>
+					<!-- msg download realizado com sucesso -->
+					<div class="alert alert-warning text-center" role="alert"
+						id="msgDownload3" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_download_success}</p>
+					</div>
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgFinished" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_msgFinished}</p>
 					</div>
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">
@@ -501,11 +694,12 @@
 						</div>
 						<!-- FInal alert -->
 						<div class="form-row">
-							<div class="form-group col-md-1">
+							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_number}</em>
 								<h:inputText class="form-control inputDesign" disabled="true"
 									id="occNumber" name="occNumber"
 									value="#{occurrencesBean.data.data_number}" />
+								<h:inputHidden />
 							</div>
 
 							<div class="form-group col-md-4">
@@ -519,7 +713,7 @@
 									<f:selectItems value="#{occurrencesBean.tipos}" />
 								</h:selectOneMenu>
 							</div>
-							<div class="form-group col-md-4">
+							<div class="form-group col-md-3">
 								<em for="inputPassword4">#{occLabels.occ_register_table_source}</em>
 								<h:selectOneMenu class="form-control inputDesign"
 									disabled="#{occurrencesBean.fields}"
@@ -540,6 +734,7 @@
 								</h:selectOneMenu>
 							</div>
 						</div>
+
 						<!-- Alert data, inicio e fim-->
 						<div class="alert alert-dark confAlert cof-alert-top" role="alert">
 							<h5 class="texter-center confTextAlert">#{occLabels.occ_titulo_data_inicio_fim}</h5>
@@ -674,7 +869,7 @@
 								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
 									disabled="#{occurrencesBean.fields}"
-									class="form-control inputDesign" pt:placeholder="..."
+									class="form-control inputDesign" pt:placeholder="0+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
 							<div class="form-group col-md-5">
@@ -800,10 +995,12 @@
 					<!-- Final da primeira tabela -->
 					<!-- Inicio da segunda tabela -->
 					<div id="tab2">
+
 						<!-- ALert Descrição -->
 						<div class="alert alert-dark confAlert" role="alert">
 							<h5 class="text-center confTextAlert">#{occLabels.occ_register_descricao}</h5>
 						</div>
+
 						<!-- FInal alert descrição -->
 						<div class="form-row">
 							<div class="form-group col-md-12">
@@ -906,12 +1103,12 @@
 
 							<!-- input file save -->
 							<div class="form-row" id="fileElements">
+
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
-										pt:multiple="true" disabled="#{occurrencesBean.fields}" />
+										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 								</div>
-
 								<div class="col-md-12">
 									<h:commandButton class="btn btnConf" id="btnUpload"
 										value="#{occLabels.occ_uploadFile}"
@@ -919,18 +1116,19 @@
 										disabled="#{occurrencesBean.fields}"
 										onclick="validatorFile();" />
 								</div>
+
 							</div>
 							<!-- End input file save -->
 
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
-								<div class="form-group col-md-12 field" align="left">
+								<div class="form-group col-md-9 field" align="left">
 									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2"
-										pt:multiple="true" disabled="#{occurrencesBean.fields}" />
+										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
 								</div>
-								<div class="col-md-12">
-									<h:commandButton class="btn btnConf"
+								<div class="col-md-3">
+									<h:commandButton class="btn btnConf" id="btnUpdate"
 										onclick="validatorFile2();"
 										value="#{occLabels.occ_uploadFile}"
 										action="#{occurrencesBean.updateFile}"
@@ -942,39 +1140,48 @@
 							<!-- Arquivos Adicionados -->
 							<div class="listarFiles" id="listFiles">
 								<!-- alert -->
-								<div class="alert alert-dark confAlert" role="alert">
-									<h5 class="text-center confTextAlert">#{occLabels.occ_list_files} (#{occurrencesBean.total})</h5>
+								<div class="alert alert-dark confAlert" id="fileTotal"
+									role="alert">
+									<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
+										(#{occurrencesBean.total})</h5>
 								</div>
-								<!-- Arquivo salvo com sucesso -->
-								<div class="alert alert-success text-center" role="alert" id="msgSave" style="display: none;"><p class="textMsgFile">#{occLabels.occ_save_file_success}</p></div>
-								<!-- msg deletado com sucesso -->
-								<div class="alert alert-danger text-center" role="alert" id="msgDelete" style="display: none;"><p class="textMsgFile">#{occLabels.occ_delete_success}</p></div>
-									<!-- msg download realizado com sucesso -->
-								<div class="alert alert-warning text-center" role="alert" id="msgDownload" style="display: none;"><p class="textMsgFile">#{occLabels.occ_download_success}</p></div>
+
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
 									<c:forEach items="#{occurrencesBean.listarFile}" var="item"
 										id="listandoFile" varStatus="loop">
 										<div class="row">
 											<div class="col-md-12">
-												<div class="forEachFiles">
-													<h:graphicImage class="imageFile" value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
+												<div class="row">
+													<!-- image file -->
+													<!--<div class="col-md-2">
+														 <h:graphicImage id="getPathImg" class="imageFile"
+															value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
+													</div> -->
 													<!-- name file -->
-													<h:outputText value="#{occLabels.occ_name_file} #{item}"></h:outputText>
-													<!-- Btn delete file -->
-													
-													<h:commandLink class="linkFile" id="btnDelete"
-														action="#{occurrencesBean.deleteFile(item)}">
-														<i class="fas fa-trash trash iconFile"
-															data-bs-toggle="tooltip" data-bs-placement="right"
-															title="Delete"> </i>
-													</h:commandLink>
-													<h:commandLink class="linkFile"
-														action="#{occurrencesBean.download(item)}">
-														<i class="fas fa-cloud-download-alt iconFile"
-															data-bs-toggle="tooltip" data-bs-placement="right"
-															title="Download"></i>
-													</h:commandLink>
+													<div class="col-md-8 text-center">
+														<span>#{occLabels.occ_name_file} </span>
+														<p class="text-center">#{item}</p>
+													</div>
+
+													<!-- btn delete -->
+													<div class="col-md-2">
+														<span>#{occLabels.occ_delete}</span>
+														<div class="dropdown">
+															<button class=" dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																aria-expanded="false">
+																<i class="far fa-trash-alt"></i>
+															</button>
+															<ul class="dropdown-menu"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li><h:commandLink
+																		action="#{occurrencesBean.deleteFile(item)}" 
+																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+															</ul>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -982,37 +1189,102 @@
 									</c:forEach>
 								</div>
 								<!-- List file update -->
-								<div class="col-md-12">
+								<div class="col-md-12" >
 									<!-- Array arquivos na pasta -->
 									<c:forEach id="listUpdate"
 										items="#{occurrencesBean.listUpdate}" var="item"
 										varStatus="loop">
 										<div class="row">
-											<div class="col-md-6">
-												<div class="forEachFiles">
-													<!-- image file -->
-													<h:graphicImage class="imageFile" value="#{occurrencesBean.caminhoImageUpdate(item)}" />
+											<div class="col-md-12">
+												<div class="row">
+													
 													<!-- name file -->
-													#{occLabels.occ_name_file} #{item}
-													<!-- Link delete -->
-													<h:commandLink class="linkFile"
-														action="#{occurrencesBean.deleteFileUpdate(item)}">
-														<i class="fas fa-trash trash iconFile"
-															data-bs-toggle="tooltip" data-bs-placement="right"
-															title="Delete"> </i>
-													</h:commandLink>
-													<h:commandLink class="linkFile"
-														action="#{occurrencesBean.downloadUpdate(item)}">
-														<i class="fas fa-cloud-download-alt iconFile"
-															data-bs-toggle="tooltip" data-bs-placement="right"
-															title="Download"></i>
-													</h:commandLink>
+													<div class="col-md-7 text-center">
+														<span>#{occLabels.occ_name_file} </span>
+														<p class="text-center">#{item}</p>
+													</div>
+
+													<!-- btn delete -->
+													<div class="col-md-1" id="updateDeleteIcon">
+														<span>#{occLabels.occ_delete}</span>
+														<div class="dropdown">
+															<button class=" dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																aria-expanded="false">
+																<i class="far fa-trash-alt"></i>
+															</button>
+															<ul class="dropdown-menu"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li><h:commandLink disabled="#{occurrencesBean.fields}"
+																		action="#{occurrencesBean.deleteFileUpdate(item)}"
+																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+															</ul>
+														</div>
+													</div>
+													<!-- download -->
+													<div class="col-md-1">
+														<span>#{occLabels.occ_download}</span>
+														<div class="dropdown">
+															<button class="dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																aria-expanded="false">
+																<i class="fas fa-cloud-download-alt iconFile"
+																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	title="Download"></i>
+															</button>
+															<ul class="dropdown-menu"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li><h:commandLink class="dropdown-item"
+																		action="#{occurrencesBean.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+															</ul>
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
 										<hr></hr>
 									</c:forEach>
-
+								</div>
+								<!-- List files click table -->
+								<div class="col-md-12" id="listUpdateFileT" style="display: none;">
+									<!-- Array arquivos na pasta -->
+									<c:forEach
+										items="#{occurrencesBean.tableFile}" var="item"
+										varStatus="loop">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="row">
+													<div class="col-md-7 text-center">
+														<span>#{occLabels.occ_name_file} </span>
+														<p class="text-center">#{item}</p>
+													</div>
+									
+													<!-- download -->
+													<div class="col-md-1">
+														<span>#{occLabels.occ_download}</span>
+														<div class="dropdown">
+															<button class="dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																aria-expanded="false">
+																<i class="fas fa-cloud-download-alt iconFile"
+																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	title="Download"></i>
+															</button>
+															<ul class="dropdown-menu"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li><h:commandLink class="dropdown-item"
+																		action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<hr></hr>
+									</c:forEach>
 								</div>
 							</div>
 							<!-- FInal alert -->
@@ -1103,7 +1375,7 @@
 							<div class="form-group col-md-6">
 								<em for="inputEmail4">#{occLabels.occ_register_extesao}</em>
 								<h:inputText value="#{occurrencesBean.data.traffic_extension}"
-									disabled="#{occurrencesBean.fields}" pt:placeholder="..."
+									disabled="#{occurrencesBean.fields}" pt:placeholder="000+250"
 									class="form-control inputDesign" name="trasitoExtKm"
 									id="trasitoExtKm" />
 							</div>
@@ -1347,6 +1619,7 @@
 		<script>
 			//Inicio dos comandos JavaScript
 			//getFilename();
+			
 			hiddenAlterar();
 			myFunction();// ADD ARQUIVOS
 			myFunction2();//myFunction2();
@@ -1354,6 +1627,18 @@
 			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
 			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
 			onload(); //Oculta o formulario 2 e 3
+		</script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+			crossorigin="anonymous">
+			
+		</script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"
+			integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs"
+			crossorigin="anonymous">
+			
 		</script>
 
 	</ui:define>

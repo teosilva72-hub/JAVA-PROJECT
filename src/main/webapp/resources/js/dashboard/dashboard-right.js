@@ -27,44 +27,19 @@ $('#dismiss, .overlay').on('click', function () {
 // OVERLAY SIDE BAR END
 
 
-//////////////////////SIP VOICE/CALL
+var url      = '/phone/phone.html',
+    features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
 
-//User Agent Configuration
-var socket = new JsSIP.WebSocketInterface('ws://192.168.0.5:8088/asterisk/ws');
-var configuration = {
-  sockets: [socket],
-  uri: 'sip:123@192.168.0.5',
-  password: 'i68Oi68O'
-};
-//User Agent Configuration end
-
-//User Agent Instance
-var coolPhone = new JsSIP.UA(configuration);
-//User Agent Instance end
-
-//WebSocket connection events
-coolPhone.on('connected', function (e) {/* Your code here */ });
-coolPhone.on('disconnected', function (e) {/* Your code here */ });
-//WebSocket connection events end
-
-//New incoming or outgoing call event
-coolPhone.on('newRTCSession', function (e) {/* Your code here */ });
-//New incoming or outgoing call event end
-
-//New incoming or outgoing IM message event
-coolPhone.on('NewMessage', function (e) {/* Your code here */ });
-//New incoming or outgoing IM message event end
-
-//SIP registration events
-coolPhone.on('registered', function (e) {/* Your code here */ });
-coolPhone.on('unregistered', function (e) {/* Your code here */ });
-coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
-//SIP registration events end
-
-//Starting the User Agent
-//See JsSIP.UA.start() method definition.
-//coolPhone.start();
-//Starting the User Agent end
+    $('.acptcall').on('click', function(event) {
+        event.preventDefault();
+        // This is set when the phone is open and removed on close
+        if (!localStorage.getItem('ctxPhone')) {
+            window.open(url, 'ctxPhone', features);
+            return false;
+        } else {
+            window.alert('Phone already open.');
+        }
+    });
 
 
 

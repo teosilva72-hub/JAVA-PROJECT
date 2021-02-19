@@ -29,7 +29,7 @@ body{
 	text-align: center;
 }
 .conteudo{
-	margin-top: -25px;
+	margin-top: 0;
 }
 .corCamposInput{
 	padding: 0;
@@ -341,14 +341,16 @@ cursor: pointer;
 	color: red;
 	display: none;
 }
-
+#btnUpload, #btnUpdate{
+	margin: 0;
+}
 #btnUpload:hover{
 	background-color: blue;
 	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
     -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
      box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
 }
-.trash:hover{
+.fa-trash-alt:hover{
 	color: red;
 	transition-duration: 1.2s;
 	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
@@ -356,6 +358,13 @@ cursor: pointer;
     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
 }
 .fa-cloud-download-alt:hover{
+	color: red;
+	transition-duration: 1.2s;
+	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+    box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
+}
+.fa-eye:hover{
 	color: red;
 	transition-duration: 1.2s;
 	-webkit-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
@@ -381,8 +390,7 @@ cursor: pointer;
 }
 .linkFile{
 	text-decoration: none;
-	padding: 10px;
-	color: black;
+	border: 0;
 }
 .iconFile{
 	color: black;
@@ -390,8 +398,7 @@ cursor: pointer;
 .forEachFiles{
 	margin: 0;
 }
-#msgDelete, #msgDownload, #msgSave{
-	margin-top: -17px;
+#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #msgSave1, #msgFinished{
 	height: 23px;
 }
 .textMsgFile{
@@ -407,3 +414,35 @@ cursor: pointer;
     -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
   }
+.viewImageFile{
+ 	border: solid 1px black;
+ 	max-width: 100%;
+ 	max-height: 100%;  
+ 	margin: 0 auto;
+ }
+.dropdown-toggle{
+	border: 0;
+	background-color: transparent;
+}
+.text-pdf{
+	font-size: 10pt;
+	color: black;
+}
+.btnPdf{
+	font-size: 12pt;
+	color: black;
+}
+.btnPdf:hover, .text-pdf:hover{
+	color: blue;
+	text-decoration: none;
+}
+#btn1, #btn2, #btn3, #edit, #alterar, #save, #new, #reset {
+	border: solid 1px white;
+	
+}
+/*#edit, #alterar, #save, #new, #reset{
+	width: 100% !important;
+}*/
+#iconPdf{
+	margin-top: 15px;
+}
