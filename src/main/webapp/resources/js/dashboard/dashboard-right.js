@@ -33,7 +33,7 @@ $('#dismiss, .overlay').on('click', function () {
 var socket = new JsSIP.WebSocketInterface('ws://192.168.0.5:8088/asterisk/ws');
 var configuration = {
   sockets: [socket],
-  uri: 'sip:123@192.168.0.5',
+  uri: 'sip:123192.168.0.5:5060',
   password: 'i68Oi68O'
 };
 //User Agent Configuration end
@@ -63,8 +63,29 @@ coolPhone.on('registrationFailed', function (e) {/* Your code here */ });
 
 //Starting the User Agent
 //See JsSIP.UA.start() method definition.
-//coolPhone.start();
+coolPhone.start();
 //Starting the User Agent end
+
+// Register callbacks to desired call events
+var eventHandlers = {
+  'progress': function(e) {
+    console.log('call is in progress');
+  },
+  'failed': function(e) {
+    console.log('call failed with cause: '+ e.data.cause);
+  },
+  'ended': function(e) {
+    console.log('call ended with cause: '+ e.data.cause);
+  },
+  'confirmed': function(e) {
+    console.log('call confirmed');
+  }
+};
+
+var options = {
+  'eventHandlers'    : eventHandlers,
+  'mediaConstraints' : { 'audio': true, 'video': true }
+};
 
 
 
