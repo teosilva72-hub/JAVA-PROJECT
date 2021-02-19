@@ -1,6 +1,9 @@
 package br.com.tracevia.webapp.model.global;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
+import br.com.tracevia.webapp.cfg.tables.ViaPaulistaTables;
+import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.BahiaNorte;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.LitoralSul;
@@ -66,6 +69,11 @@ public class RoadConcessionaire {
 	public static String externaloLogoExcelPath;
 	public static String mapUI;
 	public static String linearMapUI;
+	public static String tableVBV;
+	public static String tableLL;
+	public static String tableCCR;
+	public static String tableDados15;
+	public static String tableStatus;
 	
 	EstradaObjectController estrada;
 	
@@ -114,6 +122,11 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = BahiaNorte.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = BahiaNorte.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "bahianorte.jpg";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
 		}	
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire())) {
@@ -145,6 +158,11 @@ public class RoadConcessionaire {
 			externalImagePath += "cardel_poza_rica.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/cardel_poza_rica.png";
 			mapUI = "/resources/images/map/cardel/cardel_poza_rica_light.jpg";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();	
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
 		}
 		
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -173,8 +191,13 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl7 = LitoralSul.NOT_ID_CLASS_7AXLES.getClasse();
 			classNotIdentifiedAxl8 = LitoralSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = LitoralSul.NOT_ID_CLASS_9AXLES.getClasse();
-			externalImagePath += "litoralsul.png";			
-			
+			externalImagePath += "litoralsul.png";		
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
+						
 		}
 		
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
@@ -206,7 +229,12 @@ public class RoadConcessionaire {
 			externalImagePath += "tuxpan.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.png";
 			mapUI = "/resources/images/map/tuxpan/tuxpan_tampico_light.png";
-		
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
+				
 		}
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
@@ -236,6 +264,12 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaPaulista.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaPaulista.NOT_ID_CLASS_9AXLES.getClasse();			
 			externalImagePath += "viapaulista.png";
+			tableVBV = ViaPaulistaTables.ViaPaulistaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
+			
 		}
 
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaRondon.getConcessionaire())) {
@@ -266,7 +300,11 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl9 = ViaRondon.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaRondon.jpg";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_rondon.png";
-			
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = "";
+			tableCCR = "";
         }
         
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire())) {
@@ -305,7 +343,7 @@ public class RoadConcessionaire {
 			classCCRTruck10Axles = ViaSul.CCR_TRUCK_10AXLES.getClasse();	
 			classCCRBus2Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
 			classCCRBus3Axles = ViaSul.CCR_BUS_3AXLES.getClasse();	
-			classCCRBus4Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
+			classCCRBus4Axles = ViaSul.CCR_BUS_4AXLES.getClasse();	
 			classCCRBus5Axles = ViaSul.CCR_BUS_5AXLES.getClasse();	
 			classCCRBus6Axles = ViaSul.CCR_BUS_6AXLES.getClasse();			
 			
@@ -318,6 +356,14 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaSul.jpg";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.png";
+			mapUI = "";
+			tableVBV = ViaSulTables.ViaSulVBV.getTable();
+			tableDados15 = ViaSulTables.ViaSulDados15.getTable();
+			tableStatus = ViaSulTables.ViaSulStatus.getTable();
+			tableLL = ViaSulTables.ViaSulLL.getTable();
+			tableCCR = ViaSulTables.ViaSulCCR.getTable();
+			
 		}
 
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tracevia.getConcessionaire())) {
@@ -348,7 +394,11 @@ public class RoadConcessionaire {
 		  classNotIdentifiedAxl9 = Tracevia.NOT_ID_CLASS_9AXLES.getClasse();
 		  externalImagePath += "tracevia.jpg";		
 		  linearMapUI = "/resources/images/realTimeInterface/linear/tracevia.png";
-			
+		  tableVBV = TraceviaTables.TraceviaVBV.getTable();
+		  tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
+		  tableLL = "";
+		  tableCCR = "";
 		 		  
          }	
               		 
@@ -356,5 +406,4 @@ public class RoadConcessionaire {
     
 	 }
 	
-
 }

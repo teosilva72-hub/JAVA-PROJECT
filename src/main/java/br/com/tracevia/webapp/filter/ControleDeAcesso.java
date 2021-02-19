@@ -32,12 +32,12 @@ public class ControleDeAcesso implements Filter {
 				
 		loginAccount = new LoginAccountBean();
 				
-		String loginURI = request.getContextPath() + "/pages/main/login/login.xhtml";
-		String resetURI = request.getContextPath() + "/pages/main/login/forget.xhtml";
-		String resetConfirmationURI = request.getContextPath() + "/pages/main/login/forget-confirmation.xhtml";
+		String loginURI = request.getContextPath() + "/login.xhtml";
+		String resetURI = request.getContextPath() + "/forget.xhtml";
+		String resetConfirmationURI = request.getContextPath() + "/forget-confirmation.xhtml";
 		
-		String restrictedURI = request.getContextPath() + "/pages/main/error/access-denied.xhtml";
-		//String expiredURI = request.getContextPath() + "/webapp/pages/main/error/session-expired.xhtml";
+		String restrictedURI = request.getContextPath() + "/error/access-denied.xhtml";
+		//String expiredURI = request.getContextPath() + "/error/session-expired.xhtml";
 			
 		boolean loggedIn = session != null && session.getAttribute("user") != null;	
 		boolean role = session.getAttribute("nivel") != null;

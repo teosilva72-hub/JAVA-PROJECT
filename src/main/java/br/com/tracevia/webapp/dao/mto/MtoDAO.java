@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.mto.MtoPanel;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -22,7 +24,7 @@ public class MtoDAO {
 				
 		    try {
 			
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
 			ps = conn.prepareStatement(select);			
 			ps.setString(1, station_id);		

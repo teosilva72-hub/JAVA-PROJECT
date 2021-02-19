@@ -4,7 +4,8 @@ $('#weather-year-table').DataTable({
 "scrollY": "50.3vh",
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
-"bInfo" : false
+"bInfo" : false,
+"deferRender": true
 });
 $('.dataTables_length').removeClass('bs-select');
 }); 
@@ -15,7 +16,8 @@ $('#weather-month-table').DataTable({
 "scrollY": "50.3vh",
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
-"bInfo" : false
+"bInfo" : false,
+"deferRender": true
 });
 $('.dataTables_length').removeClass('bs-select');
 }); 
@@ -27,7 +29,8 @@ $('#weather-period-table').DataTable({
 "scrollY": "50.3vh",
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
-"bInfo" : false
+"bInfo" : false,
+"deferRender": true
 });
 $('.dataTables_length').removeClass('bs-select');
 }); 

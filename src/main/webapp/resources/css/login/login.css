@@ -38,7 +38,7 @@ html, body{
 
 @media(max-height: 778px){
 	.ladoDireito{
-	background: url('/Tracevia/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
+	background: url('/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
 	background-size: cover;
 	height: 100%;
 }
@@ -51,7 +51,7 @@ html, body{
 		margin-top: 15%;
 	}
 	.ladoDireito{
-	background: url('/Tracevia/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
+	background: url('/resources/images/logo/tracevia/tracevia-logo.png') center no-repeat;
 	background-size: cover;
 	height: 100%;
 }

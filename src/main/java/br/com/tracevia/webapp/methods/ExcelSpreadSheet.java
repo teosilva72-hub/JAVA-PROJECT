@@ -70,7 +70,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][index].setCellValue(values[auxCol][index]); 
 					            	
-					            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -99,7 +99,7 @@ public class ExcelSpreadSheet {
 			            	if(col == 0 || col == 1)
 			            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 			            	
-			            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+			            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 			            				            			            			          			            
 			            }catch(NullPointerException ex) {
 			            	ex.printStackTrace();
@@ -155,7 +155,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -185,7 +185,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 1 || col == 2)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            						            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -201,7 +201,7 @@ public class ExcelSpreadSheet {
 					int rowLenght = startRow + endRow ;
 					int auxCol = colStart;
 					
-					System.out.println(maxCol);
+					///System.out.println(maxCol);
 									
 					for(int col = colStart; col < maxCol; col++) {
 					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
@@ -220,7 +220,7 @@ public class ExcelSpreadSheet {
 					            	    
 					            		cells[col][lin].setCellValue((int) Double.parseDouble((values[auxCol][lin])));
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -260,7 +260,11 @@ public class ExcelSpreadSheet {
 					     }		
 				      }		
 				
-				//SINGLE FOR DIRECTIONS REPORTS
+				///////////////////////////////////////
+				/// 24 Hours
+				/////////////////////////////////////
+				
+				//SINGLE FOR DIRECTIONS REPORTS 
 				
 				 //Convert Fiels to Integer
 				public void fillDataSingleDirections(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int inc) {
@@ -279,20 +283,87 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
 					            	
-					            	else cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }		            		
+					        }
+					   					   					     
+					      auxCol++;
+										     
+					     }     	   
+				       }
+				
+				//SINGLE FOR DIRECTIONS REPORTS DIR 1
+				public void fillDataSingleDirectionsDir1(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int iniCol1) {
+					 
+					int rowLenght = startRow + endRow ;
+					int auxCol = 0;
+									
+					for(int col = colStart; col < maxCol; col++) {
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   				 					   
+					            row = sheet.getRow((short) rowIndex);
+					            cells[col][lin] = row.createCell((short) col);	
+					            
+					            try {
+					            				            	
+					            	if(col == 0 || col == 1)
+					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
+					            	
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
 					           }		            		
 					        }
 					   
-					     if(col == 0)
-					    	 auxCol=+inc;
+					     if(col == 1)
+					    	 auxCol+=iniCol1;
+					     
+					     else auxCol++;
 					    	 
-					     else auxCol=+3; //Coluna começa do indice 0 para percorrer o array
+					    // else auxCol=+3; //Coluna começa do indice 0 para percorrer o array
 					     
 					     }     	   
 				       }
+				
+				//SINGLE FOR DIRECTIONS REPORTS DIR 1
+				public void fillDataSingleDirectionsDir2(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int iniCol1) {
+					 
+					int rowLenght = startRow + endRow ;
+					int auxCol = 0;
+									
+					for(int col = colStart; col < maxCol; col++) {
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   				 					   
+					            row = sheet.getRow((short) rowIndex);
+					            cells[col][lin] = row.createCell((short) col);	
+					            
+					            try {
+					            				            	
+					            	if(col == 0 || col == 1)
+					            	cells[col][lin].setCellValue(values[auxCol][lin]); 
+					            	
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }		            		
+					        }
+					   
+					     if(col == 1)
+					    	 auxCol+=iniCol1;
+					     
+					     else auxCol++;
+					    						   					     
+					     }     	   
+				       }
+				
+				/////////////////////////////////////////
+				/// PERIODs
+				////////////////////////////////////////
 				
 				 //Convert Fiels to Integer
 				public void fillDataRangeDirections(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int inc) {
@@ -313,23 +384,85 @@ public class ExcelSpreadSheet {
 							            	if(col == 0 || col == 1)
 							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
 							            	
-							            	else cells[col][index].setCellValue(Integer.parseInt(values[auxCol][index]));
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
 							            	
 							            }catch(NullPointerException ex) {
 							            	ex.printStackTrace();
 							           }		            		
 							        }
 							   
-							     if(col == 0)
-							    	 auxCol++;
-							   
-							     else if(col == 1 )
-							    	 auxCol= auxCol+inc;
-							    							    	 
-							     else auxCol =+ 3; //Coluna começa do indice 0 para percorrer o array
-							     
+							   auxCol++;
+														     
 							     }		    	  
-				              }			           
+				              }	
+				
+				 //Convert Fiels to Integer
+				public void fillDataRangeDirectionsDir1(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int iniDir1) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0, auxCol = 0;
+						    	  
+				    	  for(int col = colStart; col < maxCol; col++) {
+							   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   
+								   index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[col][index] = row.createCell((short) col);	
+							            
+							            try {
+							            				            	
+							            	if(col == 0 || col == 1)
+							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
+							            	
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
+							            	
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }		            		
+							        }
+							   
+							   if(col == 1)
+								   auxCol += iniDir1;
+							   
+							   else auxCol++;
+														     
+							     }		    	  
+				              }		
+				
+				 //Convert Fiels to Integer
+				public void fillDataRangeDirectionsDir2(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int iniDir2) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0, auxCol = 0;
+						    	  
+				    	  for(int col = colStart; col < maxCol; col++) {
+							   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   
+								   index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[col][index] = row.createCell((short) col);	
+							            
+							            try {
+							            				            	
+							            	if(col == 0 || col == 1)
+							            		 cells[col][index].setCellValue(values[auxCol][index]);			          			            
+							            	
+							            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][lin]));
+							            	
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }		            		
+							        }
+							   
+							   if(col == 1)
+								   auxCol += iniDir2;
+							   
+							   else  auxCol++;
+														     
+							     }		    	  
+				              }		
 					
 									
 				 //Convert Fiels to Integer
@@ -491,7 +624,7 @@ public class ExcelSpreadSheet {
 		      row = sheet.getRow(lin);		
 		        row.createCell(c);
 		        
-		        System.out.println(lin);
+		       // System.out.println(lin);
 	    }
 	  }
    }
@@ -779,11 +912,14 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		externalContext.setResponseContentType("application/vnd.ms-excel");
 		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".xlsx\"");
 
+		workbook.write(externalContext.getResponseOutputStream());
+		facesContext.responseComplete();
+		
 		OutputStream responseOutputStream = externalContext.getResponseOutputStream();     
 		
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();
+		//workbook.close();
 	   
 		
 	}
@@ -800,8 +936,8 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();
-	    workbook.dispose();
+		//workbook.close();
+	   // workbook.dispose();
 		
 	}
     
@@ -816,7 +952,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		
 		workbook.write(responseOutputStream);
 		facesContext.responseComplete();   
-		workbook.close();   
+		//workbook.close();   
 		
 	}
     
@@ -826,22 +962,20 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		int totalStartRow = rowIni + 1;	
 		length -= 1;
     	
-    	if(period.equals("24 hours"))    		
-    		startColumn = 1;
-    	    	    	    	
-    	else {startColumn = 2; mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); }
+    	    	    	    	    	
+    	startColumn = 2; mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); 
     	
-    	System.out.println("COL: "+startColumn);
-    	System.out.println("LEH: "+length);
+    	//System.out.println("COL: "+startColumn);
+    	//System.out.println("LEH: "+length);
 				
-		System.out.println("ST: "+totalStartRow);
-		System.out.println("MX: "+rowMax);
+		//System.out.println("ST: "+totalStartRow);
+		//System.out.println("MX: "+rowMax);
 		
 		for(int col = startColumn; col <= length; col++) {
 			
 			String columnLetter = CellReference.convertNumToColString(col);
 			
-			System.out.println(columnLetter);
+			//System.out.println(columnLetter);
 			
 			 // for(int r = totalStartRow; r <= rowMax; r++) { 
 				

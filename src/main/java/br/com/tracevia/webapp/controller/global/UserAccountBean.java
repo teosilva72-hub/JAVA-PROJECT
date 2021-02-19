@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
@@ -102,8 +103,7 @@ public class UserAccountBean implements Serializable {
 			
 			localeUsers = new LocaleUtil();
 			localeUsers.getResourceBundle(LocaleUtil.MESSAGES_USERS);
-			
-						
+									
 		}
 		
 		public void cadastroUsuario() {
@@ -111,7 +111,11 @@ public class UserAccountBean implements Serializable {
 			String generatedPass = "";		
 			boolean response = false;
 			MessagesUtil message = new MessagesUtil();
-						
+			
+			//Get external application contents
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext externalContext = facesContext.getExternalContext();
+									
 			try {
 									
 				dao = new UserAccountDAO();
@@ -120,7 +124,7 @@ public class UserAccountBean implements Serializable {
 				EmailUtil mail = new EmailUtil();
 				EmailModels cadMail = new EmailModels();
 				
-				if(user.getUserID() != "" && user.getName() != "" && user.getJob_position() != "" &&
+				if(user.getName() != "" && user.getJob_position() != "" &&
 						user.getEmail() != "" && user.getUsername() != "" && user.getPermission_id() != 0) {
 				
 				//Criar Senha
@@ -130,6 +134,9 @@ public class UserAccountBean implements Serializable {
 				
 				//Encriptar password para MD5
 				user.setPassword(encrypt.encryptPassword(generatedPass));
+				
+				//Salvar usuário da sessão que criou usuário
+				user.setCreatedBy((String) facesContext.getExternalContext().getSessionMap().get("user"));
 				
 				//Gerar Assunto do Cadastro
 				String assunto = cadMail.createRegisterSubject();

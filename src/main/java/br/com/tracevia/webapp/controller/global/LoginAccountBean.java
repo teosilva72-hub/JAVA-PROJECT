@@ -115,15 +115,16 @@ public class LoginAccountBean {
 	   InMemoryAuthenticationUtil memoryUtil = new InMemoryAuthenticationUtil();
 	   EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
 	   MessagesUtil message = new MessagesUtil();
-	   
-	   LoginAccountDAO dao = new LoginAccountDAO();	   
+	   	     
 	   RoadConcessionaire roadConcessionaire = new RoadConcessionaire();
-	   
 	   FacesContext context = FacesContext.getCurrentInstance();
 	   
 	    //IF SUCCESS ON AUTH GET SERVER INFORMATION
 	    isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
 	    
+	    //CHANGES
+	    LoginAccountDAO dao = new LoginAccountDAO();
+	  	    
 	    if(isName) {
 	   	 	   
 	   //First - Auth memory user
@@ -145,10 +146,12 @@ public class LoginAccountBean {
 			context.getExternalContext().getSessionMap().put("concessionaria", RoadConcessionaire.roadConcessionaire); 
 					  
 			load.startupComponents(); //Inicializar Componentes			
+			
+			//NOT IN USE 
 			mapUI = RoadConcessionaire.mapUI; // Load Map
 			linearMapUI = RoadConcessionaire.linearMapUI;
 									
-		    return "/pages/main/dashboard/dashboard.xhtml?faces-redirect=true"; 		    
+		    return "/dashboard/dashboard.xhtml?faces-redirect=true"; 		    
 		    
 		  } 
 		 	   
@@ -164,7 +167,7 @@ public class LoginAccountBean {
 	  
 	  login = new UserAccount();
 	  login = dao.loginValidation(user.getUsername(), encrypt.encryptPassword(user.getPassword()));
-		 
+	  		 
 	  if (login != null) {		  
 		  if(login.isActiveStatus() == true) {			  	
 			  			  
@@ -176,7 +179,7 @@ public class LoginAccountBean {
 			  mapUI = RoadConcessionaire.mapUI; // Load Map
 			  linearMapUI = RoadConcessionaire.linearMapUI;
 			  
-			  return "/pages/main/dashboard/dashboard.xhtml?faces-redirect=true"; 				 
+			  return "/dashboard/dashboard.xhtml?faces-redirect=true"; 				 
 		  
 		  }	message.ErrorMessage(locale.getStringKey("login_message_inactive_user"), "" );  
 		  
@@ -202,7 +205,7 @@ public void LogOut() {
 		new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
 		externalContext.getFlash().setKeepMessages(true);
 		context.getExternalContext().invalidateSession();
-		context.getExternalContext().redirect("${facesContext.externalContext.requestContextPath}/WebContent/RESOURCES/pages/login.xhtml");
+		context.getExternalContext().redirect("${facesContext.externalContext.requestContextPath}/login.xhtml");
 
 	} catch (IOException e) {
 
@@ -213,14 +216,14 @@ public void LogOut() {
 
 public String forgetPasswordRedirect() {	
 	
-	return "/pages/main/login/forget.xhtml?faces-redirect=true";
+	return "/forget.xhtml?faces-redirect=true";
 
 }
 public String forgetConfirmationRedirect() {		
-	return "/pages/main/login/forget-confirmation.xhtml?faces-redirect=true";
+	return "/forget-confirmation.xhtml?faces-redirect=true";
 }
 public String loginRedirect() {		
-	return "/pages/main/login/login.xhtml?faces-redirect=true";
+	return "/login.xhtml?faces-redirect=true";
 }
 
 
@@ -284,7 +287,7 @@ public boolean permissionAdminOrSuper(int roleID) {
 							
 		mail.sendEmail(user.getEmail(), assunto, mensagem);	
 		
-		return "/pages/main/login/forget-confirmation.xhtml?faces-redirect=true";
+		return "/forget-confirmation.xhtml?faces-redirect=true";
 					
 	    }else message.ErrorMessage(locale1.getStringKey("email_recovery_unsuccess_send_header"), locale1.getStringKey("email_recovery_unsuccess_send_body") ); 
 		

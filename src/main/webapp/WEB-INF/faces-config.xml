@@ -69,6 +69,11 @@
           <var>periodsLabels</var>        
         </resource-bundle>    
         
+        <resource-bundle>
+          <base-name>bundle.labels.system.access-denied.labels_access_denied</base-name>           
+          <var>accessDeniedLabels</var>        
+        </resource-bundle>
+        
          <resource-bundle>
           <base-name>bundle.labels.system.restricted.labels_restricted</base-name>           
           <var>restrictedLabels</var>        
@@ -170,7 +175,8 @@
 		<message-bundle>bundle.labels.system.maps.labels_maps</message-bundle>		
 		<message-bundle>bundle.labels.system.periods.labels_periods</message-bundle>
 		<message-bundle>bundle.labels.system.restricted.labels_restricted</message-bundle>
-		<message-bundle>bundle.labels.system.realtime.labels_realtime</message-bundle>		
+		<message-bundle>bundle.labels.system.realtime.labels_realtime</message-bundle>	
+		<message-bundle>bundle.labels.system.access-denied.labels_access_denied</message-bundle>		
         <message-bundle>bundle.labels.users.labels_users</message-bundle>
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
         

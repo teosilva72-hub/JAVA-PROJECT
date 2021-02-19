@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.model.global.Modules;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class ModulesDAO {
@@ -20,7 +22,7 @@ public class ModulesDAO {
 
 		try {
 			
-			conn = ConnectionFactory.connectToTraceviaCore();	
+		   conn = ConnectionFactory.connectToTraceviaCore();
 			
 		} catch (Exception e) {
 			
@@ -48,6 +50,8 @@ public class ModulesDAO {
 			
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
+			
+			//System.out.println(query);
 
 			if (rs != null) {
 				while (rs.next()) {			
@@ -55,7 +59,7 @@ public class ModulesDAO {
 				  Modules mod = new Modules();
 					
 				  mod.setModule(rs.getString("module"));		
-				  mod.setState(rs.getBoolean("enabled"));		
+				  mod.setEnabled(rs.getBoolean("enabled"));		
 				  modules.add(mod);
 				    
 				}

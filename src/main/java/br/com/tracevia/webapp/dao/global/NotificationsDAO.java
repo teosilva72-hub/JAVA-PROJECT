@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -55,7 +57,13 @@ public class NotificationsDAO {
 						
 				    try {
 					
-					conn = ConnectionFactory.connectToTraceviaApp();
+				    	 if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
+					           conn = ConnectionFactory.connectToCCR();
+					    
+					    else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
+					           conn = ConnectionFactory.connectToViaPaulista();
+					    
+					    else conn = ConnectionFactory.connectToTraceviaApp();
 					
 					ps = conn.prepareStatement(select);	
 					ps.setString(1 , type);

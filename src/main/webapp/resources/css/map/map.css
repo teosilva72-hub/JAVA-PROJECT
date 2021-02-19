@@ -58,7 +58,6 @@ body {
   border: 1px solid transparent;
   overflow: hidden;
   width: 100%;
-  height: 100%;
 }
 
 #map {
@@ -82,8 +81,8 @@ body {
 /* GRID CROPPED MAP */
 
 .grid-img {
-  width: 70%;
-  height: 100%;
+  width: 100%;
+  height: 190px;
 }
 
 .grid-container {
@@ -143,6 +142,7 @@ body {
   position: relative;
   font-size: 10px;
   width: 250px;
+	height: 69px;
   border: none;
   background: #333333;
   border-right: 6px solid #00fa9a;
@@ -168,6 +168,10 @@ body {
   border-right-style: solid;
   border-width: 1px;
   border-color: #000000;
+}
+
+#dmsTab p {
+  height: 15px;
 }
 
 .padding-pmv {
@@ -203,6 +207,7 @@ body {
 
 .ui-graphic-image {
   width: 52px;
+  height: 52px;
 }
 
 .equip-graphic {
@@ -312,7 +317,7 @@ table {
   display: none;
   cursor: pointer;
   text-align: center;
-  margin-left: 10%;
+  margin-left: 1%;
 }
 
 .save_pos:hover {
@@ -430,7 +435,6 @@ table {
   -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
   margin-top: 20px;
-  margin-left: 200px;
   cursor: pointer;
 }
 
@@ -497,9 +501,7 @@ table {
   margin-left: 190px;
   margin-top: 2px;
 }
-#savePos {
-  margin-left: 50px;
-}
+
 #cancelPos {
   margin-left: 15px;
 }
@@ -522,42 +524,51 @@ table {
 }
 
 #zoomIn1 {
-  margin-left: -4px;
-  margin-top: 55px;
+  margin-top: -120px;
+  margin-left: -60px;
+  position: fixed;
 }
 #zoomOut1 {
-  margin-left: -4px;
-  margin-top: 75px;
+  margin-top: -100px;
+  margin-left: -60px;
+  position: fixed;
 }
 #fulldiv1 {
-  margin-left: -4px;
-  margin-top: 100px;
+  margin-top: -80px;
+  margin-left: -60px;
+  position: fixed;
 }
 
 #zoomIn2 {
-  margin-left: -4px;
-  margin-top: 195px;
+  margin-top: -160px;
+  margin-left: -60px;
+  position: fixed;	
 }
 #zoomOut2 {
-  margin-left: -4px;
-  margin-top: 215px;
+  margin-top: -140px;
+  margin-left: -60px;
+  position: fixed;
 }
 #fulldiv2 {
-  margin-left: -4px;
-  margin-top: 240px;
+  margin-top: -120px;
+  margin-left: -60px;
+  position: fixed;
 }
 
 #zoomIn3 {
-  margin-left: -4px;
-  margin-top: 405px;
+  margin-top: -160px;
+  margin-left: -60px;
+  position: fixed;
 }
 #zoomOut3 {
-  margin-left: -4px;
-  margin-top: 425px;
+  margin-top: -140px;
+  margin-left: -60px;
+  position: fixed;
 }
 #fulldiv3 {
-  margin-left: -4px;
-  margin-top: 450px;
+  margin-top: -120px;
+  margin-left: -60px;
+  position: fixed;
 }
 
 /* MAP DIVISION/SHOW BUTTON */
@@ -634,7 +645,7 @@ img.box-img {
 }
 
 img.box-img[zoom] {
-  height: 200%;
+  height: 200%;	
   width: 200%;
   top: 100%;
   left: 100%;
@@ -645,7 +656,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
@@ -655,8 +666,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
-  margin-top: 10%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
@@ -666,7 +676,7 @@ img.box-img[zoom] {
   position: relative;
   width: 80%;
   height: 60%;
-  margin: 1%;
+  left: 10%;
   background-size: cover;
   overflow: hidden;
 }
@@ -811,14 +821,6 @@ img.box-img[zoom] {
   bottom: 50px;
 }
 
-main > div:first-child {
-  width: 100%;
-  position: fixed;
-  top: 70px;
-  bottom: 50px;
-  padding: 0;
-}
-
 .draggable .equip-box,
 .draggable .equip-info {
   transform: translate(-50%, -50%);
@@ -863,6 +865,10 @@ input[type="number"] {
 
 /* MODAL SIZE EQUIP */
 
+#szselect {
+	z-index: 99999;
+}
+
 #moddialog {
 	position: fixed;
 	right: 20px;
@@ -870,6 +876,10 @@ input[type="number"] {
 }
 
 #modheaderpad {
+	padding: 0;
+}
+
+#modborderpad {
 	padding: 0;
 }
 
@@ -884,6 +894,8 @@ input[type="number"] {
    overflow-y: auto;
 }
 
+
+
 .modal-backdrop.in {
     opacity: 0 !important;
     z-index: -1050 !important;
@@ -896,7 +908,7 @@ input[type="number"] {
 .bar {
   position: relative;
   width: 80%;
-  margin: 50px auto;
+  margin: 20px auto;
   border: 1px black solid;
   border-radius: 100%;
 }
@@ -914,5 +926,6 @@ input[type="number"] {
 .bar .bar-ball:active {
   cursor: grabbing;
 }
+
 
 /* MODAL SIZE EQUIP END */

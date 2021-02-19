@@ -32,32 +32,36 @@ public class ListEquipments {
 		this.equips = equips;
 	}
 	
+	LoadStartupModules load;
+	
 	@PostConstruct
 	public void initalize() {
 		
 		CreateMapEquipment();
 		
 	}
-	
+		
+	public LoadStartupModules getLoad() {
+		return load;
+	}
+
+	public void setLoad(LoadStartupModules load) {
+		this.load = load;
+	}
+
 	public class listEquips {
-		private boolean val1;
-		private boolean val2;
+		private boolean value;	
 		private List<Equipments> list;
 		
-		listEquips(boolean val1, boolean val2, List<Equipments> list) {
-			this.val1 = val1;
-			this.val2 = val2;
+		listEquips(boolean value, List<Equipments> list) {
+			this.value = value;			
 			this.list = list;
 		}
 		
-		public boolean getVal1() {
-			return val1;
+		public boolean getValue() {
+			return value;
 		}
-		
-		public boolean getVal2() {
-			return val2;
-		}
-
+			
 		public List<Equipments> getList() {
 			return list;
 		}
@@ -66,35 +70,59 @@ public class ListEquipments {
 	
 	public void CreateMapEquipment() {
 		equips = new ArrayList<listEquips>();
-		LoadStartupModules auth = new LoadStartupModules();
-		auth.startupComponents();
 		
+		load = new LoadStartupModules();
+		load.startupComponents();
+						
 		try {	
 			
 			try {
-					
+						
 				CFTV cftv =  new CFTV();
-				equips.add(new listEquips(auth.isEn_cftv(), auth.isRt_cftv(), cftv.ListMapEquipments("cftv")));
 				Colas colas = new Colas();
-				equips.add(new listEquips(auth.isEn_colas(), auth.isRt_colas(), colas.ListMapEquipments("colas")));
 				COMMS comms = new COMMS();
-				equips.add(new listEquips(auth.isEn_comms(), auth.isRt_comms(), comms.ListMapEquipments("comms")));
 				DAI dai = new DAI();
-				equips.add(new listEquips(auth.isEn_dai(), auth.isRt_dai(), dai.ListMapEquipments("dai")));
 				DMS dms = new DMS();
-				equips.add(new listEquips(auth.isEn_pmv(), auth.isRt_pmv(), dms.ListMapDMSEquipments("pmv")));
 				LPR lpr =  new LPR();
-				equips.add(new listEquips(auth.isEn_lpr(), auth.isRt_lpr(), lpr.ListMapEquipments("lpr")));
 				MTO mto =  new MTO();
-				equips.add(new listEquips(auth.isEn_mto(), auth.isRt_mto(), mto.ListMapEquipments("mto")));
 				SAT sat = new SAT();
-				equips.add(new listEquips(auth.isEn_sat(), auth.isRt_sat(), sat.ListMapEquipments("sat")));
 				SOS sos = new SOS();
-				equips.add(new listEquips(auth.isEn_sos(), auth.isRt_sos(), sos.ListMapEquipments("sos")));
 				Speed speed =  new Speed();
-				equips.add(new listEquips(auth.isEn_speed(), auth.isRt_speed(), speed.ListMapEquipments("speed")));
 				WIM wim =  new WIM();
-				equips.add(new listEquips(auth.isEn_wim(), auth.isRt_wim(), wim.ListMapEquipments("wim")));
+			
+				if(load.isEn_cftv())			
+				equips.add(new listEquips(load.isEn_cftv(), cftv.listEquipments("cftv")));
+				
+				if(load.isEn_colas())
+				equips.add(new listEquips(load.isEn_colas(), colas.listEquipments("colas")));
+				
+				if(load.isEn_comms())
+				equips.add(new listEquips(load.isEn_comms(), comms.listEquipments("comms")));
+				
+				if(load.isEn_dai())
+				equips.add(new listEquips(load.isEn_dai(), dai.listEquipments("dai")));
+				
+				if(load.isEn_pmv())
+				equips.add(new listEquips(load.isEn_pmv(), dms.listEquipments("pmv")));
+				
+				if(load.isEn_lpr())
+				equips.add(new listEquips(load.isEn_lpr(), lpr.listEquipments("lpr")));
+				
+				if(load.isEn_mto())
+				equips.add(new listEquips(load.isEn_mto(), mto.listEquipments("mto")));
+				
+				if(load.isEn_sat())
+				equips.add(new listEquips(load.isEn_sat(), sat.listEquipments("sat")));
+				
+				if(load.isEn_sos())
+				equips.add(new listEquips(load.isEn_sos(), sos.listEquipments("sos")));
+				
+				if(load.isEn_speed())
+				equips.add(new listEquips(load.isEn_speed(), speed.listEquipments("speed")));
+				
+				if(load.isEn_wim())
+				equips.add(new listEquips(load.isEn_wim(), wim.listEquipments("wim")));
+				
 					
             }catch(IndexOutOfBoundsException ex) {}
 		

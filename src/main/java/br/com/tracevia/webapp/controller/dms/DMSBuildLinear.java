@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="dmsLinearView")
+@ManagedBean(name="dmsMapsView")
 @ViewScoped
 public class DMSBuildLinear {
 	
@@ -61,7 +61,7 @@ public class DMSBuildLinear {
 			MessagesDAO messageDao = new MessagesDAO();
 			
 			DMS dms = new DMS();
-			dmsList = dms.ListLinearDMSEquipments("pmv");			
+			dmsList = dms.listEquipments("pmv");			
 			
 			messagesDisplay = messageDao.selectActivesMessages();
 						

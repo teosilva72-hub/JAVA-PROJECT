@@ -142,6 +142,8 @@ public class DateMethods {
 	public void setLang(LanguageBean lang) {
 		this.lang = lang;
 	}
+	
+	//UPDATED
 
 	public String DateTimeToStringIni(Date data) {
 		

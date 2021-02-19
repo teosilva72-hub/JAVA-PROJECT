@@ -3,15 +3,13 @@ package br.com.tracevia.webapp.model.global;
 public class Modules {
 	
 	private int moduleID;
-	private String module;
-	private boolean state;
+	private String module;	
 	private boolean enabled;
 		
-	public Modules(int moduleID, String module, boolean state, boolean enabled) {
+	public Modules(int moduleID, String module, boolean enabled) {
 		
 		this.moduleID = moduleID;
-		this.module = module;
-		this.state = state;
+		this.module = module;		
 		this.enabled = enabled;
 	}
 	
@@ -33,14 +31,6 @@ public class Modules {
 		this.module = module;
 	}
 		
-	public boolean isState() {
-		return state;
-	}
-
-	public void setState(boolean state) {
-		this.state = state;
-	}
-
 	public boolean isEnabled() {
 		return enabled;
 	}
