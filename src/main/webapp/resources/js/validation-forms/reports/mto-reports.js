@@ -5,6 +5,7 @@
 	   return new Date(parts[2], parts[1] - 1, parts[0])
 	} // End toDate
 	
+	//NEW 
 	//Function to validate max date input to endDate
 	function maxDateCheck(dateStart, dateEnd, dateError, message, days){
 		
