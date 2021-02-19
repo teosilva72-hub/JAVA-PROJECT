@@ -673,12 +673,14 @@
     </div> <!-- End Wrapper -->
 
     <!-- Loading -->
-    <div class="loading">
-      <div class="loading-animation" role="status">
-        <h:graphicImage url="/resources/images/gifs/loading.gif" />
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
+	<ui:insert name="loading">
+	    <div class="loading">
+	      <div class="loading-animation" role="status">
+	        <h:graphicImage url="/resources/images/gifs/loading.gif" />
+	        <span class="sr-only">Loading...</span>
+	      </div>
+	    </div>
+	</ui:insert>
 
     <ui:insert name="default-content">
 
@@ -701,7 +703,7 @@
     <ui:insert name="modal-content"></ui:insert>
 
     <!-- TOAST ACCEPT/DIMISS CALL -->
-    <div id="calltoast">
+    <div id="calltoast" style="display:none;">
       <div class="toast hide" id="toastvoice" role="alert" data-autohide="false">
         <div class="toast-dialog">
           <h:form class="toast-content toast-sm" id="callform">
@@ -733,7 +735,7 @@
     <!-- TOAST ACCEPT/DIMISS CALL END -->
 
     <!--  TOAST CALL LIST -->
-    <div id="listcall">
+    <div id="listcall" style="display: none;">
       <div class="toast" id="list-toast" role="alert" data-autohide="false">
         <div class="toast-dialog">
           <div class="toast-content toast-sm" style="width:275px;">

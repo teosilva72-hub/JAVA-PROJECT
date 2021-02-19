@@ -15,19 +15,10 @@ import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class OccurrencesDAO {
 	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	public OccurrencesDAO() throws Exception {
-
-		try {
-			this.conn = ConnectionFactory.connectToTraceviaApp();
-		} catch (Exception e) {
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	}
-
+	
 	/**
 	 * @param data
 	 * @return

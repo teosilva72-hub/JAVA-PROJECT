@@ -975,6 +975,8 @@ public class OccurrencesBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDelete()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+				
+				listingUpdate();
 			}
 
 		}catch(Exception ex) {
@@ -1017,7 +1019,7 @@ public class OccurrencesBean {
 		}
 
 	}
-
+	//exclui pasta gerada do occ quando é clicado em anular
 	public File deleteDirectory() {
 
 		try {
@@ -1091,7 +1093,11 @@ public class OccurrencesBean {
 		System.out.println("Download realizado: "+fileName);
 	}
 	public void downloadUpdate(String fileName) throws Exception {
-
+		//js
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");	
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
 		//pegando o id
 		int id = getValue();
 
@@ -1118,17 +1124,9 @@ public class OccurrencesBean {
 
 		fos.close();
 
-		fields = false;
-		reset = false;
-		save = true;
-		edit = true;
-		alterar = false;
 		
 
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");	
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");   
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
+		
 		System.out.println("Download realizado: "+fileName);
 	}
 	public void downloadUpdateTable(String fileName) throws Exception {

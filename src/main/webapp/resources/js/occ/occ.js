@@ -3,6 +3,7 @@ function reload(){
 
 	document.location.reload(false);
 }
+
 //////////////////////////////////////////////////////
 function resetForm(){
 	$('form-cadastro').each (function(){
@@ -722,7 +723,6 @@ function alterarBtn(){
 	hiddenFile();
 	valueOcc();
 	listingFile();
-	bloquerTable();
 }
 function hiddenAlterar(){
 	document.getElementById("alterar").style.display = "none";

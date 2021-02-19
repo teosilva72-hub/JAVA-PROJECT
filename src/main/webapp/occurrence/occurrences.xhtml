@@ -10,6 +10,8 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
+	
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
 
@@ -1195,11 +1197,7 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
-													<!-- image file -->
-													<!--<div class="col-md-2">
-														 <h:graphicImage id="getPathImg" class="imageFile"
-															value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
-													</div> -->
+													
 													<!-- name file -->
 													<div class="col-md-7 text-center">
 														<span>#{occLabels.occ_name_file} </span>
