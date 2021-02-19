@@ -39,26 +39,25 @@
 						<h:form id="content-form">
 
 							<!-- PAGINATORS -->
-							<div class="card-body">
-								<div class="btn-group btn-group-toggle mb-4 justify-content-end" data-toggle="buttons">
-									<label class="btn btn-dark active">
+							<div class="card-body position-relative pb-0">
+								<div class="btn-group btn-group-toggle mb-4 buttons-page" data-toggle="buttons">
+									<label class="btn btn-dark py-0 px-2 active">
 										<h:commandButton pt:type="radio" value="1" />1
 									</label>
-									<label class="btn btn-dark">
+									<label class="btn btn-dark py-0 px-2">
 										<h:commandButton pt:type="radio" value="2" />2
 									</label>
-									<label class="btn btn-dark">
+									<label class="btn btn-dark py-0 px-2">
 										<h:commandButton pt:type="radio" value="3" />3
 									</label>
-									<label class="btn btn-dark">
+									<label class="btn btn-dark py-0 px-2">
 										<h:commandButton pt:type="radio" value="4" />4
 									</label>
-									<label class="btn btn-dark">
+									<label class="btn btn-dark py-0 px-2">
 										<h:commandButton pt:type="radio" value="5" />5
 									</label>
 								</div>
-								<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
-									posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}">
+								<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id} mt-2">
 
 									<!-- Table with DIV -->
 
@@ -204,159 +203,152 @@
 								</div>
 								<div class="mt-4">
 									<!-- TIMERS -->
-									<div class="form-row">
+									<div class="form-row timer-row">
 										<div class="form-group col">
-											<h:inputText class="form-control form-control-sm"
-												title="for message 1" pt:placeholder="Timer 1" />
+											<h:inputText class="form-control form-control-sm text-timer" title="for message 1"
+												pt:placeholder="Timer 1" />
 										</div>
 										<div class="form-group col">
-											<h:inputText class="form-control form-control-sm"
-												title="for message 2" pt:placeholder="Timer 2" />
+											<h:inputText class="form-control form-control-sm text-timer" title="for message 2"
+												pt:placeholder="Timer 2" />
 										</div>
 										<div class="form-group col">
-											<h:inputText class="form-control form-control-sm"
-												title="for message 3" pt:placeholder="Timer 3" />
+											<h:inputText class="form-control form-control-sm text-timer" title="for message 3"
+												pt:placeholder="Timer 3" />
 										</div>
 										<div class="form-group col">
-											<h:inputText class="form-control form-control-sm"
-												title="for message 4" pt:placeholder="Timer 4" />
+											<h:inputText class="form-control form-control-sm text-timer" title="for message 4"
+												pt:placeholder="Timer 4" />
 										</div>
 										<div class="form-group col">
-											<h:inputText class="form-control form-control-sm"
-												title="for message 5" pt:placeholder="Timer 5" />
+											<h:inputText class="form-control form-control-sm text-timer" title="for message 5"
+												pt:placeholder="Timer 5" />
 										</div>
 									</div>
 								</div>
-								<div class="col-1 row form-group">
-
-
-									<div class="col-7">
-										<div id="list-images">
-											<div id="select-image">
-												<p:selectOneListbox id="picture-id" value="#{pmvMessage.picture}"
-													effect="fade" var="p" filter="false" class="listbox"
-													filterMatchMode="startsWith" onclick="returnDIV(); bloquerTable();">
-													<f:converter converterId="pictureConverter" />
-													<f:selectItems value="#{pmvMessage.pictures}" var="picture"
-														itemLabel="#{picture.image}" itemValue="#{picture}" />
-													<p:ajax event="change" update="picture-box "
-														listener="#{pmvMessage.loadPictureImage}" />
-													<p:column>
-														<h:graphicImage value="/resources/images/pictures/#{p.image}"
-															width="60" height="60" />
-													</p:column>
-												</p:selectOneListbox>
-											</div>
-										</div>
-									</div>
-									<div class="col-7">
-
-										<div id="image-content">
-											<div id="image-div">
-												<h:commandLink id="link-image" disabled="#{pmvMessage.inputs}"
-													action="#{pmvMessage.imageState}">
-													<i class="fas fa-image fa-3x confIcone" data-bs-toggle="tooltip"
-														data-bs-placement="top" title="Adicionar Icone"></i>
-													<f:ajax execute="@form" render=":picture-id" />
-												</h:commandLink>
-											</div>
-										</div>
-
-									</div>
+								<div class="row form-group">
 									<!-- id input -->
-									<div class="col-sm-10 confInput">
-										<div id="id-div">
-											<span class="iconeSpan"><i class="fas fa-key"></i></span>
-											<div class="input-group">
-
-												<h:inputText id="id-input" class="form-control inputDesign id"
-													value="#{pmvMessage.idMessage}" disabled="true" pt:type="text"
-													name="id"
-													pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
-											</div>
+									<div class="col-3">
+										<div id="image-div">
+											<h:commandLink id="link-image" disabled="#{pmvMessage.inputs}"
+												action="#{pmvMessage.imageState}">
+												<i class="fas fa-image fa-3x confIcone" data-bs-toggle="tooltip"
+													data-bs-placement="top" title="Adicionar Icone"></i>
+												<f:ajax execute="@form" render=":picture-id" />
+											</h:commandLink>
+										</div>
+										<div id="list-images">
+											<p:selectOneListbox id="picture-id" value="#{pmvMessage.picture}" effect="fade"
+												var="p" filter="false" class="listbox" filterMatchMode="startsWith"
+												onclick="returnDIV(); bloquerTable();">
+												<f:converter converterId="pictureConverter" />
+												<f:selectItems value="#{pmvMessage.pictures}" var="picture"
+													itemLabel="#{picture.image}" itemValue="#{picture}" />
+												<p:ajax event="change" update="picture-box "
+													listener="#{pmvMessage.loadPictureImage}" />
+												<p:column>
+													<h:graphicImage value="/resources/images/pictures/#{p.image}" width="60"
+														height="60" />
+												</p:column>
+											</p:selectOneListbox>
 										</div>
 									</div>
-									<!-- end id input -->
-									<!-- Type Select -->
-									<div class="col-sm-10 confInput">
-										<div id="id-div">
-											<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
-											<div class="input-group">
-												<h:selectOneMenu class="form-control selectType"
-													disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}" id="tipo"
-													name="tipo">
-													<f:selectItem itemLabel="Type" itemValue="Type" />
-													<f:selectItems value="#{pmvMessage.type}" />
-												</h:selectOneMenu>
+									<div class="row col-9">
+
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-key"></i></span>
+												<div class="input-group">
+	
+													<h:inputText id="id-input" class="form-control inputDesign id"
+														value="#{pmvMessage.idMessage}" disabled="true" pt:type="text"
+														name="id"
+														pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- End Type Select -->
-									<!-- input name -->
-									<div class="col-sm-10 confInput">
-										<div id="name-div">
-											<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
-											<div class="input-group">
-												<h:inputText id="name-input" class="form-control name inputDesign"
-													pt:type="text" name="name"
-													pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
-													value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
-													maxlength="15" pt:autocomplete="off" />
+										<!-- end id input -->
+										<!-- Type Select -->
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
+												<div class="input-group">
+													<h:selectOneMenu class="form-control selectType"
+														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}" id="tipo"
+														name="tipo">
+														<f:selectItem itemLabel="Type" itemValue="Type" />
+														<f:selectItems value="#{pmvMessage.type}" />
+													</h:selectOneMenu>
+												</div>
 											</div>
 										</div>
-
-									</div>
-									<!-- end input name -->
-									<!-- message input -->
-									<div class="col-sm-10 confInput">
-										<div id="input-message-1">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-
-												<h:inputText id="message-box1"
-													class="form-control message-input inputDesign" maxlength="12"
-													autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
-													value="#{pmvMessage.message1}" pt:type="text" name="message-1"
-													pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
-													pt:autocomplete="off">
-													<p:ajax event="keyup" update="box-1, box-2, box-3, box-4, box-5,
-				box-6, box-7, box-8, box-9, box-10, box-11, box-12" listener="#{pmvMessage.messageRowOne}" />
-												</h:inputText>
+										<!-- End Type Select -->
+										<!-- input name -->
+										<div class="col-12 confInput">
+											<div id="name-div">
+												<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
+												<div class="input-group">
+													<h:inputText id="name-input" class="form-control name inputDesign"
+														pt:type="text" name="name"
+														pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+														value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
+														maxlength="15" pt:autocomplete="off" />
+												</div>
+											</div>
+	
+										</div>
+										<!-- end input name -->
+										<!-- message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-1">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+	
+													<h:inputText id="message-box1"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message1}" pt:type="text" name="message-1"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup" update="box-1, box-2, box-3, box-4, box-5,
+					box-6, box-7, box-8, box-9, box-10, box-11, box-12" listener="#{pmvMessage.messageRowOne}" />
+													</h:inputText>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- end message input -->
-									<div class="col-sm-10 confInput">
-										<div id="input-message-2">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-
-												<h:inputText id="message-box2"
-													class="form-control message-input inputDesign" maxlength="12"
-													autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
-													value="#{pmvMessage.message2}" pt:type="text" name="message-2"
-													pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
-													pt:autocomplete="off">
-													<p:ajax event="keyup" update="box-13, box-14, box-15, box-16, box-17,
-				box-18, box-19, box-20, box-21, box-22, box-23, box-24" listener="#{pmvMessage.messageRowTwo}" />
-												</h:inputText>
+										<!-- end message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-2">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+	
+													<h:inputText id="message-box2"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message2}" pt:type="text" name="message-2"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup" update="box-13, box-14, box-15, box-16, box-17,
+					box-18, box-19, box-20, box-21, box-22, box-23, box-24" listener="#{pmvMessage.messageRowTwo}" />
+													</h:inputText>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-sm-10 confInput">
-										<div id="input-message-3">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-
-												<h:inputText id="message-box3"
-													class="form-control message-input inputDesign" maxlength="12"
-													autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
-													value="#{pmvMessage.message3}" pt:type="text" name="message-3"
-													pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
-													pt:autocomplete="off">
-													<p:ajax event="keyup" update="box-25, box-26, box-27, box-28, box-29,
-					box-30, box-31, box-32, box-33, box-34, box-35, box-36" listener="#{pmvMessage.messageRowThree}" />
-												</h:inputText>
+										<div class="col-12 confInput">
+											<div id="input-message-3">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
+	
+													<h:inputText id="message-box3"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" disabled="#{pmvMessage.inputs}"
+														value="#{pmvMessage.message3}" pt:type="text" name="message-3"
+														pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+														pt:autocomplete="off">
+														<p:ajax event="keyup" update="box-25, box-26, box-27, box-28, box-29,
+						box-30, box-31, box-32, box-33, box-34, box-35, box-36" listener="#{pmvMessage.messageRowThree}" />
+													</h:inputText>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -366,17 +358,17 @@
 								<!-- Painel real -->
 								<!-- Final do painel real -->
 							</div>
-							<div class="btn-painel card-footer">
+							<div class="btn-painel card-footer pt-0 row row-cols-2">
 								<!-- button submit -->
 
-								<div id="col-sm-8">
+								<div id="col">
 									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_save}" id="btnCr1"
 										action="#{pmvMessage.messageActions}" disabled="#{pmvMessage.submit}"
 										class="btn btn-dark confBtn">
 									</h:commandButton>
 								</div>
 								<!-- button clear -->
-								<div id="col-sm-8">
+								<div id="col">
 									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_cancel}"
 										action="#{pmvMessage.cleanSelection}" id="btnCr2"
 										class="btn btn-dark confBtn conf2Btn" process="@this"

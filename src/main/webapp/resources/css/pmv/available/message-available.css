@@ -96,13 +96,6 @@ body {
 		width: 85%;
 		margin-left: 7.5%;
 	} */
-	.confIcone{
-		margin-left: 150px !important;
-		font-size: 50pt !important;
-		margin-top: -50px !important;
-		z-index: 999;
-		position: absolute;
-	}
 	.boardDetails{
 		margin-top: 0 !important;
 		height: 490px !important;
@@ -116,8 +109,8 @@ body {
 		text-align: center;
 	}
 	.ui-selectonelistbox {
-		height: 350px !important;
-		margin-top: 20px;
+		height: 210px !important;
+		width:auto !important;
 	}
 	.inputDesign{
 		height: 25px !important;
@@ -270,9 +263,9 @@ body {
 }
 .selectType{
 	text-align-last: center;
-	margin-left: 20%;
 	text-align: center;
-	height: 33px;
+	height: 25px !important;
+	padding: 0px;
 	font-size: 9pt;
 	border: solid 1px #767676;
 	border-radius: 25px;
@@ -330,23 +323,6 @@ body {
 
 /*TEXT AREA COMPONENT INPUT */
 
-/*Input text changes*/
-.input-group .id {
-	padding-left: 20px;
-}
-
-.input-group .name {
-	padding-left: 15px;
-}
-
-.input-group .select {
-	padding-left: 15px;
-}
-
-.input-group .message-input {
-	padding-left: 20px;
-}
-
 /*Font Size and Height - Inputs*/
 .input-group input {
 	font-size: 14px;
@@ -373,35 +349,25 @@ body {
 
 /*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
 #list-images {
-	margin-top: -40px;
 	display: none;
-	width: 100%;
+	width: 68px;
 	overflow-y: hidden;
 	overflow-x: hidden;
 	height: auto;
-	border: 1px solid transparent;
-}
-
-/*SELECTONELISTBOX - COMPONENTE*/
-.ui-selectonelistbox {
-	width: 50%;
-	border: solid 3px pink;
-	height: 500px;
-	background: transparent;
-	border: none;
-	margin-left: 25% !important;
-	margin-top: 10% !important;
 }
 
 /*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
 .ui-selectlistbox-listcontainer {
-	width: 100%;
 	height: 100% !important;
+	width: auto !important;
+}
+
+.ui-selectlistbox-list { 
+	width: auto !important;
 }
 
 /* ITENS - SELECTONELISTBOX*/
 .ui-selectlistbox-item {
-	width: 100%;
 	height: 65px;
 }
 
@@ -535,12 +501,8 @@ body {
 }
 
 .confIcone {
-	margin-left: 280%;
 	font-size: 60pt;
 	color: black;
-	margin-top: -60px;
-	text-decoration: none;
-
 }
 .confBtn{
 	width: 60%;
@@ -560,7 +522,6 @@ body {
 	cursor: pointer;
 }
 .inputDesign {
-	margin-left: 20%;
 	text-align: center;
 	height: 29px;
 	font-size: 9pt;
@@ -584,12 +545,22 @@ select{
 .iconeSpan{
 	margin-top: -3px;
 	position: absolute;
-	padding-left: 22%;
+	padding-left: 2%;
 	color: #292525;
 	height: 40px;
 	z-index: 999;
 }
-.btn-painel{
-	margin-top: 20px;
+
+.buttons-page {
+	position: absolute;
+    top: -17px;
+    right: 10px;
 }
 
+.timer-row {
+	margin-bottom: -17px;
+}
+
+.text-timer {
+	font-size: 12px;
+}
