@@ -571,7 +571,6 @@ public class OccurrencesBean {
 		OccurrencesDAO dao = new OccurrencesDAO();
 
 		status = dao.atualizarOcorrencia(data);
-
 		if(status) {
 
 			//btn
@@ -582,7 +581,10 @@ public class OccurrencesBean {
 			fields = true;
 			edit = true;
 			table = true;
-
+			
+			total = 0;
+			listUpdate = null;
+			
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 
 			occurrences = dao.listarOcorrencias();
@@ -693,6 +695,7 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		//Global
 		value = pegarId();
 
