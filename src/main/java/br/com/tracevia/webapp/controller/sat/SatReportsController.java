@@ -814,9 +814,7 @@ public class SatReportsController {
 		else if(!satReport.getPeriod().equals("24 hours") && !satReport.getPeriod().equals("01 hour") && !satReport.getPeriod().equals("06 hours")) {
 			    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 			    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));	
-			    
-			    System.out.println(hr);
-			    System.out.println(minuto);
+			    			 
 			}
 				  
 		//System.out.println(satReport.getStartDate());

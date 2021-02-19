@@ -20,121 +20,21 @@
 	
 	<ui:define name="head" >
 	
-	<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />	
-	<h:outputStylesheet library="css/reports" name="reports_template.css"  /> 	
+	<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
+		<h:outputScript library="js/datepicker" name="datepicker.js" />
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/validation-forms/reports"
+			name="mto-reports.js" />	
 
-  <script>
-  /*<![CDATA[ */
-	  
-	$(document).ready(function(){	  
-	
-function toDate(dateStr) {
-	  var parts = dateStr.split("/")
-	  return new Date(parts[2], parts[1] - 1, parts[0])
-	}
-
-jQuery.validator.addMethod("maxDate", function (value, element) {
-    var max = 45;
-    var startDate =  $('#dateStart').val();
-    var endDate =  $('#dateEnd').val();
-        
-    var dataInicio = toDate(startDate);
-    var dataFim = toDate(endDate);
-               
-    var days = (dataFim - dataInicio) / (1000*3600*24);
-    
-    if (days > max){
-    	
-    	 $('#dateEnd').removeClass('valid').addClass('invalid');
-    	 $('#dateEnd-error').parent().find('.error').fadeIn(500);
-    	 return false;
-    }
-    else{  $('#dateEnd').removeClass('invalid').addClass('valid'); return true;      
-    }
-}, "#{validatorMessages.validator_max_date}");
-
-jQuery.validator.addMethod("greaterThanStartDate", 
-		function(value, element, params) {
-
-		    if (!/Invalid|NaN/.test(new Date(value))) {
-		    	 $('#dateEnd').removeClass('valid').addClass('invalid');
-		    	 $('#dateEnd-error').parent().find('.error').fadeIn(500);
-		        return new Date(value) >= new Date($(params).val());
-		    }
-		    
-		    else {
-		    	$('#dateEnd').removeClass('invalid').addClass('valid');
-		    return isNaN(value) && isNaN($(params).val()) 
-		        || (Number(value) >= Number($(params).val())); 
-		    
-            }
-		    
-		},"#{validatorMessages.validator_start_date_greater_than_end_date_header}");
-
-
-    //form validation rules
-    $("#form_myModal").validate({    	
-        rules: {
-            equips:{
-              required:true
-            }, 
-            periods:{
-              required: true
-            },
-            vehicles:{
-            	required: true
-            },
-            dateStart:{
-               required: true,
-               dateITA: true
-            },
-            dateEnd: {
-              required: true,
-              greaterThanStartDate: "#dateStart",
-              dateITA: true,
-              maxDate: true
-            }
-              
-          },
-        messages: {
-            equips:{
-            	required: "#{requiredMessages.required_sat_reports_select_equipments}"
-             },
-            periods:{ required: "#{requiredMessages.required_sat_reports_select_periods}" },
-            vehicles:{ required: "#{requiredMessages.required_sat_reports_select_vehicles}"}, 
-            dateStart:{
-            	required: "#{requiredMessages.required_sat_reports_input_date_start }",
-            	dateITA:  "#{validatorMessages.validator_valid_date}"
-            	
-            },
-            dateEnd:{ required: "#{requiredMessages.required_sat_reports_input_date_start}",            	      
-            	      dateITA: "#{validatorMessages.validator_valid_date}"
-             }
-          },
-          errorClass : "error",
-          // use highlight and unhighlight
-          highlight: function(element, errorClass) {
-           $(element).addClass(errorClass);
-           $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
-           $(element.form).find("select").addClass('invalid');
-           $(element.form).find("input").addClass('invalid');
-           },
-          unhighlight: function(element, errorClass) {
-           $(element).removeClass(errorClass);
-           $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
-           $(element.form).find("select").removeClass('invalid');
-           $(element.form).find("input").removeClass('invalid');
-           
-          } 	    
-      });   
-    
-	});
- 
-       
-    /* ]]> */
-    
-  </script> 
 
 	</ui:define>
 	
@@ -155,99 +55,227 @@ jQuery.validator.addMethod("greaterThanStartDate",
   	 	 
     </h:dataTable>
     
-    <!-- Button FORM -->
-    
-       <h:form id="form-btns">
-			<div id="buttons" >
-			<div id="btn-search-tab" class="text-center">
-           <h:commandButton id="btn-tab-search" class="btn btn-dark panel-button" 
-             value="#{mtoLabels.mto_reports_btn_search}">
-           <f:passThroughAttribute name="data-toggle" value="modal" />
-           <f:passThroughAttribute name="data-target" value="#modalReportOption" />           
-           <f:ajax execute="@form" render="@none" />
-           </h:commandButton>
-            </div>		 
-							     
-			<div id="btn-clean-tab">				
-			<h:commandButton value="#{mtoLabels.mto_reports_btn_clean}" id="btn-tab-reset"
-				class="btn btn-dark panel-button" onclick="resetTable();">	
-				<f:ajax execute="@form" render="@form" />
-				 </h:commandButton>	   		   	
-		   </div>		   
-		   </div>
-		 </h:form>		 
-		 </div>	
-		 
-		 <h:form id="excelForm">		 
-		 <h:commandLink ajax="false" immediate="true"
-					action="#{mtoReportsBean.download}" widgetVar="startLink">
-					  <h:graphicImage
-					    url="/resources/icons/microsoft/microsoft_excel_logo.png"
-						styleClass="ui-image-icon-download" /> 								
-		 </h:commandLink>		 
-		 </h:form> 
-	 	 
-	<!-- myModal -->
-   <div class="modal fade" id="modalReportOption" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <h:form class="modal-content" name="form_myModal" id="form_myModal">
-             <div class="modal-header text-center">
-             <h4 class="modal-title w-100 font-weight-bold">#{mtoLabels.mto_reports_modal_title}</h4>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-             </button>              
-            </div>
-            <div class="modal-body">    
-                 <br/>
-						<div class="contentGroupReports">
-							<div class="select-field">								
-							    <span><i class="fas fa-hdd"></i></span>								    					    
-							      <select name="equip" id="equip">	
-							       <option value="" >#{mtoLabels.mto_reports_select_station}</option>						      
-								   	 <ui:repeat var="eqp"  value="#{mtoReportsBean.equipments}"  varStatus="eqpStatus" >
-								         <option value="#{eqp.value}" > #{eqp.label} </option>	                                  
-                                        </ui:repeat> 
-                                   </select>										    							   														
+    	 	<!-- BUTTONS FORM -->
+
+			<h:form id="form-btns">
+				<!-- BUTTONS DIV CONTENT -->
+				<div id="buttons">
+
+					<!-- BUTTON SEARCH DIV -->
+					<div id="btn-search" class="text-center">
+						<h:commandButton id="btn-tab-search"
+							class="btn btn-dark draw-button fas fa-search fa-3x" value=""
+							data-toggle="tooltip" data-placement="bottom"
+							title="#{mtoLabels.mto_reports_btn_search}">
+							<f:passThroughAttribute name="data-toggle" value="modal" />
+							<f:passThroughAttribute name="data-target"
+								value="#modalReportOptions" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+					</div>
+
+					<!-- BUTTON RESET DIV -->
+					<div id="btn-reset">
+						<h:commandButton id="btn-tab-reset"
+							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
+							value="" data-toggle="tooltip" data-placement="bottom"
+							disabled="#{mtoReportsBean.clearBool}"
+							title="#{mtoLabels.mto_reports_btn_clean}">
+							<f:passThroughAttribute name="data-toggle" value="modal" />
+							<f:passThroughAttribute name="data-target" value="#modalClear" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+					</div>
+					
+					<!-- BUTTON EXCEL DIV -->					
+				   <div id="btn-excel" >
+					<h:commandButton id="excel-act" value=""
+					disabled="#{mtoReportsBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{mtoLabels.mto_reports_btn_excel}"
+					action="#{mtoReportsBean.download}" widgetVar="excelWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalDownload" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+				   </div>
+					
+				</div>
+
+				<!-- MODAL CLEAR -->
+				<div class="modal fade" id="modalClear" tabindex="-1"
+					aria-labelledby="clearModalLabel" aria-hidden="true">
+					<div class="modal-dialog confirmation-modal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{mtoLabels.mto_reports_modal_alert_clear_title}</h5>
 							</div>
-							<div class="error-label"><label for="equips" class="error" id="equips-error"></label></div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">#{mtoLabels.mto_reports_modal_alert_clear_table}</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton
+									value="#{mtoLabels.mto_reports_modal_alert_btn_yes}"
+									action="#{mtoReportsBean.resetFormValues(2)}"
+									class="btn btn-dark form-draw-button" />
+
+								<h:commandButton
+									value="#{mtoLabels.mto_reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+							</div>
 						</div>
-											
-						<div class="contentGroupReports">
-								<div class="select-field">									
-									<span><i class="fas fa-calendar"></i></span>
-									<select name="year" id="year" size="1"  >										
-								     <option value="" >#{mtoLabels.mto_reports_select_year}</option>
-								   	   <ui:repeat var="yr"  value="#{mtoReportsBean.years}"  varStatus="yearStatus" >
-								         <option value="#{yr.value}" > #{yr.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>																	
+					</div>
+				</div>
+				<!-- MODAL CLEAR END -->
+
+			</h:form>
+		
+
+		<!-- BUTTONS FORM -->
+
+		<!-- EXCEL FORM -->
+		<h:form id="form-excel">
+			
+			<!-- MODAL DOWNLOAD -->
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+				<div class="modal-dialog confirmation-modal">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{mtoLabels.mto_reports_modal_alert_download_title}</h5>
+						</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{mtoLabels.mto_reports_modal_alert_download_file_excel} <span
+									class="extension">#{mtoLabels.mto_reports_modal_alert_extension_xlsx}</span>
+								?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{mtoLabels.mto_reports_modal_alert_btn_yes}"
+								action="#{mtoReportsBean.download}"
+								class="btn btn-dark form-draw-button" />
+							<h:commandButton
+								value="#{mtoLabels.mto_reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- MODAL DOWNLOAD END -->
+
+		</h:form>
+
+		<!-- EXCEL FORM -->
+	 	 
+<!-- MODAL SUBMIT -->
+
+		<div class="modal fade" id="modalReportOptions" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<h:form class="modal-content" name="report-form"
+					id="report-form">
+					<div class="modal-header text-center">
+						<h4 class="modal-title w-100 font-weight-bold">#{mtoLabels.mto_reports_modal_title}</h4>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<br />
+
+						<!-- EQUIPMENTS OPTIONS -->
+
+						<div class="form-row">
+							<div class="form-group col-sm-12 select-field">
+								<span><i class="fas fa-hdd"></i></span> <span for="equip"
+										class="valid-icon-hidden"></span> <select name="equip"	id="equip">
+										<option value="">#{mtoLabels.mto_reports_select_station}</option>
+										<ui:repeat var="eqp" value="#{mtoReportsBean.equipments}"
+											varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select>
+							  </div>
+							  <div class="error-label">
+									<label for="equip" class="error" id="equip-error"></label>
 								</div>
-								<div class="error-label"><label for="years" class="error" id="years-error"></label></div>
+						  </div>
+						
+							<!-- MONTH OPTIONS -->
+
+							<div class="form-row">
+							<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar"></i></span> <span for="month"
+										class="valid-icon-hidden"></span> <select name="month"
+										id="month" size="1">
+										<option value="">#{mtoLabels.mto_reports_select_month}</option>
+										<ui:repeat var="mth" value="#{mtoReportsBean.months}"
+											varStatus="mthStatus">
+											<option value="#{mth.value}">#{mth.label}</option>
+										</ui:repeat>
+									</select>
+								</div>
+								<div class="error-label">
+									<label for="month" class="error" id="month-error"></label>
+								</div>
 							</div>
-							
-							<div class="contentGroupReports">
-								<div class="select-field">									
-							      <span><i class="fas fa-calendar-alt"></i></span>
-									<select name="month" id="month" size="1"  >										
-								     <option value="" >#{mtoLabels.mto_reports_select_month}</option>
-								   	   <ui:repeat var="mth"  value="#{mtoReportsBean.months}"  varStatus="monthStatus" >
-								         <option value="#{mth.value}" > #{mth.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>																	
+														
+							<!-- YEARS OPTIONS -->
+
+							<div class="form-row">
+							<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar-alt"></i></span> <span for="year"
+										class="valid-icon-hidden"></span> <select name="year"
+										id="year" size="1">
+										<option value="">#{mtoLabels.mto_reports_select_year}</option>
+										<ui:repeat var="yr" value="#{mtoReportsBean.years}"
+											varStatus="yrStatus">
+											<option value="#{yr.value}">#{yr.label}</option>
+										</ui:repeat>
+									</select>
 								</div>
-								<div class="error-label"><label for="months" class="error" id="months-error"></label></div>
-							</div>	
-							
-					      <input type="hidden" name="period" value="month" />	 					
-													
-			     </div>
-            <div class="modal-footer">                         
-                <h:commandButton value = "ENVIAR!" action="#{mtoReportsBean.GetReports(2)}"  class="btn btn-dark" />                
-                <h:commandButton value = "LIMPAR!" action="#{mtoReportsBean.GetReports(2)}"  class="btn btn-dark" />              
-            </div>
-        </h:form>
-    </div>
+								<div class="error-label">
+									<label for="year" class="error" id="year-error"></label>
+								</div>
+							</div>												 
+						</div>
+
+						<!-- MODAL BUTTONS -->
+
+					<div class="modal-footer">
+
+						<h:commandButton value="#{mtoLabels.mto_reports_form_btn_send}"
+							id="btn-form-send" action="#{mtoReportsBean.GetReports(2)}"
+							class="btn btn-dark form-modal-draw-button" />
+
+						<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
+							id="btn-form-reset" immediate="true" type="reset"							
+							class="btn btn-dark form-modal-draw-button  reset-btn">
+							<f:ajax execute="@form"
+								render=":equip :month :year" />
+						</h:commandButton>
+					</div>
+				</h:form>
+			</div>
+		</div>
+
+		<!-- MODAL SUBMIT -->
+		
 </div>
+
+<script type='text/javascript'>
+
+    weatherMonthValidation("#report-form", "equip", "month", "year");
+      </script>
 	 
 </ui:define>
 

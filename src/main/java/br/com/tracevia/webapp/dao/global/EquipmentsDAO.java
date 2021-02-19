@@ -435,7 +435,7 @@ public class EquipmentsDAO {
 		String sql = "SELECT equip_id, name FROM "+modulo+"_equipment WHERE visible = 1";
 				
 		try {
-			
+							
 			 //GET CONNECTION			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
