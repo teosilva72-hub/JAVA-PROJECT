@@ -60,9 +60,9 @@ public class uploadBean {
  	        fileNameDate = part.getSubmittedFileName();
  	        InputStream fileContent = part.getInputStream();
  	        //System.out.println("Arquivo "+fileName +"> "+file);
- 	        Files.copy(fileContent, new File(directoryDate, minute+"-"+second+"-"+fileNameDate).toPath());
+ 	        Files.copy(fileContent, new File(directoryDate, minute+second+"_"+fileNameDate).toPath());
  	       
- 	        System.out.println("Arquivo enviado com sucesso: "+minute+"-"+second+"-"+fileNameDate);
+ 	        System.out.println("Arquivo enviado com sucesso: "+minute+second+"-"+fileNameDate);
  	        
  	        //teste list files
  	        
@@ -89,7 +89,7 @@ public class uploadBean {
     	        fileName = part.getSubmittedFileName();
     	        InputStream fileContent = part.getInputStream();
     	        //System.out.println("Arquivo "+fileName +"> "+file);
-    	        Files.copy(fileContent, new File(directory, minute+"-"+second+"-"+fileName).toPath());
+    	        Files.copy(fileContent, new File(directory, minute+second+"_"+fileName).toPath());
     	       
     	        System.out.println("Arquivo enviado com sucesso: "+minute+"-"+second+"-"+fileName);
     	        

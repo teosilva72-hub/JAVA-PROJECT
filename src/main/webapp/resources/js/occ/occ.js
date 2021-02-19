@@ -1,5 +1,6 @@
 //////////////////////////////reload////////////////////////
 function reload(){
+
 	document.location.reload(false);
 }
 //////////////////////////////////////////////////////
@@ -16,6 +17,7 @@ function formFile(){
 function resetFormFile(){
 	$('listandoFile').each (function(){
   this.reset();
+
 });
 }
  //////////////////////////////////////////////////////////////
@@ -176,6 +178,12 @@ function bloquerTable(){
 			document.getElementById("anularAtualHidden").style.display = "none";
 			document.getElementById("anularDepois").style.display = "block";
 		}
+		function displayPdf(){
+			document.getElementById("iconPdf").style.display = "block";
+		}
+		function hiddenPdf(){
+			document.getElementById("iconPdf").style.display = "none";
+		}
 /////////////////////////////////////////////////////////////////////////////
 		//Levar informações da tabela para os inputs
 		function selecaoTable(){
@@ -186,7 +194,7 @@ function bloquerTable(){
 	     	//Check if table row is selected on not (Change state) (true or false)
 	      	if(!row.hasClass('selected')){
 		      	selected = true;
-				
+				//document.getElementById("iconPdf").style.display = "block";
 				hiddenAnular();			 
 				
 		    }else{
@@ -707,9 +715,14 @@ function alterarBtn(){
 	document.getElementById("save").style.display = "none";
 	document.getElementById("alterar").style.display = "block";
 	document.getElementById("listDateFile").style.display = "block";
+	document.getElementById("new").disabled = true;
+	//document.getElementById("").disabled = true;
+	
 	//alert("estou aqui");
 	hiddenFile();
 	valueOcc();
+	listingFile();
+	bloquerTable();
 }
 function hiddenAlterar(){
 	document.getElementById("alterar").style.display = "none";
@@ -920,21 +933,80 @@ function validatorFile2(){
 		return mostrarTab2();
 	}
 }
+
 setTimeout(function() {
-   $('#msgSave').fadeOut('fast');
+   $('#msgSave1').fadeOut('fast');
 },3000);
 setTimeout(function() {
-   $('#msgDelete').fadeOut('fast');
+   $('#msgDelete2').fadeOut('fast');
 }, 3000);
 setTimeout(function() {
-   $('#msgDownload').fadeOut('fast');
+   $('#msgDownload3').fadeOut('fast');
+}, 3000);
+setTimeout(function() {
+   $('#msgFinished').fadeOut('fast');
 }, 3000);
 function msgDelete(){
-	document.getElementById("msgDelete").style.display = "block";
+	//document.getElementById("msgDelete").style.display = "block";
+	document.getElementById("msgDelete2").style.display = "block";
 }
 function msgDownload(){
-	document.getElementById("msgDownload").style.display = "block";
+	//document.getElementById("msgDownload").style.display = "block";
+	document.getElementById("msgDownload3").style.display = "block";
 }
 function msgSaveFile(){
-	document.getElementById("msgSave").style.display = "block";
+	//document.getElementById("msgSave").style.display = "block";
+	document.getElementById("msgSave1").style.display = "block";
+}
+function msgFinished(){
+	document.getElementById("msgFinished").style.display = "block";
+}
+function msgFinishedHidden(){
+	document.getElementById("msgFinished").style.display = "none";
+}
+//mascara dos input KM
+ $(document).ready(function () { 
+        var $km = $("#eventoKm");
+        $km.mask('000+000', {reverse: false});
+    });
+$(document).ready(function () { 
+        var $km = $("#trasitoExtKm");
+        $km.mask('000+000', {reverse: false});
+    });
+
+
+function listingFileBtnHidden(){
+	//document.getElementById("btnListingFile").style.display = "none";
+	//document.getElementById("tableListingFile").style.display = "none";
+}
+function listingFile(){
+	document.getElementById("tableListingFile").style.display = "none";
+}
+function listingFile1(){
+	document.getElementById("tableListingFile").style.display = "block";
+}
+function disableEdit(){
+	document.getElementById("edit").disabled = true;
+}
+function hiddenBtnIcon(){
+	document.getElementById("updateDeleteIcon").style.display = "none";
+	document.getElementById("updateDownloadIcon").style.display = "none";
+
+}
+function btnIconBlock(){
+	document.getElementById("updateDeleteIcon").style.display = "block";
+	document.getElementById("updateDownloadIcon").style.display = "block";
+
+}
+function fileTotal(){
+	document.getElementById("fileTotal").style.display = "block";
+}
+function fileTotalHidden(){
+	document.getElementById("fileTotal").style.display = "none";
+}
+function listUpdateFile1(){
+	document.getElementById("listUpdateFileT").style.display = "none"
+}
+function listUpdateFile2(){
+	document.getElementById("listUpdateFileT").style.display = "block"
 }

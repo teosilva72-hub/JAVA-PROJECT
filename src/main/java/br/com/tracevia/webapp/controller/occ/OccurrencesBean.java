@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.occ;
-
-import java.awt.Image;
+import com.itextpdf.text.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -14,10 +13,15 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -28,16 +32,38 @@ import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
+import org.jboss.logging.Cause;
+import org.snmp4j.util.TableListener;
+
+import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfWriter;
 @ManagedBean(name="occurrencesBean")
 @ViewScoped
 public class OccurrencesBean {
 
 	private OccurrencesData data;
+	private OccurrencesData getPdf;
+	private UserAccountBean userId;
 	private OccurrencesDetails details;
 
 	OccurrencesDAO dao;
@@ -47,12 +73,14 @@ public class OccurrencesBean {
 
 	private String action, title_modal, message_modal;
 
-	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload; 
-	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage;
-	private String[] listarFile, listUpdate, imagem, FileName;
+	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
+	minutePdf, secondPdf, dayPdf, hourPdf; 
+	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
+	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
+	
 	private File arquivos[], directory, fileWay;
-	private int bytes, total;
-	private int value, content;
+	private int bytes, total, situation;
+	private int value, value1, value2, content;
 	private Part file = null;
 	private Part file2 = null;
 	private ImageIcon image;
@@ -123,6 +151,12 @@ public class OccurrencesBean {
 		return damageUnity;
 	}
 
+	public String[] getTableFile() {
+		return tableFile;
+	}
+	public void setTableFile(String[] tableFile) {
+		this.tableFile = tableFile;
+	}
 	public String[] getFileName() {
 		return FileName;
 	}
@@ -222,7 +256,7 @@ public class OccurrencesBean {
 	public List<SelectItem> getMinutos() {
 		return minutos;
 	}
-	
+
 	public String getAbsoluteImage() {
 		return absoluteImage;
 	}
@@ -231,6 +265,13 @@ public class OccurrencesBean {
 	}
 	public String getPathImage() {
 		return pathImage;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 	public void setPathImage(String pathImage) {
 		this.pathImage = pathImage;
@@ -241,7 +282,7 @@ public class OccurrencesBean {
 	public void setDownloadPath(String downloadPath) {
 		this.downloadPath = downloadPath;
 	}
-	
+
 	public String getPathDownload() {
 		return pathDownload;
 	}
@@ -377,7 +418,7 @@ public class OccurrencesBean {
 
 	@PostConstruct
 	public void initialize() {	
-
+		//listingUpdate();
 		occurrences = new ArrayList<OccurrencesData>();
 		rodovias = new ArrayList<SelectItem>();
 		estado_locais = new  ArrayList<SelectItem>();
@@ -400,8 +441,6 @@ public class OccurrencesBean {
 		damageUnity = new ArrayList<SelectItem>();
 		involvedType = new ArrayList<SelectItem>();
 		damage_gravity = new ArrayList<SelectItem>();
-
-
 		try {
 
 			OccurrencesDAO dao = new OccurrencesDAO();
@@ -428,7 +467,6 @@ public class OccurrencesBean {
 			damageUnity = dao.dropDownFieldValues("damageUnity");
 			involvedType = dao.dropDownFieldValues("involvedType");
 			damage_gravity = dao.dropDownFieldValues("damageSeverity");
-
 
 			horas = new  ArrayList<SelectItem>();
 
@@ -466,12 +504,11 @@ public class OccurrencesBean {
 
 			edit = true;
 			save = true;
-			reset = true;  
+			reset = true;
 			new_ = false;
 			fields = true;
 			table = true;
-			
-			
+
 			mainPath = "C:\\Tracevia\\";
 			pathImage = "http://localhost:8081/occ/";
 			downloadPath = "file:///C:/Tracevia/";
@@ -483,12 +520,15 @@ public class OccurrencesBean {
 
 	public int pegarId() throws Exception{
 
-		OccurrencesDAO dao = new OccurrencesDAO();
-		value = dao.GetId();
-		value += 1;
+		int second = LocalDateTime.now().getSecond();
+		int date = LocalDateTime.now().getYear();
+		OccurrencesDAO x = new OccurrencesDAO();
+		value = x.GetId();
+		//String e = userId.getUser_id();
+		value += (1+second);
 		data = new OccurrencesData();
 		data.setData_number(String.valueOf(value));
-
+		//System.out.println(e+ "<<< testando aqui ahr");
 		return value;
 
 	}
@@ -499,7 +539,7 @@ public class OccurrencesBean {
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 		occNumber = dao.cadastroOcorrencia(data);
-
+		//int teste = Integer.parseInt(occNumber);
 		//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
 
@@ -515,17 +555,14 @@ public class OccurrencesBean {
 			table = true;
 			listarFile = null;
 			total = 0;
-			//resetOccurrencesData(); // Clean form
 
 			occurrences = dao.listarOcorrencias(); // List occurrences    
-
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
+			//getRowValue();
 
-			System.out.println("PATH UPDATED: "+sucess);
 		}
 
 	}
-
 
 	public void atualizarOcorrencia() throws Exception {
 
@@ -534,8 +571,6 @@ public class OccurrencesBean {
 		OccurrencesDAO dao = new OccurrencesDAO();
 
 		status = dao.atualizarOcorrencia(data);
-
-		//org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 
 		if(status) {
 
@@ -548,12 +583,9 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//listarFile = null;
-			listUpdate = null;
-			total = 0;
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 
 			occurrences = dao.listarOcorrencias();
-			listUpdate = null;
 		}
 
 	}
@@ -571,42 +603,70 @@ public class OccurrencesBean {
 		edit = true;
 		table = true;
 
-
 		//var 
 		listarFile = null;
 		listUpdate = null;
 		total = 0;
 
-		//mÃ©todo
 		deleteDirectory();
-
 	}
-	public void getRowValue() {
-
-		//System.out.println(rowkey);
-		//System.out.println(selectedRow);
+	public void getRowValue() throws Exception {
 
 		try {
-
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("displayPdf()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			OccurrencesDAO dao = new OccurrencesDAO();
 			data = dao.buscarOcorrenciaPorId(rowkey);
-
+			getPdf = dao.submitPdf(rowkey);
+			pathSQL = data.getLocalFiles();
+			String x = data.getState_occurrences();
+			situation = Integer.parseInt(x);
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
-
-		System.out.println("SelectRow: "+selectedRow);
-
+		//listando arquivos quando clica na linha da tabela
+		TableFile();
+		
 		//Se a linha da table estiver selecionada:
-		if(selectedRow) {
+		if(selectedRow ) {
+			
+			//se a situação for igual 30 ou 31
+			//não é possivel fazer alteração
+			if(situation == 31 || situation == 30) {
 
-			save = true;
-			alterar = true;
-			edit = false;
-			new_ = true;
-			reset = true;
-			fields = true; 
+				save = true;
+				alterar = true;
+				reset = true;
+				new_ = false;
+				fields = true;
+				edit = true;
+				table = true;
+				
+				//listar arquivos
+				
+				//execute js
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+				
+				//senão pode relizar normalmente alterações
+			}else {
+				//btn
+				save = true;
+				alterar = true;
+				edit = false;
+				new_ = false;
+				reset = true;
+				fields = true; 
+				//execute js
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			}
 
+			//se não estiver selecionada a linha da tabela
 		}else {
 
 			save = true;
@@ -616,23 +676,23 @@ public class OccurrencesBean {
 			fields = true;
 			edit = true;
 			table = true;
-			//function js
-			//org.primefaces.context.RequestContext.getCurrentInstance().execute("reload()");
+			
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFileBtn()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
+			tableFile = null;
+			total = 0;
 		}
+
 	}
 
-	//Habilitar botï¿½es (Default)
 	//Action NOVO
 	public void btnEnable() throws Exception {
 
-		edit = false;
-		save = false;
-		alterar = false;
-		reset = false;
-		new_ = true;
-		fields = false;
-		action = "save";
-
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 		//Global
 		value = pegarId();
 
@@ -643,13 +703,42 @@ public class OccurrencesBean {
 			//CREATE LOCAL PATH
 			localPath = localPath(occNumber);
 			createFileFolder(mainPath, localPath);	
-
-			//Criou a pasta ok
+			
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
+			
+			
+			edit = true;
+			save = false;
+			alterar = true;
+			reset = false;
+			new_ = true;
+			fields = false;
+			action = "save";
 
 		}
 
 	}
+	public void btnEdit() {
+		
+		//btn
+		fields = false;
+		reset = false;
+		save = true;
+		edit = true;
+		alterar = false;
+		
+		//js
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
 
+		//listando arquivos
+		listingUpdate();
+	}
 	//CREATE DIRECTORY FOR FILES
 	public void createFileFolder(String mainPath, String localPath) {
 
@@ -669,7 +758,7 @@ public class OccurrencesBean {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		path = local.getYear()+"\\"+local.getMonthValue()+"\\OCC_"+occ_number;
+		path = local.getYear()+"//"+local.getMonthValue()+"//OCC_"+occ_number;
 
 		return path;
 	}
@@ -692,7 +781,9 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");
 	}
+
 	public void uploadFile() throws Exception {
 
 		uploadBean up = new uploadBean();	
@@ -713,26 +804,24 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 	}
 
 	public String[] listingUpdate() {
-
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+		
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		
 		//pega o id da tabela.
 		int id = getValue();
 
-		//chamando mÃªs e ano, para passar para o caminho.
-		DateTimeApplication dddd = new DateTimeApplication();
-		LocalDate data = dddd.localeDate();
-
 		//criando caminho da seleÃ§Ã£o da pasta.
-		way = data.getYear()+"\\"+data.getMonthValue()+"\\OCC_"+id;
+		way = pathSQL;
 
 		//caminho criado
 		fileWay = new File(mainPath+way);
-		System.out.println("Estamos aqui: > "+ fileWay);
+		//System.out.println("Estamos aqui: > "+ fileWay);
 
 		int x = 0;
 
@@ -749,17 +838,58 @@ public class OccurrencesBean {
 			x++;
 
 		}
-
-		fields = false;
-		reset = false;
-		save = true;
-		edit = true;
-		alterar = false;
-		action = "update";
+		
 
 		return listUpdate;
 	}
+	public String[] TableFile() {
+		
+		String b = data.getState_occurrences();
+		situation = Integer.parseInt(b);
+		
+		if(situation == 31 || situation == 30) {
 
+			save = true;
+			alterar = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			edit = true;
+			table = true;
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+		}
+		
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");
+
+		//pega o id da tabela.
+		int id = getValue();
+
+		//criando caminho da seleção da pasta.
+		way = pathSQL;
+
+		//caminho criado
+		fileWay = new File(mainPath+way);
+		//System.out.println("Estamos aqui: > "+ fileWay);
+
+		int x = 0;
+
+		arquivos = fileWay.listFiles();
+
+		tableFile = new String[arquivos.length];
+		total = arquivos.length;
+		while (x != arquivos.length){
+
+			tableFile[x] = arquivos[x].getName();
+
+			System.out.println("Position: "+x+" < Arquivo na pasta > "+ tableFile[x]);
+
+			x++;
+
+		}
+
+		return tableFile;
+
+	}
 	public String[] listFiles() throws Exception{
 
 		//variÃ¡vel do tipo int
@@ -767,7 +897,7 @@ public class OccurrencesBean {
 
 		//local do armazenamento do arquivo
 		directory = new File(mainPath+path+"\\");
-		
+
 		//listar arquivos
 		arquivos = directory.listFiles();
 
@@ -776,81 +906,48 @@ public class OccurrencesBean {
 		System.out.println("Total Files: "+ total);
 
 		listarFile = new String[arquivos.length];
-		
-		//tratando imagem
-			/*OccurrencesBean pegar= new OccurrencesBean();
-			int id = pegar.pegarId();
-			DateTimeApplication dddd = new DateTimeApplication();
-			LocalDate data = dddd.localeDate();
-			String imagePath = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/";
-				*/
-		
+
 		//lopping para pegar arquivos dentro do diretÃ³rio
 		while (content != arquivos.length){
 			//pega arquivo pelo nome
-			listarFile[content] = arquivos[content].getName();
-			//passando a imagem
-			//absoluteImage = pathImage+imagePath+listarFile[content];
-			
+			listarFile[content] = arquivos[content].getName();		
 			System.out.println(content+": Arquivo recebido "+ listarFile[content]);
-			//System.out.println("Testando aqui: "+absoluteImage);
-
 			content++;
-			
+
 		} 
-		
+
 		return listarFile;
 	}
-	public String caminhoImage(String myImg) throws Exception{
-		
-		//tratando imagem
-		OccurrencesBean pegar= new OccurrencesBean();
-		int id = pegar.pegarId();
-		DateTimeApplication dddd = new DateTimeApplication();
-		LocalDate data = dddd.localeDate();
-		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/";
-			
-		absoluteImage = pathImage+imagePath+myImg;
-		
-		System.out.println("Testando aqui: "+ absoluteImage + ">>>"+ myImg);
-		
-		return absoluteImage;
-		
-	}
+
 	//Buscando imagem
 	public String getImageUpload(String myImg) throws Exception{
-		
+
 		//gerando o caminho onde se encontra a imagem
 		OccurrencesBean pegar= new OccurrencesBean();
 		int id = pegar.pegarId();
 		DateTimeApplication dddd = new DateTimeApplication();
 		LocalDate data = dddd.localeDate();
-		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/";
-			
+		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/"+"OCC_"+id+"/";
+
 		absoluteImage = pathImage+imagePath+myImg;
-		
-		System.out.println("Testando aqui: "+ absoluteImage);
-		
+
 		return absoluteImage;
-		
+
 	}
-public String caminhoImageUpdate(String myImg) throws Exception{
-		
+	public String getImageUpdate(String myImg) throws Exception{
+
 		//gerando o caminho onde se encontra a imagem
 		int id = getValue();
-		DateTimeApplication dddd = new DateTimeApplication();
-		LocalDate data = dddd.localeDate();
-		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/";
-			
+
+		String imagePath = pathSQL+"/";
+
 		absoluteImage = pathImage+imagePath+myImg;
-		
-		System.out.println("Testando aqui: "+ id);
-		
+
 		return absoluteImage;
-		
+
 	}
-	
-	public void deleteFileUpdate(String file) {
+
+	public void deleteFileUpdate(String file) throws Exception {
 		try {
 			fileWay = new File(mainPath+way+"\\");
 			System.out.println(fileWay+file);
@@ -864,19 +961,27 @@ public String caminhoImageUpdate(String myImg) throws Exception{
 				currentFile.delete();
 
 				System.out.println("Arquivo excluido com sucesso! ");
-
+				
+				save = true;
+				alterar = false;
+				edit = true;
+				new_ = true;
+				reset = false;
+				fields = false;
+				
 				total = total - 1;
-				listingUpdate();
-
+				
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDelete()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
 			}
 
 		}catch(Exception ex) {
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 			System.out.println("Erro ao excluir arquivo");
 		}
-
+		
 	}
 	public void deleteFile(String file){
 
@@ -896,13 +1001,14 @@ public String caminhoImageUpdate(String myImg) throws Exception{
 				currentFile.delete();
 
 				System.out.println("Arquivo excluido com sucesso! "+currentFile);
-
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 				total -=  1;
 				listFiles();
-				
+
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDelete()");
-				
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+
 			}
 
 		}catch(Exception ex) {
@@ -915,7 +1021,6 @@ public String caminhoImageUpdate(String myImg) throws Exception{
 	public File deleteDirectory() {
 
 		try {
-
 			File folder = new File(mainPath+path+"\\");
 
 			System.out.println("Pasta excluida: "+folder);
@@ -941,95 +1046,412 @@ public String caminhoImageUpdate(String myImg) throws Exception{
 
 			System.out.println("Erro ao excluir diretorio");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+			
 		}
 		return null;
 	}
 	public void download(String fileName) throws Exception {
-		
-			//pegando o id
-			OccurrencesDAO dao = new OccurrencesDAO();
-			int id = dao.GetId();
-			id += 1;
-			data = new OccurrencesData();
-			data.setData_number(String.valueOf(id));
-			
-			//chamando mÃªs e ano, para passar para o caminho.
-			DateTimeApplication dddd = new DateTimeApplication();
-			LocalDate data = dddd.localeDate();
 
-			//criando caminho da seleÃ§Ã£o da pasta.
-			String absoluteFile = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/"+fileName;
-			
-			//caminho onde pegamos o arquivo
-			URL url = new URL(downloadPath+absoluteFile);
-			String arquivos = url.getQuery();
-			
-		  	//caminho onde o arquivo serÃ¡ guardado
-	        File file = new File(pathDownload+fileName);
+		//pegando o id
+		OccurrencesDAO dao = new OccurrencesDAO();
+		int id = dao.GetId();
+		id += 1;
+		data = new OccurrencesData();
+		data.setData_number(String.valueOf(id));
 
-	        InputStream is = url.openStream();
-	        FileOutputStream fos = new FileOutputStream(file);
+		//chamando mÃªs e ano, para passar para o caminho.
+		DateTimeApplication dddd = new DateTimeApplication();
+		LocalDate data = dddd.localeDate();
 
-	        int bytes = 0;
-	        
-	        while ((bytes = is.read()) != -1) {
-	            fos.write(bytes);
-	        }
+		//criando caminho da seleÃ§Ã£o da pasta.
+		String absoluteFile = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/"+fileName;
 
-	        is.close();
+		//caminho onde pegamos o arquivo
+		URL url = new URL(downloadPath+absoluteFile);
+		String arquivos = url.getQuery();
 
-	        fos.close();
-	    
+		//caminho onde o arquivo serÃ¡ guardado
+		File file = new File(pathDownload+fileName);
+
+		InputStream is = url.openStream();
+		FileOutputStream fos = new FileOutputStream(file);
+
+		int bytes = 0;
+
+		while ((bytes = is.read()) != -1) {
+			fos.write(bytes);
+		}
+
+		is.close();
+
+		fos.close();
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
 		System.out.println("Download realizado: "+fileName);
 	}
 	public void downloadUpdate(String fileName) throws Exception {
+
+		//pegando o id
+		int id = getValue();
+
+		//criando caminho da seleÃ§Ã£o da pasta.
+		String absoluteFile = pathSQL+"/"+fileName;
+
+		//caminho onde pegamos o arquivo
+		URL url = new URL(downloadPath+absoluteFile);
+		String arquivos = url.getQuery();
+
+		//caminho onde o arquivo serÃ¡ guardado
+		File file = new File(pathDownload+fileName);
+
+		InputStream is = url.openStream();
+		FileOutputStream fos = new FileOutputStream(file);
+
+		int bytes = 0;
+
+		while ((bytes = is.read()) != -1) {
+			fos.write(bytes);
+		}
+
+		is.close();
+
+		fos.close();
+
+		fields = false;
+		reset = false;
+		save = true;
+		edit = true;
+		alterar = false;
 		
-			//pegando o id
-			int id = getValue();
-			
-			//chamando mÃªs e ano, para passar para o caminho.
-			DateTimeApplication dddd = new DateTimeApplication();
-			LocalDate data = dddd.localeDate();
 
-			//criando caminho da seleÃ§Ã£o da pasta.
-			String absoluteFile = data.getYear()+"/"+data.getMonthValue()+"/OCC_"+id+"/"+fileName;
-			
-			//caminho onde pegamos o arquivo
-			URL url = new URL(downloadPath+absoluteFile);
-			String arquivos = url.getQuery();
-			
-		  	//caminho onde o arquivo serÃ¡ guardado
-	        File file = new File(pathDownload+fileName);
-
-	        InputStream is = url.openStream();
-	        FileOutputStream fos = new FileOutputStream(file);
-
-	        int bytes = 0;
-	        
-	        while ((bytes = is.read()) != -1) {
-	            fos.write(bytes);
-	        }
-
-	        is.close();
-
-	        fos.close();
-	        
-	    	fields = false;
-			reset = false;
-			save = true;
-			edit = true;
-			alterar = false;
-			action = "update";
-			
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");	
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");   
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
 		System.out.println("Download realizado: "+fileName);
 	}
-	public void pegarImagem() {
-		
+	public void downloadUpdateTable(String fileName) throws Exception {
+
+		//pegando o id
+		int id = getValue();
+
+		//criando caminho da seleÃ§Ã£o da pasta.
+		String absoluteFile = pathSQL+"/"+fileName;
+
+		//caminho onde pegamos o arquivo
+		URL url = new URL(downloadPath+absoluteFile);
+		String arquivos = url.getQuery();
+
+		//caminho onde o arquivo serÃ¡ guardado
+		File file = new File(pathDownload+fileName);
+
+		InputStream is = url.openStream();
+		FileOutputStream fos = new FileOutputStream(file);
+
+		int bytes = 0;
+
+		while ((bytes = is.read()) != -1) {
+			fos.write(bytes);
+		}
+
+		is.close();
+
+		fos.close();
+
+		if(situation == 31 || situation == 30) {
+
+			save = true;
+			alterar = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			edit = true;
+			table = true;
+			
+		}else {
+			//btn
+			save = true;
+			alterar = true;
+			edit = false;
+			new_ = false;
+			reset = true;
+			fields = true; 
+			
+		}
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
+		System.out.println("Download realizado: "+fileName);
 	}
-	
+	public void downloadPdf() throws Exception {
+		// criação do documento
+		Document document = new Document();
+
+		try {
+			//caminho onde é gerado o pdf
+			PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\mateu\\Downloads\\"+"OCC_"+data.getData_number()+".pdf"));
+			//gera o arquivo
+			document.open();
+
+			//formato da folha
+			document.setPageSize(PageSize.A4);
+
+			//Editando o tipo de fonte do titulo
+			Paragraph pTitulo = new Paragraph(new Phrase(20F , "    "
+					+ "              Informe de ocurrencia", FontFactory.getFont(FontFactory.HELVETICA, 25F)));
+			Paragraph evento = new Paragraph(new Phrase(20F , "Eventos", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph dateHour = new Paragraph(new Phrase(20F , "Fecha y Hora", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph causeProbable = new Paragraph(new Phrase(20F , "Causa probable", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph eventoLocal = new Paragraph(new Phrase(20F , "Evento Local", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph detalhes = new Paragraph(new Phrase(20F , "Detalles", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , "Descripción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph envolvidos = new Paragraph(new Phrase(20F , "Involucrados", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , "Tráfico", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph danos = new Paragraph(new Phrase(20F , "Daño", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , "acción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			
+			//chamando a imagem
+			
+			Image image1 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\traceviaLayout.png");
+			Image image2 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
+			
+			System.out.println(RoadConcessionaire.externalImagePath);
+			//edição das imagens
+			image1.setAbsolutePosition(50, 790);
+			image1.scaleAbsolute (100, 50);
+			image2.setAbsolutePosition(420, 800);
+			image2.scaleAbsolute (120, 30);
+			//passando a imagem
+			document.add(image1);
+			document.add(image2);
+			
+			document.add(new Paragraph("\n"));
+			//add titulo
+			document.add(new Paragraph(pTitulo));
+			document.add(new Paragraph("\n"));
+
+			//primeiro paragrafo Evento
+			Rectangle event1 = new Rectangle(577, 685, 10, 750); // you can resize rectangle 
+			event1.enableBorderSide(1);
+			event1.enableBorderSide(2);
+			event1.enableBorderSide(4);
+			event1.enableBorderSide(8);
+			event1.setBorderColor(BaseColor.BLACK);
+			event1.setBorderWidth(1);
+			document.add(event1);
+			document.add(new Paragraph(evento+"\n"+"\n"));
+			//document.add(new Paragraph(" "));
+			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
+					+ "Tipo: "+ getPdf.getType()+"         "
+					+ "Fuente: "+getPdf.getOrigin()+"          "
+					+ "Situación: "+getPdf.getState_occurrences()+"\n\n"));
+
+			//data e hora inivial
+			Rectangle dateHourStart = new Rectangle(577, 615, 10, 680); // you can resize rectangle 
+			dateHourStart.enableBorderSide(1);
+			dateHourStart.enableBorderSide(2);
+			dateHourStart.enableBorderSide(4);
+			dateHourStart.enableBorderSide(8);
+			dateHourStart.setBorderColor(BaseColor.BLACK);
+			dateHourStart.setBorderWidth(1);
+			document.add(dateHourStart);
+			document.add(new Paragraph(dateHour+"\n"+"\n"));
+			//data e hora inicial
+			document.add(new Paragraph("Inicial: "+data.getStart_date()+"             Inicial: "+data.getStart_hour()+":"+data.getStart_minute()+"             "
+					+ "Final: "+data.getEnd_date()+"             Final: "+data.getEnd_hour()+":"+data.getEnd_minute()+"\n\n"));
+
+			//causa provável e descrição principal e interna.
+			Rectangle causePr= new Rectangle(577, 470, 10, 610); // you can resize rectangle 
+			causePr.enableBorderSide(1);
+			causePr.enableBorderSide(2);
+			causePr.enableBorderSide(4);
+			causePr.enableBorderSide(8);
+			causePr.setBorderColor(BaseColor.BLACK);
+			causePr.setBorderWidth(1);
+			document.add(causePr);
+			document.add(new Paragraph(causeProbable+"\n"+"\n"));
+			document.add(new Paragraph("Causa: "+getPdf.getCause()+"\n\n"));
+			document.add(new Paragraph("Descripción: "+data.getCause_description()+"\n\n"));
+			document.add(new Paragraph("Descripción interna: "+data.getCauseDescrInter()+"\n\n"));
+
+			//Evento Local
+			Rectangle eventL= new Rectangle(577, 360, 10, 465); // you can resize rectangle 
+			eventL.enableBorderSide(1);
+			eventL.enableBorderSide(2);
+			eventL.enableBorderSide(4);
+			eventL.enableBorderSide(8);
+			eventL.setBorderColor(BaseColor.BLACK);
+			eventL.setBorderWidth(1);
+			document.add(eventL);
+			document.add(new Paragraph(eventoLocal+"\n"+"\n"));
+			document.add(new Paragraph(""));
+			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
+					+ "Autopista: "+getPdf.getHighway()+"            "
+					+ "Estado: "+getPdf.getLocal_state()+"\n\n"));
+			document.add(new Paragraph("Dirección: "+getPdf.getDirection()+"            "
+					+ "Carril: "+getPdf.getLane()+"            "
+					+ "Observación: "+data.getOthers()+"\n\n"));
+
+			//Detalhes
+			Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
+			details.enableBorderSide(1);
+			details.enableBorderSide(2);
+			details.enableBorderSide(4);
+			details.enableBorderSide(8);
+			details.setBorderColor(BaseColor.BLACK);
+			details.setBorderWidth(1);
+			document.add(details);
+			document.add(new Paragraph(detalhes+"\n"+"\n"));
+			document.add(new Paragraph(""));
+			document.add(new Paragraph("Condición local: "+getPdf.getLocal_condition()+"     "
+					+ "Condición del tráfico: "+getPdf.getTraffic()+"      "
+					+ "Característica: "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph("Interference: "+getPdf.getInterference()+"     "
+					+"Signaling: "+getPdf.getSignaling()+"     "
+					+"Condición conductor: "+ getPdf.getConductor_condition()+"\n\n"));
+
+			//descrição
+			Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
+			descriptions.enableBorderSide(1);
+			descriptions.enableBorderSide(2);
+			descriptions.enableBorderSide(4);
+			descriptions.enableBorderSide(8);
+			descriptions.setBorderColor(BaseColor.BLACK);
+			descriptions.setBorderWidth(1);
+			document.add(descriptions);
+			document.add(new Paragraph(description+"\n"+"\n"));
+			document.add(new Paragraph("Descripción del Título: "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph("Descripción: "+data.getDescription_text()+"\n\n"));
+			document.add(new Paragraph("Descripción interna: "+data.getDescriptionInter()+"\n\n"));
+
+			document.add(new Paragraph("\n\n                                                                        Pág. 1"));
+			//adicionando nova pagina
+			document.newPage();
+
+			//Envolvidos
+			Rectangle envolvido = new Rectangle(577, 670, 10, 810); // you can resize rectangle 
+			envolvido.enableBorderSide(1);
+			envolvido.enableBorderSide(2);
+			envolvido.enableBorderSide(4);
+			envolvido.enableBorderSide(8);
+			envolvido.setBorderColor(BaseColor.BLACK);
+			envolvido.setBorderWidth(1);
+			document.add(envolvido);
+			document.add(new Paragraph(envolvidos+"\n"+"\n"));
+			document.add(new Paragraph("Tipo: "+getPdf.getInvolved_type()+"\n\n"));
+			document.add(new Paragraph("Descripción: "+ data.getInvolved_description()+"\n\n"));
+			document.add(new Paragraph("Descripción interna: "+ data.getInvolvedInter()+"\n\n"));
+
+			//Trânsito
+			Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
+			track1.enableBorderSide(1);
+			track1.enableBorderSide(2);
+			track1.enableBorderSide(4);
+			track1.enableBorderSide(8);
+			track1.setBorderColor(BaseColor.BLACK);
+			track1.setBorderWidth(1);
+			document.add(track1);
+			document.add(new Paragraph(track+"\n"+"\n"));
+			document.add(new Paragraph("Inicial: " + data.getTrackStartDate()+ "             Inicial: " + data.getTrackStartHour() + ":" + data.getTrackStartMinute() + "             "
+					+ "Final: " + data.getTrackEndDate() + "             Final: " + data.getTrackEndHour() + ":"+data.getTrackEndMinute() + "\n\n"));
+			document.add(new Paragraph());
+			document.add(new Paragraph("Extensión: "+data.getTraffic_extension()+"            "
+					+"Pista interrumpida: "+ getPdf.getTraffic_stopped()+"\n\n"));
+
+			//Danos
+			Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
+			damage1.enableBorderSide(1);
+			damage1.enableBorderSide(2);
+			damage1.enableBorderSide(4);
+			damage1.enableBorderSide(8);
+			damage1.setBorderColor(BaseColor.BLACK);
+			damage1.setBorderWidth(1);
+			document.add(damage1);
+			document.add(new Paragraph(danos+"\n"+"\n"));
+			document.add(new Paragraph(""));
+			document.add(new Paragraph("Tipo: "+getPdf.getDamage_type_damage()+"     Gravedad: "+getPdf.getDamage_gravity()+"     Unidad: "+getPdf.getDamageUnity()
+			+"     Amount: "+data.getDamage_amount()+ "\n\n"));
+			document.add(new Paragraph("Descripción: "+data.getDemage_description()+ "\n\n"));
+			document.add(new Paragraph("Descripción interna: "+data.getDamageDescriptionInternal()+"\n\n"));
+
+			//ação
+			Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
+			action1.enableBorderSide(1);
+			action1.enableBorderSide(2);
+			action1.enableBorderSide(4);
+			action1.enableBorderSide(8);
+			action1.setBorderColor(BaseColor.BLACK);
+			action1.setBorderWidth(1);
+			document.add(action1);
+			document.add(new Paragraph(action+"\n"+"\n"));
+
+			document.add(new Paragraph("Tipo: "+getPdf.getAction_type()+"             Situación: "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph("Inicial: "+data.getActionStartData()+"     Inicial: "+data.getActionStartHour()+":"+data.getActionStartMinute()
+			+"             Final: "+data.getActionEndData()+"             Final: "+data.getActionEndHour()+":"+data.getActionEndMinute()+"\n\n"));
+			document.add(new Paragraph("Descripción: "+data.getAction_description()+"\n\n"));
+			document.add(new Paragraph("Descripción interna: "+data.getActionInter()+"\n\n"));
+
+			//chamando data e hora
+			int day1 = LocalDateTime.now().getDayOfMonth();
+			int year1 = LocalDateTime.now().getYear();
+			int month1 = LocalDateTime.now().getMonthValue();
+			int hour1 = LocalDateTime.now().getHour();
+			int minute1 = LocalDateTime.now().getMinute();
+			int second1 = LocalDateTime.now().getSecond();
+			
+			if(day1 < 10) {dayPdf = "0"+String.valueOf(day1);}else {dayPdf = String.valueOf(day1);}
+			if(hour1 < 10) {hourPdf = "0"+String.valueOf(hour1);}else {hourPdf = String.valueOf(hour1);}
+			if(month1 < 10) {monthPdf = "0"+String.valueOf(month1);}else {monthPdf = String.valueOf(month1);}
+			if(minute1 < 10) {minutePdf = "0"+String.valueOf(minute1);}else {minutePdf = String.valueOf(minute1);}
+			if(second1 < 10) {secondPdf = "0"+String.valueOf(second1);}else {secondPdf = String.valueOf(second1);}	
+			
+			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
+
+			//assinatura
+			document.add(new Paragraph("\n\n                    Firma: ______________________________________________."+ "\n\n\n\n"
+					+ "                              fecha del informe: "+dayPdf+"/"+monthPdf+"/"+year1+"     Hora: "+hourPdf+":"+minutePdf+":"+secondPdf));
+			document.add(new Paragraph("\n\n                                                                        Pág. 2"));
+
+		}
+		catch(DocumentException de) {
+			System.err.println(de.getMessage());
+		}
+		catch(IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
+		document.close();
+
+		//getRowValue();
+		
+		String x = data.getState_occurrences();
+		situation = Integer.parseInt(x);
+		
+		if(situation == 31 || situation == 30) {
+
+			save = true;
+			alterar = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			edit = true;
+			table = true;
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+		}else {
+			//btn menu
+			edit = false;
+			save = true;
+			reset = true;  
+			new_ = false;
+			fields = true;
+			table = true;
+
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+		}
+		
+			
+	}
+
 }

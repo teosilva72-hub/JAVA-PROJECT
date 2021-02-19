@@ -69,11 +69,7 @@ public class OccurrencesData {
 	private String involvedInter;
 	private String actionInter;
 	private String statusAction;
-	
-	
-
-
-	
+	private String localFiles;
 
 	public OccurrencesData(int data_id, String data_number, String type, String origin, String state_occurrences,
 			String start_date, String start_hour, String start_minute, String end_date, String end_hour,
@@ -90,7 +86,7 @@ public class OccurrencesData {
 			String actionEndMinute, String trackStartDate, String trackStartHour, String trackStartMinute,
 			String trackEndDate, String trackEndHour, String trackEndMinute, String damageDescriptionMain,
 			String damageDescriptionInternal, String damageUnity, String causeDescrInter, String descriptionInter,
-			String involvedInter, String actionInter, String statusAction)
+			String involvedInter, String actionInter, String statusAction, String localFiles)
 	{
 
 		this.data_id = data_id;
@@ -161,13 +157,14 @@ public class OccurrencesData {
 		this.involvedInter = involvedInter;
 		this.actionInter = actionInter;
 		this.statusAction = statusAction;
+		this.localFiles = localFiles;
 	}
 
 
 	public OccurrencesData() {
 	}
 
-
+	
 	public int getData_id() {
 		return data_id;
 	}
@@ -841,6 +838,16 @@ public class OccurrencesData {
 		this.damageDescriptionInternal = damageDescriptionInternal;
 	}
 
+
+	public String getLocalFiles() {
+		return localFiles;
+	}
+
+
+	public void setLocalFiles(String localFiles) {
+		this.localFiles = localFiles;
+	}
+	
 
 
 	
