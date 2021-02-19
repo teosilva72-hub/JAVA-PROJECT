@@ -28,6 +28,7 @@ function posEquip(equip) {
 
 	if (equip.attr("class").includes('equip-box-sat')) {
 		let sat_status = equip.attr('status')
+		let interval =  Number(equip.attr('status-period'))
 		let fluxo1 = equip.find('[id^=img1FluxoTab]')
 		let fluxo2 = fluxo1.next()
 		let speed1 = Number(equip.find('#speed1').text())
@@ -43,7 +44,7 @@ function posEquip(equip) {
 			.css(fluxo)
 
 		//Green Color > indica que o equipamento está conectado
-		if (sat_status > 7) {
+		if (sat_status > 0 && interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
 				color: 'black'
@@ -52,9 +53,17 @@ function posEquip(equip) {
 
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && sat_status < 8) {
+		else if (sat_status > 0 && interval == 45) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF7F',
+				color: 'black'
+			});
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF7F';
+		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (sat_status > 0 && interval == 8) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FFFF00',
 				color: 'black'
 			});
 			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF7F';

@@ -6,6 +6,7 @@ public class UserAccount {
 	private int permission_id;
 	private int permission_user_id;
 	private String date_register;
+	private String createdBy;
 	private String name;
 	private String job_position;
 	private String email;
@@ -19,7 +20,7 @@ public class UserAccount {
 	private boolean activeStatus;
 	
 		
-	public UserAccount(int user_id, int permission_id, int permission_user_id, String date_register, String name,
+	public UserAccount(int user_id, int permission_id, int permission_user_id, String date_register, String createdBy, String name,
 			String job_position, String email, String username, String password, String permission_role, String userID,
 			String confPassword, String newPassword, String checkActive, boolean activeStatus) {
 		
@@ -27,6 +28,7 @@ public class UserAccount {
 		this.permission_id = permission_id;
 		this.permission_user_id = permission_user_id;
 		this.date_register = date_register;
+		this.createdBy = createdBy;
 		this.name = name;
 		this.job_position = job_position;
 		this.email = email;
@@ -75,6 +77,15 @@ public class UserAccount {
 	public void setDate_register(String date_register) {
 		this.date_register = date_register;
 	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
 
 	public String getName() {
 		return name;

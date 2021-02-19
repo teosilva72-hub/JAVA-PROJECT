@@ -44,8 +44,8 @@ public class UserAccountDAO {
 			throw new Exception("O valor passado nao pode ser nulo");
 
 		try {
-			String sql = "INSERT INTO users_register (user_id, date_register, name, job_position, email, username, password)"
-					+ " values  ( ?, ?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO users_register (user_id, date_register, creation_username, name, job_position, email, username, password)"
+					+ " values  ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status) values  ( ?, ?, ?)";
 
@@ -77,11 +77,12 @@ public class UserAccountDAO {
 
 			ps.setInt(1, id);
 			ps.setString(2, dt_register);
-			ps.setString(3, user.getName());
-			ps.setString(4, user.getJob_position());
-			ps.setString(5, user.getEmail());
-			ps.setString(6, user.getUsername());
-			ps.setString(7, user.getPassword());
+			ps.setString(3, user.getCreatedBy());
+			ps.setString(4, user.getName());
+			ps.setString(5, user.getJob_position());
+			ps.setString(6, user.getEmail());
+			ps.setString(7, user.getUsername());
+			ps.setString(8, user.getPassword());
 
 			// System.out.println(sql);
 

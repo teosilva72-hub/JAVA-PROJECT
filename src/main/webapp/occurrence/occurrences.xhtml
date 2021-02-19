@@ -7,8 +7,8 @@
 	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
 	<ui:define name="head">
@@ -908,7 +908,7 @@
 							<div class="form-row" id="fileElements">
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
-										a:multiple="true" disabled="#{occurrencesBean.fields}" />
+										pt:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 								</div>
 
@@ -926,7 +926,7 @@
 							<div class="form-row" id="listDateFile" style="display: none;">
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2"
-										a:multiple="true" disabled="#{occurrencesBean.fields}" />
+										pt:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
 								</div>
 								<div class="col-md-12">
