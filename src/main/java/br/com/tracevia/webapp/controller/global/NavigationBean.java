@@ -204,7 +204,7 @@ public class NavigationBean {
    
    public String redirectToOccurrences() {
 		
-		navigation_page = "/occ/occurrences.xhtml?faces-redirect=true";		
+		navigation_page = "/occurrence/occurrences.xhtml?faces-redirect=true";		
 		
 		return navigation_page;
 	}
