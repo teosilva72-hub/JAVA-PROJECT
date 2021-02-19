@@ -1265,9 +1265,9 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				   if(minuto == 15)
 				       i=1;
 				   if(minuto == 30)
-				       i=3;
+				       i=2;
 				   if(minuto == 45)
-				       i=4;
+				       i=3;
 				     			        			        
 				        return idx + i;
 			}	
