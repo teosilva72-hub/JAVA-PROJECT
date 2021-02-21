@@ -7,57 +7,55 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	
+
 	<f:metadata>
-	
-	 <!-- Create Table Header -->	
-	<f:viewAction action="#{mtoReportsBean.CreateFields(2)}" /> 
-          
-    </f:metadata>
-	
-	<ui:define name="head" >
-	
-	<h:outputStylesheet library="css/datatables/custom"
+
+		<!-- Create Table Header -->
+		<f:viewAction action="#{mtoReportsBean.CreateFields(2)}" />
+
+	</f:metadata>
+
+	<ui:define name="head">
+
+		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
 		<h:outputStylesheet library="css/forms" name="form-style.css" />
-		<h:outputStylesheet library="bootstrap/css"
-			name="bootstrap-multiselect.css" />
-		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
-
-		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
-		<h:outputScript library="js/datepicker" name="datepicker.js" />
-		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
-		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/validation-forms/reports"
-			name="mto-reports.js" />	
-
+			name="mto-reports.js" />
+		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />
 
 	</ui:define>
-	
-	 <ui:define name="main-content" >
-	 
-	  <div class="table-container">
-	 
-	  <h:dataTable id="weather-month-table" value="#{mtoReportsBean.resultList}" var="weather" autocomplete="off"				               
-     styleClass="table table-striped table-bordered table-dark custom-table" cellspacing="0" width="100%" 
-     headerClass="custom-table-header">	
-                   
-     <c:forEach items="#{mtoReportsBean.columns}" var="header" varStatus="loop">
-          <h:column>
-              <f:facet name ="header">#{header.field}</f:facet>
-              <h:outputText value="#{weather[header.value]}" />
-            </h:column> 
-     </c:forEach>   
-  	 	 
-    </h:dataTable>
-    
-    	 	<!-- BUTTONS FORM -->
 
+	<ui:define name="main-content">
+
+		<!-- TABLE DIV CONTENT -->
+		<div class="table-container">
+
+			<!-- TABLE -->
+			<h:dataTable id="weather-month-table"
+				value="#{mtoReportsBean.resultList}" var="weather"
+				autocomplete="off"
+				styleClass="table table-striped table-bordered table-dark custom-table"
+				cellspacing="0" width="100%" headerClass="custom-table-header">
+
+				<c:forEach items="#{mtoReportsBean.columns}" var="header"
+					varStatus="loop">
+					<h:column>
+						<f:facet name="header">#{header.field}</f:facet>
+						<h:outputText value="#{weather[header.value]}" />
+					</h:column>
+				</c:forEach>
+
+			</h:dataTable>
+			<!-- TABLE -->
+
+			<!-- BUTTONS FORM -->
 			<h:form id="form-btns">
+
 				<!-- BUTTONS DIV CONTENT -->
 				<div id="buttons">
 
@@ -73,6 +71,7 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
+					<!-- BUTTON SEARCH DIV -->
 
 					<!-- BUTTON RESET DIV -->
 					<div id="btn-reset">
@@ -86,21 +85,25 @@
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
 					</div>
-					
-					<!-- BUTTON EXCEL DIV -->					
-				   <div id="btn-excel" >
-					<h:commandButton id="excel-act" value=""
-					disabled="#{mtoReportsBean.excelBool}"
-					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
-					data-placement="bottom" title="#{mtoLabels.mto_reports_btn_excel}"
-					action="#{mtoReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-				   </div>
-					
+					<!-- BUTTON RESET DIV -->
+
+					<!-- BUTTON EXCEL DIV -->
+					<div id="btn-excel">
+						<h:commandButton id="excel-act" value=""
+							disabled="#{mtoReportsBean.excelBool}"
+							class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+							data-placement="bottom"
+							title="#{mtoLabels.mto_reports_btn_excel}"
+							action="#{mtoReportsBean.download}" widgetVar="excelWgt">
+							<f:passThroughAttribute name="data-toggle" value="modal" />
+							<f:passThroughAttribute name="data-target" value="#modalDownload" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+					</div>
+					<!-- BUTTON EXCEL DIV -->
+
 				</div>
+				<!-- BUTTONS DIV CONTENT -->
 
 				<!-- MODAL CLEAR -->
 				<div class="modal fade" id="modalClear" tabindex="-1"
@@ -130,90 +133,87 @@
 					</div>
 				</div>
 				<!-- MODAL CLEAR END -->
-
 			</h:form>
-		
+			<!-- BUTTONS FORM -->
 
-		<!-- BUTTONS FORM -->
+			<!-- EXCEL FORM -->
+			<h:form id="form-excel">
 
-		<!-- EXCEL FORM -->
-		<h:form id="form-excel">
-			
-			<!-- MODAL DOWNLOAD -->
-			<div class="modal fade" id="modalDownload" tabindex="-1"
-				aria-labelledby="downloadModalLabel" aria-hidden="true">
-				<div class="modal-dialog confirmation-modal">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{mtoLabels.mto_reports_modal_alert_download_title}</h5>
-						</div>
-						<div class="modal-body">
-							<p class="modal-alert-msg">
-								#{mtoLabels.mto_reports_modal_alert_download_file_excel} <span
-									class="extension">#{mtoLabels.mto_reports_modal_alert_extension_xlsx}</span>
-								?
-							</p>
-						</div>
-						<div class="modal-footer">
-							<h:commandButton p:onclose="download"
-								value="#{mtoLabels.mto_reports_modal_alert_btn_yes}"
-								action="#{mtoReportsBean.download}"
-								class="btn btn-dark form-draw-button" />
-							<h:commandButton
-								value="#{mtoLabels.mto_reports_modal_alert_btn_no}"
-								class="btn btn-dark form-draw-button">
-								<f:passThroughAttribute name="data-dismiss" value="modal" />
-								<f:ajax execute="@form" render="@none" />
-							</h:commandButton>
+				<!-- MODAL DOWNLOAD -->
+				<div class="modal fade" id="modalDownload" tabindex="-1"
+					aria-labelledby="downloadModalLabel" aria-hidden="true">
+					<div class="modal-dialog confirmation-modal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title"
+									id="donwloadModalLabel">#{mtoLabels.mto_reports_modal_alert_download_title}</h5>
+							</div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">
+									#{mtoLabels.mto_reports_modal_alert_download_file_excel} <span
+										class="extension">#{mtoLabels.mto_reports_modal_alert_extension_xlsx}</span>
+									?
+								</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton p:onclose="download"
+									value="#{mtoLabels.mto_reports_modal_alert_btn_yes}"
+									action="#{mtoReportsBean.download}"
+									class="btn btn-dark form-draw-button" />
+								<h:commandButton
+									value="#{mtoLabels.mto_reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- MODAL DOWNLOAD END -->
+				<!-- MODAL DOWNLOAD END -->
 
-		</h:form>
+			</h:form>
+			<!-- EXCEL FORM -->
 
-		<!-- EXCEL FORM -->
-	 	 
-<!-- MODAL SUBMIT -->
+			<!-- MODAL SUBMIT -->
 
-		<div class="modal fade" id="modalReportOptions" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel">
-			<div class="modal-dialog" role="document">
-				<h:form class="modal-content" name="report-form"
-					id="report-form">
-					<div class="modal-header text-center">
-						<h4 class="modal-title w-100 font-weight-bold">#{mtoLabels.mto_reports_modal_title}</h4>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<br />
+			<div class="modal fade" id="modalReportOptions" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<h:form class="modal-content" name="report-form" id="report-form">
+						<div class="modal-header text-center">
+							<h4 class="modal-title w-100 font-weight-bold">#{mtoLabels.mto_reports_modal_title}</h4>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<br />
 
-						<!-- EQUIPMENTS OPTIONS -->
+							<!-- EQUIPMENTS OPTIONS -->
 
-						<div class="form-row">
-							<div class="form-group col-sm-12 select-field">
-								<span><i class="fas fa-hdd"></i></span> <span for="equip"
-										class="valid-icon-hidden"></span> <select name="equip"	id="equip">
+							<div class="form-row">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-hdd"></i></span> <span for="equip"
+										class="valid-icon-hidden"></span> <select name="equip"
+										id="equip">
 										<option value="">#{mtoLabels.mto_reports_select_station}</option>
 										<ui:repeat var="eqp" value="#{mtoReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
 									</select>
-							  </div>
-							  <div class="error-label">
+								</div>
+								<div class="error-label">
 									<label for="equip" class="error" id="equip-error"></label>
 								</div>
-						  </div>
-						
+							</div>
+
 							<!-- MONTH OPTIONS -->
 
 							<div class="form-row">
-							<div class="form-group col-sm-12 select-field">
+								<div class="form-group col-sm-12 select-field">
 									<span><i class="fas fa-calendar"></i></span> <span for="month"
 										class="valid-icon-hidden"></span> <select name="month"
 										id="month" size="1">
@@ -228,14 +228,14 @@
 									<label for="month" class="error" id="month-error"></label>
 								</div>
 							</div>
-														
+
 							<!-- YEARS OPTIONS -->
 
 							<div class="form-row">
-							<div class="form-group col-sm-12 select-field">
-									<span><i class="fas fa-calendar-alt"></i></span> <span for="year"
-										class="valid-icon-hidden"></span> <select name="year"
-										id="year" size="1">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar-alt"></i></span> <span
+										for="year" class="valid-icon-hidden"></span> <select
+										name="year" id="year" size="1">
 										<option value="">#{mtoLabels.mto_reports_select_year}</option>
 										<ui:repeat var="yr" value="#{mtoReportsBean.years}"
 											varStatus="yrStatus">
@@ -246,42 +246,59 @@
 								<div class="error-label">
 									<label for="year" class="error" id="year-error"></label>
 								</div>
-							</div>												 
+							</div>
 						</div>
 
 						<!-- MODAL BUTTONS -->
 
-					<div class="modal-footer">
+						<div class="modal-footer">
 
-						<h:commandButton value="#{mtoLabels.mto_reports_form_btn_send}"
-							id="btn-form-send" action="#{mtoReportsBean.GetReports(2)}"
-							class="btn btn-dark form-modal-draw-button" />
+							<h:commandButton value="#{mtoLabels.mto_reports_form_btn_send}"
+								id="btn-form-send" action="#{mtoReportsBean.GetReports(2)}"
+								class="btn btn-dark form-modal-draw-button" />
 
-						<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
-							id="btn-form-reset" immediate="true" type="reset"							
-							class="btn btn-dark form-modal-draw-button  reset-btn">
-							<f:ajax execute="@form"
-								render=":equip :month :year" />
-						</h:commandButton>
-					</div>
-				</h:form>
+							<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
+								id="btn-form-reset" immediate="true" type="reset"
+								class="btn btn-dark form-modal-draw-button  reset-btn">
+								<f:ajax execute="@form" render=":equip :month :year" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
 			</div>
+			<!-- MODAL SUBMIT -->
+
 		</div>
+		<!-- TABLE DIV CONTENT -->
 
-		<!-- MODAL SUBMIT -->
-		
-</div>
+		<script type='text/javascript'>
+			//Validation Methods
 
-<script type='text/javascript'>
+			//Validate a form and insert messages
+			weatherValidationModel1("#report-form", "equip", "month", "year");
 
-    weatherMonthValidation("#report-form", "equip", "month", "year");
-      </script>
-	 
-</ui:define>
+			//Validate on change value
+			validateOnChange('#equip');
+			validateOnChange('#month');
+			validateOnChange('#year');
 
-<ui:define name="jscript">
-      <h:outputScript name="mto_reports_dataTable.js" library="js/reports" />	
+			//Reset Form on close modal
+			//close modal action
+			removeValidationOnModalClose('#modalReportOptions', 'equip');
+			removeValidationOnModalClose('#modalReportOptions', 'month');
+			removeValidationOnModalClose('#modalReportOptions', 'year');
+
+			//Remove validation icons
+			//click reset button action
+			removeValidationIcon("reset-btn", 'equip');
+			removeValidationIcon("reset-btn", 'month');
+			removeValidationIcon("reset-btn", 'year');
+
+			//Reset validation form
+			//click reset button action
+			resetFormValidation("#report-form", "reset-btn");
+		</script>
+
 	</ui:define>
-	
-		
-</ui:composition>	
+
+</ui:composition>
