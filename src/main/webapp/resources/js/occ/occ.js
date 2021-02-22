@@ -1,6 +1,5 @@
 //////////////////////////////reload////////////////////////
 function reload(){
-
 	document.location.reload(false);
 }
 
@@ -142,6 +141,10 @@ function bloquerTable(){
 		function tableBloqueada(){
 			$(document).ready(function() {
 			  	$('#occurrence-tables').DataTable({
+					language: {
+						"search": "",
+				        searchPlaceholder: "Search"
+				    },
 					"select": false,
 				    "Width": true,			  	   	
 				    "scrollY": "68vh",
@@ -156,7 +159,11 @@ function bloquerTable(){
 		//configuração da tabela real
 		function tabelaReal(){
 			$(document).ready(function teste() {
-		   		var table = $('#occurrence-table').DataTable({		
+		   		var table = $('#occurrence-table').DataTable({
+					language: {
+						"search": "",
+				        searchPlaceholder: "Search"
+				    },		
 		    		"select": true,
 				    "autoWidth": true,			  	   	
 				    "scrollY": "68vh",
@@ -715,22 +722,13 @@ function comparationDate(){
 function alterarBtn(){
 	document.getElementById("save").style.display = "none";
 	document.getElementById("alterar").style.display = "block";
-	document.getElementById("listDateFile").style.display = "block";
 	document.getElementById("new").disabled = true;
+	document.getElementById("listDateFile").style.display = "block";
 	//document.getElementById("").disabled = true;
 	
 	//alert("estou aqui");
-	hiddenFile();
 	valueOcc();
 	listingFile();
-}
-function hiddenAlterar(){
-	document.getElementById("alterar").style.display = "none";
-	//document.getElementById("listDateFile").style.display = "block";
-}
-function hiddenFile(){
-	document.getElementById("fileElements").style.display = "none";
-  
 }
 function valueOcc(){
 	var value = document.getElementById("occNumber").value;
@@ -1006,7 +1004,21 @@ function fileTotalHidden(){
 }
 function listUpdateFile1(){
 	document.getElementById("listUpdateFileT").style.display = "none"
+	document.getElementById("listDateFile").style.display = "block";
+
 }
 function listUpdateFile2(){
 	document.getElementById("listUpdateFileT").style.display = "block"
+}
+function alterBtnReset(){
+	document.getElementById("resetUpdate").style.display = "block";
+	document.getElementById("anularAtual").style.display = "none";
+}
+function uploadFile(){
+	document.getElementById("uploadFile1").style.display = "block";
+	document.getElementById("listDateFile").style.display = "none";
+}
+function hiddenSave(){
+	var save = 	document.getElementById("save").style.display = "none";
+
 }

@@ -556,6 +556,11 @@
 										id="anularAtualHidden" onclick=" reload(); "
 										action="#{occurrencesBean.resetOccurrencesData}"
 										class="btn btnConf" />
+										<h:commandButton style="display: none;"
+										value="#{occLabels.btn_sim}"
+										id="resetUpdate"
+										action="#{occurrencesBean.resetUpdate}"
+										class="btn btnConf" />
 								</div>
 							</div>
 						</div>
@@ -587,7 +592,7 @@
 											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :btnUpdate :myFile2" /> -->
 										</h:commandButton>
 										<!-- Botão editar -->
-										<h:commandButton id="alterar" class="btn btnConf"
+										<h:commandButton id="alterar" class="btn btnConf" style="display: none;"
 											disabled="#{occurrencesBean.alterar}"
 											value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
@@ -1102,9 +1107,8 @@
 							<!-- FInal alert Anexos -->
 
 							<!-- input file save -->
-							<div class="form-row" id="fileElements">
-
-								<div class="form-group col-md-12 field" align="left">
+								<div id="uploadFile1" class="form-row" style="display: none;">
+									<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
@@ -1116,10 +1120,8 @@
 										disabled="#{occurrencesBean.fields}"
 										onclick="validatorFile();" />
 								</div>
-
-							</div>
+								</div>
 							<!-- End input file save -->
-
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
 								<div class="form-group col-md-9 field" align="left">
@@ -1619,8 +1621,7 @@
 		<script>
 			//Inicio dos comandos JavaScript
 			//getFilename();
-			
-			hiddenAlterar();
+
 			myFunction();// ADD ARQUIVOS
 			myFunction2();//myFunction2();
 			tabelaReal(); //Função da tabela de seleção [Editar]
