@@ -13,6 +13,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.GlobalReportsDAO;
 import br.com.tracevia.webapp.dao.mto.MtoQueriesModels;
@@ -25,6 +27,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.mto.MtoReports;
 import br.com.tracevia.webapp.model.mto.MtoReports.Builder;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sat.SatReports;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
@@ -43,10 +46,21 @@ public class MtoReportsController {
 		
 	LocaleUtil localeLabel, localeCalendar;
 			
-	int fieldsNumber, numRegisters, periodRange, daysInMonth, daysCount, start_month, end_month;  
+	int periodRange, daysInMonth, daysCount, start_month, end_month;  
 		
-	String procedure, query, queryCount, module, fileName, currentDate, direction1, direction2; 
+	String procedure, query, queryCount, module, fileName, currentDate, direction1, direction2, table; 
 	
+	// Variável que recebe o número de registros esperados para uma consula SQL (de acordo com períodos)
+     private static int numRegisters;	
+
+	// Variável que recebe o número de campos de uma consulta SQL
+	private static int fieldsNumber;	
+	
+	private boolean clearBool, excelBool;
+	
+	//Dates
+	String start, end;
+		
      String[] field, fieldObjectValues;
 	
 	String[][] resultQuery;
@@ -89,7 +103,38 @@ public class MtoReportsController {
 		return periods;
 	}	
 	
-	
+	public static int getNumRegisters() {
+		return numRegisters;
+	}
+
+	public static void setNumRegisters(int numRegisters) {
+		MtoReportsController.numRegisters = numRegisters;
+	}
+
+	public static int getFieldsNumber() {
+		return fieldsNumber;
+	}
+
+	public static void setFieldsNumber(int fieldsNumber) {
+		MtoReportsController.fieldsNumber = fieldsNumber;
+	}
+
+	public boolean isClearBool() {
+		return clearBool;
+	}
+
+	public void setClearBool(boolean clearBool) {
+		this.clearBool = clearBool;
+	}
+
+	public boolean isExcelBool() {
+		return excelBool;
+	}
+
+	public void setExcelBool(boolean excelBool) {
+		this.excelBool = excelBool;
+	}
+
 	@PostConstruct
 	public void initialize() {
 		
@@ -154,135 +199,45 @@ public class MtoReportsController {
 		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("mto_reports_select_periods_twenty_four_hours")));
 		
 		module = "mto";
+		
+		table = "weather_stations";
 				
 	}
-		
-	/**
-	 * Método para criar os campos nas tabelas dos relatórios	
-	 * @param field - Campos (Headers)
-	 * @param objectValue - Valores de cada campos expressos em objetos
-	 */
-	public void drawTable(String[] field, String[] objectValue) {
-				
-		columns = new ArrayList<ColumnModel>();
-		
-		for(int i = 0; i < field.length; i++)
-		   columns.add(new ColumnModel(field[i], objectValue[i]));		
-		
-	}
-	
-	//GETREPORTS
-			
-	// REPORTS MODELS
-	public void GetReports(String type) throws Exception{
-		
-		   FacesContext facesContext = FacesContext.getCurrentInstance();
-	       ExternalContext externalContext = facesContext.getExternalContext();
-	    
-		    QueriesReportsModels models = new QueriesReportsModels();
-		    MtoQueriesModels mtoModels = new MtoQueriesModels();	    
-		    DateTimeApplication dta = new DateTimeApplication();
-		    
-			GlobalReportsDAO dao = new GlobalReportsDAO();	
-			
-		    end_month = 0;
-		    start_month = 0;
-			
-			Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
-			
-			//Single Selection
-			mtoReport.setEquipment(parameterMap.get("equip"));
-			
-			mtoReport.setMonth(parameterMap.get("month"));
-			
-			mtoReport.setMonth(parameterMap.get("month"));
-			
-			mtoReport.setStartMonth(parameterMap.get("start-month"));
-						
-			mtoReport.setEndMonth(parameterMap.get("end-month"));
-								
-			mtoReport.setYear(parameterMap.get("year"));
-			
-			mtoReport.setPeriod(parameterMap.get("period"));
-						
-			int length = (int) externalContext.getSessionMap().get("fields");
-											
-			 //Initialize ResultList
-		     resultList = new ArrayList<Builder>();	
-		 		    	 
-		    	 if(type.equals("1")) {
-		    		    			    	
-		    	// Quantos dias possui o respectivo mês
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getEndMonth()));
-				int daysInEndMonth = yearMonthObject.lengthOfMonth();
-				
-				System.out.println(daysInEndMonth);
-								
-				mtoReport.setStartDate("01/"+mtoReport.getStartMonth()+"/"+mtoReport.getYear());
-				mtoReport.setEndDate(daysInEndMonth+"/"+mtoReport.getEndMonth()+"/"+mtoReport.getYear());
-				
-				end_month = Integer.parseInt(mtoReport.getEndMonth());
-				start_month = Integer.parseInt(mtoReport.getStartMonth());
-				
-				numRegisters = ((end_month - start_month) + 1);
-								 
-				 fieldsNumber = length;
-				 
-		    	 }
-		    	 
-		    	 else if(type.equals("2")) {
-		  		    	 
-				// Quantos dias possui o respectivo mês
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getMonth()));
-				int daysInMonth = yearMonthObject.lengthOfMonth();
-				
-				mtoReport.setStartDate("01/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
-				mtoReport.setEndDate(daysInMonth+"/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
-				
-				numRegisters = daysInMonth;				
-				fieldsNumber = length;
-		    	
-		    	 }
-		    	 
-		    	 else if(type.equals("3")) {
-		    		 
-		    		 mtoReport.setStartDate(parameterMap.get("dateStart"));
-		    		 mtoReport.setEndDate(parameterMap.get("dateEnd"));
-		    		 
-		    		 daysCount = ((int) dta.diferencaDias(mtoReport.getStartDate(), mtoReport.getEndDate()) + 1);
-		    		 
-		    		//Registros de acordo com seleção - importante
-		 			numRegisters = dta.RegistersNumbers(mtoReport.getStartDate(), mtoReport.getEndDate(), mtoReport.getPeriod());
-		 		   
-		 			if(mtoReport.getPeriod().equals("24 hours"))
-		 				fieldsNumber = length - 1;
-		 			
-		 			else fieldsNumber = length;
-		 			
-		 			periodRange = dta.periodsRange(mtoReport.getPeriod());
-		 		    	    	    	   
-		    	   }
-		    		   				    
-			//Chamar Procedure de acordo com período selecionado
-			procedure = models.SelectProcedureByPeriod(mtoReport.getPeriod());		
-			
-			//Select specific query by type
-			query = SelectQueryType(type, models, mtoModels); 
-													
-			//Execution of Query
-		   // resultQuery = dao.ExecuteQuery(procedure, query, mtoReport.getStartDate(), mtoReport.getEndDate(), numRegisters, fieldsNumber);
-					
-		    //Excel OutPut
-		    ExcelOutPut(type, model);
-		    
-		    //Output to datatable
-		    OutputResult(type);		
-	     
-	}
-	
-  //Create Fields
-    
-   public void CreateFields(String type) {
+///////////////////////////////////
+//CREATE REPORTS
+/////////////////////////////////  
+
+/**********************************************************************************************************/
+
+//////DESENHAR TABLES 	
+
+/**
+* Método para criar os headers
+* @param field - headers
+* @param objectValue - Valores de cada header estanciados em objetos
+*/
+public void drawTable(String[] field, String[] objectValue) {
+
+columns = new ArrayList<ColumnModel>();
+
+for(int i = 0; i < field.length; i++)
+columns.add(new ColumnModel(field[i], objectValue[i]));		
+
+}
+
+
+//////DESENHAR TABLES 	
+
+/**********************************************************************************************************/
+
+////CRIAR TABLE HEADERS
+
+// CRIAR CAMPOS PARA OS HEADERS
+// CRIAR CAMPOS PARA TABELA FRONT-END
+// FIELDS -> HEADERS
+// FIELDSOBJECTVALUES -> VALUES		
+
+public void CreateFields(String type) {
 	   
 	   FacesContext facesContext = FacesContext.getCurrentInstance();
 	   
@@ -329,9 +284,301 @@ public class MtoReportsController {
 	   
 	        //Finally Draw Table
 	        drawTable(field, fieldObjectValues);			   
-    
-      }
-      
+ 
+   }
+
+	public void GetReports(String type) throws Exception{
+		
+		   FacesContext facesContext = FacesContext.getCurrentInstance();
+	       ExternalContext externalContext = facesContext.getExternalContext();
+	    
+		    QueriesReportsModels models = new QueriesReportsModels();
+		    MtoQueriesModels mtoModels = new MtoQueriesModels();	    
+		    DateTimeApplication dta = new DateTimeApplication();
+		    
+			GlobalReportsDAO dao = new GlobalReportsDAO();	
+			
+			String startDate = null, endDate = null, data_anterior = null;
+			
+		    end_month = 0;
+		    start_month = 0;
+			
+			Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+			
+			//Single Selection
+			mtoReport.setEquipment(parameterMap.get("equip"));
+			
+			mtoReport.setMonth(parameterMap.get("month"));
+			
+			mtoReport.setMonth(parameterMap.get("month"));
+			
+			mtoReport.setStartMonth(parameterMap.get("start-month"));
+						
+			mtoReport.setEndMonth(parameterMap.get("end-month"));
+								
+			mtoReport.setYear(parameterMap.get("year"));
+			
+			mtoReport.setPeriod(parameterMap.get("period"));
+						
+			int length = (int) externalContext.getSessionMap().get("fields");
+											
+			 //Initialize ResultList
+		     resultList = new ArrayList<Builder>();	
+		 		    	 
+		    	 if(type.equals("1")) {
+		    		    			    	
+		    	// Quantos dias possui o respectivo mês
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getEndMonth()));
+				int daysInEndMonth = yearMonthObject.lengthOfMonth();
+											
+				mtoReport.setStartDate("01/"+mtoReport.getStartMonth()+"/"+mtoReport.getYear());
+				mtoReport.setEndDate(daysInEndMonth+"/"+mtoReport.getEndMonth()+"/"+mtoReport.getYear());
+				
+				end_month = Integer.parseInt(mtoReport.getEndMonth());
+				start_month = Integer.parseInt(mtoReport.getStartMonth());
+				
+				setNumRegisters((end_month - start_month) + 1);
+								 
+		    	 }
+		    	 
+		    	 else if(type.equals("2")) {
+		  		    	 
+				// Quantos dias possui o respectivo mês
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getMonth()));
+				int daysInMonth = yearMonthObject.lengthOfMonth();
+				
+				mtoReport.setStartDate("01/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
+				mtoReport.setEndDate(daysInMonth+"/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
+				
+				setNumRegisters(daysInMonth);				
+				    	
+		    	 }
+		    	 
+		    	 else if(type.equals("3")) {
+		    		 
+		    		 mtoReport.setStartDate(parameterMap.get("dateStart"));
+		    		 mtoReport.setEndDate(parameterMap.get("dateEnd"));
+		    		 
+		    		 daysCount = ((int) dta.diferencaDias(mtoReport.getStartDate(), mtoReport.getEndDate()) + 1);
+		    		 
+		    		//Registros de acordo com seleção - importante
+		 			setNumRegisters(dta.RegistersNumbers(mtoReport.getStartDate(), mtoReport.getEndDate(), mtoReport.getPeriod()));
+		 		 	 			
+		 			periodRange = dta.periodsRange(mtoReport.getPeriod());
+		 		    	    	    	   
+		    	   }
+		    		   				    
+			//Chamar Procedure de acordo com período selecionado
+			//procedure = models.SelectProcedureByPeriod(mtoReport.getPeriod());		
+			
+			//Select specific query by type
+			query = SelectQueryType(type, models, mtoModels); 
+			
+			startDate = dta.StringDBDateFormat(mtoReport.getStartDate());
+			endDate = dta.StringDBDateFormat(mtoReport.getEndDate());
+			data_anterior = startDate;
+					
+			start = dta.DateTimeToStringIni(startDate); 
+			end = dta.DateTimeToStringFim(endDate); 
+													
+			//System.out.println(query); //debug
+
+			//EXECUÇÃO DA QUERY
+			String[][] auxResult = dao.ExecuteQuery(query);
+			
+			//// NEW METHOD
+			
+			int minuto = 0;
+			int iterator= 0;
+			int pos = 0;
+			int hr = 0;
+	 		
+			int lin = 0;
+			int col = 0;
+			int p = 0;
+			
+			lin = auxResult[0].length;
+			col = auxResult.length;
+			
+			//DATAS
+			dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
+			
+			//PERIODOS
+			//NEW
+			if(mtoReport.getPeriod().equals("05 minutes"))			
+				 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
+						
+			if(mtoReport.getPeriod().equals("06 minutes"))			
+			     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
+			
+			if(mtoReport.getPeriod().equals("10 minutes"))		
+				dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
+			   			
+			if(mtoReport.getPeriod().equals("15 minutes"))		
+			    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
+			
+			if(mtoReport.getPeriod().equals("30 minutes"))		
+				dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
+				   		        			
+			if(mtoReport.getPeriod().equals("01 hour")) 	
+				dta.preencherHora(resultQuery, 1, getNumRegisters());
+			
+			if(mtoReport.getPeriod().equals("06 hours"))	
+			    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
+			
+			 if(mtoReport.getPeriod().equals("24 hours"))
+			    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
+													
+			for(int j = 0; j < lin; j++) {
+			   for(int i = 0; i < col; i++) {
+			
+		    //CASO NAO EXISTA >>>>>>> PULAR		   
+			if(auxResult[0][j] != null)	 {  
+			
+			if(mtoReport.getPeriod().equals("01 hour") || mtoReport.getPeriod().equals("06 hours"))
+				   hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
+				
+			else if(!mtoReport.getPeriod().equals("24 hours") && !mtoReport.getPeriod().equals("01 hour") && !mtoReport.getPeriod().equals("06 hours")) {
+				    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
+				    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));	
+				    
+				}
+					  
+			//System.out.println(satReport.getStartDate());
+
+				// Restrição caso não haja dados nos primeiros registros
+				if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
+					
+					if(mtoReport.getPeriod().equals("24 hours"))
+						iterator = (int) dta.daysDifference(startDate, auxResult[0][j]);
+
+					else iterator = dta.daysDifference(startDate, auxResult[0][j], periodRange);	
+					
+					pos+= iterator;
+					startDate = null;
+
+				} else if (!auxResult[0][j].equals(data_anterior)) {								
+												
+					if(mtoReport.getPeriod().equals("24 hours"))
+						iterator = (int) dta.daysDifference(data_anterior, auxResult[0][j]);
+					   
+					else iterator = dta.daysDifference(data_anterior, auxResult[0][j], periodRange);	
+					
+					pos+= iterator;							
+				} 			
+				
+				data_anterior = auxResult[0][j];
+				
+				 if(mtoReport.getPeriod().equals("05 minutes"))	{
+					 p = dta.index05Minutes(hr, minuto);
+					 p = p + pos;
+				 }
+				 else if(mtoReport.getPeriod().equals("06 minutes")) {	
+						 p = dta.index06Minutes(hr, minuto);
+						 p = p + pos;
+				 }
+				 else if(mtoReport.getPeriod().equals("10 minutes")) {
+				    	 p = dta.index10Minutes(hr, minuto);
+				    	 p = p + pos;
+				 }
+				 else if(mtoReport.getPeriod().equals("15 minutes")) {	
+						 p = dta.index15Minutes(hr, minuto);
+				         p = p + pos;
+								
+				 }
+				 else if(mtoReport.getPeriod().equals("30 minutes")) {	
+						 p = dta.index30Minutes(hr, minuto);
+						 p = p + pos;
+				 }
+				 else if(mtoReport.getPeriod().equals("01 hour"))				
+					p = pos + hr;
+							
+				else if(mtoReport.getPeriod().equals("06 hours")) {
+					
+					p = dta.index06Hours(hr);				
+					p = pos + p;
+					
+				}
+				
+				else if(mtoReport.getPeriod().equals("24 hours"))
+					     p = pos;
+						
+									 
+				if(i > 1 )
+				    resultQuery[i][p] = auxResult[i][j];	 
+				
+				
+			   }
+			   }
+			}
+					
+			  //// NEW METHOD
+
+			//CASO EXISTIR VALORES
+			if(resultQuery.length > 0) {
+
+				//SAÍDA PARA A TABELA
+				OutputResult(type);
+				
+				//SAÍDA DO EXCEL
+				ExcelOutPut(type, model);
+
+				//BOTÃO DE LIMPAR 
+				setClearBool(false);
+
+				//LINK DE DOWNLOAD DO EXCEL
+				setExcelBool(false);
+
+				//UPDATE RESET BUTTON
+				RequestContext.getCurrentInstance().update("form-btns:#btn-tab-reset");
+
+				//UPDATE BUTTON GENERATE EXCEL
+				RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
+			}
+	     
+	}
+			
+			
+/**********************************************************************************************************/
+
+///////////////////////////////////
+//SAIDA DE DADOS
+/////////////////////////////////      
+
+/////// FIELDS NUMBER - SAÍDA DE DADO
+
+public Integer fieldsNumber(String type) {
+
+	FacesContext facesContext = FacesContext.getCurrentInstance();
+	ExternalContext externalContext = facesContext.getExternalContext();
+
+	int length = (int) externalContext.getSessionMap().get("fieldsLength");
+
+int fields = 0;
+
+/**** CONTAGEM VEÍCULOS ****/		
+if(type.equals("1")) {    		
+	fields = length;		
+
+}
+
+/**** CONTAGEM VEÍCULOS ****/		
+if(type.equals("2")) {    
+	fields = length;   
+	
+}
+
+/**** FLUXO MENSAL  ****/
+if(type.equals("3")) {    		
+		fields = length;    		 
+	}
+	
+	return fields;    	 
+}
+
+ /////// FIELDS NUMBER - SAÍDA DE DADO 
+
+/**********************************************************************************************************/
    
    /* *********** */
    /* *** AUX *** */
@@ -344,12 +591,11 @@ public class MtoReportsController {
     * @param mainQuery - Query principal a ser adicionada
     * @return
     */
-   public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    	 
+   public String BuildMainQuery(QueriesReportsModels models, String mainQuery, String index) {    	 
 
 	   String query = null;
-
-	 //  query = models.BuildQuery(models.QueryHeader(mtoReport.getPeriod()), mainQuery, models.QueryFromTable(mtoReport.getPeriod()), models.LeftJoinStart("mto"),
-		//	   models.LeftJoinCondition(mtoReport.getPeriod()), models.LeftJoinEnd("mto"), models.QueryGroupAndOrder(mtoReport.getPeriod()));
+	   query = models.BuildQueryIndexType2(models.QueryHeader(mtoReport.getPeriod()), mainQuery, models.QueryFromMtoTable(mtoReport.getPeriod(), table), models.useIndex(index),
+				models.innerJoinMto(), models.whereClauseWeatherEquipDate(mtoReport.getEquipment(), start, end), models.QueryWeatherGroupAndOrder(mtoReport.getPeriod()));
 
 	   return query;
    }
@@ -368,9 +614,9 @@ public class MtoReportsController {
 		
 	     switch(type) {
 	     
-	     case "1": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment())); break;
-	     case "2": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment())); break;
-	     case "3": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment())); break;
+	     case "1": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "2": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "3": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
 	     case "4": ; break;	   
 	     default: query = null; break;
 	       	    	     
@@ -380,81 +626,59 @@ public class MtoReportsController {
 		
     }
 
-
-   
    
    public void OutputResult(String type) {  
 	   
 	   if(type.equals("1")) { 
   		   		       			 
-  		    for(int k = 0; k < numRegisters; k++) {      
+  		    for(int k = 0; k < getNumRegisters(); k++) {      
   		     			     		     					 
   		      resultList.add(new MtoReports.Builder().month(resultQuery[0][k]) 
   		    		                    .atmPressure(Integer.parseInt(resultQuery[1][k]))  
-  		    		                    .relative_humidity(Integer.parseInt(resultQuery[2][k]))
-  		 				                .temperature(Integer.parseInt(resultQuery[3][k]))
-  		 				                .windDir(Integer.parseInt(resultQuery[4][k]))
-  		    		                    .windSpeed(Integer.parseInt(resultQuery[5][k]))
-  		    		                    .preciptationRate(Integer.parseInt(resultQuery[5][k]))
-  		    		                    .preciptationRateHour(Integer.parseInt(resultQuery[7][k]))
-  		    		                    .visibility(Integer.parseInt(resultQuery[8][k])));  		    		                
+  		    		                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+  		 				                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+  		 				                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+  		    		                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+  		    		                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+  		    		                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+  		    		                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));  		    		                
   		    		    			    				 
   		 }
 	   }
 	   
 	   if(type.equals("2")) { 
       			 
- 		    for(int k = 0; k < numRegisters; k++) {      
+ 		    for(int k = 0; k < getNumRegisters(); k++) {      
  		     			     		     					 
  		      resultList.add(new MtoReports.Builder().dayOfMonth(Integer.parseInt(resultQuery[0][k])) 
  		    		                    .atmPressure(Integer.parseInt(resultQuery[1][k]))  
- 		    		                    .relative_humidity(Integer.parseInt(resultQuery[2][k]))
- 		 				                .temperature(Integer.parseInt(resultQuery[3][k]))
- 		 				                .windDir(Integer.parseInt(resultQuery[4][k]))
- 		    		                    .windSpeed(Integer.parseInt(resultQuery[5][k]))
- 		    		                    .preciptationRate(Integer.parseInt(resultQuery[5][k]))
- 		    		                    .preciptationRateHour(Integer.parseInt(resultQuery[7][k]))
- 		    		                    .visibility(Integer.parseInt(resultQuery[8][k])));
+ 		    		                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+ 		 				                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+ 		 				                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+ 		    		                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+ 		    		                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+ 		    		                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+ 		    		                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
  		    		    			    				 
  		 }
 	   }
 	   
-	   if(type.equals("3")) { 
-		   
-		   if(mtoReport.getPeriod().equals("24 hours")) {
-      			 
- 		    for(int k = 0; k < numRegisters; k++) {      
- 		     			     		     					 
- 		      resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
- 		    		                    .atmPressure(Integer.parseInt(resultQuery[1][k]))  
- 		    		                    .relative_humidity(Integer.parseInt(resultQuery[2][k]))
- 		 				                .temperature(Integer.parseInt(resultQuery[3][k]))
- 		 				                .windDir(Integer.parseInt(resultQuery[4][k]))
- 		    		                    .windSpeed(Integer.parseInt(resultQuery[5][k]))
- 		    		                    .preciptationRate(Integer.parseInt(resultQuery[5][k]))
- 		    		                    .preciptationRateHour(Integer.parseInt(resultQuery[7][k]))
- 		    		                    .visibility(Integer.parseInt(resultQuery[8][k])));
- 		    		    			    				 
- 		 }
- 		    
-		 }else {
- 		    	
-			  for(int k = 0; k < numRegisters; k++) {      
+			  for(int k = 0; k < getNumRegisters(); k++) {      
  					 
 	 		      resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
 	 		    		                    .dateTime(resultQuery[1][k]) 
-	 		    		                    .atmPressure(Integer.parseInt(resultQuery[2][k]))  
-	 		    		                    .relative_humidity(Integer.parseInt(resultQuery[3][k]))
-	 		 				                .temperature(Integer.parseInt(resultQuery[4][k]))
-	 		 				                .windDir(Integer.parseInt(resultQuery[5][k]))
-	 		    		                    .windSpeed(Integer.parseInt(resultQuery[6][k]))
-	 		    		                    .preciptationRate(Integer.parseInt(resultQuery[7][k]))
-	 		    		                    .preciptationRateHour(Integer.parseInt(resultQuery[8][k]))
-	 		    		                    .visibility(Integer.parseInt(resultQuery[9][k])));
+	 		    		                    .atmPressure(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  
+	 		    		                    .relative_humidity(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+	 		 				                .temperature(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+	 		 				                .windDir(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+	 		    		                    .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+	 		    		                    .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+	 		    		                    .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+	 		    		                    .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
 	 		    		    			    				 
 	 		 }
  		    	
- 		 }
+ 		 
 		   
 		   //Reorder DataTable
 		 //  ReorderTableHeaderPeriod();
@@ -464,8 +688,6 @@ public class MtoReportsController {
 	   
 	   }
 	   
-   }
-   
    
    public void ReorderTableHeaderPeriod() {
    	 
@@ -636,6 +858,28 @@ public class MtoReportsController {
 		}
  	  
     }
+      
+    //Form Reset
+  	public void resetFormValues(String type) {
+  		
+  		FacesContext facesContext = FacesContext.getCurrentInstance();	
+  		ExternalContext externalContext = facesContext.getExternalContext();
+
+  		//Reset object => call on click reset button
+  		mtoReport = new MtoReports();
+
+  		//System.out.println("reset");
+  		
+  		externalContext.getSessionMap().remove("xlsModel");
+  		externalContext.getSessionMap().remove("current");
+  		externalContext.getSessionMap().remove("fileName");		
+  		externalContext.getSessionMap().remove("fields");
+  		externalContext.getSessionMap().remove("fieldsObject");
+
+  		// Fields again
+  		CreateFields(type);
+
+  	}
    
    
    

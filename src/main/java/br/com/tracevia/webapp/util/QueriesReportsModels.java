@@ -106,6 +106,16 @@ public class QueriesReportsModels {
 	private static final String FROM_TABLE_01_HOUR_SAT = " FROM sat_vbv st ";
 	private static final String FROM_TABLE_06_HOURS_SAT = " FROM sat_vbv st ";
 	private static final String FROM_TABLE_DATE_SAT = " FROM sat_vbv st " ;
+	
+    //FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_06_MIN_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_10_MIN_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_15_MIN_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_30_MIN_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_01_HOUR_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_06_HOURS_MTO = " FROM weather_station st ";
+	private static final String FROM_TABLE_DATE_MTO = " FROM weather_station st " ;
 
 
 	//LEFT JOIN TABLE REFERENCE
@@ -119,6 +129,7 @@ public class QueriesReportsModels {
 	private static final String LEFT_JOIN_END_SAT_EQUIP = "LEFT JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
 	private static final String LEFT_JOIN_END_MTO_EQUIP = "LEFT JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
 	private static final String INNER_JOIN_END_SAT_EQUIP = "INNER JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
+	private static final String INNER_JOIN_END_MTO_EQUIP = "INNER JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
 	
 	//LEFT JOIN PERIOD 05 MINUTES
 		private static final String LEFT_JOIN_CONDITION_05_MIN = "ON DATE(st.data) = DATE(tmp.datetime_05) AND HOUR(st.data) = HOUR(tmp.datetime_05) AND " +
@@ -257,12 +268,48 @@ public class QueriesReportsModels {
 		private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_SAT = "GROUP BY MONTH(data) " +
 		       "ORDER BY MONTH(data) ASC";
 		
+		//QUERIES GROUP AND ORDER BY PERIODSNEW MTO		
+				private static final String GROUP_AND_ORDER_TABLE_05_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
+						"ORDER BY DATE(datetime_) ASC ";
+
+				private static final String GROUP_AND_ORDER_TABLE_06_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
+						"ORDER BY DATE(datetime_) ASC ";
+
+				private static final String GROUP_AND_ORDER_TABLE_10_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
+						"ORDER BY DATE(datetime_) ASC ";
+
+				private static final String GROUP_AND_ORDER_TABLE_15_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
+						"ORDER BY DATE(datetime_) ASC ";
+
+				private static final String GROUP_AND_ORDER_TABLE_30_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
+						"ORDER BY DATE(datetime_) ASC ";
+
+				private static final String GROUP_AND_ORDER_TABLE_01_HOUR_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
+						"ORDER BY DATE(datetime_) ASC "; 
+
+				private static final String GROUP_AND_ORDER_TABLE_06_HOURS_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
+						"ORDER BY DATE(datetime_) ASC "; 
+
+				private static final String GROUP_AND_ORDER_TABLE_DAYS_MTO = "GROUP BY DAY(datetime_) " +
+						"ORDER BY DAY(datetime_) ASC";
+
+				private static final String GROUP_AND_ORDER_TABLE_DATE_MTO = "GROUP BY DATE(datetime_) " +
+						"ORDER BY DATE(datetime_) ASC";
+
+				private static final String GROUP_AND_ORDER_TABLE_MONTHS_MTO = "GROUP BY DAY(datetime_) " +
+						"ORDER BY DAY(datetime_) ASC";
+
+				private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_MTO = "GROUP BY MONTH(datetime_) " +
+				       "ORDER BY MONTH(datetime_) ASC";
+		
 		//INDEX
 		public static final String USE_INDEX_IDX_DATE_SITEID = "USE INDEX(idx_date_siteID) ";
 		
 		public static final String USE_INDEX_SITE_ID = "USE INDEX(siteID_data) ";
 		
 		public static final String USE_INDEX_IDX_SITEID_DATA = "USE INDEX(idx_siteID_data) ";
+		
+		public static final String USE_INDEX_IDX_DATETIME_STATION = "USE INDEX(idx_datetime_station) ";
 				
 		
 	///////////////////
@@ -395,6 +442,7 @@ public class QueriesReportsModels {
 						
 						else if(table.equals("tb_vbv_ccr"))
 							 return FROM_TABLE_05_MIN_CCR;
+							 
 			        }
 
 			if(period.equals("06 minutes")) {
@@ -508,6 +556,38 @@ public class QueriesReportsModels {
 			return null;
 		}
 		
+		//TABLE FROM  METHOD SELECTION
+				public String QueryFromMtoTable(String period, String table) {
+
+					if(period.equals("05 minutes"))
+						return FROM_TABLE_05_MIN_MTO;
+
+					if(period.equals("06 minutes"))
+						return FROM_TABLE_06_MIN_MTO;
+
+					if(period.equals("10 minutes"))
+						return FROM_TABLE_10_MIN_MTO;
+
+					if(period.equals("15 minutes"))
+						return FROM_TABLE_15_MIN_MTO;
+
+					if(period.equals("30 minutes"))
+						return FROM_TABLE_30_MIN_MTO;
+
+					if(period.equals("01 hour"))
+						return FROM_TABLE_01_HOUR_MTO;
+
+					if(period.equals("06 hours"))
+						return FROM_TABLE_06_HOURS_MTO;
+
+					if(period.equals("24 hours") || period.equals("year") || period.equals("month"))
+						return FROM_TABLE_DATE_MTO;
+						
+					return null;
+									 
+					        
+				}
+		
 		/**********************************************************************************************************/
 
 	//METHOD GROUP BY  AND ORDER BY
@@ -586,6 +666,42 @@ public class QueriesReportsModels {
 	
 	/**********************************************************************************************************/
 
+	//METHOD GROUP BY  AND ORDER BY
+		public String QueryWeatherGroupAndOrder(String period) {
+
+			if(period.equals("05 minutes"))
+				return GROUP_AND_ORDER_TABLE_05_MIN_MTO;
+
+			if(period.equals("06 minutes"))
+				return GROUP_AND_ORDER_TABLE_06_MIN_MTO;
+
+			if(period.equals("10 minutes"))
+				return GROUP_AND_ORDER_TABLE_10_MIN_MTO;
+
+			if(period.equals("15 minutes"))
+				return GROUP_AND_ORDER_TABLE_15_MIN_MTO;
+
+			if(period.equals("30 minutes"))
+				return GROUP_AND_ORDER_TABLE_30_MIN_MTO;
+
+			if(period.equals("01 hour"))
+				return GROUP_AND_ORDER_TABLE_01_HOUR_MTO;
+
+			if(period.equals("06 hours"))
+				return GROUP_AND_ORDER_TABLE_06_HOURS_MTO;
+
+			if(period.equals("24 hours"))
+				return GROUP_AND_ORDER_TABLE_DATE_MTO;
+
+			if(period.equals("month"))
+				return GROUP_AND_ORDER_TABLE_MONTHS_MTO;
+
+			if(period.equals("year"))
+				return GROUP_AND_ORDER_TABLE_MONTH_YEAR_MTO;		
+
+			return null;
+		}
+		
 	//METHOD LEFT JOIN TABLE
 	public String LeftJoinStart(String module) {
 
@@ -623,6 +739,11 @@ public class QueriesReportsModels {
 	
 	public String innerJoinSat() {
 		return INNER_JOIN_END_SAT_EQUIP;
+		
+	}
+	
+	public String innerJoinMto() {
+		return INNER_JOIN_END_MTO_EQUIP;
 		
 	}
 
@@ -755,6 +876,17 @@ public class QueriesReportsModels {
   	   return query;
   	   
      }
+	 
+	  public String whereClauseWeatherEquipDate(String station, String startDate, String endDate) {
+	  	   
+	  	   String query = "";
+	  	   
+	  	   query =" WHERE station_id = '"+station+"' AND data between '"+startDate+"' AND '"+endDate+"' ";
+	  	   
+	  	   
+	  	   return query;
+	  	   
+	     }
      
      
        public String whereClauseEquipDate(String siteID, String startDate, String endDate) {
