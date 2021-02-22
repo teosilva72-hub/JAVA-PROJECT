@@ -542,6 +542,7 @@ public class OccurrencesBean {
 		//int teste = Integer.parseInt(occNumber);
 		//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
 
 		if(occNumber != null) {
 
@@ -611,6 +612,27 @@ public class OccurrencesBean {
 		total = 0;
 
 		deleteDirectory();
+	}
+	public void resetUpdate() throws Exception{
+		
+		OccurrencesDAO dao = new OccurrencesDAO();
+		occurrences = dao.listarOcorrencias();
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("eventValidator()");
+
+		data = new OccurrencesData();
+
+		//btn
+		save = true;
+		alterar = true;
+		reset = true;
+		new_ = false;
+		fields = true;
+		edit = true;
+		table = true;
+		
+		listUpdate = null;
+		total = 0;
+		
 	}
 	public void getRowValue() throws Exception {
 
@@ -696,6 +718,8 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("uploadFile()");
+
 		//Global
 		value = pegarId();
 
@@ -735,9 +759,11 @@ public class OccurrencesBean {
 		alterar = false;
 		
 		//js
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterBtnReset()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+
 
 		//listando arquivos
 		listingUpdate();
@@ -809,13 +835,23 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("uploadFile()");
+
 	}
 
 	public String[] listingUpdate() {
 		
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
-		
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+
+		save = true;
+		alterar = false;
+		edit = true;
+		new_ = true;
+		reset = false;
+		fields = false;
 		//pega o id da tabela.
 		int id = getValue();
 
@@ -1026,6 +1062,7 @@ public class OccurrencesBean {
 	public File deleteDirectory() {
 
 		try {
+
 			File folder = new File(mainPath+path+"\\");
 
 			System.out.println("Pasta excluida: "+folder);
@@ -1127,9 +1164,6 @@ public class OccurrencesBean {
 
 		fos.close();
 
-		
-
-		
 		System.out.println("Download realizado: "+fileName);
 	}
 	public void downloadUpdateTable(String fileName) throws Exception {
