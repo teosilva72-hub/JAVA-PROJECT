@@ -30,7 +30,7 @@ $('#dismiss, .overlay').on('click', function () {
 var url      = '/phone/phone.html',
     features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
 
-    $('.acptcall').on('click', function(event) {
+    $('#navCall').on('click', function(event) {
         event.preventDefault();
         // This is set when the phone is open and removed on close
         if (!localStorage.getItem('ctxPhone')) {

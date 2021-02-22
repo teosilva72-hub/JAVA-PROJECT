@@ -6,7 +6,7 @@ var user = {
     //  Auth Realm
     "Realm"   : "192.168.0.5",
     // Display Name
-    "Display" : "Shedu",
+    "Display" : "Tests",
     // WebSocket URL
-    "WSServer"  : "ws://192.168.0.5:8088/asterisk/ws"
+    "WSServer"  : "wss://192.168.0.5:8088/asterisk/ws"
 };
