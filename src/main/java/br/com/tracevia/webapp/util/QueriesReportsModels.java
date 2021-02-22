@@ -56,6 +56,43 @@ public class QueriesReportsModels {
   private static final String QUERY_HEADER_DAYS = "SELECT DATE_FORMAT(data, '%d') AS days, ";
 
   private static final String QUERY_HEADER_MONTHS = "SELECT DATE_FORMAT(data, '%M') AS month, ";
+  
+  /////////////////////// DATETIME ////////////////////////////////////////
+  //CABEÇALHO QUERIES
+  private static final String QUERY_HEADER_05_MIN_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(05*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 240 ) - TIME_TO_SEC(datetime_)%(05*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_06_MIN_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(06*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 300 ) - TIME_TO_SEC(datetime_)%(06*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_10_MIN_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(10*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 540 ) - TIME_TO_SEC(datetime_)%(10*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_15_MIN_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(15*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 840 ) - TIME_TO_SEC(datetime_)%(15*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_30_MIN_DATETIME = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(30*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 1740 ) - TIME_TO_SEC(datetime_)%(30*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_01_HOUR_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(60*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 3599 ) - TIME_TO_SEC(datetime_)%(60*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_06_HOURS_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
+  "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(360*60))),'%H:%i'), ' - '), " +
+  "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 21599 ) - TIME_TO_SEC(datetime_)%(360*60))),'%H:%i')) AS intervals, ";
+
+  private static final String QUERY_HEADER_DATE_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, CONCAT('', ' ----- ') AS intervals, ";
+ 
+  private static final String QUERY_HEADER_DAYS_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%d') AS days, ";
+
+  private static final String QUERY_HEADER_MONTHS_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%m') AS month, ";
+  
 
 	//FROM TABLES REFERENCE		
 	private static final String FROM_TABLE_05_MIN = " FROM temporarydatetime05 as tmp ";
@@ -393,6 +430,44 @@ public class QueriesReportsModels {
 
 	/**********************************************************************************************************/
 
+	//METODO PARA SELECIONAR O HEADER DA QUERY
+	public String QueryDateTimeHeader(String period) {
+
+		if(period.equals("05 minutes"))
+			return QUERY_HEADER_05_MIN_DATETIME;
+
+		if(period.equals("06 minutes"))
+			return QUERY_HEADER_06_MIN_DATETIME;
+
+		if(period.equals("10 minutes"))
+			return QUERY_HEADER_10_MIN_DATETIME;
+
+		if(period.equals("15 minutes"))
+			return QUERY_HEADER_15_MIN_DATETIME;
+
+		if(period.equals("30 minutes"))
+			return QUERY_HEADER_30_MIN_DATETIME;
+
+		if(period.equals("01 hour"))
+			return QUERY_HEADER_01_HOUR_DATETIME;
+
+		if(period.equals("06 hours"))
+			return QUERY_HEADER_06_HOURS_DATETIME;
+
+		if(period.equals("24 hours"))
+			return QUERY_HEADER_DATE_DATETIME;
+
+		if(period.equals("month"))
+			return QUERY_HEADER_DAYS_DATETIME;	
+
+		if(period.equals("year"))
+			return QUERY_HEADER_MONTHS_DATETIME;							 	
+
+		return null;
+	}
+	
+	/**********************************************************************************************************/
+	
 	//TABLE FROM  METHOD
 	public String QueryFromTable(String period) {
 
@@ -878,10 +953,10 @@ public class QueriesReportsModels {
      }
 	 
 	  public String whereClauseWeatherEquipDate(String station, String startDate, String endDate) {
-	  	   
+		  			  	   
 	  	   String query = "";
 	  	   
-	  	   query =" WHERE station_id = '"+station+"' AND data between '"+startDate+"' AND '"+endDate+"' ";
+	  	   query =" WHERE station_id = '"+station+"' AND datetime_ between '"+startDate+"' AND '"+endDate+"' ";
 	  	   
 	  	   
 	  	   return query;
