@@ -17,13 +17,7 @@ public class OccurrencesDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-
 	
-	/**
-	 * @param data
-	 * @return
-	 * @throws Exception
-	 */
 		
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 

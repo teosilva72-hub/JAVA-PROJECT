@@ -145,7 +145,8 @@ body {
 }
 
 /* input and select width definition */ 
-#equips, #equip, #periods, #dateStart, #dateEnd, #month, #year {width: 100%;}
+#equips, #equip, #periods, #dateStart, #dateEnd, #month, 
+#year, #start_month, #end_month {width: 100%;}
 
 /*****************************************************/
 /****************** FORM CONTAINER ******************/
