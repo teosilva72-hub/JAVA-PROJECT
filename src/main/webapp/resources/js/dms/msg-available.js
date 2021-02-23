@@ -1,5 +1,3 @@
-
-////////////////////////////////////////////////////////////
 function showImageInfo() {
 	document.getElementById("image-div-info").style.display = "block";
 }
@@ -29,7 +27,7 @@ function changeDIV() {
 function returnDIV() {
 	document.getElementById('image-div').style.display = "block";
 	document.getElementById('list-images').style.display = "none";
-	
+
 }
 function imageDisabled() {
 	document.getElementById("image-place").style.opacity = "0.4";
@@ -44,123 +42,134 @@ function dialogHide() {
 function showRefreshIcon() {
 	document.getElementById("table-refresh").style.display = "block";
 }
-/////ESCONDER TABELAS/////////////////////////////////////////////////////
-function bloquerTable(){
-	//ESCONDER A TABELA REAL///////////////////////////////////////
+// ESCONDER TABELAS
+function bloquerTable() {
+	// ESCONDER A TABELA REAL
 	document.getElementById("tabelaReal").style.display = "none";
-	//////TRAZER A TABELA OCULTA BLOQUEADA////////////////////////
+	// TRAZER A TABELA OCULTA BLOQUEADA
 	var element = document.getElementById("tabelaHidden");
- 	 element.classList.remove("trazerTable");
+	element.classList.remove("trazerTable");
 }
-//////////////////////////////////////////////////////////////////////////////////
-//Id do inputHidden para passar valor para pmvMessage (Bean)		 
-	var idMessage, selected;
 
-//Método para Criar a datatable JQuery (Quando for selection será definida na página)
-function listTable(){
-	$(document).ready(function() {
-	
-	var table = $('#message-table').DataTable({
-		select : true,
-		"autoWidth" : true,
-		"scrollY" : "65vh",
-		"scrollCollapse" : true,
-		"paging" : false,
-		"bInfo" : false,
-		"columnDefs" : [ {
-		"width" : "7%",
-		"targets" : 0
-		}, {
-			"width" : "20%",
-			"targets" : 1
-		}, {
-			"width" : "20%",
-			"targets" : 2
-		}, {
-			"width" : "3%",
-			"targets" : 3
-		}, {
-			"width" : "30%",
-			"targets" : 4
+
+// Id do inputHidden para passar valor para pmvMessage (Bean)		 
+var idMessage, selected;
+
+// Método para Criar a datatable JQuery (Quando for selection será definida na página)
+function listTable() {
+	$(document).ready(function () {
+
+		var table = $('#message-table').DataTable({
+			select: true,
+			"autoWidth": true,
+			"scrollY": "65vh",
+			"scrollCollapse": true,
+			"paging": false,
+			"bInfo": false,
+			"columnDefs": [{
+				"width": "7%",
+				"targets": 0
+			}, {
+				"width": "20%",
+				"targets": 1
+			}, {
+				"width": "20%",
+				"targets": 2
+			}, {
+				"width": "3%",
+				"targets": 3
+			}, {
+				"width": "30%",
+				"targets": 4
 			}]
+		});
+
+		$('.dataTables_length').removeClass('bs-select');
 	});
-	
-	$('.dataTables_length').removeClass('bs-select');
-});
 }
-function listTableHidden(){
-	$(document).ready(function() {
-	
-	var table = $('#message-table-hidden').DataTable({
-		select : false,
-		"autoWidth" : true,
-		"scrollY" : "65vh",
-		"scrollCollapse" : true,
-		"paging" : false,
-		"bInfo" : false,
-		"columnDefs" : [ {
-		"width" : "7%",
-		"targets" : 0
-		}, {
-			"width" : "20%",
-			"targets" : 1
-		}, {
-			"width" : "20%",
-			"targets" : 2
-		}, {
-			"width" : "3%",
-			"targets" : 3
-		}, {
-			"width" : "30%",
-			"targets" : 4
+function listTableHidden() {
+	$(document).ready(function () {
+
+		$('#message-table-hidden').DataTable({
+			select: false,
+			"autoWidth": true,
+			"scrollY": "65vh",
+			"scrollCollapse": true,
+			"paging": false,
+			"bInfo": false,
+			"columnDefs": [{
+				"width": "7%",
+				"targets": 0
+			}, {
+				"width": "20%",
+				"targets": 1
+			}, {
+				"width": "20%",
+				"targets": 2
+			}, {
+				"width": "3%",
+				"targets": 3
+			}, {
+				"width": "30%",
+				"targets": 4
 			}]
+		});
 	});
-});
 }
-function selectList(){
-	//Método para pegar id da mensagem na seleção de uma row
-$('#message-table tbody').on('click', 'tr', function() {
-	//Get table row
-	var row = $(this);
+function selectList() {
+	// Método para pegar id da mensagem na seleção de uma row
+	$('#message-table tbody').on('click', 'tr', function () {
+		// Get table row
+		var row = $(this);
 
-	//Check if table row is selected on not (Change state) (true or false)
-	if (!row.hasClass('selected'))
-		selected = true;
+		// Check if table row is selected on not (Change state) (true or false)
+		if (!row.hasClass('selected'))
+			selected = true;
 
-	else
-		selected = false;
+		else
+			selected = false;
 
-	//Get table id on select Row		  
-	var tableData = $(this).children("td").map(function() {
-		return $(this).text();
-			}).get();
+		// Get table id on select Row		  
+		var tableData = $(this).children("td").map(function () {
+			return $(this).text();
+		}).get();
 
-	idMessage = tableData[0]; // td posição 0 da row (Primeira posição)
+		idMessage = tableData[0]; // td posição 0 da row (Primeira posição)
 
-	//alert(idMessage); //Mostrar id   
+		// alert(idMessage); //Mostrar id   
 
-	//Chamar Action do Botão Hidden
-	document.getElementById('formId:hdnBtn').click();
+		// Chamar Action do Botão Hidden
+		document.getElementById('formId:hdnBtn').click();
 
-	//Passar o id para dialog
-	$('#selectedId').text(idMessage);
+		// Passar o id para dialog
+		$('#selectedId').text(idMessage);
 
-});
+	});
 }
- /////////////////////////////////////////////////////////////////////////////////
-////////Método para passar o valor selecionado///////////////////////////////////
+
+// Método para passar o valor selecionado
 function getMessageId() {
 	document.getElementById("formId:idMessage").value = idMessage;
 	document.getElementById("formId:checked").value = selected;
 }
-////////////////////////////////////////////////////////////////////////////////
-//Check if row is selected or not
+
+// Check if row is selected or not
 function checkRowSelected() {
 	if (!table.data().any())
 		selected = false
 	else
 		selected = true;
 }
- function hideMsg(){
-     $("#message-display").delay(1000).hide(1000);
+function hideMsg() {
+	$("#message-display").delay(1000).hide(1000);
 }
+
+// $(function () {
+// 	setTimeout(function () {
+// 		listTable();
+// 		listTableHidden();
+// 		selectList();
+// 		getMessageId();
+// 		hideMsg();
+// 	}, 10)
+// });
