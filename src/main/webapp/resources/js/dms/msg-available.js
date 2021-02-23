@@ -29,10 +29,10 @@ function returnDIV() {
 	document.getElementById('list-images').style.display = "none";
 
 }
-function imageDisabled() {
+function imageDisabled() {// Todo: Talvez elimine esse
 	document.getElementById("image-place").style.opacity = "0.4";
 }
-function imageEnabled() {
+function imageEnabled() { // Todo: Talvez elimine esse
 	document.getElementById("image-place").style.opacity = "1";
 }
 function dialogHide() {
@@ -43,7 +43,7 @@ function showRefreshIcon() {
 	document.getElementById("table-refresh").style.display = "block";
 }
 // ESCONDER TABELAS
-function bloquerTable() {
+function bloquerTable() {// Todo: Talvez elimine esse
 	// ESCONDER A TABELA REAL
 	document.getElementById("tabelaReal").style.display = "none";
 	// TRAZER A TABELA OCULTA BLOQUEADA

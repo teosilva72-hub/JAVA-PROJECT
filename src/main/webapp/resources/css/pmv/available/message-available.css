@@ -73,9 +73,9 @@ body {
 }
 
 .msg-pos {
-	position: absolute;
-	right: 5px;
-	bottom: 3px;
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
 }
 
 .table-message {
@@ -85,11 +85,10 @@ body {
 
 /*TABLES EQUIP PREVIEW*/
 @media (max-width: 1366px) {
-  .boardDetails {
-    margin-top: 0 !important;
-    height: 490px !important;
-    overflow-y: auto;
+  .responsive {
+    height: 380px;
   }
+
   .confBtn {
     margin-left: 20% !important;
     height: 28px;
@@ -129,6 +128,8 @@ body {
   padding-top: 1rem;
   top: 75px;
   bottom: 60px;
+  right: 5px;
+  left: 5px;
 }
 
 ::-webkit-scrollbar {
@@ -482,9 +483,6 @@ select {
   border-bottom: 2px solid #1c86ee; /*#dc3545*/
   box-shadow: 2px 2px 2px #1c86ee;
 }
-.trazerTable {
-  margin-top: 100000vh;
-}
 .iconeSpan {
   margin-top: -3px;
   position: absolute;
@@ -502,4 +500,8 @@ select {
 
 .text-timer {
   font-size: 12px;
+}
+
+.text-creation {
+	opacity: 0;
 }

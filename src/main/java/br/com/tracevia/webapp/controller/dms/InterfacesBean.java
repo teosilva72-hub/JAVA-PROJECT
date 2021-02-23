@@ -312,22 +312,22 @@ public class InterfacesBean implements Serializable {
 				  
 				  if(m.isActiveMessage()) {
 																																		
-				  image[e] = m.getImagem();	
-				  image1[e] = m.getImagem();
+				  image[e] = m.getImage();	
+				  image1[e] = m.getImage();
 								  					  					  						 																			
-				  for(int n = 0; n < m.getTexto1().length(); n++) {
-						  letter[e][0][n] = m.getTexto1().charAt(n);
-				          letter1[e][0][n] = m.getTexto1().charAt(n);				          
+				  for(int n = 0; n < m.getPages().get(0).getText1().length(); n++) {
+						  letter[e][0][n] = m.getPages().get(0).getText1().charAt(n);
+				          letter1[e][0][n] = m.getPages().get(0).getText1().charAt(n);				          
 				  }
 					   
-			      for(int n = 0; n < m.getTexto2().length(); n++) {
-						   letter[e][1][n] = m.getTexto2().charAt(n);
-						   letter1[e][1][n] = m.getTexto2().charAt(n);						  
+			      for(int n = 0; n < m.getPages().get(0).getText2().length(); n++) {
+						   letter[e][1][n] = m.getPages().get(0).getText2().charAt(n);
+						   letter1[e][1][n] = m.getPages().get(0).getText2().charAt(n);						  
 			      }
 					   
-				  for(int n = 0; n < m.getTexto3().length(); n++) {
-						    letter[e][2][n] = m.getTexto3().charAt(n);	
-						    letter1[e][2][n] = m.getTexto3().charAt(n);					    
+				  for(int n = 0; n < m.getPages().get(0).getText3().length(); n++) {
+						    letter[e][2][n] = m.getPages().get(0).getText3().charAt(n);	
+						    letter1[e][2][n] = m.getPages().get(0).getText3().charAt(n);					    
 				  }
 				  				 				  				  
 					}else {
@@ -341,36 +341,36 @@ public class InterfacesBean implements Serializable {
 					RequestContext.getCurrentInstance().execute("uncheckedOpacityNormalShadow('"+equips[e]+"');");
 					RequestContext.getCurrentInstance().execute("uncheckedOpacityNormalShadow('1"+equips[e]+"');");	
 					
-					  image[e] = m.getImagem(); //IF IS INACTIVE MUST REPEAT THE MESSAGE
-					  image1[e] = msg.getImagem();
-					  imageAux[e] = msg.getImagem();
+					  image[e] = m.getImage(); //IF IS INACTIVE MUST REPEAT THE MESSAGE
+					  image1[e] = msg.getImage();
+					  imageAux[e] = msg.getImage();
 					
 					//IF IS INACTIVE MUST REPEAT THE ACTIVE MESSAGE ON THIS PART					
-					   for(int n = 0; n < m.getTexto1().length(); n++) 
-						  letter[e][0][n] = m.getTexto1().charAt(n);				    
+					   for(int n = 0; n < m.getPages().get(0).getText1().length(); n++) 
+						  letter[e][0][n] = m.getPages().get(0).getText1().charAt(n);				    
 					   
-			           for(int n = 0; n < m.getTexto2().length(); n++) 
-						   letter[e][1][n] = m.getTexto2().charAt(n);						   			    
+			           for(int n = 0; n < m.getPages().get(0).getText2().length(); n++) 
+						   letter[e][1][n] = m.getPages().get(0).getText2().charAt(n);						   			    
 					   
-				       for(int n = 0; n < m.getTexto3().length(); n++) 
-				    	   letter[e][2][n] = m.getTexto3().charAt(n);
+				       for(int n = 0; n < m.getPages().get(0).getText3().length(); n++) 
+				    	   letter[e][2][n] = m.getPages().get(0).getText3().charAt(n);
 				       
 				     //IF IS INACTIVE MUST REPEAT THE ACTIVE MESSAGE ON THIS PART
 						   				    	       
 				         // HERE SET THE MESSAGE TO ACTIVATE ON THIS PART			    	
-					      for(int n = 0; n < msg.getTexto1().length(); n++) {
-								  letter1[e][0][n] = msg.getTexto1().charAt(n);
-						          letterAux[e][0][n] = msg.getTexto1().charAt(n);				          
+					      for(int n = 0; n < msg.getPages().get(0).getText1().length(); n++) {
+								  letter1[e][0][n] = msg.getPages().get(0).getText1().charAt(n);
+						          letterAux[e][0][n] = msg.getPages().get(0).getText1().charAt(n);				          
 						  }
 							   
-					      for(int n = 0; n < msg.getTexto2().length(); n++) {
-								   letter1[e][1][n] = msg.getTexto2().charAt(n);
-								   letterAux[e][1][n] = msg.getTexto2().charAt(n);						  
+					      for(int n = 0; n < msg.getPages().get(0).getText2().length(); n++) {
+								   letter1[e][1][n] = msg.getPages().get(0).getText2().charAt(n);
+								   letterAux[e][1][n] = msg.getPages().get(0).getText2().charAt(n);						  
 					      }
 							   
-						  for(int n = 0; n < msg.getTexto3().length(); n++) {
-								    letter1[e][2][n] = msg.getTexto3().charAt(n);	
-								    letterAux[e][2][n] = msg.getTexto3().charAt(n);		  			    	
+						  for(int n = 0; n < msg.getPages().get(0).getText3().length(); n++) {
+								    letter1[e][2][n] = msg.getPages().get(0).getText3().charAt(n);	
+								    letterAux[e][2][n] = msg.getPages().get(0).getText3().charAt(n);		  			    	
 					    }
 						  
 					   // HERE SET THE MESSAGE TO ACTIVATE ON THIS PART																							
@@ -382,7 +382,7 @@ public class InterfacesBean implements Serializable {
 								
 			} else {
 				
-				//IF HAVEN´T REGISTERS								
+				//IF HAVENï¿½T REGISTERS								
 				for(int eq = 0; eq < amountDMS; eq++) {
 				     
 					image[eq] += standard_image; 					
@@ -419,11 +419,11 @@ public class InterfacesBean implements Serializable {
 				
 	public void loadMessageInformation(AjaxBehaviorEvent event) throws AbortProcessingException {	
 				
-		this.messageID = message.getId_reg();
-		this.imagem = String.valueOf(message.getImagem());	
-		this.texto1 = message.getTexto1();
-		this.texto2 = message.getTexto2();
-		this.texto3 = message.getTexto3();
+		this.messageID = message.getId_message();
+		this.imagem = String.valueOf(message.getImage());	
+		this.texto1 = message.getPages().get(0).getText1();
+		this.texto2 = message.getPages().get(0).getText2();
+		this.texto3 = message.getPages().get(0).getText3();
 		
 		//messages = null;
 		typeSelection = null;
@@ -508,7 +508,7 @@ public class InterfacesBean implements Serializable {
 				
 			}	
 								
-			//Deixar a apresentação conforme chefe solicitou
+			//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 			if(state[i] == false && state_prev[i] == true) {
 																							
 				  RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -520,7 +520,7 @@ public class InterfacesBean implements Serializable {
 				
 			   }	
 			
-			/* Caso começe o a mensagem sem ativação - permancer nessa configuração */
+			/* Caso comeï¿½e o a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 			if(state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 				
 				RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -571,7 +571,7 @@ public class InterfacesBean implements Serializable {
 				   	
 			     }
 							
-				//Deixar a apresentação conforme chefe solicitou
+				//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 				if(state[i] == false && state_prev[i] == true) {
 																								
 					 RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -599,9 +599,9 @@ public class InterfacesBean implements Serializable {
 			      }	
 				
 
-				/* Caso a mensagem ainda n foi ativada - manter em estado de ativação */
+				/* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */
 				  
-				  /* Caso começe com a mensagem sem ativação - permancer nessa configuração */
+				  /* Caso comeï¿½e com a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 				  if(state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 					
 					RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -612,7 +612,7 @@ public class InterfacesBean implements Serializable {
 								
 				   }
 				  
-			        /* Caso a mensagem ainda n foi ativada - manter em estado de ativação */			       
+			        /* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */			       
 		       }
 		   		   
 		         RequestContext.getCurrentInstance().execute("imageOpacity();");
@@ -651,7 +651,7 @@ public class InterfacesBean implements Serializable {
 									
 		     }
 						
-			//Deixar a apresentação conforme chefe solicitou
+			//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 			if(state[i] == false && state_prev[i] == true) {
 																							
 				  RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -688,9 +688,9 @@ public class InterfacesBean implements Serializable {
 				    letter1[i][2][n] = texto3.charAt(n);				
 		     }
 			
-			/* Caso a mensagem ainda n foi ativada - manter em estado de ativação */
+			/* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */
 			  
-			  /* Caso começe com a mensagem sem ativação - permancer nessa configuração */
+			  /* Caso comeï¿½e com a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 			  if(state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 				
 				RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -701,7 +701,7 @@ public class InterfacesBean implements Serializable {
 							
 			   }
 			  
-		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativação */		
+		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */		
 			
 			state[i] = false;
 				        
@@ -740,7 +740,7 @@ public class InterfacesBean implements Serializable {
 				}				
 		     }
 			
-			//Deixar a apresentação conforme chefe solicitou
+			//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 			if(state[i] == false && state_prev[i] == true) {
 																							
 				  RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -775,9 +775,9 @@ public class InterfacesBean implements Serializable {
 				}	     
 		     }
 			
-			/* Caso a mensagem ainda n foi ativada - manter em estado de ativação */
+			/* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */
 			  
-			  /* Caso começe com a mensagem sem ativação - permancer nessa configuração */
+			  /* Caso comeï¿½e com a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 			  if(state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 				
 				RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -788,7 +788,7 @@ public class InterfacesBean implements Serializable {
 							
 			   }
 			  
-		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativação */		
+		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */		
 			
 			state[i] = false;		
 		   }
@@ -852,7 +852,7 @@ public class InterfacesBean implements Serializable {
 				  }							
 		     }
 											
-			//Deixar a apresentação conforme chefe solicitou
+			//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 			if(state[i] == false && state_prev[i] == true) {
 																							
 				  RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -863,7 +863,7 @@ public class InterfacesBean implements Serializable {
 				   
 				 }	
 			
-			//Deixar a apresentação conforme chefe solicitou
+			//Deixar a apresentaï¿½ï¿½o conforme chefe solicitou
 			if(state[i] == true && state_prev[i] == false) {
 																							
 				   RequestContext.getCurrentInstance().execute("myFunction2('"+equips[i]+"');");
@@ -902,9 +902,9 @@ public class InterfacesBean implements Serializable {
 					
 				 }	
 			
-			/* Caso a mensagem ainda n foi ativada - manter em estado de ativação */
+			/* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */
 					  
-			  /* Caso começe com a mensagem sem ativação - permancer nessa configuração */
+			  /* Caso comeï¿½e com a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 			  if(state[i] == true && state_prev[i] == false && !lista.get(i).isActiveMessage() ||
 				   state[i] == true && state_prev[i] == true && !lista.get(i).isActiveMessage() ||
 					  state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
@@ -945,7 +945,7 @@ public class InterfacesBean implements Serializable {
 				  
 			  }
 			  
-		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativação */		
+		   /* Caso a mensagem ainda n foi ativada - manter em estado de ativaï¿½ï¿½o */		
 							
 		    state[i] = false;	    
 			  
@@ -1006,7 +1006,7 @@ public class InterfacesBean implements Serializable {
 				
 		      }	
 			
-			 /* Caso começe o a mensagem sem ativação - permancer nessa configuração */
+			 /* Caso comeï¿½e o a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 			  if(state[i] == true && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 				
 				RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
@@ -1057,7 +1057,7 @@ public class InterfacesBean implements Serializable {
 					
 			      }
 				
-				  /* Caso começe o a mensagem sem ativação - permancer nessa configuração */
+				  /* Caso comeï¿½e o a mensagem sem ativaï¿½ï¿½o - permancer nessa configuraï¿½ï¿½o */
 				  if(state[i] == false && state_prev[i] == false && !lista.get(i).isActiveMessage()) {
 					
 					RequestContext.getCurrentInstance().execute("myFunction('"+equips[i]+"');");
