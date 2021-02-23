@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.controller.mto.MtoReportsController;
 import br.com.tracevia.webapp.controller.sat.SatReportsController;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
@@ -41,8 +42,8 @@ public class GlobalReportsDAO {
 	public String[][] ExecuteQuery(String query) throws Exception {		
 			
 		//Parametros vindo do Bean
-		int registers = SatReportsController.getNumRegisters();
-		int fieldsNumber = SatReportsController.getFieldsNumber();
+		int registers = MtoReportsController.getNumRegisters();
+		int fieldsNumber = MtoReportsController.getFieldsNumber();
 			
 		result = new String[fieldsNumber][registers];
 				

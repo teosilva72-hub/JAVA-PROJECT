@@ -32,6 +32,8 @@ public class LocaleUtil {
 	public static final String MESSAGES_OCC = "bundle.messages.occ.messages_occ_";
 	public static final String MESSAGES_MAPS = "bundle.messages.system.maps.labels_maps_";
 	public static final String MESSAGES_REALTIME = "bundle.messages.system.realtime.labels_realtime_";	
+	public static final String MESSAGES_MTO = "bundle.messages.mto.messages_mto_";	
+	public static final String MESSAGES_SAT = "bundle.messages.sat.messages_sat_";	
 
 			
 	 LanguageBean language;

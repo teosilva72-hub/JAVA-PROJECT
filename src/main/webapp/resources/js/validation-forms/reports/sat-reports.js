@@ -1,24 +1,39 @@
+	///////////////////////////////////
+	//DAYS TO LIMIT MAX DATE SEARCH
+	//////////////////////////////////
+	var maxDays = 60;
+	///////////////////////////////////
+	//DAYS TO LIMIT MAX DATE SEARCH
+	///////////////////////////////////
 	
-	//Convert String date to Date type
+	//////////////////////////////
+	//// CONVERT STRING TO DATE 
+	/////////////////////////////
 	 function toDate(dateStr) {
 	   var parts = dateStr.split("/")
 	   return new Date(parts[2], parts[1] - 1, parts[0])
 	} // End toDate
 	
-	//Function to validate max date input to endDate
-	function maxDateCheck(dateStart, dateEnd, dateError, message, days){
+	//////////////////////////////
+	//// CONVERT STRING TO DATE 
+	/////////////////////////////
+	
+	//////////////////////////
+	//// VALIDATE MAX DATE 
+	/////////////////////////
+	function maxDateCheck(dateStart, dateEnd, dateError, message){
 		
 	jQuery.validator.addMethod("maxDate", function (value, element) {
-		    var max = days;
+		    var max = maxDays;
 		    var startDate =  $(dateStart).val();
 		    var endDate =  $(dateEnd).val();
 		        
 		    var dataInicio = toDate(startDate);
 		    var dataFim = toDate(endDate);
 		               
-		    var days = (dataFim - dataInicio) / (1000*3600*24);
+		    var daysDiff = (dataFim - dataInicio) / (1000*3600*24);
 		    
-		    if (days > max){
+		    if (daysDiff > max){
 		    	
 		    	 $(dateEnd).removeClass('valid').addClass('invalid');
 		    	 $(dateError).parent().find('.error').fadeIn(500);
@@ -27,12 +42,18 @@
 		    else{  $(dateEnd).removeClass('invalid').addClass('valid'); return true;      
 		    }
 		}, message);	
-	}// End maxDateCheck
-	
-	//Function to validate if startDate is greater than endDate
+	}
+		
+	//////////////////////////////////////
+	//// VALIDATE MAX DATE 
+	/////////////////////////////////////
+
+	/////////////////////////////////////////////////////
+	//// VALIDATE START DATE IS GREATHER THEN END DATE 
+	////////////////////////////////////////////////////
 	function greaterThanEndDate(dateStart, dateEnd, dateError, message){
 		
-		jQuery.validator.addMethod("greaterThan", function(value, element, params) {			
+		jQuery.validator.addMethod("greaterThan", function(value, element) {			
 			
 			var str = $(dateStart).val();
 		    var end = $(dateEnd).val();
@@ -55,7 +76,14 @@
             }
 				    
 		}, message);
-	} // End greaterThanEndDate
+	} 
+	
+	/////////////////////////////////////////////////////
+	//// VALIDATE START DATE IS GREATHER THEN END DATE 
+	////////////////////////////////////////////////////
+		
+	///////////////////////////////////////////////////////////////////////////////////////////////	
+		
 		
     // Validate Count Vehicle Form
 	function formValidation(startDate, elem1RequiredMessage, elem2RequiredMessage, elem3RequiredMessage,
