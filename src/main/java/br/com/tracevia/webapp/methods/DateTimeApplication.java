@@ -439,7 +439,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 
 			return difference;
 		}	
-		
+				
 		//Sobrecarga 24 HRS		
 		public int daysDifference(String startDate, String endDate) throws ParseException {
 			

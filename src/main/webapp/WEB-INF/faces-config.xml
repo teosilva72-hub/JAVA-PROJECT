@@ -157,6 +157,16 @@
           <base-name>bundle.messages.system.realtime.messages_realtime</base-name>           
           <var>realtimeMessages</var>        
         </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.mto.messages_mto</base-name>           
+          <var>mtoMessages</var>        
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.messages.sat.messages_sat</base-name>           
+          <var>satMessages</var>        
+        </resource-bundle>
 				                     
         <!-- ********************************** -->
            
@@ -192,7 +202,9 @@
 		<message-bundle>bundle.messages.users.messages_users</message-bundle>
 		<message-bundle>bundle.messages.occ.messages_occ</message-bundle>
 		<message-bundle>bundle.messages.system.maps.messages_maps</message-bundle>	
-		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>	
+		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>		
+		<message-bundle>bundle.messages.mto.messages_mto</message-bundle>	
+		<message-bundle>bundle.messages.sat.messages_sat</message-bundle>	
                
  </application> 
 

@@ -51,7 +51,7 @@ public class MessagesConverter implements Converter {
 		 if (value == null || value.equals("")) {
 	            return "";
 	        } else {
-	            return String.valueOf(((Messages) value).getId_reg());
+	            return String.valueOf(((Messages) value).getId_message());
 	        }
 	}
 	

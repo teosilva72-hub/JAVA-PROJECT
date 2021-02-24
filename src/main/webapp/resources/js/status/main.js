@@ -91,7 +91,6 @@ function ready() {
         xhttp.send();
     })
 
-
     update()
     setInterval(() => {
         update()
