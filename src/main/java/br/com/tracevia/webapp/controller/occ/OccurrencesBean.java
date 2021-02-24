@@ -525,12 +525,11 @@ public class OccurrencesBean {
 		OccurrencesDAO x = new OccurrencesDAO();
 		value = x.GetId();
 		//String e = userId.getUser_id();
-		value += (1+second);
+		value += 1;
 		data = new OccurrencesData();
 		data.setData_number(String.valueOf(value));
-		//System.out.println(e+ "<<< testando aqui ahr");
-		return value;
 
+		return value;
 	}
 
 	public void cadastroOcorrencia() throws Exception {
@@ -570,6 +569,10 @@ public class OccurrencesBean {
 		boolean status = false;
 
 		OccurrencesDAO dao = new OccurrencesDAO();
+		//bloquear a tabela quando outro usuario estiver editando
+		boolean updateTable = false;
+		//passando dados para o banco de dados
+		dao.editTable(updateTable, data.getData_number());
 
 		status = dao.atualizarOcorrencia(data);
 		if(status) {
@@ -616,6 +619,10 @@ public class OccurrencesBean {
 	public void resetUpdate() throws Exception{
 		
 		OccurrencesDAO dao = new OccurrencesDAO();
+		//bloquear a tabela quando outro usuario estiver editando
+		boolean updateTable = false;
+		//passando dados para o banco de dados
+		dao.editTable(updateTable, data.getData_number());
 		occurrences = dao.listarOcorrencias();
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("eventValidator()");
 
@@ -639,11 +646,18 @@ public class OccurrencesBean {
 		try {
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("displayPdf()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+
 			OccurrencesDAO dao = new OccurrencesDAO();
+			
+			//buscar dados por id
 			data = dao.buscarOcorrenciaPorId(rowkey);
+			//buscar dados pdf
 			getPdf = dao.submitPdf(rowkey);
+			//buscar caminho dos arquivos 
 			pathSQL = data.getLocalFiles();
+			//status da occorencia
 			String x = data.getState_occurrences();
+			//transformando em int
 			situation = Integer.parseInt(x);
 			
 		}catch(Exception ex){
@@ -653,7 +667,7 @@ public class OccurrencesBean {
 		TableFile();
 		
 		//Se a linha da table estiver selecionada:
-		if(selectedRow ) {
+		if(selectedRow) {
 			
 			//se a situação for igual 30 ou 31
 			//não é possivel fazer alteração
@@ -670,12 +684,12 @@ public class OccurrencesBean {
 				//listar arquivos
 				
 				//execute js
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 				
 				//senão pode relizar normalmente alterações
-			}else {
+			}else if(data.getEditTable() == false) {
 				//btn
 				save = true;
 				alterar = true;
@@ -688,6 +702,17 @@ public class OccurrencesBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			}else if(data.getEditTable() == true) {
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+
+				save = true;
+				alterar = true;
+				reset = true;
+				new_ = false;
+				fields = true;
+				edit = true;
+				table = true;
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
 			}
 
 			//se não estiver selecionada a linha da tabela
@@ -724,7 +749,7 @@ public class OccurrencesBean {
 		value = pegarId();
 
 		if(value > 0) {
-
+			cadastroOcorrencia();
 			String occNumber = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
@@ -749,24 +774,30 @@ public class OccurrencesBean {
 		}
 
 	}
-	public void btnEdit() {
+	public void btnEdit() throws Exception {
+		OccurrencesDAO dao = new OccurrencesDAO();
+		//bloquear a tabela quando outro usuario estiver editando
+		boolean updateTable = true;
+		//passando dados para o banco de dados
+		dao.editTable(updateTable, data.getData_number());
 		
-		//btn
-		fields = false;
-		reset = false;
-		save = true;
-		edit = true;
-		alterar = false;
-		
-		//js
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterBtnReset()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+			//btn
+			fields = false;
+			reset = false;
+			save = true;
+			edit = true;
+			alterar = false;
+			
+			//js
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterBtnReset()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
 
 
-		//listando arquivos
-		listingUpdate();
+			//listando arquivos
+			listingUpdate();
+	
 	}
 	//CREATE DIRECTORY FOR FILES
 	public void createFileFolder(String mainPath, String localPath) {
@@ -811,6 +842,8 @@ public class OccurrencesBean {
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+
 	}
 
 	public void uploadFile() throws Exception {
@@ -1324,8 +1357,8 @@ public class OccurrencesBean {
 			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
 					+ "Autopista: "+getPdf.getHighway()+"            "
 					+ "Estado: "+getPdf.getLocal_state()+"\n\n"));
-			document.add(new Paragraph("Dirección: "+getPdf.getDirection()+"            "
-					+ "Carril: "+getPdf.getLane()+"            "
+			document.add(new Paragraph("Dirección: "+getPdf.getDirection()+"     "
+					+ "Carril: "+getPdf.getLane()+"     "
 					+ "Observación: "+data.getOthers()+"\n\n"));
 
 			//Detalhes

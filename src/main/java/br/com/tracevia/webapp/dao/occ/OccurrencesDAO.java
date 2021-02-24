@@ -165,7 +165,40 @@ public class OccurrencesDAO {
 		return listarDropDownValue;
 	}
 
+	public boolean editTable(boolean editable, String id) throws Exception {
+		
+		boolean status = false;
+		
+		String query = "UPDATE occ_data SET editTable = ? WHERE occ_number = ?";
+		
+		DateTimeApplication dtm = new DateTimeApplication();
+		System.out.println(editable);
+		
+		try {
+			
+			conn = ConnectionFactory.connectToTraceviaApp();
+			
+			ps = conn.prepareStatement(query);
 
+			ps.setBoolean(1, editable);
+			ps.setString(2, id);
+			
+			ps.executeUpdate();
+			
+
+		}catch (SQLException alterarOcorrencia){
+			
+			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+			
+		}finally {
+			
+			ConnectionFactory.closeConnection(conn, ps);
+			
+		}		
+		
+		return status;
+		
+	}
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 		boolean status = false;
@@ -467,7 +500,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files, editTable " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -546,6 +579,7 @@ public class OccurrencesDAO {
 					occ.setStatusAction(rs.getString(63));
 					occ.setDamageUnity(rs.getString(64));
 					occ.setLocalFiles(rs.getString(65));
+					occ.setEditTable(rs.getBoolean(66));
 
 				}
 
