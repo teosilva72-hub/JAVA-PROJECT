@@ -673,6 +673,7 @@ public class OccurrencesBean {
 			//não é possivel fazer alteração
 			if(situation == 31 || situation == 30) {
 
+				//btn
 				save = true;
 				alterar = true;
 				reset = true;
@@ -689,6 +690,7 @@ public class OccurrencesBean {
 				
 				//senão se for igual a false acesso liberado para realizar edição
 			}else if(data.getEditTable() == false) {
+				
 				//btn
 				save = true;
 				alterar = true;
@@ -696,9 +698,8 @@ public class OccurrencesBean {
 				new_ = false;
 				reset = true;
 				fields = true; 
+				
 				//execute js
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 				
@@ -715,7 +716,7 @@ public class OccurrencesBean {
 				table = true;
 			}
 
-			//se não estiver selecionada a linha da tabela
+			//senão estiver selecionada a linha da tabela
 		}else {
 
 			save = true;
