@@ -52,31 +52,31 @@ startButton.addEventListener("click", function () {
 //Accept a Call Button End
 
 //Ending a Call Button
-var endButton = document.querySelector('.dismisscall');
-endButton.addEventListener("click", function () {
-  coolPhone.hangup();
-  alert("Call Ended.")
-}, false);
+//var endButton = document.querySelector('.dismisscall');
+//endButton.addEventListener("click", function () {
+//  coolPhone.hangup();
+//  alert("Call Ended.")
+//}, false);
 //Ending a Call Button End
 
 //Placing a call on hold
-var holdButton = document.querySelector('.holdcall');
-holdButton.addEventListener("click", function () {
-  coolPhone.hold();
-  alert("Call on Hold.")
-}, false);
+//var holdButton = document.querySelector('.holdcall');
+//holdButton.addEventListener("click", function () {
+//  coolPhone.hold();
+//  alert("Call on Hold.")
+//}, false);
 
-var unholdButton = document.querySelector('.holdcallstop');
-unholdButton.addEventListener("click", function () {
-  coolPhone.unhold();
-  alert("Call Came Back.")
-}, false);
+//var unholdButton = document.querySelector('.holdcallstop');
+//unholdButton.addEventListener("click", function () {
+//  coolPhone.unhold();
+//  alert("Call Came Back.")
+//}, false);
 //Placing a call on hold End
 
 //Answering a Call
-coolPhone.on('ringing', function () {
-  coolPhone.answer()
-});
+//coolPhone.on('ringing', function () {
+//  coolPhone.answer()
+//});
 //Answering a Call End
 
 //////////////////////SIP VOICE/CALL END
