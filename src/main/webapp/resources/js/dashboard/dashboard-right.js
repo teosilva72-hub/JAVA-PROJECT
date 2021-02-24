@@ -43,13 +43,13 @@ var url      = '/phone/phone.html',
 
 
 
-<<<<<<< HEAD
+
 //Accept a Call Button
-var startButton = document.querySelector('.acptcall');
-startButton.addEventListener("click", function () {
-  coolPhone.start();
-  alert("Call Started.")
-}, false);
+//var startButton = document.querySelector('.acptcall');
+//startButton.addEventListener("click", function () {
+//  coolPhone.start();
+//  alert("Call Started.")
+//}, false);
 //Accept a Call Button End
 
 //Ending a Call Button
@@ -78,7 +78,7 @@ startButton.addEventListener("click", function () {
 //coolPhone.on('ringing', function () {
 //  coolPhone.answer()
 //});
-=======
+
 // //Accept a Call Button
 // var startButton = document.querySelector('.acptcall');
 // startButton.addEventListener("click", function () {
@@ -113,7 +113,7 @@ startButton.addEventListener("click", function () {
 // coolPhone.on('ringing', function () {
 //   coolPhone.answer()
 // });
->>>>>>> 09cd8a67ffc674752cec7e5c529a192b34260b59
+
 //Answering a Call End
 
 //////////////////////SIP VOICE/CALL END
