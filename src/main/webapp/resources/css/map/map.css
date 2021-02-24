@@ -927,5 +927,23 @@ input[type="number"] {
   cursor: grabbing;
 }
 
-
 /* MODAL SIZE EQUIP END */
+
+/* ALL MODALS */
+
+#modaladd {
+z-index: 10030;
+}
+
+#OPmodal {
+z-index: 10030;
+}
+
+#editmodal {
+z-index: 10030;
+}
+
+#deletemodal {
+z-index: 10030;
+}
+/* ALL MODALS END*/
