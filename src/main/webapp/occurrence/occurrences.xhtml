@@ -528,7 +528,7 @@
 									<button type="submit" style="display: none" class="btn btnConf"
 										data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
 									<h:commandButton value="#{occLabels.btn_sim}"
-										action="#{occurrencesBean.cadastroOcorrencia}"
+										action="#{occurrencesBean.atualizarOcorrencia}"
 										class="btn btnConf" id="saveBtn" onclick="mostrarTab1();" />
 								</div>
 							</div>
@@ -690,6 +690,10 @@
 					<div class="alert alert-danger text-center" role="alert"
 						id="msgFinished" style="display: none;">
 						<p class="textMsgFile">#{occLabels.occ_msgFinished}</p>
+					</div>
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgOthersUsers" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_other_users}</p>
 					</div>
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">

@@ -398,7 +398,7 @@ cursor: pointer;
 .forEachFiles{
 	margin: 0;
 }
-#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #msgSave1, #msgFinished{
+#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #msgSave1, #msgFinished, #msgOthersUsers{
 	height: 23px;
 }
 .textMsgFile{
