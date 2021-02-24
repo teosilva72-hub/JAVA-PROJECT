@@ -446,3 +446,8 @@ cursor: pointer;
 #iconPdf{
 	margin-top: 15px;
 }
+
+#occurrence-table_filter > label {
+	color: black !important;
+}
+

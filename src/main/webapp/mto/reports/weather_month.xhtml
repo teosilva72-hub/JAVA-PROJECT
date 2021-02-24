@@ -275,7 +275,8 @@
 			//Validation Methods
 
 			//Validate a form and insert messages
-			weatherValidationModel1("#report-form", "equip", "month", "year");
+			weatherValidationModel2("#report-form", "#{requiredMessages.required_mto_reports_select_equipments}", 
+					"#{requiredMessages.required_mto_reports_select_month}", "#{requiredMessages.required_mto_reports_select_year}");
 
 			//Validate on change value
 			validateOnChange('#equip');
@@ -297,6 +298,7 @@
 			//Reset validation form
 			//click reset button action
 			resetFormValidation("#report-form", "reset-btn");
+			
 		</script>
 
 	</ui:define>

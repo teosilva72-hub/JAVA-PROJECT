@@ -280,11 +280,16 @@
 			
 	    //Define Datepicker locale
 	    $('.datepicker').datepickerLocale('#{language.locale}');
-	    		        
-	   
-		//Validate a form and insert messages
-		weatherValidationModel3("#report-form", "equip", "periods", "","");
 		
+	    //Validation Methods - needs to use
+	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}');
+	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
+	       	    		        	   
+		//Validate a form and insert messages
+		weatherValidationModel3("#report-form", '#dateStart', "#{requiredMessages.required_mto_reports_select_equipments}", "#{requiredMessages.required_mto_reports_select_year}",
+				"#{requiredMessages.required_mto_reports_select_start_month}", "#{requiredMessages.required_mto_reports_select_end_month}",
+				'#{validatorMessages.validator_valid_date}');
+
 		//Validate on change value
 		validateOnChange('#equip');
 		validateOnChange('#periods');
@@ -310,7 +315,6 @@
 		resetFormValidation("#report-form", "reset-btn");
 		
 		</script>
-
 
 	</ui:define>
 </ui:composition>

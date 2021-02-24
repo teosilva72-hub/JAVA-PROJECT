@@ -66,7 +66,6 @@ public class uploadBean {
  	        
  	        //teste list files
  	        
-
  	    }
 
 		
@@ -95,7 +94,6 @@ public class uploadBean {
     	        
     	        //teste list files
     	        
-
     	    }
 
         return null;

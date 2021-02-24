@@ -27,12 +27,25 @@
 }
 
 .header {
-  background-color: black;
-  color: white;
   font-size: 42px;
   height: 70px;
 }
 
 .header .temp {
   font-size: 35px;
+}
+
+.bi-gear-fill {
+  opacity: 0;
+  color: yellow;
+}
+
+.bi-gear-fill.active {
+  animation: maintenance linear infinite 1s;
+}
+
+@keyframes maintenance {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
 }

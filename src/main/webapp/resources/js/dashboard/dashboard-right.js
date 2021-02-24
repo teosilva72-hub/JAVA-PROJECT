@@ -7,7 +7,7 @@ $(function () {
 
   var adjustSidebar = function () {
     $(".menu-mode > form").slimScroll({ height: window.innerHeight - 150 })
-    $(".content-module").slimScroll({ height: window.innerHeight - 150 })
+    $(".equips-div").slimScroll({ height: window.innerHeight - 150 })
   };
 
   adjustSidebar();
@@ -43,6 +43,7 @@ var url      = '/phone/phone.html',
 
 
 
+<<<<<<< HEAD
 //Accept a Call Button
 var startButton = document.querySelector('.acptcall');
 startButton.addEventListener("click", function () {
@@ -77,6 +78,42 @@ startButton.addEventListener("click", function () {
 //coolPhone.on('ringing', function () {
 //  coolPhone.answer()
 //});
+=======
+// //Accept a Call Button
+// var startButton = document.querySelector('.acptcall');
+// startButton.addEventListener("click", function () {
+//   coolPhone.start();
+//   alert("Call Started.")
+// }, false);
+// //Accept a Call Button End
+
+// //Ending a Call Button
+// var endButton = document.querySelector('.dismisscall');
+// endButton.addEventListener("click", function () {
+//   coolPhone.hangup();
+//   alert("Call Ended.")
+// }, false);
+// //Ending a Call Button End
+
+// //Placing a call on hold
+// var holdButton = document.querySelector('.holdcall');
+// holdButton.addEventListener("click", function () {
+//   coolPhone.hold();
+//   alert("Call on Hold.")
+// }, false);
+
+// var unholdButton = document.querySelector('.holdcallstop');
+// unholdButton.addEventListener("click", function () {
+//   coolPhone.unhold();
+//   alert("Call Came Back.")
+// }, false);
+// //Placing a call on hold End
+
+// //Answering a Call
+// coolPhone.on('ringing', function () {
+//   coolPhone.answer()
+// });
+>>>>>>> 09cd8a67ffc674752cec7e5c529a192b34260b59
 //Answering a Call End
 
 //////////////////////SIP VOICE/CALL END
