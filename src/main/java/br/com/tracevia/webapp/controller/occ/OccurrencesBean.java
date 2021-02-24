@@ -684,11 +684,10 @@ public class OccurrencesBean {
 				//listar arquivos
 				
 				//execute js
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 				
-				//senão pode relizar normalmente alterações
+				//senão se for igual a false acesso liberado para realizar edição
 			}else if(data.getEditTable() == false) {
 				//btn
 				save = true;
@@ -702,8 +701,10 @@ public class OccurrencesBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+				
+				//senão se for igual a true acesso bloqueado para realizar edição
 			}else if(data.getEditTable() == true) {
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
 
 				save = true;
 				alterar = true;
@@ -712,7 +713,6 @@ public class OccurrencesBean {
 				fields = true;
 				edit = true;
 				table = true;
-				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
 			}
 
 			//se não estiver selecionada a linha da tabela
