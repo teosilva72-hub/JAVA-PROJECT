@@ -201,7 +201,6 @@ public class EquipmentsBean implements Serializable {
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
 		 update = dao.EquipUpdateMap(equip, equipTable);
-		
 		    
 		 //System.out.println("UP"+update);
 	    //For Equipment ID

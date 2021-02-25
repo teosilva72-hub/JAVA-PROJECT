@@ -521,7 +521,7 @@ public class OccurrencesBean {
 			mainPath = "C:\\Tracevia\\";
 			pathImage = "http://localhost:8081/occ/";
 			downloadPath = "file:///C:/Tracevia/";
-			pathDownload = "C:\\Users\\mateu\\Downloads\\";
+			pathDownload = "C:\\Users\\trace\\Downloads\\";
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}

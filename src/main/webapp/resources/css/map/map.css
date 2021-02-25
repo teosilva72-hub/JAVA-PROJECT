@@ -6,6 +6,7 @@ body {
   height: 100%;
 }
 
+
 /*Road Map Image for Background */
 
 .img > div {
@@ -847,7 +848,7 @@ img.box-img[zoom] {
 }
 
 /* INPUT NUMBER ARROWS REMOVED */
-
+	
 /* Chrome, SAfari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -954,3 +955,17 @@ z-index: 10030;
 z-index: 10030;
 }
 /* ALL MODALS END*/
+
+/* ALERTS STYLE */
+
+#realsave, #realcancel {
+height: 23px;
+}
+
+.textAlert{
+margin-top: -12px;
+font: 12pt;
+text-align: center;
+}
+
+/* ALERTS STYLE END*/
