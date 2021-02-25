@@ -450,4 +450,6 @@ cursor: pointer;
 #occurrence-table_filter > label {
 	color: black !important;
 }
-
+.odd{
+	background: red;
+}

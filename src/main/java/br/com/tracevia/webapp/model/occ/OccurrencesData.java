@@ -71,6 +71,7 @@ public class OccurrencesData {
 	private String statusAction;
 	private String localFiles;
 	private Boolean editTable;
+	private String nameUser;
 
 	public OccurrencesData(int data_id, String data_number, String type, String origin, String state_occurrences,
 			String start_date, String start_hour, String start_minute, String end_date, String end_hour,
@@ -87,7 +88,7 @@ public class OccurrencesData {
 			String actionEndMinute, String trackStartDate, String trackStartHour, String trackStartMinute,
 			String trackEndDate, String trackEndHour, String trackEndMinute, String damageDescriptionMain,
 			String damageDescriptionInternal, String damageUnity, String causeDescrInter, String descriptionInter,
-			String involvedInter, String actionInter, String statusAction, String localFiles, Boolean editTable)
+			String involvedInter, String actionInter, String statusAction, String localFiles, Boolean editTable, String nameUser)
 	{
 
 		this.data_id = data_id;
@@ -160,9 +161,20 @@ public class OccurrencesData {
 		this.statusAction = statusAction;
 		this.localFiles = localFiles;
 		this.editTable = editTable;
+		this.nameUser = nameUser;
 	}
 
 	
+	public String getNameUser() {
+		return nameUser;
+	}
+
+
+	public void setNameUser(String nameUser) {
+		this.nameUser = nameUser;
+	}
+
+
 	public OccurrencesData() {
 	}
 
