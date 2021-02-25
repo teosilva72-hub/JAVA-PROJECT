@@ -25,6 +25,8 @@ import com.itextpdf.text.Font.FontFamily;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -39,6 +41,7 @@ import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
@@ -74,7 +77,7 @@ public class OccurrencesBean {
 	private String action, title_modal, message_modal;
 
 	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
-	minutePdf, secondPdf, dayPdf, hourPdf; 
+	minutePdf, secondPdf, dayPdf, hourPdf, nameUser; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
 	
@@ -150,7 +153,13 @@ public class OccurrencesBean {
 	public List<SelectItem> getDamageUnity() {
 		return damageUnity;
 	}
-
+	
+	public String getNameUser() {
+		return nameUser;
+	}
+	public void setNameUser(String nameUser) {
+		this.nameUser = nameUser;
+	}
 	public String[] getTableFile() {
 		return tableFile;
 	}
@@ -565,14 +574,14 @@ public class OccurrencesBean {
 	}
 
 	public void atualizarOcorrencia() throws Exception {
-
+		String nameUser = "";
 		boolean status = false;
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 		//bloquear a tabela quando outro usuario estiver editando
 		boolean updateTable = false;
 		//passando dados para o banco de dados
-		dao.editTable(updateTable, data.getData_number());
+		dao.editTable(updateTable, nameUser, data.getData_number());
 
 		status = dao.atualizarOcorrencia(data);
 		if(status) {
@@ -617,12 +626,12 @@ public class OccurrencesBean {
 		deleteDirectory();
 	}
 	public void resetUpdate() throws Exception{
-		
+		String nameUser = "";
 		OccurrencesDAO dao = new OccurrencesDAO();
 		//bloquear a tabela quando outro usuario estiver editando
 		boolean updateTable = false;
 		//passando dados para o banco de dados
-		dao.editTable(updateTable, data.getData_number());
+		dao.editTable(updateTable, nameUser, data.getData_number());
 		occurrences = dao.listarOcorrencias();
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("eventValidator()");
 
@@ -668,7 +677,7 @@ public class OccurrencesBean {
 		
 		//Se a linha da table estiver selecionada:
 		if(selectedRow) {
-			
+			//org.primefaces.context.RequestContext.getCurrentInstance().execute("selecaoTable()");
 			//se a situação for igual 30 ou 31
 			//não é possivel fazer alteração
 			if(situation == 31 || situation == 30) {
@@ -776,11 +785,20 @@ public class OccurrencesBean {
 
 	}
 	public void btnEdit() throws Exception {
-		OccurrencesDAO dao = new OccurrencesDAO();
-		//bloquear a tabela quando outro usuario estiver editando
 		boolean updateTable = true;
-		//passando dados para o banco de dados
-		dao.editTable(updateTable, data.getData_number());
+		//pegando o nome do usuario
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();			            	
+		String nameUser = (String) facesContext.getExternalContext().getSessionMap().get("user");
+		
+		//acessando query occDAO
+		OccurrencesDAO dao = new OccurrencesDAO();
+		dao.editTable(updateTable, nameUser, data.getData_number());
+		//passando o valor true para realizar o bloqueio da tabela
+		
+		
+		//passando dados para realizar o bloqueio da tabela
+		
 		
 			//btn
 			fields = false;
@@ -794,6 +812,7 @@ public class OccurrencesBean {
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("atualizarTela()");
 
 
 			//listando arquivos
@@ -930,6 +949,31 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+		}else if(data.getEditTable() == false) {
+			
+			//btn
+			save = true;
+			alterar = true;
+			edit = false;
+			new_ = false;
+			reset = true;
+			fields = true; 
+			
+			//execute js
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			
+			//senão se for igual a true acesso bloqueado para realizar edição
+		}else if(data.getEditTable() == true) {
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
+
+			save = true;
+			alterar = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			edit = true;
+			table = true;
 		}
 		
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");

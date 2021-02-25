@@ -639,6 +639,7 @@
 									</div>
 								</div>
 								<div class="col-md-1"></div>
+								<div class="col-md-1" id="demo" style="display: none;"></div>
 								<!-- Icon PDF -->
 								<div class="col-md-1" id="iconPdf" style="display: none;">
 
@@ -693,7 +694,8 @@
 					</div>
 					<div class="alert alert-danger text-center" role="alert"
 						id="msgOthersUsers" style="display: none;">
-						<p class="textMsgFile">#{occLabels.occ_other_users}</p>
+						<p class="textMsgFile">#{occLabels.occ_other_users} #{occurrencesBean.data.nameUser} </p>
+						
 					</div>
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">
@@ -973,7 +975,7 @@
 									id="interFaixa" name="interFaixa"
 									class="form-control inputDesign"
 									disabled="#{occurrencesBean.fields}">
-									<f:selectItem itemLabel="Selecione" itemValue="" />
+									<f:selectItem itemLabel="select" itemValue="" />
 									<f:selectItems
 										value="#{occurrencesBean.interferencia_da_faixas}" />
 								</h:selectOneMenu>
