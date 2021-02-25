@@ -189,6 +189,13 @@ body {
   border: none;
 }
 
+.equip-imageSPD {
+  margin-top: -17%;
+  width: 70%;
+  height: 50%;
+  border: none;
+}
+
 .equip-imagePOST {
   vertical-align: top;
   margin-top: -20%;
