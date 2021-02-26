@@ -638,10 +638,11 @@
 									</div>
 								</div>
 								
-								<!-- Icon PDF -->
+								<!-- col para separar btn e pdf -->
 								<div class="col-md-1"></div>
+								<!-- col para separar btn e pdf -->
 								<div class="col-md-1 btnPdf" id="iconPdf" style="display: none;">
-
+									<!-- Icon PDF -->
 									<h:commandLink class="btnPdf" id="pdfId"
 										data-bs-toggle="tooltip" data-bs-placement="top"
 										title="#{occLabels.occ_download_file}"
@@ -649,6 +650,8 @@
 										<i class="fas fa-file-pdf"></i>
 									</h:commandLink>
 								</div>
+								<!-- final do pdf -->
+								<!-- btns forms -->
 								<div class="col-md-5">
 									<!-- Botão form 1 -->
 									<div class="btn-group" role="group" aria-label="Basic example"
@@ -688,15 +691,18 @@
 						id="msgDownload3" style="display: none;">
 						<p class="textMsgFile">#{occLabels.occ_download_success}</p>
 					</div>
+					<!-- msg ocorrencia finalizada -->
 					<div class="alert alert-danger text-center" role="alert"
 						id="msgFinished" style="display: none;">
 						<p class="textMsgFile">#{occLabels.occ_msgFinished}</p>
 					</div>
+					<!-- msg usuario esta editando ocorrencia -->
 					<div class="alert alert-danger text-center" role="alert"
 						id="msgOthersUsers" style="display: none;">
 						<p class="textMsgFile">#{occLabels.occ_other_users}
 							#{occurrencesBean.data.nameUser}</p>
 					</div>
+					<!-- msg pode editar essa ocorrencia -->
 					<div class="alert alert-success text-center" role="alert"
 						id="unLock" style="display: none;">
 						<p class="textMsgFile">#{occLabels.un_lock}</p>
@@ -709,6 +715,7 @@
 						</div>
 						<!-- FInal alert -->
 						<div class="form-row">
+							<!-- id occ -->
 							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_number}</em>
 								<h:inputText class="form-control inputDesign" disabled="true"
@@ -716,7 +723,7 @@
 									value="#{occurrencesBean.data.data_number}" />
 								<h:inputHidden />
 							</div>
-
+							<!-- tipo occ -->
 							<div class="form-group col-md-4">
 								<em for="inputPassword4">#{occLabels.occ_register_table_type}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.type}"
@@ -728,6 +735,7 @@
 									<f:selectItems value="#{occurrencesBean.tipos}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- Origem occ -->
 							<div class="form-group col-md-3">
 								<em for="inputPassword4">#{occLabels.occ_register_table_source}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -738,6 +746,7 @@
 									<f:selectItems value="#{occurrencesBean.origens}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- situacao occ -->
 							<div class="form-group col-md-3">
 								<em for="inputPassword4">#{occLabels.occ_register_table_status}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -756,6 +765,7 @@
 						</div>
 						<!-- Final alert -->
 						<div class="form-row">
+							<!-- data inicial -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
 								<h:inputText value="#{occurrencesBean.data.start_date}"
@@ -766,6 +776,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent1">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- Hora inicial -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_start}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -778,6 +789,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent2">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- minuto inicial -->
 							<div class="form-group col-md-2">
 								<em for="inputCity">#{occLabels.occ_register_table_minute_start}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -790,6 +802,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent3">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- data final -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_end}</em>
 								<h:inputText value="#{occurrencesBean.data.end_date}"
@@ -800,6 +813,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent4">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- hora final -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -812,6 +826,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent5">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- minuto final -->
 							<div class="form-group col-md-2">
 								<em for="inputCity">#{occLabels.occ_register_table_minute_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -831,6 +846,7 @@
 						</div>
 						<!-- FInal alert -->
 						<div class="form-row">
+							<!-- causa -->
 							<div class="form-group col-md-12">
 								<em for="inputAddress">#{occLabels.occ_register_table_cause}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.cause}"
@@ -841,6 +857,7 @@
 									<f:selectItems value="#{occurrencesBean.causa_provaveis}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- Inicio descricao principal e descricao interna -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
@@ -855,6 +872,7 @@
 									onclick="hiddenActionDescription10();"
 									disabled="#{occurrencesBean.fields}" />
 							</div>
+							<!-- textarea descricao principal -->
 							<div class="form-group col-md-12" id="descriptionCause1">
 								<em for="inputAddress2">#{occLabels.occ_descript_action1}</em>
 								<h:inputTextarea
@@ -864,6 +882,7 @@
 									pt:placeholder="#{occLabels.occ_descript_action1}"
 									disabled="#{occurrencesBean.fields}" />
 							</div>
+							<!-- textarea descricao interna -->
 							<div class="form-group col-md-12" id="descriptionCause2"
 								style="display: none;">
 								<em for="inputAddress2">#{occLabels.occ_descript_action2}</em>
@@ -873,6 +892,7 @@
 									pt:placeholder="#{occLabels.occ_descript_action2}"
 									disabled="#{occurrencesBean.fields}" />
 							</div>
+							<!-- Inicio descricao principal e descricao interna -->
 						</div>
 						<!-- Inicio do alert Evento Local -->
 						<div class="alert alert-dark confAlert" role="alert">
@@ -880,6 +900,7 @@
 						</div>
 						<!-- FInal alert -->
 						<div class="form-row">
+							<!-- KM -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
@@ -887,6 +908,7 @@
 									class="form-control inputDesign" pt:placeholder="0+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
+							<!-- RODOVIA -->
 							<div class="form-group col-md-5">
 								<em for="inputAddress2">#{occLabels.occ_register_rodovia}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.highway}"
@@ -897,6 +919,7 @@
 									<f:selectItems value="#{occurrencesBean.rodovias}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- ESTADO -->
 							<div class="form-group col-md-5">
 								<em for="inputCity">#{occLabels.occ_register_Estado}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.local_state}"
@@ -907,6 +930,7 @@
 									<f:selectItems value="#{occurrencesBean.estado_locais}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- SENTIDO -->
 							<div class="form-group col-md-3">
 								<em for="inputAddress2">#{occLabels.occ_register_sentido}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.direction}"
@@ -917,6 +941,7 @@
 									<f:selectItems value="#{occurrencesBean.sentidos}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- FAIXA -->
 							<div class="form-group col-md-4">
 								<em for="inputAddress2">#{occLabels.occ_register_faixa}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.lane}"
@@ -927,6 +952,7 @@
 									<f:selectItems value="#{occurrencesBean.faixas}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- OBSERVACAO -->
 							<div class="form-group col-md-5">
 								<em for="inputAddress">#{occLabels.occ_register_outros_eventos}</em>
 								<h:inputText value="#{occurrencesBean.data.others}"
@@ -942,6 +968,7 @@
 						</div>
 						<!-- FInal alert detalhes -->
 						<div class="form-row">
+							<!-- CODICAO LOCAL -->
 							<div class="form-group col-md-4">
 								<em for="inputCity">#{occLabels.occ_register_cond_local}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.local_condition}"
@@ -952,6 +979,7 @@
 									<f:selectItems value="#{occurrencesBean.condicao_locais}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- CODICAO TRAFEGO -->
 							<div class="form-group col-md-4">
 								<em for="inputAddress2">#{occLabels.occ_register_cond_trafego}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.traffic}"
@@ -962,6 +990,7 @@
 									<f:selectItems value="#{occurrencesBean.condicao_de_trafegos}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- CARACTERISTICAS -->
 							<div class="form-group col-md-4">
 								<em for="inputCity">#{occLabels.occ_register_caracteristica}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.characteristic}"
@@ -973,6 +1002,7 @@
 										value="#{occurrencesBean.caracteristica_da_secoes}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- INTERFERENCIA FAIZA -->
 							<div class="form-group col-md-4">
 								<em for="inputAddress">#{occLabels.occ_register_interf_faixa}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.interference}"
@@ -984,6 +1014,7 @@
 										value="#{occurrencesBean.interferencia_da_faixas}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- SINALICAO -->
 							<div class="form-group col-md-4">
 								<em for="inputAddress2">#{occLabels.occ_register_sinalizacao}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.signaling}"
@@ -994,6 +1025,7 @@
 									<f:selectItems value="#{occurrencesBean.sinalizacoes}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- SITUACAO CONDUTOR -->
 							<div class="form-group col-md-4">
 								<em for="inputCity">#{occLabels.occ_register_situacao_condutor}</em>
 								<h:selectOneMenu
@@ -1018,6 +1050,7 @@
 
 						<!-- FInal alert descrição -->
 						<div class="form-row">
+							<!-- TITULO DA DESCRICAO -->
 							<div class="form-group col-md-12">
 								<em for="inputAddress">#{occLabels.occ_titulo_descricao}</em>
 								<h:inputText value="#{occurrencesBean.data.description_title}"
@@ -1026,6 +1059,7 @@
 									class="form-control inputDesign"
 									disabled="#{occurrencesBean.fields}" />
 							</div>
+							<!-- INICIO TEXTAREA PRINCIPAL E INTERNA -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
@@ -1057,7 +1091,7 @@
 									id="descrDescr1" name="descrDescr1"
 									disabled="#{occurrencesBean.fields}" />
 							</div>
-
+							<!-- FINAL TEXTAREA PRINCIPAL E INTERNA -->
 						</div>
 						<!-- ALert Envolvidos -->
 						<div class="alert alert-dark confAlert" role="alert">
@@ -1065,6 +1099,7 @@
 						</div>
 						<!-- FInal alert Envolvidos -->
 						<div class="form-row">
+							<!-- TIPO -->
 							<div class="form-group col-md-12">
 								<em for="inputEmail4">#{occLabels.occ_register_table_type}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.involved_type}"
@@ -1076,6 +1111,7 @@
 									<f:selectItems value="#{occurrencesBean.involvedType}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- INICIO TEXTAREA PRINCIPAL E INTERNA -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
@@ -1107,6 +1143,7 @@
 									pt:placeholder="#{occLabels.occ_descript_action2}"
 									value="#{occurrencesBean.data.involvedInter}" rows="4" />
 							</div>
+							<!-- FINAL TEXTAREA PRINCIPAL E INTERNA -->
 						</div>
 						<!-- Inicio do add File -->
 						<div>
@@ -1123,6 +1160,7 @@
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 								</div>
+								<!-- BTN UPLOAD FILE -->
 								<div class="col-md-12">
 									<h:commandButton class="btn btnConf" id="btnUpload"
 										value="#{occLabels.occ_uploadFile}"
@@ -1132,6 +1170,7 @@
 								</div>
 							</div>
 							<!-- End input file save -->
+							
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
 								<div class="form-group col-md-9 field" align="left">
@@ -1139,6 +1178,7 @@
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
 								</div>
+								<!-- BTN UPDATE FILE -->
 								<div class="col-md-3">
 									<h:commandButton class="btn btnConf" id="btnUpdate"
 										onclick="validatorFile2();"
@@ -1178,16 +1218,23 @@
 
 													<!-- btn delete -->
 													<div class="col-md-2">
+													
 														<span>#{occLabels.occ_delete}</span>
+														
 														<div class="dropdown">
+														
 															<button class=" dropdown-toggle" type="button"
 																id="dropdownMenuButton" data-bs-toggle="dropdown"
 																aria-expanded="false">
+																
 																<i class="far fa-trash-alt"></i>
+																
 															</button>
+															
 															<ul class="dropdown-menu"
 																aria-labelledby="dropdownMenuButton">
 																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																
 																<li><h:commandLink
 																		action="#{occurrencesBean.deleteFile(item)}"
 																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
@@ -1314,6 +1361,7 @@
 						</div>
 						<!-- FInal alert Trânsito -->
 						<div class="form-row">
+							<!-- DATA INCIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
 								<h:inputText value="#{occurrencesBean.data.trackStartDate}"
@@ -1324,6 +1372,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack1">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- HORA INICIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_hour_start}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.trackStartHour}"
@@ -1337,6 +1386,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack2">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- MINUTO INICIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_minute_start}</em>
 								<h:selectOneMenu
@@ -1351,6 +1401,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack3">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- DATA FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_end}</em>
 								<h:inputText value="#{occurrencesBean.data.trackEndDate}"
@@ -1361,6 +1412,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack4">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- HORA FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -1373,6 +1425,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack5">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- MINUTO FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputCity">#{occLabels.occ_register_table_minute_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -1385,6 +1438,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorTrack6">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- EXTENSAO KM -->
 							<div class="form-group col-md-6">
 								<em for="inputEmail4">#{occLabels.occ_register_extesao}</em>
 								<h:inputText value="#{occurrencesBean.data.traffic_extension}"
@@ -1392,6 +1446,7 @@
 									class="form-control inputDesign" name="trasitoExtKm"
 									id="trasitoExtKm" />
 							</div>
+							<!-- PISTA INTERROMPIDA -->
 							<div class="form-group col-md-6">
 								<em for="inputEmail4">#{occLabels.occ_register_pista_interrp}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.traffic_stopped}"
@@ -1410,6 +1465,7 @@
 						</div>
 						<!-- FInal alert Danos -->
 						<div class="form-row">
+							<!-- TIPO DANO -->
 							<div class="form-group col-md-3">
 								<em for="inputEmail4">#{occLabels.occ_register_tipo_dano}</em>
 								<h:selectOneMenu
@@ -1422,6 +1478,7 @@
 									<f:selectItems value="#{occurrencesBean.damageType}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- GRAVIDADE DANO -->
 							<div class="form-group col-md-3">
 								<em for="inputEmail4">#{occLabels.occ_register_gravidade}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.damage_gravity}"
@@ -1433,6 +1490,7 @@
 									<f:selectItems value="#{occurrencesBean.damage_gravity}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- UNIDADE  -->
 							<div class="form-group col-md-3">
 								<em for="inputEmail4">#{occLabels.occ_damage_unity}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.damageUnity}"
@@ -1444,6 +1502,7 @@
 									<f:selectItems value="#{occurrencesBean.damageUnity}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- QUANTIDADE -->
 							<div class="form-group col-md-3">
 								<em for="inputAddress">#{occLabels.occ_damage_amount}</em>
 								<h:inputText value="#{occurrencesBean.data.damage_amount}"
@@ -1453,6 +1512,7 @@
 									disabled="#{occurrencesBean.fields}" />
 							</div>
 							<hr></hr>
+							<!-- INICIO DESCRICAO PRINCIPAL E INTERNA -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
@@ -1484,7 +1544,7 @@
 									value="#{occurrencesBean.data.damageDescriptionInternal}"
 									rows="4" name="danoDescr2" id="danoDescr2" />
 							</div>
-
+							<!-- FINAL DESCRICAO PRINCIPAL E INTERNA -->
 						</div>
 
 						<!-- ALert Ações -->
@@ -1492,6 +1552,7 @@
 							<h5 class="text-center confTextAlert">#{occLabels.occ_acoes_acoes}</h5>
 						</div>
 						<div class="form-row">
+							<!-- ACAO TIPO -->
 							<div class="form-group col-md-6">
 								<em for="inputEmail4">#{occLabels.occ_register_table_type}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.action_type}"
@@ -1503,6 +1564,7 @@
 									<f:selectItems value="#{occurrencesBean.actions}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- ACAO STATUS -->
 							<div class="form-group col-md-6">
 								<em for="inputEmail4">#{occLabels.occ_register_table_action_state}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.statusAction}"
@@ -1514,6 +1576,7 @@
 									<f:selectItems value="#{occurrencesBean.actionState}" />
 								</h:selectOneMenu>
 							</div>
+							<!-- DATA INICIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
 								<h:inputText value="#{occurrencesBean.data.actionStartData}"
@@ -1524,6 +1587,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorAction1">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- HORA INICIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_hour_start}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.actionStartHour}"
@@ -1537,6 +1601,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorAction2">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- MINUTO INICIAL -->
 							<div class="form-group col-md-2">
 								<em for="inputEmail4">#{occLabels.occ_register_table_minute_start}</em>
 								<h:selectOneMenu
@@ -1551,6 +1616,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorAction3">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- DATA FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_end}</em>
 								<h:inputText value="#{occurrencesBean.data.actionEndData}"
@@ -1561,6 +1627,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorAction4">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- HORA FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -1573,6 +1640,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorAction5">#{occLabels.occ_error_input}</span>
 							</div>
+							<!-- MINUTO FINAL -->
 							<div class="form-group col-md-2">
 								<em for="inputCity">#{occLabels.occ_register_table_minute_end}</em>
 								<h:selectOneMenu class="form-control inputDesign"
@@ -1586,6 +1654,7 @@
 									id="errorAction6">#{occLabels.occ_error_input}</span>
 							</div>
 							<hr></hr>
+							<!-- ACAO DESCRICAO PRINCIPAL E INTERNA -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
@@ -1618,6 +1687,7 @@
 									value="#{occurrencesBean.data.actionInter}" rows="4"
 									pt:placeholder="#{occLabels.occ_descript_action2}" />
 							</div>
+							<!-- FINAL ACAO DESCRICAO PRINCIPAL E INTERNA -->
 						</div>
 						<!-- FInal alert Ações -->
 					</div>
