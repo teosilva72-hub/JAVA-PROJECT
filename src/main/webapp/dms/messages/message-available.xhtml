@@ -421,7 +421,7 @@
 								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_reg}"
+									<h:outputText value="#{msg.id_message}"
 										style="vertical-align: middle; text-align: center;" />
 								</h:column>
 								<h:column>
@@ -434,17 +434,17 @@
 								</h:column>
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.imagem}"
+									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.image}"
 										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
+									<h:inputHidden value="#{msg.id_image}" id="hiddenField" />
 								</h:column>
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.texto1}" />
+									<h:outputText value="#{msg.pages.get(0).text1}" />
 									<br />
-									<h:outputText value="#{msg.texto2}" />
+									<h:outputText value="#{msg.pages.get(0).text2}" />
 									<br />
-									<h:outputText value="#{msg.texto3}" />
+									<h:outputText value="#{msg.pages.get(0).text3}" />
 								</h:column>
 							</h:dataTable>
 						</div>
@@ -460,7 +460,7 @@
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_reg}"
+									<h:outputText value="#{msg.id_message}"
 										style="vertical-align: middle; text-align: center;" />
 								</h:column>
 
@@ -476,18 +476,18 @@
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.imagem}"
+									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.image}"
 										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
+									<h:inputHidden value="#{msg.id_image}" id="hiddenField" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.texto1}" />
+									<h:outputText value="#{msg.pages.get(0).text1}" />
 									<br />
-									<h:outputText value="#{msg.texto2}" />
+									<h:outputText value="#{msg.pages.get(0).text2}" />
 									<br />
-									<h:outputText value="#{msg.texto3}" />
+									<h:outputText value="#{msg.pages.get(0).text3}" />
 								</h:column>
 							</h:dataTable>
 						</div>

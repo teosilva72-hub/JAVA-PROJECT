@@ -37,7 +37,7 @@ var url      = '/phone/phone.html',
             window.open(url, 'ctxPhone', features);
             return false;
         } else {
-            window.alert('Phone already open.');
+            window.alert('Telefone já esta aberto.');
         }
     });
 

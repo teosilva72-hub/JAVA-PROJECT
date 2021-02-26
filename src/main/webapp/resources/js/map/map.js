@@ -132,6 +132,8 @@ $(function () {
 		resizeEquip(equip.closest('[scroll-zoom]'))
 
 		equip.dblclick(function () {
+			posReset();
+			
 			id = equip.attr('id').match(/\d+/g)[0];
 			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 			toDrag = `#${equip.attr('id')}`
@@ -154,6 +156,10 @@ $(function () {
 	})
 
 })
+
+function posReset() {
+	$(toDrag).off('mousedown');
+}
 
 function ScrollZoom(container) {
 	let max_scale = Number(container.attr('max-scale')) || 4
@@ -220,7 +226,7 @@ function ScrollZoom(container) {
 
 // SIZE BAR EQUIPMENTS
 
-function barResize(){
+ function barResize(){
 
 	let size = $('.bar')
 	let input = size.find('input')
@@ -467,14 +473,15 @@ function dragEquip() {
 	}
 
 	//closeDragElement();
-}
-
-function closeDragElement() {
+	function closeDragElement() {
 	// Stop moving when mouse button is released:
 	$(document)
 		.off("mouseup")
 		.off("mousemove")
 }
+
+}
+
 
 //Drag/Drop Element END
 

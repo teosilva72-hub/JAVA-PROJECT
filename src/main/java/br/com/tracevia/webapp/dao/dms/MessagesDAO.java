@@ -34,32 +34,58 @@ public class MessagesDAO {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			ps = conn.prepareStatement("SELECT ma.id_message, page1, timer1, page2, timer2, page3, timer3, page4, "
-					+ "timer4, page5, timer5, type, name, id_image, text1, text2, text3 "
+			ps = conn.prepareStatement("SELECT ma.id_message, m.id_message as page, page1, "
+					+ "timer1, page2, timer2, page3, timer3, page4, timer4, page5, timer5, "
+					+ "type, name, id_image, text1, text2, text3 "
 					+ "FROM tracevia_app.pmv_messages_available ma INNER JOIN tracevia_app.pmv_messages m "
 					+ "ON ma.page1 = m.id_message OR ma.page2 = m.id_message "
 					+ "OR ma.page3 = m.id_message OR ma.page4 = m.id_message "
-					+ "OR ma.page5 = m.id_message WHERE ma.id_message <> 1 and enabled <> 0 and avaliable <> 0");
+					+ "OR ma.page5 = m.id_message OR m.id_message = 1 "
+					+ "WHERE enabled <> 0 and avaliable <> 0 ORDER BY ma.id_message ASC");
 			rs = ps.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
-
-					Messages mensagens = new Messages();
-
-					mensagens.setId_message(rs.getInt("id_message"));
-					mensagens.setTipo(rs.getString("type"));
-					mensagens.setNome(rs.getString("name"));
-					mensagens.setId_image(rs.getInt("id_image"));
-					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
-
-					mensagens.setPages("", "", ""); // TODO: Corrigir
-
-					lista.add(mensagens);
+			if (rs.isBeforeFirst()) {
+				Messages mensagens = new Messages();
+				boolean[] pages = new boolean[] { true, true, true, true, true };
+				rs.next();
+				while (true) {
+					int page = rs.getInt("page");
+					if (page == 1) {
+						mensagens = new Messages();
+						mensagens.setId_message(rs.getInt("id_message"));
+					} else
+						for (int i = 0; i <= pages.length - 1; i++)
+							if (rs.getInt("page" + (i + 1)) == page) {
+								int index = mensagens.getPages().size();
+								if (i <= index)
+									index = i;
+								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
+										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
+										getImageFromMessageAvailable(rs.getInt("id_image")),
+										rs.getFloat("timer" + (i + 1)), index);
+								pages[i] = false;
+							}
+					if (rs.next()) {
+						if (rs.getInt("id_message") != mensagens.getId_message()) {
+							for (int i = 0; i < pages.length; i++) {
+								if (pages[i]) {
+									pages[i] = false;
+									mensagens.setPages(i);
+								}
+							}
+							pages = new boolean[] { true, true, true, true, true };
+							lista.add(mensagens);
+						}
+					} else {
+						lista.add(mensagens);
+						break;
+					}
 				}
 			}
 
-		} catch (SQLException e) {
+		} catch (
+
+		SQLException e) {
 			e.printStackTrace();
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
@@ -100,8 +126,8 @@ public class MessagesDAO {
 					mensagens.setNome(rs.getString("name"));
 					mensagens.setId_image(rs.getInt("id_image"));
 					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
-					
-					mensagens.setPages("", "", ""); // TODO: Corrigir query e setpages
+
+					// mensagens.setPages("", "", "", 0); // TODO: Corrigir query e setpages
 
 					lista.add(mensagens);
 				}
@@ -222,8 +248,8 @@ public class MessagesDAO {
 					mensagem.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
 					mensagem.setTipo(rs.getString("type"));
 					mensagem.setNome(rs.getString("name"));
-					
-					mensagem.setPages("", "", ""); // TODO: Corrigir query e setpages
+
+					// mensagem.setPages("", "", "", 0); // TODO: Corrigir query e setpages
 				}
 			}
 
@@ -278,8 +304,8 @@ public class MessagesDAO {
 					mensagem.setId_message(rs.getInt("id_message"));
 					mensagem.setId_image(rs.getInt("id_image"));
 					mensagem.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
-					
-					mensagem.setPages("", "", ""); // TODO: Corrigir query e setpages
+
+					// mensagem.setPages("", "", "", 0); // TODO: Corrigir query e setpages
 				}
 			}
 
@@ -316,8 +342,8 @@ public class MessagesDAO {
 					mensagem.setId_image(rs.getInt("d.id_image"));
 					mensagem.setImage(getImageFromMessageAvailable(rs.getInt("d.id_image")));
 					mensagem.setId_modify(rs.getInt("a.id_modify"));
-					
-					mensagem.setPages("", "", ""); // TODO: Corrigir query e setpages
+
+					// mensagem.setPages("", "", "", 0); // TODO: Corrigir query e setpages
 				}
 			}
 
@@ -358,8 +384,8 @@ public class MessagesDAO {
 					message.setImage(getImageFromMessageAvailable(rs.getInt("d.id_image")));
 					message.setActiveMessage(rs.getBoolean("a.active_status"));
 
-					message.setPages("", "", ""); // TODO: Corrigir query e setpages
-					
+					// message.setPages("", "", "", 0); // TODO: Corrigir query e setpages
+
 					lista.add(message);
 				}
 			}
