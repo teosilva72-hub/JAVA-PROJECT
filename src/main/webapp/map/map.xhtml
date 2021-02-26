@@ -59,50 +59,9 @@
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
-				<button type="button" id="fullbody" class="fullBodys"
-					onclick="history.go(0)" data-toggle="tooltip"
-					data-placement="bottom" title="Return FullScreen">
-					<span> <i class="fas fa-undo fa-1x"></i></span>
-				</button>
-
 				<button type="button" id="addequip" class="add_equip"
-					title="Add Equipment" data-toggle="modal" data-target="#modaladd">Add</button>
+					title="Add Equipment" data-toggle="modal" data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 
-				<!-- TESTE -->
-				<button type="button" class="btn btn-primary" data-toggle="modal"
-					data-target="#exampleModal">Launch demo modal</button>
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1"
-					role="dialog" aria-labelledby="exampleModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Teste</h5>
-								<button type="button" class="close" data-dismiss="modal"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-6">
-										<input type="text"></input>
-									</div>
-									<div class="col-md-6">
-										<input type="text"></input>
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save
-									changes</button>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<h:form id="real">
@@ -113,13 +72,13 @@
 				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
 				<h:commandButton id="savePos"
 					class="btn btn-dark form-draw-button save_pos"
-					value="Save Position" onclick="alert('#realsave');"
+					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');"
 					action="#{equipsBean.definePosition}" title="Save Position">
 				</h:commandButton>
 
 				<h:commandButton id="cancelPos" style="display:none;"
 					class="btn btn-dark form-draw-button cancel_pos"
-					value="Cancel Position" onclick="alert('#realcancel');"
+					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
 				</h:commandButton>
 			</h:form>
@@ -133,7 +92,7 @@
 
 			<button class="btn btn-secondary dropdown-toggle" type="button"
 				id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">Equip Size</button>
+				aria-expanded="false">#{mapLabels.map_size_equip_button}</button>
 
 			<div class="dropdown-menu" id="szselect"
 				aria-labelledby="dropdownMenuButton">
@@ -660,7 +619,8 @@
 							<h:commandButton
 								value="#{mapLabels.map_creation_btn_save_equipment}"
 								id="btn-form-send" class="btn btn-dark form-draw-button"
-								action="#{equipsBean.createEquipment}" onclick="history.go(0);">
+								action="#{equipsBean.createEquipment}">
+								<f:ajax execute="@all" render="@none" />
 							</h:commandButton>
 
 							<h:commandButton
@@ -887,7 +847,8 @@
 								value="#{mapLabels.map_creation_btn_save_equipment}"
 								id="btn-form-send" class="btn btn-dark form-draw-button"
 								action="#{equipsBean.UpdateEquipment}" type="submit"
-								onclick="sendType(); history.go(0);">
+								onclick=" sendType();">
+								<f:ajax execute="@form" render="@none" />
 							</h:commandButton>
 
 							<h:commandButton
@@ -912,7 +873,7 @@
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{map_option_confirm_title}</h4>
+							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_confirm_title}</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -929,8 +890,8 @@
 									value="#{mapLabels.map_creation_btn_yes_equipment}"
 									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"
 									action="#{equipsBean.DeleteEquipment}"
-									onclick="history.go(0); deleteParameters();">
-									<f:ajax execute="@form" render="@form" />
+									onclick="deleteParameters();">
+									<f:ajax execute="@all" render="@none" />
 								</h:commandButton>
 
 								<h:commandButton
@@ -964,7 +925,7 @@
 					<div class="modal-footer" id="modborderpad">
 						<form class="bar">
 							<div class="bar-ball">
-								<label for="bar-size" style="display: none;">size</label> <input
+								<label for="bar-size" style="display: none;">#{mapLabels.map_size_equip_modal}</label> <input
 									type="number" id="bar-size" value="1" min="1" max="2" hidden="" />
 							</div>
 						</form>
@@ -983,6 +944,25 @@
 		<!-- Mudança -->
 
 		<script>
+			function borderEquip(id){
+				setTimeout(function() {
+					$(id).fadeOut('fast');
+				}, 1000);
+				console.log(id)
+				var equipBorder = document.getElementById(id);
+				equipBorder.style.border = "solid blue 1px";
+				
+				
+			}
+			$(function() {
+				
+				let match = RegExp(/newId=(\w+)/)
+				let get = match.exec(location.href)
+				if (get) {
+					borderEquip(get[1])
+				}
+			})
+		
 			function hiddenBtns() {
 				document.getElementById("topButtons").style.display = "none";
 			}

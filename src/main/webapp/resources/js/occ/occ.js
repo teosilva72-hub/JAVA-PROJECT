@@ -1028,8 +1028,15 @@ setTimeout(function() {
    $('#msgOthersUsers').fadeOut('fast');
 }, 3000);
 function msgUser(){
-	//document.getElementById("msgDelete").style.display = "block";
 	document.getElementById("msgOthersUsers").style.display = "block";
+}
+setTimeout(function() {
+   $('#unLock').fadeOut('fast');
+}, 3000);
+function unLock(){
+	document.getElementById("unLock").style.display = "block";
+	document.getElementById("msgOthersUsers").style.display = "none";
+	document.getElementById("msgFinished").style.display = "none";
 }
 //Mostrar msg antes de fechar a aba no navegador
 /*window.addEventListener('beforeunload', function (e) {

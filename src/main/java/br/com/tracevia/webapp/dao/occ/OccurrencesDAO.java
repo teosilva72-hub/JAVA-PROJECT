@@ -165,11 +165,11 @@ public class OccurrencesDAO {
 		return listarDropDownValue;
 	}
 	
-	public boolean editTable(boolean editTable, String name_user, String id) throws Exception {
+	public boolean editTable(boolean editTable, String name_user, int accessLevel, String id ) throws Exception {
 		
 		boolean status = false;
 
-		String query = "UPDATE occ_data SET editTable = ?, nameUser = ? WHERE occ_number = ?";
+		String query = "UPDATE occ_data SET editTable = ?, nameUser = ?, accessLevel = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -181,7 +181,8 @@ public class OccurrencesDAO {
 
 			ps.setBoolean(1, editTable);
 			ps.setString(2, name_user);
-			ps.setString(3, id);
+			ps.setInt(3, accessLevel);
+			ps.setString(4, id);
 
 			ps.executeUpdate();
 
