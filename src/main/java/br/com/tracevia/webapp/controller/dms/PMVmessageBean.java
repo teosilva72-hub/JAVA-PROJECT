@@ -65,6 +65,7 @@ public class PMVmessageBean implements Serializable {
 	private Messages message;
 	//private HtmlDataTable dataTable;
 	private List<Messages> messages;
+	private List<Enumeration> messages_enumeration;
 	private ArrayList<SelectItem> items;
 	private ArrayList<SelectItem> name;
 	private ArrayList<SelectItem> type;	
@@ -170,6 +171,14 @@ public class PMVmessageBean implements Serializable {
 
 	public void setMessages(List<Messages> messages) {
 		this.messages = messages;
+	}
+
+	public List<Enumeration> getMessages_enumeration() {
+		return messages_enumeration;
+	}
+
+	public void setMessages_enumeration(List<Enumeration> messages_enumeration) {
+		this.messages_enumeration = messages_enumeration;
 	}
 		
 	public Messages getMessage() {
@@ -397,8 +406,10 @@ public class PMVmessageBean implements Serializable {
 	 	    
 	   MessagesDAO dao = new MessagesDAO();	 
 	   equipDAO = new EquipmentsDAO();	  
+	   Enumeration enumaration = new Enumeration();
 	   
 	   messages = dao.mensagensDisponiveis();
+	   messages_enumeration = enumaration.create(messages);
 	  		    		    
 		ArrayList<Equipments> list = new ArrayList<Equipments>();		
 		list = equipDAO.listPMVSites();
@@ -421,6 +432,47 @@ public class PMVmessageBean implements Serializable {
 		type.add(new SelectItem("Information", localeLabel.getStringKey("dms_active_messages_select_label_informations")));
 		type.add(new SelectItem("Signaling", localeLabel.getStringKey("dms_active_messages_select_label_signaling")));
 				
+	}
+
+	/**
+	 * Enumeration
+	 */
+	public class Enumeration {
+	
+		private Messages value;
+		private int key;
+
+		public Messages getValue() {
+			return value;
+		}
+
+		public void setValue(Messages value) {
+			this.value = value;
+		}
+
+		public int getKey() {
+			return key;
+		}
+
+		public void setKey(int key) {
+			this.key = key;
+		}
+
+		private Enumeration() {}
+
+		private Enumeration(Messages value, int key) {
+			this.value = value;
+			this.key = key;
+		}
+		
+		public List<Enumeration> create(List<Messages> value){
+			List<Enumeration> list = new ArrayList<Enumeration>();
+			for (int i = 0; i < value.size(); i++) {
+				Enumeration enumeration = new Enumeration(value.get(i), i);
+				list.add(enumeration);
+			}
+			return list;
+		}
 	}
 	
 	/* Message Creation Available */

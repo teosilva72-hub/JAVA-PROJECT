@@ -1,17 +1,18 @@
 package br.com.tracevia.webapp.model.dms;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Messages {
 
 	private int id_message;
-	private int id_image;
+	private int id_image; // TODO: Remover futuramente, estará obsoleto
 	private int id_modify;
 	private int equip;
 	private String id;
-	private String tipo;
-	private String nome;
-	private String image;
+	private String tipo; // TODO: Remover futuramente, estará obsoleto
+	private String nome; // TODO: Remover futuramente, estará obsoleto
+	private String image; // TODO: Remover futuramente, estará obsoleto
 	private List<Pages> pages;
 	private String tableImg;
 	private String tableMessage;
@@ -31,9 +32,11 @@ public class Messages {
 		this.tableImg = tableImg;
 		this.tableMessage = tableMessage;
 		this.activeMessage = activeMessage;
+		this.pages = new ArrayList<Pages>();
 	}
 
 	public Messages() {
+		this.pages = new ArrayList<Pages>();
 	}
 
 	public int getId_message() {
@@ -128,13 +131,14 @@ public class Messages {
 		this.activeMessage = activeMessage;
 	}
 
-	public void setPages(String text1, String text2, String text3) {
-		Pages page;
-		if (text1 != "" && text2 != "" && text3 != "")
-			page = new Pages(text1, text2, text3);
-		else
-			page = new Pages();
-		this.pages.add(page);
+	public void setPages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
+			float timer, int page) {
+		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer);
+		this.pages.add(page, pages);
+	}
+
+	public void setPages(int page) {
+		this.pages.add(page, new Pages());
 	}
 
 	@Override
@@ -164,15 +168,34 @@ public class Messages {
 		private String text1;
 		private String text2;
 		private String text3;
+		private float timer;
+		private int id_image;
+		private String image;
+		private String tipo;
+		private String nome;
 
-		public Pages(String text1, String text2, String text3) {
+		public Pages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
+				float timer) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
+			this.id_image = id_image;
+			this.image = image;
+			this.tipo = tipo;
+			this.nome = nome;
+			this.timer = timer;
 			this.contain = true;
 		}
 
 		public Pages() {
+			this.text1 = "";
+			this.text2 = "";
+			this.text3 = "";
+			this.id_image = 0;
+			this.image = "";
+			this.tipo = "";
+			this.nome = "";
+			this.timer = 0;
 			this.contain = false;
 		}
 
@@ -186,6 +209,26 @@ public class Messages {
 
 		public String getText3() {
 			return text3;
+		}
+
+		public float getTimer() {
+			return timer;
+		}
+
+		public int getId_image() {
+			return id_image;
+		}
+
+		public String getImage() {
+			return image;
+		}
+
+		public String getTipo() {
+			return tipo;
+		}
+
+		public String getNome() {
+			return nome;
 		}
 
 		public Boolean getContain() {

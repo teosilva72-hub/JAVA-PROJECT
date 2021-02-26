@@ -39,9 +39,10 @@
 
 							<!-- PAGINATORS -->
 							<div class="card-body position-relative responsive">
-								<div class="btn-group mb-4 buttons-page" role="group"
+								<div class="btn-group mb-4 buttons-page edit-pmv-page" role="group"
 									aria-label="Page select">
-									<input class="btn-check" name="btn-pages" id="btn-page1" type="radio" value="1" checked="checked" />
+									<input class="btn-check" name="btn-pages" id="btn-page1" type="radio" value="1"
+										checked="checked" />
 									<label class="btn btn-dark py-0 px-2" for="btn-page1">1</label>
 									<input class="btn-check" name="btn-pages" id="btn-page2" type="radio" value="2" />
 									<label class="btn btn-dark py-0 px-2" for="btn-page2">2</label>
@@ -196,7 +197,8 @@
 									</div>
 
 								</div>
-								<div class="mt-4">
+
+								<div class="mt-4 edit-pmv-page">
 									<!-- TIMERS -->
 									<div class="row">
 										<div class="col px-1">
@@ -248,108 +250,114 @@
 											</p:selectOneListbox>
 										</div>
 									</div>
-									<div class="row col-9 my-5">
+									<div class="edit-field row col-9 my-5">
+										<div class="position-absolute">
 
-										<div class="col-12 confInput">
-											<div id="id-div">
-												<span class="iconeSpan"><i class="fas fa-key"></i></span>
-												<div class="input-group">
+											<div class="col-12 confInput">
+												<div id="id-div">
+													<span class="iconeSpan"><i class="fas fa-key"></i></span>
+													<div class="input-group">
 
-													<h:inputText id="id-input" class="form-control inputDesign id"
-														value="#{pmvMessage.idMessage}" disabled="true" pt:type="text"
-														name="id"
-														pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+														<h:inputText id="id-input" class="form-control inputDesign id"
+															value="#{pmvMessage.idMessage}" disabled="true"
+															pt:type="text" name="id"
+															pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+													</div>
 												</div>
 											</div>
-										</div>
-										<!-- end id input -->
-										<!-- Type Select -->
-										<div class="col-12 confInput">
-											<div id="id-div">
-												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
-												<div class="input-group">
-													<h:selectOneMenu class="form-control selectType"
-														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}"
-														id="tipo" name="tipo">
-														<f:selectItem itemLabel="Type" itemValue="Type" />
-														<f:selectItems value="#{pmvMessage.type}" />
-													</h:selectOneMenu>
+											<!-- end id input -->
+											<!-- Type Select -->
+											<div class="col-12 confInput">
+												<div id="id-div">
+													<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
+													<div class="input-group">
+														<h:selectOneMenu class="form-control selectType"
+															disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}"
+															id="tipo" name="tipo">
+															<f:selectItem itemLabel="Type" itemValue="Type" />
+															<f:selectItems value="#{pmvMessage.type}" />
+														</h:selectOneMenu>
+													</div>
 												</div>
 											</div>
+											<!-- End Type Select -->
+											<!-- input name -->
+											<div class="col-12 confInput">
+												<div id="name-div">
+													<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
+													<div class="input-group">
+														<h:inputText id="name-input"
+															class="form-control name inputDesign" pt:type="text"
+															name="name"
+															pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+															value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
+															maxlength="15" pt:autocomplete="off" />
+													</div>
+												</div>
+
+											</div>
+											<!-- end input name -->
+
 										</div>
-										<!-- End Type Select -->
-										<!-- input name -->
-										<div class="col-12 confInput">
-											<div id="name-div">
-												<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
-												<div class="input-group">
-													<h:inputText id="name-input" class="form-control name inputDesign"
-														pt:type="text" name="name"
-														pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
-														value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
-														maxlength="15" pt:autocomplete="off" />
+										<div class="position-absolute text-creation">
+
+											<!-- message input -->
+											<div class="col-12 confInput">
+												<div id="input-message-1">
+													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+													<div class="input-group">
+
+														<h:inputText id="message-box1"
+															class="form-control message-input inputDesign"
+															maxlength="12" autoResize="false" resizable="false"
+															disabled="#{pmvMessage.inputs}"
+															value="#{pmvMessage.message1}" pt:type="text"
+															name="message-1"
+															pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+															pt:autocomplete="off">
+															<p:ajax event="keyup" update="box-1, box-2, box-3, box-4, box-5,
+						box-6, box-7, box-8, box-9, box-10, box-11, box-12" listener="#{pmvMessage.messageRowOne}" />
+														</h:inputText>
+													</div>
 												</div>
 											</div>
+											<!-- end message input -->
+											<div class="col-12 confInput">
+												<div id="input-message-2">
+													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+													<div class="input-group">
 
-										</div>
-										<!-- end input name -->
-
-									</div>
-									<div class="row col-9 text-creation">
-
-										<!-- message input -->
-										<div class="col-12 confInput">
-											<div id="input-message-1">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
-
-													<h:inputText id="message-box1"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false"
-														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.message1}"
-														pt:type="text" name="message-1"
-														pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
-														pt:autocomplete="off">
-														<p:ajax event="keyup" update="box-1, box-2, box-3, box-4, box-5,
-					box-6, box-7, box-8, box-9, box-10, box-11, box-12" listener="#{pmvMessage.messageRowOne}" />
-													</h:inputText>
+														<h:inputText id="message-box2"
+															class="form-control message-input inputDesign"
+															maxlength="12" autoResize="false" resizable="false"
+															disabled="#{pmvMessage.inputs}"
+															value="#{pmvMessage.message2}" pt:type="text"
+															name="message-2"
+															pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+															pt:autocomplete="off">
+															<p:ajax event="keyup" update="box-13, box-14, box-15, box-16, box-17,
+						box-18, box-19, box-20, box-21, box-22, box-23, box-24" listener="#{pmvMessage.messageRowTwo}" />
+														</h:inputText>
+													</div>
 												</div>
 											</div>
-										</div>
-										<!-- end message input -->
-										<div class="col-12 confInput">
-											<div id="input-message-2">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
+											<div class="col-12 confInput">
+												<div id="input-message-3">
+													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+													<div class="input-group">
 
-													<h:inputText id="message-box2"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false"
-														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.message2}"
-														pt:type="text" name="message-2"
-														pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
-														pt:autocomplete="off">
-														<p:ajax event="keyup" update="box-13, box-14, box-15, box-16, box-17,
-					box-18, box-19, box-20, box-21, box-22, box-23, box-24" listener="#{pmvMessage.messageRowTwo}" />
-													</h:inputText>
-												</div>
-											</div>
-										</div>
-										<div class="col-12 confInput">
-											<div id="input-message-3">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
-
-													<h:inputText id="message-box3"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false"
-														disabled="#{pmvMessage.inputs}" value="#{pmvMessage.message3}"
-														pt:type="text" name="message-3"
-														pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
-														pt:autocomplete="off">
-														<p:ajax event="keyup" update="box-25, box-26, box-27, box-28, box-29,
-						box-30, box-31, box-32, box-33, box-34, box-35, box-36" listener="#{pmvMessage.messageRowThree}" />
-													</h:inputText>
+														<h:inputText id="message-box3"
+															class="form-control message-input inputDesign"
+															maxlength="12" autoResize="false" resizable="false"
+															disabled="#{pmvMessage.inputs}"
+															value="#{pmvMessage.message3}" pt:type="text"
+															name="message-3"
+															pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+															pt:autocomplete="off">
+															<p:ajax event="keyup" update="box-25, box-26, box-27, box-28, box-29,
+							box-30, box-31, box-32, box-33, box-34, box-35, box-36" listener="#{pmvMessage.messageRowThree}" />
+														</h:inputText>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -416,38 +424,94 @@
 						</h:form>
 						<!-- Tabela real -->
 						<div id="tabelaReal">
-							<h:dataTable id="message-table" value="#{pmvMessage.messages}" var="msg"
+							<h:dataTable id="message-table" value="#{pmvMessage.messages_enumeration}" var="msg"
 								styleClass="table table-sm table-striped table-hover table-dark custom-table"
 								cellspacing="0" width="100%" headerClass="custom-table-header"
 								rowClasses="custom-table-odd-row, custom-table-even-row"
 								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_reg}"
-										style="vertical-align: middle; text-align: center;" />
+									<h:outputText value="#{msg.value.id_message}" />
 								</h:column>
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
-									<h:outputText value="#{(pmvMessage.translateType(msg.tipo))}" />
-								</h:column>
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
-									<h:outputText value="#{msg.nome}" />
-								</h:column>
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.imagem}"
-										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
-								</h:column>
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.texto1}" />
-									<br />
-									<h:outputText value="#{msg.texto2}" />
-									<br />
-									<h:outputText value="#{msg.texto3}" />
-								</h:column>
+								<c:forEach items="#{pmvMessage.messages.get(msg.key).pages}" var="page"
+									varStatus="index">
+									<c:choose>
+										<c:when test="#{index.first}">
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<f:facet name="header">
+													#{dmsLabels.dms_available_messages_table_col_type}
+												</f:facet>
+												<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
+											</h:column>
+										</c:when>
+										<c:otherwise>
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
+											</h:column>
+
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="#{index.first}">
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<f:facet name="header">
+													#{dmsLabels.dms_available_messages_table_col_name}
+												</f:facet>
+												<h:outputText value="#{page.nome}" />
+											</h:column>
+										</c:when>
+										<c:otherwise>
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<h:outputText value="#{page.nome}" />
+											</h:column>
+
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="#{index.first}">
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<f:facet name="header">
+													#{dmsLabels.dms_available_messages_table_col_image}
+												</f:facet>
+												<h:graphicImage id="picture-table"
+													value="/resources/images/pictures/#{page.image}" width="50"
+													height="50" style="margin-top: 5px;" />
+												<h:inputHidden value="#{page.id_image}" id="hiddenField" />
+											</h:column>
+										</c:when>
+										<c:otherwise>
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<h:graphicImage id="picture-table"
+													value="/resources/images/pictures/#{page.image}" width="50"
+													height="50" style="margin-top: 5px;" />
+												<h:inputHidden value="#{page.id_image}" id="hiddenField" />
+											</h:column>
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="#{index.first}">
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<f:facet name="header">
+													#{dmsLabels.dms_available_messages_table_col_text}
+												</f:facet>
+												<h:outputText value="#{page.text1}" />
+												<br />
+												<h:outputText value="#{page.text2}" />
+												<br />
+												<h:outputText value="#{page.text3}" />
+											</h:column>
+										</c:when>
+										<c:otherwise>
+											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+												<h:outputText value="#{page.text1}" />
+												<br />
+												<h:outputText value="#{page.text2}" />
+												<br />
+												<h:outputText value="#{page.text3}" />
+											</h:column>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
 							</h:dataTable>
 						</div>
 						<!-- Tabela hidden -->
@@ -462,34 +526,33 @@
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_reg}"
-										style="vertical-align: middle; text-align: center;" />
+									<h:outputText value="#{msg.id_message}" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
-									<h:outputText value="#{(pmvMessage.translateType(msg.tipo))}" />
+									<h:outputText value="#{(pmvMessage.translateType(msg.pages.get(0).tipo))}" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
-									<h:outputText value="#{msg.nome}" />
+									<h:outputText value="#{msg.pages.get(0).nome}" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.imagem}"
+									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.image}"
 										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.id_imagem}" id="hiddenField" />
+									<h:inputHidden value="#{msg.pages.get(0).id_image}" id="hiddenField" />
 								</h:column>
 
 								<h:column>
 									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.texto1}" />
+									<h:outputText value="#{msg.pages.get(0).text1}" />
 									<br />
-									<h:outputText value="#{msg.texto2}" />
+									<h:outputText value="#{msg.pages.get(1).text2}" />
 									<br />
-									<h:outputText value="#{msg.texto3}" />
+									<h:outputText value="#{msg.pages.get(0).text3}" />
 								</h:column>
 							</h:dataTable>
 						</div>
