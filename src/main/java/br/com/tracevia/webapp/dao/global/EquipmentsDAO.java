@@ -804,8 +804,8 @@ public class EquipmentsDAO {
           			ps.setString(6, equip.getEstrada());
           			ps.setString(7, equip.getKm());			
           			ps.setInt(8, equip.getMapWidth());
-          			ps.setInt(9, 0); //posX
-          			ps.setInt(10, 0); //posY
+          			ps.setInt(9, 50); //posX
+          			ps.setInt(10, 50); //posY
           			ps.setBoolean(11, true);
           			          			
           			//System.out.println(sql);

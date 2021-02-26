@@ -13,6 +13,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import com.mysql.cj.ParseInfo;
+
 import br.com.tracevia.webapp.controller.sos.SOSBuildMaps;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
@@ -37,7 +39,7 @@ public class EquipmentsBean implements Serializable {
 	Equipments equip;
 	
 	private int equipId;
-	private String equipTable;
+	private String equipTable, equipBord;
 	private int positionX, positionY;
 					
 	public List<SelectItem> getCities() {
@@ -80,6 +82,14 @@ public class EquipmentsBean implements Serializable {
 		this.equipTable = equipTable;
 	}
 	
+	public String getEquipBord() {
+		return equipBord;
+	}
+
+	public void setEquipBord(String equipBord) {
+		this.equipBord = equipBord;
+	}
+
 	public Equipments getEquip() {
 		return equip;
 	}
@@ -137,10 +147,10 @@ public class EquipmentsBean implements Serializable {
 	    Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
 		
 	   int moduleID = Integer.parseInt(parameterMap.get("equips"));
-	    
+	   
 		//For Equipment ID
 		equip.setEquip_id(Integer.parseInt(parameterMap.get("equipId")));
-		
+		 
 		//For Equipment CreationDate
 	    equip.setCreation_date(dta.currentTimeDBformat());
 				    
@@ -161,11 +171,18 @@ public class EquipmentsBean implements Serializable {
 	    
 	    //For Equipment Width
 	    equip.setMapWidth(Integer.parseInt(parameterMap.get("width")));
-	    	    
+	    
+	    String table = defineTableById(moduleID);
+	    //execute js
+	    org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0);");
+	    org.primefaces.context.RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+Integer.parseInt(parameterMap.get("equipId"))+"'");
 	    EquipmentsDAO equipDAO = new EquipmentsDAO();
 	    
-	     String table = defineTableById(moduleID);
+	     
+	     equipBord = table+parameterMap.get("equipId");
+	     System.out.println(equipBord+ "< id do equip bord");
 	    
+	     
 	   boolean equipr = equipDAO.EquipRegisterMap(equip, table);
 	   			
 	   		//if (equipr)
@@ -197,6 +214,7 @@ public class EquipmentsBean implements Serializable {
 		 String equipTable = getEquipTable();
 		 
 		// System.out.println(equipTable);
+		 org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0)");
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
@@ -215,6 +233,7 @@ public class EquipmentsBean implements Serializable {
 		 String equipTable = getEquipTable();
 		 
 		 //System.out.println(equipTable);
+		 org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0)");
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 

@@ -867,7 +867,7 @@ input[type="number"] {
 #dropdwnsizebtn {
 	position: fixed;
 	right: 20px;
-	z-index: 9999;
+	z-index: 999;
 }
 /* BUTTON EQUIP SIZE END */
 
