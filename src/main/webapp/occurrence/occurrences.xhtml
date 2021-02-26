@@ -10,7 +10,7 @@
 	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://jcp.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	
+
 	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
@@ -459,8 +459,8 @@
 								onclick="getMessageId();"
 								actionListener="#{occurrencesBean.getRowValue}"
 								style="display:none;">
-								
-									</h:commandButton>
+
+							</h:commandButton>
 						</h:form>
 					</div>
 					<!-- final da tabela oculta -->
@@ -556,11 +556,9 @@
 										id="anularAtualHidden" onclick=" reload(); "
 										action="#{occurrencesBean.resetOccurrencesData}"
 										class="btn btnConf" />
-										<h:commandButton style="display: none;"
-										value="#{occLabels.btn_sim}"
-										id="resetUpdate"
-										action="#{occurrencesBean.resetUpdate}"
-										class="btn btnConf" />
+									<h:commandButton style="display: none;"
+										value="#{occLabels.btn_sim}" id="resetUpdate"
+										action="#{occurrencesBean.resetUpdate}" class="btn btnConf" />
 								</div>
 							</div>
 						</div>
@@ -592,8 +590,8 @@
 											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :btnUpdate :myFile2" /> -->
 										</h:commandButton>
 										<!-- Botão editar -->
-										<h:commandButton id="alterar" class="btn btnConf" style="display: none;"
-											disabled="#{occurrencesBean.alterar}"
+										<h:commandButton id="alterar" class="btn btnConf"
+											style="display: none;" disabled="#{occurrencesBean.alterar}"
 											value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
@@ -615,7 +613,8 @@
 										<h:commandButton class="btn btnConf" id="new"
 											disabled="#{occurrencesBean.new_}"
 											action="#{occurrencesBean.btnEnable}"
-											value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
+											value="#{occLabels.btn_novo}"
+											onclick="bloquerTable(); fileTotalHidden()">
 											<f:ajax execute="@form"
 												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
 											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
@@ -638,18 +637,18 @@
 										</h:commandButton>
 									</div>
 								</div>
-								<div class="col-md-1"></div>
-								<div class="col-md-1" id="demo" style="display: none;"></div>
+								
 								<!-- Icon PDF -->
-								<div class="col-md-1" id="iconPdf" style="display: none;">
+								<div class="col-md-1 btnPdf" id="iconPdf" style="display: none;">
 
 									<h:commandLink class="btnPdf" id="pdfId"
+										data-bs-toggle="tooltip" data-bs-placement="top"
+										title="#{occLabels.occ_download_file}"
 										action="#{occurrencesBean.downloadPdf}">
 										<i class="fas fa-file-pdf"></i>
-										<span class="text-pdf">#{occLabels.occ_download_file}</span>
 									</h:commandLink>
 								</div>
-								<div class="col-md-5" style="width: 50%;">
+								<div class="col-md-5">
 									<!-- Botão form 1 -->
 									<div class="btn-group" role="group" aria-label="Basic example"
 										style="width: 100%;">
@@ -694,8 +693,12 @@
 					</div>
 					<div class="alert alert-danger text-center" role="alert"
 						id="msgOthersUsers" style="display: none;">
-						<p class="textMsgFile">#{occLabels.occ_other_users} #{occurrencesBean.data.nameUser} </p>
-						
+						<p class="textMsgFile">#{occLabels.occ_other_users}
+							#{occurrencesBean.data.nameUser}</p>
+					</div>
+					<div class="alert alert-success text-center" role="alert"
+						id="unLock" style="display: none;">
+						<p class="textMsgFile">#{occLabels.un_lock}</p>
 					</div>
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">
@@ -1113,8 +1116,8 @@
 							<!-- FInal alert Anexos -->
 
 							<!-- input file save -->
-								<div id="uploadFile1" class="form-row" style="display: none;">
-									<div class="form-group col-md-12 field" align="left">
+							<div id="uploadFile1" class="form-row" style="display: none;">
+								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
@@ -1126,7 +1129,7 @@
 										disabled="#{occurrencesBean.fields}"
 										onclick="validatorFile();" />
 								</div>
-								</div>
+							</div>
 							<!-- End input file save -->
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
@@ -1185,7 +1188,7 @@
 																aria-labelledby="dropdownMenuButton">
 																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
 																<li><h:commandLink
-																		action="#{occurrencesBean.deleteFile(item)}" 
+																		action="#{occurrencesBean.deleteFile(item)}"
 																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
 															</ul>
 														</div>
@@ -1197,7 +1200,7 @@
 									</c:forEach>
 								</div>
 								<!-- List file update -->
-								<div class="col-md-12" >
+								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
 									<c:forEach id="listUpdate"
 										items="#{occurrencesBean.listUpdate}" var="item"
@@ -1205,7 +1208,7 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
-													
+
 													<!-- name file -->
 													<div class="col-md-7 text-center">
 														<span>#{occLabels.occ_name_file} </span>
@@ -1224,7 +1227,8 @@
 															<ul class="dropdown-menu"
 																aria-labelledby="dropdownMenuButton">
 																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																<li><h:commandLink disabled="#{occurrencesBean.fields}"
+																<li><h:commandLink
+																		disabled="#{occurrencesBean.fields}"
 																		action="#{occurrencesBean.deleteFileUpdate(item)}"
 																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
 															</ul>
@@ -1256,10 +1260,10 @@
 									</c:forEach>
 								</div>
 								<!-- List files click table -->
-								<div class="col-md-12" id="listUpdateFileT" style="display: none;">
+								<div class="col-md-12" id="listUpdateFileT"
+									style="display: none;">
 									<!-- Array arquivos na pasta -->
-									<c:forEach
-										items="#{occurrencesBean.tableFile}" var="item"
+									<c:forEach items="#{occurrencesBean.tableFile}" var="item"
 										varStatus="loop">
 										<div class="row">
 											<div class="col-md-12">
@@ -1268,7 +1272,7 @@
 														<span>#{occLabels.occ_name_file} </span>
 														<p class="text-center">#{item}</p>
 													</div>
-									
+
 													<!-- download -->
 													<div class="col-md-1">
 														<span>#{occLabels.occ_download}</span>
