@@ -76,16 +76,16 @@ public class DMSBuildLinear {
 														
 				for(Messages m : messagesDisplay){
 																																		
-				  image[e] = m.getImagem();	
+				  image[e] = m.getImage();	
 				  				  					  					  						 																			
-				  for(int n = 0; n < m.getTexto1().length(); n++) 
-						  letter[e][0][n] = m.getTexto1().charAt(n);        
+				  for(int n = 0; n < m.getPages().get(0).getText1().length(); n++) 
+						  letter[e][0][n] = m.getPages().get(0).getText1().charAt(n);        
 				  					   
-			      for(int n = 0; n < m.getTexto2().length(); n++) 
-						   letter[e][1][n] = m.getTexto2().charAt(n);
+			      for(int n = 0; n < m.getPages().get(0).getText2().length(); n++) 
+						   letter[e][1][n] = m.getPages().get(0).getText2().charAt(n);
 									   
-				  for(int n = 0; n < m.getTexto3().length(); n++) 
-						    letter[e][2][n] = m.getTexto3().charAt(n);
+				  for(int n = 0; n < m.getPages().get(0).getText3().length(); n++) 
+						    letter[e][2][n] = m.getPages().get(0).getText3().charAt(n);
 				  
 				  e++; // incrementa equipamento		
 				 

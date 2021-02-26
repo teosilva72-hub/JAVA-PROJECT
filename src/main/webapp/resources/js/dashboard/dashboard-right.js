@@ -37,11 +37,47 @@ var url      = '/phone/phone.html',
             window.open(url, 'ctxPhone', features);
             return false;
         } else {
-            window.alert('Phone already open.');
+            window.alert('Telefone já esta aberto.');
         }
     });
 
 
+
+
+//Accept a Call Button
+//var startButton = document.querySelector('.acptcall');
+//startButton.addEventListener("click", function () {
+//  coolPhone.start();
+//  alert("Call Started.")
+//}, false);
+//Accept a Call Button End
+
+//Ending a Call Button
+//var endButton = document.querySelector('.dismisscall');
+//endButton.addEventListener("click", function () {
+//  coolPhone.hangup();
+//  alert("Call Ended.")
+//}, false);
+//Ending a Call Button End
+
+//Placing a call on hold
+//var holdButton = document.querySelector('.holdcall');
+//holdButton.addEventListener("click", function () {
+//  coolPhone.hold();
+//  alert("Call on Hold.")
+//}, false);
+
+//var unholdButton = document.querySelector('.holdcallstop');
+//unholdButton.addEventListener("click", function () {
+//  coolPhone.unhold();
+//  alert("Call Came Back.")
+//}, false);
+//Placing a call on hold End
+
+//Answering a Call
+//coolPhone.on('ringing', function () {
+//  coolPhone.answer()
+//});
 
 // //Accept a Call Button
 // var startButton = document.querySelector('.acptcall');
@@ -65,7 +101,7 @@ var url      = '/phone/phone.html',
 //   coolPhone.hold();
 //   alert("Call on Hold.")
 // }, false);
-
+3
 // var unholdButton = document.querySelector('.holdcallstop');
 // unholdButton.addEventListener("click", function () {
 //   coolPhone.unhold();
@@ -77,6 +113,7 @@ var url      = '/phone/phone.html',
 // coolPhone.on('ringing', function () {
 //   coolPhone.answer()
 // });
+
 //Answering a Call End
 
 //////////////////////SIP VOICE/CALL END

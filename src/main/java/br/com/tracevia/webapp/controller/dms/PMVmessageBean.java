@@ -65,6 +65,7 @@ public class PMVmessageBean implements Serializable {
 	private Messages message;
 	//private HtmlDataTable dataTable;
 	private List<Messages> messages;
+	private List<Enumeration> messages_enumeration;
 	private ArrayList<SelectItem> items;
 	private ArrayList<SelectItem> name;
 	private ArrayList<SelectItem> type;	
@@ -170,6 +171,14 @@ public class PMVmessageBean implements Serializable {
 
 	public void setMessages(List<Messages> messages) {
 		this.messages = messages;
+	}
+
+	public List<Enumeration> getMessages_enumeration() {
+		return messages_enumeration;
+	}
+
+	public void setMessages_enumeration(List<Enumeration> messages_enumeration) {
+		this.messages_enumeration = messages_enumeration;
 	}
 		
 	public Messages getMessage() {
@@ -397,8 +406,10 @@ public class PMVmessageBean implements Serializable {
 	 	    
 	   MessagesDAO dao = new MessagesDAO();	 
 	   equipDAO = new EquipmentsDAO();	  
+	   Enumeration enumaration = new Enumeration();
 	   
 	   messages = dao.mensagensDisponiveis();
+	   messages_enumeration = enumaration.create(messages);
 	  		    		    
 		ArrayList<Equipments> list = new ArrayList<Equipments>();		
 		list = equipDAO.listPMVSites();
@@ -421,6 +432,47 @@ public class PMVmessageBean implements Serializable {
 		type.add(new SelectItem("Information", localeLabel.getStringKey("dms_active_messages_select_label_informations")));
 		type.add(new SelectItem("Signaling", localeLabel.getStringKey("dms_active_messages_select_label_signaling")));
 				
+	}
+
+	/**
+	 * Enumeration
+	 */
+	public class Enumeration {
+	
+		private Messages value;
+		private int key;
+
+		public Messages getValue() {
+			return value;
+		}
+
+		public void setValue(Messages value) {
+			this.value = value;
+		}
+
+		public int getKey() {
+			return key;
+		}
+
+		public void setKey(int key) {
+			this.key = key;
+		}
+
+		private Enumeration() {}
+
+		private Enumeration(Messages value, int key) {
+			this.value = value;
+			this.key = key;
+		}
+		
+		public List<Enumeration> create(List<Messages> value){
+			List<Enumeration> list = new ArrayList<Enumeration>();
+			for (int i = 0; i < value.size(); i++) {
+				Enumeration enumeration = new Enumeration(value.get(i), i);
+				list.add(enumeration);
+			}
+			return list;
+		}
 	}
 	
 	/* Message Creation Available */
@@ -469,7 +521,7 @@ public class PMVmessageBean implements Serializable {
 	 if(picture == null)
 		 picture = new Picture(0);
 	 			
-	//Pegar Usuário na sessão 
+	//Pegar Usuï¿½rio na sessï¿½o 
 	 String user =  (String) context.getExternalContext().getSessionMap().get("user");
 	 
 	 result = dao.insertMessage(picture.getId(), user, tipo, nome, message1, message2, message3);
@@ -492,9 +544,9 @@ public class PMVmessageBean implements Serializable {
 	 MessagesUtil message = new MessagesUtil();
 		     
 	   if(picture == null)
-	       picture = new Picture(idPicture); // Caso não seja selecionado nenhum novo id
+	       picture = new Picture(idPicture); // Caso nï¿½o seja selecionado nenhum novo id
 	     
-	  //Pegar Usuário na sessão 
+	  //Pegar Usuï¿½rio na sessï¿½o 
 	  String user =  (String) context.getExternalContext().getSessionMap().get("user");
 	     	 		    	 	
 	  result = dao.updateMessage(picture.getId(), user, tipo, nome, message1, message2, message3, idMessage);
@@ -521,10 +573,10 @@ public class PMVmessageBean implements Serializable {
 	 	 
 	 if(rowKey != 0) {
 	
-	 // Verifica se a mensagem está ativa
+	 // Verifica se a mensagem estï¿½ ativa
 	 active = dao.verifyRegisterIsActive(rowKey);
 	
-	 if(active == 0) {	// Caso não esteja ativa segue para exclusão	 			 	 
+	 if(active == 0) {	// Caso nï¿½o esteja ativa segue para exclusï¿½o	 			 	 
 	     response = dao.removeRegister(rowKey);
 	 	 	 	 
 	 if(response) {	   
@@ -634,36 +686,36 @@ public class PMVmessageBean implements Serializable {
  
  message = dao.mensagensDisponivelById(rowKey);
 
- this.image = String.valueOf(message.getImagem());
+ this.image = String.valueOf(message.getImage());
  
- picture = new Picture(message.getId_imagem()); 
+ picture = new Picture(message.getId_image()); 
  idPicture = picture.getId();
   
  //Image  
  this.tipo = message.getTipo();
  this.nome = message.getNome();
- this.idMessage = String.valueOf(message.getId_reg());
+ this.idMessage = String.valueOf(message.getId_message()); // TODO: corrigir
   
-     for(int i = 0; i < message.getTexto1().length(); i++)	{
+     for(int i = 0; i < message.getPages().get(0).getText1().length(); i++)	{
     	 
-    	 if(message.getTexto1().charAt(i) != Character.MIN_VALUE) {       
-    	    chars1[i] = message.getTexto1().charAt(i); 
+    	 if(message.getPages().get(0).getText1().charAt(i) != Character.MIN_VALUE) {       
+    	    chars1[i] = message.getPages().get(0).getText1().charAt(i); 
             lmt1++;
           
     	 }
      }
   
-     for(int i = 0; i < message.getTexto2().length(); i++) {	
-    	 if(message.getTexto2().charAt(i) != Character.MIN_VALUE) {  
-          chars2[i] = message.getTexto2().charAt(i);
+     for(int i = 0; i < message.getPages().get(0).getText2().length(); i++) {	
+    	 if(message.getPages().get(0).getText2().charAt(i) != Character.MIN_VALUE) {  
+          chars2[i] = message.getPages().get(0).getText2().charAt(i);
           lmt2++;
           
     	 }
      }
 
-     for(int i = 0; i < message.getTexto3().length(); i++) {
-    	 if(message.getTexto3().charAt(i) != Character.MIN_VALUE) {  
-	      chars3[i] = message.getTexto3().charAt(i);
+     for(int i = 0; i < message.getPages().get(0).getText3().length(); i++) {
+    	 if(message.getPages().get(0).getText3().charAt(i) != Character.MIN_VALUE) {  
+	      chars3[i] = message.getPages().get(0).getText3().charAt(i);
           lmt3++;   
           
        }
@@ -794,7 +846,7 @@ public class PMVmessageBean implements Serializable {
 	 MessagesUtil messageUtil = new MessagesUtil();
 			 
 	 if(message != null) {
-		 messageID = message.getId_reg(); 
+		 messageID = message.getId_message(); 
 		 messageUtil.InfoMessage(localeMessage.getStringKey("dms_activation_message_activation_selected"), " " );		
 		 editable = false;
 	 }
