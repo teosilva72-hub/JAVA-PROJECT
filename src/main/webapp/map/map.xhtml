@@ -113,13 +113,13 @@
 				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
 				<h:commandButton id="savePos"
 					class="btn btn-dark form-draw-button save_pos"
-					value="Save Position" onclick="alert('#realsave');"
+					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');"
 					action="#{equipsBean.definePosition}" title="Save Position">
 				</h:commandButton>
 
 				<h:commandButton id="cancelPos" style="display:none;"
 					class="btn btn-dark form-draw-button cancel_pos"
-					value="Cancel Position" onclick="alert('#realcancel');"
+					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
 				</h:commandButton>
 			</h:form>
