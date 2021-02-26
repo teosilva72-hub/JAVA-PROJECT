@@ -162,7 +162,7 @@ function bloquerTable(){
 		   		var table = $('#occurrence-table').DataTable({
 					language: {
 						"search": "",
-				        searchPlaceholder: "Search"
+				        searchPlaceholder: "Buscar"
 				    },		
 		    		"select": true,
 				    "autoWidth": true,			  	   	
@@ -944,6 +944,7 @@ setTimeout(function() {
 setTimeout(function() {
    $('#msgFinished').fadeOut('fast');
 }, 3000);
+
 function msgDelete(){
 	//document.getElementById("msgDelete").style.display = "block";
 	document.getElementById("msgDelete2").style.display = "block";
@@ -972,11 +973,6 @@ $(document).ready(function () {
         $km.mask('000+000', {reverse: false});
     });
 
-
-function listingFileBtnHidden(){
-	//document.getElementById("btnListingFile").style.display = "none";
-	//document.getElementById("tableListingFile").style.display = "none";
-}
 function listingFile(){
 	document.getElementById("tableListingFile").style.display = "none";
 }
@@ -1022,3 +1018,23 @@ function hiddenSave(){
 	var save = 	document.getElementById("save").style.display = "none";
 
 }
+//desativa o envio de dados pela tecla enter
+document.addEventListener("keydown", function(e) {
+  if(e.keyCode === 13) {
+    e.preventDefault(); 
+  }
+});
+setTimeout(function() {
+   $('#msgOthersUsers').fadeOut('fast');
+}, 3000);
+function msgUser(){
+	//document.getElementById("msgDelete").style.display = "block";
+	document.getElementById("msgOthersUsers").style.display = "block";
+}
+//Mostrar msg antes de fechar a aba no navegador
+/*window.addEventListener('beforeunload', function (e) {
+  // Cancel the event
+  e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+  // Chrome requires returnValue to be set
+  e.returnValue = '';
+});*/

@@ -17,8 +17,8 @@ public class OccurrencesDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	
-		
+
+
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
@@ -164,8 +164,41 @@ public class OccurrencesDAO {
 		}
 		return listarDropDownValue;
 	}
+	
+	public boolean editTable(boolean editTable, String name_user, String id) throws Exception {
+		
+		boolean status = false;
+
+		String query = "UPDATE occ_data SET editTable = ?, nameUser = ? WHERE occ_number = ?";
+
+		DateTimeApplication dtm = new DateTimeApplication();
+
+		try {
+
+			conn = ConnectionFactory.connectToTraceviaApp();
+
+			ps = conn.prepareStatement(query);
+
+			ps.setBoolean(1, editTable);
+			ps.setString(2, name_user);
+			ps.setString(3, id);
+
+			ps.executeUpdate();
 
 
+		}catch (SQLException alterarOcorrencia){
+
+			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+
+		}finally {
+
+			ConnectionFactory.closeConnection(conn, ps);
+
+		}		
+
+		return status;
+
+	}
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 		boolean status = false;
@@ -284,7 +317,7 @@ public class OccurrencesDAO {
 			if(rs != null) {
 				while(rs.next()) {
 
-					 value = rs.getInt(1);	   			
+					value = rs.getInt(1);	   			
 				}
 			}
 		}finally {
@@ -323,7 +356,7 @@ public class OccurrencesDAO {
 				"LEFT JOIN occ_details dt19 ON d.statusAction = dt19.detail_id "  +
 				"LEFT JOIN occ_details dt20 ON d.characteristic = dt20.detail_id " +
 				"WHERE occ_number = ? ";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -333,7 +366,7 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-					
+
 					occ.setType(rs.getString(1));
 					occ.setOrigin(rs.getString(2));
 					occ.setState_occurrences(rs.getString(3));
@@ -370,7 +403,7 @@ public class OccurrencesDAO {
 
 		UserAccountBean occ = new UserAccountBean();
 		String userId = "SELECT user_id from users_register ;";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -380,9 +413,9 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-					
+
 					occ.setUser_id(rs.getString(1));
-					
+
 				}
 			}
 		} catch (Exception e) {
@@ -455,6 +488,39 @@ public class OccurrencesDAO {
 
 		return status;
 	}
+	/*public String nameUser(String name_user, String id) throws Exception {
+
+		String occ_number = null;
+
+		String query = "SELECT name = ? FROM users_register WHERE user_id = ?";
+
+		DateTimeApplication dtm = new DateTimeApplication();
+
+		try {
+
+			conn = ConnectionFactory.connectToTraceviaApp();
+
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, name_user);
+			ps.setString(2, id);
+
+			ps.executeUpdate();
+
+
+		}catch (SQLException alterarOcorrencia){
+
+			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+
+		}finally {
+
+			ConnectionFactory.closeConnection(conn, ps);
+
+		}		
+
+		return occ_number;
+
+	}*/
 
 	public OccurrencesData buscarOcorrenciaPorId(int id) throws Exception {
 
@@ -467,7 +533,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files, editTable, nameUser " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -546,6 +612,8 @@ public class OccurrencesDAO {
 					occ.setStatusAction(rs.getString(63));
 					occ.setDamageUnity(rs.getString(64));
 					occ.setLocalFiles(rs.getString(65));
+					occ.setEditTable(rs.getBoolean(66));
+					occ.setNameUser(rs.getString(67));
 
 				}
 
