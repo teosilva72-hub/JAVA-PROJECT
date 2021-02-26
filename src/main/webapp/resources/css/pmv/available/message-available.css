@@ -17,8 +17,14 @@ body {
 }
 
 .equip-info {
-  transform: scale(1.5);
   font-size: 5px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(1.5);
+}
+
+#page-pmv {
+  position: relative;
 }
 
 .equip-info .tableStyle {
@@ -36,7 +42,7 @@ body {
   margin-bottom: -5px;
 }
 
-#dmsTab p {
+.dmsTab p {
   height: 15px;
 }
 
@@ -499,23 +505,32 @@ select {
 }
 
 .text-creation {
-  opacity: 0;
   display: none;
+}
+
+.text-creation.active {
+  display: revert;
 }
 
 .edit-pmv-page {
-  opacity: 0;
   display: none;
 }
 
-.equip-info.equip2 {
-  top: 35%;
-  left: 20%;
+.edit-pmv-page.active {
+  display: inline-flex;
 }
 
 .edit-field {
   position: relative;
   display: none;
+}
+
+.equip-info {
+  display: none;
+}
+
+.equip-info.active {
+  display: revert;
 }
 
 th.pageTable2,
