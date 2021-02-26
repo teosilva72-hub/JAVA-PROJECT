@@ -28,24 +28,23 @@
 			name="mto-reports.js" />
 		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />	
 		
-		<script>
-		
-		$(function() {
-			setTimeout(function () {
-				$('#message-div').hide(); 		
-			}, 5000); 
-		});
-		
-		</script>
-
+				
 	</ui:define>
+	
+	<!-- Subistiuição do loading -->
+	<ui:define name="loading"></ui:define>
 	
 	 <ui:define name="main-content" >
 	 
-	 <!-- Mensagem parte superior -->
-	<div id="message-div">
+	    <!-- Mensagem parte superior -->
+	    <div id="message-div">
 			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 		</div>
+		
+		<!-- REPORTS LABEL INFORMATION -->
+		 <div class="text-dark text-center font-weight-bold report-title" >
+	      <h:outputText value="#{mtoLabels.mto_reports_name_year}" />	
+	     </div>
 	 
 	 <!-- TABLE DIV CONTENT -->
 	  <div class="table-container">
@@ -256,7 +255,7 @@
 								<div class="error-label"><label for="end_month" class="error" id="end_month-error"></label></div>
 							</div>																					
                 
-                 <input type="hidden" name="period" value="year" />	 
+                 <input type="hidden" name="periods" value="year" />	 
                  
 			     </div>
         <div class="modal-footer">

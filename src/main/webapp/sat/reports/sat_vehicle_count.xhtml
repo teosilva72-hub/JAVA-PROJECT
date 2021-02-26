@@ -9,6 +9,7 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
 	<f:metadata>
@@ -39,6 +40,11 @@
 	<ui:define name="main-content">
 
 		<div class="table-container">
+		
+		  <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
 
 			<div class="text-dark text-center font-weight-bold report-title">
 				<h:outputText value="#{satLabels.sat_reports_name_count}" />
@@ -355,7 +361,7 @@
 	    //Reset Modal on Close if has valitation active
 	    resetOnModalClose('#modalReportOptions', '#report-form',  'equips', '#{satLabels.sat_reports_select_equipments}', array,
 		    	'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh, 'periods', 'dateStart', 'dateEnd');
-	    
+	    	    
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->

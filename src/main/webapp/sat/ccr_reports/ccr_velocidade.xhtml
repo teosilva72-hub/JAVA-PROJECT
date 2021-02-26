@@ -19,8 +19,7 @@
     </f:metadata>
 	
 	<ui:define name="head" >
-				
-	
+			
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
@@ -40,6 +39,11 @@
 	 <ui:define name="main-content" >
 	 
 	 <div class="table-container">
+	 
+	  <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
 	 
 	 <div class="text-dark text-center font-weight-bold report-title" >
 	 <h:outputText value="#{satLabels.sat_reports_name_ccr_speed}" />	
@@ -213,7 +217,7 @@
 						<div class="form-row">
 							<div class="form-group col-sm-12 select-field">
 								<span><i class="fas fa-hdd"></i></span>
-								<span for="equips"
+								<span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip"
 									id="equip" size="1">
 									<option value="">#{satLabels.sat_reports_select_equipments}</option>

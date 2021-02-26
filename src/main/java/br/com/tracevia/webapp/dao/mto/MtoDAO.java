@@ -33,7 +33,7 @@ public class MtoDAO {
 			
 			System.out.println(select);
 			
-			if (rs != null) {
+			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 										
 					panel.setAtmPressure(rs.getInt(1)/10);
@@ -49,7 +49,7 @@ public class MtoDAO {
 					panel.setLine_volts(rs.getInt(11));
 				
 				}				
-			 }			
+			 } else panel = null;	//DEFINE A VÁRIÁVEL COMO NULA
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -59,5 +59,5 @@ public class MtoDAO {
 		return panel;
 		
 	}
-
+	
 }

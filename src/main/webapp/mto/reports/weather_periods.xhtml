@@ -33,8 +33,21 @@
 		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />
 
 	</ui:define>
+	
+	<!-- Subistiuição do loading -->
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="main-content">
+	
+	    <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
+		
+		<!-- REPORTS LABEL INFORMATION -->
+		 <div class="text-dark text-center font-weight-bold report-title" >
+	      <h:outputText value="#{mtoLabels.mto_reports_name_periods}" />	
+	     </div>
 
 		<!-- TABLE DIV CONTENT -->
 		<div class="table-container">

@@ -19,7 +19,8 @@ public class Messages {
 				
 	public Messages(int id_reg, int id_imagem, int id_modify, int equip, String id, String tipo, String nome,
 			String imagem, String texto1, String texto2, String texto3, String tableImg, String tableMessage,
-			 boolean activeMessage) {		
+			 boolean activeMessage) {	
+		
 		this.id_reg = id_reg;
 		this.id_imagem = id_imagem;
 		this.id_modify = id_modify;

@@ -294,16 +294,14 @@ public class InterfacesBean implements Serializable {
 					 state_prev[k] = false;
 				     state[k] = false;
 			     }
-				 
-				//inicializar imagem nos equipamentos do preview
-				for(int d = 0; d < amountDMS; d++)
-						  image1[d] = imagem;
-																							
+				 																											
 				  lista = dao.selectActivesMessages();
 								
                 try {
 								
 				if(!lista.isEmpty()) {
+					
+					//System.out.println("is here");
 				
 				int e = 0;
 														
@@ -385,9 +383,9 @@ public class InterfacesBean implements Serializable {
 				//IF HAVEN´T REGISTERS								
 				for(int eq = 0; eq < amountDMS; eq++) {
 				     
-					image[eq] += standard_image; 					
-					image1[eq] += standard_image;
-					imageAux[eq] += standard_image; 
+					image[eq] = standard_image; 					
+					image1[eq] = standard_image;
+					imageAux[eq] = standard_image; 
 					
 				   for(int n = 0; n < 12; n++) {
 					    letter[eq][0][n] = Character.MIN_VALUE;

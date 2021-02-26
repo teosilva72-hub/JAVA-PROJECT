@@ -83,8 +83,7 @@
 	////////////////////////////////////////////////////
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////	
-		
-		
+				
     // Validate Count Vehicle Form
 	function formValidation(startDate, elem1RequiredMessage, elem2RequiredMessage, elem3RequiredMessage,
 	elem4RequiredMessage, elem5RequiredMessage, elem6RequiredMessage, elem7RequiredMessage, elem8RequiredMessage, startDateRequiredMessage, endDateRequiredMessage, validDateMessage){

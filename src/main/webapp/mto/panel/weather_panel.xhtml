@@ -14,62 +14,81 @@
 	<f:metadata>	
 
 	<f:viewParam id="act1" name="equip" value="#{mtoPanelBean.station}" /> 
-	
-	<f:viewAction action="#{mtoPanelBean.GetPanelInformation}" />
-          
+		          
     </f:metadata>
 	
 	<ui:define name="head" >
 	
 	<h:outputStylesheet name="mto_panel.css" library="css/mto" />
+	<h:outputScript name="mto-panel.js" library="js/validation-forms/mto" />
+	
+	<script>
+	
+	$(function() {
+		setTimeout(function () {
+			$('#message-div').hide(); 		
+		}, 5000); 
+	});
+		
+	</script>
 
 	</ui:define>
 	
 	 <ui:define name="main-content" >
+	 
+	  <!-- Mensagem parte superior -->
+	    <div id="message-div" >
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
+	 
 	 	 <!-- Inicio da estrutura do conteudo -->
-	 	<form>
+	 	
 			<div class="jumbotron jumbotron-fluid">
+			<h:form id="panel">
 				<div class="barraBusca">
-					<div class="row">
+					<div class="row line">
 						<!-- Inicio barra de pesquisa -->
 							<div class="col-sm">
-								<div class="select-field">								
-									<span><i class="fas fa-hdd"></i></span>								    					    
+								<div class="select-field">																
+									<span><i class="fas fa-hdd"></i></span>	
+									<span for="equip"
+										class="valid-icon-hidden"></span> 							    					    
 									<select name="equip" id="equip">	
-									    <option value="" >#{mtoLabels.mto_reports_select_station}</option>						      
+									  <option value="" >#{mtoLabels.mto_reports_select_station}</option>																	      
 										<ui:repeat var="eqp"  value="#{mtoPanelBean.equipments}"  varStatus="eqpStatus" >
 											<option value="#{eqp.value}" > #{eqp.label} </option>	                                  
 		                                </ui:repeat> 
 		                            </select>										    							   														
 								</div>
-								<div class="error-label"><label for="equips" class="error" id="equips-error"></label></div>
+								<div class="error-label"><label for="equip" class="error" id="equip-error"></label></div>
 							</div>
 							<!-- Final barra de pesquisa -->
 							<!-- Botão barra de pesquisa -->
 							<div class="col-2">	     
-								<button  type="submit" id="btn-search-tab" class="btn btn-dark btnConf" >       
-									#{mtoLabels.mto_reports_btn_search}
-								</button>     		
+								<h:commandButton id="btn-search-tab" class="btn btn-dark btnConf" value="#{mtoLabels.mto_reports_btn_search}"
+								action="#{mtoPanelBean.GetPanelInformation}" />	
+								    		
 							</div>
 						<!-- Final do botão barra de pesquisa -->
 						<!-- Inicio da barra de informação -->
 						<div class="col-sm">	     
 							<div class="alert alert-dark" role="alert">
-							 	<p class="textMsg">mensagem da pesquisa</p>
+							 	<h:outputLabel id="stat" class="stationName" value="#{mtoPanelBean.station_name}" />
 							</div>
 						</div>
 						<!-- Final barra de informação -->
 					</div>
 				</div>
+							
 				<div class="cardContainer">	
 		  			<!-- Inicio da primeira grid-->
-					<div class="row">
+					<div class="row line">
 				    	<div class="col-sm col-lg col-xl">
 				    		<!-- Inicio do card 1 -->
 				     		<div class="card presAtm">
 								<div class="card-body">
 									<h:outputLabel value="#{mtoLabels.mto_panel_station_atmPressure}" />
-									<h1>#{mtoPanelBean.panel.atmPressure} hPa</h1>
+									<h1 id="pressure">#{mtoPanelBean.panel.atmPressure} hPa</h1>
 								</div>
 							</div>
 							<!-- Final do card 1 -->
@@ -100,7 +119,7 @@
 				  	</div>
 				  	<!-- Final da primeira grid -->
 				  	<!-- Inicio da segunda grid-->
-					<div class="row">
+					<div class="row line">
 				    	<div class="col-sm col-lg col-xl">
 				     		 <!-- Inicio do card 4 -->
 				     		<div class="card">
@@ -113,11 +132,10 @@
 				    	</div>
 				    	<div class="col-sm col-lg col-xl">
 				     		 <!-- Inicio do card 5 -->
-				     		<div class="card bussolaMaxHei">
-								<div class="card-body textBuss ">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_direction}" />
-									<div class="bussola"></div>
-										<div class="">
+				     		<div class="card bussolaMaxHei py-1">
+								<div class="card-body textBuss bussola">
+									<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_direction}" />								
+										<div class="direction-wind">
 											<h:graphicImage class="ponteiro" url="/resources/images/estacao/setaBussola.png" 
 											 style="
 											transform: rotate(#{mtoPanelBean.panel.wind_speed}deg);"/>
@@ -132,7 +150,7 @@
 				     		<div class="card">
 								<div class="card-body velocVento">
 									<div class="">
-										<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_speed}" /><hr></hr>
+										<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_speed}" />
 										<h1>#{mtoPanelBean.panel.wind_speed} km/h</h1>
 									</div>
 									
@@ -143,7 +161,7 @@
 				  	</div>
 				  	<!-- Final da segunda grid -->
 				  	<!-- Inicio da terceira grid-->
-					<div class="row">
+					<div class="row line">
 				    	<div class="col-sm col-lg col-xl">
 				     		 <!-- Inicio do card 7 -->
 				     		<div class="card">
@@ -170,12 +188,14 @@
 				      		<!-- Inicio do card 9 -->
 				     		<div class="card energia">
 								<div class="card-body">
-									<div class=" ">		
-										
-										<h3 class=""><h:outputLabel value="#{mtoLabels.mto_panel_station_status}" /></h3>	 
-						 				<h:outputLabel class="statusOn" styleClass="#{(mtoPanelBean.panel.status == 0) ? 'green' : 'red'}" style="font-size:20px;" value="ONLINE"/>
-										<h3 class="">#{mtoLabels.mto_panel_station_line_volts} : #{mtoPanelBean.panel.line_volts}</h3>
-										<h3 class="">#{mtoLabels.mto_panel_station_battery} : #{mtoPanelBean.panel.battery}</h3>
+									<div class=" ">												
+										<h5 class=""><h:outputLabel value="#{mtoLabels.mto_panel_station_status} : " />
+											<label id="status" ></label> <!-- JSF LABEL NOT WORK HERE -->
+											<h:inputHidden id="hidden" value="#{mtoPanelBean.panel.status}" />
+						 				</h5>						 				
+										<h5 class="status-volts">#{mtoLabels.mto_panel_station_line_volts} : #{mtoPanelBean.panel.line_volts}</h5>
+										<h5 class="status-battery">#{mtoLabels.mto_panel_station_battery} : #{mtoPanelBean.panel.battery}</h5>
+								
 									</div>
 								</div>
 							</div>
@@ -184,9 +204,23 @@
 				  	</div>
 				  	<!-- Final da terceira grid -->
 				</div>
+			  </h:form>
 			</div>
-			<!-- Final da estrutura do conteudo --> 	
-		</form>
+			<!-- Final da estrutura do conteudo --> 
+							
+		<!-- CHANGE STATUSSS -->
+		
+	<script type='text/javascript'>
+			
+		checkMtoStatus();		
+		weatherStationValidation("#panel", '#{requiredMessages.required_mto_reports_select_equipments}');
+				
+		//Validate on change value
+		validateOnChange('#equip');
+						
+		</script>
+		
+		<!-- CHANGE STATUSSS -->
 	 
 	 </ui:define>	
 </ui:composition>	

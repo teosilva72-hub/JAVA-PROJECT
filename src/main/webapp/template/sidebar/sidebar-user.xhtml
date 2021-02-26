@@ -297,8 +297,13 @@
 				     
 				     <ui:fragment rendered="#{loginAccount.load.en_occ}">
 				        <li class="nav-item ml-2">
-                        <a class="nav-link" href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-tv icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
-					       <ul class="collapse list-unstyled ml-3" id="occSubmenu">						          			   
+                        <a class="nav-link" href="#occUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-tv icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
+					      <ul class="collapse list-unstyled ml-3" id="occUiSubmenu">	
+					        <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToOccurrences}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>                                      
+                               </h:commandLink>
+						      </li>  					          			   
 					    </ul>
 				     </li>
 				     </ui:fragment>

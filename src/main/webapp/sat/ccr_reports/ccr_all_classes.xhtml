@@ -20,7 +20,6 @@
 
 	<ui:define name="head">
 
-
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
@@ -42,7 +41,11 @@
 
 		<div class="table-container">
 		
-		  
+		   <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
+		
 	 <div class="text-dark text-center font-weight-bold report-title" >
 	 <h:outputText value="#{satLabels.sat_reports_name_ccr_all_classes}" />	
 	 </div>
