@@ -66,7 +66,7 @@
 				</button>
 
 				<button type="button" id="addequip" class="add_equip"
-					title="Add Equipment" data-toggle="modal" data-target="#modaladd">Add</button>
+					title="Add Equipment" data-toggle="modal" data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 
 				<!-- TESTE -->
 				<button type="button" class="btn btn-primary" data-toggle="modal"
@@ -133,7 +133,7 @@
 
 			<button class="btn btn-secondary dropdown-toggle" type="button"
 				id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="false">Equip Size</button>
+				aria-expanded="false">#{mapLabels.map_size_equip_button}</button>
 
 			<div class="dropdown-menu" id="szselect"
 				aria-labelledby="dropdownMenuButton">
@@ -912,7 +912,7 @@
 					<!-- Modal content-->
 					<div class="modal-content">
 						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{map_option_confirm_title}</h4>
+							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_confirm_title}</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -964,7 +964,7 @@
 					<div class="modal-footer" id="modborderpad">
 						<form class="bar">
 							<div class="bar-ball">
-								<label for="bar-size" style="display: none;">size</label> <input
+								<label for="bar-size" style="display: none;">#{mapLabels.map_size_equip_modal}</label> <input
 									type="number" id="bar-size" value="1" min="1" max="2" hidden="" />
 							</div>
 						</form>
