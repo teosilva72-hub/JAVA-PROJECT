@@ -237,10 +237,6 @@ body {
   width: 65%;
 }
 
-/*TEXT AREA COMPONENTS DIV's*/
-#id-div {
-}
-
 #type-div {
   margin-top: 0;
 }
@@ -503,5 +499,50 @@ select {
 }
 
 .text-creation {
-	opacity: 0;
+  opacity: 0;
+  display: none;
+}
+
+.edit-pmv-page {
+  opacity: 0;
+  display: none;
+}
+
+.equip-info.equip2 {
+  top: 35%;
+  left: 20%;
+}
+
+.edit-field {
+  position: relative;
+  display: none;
+}
+
+th.pageTable2,
+th.pageTable3,
+th.pageTable4,
+th.pageTable5,
+td[class^="pageTable"] {
+  display: none;
+}
+
+td[class^="pageTable"].active {
+  display: revert;
+  animation-name: fade;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dataTables_filter {
+  width: max-content;
+  margin-left: auto;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

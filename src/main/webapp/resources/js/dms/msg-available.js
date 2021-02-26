@@ -55,67 +55,6 @@ function bloquerTable() {// Todo: Talvez elimine esse
 // Id do inputHidden para passar valor para pmvMessage (Bean)		 
 var idMessage, selected;
 
-// Método para Criar a datatable JQuery (Quando for selection será definida na página)
-function listTable() {
-	$(document).ready(function () {
-
-		var table = $('#message-table').DataTable({
-			select: true,
-			"autoWidth": true,
-			"scrollY": "65vh",
-			"scrollCollapse": true,
-			"paging": false,
-			"bInfo": false,
-			"columnDefs": [{
-				"width": "7%",
-				"targets": 0
-			}, {
-				"width": "20%",
-				"targets": 1
-			}, {
-				"width": "20%",
-				"targets": 2
-			}, {
-				"width": "3%",
-				"targets": 3
-			}, {
-				"width": "30%",
-				"targets": 4
-			}]
-		});
-
-		$('.dataTables_length').removeClass('bs-select');
-	});
-}
-function listTableHidden() {
-	$(document).ready(function () {
-
-		$('#message-table-hidden').DataTable({
-			select: false,
-			"autoWidth": true,
-			"scrollY": "65vh",
-			"scrollCollapse": true,
-			"paging": false,
-			"bInfo": false,
-			"columnDefs": [{
-				"width": "7%",
-				"targets": 0
-			}, {
-				"width": "20%",
-				"targets": 1
-			}, {
-				"width": "20%",
-				"targets": 2
-			}, {
-				"width": "3%",
-				"targets": 3
-			}, {
-				"width": "30%",
-				"targets": 4
-			}]
-		});
-	});
-}
 function selectList() {
 	// Método para pegar id da mensagem na seleção de uma row
 	$('#message-table tbody').on('click', 'tr', function () {
@@ -164,12 +103,73 @@ function hideMsg() {
 	$("#message-display").delay(1000).hide(1000);
 }
 
-// $(function () {
-// 	setTimeout(function () {
-// 		listTable();
-// 		listTableHidden();
-// 		selectList();
-// 		getMessageId();
-// 		hideMsg();
-// 	}, 10)
-// });
+$.fn.loopNext = function (selector) {
+	var selector = selector || '';
+	return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
+}
+
+function changeMsg(msg) {
+	if (msg.index()) {
+		let timer = Number(msg.attr("timer"));
+		let name = msg.loopNext();
+		let img = name.loopNext();
+		let text = img.loopNext();
+		if (timer) {
+			msg.addClass('active');
+			name.addClass('active');
+			img.addClass('active');
+			text.addClass('active');
+			setTimeout(() => {
+				msg.removeClass('active');
+				name.removeClass('active');
+				img.removeClass('active');
+				text.removeClass('active');
+				changeMsg(text.loopNext());
+			}, timer * 1000)
+		} else
+			changeMsg(text.loopNext());
+	} else
+		changeMsg(msg.loopNext());
+}
+
+$(function () {
+	// Start rotation for tables
+	let table = $('.idColumn + td.pageTable1')
+	table.each(function () {
+		changeMsg($(this));
+	})
+
+	// Start more components for tables
+	$('#message-table').DataTable({
+		select: true,
+		language: {
+			search: "",
+			searchPlaceholder: "Buscar",
+		},
+		"autoWidth": true,
+		"scrollY": "65vh",
+		"scrollCollapse": true,
+		"paging": false,
+		"bInfo": false,
+		"columnDefs": [{
+			"width": "7%",
+			"targets": 0
+		}, {
+			"width": "20%",
+			"targets": 1
+		}, {
+			"width": "20%",
+			"targets": 2
+		}, {
+			"width": "3%",
+			"targets": 3
+		}, {
+			"width": "30%",
+			"targets": 4
+		}]
+	});
+})
+
+selectList();
+getMessageId();
+hideMsg();
