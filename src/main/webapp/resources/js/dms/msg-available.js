@@ -1,15 +1,3 @@
-function showImageInfo() {
-	document.getElementById("image-div-info").style.display = "block";
-}
-function hideImageInfo() {
-	document.getElementById("image-div-info").style.display = "none";
-}
-function hideLinkInfo() {
-	document.getElementById("image-div-link").style.display = "none";
-}
-function refresh() {
-	setTimeout("location.reload(true);", 3000);
-}
 function hideID() {
 	document.getElementById("id-div").style.display = "none";
 	// document.getElementById("space").style.display = "block";	
@@ -29,17 +17,10 @@ function returnDIV() {
 	document.getElementById('list-images').style.display = "none";
 
 }
-function imageDisabled() {// Todo: Talvez elimine esse
-	document.getElementById("image-place").style.opacity = "0.4";
-}
-function imageEnabled() { // Todo: Talvez elimine esse
-	document.getElementById("image-place").style.opacity = "1";
-}
 function dialogHide() {
 	var dialog = document.getElementById("deleteModal");
 	dialog.modal("hide");
 }
-
 
 // Id do inputHidden para passar valor para pmvMessage (Bean)		 
 var idMessage, selected;
@@ -165,10 +146,7 @@ $(function () {
 					pre_vi.find('.dmsTab p').text('')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).children().each(function (index) {
-							if ((msg.text().length - index) > 0)
-								$(this).find('[id*=box]').text(msg.text()[index])
-							else
-								$(this).find('[id*=box]').text("")
+							$(this).find('[id*=box]').text("")
 						})
 						msg = msg.next()
 					})
