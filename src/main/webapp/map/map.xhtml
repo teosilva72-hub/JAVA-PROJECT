@@ -945,14 +945,11 @@
 
 		<script>
 			function borderEquip(id){
-				setTimeout(function() {
-					$(id).fadeOut('fast');
-				}, 1000);
-				console.log(id)
 				var equipBorder = document.getElementById(id);
-				equipBorder.style.border = "solid blue 1px";
-				
-				
+				equipBorder.style.border = "solid blue 2px"
+				setTimeout(function() {
+					equipBorder.style.border = ""
+				}, 1000);	
 			}
 			$(function() {
 				
@@ -1028,16 +1025,6 @@
 			$(".posbtn").click(function() {
 				$(".save_pos").show();
 				$(".cancel_pos").show();
-			});
-
-			$(".editbtn").click(function() {
-				$(".save_pos").hide();
-				$(".cancel_pos").hide();
-			});
-
-			$(".delbtn").click(function() {
-				$(".save_pos").hide();
-				$(".cancel_pos").hide();
 			});
 
 			$(".add_equip").click(function() {
