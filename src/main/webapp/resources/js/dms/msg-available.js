@@ -73,7 +73,7 @@ $.fn.loopNext = function (selector) {
 }
 
 // func to start rotation tables. Only tables
-function changeMsg(msg) {
+const changeMsg = msg => {
 	if (msg.index()) {
 		let timer = Number(msg.attr("timer"));
 		let name = msg.loopNext();
@@ -111,27 +111,45 @@ $(function () {
 	table.each(function () {
 		let tr = $(this).parent()
 		let pagination = $('.edit-pmv-page')
-
+		
 		// Start rotation for tables
 		changeMsg($(this));
-
-
+		
+		
 		// Add on click pre-visualization
 		$(`#page-pmv .equip1`).addClass('active');
 		tr.click(function () {
+			let morePage = true;
+			// get all page with time > 0
 			let pages = $(this).find('td:not(td[timer="0.0"])');
+
 			for (let i = 1; i <= 5; i++) {
+				// page
 				const page = pages.filter('.pageTable' + i);
+				// Verification
+				const verif = page.filter('td[active]').attr('active');
+				// page originpager
+				const originpager = page.filter('td[originpager]').attr('originpager');
+				// page timer
+				let timer = page.filter('td[timer]').attr('timer');
+				// Pré visualização
 				let pre_vi = $(`#page-pmv .equip${i}`);
+				// get first message on page
 				let msg = page.filter('.msgPage1')
 				pagination.addClass('active').find('#btn-page1').prop('checked', true);
-				if (i == 1)
+				if (i == 1) {
+					morePage = true;
 					pre_vi.addClass('active');
+				}
 				else
 					pre_vi.removeClass('active');
-				if (page.length) {
+				// add information on page
+				if (verif) {
+					// Add image
 					pre_vi.find('.picture-box').attr('src', page.find('[id*=picture-table]').attr('src'))
+					// Add ID and NAME
 					pre_vi.find('.dmsTab p').text(`${pages.filter('.idColumn').text()} - ${page.find('.tablePageName').text()}`)
+					// add messages
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).children().each(function (index) {
 							if ((msg.text().length - index) > 0)
@@ -141,15 +159,33 @@ $(function () {
 						})
 						msg = msg.next()
 					})
+
+					// disable button if morePage if false
+					if (morePage && page.length) {
+						// add check page
+						pagination.find(`#timerCheck${originpager}`).prop('checked', true);
+						pagination.find(`#btn-page${originpager}`).removeAttr('disabled');
+					} else {
+						pagination.find(`#timerCheck${originpager}`).prop('checked', false);
+						pagination.find(`#btn-page${originpager}`).attr('disabled', 'disabled');
+						morePage = false;
+					}
+					// add Timers
+					pagination.find(`#timerPage${originpager}`).val(timer);
+					
 				} else {
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
 					pre_vi.find('.dmsTab p').text('')
 					pre_vi.find(`#msg${i}`).children().each(function () {
-						$(this).children().each(function (index) {
+						$(this).children().each(function () {
 							$(this).find('[id*=box]').text("")
 						})
 						msg = msg.next()
 					})
+					pagination.find(`#timerCheck${i}`).prop('checked', false);
+					pagination.find(`#btn-page${i}`).attr('disabled', 'disabled');
+					pagination.find(`#timerPage${i}`).val(0);
+					morePage = false;
 				}
 			}
 		})

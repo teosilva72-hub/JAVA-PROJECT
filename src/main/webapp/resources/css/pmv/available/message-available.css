@@ -268,8 +268,7 @@ body {
 
 /*Font Size and Height - Inputs*/
 .input-group input {
-  font-size: 14px;
-  height: 35px;
+  font-size: 10px;
 }
 
 .select {
@@ -494,30 +493,30 @@ select {
   z-index: 999;
 }
 
-.buttons-page {
-  position: absolute;
-  top: -17px;
-  right: 10px;
-}
-
 .text-timer {
   font-size: 12px;
 }
 
-.text-creation {
-  display: none;
-}
-
-.text-creation.active {
-  display: revert;
-}
-
 .edit-pmv-page {
+  position: absolute;
+  top: 125px;
   display: none;
 }
 
 .edit-pmv-page.active {
-  display: inline-flex;
+  display: block;
+}
+
+.page-button {
+  width: 25px;
+}
+
+.bar-width {
+  width: 80px;
+}
+
+.bar-width .input-group-text {
+  padding: 5px;
 }
 
 .edit-field {
@@ -546,6 +545,10 @@ td[class^="pageTable"].active {
   animation-name: fade;
   animation-duration: 1s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+tr[role="row"] {
+  cursor: pointer;
 }
 
 .dataTables_filter {

@@ -132,8 +132,8 @@ public class Messages {
 	}
 
 	public void setPages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
-			float timer, int page) {
-		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer);
+			float timer, int idx, int page) {
+		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer, idx);
 		this.pages.add(page, pages);
 	}
 
@@ -173,9 +173,10 @@ public class Messages {
 		private String image;
 		private String tipo;
 		private String nome;
+		private int page;
 
 		public Pages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
-				float timer) {
+				float timer, int page) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
@@ -184,6 +185,7 @@ public class Messages {
 			this.tipo = tipo;
 			this.nome = nome;
 			this.timer = timer;
+			this.page = page;
 			this.contain = true;
 		}
 
@@ -196,6 +198,7 @@ public class Messages {
 			this.tipo = "";
 			this.nome = "";
 			this.timer = 0;
+			this.page = 0;
 			this.contain = false;
 		}
 
@@ -233,6 +236,10 @@ public class Messages {
 
 		public Boolean getContain() {
 			return contain;
+		}
+
+		public int getPage() {
+			return page;
 		}
 	}
 }
