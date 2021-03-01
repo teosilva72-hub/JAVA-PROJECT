@@ -83,62 +83,48 @@
 	////////////////////////////////////////////////////
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////	
-				
-    // Validate Count Vehicle Form
-	function formValidation(startDate, elem1RequiredMessage, elem2RequiredMessage, elem3RequiredMessage,
-	elem4RequiredMessage, elem5RequiredMessage, elem6RequiredMessage, elem7RequiredMessage, elem8RequiredMessage, startDateRequiredMessage, endDateRequiredMessage, validDateMessage){
+	
+	////////////////////////////////////////
+	  ///// VALIDATION FORM 1	
+	////////////////////////////////////////
+	
+	/* USE IN COUNT VEHICLES REPORT */
+	/* USE MULTISELECT ITEMS */	
+	function satReportsValidationModel1(form, dateStart, equips_message, vehicles_message, periods_message, dateStart_message, dateEnd_message, validDate_message){
 		
-		 $("#report-form").validate({
-		    	  ignore: [],                    
+		 $(form).validate({		
+		       ignore: [],               	                 
 		         rules: {
-		         dateStart: {    	
-		              required: true,
-		              dateITA: true
-		           },
-		           equip: {
+		          equips: "required",        
+		           vehicles: "required",    
+		            periods: {
 		            required: true
-		           },
-		           dateEnd: {
-		             required: true,
-		             greaterThan: startDate,	
-                     dateITA: true,	           
-		             maxDate: true
-		           }, 
-                   periods: {
-		           required: true
-		           }, 
-                   month: {
-	                 required: true
+		           },		          
+                   dateStart: {
+	                 required: true,
+                     dateITA: true                   
                    },   
-	               year: {
-		            required: true
-	               },
-      	           equips: "required",        
-		           vehicles: "required",
-                   axles: "required", 
-                   classes: "required", 
-                   directions: "required"               
+	               dateEnd: {
+		            required: true,
+                     greaterThan: dateStart,
+                     maxDate: maxDays,	
+                     dateITA: true,	           
+		            
+	               }               
 		          },
 
 		          messages: {
 						
-		              equips:{ required: elem1RequiredMessage },
-		              equip:{ required: elem1RequiredMessage },
-                      vehicles:{required: elem2RequiredMessage},                    
-		              periods:{required: elem3RequiredMessage },
-                      axles:{ required: elem4RequiredMessage },
-                      classes: {required: elem5RequiredMessage},
-                      month:{required: elem6RequiredMessage},
-                      year: {required: elem7RequiredMessage},	
-                      directions: {required: elem8RequiredMessage} ,
-	            	              
-		              dateStart:{
-		              	required: startDateRequiredMessage              	
-		              	
-		              },
-		              dateEnd:{ required: endDateRequiredMessage,            	      
-		              	      dateITA: validDateMessage
-		               }
+		              equips: { required: equips_message },
+		              vehicles: { required: vehicles_message },
+		              periods: {required: periods_message },	
+		              dateStart: { required: dateStart_message,
+		              dateITA: validDate_message },		             
+                      dateEnd: {	                        
+                            required: dateEnd_message,                                   
+                            dateITA: validDate_message 
+                     },
+                                         
 		            },
 		            
 		            errorClass : "error",
@@ -197,291 +183,295 @@
                     } 
                  }                  
 		     });
-	}// End Validation Form
+	}
+		  
+	 ////////////////////////////////////////
+	  ///// VALIDATION FORM 1	
+	////////////////////////////////////////
+
+	////////////////////////////////////////
+	///// VALIDATION FORM 2	
+	////////////////////////////////////////
 	
-	
-//Reset modal validations on Close	
-function resetOnModalClose(modalId, form, elem1, elem1NonText, elem1Array,
-      elem2, elem2NonText, elem2Array, elem3, elem4, elem5){
-	
-	$(modalId).on('hidden.bs.modal', function (e) {
+	/* USE IN VEHICLE COUNT FLOW, SPEED, AXLES, CLASSES AND WEIGHING */	
+	function satReportValidationModel2(form, dateStart, equip_message, periods_message, dateStart_message, dateEnd_message, validDate_message){
 		
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
+		$(form).validate({		    	                 
+				rules: {		       
+				  equip: {
+				   required: true
+				  },
+				   periods: {
+				   required: true
+				  },		          
+				  dateStart: {
+					required: true,
+					dateITA: true                   
+				  },   
+				  dateEnd: {
+				   required: true,
+					greaterThan: dateStart,
+					maxDate: maxDays,	
+					dateITA: true,	           
+				   
+				  }               
+				 },
 
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');   
+				 messages: {
+					   
+					 equip: { required: equip_message },
+					 periods: {required: periods_message },	
+					 dateStart: { required: dateStart_message,
+								  dateITA: validDate_message
+					  },		             
+					 dateEnd: {	                        
+						   required: dateEnd_message,                                   
+						   dateITA: validDate_message 
+					},
+										
+				   },
 
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-        resetMultiselectValues('#'+elem2, elem2NonText, elem2Array);
+		            errorClass : "error",
+                    validClass: "success",                  
+		            errorElement: "label", 
 
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem3);
-        resetFieldValue('#'+elem4);
-        resetFieldValue('#'+elem5);
-  })
-} //Reset on Modal Close
+                    errorPlacement: function ( error, element ) {
+	                  //Place elements for place errors	 
+                
+                    },
+								
+					success: function ( label, element ) {	
+											 	
+					  //If no have errors set check success status	
+					 //Show span validation icon
+                     $(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+									
+				     //FontAwesome Icon Check for success
+                     $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+        		
+				     }, 		
+                         
+		              // use highlight and unhighlight
+		             highlight: function(element, errorClass, validClass) {	        
+                     $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
 
-//Reset modal validations on Close	
-function resetOnModalClose2(modalId, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3){
+                     $(element.form).find("input[id="+element.id+"]").removeClass('valid').addClass('invalid');
+                     $(element.form).find("select[id="+element.id+"]").removeClass('valid').addClass('invalid');         
+                                    
+                     //Show span validation icon
+                     $(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+
+                     //FontAwesome Icon Times for error
+                     $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-times error'></i>");
+
+                    //Multiselect button configuration to set invalid
+                    if($(element.form).find("select[id="+element.id+"]").hasClass('invalid')) {                         
+                         $(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+
+                      }
+		            
+                    },
+
+		          unhighlight: function(element, errorClass, validClass) {		       
+                  $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);  
+               
+                  $(element.form).find("input[id="+element.id+"]").removeClass('invalid').addClass('valid');
+                  $(element.form).find("select[id="+element.id+"]").removeClass('invalid').addClass('valid');
+                
+                  //FontAwesome Icon Check for success
+                  $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+
+                  //Multiselect button configuration to set valid
+                  if($(element.form).find("select[id="+element.id+"]").hasClass('valid')) {                         
+                        $(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+                    } 
+                 }                  
+		     });
+   }
+				  							   
+		 
+	////////////////////////////////////////
+	 ///// VALIDATION FORM 3	
+   ////////////////////////////////////////
+
+   	/* USE IN MONTH FLOW */	  
+
+function satReportsValidationModel3(form, equip_message, month_message, year_message){
 	
-	$(modalId).on('hidden.bs.modal', function (e) {
-		
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');      
-
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);      
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3);
-    })
-} //Reset on Modal Close
-
-//Reset modal validations on Close	
-function resetOnModalClose3(modalId, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3, elem4){
-	
-	$(modalId).on('hidden.bs.modal', function (e) {
-		
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');    
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');      
-
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);      
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3);
-        resetFieldValue('#'+elem4);
-    })
-} //Reset on Modal Close
-
-//Reset modal validations on Close	
-function resetOnModalClose4(modalId, form, elem1, elem2, elem3, elem4){
-	
-	$(modalId).on('hidden.bs.modal', function (e) {
-		
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');    
- 
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);      
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem1);
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3);
-    })
-} //Reset on Modal Close
-
-//Reset modal validations on Close	
-function resetOnModalClose5(modalId, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3, elem4, elem5){
-	
-	$(modalId).on('hidden.bs.modal', function (e) {
-		
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');    
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');  
-        $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');      
-
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);      
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3);
-        resetFieldValue('#'+elem4);
-        resetFieldValue('#'+elem5);
-
-    })
-} //Reset on Modal Close
-	
-	//VALIDATE FIELDS BY ID ON CHANGE
-	//CHECK IF ELEMENT IS VALID FIRST
-	function validateOnChange(id){
-	 $(id).on('change', function(){
-	        if($(id).valid()) {
-	            $(id).removeClass('invalid');
-	        }
-	    })
-      } // End ValidateOnChange
-
-//RESET VALUES FROM INPUTS AND SIMPLE SELECT
-   function resetFieldValue(id){ 
-        $(id).val(''); 
-} // End ResetFieldsValue
-
-  //Validate Reset on Reset button actions
-   function resetValidationForm(class_, form, elem1, elem1NonText, elem1Array,
-      elem2, elem2NonText, elem2Array, elem3, elem4, elem5){ 
-	
-	  $(class_).click(function() {
-						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden'); 
-
-     //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-        resetMultiselectValues('#'+elem2, elem2NonText, elem2Array);
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem3);
-        resetFieldValue('#'+elem4);
-        resetFieldValue('#'+elem5);
-	     
-    });
- } //End ResetValidationForm
-
-//Validate Reset on Reset button actions
-   function resetValidationForm2(class_, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3){ 
-	
-	  $(class_).click(function() {
-						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-      
-     //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-    
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3);      
-	     
-    });
- } //End ResetValidationForm
-
-//Validate Reset on Reset button actions
-   function resetValidationForm3(class_, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3, elem4){ 
-	
-	  $(class_).click(function() {
-						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-      
-     //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-    
-
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3); 
-        resetFieldValue('#'+elem4);      
-	     
-    });
- } //End ResetValidationForm
-
-//Validate Reset on Reset button actions
-   function resetValidationForm4(class_, form, elem1, elem2, elem3, elem4){ 
-	
-	  $(class_).click(function() {
-						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+	 $(form).validate({		    	                 
+	         rules: {		       
+	           equip: {
+	            required: true
+	           },		          
+               month: {
+                 required: true
+               },   
+               year: {
+	            required: true
+               }               
+	          },
+	          messages: {
+					
+	              equip: { required: equip_message },		             
+                  month: {required: month_message},
+                  year: {required: year_message},	
+                
+	            },
+	 	      	 
+				errorClass : "error",
+                validClass: "success",                  
+	            errorElement: "label", 
+                errorPlacement: function ( error, element ) {
+                  //Place elements for place errors	 
+            
+                },
+							
+				success: function ( label, element ) {	
+										 	
+				  //If no have errors set check success status	
+				 //Show span validation icon
+                 $(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+								
+			     //FontAwesome Icon Check for success
+                 $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+    		
+			     }, 		
+                     
+	              // use highlight and unhighlight
+	             highlight: function(element, errorClass, validClass) {	        
+                 $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+                 $(element.form).find("input[id="+element.id+"]").removeClass('valid').addClass('invalid');
+                 $(element.form).find("select[id="+element.id+"]").removeClass('valid').addClass('invalid');         
+                                
+                 //Show span validation icon
+                 $(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+                 //FontAwesome Icon Times for error
+                 $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-times error'></i>");
+                //Multiselect button configuration to set invalid
+                if($(element.form).find("select[id="+element.id+"]").hasClass('invalid')) {                         
+                     $(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+                  }
+	            
+                },
+	          unhighlight: function(element, errorClass, validClass) {		       
+              $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);  
            
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem1);
-        resetFieldValue('#'+elem2); 
-        resetFieldValue('#'+elem3); 
-        resetFieldValue('#'+elem4);     
-	     
-    });
- } //End ResetValidationForm
+              $(element.form).find("input[id="+element.id+"]").removeClass('invalid').addClass('valid');
+              $(element.form).find("select[id="+element.id+"]").removeClass('invalid').addClass('valid');
+            
+              //FontAwesome Icon Check for success
+              $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+              //Multiselect button configuration to set valid
+              if($(element.form).find("select[id="+element.id+"]").hasClass('valid')) {                         
+                    $(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+                } 
+			}                					     		     	    	     	 	 
+               
+		});
+}
 
-//Validate Reset on Reset button actions
-   function resetValidationForm5(class_, form, elem1, elem1NonText, elem1Array,
-      elem2, elem3, elem4, elem5){ 
+////////////////////////////////////////
+ ///// VALIDATION FORM 3	
+////////////////////////////////////////
+				
+		 
+	////////////////////////////////////////
+	 ///// VALIDATION FORM 4	
+   ////////////////////////////////////////
+
+   	/* USE IN PERIOD FLOW */
+	   function satReportsValidationModel4(form, equips_message, periods_message, month_message, year_message){
 	
-	  $(class_).click(function() {
+		$(form).validate({	
+			ignore: [],   	    	                 
+				rules: {		       
+				  equips:  "required",				  	
+				  periods: {
+					required: true
+				   },		      	          
+				  month: {
+					required: true
+				  },   
+				  year: {
+				   required: true
+				  }               
+				 },
+				 messages: {					   
+					 equips: { required: equips_message },
+					 periods: { required: periods_message },
+					 month: {required: month_message},
+					 year: {required: year_message},	
+				   
+				   },
+
+				   errorClass : "error",
+				   validClass: "success",                  
+				   errorElement: "label", 
+
+				   errorPlacement: function ( error, element ) {
+					 //Place elements for place errors	 
+			   
+				   },
+							   
+				   success: function ( label, element ) {	
+												
+					 //If no have errors set check success status	
+					//Show span validation icon
+					$(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+								   
+					//FontAwesome Icon Check for success
+					$(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+			   
+					}, 		
 						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
+					 // use highlight and unhighlight
+					highlight: function(element, errorClass, validClass) {	        
+					$(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
 
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-      
-     //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-    
-       // Redefine values on click (Reset input and select)
-        resetFieldValue('#'+elem2);
-        resetFieldValue('#'+elem3); 
-        resetFieldValue('#'+elem4);    
-        resetFieldValue('#'+elem5);   
-	     
-    });
- } //End ResetValidationForm
+					$(element.form).find("input[id="+element.id+"]").removeClass('valid').addClass('invalid');
+					$(element.form).find("select[id="+element.id+"]").removeClass('valid').addClass('invalid');         
+								   
+					//Show span validation icon
+					$(element.form).find("span[for="+ element.id +"]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
 
+					//FontAwesome Icon Times for error
+					$(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-times error'></i>");
+
+				   //Multiselect button configuration to set invalid
+				   if($(element.form).find("select[id="+element.id+"]").hasClass('invalid')) {                         
+						$(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+
+					 }
+				   
+				   },
+
+				 unhighlight: function(element, errorClass, validClass) {		       
+				 $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);  
+			  
+				 $(element.form).find("input[id="+element.id+"]").removeClass('invalid').addClass('valid');
+				 $(element.form).find("select[id="+element.id+"]").removeClass('invalid').addClass('valid');
+			   
+				 //FontAwesome Icon Check for success
+				 $(element.form).find("span[for="+element.id+"]").html("<i class='fa fa-check success'></i>");
+
+				 //Multiselect button configuration to set valid
+				 if($(element.form).find("select[id="+element.id+"]").hasClass('valid')) {                         
+					   $(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+				   } 
+				}                  
+			});
+  
+ }
+   
+   ////////////////////////////////////////
+	///// VALIDATION FORM 4
+   ////////////////////////////////////////
+				
+   
+ /////////////////////////////////////////
+ //// CHANGE SELECTION
+ ////////////////////////////////////////
+  
 //Change action by Selection
 function changeActionBySelection(selectId, form, id1, id2){
  $(selectId).on('change', function() {
@@ -491,6 +481,13 @@ function changeActionBySelection(selectId, form, id1, id2){
     });
 } // END Change action by Selection
 
+ /////////////////////////////////////////
+ //// CHANGE SELECTION
+ ////////////////////////////////////////
+ 
+/////////////////////////////////////////
+ //// DIRECTIONS
+ ////////////////////////////////////////
 //var  Directions 
 //Specific for directions multiselect
  function updateDirections(nonSelectText){
@@ -518,73 +515,167 @@ function changeActionBySelection(selectId, form, id1, id2){
     	    });    	    
    } //Update Directions	
 
-
-//Validate Reset on Reset button actions
-   function resetValidationForm6(class_, form, elem1, elem1NonText, elem1Array,
-      elem2, elem2NonText, elem2Array, elem3, elem4, elem5, elem6){ 
+/////////////////////////////////////////
+ //// DIRECTIONS
+ ////////////////////////////////////////
 	
-	  $(class_).click(function() {
-						
-		//Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();
-
-       //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-        $('span[for='+elem6+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+	/////////////////////////////////////////////////
+	///// VALIDATE FIELDS BY ID ON CHANGE
+	////////////////////////////////////////////////
+	function validateOnChange(id){
+	 $(id).on('change', function(){
+	        if($(id).valid()) 
+	            $(id).removeClass('invalid');
+	            	            
+	            else  $(id).removeClass('valid');
+	           	        
+	    })
+      } // End ValidateOnChange
       
-        //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);
-        resetMultiselectValues('#'+elem2, elem2NonText, elem2Array);
-    
-       // Redefine values on click (Reset input and select)       
-        resetFieldValue('#'+elem3); 
-        resetFieldValue('#'+elem4);    
-        resetFieldValue('#'+elem5); 
-        resetFieldValue('#'+elem6);   
-	     
+   ////////////////////////////////////////////////
+   //// VALIDATE FIELDS BY ID ON CHANGE
+  ////////////////////////////////////////////////
+	
+  ////////////////////////////////////////////////
+ //// RESET FORM VALIDATION ICON
+ ////////////////////////////////////////////////
+ function removeValidationIcon(btn, elem){ 
+	
+	  $('.'+btn).click(function() {
+					
+       //Hide span by class  
+	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+	    	     
+	      //Reset Field 	     
+	     resetFieldValue('#'+elem);
     });
  } //End ResetValidationForm
-
-//Reset modal validations on Close	
-function resetOnModalClose6(modalId, form, elem1, elem1NonText, elem1Array,
-      elem2,  elem2NonText, elem2Array, elem3, elem4, elem5, elem6){
 	
-	$(modalId).on('hidden.bs.modal', function (e) {
-		
-		  //Reset Form validation
-	       var validator = $(form).validate();
-	       validator.resetForm();    
-
+ ////////////////////////////////////////////////
+ ///// RESET FORM VALIDATION ICON
+ ////////////////////////////////////////////////	
+ 
+   ////////////////////////////////////////////////
+ //// RESET FORM VALIDATION ICON MULTISELECT
+ ////////////////////////////////////////////////
+ function removeValidationMultiselectIcon(btn, elem, defaultMessage, array){ 
+	
+	  $('.'+btn).click(function() {
+					
        //Hide span by class  
-	    $('span[for='+elem1+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem2+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    $('span[for='+elem3+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');    
-        $('span[for='+elem4+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');  
-        $('span[for='+elem5+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');      
-        $('span[for='+elem6+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden'); 
+	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+	    	     
+	      //Reset Multiselect Field 	     
+	      resetMultiselectValues('#'+elem, defaultMessage, array);   
+    });
+ } //End ResetValidationForm
+	
+ ////////////////////////////////////////////////
+ ///// RESET FORM VALIDATION ICON MULTISELECT
+ ////////////////////////////////////////////////	
+ 
+ ////////////////////////////////////////////////
+ //// CLEAN MODAL ON CLOSE
+ ////////////////////////////////////////////////
+function cleanValidationOnModalClose(form, modalId){
+	
+	   $(modalId).on("hide.bs.modal", function() {
+	   
+	    //Hide span by class        				
+		$(form).validate().resetForm();	
+})
 
-       //Redefine multiselect
-        resetMultiselectValues('#'+elem1, elem1NonText, elem1Array);   
-        resetMultiselectValues('#'+elem2, elem2NonText, elem2Array);     
-
-       // Redefine values on click (Reset input and select)      
-        resetFieldValue('#'+elem3);
-        resetFieldValue('#'+elem4);
-        resetFieldValue('#'+elem5);
-        resetFieldValue('#'+elem6);
-    })
 } //Reset on Modal Close
 
-//Close download modal
 
+ ////////////////////////////////////////////////
+ ////////CLEAN MODAL ON CLOSE
+ ////////////////////////////////////////////////
+ 
+ ////////////////////////////////////////////////
+ //// RESET FIELD ON MODAL CLOSE
+ ////////////////////////////////////////////////
+function resetFieldOnModalClose(modalId, elem){
+	
+	   $(modalId).on("hide.bs.modal", function() {
+	   
+	    //Hide span by class  
+	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+                 
+          //Reset Field 	     
+	      resetFieldValue('#'+elem);	      
+	      
+})
+
+} //Reset on Modal Close
+
+ ////////////////////////////////////////////////
+ ////////RESET FIELD ON MODAL CLOSE
+ ////////////////////////////////////////////////
+ 
+ ////////////////////////////////////////////////
+ //// RESET MULTISELCT FIELD ON MODAL CLOSE
+ ////////////////////////////////////////////////
+function resetFieldMultiselectOnModalClose(modalId, elem, defaultMessage, array){
+	
+	$(modalId).on('hide.bs.modal', function (e) {
+				
+       //Hide span by class  
+	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+                 
+          //Reset Multiselect Field 	     
+	      resetMultiselectValues('#'+elem, defaultMessage, array);  
+	  				  
+  })
+} //Reset on Modal Close
+
+
+ ////////////////////////////////////////////////
+ ////////RESET MULTISELCT FIELD ON MODAL CLOSE
+ ////////////////////////////////////////////////
+ 
+ ///////////////////////////////////////
+ ////////// RESET FORM VALIDATION
+ //////////////////////////////////////
+ 
+ function resetFormValidation(form, btn){
+ //Reset Form validation
+ 
+   $('.'+btn).click(function() {
+   
+	  var validator = $(form).validate();
+	  validator.resetForm();
+	  
+	  })
+   }
+	       
+ ///////////////////////////////////////
+ ////////// RESET FORM VALIDATION
+ //////////////////////////////////////
+ 
+ /////////////////////////////////////
+ //// RESET VALUES FORM FIELDS
+ ////////////////////////////////////
+   function resetFieldValue(id){ 
+        $(id).val(''); 
+ } // End ResetFieldsValues
+		
+  /////////////////////////////////////
+ //// RESET VALUES FORM FIELDS
+ ////////////////////////////////////
+
+
+//////////////////////////////////////////////
+//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+////////////////////////////////////////////
   $(function () {
 	    	$("[onclose='download']").click(function () {
 	    		$('#modalDownload').modal('hide')
 	    	})
 	    })
+	
+/////////////////////////////////////////////
+//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+////////////////////////////////////////////
+
 	

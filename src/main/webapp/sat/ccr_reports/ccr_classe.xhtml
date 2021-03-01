@@ -303,33 +303,50 @@
 			</div>
 		</div>
 
-<script type='text/javascript'>
+  <script type='text/javascript'>
+  //Define Datepicker locale
+  $('.datepicker').datepickerLocale('#{language.locale}');
 
-//Define Datepicker locale
-$('.datepicker').datepickerLocale('#{language.locale}');
-   
-    //Validation Methods - needs to use
-    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}', 60);
-    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
-       
-    //Validation Form
-    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', '', '#{requiredMessages.required_sat_reports_select_periods}', '',
-    '', '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
-    
-    //Validate elements on change value
-    //In this case check if the element is valid
-    validateOnChange('#equip');
-    validateOnChange('#periods');
-    validateOnChange('#dateStart');
-    validateOnChange('#dateEnd');
-    
-    //ResetValidation in case of action
-    resetValidationForm4('.reset-btn', '#report-form', 'equip', 'periods', 'dateStart', 'dateEnd');
-   
-    //Reset Modal on Close if has valitation active	  
-    resetOnModalClose4('#modalReportOptions', '#report-form',  'equip', 'periods', 'dateStart', 'dateEnd');
-	 
-     </script>
+//Get equipments from backing bean
+	  	        
+//Validation Methods - needs to use
+//Date Validation
+maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}');
+greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
+	  
+satReportValidationModel2("#report-form", '#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}',
+'#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_input_date_start }', 
+'#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
+
+ //Validate elements on change value
+ //In this case check if the element is valid
+ validateOnChange('#equip');
+ validateOnChange('#periods');
+ validateOnChange('#dateStart');
+ validateOnChange('#dateEnd');
+ 
+ //Reset Fields on close modal
+ resetFieldOnModalClose('#modalReportOptions', 'equip');
+ resetFieldOnModalClose('#modalReportOptions', 'periods');
+ resetFieldOnModalClose('#modalReportOptions', 'dateStart');
+ resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
+ 
+ //Remove validation icons
+ //click reset button action		 
+ removeValidationIcon("reset-btn", 'equip');
+ removeValidationIcon("reset-btn", 'periods');
+ removeValidationIcon("reset-btn", 'dateStart');
+ removeValidationIcon("reset-btn", 'dateEnd');
+
+ //Clean Form validation on close modal
+ cleanValidationOnModalClose("#report-form", '#modalReportOptions');
+
+ //Reset validation form
+ //click reset button action
+ resetFormValidation("#report-form", "reset-btn");
+
+
+</script>
 
 	</ui:define>
 

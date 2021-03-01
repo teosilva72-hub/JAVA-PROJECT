@@ -24,7 +24,7 @@ function destroyMultiselect(id){
 }
 
 //REBUILD MULTISELECT WITH VALUES PARAMETERS
-function resetMultiselectValues(id, resetLabel, array){
+function resetMultiselectValues(id, defaultLabel, array){
 	
 	//Destroy multiselect
 	destroyMultiselect(id);
@@ -33,7 +33,7 @@ function resetMultiselectValues(id, resetLabel, array){
     checkedByDefault(id, array);  
 
     //Define multiselect values again   
-    defineMultiselect(id, resetLabel)
+    defineMultiselect(id, defaultLabel)
 	
 }
 

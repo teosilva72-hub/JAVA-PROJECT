@@ -134,13 +134,15 @@ body {
 /*****************************************************/cc
 
 /* Validation icon position type select checkbox options */
-.checkbox-field .valid-icon-visible,  .checkbox-field .valid-icon-hidden {
+ .checkbox-field .valid-icon-hidden,
+ .checkbox-field .valid-icon-visible {
   margin-left: 86% !important;
-}
+} 
 
 /* Validation icon position type (input/select) */
-.input-field .valid-icon-visible,  .input-field .valid-icon-hidden,
-.select-field .valid-icon-visible,  .select-field .valid-icon-hidden {
+ .input-field .valid-icon-hidden, .input-field .valid-icon-visible,
+ .select-field .valid-icon-hidden, .select-field .valid-icon-visible
+ {
   margin-left: 90% !important;
 }
 

@@ -7,123 +7,221 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-		
-	<ui:define name="head" >
-	
-	<h:outputStylesheet library="css/datatables/custom"
-			name="table-style.css" />		
+
+	<ui:define name="head">
+
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="vbv_report.css" />
-		<h:outputStylesheet library="css/forms" name="form-style.css" />	
+		<h:outputStylesheet library="css/validation" name="validation_style.css" />
+	
 	
 		<h:outputScript library="js/validation-forms/reports"
-		   name="vbv-report.js" />
-			
+			name="vbv-report.js" />
+
 	</ui:define>
-	
-	 <ui:define name="main-content" >
-	 	 
-	  	 <!-- myModal -->
-	  	 	  	 
-	  	 <h:form name="vbv-form" id="vbv-form">
-	  	 	  	     
-             <div class="vbv-container">
-             
-               <!-- Mensagem parte superior -->
-	           <div id="message-div">
-			     <pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-		       </div>
+
+	<ui:define name="main-content">
+
+		<!-- FORM -->
+
+		<h:form name="vbv-form" id="vbv-form">
+
+			<div class="vbv-container">
+
+				<!-- Mensagem parte superior -->
+				<div id="message-div">
+					<pf:messages id="msgs" showDetail="true" autoUpdate="true"
+						closable="true" />
+				</div>
 
 				<div class="text-dark text-center font-weight-bold report-title">
 					<h:outputText value="#{satLabels.sat_reports_name_vbv}" />
 					<hr></hr>
 				</div>
 
-				<h4 class="vbv-title">#{satLabels.sat_reports_modal_title}</h4> 
-                 <br/>                          
-                        <div class="form-row vbv-field" id="vbv_equips">
-							<div class="form-group select-field">															
-									<span><i class="fas fa-hdd"></i></span>	
-									 <span for="equip"
-										class="valid-icon-hidden"></span>	
-									<select name="equip" id="equip" size="1"  >											
-								     <option value="" >#{satLabels.sat_reports_select_equipments}</option>
-								   	   <ui:repeat var="eqp"  value="#{satReportsBean.equipments}"  varStatus="eqpStatus" >
-								         <option value="#{eqp.value}" > #{eqp.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>																	
-								</div>
-								<div class="error-label"><label for="equip" class="error" id="equip-error"></label></div>
-							</div>					
-					
-					    <h:inputHidden value ="month" id="period" name="period" /> 
-							
-					     <div class="form-row vbv-field" id="vbv_months" >
-							<div class="form-group col-sm-12 select-field">															
-									<span><i class="fas fa-calendar-alt"></i></span>
-									 <span for="month"
-										class="valid-icon-hidden"></span>
-									<select name="month" id="month" size="1"  >										
-								     <option value="" >#{satLabels.sat_reports_select_month}</option>
-								   	   <ui:repeat var="mth"  value="#{satReportsBean.months}"  varStatus="monthStatus" >
-								         <option value="#{mth.value}" > #{mth.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>																	
-								</div>
-								<div class="error-label"><label for="month" class="error" id="month-error"></label></div>
-							</div>
-																												
-					<div class="form-row vbv-field" id="vbv_years">
-							<div class="form-group col-sm-12 select-field">																	
-									<span><i class="fas fa-calendar"></i></span>
-									 <span for="month"
-										class="valid-icon-hidden"></span>
-									<select name="year" id="year" size="1"  >										
-								     <option value="" >#{satLabels.sat_reports_select_year}</option>
-								   	   <ui:repeat var="year"  value="#{satReportsBean.years}"  varStatus="yearStatus" >
-								         <option value="#{year.value}" > #{year.label} </option>	                                  
-                                        </ui:repeat> 									
-								    </select>																	
-								</div>
-								<div class="error-label"><label for="year" class="error" id="year-error"></label></div>
-							</div>
-																
-						 <div class="vbv-footer">  
-						 
-						 <h:commandButton value="#{satLabels.sat_reports_form_btn_send}"
-							id="btn-send" action="#{satReportsBean.GetVBVReport}"
-							class="btn btn-dark form-draw-button submit-btn" />
+				<h4 class="vbv-title">#{satLabels.sat_reports_modal_title}</h4>
+				<br />
 
-						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
-							id="btn-reset" immediate="true" type="reset"
-							action="#{satReportsBean.resetFormValues}"
-							class="btn btn-dark form-draw-button reset-btn">
-							<f:ajax execute="@form" render="@form" />
-						</h:commandButton>
-				            
-				<br />	  
-               
-            </div>																				
-                
+				<!-- VBV FIELDS -->
+				
+				<div class="row" >
+
+				<!-- EQUIPMENTS -->
+				
+				<div class="form-row left">
+					<div class="form-group col-sm-12 select-field">
+						<span><i class="fas fa-hdd"></i></span> <span for="equip"
+							class="valid-icon-hidden"></span> <select name="equip" id="equip"
+							size="1">
+							<option value="">#{satLabels.sat_reports_select_equipments}</option>
+							<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
+								varStatus="eqpStatus">
+								<option value="#{eqp.value}">#{eqp.label}</option>
+							</ui:repeat>
+						</select>
+					</div>
+					<div class="error-label">
+						<label for="equip" class="error" id="equip-error"></label>
+					</div>
+					</div>
+								
+				<!-- EQUIPMENTS -->
+
+				<!-- PERIOD  -->
+				<h:inputHidden value="month" id="period" name="period" />
+				<!-- PERIOD -->
+
+				<!-- MONTHS -->
+
+
+                   <div class="form-row">
+					<div class="form-group col-sm-12 select-field">
+						<span><i class="fas fa-calendar-alt"></i></span> <span for="month"
+							class="valid-icon-hidden"></span> <select name="month" id="month"
+							size="1">
+							<option value="">#{satLabels.sat_reports_select_month}</option>
+							<ui:repeat var="mth" value="#{satReportsBean.months}"
+								varStatus="monthStatus">
+								<option value="#{mth.value}">#{mth.label}</option>
+							</ui:repeat>
+						</select>
+					</div>
+					<div class="error-label">
+						<label for="month" class="error" id="month-error"></label>
+					</div>
+				</div>
+				<!-- MONTHS -->
+
+				<!-- YEARS -->
+
+              <div class="form-row">
+				<div class="form-group col-sm-12 select-field">
+						<span><i class="fas fa-calendar"></i></span> <span for="year"
+							class="valid-icon-hidden"></span> <select name="year" id="year"
+							size="1">
+							<option value="">#{satLabels.sat_reports_select_year}</option>
+							<ui:repeat var="year" value="#{satReportsBean.years}"
+								varStatus="yearStatus">
+								<option value="#{year.value}">#{year.label}</option>
+							</ui:repeat>
+						</select>
+					</div>
+					<div class="error-label">
+						<label for="year" class="error" id="year-error"></label>
+					</div>
+				</div>
+			<!-- YEARS -->
+
+			<!-- VBV FIELDS -->
+
+			<!-- VBV FOOTER BUTTONS -->
+			<div class="vbv-footer">
+
+				<!-- SEND -->
+				<h:commandButton value="#{satLabels.sat_reports_form_btn_send}"
+					id="btn-send" action="#{satReportsBean.GetVBVReport}"
+					class="btn btn-dark form-draw-button submit-btn" />
+
+				<!-- RESET -->
+				<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
+					id="btn-reset" immediate="true" type="reset"
+					class="btn btn-dark form-draw-button reset-btn">					
+				</h:commandButton>
+
+				<br />
 			</div>
-           
-        </h:form>
-        
-        
-        <!-- SCRIPT DEFINITIONS -->
+
+			<!-- VBV FOOTER BUTTONS -->
+			
+			</div>
+			
+					<!-- BUTTON EXCEL DIV -->					
+		   <div id="btn-file" >
+			<h:commandButton id="file-act" value=""		
+			class="fas fa-file-alt txt fa-2x" data-toggle="tooltip"
+			data-placement="bottom" title="#{satLabels.sat_reports_btn_file}"
+			widgetVar="fileWgt">
+			<f:passThroughAttribute name="data-toggle" value="modal" />
+			<f:passThroughAttribute name="data-target" value="#modalDownload" />
+			<f:ajax execute="@form" render="@none" />
+		</h:commandButton>
+		   </div>
+
+		
+			<!-- FILE FORM -->
+		<h:form id="form-file">
+			
+			<!-- MODAL DOWNLOAD -->			
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+				<div class="modal-dialog confirmation-modal">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{satLabels.sat_reports_modal_alert_download_title}</h5>
+						</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{satLabels.sat_reports_modal_alert_download_file_excel} <span
+									class="extension">#{satLabels.sat_reports_modal_alert_extension_txt}</span> ?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{satLabels.sat_reports_modal_alert_btn_yes}"								
+								class="btn btn-dark form-draw-button" />
+							<h:commandButton
+								value="#{satLabels.sat_reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- MODAL DOWNLOAD END -->
+
+		</h:form>
+		<!-- FILE FORM -->
+			
+		</div>
+			
+		</h:form>
+		<!-- FORM -->
+		
+		<!-- SCRIPT DEFINITIONS -->
 
 		<script type="text/javascript">
 	  	
 	    //Validation Form
-	    formValidation('#{requiredMessages.required_sat_reports_select_equipments}', '#{requiredMessages.required_sat_reports_select_months}',  '#{requiredMessages.required_sat_reports_select_years}');
-	    	 	  	   
+	    formValidation('#vbv-form', '#{requiredMessages.required_sat_reports_select_equipments}', '#{requiredMessages.required_sat_reports_select_months}',  '#{requiredMessages.required_sat_reports_select_years}');
+	    
+	    //Validate elements on change value
+	    //In this case check if the element is valid
+	    validateOnChange('#equip');
+	    validateOnChange('#month');
+	    validateOnChange('#year');
+	    
+	    //Remove validation icons
+	    //click reset button action		 
+	    removeValidationIcon("reset-btn", 'equip');
+	    removeValidationIcon("reset-btn", 'month');
+	    removeValidationIcon("reset-btn", 'year');
+	 
+	    //Reset validation form
+	    //click reset button action
+	    resetFormValidation("#vbv-form", "reset-btn");
+	    
+	    
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->
-   	 
-	 </ui:define>
-	
-		
-	</ui:composition>	
+
+	</ui:define>
+
+
+</ui:composition>

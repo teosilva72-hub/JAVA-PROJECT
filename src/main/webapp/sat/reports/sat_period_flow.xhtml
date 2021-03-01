@@ -222,7 +222,7 @@
 
 						<!-- EQUIPMENTS OPTIONS -->
 
-						<div class="form-row">
+							<div class="form-row">
 							<div class="form-group col-sm-12 checkbox-field">
 								<span><i class="fas fa-hdd"></i></span> <span for="equips"
 										class="valid-icon-hidden"></span> <select name="equips"
@@ -309,7 +309,7 @@
 							action="#{satReportsBean.resetFormValues}"
 							class="btn btn-dark form-modal-draw-button  reset-btn">
 							<f:ajax execute="@form"
-								render=":equips :vehicles :periods :month :year" />
+								render=":equips :periods :month :year" />
 						</h:commandButton>
 					</div>
 				</h:form>
@@ -322,44 +322,56 @@
 
 		<script type="text/javascript">
 	  	     
-	  //Get equipments from backing bean
-	  //Create array
-	  var array = new Array();
-	
-	  //Use facelets tag
-	  <ui:repeat value="#{satReportsBean.equipments}" var="eqp">
-	      array.push(#{eqp.value}); // Fill array
-	  </ui:repeat>
-	    
-	    //Call method to set checkbox all checked
-	    checkedByDefault('#equips', array);
-	 	        
-	    //Create / Define multiselect
-	    defineMultiselect('#equips', '#{satLabels.sat_reports_select_equipments}');
+		 //Get equipments from backing bean
+		  //Create array
+		  var equipsArray = new Array();
+		
+		  //Use facelets tag
+		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp">
+		  equipsArray.push(#{eqp.value}); // Fill array
+		  </ui:repeat>
+		    
+		  //Call method to set checkbox all checked
+		  checkedByDefault('#equips', equipsArray);
+		  
+		  //Create / Define multiselect
+		  defineMultiselect('#equips', '#{satLabels.sat_reports_select_equipments}');
 
-	    //Validation Form
-	    formValidation('', '#{requiredMessages.required_sat_reports_select_equipments}', '', '#{requiredMessages.required_sat_reports_select_periods}',
-	    '','#{requiredMessages.required_sat_reports_select_months}', '#{requiredMessages.required_sat_reports_select_years}', '', '', '');
-	    	 	   
+	    //Validation Form			   
+		satReportsValidationModel4("#report-form", '#{requiredMessages.required_sat_reports_select_equipments}',
+		'#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_select_months}',
+		'#{requiredMessages.required_sat_reports_select_years}');
+
 	    //Validate elements on change value
 	    //In this case check if the element is valid
 	    validateOnChange('#equips');
 	    validateOnChange('#periods');
 	    validateOnChange('#month');
 	    validateOnChange('#year');
-	    
-	    //ResetValidation in case of action
-	    resetValidationForm3('.reset-btn', '#report-form', 'equips', '#{satLabels.sat_reports_select_equipments}', array,
-	  	 'periods', 'month', 'year');
-	   
-	    //Reset Modal on Close if has valitation active
-	    resetOnModalClose3('#modalReportOptions', '#report-form', 'equips', '#{satLabels.sat_reports_select_equipments}', array,
-	   	 'periods', 'month', 'year');
-	        
-	    </script>
-
-		<!-- SCRIPT DEFINITIONS -->
 		
+        //Reset Fields on close modal
+		resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
+        resetFieldOnModalClose('#modalReportOptions', 'periods');
+        resetFieldOnModalClose('#modalReportOptions', 'month');
+        resetFieldOnModalClose('#modalReportOptions', 'year');
+       
+       //Remove validation icons
+       //click reset button action	
+       removeValidationMultiselectIcon("reset-btn", 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
+       removeValidationIcon("reset-btn", 'periods');
+       removeValidationIcon("reset-btn", 'month');
+       removeValidationIcon("reset-btn", 'year');
+
+	    //Clean Form validation on close modal
+        cleanValidationOnModalClose("#report-form", '#modalReportOptions');
+           
+	   //Reset validation form
+      //click reset button action
+      resetFormValidation("#report-form", "reset-btn");
+
+		</script>
+
+		<!-- SCRIPT DEFINITIONS -->		
 			 	 
    </ui:define>
 

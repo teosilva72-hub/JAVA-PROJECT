@@ -219,6 +219,7 @@
 							<div class="form-group col-sm-12 select-field">
 								<span><i class="fas fa-hdd"></i></span> <span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip"	id="equip">
+									<option value="">#{satLabels.sat_reports_select_equipments}</option>
 										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
@@ -282,8 +283,7 @@
 							class="btn btn-dark form-modal-draw-button" />
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
-							id="btn-form-reset" immediate="true" type="reset"
-							action="#{satReportsBean.resetFormValues}"
+							id="btn-form-reset" immediate="true" type="reset"						
 							class="btn btn-dark form-modal-draw-button  reset-btn">
 							<f:ajax execute="@form"
 								render=":equips :dateStart :dateEnd" />
@@ -298,27 +298,35 @@
 	 <!-- SCRIPT DEFINITIONS -->
 
 		<script type="text/javascript">
-		     			        
-	    //Validation Methods - needs to use
-	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}', 60);
-	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
-	       
-	    //Validation Form
-	    formValidation('', '#{requiredMessages.required_sat_reports_select_equipments}', '',  '',
-	    '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
-	    	 	   
+
+        //Form validation
+		satReportsValidationModel3('#report-form', '#{requiredMessages.required_sat_reports_select_equipments}', 
+		"#{requiredMessages.required_mto_reports_select_month}", "#{requiredMessages.required_mto_reports_select_year}");
+
 	    //Validate elements on change value
 	    //In this case check if the element is valid
 	    validateOnChange('#equip');	 
 	    validateOnChange('#month');
 	    validateOnChange('#year');
-	    
-	    //ResetValidation in case of action	 	    
-	    resetOnModalClose4('.reset-btn', '#report-form', 'equip',  'month', 'year', '');
-	   
-	    //Reset Modal on Close if has valitation active	  	    
-	    resetValidationForm4('#modalReportOptions', '#report-form',  'equip', 'month', 'year', '')
-	    
+	    		
+		//Reset Fields on close modal
+		resetFieldOnModalClose('#modalReportOptions', 'equip');
+		resetFieldOnModalClose('#modalReportOptions', 'month');
+		resetFieldOnModalClose('#modalReportOptions', 'year');
+                                 
+       //Remove validation icons
+       //click reset button action		 
+       removeValidationIcon("reset-btn", 'equip');
+       removeValidationIcon("reset-btn", 'month');
+       removeValidationIcon("reset-btn", 'year');
+       
+       
+	   //Clean Form validation on close modal
+       cleanValidationOnModalClose("#report-form", '#modalReportOptions');
+	  
+       //Reset validation form on reset click button       
+       resetFormValidation("#report-form", "reset-btn");
+	   	   	      	   	    
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->

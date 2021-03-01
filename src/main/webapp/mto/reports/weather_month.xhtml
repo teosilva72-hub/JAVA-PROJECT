@@ -298,18 +298,20 @@
 			validateOnChange('#equip');
 			validateOnChange('#month');
 			validateOnChange('#year');
-
-			//Reset Form on close modal
-			//close modal action
-			removeValidationOnModalClose('#modalReportOptions', 'equip');
-			removeValidationOnModalClose('#modalReportOptions', 'month');
-			removeValidationOnModalClose('#modalReportOptions', 'year');
+	
+		    //Reset Fields on close modal
+			resetFieldOnModalClose('#modalReportOptions', 'equip');
+			resetFieldOnModalClose('#modalReportOptions', 'month');
+			resetFieldOnModalClose('#modalReportOptions', 'year');
 
 			//Remove validation icons
 			//click reset button action
 			removeValidationIcon("reset-btn", 'equip');
 			removeValidationIcon("reset-btn", 'month');
 			removeValidationIcon("reset-btn", 'year');
+
+			//Clean Form validation on close modal
+            cleanValidationOnModalClose("#report-form", '#modalReportOptions');
 
 			//Reset validation form
 			//click reset button action
