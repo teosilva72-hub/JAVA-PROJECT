@@ -188,7 +188,7 @@ public class ConnectionFactory {
 	public static Connection useConnection(String roadConcessionaire) throws Exception {
 		
 		Connection conn = null;
-		
+				
 		 //GET CONNECTION			
 	    if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
 	           conn = connectToCCR();

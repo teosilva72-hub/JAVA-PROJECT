@@ -192,7 +192,7 @@ public class Messages {
 			this.text2 = "";
 			this.text3 = "";
 			this.id_image = 0;
-			this.image = "";
+			this.image = "000_6464.bmp";
 			this.tipo = "";
 			this.nome = "";
 			this.timer = 0;

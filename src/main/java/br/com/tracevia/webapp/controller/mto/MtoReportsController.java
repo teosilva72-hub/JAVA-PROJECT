@@ -204,6 +204,10 @@ public class MtoReportsController {
 		module = "mto";
 		
 		table = "weather_stations";
+		
+		//Disabled
+		clearBool = true;
+		excelBool = true;
 				
 	}
 ///////////////////////////////////
@@ -281,19 +285,22 @@ public void CreateFields(String type) {
 			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
 					"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
 			
-	      }
-	   
-	      facesContext.getExternalContext().getSessionMap().put("fields", field.length); 
-	   
+	      }	   
+	       
 	        //Finally Draw Table
-	        drawTable(field, fieldObjectValues);			   
+	        drawTable(field, fieldObjectValues);	
+	        
+	      //GUARDAR VALORES NA SESSION
+			facesContext.getExternalContext().getSessionMap().put("fieldsLength", field.length); //Length of Fields
+			facesContext.getExternalContext().getSessionMap().put("fields", field);	//Fields
+			facesContext.getExternalContext().getSessionMap().put("fieldsObject", fieldObjectValues); //Objects
  
    }
 
 	public void GetReports(String type) throws Exception{
 		
-		   FacesContext facesContext = FacesContext.getCurrentInstance();
-	       ExternalContext externalContext = facesContext.getExternalContext();
+		    FacesContext facesContext = FacesContext.getCurrentInstance();
+	        ExternalContext externalContext = facesContext.getExternalContext();
 	    
 		    QueriesReportsModels models = new QueriesReportsModels();
 		    MtoQueriesModels mtoModels = new MtoQueriesModels();	    
@@ -303,7 +310,7 @@ public void CreateFields(String type) {
 			
 			MessagesUtil message = new MessagesUtil(); //Display messages
 			
-			String startDate = null, endDate = null, data_anterior = null, mes_anterior = null, mes_inicial = null;
+			String startDate = null, endDate = null, data_anterior = null, mes_anterior = null, mes_inicial = null, month_start_date = null;
 			
 		    end_month = 0;
 		    start_month = 0;
@@ -313,9 +320,9 @@ public void CreateFields(String type) {
 			//Single Selection
 			mtoReport.setEquipment(parameterMap.get("equip"));
 			
-			mtoReport.setMonth(parameterMap.get("month"));
+			mtoReport.setStartDate(parameterMap.get("dateStart"));
 			
-			mtoReport.setMonth(parameterMap.get("month"));
+			mtoReport.setEndDate(parameterMap.get("dateEnd"));
 			
 			mtoReport.setStartMonth(parameterMap.get("start_month"));
 						
@@ -323,7 +330,9 @@ public void CreateFields(String type) {
 								
 			mtoReport.setYear(parameterMap.get("year"));
 			
-			mtoReport.setPeriod(parameterMap.get("period"));
+			mtoReport.setMonth(parameterMap.get("month"));
+			
+			mtoReport.setPeriod(parameterMap.get("periods"));
 													
 			 //Initialize ResultList
 		     resultList = new ArrayList<Builder>();	
@@ -350,7 +359,7 @@ public void CreateFields(String type) {
 		  		    	 
 				// Quantos dias possui o respectivo mês
 				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getMonth()));
-				int daysInMonth = yearMonthObject.lengthOfMonth();
+				daysInMonth = yearMonthObject.lengthOfMonth();
 				
 				mtoReport.setStartDate("01/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
 				mtoReport.setEndDate(daysInMonth+"/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
@@ -380,6 +389,7 @@ public void CreateFields(String type) {
 			endDate = dta.StringDBDateFormat(mtoReport.getEndDate());
 			data_anterior = startDate;
 			mes_inicial = mtoReport.getStartMonth();	
+			month_start_date = "01";
 			
 			start = dta.DateTimeToStringIni(startDate); 
 			end = dta.DateTimeToStringFim(endDate); 
@@ -396,12 +406,13 @@ public void CreateFields(String type) {
 			System.out.println(query); //debug
 
 			//EXECUÇÃO DA QUERY
-			String[][] auxResult = dao.ExecuteQuery(query);
+			String[][] auxResult = dao.ExecuteQuery(query, getFieldsNumber(), getNumRegisters());
+			
+			//CASO EXISTA REGISTROS ENTRA AQUI
+			if(auxResult.length > 0) {
 			
 			//// NEW METHOD
-							
-			if(auxResult.length != 0) {
-			
+						
 			int minuto = 0;
 			int iterator= 0;
 			int pos = 0;
@@ -413,9 +424,17 @@ public void CreateFields(String type) {
 			
 			lin = auxResult[0].length;
 			col = auxResult.length;
+						
+			if(mtoReport.getPeriod().equals("month"))
+		       dta.preencherDias(resultQuery, 0, startDate, daysInMonth);
+			
+			else if (mtoReport.getPeriod().equals("year"))
+				dta.preencherDataMes(resultQuery, 0, mtoReport.getStartMonth(), mtoReport.getEndMonth());
 			
 			//DATAS
-			//dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
+			else {
+				
+			     dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
 			
 			//PERIODOS
 			//NEW
@@ -442,25 +461,26 @@ public void CreateFields(String type) {
 			
 			 if(mtoReport.getPeriod().equals("24 hours"))
 			    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
+			 
+			}
 			 													
 			for(int j = 0; j < lin; j++) {
 			   for(int i = 0; i < col; i++) {
-				   
+				 
+		    // CASO NÃO EXISTA VALOR >>>>>>> PASSA	   
 		    if(auxResult[0][j] != null)	 { 
 						
 			if(mtoReport.getPeriod().equals("01 hour") || mtoReport.getPeriod().equals("06 hours"))
 				   hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				
 			else if(!mtoReport.getPeriod().equals("24 hours") && !mtoReport.getPeriod().equals("01 hour") && !mtoReport.getPeriod().equals("06 hours")
-					&& !mtoReport.getPeriod().equals("year")) {
+					&& !mtoReport.getPeriod().equals("year") && !mtoReport.getPeriod().equals("month") ) {
 				    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));	
 				    
 				}
-					  
-			//System.out.println(satReport.getStartDate());
-			
-			  if(!mtoReport.getPeriod().equals("year")) {
+						
+			  if(!mtoReport.getPeriod().equals("year") &&  !mtoReport.getPeriod().equals("month")) {
 
 				// Restrição caso não haja dados nos primeiros registros
 				if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
@@ -522,32 +542,61 @@ public void CreateFields(String type) {
 					if(i > 1 )
 					    resultQuery[i][p] = auxResult[i][j];
 				 
-			  }else {	
-				  				  
+			  }
+			  //////////////////////////////////
+			  /////////////// YEAR REPORT 
+			  ////////////////////////////////
+			  else if(mtoReport.getPeriod().equals("year")) {	
+				  				  				  
 				      if((mes_inicial != null) && Integer.parseInt(mes_inicial) != Integer.parseInt(auxResult[0][j])) {
 							
 							p = Integer.parseInt(auxResult[0][j]) - Integer.parseInt(mes_inicial);
 							mes_inicial = null;
 							
-						}else if(Integer.parseInt(mes_anterior) != Integer.parseInt(auxResult[0][j])) {							
+						}else if((mes_inicial != null) && Integer.parseInt(mes_inicial) == Integer.parseInt(auxResult[0][j])) {
+							 p = 0;
+							 mes_inicial = null;
+						
+						}      
+				      else if(Integer.parseInt(mes_anterior) != Integer.parseInt(auxResult[0][j])) {							
 							 p++;							
 						}
 												
 					     mes_anterior = auxResult[0][j];
+					     
+					     if(i > 0) 
+							 resultQuery[i][p] = auxResult[i][j];	
+					   		
 					}
+			  //////////////////////////////////
+			  /////////////// MONTH REPORT 
+			  ////////////////////////////////
+			  else if(mtoReport.getPeriod().equals("month")){				
+				  
+				    if((month_start_date != null) && Integer.parseInt(month_start_date) != Integer.parseInt(auxResult[0][j])) {
+				    							
+						p = Integer.parseInt(auxResult[0][j]) - Integer.parseInt(month_start_date);
+						month_start_date = null;
+						
+					}else if(Integer.parseInt(data_anterior) != Integer.parseInt(auxResult[0][j])) {							
+						 p++;							
+					}
+											
+				     data_anterior = auxResult[0][j];
+				     
+				     if(i > 0) 
+						 resultQuery[i][p] = auxResult[i][j];		
+				  				  
+			  }
 			 				
-				   if(i > 0) 
-					 resultQuery[i][p] = auxResult[i][j];				    
+			  //////////////////////////////////
+			  /////////////// MONTH REPORT 
+			  ////////////////////////////////			    
 			  
-				   }
+				   } // CASO NÃO EXISTA VALOR >>>>>>> PASSA	 
 			     }
-			   }		  	
-					
-			  //// NEW METHOD
-
-			//CASO EXISTIR VALORES
-			if(resultQuery.length > 0) {
-
+			   }	
+		
 				//SAÍDA PARA A TABELA
 				OutputResult(type);
 				
@@ -565,16 +614,18 @@ public void CreateFields(String type) {
 
 				//UPDATE BUTTON GENERATE EXCEL
 				RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
-			}
+				
 			
-	   } else {
-		   message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"), localeMto.getStringKey("mto_message_records_not_found"));
-		   CreateFields(type);
-		 
-		   
-	   }
-	     
-	}
+			//CASO CONTRARIO ENTRA AQUI
+		} else {
+			      message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"), localeMto.getStringKey("mto_message_records_not_found"));
+		          CreateFields(type);  
+		          
+		          //EXECUTE JS
+				  RequestContext.getCurrentInstance().execute("hideMessage();");
+				  
+	           }	     
+	      }
 			
 			
 /**********************************************************************************************************/
@@ -590,7 +641,7 @@ public Integer fieldsNumber(String type) {
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	ExternalContext externalContext = facesContext.getExternalContext();
 
-	int length = (int) externalContext.getSessionMap().get("fields");
+	int length = (int) externalContext.getSessionMap().get("fieldsLength");
 
 int fields = 0;
 
@@ -665,59 +716,41 @@ if(type.equals("3")) {
     }
 
    
-   public void OutputResult(String type) {  
-	   
+  public void OutputResult(String type) {  
+	  
+	//ACESSAR DADOS DO RELATÓRIOF
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+
+		//FIELDS EXTERNOS ARMAZENADOS NA REQUISIÇÃO
+		field = (String[]) externalContext.getSessionMap().get("fields");
+		fieldObjectValues =  (String[]) externalContext.getSessionMap().get("fieldsObject");
+   
 	   if(type.equals("1")) { 
   		   		       			 
-  		    for(int k = 0; k < getNumRegisters(); k++) {      
-  		     			     		     					 
-  		      resultList.add(new MtoReports.Builder().month(resultQuery[0][k]) 
-  		    		                    .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
-  		    		                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
-  		 				                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
-  		 				                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
-  		    		                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
-  		    		                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
-  		    		                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-  		    		                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));  		    		                
-  		    		    			    				 
-  		 }
+  		   yearBuilder();
+  		   
+  		// DRAW TABLE -- BUILD HEADER
+  		drawTable(field, fieldObjectValues);
 	   }
 	   
 	   if(type.equals("2")) { 
-      			 
- 		    for(int k = 0; k < getNumRegisters(); k++) {      
- 		     			     		     					 
- 		      resultList.add(new MtoReports.Builder().dayOfMonth(Integer.parseInt(resultQuery[0][k])) 
- 		    		                    .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
- 		    		                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
- 		 				                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
- 		 				                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
- 		    		                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
- 		    		                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
- 		    		                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
- 		    		                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
- 		    		    			    				 
- 		 }
+      			
+		   monthBuilder();
+		   
+		// DRAW TABLE -- BUILD HEADER
+	  	 drawTable(field, fieldObjectValues);
+ 		   
 	   }
-	   if(type.equals("3")) { 
+	   if(type.equals("3")) {
+		   			
+		 periodBuilder();
+		   
+		// DRAW TABLE -- BUILD HEADER
+	  	 drawTable(field, fieldObjectValues);
 	   
-			  for(int k = 0; k < getNumRegisters(); k++) {      
- 					 
-	 		      resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
-	 		    		                    .dateTime(resultQuery[1][k]) 
-	 		    		                    .atmPressure(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  
-	 		    		                    .relative_humidity(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
-	 		 				                .temperature(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
-	 		 				                .windDir(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
-	 		    		                    .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
-	 		    		                    .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-	 		    		                    .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
-	 		    		                    .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
-	 		    		    			    				 
-	 		 }
- 		    	
-	   }		   
+	   }
+			
     }
 	   	   
    
@@ -781,7 +814,7 @@ if(type.equals("3")) {
 		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
 		   		 
 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
-		  excel_title = localeLabel.getStringKey("excel_report_weather_title");
+		  excel_title = localeLabel.getStringKey("excel_report_weather_title_year"); 
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
 		  		     		  
@@ -811,7 +844,7 @@ if(type.equals("3")) {
 		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
  		   		 
  		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
- 		  excel_title = localeLabel.getStringKey("excel_report_weather_title");
+ 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_month");
  		  
  		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
  		  		     		  
@@ -840,7 +873,7 @@ if(type.equals("3")) {
 		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
 		   		 
 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
-		  excel_title = localeLabel.getStringKey("excel_report_weather_title");
+		  excel_title = localeLabel.getStringKey("excel_report_weather_title_periods");
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:I4", "J1:L4"};
 		  		     		  
@@ -861,36 +894,44 @@ if(type.equals("3")) {
 		  
 	    }
  	   	  
- 	  facesContext.getExternalContext().getSessionMap().put("xlsModel", model); 
-	  facesContext.getExternalContext().getSessionMap().put("current", dta.currentTime());
-	  facesContext.getExternalContext().getSessionMap().put("fileName", fileName); 
-    
-      }
-      
-      public void download() {
- 	  
- 	  FacesContext facesContext = FacesContext.getCurrentInstance();	
- 	  ExternalContext externalContext = facesContext.getExternalContext();
- 	      	  
- 	  model = (ExcelModels) externalContext.getSessionMap().get("xlsModel");
- 	  currentDate = (String) externalContext.getSessionMap().get("current");
- 	  fileName = (String) externalContext.getSessionMap().get("fileName");
- 	    	  
- 	  String name = fileName+"_"+currentDate;
- 	  
- 	  try {
+ 	//Define Values in session map !important
+		facesContext.getExternalContext().getSessionMap().put("xlsModel", model); 
+		facesContext.getExternalContext().getSessionMap().put("current", dta.currentTime());
+		facesContext.getExternalContext().getSessionMap().put("fileName", fileName);    	  
+	}
+
+   /////// SAIDA DO EXCEL
+
+	/**********************************************************************************************************/
+
+ /////// DOWNLOAD DO EXCEL
+
+	//Download File Method
+	public void download() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();	
+		ExternalContext externalContext = facesContext.getExternalContext();
+
+		model = (ExcelModels) externalContext.getSessionMap().get("xlsModel");
+		currentDate = (String) externalContext.getSessionMap().get("current");
+		fileName = (String) externalContext.getSessionMap().get("fileName");
+
+		String name = fileName+"_"+currentDate;
+			
+		try {
 			model.download(ExcelModels.workbook, name);
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}
- 	  finally {
- 		  externalContext.getSessionMap().remove("xlsModel");
- 		  externalContext.getSessionMap().remove("current");
- 		  externalContext.getSessionMap().remove("fileName");
+		finally {
+			//externalContext.getSessionMap().remove("xlsModel");
+			//externalContext.getSessionMap().remove("current");
+			//externalContext.getSessionMap().remove("fileName");			
+			
 		}
- 	  
-    }
-      
+
+	}      
+        
     //Form Reset
   	public void resetFormValues(String type) {
   		
@@ -912,40 +953,60 @@ if(type.equals("3")) {
   		CreateFields(type);
 
   	}
-  	
-  //Abreviação do Mês
-  		public String monthComparison(String selectedMes) {
-
-  			String selectMonth = "";				
-  									
-  			if (selectedMes.equals("1"))
-  				selectMonth = "January";
-  			if (selectedMes.equals("2"))
-  				selectMonth = "February";
-  			if (selectedMes.equals("3"))
-  				selectMonth = "March";
-  			if (selectedMes.equals("4"))
-  				selectMonth = "April";
-  			if (selectedMes.equals("5"))
-  				selectMonth = "May";
-  			if (selectedMes.equals("6"))
-  				selectMonth = "June";
-  			if (selectedMes.equals("7"))
-  				selectMonth = "July";
-  			if (selectedMes.equals("8"))
-  				selectMonth = "August";
-  			if (selectedMes.equals("9"))
-  				selectMonth = "September";
-  			if (selectedMes.equals("10"))
-  				selectMonth = "October";
-  			if (selectedMes.equals("11"))
-  				selectMonth = "November";
-  			if (selectedMes.equals("12"))
-  				selectMonth = "December";						
-  			
-  			return selectMonth;
+  	   
+  		 //CONSTRUCTORS
+  		public void yearBuilder() {
+  		
+  		 for(int k = 0; k < getNumRegisters(); k++) {      
+					 
+ 		      resultList.add(new MtoReports.Builder().month(resultQuery[0][k]) 
+                .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
+                .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+                .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+                .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+                .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));  		 
+ 		       		       		    	    			    				 
+ 		 }  		   		 
   		}
-   
-   
+  		
+  		public void monthBuilder() {
+  			
+  			 for(int k = 0; k < getNumRegisters(); k++) {      
+					 
+  	 		      resultList.add(new MtoReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
+                    .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
+                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+	                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+	                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
+  	 		    		    			    				 
+  	 		 }
+  			
+  		}
+  		
+  		public void periodBuilder() {
+  			
+  		  for(int k = 0; k < getNumRegisters(); k++) {      
+				 
+ 		      resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
+                .dateTime(resultQuery[1][k]) 
+                .atmPressure(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  
+                .relative_humidity(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+                .temperature(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+                .windDir(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+                .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+                .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+                .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+                .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
+ 		    		    			    				 
+ 		 }
+		    	
+   }		   
    
    }

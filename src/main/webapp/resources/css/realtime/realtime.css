@@ -1,7 +1,7 @@
 @charset "ISO-8859-1";
 
 body {
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 /*Road Map Image for Background */
@@ -29,7 +29,7 @@ body {
   position: relative;
   border: 1px solid transparent;
   overflow-x: hidden;
-  overflow-y: overlay;
+  overflow-y: overlay; /* old --> overlay */
   width: 100%;
   height: 100%;
 }
@@ -91,20 +91,12 @@ body {
   background: transparent;
   border-right: none;
   float: left;
+  text-align: center;
   overflow: hidden;
   border: 1px solid transparent;
   z-index: 9999; /* nï¿½mero mï¿½ximo ï¿½ 9999 */
 }
 
-/*Conteï¿½do interno dos equipamentos*/
-.equip-status {
-  width: 7px;
-  height: 7px;
-  background-color: #00ff0d;
-  border-radius: 50%;
-  margin-top: -9.5px;
-  margin-left: 1px;
-}
 
 /*
 .equip-graphic{
@@ -392,3 +384,49 @@ body {
 }
 
 /*REAL TIME SAT*/
+
+.equip-image {
+  margin-top: 0%;
+  width: 70%;
+  height: 40%;
+  border: none;
+}
+
+.equip-imagePOST {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 100%;
+  height: 50%;
+  border: none;
+}
+
+.equip-imageCAM {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 80%;
+  height: 30%;
+  border: none;
+}
+
+.generic-text{
+font-size: 45px;
+font-weight: bold;	
+}
+
+/*Conteúdo interno dos equipamentos genéricos*/
+.equip-status {
+  width: 30px;
+  height: 30px;
+  background-color: #00ff0d;
+  border-radius: 50%;
+  position: absolute;
+  right: 22px;
+  top: 14px;
+}
+
+.generic{
+ width: auto;
+ display: block;
+}
+
+

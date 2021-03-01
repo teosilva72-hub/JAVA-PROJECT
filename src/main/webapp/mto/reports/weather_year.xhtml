@@ -28,24 +28,23 @@
 			name="mto-reports.js" />
 		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />	
 		
-		<script>
-		
-		$(function() {
-			setTimeout(function () {
-				$('#message-div').hide(); 		
-			}, 5000); 
-		});
-		
-		</script>
-
+				
 	</ui:define>
+	
+	<!-- Subistiuição do loading -->
+	<ui:define name="loading"></ui:define>
 	
 	 <ui:define name="main-content" >
 	 
-	 <!-- Mensagem parte superior -->
-	<div id="message-div">
+	    <!-- Mensagem parte superior -->
+	    <div id="message-div">
 			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 		</div>
+		
+		<!-- REPORTS LABEL INFORMATION -->
+		 <div class="text-dark text-center font-weight-bold report-title" >
+	      <h:outputText value="#{mtoLabels.mto_reports_name_year}" />	
+	     </div>
 	 
 	 <!-- TABLE DIV CONTENT -->
 	  <div class="table-container">
@@ -256,7 +255,7 @@
 								<div class="error-label"><label for="end_month" class="error" id="end_month-error"></label></div>
 							</div>																					
                 
-                 <input type="hidden" name="period" value="year" />	 
+                 <input type="hidden" name="periods" value="year" />	 
                  
 			     </div>
         <div class="modal-footer">
@@ -290,12 +289,11 @@ validateOnChange('#year');
 validateOnChange('#start_month');
 validateOnChange('#end_month');
 
-//Reset Form on close modal
-//close modal action
-removeValidationOnModalClose('#modalReportOptions', 'equip');
-removeValidationOnModalClose('#modalReportOptions', 'year');
-removeValidationOnModalClose('#modalReportOptions', 'start_month');
-removeValidationOnModalClose('#modalReportOptions', 'end_month');
+//Reset Fields on close modal
+resetFieldOnModalClose('#modalReportOptions', 'equip');
+resetFieldOnModalClose('#modalReportOptions', 'year');
+resetFieldOnModalClose('#modalReportOptions', 'start_month');
+resetFieldOnModalClose('#modalReportOptions', 'end_month');
 
 //Remove validation icons
 //click reset button action
@@ -303,6 +301,9 @@ removeValidationIcon("reset-btn", 'equip');
 removeValidationIcon("reset-btn", 'year');
 removeValidationIcon("reset-btn", 'start_month');
 removeValidationIcon("reset-btn", 'end_month');
+
+//Clean Form validation on close modal
+cleanValidationOnModalClose("#report-form", '#modalReportOptions');
 
 //Reset validation form
 //click reset button action

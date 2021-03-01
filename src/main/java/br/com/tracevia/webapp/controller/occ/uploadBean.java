@@ -53,7 +53,7 @@ public class uploadBean {
 		directoryDate = mainPath.concat(way);
 		
 		 int second = LocalDateTime.now().getSecond();
- 	     int minute = LocalDateTime.now().getMinute();
+ 	    int minute = LocalDateTime.now().getMinute();
 
  	    for (Part part : getAllParts(file2)) {
  	    	

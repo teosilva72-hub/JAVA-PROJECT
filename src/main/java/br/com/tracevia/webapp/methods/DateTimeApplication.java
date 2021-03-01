@@ -565,6 +565,79 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		 
 	}
 		
+		/////////////////////////////////
+		///// PREENCHER DATA POR DIA
+		////////////////////////////////
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public void preencherDias(String matriz[][], int col, String dtInicio, int daysInMonth) {
+
+			String da, mth; // Formatar apresentação
+									
+			// dia, mês e ano da dataInicial
+
+			String mesIni = dtInicio.substring(5, 7);
+			String diaIni = dtInicio.substring(8, 10);
+			
+			// dia inicial - conversão para inteiro
+			int dayIni = Integer.parseInt(diaIni);
+
+			// mes inicial - conversão para inteiro
+			int mthIni = Integer.parseInt(mesIni);
+
+			int dia = dayIni; // inicializar variável do dia
+			int mes = mthIni; // inicializar variável do mês
+			
+			// Novo Objeto - auxiliar
+			//YearMonth yearMonthNew;
+
+			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// intervalos por hora x 24 horas)
+										
+				for (int i = 0; i < daysInMonth; i++) {
+
+				// Caso o dia seja maior que total de dias no mês
+				if (dia > daysInMonth)
+					dia = 1; 
+			
+				// Formata apresentação da String
+				if (dia <= 9)
+					da = "0";
+				else
+					da = "";
+				if (mes < 10)
+					mth = "0";
+				else
+					mth = "";
+
+				matriz[col][i] = da + dia; // Preenche os dados
+				 dia++;	
+									
+					
+			     }			
+					 
+	}
+		
+		/////////////////////////////////
+		///// PREENCHER DATA POR FLUXO
+		////////////////////////////////
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public void preencherDataMes(String matriz[][], int col, String mesInicio, String mesFim) {
+
+			TranslationMethods translate = new TranslationMethods();
+			
+			    int startMonth = Integer.parseInt(mesInicio);
+			    int endMonth = Integer.parseInt(mesFim);
+			    
+			    int monthsLength = (endMonth - startMonth) + 1;
+													
+				for (int i = 0; i < monthsLength; i++) {
+          			matriz[col][i] = translate.monthComparison(i+startMonth);
+							
+				}
+	}
+		
 		
 		///////////////////////////
 		///// INTERVALOS

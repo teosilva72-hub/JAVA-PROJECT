@@ -901,9 +901,13 @@ public class ExcelModels {
 
 			spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas
 
-			if(period.equals("month"))										
+			if(period.equals("month"))									
 				spreadSheet.fillDataSingleMonthReport(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
 
+			else if(period.contentEquals("year"))	
+				 spreadSheet.fillDataSingleYearReport(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
+
+				
 			else spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
 
 			spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 0); 		

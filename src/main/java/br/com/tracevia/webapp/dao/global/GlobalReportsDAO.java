@@ -29,22 +29,22 @@ public class GlobalReportsDAO {
    /* ************************** */	
 	
 	/**
-	 * 
-	 * @param procedure - store procedure para gerar datas
-	 * @param query - query de consulta
-	 * @param startDate - data inicial
-	 * @param endDate - data final
-	 * @param fields - colunas dos campos do relatório
-	 * @return lista de objetos
+	 * @author Wellington Silva -- updated: 24/02/2021	
+	 * @version: 1.1
+	 * @since 1.0		
+	 * @param query - consulta SQL
+	 * @param fieldsNumber - número de campos de acordo com a saída da query
+	 * @param registers - número de registros
+	 * @return array contendo dados do relatório
 	 * @throws Exception
 	 */
 	
-	public String[][] ExecuteQuery(String query) throws Exception {		
+	public String[][] ExecuteQuery(String query, int fieldsNumber, int registers) throws Exception {		
 			
-		//Parametros vindo do Bean
-		int registers = MtoReportsController.getNumRegisters();
-		int fieldsNumber = MtoReportsController.getFieldsNumber();
-			
+	    // NECESSITA DA CONSTRUÇÃO DE UMA MATRIZ PARA RECEBER OS DADOS DE SAÍDA DA QUERY
+		// FIELDSNUMBER SÃO O NUMERO DE CAMPOS DE ACORDO COM A QUERY A SER EXECUTADA -> RECEBE ESSE PARÂMETRO DO BEAN
+		/* REGISTERS SÃO O NÚMERO DE REGISTROS QUE A MATRIZ DEVERÁ POSSUIR. SUA CONSTRUÇÃO SE DEVE NA ESCOLHA DE DATA DE ÍNICIO, DATA DE FIM, 
+		MÊS, ANOS E ETC. */
 		result = new String[fieldsNumber][registers];
 				
 		try {
@@ -54,30 +54,25 @@ public class GlobalReportsDAO {
 				//EXECUTE QUERY				
 				ps = conn.prepareStatement(query);
 				rs = ps.executeQuery();
-				
-			//	System.out.println("QUERY: "+query);			
-								
-				//RESULT IN RESULTSET
-							
+									
 				int lin = 0;
-
-				if (rs != null) {
+						
+				//RESULT IN RESULTSET	
+				if (rs.isBeforeFirst()) {
 					while (rs.next()) { //Linhas
 						
-				     for(int col = 0; col < fieldsNumber; col++ )	{ //Colunas
+				     for(int col = 0; col < fieldsNumber; col++ ) { //Colunas
 				    					    	 
 				    	    result[col][lin] = rs.getString((col+1));
 				    	    				    	    
-				    	   // System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  
-				    	 				      
+				    	    //System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  				    	 				      
 				        }
 				    				     
 				     lin++;
 				     
 				    } 
-				 } 
-
-
+				 } else result = new String[0][0]; //CASO NÃO EXISTA REGISTROS REDEFINE TAMANHO DO ARRAY
+				
 		}finally 
 		{
 			ConnectionFactory.closeConnection(conn, ps, rs);			

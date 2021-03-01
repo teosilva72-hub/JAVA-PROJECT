@@ -9,6 +9,7 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
 	<f:metadata>
@@ -39,6 +40,11 @@
 	<ui:define name="main-content">
 
 		<div class="table-container">
+		
+		  <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
 
 			<div class="text-dark text-center font-weight-bold report-title">
 				<h:outputText value="#{satLabels.sat_reports_name_count}" />
@@ -290,10 +296,9 @@
 							id="btn-form-send" action="#{satReportsBean.GetReports(1)}"
 							class="btn btn-dark form-modal-draw-button" />
 
-						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
+							<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
 							id="btn-form-reset" immediate="true" type="reset"
-							action="#{satReportsBean.resetFormValues}"
-							class="btn btn-dark form-modal-draw-button  reset-btn">
+							class="btn btn-dark form-modal-draw-button reset-btn">							
 							<f:ajax execute="@form"
 								render=":equips :vehicles :periods :dateStart :dateEnd" />
 						</h:commandButton>
@@ -313,15 +318,15 @@
 	    
 	  //Get equipments from backing bean
 	  //Create array
-	  var array = new Array();
+	  var equipments = new Array();
 	
 	  //Use facelets tag
 	  <ui:repeat value="#{satReportsBean.equipments}" var="eqp">
-	      array.push(#{eqp.value}); // Fill array
+	     equipments.push(#{eqp.value}); // Fill array
 	  </ui:repeat>
 	    
 	  //Call method to set checkbox all checked
-	  checkedByDefault('#equips', array);
+	  checkedByDefault('#equips', equipments);
 	  
 	    //Create array         
 	    var veh = [1, 2, 3, 4, 5]; 
@@ -333,29 +338,42 @@
 	    defineMultiselect('#vehicles', '#{satLabels.sat_reports_select_vehicles}');
 	        	  
 	    //Validation Methods - needs to use
-	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}', 60);
+	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}');
 	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
-	       
-	    //Validation Form
-	    formValidation('#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', '#{requiredMessages.required_sat_reports_select_vehicles}',  '#{requiredMessages.required_sat_reports_select_periods}',
-	    '', '', '', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
-	    	 	   
-	    //Validate elements on change value
-	    //In this case check if the element is valid
+	  
+	    
+	    satReportsValidationModel1('#report-form', '#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', 
+	    		'#{requiredMessages.required_sat_reports_select_vehicles}', '#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
+	  	 	   	    
+	  //Validate on change value
 	    validateOnChange('#equips');
 	    validateOnChange('#vehicles');
 	    validateOnChange('#periods');
 	    validateOnChange('#dateStart');
 	    validateOnChange('#dateEnd');
+
+	    //Reset Fields on close modal	   
+	    resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', '#{satLabels.sat_reports_select_equipments}', equipments);
+	    resetFieldMultiselectOnModalClose('#modalReportOptions', 'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh);
+	    resetFieldOnModalClose('#modalReportOptions', 'periods');
+	    resetFieldOnModalClose('#modalReportOptions', 'dateStart');
+	    resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
 	    
-	    //ResetValidation in case of action
-	    resetValidationForm('.reset-btn', '#report-form', 'equips', '#{satLabels.sat_reports_select_equipments}', array,
-	    	'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh, 'periods', 'dateStart', 'dateEnd');
-	   
-	    //Reset Modal on Close if has valitation active
-	    resetOnModalClose('#modalReportOptions', '#report-form',  'equips', '#{satLabels.sat_reports_select_equipments}', array,
-		    	'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh, 'periods', 'dateStart', 'dateEnd');
-	    
+	    //Remove validation icons
+	    //click reset button action	
+	    removeValidationMultiselectIcon("reset-btn", 'equips', '#{satLabels.sat_reports_select_equipments}', equipments);
+	    removeValidationMultiselectIcon("reset-btn", 'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh);
+	    removeValidationIcon("reset-btn", 'periods');
+	    removeValidationIcon("reset-btn", 'dateStart');
+	    removeValidationIcon("reset-btn", 'dateEnd');
+
+		//Clean Form validation on close modal
+        cleanValidationOnModalClose("#report-form", '#modalReportOptions');
+
+	    //Reset validation form
+	    //click reset button action
+	    resetFormValidation("#report-form", "reset-btn");
+	    	    
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->
