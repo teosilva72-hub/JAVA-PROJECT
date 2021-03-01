@@ -16,16 +16,6 @@ public class Messages {
 	private List<Pages> pages;
 	private String tableImg;
 	private String tableMessage;
-<<<<<<< HEAD
-	private boolean activeMessage;	
-				
-	public Messages(int id_reg, int id_imagem, int id_modify, int equip, String id, String tipo, String nome,
-			String imagem, String texto1, String texto2, String texto3, String tableImg, String tableMessage,
-			 boolean activeMessage) {	
-		
-		this.id_reg = id_reg;
-		this.id_imagem = id_imagem;
-=======
 	private boolean activeMessage;
 
 	public Messages(int id_message, int id_image, int id_modify, int equip, String id, String tipo, String nome,
@@ -33,7 +23,6 @@ public class Messages {
 			boolean activeMessage) {
 		this.id_message = id_message;
 		this.id_image = id_image;
->>>>>>> 216db89488369ad5300d50f1b8ec4044c5336e24
 		this.id_modify = id_modify;
 		this.equip = equip;
 		this.id = id;
