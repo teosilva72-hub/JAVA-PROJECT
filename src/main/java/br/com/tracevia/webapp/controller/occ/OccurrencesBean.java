@@ -418,7 +418,7 @@ public class OccurrencesBean {
 
 	@PostConstruct
 	public void initialize() {	
-		//listingUpdate();
+		//input select options
 		occurrences = new ArrayList<OccurrencesData>();
 		rodovias = new ArrayList<SelectItem>();
 		estado_locais = new  ArrayList<SelectItem>();
@@ -467,7 +467,10 @@ public class OccurrencesBean {
 			damageUnity = dao.dropDownFieldValues("damageUnity");
 			involvedType = dao.dropDownFieldValues("involvedType");
 			damage_gravity = dao.dropDownFieldValues("damageSeverity");
-
+			
+			//select option hours and minutes
+			
+			//hours
 			horas = new  ArrayList<SelectItem>();
 
 			for(int h = 0; h < 24; h++) {				
@@ -479,7 +482,7 @@ public class OccurrencesBean {
 					horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
 
 			}
-			//Minutos
+			//minutes
 			minutos = new  ArrayList<SelectItem>();
 
 			for(int m = 0; m < 60; m++){				
@@ -489,7 +492,7 @@ public class OccurrencesBean {
 					minutos.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
 
 			}
-
+			
 			occLabel = new LocaleUtil();
 			occLabel.getResourceBundle(LocaleUtil.LABELS_OCC);
 
@@ -501,27 +504,29 @@ public class OccurrencesBean {
 
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
-
+			
+			//initialize btns
 			edit = true;
 			save = true;
 			reset = true;
 			new_ = false;
 			fields = true;
 			table = true;
-
+			
+			//paths
 			mainPath = "C:\\Tracevia\\";
 			pathImage = "http://localhost:8081/occ/";
 			downloadPath = "file:///C:/Tracevia/";
-			pathDownload = "C:\\Users\\mateu\\Downloads\\";
+			pathDownload = "C:\\Users\\trace\\Downloads\\";
+			
 		}catch(Exception ex){
 			ex.printStackTrace();
 		}
 	}	
-
+	
+	//taking the last id from the database and passing 1 more
 	public int pegarId() throws Exception{
 
-		int second = LocalDateTime.now().getSecond();
-		int date = LocalDateTime.now().getYear();
 		OccurrencesDAO x = new OccurrencesDAO();
 		value = x.GetId();
 		//String e = userId.getUser_id();
@@ -532,18 +537,19 @@ public class OccurrencesBean {
 		return value;
 
 	}
-
+	
+	//register occurrences
 	public void cadastroOcorrencia() throws Exception {
 
 		boolean sucess = false;
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 		occNumber = dao.cadastroOcorrencia(data);
-		//int teste = Integer.parseInt(occNumber);
 		//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
-
+		
+		//if id is non-null
 		if(occNumber != null) {
 
 			//btn
@@ -554,24 +560,36 @@ public class OccurrencesBean {
 			fields = true;
 			edit = true;
 			table = true;
+			//zerar variaveis
 			listarFile = null;
 			total = 0;
-
+			
+			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
-			//getRowValue();
 
 		}
 
 	}
-
+	
+	//update occurences
 	public void atualizarOcorrencia() throws Exception {
-
-		boolean status = false;
-
+		
 		OccurrencesDAO dao = new OccurrencesDAO();
-
+		
+		//ao atualizar a ocorrencia passamos um valor null para a variavel (nameUser),
+		//passos 0 para a variavel (accessLevel) e para a variavel (updateTable) passamos false
+		// ambos os valores serï¿½o armazenados no BD a fazer a requisiï¿½ï¿½o
+		String nameUser = ""; int accessLevel = 0; boolean updateTable = false; 
+		
+		//passando falso para acessar a condiï¿½ï¿½o IF
+		boolean status = false;
+		
+		//Passando dados definidos para o banco de dados
+		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
+		
 		status = dao.atualizarOcorrencia(data);
+		
 		if(status) {
 
 			//btn
@@ -583,16 +601,15 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 			
-			total = 0;
-			listUpdate = null;
-			
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
-
+			//executando funï¿½ï¿½o javascript
+			//org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
+			//listar ocorrencia
 			occurrences = dao.listarOcorrencias();
 		}
 
 	}
-
+	
+	//metodo anular ocorrencia, esse metodo ï¿½ chamado quando estamos na sessï¿½o novo
 	public void resetOccurrencesData(){       
 
 		data = new OccurrencesData();
@@ -610,13 +627,27 @@ public class OccurrencesBean {
 		listarFile = null;
 		listUpdate = null;
 		total = 0;
-
+		
+		//deletar pasta
 		deleteDirectory();
 	}
+	//metodo anular ocorrencia, esse metodo ï¿½ chamado quando estamos na sessï¿½o editar
 	public void resetUpdate() throws Exception{
-		
 		OccurrencesDAO dao = new OccurrencesDAO();
+		
+		//ao anular a ocorrencia passamos os valores predeterminados para a seguintes variaveis:
+		//(nameUser = null, accessLevel = 0 e updateTable = False) ambos os valores sï¿½o armazenados no BD.
+		String nameUser = "";
+		int accessLevel = 0;
+		boolean updateTable = false;
+		
+		
+		//passando dados para o banco de dados
+		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
+		
+		//atualizar a ocorrencia depois que o metodo for chamado
 		occurrences = dao.listarOcorrencias();
+		//chamando funï¿½ï¿½o javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("eventValidator()");
 
 		data = new OccurrencesData();
@@ -630,6 +661,7 @@ public class OccurrencesBean {
 		edit = true;
 		table = true;
 		
+		//zerando os valores das variaves (listUpdate e total)
 		listUpdate = null;
 		total = 0;
 		
@@ -637,6 +669,16 @@ public class OccurrencesBean {
 	public void getRowValue() throws Exception {
 
 		try {
+			
+			//chamando valores do usuï¿½rio de outro controller
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext externalContext = facesContext.getExternalContext();	
+			
+			//pegando os valores de outro controller e armazenado dentro das variaveis: (userName e nivelUser)
+			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
+			nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
+
+			//executando funï¿½ï¿½o javascript
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("displayPdf()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			OccurrencesDAO dao = new OccurrencesDAO();
@@ -655,8 +697,8 @@ public class OccurrencesBean {
 		//Se a linha da table estiver selecionada:
 		if(selectedRow ) {
 			
-			//se a situação for igual 30 ou 31
-			//não é possivel fazer alteração
+			//se a situaï¿½ï¿½o for igual 30 ou 31
+			//nï¿½o ï¿½ possivel fazer alteraï¿½ï¿½o
 			if(situation == 31 || situation == 30) {
 
 				save = true;
@@ -674,7 +716,7 @@ public class OccurrencesBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 				
-				//senão pode relizar normalmente alterações
+				//senï¿½o pode relizar normalmente alteraï¿½ï¿½es
 			}else {
 				//btn
 				save = true;
@@ -688,9 +730,59 @@ public class OccurrencesBean {
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
-			}
+				
+				//senï¿½o se for igual a true acesso bloqueado para realizar ediï¿½ï¿½o
+			}else if((data.getEditTable() == true)) {
+				
+				//executando funï¿½ï¿½o javascript
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
 
-			//se não estiver selecionada a linha da tabela
+				save = true;
+				alterar = true;
+				reset = true;
+				new_ = false;
+				fields = true;
+				edit = true;
+				table = true;
+				
+				//se o nome do usuario local, for igual o nome da pessoa que esta editando
+				//a ocorrencia acessa pode acessar a essa condiï¿½ï¿½o
+				if(userName.equals(data.getNameUser())){
+
+					//btn
+					save = true;
+					alterar = true;
+					edit = false;
+					new_ = false;
+					reset = true;
+					fields = true; 
+					
+					//execute js
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+					
+				//senï¿½o se o nivel de acesso do usuï¿½rio for igual a 1 ou igual a 6
+					//tem permissï¿½o para acessar a condiï¿½ï¿½o
+				}else if(nivelUser == 1 || nivelUser == 6) {
+					//btn
+					save = true;
+					alterar = true;
+					edit = false;
+					new_ = false;
+					reset = true;
+					fields = true; 
+					
+					//execute js
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+					org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+				}
+	
+			}
+			
+			//mï¿½todo nï¿½o estï¿½ sendo usado
+			//senï¿½o estiver selecionada a linha da tabela
 		}else {
 
 			save = true;
@@ -701,43 +793,51 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 			
+			//executando as funï¿½ï¿½es javascript
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFileBtn()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
+			//zerando as variaveis
 			tableFile = null;
 			total = 0;
 		}
 
 	}
-
-	//Action NOVO
+	//mï¿½todo novo
 	public void btnEnable() throws Exception {
-
+		
+		//executando as funï¿½ï¿½es javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("uploadFile()");
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenListFiles()");
 
-		//Global
-		value = pegarId();
-
+		//pegando o valor da ultima variavel do vanco de dados
+		value = pegarId(); // pegarId() + 1
+		
+		//se o valor for maior do que 0 acessamos a condiï¿½ï¿½o
 		if(value > 0) {
-
+			
+			//executando o mï¿½todo cadastrar, ou seja, quando acessamos esse mï¿½todo
+			//estamos reservando o id no banco de dados.
+			cadastroOcorrencia();
+			//transformando a variavel (value) em String
 			String occNumber = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
 			localPath = localPath(occNumber);
 			createFileFolder(mainPath, localPath);	
-			
+			//executando javascript
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 			
-			
+			//btn
 			edit = true;
 			save = false;
 			alterar = true;
@@ -745,24 +845,42 @@ public class OccurrencesBean {
 			new_ = true;
 			fields = false;
 			action = "save";
-
+			//zerar variaveis
+			listarFile = null;
+			total = 0;
 		}
 
 	}
-	public void btnEdit() {
+	//mï¿½todo editar ocorrencia
+	public void btnEdit() throws Exception {
 		
-		//btn
-		fields = false;
-		reset = false;
-		save = true;
-		edit = true;
-		alterar = false;
+		OccurrencesDAO dao = new OccurrencesDAO();
 		
-		//js
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterBtnReset()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+		//pegando valores dos usuï¿½rios de outro controller
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		
+		//passando os valores predeterminados para as variveis
+		String nameUser = (String) facesContext.getExternalContext().getSessionMap().get("user");
+		int nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
+		boolean updateTable = true;
+		
+		//passando valores das varaveis para o banco de dados
+		dao.editTable(updateTable, nameUser, nivelUser, data.getData_number());			
+		
+			//btn
+			fields = false;
+			reset = false;
+			save = true;
+			edit = true;
+			alterar = false;
+			
+			//executando funï¿½ï¿½es javascript
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterBtnReset()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("atualizarTela()");
 
 
 		//listando arquivos
@@ -792,27 +910,31 @@ public class OccurrencesBean {
 		return path;
 	}
 
-	//CREATE METHOD TO ACTION UPLOAD FILE
-	//RETURN VOID
+	//mï¿½todo para enviar arquivos na tela de atualizaï¿½ï¿½o de cadastro
 	public void updateFile() throws IOException, ServletException{
 
 		uploadBean up = new uploadBean();
 		up.update(mainPath, way, file2);
-
+		
+		//btns
 		edit = true;
 		save = false;
 		alterar = true;
 		reset = false;
 		new_ = true;
 		fields = false;
-
+		
+		//listando arquivos
 		listingUpdate();
+		
+		//executando funï¿½ï¿½es javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");
 	}
-
+	
+	//mï¿½todo enviando
 	public void uploadFile() throws Exception {
 
 		uploadBean up = new uploadBean();	
@@ -827,31 +949,36 @@ public class OccurrencesBean {
 		reset = false;
 		new_ = true;
 		fields = false;
-
+		
+		//listando arquivosd
 		listFiles();
-		//volta para o form 2
+		//executando o javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgSaveFile()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("uploadFile()");
-
+		org.primefaces.context.RequestContext.getCurrentInstance().execute("blockListFiles()");
 	}
-
+	
+	//mï¿½todo listar arqivos ao atualizar
 	public String[] listingUpdate() {
 		
+		//executar javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
-
+		
+		//btns
 		save = true;
 		alterar = false;
 		edit = true;
 		new_ = true;
 		reset = false;
 		fields = false;
+		
 		//pega o id da tabela.
 		int id = getValue();
 
@@ -861,15 +988,18 @@ public class OccurrencesBean {
 		//caminho criado
 		fileWay = new File(mainPath+way);
 		//System.out.println("Estamos aqui: > "+ fileWay);
-
+		//iniciando variavel com valor 0
 		int x = 0;
-
+		
+		//listando os arquivos
 		arquivos = fileWay.listFiles();
-
 		listUpdate = new String[arquivos.length];
+		//pegando o total de aruivos dentro do diretorio
 		total = arquivos.length;
+		//enquantos os arquivos forem diferentes do valor 0 executa
 		while (x != arquivos.length){
-
+			
+			//pegando os nomes do arquivos na posiï¿½ï¿½o
 			listUpdate[x] = arquivos[x].getName();
 
 			System.out.println("Position: "+x+" < Arquivo na pasta > "+ listUpdate[x]);
@@ -878,16 +1008,23 @@ public class OccurrencesBean {
 
 		}
 		
-
+		//retornando o valor do mï¿½todo listUpdate == nome do arquivo
 		return listUpdate;
 	}
+	//mï¿½todo listar arquivos quando clicamos na tablea
 	public String[] TableFile() {
 		
+		//pegando o status da ocorrï¿½ncia		
 		String b = data.getState_occurrences();
+		//tranformando o valor do status da ocorrï¿½ncia  em inteiro
 		situation = Integer.parseInt(b);
 		
+		listarFile = null;
+		total = 0;
+		
+		//se o status da occorencia for igual a 30 ou 31, acessamos esse funï¿½ï¿½o
 		if(situation == 31 || situation == 30) {
-
+			//btns
 			save = true;
 			alterar = true;
 			reset = true;
@@ -895,15 +1032,95 @@ public class OccurrencesBean {
 			fields = true;
 			edit = true;
 			table = true;
+			
+			//executando javascript
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinished()");
+			
+			//se o nivel de acesso dop usuï¿½rio for igual a 1 ou igual a 6, acessamos a funï¿½ï¿½o
+			if(nivelUser == 1 || nivelUser == 6) {
+				//btn
+				save = true;
+				alterar = true;
+				edit = false;
+				new_ = false;
+				reset = true;
+				fields = true; 
+				
+				//execute js
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			}
+			//senï¿½o se o valor do atributo editTable for igual 0 (false), acessos a condiï¿½ï¿½o
+		}else if(data.getEditTable() == false) {
+			
+			//btn
+			save = true;
+			alterar = true;
+			edit = false;
+			new_ = false;
+			reset = true;
+			fields = true; 
+			
+			//execute js
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			
+			//senï¿½o se for igual a true acesso bloqueado para realizar ediï¿½ï¿½o
+		}else if(data.getEditTable() == true ) {
+			
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgUser()");
+			
+			save = true;
+			alterar = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			edit = true;
+			table = true;
+			
+			//se o nome do usuï¿½rio for igual o nome armazenado no atributo nameUser, acessamos a condiï¿½ï¿½o
+			if(userName.equals(data.getNameUser())){
+				
+				//btn
+				save = true;
+				alterar = true;
+				edit = false;
+				new_ = false;
+				reset = true;
+				fields = true; 
+				
+				//execute js
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+				
+				//senï¿½o se o nivel de acesso do usuï¿½rio for igual a 1 ou igual a 6, acessamos a condiï¿½ï¿½o
+			}else if(nivelUser == 1 || nivelUser == 6) {
+				//btn
+				save = true;
+				alterar = true;
+				edit = false;
+				new_ = false;
+				reset = true;
+				fields = true; 
+				
+				//execute js
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("unLock()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+				org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal()");
+			}
+			
 		}
 		
+		//executando javascript
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotal1()");
 
 		//pega o id da tabela.
 		int id = getValue();
 
-		//criando caminho da seleção da pasta.
+		//criando caminho da seleï¿½ï¿½o da pasta.
 		way = pathSQL;
 
 		//caminho criado
@@ -925,10 +1142,12 @@ public class OccurrencesBean {
 			x++;
 
 		}
-
+		//passando valor final do mï¿½todo para a variavel tableFile
 		return tableFile;
 
 	}
+	
+	//mï¿½todo listar arquivos
 	public String[] listFiles() throws Exception{
 
 		//variÃ¡vel do tipo int
@@ -954,10 +1173,11 @@ public class OccurrencesBean {
 			content++;
 
 		} 
-
+		//passando valor do mï¿½todo para a variï¿½vel
 		return listarFile;
 	}
-
+	
+	//esse mï¿½todo nï¿½o esta sendo aplicado, estï¿½ aqui para futuros testes
 	//Buscando imagem
 	public String getImageUpload(String myImg) throws Exception{
 
@@ -973,132 +1193,148 @@ public class OccurrencesBean {
 		return absoluteImage;
 
 	}
+	//esse mï¿½todo nï¿½o esta sendo usado, estï¿½ aqui para testes
 	public String getImageUpdate(String myImg) throws Exception{
 
 		//gerando o caminho onde se encontra a imagem
 		int id = getValue();
 
 		String imagePath = pathSQL+"/";
-
+		
 		absoluteImage = pathImage+imagePath+myImg;
 
 		return absoluteImage;
 
 	}
-
+	
+	//mï¿½todo deletar arquivos na atualizaï¿½ï¿½o do cadastro
 	public void deleteFileUpdate(String file) throws Exception {
+		//tentar
 		try {
+			//criando o camingo onde os arquivos sï¿½o armazenados
 			fileWay = new File(mainPath+way+"\\");
-			System.out.println(fileWay+file);
-
+			
+			//buscando arquivos para ver se existem dentro do diretï¿½rio
 			boolean check = new File(fileWay, file).exists();
-
+			
+			//se existir arquivos dentro da pasta, acessamos a condiï¿½ï¿½o
 			if(check) {
-
-				File currentFile = new File(fileWay, file);
-
-				currentFile.delete();
-
-				System.out.println("Arquivo excluido com sucesso! ");
 				
+				//pegando o arquivo
+				File currentFile = new File(fileWay, file);
+				//execute o delete
+				currentFile.delete();
+				//btns
 				save = true;
 				alterar = false;
 				edit = true;
 				new_ = true;
 				reset = false;
 				fields = false;
-				
+				//quando deletamos um arquivo, passamos o valor -1 para o total
 				total = total - 1;
-				
+				//executando javascript
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDelete()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
-				
+				//listando arquivos
 				listingUpdate();
 			}
-
+			
+			//capturar 
 		}catch(Exception ex) {
+			//executando funï¿½ï¿½o javascript
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+			//msg de erro ao deletar file
 			System.out.println("Erro ao excluir arquivo");
 		}
 		
 	}
+	//mï¿½todo deletar arquivos quando estamos na tela de novo cadastri
 	public void deleteFile(String file){
-
+		//tentar
 		try {
 
 			//caminho do diretorio e o arquivo que estou apagando
 			directory = new File(mainPath+path+"\\");
-
+			
+			//buscando arquivos para ver se existem dentro do diretï¿½rio
 			boolean check = new File(directory, file).exists();
-
-			System.out.println(check +" \n DIR: "+directory+"\n File: "+file);
-
+			//se existir arquivos dentro da pasta, acessamos a condiï¿½ï¿½o
 			if(check) {
-
+				//pegando o arquivo
 				File currentFile = new File(directory, file);
-
+				//execute o delete
 				currentFile.delete();
-
-				System.out.println("Arquivo excluido com sucesso! "+currentFile);
+				//executando javascript
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
+				//quando deletamos um arquivo, passamos o valor -1 para o total
 				total -=  1;
+				//executando mï¿½todo listar arquivos
 				listFiles();
-
+				//executando funï¿½ï¿½es javascript
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDelete()");
 				org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 
 			}
-
+			
+			//capturar
 		}catch(Exception ex) {
+			//executando js
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
+			//msg de erro
 			System.out.println("Erro ao excluir arquivo");
 		}
 
 	}
-	//exclui pasta gerada do occ quando é clicado em anular
+	//exclui pasta gerada do occ quando ï¿½ clicado em anular
 	public File deleteDirectory() {
 
 		try {
-
+			//escolhendo o caminho do arquivo
 			File folder = new File(mainPath+path+"\\");
-
-			System.out.println("Pasta excluida: "+folder);
-
+			
+			//se o diretorio for encontrado
 			if (folder.isDirectory()) {
-
+				//pegamos todos os arquivos que estï¿½o dentro da pasta
 				File[] files = folder.listFiles();
-
+				
+				//para deletar os objetos, percorremos a lista e fazemos de delete
 				for (File filesToDelete : files) {
-
+					
+					//deletando arquivos
 					filesToDelete.delete();
 
 				}
 
-				//delete finally
+				//deletando a pasta
 				folder.delete();
 
-				System.out.println("Diretorio deletado!");
-
 			}
-
+			
+			//capturando
 		}catch(Exception ex) {
-
+			//msg de erro
 			System.out.println("Erro ao excluir diretorio");
+			//executando funï¿½ï¿½o js
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 			
 		}
+		//retornando um valor nulo para esse mï¿½todo
 		return null;
 	}
+	//mï¿½todo baixar arquivos
 	public void download(String fileName) throws Exception {
 
-		//pegando o id
 		OccurrencesDAO dao = new OccurrencesDAO();
+		data = new OccurrencesData();
+		//pï¿½gando o id da ocorrï¿½ncia e atribuindo +1
 		int id = dao.GetId();
 		id += 1;
-		data = new OccurrencesData();
+		//criando variavel global
+		
 		data.setData_number(String.valueOf(id));
 
 		//chamando mÃªs e ano, para passar para o caminho.
@@ -1119,18 +1355,21 @@ public class OccurrencesBean {
 		FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
-
+		
+		//enquanto o byte faz a leitura do arquivo o qual ï¿½ diferente de -1
 		while ((bytes = is.read()) != -1) {
+			//subscreve/ copia o arquivo atual
 			fos.write(bytes);
 		}
-
+		
+		//fechando o comando downlod
 		is.close();
-
 		fos.close();
+		
+		//executando funï¿½ï¿½es js
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("bloquerTable()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
-		System.out.println("Download realizado: "+fileName);
 	}
 	public void downloadUpdate(String fileName) throws Exception {
 		//js
@@ -1155,17 +1394,16 @@ public class OccurrencesBean {
 		FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
-
+		//enquanto o byte faz a leitura do arquivo o qual ï¿½ diferente de -1
 		while ((bytes = is.read()) != -1) {
 			fos.write(bytes);
 		}
-
+		//parando o download
 		is.close();
-
 		fos.close();
 
-		System.out.println("Download realizado: "+fileName);
 	}
+	//download quando fizer o clique em alguma linha da tabela
 	public void downloadUpdateTable(String fileName) throws Exception {
 
 		//pegando o id
@@ -1185,17 +1423,17 @@ public class OccurrencesBean {
 		FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
-
+		//enquanto o byte faz a leitura do arquivo o qual ï¿½ diferente de -1
 		while ((bytes = is.read()) != -1) {
 			fos.write(bytes);
 		}
-
+		//fechando o download
 		is.close();
-
 		fos.close();
-
+		
+		//se a variavel situaï¿½ï¿½o for igual a 30 ou 31 acessamos a condiï¿½ï¿½o
 		if(situation == 31 || situation == 30) {
-
+			//btns
 			save = true;
 			alterar = true;
 			reset = true;
@@ -1204,8 +1442,9 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 			
+			//senï¿½o acessamos a essa condiï¿½ï¿½o
 		}else {
-			//btn
+			//btns
 			save = true;
 			alterar = true;
 			edit = false;
@@ -1214,17 +1453,19 @@ public class OccurrencesBean {
 			fields = true; 
 			
 		}
+		//executando js
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
 		System.out.println("Download realizado: "+fileName);
 	}
+	//mï¿½todo download PDF
 	public void downloadPdf() throws Exception {
-		// criação do documento
+		// criaï¿½ï¿½o do documento
 		Document document = new Document();
 
 		try {
-			//caminho onde é gerado o pdf
+			//caminho onde ï¿½ gerado o pdf
 			PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\mateu\\Downloads\\"+"OCC_"+data.getData_number()+".pdf"));
 			//gera o arquivo
 			document.open();
@@ -1240,11 +1481,11 @@ public class OccurrencesBean {
 			Paragraph causeProbable = new Paragraph(new Phrase(20F , "Causa probable", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph eventoLocal = new Paragraph(new Phrase(20F , "Evento Local", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph detalhes = new Paragraph(new Phrase(20F , "Detalles", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph description = new Paragraph(new Phrase(20F , "Descripción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , "Descripciï¿½n", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph envolvidos = new Paragraph(new Phrase(20F , "Involucrados", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph track = new Paragraph(new Phrase(20F , "Tráfico", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph danos = new Paragraph(new Phrase(20F , "Daño", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph action = new Paragraph(new Phrase(20F , "acción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , "Trï¿½fico", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph danos = new Paragraph(new Phrase(20F , "Daï¿½o", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , "acciï¿½n", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			
 			//chamando a imagem
 			
@@ -1252,7 +1493,7 @@ public class OccurrencesBean {
 			Image image2 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
 			
 			System.out.println(RoadConcessionaire.externalImagePath);
-			//edição das imagens
+			//ediï¿½ï¿½o das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(420, 800);
@@ -1277,10 +1518,10 @@ public class OccurrencesBean {
 			document.add(event1);
 			document.add(new Paragraph(evento+"\n"+"\n"));
 			//document.add(new Paragraph(" "));
-			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
+			document.add(new Paragraph("Occ Nï¿½: "+data.getData_number()+"        "
 					+ "Tipo: "+ getPdf.getType()+"         "
 					+ "Fuente: "+getPdf.getOrigin()+"          "
-					+ "Situación: "+getPdf.getState_occurrences()+"\n\n"));
+					+ "Situaciï¿½n: "+getPdf.getState_occurrences()+"\n\n"));
 
 			//data e hora inivial
 			Rectangle dateHourStart = new Rectangle(577, 615, 10, 680); // you can resize rectangle 
@@ -1296,7 +1537,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph("Inicial: "+data.getStart_date()+"             Inicial: "+data.getStart_hour()+":"+data.getStart_minute()+"             "
 					+ "Final: "+data.getEnd_date()+"             Final: "+data.getEnd_hour()+":"+data.getEnd_minute()+"\n\n"));
 
-			//causa provável e descrição principal e interna.
+			//causa provï¿½vel e descriï¿½ï¿½o principal e interna.
 			Rectangle causePr= new Rectangle(577, 470, 10, 610); // you can resize rectangle 
 			causePr.enableBorderSide(1);
 			causePr.enableBorderSide(2);
@@ -1307,8 +1548,8 @@ public class OccurrencesBean {
 			document.add(causePr);
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
 			document.add(new Paragraph("Causa: "+getPdf.getCause()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getCause_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getCauseDescrInter()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n: "+data.getCause_description()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n interna: "+data.getCauseDescrInter()+"\n\n"));
 
 			//Evento Local
 			Rectangle eventL= new Rectangle(577, 360, 10, 465); // you can resize rectangle 
@@ -1324,9 +1565,9 @@ public class OccurrencesBean {
 			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
 					+ "Autopista: "+getPdf.getHighway()+"            "
 					+ "Estado: "+getPdf.getLocal_state()+"\n\n"));
-			document.add(new Paragraph("Dirección: "+getPdf.getDirection()+"            "
+			document.add(new Paragraph("Direcciï¿½n: "+getPdf.getDirection()+"            "
 					+ "Carril: "+getPdf.getLane()+"            "
-					+ "Observación: "+data.getOthers()+"\n\n"));
+					+ "Observaciï¿½n: "+data.getOthers()+"\n\n"));
 
 			//Detalhes
 			Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
@@ -1339,14 +1580,14 @@ public class OccurrencesBean {
 			document.add(details);
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
 			document.add(new Paragraph(""));
-			document.add(new Paragraph("Condición local: "+getPdf.getLocal_condition()+"     "
-					+ "Condición del tráfico: "+getPdf.getTraffic()+"      "
-					+ "Característica: "+getPdf.getCharacteristic()+"\n\n"));
-			document.add(new Paragraph("Interference: "+getPdf.getInterference()+"     "
-					+"Signaling: "+getPdf.getSignaling()+"     "
-					+"Condición conductor: "+ getPdf.getConductor_condition()+"\n\n"));
+			document.add(new Paragraph("Condiciï¿½n local: "+getPdf.getLocal_condition()+"  "
+					+ "Condiciï¿½n del trï¿½fico: "+getPdf.getTraffic()+"   "
+					+ "Caracterï¿½stica: "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph("Interference: "+getPdf.getInterference()+"  "
+					+"Signaling: "+getPdf.getSignaling()+"  "
+					+"Condiciï¿½n conductor: "+ getPdf.getConductor_condition()+"\n\n"));
 
-			//descrição
+			//descriï¿½ï¿½o
 			Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
 			descriptions.enableBorderSide(1);
 			descriptions.enableBorderSide(2);
@@ -1356,11 +1597,11 @@ public class OccurrencesBean {
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);
 			document.add(new Paragraph(description+"\n"+"\n"));
-			document.add(new Paragraph("Descripción del Título: "+ data.getDescription_title()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getDescription_text()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getDescriptionInter()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n del Tï¿½tulo: "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n: "+data.getDescription_text()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n interna: "+data.getDescriptionInter()+"\n\n"));
 
-			document.add(new Paragraph("\n\n                                                                        Pág. 1"));
+			document.add(new Paragraph("\n\n                                                                        Pï¿½g. 1"));
 			//adicionando nova pagina
 			document.newPage();
 
@@ -1375,10 +1616,10 @@ public class OccurrencesBean {
 			document.add(envolvido);
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
 			document.add(new Paragraph("Tipo: "+getPdf.getInvolved_type()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+ data.getInvolved_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+ data.getInvolvedInter()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n: "+ data.getInvolved_description()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n interna: "+ data.getInvolvedInter()+"\n\n"));
 
-			//Trânsito
+			//Trï¿½nsito
 			Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
 			track1.enableBorderSide(1);
 			track1.enableBorderSide(2);
@@ -1391,7 +1632,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph("Inicial: " + data.getTrackStartDate()+ "             Inicial: " + data.getTrackStartHour() + ":" + data.getTrackStartMinute() + "             "
 					+ "Final: " + data.getTrackEndDate() + "             Final: " + data.getTrackEndHour() + ":"+data.getTrackEndMinute() + "\n\n"));
 			document.add(new Paragraph());
-			document.add(new Paragraph("Extensión: "+data.getTraffic_extension()+"            "
+			document.add(new Paragraph("Extensiï¿½n: "+data.getTraffic_extension()+"            "
 					+"Pista interrumpida: "+ getPdf.getTraffic_stopped()+"\n\n"));
 
 			//Danos
@@ -1407,10 +1648,10 @@ public class OccurrencesBean {
 			document.add(new Paragraph(""));
 			document.add(new Paragraph("Tipo: "+getPdf.getDamage_type_damage()+"     Gravedad: "+getPdf.getDamage_gravity()+"     Unidad: "+getPdf.getDamageUnity()
 			+"     Amount: "+data.getDamage_amount()+ "\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getDemage_description()+ "\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getDamageDescriptionInternal()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n: "+data.getDemage_description()+ "\n\n"));
+			document.add(new Paragraph("Descripciï¿½n interna: "+data.getDamageDescriptionInternal()+"\n\n"));
 
-			//ação
+			//aï¿½ï¿½o
 			Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
 			action1.enableBorderSide(1);
 			action1.enableBorderSide(2);
@@ -1421,11 +1662,11 @@ public class OccurrencesBean {
 			document.add(action1);
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph("Tipo: "+getPdf.getAction_type()+"             Situación: "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph("Tipo: "+getPdf.getAction_type()+"             Situaciï¿½n: "+getPdf.getStatusAction()+"\n\n"));
 			document.add(new Paragraph("Inicial: "+data.getActionStartData()+"     Inicial: "+data.getActionStartHour()+":"+data.getActionStartMinute()
 			+"             Final: "+data.getActionEndData()+"             Final: "+data.getActionEndHour()+":"+data.getActionEndMinute()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getAction_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getActionInter()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n: "+data.getAction_description()+"\n\n"));
+			document.add(new Paragraph("Descripciï¿½n interna: "+data.getActionInter()+"\n\n"));
 
 			//chamando data e hora
 			int day1 = LocalDateTime.now().getDayOfMonth();
@@ -1446,7 +1687,7 @@ public class OccurrencesBean {
 			//assinatura
 			document.add(new Paragraph("\n\n                    Firma: ______________________________________________."+ "\n\n\n\n"
 					+ "                              fecha del informe: "+dayPdf+"/"+monthPdf+"/"+year1+"     Hora: "+hourPdf+":"+minutePdf+":"+secondPdf));
-			document.add(new Paragraph("\n\n                                                                        Pág. 2"));
+			document.add(new Paragraph("\n\n                                                                        Pï¿½g. 2"));
 
 		}
 		catch(DocumentException de) {
@@ -1462,8 +1703,9 @@ public class OccurrencesBean {
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
 		
+		//se a variavel situaï¿½ï¿½o for igual a 30 ou 31 acessamos a essa condiï¿½ï¿½o
 		if(situation == 31 || situation == 30) {
-
+			//btns
 			save = true;
 			alterar = true;
 			reset = true;
@@ -1471,8 +1713,11 @@ public class OccurrencesBean {
 			fields = true;
 			edit = true;
 			table = true;
+			//executando funï¿½ï¿½es js
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
+			
+			//senï¿½o acessa a essa condiï¿½ï¿½o
 		}else {
 			//btn menu
 			edit = false;
@@ -1481,7 +1726,7 @@ public class OccurrencesBean {
 			new_ = false;
 			fields = true;
 			table = true;
-
+			//executando funï¿½ï¿½es js
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgDownload()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
 		}
