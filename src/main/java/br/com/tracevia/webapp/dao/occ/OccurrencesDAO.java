@@ -18,11 +18,12 @@ public class OccurrencesDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-
+	//método cadastrar ocorrências
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
-
+		
+		//script BD
 		String query = "INSERT INTO occ_data(occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, end_minute, cause, cause_description, kilometer, highway, "
 				+ "local_state, direction, lane, others, local_condition, traffic, characteristic, interference, signaling, conductor_condition, descrTitleDescr, descrDescr, envolvTypo, "
 				+ "envolvWhen, envolvDescr, procedureName, procedureDescr, trafficHour, trafficMinute, trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, "
@@ -37,7 +38,8 @@ public class OccurrencesDAO {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
-
+			
+			//passando valores para os atributos BD
 			ps.setString(1, data.getData_number());
 			ps.setString(2, data.getType());
 			ps.setString(3, data.getOrigin());
@@ -104,9 +106,11 @@ public class OccurrencesDAO {
 			ps.setString(64, data.getDamageUnity()); 
 
 			int res = ps.executeUpdate();
-
+			
+			//se a variável for maior do que 0, acessamos a essa função
 			if(res > 0) {
-
+				
+				//pengando o último valor do banco de dados
 				String query2 = "Select MAX(occ_number) AS last_Id  FROM occ_data";
 
 				ps = conn.prepareStatement(query2);
@@ -115,7 +119,7 @@ public class OccurrencesDAO {
 
 				if(rs != null) {
 					while(rs.next()) {	
-
+						//atribuindo para a variavel occ_number o último valor do banco de dados
 						occ_number = rs.getString("last_Id");
 
 					}
@@ -128,11 +132,11 @@ public class OccurrencesDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
-
+		//retordo o valor do método como o último id do banco de dados
 		return occ_number;
 
 	}
-
+	
 	public ArrayList<SelectItem> dropDownFieldValues (String field) throws Exception {	
 
 		String query = "SELECT detail_id, value_ FROM tracevia_app.occ_details WHERE field = ? and active = 1";
@@ -165,16 +169,18 @@ public class OccurrencesDAO {
 		return listarDropDownValue;
 	}
 	
+	//método editTable, esse é o método onde passamos os valores para os atributos para fazer o bloqueio e desbloqueio da tabela
 	public boolean editTable(boolean editTable, String name_user, int accessLevel, String id ) throws Exception {
 		
 		boolean status = false;
-
+		
+		//script para pegar os valores e passar valores
 		String query = "UPDATE occ_data SET editTable = ?, nameUser = ?, accessLevel = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
-
+		
 		try {
-
+			//passando ou pegando os valores dos atributos
 			conn = ConnectionFactory.connectToTraceviaApp();
 
 			ps = conn.prepareStatement(query);
@@ -200,10 +206,12 @@ public class OccurrencesDAO {
 		return status;
 
 	}
+	
+	//método atualizar ocorrência 
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 		boolean status = false;
-
+		//script dos atributos que serão atualizados as informaçoes do banco de dados
 		String query = "UPDATE occ_data SET type = ? , origin = ?, state_occurrence = ?, start_date = ?, start_hour = ?, " +
 				"start_minute = ?, end_date = ?, end_hour = ?, end_minute = ?, cause = ?, cause_description = ?, kilometer = ?, highway = ?, " +
 				"local_state = ?, direction = ?, lane = ?, others = ?, local_condition = ?, traffic = ?, characteristic = ?, interference = ?, " +
@@ -215,8 +223,10 @@ public class OccurrencesDAO {
 				"descriptionInter = ?, involvedInter = ?, actionInter = ?, damage_amount = ?, statusAction = ?, damageUnitySelect = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
-		System.out.println(data.getActionStartData());
+		
 		try {
+			//atributos que serão atualizados quando o método for chamado
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
 
@@ -303,14 +313,17 @@ public class OccurrencesDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//pegando o último registro do banco de dados
 	public int GetId() throws Exception{
 
 		String sql = "SELECT max(occ_number) FROM occ_data";
 
 		int value = 0; 
-
+		
+		//tentar
 		try {
-
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -324,14 +337,18 @@ public class OccurrencesDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-
+		
+		//retornando o valor do último a id para a variavel (value)
 		return value;
 
 	}
+	
+	//método PDF
 	public OccurrencesData submitPdf(int PdfGet) throws Exception {
 
 		OccurrencesData occ = new OccurrencesData();
 
+		//script onde pegamos os valores dos atributos
 		String pdf = "SELECT  dt.value_, dt1.value_, dt2.value_, dt3.value_, dt4.value_, dt5.value_, dt6.value_, dt7.value_, dt8.value_, dt9.value_, dt10.value_, " + 
 				"dt11.value_, dt12.value_, dt13.value_, dt14.value_, dt15.value_, dt16.value_, dt17.value_, dt18.value_, dt19.value_, dt20.value_ "+ 
 				"FROM occ_data d "+ 
@@ -367,7 +384,7 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-
+					//valores dos atributos dentro do banco de dados
 					occ.setType(rs.getString(1));
 					occ.setOrigin(rs.getString(2));
 					occ.setState_occurrences(rs.getString(3));
@@ -396,8 +413,8 @@ public class OccurrencesDAO {
 			e.printStackTrace();
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-
+		}	
+		//passando os valores dos atributos para dentro da var
 		return occ;
 	}
 	public UserAccountBean user_id(int user) throws Exception {
@@ -489,44 +506,13 @@ public class OccurrencesDAO {
 
 		return status;
 	}
-	/*public String nameUser(String name_user, String id) throws Exception {
 
-		String occ_number = null;
-
-		String query = "SELECT name = ? FROM users_register WHERE user_id = ?";
-
-		DateTimeApplication dtm = new DateTimeApplication();
-
-		try {
-
-			conn = ConnectionFactory.connectToTraceviaApp();
-
-			ps = conn.prepareStatement(query);
-
-			ps.setString(1, name_user);
-			ps.setString(2, id);
-
-			ps.executeUpdate();
-
-
-		}catch (SQLException alterarOcorrencia){
-
-			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
-
-		}finally {
-
-			ConnectionFactory.closeConnection(conn, ps);
-
-		}		
-
-		return occ_number;
-
-	}*/
-
+	//método buscar ocorrência por id
 	public OccurrencesData buscarOcorrenciaPorId(int id) throws Exception {
 
 		OccurrencesData occ = new OccurrencesData();
-
+		
+		//Script dos atributos que as inforções serão requisitadas
 		String query = "SELECT occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, " +
 				"end_minute, cause, cause_description, kilometer, highway, local_state, direction, lane, others, local_condition, " +
 				"traffic, characteristic, interference, signaling, conductor_condition, descrTitleDescr, descrDescr, " +
@@ -547,7 +533,7 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-
+					//atributos onde as informações estão armazenadas
 					occ.setData_number(rs.getString(1));
 					occ.setType(rs.getString(2));
 					occ.setOrigin(rs.getString(3)); 
@@ -625,7 +611,7 @@ public class OccurrencesDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-
+		//passando os valores dos atributos para a variável occ
 		return occ;
 
 	}
