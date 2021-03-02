@@ -6,13 +6,16 @@ import java.util.List;
 public class Messages {
 
 	private int id_message;
-	private int id_image; // TODO: Remover futuramente, estará obsoleto
+	private int id_image;
 	private int id_modify;
 	private int equip;
 	private String id;
-	private String tipo; // TODO: Remover futuramente, estará obsoleto
-	private String nome; // TODO: Remover futuramente, estará obsoleto
-	private String image; // TODO: Remover futuramente, estará obsoleto
+	private String tipo;
+	private String nome;
+	private String image;
+	private String message1;
+	private String message2;
+	private String message3;
 	private List<Pages> pages;
 	private String tableImg;
 	private String tableMessage;
@@ -132,13 +135,24 @@ public class Messages {
 	}
 
 	public void setPages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
-			float timer, int page) {
-		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer);
+			float timer, int idx, int page) {
+		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer, idx);
 		this.pages.add(page, pages);
 	}
 
 	public void setPages(int page) {
 		this.pages.add(page, new Pages());
+	}
+
+	public void revision() {
+		boolean revision = false;
+		for (Pages page : pages) {
+			if (page.contain && page.timer != 0 && !revision)
+				continue;
+			else
+				revision = true;
+				page.timer = 0;
+		}
 	}
 
 	@Override
@@ -163,6 +177,30 @@ public class Messages {
 		return true;
 	}
 
+	public String getMessage3() {
+		return message3;
+	}
+
+	public void setMessage3(String message3) {
+		this.message3 = message3;
+	}
+
+	public String getMessage2() {
+		return message2;
+	}
+
+	public void setMessage2(String message2) {
+		this.message2 = message2;
+	}
+
+	public String getMessage1() {
+		return message1;
+	}
+
+	public void setMessage1(String message1) {
+		this.message1 = message1;
+	}
+
 	public class Pages {
 		private Boolean contain;
 		private String text1;
@@ -173,9 +211,10 @@ public class Messages {
 		private String image;
 		private String tipo;
 		private String nome;
+		private int page;
 
 		public Pages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
-				float timer) {
+				float timer, int page) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
@@ -184,6 +223,7 @@ public class Messages {
 			this.tipo = tipo;
 			this.nome = nome;
 			this.timer = timer;
+			this.page = page;
 			this.contain = true;
 		}
 
@@ -196,6 +236,7 @@ public class Messages {
 			this.tipo = "";
 			this.nome = "";
 			this.timer = 0;
+			this.page = 0;
 			this.contain = false;
 		}
 
@@ -233,6 +274,10 @@ public class Messages {
 
 		public Boolean getContain() {
 			return contain;
+		}
+
+		public int getPage() {
+			return page;
 		}
 	}
 }

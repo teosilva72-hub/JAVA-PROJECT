@@ -461,7 +461,7 @@
 
 					<!-- Modal content-->
 
-					<div class="modal-content">
+					<div class="modal-content addbox">
 						<div class="modal-header text-center">
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_creation_modal_title}</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -479,7 +479,8 @@
 							<div class="row">
 								<div class="form-row">
 									<div class="col-md-12">
-										<span for="eqp" class="valid-icon-hidden"></span> <select
+										<span for="eqp" class="valid-icon-hidden"></span> 
+										<select
 											name="equips" id="equips" size="1">
 											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}"
@@ -673,7 +674,7 @@
 										<f:passThroughAttribute name="data-target" value="#editmodal" />
 										<f:ajax execute="@form"
 											render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
-								edit-equip-form:roads edit-equip-form:km edit-equip-form:width edit-equip-form:visible" />
+								edit-equip-form:roads edit-equip-form:km edit-equip-form:width" />
 									</h:commandButton>
 								</div>
 								<div class="form-group col-md-4">
@@ -690,12 +691,12 @@
 
 								<div class="form-group col-md-4">
 									<h:commandButton
-										value="#{mapLabels.map_creation_btn_delete_equipment}"
-										id="delequip" class="btn btn-dark form-draw-button delbtn">
+										value="#{mapLabels.map_creation_btn_delete_equipment}" action="#{equipsBean.runDel}"
+										id="delequip" class="btn btn-dark form-draw-button delbtn" >
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target"
-											value="#deletemodal" />
-										<f:ajax execute="@form" render="@none" />
+											value="#deletemodal"  />
+										<f:ajax execute="@form" render="delete-equip-form:delete-equipName" />
 									</h:commandButton>
 								</div>
 							</div>
@@ -714,7 +715,7 @@
 				<h:form class="modal-content" name="edit-equip-form"
 					id="edit-equip-form">
 					<!-- Modal content-->
-					<div class="modal-content">
+					<div class="modal-content addbox">
 						<div class="modal-header text-center">
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_edit_modal_title}</h4>
 							<button type="button" class="close" data-dismiss="modal"
@@ -880,12 +881,14 @@
 							</button>
 
 						</div>
-						<div class="modal-body"></div>
-
-						<div class="modal-footer">
+						<div class="modal-body">
+						
+						<h:outputLabel name="delete-equipName" id="delete-equipName" value= "Deletar'#{equipsBean.equip.nome}'"  /></div>
+						
+						 <div class="modal-footer">
 							<div class="form-row">
-								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}" />
-								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}" />
+								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}"/>
+								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}"/>
 								<h:commandButton
 									value="#{mapLabels.map_creation_btn_yes_equipment}"
 									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"
@@ -945,14 +948,13 @@
 
 		<script>
 			function borderEquip(id){
-				setTimeout(function() {
-					$(id).fadeOut('fast');
-				}, 1000);
-				console.log(id)
 				var equipBorder = document.getElementById(id);
-				equipBorder.style.border = "solid blue 1px";
-				
-				
+				equipBorder.style.border = "1px solid black"
+				equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
+				setTimeout(function() {
+					equipBorder.style.border = ""
+					equipBorder.style.borderImage = ""
+				}, 2500);	
 			}
 			$(function() {
 				
@@ -993,6 +995,12 @@
 				document.getElementById('form-modal-submit:equipTable').value = type;
 
 			}
+			
+			function sendToBeanDel() {
+
+				document.getElementById('delete-equip-form:delete-equipName').innerText = type + id;
+
+			}
 
 			function sendType() {
 				document.getElementById('edit-equip-form:equipTable1').value = type;
@@ -1028,16 +1036,6 @@
 			$(".posbtn").click(function() {
 				$(".save_pos").show();
 				$(".cancel_pos").show();
-			});
-
-			$(".editbtn").click(function() {
-				$(".save_pos").hide();
-				$(".cancel_pos").hide();
-			});
-
-			$(".delbtn").click(function() {
-				$(".save_pos").hide();
-				$(".cancel_pos").hide();
 			});
 
 			$(".add_equip").click(function() {

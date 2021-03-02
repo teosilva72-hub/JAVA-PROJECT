@@ -1038,10 +1038,21 @@ function unLock(){
 	document.getElementById("msgOthersUsers").style.display = "none";
 	document.getElementById("msgFinished").style.display = "none";
 }
-//Mostrar msg antes de fechar a aba no navegador
-/*window.addEventListener('beforeunload', function (e) {
-  // Cancel the event
-  e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-  // Chrome requires returnValue to be set
-  e.returnValue = '';
-});*/
+function hiddenListFile(){
+	document.getElementById("listFiles").style.display = "none";
+}
+function blockListFile(){
+	document.getElementById("listFiles").style.display = "block";
+}
+function updateOcc(){
+	document.getElementById("updateOcc").style.display = "block";
+}
+function cancelOcc(){
+	document.getElementById("cancelOcc").style.display = "block";
+}
+setTimeout(function() {
+   $('#updateOcc').fadeOut('fast');
+}, 3000);
+setTimeout(function() {
+   $('#cancelOcc').fadeOut('fast');
+}, 3000);

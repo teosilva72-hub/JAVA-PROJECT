@@ -17,12 +17,13 @@ public class OccurrencesDAO {
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
-	
-		
+
+	//m�todo cadastrar ocorr�ncias
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
-
+		
+		//script BD
 		String query = "INSERT INTO occ_data(occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, end_minute, cause, cause_description, kilometer, highway, "
 				+ "local_state, direction, lane, others, local_condition, traffic, characteristic, interference, signaling, conductor_condition, descrTitleDescr, descrDescr, envolvTypo, "
 				+ "envolvWhen, envolvDescr, procedureName, procedureDescr, trafficHour, trafficMinute, trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, "
@@ -37,7 +38,8 @@ public class OccurrencesDAO {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
-
+			
+			//passando valores para os atributos BD
 			ps.setString(1, data.getData_number());
 			ps.setString(2, data.getType());
 			ps.setString(3, data.getOrigin());
@@ -104,9 +106,11 @@ public class OccurrencesDAO {
 			ps.setString(64, data.getDamageUnity()); 
 
 			int res = ps.executeUpdate();
-
+			
+			//se a vari�vel for maior do que 0, acessamos a essa fun��o
 			if(res > 0) {
-
+				
+				//pengando o �ltimo valor do banco de dados
 				String query2 = "Select MAX(occ_number) AS last_Id  FROM occ_data";
 
 				ps = conn.prepareStatement(query2);
@@ -115,7 +119,7 @@ public class OccurrencesDAO {
 
 				if(rs != null) {
 					while(rs.next()) {	
-
+						//atribuindo para a variavel occ_number o �ltimo valor do banco de dados
 						occ_number = rs.getString("last_Id");
 
 					}
@@ -128,11 +132,11 @@ public class OccurrencesDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
-
+		//retordo o valor do m�todo como o �ltimo id do banco de dados
 		return occ_number;
 
 	}
-
+	
 	public ArrayList<SelectItem> dropDownFieldValues (String field) throws Exception {	
 
 		String query = "SELECT detail_id, value_ FROM tracevia_app.occ_details WHERE field = ? and active = 1";
@@ -164,12 +168,50 @@ public class OccurrencesDAO {
 		}
 		return listarDropDownValue;
 	}
+	
+	//m�todo editTable, esse � o m�todo onde passamos os valores para os atributos para fazer o bloqueio e desbloqueio da tabela
+	public boolean editTable(boolean editTable, String name_user, int accessLevel, String id ) throws Exception {
+		
+		boolean status = false;
+		
+		//script para pegar os valores e passar valores
+		String query = "UPDATE occ_data SET editTable = ?, nameUser = ?, accessLevel = ? WHERE occ_number = ?";
+
+		DateTimeApplication dtm = new DateTimeApplication();
+		
+		try {
+			//passando ou pegando os valores dos atributos
+			conn = ConnectionFactory.connectToTraceviaApp();
+
+			ps = conn.prepareStatement(query);
+
+			ps.setBoolean(1, editTable);
+			ps.setString(2, name_user);
+			ps.setInt(3, accessLevel);
+			ps.setString(4, id);
+
+			ps.executeUpdate();
 
 
+		}catch (SQLException alterarOcorrencia){
+
+			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+
+		}finally {
+
+			ConnectionFactory.closeConnection(conn, ps);
+
+		}		
+
+		return status;
+
+	}
+	
+	//m�todo atualizar ocorr�ncia 
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 		boolean status = false;
-
+		//script dos atributos que ser�o atualizados as informa�oes do banco de dados
 		String query = "UPDATE occ_data SET type = ? , origin = ?, state_occurrence = ?, start_date = ?, start_hour = ?, " +
 				"start_minute = ?, end_date = ?, end_hour = ?, end_minute = ?, cause = ?, cause_description = ?, kilometer = ?, highway = ?, " +
 				"local_state = ?, direction = ?, lane = ?, others = ?, local_condition = ?, traffic = ?, characteristic = ?, interference = ?, " +
@@ -181,8 +223,10 @@ public class OccurrencesDAO {
 				"descriptionInter = ?, involvedInter = ?, actionInter = ?, damage_amount = ?, statusAction = ?, damageUnitySelect = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
-		System.out.println(data.getActionStartData());
+		
 		try {
+			//atributos que ser�o atualizados quando o m�todo for chamado
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
 
@@ -269,14 +313,17 @@ public class OccurrencesDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	//pegando o �ltimo registro do banco de dados
 	public int GetId() throws Exception{
 
 		String sql = "SELECT max(occ_number) FROM occ_data";
 
 		int value = 0; 
-
+		
+		//tentar
 		try {
-
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -284,20 +331,24 @@ public class OccurrencesDAO {
 			if(rs != null) {
 				while(rs.next()) {
 
-					 value = rs.getInt(1);	   			
+					value = rs.getInt(1);	   			
 				}
 			}
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-
+		
+		//retornando o valor do �ltimo a id para a variavel (value)
 		return value;
 
 	}
+	
+	//m�todo PDF
 	public OccurrencesData submitPdf(int PdfGet) throws Exception {
 
 		OccurrencesData occ = new OccurrencesData();
 
+		//script onde pegamos os valores dos atributos
 		String pdf = "SELECT  dt.value_, dt1.value_, dt2.value_, dt3.value_, dt4.value_, dt5.value_, dt6.value_, dt7.value_, dt8.value_, dt9.value_, dt10.value_, " + 
 				"dt11.value_, dt12.value_, dt13.value_, dt14.value_, dt15.value_, dt16.value_, dt17.value_, dt18.value_, dt19.value_, dt20.value_ "+ 
 				"FROM occ_data d "+ 
@@ -323,7 +374,7 @@ public class OccurrencesDAO {
 				"LEFT JOIN occ_details dt19 ON d.statusAction = dt19.detail_id "  +
 				"LEFT JOIN occ_details dt20 ON d.characteristic = dt20.detail_id " +
 				"WHERE occ_number = ? ";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -333,7 +384,7 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-					
+					//valores dos atributos dentro do banco de dados
 					occ.setType(rs.getString(1));
 					occ.setOrigin(rs.getString(2));
 					occ.setState_occurrences(rs.getString(3));
@@ -362,15 +413,15 @@ public class OccurrencesDAO {
 			e.printStackTrace();
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-
+		}	
+		//passando os valores dos atributos para dentro da var
 		return occ;
 	}
 	public UserAccountBean user_id(int user) throws Exception {
 
 		UserAccountBean occ = new UserAccountBean();
 		String userId = "SELECT user_id from users_register ;";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -380,9 +431,9 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-					
+
 					occ.setUser_id(rs.getString(1));
-					
+
 				}
 			}
 		} catch (Exception e) {
@@ -456,10 +507,12 @@ public class OccurrencesDAO {
 		return status;
 	}
 
+	//m�todo buscar ocorr�ncia por id
 	public OccurrencesData buscarOcorrenciaPorId(int id) throws Exception {
 
 		OccurrencesData occ = new OccurrencesData();
-
+		
+		//Script dos atributos que as infor��es ser�o requisitadas
 		String query = "SELECT occ_number, type, origin, state_occurrence, start_date, start_hour, start_minute, end_date, end_hour, " +
 				"end_minute, cause, cause_description, kilometer, highway, local_state, direction, lane, others, local_condition, " +
 				"traffic, characteristic, interference, signaling, conductor_condition, descrTitleDescr, descrDescr, " +
@@ -467,7 +520,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files, editTable, nameUser " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -480,7 +533,7 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-
+					//atributos onde as informa��es est�o armazenadas
 					occ.setData_number(rs.getString(1));
 					occ.setType(rs.getString(2));
 					occ.setOrigin(rs.getString(3)); 
@@ -546,6 +599,8 @@ public class OccurrencesDAO {
 					occ.setStatusAction(rs.getString(63));
 					occ.setDamageUnity(rs.getString(64));
 					occ.setLocalFiles(rs.getString(65));
+					occ.setEditTable(rs.getBoolean(66));
+					occ.setNameUser(rs.getString(67));
 
 				}
 
@@ -556,7 +611,7 @@ public class OccurrencesDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-
+		//passando os valores dos atributos para a vari�vel occ
 		return occ;
 
 	}

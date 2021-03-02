@@ -27,7 +27,7 @@
 					<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 				</div>
 			</h:form>
-			<div class="row">
+			<div class="row flex-row-reverse">
 				<!-- MESSAGE CONTENT BOX -->
 				<div class="boardDetails shadow col-4">
 					<!--  PMV BOARD -->
@@ -39,20 +39,6 @@
 
 							<!-- PAGINATORS -->
 							<div class="card-body position-relative responsive">
-								<div class="btn-group mb-4 buttons-page edit-pmv-page" role="group"
-									aria-label="Page select">
-									<input class="btn-check" name="btn-pages" id="btn-page1" type="radio" value="1"
-										checked="checked" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page1">1</label>
-									<input class="btn-check" name="btn-pages" id="btn-page2" type="radio" value="2" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page2">2</label>
-									<input class="btn-check" name="btn-pages" id="btn-page3" type="radio" value="3" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page3">3</label>
-									<input class="btn-check" name="btn-pages" id="btn-page4" type="radio" value="4" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page4">4</label>
-									<input class="btn-check" name="btn-pages" id="btn-page5" type="radio" value="5" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page5">5</label>
-								</div>
 								<div id="page-pmv">
 									<c:forEach begin="1" end="5" varStatus="index">
 
@@ -198,32 +184,108 @@
 									</c:forEach>
 								</div>
 
-								<div class="mt-4 text-creation">
+								<div class="edit-pmv-page">
 									<!-- TIMERS -->
 									<div class="row">
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 1" pt:placeholder="Timer 1" />
+
+										<div class="col-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck1" class="form-check-input mt-0"
+														type="checkbox" value="1" aria-label="Checkbox for timer1"
+														disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage1" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer1"
+													title="Timer 1" placeholder="0" disabled="disabled"  min="1" max="10"/>
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
+													value="1" checked="checked" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page1">1</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 2" pt:placeholder="Timer 2" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck2" class="form-check-input mt-0"
+														type="checkbox" value="2" aria-label="Checkbox for timer2"
+														disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage2" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer2"
+													title="Timer 2" placeholder="0" disabled="disabled"  min="1" max="10"/>
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
+													value="2" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page2">2</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 3" pt:placeholder="Timer 3" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck3" class="form-check-input mt-0"
+														type="checkbox" value="3" aria-label="Checkbox for timer3"
+														disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage3" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer3"
+													title="Timer 3" placeholder="0" disabled="disabled"  min="1" max="10"/>
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
+													value="3" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page3">3</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 4" pt:placeholder="Timer 4" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck4" class="form-check-input mt-0"
+														type="checkbox" value="4" aria-label="Checkbox for timer4"
+														disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage4" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer4"
+													title="Timer 4" placeholder="0" disabled="disabled"  min="1" max="10"/>
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
+													value="4" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page4">4</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 5" pt:placeholder="Timer 5" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck5" class="form-check-input mt-0"
+														type="checkbox" value="5" aria-label="Checkbox for timer5"
+														disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage5" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer5"
+													title="Timer 5" placeholder="0" disabled="disabled"  min="1" max="10"/>
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
+													value="5" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page5">5</label>
+											</div>
 										</div>
 									</div>
 								</div>
-								<div class="row">
+								<div class="row edit-field">
 									<!-- id input -->
 									<div class="col-3">
 										<div id="image-div">
@@ -249,114 +311,88 @@
 											</p:selectOneListbox>
 										</div>
 									</div>
-									<div class="edit-field row col-9 my-5">
-										<div class="position-absolute">
+									<div class="row col-9">
 
-											<div class="col-12 confInput">
-												<div id="id-div">
-													<span class="iconeSpan"><i class="fas fa-key"></i></span>
-													<div class="input-group">
-
-														<h:inputText id="id-input" class="form-control inputDesign id"
-															value="#{pmvMessage.idMessage}" disabled="true"
-															pt:type="text" name="id"
-															pt:placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
-													</div>
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-key"></i></span>
+												<div class="input-group">
+													<input id="id-input" class="form-control inputDesign id"
+														disabled="disabled" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
 												</div>
 											</div>
-											<!-- end id input -->
-											<!-- Type Select -->
-											<div class="col-12 confInput">
-												<div id="id-div">
-													<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
-													<div class="input-group">
-														<h:selectOneMenu class="form-control selectType"
-															disabled="#{pmvMessage.inputs}" value="#{pmvMessage.tipo}"
-															id="tipo" name="tipo">
-															<f:selectItem itemLabel="Type" itemValue="Type" />
-															<f:selectItems value="#{pmvMessage.type}" />
-														</h:selectOneMenu>
-													</div>
+										</div>
+										<!-- end id input -->
+										<!-- Type Select -->
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
+												<div class="input-group">
+													<select name="tipo" id="tipo" class="form-control selectType">
+														<c:forEach items="#{pmvMessage.type}" var="opt">
+															<option value="#{opt.value}">#{opt.label}</option>
+														</c:forEach>
+													</select>
 												</div>
 											</div>
-											<!-- End Type Select -->
-											<!-- input name -->
-											<div class="col-12 confInput">
-												<div id="name-div">
-													<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
-													<div class="input-group">
-														<h:inputText id="name-input"
-															class="form-control name inputDesign" pt:type="text"
-															name="name"
-															pt:placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
-															value="#{pmvMessage.nome}" disabled="#{pmvMessage.inputs}"
-															maxlength="15" pt:autocomplete="off" />
-													</div>
+										</div>
+										<!-- End Type Select -->
+										<!-- input name -->
+										<div class="col-12 confInput">
+											<div id="name-div">
+												<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
+												<div class="input-group">
+													<input id="name-input" class="form-control name inputDesign"
+														type="text"
+														placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+														maxlength="15" autocomplete="off" />
 												</div>
-
 											</div>
-											<!-- end input name -->
 
 										</div>
-										<div class="position-absolute text-creation">
+										<!-- end input name -->
 
-											<!-- message input -->
-											<div class="col-12 confInput">
-												<div id="input-message-1">
-													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-													<div class="input-group">
+										<!-- message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-1">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
 
-														<h:inputText id="message-box1"
-															class="form-control message-input inputDesign"
-															maxlength="12" autoResize="false" resizable="false"
-															disabled="#{pmvMessage.inputs}"
-															value="#{pmvMessage.message1}" pt:type="text"
-															name="message-1"
-															pt:placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
-															pt:autocomplete="off">
-															<p:ajax event="keyup" update="box-1, box-2, box-3, box-4, box-5,
-						box-6, box-7, box-8, box-9, box-10, box-11, box-12" listener="#{pmvMessage.messageRowOne}" />
-														</h:inputText>
-													</div>
+													<input id="message-box1"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+														autocomplete="off" />
 												</div>
 											</div>
-											<!-- end message input -->
-											<div class="col-12 confInput">
-												<div id="input-message-2">
-													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-													<div class="input-group">
+										</div>
+										<!-- end message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-2">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
 
-														<h:inputText id="message-box2"
-															class="form-control message-input inputDesign"
-															maxlength="12" autoResize="false" resizable="false"
-															disabled="#{pmvMessage.inputs}"
-															value="#{pmvMessage.message2}" pt:type="text"
-															name="message-2"
-															pt:placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
-															pt:autocomplete="off">
-															<p:ajax event="keyup" update="box-13, box-14, box-15, box-16, box-17,
-						box-18, box-19, box-20, box-21, box-22, box-23, box-24" listener="#{pmvMessage.messageRowTwo}" />
-														</h:inputText>
-													</div>
+													<input id="message-box2"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+														autocomplete="off">
+													</input>
 												</div>
 											</div>
-											<div class="col-12 confInput">
-												<div id="input-message-3">
-													<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-													<div class="input-group">
+										</div>
+										<div class="col-12 confInput">
+											<div id="input-message-3">
+												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+												<div class="input-group">
 
-														<h:inputText id="message-box3"
-															class="form-control message-input inputDesign"
-															maxlength="12" autoResize="false" resizable="false"
-															disabled="#{pmvMessage.inputs}"
-															value="#{pmvMessage.message3}" pt:type="text"
-															name="message-3"
-															pt:placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
-															pt:autocomplete="off">
-															<p:ajax event="keyup" update="box-25, box-26, box-27, box-28, box-29,
-							box-30, box-31, box-32, box-33, box-34, box-35, box-36" listener="#{pmvMessage.messageRowThree}" />
-														</h:inputText>
-													</div>
+													<input id="message-box3"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+														autocomplete="off">
+													</input>
 												</div>
 											</div>
 										</div>
@@ -371,20 +407,13 @@
 								<!-- button submit -->
 
 								<div id="col">
-									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_save}" id="btnCr1"
-										action="#{pmvMessage.messageActions}" disabled="#{pmvMessage.submit}"
-										class="btn btn-dark confBtn">
-									</h:commandButton>
+									<button id="btnCr1" type="button" disabled="disabled"
+										class="btn btn-dark confBtn">#{dmsLabels.dms_available_messages_btn_save}</button>
 								</div>
 								<!-- button clear -->
 								<div id="col">
-									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_cancel}"
-										action="#{pmvMessage.cleanSelection}" id="btnCr2"
-										class="btn btn-dark confBtn conf2Btn" process="@this"
-										disabled="#{pmvMessage.submit}"
-										onclick="showID(); returnDIV(); PF('bui').hide()">
-										<f:ajax render="@form" resetValues="true" />
-									</h:commandButton>
+									<button id="btnCr2" type="button" class="btn btn-dark confBtn conf2Btn"
+										disabled="disabled">#{dmsLabels.dms_available_messages_btn_cancel}</button>
 								</div>
 							</div>
 
@@ -393,135 +422,29 @@
 				</div>
 				<div class="col-8 tabelaDetails">
 
-					<div class="table-responsive-sm">
+					<div class="table-responsive">
 						<h:form id="btn-form">
 							<div class="btnEstruta">
 								<div id="table-create">
-									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_create}"
-										id="btnCreate" action="#{pmvMessage.createMessage}" onclick="bloquerTable();"
-										disabled="#{pmvMessage.create}" class="btn btn-available">
-										<f:ajax execute="@form" render=":content-form :btn-form" />
-									</h:commandButton>
+									<button id="btnCreate" type="button"
+										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_create}</button>
 								</div>
 								<div id="table-edit">
-									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_edit}" id="btnEdit"
-										action="#{pmvMessage.editMessage}" onclick="bloquerTable();"
-										disabled="#{pmvMessage.editable}" class="btn btn-available">
-										<f:ajax execute="@form" render=":content-form :btn-form" />
-									</h:commandButton>
+									<button id="btnEdit" type="button" disabled="disabled"
+										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_edit}</button>
 								</div>
 								<div id="table-delete">
-									<h:commandButton value="#{dmsLabels.dms_available_messages_btn_delete}"
-										id="btnDelete" disabled="#{pmvMessage.delete}" class="btn btn-available"
-										immediate="true">
-										<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target" value="#deleteModal" />
-										<f:ajax execute="@form" render="@none" />
-									</h:commandButton>
+									<button id="btnDelete" disabled="disabled"
+										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_delete}</button>
 								</div>
 							</div>
 						</h:form>
 						<!-- Tabela real -->
 						<div id="tabelaReal">
-							<h:dataTable id="message-table" value="#{pmvMessage.messages_enumeration}" var="msg"
-								styleClass="table table-sm table-striped table-hover table-dark custom-table"
-								cellspacing="0" width="100%" headerClass="custom-table-header"
-								rowClasses="custom-table-odd-row, custom-table-even-row"
-								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.value.id_message}" />
-								</h:column>
-								<c:forEach items="#{pmvMessage.messages.get(msg.key).pages}" var="page"
-									varStatus="index">
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_table_col_type}
-										</f:facet>
-										<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_table_col_name}
-										</f:facet>
-										<h:outputText value="#{page.nome}" class="tablePageName" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_table_col_image}
-										</f:facet>
-										<h:graphicImage id="picture-table#{index.index + 1}"
-											value="/resources/images/pictures/#{page.image}" width="25" height="25" />
-										<h:inputHidden value="#{page.id_image}" id="hiddenField" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1} msgPage1" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_msg1_placeholder}
-										</f:facet>
-										<h:outputText value="#{page.text1}" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_msg2_placeholder}
-										</f:facet>
-										<h:outputText value="#{page.text2}" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											#{dmsLabels.dms_available_messages_msg3_placeholder}
-										</f:facet>
-										<h:outputText value="#{page.text3}" />
-									</h:column>
-									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-										<f:facet rendered="#{index.first}" name="header">
-											pg
-										</f:facet>
-										<h:outputText value="#{index.index + 1}" />
-									</h:column>
-								</c:forEach>
-							</h:dataTable>
+
 						</div>
-						<!-- Tabela hidden -->
-						<div id="tabelaHidden" class="trazerTable">
-
-							<h:dataTable id="message-table-hidden" disabled="#{pmvMessage.editable}"
-								value="#{pmvMessage.messages}" var="msg"
-								styleClass="table table-sm table-striped table-hover table-dark custom-table"
-								cellspacing="0" width="100%" headerClass="custom-table-header"
-								rowClasses="custom-table-odd-row, custom-table-even-row"
-								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_message}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
-									<h:outputText value="#{(pmvMessage.translateType(msg.pages.get(0).tipo))}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
-									<h:outputText value="#{msg.pages.get(0).nome}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.image}"
-										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.pages.get(0).id_image}" id="hiddenField" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.pages.get(0).text1}" />
-									<br />
-									<h:outputText value="#{msg.pages.get(1).text2}" />
-									<br />
-									<h:outputText value="#{msg.pages.get(0).text3}" />
-								</h:column>
-							</h:dataTable>
+						<div id="disableTable">
+							<span>Blocked</span>
 						</div>
 						<h:form id="formId">
 							<h:inputHidden id="idMessage" value="#{pmvMessage.rowKey}" />

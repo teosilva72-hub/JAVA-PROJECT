@@ -346,8 +346,18 @@
 
 	</ui:define>
 	<ui:define name="main-content">
+		
+		<h:form>
+			<div class="alert alert-success text-center" role="alert"
+				id="updateOcc" style="display: none;">
+				<h6 class="textMsgFile">#{occLabels.id_idUpdate} #{occurrencesBean.idUpdate}</h6>
+			</div>
+			<div class="alert alert-success text-center" role="alert"
+				id="cancelOcc" style="display: none;">
+				<h6 class="textMsgFile">#{occLabels.occ_cancel}</h6>
+			</div>
+		</h:form>
 		<!-- Inicio do conteudo do site -->
-
 		<section class="conteudo"> <!--Inicio da animação  -->
 		<div id="preloader" style="display: none;">
 			<div class="inner">
@@ -483,8 +493,8 @@
 								</div>
 								<div class="modal-body">
 									<p id="editModal">#{occLabels.msg_editar}</p>
-									#{occLabels.msg_occ_id_p}
-									<h:inputText id="selectedId" disabled="true"></h:inputText>
+									<p>#{occLabels.msg_occ_id_p}:
+										#{occurrencesBean.data.data_number}</p>
 									<p id="editorTextModal" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden}</p>
 									<p id="editorTextModal2" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden2}</p>
 									<p id="editorTextModal3" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden3}</p>
@@ -637,7 +647,7 @@
 										</h:commandButton>
 									</div>
 								</div>
-								
+
 								<!-- col para separar btn e pdf -->
 								<div class="col-md-1"></div>
 								<!-- col para separar btn e pdf -->
@@ -707,6 +717,7 @@
 						id="unLock" style="display: none;">
 						<p class="textMsgFile">#{occLabels.un_lock}</p>
 					</div>
+
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">
 						<!-- Alert evento -->
@@ -721,7 +732,7 @@
 								<h:inputText class="form-control inputDesign" disabled="true"
 									id="occNumber" name="occNumber"
 									value="#{occurrencesBean.data.data_number}" />
-								<h:inputHidden />
+
 							</div>
 							<!-- tipo occ -->
 							<div class="form-group col-md-4">
@@ -1170,7 +1181,7 @@
 								</div>
 							</div>
 							<!-- End input file save -->
-							
+
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
 								<div class="form-group col-md-9 field" align="left">
@@ -1190,14 +1201,13 @@
 							<!-- End input file alterar -->
 
 							<!-- Arquivos Adicionados -->
+							<!-- alert -->
+							<div class="alert alert-dark confAlert" id="fileTotal"
+								role="alert">
+								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
+									(#{occurrencesBean.total})</h5>
+							</div>
 							<div class="listarFiles" id="listFiles">
-								<!-- alert -->
-								<div class="alert alert-dark confAlert" id="fileTotal"
-									role="alert">
-									<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
-										(#{occurrencesBean.total})</h5>
-								</div>
-
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
 									<c:forEach items="#{occurrencesBean.listarFile}" var="item"
@@ -1218,23 +1228,23 @@
 
 													<!-- btn delete -->
 													<div class="col-md-2">
-													
+
 														<span>#{occLabels.occ_delete}</span>
-														
+
 														<div class="dropdown">
-														
+
 															<button class=" dropdown-toggle" type="button"
 																id="dropdownMenuButton" data-bs-toggle="dropdown"
 																aria-expanded="false">
-																
+
 																<i class="far fa-trash-alt"></i>
-																
+
 															</button>
-															
+
 															<ul class="dropdown-menu"
 																aria-labelledby="dropdownMenuButton">
 																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																
+
 																<li><h:commandLink
 																		action="#{occurrencesBean.deleteFile(item)}"
 																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>

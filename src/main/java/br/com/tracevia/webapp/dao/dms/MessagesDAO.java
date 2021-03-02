@@ -54,17 +54,19 @@ public class MessagesDAO {
 						mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
 					} else
-						for (int i = 0; i <= pages.length - 1; i++)
-							if (rs.getInt("page" + (i + 1)) == page) {
+						for (int i = 0; i <= pages.length - 1; i++) {
+							int idx = i + 1;
+							if (rs.getInt("page" + idx) == page) {
 								int index = mensagens.getPages().size();
 								if (i <= index)
 									index = i;
 								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
 										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
-										getImageFromMessageAvailable(rs.getInt("id_image")),
-										rs.getFloat("timer" + (i + 1)), index);
+										getImageFromMessageAvailable(rs.getInt("id_image")), rs.getFloat("timer" + idx),
+										idx, index);
 								pages[i] = false;
 							}
+						}
 					if (rs.next()) {
 						if (rs.getInt("id_message") != mensagens.getId_message()) {
 							for (int i = 0; i < pages.length; i++) {
@@ -77,11 +79,62 @@ public class MessagesDAO {
 							lista.add(mensagens);
 						}
 					} else {
+						for (int i = 0; i < pages.length; i++) {
+							if (pages[i]) {
+								pages[i] = false;
+								mensagens.setPages(i);
+							}
+						}
 						lista.add(mensagens);
 						break;
 					}
 				}
 			}
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+
+		for (Messages messages : lista) {
+			messages.revision();
+		}
+
+		return lista;
+	}
+
+	public List<Messages> mensagensOnly() throws Exception {
+
+		List<Messages> lista = new ArrayList<Messages>();
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement("SELECT id_message, id_image, type, name, text1, text2, text3 "
+					+ "FROM tracevia_app.pmv_messages WHERE enabled <> 0 AND id_message <> 1 ORDER BY id_message ASC");
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+					Messages mensagens = new Messages();
+
+					mensagens.setId_message(rs.getInt("id_message") - 1);
+					mensagens.setId_image(rs.getInt("id_image"));
+					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
+					mensagens.setTipo(rs.getString("type"));
+					mensagens.setNome(rs.getString("name"));
+					mensagens.setMessage1(rs.getString("text1"));
+					mensagens.setMessage2(rs.getString("text2"));
+					mensagens.setMessage3(rs.getString("text3"));
+
+					lista.add(mensagens);
+				}
+			}
+			return lista;
 
 		} catch (
 

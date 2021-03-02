@@ -22,6 +22,8 @@ import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.sos.SOS;
 
+import org.primefaces.context.RequestContext;
+
 
 @ManagedBean(name="equipsBean")
 @RequestScoped
@@ -38,8 +40,8 @@ public class EquipmentsBean implements Serializable {
 	
 	Equipments equip;
 	
-	private int equipId;
-	private String equipTable, equipBord;
+	private int equipId, equipId2;
+	private String equipTable, equipTable2, equipBord, equipDel;
 	private int positionX, positionY;
 					
 	public List<SelectItem> getCities() {
@@ -92,6 +94,14 @@ public class EquipmentsBean implements Serializable {
 
 	public Equipments getEquip() {
 		return equip;
+	}
+	
+	public String getEquipDel() {
+		return equipDel;
+	}
+
+	public void setEquipDel(String equipDel) {
+		this.equipDel = equipDel;
 	}
 
 	public void setEquip(Equipments equip) {
@@ -174,8 +184,8 @@ public class EquipmentsBean implements Serializable {
 	    
 	    String table = defineTableById(moduleID);
 	    //execute js
-	    org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0);");
-	    org.primefaces.context.RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+Integer.parseInt(parameterMap.get("equipId"))+"'");
+	    RequestContext.getCurrentInstance().execute("history.go(0);");
+	    RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+Integer.parseInt(parameterMap.get("equipId"))+"'");
 	    EquipmentsDAO equipDAO = new EquipmentsDAO();
 	    
 	     
@@ -194,15 +204,25 @@ public class EquipmentsBean implements Serializable {
 		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
-		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 equip = new Equipments();
 		 
-		 equip = dao.EquipSearchMap(equipId, equipTable);
-				    
-		 //System.out.println(equip.getCidade());
-	    //For Equipment ID
-	 
+		 equip = dao.EquipSearchMap(equipId, equipTable); 
+		
+		 //System.out.println(equip.getNome());
+		 System.out.println(equipId);
+		 
+         RequestContext.getCurrentInstance().update("delete-equip-form:delete-equipName");
+	    // For Equipment ID
+		 
+	    
+	}
+	
+	public void runDel() throws Exception {
+		 
+        RequestContext.getCurrentInstance().execute("sendToBeanDel();");
+	    // For Equipment ID
+		 
 	    
 	}
 	
@@ -214,7 +234,7 @@ public class EquipmentsBean implements Serializable {
 		 String equipTable = getEquipTable();
 		 
 		// System.out.println(equipTable);
-		 org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0)");
+		 RequestContext.getCurrentInstance().execute("history.go(0)");
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
@@ -227,13 +247,18 @@ public class EquipmentsBean implements Serializable {
 	
 	public void DeleteEquipment() throws Exception {
 		
+				
 		boolean delete = false;
 		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
 		 
 		 //System.out.println(equipTable);
-		 org.primefaces.context.RequestContext.getCurrentInstance().execute("history.go(0)");
+		 RequestContext.getCurrentInstance().execute("history.go(0)");
+		 
+		 //RequestContext.getCurrentInstance().update("delete-equip-form:delete-equipName");
+				 
+		
 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
