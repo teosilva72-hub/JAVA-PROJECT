@@ -674,7 +674,7 @@
 										<f:passThroughAttribute name="data-target" value="#editmodal" />
 										<f:ajax execute="@form"
 											render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
-								edit-equip-form:roads edit-equip-form:km edit-equip-form:width edit-equip-form:visible" />
+								edit-equip-form:roads edit-equip-form:km edit-equip-form:width" />
 									</h:commandButton>
 								</div>
 								<div class="form-group col-md-4">
@@ -691,12 +691,12 @@
 
 								<div class="form-group col-md-4">
 									<h:commandButton
-										value="#{mapLabels.map_creation_btn_delete_equipment}"
-										id="delequip" class="btn btn-dark form-draw-button delbtn">
+										value="#{mapLabels.map_creation_btn_delete_equipment}" action="#{equipsBean.runDel}"
+										id="delequip" class="btn btn-dark form-draw-button delbtn" >
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target"
-											value="#deletemodal" />
-										<f:ajax execute="@form" render="@none" />
+											value="#deletemodal"  />
+										<f:ajax execute="@form" render="delete-equip-form:delete-equipName" />
 									</h:commandButton>
 								</div>
 							</div>
@@ -881,12 +881,14 @@
 							</button>
 
 						</div>
-						<div class="modal-body"></div>
-
-						<div class="modal-footer">
+						<div class="modal-body">
+						
+						<h:outputLabel name="delete-equipName" id="delete-equipName" value= "Deletar'#{equipsBean.equip.nome}'"  /></div>
+						
+						 <div class="modal-footer">
 							<div class="form-row">
-								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}" />
-								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}" />
+								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}"/>
+								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}"/>
 								<h:commandButton
 									value="#{mapLabels.map_creation_btn_yes_equipment}"
 									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"
@@ -952,7 +954,7 @@
 				setTimeout(function() {
 					equipBorder.style.border = ""
 					equipBorder.style.borderImage = ""
-				}, 4000);	
+				}, 2500);	
 			}
 			$(function() {
 				
@@ -991,6 +993,12 @@
 
 				document.getElementById('form-modal-submit:equipCod').value = id;
 				document.getElementById('form-modal-submit:equipTable').value = type;
+
+			}
+			
+			function sendToBeanDel() {
+
+				document.getElementById('delete-equip-form:delete-equipName').innerText = type + id;
 
 			}
 

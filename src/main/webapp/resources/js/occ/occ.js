@@ -1044,3 +1044,15 @@ function hiddenListFile(){
 function blockListFile(){
 	document.getElementById("listFiles").style.display = "block";
 }
+function updateOcc(){
+	document.getElementById("updateOcc").style.display = "block";
+}
+function cancelOcc(){
+	document.getElementById("cancelOcc").style.display = "block";
+}
+setTimeout(function() {
+   $('#updateOcc').fadeOut('fast');
+}, 3000);
+setTimeout(function() {
+   $('#cancelOcc').fadeOut('fast');
+}, 3000);
