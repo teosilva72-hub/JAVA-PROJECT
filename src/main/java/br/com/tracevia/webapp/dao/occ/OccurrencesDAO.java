@@ -190,6 +190,7 @@ public class OccurrencesDAO {
 			ps.setInt(3, accessLevel);
 			ps.setString(4, id);
 
+			ps.executeUpdate();
 
 
 		}catch (SQLException alterarOcorrencia){
@@ -330,7 +331,7 @@ public class OccurrencesDAO {
 			if(rs != null) {
 				while(rs.next()) {
 
-					 value = rs.getInt(1);	   			
+					value = rs.getInt(1);	   			
 				}
 			}
 		}finally {
@@ -373,7 +374,7 @@ public class OccurrencesDAO {
 				"LEFT JOIN occ_details dt19 ON d.statusAction = dt19.detail_id "  +
 				"LEFT JOIN occ_details dt20 ON d.characteristic = dt20.detail_id " +
 				"WHERE occ_number = ? ";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -420,7 +421,7 @@ public class OccurrencesDAO {
 
 		UserAccountBean occ = new UserAccountBean();
 		String userId = "SELECT user_id from users_register ;";
-		
+
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -430,9 +431,9 @@ public class OccurrencesDAO {
 
 			if(rs != null) {
 				while(rs.next()) {
-					
+
 					occ.setUser_id(rs.getString(1));
-					
+
 				}
 			}
 		} catch (Exception e) {
@@ -519,7 +520,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files, editTable, nameUser " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -598,6 +599,8 @@ public class OccurrencesDAO {
 					occ.setStatusAction(rs.getString(63));
 					occ.setDamageUnity(rs.getString(64));
 					occ.setLocalFiles(rs.getString(65));
+					occ.setEditTable(rs.getBoolean(66));
+					occ.setNameUser(rs.getString(67));
 
 				}
 

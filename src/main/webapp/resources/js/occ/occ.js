@@ -1038,9 +1038,9 @@ function unLock(){
 	document.getElementById("msgOthersUsers").style.display = "none";
 	document.getElementById("msgFinished").style.display = "none";
 }
-function hiddenListFiles(){	
+function hiddenListFile(){
 	document.getElementById("listFiles").style.display = "none";
 }
-function blockListFiles(){
+function blockListFile(){
 	document.getElementById("listFiles").style.display = "block";
 }
