@@ -522,6 +522,11 @@ select {
 .edit-field {
   position: relative;
   display: none;
+  top: 143px;
+}
+
+.edit-field.active {
+  display: flex;
 }
 
 .equip-info {
@@ -547,13 +552,35 @@ td[class^="pageTable"].active {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-tr[role="row"] {
+tbody tr {
   cursor: pointer;
 }
 
 .dataTables_filter {
   width: max-content;
   margin-left: auto;
+}
+
+#disableTable {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: xxx-large;
+  color: white;
+  background-color: #21212188;
+  display: none;
+}
+
+#disableTable.active {
+  display: revert;
+}
+
+.table-responsive {
+  position: relative;
 }
 
 @keyframes fade {

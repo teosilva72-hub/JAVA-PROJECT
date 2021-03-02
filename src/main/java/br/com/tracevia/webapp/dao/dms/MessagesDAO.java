@@ -62,8 +62,8 @@ public class MessagesDAO {
 									index = i;
 								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
 										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
-										getImageFromMessageAvailable(rs.getInt("id_image")),
-										rs.getFloat("timer" + idx), idx, index);
+										getImageFromMessageAvailable(rs.getInt("id_image")), rs.getFloat("timer" + idx),
+										idx, index);
 								pages[i] = false;
 							}
 						}
@@ -101,6 +101,47 @@ public class MessagesDAO {
 
 		for (Messages messages : lista) {
 			messages.revision();
+		}
+
+		return lista;
+	}
+
+	public List<Messages> mensagensOnly() throws Exception {
+
+		List<Messages> lista = new ArrayList<Messages>();
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement("SELECT id_message, id_image, type, name, text1, text2, text3 "
+					+ "FROM tracevia_app.pmv_messages WHERE enabled <> 0 AND id_message <> 1 ORDER BY id_message ASC");
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+					Messages mensagens = new Messages();
+
+					mensagens.setId_message(rs.getInt("id_message") - 1);
+					mensagens.setId_image(rs.getInt("id_image"));
+					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
+					mensagens.setTipo(rs.getString("type"));
+					mensagens.setNome(rs.getString("name"));
+					mensagens.setMessage1(rs.getString("text1"));
+					mensagens.setMessage2(rs.getString("text2"));
+					mensagens.setMessage3(rs.getString("text3"));
+
+					lista.add(mensagens);
+				}
+			}
+			return lista;
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return lista;

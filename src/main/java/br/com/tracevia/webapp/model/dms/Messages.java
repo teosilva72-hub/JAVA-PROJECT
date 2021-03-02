@@ -6,13 +6,16 @@ import java.util.List;
 public class Messages {
 
 	private int id_message;
-	private int id_image; // TODO: Remover futuramente, estará obsoleto
+	private int id_image;
 	private int id_modify;
 	private int equip;
 	private String id;
-	private String tipo; // TODO: Remover futuramente, estará obsoleto
-	private String nome; // TODO: Remover futuramente, estará obsoleto
-	private String image; // TODO: Remover futuramente, estará obsoleto
+	private String tipo;
+	private String nome;
+	private String image;
+	private String message1;
+	private String message2;
+	private String message3;
 	private List<Pages> pages;
 	private String tableImg;
 	private String tableMessage;
@@ -172,6 +175,30 @@ public class Messages {
 		if (id_message != other.id_message)
 			return false;
 		return true;
+	}
+
+	public String getMessage3() {
+		return message3;
+	}
+
+	public void setMessage3(String message3) {
+		this.message3 = message3;
+	}
+
+	public String getMessage2() {
+		return message2;
+	}
+
+	public void setMessage2(String message2) {
+		this.message2 = message2;
+	}
+
+	public String getMessage1() {
+		return message1;
+	}
+
+	public void setMessage1(String message1) {
+		this.message1 = message1;
 	}
 
 	public class Pages {

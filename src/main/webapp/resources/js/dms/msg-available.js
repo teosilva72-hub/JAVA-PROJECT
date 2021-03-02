@@ -72,50 +72,86 @@ $.fn.loopNext = function (selector) {
 	return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
 }
 
-// func to start rotation tables. Only tables
-const changeMsg = msg => {
-	if (msg.index()) {
-		let timer = Number(msg.attr("timer"));
-		let name = msg.loopNext();
-		let img = name.loopNext();
-		let text1 = img.loopNext();
-		let text2 = text1.loopNext();
-		let text3 = text2.loopNext();
-		let pg = text3.loopNext();
-		if (timer) {
-			msg.addClass('active');
-			name.addClass('active');
-			img.addClass('active');
-			text1.addClass('active');
-			text2.addClass('active');
-			text3.addClass('active');
-			pg.addClass('active');
-			setTimeout(() => {
-				msg.removeClass('active');
-				name.removeClass('active');
-				img.removeClass('active');
-				text1.removeClass('active');
-				text2.removeClass('active');
-				text3.removeClass('active');
-				pg.removeClass('active');
-				changeMsg(pg.loopNext());
-			}, timer * 1000)
-		} else
-			changeMsg(pg.loopNext());
-	} else
-		changeMsg(msg.loopNext());
+const newMsg = () => {
+	$('#btnCreate').prop('disabled', true);
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+	$('#btnCr1').prop('disabled', false);
+	$('#btnCr2').prop('disabled', false);
+	$('#disableTable').addClass('active')
+	$('.edit-pmv-page').removeClass('active')
+	$('.edit-field').addClass('active')
+	let pre_vi = $(`#page-pmv .equip1`)
+	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
+	pre_vi.find('.dmsTab p').text('')
+	pre_vi.find(`#msg1`).children().each(function () {
+		$(this).children().each(function () {
+			$(this).find('[id*=box]').text("")
+		})
+	})
+
+	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active')
 }
 
-$(function () {
+const cancel = () => {
+	$('#btnCreate').prop('disabled', false);
+	$('#btnCr1').prop('disabled', true);
+	$('#btnCr2').prop('disabled', true);
+	$('#disableTable').removeClass('active')
+	$('.edit-field').removeClass('active')
+}
+
+const tableRender = () => {
+	// Start more components for tables
+	$('#message-table').DataTable({
+		select: true,
+		language: {
+			search: "",
+			searchPlaceholder: "Buscar",
+		},
+		"autoWidth": true,
+		"scrollY": "65vh",
+		"scrollCollapse": true,
+		"paging": false,
+		"bInfo": false,
+		"columnDefs": [{
+			"width": "5%",
+			"targets": 0
+		}, {
+			"width": "10%",
+			"targets": 1
+		}, {
+			"width": "10%",
+			"targets": 2
+		}, {
+			"width": "5%",
+			"targets": 3
+		}, {
+			"width": "15%",
+			"targets": 4
+		}, {
+			"width": "15%",
+			"targets": 5
+		}, {
+			"width": "15%",
+			"targets": 6
+		}, {
+			"width": "5%",
+			"targets": 7
+		}]
+	});
+}
+
+const init = () => {
 	let table = $('.idColumn + td.pageTable1')
 	table.each(function () {
 		let tr = $(this).parent()
 		let pagination = $('.edit-pmv-page')
-		
+
 		// Start rotation for tables
 		changeMsg($(this));
-		
-		
+
+
 		// Add on click pre-visualization
 		$(`#page-pmv .equip1`).addClass('active');
 		tr.click(function () {
@@ -172,7 +208,7 @@ $(function () {
 					}
 					// add Timers
 					pagination.find(`#timerPage${originpager}`).val(timer);
-					
+
 				} else {
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
 					pre_vi.find('.dmsTab p').text('')
@@ -180,7 +216,6 @@ $(function () {
 						$(this).children().each(function () {
 							$(this).find('[id*=box]').text("")
 						})
-						msg = msg.next()
 					})
 					pagination.find(`#timerCheck${i}`).prop('checked', false);
 					pagination.find(`#btn-page${i}`).attr('disabled', 'disabled');
@@ -196,46 +231,54 @@ $(function () {
 		})
 	})
 
-	// Start more components for tables
-	$('#message-table').DataTable({
-		select: true,
-		language: {
-			search: "",
-			searchPlaceholder: "Buscar",
-		},
-		"autoWidth": true,
-		"scrollY": "65vh",
-		"scrollCollapse": true,
-		"paging": false,
-		"bInfo": false,
-		"columnDefs": [{
-			"width": "5%",
-			"targets": 0
-		}, {
-			"width": "10%",
-			"targets": 1
-		}, {
-			"width": "10%",
-			"targets": 2
-		}, {
-			"width": "5%",
-			"targets": 3
-		}, {
-			"width": "15%",
-			"targets": 4
-		}, {
-			"width": "15%",
-			"targets": 5
-		}, {
-			"width": "15%",
-			"targets": 6
-		}, {
-			"width": "5%",
-			"targets": 7
-		}]
-	});
+	// load first table
+	tableRender();
+}
+
+// func to start rotation tables. Only tables
+const changeMsg = msg => {
+	if (msg.index()) {
+		let timer = Number(msg.attr("timer"));
+		let name = msg.loopNext();
+		let img = name.loopNext();
+		let text1 = img.loopNext();
+		let text2 = text1.loopNext();
+		let text3 = text2.loopNext();
+		let pg = text3.loopNext();
+		if (timer) {
+			msg.addClass('active');
+			name.addClass('active');
+			img.addClass('active');
+			text1.addClass('active');
+			text2.addClass('active');
+			text3.addClass('active');
+			pg.addClass('active');
+			setTimeout(() => {
+				msg.removeClass('active');
+				name.removeClass('active');
+				img.removeClass('active');
+				text1.removeClass('active');
+				text2.removeClass('active');
+				text3.removeClass('active');
+				pg.removeClass('active');
+				changeMsg(pg.loopNext());
+			}, timer * 1000)
+		} else
+			changeMsg(pg.loopNext());
+	} else
+		changeMsg(msg.loopNext());
+}
+
+$(function () {
+	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		// Main loading
+		init();
+	})
+
+	$('#btnCreate').click(newMsg);
+	$('#btnCr2').click(cancel);
 })
 
-selectList();
-getMessageId();
-hideMsg();
+// selectList();
+// getMessageId();
+// hideMsg();
