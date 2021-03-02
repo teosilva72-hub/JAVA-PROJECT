@@ -224,11 +224,6 @@ const init = () => {
 				}
 			}
 		})
-
-		// Pagination with buttons
-		pagination.on('click', 'label', function () {
-			$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active')
-		})
 	})
 
 	// load first table
@@ -274,6 +269,18 @@ $(function () {
 		// Main loading
 		init();
 	})
+
+	$('.edit-pmv-page').on('click', 'label', function () {
+		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active')
+	}).find('[id^=timerCheck]').change(function () {
+		let check = $(this);
+		if (check.prop('checked'))
+			check.parent().next().prop('disabled', false)
+		else
+			check.parent().next().prop('disabled', true)
+	})
+
+	
 
 	$('#btnCreate').click(newMsg);
 	$('#btnCr2').click(cancel);
