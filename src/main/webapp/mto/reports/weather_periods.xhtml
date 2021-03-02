@@ -33,8 +33,21 @@
 		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />
 
 	</ui:define>
+	
+	<!-- Subistiuição do loading -->
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="main-content">
+	
+	    <!-- Mensagem parte superior -->
+	    <div id="message-div">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
+		</div>
+		
+		<!-- REPORTS LABEL INFORMATION -->
+		 <div class="text-dark text-center font-weight-bold report-title" >
+	      <h:outputText value="#{mtoLabels.mto_reports_name_periods}" />	
+	     </div>
 
 		<!-- TABLE DIV CONTENT -->
 		<div class="table-container">
@@ -296,19 +309,22 @@
 		validateOnChange('#dateStart');
 		validateOnChange('#dateEnd');
 
-		//Reset Form on close modal
-		//close modal action
-		removeValidationOnModalClose('#modalReportOptions', 'equip');
-		removeValidationOnModalClose('#modalReportOptions', 'periods');
-		removeValidationOnModalClose('#modalReportOptions', 'dateStart');
-		removeValidationOnModalClose('#modalReportOptions', 'dateEnd');
+		//Reset Fields on close modal
+		resetFieldOnModalClose('#modalReportOptions', 'equip');
+		resetFieldOnModalClose('#modalReportOptions', 'periods');
+		resetFieldOnModalClose('#modalReportOptions', 'dateStart');
+		resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
 
 		//Remove validation icons
 		//click reset button action
+		
 		removeValidationIcon("reset-btn", 'equip');
 		removeValidationIcon("reset-btn", 'periods');
 		removeValidationIcon("reset-btn", 'dateStart');
 		removeValidationIcon("reset-btn", 'dateEnd');
+
+		//Clean Form validation on close modal
+        cleanValidationOnModalClose("#report-form", '#modalReportOptions');
 
 		//Reset validation form
 		//click reset button action

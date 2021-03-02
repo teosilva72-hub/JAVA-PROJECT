@@ -136,5 +136,10 @@ $(document).ready(function () {
     $('.dataTables_length').removeClass('bs-select');
 });
 
-
+//RESET MESSAGE DISPLAY	
+function hideMessage() {
+setTimeout(function () {
+$('#message-div').hide(); 		
+}, 5000); 
+}
 

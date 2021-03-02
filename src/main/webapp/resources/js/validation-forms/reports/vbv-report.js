@@ -1,25 +1,25 @@
 
  // Validate VBV Report Form
-	function formValidation(equipRequiredMessage, monthsRequiredMessage, yearsRequiredMessage){
+	function formValidation(form, equip_message, month_message, year_message){
 		
-		 $("#vbv-form").validate({		    	                   
+		 $(form).validate({		    	                   
 		         rules: {
-		         equips: {    	
+		         equip: {    	
 		              required: true		            
 		           },	          
-                   months: {
+                   month: {
 	                 required: true
                    },   
-	               years: {
+	               year: {
 		            required: true
 	               }   	                         
 		          },
 
 		          messages: {
 						
-		              equips:{required: equipsRequiredMessage},                     
-                      months:{required: monthsRequiredMessage},
-                      years: {required: yearsRequiredMessage}           	              
+		              equip :{ required: equip_message},                     
+                      month :{ required: month_message},
+                      year : { required: year_message}           	              
 		              
 		            },
 		            
@@ -46,8 +46,7 @@
 		              // use highlight and unhighlight
 		             highlight: function(element, errorClass, validClass) {	        
                      $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
-
-                     $(element.form).find("input[id="+element.id+"]").removeClass('valid').addClass('invalid');
+                  
                      $(element.form).find("select[id="+element.id+"]").removeClass('valid').addClass('invalid');         
                                     
                      //Show span validation icon
@@ -66,8 +65,7 @@
 
 		          unhighlight: function(element, errorClass, validClass) {		       
                   $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);  
-               
-                  $(element.form).find("input[id="+element.id+"]").removeClass('invalid').addClass('valid');
+                               
                   $(element.form).find("select[id="+element.id+"]").removeClass('invalid').addClass('valid');
                 
                   //FontAwesome Icon Check for success
@@ -77,3 +75,83 @@
                  }                  
 		     });
 	}// End Validation Form
+
+	/////////////////////////////////////////////////
+	///// VALIDATE FIELDS BY ID ON CHANGE
+	////////////////////////////////////////////////
+	function validateOnChange(id){
+	 $(id).on('change', function(){
+	        if($(id).valid()) 
+	            $(id).removeClass('invalid');
+	            	            
+	            else  $(id).removeClass('valid');
+	           	        
+	    })
+      } // End ValidateOnChange
+      
+   ////////////////////////////////////////////////
+   //// VALIDATE FIELDS BY ID ON CHANGE
+  ////////////////////////////////////////////////
+	
+  ////////////////////////////////////////////////
+ //// RESET FORM VALIDATION ICON
+ ////////////////////////////////////////////////
+ function removeValidationIcon(btn, elem){ 
+	
+	  $('.'+btn).click(function() {
+					
+       //Hide span by class  
+	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+	    	     
+	      //Reset Field 	     
+	     resetFieldValue('#'+elem);
+    });
+ } //End ResetValidationForm
+	
+ ////////////////////////////////////////////////
+ ///// RESET FORM VALIDATION ICON
+ ////////////////////////////////////////////////		
+ 
+ ///////////////////////////////////////
+ ////////// RESET FORM VALIDATION
+ //////////////////////////////////////
+ 
+ function resetFormValidation(form, btn){
+ //Reset Form validation
+ 
+   $('.'+btn).click(function() {
+   
+	  var validator = $(form).validate();
+	  validator.resetForm();
+	  
+	  })
+   }
+	       
+ ///////////////////////////////////////
+ ////////// RESET FORM VALIDATION
+ //////////////////////////////////////
+ 
+ /////////////////////////////////////
+ //// RESET VALUES FORM FIELDS
+ ////////////////////////////////////
+   function resetFieldValue(id){ 
+        $(id).val(''); 
+ } // End ResetFieldsValues
+		
+  /////////////////////////////////////
+ //// RESET VALUES FORM FIELDS
+ ////////////////////////////////////
+
+
+//////////////////////////////////////////////
+//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+////////////////////////////////////////////
+  $(function () {
+	    	$("[onclose='download']").click(function () {
+	    		$('#modalDownload').modal('hide')
+	    	})
+	    })
+	
+/////////////////////////////////////////////
+//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+////////////////////////////////////////////

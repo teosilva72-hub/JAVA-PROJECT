@@ -280,7 +280,9 @@
 						
 		              equip: { required: equip_message },
 		              periods: {required: periods_message },	
-		              dateStart: { required: dateStart_message },		             
+		              dateStart: { required: dateStart_message,
+		                           dateITA: validDate_message
+		               },		             
                       dateEnd: {	                        
                             required: dateEnd_message,                                   
                             dateITA: validDate_message 
@@ -338,103 +340,216 @@
 		  
 	 ////////////////////////////////////////
 	  ///// VALIDATION FORM 3	
-	////////////////////////////////////////	
+	////////////////////////////////////////
 		
-	/////////////////////////////////////////////////
-	///// VALIDATE FIELDS BY ID ON CHANGE
-	////////////////////////////////////////////////
-	function validateOnChange(id){
-	 $(id).on('change', function(){
-	        if($(id).valid()) 
-	            $(id).removeClass('invalid');
-	            	            
-	            else  $(id).removeClass('valid');
-	           	        
-	    })
-      } // End ValidateOnChange
-      
-   ////////////////////////////////////////////////
-   //// VALIDATE FIELDS BY ID ON CHANGE
-  ////////////////////////////////////////////////
+ /////////////////////////////////////////
+ //// CHANGE SELECTION
+ ////////////////////////////////////////
+  
+//Change action by Selection
+function changeActionBySelection(selectId, form, id1, id2){
+	$(selectId).on('change', function() {
+			
+			document.getElementById(form+':'+id1).value = this.value;	
+			document.getElementById(form+':'+id2).click();       
+	   });
+   } // END Change action by Selection
+   
+	/////////////////////////////////////////
+	//// CHANGE SELECTION
+	////////////////////////////////////////
 	
-  ////////////////////////////////////////////////
- //// RESET FORM VALIDATION
- ////////////////////////////////////////////////
- function removeValidationIcon(btn, elem){ 
+   /////////////////////////////////////////
+	//// DIRECTIONS
+	////////////////////////////////////////
+   //var  Directions 
+   //Specific for directions multiselect
+	function updateDirections(nonSelectText){
+			   
+		   dirLab1 = document.getElementById('report-form:dirLab1').value;
+		   dirValue1 = document.getElementById('report-form:dirVal1').value;
+		   dirLab2 = document.getElementById('report-form:dirLab2').value;
+		   dirValue2 = document.getElementById('report-form:dirVal2').value;
+		 
+			 $('#directions').multiselect('destroy');	
+			 
+			 $('#op1').text(dirLab1);
+			 $('#op1').val(dirValue1);
+			 
+			 $('#op2').text(dirLab2);
+			 $('#op2').val(dirValue2);
+			 
+			 $('#directions').multiselect({
+				   columns: 1,       
+				   allSelectedText: 'All',
+				   maxHeight: 200,
+				   includeSelectAllOption: true,
+				   buttonWidth:'100%',
+				   nSelectedText: nonSelectText    	        
+			   });    	    
+	  } //Update Directions	
+   
+   /////////////////////////////////////////
+	//// DIRECTIONS
+	////////////////////////////////////////
+	   
+	   /////////////////////////////////////////////////
+	   ///// VALIDATE FIELDS BY ID ON CHANGE
+	   ////////////////////////////////////////////////
+	   function validateOnChange(id){
+		$(id).on('change', function(){
+			   if($(id).valid()) 
+				   $(id).removeClass('invalid');
+								   
+				   else  $(id).removeClass('valid');
+							  
+		   })
+		 } // End ValidateOnChange
+		 
+	  ////////////////////////////////////////////////
+	  //// VALIDATE FIELDS BY ID ON CHANGE
+	 ////////////////////////////////////////////////
+	   
+	 ////////////////////////////////////////////////
+	//// RESET FORM VALIDATION ICON
+	////////////////////////////////////////////////
+	function removeValidationIcon(btn, elem){ 
+	   
+		 $('.'+btn).click(function() {
+					   
+		  //Hide span by class  
+		   $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+					
+			 //Reset Field 	     
+			resetFieldValue('#'+elem);
+	   });
+	} //End ResetValidationForm
+	   
+	////////////////////////////////////////////////
+	///// RESET FORM VALIDATION ICON
+	////////////////////////////////////////////////	
+	
+	  ////////////////////////////////////////////////
+	//// RESET FORM VALIDATION ICON MULTISELECT
+	////////////////////////////////////////////////
+	function removeValidationMultiselectIcon(btn, elem, defaultMessage, array){ 
+	   
+		 $('.'+btn).click(function() {
+					   
+		  //Hide span by class  
+		   $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+					
+			 //Reset Multiselect Field 	     
+			 resetMultiselectValues('#'+elem, defaultMessage, array);   
+	   });
+	} //End ResetValidationForm
+	   
+	////////////////////////////////////////////////
+	///// RESET FORM VALIDATION ICON MULTISELECT
+	////////////////////////////////////////////////	
+	
+	////////////////////////////////////////////////
+	//// CLEAN MODAL ON CLOSE
+	////////////////////////////////////////////////
+   function cleanValidationOnModalClose(form, modalId){
+	   
+		  $(modalId).on("hide.bs.modal", function() {
+		  
+		   //Hide span by class        				
+		   $(form).validate().resetForm();	
+   })
+   
+   } //Reset on Modal Close
+   
+   
+	////////////////////////////////////////////////
+	////////CLEAN MODAL ON CLOSE
+	////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////
+	//// RESET FIELD ON MODAL CLOSE
+	////////////////////////////////////////////////
+   function resetFieldOnModalClose(modalId, elem){
+	   
+		  $(modalId).on("hide.bs.modal", function() {
+		  
+		   //Hide span by class  
+		   $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+					
+			 //Reset Field 	     
+			 resetFieldValue('#'+elem);	      
+			 
+   })
+   
+   } //Reset on Modal Close
+   
+	////////////////////////////////////////////////
+	////////RESET FIELD ON MODAL CLOSE
+	////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////
+	//// RESET MULTISELCT FIELD ON MODAL CLOSE
+	////////////////////////////////////////////////
+   function resetFieldMultiselectOnModalClose(modalId, elem, defaultMessage, array){
+	   
+	   $(modalId).on('hide.bs.modal', function (e) {
+				   
+		  //Hide span by class  
+		   $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
+					
+			 //Reset Multiselect Field 	     
+			 resetMultiselectValues('#'+elem, defaultMessage, array);  
+						   
+	 })
+   } //Reset on Modal Close
+   
+   
+	////////////////////////////////////////////////
+	////////RESET MULTISELCT FIELD ON MODAL CLOSE
+	////////////////////////////////////////////////
+	
+	///////////////////////////////////////
+	////////// RESET FORM VALIDATION
+	//////////////////////////////////////
+	
+	function resetFormValidation(form, btn){
+	//Reset Form validation
 	
 	  $('.'+btn).click(function() {
-					
-       //Hide span by class  
-	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-	    	     
-	      //Reset Field 	     
-	     resetFieldValue('#'+elem);
-    });
- } //End ResetValidationForm
-	
- ////////////////////////////////////////////////
- ///// RESET FORM VALIDATION
- ////////////////////////////////////////////////	
- 
- ////////////////////////////////////////////////
- //// RESET MODAL ON CLOSE
- ////////////////////////////////////////////////
-function removeValidationOnModalClose(modalId, elem){
-	
-	$(modalId).on('hidden.bs.modal', function (e) {
-				
-       //Hide span by class  
-	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
-                 
-         //Reset Field 	
-        resetFieldValue('#'+elem);
-  })
-} //Reset on Modal Close
-
- ////////////////////////////////////////////////
- ////////RESET MODAL ON CLOSE
- ////////////////////////////////////////////////
- 
- ///////////////////////////////////////
- ////////// RESET FORM VALIDATION
- //////////////////////////////////////
- 
- function resetFormValidation(form, btn){
- //Reset Form validation
- 
-   $('.'+btn).click(function() {
-   
-	  var validator = $(form).validate();
-	  validator.resetForm();
 	  
-	  })
-   }
-	       
- ///////////////////////////////////////
- ////////// RESET FORM VALIDATION
- //////////////////////////////////////
- 
- /////////////////////////////////////
- //// RESET VALUES FORM FIELDS
- ////////////////////////////////////
-   function resetFieldValue(id){ 
-        $(id).val(''); 
- } // End ResetFieldsValues
-		
-  /////////////////////////////////////
- //// RESET VALUES FORM FIELDS
- ////////////////////////////////////
-
-
-//////////////////////////////////////////////
-//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
-////////////////////////////////////////////
-  $(function () {
-	    	$("[onclose='download']").click(function () {
-	    		$('#modalDownload').modal('hide')
-	    	})
-	    })
+		 var validator = $(form).validate();
+		 validator.resetForm();
+		 
+		 })
+	  }
+			  
+	///////////////////////////////////////
+	////////// RESET FORM VALIDATION
+	//////////////////////////////////////
 	
-/////////////////////////////////////////////
-//// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
-////////////////////////////////////////////
+	/////////////////////////////////////
+	//// RESET VALUES FORM FIELDS
+	////////////////////////////////////
+	  function resetFieldValue(id){ 
+		   $(id).val(''); 
+	} // End ResetFieldsValues
+		   
+	 /////////////////////////////////////
+	//// RESET VALUES FORM FIELDS
+	////////////////////////////////////
+   
+   
+   //////////////////////////////////////////////
+   //// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+   ////////////////////////////////////////////
+	 $(function () {
+			   $("[onclose='download']").click(function () {
+				   $('#modalDownload').modal('hide')
+			   })
+		   })
+	   
+   /////////////////////////////////////////////
+   //// ON CLICK SUBMIT BUTTON DOWNLOAD MODAL
+   ////////////////////////////////////////////
+   
+	   

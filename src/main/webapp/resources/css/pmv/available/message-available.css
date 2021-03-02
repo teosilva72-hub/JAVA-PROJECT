@@ -17,8 +17,14 @@ body {
 }
 
 .equip-info {
-  transform: scale(1.5);
   font-size: 5px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scale(1.5);
+}
+
+#page-pmv {
+  position: relative;
 }
 
 .equip-info .tableStyle {
@@ -36,7 +42,7 @@ body {
   margin-bottom: -5px;
 }
 
-#dmsTab p {
+.dmsTab p {
   height: 15px;
 }
 
@@ -262,8 +268,7 @@ body {
 
 /*Font Size and Height - Inputs*/
 .input-group input {
-  font-size: 14px;
-  height: 35px;
+  font-size: 10px;
 }
 
 .select {
@@ -488,34 +493,43 @@ select {
   z-index: 999;
 }
 
-.buttons-page {
-  position: absolute;
-  top: -17px;
-  right: 10px;
-}
-
 .text-timer {
   font-size: 12px;
 }
 
-.text-creation {
-  opacity: 0;
-  display: none;
-}
-
 .edit-pmv-page {
-  opacity: 0;
+  position: absolute;
+  top: 125px;
   display: none;
 }
 
-.equip-info.equip2 {
-  top: 35%;
-  left: 20%;
+.edit-pmv-page.active {
+  display: block;
+}
+
+.page-button {
+  width: 25px;
+}
+
+.bar-width {
+  width: 80px;
+}
+
+.bar-width .input-group-text {
+  padding: 5px;
 }
 
 .edit-field {
   position: relative;
   display: none;
+}
+
+.equip-info {
+  display: none;
+}
+
+.equip-info.active {
+  display: revert;
 }
 
 th.pageTable2,
@@ -531,6 +545,10 @@ td[class^="pageTable"].active {
   animation-name: fade;
   animation-duration: 1s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+tr[role="row"] {
+  cursor: pointer;
 }
 
 .dataTables_filter {

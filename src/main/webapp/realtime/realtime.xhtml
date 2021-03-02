@@ -229,10 +229,9 @@
 										<c:otherwise>
 											<div id="#{item.table_id}#{item.equip_id}" posX="#{item.linearPosX}"
 												posY="#{item.linearPosY}" item-width="#{item.linearWidth}" class="equip-box #{item.table_id}">
-												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
-													<p class="col-auto mb-0 pr-1">#{item.nome}</p>
-													<span id="#{item.table_id}Status1" class="equip-status"></span>
-													<p class="col-12 mb-0">#{item.km}</p>
+												<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1 generic">
+													<p class="col-auto mb-0 pr-1 generic-text">#{item.nome} - #{item.km}</p>
+													<span id="#{item.table_id}Status1" class="equip-status"></span>												
 												</div>
 	
 												<c:if test="#{item.table_id eq 'cftv'}">

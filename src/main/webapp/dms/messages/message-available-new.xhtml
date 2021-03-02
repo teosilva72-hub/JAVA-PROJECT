@@ -27,7 +27,7 @@
 					<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
 				</div>
 			</h:form>
-			<div class="row">
+			<div class="row flex-row-reverse">
 				<!-- MESSAGE CONTENT BOX -->
 				<div class="boardDetails shadow col-4">
 					<!--  PMV BOARD -->
@@ -39,187 +39,244 @@
 
 							<!-- PAGINATORS -->
 							<div class="card-body position-relative responsive">
-								<div class="btn-group mb-4 buttons-page edit-pmv-page" role="group"
-									aria-label="Page select">
-									<input class="btn-check" name="btn-pages" id="btn-page1" type="radio" value="1"
-										checked="checked" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page1">1</label>
-									<input class="btn-check" name="btn-pages" id="btn-page2" type="radio" value="2" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page2">2</label>
-									<input class="btn-check" name="btn-pages" id="btn-page3" type="radio" value="3" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page3">3</label>
-									<input class="btn-check" name="btn-pages" id="btn-page4" type="radio" value="4" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page4">4</label>
-									<input class="btn-check" name="btn-pages" id="btn-page5" type="radio" value="5" />
-									<label class="btn btn-dark py-0 px-2" for="btn-page5">5</label>
-								</div>
-								<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id} mt-3">
+								<div id="page-pmv">
+									<c:forEach begin="1" end="5" varStatus="index">
 
-									<!-- Table with DIV -->
+										<div id="#{item.table_id}#{item.equip_id}"
+											class="equip-info equip#{index.index} #{item.table_id} mt-3">
 
-									<div class="container tableStyle card">
-										<div class="dms-name card-header py-0">
-											<div id="dmsTab#{item.equip_id}" class="text-center">
-												<p class="mb-0 text-white">#{pmvMessage.nome}</p>
-											</div>
-										</div>
-										<div class="row text-center card-body p-0">
-											<div id="child-img" class="col-2 padding-pmv">
-												<h:graphicImage id="picture-box"
-													value="/resources/images/pictures/#{pmvMessage.image}"
-													styleClass="ui-graphic-image" />
-											</div>
-											<div id="child-msg" class="col-auto msg-pos">
-												<div id="msg#{item.equip_id}" class="table-message">
-													<div class="row border-table-right">
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-1" value="#{pmvMessage.chars1[0]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-2" value="#{pmvMessage.chars1[1]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-3" value="#{pmvMessage.chars1[2]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-4" value="#{pmvMessage.chars1[3]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-5" value="#{pmvMessage.chars1[4]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-6" value="#{pmvMessage.chars1[5]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-7" value="#{pmvMessage.chars1[6]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-8" value="#{pmvMessage.chars1[7]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-9" value="#{pmvMessage.chars1[8]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-10" value="#{pmvMessage.chars1[9]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-11"
-																value="#{pmvMessage.chars1[10]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-12"
-																value="#{pmvMessage.chars1[11]}" />
-														</div>
+											<!-- Table with DIV -->
+
+											<div class="container tableStyle card">
+												<div class="dms-name card-header py-0">
+													<div class="text-center dmsTab#{item.equip_id}">
+														<p class="mb-0 text-white">#{pmvMessage.nome}</p>
 													</div>
-													<div class="row border-table-right">
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-13" value="#{pmvMessage.chars2[0]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-14" value="#{pmvMessage.chars2[1]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-15" value="#{pmvMessage.chars2[2]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-16" value="#{pmvMessage.chars2[3]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-17" value="#{pmvMessage.chars2[4]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-18" value="#{pmvMessage.chars2[5]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-19" value="#{pmvMessage.chars2[6]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-20" value="#{pmvMessage.chars2[7]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-21" value="#{pmvMessage.chars2[8]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-22" value="#{pmvMessage.chars2[9]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-23"
-																value="#{pmvMessage.chars2[10]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-24"
-																value="#{pmvMessage.chars2[11]}" />
-														</div>
+												</div>
+												<div class="row text-center card-body p-0">
+													<div id="child-img" class="col-2 padding-pmv">
+														<h:graphicImage
+															value="/resources/images/pictures/#{pmvMessage.image}"
+															styleClass="ui-graphic-image picture-box" />
 													</div>
-													<div class="row border-table-right bottom">
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-25" value="#{pmvMessage.chars3[0]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-26" value="#{pmvMessage.chars3[1]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-27" value="#{pmvMessage.chars3[2]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-28" value="#{pmvMessage.chars3[3]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-29" value="#{pmvMessage.chars3[4]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-30" value="#{pmvMessage.chars3[5]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-31" value="#{pmvMessage.chars3[6]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-32" value="#{pmvMessage.chars3[7]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-33" value="#{pmvMessage.chars3[8]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-34" value="#{pmvMessage.chars3[9]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-35"
-																value="#{pmvMessage.chars3[10]}" />
-														</div>
-														<div class="col-1 px-0 border-table">
-															<h:outputText id="box-36"
-																value="#{pmvMessage.chars3[11]}" />
+													<div id="child-msg" class="col-auto msg-pos">
+														<div id="msg#{index.index}" class="table-message">
+															<div class="row border-table-right">
+																<div class="col-1 px-0 border-table">
+																	<span id="box-1"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-2"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-3"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-4"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-5"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-6"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-7"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-8"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-9"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-10"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-11"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-12"></span>
+																</div>
+															</div>
+															<div class="row border-table-right">
+																<div class="col-1 px-0 border-table">
+																	<span id="box-13"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-14"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-15"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-16"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-17"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-18"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-19"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-20"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-21"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-22"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-23"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-24"></span>
+																</div>
+															</div>
+															<div class="row border-table-right bottom">
+																<div class="col-1 px-0 border-table">
+																	<span id="box-25"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-26"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-27"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-28"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-29"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-30"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-31"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-32"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-33"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-34"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-35"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-36"></span>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</div>
 
+										</div>
+									</c:forEach>
 								</div>
 
-								<div class="mt-4 edit-pmv-page">
+								<div class="edit-pmv-page">
 									<!-- TIMERS -->
 									<div class="row">
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 1" pt:placeholder="Timer 1" />
+
+										<div class="col-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck1" class="form-check-input mt-0" type="checkbox" value="1"
+														aria-label="Checkbox for timer1" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage1" type="text" class="form-control form-control-sm text-timer"
+													aria-label="timer1" title="Timer 1" placeholder="0"
+													disabled="disabled" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
+													value="1" checked="checked" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page1">1</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 2" pt:placeholder="Timer 2" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck2" class="form-check-input mt-0" type="checkbox" value="2"
+														aria-label="Checkbox for timer2" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage2" type="text" class="form-control form-control-sm text-timer"
+													aria-label="timer2" title="Timer 2" placeholder="0"
+													disabled="disabled" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
+													value="2" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page2">2</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 3" pt:placeholder="Timer 3" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck3" class="form-check-input mt-0" type="checkbox" value="3"
+														aria-label="Checkbox for timer3" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage3" type="text" class="form-control form-control-sm text-timer"
+													aria-label="timer3" title="Timer 3" placeholder="0"
+													disabled="disabled" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
+													value="3" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page3">3</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 4" pt:placeholder="Timer 4" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck4" class="form-check-input mt-0" type="checkbox" value="4"
+														aria-label="Checkbox for timer4" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage4" type="text" class="form-control form-control-sm text-timer"
+													aria-label="timer4" title="Timer 4" placeholder="0"
+													disabled="disabled" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
+													value="4" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page4">4</label>
+											</div>
 										</div>
-										<div class="col px-1">
-											<h:inputText class="form-control form-control-sm text-timer"
-												title="for message 5" pt:placeholder="Timer 5" />
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck5" class="form-check-input mt-0" type="checkbox" value="5"
+														aria-label="Checkbox for timer5" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage5" type="text" class="form-control form-control-sm text-timer"
+													aria-label="timer5" title="Timer 5" placeholder="0"
+													disabled="disabled" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
+													value="5" />
+												<label class="btn btn-dark py-0 px-2 page-button"
+													for="btn-page5">5</label>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -241,8 +298,7 @@
 												<f:converter converterId="pictureConverter" />
 												<f:selectItems value="#{pmvMessage.pictures}" var="picture"
 													itemLabel="#{picture.image}" itemValue="#{picture}" />
-												<p:ajax event="change" update="picture-box "
-													listener="#{pmvMessage.loadPictureImage}" />
+												<p:ajax event="change" listener="#{pmvMessage.loadPictureImage}" />
 												<p:column>
 													<h:graphicImage value="/resources/images/pictures/#{p.image}"
 														width="60" height="60" />
@@ -435,125 +491,51 @@
 								</h:column>
 								<c:forEach items="#{pmvMessage.messages.get(msg.key).pages}" var="page"
 									varStatus="index">
-									<c:choose>
-										<c:when test="#{index.first}">
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<f:facet name="header">
-													#{dmsLabels.dms_available_messages_table_col_type}
-												</f:facet>
-												<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
-											</h:column>
-										</c:when>
-										<c:otherwise>
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
-											</h:column>
-
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="#{index.first}">
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<f:facet name="header">
-													#{dmsLabels.dms_available_messages_table_col_name}
-												</f:facet>
-												<h:outputText value="#{page.nome}" />
-											</h:column>
-										</c:when>
-										<c:otherwise>
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<h:outputText value="#{page.nome}" />
-											</h:column>
-
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="#{index.first}">
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<f:facet name="header">
-													#{dmsLabels.dms_available_messages_table_col_image}
-												</f:facet>
-												<h:graphicImage id="picture-table"
-													value="/resources/images/pictures/#{page.image}" width="50"
-													height="50" style="margin-top: 5px;" />
-												<h:inputHidden value="#{page.id_image}" id="hiddenField" />
-											</h:column>
-										</c:when>
-										<c:otherwise>
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<h:graphicImage id="picture-table"
-													value="/resources/images/pictures/#{page.image}" width="50"
-													height="50" style="margin-top: 5px;" />
-												<h:inputHidden value="#{page.id_image}" id="hiddenField" />
-											</h:column>
-										</c:otherwise>
-									</c:choose>
-									<c:choose>
-										<c:when test="#{index.first}">
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<f:facet name="header">
-													#{dmsLabels.dms_available_messages_table_col_text}
-												</f:facet>
-												<h:outputText value="#{page.text1}" />
-												<br />
-												<h:outputText value="#{page.text2}" />
-												<br />
-												<h:outputText value="#{page.text3}" />
-											</h:column>
-										</c:when>
-										<c:otherwise>
-											<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-												<h:outputText value="#{page.text1}" />
-												<br />
-												<h:outputText value="#{page.text2}" />
-												<br />
-												<h:outputText value="#{page.text3}" />
-											</h:column>
-										</c:otherwise>
-									</c:choose>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_table_col_type}
+										</f:facet>
+										<h:outputText value="#{(pmvMessage.translateType(page.tipo))}" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_table_col_name}
+										</f:facet>
+										<h:outputText value="#{page.nome}" class="tablePageName" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_table_col_image}
+										</f:facet>
+										<h:graphicImage id="picture-table#{index.index + 1}"
+											value="/resources/images/pictures/#{page.image}" width="25" height="25" />
+										<h:inputHidden value="#{page.id_image}" id="hiddenField" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1} msgPage1" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_msg1_placeholder}
+										</f:facet>
+										<h:outputText value="#{page.text1}" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_msg2_placeholder}
+										</f:facet>
+										<h:outputText value="#{page.text2}" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											#{dmsLabels.dms_available_messages_msg3_placeholder}
+										</f:facet>
+										<h:outputText value="#{page.text3}" />
+									</h:column>
+									<h:column pt:class="pageTable#{index.index + 1}" pt:originPager="#{page.page}" pt:active="#{page.contain}" pt:timer="#{page.timer}">
+										<f:facet rendered="#{index.first}" name="header">
+											pg
+										</f:facet>
+										<h:outputText value="#{index.index + 1}" />
+									</h:column>
 								</c:forEach>
-							</h:dataTable>
-						</div>
-						<!-- Tabela hidden -->
-						<div id="tabelaHidden" class="trazerTable">
-
-							<h:dataTable id="message-table-hidden" disabled="#{pmvMessage.editable}"
-								value="#{pmvMessage.messages}" var="msg"
-								styleClass="table table-sm table-striped table-hover table-dark custom-table"
-								cellspacing="0" width="100%" headerClass="custom-table-header"
-								rowClasses="custom-table-odd-row, custom-table-even-row"
-								columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_id}</f:facet>
-									<h:outputText value="#{msg.id_message}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_type}</f:facet>
-									<h:outputText value="#{(pmvMessage.translateType(msg.pages.get(0).tipo))}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_name}</f:facet>
-									<h:outputText value="#{msg.pages.get(0).nome}" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_image}</f:facet>
-									<h:graphicImage id="picture-table" value="/resources/images/pictures/#{msg.image}"
-										width="50" height="50" style="margin-top: 5px;" />
-									<h:inputHidden value="#{msg.pages.get(0).id_image}" id="hiddenField" />
-								</h:column>
-
-								<h:column>
-									<f:facet name="header">#{dmsLabels.dms_available_messages_table_col_text}</f:facet>
-									<h:outputText value="#{msg.pages.get(0).text1}" />
-									<br />
-									<h:outputText value="#{msg.pages.get(1).text2}" />
-									<br />
-									<h:outputText value="#{msg.pages.get(0).text3}" />
-								</h:column>
 							</h:dataTable>
 						</div>
 						<h:form id="formId">

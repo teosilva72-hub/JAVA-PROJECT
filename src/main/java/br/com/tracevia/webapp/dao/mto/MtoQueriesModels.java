@@ -15,8 +15,8 @@ public class MtoQueriesModels {
 			+ "battery_status, "
 			+ "line_volts "
 			+ "FROM weather_station "
-			+ "WHERE station_id = ? "
-			+ "ORDER BY data DESC LIMIT 1";
+			+ "WHERE station_id = ? AND DATE(datetime_) = DATE(NOW()) "
+			+ "ORDER BY DATE(datetime_) DESC LIMIT 1";
 	
 	public String WeatherMainQuery(String station_id) {
 		

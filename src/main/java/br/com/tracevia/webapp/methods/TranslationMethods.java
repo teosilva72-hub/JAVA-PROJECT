@@ -251,6 +251,39 @@ public String periodName(String period) {
     	 }	    	 
       }  
 	 
+	 
+	 //USED FOR METEO
+		public String monthComparison(int selectedMes) {
+
+			String selectMonth = "";				
+									
+			if (selectedMes == 1)
+				selectMonth = localeCalendar.getStringKey("january");
+			if (selectedMes == 2)
+				selectMonth = localeCalendar.getStringKey("february");
+			if (selectedMes == 3)
+				selectMonth = localeCalendar.getStringKey("march");
+			if (selectedMes == 4)
+				selectMonth = localeCalendar.getStringKey("april");
+			if (selectedMes == 5)
+				selectMonth = localeCalendar.getStringKey("may");
+			if (selectedMes == 6)
+				selectMonth = localeCalendar.getStringKey("june");
+			if (selectedMes == 7)
+				selectMonth = localeCalendar.getStringKey("july");
+			if (selectedMes == 8)
+				selectMonth = localeCalendar.getStringKey("august");
+			if (selectedMes == 9)
+				selectMonth = localeCalendar.getStringKey("september");
+			if (selectedMes == 10)
+				selectMonth = localeCalendar.getStringKey("october");
+			if (selectedMes == 11)
+				selectMonth = localeCalendar.getStringKey("november");
+			if (selectedMes == 12)
+				selectMonth = localeCalendar.getStringKey("december");						
+			
+			return selectMonth;
+		}
 	
 	 	
 }

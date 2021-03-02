@@ -1190,14 +1190,13 @@
 							<!-- End input file alterar -->
 
 							<!-- Arquivos Adicionados -->
-							<div class="listarFiles" id="listFiles">
-								<!-- alert -->
-								<div class="alert alert-dark confAlert" id="fileTotal"
+							<!-- alert -->
+							<div class="alert alert-dark confAlert" id="fileTotal"
 									role="alert">
 									<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
 										(#{occurrencesBean.total})</h5>
 								</div>
-
+							<div class="listarFiles" id="listFiles">
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
 									<c:forEach items="#{occurrencesBean.listarFile}" var="item"

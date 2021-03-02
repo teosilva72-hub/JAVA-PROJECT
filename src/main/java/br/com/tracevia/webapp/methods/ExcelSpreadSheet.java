@@ -126,7 +126,35 @@ public class ExcelSpreadSheet {
 					            
 					            try {
 					            				            	
-					            	cells[col][lin].setCellValue(Integer.parseInt(values[auxCol][lin]));
+					            	cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }		            		
+					        }
+					   
+					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					     }     	   
+				       }
+				
+				  //Convert Fiels to Integer
+				public void fillDataSingleYearReport(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
+					 
+					int rowLenght = startRow + endRow ;
+					int auxCol = 0;
+											
+					for(int col = colStart; col < maxCol; col++) {
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   				 					   
+					            row = sheet.getRow((short) rowIndex);
+					            cells[col][lin] = row.createCell((short) col);	
+					            
+					            try {
+					            	
+					            	if(col == 0)
+						            	cells[col][lin].setCellValue(values[auxCol][lin]); 
+					            				            	
+					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();

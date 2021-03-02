@@ -6,6 +6,7 @@ $(function () {
 		let equip = $(this)
 
 		posEquip(equip)
+        resizeEquip($('#content'))
 
 		$(window).resize(function () {
 			posEquip(equip)
@@ -137,8 +138,6 @@ function posEquip(equip) {
 				animation: 'myMove 500s linear infinite'				
 			})
 		}
-	} else if (equip.attr("class").includes('equip-box')) {
-		drawGenericEquipments(equip.attr('id'), `satTab${equip.attr('id').replace('sat', '')}`, pos.x, pos.y, Number(equip.attr('item-width')), 1)
 	}
 }
 
@@ -473,6 +472,7 @@ function zoomOut(id) {
 	}
 
 }
+
 
 
 

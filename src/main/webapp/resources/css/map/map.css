@@ -954,6 +954,10 @@ z-index: 10030;
 #deletemodal {
 z-index: 10030;
 }
+
+.addbox {
+  width: 110%;
+}
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */

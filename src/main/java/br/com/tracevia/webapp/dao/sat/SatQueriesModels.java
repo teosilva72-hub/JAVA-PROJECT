@@ -2581,6 +2581,350 @@ public class SatQueriesModels {
                 	   return query;
                    }
                    
+                   
+                   /**
+            	    * Método para criação da mainQuery tipo por classes
+            	    * @param station_id - Id do equipamento
+            	    * @param classes - array com as classes selecionadas
+            	    * @param lanes - numero de faixas do equipamento
+            	    * @return
+            	    */
+            	   public String ClassTypeCCRMainQuery(String station_id) {
+               		   
+            		   String query = "";
+            		   
+            						
+            		   query += "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) 'AUTOS', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) 'MOTO', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) 'TRAILER', " + 
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) 'SEMITRAILER', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRTruckSimple2Axles1+"' OR st.classe = '"+RoadConcessionaire.classCCRTruckSimple2Axles2+"'OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) 'TRUCK 2 AXLES', " + 
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) 'TRUCK 3 AXLES', " + 
+            		             "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) 'TRUCK 4 AXLES', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) 'TRUCK 5 AXLES', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) 'TRUCK 6 AXLES', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) 'TRUCK 7 AXLES', " +
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) 'TRUCK 8 AXLES', " +			 
+            					 "IFNULL(ROUND(COUNT(IF((st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) 'TRUCK 9 AXLES', " +
+            			         "IFNULL(ROUND(COUNT(IF((st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.axlNumber > 10)) , st.classe, NULL )), 0), 0) 'TRUCK 10 AXLES', " +
+            				     "IFNULL(ROUND(COUNT(st.axlNumber),0),0) 'TOTAL', " +				         	   		   
+
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2  THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AUTOS_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'MOTOS_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'TRAILER_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2  THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'SEMI_TRAILER_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_2_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_3_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_4_S1', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_5_S1', " +
+            			   
+            		       "CASE " +
+            		       "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            		       "ELSE 0   " +
+            		       "END 'AXLE_5_S1', " +
+            			  	   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_7_S1', " +
+            			   				   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_8_S1', " +
+            			   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_9_S1', " +
+            			   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_10_S1', " +
+
+            			   "CASE    " +
+            			    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(COUNT(IF((st.lane = 1) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , st.classe, NULL)), 0), 0)  " +
+
+            			    "ELSE 0   " +
+            			    "END 'TOTAL_S1' ,  " +
+            			                     
+            			  "CASE " +
+            			   "WHEN eq.number_lanes = 2  THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.classe < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AUTOS_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2  OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRMotorcycle+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'MOTOS_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'TRAILER_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2  THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRSemiTrailer+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'SEMI_TRAILER_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck2Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus2Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_2_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck3Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus3Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl3+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_3_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck4Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus4Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl4+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_4_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck5Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus5Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl5+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_5_S2', " +
+
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck6Axles+"' OR st.classe = '"+RoadConcessionaire.classCCRBus6Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl6+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_6_S2', " + 
+            			   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck7Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl7+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_7_S2', " +
+            			   				   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck8Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl8+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_8_S2', " +
+            			   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe = '"+RoadConcessionaire.classCCRTruck9Axles+"' OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl9+"') , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_9_S2', " +
+            			   
+            			   "CASE " +
+            			   "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 2 OR st.lane = 3) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF(( st.lane = 3 OR st.lane = 4) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND (st.classe='"+RoadConcessionaire.classCCRTruck10Axles+"' or (st.classe='"+RoadConcessionaire.classUnknown+"' and st.classe > 9)) , st.classe, NULL )), 0), 0) " +
+            			   "ELSE 0   " +
+            			   "END 'AXLE_10_S2', " +
+
+
+            			   "CASE    " +
+            			    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3)  , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) , st.classe, NULL)), 0), 0)  " +
+            			    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) , st.classe, NULL)), 0), 0)  " +
+
+            			    "ELSE 0   " +
+            			    "END 'TOTAL_S2'   " ;
+            		   
+            		                   //END METHOD		               
+            		                   return query;		             
+            		     
+            	                   } 
+            	   
                                       
                    
                     // -------------------------------------------------------------------- //      

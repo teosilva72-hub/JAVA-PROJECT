@@ -8,6 +8,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import org.apache.poi.hssf.util.PaneInformation;
+import org.primefaces.context.RequestContext;
+
 import com.google.protobuf.Value;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -16,6 +19,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.mto.MTO;
 import br.com.tracevia.webapp.model.mto.MtoPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.MessagesUtil;
 
 @ManagedBean(name="mtoPanelBean")
 @RequestScoped
@@ -24,12 +28,14 @@ public class MtoPanelController {
 	private MtoPanel panel;
 	private List<SelectItem> equipments;
 	
-	LocaleUtil localeLabel, localeCalendar;
+	LocaleUtil localeLabel, localeCalendar, localeMto;
+	
+	MessagesUtil message;
 	
 	EquipmentsDAO dao;
 	MtoDAO mtoDao;	
 	
-	private String station;
+	private String station, station_name;
 			
 	public String getStation() {
 		return station;
@@ -37,6 +43,14 @@ public class MtoPanelController {
 
 	public void setStation(String station) {
 		this.station = station;
+	}
+	
+	public String getStation_name() {
+		return station_name;
+	}
+
+	public void setStation_name(String station_name) {
+		this.station_name = station_name;
 	}
 
 	public MtoPanel getPanel() {
@@ -56,6 +70,9 @@ public class MtoPanelController {
 		
 		localeLabel = new LocaleUtil();	
 		localeLabel.getResourceBundle(LocaleUtil.LABELS_MTO);
+		
+		localeMto = new LocaleUtil();	
+		localeMto.getResourceBundle(LocaleUtil.MESSAGES_MTO);
 		
 		/* EQUIPMENTS SELECTION */
 		panel = new MtoPanel();
@@ -82,6 +99,8 @@ public class MtoPanelController {
 		//Initialize with first register
 		station = String.valueOf(listMto.get(0).getEquip_id());
 		
+		station_name = listMto.get(0).getNome();
+		
 	    //Initialize Panel Values
 		InitializePanel();
 		
@@ -92,10 +111,20 @@ public class MtoPanelController {
 		
 		try {					
 			
+			message = new MessagesUtil();
 			mtoDao = new MtoDAO();
 			panel = new MtoPanel();
+					
 			panel = mtoDao.WeatherPanelInformation(station);
-						
+														
+			if(panel == null) {
+				
+			   panel = new MtoPanel(); // Instância o objeto novamente.
+			   initPanelZero(panel);
+			  		  
+			 }		
+			
+			RequestContext.getCurrentInstance().execute("checkMtoStatus();");	
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -105,19 +134,52 @@ public class MtoPanelController {
 	//Information to Update
 	public void GetPanelInformation(){
 		try {
-								
-			/*if(station != null) {
+											
+			if(station != null) {
 										
-			mtoDao = new MtoDAO();				
+			mtoDao = new MtoDAO();	
+			message = new MessagesUtil();
 			panel = new MtoPanel();				
-			panel = mtoDao.WeatherPanelInformation(station);			
+			panel = mtoDao.WeatherPanelInformation(station);	
+						
+			//Nome do Equipamento
+			for(SelectItem s : equipments) {							
+				if(station.equals(String.valueOf(s.getValue())))			
+					station_name = s.getLabel();				
+				
+			}
+						
+			if(panel == null) {
+				
+				panel = new MtoPanel();	// Instância o objeto novamente.
+				initPanelZero(panel);				
+				message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"),localeMto.getStringKey("mto_message_equipment_no_data"));
+			}
+			
+			RequestContext.getCurrentInstance().execute("checkMtoStatus();");			
 		  								
-			}*/
+			}
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}		
 	}	
 	
+	//PREENCHER CASO NÃO HAJA VALORES
+	public void initPanelZero(MtoPanel panel) {
+		
+		panel.setAtmPressure(0);
+		panel.setRelative_humidity(0);
+		panel.setPreciptation_rate(0);
+		panel.setPreciptation_rate_hour(0);
+		panel.setWind_speed(0);
+		panel.setWind_direction(0);  
+		panel.setTemperature(0);
+		panel.setVisibility(0);
+		panel.setStatus(0);
+		panel.setBattery(0);
+		panel.setLine_volts(0);	
+		
+	}
 
 }

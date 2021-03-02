@@ -54,17 +54,19 @@ public class MessagesDAO {
 						mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
 					} else
-						for (int i = 0; i <= pages.length - 1; i++)
-							if (rs.getInt("page" + (i + 1)) == page) {
+						for (int i = 0; i <= pages.length - 1; i++) {
+							int idx = i + 1;
+							if (rs.getInt("page" + idx) == page) {
 								int index = mensagens.getPages().size();
 								if (i <= index)
 									index = i;
 								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
 										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
 										getImageFromMessageAvailable(rs.getInt("id_image")),
-										rs.getFloat("timer" + (i + 1)), index);
+										rs.getFloat("timer" + idx), idx, index);
 								pages[i] = false;
 							}
+						}
 					if (rs.next()) {
 						if (rs.getInt("id_message") != mensagens.getId_message()) {
 							for (int i = 0; i < pages.length; i++) {
@@ -77,6 +79,12 @@ public class MessagesDAO {
 							lista.add(mensagens);
 						}
 					} else {
+						for (int i = 0; i < pages.length; i++) {
+							if (pages[i]) {
+								pages[i] = false;
+								mensagens.setPages(i);
+							}
+						}
 						lista.add(mensagens);
 						break;
 					}
