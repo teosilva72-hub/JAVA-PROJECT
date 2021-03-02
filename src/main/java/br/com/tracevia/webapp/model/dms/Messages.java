@@ -144,7 +144,7 @@ public class Messages {
 	public void revision() {
 		boolean revision = false;
 		for (Pages page : pages) {
-			if (page.contain && !revision)
+			if (page.contain && page.timer != 0 && !revision)
 				continue;
 			else
 				revision = true;

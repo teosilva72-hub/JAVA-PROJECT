@@ -99,6 +99,10 @@ public class MessagesDAO {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
+		for (Messages messages : lista) {
+			messages.revision();
+		}
+
 		return lista;
 	}
 
