@@ -406,10 +406,10 @@ public class PMVmessageBean implements Serializable {
 	 	    
 	   MessagesDAO dao = new MessagesDAO();	 
 	   equipDAO = new EquipmentsDAO();	  
-	   Enumeration enumaration = new Enumeration();
+	   Enumeration enumeration = new Enumeration();
 	   
 	   messages = dao.mensagensDisponiveis();
-	   messages_enumeration = enumaration.create(messages);
+	   messages_enumeration = enumeration.create(messages);
 	  		    		    
 		ArrayList<Equipments> list = new ArrayList<Equipments>();		
 		list = equipDAO.listPMVSites();

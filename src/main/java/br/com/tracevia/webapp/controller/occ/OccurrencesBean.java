@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 import org.jboss.logging.Cause;
+import org.primefaces.context.RequestContext;
 import org.snmp4j.util.TableListener;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
@@ -74,7 +75,7 @@ public class OccurrencesBean {
 
 	private boolean save, edit, new_, reset, fields, table, alterar;
 
-	private String action, title_modal, message_modal;
+	private String action, title_modal, message_modal, idUpdate;
 
 	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	minutePdf, secondPdf, dayPdf, hourPdf, nameUser, userName; 
@@ -82,7 +83,7 @@ public class OccurrencesBean {
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
 	
 	private File arquivos[], directory, fileWay;
-	private int bytes, total, situation;
+	private int bytes, total, situation, idUpload;
 	private int value, value1, value2, content, nivelUser;
 	private Part file = null;
 	private Part file2 = null;
@@ -154,6 +155,18 @@ public class OccurrencesBean {
 		return damageUnity;
 	}
 	
+	public String getIdUpdate() {
+		return idUpdate;
+	}
+	public void setIdUpdate(String idUpdate) {
+		this.idUpdate = idUpdate;
+	}
+	public int getIdUpload() {
+		return idUpload;
+	}
+	public void setIdUpload(int idUpload) {
+		this.idUpload = idUpload;
+	}
 	public String getNameUser() {
 		return nameUser;
 	}
@@ -595,7 +608,8 @@ public class OccurrencesBean {
 		//passos 0 para a variavel (accessLevel) e para a variavel (updateTable) passamos false
 		// ambos os valores serão armazenados no BD a fazer a requisição
 		String nameUser = ""; int accessLevel = 0; boolean updateTable = false; 
-		
+		System.out.println(data.getData_number());
+		idUpdate = data.getData_number();
 		//Passando dados definidos para o banco de dados
 		dao.editTable(updateTable, nameUser, accessLevel, data.getData_number());
 		
@@ -620,6 +634,7 @@ public class OccurrencesBean {
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+			org.primefaces.context.RequestContext.getCurrentInstance().execute("updateOcc()");
 
 			//listar ocorrencia
 			occurrences = dao.listarOcorrencias();
@@ -629,13 +644,14 @@ public class OccurrencesBean {
 			
 		}
 		resetUpdate();
+		
 	}
 	
 	//metodo anular ocorrencia, esse metodo é chamado quando estamos na sessão novo
 	public void resetOccurrencesData(){       
 
 		data = new OccurrencesData();
-
+		RequestContext.getCurrentInstance().execute("cancelOcc()");
 		//btn
 		save = true;
 		alterar = true;
@@ -670,7 +686,7 @@ public class OccurrencesBean {
 		//atualizar a ocorrencia depois que o metodo for chamado
 		occurrences = dao.listarOcorrencias();
 		//chamando função javascript
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("eventValidator()");
+		RequestContext.getCurrentInstance().execute("eventValidator()");
 
 		data = new OccurrencesData();
 
@@ -701,8 +717,8 @@ public class OccurrencesBean {
 			nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 
 			//executando função javascript
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("displayPdf()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile2()");
+			RequestContext.getCurrentInstance().execute("displayPdf()");
+			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
 			OccurrencesDAO dao = new OccurrencesDAO();
 			
@@ -838,10 +854,10 @@ public class OccurrencesBean {
 			table = true;
 			
 			//executando as funções javascript
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFileBtn()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
+			RequestContext.getCurrentInstance().execute("hiddenPdf()");
+			RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
+			RequestContext.getCurrentInstance().execute("listingFileBtn()");
+			RequestContext.getCurrentInstance().execute("listingFile()");
 			
 		}
 		//zerando as variaveis
@@ -849,14 +865,14 @@ public class OccurrencesBean {
 	}
 	//método novo
 	public void btnEnable() throws Exception {
-		
+
 		//executando as funções javascript
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("uploadFile()");
-		org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenListFile()");
+		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		RequestContext.getCurrentInstance().execute("disableEdit()");
+		RequestContext.getCurrentInstance().execute("hiddenPdf()");
+		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
+		RequestContext.getCurrentInstance().execute("uploadFile()");
+		RequestContext.getCurrentInstance().execute("hiddenListFile()");
 
 		//pegando o valor da ultima variavel do vanco de dados
 		value = pegarId(); // pegarId() + 1
@@ -874,12 +890,12 @@ public class OccurrencesBean {
 			localPath = localPath(occNumber);
 			createFileFolder(mainPath, localPath);	
 			//executando javascript
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("listingFile()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("disableEdit()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("resetForm()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("hiddenPdf()");
-			org.primefaces.context.RequestContext.getCurrentInstance().execute("fileTotalHidden()");
-			
+			RequestContext.getCurrentInstance().execute("listingFile()");
+			RequestContext.getCurrentInstance().execute("disableEdit()");
+			RequestContext.getCurrentInstance().execute("resetForm()");
+			RequestContext.getCurrentInstance().execute("hiddenPdf()");
+			RequestContext.getCurrentInstance().execute("fileTotalHidden()");
+
 			//btn
 			edit = true;
 			save = false;
@@ -905,7 +921,6 @@ public class OccurrencesBean {
 		String nameUser = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		int nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 		boolean updateTable = true;
-		
 		//passando valores das varaveis para o banco de dados
 		dao.editTable(updateTable, nameUser, nivelUser, data.getData_number());			
 		
@@ -922,7 +937,6 @@ public class OccurrencesBean {
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("alterarBtn()");
 			org.primefaces.context.RequestContext.getCurrentInstance().execute("atualizarTela()");
-
 
 			//listando arquivos
 			listingUpdate();

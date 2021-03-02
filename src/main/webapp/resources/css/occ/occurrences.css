@@ -80,7 +80,7 @@ body{
 	border: solid red 2px blue;
 }
 /*Fim do design dos elementos inputs e textarea*/
-@media (max-height: 768px){
+@media (max-width: 1366px){
 	#tab1{
 		height: 490px;
 	}
@@ -398,7 +398,7 @@ cursor: pointer;
 .forEachFiles{
 	margin: 0;
 }
-#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #unLock, #msgSave1, #msgFinished, #msgOthersUsers{
+#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #unLock, #msgSave1, #msgFinished, #msgOthersUsers, #updateOcc, #cancelOcc{
 	height: 23px;
 }
 .textMsgFile{

@@ -141,6 +141,17 @@ public class Messages {
 		this.pages.add(page, new Pages());
 	}
 
+	public void revision() {
+		boolean revision = false;
+		for (Pages page : pages) {
+			if (page.contain && page.timer != 0 && !revision)
+				continue;
+			else
+				revision = true;
+				page.timer = 0;
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
