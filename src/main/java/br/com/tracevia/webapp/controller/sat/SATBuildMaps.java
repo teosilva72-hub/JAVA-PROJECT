@@ -185,7 +185,7 @@ public class SATBuildMaps {
 						if (pass) {
 
 							//BUSCA DADOS DOS ULTIMAS 45 MINUTOS
-							satListObj = satDAO.SATstatus45Stat(satList.get(s).getEquip_id());
+							satListObj = satDAO.statusByData45(satList.get(s).getEquip_id());
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
 							if (satListObj.getEquip_id() != 0)

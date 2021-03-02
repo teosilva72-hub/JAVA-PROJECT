@@ -282,16 +282,17 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 " +
+	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
 	    "GROUP BY d.NOME_ESTACAO " +
-	    "ORDER BY d.DATA_HORA ASC";
+	    "ORDER BY d.DATA_HORA";
 					
 	  try {
 			
 		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		  
 			ps = conn.prepareStatement(select);			
-			ps.setString(1, currentDate);		
+			ps.setString(1, currentDate);	
+			ps.setString(2, currentDate);		
 						
 			rs = ps.executeQuery();
 			
@@ -417,6 +418,7 @@ public class SATinformationsDAO {
 		
 	}
 	
+	//LISTAR TODOS EQUIPAMENTOS POR DADOS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
      public SAT dataInfoByData08(int equip) throws Exception {
 		
 		SAT sat = new SAT();
@@ -478,7 +480,9 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 ";
+	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+		"GROUP BY d.DATA_HORA " +
+        "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
 	  					
 	  try {
 			
@@ -486,7 +490,8 @@ public class SATinformationsDAO {
 			
 			ps = conn.prepareStatement(select);
 			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);		
+			ps.setString(2, currentDate);	
+			ps.setString(3, currentDate);	
 						
 			rs = ps.executeQuery();
 			
@@ -518,6 +523,7 @@ public class SATinformationsDAO {
 	//// SAT STATUS BY DATA
     ////////////////////////////////
 	
+    //LISTAR TODOS EQUIPAMENTOS POR STATUS NOS ULTIMOS 30 MINUTOS (DELAY DE 15 MINUTOS)
 	public List<SAT> statusByData30() throws Exception {
 	
 	List<SAT> list = new ArrayList<SAT>();
@@ -536,8 +542,8 @@ public class SATinformationsDAO {
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
 			       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
-			       "GROUP BY d.NOME_ESTACAO " +
-				   "ORDER BY d.DATA_HORA ASC";
+			       "GROUP BY d.NOME_ESTACAO " +			       
+				   "ORDER BY d.DATA_HORA";
 	
 	try {
 		
@@ -548,7 +554,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("STATUS30MINSQL: "+select);
+			//System.out.println("STATUS45DATA30: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -572,6 +578,7 @@ public class SATinformationsDAO {
 			
       }
 	
+	//LISTAR TODOS EQUIPAMENTOS POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
 	public List<SAT> statusByData08() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
@@ -587,18 +594,21 @@ public class SATinformationsDAO {
 		
 		//System.out.println(currentDate);
 					
-		String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
+		String select ="SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-				       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 " +
+				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
 				       "GROUP BY d.NOME_ESTACAO " +
-					   "ORDER BY d.DATA_HORA ASC";
+					   "ORDER BY d.DATA_HORA";
 		
 		try {
 			
 			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
 				ps = conn.prepareStatement(select);					
-				ps.setString(1, currentDate);		
+				ps.setString(1, currentDate);	
+				ps.setString(2, currentDate);	
+				
+				//System.out.println("STATUS45DATA08: "+select);
 							
 				rs = ps.executeQuery();
 				
@@ -626,7 +636,8 @@ public class SATinformationsDAO {
 				
 	      }
 	
-public List<SAT> statusByData45() throws Exception {
+  //LISTAR TODOS EQUIPAMENTOS POR STATUS NOS ULTIMOS 45 MINUTOS (DELAY DE 15 MINUTOS)	
+  public List<SAT> statusByData45() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -656,7 +667,7 @@ public List<SAT> statusByData45() throws Exception {
 							
 				rs = ps.executeQuery();
 				
-				//System.out.println("STATUS30MINSQL: "+select);
+				//System.out.println("STATUS45DATA01: "+select);
 				
 				if (rs != null) {
 					while (rs.next()) {
@@ -680,7 +691,7 @@ public List<SAT> statusByData45() throws Exception {
 				
 	      }
 	
-	//ONE TO ONE EQUIPMENT => 45 MINUTES
+    //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMOS 45 MINUTOS (DELAY DE 15 MINUTOS)
     public SAT statusByData45(int equip) throws Exception {
 		
 		SAT sat = new SAT();
@@ -697,8 +708,8 @@ public List<SAT> statusByData45() throws Exception {
 		//System.out.println(currentDate);
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
-			       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			       "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
+			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
 			      	    	  					
 	  try {
 			
@@ -706,7 +717,9 @@ public List<SAT> statusByData45() throws Exception {
 			
 			ps = conn.prepareStatement(select);
 			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);		
+			ps.setString(2, currentDate);	
+			
+			//System.out.println("STATUS45DATA: "+select);
 						
 			rs = ps.executeQuery();
 						
@@ -729,7 +742,7 @@ public List<SAT> statusByData45() throws Exception {
 	}	
     
     
-	//ONE TO ONE EQUIPMENT => 8 HOURS
+  //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
     public SAT statusByData08(int equip) throws Exception {
 		
 		SAT sat = new SAT();
@@ -747,7 +760,9 @@ public List<SAT> statusByData45() throws Exception {
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			        "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 8 HOUR) AND eq.visible = 1 ";
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+			        "GROUP BY d.DATA_HORA " + 			        
+			        "ORDER BY d.DATA_HORA DESC LIMIT 1";
 			      	    	  					
 	  try {
 			
@@ -755,7 +770,10 @@ public List<SAT> statusByData45() throws Exception {
 			
 			ps = conn.prepareStatement(select);
 			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);		
+			ps.setString(2, currentDate);	
+			ps.setString(3, currentDate);	
+			
+			//System.out.println("STATUS08DATA: "+select);
 						
 			rs = ps.executeQuery();
 						
@@ -786,7 +804,7 @@ public List<SAT> statusByData45() throws Exception {
 	/// SAT STATUS
 	////////////////////////////////////
 		
-	public List<SAT> SATstatus30() throws Exception {
+	/*public List<SAT> SATstatus30() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -843,7 +861,7 @@ public List<SAT> statusByData45() throws Exception {
 		return list;		
 	}
 	
-public List<SAT> SATstatus45() throws Exception {
+    public List<SAT> SATstatus45() throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -952,6 +970,6 @@ public List<SAT> SATstatus45() throws Exception {
 
 				
 		return sat;		
-	}
+	} */
 			
 }

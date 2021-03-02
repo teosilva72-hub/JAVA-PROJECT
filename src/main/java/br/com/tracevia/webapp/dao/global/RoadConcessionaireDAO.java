@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.cfg.servers.Servers;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class RoadConcessionaireDAO {
