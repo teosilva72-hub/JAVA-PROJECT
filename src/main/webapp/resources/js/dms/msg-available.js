@@ -1,4 +1,3 @@
-
 var msg;
 
 // implementation 'loopNext' in jquery
@@ -36,31 +35,32 @@ const updateMessage = () => {
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].text[2])
 }
 
-// $('#name-input').change(function() {
-// 	msg.pages[$('.equip-info.active').index()].name = $('.equip-info.active').find('.dmsTab span#dmsName').text()
-// })
-
 const newMsg = () => {
 	$('#btnCreate').prop('disabled', true);
 	$('#btnEdit').prop('disabled', true);
 	$('#btnDelete').prop('disabled', true);
 	$('#btnCr1').prop('disabled', false);
 	$('#btnCr2').prop('disabled', false);
-	$('#disableTable').addClass('active')
+	$('#disableTable').addClass('active');
+	$('.edit-field').addClass('active');
 	$('.edit-pmv-page').addClass('active')
-	$('.edit-field').addClass('active')
-	let pre_vi = $(`#page-pmv .equip-info`)
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
+		.find(`[id^=timerPage]`).val(0)
+		.first().prev().find('[id^=timerCheck]')
+		.prop('checked', false).trigger('change');
+	let pre_vi = $(`#page-pmv .equip-info`);
+	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
 	pre_vi.find(`[id^=msg]`).children().each(function () {
 		$(this).attr('msg', '').children().each(function () {
-			$(this).find('[id*=box]').text("")
+			$(this).find('[id*=box]').text("");
 		})
 	})
 
-	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active')
+	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
+
+	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
 
 	selectMessage();
 	updateMessage();
@@ -70,8 +70,26 @@ const cancel = () => {
 	$('#btnCreate').prop('disabled', false);
 	$('#btnCr1').prop('disabled', true);
 	$('#btnCr2').prop('disabled', true);
-	$('#disableTable').removeClass('active')
-	$('.edit-field').removeClass('active')
+	$('#disableTable').removeClass('active');
+	$('.edit-pmv-page').removeClass('active');
+	$('.edit-field').removeClass('active');
+	let pre_vi = $(`#page-pmv .equip-info`);
+	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.dmsTab span').text('').each(function () {
+		$(this).last().attr('type', '')
+	})
+	pre_vi.find(`[id^=msg]`).children().each(function () {
+		$(this).attr('msg', '').children().each(function () {
+			$(this).find('[id*=box]').text("");
+		})
+	})
+
+	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
+
+	$('input[id^=timerCheck]').prop('disabled', true).trigger('change');
+
+	selectMessage();
+	updateMessage();
 }
 
 const tableRender = () => {
@@ -241,6 +259,20 @@ const changeMsg = msg => {
 		changeMsg(msg.loopNext());
 }
 
+const upTextToChar = (elmt, id) => {
+	let textFull = elmt.val();
+	for (const idx in textFull) {
+		if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
+			const char = textFull[idx];
+
+			$('.equip-info.active').find(`.message${id}`).attr('msg', textFull).find(`div > span[id^=box]`)[idx].innerText = char;
+		}
+	}
+	for (let index = 11; index >= textFull.length; index--) {
+		$('.equip-info.active').find(`.message${id} div > span[id^=box]`)[index].innerText = "";
+	}
+}
+
 $(function () {
 	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
 		// Main loading
@@ -248,6 +280,8 @@ $(function () {
 	})
 
 	$('.edit-pmv-page').on('click', 'label', function () {
+		selectMessage();
+
 		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
 
 		updateMessage();
@@ -255,47 +289,32 @@ $(function () {
 	}).find('[id^=timerCheck]').change(function () {
 		let check = $(this);
 		if (check.prop('checked'))
-			check.parent().next().prop('disabled', false);
+			check.parent().next().prop('disabled', false).next().prop('disabled', false)
+				.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
 		else
-			check.parent().next().prop('disabled', true);
+			check.parent().next().prop('disabled', true).next().prop('disabled', true)
+				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 	})
 
+	// change field type
 	$('#type-input').change(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
 	})
+	// change field name
 	$('#name-input').keyup(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
 	})
+	// change field msg1
 	$('#message-box1').keyup(function () {
-		let textFull = $(this).val();
-		for (const idx in textFull) {
-			console.log('sda')
-			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
-				const char = textFull[idx];
-				
-				$('.equip-info.active').find(`.message1 div > span[id^=box]`)[idx].innerText = char;
-			}
-		}
+		upTextToChar($(this), 1);
 	})
+	// change field msg2
 	$('#message-box2').keyup(function () {
-		let textFull = $(this).val();
-		for (const idx in textFull) {
-			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
-				const char = textFull[idx];
-				
-				$('.equip-info.active').find(`.message2 div > span[id^=box]`)[idx].innerText = char;
-			}
-		}
+		upTextToChar($(this), 2);
 	})
+	// change field msg3
 	$('#message-box3').keyup(function () {
-		let textFull = $(this).val();
-		for (const idx in textFull) {
-			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
-				const char = textFull[idx];
-				
-				$('.equip-info.active').find(`.message3 div > span[id^=box]`)[idx].innerText = char;
-			}
-		}
+		upTextToChar($(this), 3);
 	})
 
 	$('#btnCreate').click(newMsg);
