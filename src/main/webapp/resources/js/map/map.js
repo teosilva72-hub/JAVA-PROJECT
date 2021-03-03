@@ -514,7 +514,6 @@ $(document).ready(function(){
 
 //Delete Modal Name
  function DelName(){
-	
 }
-
 //Delete Modal Name End
+
