@@ -82,7 +82,12 @@
           <resource-bundle>
           <base-name>bundle.labels.system.realtime.labels_realtime</base-name>           
           <var>realtimeLabels</var>        
-        </resource-bundle> 
+        </resource-bundle>
+        
+         <resource-bundle>
+          <base-name>bundle.labels.system.informations.labels_info</base-name>           
+          <var>infoLabels</var>        
+        </resource-bundle>  
         
          <resource-bundle>
           <base-name>bundle.labels.users.labels_users</base-name>           
@@ -186,7 +191,8 @@
 		<message-bundle>bundle.labels.system.periods.labels_periods</message-bundle>
 		<message-bundle>bundle.labels.system.restricted.labels_restricted</message-bundle>
 		<message-bundle>bundle.labels.system.realtime.labels_realtime</message-bundle>	
-		<message-bundle>bundle.labels.system.access-denied.labels_access_denied</message-bundle>		
+		<message-bundle>bundle.labels.system.access-denied.labels_access_denied</message-bundle>
+		<message-bundle>bundle.labels.system.informations.labels_info</message-bundle>				
         <message-bundle>bundle.labels.users.labels_users</message-bundle>
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
         

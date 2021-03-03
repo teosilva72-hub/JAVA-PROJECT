@@ -51,9 +51,9 @@ public class ListEquipments {
 
 	public class listEquips {
 		private boolean value;	
-		private List<Equipments> list;
+		private List<? extends Equipments> list;
 		
-		listEquips(boolean value, List<Equipments> list) {
+		listEquips(boolean value, List<? extends Equipments> list) {
 			this.value = value;			
 			this.list = list;
 		}
@@ -62,7 +62,7 @@ public class ListEquipments {
 			return value;
 		}
 			
-		public List<Equipments> getList() {
+		public List<? extends Equipments> getList() {
 			return list;
 		}
 
@@ -112,7 +112,7 @@ public class ListEquipments {
 				equips.add(new listEquips(load.isEn_mto(), mto.listEquipments("mto")));
 				
 				if(load.isEn_sat())
-				equips.add(new listEquips(load.isEn_sat(), sat.listEquipments("sat")));
+				equips.add(new listEquips(load.isEn_sat(), sat.listSatEquipments()));
 				
 				if(load.isEn_sos())
 				equips.add(new listEquips(load.isEn_sos(), sos.listEquipments("sos")));

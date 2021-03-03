@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
+import br.com.tracevia.webapp.model.sat.SAT;
 
 public class Equipments {
 	
@@ -232,6 +233,16 @@ public class Equipments {
 			List<Equipments> lista = new ArrayList<Equipments>();	
 			EquipmentsDAO dao = new EquipmentsDAO();			
 			lista.addAll(dao.buildEquipmentsInterface(modulo));	
+			
+			return lista;
+		}
+		
+		//Linear SAT equipments
+		public List<? extends Equipments> listSatEquipments() throws Exception {
+			
+			List<SAT> lista = new ArrayList<SAT>();	
+			EquipmentsDAO dao = new EquipmentsDAO();			
+			lista.addAll(dao.buildSatEquipmentsInterface());						
 			
 			return lista;
 		}
