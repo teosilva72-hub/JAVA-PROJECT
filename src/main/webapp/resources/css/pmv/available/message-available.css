@@ -90,44 +90,43 @@ body {
 }
 
 /*TABLES EQUIP PREVIEW*/
-@media (max-width: 1366px) {
-  .responsive {
-    height: 380px;
-  }
-
-  .confBtn {
-    margin-left: 20% !important;
-    height: 28px;
-    font-size: 9pt !important;
-    margin-top: 10px !important;
-    text-align: center;
-  }
-  .ui-selectonelistbox {
-    height: 210px !important;
-    width: auto !important;
-  }
-  .inputDesign {
-    height: 25px !important;
-  }
-  .conf2Btn {
-    margin-top: 10px !important;
-  }
-
-  #table-message {
-    position: absolute;
-    margin-top: 2%;
-    margin-left: 25%;
-    width: 65% !important;
-  }
-  .fa-keyboard,
-  .fa-file-signature,
-  .fa-key,
-  .fa-th-large {
-    margin-top: 8px;
-    margin-left: 5px;
-    font-size: 18px !important;
-  }
+.responsive {
+  height: 380px;
 }
+
+.confBtn {
+  margin-left: 20% !important;
+  height: 28px;
+  font-size: 9pt !important;
+  margin-top: 10px !important;
+  text-align: center;
+}
+.ui-selectonelistbox {
+  height: 210px !important;
+  width: auto !important;
+}
+.inputDesign {
+  height: 25px !important;
+}
+.conf2Btn {
+  margin-top: 10px !important;
+}
+
+#table-message {
+  position: absolute;
+  margin-top: 2%;
+  margin-left: 25%;
+  width: 65% !important;
+}
+.fa-keyboard,
+.fa-file-signature,
+.fa-key,
+.fa-th-large {
+  margin-top: 8px;
+  margin-left: 5px;
+  font-size: 18px !important;
+}
+
 .jumbotron {
   margin: 0 10px;
   position: fixed;
@@ -581,6 +580,10 @@ tbody tr {
 
 .table-responsive {
   position: relative;
+}
+
+#image-div {
+  cursor: pointer;
 }
 
 @keyframes fade {

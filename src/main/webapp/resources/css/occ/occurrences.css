@@ -3,12 +3,18 @@ body{
 	height: 100%;
 	width: 100%;
 }
+html, body{
+	width: 100%;
+	height: 100%;
+}
 #tabelaOculta{
 	width: 100%;	
 }
+
 .testeTable{
 	margin-top: 100000vh;
 }
+
 @media(min-height:800px){
 	.colEsquerda{
 	height: 500px;
@@ -82,28 +88,29 @@ body{
 /*Fim do design dos elementos inputs e textarea*/
 @media (max-width: 1366px){
 	#tab1{
-		height: 490px;
+		height: 470px;
 	}
 	#tab2{
-		height: 490px;
+		height: 470px;
 	}
 	#tab3{
-		height: 490px;
+		height: 470px;
 		
 	}
 	.btnConf{
 		font-size: 10pt;
 	}
 }
+
 @media (min-height: 768px){
 	#tab1{
-		height: 800px;
+		height: 580px;
 	}
 	#tab2{
-		height: 780px;
+		height: 580px;
 	}
 	#tab3{
-		height: 800px;
+		height: 580px;
 	}
 }
 #tab1{
@@ -398,8 +405,13 @@ cursor: pointer;
 .forEachFiles{
 	margin: 0;
 }
-#msgDelete, #msgDownload, #msgSave, #msgDelete2, #msgDownload3, #unLock, #msgSave1, #msgFinished, #msgOthersUsers, #updateOcc, #cancelOcc{
+
+#msgDelete, #msgDownload, #msgSave, #msgDelete2,
+#msgDownload3, #unLock, #msgSave1, #msgFinished,
+#msgOthersUsers, #updateOcc, #cancelOcc, #msgUploads{
 	height: 23px;
+	width: 100%;
+	margin-top: 0;
 }
 .textMsgFile{
 	margin-top: -10px;
