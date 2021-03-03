@@ -296,6 +296,14 @@ $(function () {
 				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 	})
 
+	$('#image-div').click(function() {
+		$(this).css('display', 'none').next().css('display', 'block')
+	})
+
+	$('#list-images').on('click', 'tr', function() {
+		$('#list-images').css('display', 'none').prev().css('display', 'block')
+	})
+
 	// change field type
 	$('#type-input').change(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
