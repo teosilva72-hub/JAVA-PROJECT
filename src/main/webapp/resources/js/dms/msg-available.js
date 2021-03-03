@@ -17,7 +17,9 @@ const selectMessage = () => {
 		msg.pages.push({
 			type: info.find('.dmsTab span#dmsType').attr('type'),
 			name: info.find('.dmsTab span#dmsName').text(),
-			image: info.find('	#child-img img').attr('src'),
+			image: info.find('#child-img img').attr('src'),
+			image_id: info.find('#child-img img').attr('id-img'),
+			timer: $(`#timerPage${i}`).val(),
 			text: [
 				info.find('#child-msg .message1').attr('msg'),
 				info.find('#child-msg .message2').attr('msg'),
@@ -297,10 +299,11 @@ $(function () {
 	})
 
 	$('#image-div').click(function() {
-		$(this).css('display', 'none').next().css('display', 'block')
+		$(this).css('display', 'none').next().css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
 	})
 
-	$('#list-images').on('click', 'tr', function() {
+	$('#list-images').on('click', 'div > img[id-img]', function(e) {
+		e.currentTarget.ondragstart = function () { return false }
 		$('#list-images').css('display', 'none').prev().css('display', 'block')
 	})
 
@@ -311,6 +314,10 @@ $(function () {
 	// change field name
 	$('#name-input').keyup(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
+	})
+	// change field image
+	$('#list-images div > img[id-img]').click(function () {
+		$('.equip-info.active').find('#child-img img[id-img]').attr({src: $(this).attr('src'), 'id-img': $(this).attr('id-img')})
 	})
 	// change field msg1
 	$('#message-box1').keyup(function () {
