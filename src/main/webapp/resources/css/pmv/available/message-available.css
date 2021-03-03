@@ -582,6 +582,10 @@ tbody tr {
   position: relative;
 }
 
+#image-div {
+  cursor: pointer;
+}
+
 @keyframes fade {
   from {
     opacity: 0;

@@ -50,7 +50,8 @@
 											<div class="container tableStyle card">
 												<div class="dms-name card-header py-0">
 													<div class="text-center dmsTab#{item.equip_id}">
-														<span class="mb-0 text-white" id="dmsId"></span> - <span id="dmsName"></span> - <span id="dmsType" type=""></span>
+														<span class="mb-0 text-white" id="dmsId"></span> - <span
+															id="dmsName"></span> - <span id="dmsType" type=""></span>
 													</div>
 												</div>
 												<div class="row text-center card-body p-0">
@@ -198,8 +199,9 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage1" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer1"
-													title="Timer 1" placeholder="0" disabled="disabled"  min="1" max="10"/>
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer1" title="Timer 1" placeholder="0"
+													disabled="disabled" min="1" max="10" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
 													value="1" checked="checked" />
@@ -217,8 +219,9 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage2" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer2"
-													title="Timer 2" placeholder="0" disabled="disabled"  min="1" max="10"/>
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer2" title="Timer 2" placeholder="0"
+													disabled="disabled" min="1" max="10" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
 													value="2" />
@@ -236,8 +239,9 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage3" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer3"
-													title="Timer 3" placeholder="0" disabled="disabled"  min="1" max="10"/>
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer3" title="Timer 3" placeholder="0"
+													disabled="disabled" min="1" max="10" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
 													value="3" />
@@ -255,8 +259,9 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage4" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer4"
-													title="Timer 4" placeholder="0" disabled="disabled"  min="1" max="10"/>
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer4" title="Timer 4" placeholder="0"
+													disabled="disabled" min="1" max="10" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
 													value="4" />
@@ -274,8 +279,9 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage5" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0" aria-label="timer5"
-													title="Timer 5" placeholder="0" disabled="disabled"  min="1" max="10"/>
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer5" title="Timer 5" placeholder="0"
+													disabled="disabled" min="1" max="10" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
 													value="5" />
@@ -289,17 +295,17 @@
 									<!-- id input -->
 									<div class="col-3">
 										<div id="image-div">
-											<h:commandLink id="link-image" disabled="#{pmvMessage.inputs}"
-												action="#{pmvMessage.imageState}">
-												<i class="fas fa-image fa-3x confIcone" data-bs-toggle="tooltip"
-													data-bs-placement="top" title="Adicionar Icone"></i>
-												<f:ajax execute="@form" render=":picture-id" />
-											</h:commandLink>
+											<a id="link-image"><svg width="80" height="80" fill="currentColor"
+													class="bi bi-images" viewBox="0 0 16 16">
+													<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+													<path
+														d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
+												</svg></a>
 										</div>
 										<div id="list-images">
 											<p:selectOneListbox id="picture-id" value="#{pmvMessage.picture}"
 												effect="fade" var="p" filter="false" class="listbox"
-												filterMatchMode="startsWith" onclick="returnDIV(); bloquerTable();">
+												filterMatchMode="startsWith">
 												<f:converter converterId="pictureConverter" />
 												<f:selectItems value="#{pmvMessage.pictures}" var="picture"
 													itemLabel="#{picture.image}" itemValue="#{picture}" />
@@ -330,7 +336,8 @@
 												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
 												<div class="input-group">
 													<select name="tipo" id="type-input" class="form-control selectType">
-														<option value="" disabled="disabled" selected="selected">Type</option>
+														<option value="" disabled="disabled" selected="selected">Type
+														</option>
 														<c:forEach items="#{pmvMessage.type}" var="opt">
 															<option value="#{opt.value}">#{opt.label}</option>
 														</c:forEach>
