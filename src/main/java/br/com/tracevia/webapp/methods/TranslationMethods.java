@@ -4,7 +4,7 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
 	
-	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar;
+	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc;
 	
 	public TranslationMethods() {
 		
@@ -22,11 +22,137 @@ public class TranslationMethods {
 		
 		localeCalendar = new LocaleUtil();
 		localeCalendar.getResourceBundle(LocaleUtil.LABELS_CALENDAR); 
+		
+		localeOcc = new LocaleUtil();
+		localeOcc.getResourceBundle(LocaleUtil.LABELS_OCC);
 	
      }
 	
-	//USERS PANEL TRANSLATION USE
-	
+	//USERS PANEL TRANSLATION OCCURRENCES
+	public String occurrencesTranslator(String occ) {
+		
+		String converteOcc = "";
+		
+		switch(occ){
+
+		case "Autopista Tuxpam - Tampico" : converteOcc = localeOcc.getStringKey("highway1"); break;
+		case "Autopista Cardel - Poza Rica" : converteOcc = localeOcc.getStringKey("highway2"); break;
+		case "Autopista Siervo de la Nación" : converteOcc = localeOcc.getStringKey("highway3"); break;
+		case "Veracruz" : converteOcc = localeOcc.getStringKey("estado_local1"); break;
+		case "CDMX" : converteOcc = localeOcc.getStringKey("estado_local2"); break;
+		case "Norte" : converteOcc = localeOcc.getStringKey("direction1"); break;
+		case "Sur" : converteOcc = localeOcc.getStringKey("direction2"); break;
+		case "Este" : converteOcc = localeOcc.getStringKey("direction3"); break;
+		case "Oeste" : converteOcc = localeOcc.getStringKey("direction4"); break;
+		case "1A" : converteOcc = localeOcc.getStringKey("lane1"); break;
+		case "2A" : converteOcc = localeOcc.getStringKey("lane2"); break;
+		case "1B" : converteOcc = localeOcc.getStringKey("lane3"); break;
+		case "2B" : converteOcc = localeOcc.getStringKey("lane4"); break;
+		
+		case "Accidente con víctima" : converteOcc = localeOcc.getStringKey("type1"); break;
+		case "Accidente con víctima grave" : converteOcc = localeOcc.getStringKey("type2"); break;
+		case "Animal en la carretera" : converteOcc = localeOcc.getStringKey("type3"); break;
+		case "Objeto en la carretera" : converteOcc = localeOcc.getStringKey("type4"); break;
+		case "Accidente leve" : converteOcc = localeOcc.getStringKey("type5"); break;
+		case "Accidente moderado" : converteOcc = localeOcc.getStringKey("type6"); break;
+		case "Accidente grave" : converteOcc = localeOcc.getStringKey("type7"); break;
+		case "Iluminación" : converteOcc = localeOcc.getStringKey("type8"); break;
+		case "Otros" : converteOcc = localeOcc.getStringKey("type9"); break;
+
+		case "Cámaras" : converteOcc = localeOcc.getStringKey("origin1"); break;
+		case "SOS" : converteOcc = localeOcc.getStringKey("origin2"); break;
+		case "Teléfono" : converteOcc = localeOcc.getStringKey("origin3"); break;
+		case "0800" : converteOcc = localeOcc.getStringKey("origin4"); break;
+		case "Correo" : converteOcc = localeOcc.getStringKey("origin5"); break;
+		case "Outro" : converteOcc = localeOcc.getStringKey("origin6"); break;
+		
+		case "Abierto" : converteOcc = localeOcc.getStringKey("state1"); break;
+		case "Cancelado" : converteOcc = localeOcc.getStringKey("state2"); break;
+		case "Finalizado" : converteOcc = localeOcc.getStringKey("state3"); break;
+		
+		case "Desgaste natural" : converteOcc = localeOcc.getStringKey("probable_cause1"); break;
+		case "Colisión" : converteOcc = localeOcc.getStringKey("probable_cause2"); break;
+		case "Vandalismo" : converteOcc = localeOcc.getStringKey("probable_cause3"); break;
+		case "Lluvia" : converteOcc = localeOcc.getStringKey("probable_cause4"); break;
+		case "Temperatura" : converteOcc = localeOcc.getStringKey("probable_cause5"); break;
+		case "Viento" : converteOcc = localeOcc.getStringKey("probable_cause6"); break;
+		case "Rayo" : converteOcc = localeOcc.getStringKey("probable_cause7"); break;
+		case "Others" : converteOcc = localeOcc.getStringKey("probable_cause8"); break;
+		case "------------" : converteOcc = localeOcc.getStringKey("probable_cause9"); break;
+		
+		case "Día" : converteOcc = localeOcc.getStringKey("condition1"); break;
+		case "Día lluvioso" : converteOcc = localeOcc.getStringKey("condition2"); break;
+		case "Dia de nevoeiro" : converteOcc = localeOcc.getStringKey("condition3"); break;
+		case "Noche" : converteOcc = localeOcc.getStringKey("condition4"); break;
+		case "Noche con lluvia" : converteOcc = localeOcc.getStringKey("condition5"); break;
+		case "Noche con niebla" : converteOcc = localeOcc.getStringKey("condition6"); break;
+		
+		case "Normal" : converteOcc = localeOcc.getStringKey("conditionTrack1"); break;
+		case "Moderado" : converteOcc = localeOcc.getStringKey("conditionTrack2"); break;
+		case "Denso" : converteOcc = localeOcc.getStringKey("conditionTrack3"); break;
+		case "Detenido" : converteOcc = localeOcc.getStringKey("conditionTrack4"); break;
+		case "Nulo" : converteOcc = localeOcc.getStringKey("conditionTrack5"); break;
+		
+		case "Línea recta" : converteOcc = localeOcc.getStringKey("characteristic1"); break;
+		case "Subida recta" : converteOcc = localeOcc.getStringKey("characteristic2"); break;
+		case "Descenso recto" : converteOcc = localeOcc.getStringKey("characteristic3"); break;
+		case "Curva plana" : converteOcc = localeOcc.getStringKey("characteristic4"); break;
+		case "Curva hacia arriba" : converteOcc = localeOcc.getStringKey("characteristic5"); break;
+		case "Curva Descida" : converteOcc = localeOcc.getStringKey("characteristic6"); break;
+		
+		case "Vehículo" : converteOcc = localeOcc.getStringKey("interference1"); break;
+		case "Objeto" : converteOcc = localeOcc.getStringKey("interference2"); break;
+		case "Animal" : converteOcc = localeOcc.getStringKey("interference3"); break;
+		case "Persona" : converteOcc = localeOcc.getStringKey("interference4"); break;
+		
+		case "Precaución" : converteOcc = localeOcc.getStringKey("signaling1"); break;
+		case "Hombre de la bandera" : converteOcc = localeOcc.getStringKey("signaling2"); break;
+		case "Vehículos" : converteOcc = localeOcc.getStringKey("signaling3"); break;
+		case "Usuario" : converteOcc = localeOcc.getStringKey("signaling4"); break;
+		
+		case "Enfermo" : converteOcc = localeOcc.getStringKey("stateConductor1"); break;
+		case "Intoxicado" : converteOcc = localeOcc.getStringKey("stateConductor2"); break;
+		case "Somnoliento" : converteOcc = localeOcc.getStringKey("stateConductor3"); break;
+		case "Lesión leve" : converteOcc = localeOcc.getStringKey("stateConductor4"); break;
+		case "Lesion grave" : converteOcc = localeOcc.getStringKey("stateConductor5"); break;
+		
+		case "Asistencia en carretera" : converteOcc = localeOcc.getStringKey("action1"); break;
+		case "Ambulancia" : converteOcc = localeOcc.getStringKey("action2"); break;
+		case "Policía" : converteOcc = localeOcc.getStringKey("action3"); break;
+		case "Bomberos" : converteOcc = localeOcc.getStringKey("action4"); break;
+		case "Cabrestante" : converteOcc = localeOcc.getStringKey("action5"); break;
+		
+		case "Iniciado" : converteOcc = localeOcc.getStringKey("actionState1"); break;
+		case "Pendiente" : converteOcc = localeOcc.getStringKey("actionState2"); break;
+		case "Finalizados" : converteOcc = localeOcc.getStringKey("actionState3"); break;
+		
+		case "Acotamiento A" : converteOcc = localeOcc.getStringKey("trackInterrupted1"); break;
+		case "Acotamiento B" : converteOcc = localeOcc.getStringKey("trackInterrupted2"); break;
+		case "Pista A" : converteOcc = localeOcc.getStringKey("trackInterrupted3"); break;
+		case "Pista B" : converteOcc = localeOcc.getStringKey("trackInterrupted4"); break;
+		
+		case "Vehículo " : converteOcc = localeOcc.getStringKey("damageType1"); break;
+		case "Barrera" : converteOcc = localeOcc.getStringKey("damageType2"); break;
+		case "Señalización" : converteOcc = localeOcc.getStringKey("damageType3"); break;
+		case "SOS " : converteOcc = localeOcc.getStringKey("damageType4"); break;
+		case "CFTV" : converteOcc = localeOcc.getStringKey("damageType5"); break;
+		
+		case "KM" : converteOcc = localeOcc.getStringKey("damageUnity1"); break;
+		case "Metros" : converteOcc = localeOcc.getStringKey("damageUnity2"); break;
+		case "Partes" : converteOcc = localeOcc.getStringKey("damageUnity3"); break;
+		
+		case "Animais" : converteOcc = localeOcc.getStringKey("involvedType1"); break;
+		case "Peatones" : converteOcc = localeOcc.getStringKey("involvedType2"); break;
+		case "Objetos" : converteOcc = localeOcc.getStringKey("involvedType3"); break;
+		case "Vehículos   " : converteOcc = localeOcc.getStringKey("involvedType4"); break;
+		
+		case "Alto" : converteOcc = localeOcc.getStringKey("damageSeverity1"); break;
+		case "Medio" : converteOcc = localeOcc.getStringKey("damageSeverity2"); break;
+		case "Bajo" : converteOcc = localeOcc.getStringKey("damageSeverity3"); break;
+		}
+		
+		return converteOcc;
+	}
 	public String convertPermission(String role) {
 		
 		String convertedRole = "";

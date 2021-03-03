@@ -804,7 +804,7 @@ img.box-img[zoom] {
 }
 
 [id$="equipId"] {
-  width: 80%;
+  width: 100%;
 }
 [id$="equipName"] {
   width: 100%;

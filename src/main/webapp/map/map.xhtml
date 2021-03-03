@@ -509,7 +509,7 @@
 
 							<!-- EQUIPMENT ID -->
 							<div class="form-row">
-								<div class="form-group col-md-4 input-field" id="contentEquipId">
+								<div class="form-group col-md-12 input-field" id="contentEquipId">
 									<span><i class="fab fa-ideal"></i></span> <span
 										class="valid-icon-hidden"></span> <input
 										requiredField="number" type="text" autocomplete="off"
@@ -524,11 +524,11 @@
 
 								<!-- EQUIPMENT NAME -->
 
-								<div class="form-group col-md-8 input-field">
+								<div class="form-group col-md-12 input-field">
 									<span><i class="fas fa-signature"></i></span> <span
 										for="equipName" class="valid-icon-hidden"></span> <input
 										requiredField="" type="text" autocomplete="off"
-										name="equipName" id="equipdName"
+										name="equipName" id="equipName"
 										placeholder="#{mapLabels.map_creation_input_name}" />
 									<div class="error-label">
 										<label for="equip
@@ -731,8 +731,8 @@
 						<div class="modal-body">
 
 							<!-- EQUIPMENT ID -->
-							<div class="form-row">
-								<div class="form-group col-md-4 input-field" id="contentEquipId">
+							<div class="form-row" style="margin-bottom: -23px;">
+								<div class="form-group col-md-12 input-field" id="contentEquipId">
 									<span><i class="fab fa-ideal"></i></span> <span for="equipId"
 										class="valid-icon-hidden"></span>
 									<h:inputText value="#{equipsBean.equip.equip_id}"
@@ -748,7 +748,7 @@
 
 								<!-- EQUIPMENT NAME -->
 
-								<div class="form-group col-md-8 input-field">
+								<div class="form-group col-md-12 input-field">
 									<span><i class="fas fa-signature"></i></span> <span
 										for="equipName" class="valid-icon-hidden"></span>
 									<h:inputText autocomplete="off" name="equipName" id="equipName"
@@ -761,6 +761,7 @@
 									</div>
 								</div>
 							</div>
+							
 							<!-- EQUIPMENT NAME -->
 
 							<!-- CITY -->
@@ -886,7 +887,8 @@
 						</div>
 						<div class="modal-body">
 						
-						<h:outputLabel name="delete-equipName" id="delete-equipName" value= "Deletar'#{equipsBean.equip.nome}'"  /></div>
+						<h:outputLabel name="delete-equipName" id="delete-equipName" value= "Deletar'#{equipsBean.equip.nome}'"
+						 style = "font-size: #{equipsBean.equip.nome ? '12px' : '20px'}" /></div>
 						
 						 <div class="modal-footer">
 							<div class="form-row">
