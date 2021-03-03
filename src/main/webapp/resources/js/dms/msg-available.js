@@ -1,76 +1,44 @@
-function hideID() {
-	document.getElementById("id-div").style.display = "none";
-	// document.getElementById("space").style.display = "block";	
-	// document.getElementById("space1").style.display = "block";				 
-}
-function showID() {
-	document.getElementById("id-div").style.display = "block";
-	// document.getElementById("space").style.display = "none";	
-	// document.getElementById("space1").style.display = "none";				
-}
-function changeDIV() {
-	document.getElementById('image-div').style.display = "none";
-	document.getElementById('list-images').style.display = "block";
-}
-function returnDIV() {
-	document.getElementById('image-div').style.display = "block";
-	document.getElementById('list-images').style.display = "none";
 
-}
-function dialogHide() {
-	var dialog = document.getElementById("deleteModal");
-	dialog.modal("hide");
-}
-
-// Id do inputHidden para passar valor para pmvMessage (Bean)		 
-var idMessage, selected;
-
-function selectList() {
-	// Método para pegar id da mensagem na seleção de uma row
-	$('#message-table tbody').on('click', 'tr', function () {
-		// Get table row
-		var row = $(this);
-
-		// Check if table row is selected on not (Change state) (true or false)
-		if (!row.hasClass('selected'))
-			selected = true;
-		else
-			selected = false;
-
-		// Get table id on select Row		  
-		var tableData = $(this).children("td").first().text();
-
-		// Chamar Action do Botão Hidden
-		document.getElementById('formId:hdnBtn').click();
-
-		// Passar o id para dialog
-		$('#selectedId').text(tableData);
-
-	});
-}
-
-// Método para passar o valor selecionado
-function getMessageId() {
-	document.getElementById("formId:idMessage").value = idMessage;
-	document.getElementById("formId:checked").value = selected;
-}
-
-// Check if row is selected or not
-function checkRowSelected() {
-	if (!table.data().any())
-		selected = false
-	else
-		selected = true;
-}
-function hideMsg() {
-	$("#message-display").delay(1000).hide(1000);
-}
+var msg;
 
 // implementation 'loopNext' in jquery
 $.fn.loopNext = function (selector) {
 	var selector = selector || '';
 	return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
 }
+
+const selectMessage = () => {
+	msg = {
+		id: $(`.equip-info.equip1`).find('.dmsTab span#dmsId').text(),
+		pages: []
+	}
+
+	for (let i = 1; i <= 5; i++) {
+		let info = $(`.equip-info.equip${i}`)
+		msg.pages.push({
+			type: info.find('.dmsTab span#dmsType').attr('type'),
+			name: info.find('.dmsTab span#dmsName').text(),
+			image: info.find('	#child-img img').attr('src'),
+			text: [
+				info.find('#child-msg .message1').attr('msg'),
+				info.find('#child-msg .message2').attr('msg'),
+				info.find('#child-msg .message3').attr('msg')
+			]
+		})
+	}
+}
+
+const updateMessage = () => {
+	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
+	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
+	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].text[0])
+	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].text[1])
+	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].text[2])
+}
+
+// $('#name-input').change(function() {
+// 	msg.pages[$('.equip-info.active').index()].name = $('.equip-info.active').find('.dmsTab span#dmsName').text()
+// })
 
 const newMsg = () => {
 	$('#btnCreate').prop('disabled', true);
@@ -79,18 +47,23 @@ const newMsg = () => {
 	$('#btnCr1').prop('disabled', false);
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active')
-	$('.edit-pmv-page').removeClass('active')
+	$('.edit-pmv-page').addClass('active')
 	$('.edit-field').addClass('active')
-	let pre_vi = $(`#page-pmv .equip1`)
+	let pre_vi = $(`#page-pmv .equip-info`)
 	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-	pre_vi.find('.dmsTab p').text('')
-	pre_vi.find(`#msg1`).children().each(function () {
-		$(this).children().each(function () {
+	pre_vi.find('.dmsTab span').text('').each(function () {
+		$(this).last().attr('type', '')
+	})
+	pre_vi.find(`[id^=msg]`).children().each(function () {
+		$(this).attr('msg', '').children().each(function () {
 			$(this).find('[id*=box]').text("")
 		})
 	})
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active')
+
+	selectMessage();
+	updateMessage();
 }
 
 const cancel = () => {
@@ -184,10 +157,10 @@ const init = () => {
 					// Add image
 					pre_vi.find('.picture-box').attr('src', page.find('[id*=picture-table]').attr('src'))
 					// Add ID and NAME
-					pre_vi.find('.dmsTab p').text(`${pages.filter('.idColumn').text()} - ${page.find('.tablePageName').text()}`)
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
 					// add messages
 					pre_vi.find(`#msg${i}`).children().each(function () {
-						$(this).children().each(function (index) {
+						$(this).attr('msg', msg.text()).children().each(function (index) {
 							if ((msg.text().length - index) > 0)
 								$(this).find('[id*=box]').text(msg.text()[index])
 							else
@@ -195,6 +168,8 @@ const init = () => {
 						})
 						msg = msg.next()
 					})
+					// add Type
+					pre_vi.find('.dmsTab span#dmsType').text(page.filter('[type]').text()).attr('type', page.filter('[type]').attr('type'))
 
 					// disable button if morePage if false
 					if (morePage && page.length) {
@@ -211,9 +186,9 @@ const init = () => {
 
 				} else {
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab p').text('')
+					pre_vi.find('.dmsTab span#dmsId').text(``).next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
-						$(this).children().each(function () {
+						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
 						})
 					})
@@ -223,6 +198,8 @@ const init = () => {
 					morePage = false;
 				}
 			}
+
+			selectMessage();
 		})
 	})
 
@@ -271,21 +248,56 @@ $(function () {
 	})
 
 	$('.edit-pmv-page').on('click', 'label', function () {
-		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active')
+		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
+
+		updateMessage();
+
 	}).find('[id^=timerCheck]').change(function () {
 		let check = $(this);
 		if (check.prop('checked'))
-			check.parent().next().prop('disabled', false)
+			check.parent().next().prop('disabled', false);
 		else
-			check.parent().next().prop('disabled', true)
+			check.parent().next().prop('disabled', true);
 	})
 
-	
+	$('#type-input').change(function () {
+		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
+	})
+	$('#name-input').keyup(function () {
+		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
+	})
+	$('#message-box1').keyup(function () {
+		let textFull = $(this).val();
+		for (const idx in textFull) {
+			console.log('sda')
+			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
+				const char = textFull[idx];
+				
+				$('.equip-info.active').find(`.message1 div > span[id^=box]`)[idx].innerText = char;
+			}
+		}
+	})
+	$('#message-box2').keyup(function () {
+		let textFull = $(this).val();
+		for (const idx in textFull) {
+			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
+				const char = textFull[idx];
+				
+				$('.equip-info.active').find(`.message2 div > span[id^=box]`)[idx].innerText = char;
+			}
+		}
+	})
+	$('#message-box3').keyup(function () {
+		let textFull = $(this).val();
+		for (const idx in textFull) {
+			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
+				const char = textFull[idx];
+				
+				$('.equip-info.active').find(`.message3 div > span[id^=box]`)[idx].innerText = char;
+			}
+		}
+	})
 
 	$('#btnCreate').click(newMsg);
 	$('#btnCr2').click(cancel);
 })
-
-// selectList();
-// getMessageId();
-// hideMsg();

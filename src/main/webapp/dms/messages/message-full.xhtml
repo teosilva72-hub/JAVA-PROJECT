@@ -15,7 +15,7 @@
             <h:outputText value="#{msg.value.id_message}" />
         </h:column>
         <c:forEach items="#{pmvMessage.messages.get(msg.key).pages}" var="page" varStatus="index">
-            <h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
+            <h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}" pt:type="#{page.tipo}">
                 <f:facet rendered="#{index.first}" name="header">
                     #{dmsLabels.dms_available_messages_table_col_type}
                 </f:facet>
