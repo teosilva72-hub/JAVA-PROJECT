@@ -58,7 +58,7 @@
 													<div id="child-img" class="col-2 padding-pmv">
 														<h:graphicImage
 															value="/resources/images/pictures/#{pmvMessage.image}"
-															styleClass="ui-graphic-image picture-box" />
+															styleClass="ui-graphic-image picture-box" pt:id-img="0" />
 													</div>
 													<div id="child-msg" class="col-auto msg-pos">
 														<div id="msg#{index.index}" class="table-message">
@@ -303,18 +303,13 @@
 												</svg></a>
 										</div>
 										<div id="list-images">
-											<p:selectOneListbox id="picture-id" value="#{pmvMessage.picture}"
-												effect="fade" var="p" filter="false" class="listbox"
-												filterMatchMode="startsWith">
-												<f:converter converterId="pictureConverter" />
-												<f:selectItems value="#{pmvMessage.pictures}" var="picture"
-													itemLabel="#{picture.image}" itemValue="#{picture}" />
-												<p:ajax event="change" listener="#{pmvMessage.loadPictureImage}" />
-												<p:column>
-													<h:graphicImage value="/resources/images/pictures/#{p.image}"
-														width="60" height="60" />
-												</p:column>
-											</p:selectOneListbox>
+											<div class="listbox" id="picture-id">
+												<c:forEach items="#{pmvMessage.pictures}" var="p">
+												<div>
+													<img src="/resources/images/pictures/#{p.image}" width="60" height="60" id-img="#{p.id}" />
+												</div>
+												</c:forEach>
+											</div>
 										</div>
 									</div>
 									<div class="row col-9">

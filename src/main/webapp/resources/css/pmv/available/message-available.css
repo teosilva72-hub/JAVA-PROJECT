@@ -101,10 +101,6 @@ body {
   margin-top: 10px !important;
   text-align: center;
 }
-.ui-selectonelistbox {
-  height: 210px !important;
-  width: auto !important;
-}
 .inputDesign {
   height: 25px !important;
 }
@@ -291,25 +287,17 @@ body {
 /*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
 #list-images {
   display: none;
-  width: 68px;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  width: fit-content;
+  overflow: auto;
   height: auto;
 }
 
-/*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
-.ui-selectlistbox-listcontainer {
-  height: 100% !important;
-  width: auto !important;
+.listbox {
+  height: 210px;
 }
 
-.ui-selectlistbox-list {
-  width: auto !important;
-}
-
-/* ITENS - SELECTONELISTBOX*/
-.ui-selectlistbox-item {
-  height: 65px;
+#list-images div > img[id-img] {
+  cursor: pointer;
 }
 
 /*TEXT AREA DIV*/
