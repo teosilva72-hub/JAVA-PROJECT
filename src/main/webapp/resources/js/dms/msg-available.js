@@ -6,6 +6,7 @@ $.fn.loopNext = function (selector) {
 	return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
 }
 
+// Select message in pre-view
 const selectMessage = () => {
 	msg = {
 		id: $(`.equip-info.equip1`).find('.dmsTab span#dmsId').text(),
@@ -29,6 +30,7 @@ const selectMessage = () => {
 	}
 }
 
+// Get update to menu
 const updateMessage = () => {
 	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
 	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
@@ -37,6 +39,7 @@ const updateMessage = () => {
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].text[2])
 }
 
+// Create new message
 const newMsg = () => {
 	$('#btnCreate').prop('disabled', true);
 	$('#btnEdit').prop('disabled', true);
@@ -68,6 +71,7 @@ const newMsg = () => {
 	updateMessage();
 }
 
+// Cancel message in menu
 const cancel = () => {
 	$('#btnCreate').prop('disabled', false);
 	$('#btnCr1').prop('disabled', true);
@@ -94,6 +98,7 @@ const cancel = () => {
 	updateMessage();
 }
 
+// render table with datatable
 const tableRender = () => {
 	// Start more components for tables
 	$('#message-table').DataTable({
@@ -135,7 +140,9 @@ const tableRender = () => {
 	});
 }
 
+// init table
 const init = () => {
+	// get all message
 	let table = $('.idColumn + td.pageTable1')
 	table.each(function () {
 		let tr = $(this).parent()
@@ -197,6 +204,7 @@ const init = () => {
 						pagination.find(`#timerCheck${originpager}`).prop('checked', true);
 						pagination.find(`#btn-page${originpager}`).removeAttr('disabled');
 					} else {
+						// remove check page
 						pagination.find(`#timerCheck${originpager}`).prop('checked', false);
 						pagination.find(`#btn-page${originpager}`).attr('disabled', 'disabled');
 						morePage = false;
@@ -205,6 +213,7 @@ const init = () => {
 					pagination.find(`#timerPage${originpager}`).val(timer);
 
 				} else {
+					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
 					pre_vi.find('.dmsTab span#dmsId').text(``).next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
@@ -219,6 +228,7 @@ const init = () => {
 				}
 			}
 
+			// select message
 			selectMessage();
 		})
 	})
@@ -261,6 +271,7 @@ const changeMsg = msg => {
 		changeMsg(msg.loopNext());
 }
 
+// transform string to char in message pmv
 const upTextToChar = (elmt, id) => {
 	let textFull = elmt.val();
 	for (const idx in textFull) {
@@ -276,11 +287,13 @@ const upTextToChar = (elmt, id) => {
 }
 
 $(function () {
+	// request table
 	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
 		// Main loading
 		init();
 	})
 
+	// change and pre-save page
 	$('.edit-pmv-page').on('click', 'label', function () {
 		selectMessage();
 
@@ -289,6 +302,7 @@ $(function () {
 		updateMessage();
 
 	}).find('[id^=timerCheck]').change(function () {
+		// disable or enable other page
 		let check = $(this);
 		if (check.prop('checked'))
 			check.parent().next().prop('disabled', false).next().prop('disabled', false)
@@ -298,12 +312,15 @@ $(function () {
 				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 	})
 
-	$('#image-div').click(function() {
+	// hidden img and open list
+	$('#image-div').click(function () {
 		$(this).css('display', 'none').next().css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
 	})
 
-	$('#list-images').on('click', 'div > img[id-img]', function(e) {
+	// change field image
+	$('#list-images').on('click', 'div > img[id-img]', function (e) {
 		e.currentTarget.ondragstart = function () { return false }
+		$('.equip-info.active').find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
 		$('#list-images').css('display', 'none').prev().css('display', 'block')
 	})
 
@@ -314,10 +331,6 @@ $(function () {
 	// change field name
 	$('#name-input').keyup(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
-	})
-	// change field image
-	$('#list-images div > img[id-img]').click(function () {
-		$('.equip-info.active').find('#child-img img[id-img]').attr({src: $(this).attr('src'), 'id-img': $(this).attr('id-img')})
 	})
 	// change field msg1
 	$('#message-box1').keyup(function () {

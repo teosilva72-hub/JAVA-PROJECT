@@ -22,11 +22,6 @@
 		<!-- Final da animação -->
 		<div class="jumbotron bg-dark px-3">
 			<!-- TABLE MESSAGES -->
-			<h:form id="message-display">
-				<div id="show">
-					<p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-				</div>
-			</h:form>
 			<div class="row flex-row-reverse">
 				<!-- MESSAGE CONTENT BOX -->
 				<div class="boardDetails shadow col-4">
@@ -56,9 +51,8 @@
 												</div>
 												<div class="row text-center card-body p-0">
 													<div id="child-img" class="col-2 padding-pmv">
-														<h:graphicImage
-															value="/resources/images/pictures/#{pmvMessage.image}"
-															styleClass="ui-graphic-image picture-box" pt:id-img="0" />
+														<img src="/resources/images/pictures/#{pmvMessage.image}"
+															class="ui-graphic-image picture-box" id-img="0" />
 													</div>
 													<div id="child-msg" class="col-auto msg-pos">
 														<div id="msg#{index.index}" class="table-message">
@@ -305,9 +299,10 @@
 										<div id="list-images">
 											<div class="listbox" id="picture-id">
 												<c:forEach items="#{pmvMessage.pictures}" var="p">
-												<div>
-													<img src="/resources/images/pictures/#{p.image}" width="60" height="60" id-img="#{p.id}" />
-												</div>
+													<div>
+														<img src="/resources/images/pictures/#{p.image}" width="60"
+															height="60" id-img="#{p.id}" />
+													</div>
 												</c:forEach>
 											</div>
 										</div>
@@ -449,14 +444,6 @@
 						<div id="disableTable">
 							<span>Blocked</span>
 						</div>
-						<h:form id="formId">
-							<h:inputHidden id="idMessage" value="#{pmvMessage.rowKey}" />
-							<h:inputHidden id="checked" value="#{pmvMessage.selectedRow}" />
-							<h:commandButton id="hdnBtn" value="TESTE" onclick=" getMessageId();"
-								actionListener="#{pmvMessage.getRowValue}" style="display:none;">
-								<f:ajax execute="@form" render=":btn-form" />
-							</h:commandButton>
-						</h:form>
 					</div>
 				</div>
 			</div>
