@@ -90,44 +90,43 @@ body {
 }
 
 /*TABLES EQUIP PREVIEW*/
-@media (max-width: 1366px) {
-  .responsive {
-    height: 380px;
-  }
-
-  .confBtn {
-    margin-left: 20% !important;
-    height: 28px;
-    font-size: 9pt !important;
-    margin-top: 10px !important;
-    text-align: center;
-  }
-  .ui-selectonelistbox {
-    height: 210px !important;
-    width: auto !important;
-  }
-  .inputDesign {
-    height: 25px !important;
-  }
-  .conf2Btn {
-    margin-top: 10px !important;
-  }
-
-  #table-message {
-    position: absolute;
-    margin-top: 2%;
-    margin-left: 25%;
-    width: 65% !important;
-  }
-  .fa-keyboard,
-  .fa-file-signature,
-  .fa-key,
-  .fa-th-large {
-    margin-top: 8px;
-    margin-left: 5px;
-    font-size: 18px !important;
-  }
+.responsive {
+  height: 380px;
 }
+
+.confBtn {
+  margin-left: 20% !important;
+  height: 28px;
+  font-size: 9pt !important;
+  margin-top: 10px !important;
+  text-align: center;
+}
+.ui-selectonelistbox {
+  height: 210px !important;
+  width: auto !important;
+}
+.inputDesign {
+  height: 25px !important;
+}
+.conf2Btn {
+  margin-top: 10px !important;
+}
+
+#table-message {
+  position: absolute;
+  margin-top: 2%;
+  margin-left: 25%;
+  width: 65% !important;
+}
+.fa-keyboard,
+.fa-file-signature,
+.fa-key,
+.fa-th-large {
+  margin-top: 8px;
+  margin-left: 5px;
+  font-size: 18px !important;
+}
+
 .jumbotron {
   margin: 0 10px;
   position: fixed;
@@ -522,6 +521,11 @@ select {
 .edit-field {
   position: relative;
   display: none;
+  top: 143px;
+}
+
+.edit-field.active {
+  display: flex;
 }
 
 .equip-info {
@@ -547,13 +551,39 @@ td[class^="pageTable"].active {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-tr[role="row"] {
+tbody tr {
   cursor: pointer;
 }
 
 .dataTables_filter {
   width: max-content;
   margin-left: auto;
+}
+
+#disableTable {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: xxx-large;
+  color: white;
+  background-color: #21212188;
+  display: none;
+}
+
+#disableTable.active {
+  display: revert;
+}
+
+.table-responsive {
+  position: relative;
+}
+
+#image-div {
+  cursor: pointer;
 }
 
 @keyframes fade {

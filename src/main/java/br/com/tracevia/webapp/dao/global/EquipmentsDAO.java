@@ -1109,16 +1109,16 @@ public class EquipmentsDAO {
 // ------- UPDATE EQUIPMENT FOR MAP / REALTIME ------- //
 // --------------------------------------------------- //
          
-       //--------------------------------------------------- //
+       //---------------------------------------------------  //
       // ------- SEARCH EQUIPMENT FOR MAP / REALTIME ------- //
-      // --------------------------------------------------- //
+     // --------------------------------------------------- //
     
     
 public Equipments EquipSearchMap(int id, String table) throws Exception {    
     
 //System.out.println(table);
 	
-   try { //GET SLQException
+   try { //GET SQLException
   	 
     
     if(table.equals("cftv")) { // CFTV Definitions

@@ -65,6 +65,7 @@ public class PMVmessageBean implements Serializable {
 	private Messages message;
 	//private HtmlDataTable dataTable;
 	private List<Messages> messages;
+	private List<Messages> messagesOnly;
 	private List<Enumeration> messages_enumeration;
 	private ArrayList<SelectItem> items;
 	private ArrayList<SelectItem> name;
@@ -410,6 +411,8 @@ public class PMVmessageBean implements Serializable {
 	   
 	   messages = dao.mensagensDisponiveis();
 	   messages_enumeration = enumeration.create(messages);
+
+	   messagesOnly = dao.mensagensOnly();
 	  		    		    
 		ArrayList<Equipments> list = new ArrayList<Equipments>();		
 		list = equipDAO.listPMVSites();
@@ -742,7 +745,7 @@ public class PMVmessageBean implements Serializable {
      }
   }
  
-  public void createMessage() {
+  public void createMessage() {  // Todo: Provalvemente ele já esta obsoleto
 	 	  
 	  actionType = "create";	  
 	  create = true; // Unlock items
@@ -945,5 +948,13 @@ public void imageState() {
 		return type;					
 		
 	}
+
+public List<Messages> getMessagesOnly() {
+	return messagesOnly;
+}
+
+public void setMessagesOnly(List<Messages> messagesOnly) {
+	this.messagesOnly = messagesOnly;
+}
   	
 }
