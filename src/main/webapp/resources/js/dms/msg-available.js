@@ -78,13 +78,15 @@ const newMsg = () => {
 }
 
 const save = () => {
-	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-		// Main loading
-		init();
-	})
-
-	cancel();
-	alert("save");
+	setTimeout(() => {
+		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+			// Main loading
+			init();
+		})
+	
+		cancel();
+		alert("save");
+	}, 500)
 }
 
 // Cancel message in menu
