@@ -20,7 +20,7 @@ const selectMessage = () => {
 			name: info.find('.dmsTab span#dmsName').text(),
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
-			timer: $(`#timerPage${i}`).val(),
+			timer: ($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val(),
 			line1: info.find('#child-msg .message1').attr('msg'),
 			line2: info.find('#child-msg .message2').attr('msg'),
 			line3: info.find('#child-msg .message3').attr('msg'),
