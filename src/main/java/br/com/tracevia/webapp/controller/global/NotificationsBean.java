@@ -80,7 +80,7 @@ public class NotificationsBean {
 		notifications = new ArrayList<Notifications>();		
 		NotificationsDAO dao = new NotificationsDAO();
 				
-		notifications = dao.Notifications(NotificationsTypeEnum.SAT.toString());	
+		notifications = dao.Notifications(NotificationsTypeEnum.SAT.getType());	
 				
 		if(notifications.isEmpty()) {
 			
@@ -91,10 +91,6 @@ public class NotificationsBean {
 		   notifications.add(not);					
 			
 		}
-		
-		//for(int i = 0; i < notifications.size(); i++)
-		//System.out.println(notifications.get(i).getDescription());
-			
 		
 	}
 	

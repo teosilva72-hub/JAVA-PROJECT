@@ -282,7 +282,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 48 HOUR) AND ? AND eq.visible = 1 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA";
 					
@@ -480,7 +480,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 48 HOUR) AND ? AND eq.visible = 1 " +
 		"GROUP BY d.DATA_HORA " +
         "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
 	  					
@@ -596,7 +596,7 @@ public class SATinformationsDAO {
 					
 		String select ="SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 48 HOUR) AND ? AND eq.visible = 1 " +
 				       "GROUP BY d.NOME_ESTACAO " +
 					   "ORDER BY d.DATA_HORA";
 		
@@ -760,7 +760,7 @@ public class SATinformationsDAO {
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 48 HOUR) AND ? AND eq.visible = 1 " +
 			        "GROUP BY d.DATA_HORA " + 			        
 			        "ORDER BY d.DATA_HORA DESC LIMIT 1";
 			      	    	  					
