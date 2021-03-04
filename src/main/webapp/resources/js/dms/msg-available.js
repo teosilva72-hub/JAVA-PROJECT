@@ -184,7 +184,7 @@ const init = () => {
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length >= 28)
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 28)
 			changeMsg($(this));
 		else {
 			$(this).addClass('active')
