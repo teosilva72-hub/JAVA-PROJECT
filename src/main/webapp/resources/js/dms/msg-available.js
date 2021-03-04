@@ -71,7 +71,24 @@ const newMsg = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
+	$('input[id^=timerCheck]').prop('disabled', false);
+
+	selectMessage();
+	updateMessage();
+}
+
+// Create new message
+const editMsg = () => {
+	$('#btnCreate').prop('disabled', true);
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+	$('[id$=btnCr1]').prop('disabled', false);
+	$('#btnCr2').prop('disabled', false);
+	$('#disableTable').addClass('active');
+	$('.edit-field').addClass('active');
+	$('.edit-pmv-page').addClass('active')
+
+	$('input[id^=timerCheck]').prop('disabled', false);
 
 	selectMessage();
 	updateMessage();
@@ -83,7 +100,7 @@ const save = () => {
 			// Main loading
 			init();
 		})
-	
+
 		cancel();
 		alert("save");
 	}, 500)
@@ -167,16 +184,16 @@ const init = () => {
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length !== 28)
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length >= 28)
 			changeMsg($(this));
 		else {
 			$(this).addClass('active')
-			.loopNext().addClass('active')
-			.loopNext().addClass('active')
-			.loopNext().addClass('active')
-			.loopNext().addClass('active')
-			.loopNext().addClass('active')
-			.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
 		}
 
 
@@ -255,6 +272,8 @@ const init = () => {
 					morePage = false;
 				}
 			}
+
+			$('#btnEdit').prop('disabled', false);
 
 			// select message
 			selectMessage();
@@ -385,6 +404,7 @@ $(function () {
 
 
 	$('#btnCreate').click(newMsg);
+	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
 	$('[id$=btnCr1]').click(save);
 })
