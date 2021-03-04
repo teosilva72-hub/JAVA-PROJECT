@@ -165,7 +165,18 @@ const init = () => {
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		changeMsg($(this));
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length !== 28)
+			changeMsg($(this));
+		else {
+			$(this)
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+			.loopNext().addClass('active')
+		}
 
 
 		// Add on click pre-visualization
@@ -198,7 +209,7 @@ const init = () => {
 				// add information on page
 				if (verif) {
 					// Add image
-					pre_vi.find('.picture-box').attr({src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val()})
+					pre_vi.find('.picture-box').attr({ src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val() })
 					// Add ID and NAME
 					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
 					// add messages
@@ -347,24 +358,30 @@ $(function () {
 		selectMessage();
 	})
 	// change field name
-	$('#name-input').keyup(function () {
+	$('#name-input').on('keyup change', function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
+		selectMessage();
 	})
 	// change field msg1
-	$('#message-box1').keyup(function () {
+	$('#message-box1').on('keyup change', function () {
 		upTextToChar($(this), 1);
 		selectMessage();
 	})
 	// change field msg2
-	$('#message-box2').keyup(function () {
+	$('#message-box2').on('keyup change', function () {
 		upTextToChar($(this), 2);
 		selectMessage();
 	})
 	// change field msg3
-	$('#message-box3').keyup(function () {
+	$('#message-box3').on('keyup change', function () {
 		upTextToChar($(this), 3);
 		selectMessage();
 	})
+	// if change timer
+	$('[id^=timerPage]').on('keyup change', function () {
+		selectMessage();
+	})
+
 
 	$('#btnCreate').click(newMsg);
 	$('#btnCr2').click(cancel);
