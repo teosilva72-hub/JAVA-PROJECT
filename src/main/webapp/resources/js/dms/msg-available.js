@@ -9,7 +9,7 @@ $.fn.loopNext = function (selector) {
 // Select message in pre-view
 const selectMessage = () => {
 	msg = {
-		id: $(`.equip-info.equip1`).find('.dmsTab span#dmsId').text(),
+		id: Number($(`.equip-info.equip1`).find('.dmsTab span#dmsId').text()),
 		pages: []
 	}
 
@@ -21,22 +21,28 @@ const selectMessage = () => {
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
 			timer: $(`#timerPage${i}`).val(),
-			text: [
-				info.find('#child-msg .message1').attr('msg'),
-				info.find('#child-msg .message2').attr('msg'),
-				info.find('#child-msg .message3').attr('msg')
-			]
+			line1: info.find('#child-msg .message1').attr('msg'),
+			line2: info.find('#child-msg .message2').attr('msg'),
+			line3: info.find('#child-msg .message3').attr('msg'),
 		})
 	}
+
+	document.forms.contentForm.requestParamID.value = msg.id;
+	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
+	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
+	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
+	document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
+	document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
 }
 
 // Get update to menu
 const updateMessage = () => {
+	$('#id-input').val(msg.id)
 	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
 	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
-	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].text[0])
-	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].text[1])
-	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].text[2])
+	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
+	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
+	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
 }
 
 // Create new message
@@ -44,7 +50,7 @@ const newMsg = () => {
 	$('#btnCreate').prop('disabled', true);
 	$('#btnEdit').prop('disabled', true);
 	$('#btnDelete').prop('disabled', true);
-	$('#btnCr1').prop('disabled', false);
+	$('[id$=btnCr1]').prop('disabled', false);
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active');
 	$('.edit-field').addClass('active');
@@ -65,16 +71,45 @@ const newMsg = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
+	$('input[id^=timerCheck]').prop('disabled', false);
 
 	selectMessage();
 	updateMessage();
 }
 
+// Create new message
+const editMsg = () => {
+	$('#btnCreate').prop('disabled', true);
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+	$('[id$=btnCr1]').prop('disabled', false);
+	$('#btnCr2').prop('disabled', false);
+	$('#disableTable').addClass('active');
+	$('.edit-field').addClass('active');
+	$('.edit-pmv-page').addClass('active')
+
+	$('input[id^=timerCheck]').prop('disabled', false);
+
+	selectMessage();
+	updateMessage();
+}
+
+const save = () => {
+	setTimeout(() => {
+		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+			// Main loading
+			init();
+		})
+
+		cancel();
+		alert("save");
+	}, 500)
+}
+
 // Cancel message in menu
 const cancel = () => {
 	$('#btnCreate').prop('disabled', false);
-	$('#btnCr1').prop('disabled', true);
+	$('[id$=btnCr1]').prop('disabled', true);
 	$('#btnCr2').prop('disabled', true);
 	$('#disableTable').removeClass('active');
 	$('.edit-pmv-page').removeClass('active');
@@ -149,7 +184,17 @@ const init = () => {
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		changeMsg($(this));
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 28)
+			changeMsg($(this));
+		else {
+			$(this).addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+		}
 
 
 		// Add on click pre-visualization
@@ -182,7 +227,7 @@ const init = () => {
 				// add information on page
 				if (verif) {
 					// Add image
-					pre_vi.find('.picture-box').attr('src', page.find('[id*=picture-table]').attr('src'))
+					pre_vi.find('.picture-box').attr({ src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val() })
 					// Add ID and NAME
 					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
 					// add messages
@@ -215,7 +260,7 @@ const init = () => {
 				} else {
 					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text(``).next().text(``).next().text('').attr('type', '')
+					pre_vi.find('.dmsTab span#dmsId').text("0").next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
@@ -227,6 +272,8 @@ const init = () => {
 					morePage = false;
 				}
 			}
+
+			$('#btnEdit').prop('disabled', false);
 
 			// select message
 			selectMessage();
@@ -240,7 +287,7 @@ const init = () => {
 // func to start rotation tables. Only tables
 const changeMsg = msg => {
 	if (msg.index()) {
-		let timer = Number(msg.attr("timer"));
+		let timer = msg.attr("timer");
 		let name = msg.loopNext();
 		let img = name.loopNext();
 		let text1 = img.loopNext();
@@ -322,29 +369,42 @@ $(function () {
 		e.currentTarget.ondragstart = function () { return false }
 		$('.equip-info.active').find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
 		$('#list-images').css('display', 'none').prev().css('display', 'block')
+		selectMessage();
 	})
 
 	// change field type
 	$('#type-input').change(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
+		selectMessage();
 	})
 	// change field name
-	$('#name-input').keyup(function () {
+	$('#name-input').on('keyup change', function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
+		selectMessage();
 	})
 	// change field msg1
-	$('#message-box1').keyup(function () {
+	$('#message-box1').on('keyup change', function () {
 		upTextToChar($(this), 1);
+		selectMessage();
 	})
 	// change field msg2
-	$('#message-box2').keyup(function () {
+	$('#message-box2').on('keyup change', function () {
 		upTextToChar($(this), 2);
+		selectMessage();
 	})
 	// change field msg3
-	$('#message-box3').keyup(function () {
+	$('#message-box3').on('keyup change', function () {
 		upTextToChar($(this), 3);
+		selectMessage();
+	})
+	// if change timer
+	$('[id^=timerPage]').on('keyup change', function () {
+		selectMessage();
 	})
 
+
 	$('#btnCreate').click(newMsg);
+	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
+	$('[id$=btnCr1]').click(save);
 })

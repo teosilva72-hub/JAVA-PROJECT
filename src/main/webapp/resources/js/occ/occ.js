@@ -932,19 +932,9 @@ function validatorFile2(){
 	}
 }
 
-setTimeout(function() {
-   $('#msgSave1').fadeOut('fast');
-},5000);
-setTimeout(function() {
-   $('#msgDelete2').fadeOut('fast');
-}, 5000);
-setTimeout(function() {
-   $('#msgDownload3').fadeOut('fast');
-}, 5000);
-setTimeout(function() {
-   $('#msgFinished').fadeOut('fast');
-}, 5000);
-
+function msgUser(){
+	document.getElementById("msgOthersUsers").style.display = "block";
+}
 function msgDelete(){
 	//document.getElementById("msgDelete").style.display = "block";
 	document.getElementById("msgDelete2").style.display = "block";
@@ -1024,20 +1014,6 @@ document.addEventListener("keydown", function(e) {
     e.preventDefault(); 
   }
 });
-setTimeout(function() {
-   $('#msgOthersUsers').fadeOut('fast');
-}, 5000);
-function msgUser(){
-	document.getElementById("msgOthersUsers").style.display = "block";
-}
-setTimeout(function() {
-   $('#unLock').fadeOut('fast');
-}, 5000);
-function unLock(){
-	document.getElementById("unLock").style.display = "block";
-	document.getElementById("msgOthersUsers").style.display = "none";
-	document.getElementById("msgFinished").style.display = "none";
-}
 function hiddenListFile(){
 	document.getElementById("listFiles").style.display = "none";
 }
@@ -1053,6 +1029,7 @@ function cancelOcc(){
 function msgUploads(){
 	document.getElementById("msgUploads").style.display = "block";
 }
+//DELAY MSG
 setTimeout(function() {
    $('#updateOcc').fadeOut('fast');
 }, 5000);
@@ -1061,4 +1038,20 @@ setTimeout(function() {
 }, 5000);
 setTimeout(function() {
    $('#msgUploads').fadeOut('fast');
+}, 5000);
+setTimeout(function() {
+   $('#msgOthersUsers').fadeOut('fast');
+}, 5000);
+
+setTimeout(function() {
+   $('#msgSave1').fadeOut('fast');
+},5000);
+setTimeout(function() {
+   $('#msgDelete2').fadeOut('fast');
+}, 5000);
+setTimeout(function() {
+   $('#msgDownload3').fadeOut('fast');
+}, 5000);
+setTimeout(function() {
+   $('#msgFinished').fadeOut('fast');
 }, 5000);
