@@ -71,7 +71,7 @@ const newMsg = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', false);
+	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
 
 	selectMessage();
 	updateMessage();
@@ -88,7 +88,7 @@ const editMsg = () => {
 	$('.edit-field').addClass('active');
 	$('.edit-pmv-page').addClass('active')
 
-	$('input[id^=timerCheck]').prop('disabled', false);
+	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
 
 	selectMessage();
 	updateMessage();
