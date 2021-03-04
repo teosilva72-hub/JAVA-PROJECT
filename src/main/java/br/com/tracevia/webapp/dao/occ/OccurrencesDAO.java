@@ -19,7 +19,7 @@ public class OccurrencesDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	//m�todo cadastrar ocorr�ncias
+	//CREATE OCCURRENCE
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
