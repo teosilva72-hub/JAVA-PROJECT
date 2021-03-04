@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -18,7 +19,7 @@ public class OccurrencesDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	//m�todo cadastrar ocorr�ncias
+	//CREATE OCCURRENCE
 	public String cadastroOcorrencia (OccurrencesData data ) throws Exception {
 
 		String occ_number = null;
@@ -143,7 +144,8 @@ public class OccurrencesDAO {
 
 		ArrayList<SelectItem> listarDropDownValue = new ArrayList<SelectItem>();
 		/*System.out.println(query);*/
-
+		TranslationMethods occTranslation = new TranslationMethods();
+		
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -156,8 +158,8 @@ public class OccurrencesDAO {
 				while(rs.next()) {
 					SelectItem listarDrop = new SelectItem();
 					listarDrop.setValue(rs.getInt(1));
-					listarDrop.setLabel(rs.getString(2));
-
+					listarDrop.setLabel(occTranslation.occurrencesTranslator(rs.getString(2)));
+					
 					listarDropDownValue.add(listarDrop);
 				}
 			}
