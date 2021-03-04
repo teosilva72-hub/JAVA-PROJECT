@@ -170,8 +170,7 @@ const init = () => {
 		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length !== 28)
 			changeMsg($(this));
 		else {
-			$(this)
-			.loopNext().addClass('active')
+			$(this).addClass('active')
 			.loopNext().addClass('active')
 			.loopNext().addClass('active')
 			.loopNext().addClass('active')
