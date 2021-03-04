@@ -379,6 +379,14 @@ body {
   height: 9px;
 }
 
+.fluxo-1-margin{
+	margin: 3px;
+}
+
+.fluxo-2-margin{
+	margin: 4px;
+}
+
 .padding-sat .km {
   font-size: 7px;
 }
@@ -439,10 +447,24 @@ font-weight: bold;
 
 .popover-body{font-size: 12px;}
 
-/* EQUIPMENTS INFO POPOVERS */
-
-/* MARGIN LEFT */
+/* POPOVER CONTENT - MARGIN LEFT */
 
 .equip-label-left{
    margin-left: 10px;	
+}
+
+/* EQUIPMENTS INFO POPOVERS */
+
+/* EQUIPMENTS INFO TOOLTIPS */
+
+.tooltip > .tooltip-inner {background-color: #007bff;}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+/* EQUIPMENTS INFO TOOLTIPS */
+
+.on-mouse-hover{
+  cursor: pointer;	
 }

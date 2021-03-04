@@ -56,14 +56,16 @@ public class NotificationsDAO {
 		        "ORDER BY e.eq_type ASC";
 						
 				    try {
-					
+				    	
+				    	//System.out.println(select);
+				    	
 				    	 if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
 					           conn = ConnectionFactory.connectToCCR();
 					    
-					    else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
+					     else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
 					           conn = ConnectionFactory.connectToViaPaulista();
 					    
-					    else conn = ConnectionFactory.connectToTraceviaApp();
+					     else conn = ConnectionFactory.connectToTraceviaApp();
 					
 					ps = conn.prepareStatement(select);	
 					ps.setString(1 , type);
@@ -162,8 +164,7 @@ public class NotificationsDAO {
 
 		  return lista;
 	  } 	
-     
-     
+          
      public Integer notificationsCount(String type) throws Exception {
     	 
     	 int count = 0;
@@ -186,6 +187,7 @@ public class NotificationsDAO {
 				ps = conn.prepareStatement(select);	
 				ps.setString(1 , type);
 				
+				//System.out.println(select);
 				rs = ps.executeQuery();
 									
 				if (rs != null) {
