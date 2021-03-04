@@ -30,392 +30,390 @@
 						<div class="card-header pmv">
 							<h5 class="message-title-div ">#{dmsLabels.dms_available_messages_preview_title}</h5>
 						</div>
-						<h:form id="content-form">
 
-							<!-- PAGINATORS -->
-							<div class="card-body position-relative responsive">
-								<div id="page-pmv">
-									<c:forEach begin="1" end="5" varStatus="index">
+						<!-- PAGINATORS -->
+						<div class="card-body position-relative responsive">
+							<div id="page-pmv">
+								<c:forEach begin="1" end="5" varStatus="index">
 
-										<div id="#{item.table_id}#{item.equip_id}"
-											class="equip-info equip#{index.index} #{item.table_id} mt-3">
+									<div id="#{item.table_id}#{item.equip_id}"
+										class="equip-info equip#{index.index} #{item.table_id} mt-3">
 
-											<!-- Table with DIV -->
+										<!-- Table with DIV -->
 
-											<div class="container tableStyle card">
-												<div class="dms-name card-header py-0">
-													<div class="text-center dmsTab#{item.equip_id}">
-														<span class="mb-0 text-white" id="dmsId"></span> - <span
-															id="dmsName"></span> - <span id="dmsType" type=""></span>
-													</div>
+										<div class="container tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+													<span class="mb-0 text-white" id="dmsId"></span> - <span
+														id="dmsName"></span> - <span id="dmsType" type=""></span>
 												</div>
-												<div class="row text-center card-body p-0">
-													<div id="child-img" class="col-2 padding-pmv">
-														<img src="/resources/images/pictures/#{pmvMessage.image}"
-															class="ui-graphic-image picture-box" id-img="0" />
-													</div>
-													<div id="child-msg" class="col-auto msg-pos">
-														<div id="msg#{index.index}" class="table-message">
-															<div class="row border-table-right message1" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-1"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-2"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-3"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-4"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-5"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-6"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-7"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-8"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-9"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-10"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-11"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-12"></span>
-																</div>
+											</div>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="ui-graphic-image picture-box" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="msg#{index.index}" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
 															</div>
-															<div class="row border-table-right message2" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-13"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-14"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-15"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-16"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-17"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-18"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-19"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-20"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-21"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-22"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-23"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-24"></span>
-																</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
 															</div>
-															<div class="row border-table-right bottom message3" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-25"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-26"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-27"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-28"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-29"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-30"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-31"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-32"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-33"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-34"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-35"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-36"></span>
-																</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
+														</div>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
+														</div>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
 															</div>
 														</div>
 													</div>
 												</div>
 											</div>
+										</div>
 
-										</div>
-									</c:forEach>
-								</div>
-
-								<div class="edit-pmv-page">
-									<!-- TIMERS -->
-									<div class="row">
-
-										<div class="col-2 me-1 ps-0">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck1" class="form-check-input mt-0"
-														type="checkbox" value="1" aria-label="Checkbox for timer1"
-														disabled="disabled" />
-												</div>
-												<!-- Timer -->
-												<input id="timerPage1" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer1" title="Timer 1" placeholder="0"
-													disabled="disabled" min="1" max="10" />
-												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
-													value="1" checked="checked" />
-												<label class="btn btn-dark py-0 px-2 page-button"
-													for="btn-page1">1</label>
-											</div>
-										</div>
-										<div class="col-2 ms-2 me-1 ps-0">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck2" class="form-check-input mt-0"
-														type="checkbox" value="2" aria-label="Checkbox for timer2"
-														disabled="disabled" />
-												</div>
-												<!-- Timer -->
-												<input id="timerPage2" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer2" title="Timer 2" placeholder="0"
-													disabled="disabled" min="1" max="10" />
-												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
-													value="2" />
-												<label class="btn btn-dark py-0 px-2 page-button"
-													for="btn-page2">2</label>
-											</div>
-										</div>
-										<div class="col-2 ms-2 me-1 ps-0">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck3" class="form-check-input mt-0"
-														type="checkbox" value="3" aria-label="Checkbox for timer3"
-														disabled="disabled" />
-												</div>
-												<!-- Timer -->
-												<input id="timerPage3" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer3" title="Timer 3" placeholder="0"
-													disabled="disabled" min="1" max="10" />
-												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
-													value="3" />
-												<label class="btn btn-dark py-0 px-2 page-button"
-													for="btn-page3">3</label>
-											</div>
-										</div>
-										<div class="col-2 ms-2 me-1 ps-0">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck4" class="form-check-input mt-0"
-														type="checkbox" value="4" aria-label="Checkbox for timer4"
-														disabled="disabled" />
-												</div>
-												<!-- Timer -->
-												<input id="timerPage4" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer4" title="Timer 4" placeholder="0"
-													disabled="disabled" min="1" max="10" />
-												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
-													value="4" />
-												<label class="btn btn-dark py-0 px-2 page-button"
-													for="btn-page4">4</label>
-											</div>
-										</div>
-										<div class="col-2 ms-2 me-1 ps-0">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck5" class="form-check-input mt-0"
-														type="checkbox" value="5" aria-label="Checkbox for timer5"
-														disabled="disabled" />
-												</div>
-												<!-- Timer -->
-												<input id="timerPage5" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer5" title="Timer 5" placeholder="0"
-													disabled="disabled" min="1" max="10" />
-												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
-													value="5" />
-												<label class="btn btn-dark py-0 px-2 page-button"
-													for="btn-page5">5</label>
-											</div>
-										</div>
 									</div>
-								</div>
-								<div class="row edit-field">
-									<!-- id input -->
-									<div class="col-3">
-										<div id="image-div">
-											<a id="link-image"><svg width="80" height="80" fill="currentColor"
-													class="bi bi-images" viewBox="0 0 16 16">
-													<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-													<path
-														d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
-												</svg></a>
-										</div>
-										<div id="list-images">
-											<div class="listbox" id="picture-id">
-												<c:forEach items="#{pmvMessage.pictures}" var="p">
-													<div>
-														<img src="/resources/images/pictures/#{p.image}" width="60"
-															height="60" id-img="#{p.id}" />
-													</div>
-												</c:forEach>
-											</div>
-										</div>
-									</div>
-									<div class="row col-9">
-
-										<div class="col-12 confInput">
-											<div id="id-div">
-												<span class="iconeSpan"><i class="fas fa-key"></i></span>
-												<div class="input-group">
-													<input id="id-input" class="form-control inputDesign id"
-														disabled="disabled" type="text"
-														placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
-												</div>
-											</div>
-										</div>
-										<!-- end id input -->
-										<!-- Type Select -->
-										<div class="col-12 confInput">
-											<div id="id-div">
-												<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
-												<div class="input-group">
-													<select name="tipo" id="type-input" class="form-control selectType">
-														<option value="" disabled="disabled" selected="selected">Type
-														</option>
-														<c:forEach items="#{pmvMessage.type}" var="opt">
-															<option value="#{opt.value}">#{opt.label}</option>
-														</c:forEach>
-													</select>
-												</div>
-											</div>
-										</div>
-										<!-- End Type Select -->
-										<!-- input name -->
-										<div class="col-12 confInput">
-											<div id="name-div">
-												<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
-												<div class="input-group">
-													<input id="name-input" class="form-control name inputDesign"
-														type="text"
-														placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
-														maxlength="15" autocomplete="off" />
-												</div>
-											</div>
-
-										</div>
-										<!-- end input name -->
-
-										<!-- message input -->
-										<div class="col-12 confInput">
-											<div id="input-message-1">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
-
-													<input id="message-box1"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false" type="text"
-														placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
-														autocomplete="off" />
-												</div>
-											</div>
-										</div>
-										<!-- end message input -->
-										<div class="col-12 confInput">
-											<div id="input-message-2">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
-
-													<input id="message-box2"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false" type="text"
-														placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
-														autocomplete="off">
-													</input>
-												</div>
-											</div>
-										</div>
-										<div class="col-12 confInput">
-											<div id="input-message-3">
-												<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-												<div class="input-group">
-
-													<input id="message-box3"
-														class="form-control message-input inputDesign" maxlength="12"
-														autoResize="false" resizable="false" type="text"
-														placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
-														autocomplete="off">
-													</input>
-												</div>
-											</div>
-										</div>
-									</div>
-
-
-								</div>
-								<!-- Painel real -->
-								<!-- Final do painel real -->
+								</c:forEach>
 							</div>
-							<div class="btn-painel card-footer pt-0 row row-cols-2">
+
+							<div class="edit-pmv-page">
+								<!-- TIMERS -->
+								<div class="row">
+
+									<div class="col-2 me-1 ps-0">
+										<div class="input-group mb-3 bar-width">
+											<!-- Checkbox -->
+											<div class="input-group-text">
+												<input id="timerCheck1" class="form-check-input mt-0" type="checkbox"
+													value="1" aria-label="Checkbox for timer1" disabled="disabled" />
+											</div>
+											<!-- Timer -->
+											<input id="timerPage1" type="number"
+												class="form-control form-control-sm text-timer p-0 border-start-0"
+												aria-label="timer1" title="Timer 1" placeholder="0" disabled="disabled"
+												min="1" max="10" />
+											<!-- Button -->
+											<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
+												value="1" checked="checked" />
+											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page1">1</label>
+										</div>
+									</div>
+									<div class="col-2 ms-2 me-1 ps-0">
+										<div class="input-group mb-3 bar-width">
+											<!-- Checkbox -->
+											<div class="input-group-text">
+												<input id="timerCheck2" class="form-check-input mt-0" type="checkbox"
+													value="2" aria-label="Checkbox for timer2" disabled="disabled" />
+											</div>
+											<!-- Timer -->
+											<input id="timerPage2" type="number"
+												class="form-control form-control-sm text-timer p-0 border-start-0"
+												aria-label="timer2" title="Timer 2" placeholder="0" disabled="disabled"
+												min="1" max="10" />
+											<!-- Button -->
+											<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
+												value="2" />
+											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page2">2</label>
+										</div>
+									</div>
+									<div class="col-2 ms-2 me-1 ps-0">
+										<div class="input-group mb-3 bar-width">
+											<!-- Checkbox -->
+											<div class="input-group-text">
+												<input id="timerCheck3" class="form-check-input mt-0" type="checkbox"
+													value="3" aria-label="Checkbox for timer3" disabled="disabled" />
+											</div>
+											<!-- Timer -->
+											<input id="timerPage3" type="number"
+												class="form-control form-control-sm text-timer p-0 border-start-0"
+												aria-label="timer3" title="Timer 3" placeholder="0" disabled="disabled"
+												min="1" max="10" />
+											<!-- Button -->
+											<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
+												value="3" />
+											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page3">3</label>
+										</div>
+									</div>
+									<div class="col-2 ms-2 me-1 ps-0">
+										<div class="input-group mb-3 bar-width">
+											<!-- Checkbox -->
+											<div class="input-group-text">
+												<input id="timerCheck4" class="form-check-input mt-0" type="checkbox"
+													value="4" aria-label="Checkbox for timer4" disabled="disabled" />
+											</div>
+											<!-- Timer -->
+											<input id="timerPage4" type="number"
+												class="form-control form-control-sm text-timer p-0 border-start-0"
+												aria-label="timer4" title="Timer 4" placeholder="0" disabled="disabled"
+												min="1" max="10" />
+											<!-- Button -->
+											<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
+												value="4" />
+											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page4">4</label>
+										</div>
+									</div>
+									<div class="col-2 ms-2 me-1 ps-0">
+										<div class="input-group mb-3 bar-width">
+											<!-- Checkbox -->
+											<div class="input-group-text">
+												<input id="timerCheck5" class="form-check-input mt-0" type="checkbox"
+													value="5" aria-label="Checkbox for timer5" disabled="disabled" />
+											</div>
+											<!-- Timer -->
+											<input id="timerPage5" type="number"
+												class="form-control form-control-sm text-timer p-0 border-start-0"
+												aria-label="timer5" title="Timer 5" placeholder="0" disabled="disabled"
+												min="1" max="10" />
+											<!-- Button -->
+											<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
+												value="5" />
+											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page5">5</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row edit-field">
+								<!-- id input -->
+								<div class="col-3">
+									<div id="image-div">
+										<a id="link-image"><svg width="80" height="80" fill="currentColor"
+												class="bi bi-images" viewBox="0 0 16 16">
+												<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+												<path
+													d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
+											</svg></a>
+									</div>
+									<div id="list-images">
+										<div class="listbox" id="picture-id">
+											<c:forEach items="#{pmvMessage.pictures}" var="p">
+												<div>
+													<img src="/resources/images/pictures/#{p.image}" width="60"
+														height="60" id-img="#{p.id}" />
+												</div>
+											</c:forEach>
+										</div>
+									</div>
+								</div>
+								<div class="row col-9">
+
+									<div class="col-12 confInput">
+										<div id="id-div">
+											<span class="iconeSpan"><i class="fas fa-key"></i></span>
+											<div class="input-group">
+												<input id="id-input" class="form-control inputDesign id"
+													disabled="disabled" type="text"
+													placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+											</div>
+										</div>
+									</div>
+									<!-- end id input -->
+									<!-- Type Select -->
+									<div class="col-12 confInput">
+										<div id="id-div">
+											<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
+											<div class="input-group">
+												<select name="tipo" id="type-input" class="form-control selectType">
+													<option value="" disabled="disabled" selected="selected">Type
+													</option>
+													<c:forEach items="#{pmvMessage.type}" var="opt">
+														<option value="#{opt.value}">#{opt.label}</option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+									</div>
+									<!-- End Type Select -->
+									<!-- input name -->
+									<div class="col-12 confInput">
+										<div id="name-div">
+											<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
+											<div class="input-group">
+												<input id="name-input" class="form-control name inputDesign" type="text"
+													placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+													maxlength="15" autocomplete="off" />
+											</div>
+										</div>
+
+									</div>
+									<!-- end input name -->
+
+									<!-- message input -->
+									<div class="col-12 confInput">
+										<div id="input-message-1">
+											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+											<div class="input-group">
+
+												<input id="message-box1" class="form-control message-input inputDesign"
+													maxlength="12" autoResize="false" resizable="false" type="text"
+													placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+													autocomplete="off" />
+											</div>
+										</div>
+									</div>
+									<!-- end message input -->
+									<div class="col-12 confInput">
+										<div id="input-message-2">
+											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+											<div class="input-group">
+
+												<input id="message-box2" class="form-control message-input inputDesign"
+													maxlength="12" autoResize="false" resizable="false" type="text"
+													placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+													autocomplete="off">
+												</input>
+											</div>
+										</div>
+									</div>
+									<div class="col-12 confInput">
+										<div id="input-message-3">
+											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
+											<div class="input-group">
+
+												<input id="message-box3" class="form-control message-input inputDesign"
+													maxlength="12" autoResize="false" resizable="false" type="text"
+													placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+													autocomplete="off">
+												</input>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+							</div>
+							<!-- Painel real -->
+							<!-- Final do painel real -->
+						</div>
+						<div class="btn-painel card-footer pt-0">
+
+							<h:form id="contentForm" styleClass="row row-cols-2">
 								<!-- button submit -->
 
+								<input type="hidden" name="requestParamID" />
+								<input type="hidden" name="requestParamPAGE1" />
+								<input type="hidden" name="requestParamPAGE2" />
+								<input type="hidden" name="requestParamPAGE3" />
+								<input type="hidden" name="requestParamPAGE4" />
+								<input type="hidden" name="requestParamPAGE5" />
+
+								
 								<div id="col">
-									<button id="btnCr1" type="button" disabled="disabled"
-										class="btn btn-dark confBtn">#{dmsLabels.dms_available_messages_btn_save}</button>
+									<h:commandButton id="btnCr1" pt:disabled="disabled" class="btn btn-dark confBtn" value="#{dmsLabels.dms_available_messages_btn_save}">
+										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="none" render="none" event="click" />
+									</h:commandButton>
 								</div>
+
 								<!-- button clear -->
 								<div id="col">
 									<button id="btnCr2" type="button" class="btn btn-dark confBtn conf2Btn"
 										disabled="disabled">#{dmsLabels.dms_available_messages_btn_cancel}</button>
 								</div>
-							</div>
+							</h:form>
 
-						</h:form>
+						</div>
+
 					</div>
 				</div>
 				<div class="col-8 tabelaDetails">
