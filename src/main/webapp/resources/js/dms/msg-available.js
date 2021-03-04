@@ -26,6 +26,13 @@ const selectMessage = () => {
 			line3: info.find('#child-msg .message3').attr('msg'),
 		})
 	}
+
+	document.forms.contentForm.requestParamID.value = msg.id;
+	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
+	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
+	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
+	document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
+	document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
 }
 
 // Get update to menu
@@ -36,13 +43,6 @@ const updateMessage = () => {
 	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
 	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
-
-	document.forms.contentForm.requestParamID.value = msg.id;
-	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
-	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
-	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
-	document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
-	document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
 }
 
 // Create new message
@@ -338,11 +338,13 @@ $(function () {
 		e.currentTarget.ondragstart = function () { return false }
 		$('.equip-info.active').find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
 		$('#list-images').css('display', 'none').prev().css('display', 'block')
+		selectMessage();
 	})
 
 	// change field type
 	$('#type-input').change(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
+		selectMessage();
 	})
 	// change field name
 	$('#name-input').keyup(function () {
@@ -351,14 +353,17 @@ $(function () {
 	// change field msg1
 	$('#message-box1').keyup(function () {
 		upTextToChar($(this), 1);
+		selectMessage();
 	})
 	// change field msg2
 	$('#message-box2').keyup(function () {
 		upTextToChar($(this), 2);
+		selectMessage();
 	})
 	// change field msg3
 	$('#message-box3').keyup(function () {
 		upTextToChar($(this), 3);
+		selectMessage();
 	})
 
 	$('#btnCreate').click(newMsg);

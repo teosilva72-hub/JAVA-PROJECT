@@ -500,7 +500,7 @@ public class PMVmessageBean implements Serializable {
 		Gson gson = new Gson();
 		for (int i = 1; i <= 5; i++) {
 			Map<String, String> page = gson.fromJson(params.get("requestParamPAGE" + i), Map.class);
-			if (!page.get("timer").equals("0"))
+			if (!page.get("timer").equals("0") || i == 1)
 				ListaPages.add(page);
 		}
 
