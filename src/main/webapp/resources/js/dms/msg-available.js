@@ -368,5 +368,5 @@ $(function () {
 
 	$('#btnCreate').click(newMsg);
 	$('#btnCr2').click(cancel);
-	$('#btnCr1').click(save);
+	$('[id$=btnCr1]').click(save);
 })
