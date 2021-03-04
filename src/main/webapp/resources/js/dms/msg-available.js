@@ -54,9 +54,10 @@ const newMsg = () => {
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active');
 	$('.edit-field').addClass('active');
+	$('.edit-pmv-page').find(`[id=timerPage1]`).prop('disabled', false)
 	$('.edit-pmv-page').addClass('active')
 		.find(`[id^=timerPage]`).val(0)
-		.first().prev().find('[id^=timerCheck]')
+		.eq(1).prev().find('[id^=timerCheck]')
 		.prop('checked', false).trigger('change');
 	let pre_vi = $(`#page-pmv .equip-info`);
 	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
@@ -71,7 +72,7 @@ const newMsg = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
+	$('input[id^=timerCheck]').prop('disabled', false);
 
 	selectMessage();
 	updateMessage();
@@ -86,7 +87,7 @@ const editMsg = () => {
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active');
 	$('.edit-field').addClass('active');
-	$('.edit-pmv-page').addClass('active')
+	$('.edit-pmv-page').addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
 
 	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
 
@@ -127,7 +128,8 @@ const cancel = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', true).trigger('change');
+	$('input[id^=timerCheck]').prop('disabled', true);
+	$('input[id^=timerPage]').prop('disabled', true);
 
 	selectMessage();
 	updateMessage();
