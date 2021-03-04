@@ -9,7 +9,7 @@ $.fn.loopNext = function (selector) {
 // Select message in pre-view
 const selectMessage = () => {
 	msg = {
-		id: $(`.equip-info.equip1`).find('.dmsTab span#dmsId').text(),
+		id: Number($(`.equip-info.equip1`).find('.dmsTab span#dmsId').text()),
 		pages: []
 	}
 
@@ -21,22 +21,28 @@ const selectMessage = () => {
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
 			timer: $(`#timerPage${i}`).val(),
-			text: [
-				info.find('#child-msg .message1').attr('msg'),
-				info.find('#child-msg .message2').attr('msg'),
-				info.find('#child-msg .message3').attr('msg')
-			]
+			line1: info.find('#child-msg .message1').attr('msg'),
+			line2: info.find('#child-msg .message2').attr('msg'),
+			line3: info.find('#child-msg .message3').attr('msg'),
 		})
 	}
 }
 
 // Get update to menu
 const updateMessage = () => {
+	$('#id-input').val(msg.id)
 	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
 	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
-	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].text[0])
-	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].text[1])
-	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].text[2])
+	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
+	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
+	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
+
+	document.forms.contentForm.requestParamID.value = msg.id;
+	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
+	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
+	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
+	document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
+	document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
 }
 
 // Create new message
@@ -44,7 +50,7 @@ const newMsg = () => {
 	$('#btnCreate').prop('disabled', true);
 	$('#btnEdit').prop('disabled', true);
 	$('#btnDelete').prop('disabled', true);
-	$('#btnCr1').prop('disabled', false);
+	$('[id$=btnCr1]').prop('disabled', false);
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active');
 	$('.edit-field').addClass('active');
@@ -71,10 +77,20 @@ const newMsg = () => {
 	updateMessage();
 }
 
+const save = () => {
+	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		// Main loading
+		init();
+	})
+
+	cancel();
+	alert("save");
+}
+
 // Cancel message in menu
 const cancel = () => {
 	$('#btnCreate').prop('disabled', false);
-	$('#btnCr1').prop('disabled', true);
+	$('[id$=btnCr1]').prop('disabled', true);
 	$('#btnCr2').prop('disabled', true);
 	$('#disableTable').removeClass('active');
 	$('.edit-pmv-page').removeClass('active');
@@ -182,7 +198,7 @@ const init = () => {
 				// add information on page
 				if (verif) {
 					// Add image
-					pre_vi.find('.picture-box').attr('src', page.find('[id*=picture-table]').attr('src'))
+					pre_vi.find('.picture-box').attr({src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val()})
 					// Add ID and NAME
 					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
 					// add messages
@@ -215,7 +231,7 @@ const init = () => {
 				} else {
 					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text(``).next().text(``).next().text('').attr('type', '')
+					pre_vi.find('.dmsTab span#dmsId').text("0").next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
@@ -240,7 +256,7 @@ const init = () => {
 // func to start rotation tables. Only tables
 const changeMsg = msg => {
 	if (msg.index()) {
-		let timer = Number(msg.attr("timer"));
+		let timer = msg.attr("timer");
 		let name = msg.loopNext();
 		let img = name.loopNext();
 		let text1 = img.loopNext();
