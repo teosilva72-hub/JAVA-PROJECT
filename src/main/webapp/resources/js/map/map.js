@@ -511,3 +511,9 @@ $(document).ready(function(){
 
 
 // Map div Iframe Reload END
+
+//Delete Modal Name
+ function DelName(){
+}
+//Delete Modal Name End
+

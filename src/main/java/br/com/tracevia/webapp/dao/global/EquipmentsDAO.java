@@ -9,10 +9,13 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
@@ -310,6 +313,78 @@ public class EquipmentsDAO {
 
 		return lista;
 	}
+	
+	// ---- SAT INTERFACE EQUIPMENTS ---- //
+	
+	public ArrayList<SAT> buildSatEquipmentsInterface() throws Exception {
+
+		ArrayList<SAT> lista = new ArrayList<SAT>();
+		TranslationMethods translator = new TranslationMethods();
+		
+		String dir1 = " ", dir2 = " ";
+
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, linear_width, " +
+				   "linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
+				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				   "WHERE visible = 1 ";
+				
+		try {
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+						
+			if (rs != null) {
+
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+					
+					dir1 = translator.CheckDirection1(rs.getNString(7));
+					dir2 = translator.CheckDirection2(rs.getNString(7));
+					
+					sat.setEquip_id(rs.getInt(1));
+					sat.setTable_id("sat");
+					sat.setNome(rs.getString(2));
+					sat.setCidade(rs.getString(3));
+					sat.setEstrada(rs.getString(4));
+					sat.setKm(rs.getString(5));
+					sat.setNumFaixas(rs.getInt(6));
+					sat.setSentido1(dir1);		
+					sat.setSentido2(dir2);
+					sat.setLinearWidth(rs.getInt(8));						
+					sat.setLinearPosX(rs.getInt(9));
+					sat.setLinearPosY(rs.getInt(10));
+					sat.setMapWidth(rs.getInt(11));						
+					sat.setMapPosX(rs.getInt(12));					
+					sat.setMapPosY(rs.getInt(13));	
+					sat.setPosicao(rs.getString(14));
+					
+					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
+					
+					/*if(dms.getPosicao().equals("horizontal")) {
+						dms.setHorizontal(true);
+					}else {
+						dms.setHorizontal(false);
+					}						
+					*/
+					
+					lista.add(sat);
+				}				
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+
+		return lista;
+	}
+	
+	// ---- SAT INTERFACE EQUIPMENTS ---- //
 	
 	// ---- DMS LINEAR INTERFACE EQUIPMENTS ---- //
 	
@@ -1109,16 +1184,16 @@ public class EquipmentsDAO {
 // ------- UPDATE EQUIPMENT FOR MAP / REALTIME ------- //
 // --------------------------------------------------- //
          
-       //--------------------------------------------------- //
+       //---------------------------------------------------  //
       // ------- SEARCH EQUIPMENT FOR MAP / REALTIME ------- //
-      // --------------------------------------------------- //
+     // --------------------------------------------------- //
     
     
 public Equipments EquipSearchMap(int id, String table) throws Exception {    
     
 //System.out.println(table);
 	
-   try { //GET SLQException
+   try { //GET SQLException
   	 
     
     if(table.equals("cftv")) { // CFTV Definitions

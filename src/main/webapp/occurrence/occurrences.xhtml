@@ -1706,6 +1706,51 @@
 						<!-- FInal alert Ações -->
 					</div>
 					<!-- FInal da terceira tabela -->
+					<!-- alert msg delete, save and download -->
+					<!-- Arquivo salvo com sucesso -->
+					<div class="alert alert-success text-center" role="alert"
+						id="msgSave1" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_save_file_success}</p>
+					</div>
+					<!-- msg deletado com sucesso -->
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgDelete2" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_delete_success}</p>
+					</div>
+					<!-- msg download realizado com sucesso -->
+					<div class="alert alert-warning text-center" role="alert"
+						id="msgDownload3" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_download_success}</p>
+					</div>
+					<!-- msg ocorrencia finalizada -->
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgFinished" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_msgFinished}</p>
+					</div>
+					<!-- msg usuario esta editando ocorrencia -->
+					<div class="alert alert-danger text-center" role="alert"
+						id="msgOthersUsers" style="display: none;">
+						<p class="textMsgFile">#{occLabels.occ_other_users}
+							#{occurrencesBean.data.nameUser}</p>
+					</div>
+					<!-- msg pode editar essa ocorrencia -->
+					<div class="alert alert-success text-center" role="alert"
+						id="unLock" style="display: none;">
+						<p class="textMsgFile">#{occLabels.un_lock}</p>
+					</div>
+					<div class="alert alert-success text-center" role="alert"
+						id="updateOcc" style="display: none;">
+						<h6 class="textMsgFile">#{occLabels.id_idUpdate}
+							#{occurrencesBean.idUpdate}</h6>
+					</div>
+					<div class="alert alert-success text-center" role="alert"
+						id="cancelOcc" style="display: none;">
+						<h6 class="textMsgFile">#{occLabels.occ_cancel}</h6>
+					</div>
+					<div class="alert alert-dark text-center" role="alert"
+						id="msgUploads" style="display: none;">
+						<h6 class="textMsgFile">#{occLabels.success_upload}</h6>
+					</div>
 				</h:form>
 			</div>
 			<!-- Final do lado esquerdo -->

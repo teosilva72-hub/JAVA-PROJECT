@@ -186,6 +186,38 @@ body {
   border: none;
 }
 
+.equip-imageDAI {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 80%;
+  height: 30%;
+  border: none;
+}
+
+.equip-imageLPR{
+  vertical-align: top;
+  margin-top: -20%;
+  width: 100%;
+  height: 35%;
+  border: none;
+}
+
+.equip-imageCOLAS {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 100%;
+  height: 40%;
+  border: none;
+}
+
+.equip-imageCOMMS {
+  vertical-align: top;
+  margin-top: -20%;
+  width: 120%;
+  height: 75%;
+  border: none;
+}
+
 .ui-graphic-image {
   width: 52px;
 }

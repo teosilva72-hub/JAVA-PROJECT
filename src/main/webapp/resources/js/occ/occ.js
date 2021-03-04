@@ -1014,7 +1014,6 @@ document.addEventListener("keydown", function(e) {
     e.preventDefault(); 
   }
 });
-
 function hiddenListFile(){
 	document.getElementById("listFiles").style.display = "none";
 }

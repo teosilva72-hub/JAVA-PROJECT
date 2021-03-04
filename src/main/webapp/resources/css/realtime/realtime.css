@@ -312,7 +312,7 @@ body {
 /* EQUIPS SATS*/
 .equip-box-sat {
   position: absolute;
-  z-index: 9999; /* n�mero m�ximo � 9999 */
+  z-index: 1000; /* n�mero m�ximo � 9999 */
   height: 75px;
   width: 100px;
 }
@@ -429,4 +429,20 @@ font-weight: bold;
  display: block;
 }
 
+/* EQUIPMENTS INFO POPOVERS */
 
+.popover-header{
+  background: #007bff !important;
+  color: white;
+  font-size: 12px;
+}
+
+.popover-body{font-size: 12px;}
+
+/* EQUIPMENTS INFO POPOVERS */
+
+/* MARGIN LEFT */
+
+.equip-label-left{
+   margin-left: 10px;	
+}

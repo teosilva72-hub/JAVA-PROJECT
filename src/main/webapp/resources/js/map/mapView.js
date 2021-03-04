@@ -473,3 +473,20 @@ function closeDragElement() {
 //Drag/Drop Element END
 
 
+// iFrame Position
+
+var documentWidth = parent.window.innerWidth;
+       var documentHeight = parent.window.innerHeight;
+       var iframeWidth = window.innerWidth;
+       var iframeHeight = window.innerHeight;
+       // Get Left Position
+       var iframeX1 = window.parent.document.getElementById('frame1').offsetLeft;
+	   var iframeX2 = window.parent.document.getElementById('frame2').offsetLeft;
+	   var iframeX3 = window.parent.document.getElementById('frame3').offsetLeft;
+       // Get Top Position
+       var iframeY1 = window.parent.document.getElementById('frame1').offsetTop;
+	   var iframeY2 = window.parent.document.getElementById('frame2').offsetTop;
+	   var iframeY3 = window.parent.document.getElementById('frame3').offsetTop;
+
+	   
+//iFrame Position End

@@ -1,31 +1,38 @@
 @charset "ISO-8859-1";
 
- /*info div*/ 
-  
-.info-bagde {
-position: relative;   
-top: 2px;  
-right: 6px; 
-background-color: #00BFFF; 
-color: #ffffff;
+ /* sat info div*/   
+.sat-info-bagde {
+position: absolute;
+top: -5px;
+margin-left: -8px;
+background-color: #1E90FF;
+color: #FFFFFF !important;
 text-align: center;
 line-height: 12px;
 min-width: 12px;
 min-height: 12px;
 display: block;
-border-radius: 100%; 
-float: right;   
+border-radius: 50%;
+float: left;
 cursor: pointer;
-z-index: 3; 
-text-indent: 0px; 
-display: block;   
+z-index: 3;
+text-indent: 0px;
+display: block;
 text-decoration: none;
+font-size: 9px;
 }
  
- .info-bagde:hover {
+ /* sat info icon hover */   
+ .sat-info-bagde:hover {
  text-decoration: none;
- background: #FFFF00;
+ background:  #ffc107;
  color: #555;
+ }
+ 
+ /* sat info icon focus */   
+ .sat-info-bagde:focus{ 
+ background: #000080;
+  outline: none;
  }
     
  /* table information*/   

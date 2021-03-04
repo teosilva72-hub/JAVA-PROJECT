@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -19,8 +20,8 @@ public class MessagesDAO {
 
 	private Connection conn;
 	protected ConnectionFactory connection = new ConnectionFactory();
-	private PreparedStatement ps;
-	private ResultSet rs;
+	private PreparedStatement ps, ps1;
+	private ResultSet rs, rs1;
 
 	// LanguageMB lang;
 	Locale locale;
@@ -62,8 +63,8 @@ public class MessagesDAO {
 									index = i;
 								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
 										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
-										getImageFromMessageAvailable(rs.getInt("id_image")),
-										rs.getFloat("timer" + idx), idx, index);
+										getImageFromMessageAvailable(rs.getInt("id_image")), rs.getFloat("timer" + idx),
+										idx, index);
 								pages[i] = false;
 							}
 						}
@@ -104,6 +105,126 @@ public class MessagesDAO {
 		}
 
 		return lista;
+	}
+
+	public List<Messages> mensagensOnly() throws Exception {
+
+		List<Messages> lista = new ArrayList<Messages>();
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement("SELECT id_message, id_image, type, name, text1, text2, text3 "
+					+ "FROM tracevia_app.pmv_messages WHERE enabled <> 0 AND id_message <> 1 ORDER BY id_message ASC");
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+					Messages mensagens = new Messages();
+
+					mensagens.setId_message(rs.getInt("id_message") - 1);
+					mensagens.setId_image(rs.getInt("id_image"));
+					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
+					mensagens.setTipo(rs.getString("type"));
+					mensagens.setNome(rs.getString("name"));
+					mensagens.setMessage1(rs.getString("text1"));
+					mensagens.setMessage2(rs.getString("text2"));
+					mensagens.setMessage3(rs.getString("text3"));
+
+					lista.add(mensagens);
+				}
+			}
+			return lista;
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+
+		return lista;
+	}
+
+	public void createMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+
+		DateTimeApplication dt = new DateTimeApplication();
+		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
+
+		try {
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			boolean[] pages = new boolean[] { false, false, false, false, false };
+			List<Integer> pageId = new ArrayList<Integer>();
+			List<Float> pageTimer = new ArrayList<Float>();
+			int count = 0;
+			for (Map<String, String> page : ListaPages) {
+				int id;
+
+				ps1 = conn.prepareStatement("SELECT Max(id_message) as user FROM tracevia_app.pmv_messages;");
+				rs1 = ps1.executeQuery();
+
+				if (rs1.isBeforeFirst()) {
+					rs1.next();
+					id = rs1.getInt("user") + 1;
+				} else
+					id = 1;
+
+				String sql = "INSERT INTO tracevia_app.pmv_messages "
+						+ "(id_message, creation_date,  creation_username, type, name, id_image, text1, text2, text3, enabled) "
+						+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, true ); ";
+
+				ps = conn.prepareStatement(sql);
+				ps.setInt(1, id);
+				ps.setString(2, dt_creation);
+				ps.setString(3, user);
+				ps.setString(4, page.get("type"));
+				ps.setString(5, page.get("name"));
+				ps.setInt(6, Integer.parseInt(page.get("image_id")));
+				ps.setString(7, page.get("line1"));
+				ps.setString(8, page.get("line2"));
+				ps.setString(9, page.get("line3"));
+
+				ps.executeUpdate();
+
+				pageId.add(id);
+				pageTimer.add(Float.parseFloat(page.get("timer")));
+
+				pages[count] = true;
+				count++;
+			}
+
+			String sql = "INSERT INTO tracevia_app.pmv_messages_available "
+					+ "(id_message, creation_date, creation_username, update_date, update_username, "
+					+ "page1, timer1, page2, timer2, page3, timer3, page4, timer4, page5, timer5, avaliable) "
+					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
+
+			ps = conn.prepareStatement(sql);
+
+			ps.setString(1, dt_creation);
+			ps.setString(2, user);
+			ps.setString(3, dt_creation);
+			ps.setString(4, user);
+			for (int i = 0; i < pages.length; i++) {
+				if (pages[i]) {
+					ps.setInt(5 + i * 2, pageId.get(i));
+					ps.setFloat(6 + i * 2, pageTimer.get(i));
+				} else {
+					ps.setInt(5 + i * 2, 0);
+					ps.setInt(6 + i * 2, 0);
+				}
+			}
+
+			ps.executeUpdate();
+
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
 	}
 
 	public List<Messages> availableMessagesByType(String type) throws Exception {

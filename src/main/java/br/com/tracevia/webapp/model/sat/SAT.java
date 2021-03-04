@@ -9,8 +9,10 @@ public class SAT extends Equipments {
 	private int quantidadeS1;
 	private int velocidadeS1;
 	private int quantidadeS2;	
-	private int velocidadeS2;	
+	private int velocidadeS2;
 	private int statusInterval;
+	private String sentido1;
+	private String sentido2;
 	private String faixa1;
 	private String faixa2;
 	private String faixa3;
@@ -24,7 +26,7 @@ public class SAT extends Equipments {
 			String estrada, String cidade, String km, String posicao, int linearPosX, int linearPosY, int linearWidth,
 			int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY, int status,
 			boolean notificacao, boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2,
-			int velocidadeS2, int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
+			int velocidadeS2, String sentido1, String sentido2, int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
 			String faixa7, String faixa8) {
 		super(equip_id, table_id, creation_date, creation_username, nome, estrada, cidade, km, posicao, linearPosX,
 				linearPosY, linearWidth, mapPosX, mapPosY, mapWidth, height, dlgPosX, dlgPosY, status, notificacao,
@@ -35,6 +37,8 @@ public class SAT extends Equipments {
 		this.velocidadeS1 = velocidadeS1;
 		this.quantidadeS2 = quantidadeS2;
 		this.velocidadeS2 = velocidadeS2;
+		this.sentido1 = sentido1;
+		this.sentido2 = sentido2;
 		this.statusInterval = statusInterval; 
 		this.faixa1 = faixa1;
 		this.faixa2 = faixa2;
@@ -88,7 +92,23 @@ public class SAT extends Equipments {
 	public void setVelocidadeS2(int velocidadeS2) {
 		this.velocidadeS2 = velocidadeS2;
 	}
-	
+		
+	public String getSentido1() {
+		return sentido1;
+	}
+
+	public void setSentido1(String sentido1) {
+		this.sentido1 = sentido1;
+	}
+
+	public String getSentido2() {
+		return sentido2;
+	}
+
+	public void setSentido2(String sentido2) {
+		this.sentido2 = sentido2;
+	}
+
 	public int getStatusInterval() {
 		return statusInterval;
 	}

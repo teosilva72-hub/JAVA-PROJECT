@@ -120,6 +120,8 @@ public class LoginAccountBean {
 	   FacesContext context = FacesContext.getCurrentInstance();
 	   
 	    //IF SUCCESS ON AUTH GET SERVER INFORMATION
+	   
+	   System.out.println(addr.getHostAddress());
 	    isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
 	    
 	    //CHANGES
