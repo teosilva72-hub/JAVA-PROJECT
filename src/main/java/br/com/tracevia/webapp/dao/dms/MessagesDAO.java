@@ -42,7 +42,7 @@ public class MessagesDAO {
 					+ "ON ma.page1 = m.id_message OR ma.page2 = m.id_message "
 					+ "OR ma.page3 = m.id_message OR ma.page4 = m.id_message "
 					+ "OR ma.page5 = m.id_message OR m.id_message = 1 "
-					+ "WHERE enabled <> 0 and avaliable <> 0 ORDER BY ma.id_message ASC");
+					+ "WHERE enabled <> 0 and avaliable <> 0 ORDER BY ma.id_message ASC, page ASC");
 			rs = ps.executeQuery();
 
 			if (rs.isBeforeFirst()) {

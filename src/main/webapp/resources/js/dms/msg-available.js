@@ -20,7 +20,7 @@ const selectMessage = () => {
 			name: info.find('.dmsTab span#dmsName').text(),
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
-			timer: ($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val(),
+			timer: String(($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val()),
 			line1: info.find('#child-msg .message1').attr('msg'),
 			line2: info.find('#child-msg .message2').attr('msg'),
 			line3: info.find('#child-msg .message3').attr('msg'),
@@ -204,7 +204,7 @@ const init = () => {
 		tr.click(function () {
 			let morePage = true;
 			// get all page with time > 0
-			let pages = $(this).find('td:not(td[timer="0.0"])');
+			let pages = $(this).find('td:not(td[timer="0.0"])').add($(this).find('.pageTable1'));
 
 			for (let i = 1; i <= 5; i++) {
 				// page
