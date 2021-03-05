@@ -506,6 +506,9 @@ public class PMVmessageBean implements Serializable {
 
 		if (msgID == 0)
 			dao.createMessage(msgID, user, ListaPages);
+		else
+			dao.editMessage(msgID, user, ListaPages);
+
 	}
 
 	/* Message Creation Available */
