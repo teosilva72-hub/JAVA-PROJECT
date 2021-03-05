@@ -7,23 +7,19 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
+
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import com.mysql.cj.ParseInfo;
-
-import br.com.tracevia.webapp.controller.sos.SOSBuildMaps;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.sos.SOS;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 import org.primefaces.context.RequestContext;
-
 
 @ManagedBean(name="equipsBean")
 @RequestScoped
@@ -34,14 +30,16 @@ public class EquipmentsBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<SelectItem> cities, roads, module;
+	private List<SelectItem> cities, roads, module, lanes;
 
 	RoadConcessionaireDAO concessionaireDao;
 	
+	LocaleUtil localeDirection;
+	
 	Equipments equip;
 	
-	private int equipId, equipId2;
-	private String equipTable, equipTable2, equipBord, equipDel;
+	private int equipId;
+	private String equipTable, equipBord, equipDel;
 	private int positionX, positionY;
 					
 	public List<SelectItem> getCities() {
@@ -66,6 +64,14 @@ public class EquipmentsBean implements Serializable {
 	
 	public void setModule(List<SelectItem> module) {
 		this.module = module;
+	}
+	
+	public List<SelectItem> getLanes() {
+		return lanes;
+	}
+	
+	public void setLanes(List<SelectItem> lanes) {
+		this.lanes = lanes;
 	}
 			
 	public int getEquipId() {
@@ -126,10 +132,15 @@ public class EquipmentsBean implements Serializable {
 
 	@PostConstruct
 	public void initialize() {
+		
+	  localeDirection = new LocaleUtil();
+		
+	  localeDirection.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
 					
 	  cities = new  ArrayList<SelectItem>();
       roads = new  ArrayList<SelectItem>();
       module = new  ArrayList<SelectItem>();
+      lanes = new  ArrayList<SelectItem>();
       
       equip = new Equipments();
       
@@ -140,6 +151,16 @@ public class EquipmentsBean implements Serializable {
  		 cities = concessionaireDao.cityDefinitions();
  		 roads = concessionaireDao.roadDefinitions();
  		 module = concessionaireDao.moduleDefinitions();
+ 		 
+ 		for (int f = 1; f <= 8; f++) {
+ 			
+			SelectItem s = new SelectItem();
+
+			s.setValue(f);
+			s.setLabel(localeDirection.getStringKey("direction_lane_label")+" "+String.valueOf(f));
+			lanes.add(s);				
+		}
+ 		 
  		 
       }catch(Exception ex){
 			ex.printStackTrace();
