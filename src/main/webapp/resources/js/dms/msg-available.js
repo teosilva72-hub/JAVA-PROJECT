@@ -428,6 +428,6 @@ $(function () {
 	$('#btnCreate').click(newMsg);
 	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
-	$('[ID$=confirmDelete]').click(deleteMSG);
+	$('[id$=confirmDelete]').click(deleteMSG);
 	$('[id$=btnCr1]').click(save);
 })
