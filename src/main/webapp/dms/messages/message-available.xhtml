@@ -186,8 +186,9 @@
 										<div class="input-group mb-3 bar-width">
 											<!-- Checkbox -->
 											<div class="input-group-text">
-												<input id="fixerTimerCheck1" class="form-check-input mt-0" type="checkbox"
-													value="1" aria-label="Checkbox for timer1" checked="true" disabled="disabled" />
+												<input id="fixerTimerCheck1" class="form-check-input mt-0"
+													type="checkbox" value="1" aria-label="Checkbox for timer1"
+													checked="true" disabled="disabled" />
 											</div>
 											<!-- Timer -->
 											<input id="timerPage1" type="number"
@@ -398,10 +399,12 @@
 								<input type="hidden" name="requestParamPAGE4" />
 								<input type="hidden" name="requestParamPAGE5" />
 
-								
+
 								<div id="col">
-									<h:commandButton id="btnCr1" pt:disabled="disabled" class="btn btn-dark confBtn" value="#{dmsLabels.dms_available_messages_btn_save}">
-										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="none" render="none" event="click" />
+									<h:commandButton id="btnCr1" pt:disabled="disabled" class="btn btn-dark confBtn"
+										value="#{dmsLabels.dms_available_messages_btn_save}">
+										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="@form"
+											render="@none" event="click" />
 									</h:commandButton>
 								</div>
 
@@ -430,8 +433,10 @@
 										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_edit}</button>
 								</div>
 								<div id="table-delete">
-									<button id="btnDelete" disabled="disabled"
-										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_delete}</button>
+									<button id="btnDelete" type="button" class="btn btn-available" disabled="disabled"
+										data-bs-toggle="modal" data-bs-target="#deleteModal">
+										#{dmsLabels.dms_available_messages_btn_delete}
+									</button>
 								</div>
 							</div>
 						</h:form>
@@ -445,39 +450,50 @@
 					</div>
 				</div>
 			</div>
-			<!-- DELETE DIALOG -->
-			<h:form id="dialog-form">
-				<div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-					aria-hidden="true">
-					<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">#{dmsLabels.user_delete_modal_title}</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<p>
-									#{dmsLabels.user_delete_modal_body} <span id="selectedId"></span>
-									?
-								</p>
-							</div>
-							<div class="modal-footer">
-								<div class="4submit-modal">
-									<h:commandButton value="#{dmsLabels.user_delete_modal_btn_yes}"
-										styleClass="btn btn-dark" action="#{pmvMessage.deleteRegister}"
-										oncomplete="dialogHide();" />
-								</div>
-								<div class="cancel-modal">
-									<button type="button" class="btn btn-dark"
-										data-dismiss="modal">#{dmsLabels.user_delete_modal_btn_no}</button>
-								</div>
-							</div>
-						</div>
+		</div>
+	</ui:define>
+
+	<ui:define name="modal-content">
+		<!-- DELETE DIALOG -->
+		<div class="modal" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">#{dmsLabels.user_delete_modal_title}</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>#{dmsLabels.user_delete_modal_body} <span id="selectedId"></span>?</p>
+					</div>
+					<div class="modal-footer">
+						<h:form id="dialogForm">
+							<input type="hidden" name="deleteID" />
+
+							<h:commandButton id="confirmDelete" value="#{dmsLabels.user_delete_modal_btn_yes}"
+								styleClass="btn btn-dark">
+								<f:ajax listener="#{pmvMessage.removeAvailableMessage}" execute="@form" render="@none"
+									event="click">
+								</f:ajax>
+							</h:commandButton>
+							<button type="button" class="btn btn-dark"
+								data-bs-dismiss="modal">#{dmsLabels.user_delete_modal_btn_no}</button>
+						</h:form>
 					</div>
 				</div>
-			</h:form>
+			</div>
+		</div>
+
+		<!-- Toast -->
+
+		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+			<div id="liveToast" class="toast hide bg-white align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body">
+						<span id="msgToastNotification"></span>
+					</div>
+					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
 		</div>
 	</ui:define>
 

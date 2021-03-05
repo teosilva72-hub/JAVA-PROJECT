@@ -368,6 +368,30 @@ public class MessagesDAO {
 		}
 	}
 
+	public void removeMessage(int msgID, String user) throws Exception {
+
+		try {
+			DateTimeApplication dt = new DateTimeApplication();
+			String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(
+					"UPDATE tracevia_app.pmv_messages_available SET update_date = ?, update_username = ?, avaliable = 0 WHERE (id_message = ?);");
+			ps.setString(1, dt_creation);
+			ps.setString(2, user);
+			ps.setInt(3, msgID);
+
+			ps.executeUpdate();
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+	}
+
 	public List<Messages> availableMessagesByType(String type) throws Exception {
 
 		List<Messages> lista = new ArrayList<Messages>();

@@ -1,4 +1,4 @@
-var msg;
+var msg, toast, modal;
 
 // implementation 'loopNext' in jquery
 $.fn.loopNext = function (selector) {
@@ -27,6 +27,9 @@ const selectMessage = () => {
 		})
 	}
 
+	$('#selectedId').text(msg.id);
+
+	document.forms.dialogForm.deleteID.value = msg.id;
 	document.forms.contentForm.requestParamID.value = msg.id;
 	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
 	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
@@ -95,16 +98,35 @@ const editMsg = () => {
 	updateMessage();
 }
 
+const deleteMSG = () => {
+	setTimeout(() => {
+		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+			// Main loading
+			init();
+		})
+	}, 1500)
+
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+
+	cancel();
+
+	$('#msgToastNotification').text('Delete action success!')
+	modal.hide();
+	toast.show();
+}
+
 const save = () => {
 	setTimeout(() => {
 		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
 			// Main loading
 			init();
 		})
+	}, 1500)
 
-		cancel();
-		alert("save");
-	}, 500)
+	cancel();
+	$('#msgToastNotification').text('Save action success!')
+	toast.show();
 }
 
 // Cancel message in menu
@@ -407,9 +429,12 @@ $(function () {
 		selectMessage();
 	})
 
+	toast = new bootstrap.Toast(document.getElementById('liveToast'))
+	modal = new bootstrap.Modal(document.getElementById('deleteModal'))
 
 	$('#btnCreate').click(newMsg);
 	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
+	$('[ID$=confirmDelete]').click(deleteMSG);
 	$('[id$=btnCr1]').click(save);
 })

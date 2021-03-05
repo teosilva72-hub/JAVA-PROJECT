@@ -511,6 +511,22 @@ public class PMVmessageBean implements Serializable {
 
 	}
 
+	public void removeAvailableMessage() throws Exception {
+		MessagesDAO dao = new MessagesDAO();
+		FacesContext context = FacesContext.getCurrentInstance();
+		
+		// Pegar Usu�rio na sess�o
+		String user = (String) context.getExternalContext().getSessionMap().get("user");
+		
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		
+		int msgID = Integer.parseInt(params.get("deleteID"));
+		System.out.println(msgID);
+
+		dao.removeMessage(msgID, user);
+
+	}
+
 	/* Message Creation Available */
 
 	public void loadPictureImage(AjaxBehaviorEvent event) throws AbortProcessingException {
