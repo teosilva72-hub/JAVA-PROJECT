@@ -384,6 +384,7 @@ $(function () {
 			if (!$(this).prop('disabled'))
 				$(this).val(function () { return Number($(this).val()) || 1; });
 		})
+		selectMessage();
 	})
 
 	// hidden img and open list
