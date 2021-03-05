@@ -217,7 +217,7 @@
                 <h:graphicImage id="profile-img" value="/resources/images/avatar/user_gray.png" alt=""
                   class="rounded-circle" />
               </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown4">
+              <div class="dropdown-menu dropdown-menu-right temporaryboot" aria-labelledby="navbarDropdown4">
                 <div class="square" id="square-profile"></div>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-fw fa-user"></i>
@@ -770,12 +770,12 @@
 
     </footer>
 
+    <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+    <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
     <ui:insert name="default-plugins">
-      <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
       <h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />
       <h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
       <h:outputScript name="dataTables.select.min.js" library="js/datatables" />
-      <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
       <h:outputScript name="all.min.js" library="font-awesome/js" />
       <h:outputScript name="jssip.js" library="js/sip" />
     </ui:insert>
