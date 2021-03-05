@@ -521,10 +521,8 @@ public class PMVmessageBean implements Serializable {
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		
 		int msgID = Integer.parseInt(params.get("deleteID"));
-		System.out.println(msgID);
 
 		dao.removeMessage(msgID, user);
-
 	}
 
 	/* Message Creation Available */
