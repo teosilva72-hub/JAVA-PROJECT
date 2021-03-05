@@ -342,8 +342,9 @@ public class EquipmentsDAO {
 					
 					SAT sat = new SAT();
 					
-					dir1 = translator.CheckDirection1(rs.getNString(7));
-					dir2 = translator.CheckDirection2(rs.getNString(7));
+					System.out.println(rs.getString(7));					
+					dir1 = translator.CheckDirection1(rs.getString(7));
+					dir2 = translator.CheckDirection2(rs.getString(7));
 					
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
