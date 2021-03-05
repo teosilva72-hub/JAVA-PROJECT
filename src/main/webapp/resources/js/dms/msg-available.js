@@ -262,7 +262,7 @@ const init = () => {
 				} else {
 					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text("0").next().text(``).next().text('').attr('type', '')
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
