@@ -81,7 +81,7 @@ footer {
 
 .header-menu {
   margin: 0.5px;
-  border: 1px solid #transparent;
+  border: 1px solid transparent;
   z-index: 10030;
 }
 
@@ -143,8 +143,8 @@ footer {
 
 .header-menu > li > a .header-badge {
   position: absolute;
-  right: 4px;
-  top: 4px;
+  right: -2px;
+  top: -1px;
   background-color: #e0284f;
   color: #ffffff;
   text-align: center;
@@ -154,6 +154,7 @@ footer {
   display: block;
   font-size: 12px;
   border-radius: 100%;
+  
 }
 
 .header-menu > li > a .header-badge-msg {

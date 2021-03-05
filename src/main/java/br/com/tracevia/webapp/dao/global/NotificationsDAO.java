@@ -59,13 +59,7 @@ public class NotificationsDAO {
 				    	
 				    	//System.out.println(select);
 				    	
-				    	 if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
-					           conn = ConnectionFactory.connectToCCR();
-					    
-					     else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
-					           conn = ConnectionFactory.connectToViaPaulista();
-					    
-					     else conn = ConnectionFactory.connectToTraceviaApp();
+				    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 					
 					ps = conn.prepareStatement(select);	
 					ps.setString(1 , type);
@@ -165,37 +159,33 @@ public class NotificationsDAO {
 		  return lista;
 	  } 	
           
-     public Integer notificationsCount(String type) throws Exception {
+     public Integer notificationsCount() throws Exception {
     	 
     	 int count = 0;
     	 
-    	 String select = "SELECT " +
-    			 "SUM(IF(st.notif_battery = 1 AND st.notif_viewed_battery = 0 , 1, 0)) 'BATTERY', " +
-    			 "SUM(IF(st.notif_door = 1 AND st.notif_viewed_door = 0 , 1, 0)) 'DOOR', " +
-    			 "SUM(IF(st.notif_energy = 1 AND st.notif_viewed_energy = 0 , 1, 0)) 'ENERGY', " +
-    			 "SUM(IF(st.notif_online = 1 AND st.notif_viewed_online = 0 , 1, 0)) 'ONLINE', " +
-    			 "SUM(IF(st.notif_presence = 1 AND st.notif_viewed_presence = 0 , 1, 0)) 'PRESENCE', " +
-    			 "SUM(IF(st.notif_temperature = 1 AND st.notif_viewed_temperature = 0 , 1, 0)) 'TEMPERATURE' " +
-    			 "FROM tracevia_app.notifications_states st " +
-    			 "INNER JOIN notifications_equip e on (e.id = st.notif_equip_id)  " + 		      
-    			 "WHERE e.eq_type = ? ";
+    	 String select = "SELECT IFNULL(SUM(IF(st.notif_battery = 1 AND st.notif_viewed_battery = 0, 1 , 0) + " +
+    			 "IF(st.notif_door = 1 AND st.notif_viewed_door = 0, 1, 0) + " +
+    			 "IF(st.notif_energy = 1 AND st.notif_viewed_energy = 0, 1, 0) + " +
+    			 "IF(st.notif_online = 1 AND st.notif_viewed_online = 0, 1, 0) + " +
+    			 "IF(st.notif_presence = 1 AND st.notif_viewed_presence = 0, 1, 0) + " +
+    			 "IF(st.notif_temperature = 1 AND st.notif_viewed_temperature = 0, 1, 0)), 0) 'NOTIFICATIONS' " +
+    			 "FROM notifications_status st " +	      
+    			 "WHERE has_notification = 1";
     	
     	 try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+    	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
 				ps = conn.prepareStatement(select);	
-				ps.setString(1 , type);
-				
+								
 				//System.out.println(select);
+				
 				rs = ps.executeQuery();
 									
 				if (rs != null) {
 					while (rs.next()) {
 																	
-						count = rs.getInt("BATTERY") + 	rs.getInt("DOOR") +	rs.getInt("ENERGY") +
-						rs.getInt("ONLINE") + rs.getInt("PRESENCE") + rs.getInt("TEMPERATURE");
-						
+						count = rs.getInt("NOTIFICATIONS");						
 				    }				
 			     }			
 
@@ -233,7 +223,7 @@ public class NotificationsDAO {
     	    	
     	 try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+    	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
 				ps = conn.prepareStatement(update);					
 				ps.setInt(1 , equipId);

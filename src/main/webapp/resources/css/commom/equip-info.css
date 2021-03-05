@@ -3,23 +3,22 @@
  /* sat info div*/   
 .sat-info-bagde {
 position: absolute;
-top: -5px;
+top: -4px;
 margin-left: -8px;
 background-color: #1E90FF;
 color: #FFFFFF !important;
 text-align: center;
-line-height: 12px;
-min-width: 12px;
-min-height: 12px;
+line-height: 11px;
+min-width: 11px;
 display: block;
 border-radius: 50%;
 float: left;
 cursor: pointer;
 z-index: 3;
 text-indent: 0px;
-display: block;
 text-decoration: none;
 font-size: 9px;
+border: 1px solid black;
 }
  
  /* sat info icon hover */   

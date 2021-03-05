@@ -1,4 +1,4 @@
-var msg;
+var msg, toast, modal;
 
 // implementation 'loopNext' in jquery
 $.fn.loopNext = function (selector) {
@@ -27,6 +27,9 @@ const selectMessage = () => {
 		})
 	}
 
+	$('#selectedId').text(msg.id);
+
+	document.forms.dialogForm.deleteID.value = msg.id;
 	document.forms.contentForm.requestParamID.value = msg.id;
 	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
 	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
@@ -60,7 +63,7 @@ const newMsg = () => {
 		.eq(1).prev().find('[id^=timerCheck]')
 		.prop('checked', false).trigger('change');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
@@ -95,16 +98,35 @@ const editMsg = () => {
 	updateMessage();
 }
 
+const deleteMSG = () => {
+	setTimeout(() => {
+		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+			// Main loading
+			init();
+		})
+	}, 1500)
+
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+
+	cancel();
+
+	$('#msgToastNotification').text('Delete action success!')
+	modal.hide();
+	toast.show();
+}
+
 const save = () => {
 	setTimeout(() => {
 		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
 			// Main loading
 			init();
 		})
+	}, 1500)
 
-		cancel();
-		alert("save");
-	}, 500)
+	cancel();
+	$('#msgToastNotification').text('Save action success!')
+	toast.show();
 }
 
 // Cancel message in menu
@@ -116,7 +138,7 @@ const cancel = () => {
 	$('.edit-pmv-page').removeClass('active');
 	$('.edit-field').removeClass('active');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
@@ -262,7 +284,7 @@ const init = () => {
 				} else {
 					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text("0").next().text(``).next().text('').attr('type', '')
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
@@ -276,6 +298,7 @@ const init = () => {
 			}
 
 			$('#btnEdit').prop('disabled', false);
+			$('#btnDelete').prop('disabled', false);
 
 			// select message
 			selectMessage();
@@ -344,8 +367,6 @@ $(function () {
 
 	// change and pre-save page
 	$('.edit-pmv-page').on('click', 'label', function () {
-		selectMessage();
-
 		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
 
 		updateMessage();
@@ -359,6 +380,10 @@ $(function () {
 		else
 			check.parent().next().prop('disabled', true).next().prop('disabled', true)
 				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
+		$('[id^=timerPage]').each(function () {
+			if (!$(this).prop('disabled'))
+				$(this).val(function () { return Number($(this).val()) || 1; });
+		})
 	})
 
 	// hidden img and open list
@@ -404,9 +429,12 @@ $(function () {
 		selectMessage();
 	})
 
+	toast = new bootstrap.Toast(document.getElementById('liveToast'))
+	modal = new bootstrap.Modal(document.getElementById('deleteModal'))
 
 	$('#btnCreate').click(newMsg);
 	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
+	$('[ID$=confirmDelete]').click(deleteMSG);
 	$('[id$=btnCr1]').click(save);
 })

@@ -80,7 +80,7 @@ public class NotificationsBean {
 		notifications = new ArrayList<Notifications>();		
 		NotificationsDAO dao = new NotificationsDAO();
 				
-		notifications = dao.Notifications(NotificationsTypeEnum.SAT.getType());	
+		//notifications = dao.Notifications(NotificationsTypeEnum.SAT.getType());	
 				
 		if(notifications.isEmpty()) {
 			
@@ -100,10 +100,12 @@ public class NotificationsBean {
 		
 		notifCount = 0;
 				
-		notifCount = dao.notificationsCount(NotificationsTypeEnum.SAT.toString());	
+		notifCount = dao.notificationsCount();	
 		
 		if(notifCount > 0)
-		RequestContext.getCurrentInstance().update("testess");
+		RequestContext.getCurrentInstance().update("badge-notif");
+		
+		System.out.println(notifCount);
 				
 	}
 		
