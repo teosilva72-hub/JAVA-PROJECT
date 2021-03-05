@@ -410,21 +410,13 @@ $(function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
 		selectMessage();
 	})
-	// change field msg1
-	$('#message-box1').on('keyup change', function () {
-		upTextToChar($(this), 1);
-		selectMessage();
-	})
-	// change field msg2
-	$('#message-box2').on('keyup change', function () {
-		upTextToChar($(this), 2);
-		selectMessage();
-	})
-	// change field msg3
-	$('#message-box3').on('keyup change', function () {
-		upTextToChar($(this), 3);
-		selectMessage();
-	})
+	for (let line = 1; line <= 3; line++) {
+		// change field msg line
+		$(`#message-box${line}`).on('keyup change', function () {
+			upTextToChar($(this), line);
+			selectMessage();
+		})
+	}
 	// if change timer
 	$('[id^=timerPage]').on('keyup change', function () {
 		selectMessage();
