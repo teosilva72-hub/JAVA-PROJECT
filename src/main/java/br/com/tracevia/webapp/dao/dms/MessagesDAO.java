@@ -355,6 +355,7 @@ public class MessagesDAO {
 					ps.setFloat(4 + i * 2, 0);
 				}
 			}
+			ps.setInt(13, msgID);
 
 			ps.executeUpdate();
 
