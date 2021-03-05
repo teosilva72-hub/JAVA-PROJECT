@@ -60,7 +60,7 @@ const newMsg = () => {
 		.eq(1).prev().find('[id^=timerCheck]')
 		.prop('checked', false).trigger('change');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
@@ -116,7 +116,7 @@ const cancel = () => {
 	$('.edit-pmv-page').removeClass('active');
 	$('.edit-field').removeClass('active');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
@@ -344,8 +344,6 @@ $(function () {
 
 	// change and pre-save page
 	$('.edit-pmv-page').on('click', 'label', function () {
-		selectMessage();
-
 		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
 
 		updateMessage();
@@ -359,6 +357,10 @@ $(function () {
 		else
 			check.parent().next().prop('disabled', true).next().prop('disabled', true)
 				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
+		$('[id^=timerPage]').each(function () {
+			if (!$(this).prop('disabled'))
+				$(this).val(function () { return Number($(this).val()) || 1; });
+		})
 	})
 
 	// hidden img and open list
