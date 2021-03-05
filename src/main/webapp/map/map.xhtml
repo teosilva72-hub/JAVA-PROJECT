@@ -618,12 +618,12 @@
 							<!-- TRACKS -->
 							
 							<div class="form-row">
-								<div class="form-group col-md-12 input-field">
+								<div class="form-group col-md-4 input-field">
 									<div class="select-field">
 							         <span for="lanes" class="valid-icon-hidden"></span>
-										<h:selectOneMenu name="lanes" id="lanes" p:requiredField="">
+										<h:selectOneMenu name="lanes" id="lanes" p:requiredField="" style="display:none;">
 											<f:selectItem
-												itemLabel="#{mapLabels.map_creation_select_city}"
+												itemLabel="#{mapLabels.map_creation_select_lanes}"
 												itemValue="" />
 											<f:selectItems value="#{equipsBean.lanes}" />
 										</h:selectOneMenu>
@@ -638,7 +638,7 @@
 								<!-- TRACKS -->
 
 								<!-- DIRECTION -->
-							 <!-- <div class="form-group col-md-12 input-field">
+							 <!-- <div class="form-group col-md-8 input-field">
 									<div class="select-field">
 										<h:selectBooleanCheckbox name="dir1" id="dir1" p:requiredField=""
 											value="#{equipsBean.equip}">
@@ -1222,7 +1222,15 @@
 								newVal);
 					});
 			//ZOOM EVENT
+			
+			//SAT LANES INPUT
+			
+			function satInputs(){
+				
+			}
 
+			//SAT LANES INPUT END
+			
 			// MODAL EQUIPMENT SIZE
 			$(".dprbtn")
 					.click(
