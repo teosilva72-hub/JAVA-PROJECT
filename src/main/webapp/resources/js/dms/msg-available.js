@@ -276,6 +276,7 @@ const init = () => {
 			}
 
 			$('#btnEdit').prop('disabled', false);
+			$('#btnDelete').prop('disabled', false);
 
 			// select message
 			selectMessage();
