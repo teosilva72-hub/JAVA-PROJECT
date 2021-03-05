@@ -201,78 +201,26 @@
 											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page1">1</label>
 										</div>
 									</div>
-									<div class="col-2 ms-2 me-1 ps-0">
-										<div class="input-group mb-3 bar-width">
-											<!-- Checkbox -->
-											<div class="input-group-text">
-												<input id="timerCheck2" class="form-check-input mt-0" type="checkbox"
-													value="2" aria-label="Checkbox for timer2" disabled="disabled" />
+									<c:forEach begin="2" end="5" var="idx">
+										<div class="col-2 ms-2 me-1 ps-0">
+											<div class="input-group mb-3 bar-width">
+												<!-- Checkbox -->
+												<div class="input-group-text">
+													<input id="timerCheck#{idx}" class="form-check-input mt-0" type="checkbox"
+														value="#{idx}" aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+												</div>
+												<!-- Timer -->
+												<input id="timerPage#{idx}" type="number"
+													class="form-control form-control-sm text-timer p-0 border-start-0"
+													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0" disabled="disabled"
+													min="1" max="60" />
+												<!-- Button -->
+												<input class="btn-check" name="btn-pages" id="btn-page#{idx}" type="radio"
+													value="#{idx}" />
+												<label class="btn btn-dark py-0 px-2 page-button" for="btn-page#{idx}">#{idx}</label>
 											</div>
-											<!-- Timer -->
-											<input id="timerPage2" type="number"
-												class="form-control form-control-sm text-timer p-0 border-start-0"
-												aria-label="timer2" title="Timer 2" placeholder="0" disabled="disabled"
-												min="1" max="60" />
-											<!-- Button -->
-											<input class="btn-check" name="btn-pages" id="btn-page2" type="radio"
-												value="2" />
-											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page2">2</label>
 										</div>
-									</div>
-									<div class="col-2 ms-2 me-1 ps-0">
-										<div class="input-group mb-3 bar-width">
-											<!-- Checkbox -->
-											<div class="input-group-text">
-												<input id="timerCheck3" class="form-check-input mt-0" type="checkbox"
-													value="3" aria-label="Checkbox for timer3" disabled="disabled" />
-											</div>
-											<!-- Timer -->
-											<input id="timerPage3" type="number"
-												class="form-control form-control-sm text-timer p-0 border-start-0"
-												aria-label="timer3" title="Timer 3" placeholder="0" disabled="disabled"
-												min="1" max="60" />
-											<!-- Button -->
-											<input class="btn-check" name="btn-pages" id="btn-page3" type="radio"
-												value="3" />
-											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page3">3</label>
-										</div>
-									</div>
-									<div class="col-2 ms-2 me-1 ps-0">
-										<div class="input-group mb-3 bar-width">
-											<!-- Checkbox -->
-											<div class="input-group-text">
-												<input id="timerCheck4" class="form-check-input mt-0" type="checkbox"
-													value="4" aria-label="Checkbox for timer4" disabled="disabled" />
-											</div>
-											<!-- Timer -->
-											<input id="timerPage4" type="number"
-												class="form-control form-control-sm text-timer p-0 border-start-0"
-												aria-label="timer4" title="Timer 4" placeholder="0" disabled="disabled"
-												min="1" max="60" />
-											<!-- Button -->
-											<input class="btn-check" name="btn-pages" id="btn-page4" type="radio"
-												value="4" />
-											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page4">4</label>
-										</div>
-									</div>
-									<div class="col-2 ms-2 me-1 ps-0">
-										<div class="input-group mb-3 bar-width">
-											<!-- Checkbox -->
-											<div class="input-group-text">
-												<input id="timerCheck5" class="form-check-input mt-0" type="checkbox"
-													value="5" aria-label="Checkbox for timer5" disabled="disabled" />
-											</div>
-											<!-- Timer -->
-											<input id="timerPage5" type="number"
-												class="form-control form-control-sm text-timer p-0 border-start-0"
-												aria-label="timer5" title="Timer 5" placeholder="0" disabled="disabled"
-												min="1" max="60" />
-											<!-- Button -->
-											<input class="btn-check" name="btn-pages" id="btn-page5" type="radio"
-												value="5" />
-											<label class="btn btn-dark py-0 px-2 page-button" for="btn-page5">5</label>
-										</div>
-									</div>
+									</c:forEach>
 								</div>
 							</div>
 							<div class="row edit-field">

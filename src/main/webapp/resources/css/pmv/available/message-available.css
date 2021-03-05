@@ -582,3 +582,10 @@ tbody tr {
     opacity: 1;
   }
 }
+
+
+/* TEMPORARY CSS */
+
+.temporaryboot {
+  left: -130px;
+}
