@@ -197,22 +197,17 @@ public class LoginAccountBean {
 	    
      }        
 
-public void LogOut() {
-	FacesContext context = FacesContext.getCurrentInstance();
-	ExternalContext externalContext = context.getExternalContext();		
+public void LogOut() throws IOException {
 	
-	try {		
-		
-		context.addMessage(null,
-		new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
-		externalContext.getFlash().setKeepMessages(true);
-		context.getExternalContext().invalidateSession();
-		context.getExternalContext().redirect("${facesContext.externalContext.requestContextPath}/login.xhtml");
-
-	} catch (IOException e) {
-
-		e.printStackTrace();
-	}
+	
+	FacesContext context = FacesContext.getCurrentInstance();   
+	context.addMessage(null,
+	new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
+    
+    ExternalContext externalContext = context.getExternalContext();
+    externalContext.getFlash().setKeepMessages(true);
+    externalContext.invalidateSession();
+    externalContext.redirect("login.xhtml");
 	
 }
 

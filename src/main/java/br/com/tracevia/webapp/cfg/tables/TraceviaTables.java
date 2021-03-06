@@ -3,8 +3,8 @@ package br.com.tracevia.webapp.cfg.tables;
 public enum TraceviaTables {
 		
 		TraceviaVBV("sat_vbv"),
-		TraceviaLL("sat_ll"),
-		TraceviaCCR("sat_ccr"),
+		TraceviaLL("sat_vbv_ll"),
+		TraceviaCCR("sat_vbv_ccr"),
 		TraceviaDados15("sat_dados_15"),
 		TraceviaStatus("sat_status");
 					
