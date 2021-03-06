@@ -73,6 +73,7 @@ const newMsg = () => {
 		})
 	})
 
+	$('#btn-page1').prop('checked', true);
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
 	$('input[id^=timerCheck]').prop('disabled', false);
