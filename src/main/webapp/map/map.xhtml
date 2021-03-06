@@ -613,6 +613,28 @@
 								</div>
 							</div>
 							<!-- WIDTH -->
+							
+							<!-- CITY -->
+							<div class="form-row">
+								<div class="form-group col-md-12 input-field">
+									<div class="select-field">
+										<span><i class="fas fa-city"></i></span> <span for="lanes"
+											class="valid-icon-hidden"></span> <select requiredField=""
+											name="lanes" id="lanes" size="1">
+											<option value="">#{mapLabels.map_creation_select_city}</option>
+											<ui:repeat var="city" value="#{equipsBean.cities}"
+												varStatus="cityStatus">
+												<option value="#{city.value}">#{city.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="cities" class="error" id="cities-error"></label>
+										</div>
+									</div>
+								</div>
+								<!-- CITY -->
 
 						</div>
 

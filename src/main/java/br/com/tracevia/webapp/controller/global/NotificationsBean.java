@@ -105,7 +105,7 @@ public class NotificationsBean {
 		if(notifCount > 0)
 		RequestContext.getCurrentInstance().update("badge-notif");
 		
-		System.out.println(notifCount);
+		//System.out.println(notifCount);
 				
 	}
 		
