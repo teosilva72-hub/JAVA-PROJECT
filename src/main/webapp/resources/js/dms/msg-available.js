@@ -98,34 +98,19 @@ const editMsg = () => {
 	updateMessage();
 }
 
-const deleteMSG = () => {
-	setTimeout(() => {
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init();
-		})
-	}, 1500)
+const returnAlert = msg => {
+	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		// Main loading
+		init();
+	})
 
 	$('#btnEdit').prop('disabled', true);
 	$('#btnDelete').prop('disabled', true);
 
 	cancel();
 
-	$('#msgToastNotification').text('Delete action success!')
-	modal.hide();
-	toast.show();
-}
-
-const save = () => {
-	setTimeout(() => {
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init();
-		})
-	}, 1500)
-
-	cancel();
-	$('#msgToastNotification').text('Save action success!')
+	$('#msgToastNotification').text(msg);
+	// modal.hide();
 	toast.show();
 }
 
@@ -428,6 +413,4 @@ $(function () {
 	$('#btnCreate').click(newMsg);
 	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
-	$('[id$=confirmDelete]').click(deleteMSG);
-	$('[id$=btnCr1]').click(save);
 })

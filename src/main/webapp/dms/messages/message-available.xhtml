@@ -418,7 +418,7 @@
 							<input type="hidden" name="deleteID" />
 
 							<h:commandButton id="confirmDelete" value="#{dmsLabels.user_delete_modal_btn_yes}"
-								styleClass="btn btn-dark">
+								styleClass="btn btn-dark" pt:data-bs-dismiss="modal">
 								<f:ajax listener="#{pmvMessage.removeAvailableMessage}" execute="@form" render="@none"
 									event="click">
 								</f:ajax>

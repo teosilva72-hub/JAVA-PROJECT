@@ -258,10 +258,7 @@ public class MessagesDAO {
 
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			// boolean[] pages = new boolean[] { false, false, false, false, false };
-			// List<Integer> pageId = new ArrayList<Integer>();
 			List<Float> pageTimer = new ArrayList<Float>();
-			// int count = 0;
 			int[] idPage;
 
 			ps1 = conn.prepareStatement(
@@ -327,11 +324,7 @@ public class MessagesDAO {
 					idPage[i] = id;
 				}
 
-				// pageId.add(id);
 				pageTimer.add(Float.parseFloat(page.get("timer")));
-
-				// pages[count] = true;
-				// count++;
 			}
 
 			String sql = "UPDATE tracevia_app.pmv_messages_available SET update_date = ?, update_username = ?, "
