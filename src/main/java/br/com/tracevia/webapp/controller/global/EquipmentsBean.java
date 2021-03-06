@@ -30,7 +30,7 @@ public class EquipmentsBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<SelectItem> cities, roads, module, lanes;
+	private List<SelectItem> cities, roads, module, lanes, dir;
 
 	RoadConcessionaireDAO concessionaireDao;
 	
@@ -72,6 +72,14 @@ public class EquipmentsBean implements Serializable {
 	
 	public void setLanes(List<SelectItem> lanes) {
 		this.lanes = lanes;
+	}
+	
+	public List<SelectItem> getDir() {
+		return dir;
+	}
+	
+	public void setDir(List<SelectItem> dir) {
+		this.dir = dir;
 	}
 			
 	public int getEquipId() {
@@ -141,6 +149,7 @@ public class EquipmentsBean implements Serializable {
       roads = new  ArrayList<SelectItem>();
       module = new  ArrayList<SelectItem>();
       lanes = new  ArrayList<SelectItem>();
+      dir = new ArrayList<SelectItem>();
       
       equip = new Equipments();
       
@@ -160,7 +169,8 @@ public class EquipmentsBean implements Serializable {
 			s.setLabel(localeDirection.getStringKey("direction_lane_label")+" "+String.valueOf(f));
 			lanes.add(s);				
 		}
- 		 
+ 		 		
+ 		
  		 
       }catch(Exception ex){
 			ex.printStackTrace();

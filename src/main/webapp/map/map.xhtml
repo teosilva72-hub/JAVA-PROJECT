@@ -612,29 +612,62 @@
 									</div>
 								</div>
 							</div>
+							
 							<!-- WIDTH -->
 							
-							<!-- CITY -->
+							<!-- TRACKS -->
+							
 							<div class="form-row">
-								<div class="form-group col-md-12 input-field">
+								<div class="form-group col-md-4 input-field">
 									<div class="select-field">
-										<span><i class="fas fa-city"></i></span> <span for="lanes"
-											class="valid-icon-hidden"></span> <select requiredField=""
-											name="lanes" id="lanes" size="1">
-											<option value="">#{mapLabels.map_creation_select_city}</option>
-											<ui:repeat var="city" value="#{equipsBean.cities}"
-												varStatus="cityStatus">
-												<option value="#{city.value}">#{city.label}</option>
-											</ui:repeat>
-										</select>
+							         <span for="lanes" class="valid-icon-hidden"></span>
+										<h:selectOneMenu name="lanes" id="lanes" p:requiredField="" style="display:none;">
+											<f:selectItem
+												itemLabel="#{mapLabels.map_creation_select_lanes}"
+												itemValue="" />
+											<f:selectItems value="#{equipsBean.lanes}" />
+										</h:selectOneMenu>
 									</div>
 									<div>
 										<div class="error-label">
-											<label for="cities" class="error" id="cities-error"></label>
+											<label for="tracks" class="error" id="tracks-error"></label>
 										</div>
 									</div>
-								</div>
-								<!-- CITY -->
+								</div>  
+
+								<!-- TRACKS -->
+
+								<!-- DIRECTION -->
+							  <div class="form-group col-md-8 input-field">
+									<div class="select-field">
+										<h:selectBooleanCheckbox name="dir1" id="dir1" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir2" id="dir2" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir3" id="dir3" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir4" id="dir4" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir5" id="dir5" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir6" id="dir6" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir7" id="dir7" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir8" id="dir8" p:requiredField=""
+											value="">
+										</h:selectBooleanCheckbox>
+								</div> 
+							</div>
+							
+							
 
 						</div>
 
@@ -863,7 +896,62 @@
 								</div>
 							</div>
 							<!-- WIDTH -->
+							
+							<!-- TRACKS -->
+							
+						 	<div class="form-row">
+								<div class="form-group col-md-12 input-field">
+									<div class="select-field">
+							         <span for="lanes" class="valid-icon-hidden"></span>
+										<h:selectOneMenu name="lanes" id="lanes" p:requiredField="">
+											<f:selectItem
+												itemLabel="#{mapLabels.map_creation_select_city}"
+												itemValue="" />
+											<f:selectItems value="#{equipsBean.lanes}" />
+										</h:selectOneMenu>
+									</div>
+									<div>
+										<div class="error-label">
+											<label for="tracks" class="error" id="tracks-error"></label>
+										</div>
+									</div>
+								</div>  
 
+								<!-- TRACKS -->
+
+								<!-- DIRECTION -->
+							 <!-- <div class="form-group col-md-12 input-field">
+									<div class="select-field">
+										<h:selectBooleanCheckbox name="dir1" id="dir1" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir2" id="dir2" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir3" id="dir3" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir4" id="dir4" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir5" id="dir5" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir6" id="dir6" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir7" id="dir7" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+										<h:selectBooleanCheckbox name="dir8" id="dir8" p:requiredField=""
+											value="#{equipsBean.equip}">
+										</h:selectBooleanCheckbox>
+									</div>
+								</div> -->
+							</div>
+							
+							<!-- DIRECTION -->
+										
 						</div>
 
 						<!-- MODAL BUTTONS -->
@@ -1133,7 +1221,15 @@
 								newVal);
 					});
 			//ZOOM EVENT
+			
+			//SAT LANES INPUT
+			
+			function satInputs(){
+				
+			}
 
+			//SAT LANES INPUT END
+			
 			// MODAL EQUIPMENT SIZE
 			$(".dprbtn")
 					.click(

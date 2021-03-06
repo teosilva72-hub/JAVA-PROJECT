@@ -31,7 +31,7 @@ public class Equipments {
 	private boolean visible;
 		
 	public Equipments(int equip_id, String table_id, String creation_date, String creation_username, String nome, String estrada, String cidade, String km, String posicao,
-	  int linearPosX, int linearPosY, int linearWidth, int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY,
+    int linearPosX, int linearPosY, int linearWidth, int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY,
 	  int status, boolean notificacao, boolean visible) {
 		
 		this.equip_id = equip_id;
@@ -130,7 +130,7 @@ public class Equipments {
 		public void setPosicao(String posicao) {
 			this.posicao = posicao;
 		}
-
+		
 		public int getLinearPosX() {
 			return linearPosX;
 		}
