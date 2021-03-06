@@ -485,8 +485,10 @@ public class PMVmessageBean implements Serializable {
 	}
 
 	public void changeAvailableMessage() throws Exception {
+		boolean success;
 		MessagesDAO dao = new MessagesDAO();
 		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
 
 		// Pegar Usu�rio na sess�o
 		String user = (String) context.getExternalContext().getSessionMap().get("user");
@@ -505,16 +507,21 @@ public class PMVmessageBean implements Serializable {
 		}
 
 		if (msgID == 0)
-			dao.createMessage(msgID, user, ListaPages);
+			success = dao.createMessage(msgID, user, ListaPages);
 		else
-			dao.editMessage(msgID, user, ListaPages);
+			success = dao.editMessage(msgID, user, ListaPages);
 
-		RequestContext.getCurrentInstance().execute("returnAlert('Save action success!');");
+		if (success)
+			request.execute("returnAlert('Save action success!');");
+		else
+			request.execute("returnAlert('Save action failed!');");
 	}
 
 	public void removeAvailableMessage() throws Exception {
+		boolean success;
 		MessagesDAO dao = new MessagesDAO();
 		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
 
 		// Pegar Usu�rio na sess�o
 		String user = (String) context.getExternalContext().getSessionMap().get("user");
@@ -523,9 +530,12 @@ public class PMVmessageBean implements Serializable {
 
 		int msgID = Integer.parseInt(params.get("deleteID"));
 
-		dao.removeMessage(msgID, user);
+		success = dao.removeMessage(msgID, user);
 
-		RequestContext.getCurrentInstance().execute("returnAlert('Delete action success!');");
+		if (success)
+			request.execute("returnAlert('Delete action success!');");
+		else
+			request.execute("returnAlert('Delete action failed!');");
 	}
 
 	/* Message Creation Available */

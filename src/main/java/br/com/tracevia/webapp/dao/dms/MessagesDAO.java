@@ -160,7 +160,8 @@ public class MessagesDAO {
 	// line3
 	// @Param msgID
 	// @Param user
-	public void createMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+	public boolean createMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+		boolean success;
 
 		DateTimeApplication dt = new DateTimeApplication();
 		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
@@ -230,13 +231,16 @@ public class MessagesDAO {
 
 			ps.executeUpdate();
 
-		} catch (
-
-		SQLException e) {
+			success = true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+
+			success = false;
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
+
+		return success;
 	}
 
 	// Edit messages and pages
@@ -251,7 +255,8 @@ public class MessagesDAO {
 	// line3
 	// @Param msgID
 	// @Param user
-	public void editMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+	public boolean editMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+		boolean success;
 
 		DateTimeApplication dt = new DateTimeApplication();
 		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
@@ -272,8 +277,8 @@ public class MessagesDAO {
 				idPage = new int[] { rs1.getInt("page1"), rs1.getInt("page2"), rs1.getInt("page3"), rs1.getInt("page4"),
 						rs1.getInt("page5") };
 			} else {
-				createMessage(msgID, user, ListaPages);
-				return;
+				success = createMessage(msgID, user, ListaPages);
+				return success;
 			}
 
 			for (int i = 0; i < ListaPages.size(); i++) {
@@ -352,17 +357,20 @@ public class MessagesDAO {
 
 			ps.executeUpdate();
 
-		} catch (
-
-		SQLException e) {
+			success = true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+
+			success = false;
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
+
+		return success;
 	}
 
-	public void removeMessage(int msgID, String user) throws Exception {
-
+	public boolean removeMessage(int msgID, String user) throws Exception {
+		boolean success;
 		try {
 			DateTimeApplication dt = new DateTimeApplication();
 			String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
@@ -376,13 +384,18 @@ public class MessagesDAO {
 			ps.setInt(3, msgID);
 
 			ps.executeUpdate();
+
+			success = true;
 		} catch (
 
 		SQLException e) {
 			e.printStackTrace();
+			success = false;
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
+
+		return success;
 	}
 
 	public List<Messages> availableMessagesByType(String type) throws Exception {
@@ -652,7 +665,7 @@ public class MessagesDAO {
 
 		List<Messages> lista = new ArrayList<Messages>();
 
-		try {
+		try { // Todo: Atualmente incompativel
 
 			String sql = "SELECT d.id_image, d.text1, d.text2, d.text3, a.id_equip, a.id_modify, a.active_status "
 					+ "FROM tracevia_app.pmv_messages_available d " + "INNER JOIN tracevia_app.pmv_messages_active a "
