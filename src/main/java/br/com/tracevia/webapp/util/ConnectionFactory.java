@@ -25,10 +25,10 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_app?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -52,10 +52,10 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_core?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -78,10 +78,10 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection3 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_its?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -104,10 +104,10 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection4 = DriverManager.getConnection("jdbc:mysql://localhost:3306/trcv_sat?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -130,10 +130,10 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection5 = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_wim?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -155,7 +155,7 @@ public class ConnectionFactory {
 			close(conn, ps, rs);
 	
 		}catch(Exception e) {
-		System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+		System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 	}		
 }
 
@@ -166,7 +166,7 @@ public class ConnectionFactory {
 			close(conn, ps, null);
 	
 		}catch(Exception e) {
-		System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+		System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 	}		
   }
 
@@ -179,12 +179,12 @@ public class ConnectionFactory {
 			if (conn != null)
 				conn.close();
 		} catch (Exception e) {
-			System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+			System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 		}
 	}
 	
 	
-	//Identificar conexão com a Base de Dados
+	//Identificar conexï¿½o com a Base de Dados
 	public static Connection useConnection(String roadConcessionaire) throws Exception {
 		
 		Connection conn = null;

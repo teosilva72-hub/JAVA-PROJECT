@@ -42,7 +42,7 @@
 
       <nav class="w-100 row">
 
-        <div class="col-2 row">
+        <div class="col-auto w-auto row">
           <button class="ms-2 sideMenuToggler" type="button" data-toggle="collapse" onclick="sidenavAction()">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" width="30"
               height="30" viewBox="0 0 448 512">
@@ -72,9 +72,13 @@
             </svg>
           </button>
 
-          <a class="brand-text navbar-brand navbar-toggler" href="#">Tracevia</a>
+          
+          <a class="brand-text navbar-brand col-auto" href="#">Tracevia</a>
+          
+        </div>
 
-          <button class="profileToggler navbar-toggler" type="button" data-toggle="collapse"
+        <div class="col-3 ms-auto ml-auto justify-content-end navbar-toggler" id="navbarSupportedContent">
+          <button class="profileToggler" type="button" data-toggle="collapse"
             data-target="#navbarMaximizeMenu" aria-controls="navbarMaximizeMenu" aria-expanded="false"
             aria-label="Toggle navigation">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-v" width="30" height="30"
@@ -85,7 +89,6 @@
             </svg>
           </button>
         </div>
-
 
         <div class="col-3 collapse navbar-collapse ms-auto ml-auto justify-content-end" id="navbarSupportedContent">
 

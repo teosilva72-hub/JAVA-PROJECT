@@ -8,16 +8,17 @@ $.fn.loopNext = function (selector) {
 
 // Select message in pre-view
 const selectMessage = () => {
+	let pmv = $(`.equip-info.equip1`)
 	msg = {
-		id: Number($(`.equip-info.equip1`).find('.dmsTab span#dmsId').text()),
+		id: pmv.find('.dmsTab span#dmsId').text(),
+		type: pmv.find('.dmsTab span#dmsType').attr('type'),
+		name: pmv.find('.dmsTab span#dmsName').text(),
 		pages: []
 	}
 
 	for (let i = 1; i <= 5; i++) {
 		let info = $(`.equip-info.equip${i}`)
 		msg.pages.push({
-			type: info.find('.dmsTab span#dmsType').attr('type'),
-			name: info.find('.dmsTab span#dmsName').text(),
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
 			timer: String(($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val()),
@@ -30,7 +31,7 @@ const selectMessage = () => {
 	$('#selectedId').text(msg.id);
 
 	document.forms.dialogForm.deleteID.value = msg.id;
-	document.forms.contentForm.requestParamID.value = msg.id;
+	document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name });
 	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
 	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
 	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
@@ -41,8 +42,8 @@ const selectMessage = () => {
 // Get update to menu
 const updateMessage = () => {
 	$('#id-input').val(msg.id)
-	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
-	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
+	$('#type-input').val(msg.type)
+	$('#name-input').val(msg.name)
 	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
 	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
@@ -67,12 +68,14 @@ const newMsg = () => {
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
+	pre_vi.find('.dmsTab #dmsId').text('0')
 	pre_vi.find(`[id^=msg]`).children().each(function () {
 		$(this).attr('msg', '').children().each(function () {
 			$(this).find('[id*=box]').text("");
 		})
 	})
 
+	$('#btn-page1').prop('checked', true);
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
 	$('input[id^=timerCheck]').prop('disabled', false);
@@ -98,34 +101,19 @@ const editMsg = () => {
 	updateMessage();
 }
 
-const deleteMSG = () => {
-	setTimeout(() => {
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init();
-		})
-	}, 1500)
+const returnAlert = msg => {
+	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		// Main loading
+		init();
+	})
 
 	$('#btnEdit').prop('disabled', true);
 	$('#btnDelete').prop('disabled', true);
 
 	cancel();
 
-	$('#msgToastNotification').text('Delete action success!')
-	modal.hide();
-	toast.show();
-}
-
-const save = () => {
-	setTimeout(() => {
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init();
-		})
-	}, 1500)
-
-	cancel();
-	$('#msgToastNotification').text('Save action success!')
+	$('#msgToastNotification').text(msg);
+	// modal.hide();
 	toast.show();
 }
 
@@ -202,18 +190,16 @@ const tableRender = () => {
 // init table
 const init = () => {
 	// get all message
-	let table = $('.idColumn + td.pageTable1')
+	let table = $('.nameColumn + td.pageTable1')
 	table.each(function () {
 		let tr = $(this).parent()
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 28)
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
 			changeMsg($(this));
 		else {
 			$(this).addClass('active')
-				.loopNext().addClass('active')
-				.loopNext().addClass('active')
 				.loopNext().addClass('active')
 				.loopNext().addClass('active')
 				.loopNext().addClass('active')
@@ -253,7 +239,7 @@ const init = () => {
 					// Add image
 					pre_vi.find('.picture-box').attr({ src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val() })
 					// Add ID and NAME
-					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${pages.find('.tablePageName').text()}`)
 					// add messages
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', msg.text()).children().each(function (index) {
@@ -265,7 +251,7 @@ const init = () => {
 						msg = msg.next()
 					})
 					// add Type
-					pre_vi.find('.dmsTab span#dmsType').text(page.filter('[type]').text()).attr('type', page.filter('[type]').attr('type'))
+					pre_vi.find('.dmsTab span#dmsType').text(pages.filter('[type]').text()).attr('type', pages.filter('[type]').attr('type'))
 
 					// disable button if morePage if false
 					if (morePage && page.length) {
@@ -311,26 +297,20 @@ const init = () => {
 
 // func to start rotation tables. Only tables
 const changeMsg = msg => {
-	if (msg.index()) {
+	if (msg.index() > 2) {
 		let timer = msg.attr("timer");
-		let name = msg.loopNext();
-		let img = name.loopNext();
-		let text1 = img.loopNext();
+		let text1 = msg.loopNext();
 		let text2 = text1.loopNext();
 		let text3 = text2.loopNext();
 		let pg = text3.loopNext();
 		if (timer) {
 			msg.addClass('active');
-			name.addClass('active');
-			img.addClass('active');
 			text1.addClass('active');
 			text2.addClass('active');
 			text3.addClass('active');
 			pg.addClass('active');
 			setTimeout(() => {
 				msg.removeClass('active');
-				name.removeClass('active');
-				img.removeClass('active');
 				text1.removeClass('active');
 				text2.removeClass('active');
 				text3.removeClass('active');
@@ -428,6 +408,4 @@ $(function () {
 	$('#btnCreate').click(newMsg);
 	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
-	$('[id$=confirmDelete]').click(deleteMSG);
-	$('[id$=btnCr1]').click(save);
 })
