@@ -42,8 +42,8 @@ const selectMessage = () => {
 // Get update to menu
 const updateMessage = () => {
 	$('#id-input').val(msg.id)
-	$('#type-input').val(msg.pages.type)
-	$('#name-input').val(msg.pages.name)
+	$('#type-input').val(msg.type)
+	$('#name-input').val(msg.name)
 	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
 	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
@@ -196,12 +196,10 @@ const init = () => {
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 28)
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
 			changeMsg($(this));
 		else {
 			$(this).addClass('active')
-				.loopNext().addClass('active')
-				.loopNext().addClass('active')
 				.loopNext().addClass('active')
 				.loopNext().addClass('active')
 				.loopNext().addClass('active')
