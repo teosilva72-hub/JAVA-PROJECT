@@ -37,14 +37,13 @@
 									class="label-message-block">#{dmsLabels.dms_active_messages_label_selection}</span>
 							</div>
 							<!-- INÍCIO DO PAINEL -->
-							<div class="card border-dark mb-3" id="actionHidden">
+							<div class="card border-dark mb-3">
 								<div class="card-header">
 									<div class="row">
 										<div class="col-sm">
 											<!-- INÍCIO DO CHECK BOX TOPO -->
 											<div class="form-check form-switch">
-												<input type="checkbox" class="form-check-input"
-													id="checkListAll" />
+												<input type="checkbox" class="form-check-input" id="checkListAll" />
 												<label class="form-check-label"
 													for="checkListAll">#{dmsLabels.dms_active_messages_select_all}</label>
 											</div>
@@ -54,19 +53,12 @@
 									<!-- INICIO SELECT OPTION -->
 									<div id="selection-div">
 										<div id="type-list">
-											<h:selectOneMenu value="#{interfaces.typeSelection}" id="selection-list"
-												disabled="#{interfaces.checkbox}" class="form-control inputDesign">
-												<f:selectItem itemValue="" itemLabel="Tipo" />
-												<f:selectItem itemValue="All"
-													itemLabel="#{dmsLabels.dms_active_messages_select_label_all_messages}" />
-												<f:selectItem itemValue="Alert"
-													itemLabel="#{dmsLabels.dms_active_messages_select_label_alert}" />
-												<f:selectItem itemValue="Information"
-													itemLabel="#{dmsLabels.dms_active_messages_select_label_informations}" />
-												<f:selectItem itemValue="Signaling"
-													itemLabel="#{dmsLabels.dms_active_messages_select_label_signaling}" />
-												<p:ajax listener="#{interfaces.getMessageListType}" />
-											</h:selectOneMenu>
+											<select id="selection-list" class="form-select" aria-label="select type">
+												<option value="All" selected="selected">All</option>
+												<c:forEach items="#{pmvMessage.type}" var="opt">
+													<option value="#{opt.value}">#{opt.label}</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 									<!-- FINAL SELECT OPTION -->
