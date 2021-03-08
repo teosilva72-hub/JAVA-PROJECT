@@ -54,6 +54,8 @@ public class MessagesDAO {
 					if (page == 1) {
 						mensagens = new Messages();
 						mensagens.setId_message(rs.getInt("id_message"));
+						mensagens.setTipo(rs.getString("type"));
+						mensagens.setNome(rs.getString("name"));
 					} else
 						for (int i = 0; i <= pages.length - 1; i++) {
 							int idx = i + 1;
@@ -62,8 +64,7 @@ public class MessagesDAO {
 								if (i <= index)
 									index = i;
 								mensagens.setPages(rs.getString("text1"), rs.getString("text2"), rs.getString("text3"),
-										rs.getInt("id_image"), rs.getString("type"), rs.getString("name"),
-										getImageFromMessageAvailable(rs.getInt("id_image")), rs.getFloat("timer" + idx),
+										rs.getInt("id_image"), getImageFromMessageAvailable(rs.getInt("id_image")), rs.getFloat("timer" + idx),
 										idx, index);
 								pages[i] = false;
 							}
@@ -107,51 +108,8 @@ public class MessagesDAO {
 		return lista;
 	}
 
-	public List<Messages> mensagensOnly() throws Exception {
-
-		List<Messages> lista = new ArrayList<Messages>();
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement("SELECT id_message, id_image, type, name, text1, text2, text3 "
-					+ "FROM tracevia_app.pmv_messages WHERE enabled <> 0 AND id_message <> 1 ORDER BY id_message ASC");
-			rs = ps.executeQuery();
-
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
-					Messages mensagens = new Messages();
-
-					mensagens.setId_message(rs.getInt("id_message") - 1);
-					mensagens.setId_image(rs.getInt("id_image"));
-					mensagens.setImage(getImageFromMessageAvailable(rs.getInt("id_image")));
-					mensagens.setTipo(rs.getString("type"));
-					mensagens.setNome(rs.getString("name"));
-					mensagens.setMessage1(rs.getString("text1"));
-					mensagens.setMessage2(rs.getString("text2"));
-					mensagens.setMessage3(rs.getString("text3"));
-
-					lista.add(mensagens);
-				}
-			}
-			return lista;
-
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-
-		return lista;
-	}
-
 	// Create new messages and pages
 	// @Param ListaPages
-	// type
-	// name
 	// image
 	// image_id
 	// timer
@@ -160,7 +118,7 @@ public class MessagesDAO {
 	// line3
 	// @Param msgID
 	// @Param user
-	public boolean createMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+	public boolean createMessage(Map<String, String> msg, String user, List<Map<String, String>> ListaPages) throws Exception {
 		boolean success;
 
 		DateTimeApplication dt = new DateTimeApplication();
@@ -185,19 +143,17 @@ public class MessagesDAO {
 					id = 1;
 
 				String sql = "INSERT INTO tracevia_app.pmv_messages "
-						+ "(id_message, creation_date,  creation_username, type, name, id_image, text1, text2, text3, enabled) "
-						+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, true ); ";
+						+ "(id_message, creation_date,  creation_username, id_image, text1, text2, text3, enabled) "
+						+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, true ); ";
 
 				ps = conn.prepareStatement(sql);
 				ps.setInt(1, id);
 				ps.setString(2, dt_creation);
 				ps.setString(3, user);
-				ps.setString(4, page.get("type"));
-				ps.setString(5, page.get("name"));
-				ps.setInt(6, Integer.parseInt(page.get("image_id")));
-				ps.setString(7, page.get("line1"));
-				ps.setString(8, page.get("line2"));
-				ps.setString(9, page.get("line3"));
+				ps.setInt(4, Integer.parseInt(page.get("image_id")));
+				ps.setString(5, page.get("line1"));
+				ps.setString(6, page.get("line2"));
+				ps.setString(7, page.get("line3"));
 
 				ps.executeUpdate();
 
@@ -209,9 +165,9 @@ public class MessagesDAO {
 			}
 
 			String sql = "INSERT INTO tracevia_app.pmv_messages_available "
-					+ "(id_message, creation_date, creation_username, update_date, update_username, "
+					+ "(id_message, creation_date, creation_username, update_date, update_username, name, type, "
 					+ "page1, timer1, page2, timer2, page3, timer3, page4, timer4, page5, timer5, avaliable) "
-					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
+					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
 
 			ps = conn.prepareStatement(sql);
 
@@ -219,13 +175,15 @@ public class MessagesDAO {
 			ps.setString(2, user);
 			ps.setString(3, dt_creation);
 			ps.setString(4, user);
+			ps.setString(5, msg.get("type"));
+			ps.setString(6, msg.get("name"));
 			for (int i = 0; i < pages.length; i++) {
 				if (pages[i]) {
-					ps.setInt(5 + i * 2, pageId.get(i));
-					ps.setFloat(6 + i * 2, pageTimer.get(i));
+					ps.setInt(7 + i * 2, pageId.get(i));
+					ps.setFloat(8 + i * 2, pageTimer.get(i));
 				} else {
-					ps.setInt(5 + i * 2, 0);
-					ps.setInt(6 + i * 2, 0);
+					ps.setInt(7 + i * 2, 0);
+					ps.setInt(8 + i * 2, 0);
 				}
 			}
 
@@ -255,7 +213,7 @@ public class MessagesDAO {
 	// line3
 	// @Param msgID
 	// @Param user
-	public boolean editMessage(int msgID, String user, List<Map<String, String>> ListaPages) throws Exception {
+	public boolean editMessage(Map<String, String> msg, String user, List<Map<String, String>> ListaPages) throws Exception {
 		boolean success;
 
 		DateTimeApplication dt = new DateTimeApplication();
@@ -268,7 +226,7 @@ public class MessagesDAO {
 
 			ps1 = conn.prepareStatement(
 					"SELECT page1, page2, page3, page4, page5 FROM tracevia_app.pmv_messages_available WHERE id_message = ?;");
-			ps1.setInt(1, msgID);
+			ps1.setInt(1, Integer.parseInt(msg.get("id")));
 
 			rs1 = ps1.executeQuery();
 
@@ -277,22 +235,20 @@ public class MessagesDAO {
 				idPage = new int[] { rs1.getInt("page1"), rs1.getInt("page2"), rs1.getInt("page3"), rs1.getInt("page4"),
 						rs1.getInt("page5") };
 			} else
-				return createMessage(msgID, user, ListaPages);
+				return createMessage(msg, user, ListaPages);
 
 			for (int i = 0; i < ListaPages.size(); i++) {
 				Map<String, String> page = ListaPages.get(i);
 
 				if (idPage[i] != 0) {
-					String sql = "UPDATE tracevia_app.pmv_messages SET id_image = ?, type = ?, name = ?, text1 = ?, text2 = ?, text3 =? WHERE (id_message = ?);";
+					String sql = "UPDATE tracevia_app.pmv_messages SET id_image = ?, text1 = ?, text2 = ?, text3 =? WHERE (id_message = ?);";
 
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, Integer.parseInt(page.get("image_id")));
-					ps.setString(2, page.get("type"));
-					ps.setString(3, page.get("name"));
-					ps.setString(4, page.get("line1"));
-					ps.setString(5, page.get("line2"));
-					ps.setString(6, page.get("line3"));
-					ps.setInt(7, idPage[i]);
+					ps.setString(2, page.get("line1"));
+					ps.setString(3, page.get("line2"));
+					ps.setString(4, page.get("line3"));
+					ps.setInt(5, idPage[i]);
 
 					ps.executeUpdate();
 				} else {
@@ -308,19 +264,17 @@ public class MessagesDAO {
 						id = 1;
 
 					String sql = "INSERT INTO tracevia_app.pmv_messages "
-							+ "(id_message, creation_date,  creation_username, type, name, id_image, text1, text2, text3, enabled) "
-							+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, true ); ";
+							+ "(id_message, creation_date,  creation_username, id_image, text1, text2, text3, enabled) "
+							+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, true ); ";
 
 					ps = conn.prepareStatement(sql);
 					ps.setInt(1, id);
 					ps.setString(2, dt_creation);
 					ps.setString(3, user);
-					ps.setString(4, page.get("type"));
-					ps.setString(5, page.get("name"));
-					ps.setInt(6, Integer.parseInt(page.get("image_id")));
-					ps.setString(7, page.get("line1"));
-					ps.setString(8, page.get("line2"));
-					ps.setString(9, page.get("line3"));
+					ps.setInt(4, Integer.parseInt(page.get("image_id")));
+					ps.setString(5, page.get("line1"));
+					ps.setString(6, page.get("line2"));
+					ps.setString(7, page.get("line3"));
 
 					ps.executeUpdate();
 
@@ -331,27 +285,29 @@ public class MessagesDAO {
 			}
 
 			String sql = "UPDATE tracevia_app.pmv_messages_available SET update_date = ?, update_username = ?, "
-					+ "page1 = ?, timer1 = ?, page2 = ?, timer2 = ?, page3 = ?, timer3 = ?, "
+					+ "type = ?, name = ?, page1 = ?, timer1 = ?, page2 = ?, timer2 = ?, page3 = ?, timer3 = ?, "
 					+ "page4 = ?, timer4 = ?, page5 = ?, timer5 = ? WHERE (id_message = ?);";
 
 			ps = conn.prepareStatement(sql);
 
 			ps.setString(1, dt_creation);
 			ps.setString(2, user);
+			ps.setString(3, msg.get("type"));
+			ps.setString(4, msg.get("name"));
 			for (int i = 0; i < idPage.length; i++) {
 				if (idPage[i] != 0) {
-					ps.setInt(3 + i * 2, idPage[i]);
+					ps.setInt(5 + i * 2, idPage[i]);
 					if (pageTimer.size() > i)
-						ps.setFloat(4 + i * 2, pageTimer.get(i));
+						ps.setFloat(6 + i * 2, pageTimer.get(i));
 					else
-						ps.setFloat(4 + i * 2, 0);
+						ps.setFloat(6 + i * 2, 0);
 
 				} else {
-					ps.setInt(3 + i * 2, 0);
-					ps.setFloat(4 + i * 2, 0);
+					ps.setInt(5 + i * 2, 0);
+					ps.setFloat(6 + i * 2, 0);
 				}
 			}
-			ps.setInt(13, msgID);
+			ps.setInt(15, Integer.parseInt(msg.get("id")));
 
 			ps.executeUpdate();
 

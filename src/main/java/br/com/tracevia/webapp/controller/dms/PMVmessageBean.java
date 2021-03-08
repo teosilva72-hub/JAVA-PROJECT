@@ -415,9 +415,7 @@ public class PMVmessageBean implements Serializable {
 
 			messages = dao.mensagensDisponiveis();
 			messages_enumeration = enumeration.create(messages);
-
-			messagesOnly = dao.mensagensOnly();
-
+			
 			ArrayList<Equipments> list = new ArrayList<Equipments>();
 			list = equipDAO.listPMVSites();
 
@@ -486,6 +484,7 @@ public class PMVmessageBean implements Serializable {
 
 	public void changeAvailableMessage() throws Exception {
 		boolean success;
+		Gson gson = new Gson();
 		MessagesDAO dao = new MessagesDAO();
 		FacesContext context = FacesContext.getCurrentInstance();
 		RequestContext request = RequestContext.getCurrentInstance();
@@ -495,21 +494,22 @@ public class PMVmessageBean implements Serializable {
 
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-		int msgID = Integer.parseInt(params.get("requestParamID"));
+		Map<String, String> msg = gson.fromJson(params.get("requestParam"), Map.class);
 
 		List<Map<String, String>> ListaPages = new ArrayList<Map<String, String>>();
 
-		Gson gson = new Gson();
 		for (int i = 1; i <= 5; i++) {
 			Map<String, String> page = gson.fromJson(params.get("requestParamPAGE" + i), Map.class);
 			if (!page.get("timer").equals("0") || i == 1)
 				ListaPages.add(page);
 		}
+		
+		System.out.println(msg.get("id"));
 
-		if (msgID == 0)
-			success = dao.createMessage(msgID, user, ListaPages);
+		if (msg.get("id").equals("0"))
+			success = dao.createMessage(msg, user, ListaPages);
 		else
-			success = dao.editMessage(msgID, user, ListaPages);
+			success = dao.editMessage(msg, user, ListaPages);
 
 		if (success)
 			request.execute("returnAlert('Save action success!');");
