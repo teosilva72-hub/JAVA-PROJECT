@@ -52,7 +52,7 @@
 									</div>
 									<!-- INICIO SELECT OPTION -->
 									<div id="selection-div">
-										<div id="type-list">
+										<div id="mt-2">
 											<select id="selection-list" class="form-select" aria-label="select type">
 												<option value="All" selected="selected">All</option>
 												<c:forEach items="#{pmvMessage.type}" var="opt">
@@ -204,26 +204,17 @@
 									</div>
 
 									<div id="messages-list">
-										<p:selectOneListbox id="available-id" value="#{interfaces.message}"
-											autoWidth="true" class="form-control" effect="fade" var="m" filter="false"
-											filterMatchMode="startsWith" disabled="#{interfaces.checkbox}">
-											<f:converter converterId="messageConverter" />
-											<f:selectItems value="#{interfaces.messages}" var="msg"
-												itemLabel="#{msg.id_reg}" itemValue="#{msg}" />
-											<p:ajax event="change" listener="#{interfaces.loadMessageInformation}" />
-											<p:column>
-												<h:graphicImage value="/resources/images/pictures/#{m.imagem}"
-													width="50" height="50" />
-											</p:column>
-											<p:column>
-												#{m.texto1} <br />
-												#{m.texto2} <br />
-												#{m.texto3}
-											</p:column>
-										</p:selectOneListbox>
+										<select id="available-id" class="form-select" size="6"
+											aria-label="select message">
+											<option value="0" selected="select">Default</option>
+											<c:forEach items="#{pmvMessage.messages}" var="opt">
+												<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
+													#{opt.nome}</option>
+											</c:forEach>
+										</select>
 									</div>
 									<!-- INICIO DOS BOTÔES -->
-									<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+									<div class="btn-group btn-group-sm mt-2 d-flex" role="group" aria-label="button menu">
 										<h:commandButton value="#{dmsLabels.dms_active_messages_btn_apply}"
 											id="send-message" disabled="#{interfaces.send}"
 											class="btn btn-secondary confBtn">
