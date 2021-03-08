@@ -4,17 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
@@ -24,7 +17,7 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.Modules;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.global.UserAccount;
+
 import br.com.tracevia.webapp.model.lpr.LPR;
 import br.com.tracevia.webapp.model.mto.MTO;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -854,7 +847,7 @@ public class EquipmentsDAO {
     	    // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
     	   // --------------------------------------------------- //
               
-              public boolean EquipRegisterMap(Equipments equip, String table) throws Exception {
+              public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
             		
           		
           		boolean status = false;          		
@@ -862,8 +855,10 @@ public class EquipmentsDAO {
           		
           		try {
           			
-          			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, name, city, road, km, map_width, map_posX, map_posY, visible)"
-          					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?)";
+          			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
+          					+"dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
+          					+ "map_width, map_posX, map_posY, visible)"
+          					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
           	           
 
           			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -874,14 +869,23 @@ public class EquipmentsDAO {
           			ps.setInt(1, equip.getEquip_id());
           			ps.setString(2, equip.getCreation_date());
           			ps.setString(3, equip.getCreation_username());
-          			ps.setString(4, equip.getNome());
-          			ps.setString(5, equip.getCidade());
-          			ps.setString(6, equip.getEstrada());
-          			ps.setString(7, equip.getKm());			
-          			ps.setInt(8, equip.getMapWidth());
-          			ps.setInt(9, 50); //posX
-          			ps.setInt(10, 50); //posY
-          			ps.setBoolean(11, true);
+          			ps.setInt(4, equip.getNumFaixas());
+          			ps.setString(5, equip.getNome());
+          			ps.setString(6, equip.getCidade());
+          			ps.setString(7, equip.getEstrada());
+          			ps.setString(8, equip.getKm());
+          			ps.setString(9, equip.getFaixa1());	
+          			ps.setString(10, equip.getFaixa2());	
+          			ps.setString(11, equip.getFaixa3());	
+          			ps.setString(12, equip.getFaixa4());	
+          			ps.setString(13, equip.getFaixa5());	
+          			ps.setString(14, equip.getFaixa6());	
+          			ps.setString(15, equip.getFaixa7());	
+          			ps.setString(16, equip.getFaixa8());	          			    			
+          			ps.setInt(17, equip.getMapWidth());
+          			ps.setInt(18, 50); //posX
+          			ps.setInt(19, 50); //posY
+          			ps.setBoolean(20, true);
           			          			
           			//System.out.println(sql);
           			
@@ -904,6 +908,62 @@ public class EquipmentsDAO {
             // --------------------------------------------------- //
       	   // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
       	  // --------------------------------------------------- //
+              
+              
+              // --------------------------------------------------- //
+      	    // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
+      	   // --------------------------------------------------- //
+                
+                public boolean EquipRegisterMap(Equipments equip, String table) throws Exception {
+              		
+            		
+            		boolean status = false;          		
+            		
+            		
+            		try {
+            			
+            			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, name, city, road, km, map_width, map_posX, map_posY, visible)"
+            					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?)";
+            	           
+
+            			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            			
+                        //Execute Register			
+            			ps = conn.prepareStatement(query);
+            			
+            			ps.setInt(1, equip.getEquip_id());
+            			ps.setString(2, equip.getCreation_date());
+            			ps.setString(3, equip.getCreation_username());
+            			ps.setString(4, equip.getNome());
+            			ps.setString(5, equip.getCidade());
+            			ps.setString(6, equip.getEstrada());
+            			ps.setString(7, equip.getKm());			
+            			ps.setInt(8, equip.getMapWidth());
+            			ps.setInt(9, 50); //posX
+            			ps.setInt(10, 50); //posY
+            			ps.setBoolean(11, true);
+            			          			
+            			//System.out.println(sql);
+            			
+            			int success = ps.executeUpdate();
+            			
+            			if(success > 0)         				
+            				  status = true;							
+            	              											
+            		    } catch (SQLException sqle) {
+            			throw new Exception("Erro ao inserir dados " + sqle);
+            			
+            		} finally {
+            			ConnectionFactory.closeConnection(conn, ps);
+            		}
+            		
+            		return status;	
+            	}
+                
+                
+              // --------------------------------------------------- //
+        	   // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
+        	  // --------------------------------------------------- //
            
            // --------------------------------------------------- //
           // ------- UPDATE EQUIPMENT FOR MAP / REALTIME ------- //

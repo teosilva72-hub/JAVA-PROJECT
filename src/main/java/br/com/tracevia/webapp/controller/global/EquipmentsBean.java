@@ -16,7 +16,9 @@ import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 import org.primefaces.context.RequestContext;
@@ -37,7 +39,7 @@ public class EquipmentsBean implements Serializable {
 	LocaleUtil localeDirection;
 	
 	Equipments equip;
-	
+		
 	private int equipId;
 	private String equipTable, equipBord, equipDel;
 	private int positionX, positionY;
@@ -106,10 +108,7 @@ public class EquipmentsBean implements Serializable {
 		this.equipBord = equipBord;
 	}
 
-	public Equipments getEquip() {
-		return equip;
-	}
-	
+
 	public String getEquipDel() {
 		return equipDel;
 	}
@@ -118,9 +117,7 @@ public class EquipmentsBean implements Serializable {
 		this.equipDel = equipDel;
 	}
 
-	public void setEquip(Equipments equip) {
-		this.equip = equip;
-	}
+
 	
 	public int getPositionX() {
 		return positionX;
@@ -137,6 +134,14 @@ public class EquipmentsBean implements Serializable {
 	public void setPositionY(int positionY) {
 		this.positionY = positionY;
 	}
+	
+	public Equipments getEquip() {
+		return equip;
+	}
+
+	public void setEquip(Equipments equip) {
+		this.equip = equip;
+	}
 
 	@PostConstruct
 	public void initialize() {
@@ -144,15 +149,15 @@ public class EquipmentsBean implements Serializable {
 	  localeDirection = new LocaleUtil();
 		
 	  localeDirection.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
+	  
+	  equip = new Equipments();
 					
 	  cities = new  ArrayList<SelectItem>();
       roads = new  ArrayList<SelectItem>();
       module = new  ArrayList<SelectItem>();
       lanes = new  ArrayList<SelectItem>();
       dir = new ArrayList<SelectItem>();
-      
-      equip = new Equipments();
-      
+               
       try {
 			
     	 concessionaireDao = new RoadConcessionaireDAO();
@@ -161,17 +166,21 @@ public class EquipmentsBean implements Serializable {
  		 roads = concessionaireDao.roadDefinitions();
  		 module = concessionaireDao.moduleDefinitions();
  		 
- 		for (int f = 1; f <= 8; f++) {
+ 		for (int f = 2; f <= 8; f++) {
  			
 			SelectItem s = new SelectItem();
 
 			s.setValue(f);
-			s.setLabel(localeDirection.getStringKey("direction_lane_label")+" "+String.valueOf(f));
+			s.setLabel(String.valueOf(f)+" "+localeDirection.getStringKey("direction_lane_label"));
 			lanes.add(s);				
 		}
- 		 		
  		
- 		 
+ 		
+ 		dir.add(new SelectItem(1, localeDirection.getStringKey("directions_north")));   
+ 		dir.add(new SelectItem(2, localeDirection.getStringKey("directions_south")));   
+ 		dir.add(new SelectItem(3, localeDirection.getStringKey("directions_east")));   
+ 		dir.add(new SelectItem(4, localeDirection.getStringKey("directions_west")));   
+ 		 		 		 
       }catch(Exception ex){
 			ex.printStackTrace();
 		}
@@ -184,34 +193,88 @@ public class EquipmentsBean implements Serializable {
 	    ExternalContext externalContext = facesContext.getExternalContext();
 	    
 	    DateTimeApplication dta = new DateTimeApplication();
-	    
+	  	    
 	    Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
 		
 	   int moduleID = Integer.parseInt(parameterMap.get("equips"));
 	   
+	   boolean equipr = false;
+	   
+	   //FOR GENERICS
+	   Equipments equip = new Equipments();
+	   
+	   //FOR SAT
+	   SAT sat = new SAT();
+	   
+	   //FOR PMV
+	   DMS dms = new DMS();
+	   
+	   if(moduleID == 9) {		   
+	   
 		//For Equipment ID
-		equip.setEquip_id(Integer.parseInt(parameterMap.get("equipId")));
+		sat.setEquip_id(Integer.parseInt(parameterMap.get("equipId")));
 		 
 		//For Equipment CreationDate
-	    equip.setCreation_date(dta.currentTimeDBformat());
+	    sat.setCreation_date(dta.currentTimeDBformat());
 				    
 	    //For Equipment CreationUsername		
-		 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+		sat.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
 		
 		//For Equipment Name
-	    equip.setNome(parameterMap.get("equipName"));
+	    sat.setNome(parameterMap.get("equipName"));
 	    
 	    //For Equipment City
-	    equip.setCidade(parameterMap.get("cities"));
+	    sat.setCidade(parameterMap.get("cities"));
 	    
 	    //For Equipment Road
-	    equip.setEstrada(parameterMap.get("roads"));
+	    sat.setEstrada(parameterMap.get("roads"));
 	    
 	    //For Equipment KM
-	    equip.setKm(parameterMap.get("km"));
+	    sat.setKm(parameterMap.get("km"));
 	    
 	    //For Equipment Width
-	    equip.setMapWidth(Integer.parseInt(parameterMap.get("width")));
+	    sat.setMapWidth(Integer.parseInt(parameterMap.get("width")));
+	    
+	    sat.setNumFaixas(Integer.parseInt(parameterMap.get("lanes")));
+	    
+	    sat.setSentido1(parameterMap.get("direction1"));
+	    
+	    
+	    System.out.println("NUM FAIXA: "+sat.getNumFaixas());
+	    
+	    System.out.println("DIR: "+sat.getNumFaixas());
+	    
+	    defineDirections(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido1()));
+	    
+	    
+	   }else {
+		   		   
+			//For Equipment ID
+			equip.setEquip_id(Integer.parseInt(parameterMap.get("equipId")));
+			 
+			//For Equipment CreationDate
+		    equip.setCreation_date(dta.currentTimeDBformat());
+					    
+		    //For Equipment CreationUsername		
+			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			
+			//For Equipment Name
+		    equip.setNome(parameterMap.get("equipName"));
+		    
+		    //For Equipment City
+		    equip.setCidade(parameterMap.get("cities"));
+		    
+		    //For Equipment Road
+		    equip.setEstrada(parameterMap.get("roads"));
+		    
+		    //For Equipment KM
+		    equip.setKm(parameterMap.get("km"));
+		    
+		    //For Equipment Width
+		    equip.setMapWidth(Integer.parseInt(parameterMap.get("width")));
+		   
+	   }
+	
 	    
 	    String table = defineTableById(moduleID);
 	    //execute js
@@ -223,11 +286,16 @@ public class EquipmentsBean implements Serializable {
 	     equipBord = table+parameterMap.get("equipId");
 	     System.out.println(equipBord+ "< id do equip bord");
 	    
+	     if(moduleID == 8)
+	    	 equipr = equipDAO.EquipRegisterMap(dms, table);
 	     
-	   boolean equipr = equipDAO.EquipRegisterMap(equip, table);
+	     else if(moduleID == 9)  
+	     equipr = equipDAO.EquipSATRegisterMap(sat, table);
+	   
+	     else equipr = equipDAO.EquipRegisterMap(equip, table);
+	  
 	   			
-	   		//if (equipr)
-	   			//System.out.println("true");
+	   	
 	   			
 	}
 	
@@ -369,6 +437,70 @@ public class EquipmentsBean implements Serializable {
 	}
 	
     
+    //DEFINIÇÃO PARA SALVAR SATS
+    public void defineDirections(SAT sat, int numberLanes, int dir1){
+    	
+    	
+    	switch(dir1) {
+    	
+    	case 1: 
+    		
+    		switch (numberLanes) {    		
+			case 2: sat.setFaixa1("N"); sat.setFaixa2("S"); break;
+			case 3: sat.setFaixa1("N"); sat.setFaixa2("S"); sat.setFaixa3("S"); break;
+			case 4: sat.setFaixa1("N"); sat.setFaixa2("N"); sat.setFaixa3("S"); sat.setFaixa4("S"); break;
+			case 5:  sat.setFaixa1("N"); sat.setFaixa2("N"); sat.setFaixa3("N"); sat.setFaixa4("S"); sat.setFaixa5("S"); break;
+			case 6: sat.setFaixa1("N"); sat.setFaixa2("N"); sat.setFaixa3("N"); sat.setFaixa4("S"); sat.setFaixa5("S"); sat.setFaixa6("S"); break;
+			case 7: sat.setFaixa1("N"); sat.setFaixa2("N"); sat.setFaixa3("N"); sat.setFaixa4("N"); sat.setFaixa5("S"); sat.setFaixa6("S"); sat.setFaixa7("S"); break;
+			case 8: sat.setFaixa1("N"); sat.setFaixa2("N"); sat.setFaixa3("N"); sat.setFaixa4("N"); sat.setFaixa5("S"); sat.setFaixa6("S"); sat.setFaixa7("S"); sat.setFaixa8("S");break;
+					
+			}; break;
+    	
+    	case 2: 
+    		
+    		switch (numberLanes) {    		
+			case 2: sat.setFaixa1("S"); sat.setFaixa2("N"); break;
+			case 3: sat.setFaixa1("S"); sat.setFaixa2("N"); sat.setFaixa3("N"); break;
+			case 4: sat.setFaixa1("S"); sat.setFaixa2("S"); sat.setFaixa3("N"); sat.setFaixa4("N"); break;
+			case 5:  sat.setFaixa1("S"); sat.setFaixa2("S"); sat.setFaixa3("S"); sat.setFaixa4("N"); sat.setFaixa5("N"); break;
+			case 6: sat.setFaixa1("S"); sat.setFaixa2("S"); sat.setFaixa3("S"); sat.setFaixa4("N"); sat.setFaixa5("N"); sat.setFaixa6("N"); break;
+			case 7: sat.setFaixa1("S"); sat.setFaixa2("S"); sat.setFaixa3("S"); sat.setFaixa4("S"); sat.setFaixa5("N"); sat.setFaixa6("N"); sat.setFaixa7("N"); break;
+			case 8: sat.setFaixa1("S"); sat.setFaixa2("S"); sat.setFaixa3("S"); sat.setFaixa4("S"); sat.setFaixa5("N"); sat.setFaixa6("N"); sat.setFaixa7("N"); sat.setFaixa8("N");break;
+					
+			}; break;	
+    		    		    	
+    	case 3: 	
+    		
+    		switch (numberLanes) {    		
+			case 2: sat.setFaixa1("L"); sat.setFaixa2("O"); break;
+			case 3: sat.setFaixa1("L"); sat.setFaixa2("O"); sat.setFaixa3("O"); break;
+			case 4: sat.setFaixa1("L"); sat.setFaixa2("L"); sat.setFaixa3("O"); sat.setFaixa4("O"); break;
+			case 5:  sat.setFaixa1("L"); sat.setFaixa2("L"); sat.setFaixa3("L"); sat.setFaixa4("O"); sat.setFaixa5("O"); break;
+			case 6: sat.setFaixa1("L"); sat.setFaixa2("L"); sat.setFaixa3("L"); sat.setFaixa4("O"); sat.setFaixa5("O"); sat.setFaixa6("O"); break;
+			case 7: sat.setFaixa1("L"); sat.setFaixa2("L"); sat.setFaixa3("L"); sat.setFaixa4("L"); sat.setFaixa5("O"); sat.setFaixa6("O"); sat.setFaixa7("O"); break;
+			case 8: sat.setFaixa1("L"); sat.setFaixa2("L"); sat.setFaixa3("L"); sat.setFaixa4("L"); sat.setFaixa5("O"); sat.setFaixa6("O"); sat.setFaixa7("O"); sat.setFaixa8("O");break;
+					
+			}; break;
+      
+		
+    	case 4: 
+    		switch (numberLanes) {    		
+			case 2: sat.setFaixa1("O"); sat.setFaixa2("L"); break;
+			case 3: sat.setFaixa1("O"); sat.setFaixa2("L"); sat.setFaixa3("L"); break;
+			case 4: sat.setFaixa1("O"); sat.setFaixa2("O"); sat.setFaixa3("L"); sat.setFaixa4("L"); break;
+			case 5:  sat.setFaixa1("O"); sat.setFaixa2("O"); sat.setFaixa3("O"); sat.setFaixa4("L"); sat.setFaixa5("L"); break;
+			case 6: sat.setFaixa1("O"); sat.setFaixa2("O"); sat.setFaixa3("O"); sat.setFaixa4("L"); sat.setFaixa5("L"); sat.setFaixa6("L"); break;
+			case 7: sat.setFaixa1("O"); sat.setFaixa2("O"); sat.setFaixa3("O"); sat.setFaixa4("O"); sat.setFaixa5("L"); sat.setFaixa6("L"); sat.setFaixa7("L"); break;
+			case 8: sat.setFaixa1("O"); sat.setFaixa2("O"); sat.setFaixa3("O"); sat.setFaixa4("O"); sat.setFaixa5("L"); sat.setFaixa6("L"); sat.setFaixa7("L"); sat.setFaixa8("L");break;
+					
+			}; break;   		
+    	
+    	}
+    	
+    	
+    	
+    	
+    }
     
 
 }
