@@ -617,117 +617,57 @@
 							
 							<!-- TRACKS -->
 							
-							<div class="form-row">
+							
 								<div class="form-group col-md-2 input-field">
 									<div class="select-field">
-										<h:selectOneMenu name="lanes" id="lanes" p:requiredField="" >
-											<f:selectItem
-												itemLabel="#{mapLabels.map_creation_select_lanes}"
-												itemValue="" />
-											<f:selectItems value="#{equipsBean.lanes}" />
-										</h:selectOneMenu>
-									</div>
-									<div>
+									 <select name="lanes" id="lanes" size="1">
+											<option value="">#{mapLabels.map_creation_select_lanes}</option>
+											<ui:repeat var="lane" value="#{equipsBean.lanes}"
+												varStatus="laneStatus">
+												<option value="#{lane.value}">#{lane.label}</option>
+											</ui:repeat>
+										</select>										
+									</div>								
 										<div class="error-label">
-											<label for="tracks" class="error" id="tracks-error"></label>
+											<label for="lanes" class="error" id="lanes-error"></label>
 										</div>
 									</div>
-							    </div>  
+							  
 
 								<!-- TRACKS -->
 
-								<!-- DIRECTION -->
-								<div class="form-group col-md-10 input-field">
+								<!-- DIRECTION 1 -->
+							
+								<div class="form-group col-md-10 ml-5 input-field">
 									<div class="select-field">
-										<div class="check-dir">
-											<div id="chk1">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track1}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir1" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir2" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk2">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track2}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir3" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir4" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk3">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track3}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir5" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir6" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk4">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track4}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir7" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir8" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-										</div>
-
-										<br></br>
-
-										<div class="check-dir">
-											<div id="chk5">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track5}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir9" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir10" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk6">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track6}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir11" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir12" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk7">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track7}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir13" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir14" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-											<div id="chk8">
-												<h:outputLabel>#{mapLabels.map_creation_checkbox_track8}</h:outputLabel>
-												<h:selectBooleanCheckbox name="dir15" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-												<h:selectBooleanCheckbox name="dir16" class="road-dir"
-													p:requiredField="" value="">
-												</h:selectBooleanCheckbox>
-											</div>
-										</div>
+										 <select name="direction1" id="direction1" size="1">
+											<option value="">#{mapLabels.map_creation_select_lanes}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>										
+									</div>					
+										<div class="error-label">
+									   <label for="direction1" class="error" id="direction1-error"></label>
 									</div>
+									</div>
+								
+
+							<!-- DIRECTION 2 -->
+							
+								<div class="form-group col-md-10 ml-5 input-field">
+									<div class="select-field"></div>
+									<input
+										requiredField="" type="text" autocomplete="off"
+										name="direction2" id="direction2"
+										 />
+									
 								</div>
-
-							</div>
-							
-							
-
+						
 						</div>
 
-						<!-- MODAL BUTTONS -->
+							<!-- MODAL BUTTONS -->
 
 						<div class="modal-footer">
 
