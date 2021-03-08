@@ -41,6 +41,7 @@ import org.snmp4j.util.TableListener;
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
@@ -1539,6 +1540,8 @@ public class OccurrencesBean {
 	public String[] downloadPdf() throws Exception {
 		// criação do documento
 		Document document = new Document();
+		TranslationMethods trad = new TranslationMethods();
+		
 
 		try {
 			//caminho onde é gerado o pdf
@@ -1557,16 +1560,16 @@ public class OccurrencesBean {
 			//Editando o tipo de fonte do titulo
 			Paragraph pTitulo = new Paragraph(new Phrase(20F , "    "
 					+ "              Informe de ocurrencia", FontFactory.getFont(FontFactory.HELVETICA, 25F)));
-			Paragraph evento = new Paragraph(new Phrase(20F , "Eventos", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph dateHour = new Paragraph(new Phrase(20F , "Fecha y Hora", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph causeProbable = new Paragraph(new Phrase(20F , "Causa probable", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph eventoLocal = new Paragraph(new Phrase(20F , "Evento Local", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph detalhes = new Paragraph(new Phrase(20F , "Detalles", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph description = new Paragraph(new Phrase(20F , "Descripción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph envolvidos = new Paragraph(new Phrase(20F , "Involucrados", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph track = new Paragraph(new Phrase(20F , "Tráfico", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph danos = new Paragraph(new Phrase(20F , "Daño", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph action = new Paragraph(new Phrase(20F , "acción", FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph evento = new Paragraph(new Phrase(20F , trad.occLabels("Eventos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, Início, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa Provável"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph eventoLocal = new Paragraph(new Phrase(20F , trad.occLabels("Evento Local"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph detalhes = new Paragraph(new Phrase(20F , trad.occLabels("Detalhes"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("Descrição"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph envolvidos = new Paragraph(new Phrase(20F , trad.occLabels("Envolvidos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("Trânsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph danos = new Paragraph(new Phrase(20F , trad.occLabels("Danos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
 
@@ -1600,9 +1603,9 @@ public class OccurrencesBean {
 			document.add(new Paragraph(evento+"\n"+"\n"));
 			//document.add(new Paragraph(" "));
 			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
-					+ "Tipo: "+ getPdf.getType()+"         "
-					+ "Fuente: "+getPdf.getOrigin()+"          "
-					+ "Situación: "+getPdf.getState_occurrences()+"\n\n"));
+					+ trad.occLabels("Tipo")+(": ")+ getPdf.getType()+"         "
+					+ trad.occLabels("Origem")+(": ")+getPdf.getOrigin()+"          "
+					+ trad.occLabels("Situación")+(": ")+getPdf.getState_occurrences()+"\n\n"));
 
 			//data e hora inicial
 			Rectangle dateHourStart = new Rectangle(577, 615, 10, 680); // you can resize rectangle 
@@ -1615,8 +1618,8 @@ public class OccurrencesBean {
 			document.add(dateHourStart);
 			document.add(new Paragraph(dateHour+"\n"+"\n"));
 			//data e hora inicial
-			document.add(new Paragraph("Inicial: "+data.getStart_date()+"             Inicial: "+data.getStart_hour()+":"+data.getStart_minute()+"             "
-					+ "Final: "+data.getEnd_date()+"             Final: "+data.getEnd_hour()+":"+data.getEnd_minute()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getStart_date()+"             "+("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()+"             "
+					+ ("Final")+": "+data.getEnd_date()+"             "+("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+"\n\n"));
 
 			//causa provável e descrição principal e interna.
 			Rectangle causePr= new Rectangle(577, 470, 10, 610); // you can resize rectangle 
@@ -1628,9 +1631,9 @@ public class OccurrencesBean {
 			causePr.setBorderWidth(1);
 			document.add(causePr);
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
-			document.add(new Paragraph("Causa: "+getPdf.getCause()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getCause_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getCauseDescrInter()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Causa")+": "+getPdf.getCause()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getCause_description()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição Interna")+": "+data.getCauseDescrInter()+"\n\n"));
 
 			//Evento Local
 			Rectangle eventL= new Rectangle(577, 360, 10, 465); // you can resize rectangle 
@@ -1644,11 +1647,11 @@ public class OccurrencesBean {
 			document.add(new Paragraph(eventoLocal+"\n"+"\n"));
 			document.add(new Paragraph(""));
 			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
-					+ "Autopista: "+getPdf.getHighway()+"            "
-					+ "Estado: "+getPdf.getLocal_state()+"\n\n"));
-			document.add(new Paragraph("Dirección: "+getPdf.getDirection()+"     "
-					+ "Carril: "+getPdf.getLane()+"     "
-					+ "Observación: "+data.getOthers()+"\n\n"));
+					+ trad.occLabels("Rodovia")+": "+getPdf.getHighway()+"            "
+					+ trad.occLabels("Estado")+": "+getPdf.getLocal_state()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"     "
+					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"     "
+					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n\n"));
 
 			//Detalhes
 			Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
@@ -1662,11 +1665,11 @@ public class OccurrencesBean {
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
 			document.add(new Paragraph(""));
 			document.add(new Paragraph("Condición local: "+getPdf.getLocal_condition()+"  "
-					+ "Condición del tráfico: "+getPdf.getTraffic()+"   "
-					+ "Característica: "+getPdf.getCharacteristic()+"\n\n"));
-			document.add(new Paragraph("Interference: "+getPdf.getInterference()+"  "
-					+"Signaling: "+getPdf.getSignaling()+"  "
-					+"Condición conductor: "+ getPdf.getConductor_condition()+"\n\n"));
+					+ trad.occLabels("Condición del tráfico")+": "+getPdf.getTraffic()+"   "
+					+ trad.occLabels("Característica")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Interferência Faixa")+": "+getPdf.getInterference()+"  "
+					+trad.occLabels("Sinalização")+": "+getPdf.getSignaling()+"  "
+					+trad.occLabels("Situação Condutor")+": "+ getPdf.getConductor_condition()+"\n\n"));
 
 			//descrição
 			Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
@@ -1678,9 +1681,9 @@ public class OccurrencesBean {
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);
 			document.add(new Paragraph(description+"\n"+"\n"));
-			document.add(new Paragraph("Descripción del Título: "+ data.getDescription_title()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getDescription_text()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getDescriptionInter()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Titulo Descrição")+": "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDescription_text()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição Interna")+":"+data.getDescriptionInter()+"\n\n"));
 
 			document.add(new Paragraph("\n\n                                                                        Pág. 1"));
 			//adicionando nova pagina
@@ -1696,9 +1699,9 @@ public class OccurrencesBean {
 			envolvido.setBorderWidth(1);
 			document.add(envolvido);
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
-			document.add(new Paragraph("Tipo: "+getPdf.getInvolved_type()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+ data.getInvolved_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+ data.getInvolvedInter()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição Interna")+": "+ data.getInvolvedInter()+"\n\n"));
 
 			//Trânsito
 			Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
@@ -1710,11 +1713,11 @@ public class OccurrencesBean {
 			track1.setBorderWidth(1);
 			document.add(track1);
 			document.add(new Paragraph(track+"\n"+"\n"));
-			document.add(new Paragraph("Inicial: " + data.getTrackStartDate()+ "             Inicial: " + data.getTrackStartHour() + ":" + data.getTrackStartMinute() + "             "
-					+ "Final: " + data.getTrackEndDate() + "             Final: " + data.getTrackEndHour() + ":"+data.getTrackEndMinute() + "\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute() + "             "
+					+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute() + "\n\n"));
 			document.add(new Paragraph());
-			document.add(new Paragraph("Extensión: "+data.getTraffic_extension()+"            "
-					+"Pista interrumpida: "+ getPdf.getTraffic_stopped()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Extensión")+": "+data.getTraffic_extension()+"            "
+					+trad.occLabels("Pista interrumpida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
 
 			//Danos
 			Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
@@ -1727,10 +1730,10 @@ public class OccurrencesBean {
 			document.add(damage1);
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
-			document.add(new Paragraph("Tipo: "+getPdf.getDamage_type_damage()+"     Gravedad: "+getPdf.getDamage_gravity()+"     Unidad: "+getPdf.getDamageUnity()
-			+"     Amount: "+data.getDamage_amount()+ "\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getDemage_description()+ "\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getDamageDescriptionInternal()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     Gravedad: "+getPdf.getDamage_gravity()+"     Unidad: "+getPdf.getDamageUnity()
+			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+ "\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição Interna")+": "+data.getDamageDescriptionInternal()+"\n\n"));
 
 			//açtion
 			Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
@@ -1743,11 +1746,11 @@ public class OccurrencesBean {
 			document.add(action1);
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph("Tipo: "+getPdf.getAction_type()+"             Situación: "+getPdf.getStatusAction()+"\n\n"));
-			document.add(new Paragraph("Inicial: "+data.getActionStartData()+"     Inicial: "+data.getActionStartHour()+":"+data.getActionStartMinute()
-			+"             Final: "+data.getActionEndData()+"             Final: "+data.getActionEndHour()+":"+data.getActionEndMinute()+"\n\n"));
-			document.add(new Paragraph("Descripción: "+data.getAction_description()+"\n\n"));
-			document.add(new Paragraph("Descripción interna: "+data.getActionInter()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getAction_description()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição Interna")+": "+data.getActionInter()+"\n\n"));
 
 			//darken date and time
 			int day1 = LocalDateTime.now().getDayOfMonth();
@@ -1767,8 +1770,8 @@ public class OccurrencesBean {
 			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
 
 			//assinatura
-			document.add(new Paragraph("\n\n                    Firma: ______________________________________________."+ "\n\n\n\n"
-					+ "                              fecha del informe: "+dayPdf+"/"+monthPdf+"/"+year1+"     Hora: "+hourPdf+":"+minutePdf+":"+secondPdf));
+			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n\n\n"
+					+ "                            "+trad.occLabels("Data do relatório")+":"+dayPdf+"/"+monthPdf+"/"+year1+"     Hora: "+hourPdf+":"+minutePdf+":"+secondPdf));
 			document.add(new Paragraph("\n\n                                                                        Pág. 2"));
 
 		}

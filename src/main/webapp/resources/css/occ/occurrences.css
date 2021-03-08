@@ -94,18 +94,6 @@ html, body{
 		font-size: 10pt;
 	}
 
-/**/
-
-	#tab1{
-		height: 470px;
-	}
-	#tab2{
-		height: 470px;
-	}
-	#tab3{
-		height: 470px;
-	}
-
 #tab1{
 	margin-top: -5px;
 	overflow-y: auto;
@@ -412,6 +400,7 @@ cursor: pointer;
 	font-size: 12pt;
 }
 .imageFile{
+	margin: 5px;
 	border: solid 1px black;
 	width: 70px;
 	height: 70px;

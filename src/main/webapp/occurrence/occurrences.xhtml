@@ -687,11 +687,12 @@
 								<!-- col para separar btn e pdf -->
 								<div class="col-md-1"></div>
 								<!-- col para separar btn e pdf -->
-								<div class="col-md-1 btnPdf" id="iconPdf" style="display: block;">
+								<div class="col-md-1 btnPdf" id="iconPdf"
+									style="display: block;">
 									<!-- Icon PDF -->
-									<h:commandLink class="btnPdf" id="pdfId" disabled="#{occurrencesBean.pdf}"
-										data-bs-toggle="tooltip" data-bs-placement="top"
-										title="#{occLabels.occ_download_file}"
+									<h:commandLink class="btnPdf" id="pdfId"
+										disabled="#{occurrencesBean.pdf}" data-bs-toggle="tooltip"
+										data-bs-placement="top" title="#{occLabels.occ_download_file}"
 										action="#{occurrencesBean.downloadPdf}">
 										<i class="fas fa-file-pdf pdf-shadow"></i>
 									</h:commandLink>
@@ -1204,13 +1205,27 @@
 							</div>
 							<!-- End input file alterar -->
 
-							<!-- Arquivos Adicionados -->
-							<!-- alert -->
+							<!-- alert img-->
+							<!-- <a href="#" class="linkImg"><div class="alert alert-dark confAlert" id="imagem" role="alert">
+								<h5 class="text-center confTextAlert linkImg">Imagem</h5>
+							</div></a> -->
+							<!-- Edição imagem -->
+							<!--   <div>
+								<c:forEach  items="#{occurrencesBean.listarFile}" var="img" style="display: none;"
+									varStatus="loop">
+									
+										<h:graphicImage id="getPathImg" class="imageFile"
+											value="#{occurrencesBean.getImageUpload(img)}"></h:graphicImage>
+								</c:forEach>
+							</div> -->
+							<!-- final edição imagem -->
+							<!-- file total -->
 							<div class="alert alert-dark confAlert" id="fileTotal"
 								role="alert">
 								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
 									(#{occurrencesBean.total})</h5>
 							</div>
+
 							<div class="listarFiles" id="listFiles">
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
@@ -1220,10 +1235,10 @@
 											<div class="col-md-12">
 												<div class="row">
 													<!-- image file -->
-													<div class="col-md-2">
+													<!--<div class="col-md-2">
 														 <h:graphicImage id="getPathImg" class="imageFile"
 															value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
-													</div>
+													</div> -->
 													<!-- name file -->
 													<div class="col-md-8 text-center">
 														<span>#{occLabels.occ_name_file} </span>
