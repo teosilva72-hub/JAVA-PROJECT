@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -14,9 +15,13 @@ import br.com.tracevia.webapp.model.sat.SAT;
 @ManagedBean(name = "satMapsView")
 @ViewScoped
 public class SATBuildMaps {
+	
+	private static int ONLINE_STATE = 7;
+	private static int OFFLINE_STATE = 8;
 
 	static List<? extends Equipments> satList;
 	List<SAT> satListValues, satStatus;
+	
 
 	public List<? extends Equipments> getSatList() {
 		return satList;
@@ -39,7 +44,7 @@ public class SATBuildMaps {
 
 	public void CreateLinearEquipment() {
 				
-		//System.out.println("CON: "+RoadConcessionaire.roadConcessionaire);
+		NotificationsBean notif = new NotificationsBean();
 
 		try {
 
@@ -151,6 +156,8 @@ public class SATBuildMaps {
 								satListObj1.setStatus(0);
 
 								satStatus.add(satListObj1);
+								
+								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
 
 							}
 						}
@@ -211,6 +218,8 @@ public class SATBuildMaps {
 
 								  satStatus.add(satListObj1);
 								  
+								  notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
+								  
 						         }
 							   }
 							}						
@@ -252,13 +261,20 @@ public class SATBuildMaps {
 								satListObj1.setStatus(0);
 
 								satStatus.add(satListObj1);
+								
+								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
 							
 						}
 					} // FOR END				
 				
 			    // CASO NÃO ENCONTROU NADA 
 			    // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
-				}else intializeNullStatus(satList); 
+				}else { intializeNullStatus(satList); 
+				
+				for (int s = 0; s < satList.size(); s++) {
+				notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id()); 
+				}				
+			}
 
           ////////////////////////////////////////////////////////////////////////////////////////////
           ///// SAT STATUS
