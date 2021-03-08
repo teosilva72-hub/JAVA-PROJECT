@@ -165,7 +165,7 @@ public class MessagesDAO {
 			}
 
 			String sql = "INSERT INTO tracevia_app.pmv_messages_available "
-					+ "(id_message, creation_date, creation_username, update_date, update_username, name, type, "
+					+ "(id_message, creation_date, creation_username, update_date, update_username, type, name, "
 					+ "page1, timer1, page2, timer2, page3, timer3, page4, timer4, page5, timer5, avaliable) "
 					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
 

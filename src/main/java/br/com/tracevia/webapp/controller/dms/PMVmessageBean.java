@@ -503,8 +503,6 @@ public class PMVmessageBean implements Serializable {
 			if (!page.get("timer").equals("0") || i == 1)
 				ListaPages.add(page);
 		}
-		
-		System.out.println(msg.get("id"));
 
 		if (msg.get("id").equals("0"))
 			success = dao.createMessage(msg, user, ListaPages);
