@@ -28,7 +28,7 @@ public class ConnectionFactory {
 						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -55,7 +55,7 @@ public class ConnectionFactory {
 						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -81,7 +81,7 @@ public class ConnectionFactory {
 						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -107,7 +107,7 @@ public class ConnectionFactory {
 						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -133,7 +133,7 @@ public class ConnectionFactory {
 						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
-			System.out.println("Driver não encontrado: "+cfe.getMessage());
+			System.out.println("Driver nï¿½o encontrado: "+cfe.getMessage());
 						
 		}catch(SQLException sql) {
 			System.out.println("SQLException: " + sql.getMessage());
@@ -155,7 +155,7 @@ public class ConnectionFactory {
 			close(conn, ps, rs);
 	
 		}catch(Exception e) {
-		System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+		System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 	}		
 }
 
@@ -166,7 +166,7 @@ public class ConnectionFactory {
 			close(conn, ps, null);
 	
 		}catch(Exception e) {
-		System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+		System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 	}		
   }
 
@@ -179,12 +179,12 @@ public class ConnectionFactory {
 			if (conn != null)
 				conn.close();
 		} catch (Exception e) {
-			System.out.println("Erro ao encerrar conexão: "+e.getMessage());
+			System.out.println("Erro ao encerrar conexï¿½o: "+e.getMessage());
 		}
 	}
 	
 	
-	//Identificar conexão com a Base de Dados
+	//Identificar conexï¿½o com a Base de Dados
 	public static Connection useConnection(String roadConcessionaire) throws Exception {
 		
 		Connection conn = null;

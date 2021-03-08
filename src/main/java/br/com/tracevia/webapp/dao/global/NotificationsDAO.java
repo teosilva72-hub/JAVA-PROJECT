@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
@@ -40,115 +39,171 @@ public class NotificationsDAO {
 		dta = new DateTimeApplication();		
 	}		
 		
-     public List<Notifications> Notifications(String type) throws Exception{
+     public List<Notifications> Notifications() throws Exception{
 		
 		List<Notifications> lista = new ArrayList<Notifications>();
-		
-	   String currentDate = dta.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_VIEW);
-		
-	   String select = "SELECT e.id,e.eq_name, st.notif_battery, st.notif_stored_battery, st.notif_door, st.notif_stored_door, " +
-	   		    "st.notif_energy, st.notif_stored_energy, st.notif_online, st.notif_stored_online, " +
-			    "st.notif_presence, st.notif_stored_presence, st.notif_temperature, st.notif_stored_temperature " +
-	   		    "FROM tracevia_app.notifications_states st " +
-		        "INNER JOIN notifications_equip e on (e.id = st.notif_equip_id)  " +
-		        "WHERE e.eq_type = ? " +
-		        "GROUP BY e.eq_name " +
-		        "ORDER BY e.eq_type ASC";
+			  		
+	   String select = "SELECT st.equip_id , st.equip_name, st.equip_type, st.battery_status, st.battery_viewed, st.battery_datetime,  "
+	   		+ " st.door_status, st.door_viewed, st.door_datetime, st.energy_status, st.energy_viewed, st.energy_datetime,  "
+	   		+ "st.online_status, st.online_viewed, st.online_datetime, "
+			+ "st.presence_status,  st.presence_viewed, st.presence_datetime, "
+			+ "st.temperature_status, st.temperature_viewed, st.temperature_datetime  "
+			+ "FROM notifications_status st "
+			+ "WHERE has_notification = 1 ";
 						
 				    try {
+				    				    				    	
+				    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 					
-				    	 if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
-					           conn = ConnectionFactory.connectToCCR();
-					    
-					    else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
-					           conn = ConnectionFactory.connectToViaPaulista();
-					    
-					    else conn = ConnectionFactory.connectToTraceviaApp();
-					
-					ps = conn.prepareStatement(select);	
-					ps.setString(1 , type);
+					ps = conn.prepareStatement(select);		
 					
 					rs = ps.executeQuery();
 										
-					if (rs != null) {
+					if (rs.isBeforeFirst()) {
 						while (rs.next()) {
 							
 							Notifications not;
 														
-							   if(rs.getBoolean("st.notif_battery") == true && rs.getBoolean("st.notif_stored_battery") == false) {	
+							   if(rs.getBoolean("st.battery_status") == true && rs.getBoolean("st.battery_stored") == false) {	
 								   
 								  not = new Notifications();	
-										
-								  not.setNotifEquipId(rs.getInt("e.id"));
+								  								 										
+								  not.setEquipId(rs.getInt("st.equip_id"));
 								  not.setStatus(2); // BATTERY LOW
-								  not.setDateTime(currentDate);
-								  not.setDescription(rs.getString("e.eq_name")+" - " +		
+								  not.setType("battery"); //Type Notification
+								  
+								  if(rs.getInt("st.battery_viewed") == 0)								  
+								  not.setViewedBgColor("dropdown-nofit-checked"); 
+								  
+								  else not.setViewedBgColor("dropdown-nofit-unchecked"); 
+								  
+								  if(!rs.getString("st.battery_datetime").equals(""))
+								    not.setDateTime(dta.formatterDateTime(rs.getString("st.battery_datetime")));
+								  
+								  else  not.setDateTime("");
+								  
+								  not.setDescription(rs.getString("st.equip_name")+" - " +		
 								  locale.getStringKey("stat_equipment_notification_battery_low_description"));
 																														
 							      lista.add(not);
 							
 							     } 
 							   
-							   if(rs.getBoolean("st.notif_door") == true && rs.getBoolean("st.notif_stored_door") == false) {						
+							   if(rs.getBoolean("st.door_status") == true && rs.getBoolean("st.door_stored") == false) {						
 									
 								   not = new Notifications();	
 								   
-								      not.setNotifEquipId(rs.getInt("e.id"));
+								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(4); // DOOR OPENED
-									  not.setDateTime(currentDate);
-									  not.setDescription(rs.getString("e.eq_name")+" - " +		
+									  not.setType("door"); //Type Notification
+									  
+									  if(rs.getInt("st.door_viewed") == 0)
+										  not.setViewedBgColor("dropdown-nofit-checked"); 
+									  
+									  else not.setViewedBgColor("dropdown-nofit-unchecked"); 									  
+									  
+									  if(!rs.getString("st.door_datetime").equals(""))
+									     not.setDateTime(dta.formatterDateTime(rs.getString("st.door_datetime")));
+									  
+									  else  not.setDateTime("");
+									 
+									  not.setDescription(rs.getString("st.equip_name")+" - " +		
 									  locale.getStringKey("stat_equipment_notification_door_open_description"));
 																															
 								      lista.add(not);
 								
 							    } 
 							   
-							   if(rs.getBoolean("st.notif_energy") == true && rs.getBoolean("st.notif_stored_energy") == false) {						
+							   if(rs.getBoolean("st.energy_status") == true && rs.getBoolean("st.energy_stored") == false) {						
 									
 								   not = new Notifications();	
 								   
-								      not.setNotifEquipId(rs.getInt("e.id"));
+								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(6); // POWER OFF
-									  not.setDateTime(currentDate);
-									  not.setDescription(rs.getString("e.eq_name")+" - " +		
+									  not.setType("energy"); //Type Notification
+									  
+									  if(rs.getInt("st.energy_viewed") == 0)
+										  not.setViewedBgColor("dropdown-nofit-checked"); 
+									  
+									  else not.setViewedBgColor("dropdown-nofit-unchecked"); 
+									  
+									  if(!rs.getString("st.energy_datetime").equals(""))
+									  not.setDateTime(dta.formatterDateTime(rs.getString("st.energy_datetime")));
+									  
+									  else  not.setDateTime("");
+									  
+									  not.setDescription(rs.getString("st.equip_name")+" - " +		
 									  locale.getStringKey("stat_equipment_notification_energy_off_description"));
 																															
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.notif_online") == true && rs.getBoolean("st.notif_stored_online") == false) {						
+							   if(rs.getBoolean("st.online_status") == true && rs.getBoolean("st.online_stored") == false) {						
 									
 								   not = new Notifications();	
 								   
-								      not.setNotifEquipId(rs.getInt("e.id"));
+								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(8); // OFF-LINE
-									  not.setDateTime(currentDate);
-									  not.setDescription(rs.getString("e.eq_name")+" - " +		
+									  not.setType("online"); //Type Notification
+									  
+									  if(rs.getInt("st.online_viewed") == 0)
+										  not.setViewedBgColor("dropdown-nofit-checked"); 
+									  
+									  else not.setViewedBgColor("dropdown-nofit-unchecked"); 
+									  
+									  if(!rs.getString("st.online_datetime").equals(""))
+									  not.setDateTime(dta.formatterDateTime(rs.getString("st.online_datetime")));
+									  
+									  else  not.setDateTime("");
+									  
+									  not.setDescription(rs.getString("st.equip_name")+" - " +		
 									  locale.getStringKey("stat_equipment_notification_status_offline_description"));
 																															
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.notif_presence") == true && rs.getBoolean("st.notif_stored_presence") == false) {						
+							   if(rs.getBoolean("st.presence_status") == true && rs.getBoolean("st.presence_stored") == false) {						
 								      not = new Notifications();	
 								   
-								      not.setNotifEquipId(rs.getInt("e.id"));
+								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(10); // PRESENCE CLOSE
-									  not.setDateTime(currentDate);
-									  not.setDescription(rs.getString("e.eq_name")+" - " +		
+									  not.setType("presence"); //Type Notification
+									  
+									  if(rs.getInt("st.presence_viewed") == 0)
+										  not.setViewedBgColor("dropdown-nofit-checked"); 
+									  
+									  else not.setViewedBgColor("dropdown-nofit-unchecked");  
+									  
+									  if(!rs.getString("st.presence_datetime").equals(""))
+									     not.setDateTime(dta.formatterDateTime(rs.getString("st.presence_datetime")));
+									  
+									  else  not.setDateTime("");
+									  
+									  not.setDescription(rs.getString("st.equip_name")+" - " +		
 									  locale.getStringKey("stat_equipment_notification_presence_close_description"));
 																															
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.notif_temperature") == true && rs.getBoolean("st.notif_stored_temperature") == false) {						
-								   not = new Notifications();	
+							   if(rs.getBoolean("st.temperature_status") == true && rs.getBoolean("st.temperature_stored") == false) {						
+								      
+								      not = new Notifications();									   
 								   
-								   
-								      not.setNotifEquipId(rs.getInt("e.id"));
+								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(12); // TEMPERATURE LOW
-									  not.setDateTime(currentDate);
-									  not.setDescription(rs.getString("e.eq_name")+" - " +		
+									  not.setType("temperature"); //Type Notification
+									  
+									  if(rs.getInt("st.temperature_viewed") == 0)
+										  not.setViewedBgColor("dropdown-nofit-checked"); 
+									  
+									  else not.setViewedBgColor("dropdown-nofit-unchecked");     
+									  
+									  if(!rs.getString("st.temperature_datetime").equals(""))
+									    not.setDateTime(dta.formatterDateTime(rs.getString("st.temperature_datetime")));
+									  
+									  else  not.setDateTime("");
+									  
+									  not.setDescription(rs.getString("st.equip_name")+" - " +		
 									  locale.getStringKey("stat_equipment_notification_temperature_low_description"));
 																															
 								      lista.add(not);								
@@ -162,38 +217,34 @@ public class NotificationsDAO {
 
 		  return lista;
 	  } 	
-     
-     
-     public Integer notificationsCount(String type) throws Exception {
+          
+     public Integer notificationsCount() throws Exception {
     	 
     	 int count = 0;
     	 
-    	 String select = "SELECT " +
-    			 "SUM(IF(st.notif_battery = 1 AND st.notif_viewed_battery = 0 , 1, 0)) 'BATTERY', " +
-    			 "SUM(IF(st.notif_door = 1 AND st.notif_viewed_door = 0 , 1, 0)) 'DOOR', " +
-    			 "SUM(IF(st.notif_energy = 1 AND st.notif_viewed_energy = 0 , 1, 0)) 'ENERGY', " +
-    			 "SUM(IF(st.notif_online = 1 AND st.notif_viewed_online = 0 , 1, 0)) 'ONLINE', " +
-    			 "SUM(IF(st.notif_presence = 1 AND st.notif_viewed_presence = 0 , 1, 0)) 'PRESENCE', " +
-    			 "SUM(IF(st.notif_temperature = 1 AND st.notif_viewed_temperature = 0 , 1, 0)) 'TEMPERATURE' " +
-    			 "FROM tracevia_app.notifications_states st " +
-    			 "INNER JOIN notifications_equip e on (e.id = st.notif_equip_id)  " + 		      
-    			 "WHERE e.eq_type = ? ";
+    	 String select = "SELECT IFNULL(SUM(IF(st.battery_status = 1 AND st.battery_viewed = 0, 1 , 0) + " +
+    			 "IF(st.door_status = 1 AND st.door_viewed = 0, 1, 0) + " +
+    			 "IF(st.energy_status = 1 AND st.energy_viewed = 0, 1, 0) + " +
+    			 "IF(st.online_status = 1 AND st.online_viewed = 0, 1, 0) + " +
+    			 "IF(st.presence_status = 1 AND st.presence_viewed = 0, 1, 0) + " +
+    			 "IF(st.temperature_status = 1 AND st.temperature_viewed = 0, 1, 0)), 0) 'NOTIFICATIONS' " +
+    			 "FROM notifications_status st " +	      
+    			 "WHERE has_notification = 1";
     	
     	 try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+    	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
 				ps = conn.prepareStatement(select);	
-				ps.setString(1 , type);
+								
+				//System.out.println(select);
 				
 				rs = ps.executeQuery();
 									
-				if (rs != null) {
+				if (rs.isBeforeFirst()) {
 					while (rs.next()) {
 																	
-						count = rs.getInt("BATTERY") + 	rs.getInt("DOOR") +	rs.getInt("ENERGY") +
-						rs.getInt("ONLINE") + rs.getInt("PRESENCE") + rs.getInt("TEMPERATURE");
-						
+						count = rs.getInt("NOTIFICATIONS");						
 				    }				
 			     }			
 
@@ -207,7 +258,7 @@ public class NotificationsDAO {
      }
      
      
-  public boolean updateNotifications(int stateId, int equipId) throws Exception {
+  public boolean updateNotificationsView(int stateId, int equipId) throws Exception {
     	 
     	  boolean response = false;
     	
@@ -215,23 +266,23 @@ public class NotificationsDAO {
     	  
     	  switch(stateId) {
     	  
-    	     case 1: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_battery = 0 WHERE notif_equip_id = ? "; break;
-    	     case 2: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_battery = 1 WHERE notif_equip_id = ? "; break;
-    	     case 3: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_door = 0 WHERE notif_equip_id = ? "; break;
-    	     case 4: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_door = 1 WHERE notif_equip_id = ? "; break;
-    	     case 5: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_energy= 0 WHERE notif_equip_id = ? "; break;
-    	     case 6: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_energy = 1 WHERE notif_equip_id = ? "; break;
-    	     case 7: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_online = 0 WHERE notif_equip_id = ? "; break;
-    	     case 8: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_online = 1 WHERE notif_equip_id = ? "; break;
-    	     case 9: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_presence = 0 WHERE notif_equip_id = ? "; break;
-    	     case 10: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_presence = 1 WHERE notif_equip_id = ? "; break;
-    	     case 11: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_temperature = 0 WHERE notif_equip_id = ? "; break;
-    	     case 12: update = "UPDATE tracevia_app.notifications_states SET notif_viewed_temperature = 1 WHERE notif_equip_id = ? "; break;    	    
+    	     case 1: update = "UPDATE notifications_status SET battery_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 2: update = "UPDATE notifications_status SET battery_viewed = 1 WHERE equip_id = ? "; break;
+    	     case 3: update = "UPDATE notifications_status SET door_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 4: update = "UPDATE notifications_status SET door_viewed = 1 WHERE equip_id = ? "; break;
+    	     case 5: update = "UPDATE notifications_status SET energy_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 6: update = "UPDATE notifications_status SET energy_viewed = 1 WHERE equip_id = ? "; break;
+    	     case 7: update = "UPDATE notifications_status SET online_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 8: update = "UPDATE notifications_status SET online_viewed = 1 WHERE equip_id = ? "; break;
+    	     case 9: update = "UPDATE notifications_status SET presence_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 10: update = "UPDATE notifications_status SET presence_viewed = 1 WHERE equip_id = ? "; break;
+    	     case 11: update = "UPDATE notifications_status SET temperature_viewed = 0 WHERE equip_id = ? "; break;
+    	     case 12: update = "UPDATE notifications_status SET temperature_viewed = 1 WHERE equip_id = ? "; break;    	    
     	  }
     	    	
     	 try {
 				
-				conn = ConnectionFactory.connectToTraceviaApp();
+    	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
 				ps = conn.prepareStatement(update);					
 				ps.setInt(1 , equipId);
@@ -254,6 +305,57 @@ public class NotificationsDAO {
     	 return response;    	 
     	 
      }
+  
+  
+  public  boolean updateNotificationStatus(int stateId, int equipId) throws Exception {
+	  
+	  boolean response = false;
+	  
+	  dta = new DateTimeApplication();
+  	
+	  String update = " ";
+	  
+	  switch(stateId) {
+	  
+	     case 1: update = "UPDATE notifications_status SET battery_status = 0 AND battery_last_status = 1 AND battery_datetime = ? WHERE equip_id = ? "; break;
+	     case 2: update = "UPDATE notifications_status SET battery_status = 1 AND battery_last_status = 0 AND battery_datetime = ? WHERE equip_id = ? "; break;
+	     case 3: update = "UPDATE notifications_status SET door_status = 0 AND door_last_status = 1 AND door_datetime = ? WHERE equip_id = ? "; break;
+	     case 4: update = "UPDATE notifications_status SET door_status = 1 AND door_last_status = 0 AND door_datetime = ? WHERE equip_id = ? "; break;
+	     case 5: update = "UPDATE notifications_status SET energy_status = 0 AND energy_last_status = 1 AND energy_datetime = ? WHERE equip_id = ? "; break;
+	     case 6: update = "UPDATE notifications_status SET energy_status = 1 AND energy_last_status = 0 AND energy_datetime = ? WHERE equip_id = ? "; break;
+	     case 7: update = "UPDATE notifications_status SET online_status = 0 AND online_last_status = 1 AND online_datetime = ? WHERE equip_id = ? "; break;
+	     case 8: update = "UPDATE notifications_status SET online_status = 1 AND online_last_status = 0 AND online_datetime = ? WHERE equip_id = ? "; break;
+	     case 9: update = "UPDATE notifications_status SET presence_status = 0 AND presence_last_status = 1 AND presence_datetime = ? WHERE equip_id = ? "; break;
+	     case 10: update = "UPDATE notifications_status SET presence_status = 1 AND presence_last_status = 0 AND presence_datetime = ? WHERE equip_id = ? "; break;
+	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 AND temperature_last_status = 1 AND temperature_datetime = ? WHERE equip_id = ? "; break;
+	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 AND temperature_last_status = 0 AND temperature_datetime = ? WHERE equip_id = ? "; break;  
+	     
+	  }
+	  
+	  try {
+			
+	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(update);					
+			ps.setString(1 , dta.currentDateTime());
+			ps.setInt(2, equipId);
+			
+			System.out.println(update);
+			
+			int state = ps.executeUpdate();
+			
+			if(state > 0)
+				response = true;	
+						
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+	 
+	 return response;  
+	  
+  }
      
 
 }

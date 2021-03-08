@@ -1043,7 +1043,7 @@ public class SatReportsController {
 	public String BuildMainQueryLLType2(QueriesReportsModels models, String mainQuery, String index) {    	 
 
 		String query = null;
-
+		
 		query = models.BuildQueryIndexType2(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableLL),
 				models.useIndex(index), models.innerJoinSat(), models.whereClauseEquipDate(satReport.getEquipment(), start, end), models.QuerySatGroupAndOrder(satReport.getPeriod()));
 
@@ -1068,7 +1068,9 @@ public class SatReportsController {
 	
 
 	/*** TO VBV USE WHERE CLAUSE WITH TWO PARAMETERS ***/
-	public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    	 
+	public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    
+		
+		System.out.println("TABLE: "+RoadConcessionaire.tableCCR);
 
 		String query = null;
 

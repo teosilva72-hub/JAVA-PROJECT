@@ -1,4 +1,4 @@
-var msg;
+var msg, toast, modal;
 
 // implementation 'loopNext' in jquery
 $.fn.loopNext = function (selector) {
@@ -8,26 +8,30 @@ $.fn.loopNext = function (selector) {
 
 // Select message in pre-view
 const selectMessage = () => {
+	let pmv = $(`.equip-info.equip1`)
 	msg = {
-		id: Number($(`.equip-info.equip1`).find('.dmsTab span#dmsId').text()),
+		id: pmv.find('.dmsTab span#dmsId').text(),
+		type: pmv.find('.dmsTab span#dmsType').attr('type'),
+		name: pmv.find('.dmsTab span#dmsName').text(),
 		pages: []
 	}
 
 	for (let i = 1; i <= 5; i++) {
 		let info = $(`.equip-info.equip${i}`)
 		msg.pages.push({
-			type: info.find('.dmsTab span#dmsType').attr('type'),
-			name: info.find('.dmsTab span#dmsName').text(),
 			image: info.find('#child-img img').attr('src'),
 			image_id: info.find('#child-img img').attr('id-img'),
-			timer: $(`#timerPage${i}`).val(),
+			timer: String(($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val()),
 			line1: info.find('#child-msg .message1').attr('msg'),
 			line2: info.find('#child-msg .message2').attr('msg'),
 			line3: info.find('#child-msg .message3').attr('msg'),
 		})
 	}
 
-	document.forms.contentForm.requestParamID.value = msg.id;
+	$('#selectedId').text(msg.id);
+
+	document.forms.dialogForm.deleteID.value = msg.id;
+	document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name });
 	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
 	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
 	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
@@ -38,8 +42,8 @@ const selectMessage = () => {
 // Get update to menu
 const updateMessage = () => {
 	$('#id-input').val(msg.id)
-	$('#type-input').val(msg.pages[$('.equip-info.active').index()].type)
-	$('#name-input').val(msg.pages[$('.equip-info.active').index()].name)
+	$('#type-input').val(msg.type)
+	$('#name-input').val(msg.name)
 	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
 	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
 	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
@@ -54,22 +58,42 @@ const newMsg = () => {
 	$('#btnCr2').prop('disabled', false);
 	$('#disableTable').addClass('active');
 	$('.edit-field').addClass('active');
+	$('.edit-pmv-page').find(`[id=timerPage1]`).prop('disabled', false)
 	$('.edit-pmv-page').addClass('active')
 		.find(`[id^=timerPage]`).val(0)
-		.first().prev().find('[id^=timerCheck]')
+		.eq(1).prev().find('[id^=timerCheck]')
 		.prop('checked', false).trigger('change');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
+	pre_vi.find('.dmsTab #dmsId').text('0')
 	pre_vi.find(`[id^=msg]`).children().each(function () {
 		$(this).attr('msg', '').children().each(function () {
 			$(this).find('[id*=box]').text("");
 		})
 	})
 
+	$('#btn-page1').prop('checked', true);
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
+
+	$('input[id^=timerCheck]').prop('disabled', false);
+
+	selectMessage();
+	updateMessage();
+}
+
+// Create new message
+const editMsg = () => {
+	$('#btnCreate').prop('disabled', true);
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+	$('[id$=btnCr1]').prop('disabled', false);
+	$('#btnCr2').prop('disabled', false);
+	$('#disableTable').addClass('active');
+	$('.edit-field').addClass('active');
+	$('.edit-pmv-page').addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
 
 	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
 
@@ -77,14 +101,20 @@ const newMsg = () => {
 	updateMessage();
 }
 
-const save = () => {
+const returnAlert = msg => {
 	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
 		// Main loading
 		init();
 	})
 
+	$('#btnEdit').prop('disabled', true);
+	$('#btnDelete').prop('disabled', true);
+
 	cancel();
-	alert("save");
+
+	$('#msgToastNotification').text(msg);
+	// modal.hide();
+	toast.show();
 }
 
 // Cancel message in menu
@@ -96,7 +126,7 @@ const cancel = () => {
 	$('.edit-pmv-page').removeClass('active');
 	$('.edit-field').removeClass('active');
 	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp");
+	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 	pre_vi.find('.dmsTab span').text('').each(function () {
 		$(this).last().attr('type', '')
 	})
@@ -108,7 +138,8 @@ const cancel = () => {
 
 	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
 
-	$('input[id^=timerCheck]').prop('disabled', true).trigger('change');
+	$('input[id^=timerCheck]').prop('disabled', true);
+	$('input[id^=timerPage]').prop('disabled', true);
 
 	selectMessage();
 	updateMessage();
@@ -159,13 +190,21 @@ const tableRender = () => {
 // init table
 const init = () => {
 	// get all message
-	let table = $('.idColumn + td.pageTable1')
+	let table = $('.nameColumn + td.pageTable1')
 	table.each(function () {
 		let tr = $(this).parent()
 		let pagination = $('.edit-pmv-page')
 
 		// Start rotation for tables
-		changeMsg($(this));
+		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
+			changeMsg($(this));
+		else {
+			$(this).addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+				.loopNext().addClass('active')
+		}
 
 
 		// Add on click pre-visualization
@@ -173,7 +212,7 @@ const init = () => {
 		tr.click(function () {
 			let morePage = true;
 			// get all page with time > 0
-			let pages = $(this).find('td:not(td[timer="0.0"])');
+			let pages = $(this).find('td:not(td[timer="0.0"])').add($(this).find('.pageTable1'));
 
 			for (let i = 1; i <= 5; i++) {
 				// page
@@ -198,9 +237,9 @@ const init = () => {
 				// add information on page
 				if (verif) {
 					// Add image
-					pre_vi.find('.picture-box').attr({src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val()})
+					pre_vi.find('.picture-box').attr({ src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val() })
 					// Add ID and NAME
-					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${page.find('.tablePageName').text()}`)
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${pages.find('.tablePageName').text()}`)
 					// add messages
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', msg.text()).children().each(function (index) {
@@ -212,7 +251,7 @@ const init = () => {
 						msg = msg.next()
 					})
 					// add Type
-					pre_vi.find('.dmsTab span#dmsType').text(page.filter('[type]').text()).attr('type', page.filter('[type]').attr('type'))
+					pre_vi.find('.dmsTab span#dmsType').text(pages.filter('[type]').text()).attr('type', pages.filter('[type]').attr('type'))
 
 					// disable button if morePage if false
 					if (morePage && page.length) {
@@ -231,7 +270,7 @@ const init = () => {
 				} else {
 					// clean table void
 					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text("0").next().text(``).next().text('').attr('type', '')
+					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(``).next().text('').attr('type', '')
 					pre_vi.find(`#msg${i}`).children().each(function () {
 						$(this).attr('msg', '').children().each(function () {
 							$(this).find('[id*=box]').text("")
@@ -244,6 +283,9 @@ const init = () => {
 				}
 			}
 
+			$('#btnEdit').prop('disabled', false);
+			$('#btnDelete').prop('disabled', false);
+
 			// select message
 			selectMessage();
 		})
@@ -255,26 +297,20 @@ const init = () => {
 
 // func to start rotation tables. Only tables
 const changeMsg = msg => {
-	if (msg.index()) {
+	if (msg.index() > 2) {
 		let timer = msg.attr("timer");
-		let name = msg.loopNext();
-		let img = name.loopNext();
-		let text1 = img.loopNext();
+		let text1 = msg.loopNext();
 		let text2 = text1.loopNext();
 		let text3 = text2.loopNext();
 		let pg = text3.loopNext();
 		if (timer) {
 			msg.addClass('active');
-			name.addClass('active');
-			img.addClass('active');
 			text1.addClass('active');
 			text2.addClass('active');
 			text3.addClass('active');
 			pg.addClass('active');
 			setTimeout(() => {
 				msg.removeClass('active');
-				name.removeClass('active');
-				img.removeClass('active');
 				text1.removeClass('active');
 				text2.removeClass('active');
 				text3.removeClass('active');
@@ -311,8 +347,6 @@ $(function () {
 
 	// change and pre-save page
 	$('.edit-pmv-page').on('click', 'label', function () {
-		selectMessage();
-
 		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
 
 		updateMessage();
@@ -326,6 +360,11 @@ $(function () {
 		else
 			check.parent().next().prop('disabled', true).next().prop('disabled', true)
 				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
+		$('[id^=timerPage]').each(function () {
+			if (!$(this).prop('disabled'))
+				$(this).val(function () { return Number($(this).val()) || 1; });
+		})
+		selectMessage();
 	})
 
 	// hidden img and open list
@@ -347,26 +386,26 @@ $(function () {
 		selectMessage();
 	})
 	// change field name
-	$('#name-input').keyup(function () {
+	$('#name-input').on('keyup change', function () {
 		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
-	})
-	// change field msg1
-	$('#message-box1').keyup(function () {
-		upTextToChar($(this), 1);
 		selectMessage();
 	})
-	// change field msg2
-	$('#message-box2').keyup(function () {
-		upTextToChar($(this), 2);
-		selectMessage();
-	})
-	// change field msg3
-	$('#message-box3').keyup(function () {
-		upTextToChar($(this), 3);
+	for (let line = 1; line <= 3; line++) {
+		// change field msg line
+		$(`#message-box${line}`).on('keyup change', function () {
+			upTextToChar($(this), line);
+			selectMessage();
+		})
+	}
+	// if change timer
+	$('[id^=timerPage]').on('keyup change', function () {
 		selectMessage();
 	})
 
+	toast = new bootstrap.Toast(document.getElementById('liveToast'))
+	modal = new bootstrap.Modal(document.getElementById('deleteModal'))
+
 	$('#btnCreate').click(newMsg);
+	$('#btnEdit').click(editMsg);
 	$('#btnCr2').click(cancel);
-	$('[id$=btnCr1]').click(save);
 })

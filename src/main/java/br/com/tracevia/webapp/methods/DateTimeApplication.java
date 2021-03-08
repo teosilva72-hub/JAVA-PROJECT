@@ -4,7 +4,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -91,11 +93,38 @@ public class DateTimeApplication {
 		Date date = formatter.parse(data);
 		formatter.applyPattern(DATE_TIME_FORMAT_DATE_VIEW);
 		String dataFormatada = formatter.format(date);
-		
+				
 		return dataFormatada;	
 		}
+		
+		//FORMATTER FOR DATETIME - DATABASE TO VIEW
+		public String formatterDateTime(String datetime) {
+			
+			 DateTimeFormatter databasefmt = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_STANDARD_DATABASE);			 
+			 DateTimeFormatter viewfmt = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_STANDARD_VIEW);
+			
+			 LocalDateTime myDateObj = LocalDateTime.parse(datetime, databasefmt);			  
 	
-	
+			 String formattedDate = myDateObj.format(viewfmt);
+			 			    
+			 return  formattedDate;
+		}
+			
+		//FORMATTER FOR DATETIME - DATABASE TO VIEW
+		
+		
+		
+		//FORMATTER FOR DATETIME - DATABASE TO VIEW
+				public String currentDateTime() {
+					
+					 DateTimeFormatter databasefmt = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_STANDARD_DATABASE);			 
+										
+					 String currentDate = LocalDateTime.now().format(databasefmt);
+		 			    
+					 return  currentDate;
+				}
+					
+				//FORMATTER FOR DATETIME - DATABASE TO VIEW
 
 	//DATETIME TO STRING
 	public String DateTimeToString(Date data, String format) {

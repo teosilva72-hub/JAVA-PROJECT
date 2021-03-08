@@ -10,29 +10,18 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
-	<ui:define name="head">
-		<!-- CSS -->
-		<h:outputStylesheet name="equip-info.css" library="css/commom" />
-		<h:outputStylesheet name="commons.css" library="css/commom" />
+	<ui:define name="default-stylesheet">
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
 		<h:outputStylesheet name="message-activate.css"
 			library="css/pmv/activate" />
-		<!-- JAVASCRIPT -->
-		<h:outputScript name="msgAtv.js" library="js/dms" />
 	</ui:define>
-	<ui:define name="main-content">
-		<!--Inicio da animação  -->
-		<div id="preloader">
-			<div class="inner">
-				<!-- HTML DA ANIMAÇÃO MUITO LOUCA DO SEU PRELOADER! -->
-				<div class="bolas">
-					<div></div>
-					<div></div>
-					<div></div>
-				</div>
-			</div>
-		</div>
-		<!-- Final da animação -->
-		<div class="jumbotron bg-dark text-center">
+
+	<ui:define name="default-jquery">
+
+	</ui:define>
+
+	<ui:define name="default-content">
+		<div class="jumbotron bg-dark px-3">
 			<!-- INÍCIO DO FORMULARIO EQUIP -->
 			<h:form id="formSelect">
 				<div class="row confTop">
@@ -52,10 +41,6 @@
 				</div>
 				<!-- INÍCIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
 				<div>
-					<div id="message-show">
-						<p:messages id="msgs" showDetail="true" autoUpdate="true"
-							closable="true" />
-					</div>
 					<div class="row conteudoPag">
 						<!-- INÍCIO DA TABELA SELECAO -->
 						<div class="col-3 selecao" id="mostrarOption">
@@ -65,7 +50,7 @@
 										value="#{dmsLabels.dms_active_messages_label_selection}" />
 								</div>
 								<!-- INÍCIO DO PAINEL -->
-								<div class="card text-white mb-3" id="actionHidden">
+								<div class="card border-dark mb-3" id="actionHidden">
 									<div class="card-header">
 										<div class="row">
 											<div class="col-sm">
@@ -95,7 +80,7 @@
 														itemLabel="#{dmsLabels.dms_active_messages_select_label_informations}" />
 													<f:selectItem itemValue="Signaling"
 														itemLabel="#{dmsLabels.dms_active_messages_select_label_signaling}" />
-													<p:ajax update="available-id"
+													<p:ajax 
 														listener="#{interfaces.getMessageListType}" />
 												</h:selectOneMenu>
 											</div>
@@ -103,24 +88,151 @@
 										<!-- FINAL SELECT OPTION -->
 									</div>
 									<div class="card-body">
-										<div id="message-selected" class="form-control inputDesign">
-											<div id="graphic">
-												<p:graphicImage
-													value="/resources/images/pictures/#{interfaces.imagem}"
-													height="68" width="68" id="image-box" />
-											</div>
-											<div id="text">
-												<div id="row1">
-													<h:outputText value="#{interfaces.texto1}" id="text-1" />
+										<div id="page-pmv">
+											<c:forEach begin="1" end="5" varStatus="index">
+			
+												<div id="#{item.table_id}#{item.equip_id}"
+													class="equip-info equip#{index.index} #{item.table_id} mt-3">
+			
+													<!-- Table with DIV -->
+			
+													<div class="container tableStyle card">
+														<div class="dms-name card-header py-0">
+															<div class="text-center dmsTab#{item.equip_id}">
+																<span class="mb-0 text-white" id="dmsId"></span> - <span
+																	id="dmsName"></span> - <span id="dmsType" type=""></span>
+															</div>
+														</div>
+														<div class="row text-center card-body p-0">
+															<div id="child-img" class="col-2 padding-pmv">
+																<img src="/resources/images/pictures/#{pmvMessage.image}"
+																	class="ui-graphic-image picture-box" id-img="0" />
+															</div>
+															<div id="child-msg" class="col-auto msg-pos">
+																<div id="msg#{index.index}" class="table-message">
+																	<div class="row border-table-right message1" msg="">
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-1"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-2"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-3"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-4"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-5"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-6"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-7"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-8"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-9"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-10"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-11"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-12"></span>
+																		</div>
+																	</div>
+																	<div class="row border-table-right message2" msg="">
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-13"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-14"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-15"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-16"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-17"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-18"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-19"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-20"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-21"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-22"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-23"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-24"></span>
+																		</div>
+																	</div>
+																	<div class="row border-table-right bottom message3" msg="">
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-25"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-26"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-27"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-28"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-29"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-30"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-31"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-32"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-33"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-34"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-35"></span>
+																		</div>
+																		<div class="col-1 px-0 border-table">
+																			<span id="box-36"></span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+			
 												</div>
-												<div id="row2">
-													<h:outputText value="#{interfaces.texto2}" id="text-2" />
-												</div>
-												<div id="row3">
-													<h:outputText value="#{interfaces.texto3}" id="text-3" />
-												</div>
-											</div>
+											</c:forEach>
 										</div>
+			
 										<div id="messages-list">
 											<p:selectOneListbox id="available-id"
 												value="#{interfaces.message}" autoWidth="true"
@@ -131,7 +243,6 @@
 												<f:selectItems value="#{interfaces.messages}" var="msg"
 													itemLabel="#{msg.id_reg}" itemValue="#{msg}" />
 												<p:ajax event="change"
-													update="image-box, text-1, text-2, text-3, available-id, selection-list"
 													listener="#{interfaces.loadMessageInformation}" />
 												<p:column>
 													<h:graphicImage
@@ -199,7 +310,7 @@
 												itemLabel="" value="#{interfaces.state[loop.index]}"
 												class="ui-checkbox-equip">
 												<p:ajax
-													update="btn-up, btn-clean, btn-refresh, selection-list, available-id"
+													
 													listener="#{interfaces.checkBoxSelection}" />
 											</p:selectBooleanCheckbox>
 										</div>
@@ -465,5 +576,13 @@
 			seleccaoHidden();
 			
 		</script>
+	</ui:define>
+
+	<ui:define name="default-plugins">
+		<h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" />
+	</ui:define>
+
+	<ui:define name="jscript">
+		<h:outputScript name="msgAtv.js" library="js/dms" />
 	</ui:define>
 </ui:composition>

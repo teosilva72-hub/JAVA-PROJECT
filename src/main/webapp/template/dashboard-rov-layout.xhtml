@@ -42,7 +42,7 @@
 
       <nav class="w-100 row">
 
-        <div class="col-2 row">
+        <div class="col-auto w-auto row">
           <button class="ms-2 sideMenuToggler" type="button" data-toggle="collapse" onclick="sidenavAction()">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" width="30"
               height="30" viewBox="0 0 448 512">
@@ -72,9 +72,13 @@
             </svg>
           </button>
 
-          <a class="brand-text navbar-brand navbar-toggler" href="#">Tracevia</a>
+          
+          <a class="brand-text navbar-brand col-auto" href="#">Tracevia</a>
+          
+        </div>
 
-          <button class="profileToggler navbar-toggler" type="button" data-toggle="collapse"
+        <div class="col-3 ms-auto ml-auto justify-content-end navbar-toggler" id="navbarSupportedContent">
+          <button class="profileToggler" type="button" data-toggle="collapse"
             data-target="#navbarMaximizeMenu" aria-controls="navbarMaximizeMenu" aria-expanded="false"
             aria-label="Toggle navigation">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-v" width="30" height="30"
@@ -85,7 +89,6 @@
             </svg>
           </button>
         </div>
-
 
         <div class="col-3 collapse navbar-collapse ms-auto ml-auto justify-content-end" id="navbarSupportedContent">
 
@@ -217,7 +220,7 @@
                 <h:graphicImage id="profile-img" value="/resources/images/avatar/user_gray.png" alt=""
                   class="rounded-circle" />
               </a>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown4">
+              <div class="dropdown-menu dropdown-menu-right temporaryboot" aria-labelledby="navbarDropdown4">
                 <div class="square" id="square-profile"></div>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-fw fa-user"></i>
@@ -770,12 +773,12 @@
 
     </footer>
 
+    <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+    <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
     <ui:insert name="default-plugins">
-      <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
       <h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />
       <h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
       <h:outputScript name="dataTables.select.min.js" library="js/datatables" />
-      <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
       <h:outputScript name="all.min.js" library="font-awesome/js" />
       <h:outputScript name="jssip.js" library="js/sip" />
     </ui:insert>

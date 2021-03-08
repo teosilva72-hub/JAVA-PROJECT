@@ -135,15 +135,35 @@ public class QueriesReportsModels {
 	private static final String FROM_TABLE_DATE_CCR = " FROM tb_vbv_ccr st " ;
 	
     //FROM TABLES REFERENCE		
-	private static final String FROM_TABLE_05_MIN_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_06_MIN_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_10_MIN_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_15_MIN_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_30_MIN_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_01_HOUR_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_06_HOURS_SAT = " FROM sat_vbv st ";
-	private static final String FROM_TABLE_DATE_SAT = " FROM sat_vbv st " ;
+	private static final String FROM_TABLE_05_MIN_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_06_MIN_SAT_VBV  = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_10_MIN_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_15_MIN_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_30_MIN_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_01_HOUR_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_06_HOURS_SAT_VBV = " FROM sat_vbv st ";
+	private static final String FROM_TABLE_DATE_SAT_VBV = " FROM sat_vbv st " ;
 	
+    //FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_06_MIN_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_10_MIN_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_15_MIN_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_30_MIN_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_01_HOUR_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_06_HOURS_SAT_VBV_LL = " FROM sat_vbv_ll st ";
+	private static final String FROM_TABLE_DATE_SAT_VBV_LL = " FROM sat_vbv_ll st " ;
+	
+	//FROM TABLES REFERENCE		
+	private static final String FROM_TABLE_05_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_06_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_10_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_15_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_30_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_01_HOUR_SAT_VBV_CCR = " FROM sat_vbv_ccr st  ";
+	private static final String FROM_TABLE_06_HOURS_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
+	private static final String FROM_TABLE_DATE_SAT_VBV_CCR = " FROM sat_vbv_ccr st " ;
+
     //FROM TABLES REFERENCE		
 	private static final String FROM_TABLE_05_MIN_MTO = " FROM weather_station st ";
 	private static final String FROM_TABLE_06_MIN_MTO = " FROM weather_station st ";
@@ -506,10 +526,8 @@ public class QueriesReportsModels {
 		public String QueryFromSatTable(String period, String table) {
 
 			if(period.equals("05 minutes")) {
-				if(table.equals("sat_vbv"))
-				   return FROM_TABLE_05_MIN_SAT;
-
-				   else if(table.equals("tb_vbv"))
+								
+				   if(table.equals("tb_vbv"))
 					 return FROM_TABLE_05_MIN_VBV;
 					
 					else if(table.equals("tb_vbv_ll"))
@@ -517,107 +535,153 @@ public class QueriesReportsModels {
 						
 						else if(table.equals("tb_vbv_ccr"))
 							 return FROM_TABLE_05_MIN_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_05_MIN_SAT_VBV;
+							
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_05_MIN_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_05_MIN_SAT_VBV_CCR;
 							 
 			        }
 
 			if(period.equals("06 minutes")) {
 				
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_06_MIN_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_06_MIN_VBV;
+				 if(table.equals("tb_vbv"))
+					 return FROM_TABLE_06_MIN_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_06_MIN_LL;
 						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_06_MIN_LL;
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_06_MIN_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_06_MIN_SAT_VBV;
 							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_06_MIN_CCR;
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_06_MIN_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_06_MIN_SAT_VBV_CCR;
 			}
 				
 
 			if(period.equals("10 minutes")) {				
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_10_MIN_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_10_MIN_VBV;
+				
+				 if(table.equals("tb_vbv"))
+					 return FROM_TABLE_10_MIN_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_10_MIN_LL;
 						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_10_MIN_LL;
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_10_MIN_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_10_MIN_SAT_VBV;
 							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_10_MIN_CCR;
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_10_MIN_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_10_MIN_SAT_VBV_CCR;
 			               }
 				
 
 			if(period.equals("15 minutes")) {
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_15_MIN_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_15_MIN_VBV;
+				 
+				if(table.equals("tb_vbv"))
+					 return FROM_TABLE_15_MIN_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_15_MIN_LL;
 						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_15_MIN_LL;
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_15_MIN_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_15_MIN_SAT_VBV;
 							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_15_MIN_CCR;
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_15_MIN_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_15_MIN_SAT_VBV_CCR;
 			}
 
 			if(period.equals("30 minutes")) {
 				
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_30_MIN_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_30_MIN_VBV;
+				 if(table.equals("tb_vbv"))
+					 return FROM_TABLE_30_MIN_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_30_MIN_LL;
 						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_30_MIN_LL;
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_30_MIN_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_30_MIN_SAT_VBV;
 							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_30_MIN_CCR;
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_30_MIN_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_30_MIN_SAT_VBV_CCR;
 			}
 			
 
 			if(period.equals("01 hour")) {
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_01_HOUR_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_01_HOUR_VBV;
-						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_01_HOUR_LL;
-							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_01_HOUR_CCR;
 				
-			       }
-				
-
-			if(period.equals("06 hours")) {				
-				if(table.equals("sat_vbv"))
-					   return FROM_TABLE_06_HOURS_SAT;
-
-					   else if(table.equals("tb_vbv"))
-						 return FROM_TABLE_06_HOURS_VBV;
+				 if(table.equals("tb_vbv"))
+					 return FROM_TABLE_01_HOUR_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_01_HOUR_LL;
 						
-						else if(table.equals("tb_vbv_ll"))
-							 return FROM_TABLE_06_HOURS_LL;
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_01_HOUR_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_01_HOUR_SAT_VBV;
 							
-							else if(table.equals("tb_vbv_ccr"))
-								 return FROM_TABLE_06_HOURS_CCR;
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_01_HOUR_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_01_HOUR_SAT_VBV_CCR;
+			}
+
+			if(period.equals("06 hours")) {		
+				
+				 if(table.equals("tb_vbv"))
+					 return FROM_TABLE_06_HOURS_VBV;
+					
+					else if(table.equals("tb_vbv_ll"))
+						 return FROM_TABLE_06_HOURS_LL;
+						
+						else if(table.equals("tb_vbv_ccr"))
+							 return FROM_TABLE_06_HOURS_CCR;
+				
+						 else if(table.equals("sat_vbv"))
+							 return FROM_TABLE_06_HOURS_SAT_VBV;
+							
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_06_HOURS_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_06_HOURS_SAT_VBV_CCR;
 				
 			       }
 				
 
 			if(period.equals("24 hours") || period.equals("year") || period.equals("month")) {
-				  if(table.equals("sat_vbv"))
-					   return FROM_TABLE_DATE_SAT;
-
-					   else if(table.equals("tb_vbv"))
+				 
+			
+					   if(table.equals("tb_vbv"))
 						 return FROM_TABLE_DATE_VBV;
 						
 						else if(table.equals("tb_vbv_ll"))
@@ -625,6 +689,15 @@ public class QueriesReportsModels {
 							
 							else if(table.equals("tb_vbv_ccr"))
 								 return FROM_TABLE_DATE_CCR;
+					   
+							else if(table.equals("sat_vbv"))
+							   return FROM_TABLE_DATE_SAT_VBV;
+					   
+							else if(table.equals("sat_vbv_ll"))
+								 return FROM_TABLE_DATE_SAT_VBV_LL;
+								
+								else if(table.equals("sat_vbv_ccr"))
+									 return FROM_TABLE_DATE_SAT_VBV_CCR;
 								
 			     }
 			

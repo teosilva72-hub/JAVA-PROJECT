@@ -125,8 +125,8 @@ public class RoadConcessionaire {
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 		}	
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire())) {
@@ -158,11 +158,11 @@ public class RoadConcessionaire {
 			externalImagePath += "cardel_poza_rica.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/cardel_poza_rica.png";
 			mapUI = "/resources/images/map/cardel/cardel_poza_rica_light.jpg";
-			tableVBV = TraceviaTables.TraceviaVBV.getTable();	
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 		}
 		
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -195,8 +195,8 @@ public class RoadConcessionaire {
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 						
 		}
 		
@@ -232,9 +232,9 @@ public class RoadConcessionaire {
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
-				
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+							
 		}
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
@@ -264,11 +264,11 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaPaulista.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaPaulista.NOT_ID_CLASS_9AXLES.getClasse();			
 			externalImagePath += "viapaulista.png";
-			tableVBV = ViaPaulistaTables.ViaPaulistaVBV.getTable();
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			
 		}
 
@@ -303,8 +303,8 @@ public class RoadConcessionaire {
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = "";
-			tableCCR = "";
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
         }
         
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire())) {
@@ -397,9 +397,9 @@ public class RoadConcessionaire {
 		  tableVBV = TraceviaTables.TraceviaVBV.getTable();
 		  tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
-		  tableLL = "";
-		  tableCCR = "";
-		 		  
+		  tableLL = TraceviaTables.TraceviaLL.getTable();
+	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
+				  
          }	
               		 
 		 return checkRoadConcessionaire;

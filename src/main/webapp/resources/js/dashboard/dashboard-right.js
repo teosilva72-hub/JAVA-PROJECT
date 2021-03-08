@@ -26,7 +26,6 @@ $('#dismiss, .overlay').on('click', function () {
 });
 // OVERLAY SIDE BAR END
 
-
 var url      = '/phone/phone.html',
     features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
 
@@ -41,8 +40,20 @@ var url      = '/phone/phone.html',
         }
     });
 
+//NOTIFICATIONS BADGE
+function notificationBadge(){
+
+  var badge = Number( document.getElementById('badge-notif').innerHTML);
+    
+  if(badge > 0)
+  document.getElementById('badge-notif').style.display = 'block';
+
+  else document.getElementById('badge-notif').style.display = 'none';
+  
+}
 
 
+//NOTIFICATIONS  BADGE
 
 //Accept a Call Button
 //var startButton = document.querySelector('.acptcall');
