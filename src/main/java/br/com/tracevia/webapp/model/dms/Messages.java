@@ -134,9 +134,9 @@ public class Messages {
 		this.activeMessage = activeMessage;
 	}
 
-	public void setPages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
+	public void setPages(String text1, String text2, String text3, int id_image, String image,
 			float timer, int idx, int page) {
-		Pages pages = new Pages(text1, text2, text3, id_image, tipo, nome, image, timer, idx);
+		Pages pages = new Pages(text1, text2, text3, id_image, image, timer, idx);
 		this.pages.add(page, pages);
 	}
 
@@ -209,19 +209,15 @@ public class Messages {
 		private float timer;
 		private int id_image;
 		private String image;
-		private String tipo;
-		private String nome;
 		private int page;
 
-		public Pages(String text1, String text2, String text3, int id_image, String tipo, String nome, String image,
+		public Pages(String text1, String text2, String text3, int id_image, String image,
 				float timer, int page) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
 			this.id_image = id_image;
 			this.image = image;
-			this.tipo = tipo;
-			this.nome = nome;
 			this.timer = timer;
 			this.page = page;
 			this.contain = true;
@@ -233,8 +229,6 @@ public class Messages {
 			this.text3 = "";
 			this.id_image = 0;
 			this.image = "000_6464.bmp";
-			this.tipo = "";
-			this.nome = "";
 			this.timer = 0;
 			this.page = 0;
 			this.contain = false;
@@ -262,14 +256,6 @@ public class Messages {
 
 		public String getImage() {
 			return image;
-		}
-
-		public String getTipo() {
-			return tipo;
-		}
-
-		public String getNome() {
-			return nome;
 		}
 
 		public Boolean getContain() {
