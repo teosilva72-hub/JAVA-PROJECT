@@ -111,20 +111,7 @@ $('#submit').submit(function(e) {
       $('#submit').click(function teste1(){
         setTimeout("$('#statusModal').modal('hide');", 2000);
     });
-////////////////////////////////////////////////////////////////////
-//HIDDEN BUTTON////////MOSTRAR BUTTON/////////SELEÇÃO//////////////
-function hiddenOption(){
-	
-	document.getElementById("mostrarOption").style.display = "none";
-	document.getElementById("mostrar").style.display = "block";
-	document.getElementById("ocultar").style.display = "none";
-}
-function mostrarOption(){
-	
-	document.getElementById("mostrarOption").style.display = "block";
-	document.getElementById("ocultar").style.display = "block";
-	document.getElementById("mostrar").style.display = "none";
-}
+
 function seleccaoHidden(){
 	document.getElementById("seleccaoHidden").style.display = "none";
 }
@@ -135,3 +122,16 @@ function seleccaoHidden(){
         
     });
  ////////////////////////////////////////////////////////////
+
+
+ $(async function() {
+	$('#toogleMenu button[toggle]').click(function() {
+		if ($(this).attr('toggle') === 'show') {
+			$(this).text('Ocultar').attr('toggle', "hide")
+			$('#showOption').css("display", "block")
+		} else {
+			$(this).text('Mostrar').attr('toggle', "show")
+			$('#showOption').css("display", "none")
+		}
+	})
+ })

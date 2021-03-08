@@ -334,7 +334,7 @@ public class EquipmentsDAO {
 				while (rs.next()) {
 					
 					SAT sat = new SAT();
-										
+					
 					dir1 = translator.CheckDirection1(rs.getString(7));
 					dir2 = translator.CheckDirection2(rs.getString(7));
 					

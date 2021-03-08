@@ -347,11 +347,6 @@ tbody tr {
   cursor: pointer;
 }
 
-.btn-check:checked + label {
-  background-color: #fff !important;
-  color: #000 !important;
-}
-
 @keyframes fade {
   from {
     opacity: 0;
