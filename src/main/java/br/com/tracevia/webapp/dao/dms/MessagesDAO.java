@@ -276,10 +276,8 @@ public class MessagesDAO {
 				rs1.next();
 				idPage = new int[] { rs1.getInt("page1"), rs1.getInt("page2"), rs1.getInt("page3"), rs1.getInt("page4"),
 						rs1.getInt("page5") };
-			} else {
-				success = createMessage(msgID, user, ListaPages);
-				return success;
-			}
+			} else
+				return createMessage(msgID, user, ListaPages);
 
 			for (int i = 0; i < ListaPages.size(); i++) {
 				Map<String, String> page = ListaPages.get(i);
