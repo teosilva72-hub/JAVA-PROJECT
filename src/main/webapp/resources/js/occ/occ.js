@@ -481,7 +481,6 @@ function ActionValidator(){
 		
 	}else if(actionStart <= actionEnd){
 		
-		
 		document.getElementById("acaoData").style.border = "";
 		document.getElementById("acaoInicio").style.border = "";
 		document.getElementById("acaoDuracao").style.border = "";
@@ -709,8 +708,7 @@ function comparationDate(){
 	}
 	
 }
-////////////////////////////////////////////////////////
- //////////////////////////////////////////////////////
+
 /////ANIMAÇÃO ABERTURA DO SITE////////////////////////
 	$(window).on('load', function () {
         $('#preloader .inner').fadeOut();
@@ -791,9 +789,7 @@ function myFunction2(){
 		}
 	});	
 }
- ////STYLE CSS3 BTN/////////////////////////////////////////////
 
- /////////////////////////////////////////////////////////////////////////////////////
 /*BTN DESCRIPTION ACTION - OCULTA BTN E TEXTEAREA*///////////////////////////////////
 function hiddenActionDescription1(){                                             ///            ///
 	document.getElementById("acaoDescr1").style.display = "none";            ///           ///
@@ -1014,6 +1010,7 @@ document.addEventListener("keydown", function(e) {
     e.preventDefault(); 
   }
 });
+
 function hiddenListFile(){
 	document.getElementById("listFiles").style.display = "none";
 }
@@ -1042,7 +1039,6 @@ setTimeout(function() {
 setTimeout(function() {
    $('#msgOthersUsers').fadeOut('fast');
 }, 5000);
-
 setTimeout(function() {
    $('#msgSave1').fadeOut('fast');
 },5000);

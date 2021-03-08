@@ -459,6 +459,7 @@ public class OccurrencesDAO {
 		ArrayList<OccurrencesData> listarOcc = new ArrayList<OccurrencesData>();
 		System.out.println(query);
 		try {
+			TranslationMethods occTranslation = new TranslationMethods();
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -467,12 +468,13 @@ public class OccurrencesDAO {
 				while(rs.next()) {
 					OccurrencesData occ = new OccurrencesData();
 					occ.setData_number(String.valueOf(rs.getInt(1)));		
-					occ.setType(rs.getString(2));
+					occ.setType(occTranslation.listOcc(rs.getString(2)));
 					occ.setDate_time(rs.getString(3));
-					occ.setCause(rs.getString(4));
-					occ.setState_occurrences(rs.getString(5));
+					occ.setCause(occTranslation.listOcc(rs.getString(4)));
+					occ.setState_occurrences(occTranslation.listOcc(rs.getString(5)));
 
 					listarOcc.add(occ);
+					//System.out.println(rs.getString(5));
 				}
 			}
 		}finally {

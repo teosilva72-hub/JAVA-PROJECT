@@ -26,6 +26,7 @@ public class NotificationsBean {
     
     private int equipId;
     private int stateId;
+    private String type;
 	
 	public List<Notifications> getNotifications() {
 		return notifications;
@@ -58,6 +59,14 @@ public class NotificationsBean {
 	public void setStateId(int stateId) {
 		this.stateId = stateId;
 	}
+		
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
 
 	@PostConstruct
 	public void initializer() {
@@ -80,18 +89,19 @@ public class NotificationsBean {
 		notifications = new ArrayList<Notifications>();		
 		NotificationsDAO dao = new NotificationsDAO();
 				
-		//notifications = dao.Notifications(NotificationsTypeEnum.SAT.getType());	
-				
+		notifications = dao.Notifications();	
+					
 		if(notifications.isEmpty()) {
 			
 		   Notifications not = new Notifications();
 					
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
 			
-		   notifications.add(not);					
-			
+		   notifications.add(not);	
+		   		 			
 		}
-		
+				
+					
 	}
 	
 	public void countNotifications() throws Exception {
@@ -102,28 +112,40 @@ public class NotificationsBean {
 				
 		notifCount = dao.notificationsCount();	
 		
-		if(notifCount > 0)
-		RequestContext.getCurrentInstance().update("badge-notif");
-		
-		//System.out.println(notifCount);
-				
+		RequestContext.getCurrentInstance().update("notif-badge;");
+			       
+							
 	}
 		
-	public void updateNotifications() throws Exception {
-		
-		boolean state = false;
-				
+	public void updateNotificationView() throws Exception {
+						
 		NotificationsDAO dao = new NotificationsDAO();
 		
-		state = dao.updateNotifications(stateId, equipId);
-		
-		if(state) {
-			//System.out.println("TRUE");
-			countNotifications();	
-			 
-		}
-		
+	   boolean isUpdated = dao.updateNotificationsView(stateId, equipId);
+	   
+	   if(isUpdated)
+	      countNotifications();
+	   
+	   if(notifCount == 0)
+		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");
+									
+	       RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");	       
+	 			
 	}
+	
+	
+	//UPDATE STATUS NOTIFICATION
+	public void updateNotificationStatus(int stateId, int equipId) throws Exception {
+		
+		NotificationsDAO dao = new NotificationsDAO();
+		
+	   boolean resposta =  dao.updateNotificationStatus(stateId, equipId);
+	   
+	   System.out.println(resposta);
+	   	   
+	 			
+	}
+	
 	
 	
 

@@ -51,6 +51,8 @@ function notificationBadge(){
   else document.getElementById('badge-notif').style.display = 'none';
   
 }
+
+
 //NOTIFICATIONS  BADGE
 
 //Accept a Call Button

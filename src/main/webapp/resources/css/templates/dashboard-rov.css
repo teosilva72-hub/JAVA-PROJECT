@@ -213,6 +213,39 @@ footer {
   outline: 0;
 }
 
+/* DROPDOWN ITEM STYLES */
+.dropdown-item{
+  border-bottom: 1px solid white !important;
+  margin-bottom: 0px !important;
+}
+
+.dropdown-item:hover{background: #E6E6FA !important;}
+.dropdown-item:active{background: #212529 !important;}
+
+.navbar .dropdown.show .notif-dropdown a { 
+  background-color: #BADA55;
+}
+
+ .dropdown-notif{
+ max-height: 262px !important;
+ overflow-y: auto;
+ }
+ 
+ 
+ .dropdown-notif-style{
+ width: 100%; 
+ font-size: 10px; 
+ font-weight: bold; 
+ margin-bottom: 5px; 
+ height: auto; 
+ }
+ 
+ 
+ .dropdown-nofit-checked{background: #87CEFA;}
+  .dropdown-nofit-unchecked{background: #f8f9fa;}
+ 
+/* DROPDOWN ITEM STYLES */
+
 /*Menu Dropdown items*/
 
 .dropdown-item .profile-dropdown-img {
@@ -714,3 +747,27 @@ input.apple-switch:checked:before {
   width: 80px;
   transform: translate(-90%, -60%);
 }
+
+ /* CUSTOM SCROLL */
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+ /* CUSTOM SCROLL */
