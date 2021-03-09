@@ -32,7 +32,7 @@ public class MessagesBean implements Serializable {
 		this.lang = lang;
 	}
 	
-	//Caso não encontre nenhum registro	
+	//Caso nï¿½o encontre nenhum registro	
 	public void nenhumRegistro() {		
 		
 		lang = new LanguageBean();
@@ -43,7 +43,7 @@ public class MessagesBean implements Serializable {
 		    FacesContext.getCurrentInstance().addMessage(null, facesMsg);		    
     }	
 	
-	   //Mensagens de restrições
+	   //Mensagens de restriï¿½ï¿½es
 	
 	    //DataTable Vazia
 		public void dataTableIsEmpty() {	
@@ -124,7 +124,7 @@ public class MessagesBean implements Serializable {
 				    FacesContext.getCurrentInstance().addMessage(null, facesMsg);	
 		         }
 				
-				//Required Veículos	
+				//Required Veï¿½culos	
 				public void veiculosIsEmpty() {
 					
 					lang = new LanguageBean();
@@ -135,7 +135,7 @@ public class MessagesBean implements Serializable {
 				    FacesContext.getCurrentInstance().addMessage(null, facesMsg);	
 		         }
 				
-				//Required Veículos	
+				//Required Veï¿½culos	
 				public void sentidosIsEmpty() {
 					
 					lang = new LanguageBean();
@@ -237,7 +237,7 @@ public class MessagesBean implements Serializable {
 					
 				}
 				   
-				//Caso não encontre nenhum registro	
+				//Caso nï¿½o encontre nenhum registro	
 				public void usuarioNaoEncontrado() {
 					
 					lang = new LanguageBean();
@@ -258,7 +258,7 @@ public class MessagesBean implements Serializable {
 					    FacesContext.getCurrentInstance().addMessage(null, facesMsg);		    
 			    }
 								
-				public void usuarioNãoAtualizado() {		
+				public void usuarioNaoAtualizado() {		
 							 
 					lang = new LanguageBean();
 				    locale = lang.getLocale();
@@ -598,7 +598,7 @@ public class MessagesBean implements Serializable {
 				    locale = lang.getLocale();
 					resourceBundle = ResourceBundle.getBundle("bundle.messages.messages_"+locale.toString());
 					
-					facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao apagar mensagem", "Esta mensagen está ativa em PMV(s)");
+					facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao apagar mensagem", "Esta mensagen estï¿½ ativa em PMV(s)");
 				    FacesContext.getCurrentInstance().addMessage(null, facesMsg);	
 					
 				}

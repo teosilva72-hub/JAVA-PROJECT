@@ -43,14 +43,13 @@ public class NotificationsDAO {
 		
 		List<Notifications> lista = new ArrayList<Notifications>();
 			  		
-	   String select = "SELECT st.equip_id , st.equip_name, st.equip_type, st.battery_status, st.battery_viewed, st.battery_datetime,  "
-	   		+ " st.door_status, st.door_viewed, st.door_datetime, st.energy_status, st.energy_viewed, st.energy_datetime,  "
-	   		+ "st.online_status, st.online_viewed, st.online_datetime, "
-			+ "st.presence_status,  st.presence_viewed, st.presence_datetime, "
-			+ "st.temperature_status, st.temperature_viewed, st.temperature_datetime  "
-			+ "FROM notifications_status st "
-			+ "WHERE has_notification = 1 ";
-						
+	   String select = "SELECT st.equip_id , st.equip_name, st.equip_type, st.battery_status, st.battery_last_status, st.battery_viewed, st.battery_datetime,  "
+	   		+ " st.door_status, st.door_last_status, st.door_viewed, st.door_datetime, st.energy_status, st.energy_last_status, st.energy_viewed, st.energy_datetime,  "
+	   		+ "st.online_status, st.online_last_status, st.online_viewed, st.online_datetime, "
+			+ "st.presence_status, st.presence_last_status, st.presence_viewed, st.presence_datetime, "
+			+ "st.temperature_status, st.temperature_last_status, st.temperature_viewed, st.temperature_datetime  "
+			+ "FROM notifications_status st ";
+									
 				    try {
 				    				    				    	
 				    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -64,7 +63,7 @@ public class NotificationsDAO {
 							
 							Notifications not;
 														
-							   if(rs.getBoolean("st.battery_status") == true && rs.getBoolean("st.battery_stored") == false) {	
+							   if(rs.getBoolean("st.battery_status") == true && rs.getBoolean("st.battery_last_status") == false) {	
 								   
 								  not = new Notifications();	
 								  								 										
@@ -89,7 +88,7 @@ public class NotificationsDAO {
 							
 							     } 
 							   
-							   if(rs.getBoolean("st.door_status") == true && rs.getBoolean("st.door_stored") == false) {						
+							   if(rs.getBoolean("st.door_status") == true && rs.getBoolean("st.door_last_status") == false) {						
 									
 								   not = new Notifications();	
 								   
@@ -114,7 +113,7 @@ public class NotificationsDAO {
 								
 							    } 
 							   
-							   if(rs.getBoolean("st.energy_status") == true && rs.getBoolean("st.energy_stored") == false) {						
+							   if(rs.getBoolean("st.energy_status") == true && rs.getBoolean("st.energy_last_status") == false) {						
 									
 								   not = new Notifications();	
 								   
@@ -138,7 +137,7 @@ public class NotificationsDAO {
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.online_status") == true && rs.getBoolean("st.online_stored") == false) {						
+							   if(rs.getBoolean("st.online_status") == true && rs.getBoolean("st.online_last_status") == false) {						
 									
 								   not = new Notifications();	
 								   
@@ -162,7 +161,7 @@ public class NotificationsDAO {
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.presence_status") == true && rs.getBoolean("st.presence_stored") == false) {						
+							   if(rs.getBoolean("st.presence_status") == true && rs.getBoolean("st.presence_last_status") == false) {						
 								      not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
@@ -185,7 +184,7 @@ public class NotificationsDAO {
 								      lista.add(not);								
 							   } 
 							   
-							   if(rs.getBoolean("st.temperature_status") == true && rs.getBoolean("st.temperature_stored") == false) {						
+							   if(rs.getBoolean("st.temperature_status") == true && rs.getBoolean("st.temperature_status") == false) {						
 								      
 								      not = new Notifications();									   
 								   
@@ -228,8 +227,7 @@ public class NotificationsDAO {
     			 "IF(st.online_status = 1 AND st.online_viewed = 0, 1, 0) + " +
     			 "IF(st.presence_status = 1 AND st.presence_viewed = 0, 1, 0) + " +
     			 "IF(st.temperature_status = 1 AND st.temperature_viewed = 0, 1, 0)), 0) 'NOTIFICATIONS' " +
-    			 "FROM notifications_status st " +	      
-    			 "WHERE has_notification = 1";
+    			 "FROM notifications_status st "; 			
     	
     	 try {
 				
@@ -317,18 +315,18 @@ public class NotificationsDAO {
 	  
 	  switch(stateId) {
 	  
-	     case 1: update = "UPDATE notifications_status SET battery_status = 0 AND battery_last_status = 1 AND battery_datetime = ? WHERE equip_id = ? "; break;
-	     case 2: update = "UPDATE notifications_status SET battery_status = 1 AND battery_last_status = 0 AND battery_datetime = ? WHERE equip_id = ? "; break;
-	     case 3: update = "UPDATE notifications_status SET door_status = 0 AND door_last_status = 1 AND door_datetime = ? WHERE equip_id = ? "; break;
-	     case 4: update = "UPDATE notifications_status SET door_status = 1 AND door_last_status = 0 AND door_datetime = ? WHERE equip_id = ? "; break;
-	     case 5: update = "UPDATE notifications_status SET energy_status = 0 AND energy_last_status = 1 AND energy_datetime = ? WHERE equip_id = ? "; break;
-	     case 6: update = "UPDATE notifications_status SET energy_status = 1 AND energy_last_status = 0 AND energy_datetime = ? WHERE equip_id = ? "; break;
-	     case 7: update = "UPDATE notifications_status SET online_status = 0 AND online_last_status = 1 AND online_datetime = ? WHERE equip_id = ? "; break;
-	     case 8: update = "UPDATE notifications_status SET online_status = 1 AND online_last_status = 0 AND online_datetime = ? WHERE equip_id = ? "; break;
-	     case 9: update = "UPDATE notifications_status SET presence_status = 0 AND presence_last_status = 1 AND presence_datetime = ? WHERE equip_id = ? "; break;
-	     case 10: update = "UPDATE notifications_status SET presence_status = 1 AND presence_last_status = 0 AND presence_datetime = ? WHERE equip_id = ? "; break;
-	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 AND temperature_last_status = 1 AND temperature_datetime = ? WHERE equip_id = ? "; break;
-	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 AND temperature_last_status = 0 AND temperature_datetime = ? WHERE equip_id = ? "; break;  
+	     case 1: update = "UPDATE notifications_status SET battery_status = 0 , battery_last_status = 1 , battery_datetime = ? WHERE equip_id = ? AND battery_last_status = 1 "; break;
+	     case 2: update = "UPDATE notifications_status SET battery_status = 1 , battery_last_status = 0 , battery_datetime = ? WHERE equip_id = ? AND battery_last_status = 0 "; break;
+	     case 3: update = "UPDATE notifications_status SET door_status = 0 , door_last_status = 1 , door_datetime = ? WHERE equip_id = ? AND door_last_status = 1 "; break;
+	     case 4: update = "UPDATE notifications_status SET door_status = 1 , door_last_status = 0 , door_datetime = ? WHERE equip_id = ? AND door_last_status = 0 "; break;
+	     case 5: update = "UPDATE notifications_status SET energy_status = 0 , energy_last_status = 1 , energy_datetime = ? WHERE equip_id = ? AND energy_last_status = 1 "; break;
+	     case 6: update = "UPDATE notifications_status SET energy_status = 1 , energy_last_status = 0 , energy_datetime = ? WHERE equip_id = ? AND energy_last_status = 0 "; break;
+	     case 7: update = "UPDATE notifications_status SET online_status = 0 , online_last_status = 1 , online_datetime = ? WHERE equip_id = ? AND online_last_status = 1 "; break;
+	     case 8: update = "UPDATE notifications_status SET online_status = 1 , online_last_status = 0 , online_datetime = ? WHERE equip_id = ? AND online_last_status = 0 "; break;
+	     case 9: update = "UPDATE notifications_status SET presence_status = 0 , presence_last_status = 1 , presence_datetime = ? WHERE equip_id = ? AND presence_last_status = 1 "; break;
+	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? AND presence_last_status = 0 "; break;
+	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_datetime = ? WHERE equip_id = ? AND temperature_last_status = 1 "; break;
+	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? AND temperature_last_status = 0 "; break;  
 	     
 	  }
 	  
