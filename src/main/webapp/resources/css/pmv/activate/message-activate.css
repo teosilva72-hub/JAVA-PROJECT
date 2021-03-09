@@ -18,7 +18,11 @@ body {
   display: none;
 }
 
-
+/*DIV onde esta List Container*/
+#messages-list {
+  position: relative;
+  margin-top: 20px;
+}
 
 
 
@@ -239,26 +243,6 @@ body {
   margin-top: 0.5%;
 }
 
-/*DIV onde esta List Container*/
-#messages-list {
-  position: relative;
-  float: left;
-  border: 1px solid transparent;
-  width: 100%;
-  height: auto;
-  margin-top: 10px;
-  margin-left: 0%;
-  border-radius: 5px;
-}
-
-/*SELECTONELISTBOX - COMPONENTE*/
-#messages-list .ui-selectonelistbox {
-  margin-top: 2.5%;
-  margin-left: 2.5%;
-  width: 95%;
-  max-height: 250px;
-  height: auto;
-}
 
 /*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
 .ui-selectlistbox-listcontainer {
@@ -366,21 +350,6 @@ body {
 }
 
 /* DIV SELE��O TIPO DE MENSAGEM */
-#selection-div {
-  float: left;
-  border: none;
-  width: 100%;
-  height: 48px;
-  background: transparent;
-}
-
-/* DIV SELECTONEMENU E BTN-PLUS */
-#type-list {
-  margin-left: 5%;
-  margin-top: 3%;
-}
-
-/* DIV SELE��O TIPO DE MENSAGEM */
 
 /*Modal Changes*/
 .modal {
@@ -414,17 +383,6 @@ body {
 .form-control:focus {
   border-bottom: 2px solid #1c86ee; /*#dc3545*/
   box-shadow: 2px 2px 2px #1c86ee;
-}
-/*input design*/
-.inputDesign {
-  height: 32px;
-  font-size: 9pt;
-  border: solid 1px #767676;
-  border-radius: 25px;
-  background: white;
-  -webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
-  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
 }
 
 .paginator {
