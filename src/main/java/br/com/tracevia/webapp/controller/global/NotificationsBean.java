@@ -94,11 +94,13 @@ public class NotificationsBean {
 		if(notifications.isEmpty()) {
 			
 		   Notifications not = new Notifications();
-					
+			
+		   not.setEquipId(0);
+		   not.setType("void");
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
 			
-		   notifications.add(not);	
-		   		 			
+		   notifications.add(not);
+		   		   				 
 		}
 				
 					
@@ -111,10 +113,7 @@ public class NotificationsBean {
 		notifCount = 0;
 				
 		notifCount = dao.notificationsCount();	
-		
-		RequestContext.getCurrentInstance().update("notif-badge;");
-			       
-							
+				
 	}
 		
 	public void updateNotificationView() throws Exception {
@@ -126,11 +125,17 @@ public class NotificationsBean {
 	   if(isUpdated)
 	      countNotifications();
 	   
+	   //Update badge number
+	   RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");
+	   
+	   //Update badge notification color
+	   RequestContext.getCurrentInstance().execute("$('[id$="+type+""+equipId+"]').removeClass('dropdown-nofit-checked').addClass('dropdown-nofit-unchecked');");
+	   
+	   //show/hide when 0 count
 	   if(notifCount == 0)
 		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");
-									
-	       RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");	       
-	 			
+	  		       
+	     	 			
 	}
 	
 	
@@ -139,11 +144,8 @@ public class NotificationsBean {
 		
 		NotificationsDAO dao = new NotificationsDAO();
 		
-	   boolean resposta =  dao.updateNotificationStatus(stateId, equipId);
-	   
-	   System.out.println(resposta);
-	   	   
-	 			
+		dao.updateNotificationStatus(stateId, equipId);	   
+	  
 	}
 	
 	

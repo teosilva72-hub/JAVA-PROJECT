@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
@@ -131,6 +132,9 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								satListStatusAux.remove(r);
 								pass = false;
+								
+								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
 
 								break;
 
@@ -144,8 +148,14 @@ public class SATBuildMaps {
 							satListObj = satDAO.statusByData08(satList.get(s).getEquip_id());
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
-							if (satListObj.getEquip_id() != 0)
+							if (satListObj.getEquip_id() != 0) {
+								
 								satStatus.add(satListObj);
+								
+								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								
+							}
 							
 							//CASO CONTRARIO PREENCHE COM 0
 							else {
@@ -157,6 +167,7 @@ public class SATBuildMaps {
 
 								satStatus.add(satListObj1);
 								
+								//NESSE CASO ATUALIZA PARA OFFLINE
 								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
 
 							}
@@ -182,6 +193,9 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								satListStatusAux.remove(r);
 								pass = false;
+								
+								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
 
 								break;
 
@@ -195,8 +209,14 @@ public class SATBuildMaps {
 							satListObj = satDAO.statusByData45(satList.get(s).getEquip_id());
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
-							if (satListObj.getEquip_id() != 0)
+							if (satListObj.getEquip_id() != 0) {
+								
 								satStatus.add(satListObj);
+								
+								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								
+							}
 							
 							//BUSCA DADOS DOS ULTIMAS 08 HORAS
 							else {
@@ -205,8 +225,14 @@ public class SATBuildMaps {
 								satListObj = satDAO.statusByData08(satList.get(s).getEquip_id());
 
 								//SE HOUVER DADOS PREENCHE NA LISTA
-								if (satListObj.getEquip_id() != 0)
+								if (satListObj.getEquip_id() != 0) {
+									
 									satStatus.add(satListObj);
+									
+									//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+									notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+									
+								}
 								
 								//CASO CONTRARIO PREENCHE COM 0
 								else{
@@ -218,6 +244,7 @@ public class SATBuildMaps {
 
 								  satStatus.add(satListObj1);
 								  
+								//NESSE CASO ATUALIZA PARA OFFLINE
 								  notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
 								  
 						         }
@@ -244,6 +271,9 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								satListStatusAux.remove(r);
 								pass = false;
+								
+								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
 
 								break;
 
@@ -262,10 +292,13 @@ public class SATBuildMaps {
 
 								satStatus.add(satListObj1);
 								
+								//NESSE CASO ATUALIZA PARA OFFLINE
 								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
 							
 						}
-					} // FOR END				
+					} // FOR END		
+					
+					
 				
 			    // CASO N�O ENCONTROU NADA 
 			    // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
@@ -273,8 +306,11 @@ public class SATBuildMaps {
 				
 				for (int s = 0; s < satList.size(); s++) {
 				notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id()); 
-				}				
+				}	
+				
+				notif.findNotifications();
 			}
+				
 
           ////////////////////////////////////////////////////////////////////////////////////////////
           ///// SAT STATUS
@@ -510,6 +546,9 @@ public class SATBuildMaps {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
+		FacesContext.getCurrentInstance().getPartialViewContext()
+        .getRenderIds().add(":navbarDropdown2");
 
 	}
 

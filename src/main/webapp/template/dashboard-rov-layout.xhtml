@@ -164,9 +164,8 @@
 
           <!-- Notificações -->
 
-              <ul class="navbar-nav header-menu">
-            <li class="nav-item dropdown">
-
+            <ul class="navbar-nav header-menu" id="notification" >
+            <li class="nav-item dropdown" >
               <a class="nav-link p-0" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"
                 title="#{dashboardLabels.dashboard_navbar_icon_notifications_title}">
@@ -177,38 +176,9 @@
                   </path>
                 </svg>
                 
-                 <span class="header-badge" id="badge-notif" >#{notificationsView.notifCount}</span> 
-
               </a>
-
-              <div class="dropdown-menu dropdown-menu-right dropdown-notif" aria-labelledby="navbarDropdown2">
-                <div class="square" id="square-notif"></div>
-
-                <h:form id="dropdown-action">
-
-                  <c:forEach items="#{notificationsView.notifications}" var="item" varStatus="loop">
-
-                    <h:commandLink value="" action="#{notificationsView.updateNotificationView}"
-                      class="dropdown-item text-font dropdown-notif-style #{item.viewedBgColor}" >
-                  
-                      <f:setPropertyActionListener target="#{notificationsView.stateId}" value="#{item.status}" />
-                      <f:setPropertyActionListener target="#{notificationsView.equipId}" value="#{item.equipId}" />
-
-                      <div style="font-size: 10px; margin-left: 0px;">
-                        #{item.dateTime}
-                      </div>
-
-                      <div style="font-size: 12px;">
-                        #{item.description}
-                      </div>
-
-                      <f:ajax execute="@form" render="@none" />
-                    </h:commandLink>
-
-                  </c:forEach>
-                </h:form>
-              </div>
-            </li>
+                           
+           </li>
           </ul>
 
           <ul class="navbar-nav header-menu">
@@ -785,9 +755,7 @@
     <h:outputScript name="dashboard-right.js" library="js/dashboard" />
 
     <script>
-    
-    notificationBadge();
-
+       
       function sidenavAction() {
         document.getElementById("sidenav2").style.display = "none";
         document.getElementById("sidenav3").style.display = "none";
