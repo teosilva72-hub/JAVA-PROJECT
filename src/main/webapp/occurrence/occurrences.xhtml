@@ -26,7 +26,8 @@
 
 		<!-- Script -->
 		<h:outputScript name="occ.js" library="js/occ" />
-		<h:outputScript name="pdf.js" library="js/occ" />
+		<h:outputScript name="class_occ.js" library="js/occ" />
+		<h:outputScript name="controller_occ.js" library="js/occ" />
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"
@@ -66,7 +67,7 @@
 														},
 														descricaoCausa : {
 															minlength : 1,
-															maxlength : 50
+															maxlength : 1000
 														},
 														outrosEventos : {
 															minlength : 3,
@@ -78,19 +79,19 @@
 														},
 														descricaoCausa2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descrDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														trasitoExtKm : {
 															minlength : 1,
@@ -98,11 +99,11 @@
 														},
 														danoDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														acaoDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														/*new inputs*/
 														damageAmount : {
@@ -115,23 +116,23 @@
 														},
 														danoDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descrDescr1 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descricaoCausa2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descricaoCausa : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														}
 
 													},
@@ -1740,7 +1741,7 @@
 			onload(); //Oculta o formulario 2 e 3
 		</script>
 		
-		<h:outputScript name="bootstrap.bundle.min.js"  library="bootstrap/js"  />		
+		<h:outputScript name="bootstrap-5.bundle.min.js"  library="bootstrap/js"  />		
 		<h:outputScript name="jspdf.debug.js"  library="pdf-debug"  />
 			
 	</ui:define>
