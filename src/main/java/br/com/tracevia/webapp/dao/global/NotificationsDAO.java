@@ -305,28 +305,26 @@ public class NotificationsDAO {
      }
   
   
-  public  boolean updateNotificationStatus(int stateId, int equipId) throws Exception {
+  public  boolean updateNotificationStatus(int stateId, int equipId, String datetime, String type) throws Exception {
 	  
 	  boolean response = false;
-	  
-	  dta = new DateTimeApplication();
-  	
+	    	
 	  String update = " ";
 	  
 	  switch(stateId) {
 	  
-	     case 1: update = "UPDATE notifications_status SET battery_status = 0 , battery_last_status = 1 , battery_viewed = 0, battery_datetime = ? WHERE equip_id = ? "; break;
-	     case 2: update = "UPDATE notifications_status SET battery_status = 1 , battery_last_status = 0 , battery_datetime = ? WHERE equip_id = ? "; break;
-	     case 3: update = "UPDATE notifications_status SET door_status = 0 , door_last_status = 1 , door_viewed = 0, door_datetime = ? WHERE equip_id = ? "; break;
-	     case 4: update = "UPDATE notifications_status SET door_status = 1 , door_last_status = 0 , door_datetime = ? WHERE equip_id = ? "; break;
-	     case 5: update = "UPDATE notifications_status SET energy_status = 0 , energy_last_status = 1 , energy_viewed = 0, energy_datetime = ? WHERE equip_id = ? "; break;
-	     case 6: update = "UPDATE notifications_status SET energy_status = 1 , energy_last_status = 0 , energy_datetime = ? WHERE equip_id = ? "; break;
-	     case 7: update = "UPDATE notifications_status SET online_status = 0 , online_last_status = 1 , online_viewed = 0,  online_datetime = ? WHERE equip_id = ? "; break;
-	     case 8: update = "UPDATE notifications_status SET online_status = 1 , online_last_status = 0 , online_datetime = ? WHERE equip_id = ? "; break;
-	     case 9: update = "UPDATE notifications_status SET presence_status = 0 , presence_last_status = 1 , presence_viewed = 0, presence_datetime = ? WHERE equip_id = ? "; break;
-	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? "; break;
-	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_viewed = 0, temperature_datetime = ? WHERE equip_id = ? "; break;
-	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? "; break;  
+	     case 1: update = "UPDATE notifications_status SET battery_status = 0 , battery_last_status = 1 , battery_viewed = 0, battery_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
+	     case 2: update = "UPDATE notifications_status SET battery_status = 1 , battery_last_status = 0 , battery_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;
+	     case 3: update = "UPDATE notifications_status SET door_status = 0 , door_last_status = 1 , door_viewed = 0, door_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
+	     case 4: update = "UPDATE notifications_status SET door_status = 1 , door_last_status = 0 , door_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;
+	     case 5: update = "UPDATE notifications_status SET energy_status = 0 , energy_last_status = 1 , energy_viewed = 0, energy_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
+	     case 6: update = "UPDATE notifications_status SET energy_status = 1 , energy_last_status = 0 , energy_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;
+	     case 7: update = "UPDATE notifications_status SET online_status = 0 , online_last_status = 1 , online_viewed = 0,  online_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0"; break;
+	     case 8: update = "UPDATE notifications_status SET online_status = 1 , online_last_status = 0 , online_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1"; break;
+	     case 9: update = "UPDATE notifications_status SET presence_status = 0 , presence_last_status = 1 , presence_viewed = 0, presence_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
+	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;
+	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_viewed = 0, temperature_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
+	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;  
 	     
 	  }
 	  
@@ -334,10 +332,12 @@ public class NotificationsDAO {
 			
 	    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
-			ps = conn.prepareStatement(update);					
-			ps.setString(1 , dta.currentDateTime());
+			ps = conn.prepareStatement(update);	
+			
+			ps.setString(1 , datetime);			
 			ps.setInt(2, equipId);
-									
+			ps.setString(3, type);
+			
 			int state = ps.executeUpdate();
 			
 			if(state > 0)
@@ -350,6 +350,40 @@ public class NotificationsDAO {
 
 	 
 	 return response;  
+	  
+  }
+  
+  
+  public boolean insertNotificationHistory( int state_id, int equip_id, String datetime, String type) throws Exception {
+	 	  
+	  boolean state = false;
+		  
+	  String insert = "INSERT INTO notifications_history (id, equip_id, state_id, datetime_, equip_type) VALUES(null, ?, ?, ?, ?)";
+	  
+	  try {
+		  
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			ps = conn.prepareStatement(insert);
+			
+			//passando valores para os atributos BD
+			ps.setInt(1, equip_id);
+			ps.setInt(2, state_id);
+			ps.setString(3, datetime);
+			ps.setString(4, type);
+			
+			int res = ps.executeUpdate();
+						
+			if(res > 0) 
+				state = true;
+					
+		}catch (SQLException inserirOcorrencia){
+			throw new Exception("Erro ao inserir dados: " + inserirOcorrencia);
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+		
+		return state;
+
 	  
   }
      

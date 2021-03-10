@@ -19,6 +19,7 @@ public class SATBuildMaps {
 	
 	private static int ONLINE_STATE = 7;
 	private static int OFFLINE_STATE = 8;
+	private static String TYPE = "SAT";
 
 	static List<? extends Equipments> satList;
 	List<SAT> satListValues, satStatus;
@@ -134,7 +135,7 @@ public class SATBuildMaps {
 								pass = false;
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 
 								break;
 
@@ -153,7 +154,7 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 								
 							}
 							
@@ -168,7 +169,7 @@ public class SATBuildMaps {
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
-								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 
 							}
 						}
@@ -195,7 +196,7 @@ public class SATBuildMaps {
 								pass = false;
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 
 								break;
 
@@ -214,7 +215,7 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 								
 							}
 							
@@ -230,7 +231,7 @@ public class SATBuildMaps {
 									satStatus.add(satListObj);
 									
 									//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-									notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+									notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 									
 								}
 								
@@ -245,7 +246,7 @@ public class SATBuildMaps {
 								  satStatus.add(satListObj1);
 								  
 								//NESSE CASO ATUALIZA PARA OFFLINE
-								  notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
+								  notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 								  
 						         }
 							   }
@@ -273,7 +274,7 @@ public class SATBuildMaps {
 								pass = false;
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(ONLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 
 								break;
 
@@ -293,7 +294,7 @@ public class SATBuildMaps {
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
-								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id());
+								notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id(), TYPE);
 							
 						}
 					} // FOR END		
@@ -305,10 +306,9 @@ public class SATBuildMaps {
 				}else { intializeNullStatus(satList); 
 				
 				for (int s = 0; s < satList.size(); s++) {
-				notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id()); 
+				notif.updateNotificationStatus(OFFLINE_STATE, satList.get(s).getEquip_id(), TYPE); 
 				}	
 				
-				notif.findNotifications();
 			}
 				
 
