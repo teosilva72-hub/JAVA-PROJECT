@@ -57,7 +57,7 @@ public class NotificationsDAO {
 					ps = conn.prepareStatement(select);		
 					
 					rs = ps.executeQuery();
-										
+																				
 					if (rs.isBeforeFirst()) {
 						while (rs.next()) {
 							
@@ -315,18 +315,18 @@ public class NotificationsDAO {
 	  
 	  switch(stateId) {
 	  
-	     case 1: update = "UPDATE notifications_status SET battery_status = 0 , battery_last_status = 1 , battery_datetime = ? WHERE equip_id = ? AND battery_last_status = 1 "; break;
-	     case 2: update = "UPDATE notifications_status SET battery_status = 1 , battery_last_status = 0 , battery_datetime = ? WHERE equip_id = ? AND battery_last_status = 0 "; break;
-	     case 3: update = "UPDATE notifications_status SET door_status = 0 , door_last_status = 1 , door_datetime = ? WHERE equip_id = ? AND door_last_status = 1 "; break;
-	     case 4: update = "UPDATE notifications_status SET door_status = 1 , door_last_status = 0 , door_datetime = ? WHERE equip_id = ? AND door_last_status = 0 "; break;
-	     case 5: update = "UPDATE notifications_status SET energy_status = 0 , energy_last_status = 1 , energy_datetime = ? WHERE equip_id = ? AND energy_last_status = 1 "; break;
-	     case 6: update = "UPDATE notifications_status SET energy_status = 1 , energy_last_status = 0 , energy_datetime = ? WHERE equip_id = ? AND energy_last_status = 0 "; break;
-	     case 7: update = "UPDATE notifications_status SET online_status = 0 , online_last_status = 1 , online_datetime = ? WHERE equip_id = ? AND online_last_status = 1 "; break;
-	     case 8: update = "UPDATE notifications_status SET online_status = 1 , online_last_status = 0 , online_datetime = ? WHERE equip_id = ? AND online_last_status = 0 "; break;
-	     case 9: update = "UPDATE notifications_status SET presence_status = 0 , presence_last_status = 1 , presence_datetime = ? WHERE equip_id = ? AND presence_last_status = 1 "; break;
-	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? AND presence_last_status = 0 "; break;
-	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_datetime = ? WHERE equip_id = ? AND temperature_last_status = 1 "; break;
-	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? AND temperature_last_status = 0 "; break;  
+	     case 1: update = "UPDATE notifications_status SET battery_status = 0 , battery_last_status = 1 , battery_viewed = 0, battery_datetime = ? WHERE equip_id = ? "; break;
+	     case 2: update = "UPDATE notifications_status SET battery_status = 1 , battery_last_status = 0 , battery_datetime = ? WHERE equip_id = ? "; break;
+	     case 3: update = "UPDATE notifications_status SET door_status = 0 , door_last_status = 1 , door_viewed = 0, door_datetime = ? WHERE equip_id = ? "; break;
+	     case 4: update = "UPDATE notifications_status SET door_status = 1 , door_last_status = 0 , door_datetime = ? WHERE equip_id = ? "; break;
+	     case 5: update = "UPDATE notifications_status SET energy_status = 0 , energy_last_status = 1 , energy_viewed = 0, energy_datetime = ? WHERE equip_id = ? "; break;
+	     case 6: update = "UPDATE notifications_status SET energy_status = 1 , energy_last_status = 0 , energy_datetime = ? WHERE equip_id = ? "; break;
+	     case 7: update = "UPDATE notifications_status SET online_status = 0 , online_last_status = 1 , online_viewed = 0,  online_datetime = ? WHERE equip_id = ? "; break;
+	     case 8: update = "UPDATE notifications_status SET online_status = 1 , online_last_status = 0 , online_datetime = ? WHERE equip_id = ? "; break;
+	     case 9: update = "UPDATE notifications_status SET presence_status = 0 , presence_last_status = 1 , presence_viewed = 0, presence_datetime = ? WHERE equip_id = ? "; break;
+	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? "; break;
+	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_viewed = 0, temperature_datetime = ? WHERE equip_id = ? "; break;
+	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? "; break;  
 	     
 	  }
 	  
@@ -337,9 +337,7 @@ public class NotificationsDAO {
 			ps = conn.prepareStatement(update);					
 			ps.setString(1 , dta.currentDateTime());
 			ps.setInt(2, equipId);
-			
-			System.out.println(update);
-			
+									
 			int state = ps.executeUpdate();
 			
 			if(state > 0)
