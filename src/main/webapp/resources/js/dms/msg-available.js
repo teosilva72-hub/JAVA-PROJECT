@@ -171,10 +171,10 @@ async function main() {
 			// add Timers
 			if (pmvActive.len() >= i && pmvActive.page(i - 1).timer() > .0) {
 				pagination.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
-				pagination.find(`#timerCheck${i}`).prop('checked', true);
+				pagination.find(`#timerCheck${i}`).prop('checked', true).trigger('change');
 				pagination.find(`#btn-page${i}`).prop('disabled', false);
 			} else {
-				pagination.find(`#timerCheck${i}`).prop('checked', false);
+				pagination.find(`#timerCheck${i}`).prop('checked', false).trigger('change');
 				pagination.find(`#btn-page${i}`).prop('disabled', true);
 				pagination.find(`#timerPage${i}`).val(0);
 			}
@@ -350,18 +350,19 @@ async function main() {
 		}).find('[id^=timerCheck]').change(function () {
 			// disable or enable other page
 			let check = $(this);
+			let page = Number(check.parent().siblings().eq(2).text()) - 1
 			if (check.prop('checked')) {
 				check.parent().next().prop('disabled', false).next().prop('disabled', false)
 					.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
 
-				pmvActive.add_page_default();
+				if (pmvActive.len() <= page)
+					pmvActive.add_page_default();
 			}
 			else {
 				check.parent().next().prop('disabled', true).next().prop('disabled', true)
 					.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 
 
-				let page = Number($(this).parent().siblings().eq(2).text()) - 1
 				if (pmvActive.len() > page) {
 					pmvActive.remove_page(page)
 					pageActive = page - 1
