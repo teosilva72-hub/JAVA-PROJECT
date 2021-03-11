@@ -69,7 +69,7 @@ public class EquipmentsDAO {
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM pmv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, number_lanes, name, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sos_equipment WHERE visible = 1";	
@@ -95,11 +95,45 @@ public class EquipmentsDAO {
 
 			if (rs != null) {
 				while (rs.next()) {			
-
+					
+				  // FOR GENERICS	
 				  Equipments eq = new Equipments();
 				  
+				  //FOR SAT
+				  SAT sat = new SAT();
+				  
+				  //FOR PMV
+				  DMS pmv = new DMS();
+				  
+				  if(mod.getModule().equals(ModulesEnum.SAT.getModule())) {
+				 
+				  sat.setEquip_id(rs.getInt("equip_id"));
+				  sat.setTable_id(mod.getModule().toLowerCase());
+				  sat.setNumber_lanes(rs.getInt("number_lanes"));
+				  sat.setNome(rs.getString("name"));		
+				  sat.setKm(rs.getString("km"));
+				  sat.setDir_lane1(rs.getString("dir_lane1"));
+				  sat.setDir_lane2(rs.getString("dir_lane2"));
+				  sat.setDir_lane3(rs.getString("dir_lane3"));
+				  sat.setDir_lane4(rs.getString("dir_lane4"));
+				  sat.setDir_lane5(rs.getString("dir_lane5"));
+				  sat.setDir_lane6(rs.getString("dir_lane6"));
+				  sat.setDir_lane7(rs.getString("dir_lane7"));
+				  sat.setDir_lane8(rs.getString("dir_lane8"));
+				  sat.setMapWidth(rs.getInt("map_width"));															
+				  sat.setMapPosX(rs.getInt("map_posX"));
+				  sat.setMapPosY(rs.getInt("map_posY"));
+				  sat.setLinearWidth(rs.getInt("linear_width"));
+				  sat.setLinearPosX(rs.getInt("linear_posX"));
+				  sat.setLinearPosY(rs.getInt("linear_posY"));		
+				  sat.setPosicao(rs.getString("position"));	
+				  
+				  equips.add(sat);
+  
+				  } else {
+				  
 				  eq.setEquip_id(rs.getInt("equip_id"));
-				  eq.setTable_id(mod.getModule().toLowerCase());
+				  eq.setTable_id(mod.getModule().toLowerCase()); 
 				  eq.setNome(rs.getString("name"));		
 				  eq.setKm(rs.getString("km"));	
 				  eq.setMapWidth(rs.getInt("map_width"));															
@@ -113,8 +147,8 @@ public class EquipmentsDAO {
 				  equips.add(eq);
 				    
 				}
-			}
-
+			 }
+		  }
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
