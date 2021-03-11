@@ -142,6 +142,11 @@ async function main() {
 
 		$('input[id^=timerCheck]').prop('disabled', true);
 		$('input[id^=timerPage]').prop('disabled', true);
+
+		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+			// Main loading
+			init_table();
+		})
 	}
 
 	const changeEquipInfo = () => {
@@ -224,7 +229,7 @@ async function main() {
 		// get all message
 		let table = $('.nameColumn + td.pageTable1')
 
-		listPMV = []; // TODO: Talves sem uso
+		listPMV = [];
 		table.each(function () {
 			let tr = $(this).parent()
 
@@ -251,7 +256,7 @@ async function main() {
 				}
 			}
 
-			listPMV.push(pmv); // TODO: Talves sem uso
+			listPMV.push(pmv);
 
 			// Start rotation for tables
 			if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
