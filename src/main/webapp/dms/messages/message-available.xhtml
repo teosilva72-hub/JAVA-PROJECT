@@ -31,148 +31,145 @@
 						<!-- PAGINATORS -->
 						<div class="card-body position-relative responsive">
 							<div id="page-pmv">
-								<c:forEach begin="1" end="5" varStatus="index">
 
-									<div id="#{item.table_id}#{item.equip_id}"
-										class="equip-info equip#{index.index} #{item.table_id} mt-3">
+								<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id} mt-3">
 
-										<!-- Table with DIV -->
+									<!-- Table with DIV -->
 
-										<div class="container tableStyle card">
-											<div class="dms-name card-header py-0">
-												<div class="text-center dmsTab#{item.equip_id}">
-													<span class="mb-0 text-white" id="dmsId"></span> - <span
-														id="dmsName"></span> - <span id="dmsType" type=""></span>
-												</div>
+									<div class="container tableStyle card">
+										<div class="dms-name card-header py-0">
+											<div class="text-center dmsTab#{item.equip_id}">
+												<span class="mb-0 text-white" id="dmsId"></span> - <span
+													id="dmsName"></span> - <span id="dmsType" type=""></span>
 											</div>
-											<div class="row text-center card-body p-0">
-												<div id="child-img" class="col-2 padding-pmv">
-													<img src="/resources/images/pictures/#{pmvMessage.image}"
-														class="ui-graphic-image picture-box" id-img="0" />
-												</div>
-												<div id="child-msg" class="col-auto msg-pos">
-													<div id="msg#{index.index}" class="table-message">
-														<div class="row border-table-right message1" msg="">
-															<div class="col-1 px-0 border-table">
-																<span id="box-1"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-2"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-3"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-4"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-5"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-6"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-7"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-8"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-9"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-10"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-11"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-12"></span>
-															</div>
+										</div>
+										<div class="row text-center card-body p-0">
+											<div id="child-img" class="col-2 padding-pmv">
+												<img src="/resources/images/pictures/#{pmvMessage.image}"
+													class="ui-graphic-image picture-box" id-img="0" />
+											</div>
+											<div id="child-msg" class="col-auto msg-pos">
+												<div id="message" class="table-message">
+													<div class="row border-table-right message1" msg="">
+														<div class="col-1 px-0 border-table">
+															<span id="box-1"></span>
 														</div>
-														<div class="row border-table-right message2" msg="">
-															<div class="col-1 px-0 border-table">
-																<span id="box-13"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-14"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-15"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-16"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-17"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-18"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-19"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-20"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-21"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-22"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-23"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-24"></span>
-															</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-2"></span>
 														</div>
-														<div class="row border-table-right bottom message3" msg="">
-															<div class="col-1 px-0 border-table">
-																<span id="box-25"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-26"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-27"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-28"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-29"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-30"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-31"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-32"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-33"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-34"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-35"></span>
-															</div>
-															<div class="col-1 px-0 border-table">
-																<span id="box-36"></span>
-															</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-3"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-4"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-5"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-6"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-7"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-8"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-9"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-10"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-11"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-12"></span>
+														</div>
+													</div>
+													<div class="row border-table-right message2" msg="">
+														<div class="col-1 px-0 border-table">
+															<span id="box-13"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-14"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-15"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-16"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-17"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-18"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-19"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-20"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-21"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-22"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-23"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-24"></span>
+														</div>
+													</div>
+													<div class="row border-table-right bottom message3" msg="">
+														<div class="col-1 px-0 border-table">
+															<span id="box-25"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-26"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-27"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-28"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-29"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-30"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-31"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-32"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-33"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-34"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-35"></span>
+														</div>
+														<div class="col-1 px-0 border-table">
+															<span id="box-36"></span>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-
 									</div>
-								</c:forEach>
+
+								</div>
 							</div>
 
 							<div class="edit-pmv-page">
@@ -195,7 +192,8 @@
 											<!-- Button -->
 											<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
 												value="1" checked="checked" />
-											<label class="btn btn-outline-dark py-0 px-2 page-button" for="btn-page1">1</label>
+											<label class="btn btn-outline-dark py-0 px-2 page-button"
+												for="btn-page1">1</label>
 										</div>
 									</div>
 									<c:forEach begin="2" end="5" var="idx">
@@ -203,18 +201,20 @@
 											<div class="input-group mb-3 bar-width">
 												<!-- Checkbox -->
 												<div class="input-group-text">
-													<input id="timerCheck#{idx}" class="form-check-input mt-0" type="checkbox"
-														value="#{idx}" aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+													<input id="timerCheck#{idx}" class="form-check-input mt-0"
+														type="checkbox" value="#{idx}"
+														aria-label="Checkbox for timer#{idx}" disabled="disabled" />
 												</div>
 												<!-- Timer -->
 												<input id="timerPage#{idx}" type="number"
 													class="form-control form-control-sm text-timer p-0 border-start-0"
-													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0" disabled="disabled"
-													min="1" max="60" />
+													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
+													disabled="disabled" min="1" max="60" />
 												<!-- Button -->
-												<input class="btn-check" name="btn-pages" id="btn-page#{idx}" type="radio"
-													value="#{idx}" />
-												<label class="btn btn-outline-dark py-0 px-2 page-button" for="btn-page#{idx}">#{idx}</label>
+												<input class="btn-check" name="btn-pages" id="btn-page#{idx}"
+													type="radio" value="#{idx}" />
+												<label class="btn btn-outline-dark py-0 px-2 page-button"
+													for="btn-page#{idx}">#{idx}</label>
 											</div>
 										</div>
 									</c:forEach>
@@ -344,19 +344,23 @@
 								<input type="hidden" name="requestParamPAGE4" />
 								<input type="hidden" name="requestParamPAGE5" />
 
-
+								<!-- button save -->
 								<div id="col">
-									<h:commandButton id="btnCr1" pt:disabled="disabled" class="btn btn-dark confBtn"
-										value="#{dmsLabels.dms_available_messages_btn_save}">
-										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="@form"
-											render="@none" event="click" />
-									</h:commandButton>
+									<button id="btnCr1" disabled="disabled" type="button"
+										class="btn btn-dark confBtn">#{dmsLabels.dms_available_messages_btn_save}</button>
 								</div>
 
 								<!-- button clear -->
 								<div id="col">
 									<button id="btnCr2" type="button" class="btn btn-dark confBtn conf2Btn"
 										disabled="disabled">#{dmsLabels.dms_available_messages_btn_cancel}</button>
+								</div>
+
+								<div id="col">
+									<h:commandButton id="btnCr3" class="btn btn-dark confBtn" style="display: none;"
+										value="#{dmsLabels.dms_available_messages_btn_save}">
+										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="@form" />
+									</h:commandButton>
 								</div>
 							</h:form>
 
@@ -367,24 +371,34 @@
 				<div class="col-8 tabelaDetails">
 
 					<div class="table-responsive">
-						<h:form id="btn-form">
-							<div class="btnEstruta">
-								<div id="table-create">
-									<button id="btnCreate" type="button"
-										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_create}</button>
-								</div>
-								<div id="table-edit">
-									<button id="btnEdit" type="button" disabled="disabled"
-										class="btn btn-available">#{dmsLabels.dms_available_messages_btn_edit}</button>
-								</div>
-								<div id="table-delete">
-									<button id="btnDelete" type="button" class="btn btn-available" disabled="disabled"
-										data-bs-toggle="modal" data-bs-target="#deleteModal">
-										#{dmsLabels.dms_available_messages_btn_delete}
-									</button>
-								</div>
+						<div class="btnEstruta">
+							<div id="table-create">
+								<button id="btnCreate" type="button"
+									class="btn btn-available">#{dmsLabels.dms_available_messages_btn_create}</button>
 							</div>
-						</h:form>
+							<div id="table-edit">
+								<button id="btnEdit" type="button" disabled="disabled"
+									class="btn btn-available">#{dmsLabels.dms_available_messages_btn_edit}</button>
+							</div>
+							<div id="table-delete">
+								<button id="btnDelete" type="button" class="btn btn-available" disabled="disabled"
+									data-bs-toggle="modal" data-bs-target="#deleteModal">
+									#{dmsLabels.dms_available_messages_btn_delete}
+								</button>
+							</div>
+							<h:form id="btn-form">
+								<select class="form-select float-start w-25 ms-2" aria-label="Select Driver">
+									<option value="1">Driver 1</option>
+									<option value="2">Driver 2</option>
+									<option value="3">Driver 3</option>
+								</select>
+
+								<h:commandButton id="selectDriver" style="display:none">
+									<f:ajax listener="#{pmvMessage.changeDriver}" execute="@form">
+									</f:ajax>
+								</h:commandButton>
+							</h:form>
+						</div>
 						<!-- Tabela real -->
 						<div id="tabelaReal">
 
@@ -416,8 +430,7 @@
 
 							<h:commandButton id="confirmDelete" value="#{dmsLabels.user_delete_modal_btn_yes}"
 								styleClass="btn btn-dark" pt:data-bs-dismiss="modal">
-								<f:ajax listener="#{pmvMessage.removeAvailableMessage}" execute="@form" render="@none"
-									event="click">
+								<f:ajax listener="#{pmvMessage.removeAvailableMessage}" execute="@form" event="click">
 								</f:ajax>
 							</h:commandButton>
 							<button type="button" class="btn btn-dark"
@@ -431,12 +444,14 @@
 		<!-- Toast -->
 
 		<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-			<div id="liveToast" class="toast hide bg-white align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+			<div id="liveToast" class="toast hide bg-white align-items-center" role="alert" aria-live="assertive"
+				aria-atomic="true">
 				<div class="d-flex">
 					<div class="toast-body">
 						<span id="msgToastNotification"></span>
 					</div>
-					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast"
+						aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -448,7 +463,7 @@
 	</ui:define>
 
 	<ui:define name="jscript">
-		<h:outputScript name="msg-available.js" library="js/dms" />
+		<h:outputScript name="msg-available.js" pt:type="module" library="js/dms" />
 	</ui:define>
 
 </ui:composition>
