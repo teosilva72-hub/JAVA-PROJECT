@@ -31,7 +31,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -132,7 +132,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -232,7 +232,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -333,7 +333,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -430,7 +430,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -535,15 +535,15 @@ public class SATinformationsDAO {
 	int minute = calendar.get(Calendar.MINUTE);
 	
 	//Obter datas formatadas para os dados
-	currentDate = dta.getCurrentDateDados15(calendar, minute);
+	currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 	
 	//System.out.println(currentDate);
 				
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
-			       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
-			       "GROUP BY d.NOME_ESTACAO " +			       
-				   "ORDER BY d.DATA_HORA";
+			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
+			        "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
+			        "GROUP BY d.NOME_ESTACAO " +			       
+				    "ORDER BY d.DATA_HORA";
 	
 	try {
 		
@@ -590,7 +590,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -648,7 +648,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 					
@@ -703,7 +703,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 		
@@ -754,7 +754,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println(currentDate);
 		
@@ -815,7 +815,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//Obter datas formatadas para os dados
 		currentDateSub = dta.getCurrentDateSubDados30(calendar, minute);
@@ -872,7 +872,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//Obter datas formatadas para os dados
 		currentDateSub = dta.getCurrentDateSubDados45(calendar, minute);
@@ -931,7 +931,7 @@ public class SATinformationsDAO {
 		int minute = calendar.get(Calendar.MINUTE);
 		
 		//Obter datas formatadas para os dados
-		currentDate = dta.getCurrentDateDados15(calendar, minute);
+		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//Obter datas formatadas para os dados
 		currentDateSub = dta.getCurrentDateSubDados45(calendar, minute);

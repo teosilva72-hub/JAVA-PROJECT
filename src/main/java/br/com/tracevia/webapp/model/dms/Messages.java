@@ -135,13 +135,13 @@ public class Messages {
 	}
 
 	public void setPages(String text1, String text2, String text3, int id_image, String image,
-			float timer, int idx, int page) {
+			float timer, int idx) {
 		Pages pages = new Pages(text1, text2, text3, id_image, image, timer, idx);
-		this.pages.add(page, pages);
+		this.pages.add(pages);
 	}
 
 	public void setPages(int page) {
-		this.pages.add(page, new Pages());
+		this.pages.add(new Pages());
 	}
 
 	public void revision() {

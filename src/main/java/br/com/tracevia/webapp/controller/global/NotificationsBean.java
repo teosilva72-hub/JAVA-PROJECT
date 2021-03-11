@@ -11,6 +11,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -94,11 +95,13 @@ public class NotificationsBean {
 		if(notifications.isEmpty()) {
 			
 		   Notifications not = new Notifications();
-					
+			
+		   not.setEquipId(0);
+		   not.setType("void");
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
 			
-		   notifications.add(not);	
-		   		 			
+		   notifications.add(not);
+		   		   				 
 		}
 				
 					
@@ -111,10 +114,7 @@ public class NotificationsBean {
 		notifCount = 0;
 				
 		notifCount = dao.notificationsCount();	
-		
-		RequestContext.getCurrentInstance().update("notif-badge;");
-			       
-							
+				
 	}
 		
 	public void updateNotificationView() throws Exception {
@@ -126,24 +126,35 @@ public class NotificationsBean {
 	   if(isUpdated)
 	      countNotifications();
 	   
+	   //Update badge number
+	   RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");
+	   
+	   //Update badge notification color
+	   RequestContext.getCurrentInstance().execute("$('[id$="+type+""+equipId+"]').removeClass('dropdown-nofit-checked').addClass('dropdown-nofit-unchecked');");
+	   
+	   //show/hide when 0 count
 	   if(notifCount == 0)
 		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");
-									
-	       RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");	       
-	 			
+	  		       
+	     	 			
 	}
 	
 	
 	//UPDATE STATUS NOTIFICATION
-	public void updateNotificationStatus(int stateId, int equipId) throws Exception {
-		
+	public void updateNotificationStatus(int stateId, int equipId, String type) throws Exception {
+			
+		DateTimeApplication dta = new DateTimeApplication();
 		NotificationsDAO dao = new NotificationsDAO();
 		
-	   boolean resposta =  dao.updateNotificationStatus(stateId, equipId);
-	   
-	   System.out.println(resposta);
-	   	   
-	 			
+		boolean state = false;
+		
+		String datetime = dta.currentDateTime();
+		
+		state = dao.updateNotificationStatus(stateId, equipId, datetime, type);	   
+		
+		if(state)
+			dao.insertNotificationHistory(stateId, equipId, datetime, type);
+	  
 	}
 	
 	
