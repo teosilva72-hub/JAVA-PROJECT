@@ -1020,42 +1020,12 @@ text-align: center;
 	margin-left: 10%;
 }
 
-#chk1{
-	float: left;
+#direction1 {
+	float: right;
 }
 
-#chk2 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk3 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk4 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk5 {
-	float: left;
-}
-
-#chk6 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk7 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk8 {
-	margin-left: 1%;
-	float: left;
+#direction2 {
+	float: right;
 }
 
 .road-dir {

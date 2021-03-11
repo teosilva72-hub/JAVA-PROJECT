@@ -220,6 +220,9 @@ public class EquipmentsBean implements Serializable {
 	    //For Equipment CreationUsername		
 		sat.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
 		
+		//For Number Lanes
+		sat.setNumber_lanes(Integer.parseInt(parameterMap.get("number_lanes")));
+		
 		//For Equipment Name
 	    sat.setNome(parameterMap.get("equipName"));
 	    
@@ -232,6 +235,30 @@ public class EquipmentsBean implements Serializable {
 	    //For Equipment KM
 	    sat.setKm(parameterMap.get("km"));
 	    
+	    //For Direction Lane 1
+	    sat.setDir_lane1(parameterMap.get("dir_lane1"));
+	    
+	    //For Direction Lane 2
+	    sat.setDir_lane2(parameterMap.get("dir_lane2"));
+	    
+	    //For Direction Lane 3
+	    sat.setDir_lane3(parameterMap.get("dir_lane3"));
+	    
+	    //For Direction Lane 4
+	    sat.setDir_lane4(parameterMap.get("dir_lane4"));
+	    
+	    //For Direction Lane 5
+	    sat.setDir_lane5(parameterMap.get("dir_lane5"));
+	    
+	    //For Direction Lane 6
+	    sat.setDir_lane6(parameterMap.get("dir_lane6"));
+	    
+	    //For Direction Lane 7
+	    sat.setDir_lane7(parameterMap.get("dir_lane7"));
+	    
+	    //For Direction Lane 8
+	    sat.setDir_lane8(parameterMap.get("dir_lane8"));
+	    
 	    //For Equipment Width
 	    sat.setMapWidth(Integer.parseInt(parameterMap.get("width")));
 	    
@@ -239,10 +266,6 @@ public class EquipmentsBean implements Serializable {
 	    
 	    sat.setSentido1(parameterMap.get("direction1"));
 	    
-	    
-	    System.out.println("NUM FAIXA: "+sat.getNumFaixas());
-	    
-	    System.out.println("DIR: "+sat.getNumFaixas());
 	    
 	    defineDirections(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido1()));
 	    
@@ -256,7 +279,7 @@ public class EquipmentsBean implements Serializable {
 		    equip.setCreation_date(dta.currentTimeDBformat());
 					    
 		    //For Equipment CreationUsername		
-			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
