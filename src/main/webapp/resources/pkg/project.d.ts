@@ -72,6 +72,10 @@ export class PMV {
 * @returns {Pagina}
 */
   next(): Pagina;
+/**
+* @returns {PMV}
+*/
+  clone(): PMV;
 }
 /**
 */
@@ -131,6 +135,7 @@ export interface InitOutput {
   readonly pmv_change_image: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly pmv_change_timer: (a: number, b: number, c: number) => void;
   readonly pmv_next: (a: number) => number;
+  readonly pmv_clone: (a: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number) => void;
   readonly __wbindgen_malloc: (a: number) => number;

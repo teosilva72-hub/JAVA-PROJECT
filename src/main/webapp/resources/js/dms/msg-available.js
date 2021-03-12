@@ -142,11 +142,6 @@ async function main() {
 
 		$('input[id^=timerCheck]').prop('disabled', true);
 		$('input[id^=timerPage]').prop('disabled', true);
-
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init_table();
-		})
 	}
 
 	const changeEquipInfo = () => {
@@ -273,7 +268,7 @@ async function main() {
 			// Add on click pre-visualization
 			$(`#page-pmv .equip-info`).addClass('active');
 			tr.click(function () {
-				pmvActive = pmv;
+				pmvActive = pmv.clone();
 				pageActive = 0;
 
 				changeEquipInfo();

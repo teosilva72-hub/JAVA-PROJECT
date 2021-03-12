@@ -242,6 +242,13 @@ export class PMV {
         var ret = wasm.pmv_next(this.ptr);
         return Pagina.__wrap(ret);
     }
+    /**
+    * @returns {PMV}
+    */
+    clone() {
+        var ret = wasm.pmv_clone(this.ptr);
+        return PMV.__wrap(ret);
+    }
 }
 /**
 */
