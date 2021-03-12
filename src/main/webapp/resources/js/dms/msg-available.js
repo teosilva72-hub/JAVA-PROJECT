@@ -1,31 +1,32 @@
 import init, { PMV } from "/resources/pkg/project.js";
 
-var msg, toast, pmvActive, pageActive;
-var listPMV = [];
+let msg, toast, pmvActive, pageActive;
+let listPMV = [];
 
 async function main() {
 	await init();
 
-	let typeInput = $('#type-input');
-	let nameInput = $('#name-input');
-	let messageBox1 = $('#message-box1');
-	let messageBox2 = $('#message-box2');
-	let messageBox3 = $('#message-box3');
-	let btnCreate = $('#btnCreate');
-	let btnEdit = $('#btnEdit');
-	let btnDelete = $('#btnDelete');
-	let btnSave = $('#btnCr1');
-	let btnCancel = $('#btnCr2');
-	let btnSend = $("[id$=btnCr3]");
-	let disableTable = $('#disableTable');
-	let editField = $('.edit-field');
-	let editPMV = $('.edit-pmv-page');
-	let timerCheck = $('input[id^=timerCheck]');
-	let pre_vi = $(`#page-pmv .equip-info`);
-	let equipInfo = $('.equip-info');
-	let table = $("#tabelaReal");
-	let timerPage = $('[id^=timerPage]');
-	let listImage = $('#list-images');
+	const typeInput = $('#type-input');
+	const nameInput = $('#name-input');
+	const messageBox1 = $('#message-box1');
+	const messageBox2 = $('#message-box2');
+	const messageBox3 = $('#message-box3');
+	const btnCreate = $('#btnCreate');
+	const btnEdit = $('#btnEdit');
+	const btnDelete = $('#btnDelete');
+	const btnSave = $('#btnCr1');
+	const btnCancel = $('#btnCr2');
+	const btnSend = $("[id$=btnCr3]");
+	const disableTable = $('#disableTable');
+	const editField = $('.edit-field');
+	const editPMV = $('.edit-pmv-page');
+	const timerCheck = $('input[id^=timerCheck]:not(#timerCheck1)');
+	const timerCheckAll = $('input[id^=timerCheck]');
+	const pre_vi = $(`#page-pmv .equip-info`);
+	const equipInfo = $('.equip-info');
+	const table = $("#tabelaReal");
+	const timerPage = $('[id^=timerPage]');
+	const listImage = $('#list-images');
 
 	// implementation 'loopNext' in jquery
 	$.fn.loopNext = function (selector) {
@@ -103,10 +104,9 @@ async function main() {
 		pmvActive = PMV.new(0, "", "");
 		pmvActive.add_page_default();
 		pageActive = 0;
-
+		
 		updateMessage();
-
-		timerCheck.prop('disabled', false);
+		timerCheckAll.trigger('change')
 	}
 
 	// Create new message
@@ -120,9 +120,8 @@ async function main() {
 		editField.addClass('active');
 		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
 
-		timerCheck.prop('disabled', false);
-
 		updateMessage();
+		timerCheckAll.trigger('change')
 	}
 
 	const returnAlert = msg => {
@@ -180,10 +179,10 @@ async function main() {
 			// add Timers
 			if (pmvActive.len() >= i && pmvActive.page(i - 1).timer() > .0) {
 				editPMV.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
-				editPMV.find(`#timerCheck${i}`).prop('checked', true).trigger('change');
+				editPMV.find(`#timerCheck${i}`).prop('checked', true);
 				editPMV.find(`#btn-page${i}`).prop('disabled', false);
 			} else {
-				editPMV.find(`#timerCheck${i}`).prop('checked', false).trigger('change');
+				editPMV.find(`#timerCheck${i}`).prop('checked', false);
 				editPMV.find(`#btn-page${i}`).prop('disabled', true);
 				editPMV.find(`#timerPage${i}`).val(0);
 			}
@@ -286,6 +285,7 @@ async function main() {
 				pageActive = 0;
 
 				changeEquipInfo();
+				editPMV.find(`[id^=timerCheck]`).prop('disabled', true);
 
 				btnEdit.prop('disabled', false);
 				btnDelete.prop('disabled', false);
@@ -371,10 +371,9 @@ async function main() {
 				check.parent().next().prop('disabled', true).next().prop('disabled', true)
 					.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 
-
 				if (pmvActive.len() > page) {
 					pmvActive.remove_page(page)
-					pageActive = page - 1
+					pageActive = Number($('[id^=btn-page]:checked+label').text()) >= page ? page - 1 : Number($('[id^=btn-page]:checked+label').text()) - 1
 
 					updateMessage();
 				}
