@@ -6,6 +6,27 @@ var listPMV = [];
 async function main() {
 	await init();
 
+	let typeInput = $('#type-input');
+	let nameInput = $('#name-input');
+	let messageBox1 = $('#message-box1');
+	let messageBox2 = $('#message-box2');
+	let messageBox3 = $('#message-box3');
+	let btnCreate = $('#btnCreate');
+	let btnEdit = $('#btnEdit');
+	let btnDelete = $('#btnDelete');
+	let btnSave = $('#btnCr1');
+	let btnCancel = $('#btnCr2');
+	let btnSend = $("[id$=btnCr3]");
+	let disableTable = $('#disableTable');
+	let editField = $('.edit-field');
+	let editPMV = $('.edit-pmv-page');
+	let timerCheck = $('input[id^=timerCheck]');
+	let pre_vi = $(`#page-pmv .equip-info`);
+	let equipInfo = $('.equip-info');
+	let table = $("#tabelaReal");
+	let timerPage = $('[id^=timerPage]');
+	let listImage = $('#list-images');
+
 	// implementation 'loopNext' in jquery
 	$.fn.loopNext = function (selector) {
 		var selector = selector || '';
@@ -41,16 +62,16 @@ async function main() {
 		document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
 		document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
 
-		$("[id$=btnCr3]").click();
+		btnSend.click();
 	}
 
 	const savePMV = () => {
-		pmvActive.type_alert($('#type-input').val() || "");
-		pmvActive.name($('#name-input').val());
+		pmvActive.type_alert(typeInput.val() || "");
+		pmvActive.name(nameInput.val());
 
 		let img = $(`#page-pmv .equip-info .picture-box`);
 
-		pmvActive.change_page(pageActive, $('#message-box1').val(), $('#message-box2').val(), $('#message-box3').val());
+		pmvActive.change_page(pageActive, messageBox1.val(), messageBox2.val(), messageBox3.val());
 		pmvActive.change_image(pageActive, img.attr("id-img"), img.attr("src"));
 	}
 
@@ -59,23 +80,23 @@ async function main() {
 		changeEquipInfo();
 
 		$('#id-input').val(pmvActive.id())
-		$('#type-input').val(pmvActive.type_alert('&this'))
-		$('#name-input').val(pmvActive.name('&this'))
-		$('#message-box1').val(pmvActive.page(pageActive).line(1))
-		$('#message-box2').val(pmvActive.page(pageActive).line(2))
-		$('#message-box3').val(pmvActive.page(pageActive).line(3))
+		typeInput.val(pmvActive.type_alert('&this'))
+		nameInput.val(pmvActive.name('&this'))
+		messageBox1.val(pmvActive.page(pageActive).line(1))
+		messageBox2.val(pmvActive.page(pageActive).line(2))
+		messageBox3.val(pmvActive.page(pageActive).line(3))
 	}
 
 	// Create new message
 	const newMsg = () => {
-		$('#btnCreate').prop('disabled', true);
-		$('#btnEdit').prop('disabled', true);
-		$('#btnDelete').prop('disabled', true);
-		$('[id$=btnCr1]').prop('disabled', false);
-		$('#btnCr2').prop('disabled', false);
-		$('#disableTable').addClass('active');
-		$('.edit-field').addClass('active');
-		$('.edit-pmv-page').find(`[id=timerPage1]`).prop('disabled', false)
+		btnCreate.prop('disabled', true);
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
+		btnSave.prop('disabled', false);
+		btnCancel.prop('disabled', false);
+		disableTable.addClass('active');
+		editField.addClass('active');
+		editPMV.find(`[id=timerPage1]`).prop('disabled', false)
 
 		$('#btn-page1').prop('checked', true);
 
@@ -85,33 +106,33 @@ async function main() {
 
 		updateMessage();
 
-		$('input[id^=timerCheck]').prop('disabled', false);
+		timerCheck.prop('disabled', false);
 	}
 
 	// Create new message
 	const editMsg = () => {
-		$('#btnCreate').prop('disabled', true);
-		$('#btnEdit').prop('disabled', true);
-		$('#btnDelete').prop('disabled', true);
-		$('[id$=btnCr1]').prop('disabled', false);
-		$('#btnCr2').prop('disabled', false);
-		$('#disableTable').addClass('active');
-		$('.edit-field').addClass('active');
-		$('.edit-pmv-page').addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
+		btnCreate.prop('disabled', true);
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
+		btnSave.prop('disabled', false);
+		btnCancel.prop('disabled', false);
+		disableTable.addClass('active');
+		editField.addClass('active');
+		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
 
-		$('input[id^=timerCheck]').prop('disabled', false);
+		timerCheck.prop('disabled', false);
 
 		updateMessage();
 	}
 
 	const returnAlert = msg => {
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		table.load('/dms/messages/message-full.xhtml', () => {
 			// Main loading
 			init_table();
 		})
 
-		$('#btnEdit').prop('disabled', true);
-		$('#btnDelete').prop('disabled', true);
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
 
 		cancel();
 
@@ -121,13 +142,12 @@ async function main() {
 
 	// Cancel message in menu
 	const cancel = () => {
-		$('#btnCreate').prop('disabled', false);
-		$('[id$=btnCr1]').prop('disabled', true);
-		$('#btnCr2').prop('disabled', true);
-		$('#disableTable').removeClass('active');
-		$('.edit-pmv-page').removeClass('active');
-		$('.edit-field').removeClass('active');
-		let pre_vi = $(`#page-pmv .equip-info`);
+		btnCreate.prop('disabled', false);
+		btnSave.prop('disabled', true);
+		btnCancel.prop('disabled', true);
+		disableTable.removeClass('active');
+		editPMV.removeClass('active');
+		editField.removeClass('active');
 		pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 		pre_vi.find('.dmsTab span').text('').each(function () {
 			$(this).last().attr('type', '')
@@ -138,17 +158,11 @@ async function main() {
 			})
 		})
 
-		$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
-
-		$('input[id^=timerCheck]').prop('disabled', true);
+		timerCheck.prop('disabled', true);
 		$('input[id^=timerPage]').prop('disabled', true);
 	}
 
 	const changeEquipInfo = () => {
-		// Pré visualização
-		let pre_vi = $(`#page-pmv .equip-info`);
-		let pagination = $('.edit-pmv-page').addClass('active');
-
 		// Add ID and NAME
 		pre_vi.find('.dmsTab span#dmsId').text(`${pmvActive.id()}`).next().text(`${pmvActive.name('&this')}`)
 		// add Type
@@ -165,16 +179,16 @@ async function main() {
 		for (let i = 5; i >= 1; i--) {
 			// add Timers
 			if (pmvActive.len() >= i && pmvActive.page(i - 1).timer() > .0) {
-				pagination.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
-				pagination.find(`#timerCheck${i}`).prop('checked', true).trigger('change');
-				pagination.find(`#btn-page${i}`).prop('disabled', false);
+				editPMV.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
+				editPMV.find(`#timerCheck${i}`).prop('checked', true).trigger('change');
+				editPMV.find(`#btn-page${i}`).prop('disabled', false);
 			} else {
-				pagination.find(`#timerCheck${i}`).prop('checked', false).trigger('change');
-				pagination.find(`#btn-page${i}`).prop('disabled', true);
-				pagination.find(`#timerPage${i}`).val(0);
+				editPMV.find(`#timerCheck${i}`).prop('checked', false).trigger('change');
+				editPMV.find(`#btn-page${i}`).prop('disabled', true);
+				editPMV.find(`#timerPage${i}`).val(0);
 			}
 		}
-		pagination.find(`#btn-page${pageActive + 1}`).prop('checked', true);
+		editPMV.addClass('active').find(`#btn-page${pageActive + 1}`).prop('checked', true);
 	}
 
 	// render table with datatable
@@ -266,15 +280,15 @@ async function main() {
 
 
 			// Add on click pre-visualization
-			$(`#page-pmv .equip-info`).addClass('active');
+			pre_vi.addClass('active');
 			tr.click(function () {
 				pmvActive = pmv.clone();
 				pageActive = 0;
 
 				changeEquipInfo();
 
-				$('#btnEdit').prop('disabled', false);
-				$('#btnDelete').prop('disabled', false);
+				btnEdit.prop('disabled', false);
+				btnDelete.prop('disabled', false);
 
 				$('#selectedId').text(id);
 				document.forms.dialogForm.deleteID.value = id;
@@ -320,23 +334,23 @@ async function main() {
 			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
 				const char = textFull[idx];
 
-				$('.equip-info').find(`.message${id}`).attr('msg', textFull).find(`div > span[id^=box]`)[idx].innerText = char;
+				equipInfo.find(`.message${id}`).attr('msg', textFull).find(`div > span[id^=box]`)[idx].innerText = char;
 			}
 		}
 		for (let index = 11; index >= textFull.length; index--) {
-			$('.equip-info').find(`.message${id} div > span[id^=box]`)[index].innerText = "";
+			equipInfo.find(`.message${id} div > span[id^=box]`)[index].innerText = "";
 		}
 	}
 
 	$(function () {
 		// request table
-		$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
+		table.load('/dms/messages/message-full.xhtml', () => {
 			// Main loading
 			init_table();
 		})
 
 		// change and pre-save page
-		$('.edit-pmv-page').on('click', 'label', function () {
+		editPMV.on('click', 'label', function () {
 			savePMV();
 
 			pageActive = Number($(this).text()) - 1
@@ -366,7 +380,7 @@ async function main() {
 				}
 
 			}
-			$('[id^=timerPage]').each(function () {
+			timerPage.each(function () {
 				if (!$(this).prop('disabled'))
 					$(this).val(function () { return Number($(this).val()) || 1; });
 			})
@@ -378,19 +392,19 @@ async function main() {
 		})
 
 		// change field image
-		$('#list-images').on('click', 'div > img[id-img]', function (e) {
+		listImage.on('click', 'div > img[id-img]', function (e) {
 			e.currentTarget.ondragstart = function () { return false }
-			$('.equip-info').find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
-			$('#list-images').css('display', 'none').prev().css('display', 'block')
+			equipInfo.find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
+			listImage.css('display', 'none').prev().css('display', 'block')
 		})
 
 		// change field type
-		$('#type-input').change(function () {
-			$('.equip-info').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
+		typeInput.change(function () {
+			equipInfo.find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
 		})
 		// change field name
-		$('#name-input').on('keyup change', function () {
-			$('.equip-info').find('.dmsTab span#dmsName').text($(this).val())
+		nameInput.on('keyup change', function () {
+			equipInfo.find('.dmsTab span#dmsName').text($(this).val())
 		})
 		for (let line = 1; line <= 3; line++) {
 			// change field msg line
@@ -399,7 +413,7 @@ async function main() {
 			})
 		}
 		// if change timer
-		$('[id^=timerPage]').on('keyup change', function () {
+		timerPage.on('keyup change', function () {
 			pmvActive.change_timer(Number($(this).siblings().eq(2).text()) - 1, Number($(this).val()));
 		})
 
@@ -407,10 +421,10 @@ async function main() {
 
 		window.returnAlert = returnAlert;
 
-		$('#btnCreate').click(newMsg);
-		$('#btnEdit').click(editMsg);
-		$('#btnCr2').click(cancel);
-		$('#btnCr1').click(selectMessage);
+		btnCreate.click(newMsg);
+		btnEdit.click(editMsg);
+		btnCancel.click(cancel);
+		btnSave.click(selectMessage);
 	})
 }
 
