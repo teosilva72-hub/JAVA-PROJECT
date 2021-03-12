@@ -166,6 +166,10 @@
 													</div>
 												</div>
 											</div>
+											<div id="child-img" class="col-2 second-img ms-auto">
+												<img src="/resources/images/pictures/#{pmvMessage.image}"
+													class="ui-graphic-image picture-box" id-img="0" />
+											</div>
 										</div>
 									</div>
 
@@ -175,29 +179,8 @@
 							<div class="edit-pmv-page">
 								<!-- TIMERS -->
 								<div class="row">
-
-									<div class="col-2 me-1 ps-0">
-										<div class="input-group mb-3 bar-width">
-											<!-- Checkbox -->
-											<div class="input-group-text">
-												<input id="fixerTimerCheck1" class="form-check-input mt-0"
-													type="checkbox" value="1" aria-label="Checkbox for timer1"
-													checked="true" disabled="disabled" />
-											</div>
-											<!-- Timer -->
-											<input id="timerPage1" type="number"
-												class="form-control form-control-sm text-timer p-0 border-start-0"
-												aria-label="timer1" title="Timer 1" placeholder="0" disabled="disabled"
-												min="1" max="60" />
-											<!-- Button -->
-											<input class="btn-check" name="btn-pages" id="btn-page1" type="radio"
-												value="1" checked="checked" />
-											<label class="btn btn-outline-dark py-0 px-2 page-button"
-												for="btn-page1">1</label>
-										</div>
-									</div>
-									<c:forEach begin="2" end="5" var="idx">
-										<div class="col-2 ms-2 me-1 ps-0">
+									<c:forEach begin="1" end="5" var="idx">
+										<div class="col timerBtn">
 											<div class="input-group mb-3 bar-width">
 												<!-- Checkbox -->
 												<div class="input-group-text">
@@ -207,7 +190,7 @@
 												</div>
 												<!-- Timer -->
 												<input id="timerPage#{idx}" type="number"
-													class="form-control form-control-sm text-timer p-0 border-start-0"
+													class="form-control form-control-sm text-timer pe-0 border-start-0"
 													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
 													disabled="disabled" min="1" max="60" />
 												<!-- Button -->
@@ -248,6 +231,7 @@
 										<div id="id-div">
 											<span class="iconeSpan"><i class="fas fa-key"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="id-group">#{dmsLabels.dms_available_messages_id_placeholder}</span>
 												<input id="id-input" class="form-control inputDesign id"
 													disabled="disabled" type="text"
 													placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
@@ -260,6 +244,7 @@
 										<div id="id-div">
 											<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="type-group">Type</span>
 												<select name="tipo" id="type-input" class="form-control selectType">
 													<option value="" disabled="disabled" selected="selected">Type
 													</option>
@@ -276,6 +261,7 @@
 										<div id="name-div">
 											<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="name-group">#{dmsLabels.dms_available_messages_name_placeholder}</span>
 												<input id="name-input" class="form-control name inputDesign" type="text"
 													placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
 													maxlength="15" autocomplete="off" />
@@ -290,6 +276,7 @@
 										<div id="input-message-1">
 											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="msg1-group">#{dmsLabels.dms_available_lines_line1}</span>
 
 												<input id="message-box1" class="form-control message-input inputDesign"
 													maxlength="12" autoResize="false" resizable="false" type="text"
@@ -303,6 +290,7 @@
 										<div id="input-message-2">
 											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="msg2-group">#{dmsLabels.dms_available_lines_line2}</span>
 
 												<input id="message-box2" class="form-control message-input inputDesign"
 													maxlength="12" autoResize="false" resizable="false" type="text"
@@ -316,6 +304,7 @@
 										<div id="input-message-3">
 											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
 											<div class="input-group">
+												<span class="input-group-text" id="msg3-group">#{dmsLabels.dms_available_lines_line3}</span>
 
 												<input id="message-box3" class="form-control message-input inputDesign"
 													maxlength="12" autoResize="false" resizable="false" type="text"

@@ -4,6 +4,14 @@ body {
   height: 100% !important;
 }
 
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
 /*DIV PMV BOARD*/
 .pmv-board {
   border: none;
@@ -15,11 +23,6 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%) scale(1.5);
-  display: none;
-}
-
-.equip-info.active {
-  display: revert;
 }
 
 #page-pmv {
@@ -112,10 +115,6 @@ body {
   left: 5px;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .message-title-div {
   text-align: center;
   color: #000;
@@ -124,15 +123,10 @@ body {
 .selectType {
   text-align-last: center;
   text-align: center;
-  height: 25px !important;
   padding: 0px;
-  font-size: 9pt;
   border: solid 1px #767676;
   border-radius: 25px;
   background: white;
-  -webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
-  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
 }
 
 /* INPUT ICONS */
@@ -233,14 +227,17 @@ body {
 
 .inputDesign {
   text-align: center;
-  height: 25px;
   font-size: 9pt;
   border: solid 1px #767676;
   border-radius: 25px;
   background: white;
-  -webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
-  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
+}
+
+.confInput .input-group * {
+  height: 25px;
+  font-size: 10px;
+  min-width: 60px;
+  display: block;
 }
 
 select {
@@ -261,18 +258,24 @@ select {
   z-index: 999;
 }
 
-.text-timer {
-  font-size: 12px;
-}
-
 .edit-pmv-page {
   position: absolute;
   top: 125px;
   display: none;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .edit-pmv-page.active {
   display: block;
+}
+
+.edit-pmv-page > div {
+  min-width: 340px;
+}
+
+.timerBtn {
+  padding: 0;
 }
 
 .page-button {
@@ -280,7 +283,11 @@ select {
 }
 
 .bar-width {
-  width: 80px;
+  width: 65px;
+}
+
+.text-timer {
+  padding-left: 3px;
 }
 
 .bar-width .input-group-text {
@@ -345,6 +352,41 @@ tbody tr {
 
 #image-div {
   cursor: pointer;
+}
+
+.equip-info .second-img {
+  display: none;
+}
+
+.equip-info > .driver2 .msg-pos {
+  bottom: 10px !important;
+}
+
+.equip-info > .driver2 .message2 {
+  border-bottom-style: solid !important;
+}
+
+.equip-info > .driver2 .message3 {
+  display: none !important;
+}
+
+.equip-info > .driver3 .msg-pos {
+  right: 55px !important;
+}
+
+.equip-info > .driver3 .padding-pmv {
+  margin-left: -10px !important;
+}
+
+.equip-info > .driver3 .second-img {
+  display: revert !important;
+  margin-right: 5px;
+  padding-left: 0px;
+  margin-top: 3px;
+}
+
+.equip-info > .driver3 .table-message {
+  width: 110px !important;
 }
 
 @keyframes fade {
