@@ -27,6 +27,7 @@ async function main() {
 	const table = $("#tabelaReal");
 	const timerPage = $('[id^=timerPage]');
 	const listImage = $('#list-images');
+	const selectDriver = $('#selectDriver');
 
 	// implementation 'loopNext' in jquery
 	$.fn.loopNext = function (selector) {
@@ -104,7 +105,7 @@ async function main() {
 		pmvActive = PMV.new(0, "", "");
 		pmvActive.add_page_default();
 		pageActive = 0;
-		
+
 		updateMessage();
 		timerCheckAll.trigger('change')
 	}
@@ -125,10 +126,7 @@ async function main() {
 	}
 
 	const returnAlert = msg => {
-		table.load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init_table();
-		})
+		changeDriver();
 
 		btnEdit.prop('disabled', true);
 		btnDelete.prop('disabled', true);
@@ -233,7 +231,7 @@ async function main() {
 	}
 
 	// init_table table
-	const init_table = () => {
+	const init_table = campos => {
 		// get all message
 		let table = $('.nameColumn + td.pageTable1')
 
@@ -267,14 +265,13 @@ async function main() {
 			listPMV.push(pmv);
 
 			// Start rotation for tables
-			if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
-				changeMsg($(this));
+			if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < campos * 4)
+				changeMsg($(this), campos);
 			else {
-				$(this).addClass('active')
-					.loopNext().addClass('active')
-					.loopNext().addClass('active')
-					.loopNext().addClass('active')
-					.loopNext().addClass('active')
+				let elmt = $(this).addClass('active');
+				for (let idx = 1; idx < campos; idx++) {
+					elmt = elmt.loopNext().addClass('active');
+				}
 			}
 
 
@@ -300,31 +297,28 @@ async function main() {
 	}
 
 	// func to start rotation tables. Only tables
-	const changeMsg = msg => {
+	const changeMsg = (msg, campos) => {
 		if (msg.index() > 2) {
 			let timer = msg.attr("timer");
-			let text1 = msg.loopNext();
-			let text2 = text1.loopNext();
-			let text3 = text2.loopNext();
-			let pg = text3.loopNext();
 			if (timer) {
-				msg.addClass('active');
-				text1.addClass('active');
-				text2.addClass('active');
-				text3.addClass('active');
-				pg.addClass('active');
+				let elmt = [msg.addClass('active')];
+				for (let idx = 0; idx < campos - 1; idx++) {
+					elmt.push(elmt[idx].loopNext().addClass('active'));
+				}
 				setTimeout(() => {
-					msg.removeClass('active');
-					text1.removeClass('active');
-					text2.removeClass('active');
-					text3.removeClass('active');
-					pg.removeClass('active');
-					changeMsg(pg.loopNext());
+					for (const e of elmt) {
+						e.removeClass('active');
+					}
+					changeMsg(elmt.pop().loopNext(), campos);
 				}, timer * 1000)
-			} else
-				changeMsg(pg.loopNext());
+			} else {
+				for (let idx = 0; idx < campos; idx++) {
+					msg = msg.next();
+				}
+				changeMsg(msg, campos);
+			}
 		} else
-			changeMsg(msg.loopNext());
+			changeMsg(msg.loopNext(), campos);
 	}
 
 	// transform string to char in message pmv
@@ -342,12 +336,49 @@ async function main() {
 		}
 	}
 
+	const changeDriver = () => {
+		let equip = equipInfo.find('> .card');
+		switch (selectDriver.val()) {
+			case "1":
+				equip.removeClass(['driver2', 'driver3']);
+
+				table.load('/dms/messages/message-driver1.xhtml', () => {
+					// Main loading
+					init_table(5);
+				})
+
+				break;
+
+			case "2":
+				equip.addClass('driver2')
+					.removeClass('driver3');
+
+				table.load('/dms/messages/message-driver2.xhtml', () => {
+					// Main loading
+					init_table(4);
+				})
+
+				break;
+
+			case "3":
+				equip.addClass('driver3')
+					.removeClass('driver2');
+
+				table.load('/dms/messages/message-driver3.xhtml', () => {
+					// Main loading
+					init_table(6);
+				})
+
+				break;
+
+			default:
+				break;
+		}
+	}
+
 	$(function () {
 		// request table
-		table.load('/dms/messages/message-full.xhtml', () => {
-			// Main loading
-			init_table();
-		})
+		changeDriver();
 
 		// change and pre-save page
 		editPMV.on('click', 'label', function () {
@@ -366,8 +397,7 @@ async function main() {
 
 				if (pmvActive.len() <= page)
 					pmvActive.add_page_default();
-			}
-			else {
+			} else {
 				check.parent().next().prop('disabled', true).next().prop('disabled', true)
 					.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 
@@ -424,6 +454,7 @@ async function main() {
 		btnEdit.click(editMsg);
 		btnCancel.click(cancel);
 		btnSave.click(selectMessage);
+		selectDriver.change(changeDriver);
 	})
 }
 

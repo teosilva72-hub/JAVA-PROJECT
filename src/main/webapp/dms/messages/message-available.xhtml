@@ -376,16 +376,11 @@
 								</button>
 							</div>
 							<h:form id="btn-form">
-								<select class="form-select float-start w-25 ms-2" aria-label="Select Driver">
+								<select id="selectDriver" class="form-select float-start w-25 ms-2" aria-label="Select Driver">
 									<option value="1">Driver 1</option>
 									<option value="2">Driver 2</option>
 									<option value="3">Driver 3</option>
 								</select>
-
-								<h:commandButton id="selectDriver" style="display:none">
-									<f:ajax listener="#{pmvMessage.changeDriver}" execute="@form">
-									</f:ajax>
-								</h:commandButton>
 							</h:form>
 						</div>
 						<!-- Tabela real -->

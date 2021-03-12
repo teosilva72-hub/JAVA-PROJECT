@@ -134,12 +134,25 @@ public class Messages {
 		this.activeMessage = activeMessage;
 	}
 
-	public void setPages(String text1, String text2, String text3, int id_image, String image,
-			float timer, int idx) {
+	// Driver 1
+	public void setPages(String text1, String text2, String text3, int id_image, String image, float timer, int idx) {
 		Pages pages = new Pages(text1, text2, text3, id_image, image, timer, idx);
 		this.pages.add(pages);
 	}
+	
+	// Driver 2
+	public void setPages(String text1, String text2, int id_image, String image, float timer, int idx) {
+		Pages pages = new Pages(text1, text2, id_image, image, timer, idx);
+		this.pages.add(pages);
+	}
+	
+	// Driver 3
+	public void setPages(String text1, String text2, String text3, int id_image, String image, int id_image2, String image2, float timer, int idx) {
+		Pages pages = new Pages(text1, text2, text3, id_image, image, id_image2, image2, timer, idx);
+		this.pages.add(pages);
+	}
 
+	// Void
 	public void setPages(int page) {
 		this.pages.add(new Pages());
 	}
@@ -151,7 +164,7 @@ public class Messages {
 				continue;
 			else
 				revision = true;
-				page.timer = 0;
+			page.timer = 0;
 		}
 	}
 
@@ -209,10 +222,12 @@ public class Messages {
 		private float timer;
 		private int id_image;
 		private String image;
+		private int id_image2;
+		private String image2;
 		private int page;
 
-		public Pages(String text1, String text2, String text3, int id_image, String image,
-				float timer, int page) {
+		// Driver 1
+		public Pages(String text1, String text2, String text3, int id_image, String image, float timer, int page) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
@@ -222,13 +237,42 @@ public class Messages {
 			this.page = page;
 			this.contain = true;
 		}
+		
+		// Driver 2
+		public Pages(String text1, String text2, int id_image, String image, float timer, int page) {
+			this.text1 = text1;
+			this.text2 = text2;
+			this.id_image = id_image;
+			this.image = image;
+			this.timer = timer;
+			this.page = page;
+			this.contain = true;
+		}
+		
+		// Driver 3
+		public Pages(String text1, String text2, String text3, int id_image, String image, int id_image2, String image2,
+				float timer, int page) {
+			this.text1 = text1;
+			this.text2 = text2;
+			this.text3 = text3;
+			this.id_image = id_image;
+			this.image = image;
+			this.id_image2 = id_image2;
+			this.image2 = image2;
+			this.timer = timer;
+			this.page = page;
+			this.contain = true;
+		}
 
+		// Void
 		public Pages() {
 			this.text1 = "";
 			this.text2 = "";
 			this.text3 = "";
 			this.id_image = 0;
 			this.image = "000_6464.bmp";
+			this.id_image2 = 0;
+			this.image2 = "000_6464.bmp";
 			this.timer = 0;
 			this.page = 0;
 			this.contain = false;
@@ -256,6 +300,14 @@ public class Messages {
 
 		public String getImage() {
 			return image;
+		}
+
+		public int getId_image2() {
+			return id_image2;
+		}
+
+		public String getImage2() {
+			return image2;
 		}
 
 		public Boolean getContain() {

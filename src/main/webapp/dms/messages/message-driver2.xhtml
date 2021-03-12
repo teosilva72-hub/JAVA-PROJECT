@@ -6,7 +6,7 @@
     xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
     xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
 
-    <h:dataTable id="message-table" value="#{pmvMessage.messages_enumeration}" var="msg"
+    <h:dataTable id="message-table" value="#{pmvMessage.messages_enumeration_d2}" var="msg"
         styleClass="table table-sm table-striped table-hover table-dark custom-table" cellspacing="0" width="100%"
         headerClass="custom-table-header" rowClasses="custom-table-odd-row, custom-table-even-row"
         columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
@@ -26,7 +26,7 @@
             </f:facet>
             <h:outputText value="#{msg.value.nome}" class="tablePageName" />
         </h:column>
-        <c:forEach items="#{pmvMessage.messages.get(msg.key).pages}" var="page" varStatus="index">
+        <c:forEach items="#{pmvMessage.messages_d2.get(msg.key).pages}" var="page" varStatus="index">
             <h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
                 <f:facet rendered="#{index.first}" name="header">
                     #{dmsLabels.dms_available_messages_table_col_image}
@@ -46,12 +46,6 @@
                     #{dmsLabels.dms_available_lines_line2}
                 </f:facet>
                 <h:outputText value="#{page.text2}" />
-            </h:column>
-            <h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
-                <f:facet rendered="#{index.first}" name="header">
-                    #{dmsLabels.dms_available_lines_line3}
-                </f:facet>
-                <h:outputText value="#{page.text3}" />
             </h:column>
             <h:column pt:class="pageTable#{index.index + 1}" pt:originPager="#{page.page}" pt:active="#{page.contain}"
                 pt:timer="#{page.timer}">

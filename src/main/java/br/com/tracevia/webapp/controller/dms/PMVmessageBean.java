@@ -69,9 +69,12 @@ public class PMVmessageBean implements Serializable {
 	private List<Picture> pictures;
 	private Messages message;
 	// private HtmlDataTable dataTable;
-	private List<Messages> messages;
-	private List<Messages> messagesOnly;
-	private List<Enumeration> messages_enumeration;
+	private List<Messages> messages_d1;
+	private List<Messages> messages_d2;
+	private List<Messages> messages_d3;
+	private List<Enumeration> messages_enumeration_d1;
+	private List<Enumeration> messages_enumeration_d2;
+	private List<Enumeration> messages_enumeration_d3;
 	private ArrayList<SelectItem> items;
 	private ArrayList<SelectItem> name;
 	private ArrayList<SelectItem> type;
@@ -170,20 +173,52 @@ public class PMVmessageBean implements Serializable {
 		this.pictures = pictures;
 	}
 
-	public List<Messages> getMessages() {
-		return messages;
+	public List<Messages> getMessages_d1() {
+		return messages_d1;
 	}
 
-	public void setMessages(List<Messages> messages) {
-		this.messages = messages;
+	public void setMessages_d1(List<Messages> messages_d1) {
+		this.messages_d1 = messages_d1;
 	}
 
-	public List<Enumeration> getMessages_enumeration() {
-		return messages_enumeration;
+	public List<Messages> getMessages_d2() {
+		return messages_d2;
 	}
 
-	public void setMessages_enumeration(List<Enumeration> messages_enumeration) {
-		this.messages_enumeration = messages_enumeration;
+	public void setMessages_d2(List<Messages> messages_d2) {
+		this.messages_d2 = messages_d2;
+	}
+
+	public List<Messages> getMessages_d3() {
+		return messages_d3;
+	}
+
+	public void setMessages_d3(List<Messages> messages_d3) {
+		this.messages_d3 = messages_d3;
+	}
+
+	public List<Enumeration> getMessages_enumeration_d1() {
+		return messages_enumeration_d1;
+	}
+
+	public void setMessages_enumeration_d1(List<Enumeration> messages_enumeration_d1) {
+		this.messages_enumeration_d1 = messages_enumeration_d1;
+	}
+
+	public List<Enumeration> getMessages_enumeration_d2() {
+		return messages_enumeration_d2;
+	}
+
+	public void setMessages_enumeration_d2(List<Enumeration> messages_enumeration_d2) {
+		this.messages_enumeration_d2 = messages_enumeration_d2;
+	}
+
+	public List<Enumeration> getMessages_enumeration_d3() {
+		return messages_enumeration_d3;
+	}
+
+	public void setMessages_enumeration_d3(List<Enumeration> messages_enumeration_d3) {
+		this.messages_enumeration_d3 = messages_enumeration_d3;
 	}
 
 	public Messages getMessage() {
@@ -413,8 +448,14 @@ public class PMVmessageBean implements Serializable {
 			equipDAO = new EquipmentsDAO();
 			Enumeration enumeration = new Enumeration();
 
-			messages = dao.mensagensDisponiveis();
-			messages_enumeration = enumeration.create(messages);
+			messages_d1 = dao.mensagensDisponiveis("driver1");
+			messages_enumeration_d1 = enumeration.create(messages_d1);
+			
+			messages_d2 = dao.mensagensDisponiveis("driver2");
+			messages_enumeration_d2 = enumeration.create(messages_d2);
+
+			messages_d3 = dao.mensagensDisponiveis("driver3");
+			messages_enumeration_d3 = enumeration.create(messages_d3);
 			
 			ArrayList<Equipments> list = new ArrayList<Equipments>();
 			list = equipDAO.listPMVSites();
@@ -548,7 +589,7 @@ public class PMVmessageBean implements Serializable {
 
 			MessagesDAO dao = new MessagesDAO();
 
-			messages = dao.mensagensDisponiveis();
+			messages_d1 = dao.mensagensDisponiveis("driver1");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -590,7 +631,7 @@ public class PMVmessageBean implements Serializable {
 
 		if (result) {
 			message.InfoMessage(localeMessage.getStringKey("dms_available_message_register"), " ");
-			messages = dao.mensagensDisponiveis(); // Atualiza lista de mensagens
+			messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
 			cleanSelection();
 		}
 
@@ -616,7 +657,7 @@ public class PMVmessageBean implements Serializable {
 
 		if (result) {
 			message.InfoMessage(localeMessage.getStringKey("dms_available_message_update"), " ");
-			messages = dao.mensagensDisponiveis(); // Atualiza lista de mensagens
+			messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
 		}
 
 		else
@@ -644,7 +685,7 @@ public class PMVmessageBean implements Serializable {
 				response = dao.removeRegister(rowKey);
 
 				if (response) {
-					messages = dao.mensagensDisponiveis(); // Atualiza lista de mensagens
+					messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
 					message.InfoMessage(localeMessage.getStringKey("dms_available_message_delete_sucess"), " ");
 				}
 
@@ -1016,14 +1057,6 @@ public class PMVmessageBean implements Serializable {
 
 		return type;
 
-	}
-
-	public List<Messages> getMessagesOnly() {
-		return messagesOnly;
-	}
-
-	public void setMessagesOnly(List<Messages> messagesOnly) {
-		this.messagesOnly = messagesOnly;
 	}
 
 }

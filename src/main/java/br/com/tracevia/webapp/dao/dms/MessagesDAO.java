@@ -27,43 +27,117 @@ public class MessagesDAO {
 	Locale locale;
 	ResourceBundle resourceBundle;
 
-	public List<Messages> mensagensDisponiveis() throws Exception {
+	public List<Messages> mensagensDisponiveis(String driver) throws Exception {
 
 		List<Messages> lista = new ArrayList<Messages>();
 
 		try {
-
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			ps = conn.prepareStatement("SELECT id_message, type, name, "
-					+ "page1_image, page1_1, page1_2, page1_3, timer1, "
-					+ "page2_image, page2_1, page2_2, page2_3, timer2, "
-					+ "page3_image, page3_1, page3_2, page3_3, timer3, "
-					+ "page4_image, page4_1, page4_2, page4_3, timer4, "
-					+ "page5_image, page5_1, page5_2, page5_3, timer5 from tracevia_app.pmv_messages_available WHERE avaliable <> 0 "
-					+ "ORDER BY id_message ASC");
-			rs = ps.executeQuery();
+			switch (driver) {
+			case "driver1":
+				ps = conn.prepareStatement("SELECT id_message, type, name, "
+						+ "page1_image, page1_1, page1_2, page1_3, timer1, "
+						+ "page2_image, page2_1, page2_2, page2_3, timer2, "
+						+ "page3_image, page3_1, page3_2, page3_3, timer3, "
+						+ "page4_image, page4_1, page4_2, page4_3, timer4, "
+						+ "page5_image, page5_1, page5_2, page5_3, timer5 from tracevia_app.pmv_messages_available WHERE avaliable <> 0 "
+						+ "AND driver = 1 ORDER BY id_message ASC");
+				rs = ps.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
-					Messages mensagens = new Messages();
-					mensagens.setId_message(rs.getInt("id_message"));
-					mensagens.setTipo(rs.getString("type"));
-					mensagens.setNome(rs.getString("name"));
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						Messages mensagens = new Messages();
+						mensagens.setId_message(rs.getInt("id_message"));
+						mensagens.setTipo(rs.getString("type"));
+						mensagens.setNome(rs.getString("name"));
 
-					for (int i = 0; i < 5; i++) {
-						int idx = i + 1;
-						if (rs.getFloat("timer" + idx) != .0) {
-							mensagens.setPages(rs.getString("page" + idx + "_1"), rs.getString("page" + idx + "_2"),
-									rs.getString("page" + idx + "_3"), rs.getInt("page" + idx + "_image"),
-									getImageFromMessageAvailable(rs.getInt("page" + idx + "_image")),
-									rs.getFloat("timer" + idx), idx);
-						} else {
-							mensagens.setPages(i);
+						for (int i = 0; i < 5; i++) {
+							int idx = i + 1;
+							if (rs.getFloat("timer" + idx) != .0) {
+								mensagens.setPages(rs.getString("page" + idx + "_1"), rs.getString("page" + idx + "_2"),
+										rs.getString("page" + idx + "_3"), rs.getInt("page" + idx + "_image"),
+										getImageFromMessageAvailable(rs.getInt("page" + idx + "_image")),
+										rs.getFloat("timer" + idx), idx);
+							} else {
+								mensagens.setPages(i);
+							}
 						}
+						lista.add(mensagens);
 					}
-					lista.add(mensagens);
 				}
+				break;
+
+			case "driver2":
+				ps = conn.prepareStatement("SELECT id_message, type, name, "
+						+ "page1_image, page1_1, page1_2, timer1, page2_image, page2_1, page2_2, timer2, "
+						+ "page3_image, page3_1, page3_2, timer3, page4_image, page4_1, page4_2, timer4, "
+						+ "page5_image, page5_1, page5_2, timer5 from tracevia_app.pmv_messages_available WHERE avaliable <> 0 "
+						+ "AND driver = 2 ORDER BY id_message ASC");
+				rs = ps.executeQuery();
+
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						Messages mensagens = new Messages();
+						mensagens.setId_message(rs.getInt("id_message"));
+						mensagens.setTipo(rs.getString("type"));
+						mensagens.setNome(rs.getString("name"));
+
+						for (int i = 0; i < 5; i++) {
+							int idx = i + 1;
+							if (rs.getFloat("timer" + idx) != .0) {
+								mensagens.setPages(rs.getString("page" + idx + "_1"), rs.getString("page" + idx + "_2"),
+										rs.getInt("page" + idx + "_image"),
+										getImageFromMessageAvailable(rs.getInt("page" + idx + "_image")),
+										rs.getFloat("timer" + idx), idx);
+							} else {
+								mensagens.setPages(i);
+							}
+						}
+						lista.add(mensagens);
+					}
+				}
+
+				break;
+
+			case "driver3":
+				ps = conn.prepareStatement("SELECT id_message, type, name, "
+						+ "page1_image, page1_image2, page1_1, page1_2, page1_3, timer1, "
+						+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
+						+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
+						+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
+						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from tracevia_app.pmv_messages_available WHERE avaliable <> 0 "
+						+ "AND driver = 3 ORDER BY id_message ASC");
+				rs = ps.executeQuery();
+
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						Messages mensagens = new Messages();
+						mensagens.setId_message(rs.getInt("id_message"));
+						mensagens.setTipo(rs.getString("type"));
+						mensagens.setNome(rs.getString("name"));
+
+						for (int i = 0; i < 5; i++) {
+							int idx = i + 1;
+							if (rs.getFloat("timer" + idx) != .0) {
+								mensagens.setPages(rs.getString("page" + idx + "_1"), rs.getString("page" + idx + "_2"),
+										rs.getString("page" + idx + "_3"), rs.getInt("page" + idx + "_image"),
+										getImageFromMessageAvailable(rs.getInt("page" + idx + "_image")),
+										rs.getInt("page" + idx + "_image2"),
+										getImageFromMessageAvailable(rs.getInt("page" + idx + "_image2")),
+										rs.getFloat("timer" + idx), idx);
+							} else {
+								mensagens.setPages(i);
+							}
+						}
+						lista.add(mensagens);
+					}
+				}
+
+				break;
+
+			default:
+				break;
 			}
 
 		} catch (
