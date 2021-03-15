@@ -1,0 +1,15 @@
+{
+  "name": "project",
+  "collaborators": [
+    "Guilherme França de Oliveira <guigo613@gmail.com>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "project_bg.wasm",
+    "project.js",
+    "project.d.ts"
+  ],
+  "module": "project.js",
+  "types": "project.d.ts",
+  "sideEffects": false
+}

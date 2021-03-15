@@ -39,6 +39,7 @@ public class EquipmentsBean implements Serializable {
 	LocaleUtil localeDirection;
 	
 	Equipments equip;
+	SAT sat;
 		
 	private int equipId;
 	private String equipTable, equipBord, equipDel;
@@ -232,17 +233,42 @@ public class EquipmentsBean implements Serializable {
 	    //For Equipment KM
 	    sat.setKm(parameterMap.get("km"));
 	    
+	    //For Direction Lane 1
+	    sat.setFaixa1(parameterMap.get("faixa1"));
+	    
+	    //For Direction Lane 2
+	    sat.setFaixa2(parameterMap.get("faixa2"));
+	    
+	    //For Direction Lane 3
+	    sat.setFaixa3(parameterMap.get("faixa3"));
+	    
+	    //For Direction Lane 4
+	    sat.setFaixa4(parameterMap.get("faixa4"));
+	    
+	    //For Direction Lane 5
+	    sat.setFaixa5(parameterMap.get("faixa5"));
+	    
+	    //For Direction Lane 6
+	    sat.setFaixa6(parameterMap.get("faixa6"));
+	    
+	    //For Direction Lane 7
+	    sat.setFaixa7(parameterMap.get("faixa7"));
+	    
+	    //For Direction Lane 8
+	    sat.setFaixa8(parameterMap.get("faixa8"));
+	    
 	    //For Equipment Width
 	    sat.setMapWidth(Integer.parseInt(parameterMap.get("width")));
 	    
+	    //For Number Lanes
 	    sat.setNumFaixas(Integer.parseInt(parameterMap.get("lanes")));
 	    
+	    //For Direction 1
 	    sat.setSentido1(parameterMap.get("direction1"));
 	    
+	    //For Direction 2
+	    sat.setSentido2(parameterMap.get("direction2"));
 	    
-	    System.out.println("NUM FAIXA: "+sat.getNumFaixas());
-	    
-	    System.out.println("DIR: "+sat.getNumFaixas());
 	    
 	    defineDirections(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido1()));
 	    
@@ -256,7 +282,7 @@ public class EquipmentsBean implements Serializable {
 		    equip.setCreation_date(dta.currentTimeDBformat());
 					    
 		    //For Equipment CreationUsername		
-			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
@@ -305,9 +331,10 @@ public class EquipmentsBean implements Serializable {
 		 String equipTable = getEquipTable();
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 equip = new Equipments();
+		 sat = new SAT();
 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable); 
-		
+		 
 		 //System.out.println(equip.getNome());
 		 System.out.println(equipId);
 		 

@@ -56,10 +56,10 @@ function posEquip(equip) {
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 		else if (sat_status > 0 && interval == 45) {
 			equip.find("[id^=satName]").css({
-				"background-color": '#00FF0D',
+				"background-color": '#00BFFF',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 		else if (sat_status > 0 && interval == 8) {
