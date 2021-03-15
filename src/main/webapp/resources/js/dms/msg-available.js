@@ -141,11 +141,10 @@ async function main() {
 		disableTable.addClass('active');
 		editField.addClass('active');
 		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
+		equipInfo.addClass('editing');
 		
 		updateMessage();
 		timerCheckAll.trigger('change')
-		equipInfo.addClass('editing');
-		console.log(pageActive)
 	}
 
 	const returnAlert = msg => {
@@ -450,13 +449,13 @@ async function main() {
 			let check = $(this);
 			let page = Number(check.parent().parent().siblings().eq(1).text()) - 1
 			if (check.prop('checked')) {
-				check.parent().next().prop('disabled', false).next().prop('disabled', false)
+				check.parent().next().prop('disabled', false).parent().next().prop('disabled', false)
 					.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
 
 				if (pmvActive.len() <= page)
 					pmvActive.add_page_default();
 			} else {
-				check.parent().next().prop('disabled', true).next().prop('disabled', true)
+				check.parent().next().prop('disabled', true).parent().next().prop('disabled', true)
 					.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
 
 				if (pmvActive.len() > page) {
