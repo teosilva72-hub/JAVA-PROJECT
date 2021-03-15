@@ -75,9 +75,13 @@ input[type=number]::-webkit-inner-spin-button {
   margin-top: 3px;
 }
 
-.ui-graphic-image {
+.picture-box {
   width: 52px;
   height: 52px;
+}
+
+.equip-info.editing .picture-box {
+  cursor: pointer;
 }
 
 .msg-pos {
@@ -162,6 +166,12 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 /*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
+.picture-box.selected {
+  border-style: solid;
+  border-image: linear-gradient(to right, red, orange) 1;
+  border-width: 2px;
+}
+
 #list-images {
   display: none;
   width: fit-content;
@@ -219,6 +229,10 @@ input[type=number]::-webkit-inner-spin-button {
 
 .confInput {
   margin-top: 10px;
+}
+
+.displayInput { 
+  height: fit-content;
 }
 
 .conf2Btn {
@@ -350,42 +364,42 @@ tbody tr {
   position: relative;
 }
 
-#image-div {
-  cursor: pointer;
-}
-
 .equip-info .second-img {
   display: none;
 }
 
-.equip-info > .driver2 .msg-pos {
+.pmv-board.driver2 .equip-info .msg-pos {
   bottom: 10px !important;
 }
 
-.equip-info > .driver2 .message2 {
+.pmv-board.driver2 .equip-info .message2 {
   border-bottom-style: solid !important;
 }
 
-.equip-info > .driver2 .message3 {
+.pmv-board.driver2 .equip-info .message3 {
   display: none !important;
 }
 
-.equip-info > .driver3 .msg-pos {
+.pmv-board.driver2 #input-message-3 {
+  display: none !important;
+}
+
+.pmv-board.driver3 .equip-info .msg-pos {
   right: 55px !important;
 }
 
-.equip-info > .driver3 .padding-pmv {
+.pmv-board.driver3 .equip-info .padding-pmv {
   margin-left: -10px !important;
 }
 
-.equip-info > .driver3 .second-img {
+.pmv-board.driver3 .equip-info .second-img {
   display: revert !important;
   margin-right: 5px;
   padding-left: 0px;
   margin-top: 3px;
 }
 
-.equip-info > .driver3 .table-message {
+.pmv-board.driver3 .equip-info .table-message {
   width: 110px !important;
 }
 

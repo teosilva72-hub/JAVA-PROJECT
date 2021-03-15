@@ -1,4 +1,4 @@
-import init, { PMV } from "/resources/pkg/project.js";
+import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let msg, toast, pmvActive, pageActive;
 let listPMV = [];
@@ -24,10 +24,12 @@ async function main() {
 	const timerCheckAll = $('input[id^=timerCheck]');
 	const pre_vi = $(`#page-pmv .equip-info`);
 	const equipInfo = $('.equip-info');
+	const picture = equipInfo.find(`.picture-box`);
 	const table = $("#tabelaReal");
 	const timerPage = $('[id^=timerPage]');
 	const listImage = $('#list-images');
 	const selectDriver = $('#selectDriver');
+	const pmvBoard = $('.pmv-board');
 
 	// implementation 'loopNext' in jquery
 	$.fn.loopNext = function (selector) {
@@ -43,21 +45,25 @@ async function main() {
 			id: String(pmvActive.id()),
 			type: pmvActive.type_alert('&this'),
 			name: pmvActive.name('&this'),
+			type_page: String(pmvActive.type_page()),
 			pages: []
 		}
 
 		for (let i = 0; i < 5; i++) {
+			let pagePMV = pmvActive.page(i);
 			msg.pages.push({
-				image: pmvActive.page(i).image(),
-				image_id: String(pmvActive.page(i).image_id()),
-				timer: String(pmvActive.page(i).timer()),
-				line1: pmvActive.page(i).line(1),
-				line2: pmvActive.page(i).line(2),
-				line3: pmvActive.page(i).line(3),
+				image: pagePMV.image(0),
+				image2: pagePMV.image(1),
+				image_id: String(pagePMV.image_id(0)),
+				image_id2: String(pagePMV.image_id(1)),
+				timer: String(pagePMV.timer()),
+				line1: pagePMV.line(1),
+				line2: pagePMV.line(2),
+				line3: pagePMV.line(3),
 			})
 		}
 
-		document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name });
+		document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name, type_page: msg.type_page });
 		document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
 		document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
 		document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
@@ -71,10 +77,10 @@ async function main() {
 		pmvActive.type_alert(typeInput.val() || "");
 		pmvActive.name(nameInput.val());
 
-		let img = $(`#page-pmv .equip-info .picture-box`);
+		let img = equipInfo.find(`.picture-box`);
 
 		pmvActive.change_page(pageActive, messageBox1.val(), messageBox2.val(), messageBox3.val());
-		pmvActive.change_image(pageActive, img.attr("id-img"), img.attr("src"));
+		pmvActive.change_image(pageActive, img.eq(0).attr("id-img"), img.eq(1).attr("id-img"), img.eq(0).attr("src"), img.eq(1).attr("src"));
 	}
 
 	// Get update to menu
@@ -91,18 +97,36 @@ async function main() {
 
 	// Create new message
 	const newMsg = () => {
-		btnCreate.prop('disabled', true);
-		btnEdit.prop('disabled', true);
-		btnDelete.prop('disabled', true);
 		btnSave.prop('disabled', false);
 		btnCancel.prop('disabled', false);
 		disableTable.addClass('active');
 		editField.addClass('active');
 		editPMV.find(`[id=timerPage1]`).prop('disabled', false)
+		equipInfo.addClass('editing');
 
 		$('#btn-page1').prop('checked', true);
 
-		pmvActive = PMV.new(0, "", "");
+		let type
+
+		switch (selectDriver.val()) {
+			case "1":
+				type = PaginaType.Type1
+				break;
+
+			case "2":
+				type = PaginaType.Type2
+				break;
+
+			case "3":
+				type = PaginaType.Type3
+				break;
+
+			default:
+				type = PaginaType.Type1
+				break;
+		}
+
+		pmvActive = PMV.new(0, "", "", type);
 		pmvActive.add_page_default();
 		pageActive = 0;
 
@@ -112,14 +136,12 @@ async function main() {
 
 	// Create new message
 	const editMsg = () => {
-		btnCreate.prop('disabled', true);
-		btnEdit.prop('disabled', true);
-		btnDelete.prop('disabled', true);
 		btnSave.prop('disabled', false);
 		btnCancel.prop('disabled', false);
 		disableTable.addClass('active');
 		editField.addClass('active');
 		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
+		equipInfo.addClass('editing');
 
 		updateMessage();
 		timerCheckAll.trigger('change')
@@ -140,11 +162,16 @@ async function main() {
 	// Cancel message in menu
 	const cancel = () => {
 		btnCreate.prop('disabled', false);
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
 		btnSave.prop('disabled', true);
 		btnCancel.prop('disabled', true);
 		disableTable.removeClass('active');
 		editPMV.removeClass('active');
 		editField.removeClass('active');
+		equipInfo.removeClass('editing');
+		picture.removeClass('selected')
+		listImage.css('display', 'none')
 		pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
 		pre_vi.find('.dmsTab span').text('').each(function () {
 			$(this).last().attr('type', '')
@@ -160,16 +187,22 @@ async function main() {
 	}
 
 	const changeEquipInfo = () => {
+		let PagePMV = pmvActive.page(pageActive);
+		let picture = pre_vi.find('.picture-box')
+
 		// Add ID and NAME
 		pre_vi.find('.dmsTab span#dmsId').text(`${pmvActive.id()}`).next().text(`${pmvActive.name('&this')}`)
 		// add Type
 		pre_vi.find('.dmsTab span#dmsType').text($(`#type-input [value="${pmvActive.type_alert('&this')}"]`).text()).attr('type', pmvActive.type_alert('&this'))
 		// Add image
-		pre_vi.find('.picture-box').attr({ src: pmvActive.page(pageActive).image(), 'id-img': pmvActive.page(pageActive).image_id() })
+		picture
+			.eq(0).attr({ src: PagePMV.image(0), 'id-img': PagePMV.image_id(0) })
+		picture
+			.eq(1).attr({ src: PagePMV.image(1), 'id-img': PagePMV.image_id(1) })
 		// add messages
 		pre_vi.find(`#message`).children().each(function (line) {
 			$(this).children().each(function (index) {
-				$(this).find('[id*=box]').text(pmvActive.page(pageActive).line_char(line + 1, index))
+				$(this).find('[id*=box]').text(PagePMV.line_char(line + 1, index))
 			})
 		})
 
@@ -245,20 +278,41 @@ async function main() {
 			let type = pages.filter('[type]').attr('type')
 			let name = pages.find('.tablePageName').text()
 
-			let pmv = PMV.new(id, type, name);
+			let pageType
+			switch (selectDriver.val()) {
+				case "1":
+					pageType = PaginaType.Type1
+					break;
+
+				case "2":
+					pageType = PaginaType.Type2
+					break;
+
+				case "3":
+					pageType = PaginaType.Type3
+					break;
+
+				default:
+					pageType = PaginaType.Type1
+					break;
+			}
+
+			let pmv = PMV.new(id, type, name, pageType);
 
 			for (let i = 0; i < 5; i++) {
 				const page = pages.filter('.pageTable' + i);
 				const verif = page.filter('td[active]').attr('active');
 				if (verif) {
-					const imgId = page.find('[id*=picture-table]').next().val()
-					const img = page.find('[id*=picture-table]').attr('src');
+					const imgId = page.find('.picture-table').next().val();
+					const imgId2 = page.find('.picture-table_2').next().val() || 0;
+					const img = page.find('.picture-table').attr('src');
+					const img2 = page.find('.picture-table_2').attr('src') || "/resources/images/pictures/000_6464.bmp";
 					const timer = parseFloat(page.filter('td[timer]').attr('timer'));
 					const line1 = page.filter('.msgPage1')
 					const line2 = line1.next()
 					const line3 = line2.next()
 
-					pmv.add_page(imgId, img, timer, line1.text(), line2.text(), line3.text());
+					pmv.add_page(imgId, imgId2, img, img2, timer, line1.text(), line2.text(), line3.text());
 				}
 			}
 
@@ -276,7 +330,6 @@ async function main() {
 
 
 			// Add on click pre-visualization
-			pre_vi.addClass('active');
 			tr.click(function () {
 				pmvActive = pmv.clone();
 				pageActive = 0;
@@ -337,10 +390,12 @@ async function main() {
 	}
 
 	const changeDriver = () => {
-		let equip = equipInfo.find('> .card');
+
+		cancel();
+
 		switch (selectDriver.val()) {
 			case "1":
-				equip.removeClass(['driver2', 'driver3']);
+				pmvBoard.removeClass(['driver2', 'driver3']);
 
 				table.load('/dms/messages/message-driver1.xhtml', () => {
 					// Main loading
@@ -350,7 +405,7 @@ async function main() {
 				break;
 
 			case "2":
-				equip.addClass('driver2')
+				pmvBoard.addClass('driver2')
 					.removeClass('driver3');
 
 				table.load('/dms/messages/message-driver2.xhtml', () => {
@@ -361,7 +416,7 @@ async function main() {
 				break;
 
 			case "3":
-				equip.addClass('driver3')
+				pmvBoard.addClass('driver3')
 					.removeClass('driver2');
 
 				table.load('/dms/messages/message-driver3.xhtml', () => {
@@ -416,15 +471,19 @@ async function main() {
 		})
 
 		// hidden img and open list
-		$('#image-div').click(function () {
-			$(this).css('display', 'none').next().css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
+		picture.click(function () {
+			if (equipInfo.hasClass('editing')) {
+				picture.removeClass('selected')
+				$(this).addClass('selected')
+				$('#list-images').css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
+			}
 		})
 
 		// change field image
 		listImage.on('click', 'div > img[id-img]', function (e) {
 			e.currentTarget.ondragstart = function () { return false }
-			equipInfo.find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
-			listImage.css('display', 'none').prev().css('display', 'block')
+			equipInfo.find('#child-img .picture-box.selected').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') }).removeClass('selected')
+			listImage.css('display', 'none')
 		})
 
 		// change field type

@@ -176,11 +176,14 @@ public class MessagesDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			String sql = "INSERT INTO tracevia_app.pmv_messages_available "
-					+ "(id_message, creation_date, creation_username, update_date, update_username, type, name, "
-					+ "page1_image, page1_1, page1_2, page1_3, timer1, page2_image, page2_1, page2_2, page2_3, timer2, "
-					+ "page3_image, page3_1, page3_2, page3_3, timer3, page4_image, page4_1, page4_2, page4_3, timer4, "
-					+ "page5_image, page5_1, page5_2, page5_3, timer5, avaliable) "
-					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
+					+ "(id_message, creation_date, creation_username, update_date, update_username, type, name, driver, "
+					+ "page1_image, page1_image2, page1_1, page1_2, page1_3, timer1, "
+					+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
+					+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
+					+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
+					+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5, avaliable) "
+					+ "VALUES ( null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true );";
 
 			ps = conn.prepareStatement(sql);
 
@@ -190,19 +193,22 @@ public class MessagesDAO {
 			ps.setString(4, user);
 			ps.setString(5, msg.get("type"));
 			ps.setString(6, msg.get("name"));
+			ps.setInt(7, Integer.parseInt(msg.get("type_page")));
 			for (int i = 0; i < 5; i++) {
 				if (i < ListaPages.size()) {
-					ps.setInt(7 + i * 5, Integer.parseInt(ListaPages.get(i).get("image_id")));
-					ps.setString(8 + i * 5, ListaPages.get(i).get("line1"));
-					ps.setString(9 + i * 5, ListaPages.get(i).get("line2"));
-					ps.setString(10 + i * 5, ListaPages.get(i).get("line3"));
-					ps.setFloat(11 + i * 5, Float.parseFloat(ListaPages.get(i).get("timer")));
+					ps.setInt(8 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
+					ps.setInt(9 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
+					ps.setString(10 + i * 6, ListaPages.get(i).get("line1"));
+					ps.setString(11 + i * 6, ListaPages.get(i).get("line2"));
+					ps.setString(12 + i * 6, ListaPages.get(i).get("line3"));
+					ps.setFloat(13 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
 				} else {
-					ps.setInt(7 + i * 5, 0);
-					ps.setString(8 + i * 5, "");
-					ps.setString(9 + i * 5, "");
-					ps.setString(10 + i * 5, "");
-					ps.setInt(11 + i * 5, 0);
+					ps.setInt(8 + i * 6, 0);
+					ps.setInt(9 + i * 6, 0);
+					ps.setString(10 + i * 6, "");
+					ps.setString(11 + i * 6, "");
+					ps.setString(12 + i * 6, "");
+					ps.setInt(13 + i * 6, 0);
 				}
 			}
 
@@ -243,11 +249,11 @@ public class MessagesDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			String sql = "UPDATE tracevia_app.pmv_messages_available SET update_date = ?, update_username = ?, type = ?, name = ?, "
-					+ "page1_image = ?, page1_1 = ?, page1_2 = ?, page1_3 = ?, timer1 = ?, "
-					+ "page2_image = ?, page2_1 = ?, page2_2 = ?, page2_3 = ?, timer2 = ?, "
-					+ "page3_image = ?, page3_1 = ?, page3_2 = ?, page3_3 = ?, timer3 = ?, "
-					+ "page4_image = ?, page4_1 = ?, page4_2 = ?, page4_3 = ?, timer4 = ?, "
-					+ "page5_image = ?, page5_1 = ?, page5_2 = ?, page5_3 = ?, timer5 = ? WHERE (id_message = ?);";
+					+ "page1_image = ?, page1_image2 = ?, page1_1 = ?, page1_2 = ?, page1_3 = ?, timer1 = ?, "
+					+ "page2_image = ?, page2_image2 = ?, page2_1 = ?, page2_2 = ?, page2_3 = ?, timer2 = ?, "
+					+ "page3_image = ?, page3_image2 = ?, page3_1 = ?, page3_2 = ?, page3_3 = ?, timer3 = ?, "
+					+ "page4_image = ?, page4_image2 = ?, page4_1 = ?, page4_2 = ?, page4_3 = ?, timer4 = ?, "
+					+ "page5_image = ?, page5_image2 = ?, page5_1 = ?, page5_2 = ?, page5_3 = ?, timer5 = ? WHERE (id_message = ? AND driver = ?);";
 
 			ps = conn.prepareStatement(sql);
 
@@ -257,20 +263,23 @@ public class MessagesDAO {
 			ps.setString(4, msg.get("name"));
 			for (int i = 0; i < 5; i++) {
 				if (i < ListaPages.size()) {
-					ps.setInt(5 + i * 5, Integer.parseInt(ListaPages.get(i).get("image_id")));
-					ps.setString(6 + i * 5, ListaPages.get(i).get("line1"));
-					ps.setString(7 + i * 5, ListaPages.get(i).get("line2"));
-					ps.setString(8 + i * 5, ListaPages.get(i).get("line3"));
-					ps.setFloat(9 + i * 5, Float.parseFloat(ListaPages.get(i).get("timer")));
+					ps.setInt(5 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id")));
+					ps.setInt(6 + i * 6, Integer.parseInt(ListaPages.get(i).get("image_id2")));
+					ps.setString(7 + i * 6, ListaPages.get(i).get("line1"));
+					ps.setString(8 + i * 6, ListaPages.get(i).get("line2"));
+					ps.setString(9 + i * 6, ListaPages.get(i).get("line3"));
+					ps.setFloat(10 + i * 6, Float.parseFloat(ListaPages.get(i).get("timer")));
 				} else {
-					ps.setInt(5 + i * 5, 0);
-					ps.setString(6 + i * 5, "");
-					ps.setString(7 + i * 5, "");
-					ps.setString(8 + i * 5, "");
-					ps.setInt(9 + i * 5, 0);
+					ps.setInt(5 + i * 6, 0);
+					ps.setInt(6 + i * 6, 0);
+					ps.setString(7 + i * 6, "");
+					ps.setString(8 + i * 6, "");
+					ps.setString(9 + i * 6, "");
+					ps.setInt(10 + i * 6, 0);
 				}
 			}
-			ps.setInt(30, Integer.parseInt(msg.get("id")));
+			ps.setInt(35, Integer.parseInt(msg.get("id")));
+			ps.setInt(36, Integer.parseInt(msg.get("type_page")));
 
 			ps.executeUpdate();
 
