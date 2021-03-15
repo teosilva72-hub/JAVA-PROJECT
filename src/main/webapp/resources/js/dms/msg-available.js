@@ -141,10 +141,11 @@ async function main() {
 		disableTable.addClass('active');
 		editField.addClass('active');
 		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
-		equipInfo.addClass('editing');
-
+		
 		updateMessage();
 		timerCheckAll.trigger('change')
+		equipInfo.addClass('editing');
+		console.log(pageActive)
 	}
 
 	const returnAlert = msg => {
@@ -437,7 +438,9 @@ async function main() {
 
 		// change and pre-save page
 		editPMV.on('click', 'label', function () {
-			savePMV();
+			if (equipInfo.hasClass('editing')) {
+				savePMV();
+			}
 
 			pageActive = Number($(this).text()) - 1
 
@@ -445,7 +448,7 @@ async function main() {
 		}).find('[id^=timerCheck]').change(function () {
 			// disable or enable other page
 			let check = $(this);
-			let page = Number(check.parent().siblings().eq(2).text()) - 1
+			let page = Number(check.parent().parent().siblings().eq(1).text()) - 1
 			if (check.prop('checked')) {
 				check.parent().next().prop('disabled', false).next().prop('disabled', false)
 					.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
@@ -466,7 +469,7 @@ async function main() {
 			}
 			timerPage.each(function () {
 				if (!$(this).prop('disabled'))
-					$(this).val(function () { return Number($(this).val()) || 1; });
+					$(this).val(function () { return Number($(this).val()) || 10; });
 			})
 		})
 

@@ -181,18 +181,20 @@
 								<div class="row">
 									<c:forEach begin="1" end="5" var="idx">
 										<div class="col timerBtn">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck#{idx}" class="form-check-input mt-0"
-														type="checkbox" value="#{idx}"
-														aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+											<div class="btn-group-vertical" role="group" aria-label="timerGroup">
+												<div class="input-group bar-width">
+													<!-- Checkbox -->
+													<div class="input-group-text check-timer">
+														<input id="timerCheck#{idx}" class="form-check-input mt-0"
+															type="checkbox" value="#{idx}"
+															aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+													</div>
+													<!-- Timer -->
+													<input id="timerPage#{idx}" type="number"
+														class="form-control form-control-sm text-timer pe-0 border-start-0"
+														aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
+														disabled="disabled" min="1" max="60" />
 												</div>
-												<!-- Timer -->
-												<input id="timerPage#{idx}" type="number"
-													class="form-control form-control-sm text-timer pe-0 border-start-0"
-													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
-													disabled="disabled" min="1" max="60" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page#{idx}"
 													type="radio" value="#{idx}" />
@@ -254,15 +256,16 @@
 												<div class="input-group">
 													<span class="input-group-text"
 														id="name-group">#{dmsLabels.dms_available_messages_name_placeholder}</span>
-													<input id="name-input" class="form-control name inputDesign" type="text"
+													<input id="name-input" class="form-control name inputDesign"
+														type="text"
 														placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
 														maxlength="15" autocomplete="off" />
 												</div>
 											</div>
-	
+
 										</div>
 										<!-- end input name -->
-	
+
 										<!-- message input -->
 										<div class="col-12 confInput">
 											<div id="input-message-1">
@@ -270,9 +273,10 @@
 												<div class="input-group">
 													<span class="input-group-text"
 														id="msg1-group">#{dmsLabels.dms_available_lines_line1}</span>
-	
-													<input id="message-box1" class="form-control message-input inputDesign"
-														maxlength="12" autoResize="false" resizable="false" type="text"
+
+													<input id="message-box1"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
 														placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
 														autocomplete="off" />
 												</div>
@@ -285,9 +289,10 @@
 												<div class="input-group">
 													<span class="input-group-text"
 														id="msg2-group">#{dmsLabels.dms_available_lines_line2}</span>
-	
-													<input id="message-box2" class="form-control message-input inputDesign"
-														maxlength="12" autoResize="false" resizable="false" type="text"
+
+													<input id="message-box2"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
 														placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
 														autocomplete="off">
 													</input>
@@ -300,9 +305,10 @@
 												<div class="input-group">
 													<span class="input-group-text"
 														id="msg3-group">#{dmsLabels.dms_available_lines_line3}</span>
-	
-													<input id="message-box3" class="form-control message-input inputDesign"
-														maxlength="12" autoResize="false" resizable="false" type="text"
+
+													<input id="message-box3"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
 														placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
 														autocomplete="off">
 													</input>
