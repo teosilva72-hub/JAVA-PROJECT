@@ -133,7 +133,7 @@ $(function () {
 
 		equip.dblclick(function () {
 			posReset();
-			
+
 			id = equip.attr('id').match(/\d+/g)[0];
 			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 			toDrag = `#${equip.attr('id')}`

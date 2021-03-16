@@ -1,411 +1,530 @@
-var msg, toast, modal;
+import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
-// implementation 'loopNext' in jquery
-$.fn.loopNext = function (selector) {
-	var selector = selector || '';
-	return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
-}
+let msg, toast, pmvActive, pageActive;
+let listPMV = [];
 
-// Select message in pre-view
-const selectMessage = () => {
-	let pmv = $(`.equip-info.equip1`)
-	msg = {
-		id: pmv.find('.dmsTab span#dmsId').text(),
-		type: pmv.find('.dmsTab span#dmsType').attr('type'),
-		name: pmv.find('.dmsTab span#dmsName').text(),
-		pages: []
+async function main() {
+	await init();
+
+	const typeInput = $('#type-input');
+	const nameInput = $('#name-input');
+	const messageBox1 = $('#message-box1');
+	const messageBox2 = $('#message-box2');
+	const messageBox3 = $('#message-box3');
+	const btnCreate = $('#btnCreate');
+	const btnEdit = $('#btnEdit');
+	const btnDelete = $('#btnDelete');
+	const btnSave = $('#btnCr1');
+	const btnCancel = $('#btnCr2');
+	const btnSend = $("[id$=btnCr3]");
+	const disableTable = $('#disableTable');
+	const editField = $('.edit-field');
+	const editPMV = $('.edit-pmv-page');
+	const timerCheck = $('input[id^=timerCheck]:not(#timerCheck1)');
+	const timerCheckAll = $('input[id^=timerCheck]');
+	const pre_vi = $(`#page-pmv .equip-info`);
+	const equipInfo = $('.equip-info');
+	const picture = equipInfo.find(`.picture-box`);
+	const table = $("#tabelaReal");
+	const timerPage = $('[id^=timerPage]');
+	const listImage = $('#list-images');
+	const selectDriver = $('#selectDriver');
+	const pmvBoard = $('.pmv-board');
+
+	// implementation 'loopNext' in jquery
+	$.fn.loopNext = function (selector) {
+		var selector = selector || '';
+		return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
 	}
 
-	for (let i = 1; i <= 5; i++) {
-		let info = $(`.equip-info.equip${i}`)
-		msg.pages.push({
-			image: info.find('#child-img img').attr('src'),
-			image_id: info.find('#child-img img').attr('id-img'),
-			timer: String(($(`[id$=imerCheck${i}]`).prop('checked') || 0) && $(`#timerPage${i}`).val()),
-			line1: info.find('#child-msg .message1').attr('msg'),
-			line2: info.find('#child-msg .message2').attr('msg'),
-			line3: info.find('#child-msg .message3').attr('msg'),
-		})
+	const pmvResize = () => {
+		let scale = Math.min(0.9 / (equipInfo.outerWidth() / pmvBoard.outerWidth()), 1.5);
+		equipInfo.css('transform', `scale(${scale})`);
 	}
 
-	$('#selectedId').text(msg.id);
+	// Select message in pre-view
+	const selectMessage = () => {
+		savePMV();
 
-	document.forms.dialogForm.deleteID.value = msg.id;
-	document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name });
-	document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
-	document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
-	document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
-	document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
-	document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
-}
-
-// Get update to menu
-const updateMessage = () => {
-	$('#id-input').val(msg.id)
-	$('#type-input').val(msg.type)
-	$('#name-input').val(msg.name)
-	$('#message-box1').val(msg.pages[$('.equip-info.active').index()].line1)
-	$('#message-box2').val(msg.pages[$('.equip-info.active').index()].line2)
-	$('#message-box3').val(msg.pages[$('.equip-info.active').index()].line3)
-}
-
-// Create new message
-const newMsg = () => {
-	$('#btnCreate').prop('disabled', true);
-	$('#btnEdit').prop('disabled', true);
-	$('#btnDelete').prop('disabled', true);
-	$('[id$=btnCr1]').prop('disabled', false);
-	$('#btnCr2').prop('disabled', false);
-	$('#disableTable').addClass('active');
-	$('.edit-field').addClass('active');
-	$('.edit-pmv-page').find(`[id=timerPage1]`).prop('disabled', false)
-	$('.edit-pmv-page').addClass('active')
-		.find(`[id^=timerPage]`).val(0)
-		.eq(1).prev().find('[id^=timerCheck]')
-		.prop('checked', false).trigger('change');
-	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
-	pre_vi.find('.dmsTab span').text('').each(function () {
-		$(this).last().attr('type', '')
-	})
-	pre_vi.find('.dmsTab #dmsId').text('0')
-	pre_vi.find(`[id^=msg]`).children().each(function () {
-		$(this).attr('msg', '').children().each(function () {
-			$(this).find('[id*=box]').text("");
-		})
-	})
-
-	$('#btn-page1').prop('checked', true);
-	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
-
-	$('input[id^=timerCheck]').prop('disabled', false);
-
-	selectMessage();
-	updateMessage();
-}
-
-// Create new message
-const editMsg = () => {
-	$('#btnCreate').prop('disabled', true);
-	$('#btnEdit').prop('disabled', true);
-	$('#btnDelete').prop('disabled', true);
-	$('[id$=btnCr1]').prop('disabled', false);
-	$('#btnCr2').prop('disabled', false);
-	$('#disableTable').addClass('active');
-	$('.edit-field').addClass('active');
-	$('.edit-pmv-page').addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
-
-	$('input[id^=timerCheck]').prop('disabled', false).trigger('change');
-
-	selectMessage();
-	updateMessage();
-}
-
-const returnAlert = msg => {
-	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-		// Main loading
-		init();
-	})
-
-	$('#btnEdit').prop('disabled', true);
-	$('#btnDelete').prop('disabled', true);
-
-	cancel();
-
-	$('#msgToastNotification').text(msg);
-	// modal.hide();
-	toast.show();
-}
-
-// Cancel message in menu
-const cancel = () => {
-	$('#btnCreate').prop('disabled', false);
-	$('[id$=btnCr1]').prop('disabled', true);
-	$('#btnCr2').prop('disabled', true);
-	$('#disableTable').removeClass('active');
-	$('.edit-pmv-page').removeClass('active');
-	$('.edit-field').removeClass('active');
-	let pre_vi = $(`#page-pmv .equip-info`);
-	pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
-	pre_vi.find('.dmsTab span').text('').each(function () {
-		$(this).last().attr('type', '')
-	})
-	pre_vi.find(`[id^=msg]`).children().each(function () {
-		$(this).attr('msg', '').children().each(function () {
-			$(this).find('[id*=box]').text("");
-		})
-	})
-
-	$(`.equip-info.equip1`).addClass('active').siblings().removeClass('active');
-
-	$('input[id^=timerCheck]').prop('disabled', true);
-	$('input[id^=timerPage]').prop('disabled', true);
-
-	selectMessage();
-	updateMessage();
-}
-
-// render table with datatable
-const tableRender = () => {
-	// Start more components for tables
-	$('#message-table').DataTable({
-		select: true,
-		language: {
-			search: "",
-			searchPlaceholder: "Buscar",
-		},
-		"autoWidth": true,
-		"scrollY": "65vh",
-		"scrollCollapse": true,
-		"paging": false,
-		"bInfo": false,
-		"columnDefs": [{
-			"width": "5%",
-			"targets": 0
-		}, {
-			"width": "10%",
-			"targets": 1
-		}, {
-			"width": "10%",
-			"targets": 2
-		}, {
-			"width": "5%",
-			"targets": 3
-		}, {
-			"width": "15%",
-			"targets": 4
-		}, {
-			"width": "15%",
-			"targets": 5
-		}, {
-			"width": "15%",
-			"targets": 6
-		}, {
-			"width": "5%",
-			"targets": 7
-		}]
-	});
-}
-
-// init table
-const init = () => {
-	// get all message
-	let table = $('.nameColumn + td.pageTable1')
-	table.each(function () {
-		let tr = $(this).parent()
-		let pagination = $('.edit-pmv-page')
-
-		// Start rotation for tables
-		if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < 20)
-			changeMsg($(this));
-		else {
-			$(this).addClass('active')
-				.loopNext().addClass('active')
-				.loopNext().addClass('active')
-				.loopNext().addClass('active')
-				.loopNext().addClass('active')
+		msg = {
+			id: String(pmvActive.id()),
+			type: pmvActive.type_alert('&this'),
+			name: pmvActive.name('&this'),
+			type_page: String(pmvActive.type_page()),
+			pages: []
 		}
 
+		for (let i = 0; i < 5; i++) {
+			let pagePMV = pmvActive.page(i);
+			msg.pages.push({
+				image: pagePMV.image(0),
+				image2: pagePMV.image(1),
+				image_id: String(pagePMV.image_id(0)),
+				image_id2: String(pagePMV.image_id(1)),
+				timer: String(pagePMV.timer()),
+				line1: pagePMV.line(1),
+				line2: pagePMV.line(2),
+				line3: pagePMV.line(3),
+			})
+		}
 
-		// Add on click pre-visualization
-		$(`#page-pmv .equip1`).addClass('active');
-		tr.click(function () {
-			let morePage = true;
+		document.forms.contentForm.requestParam.value = JSON.stringify({ id: msg.id, type: msg.type, name: msg.name, type_page: msg.type_page });
+		document.forms.contentForm.requestParamPAGE1.value = JSON.stringify(msg.pages[0]);
+		document.forms.contentForm.requestParamPAGE2.value = JSON.stringify(msg.pages[1]);
+		document.forms.contentForm.requestParamPAGE3.value = JSON.stringify(msg.pages[2]);
+		document.forms.contentForm.requestParamPAGE4.value = JSON.stringify(msg.pages[3]);
+		document.forms.contentForm.requestParamPAGE5.value = JSON.stringify(msg.pages[4]);
+
+		btnSend.click();
+	}
+
+	const savePMV = () => {
+		pmvActive.type_alert(typeInput.val() || "");
+		pmvActive.name(nameInput.val());
+
+		let img = equipInfo.find(`.picture-box`);
+
+		pmvActive.change_page(pageActive, messageBox1.val(), messageBox2.val(), messageBox3.val());
+		pmvActive.change_image(pageActive, img.eq(0).attr("id-img"), img.eq(1).attr("id-img"), img.eq(0).attr("src"), img.eq(1).attr("src"));
+	}
+
+	// Get update to menu
+	const updateMessage = () => {
+		changeEquipInfo();
+
+		$('#id-input').val(pmvActive.id())
+		typeInput.val(pmvActive.type_alert('&this'))
+		nameInput.val(pmvActive.name('&this'))
+		messageBox1.val(pmvActive.page(pageActive).line(1))
+		messageBox2.val(pmvActive.page(pageActive).line(2))
+		messageBox3.val(pmvActive.page(pageActive).line(3))
+	}
+
+	// Create new message
+	const newMsg = () => {
+		btnSave.prop('disabled', false);
+		btnCancel.prop('disabled', false);
+		disableTable.addClass('active');
+		editField.addClass('active');
+		editPMV.find(`[id=timerPage1]`).prop('disabled', false)
+		equipInfo.addClass('editing');
+
+		$('#btn-page1').prop('checked', true);
+
+		let type
+
+		switch (selectDriver.val()) {
+			case "1":
+				type = PaginaType.Type1
+				break;
+
+			case "2":
+				type = PaginaType.Type2
+				break;
+
+			case "3":
+				type = PaginaType.Type3
+				break;
+
+			default:
+				type = PaginaType.Type1
+				break;
+		}
+
+		pmvActive = PMV.new(0, "", "", type);
+		pmvActive.add_page_default();
+		pageActive = 0;
+
+		updateMessage();
+		timerCheckAll.trigger('change')
+	}
+
+	// Create new message
+	const editMsg = () => {
+		btnSave.prop('disabled', false);
+		btnCancel.prop('disabled', false);
+		disableTable.addClass('active');
+		editField.addClass('active');
+		editPMV.addClass('active').find(`[id=timerPage1]`).prop('disabled', false)
+		equipInfo.addClass('editing');
+		
+		updateMessage();
+		timerCheckAll.trigger('change')
+	}
+
+	const returnAlert = msg => {
+		changeDriver();
+
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
+
+		cancel();
+
+		$('#msgToastNotification').text(msg);
+		toast.show();
+	}
+
+	// Cancel message in menu
+	const cancel = () => {
+		btnCreate.prop('disabled', false);
+		btnEdit.prop('disabled', true);
+		btnDelete.prop('disabled', true);
+		btnSave.prop('disabled', true);
+		btnCancel.prop('disabled', true);
+		disableTable.removeClass('active');
+		editPMV.removeClass('active');
+		editField.removeClass('active');
+		equipInfo.removeClass('editing');
+		picture.removeClass('selected')
+		listImage.css('display', 'none')
+		pre_vi.find('.picture-box').attr({ src: "/resources/images/pictures/000_6464.bmp", 'id-img': 0 });
+		pre_vi.find('.dmsTab span').text('').each(function () {
+			$(this).last().attr('type', '')
+		})
+		pre_vi.find(`#message`).children().each(function () {
+			$(this).children().each(function () {
+				$(this).find('[id*=box]').text("");
+			})
+		})
+
+		timerCheck.prop('disabled', true);
+		$('input[id^=timerPage]').prop('disabled', true);
+	}
+
+	const changeEquipInfo = () => {
+		let PagePMV = pmvActive.page(pageActive);
+		let picture = pre_vi.find('.picture-box')
+
+		// Add ID and NAME
+		pre_vi.find('.dmsTab span#dmsId').text(`${pmvActive.id()}`).next().text(`${pmvActive.name('&this')}`)
+		// add Type
+		pre_vi.find('.dmsTab span#dmsType').text($(`#type-input [value="${pmvActive.type_alert('&this')}"]`).text()).attr('type', pmvActive.type_alert('&this'))
+		// Add image
+		picture
+			.eq(0).attr({ src: PagePMV.image(0), 'id-img': PagePMV.image_id(0) })
+		picture
+			.eq(1).attr({ src: PagePMV.image(1), 'id-img': PagePMV.image_id(1) })
+		// add messages
+		pre_vi.find(`#message`).children().each(function (line) {
+			$(this).children().each(function (index) {
+				$(this).find('[id*=box]').text(PagePMV.line_char(line + 1, index))
+			})
+		})
+
+		for (let i = 5; i >= 1; i--) {
+			// add Timers
+			if (pmvActive.len() >= i && pmvActive.page(i - 1).timer() > .0) {
+				editPMV.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
+				editPMV.find(`#timerCheck${i}`).prop('checked', true);
+				editPMV.find(`#btn-page${i}`).prop('disabled', false);
+			} else {
+				editPMV.find(`#timerCheck${i}`).prop('checked', false);
+				editPMV.find(`#btn-page${i}`).prop('disabled', true);
+				editPMV.find(`#timerPage${i}`).val(0);
+			}
+		}
+		editPMV.addClass('active').find(`#btn-page${pageActive + 1}`).prop('checked', true);
+	}
+
+	// render table with datatable
+	const tableRender = () => {
+		// Start more components for tables
+		$('#message-table').DataTable({
+			select: true,
+			language: {
+				search: "",
+				searchPlaceholder: "Buscar",
+			},
+			"autoWidth": true,
+			"scrollY": "65vh",
+			"scrollCollapse": true,
+			"paging": false,
+			"bInfo": false,
+			"columnDefs": [{
+				"width": "5%",
+				"targets": 0
+			}, {
+				"width": "10%",
+				"targets": 1
+			}, {
+				"width": "10%",
+				"targets": 2
+			}, {
+				"width": "5%",
+				"targets": 3
+			}, {
+				"width": "15%",
+				"targets": 4
+			}, {
+				"width": "15%",
+				"targets": 5
+			}, {
+				"width": "15%",
+				"targets": 6
+			}, {
+				"width": "5%",
+				"targets": 7
+			}]
+		});
+	}
+
+	// init_table table
+	const init_table = campos => {
+		// get all message
+		let table = $('.nameColumn + td.pageTable1')
+
+		listPMV = [];
+		table.each(function () {
+			let tr = $(this).parent()
+
 			// get all page with time > 0
-			let pages = $(this).find('td:not(td[timer="0.0"])').add($(this).find('.pageTable1'));
+			let pages = tr.find('td:not(td[timer="0.0"])').add(tr.find('.pageTable1'));
+			let id = Number(pages.filter('.idColumn').text())
+			let type = pages.filter('[type]').attr('type')
+			let name = pages.find('.tablePageName').text()
 
-			for (let i = 1; i <= 5; i++) {
-				// page
+			let pageType
+			switch (selectDriver.val()) {
+				case "1":
+					pageType = PaginaType.Type1
+					break;
+
+				case "2":
+					pageType = PaginaType.Type2
+					break;
+
+				case "3":
+					pageType = PaginaType.Type3
+					break;
+
+				default:
+					pageType = PaginaType.Type1
+					break;
+			}
+
+			let pmv = PMV.new(id, type, name, pageType);
+
+			for (let i = 0; i < 5; i++) {
 				const page = pages.filter('.pageTable' + i);
-				// Verification
 				const verif = page.filter('td[active]').attr('active');
-				// page originpager
-				const originpager = page.filter('td[originpager]').attr('originpager');
-				// page timer
-				let timer = page.filter('td[timer]').attr('timer');
-				// Pré visualização
-				let pre_vi = $(`#page-pmv .equip${i}`);
-				// get first message on page
-				let msg = page.filter('.msgPage1')
-				pagination.addClass('active').find('#btn-page1').prop('checked', true);
-				if (i == 1) {
-					morePage = true;
-					pre_vi.addClass('active');
-				}
-				else
-					pre_vi.removeClass('active');
-				// add information on page
 				if (verif) {
-					// Add image
-					pre_vi.find('.picture-box').attr({ src: page.find('[id*=picture-table]').attr('src'), 'id-img': page.find('[id*=picture-table]').next().val() })
-					// Add ID and NAME
-					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(`${pages.find('.tablePageName').text()}`)
-					// add messages
-					pre_vi.find(`#msg${i}`).children().each(function () {
-						$(this).attr('msg', msg.text()).children().each(function (index) {
-							if ((msg.text().length - index) > 0)
-								$(this).find('[id*=box]').text(msg.text()[index])
-							else
-								$(this).find('[id*=box]').text("")
-						})
-						msg = msg.next()
-					})
-					// add Type
-					pre_vi.find('.dmsTab span#dmsType').text(pages.filter('[type]').text()).attr('type', pages.filter('[type]').attr('type'))
+					const imgId = page.find('.picture-table').next().val();
+					const imgId2 = page.find('.picture-table_2').next().val() || 0;
+					const img = page.find('.picture-table').attr('src');
+					const img2 = page.find('.picture-table_2').attr('src') || "/resources/images/pictures/000_6464.bmp";
+					const timer = parseFloat(page.filter('td[timer]').attr('timer'));
+					const line1 = page.filter('.msgPage1')
+					const line2 = line1.next()
+					const line3 = line2.next()
 
-					// disable button if morePage if false
-					if (morePage && page.length) {
-						// add check page
-						pagination.find(`#timerCheck${originpager}`).prop('checked', true);
-						pagination.find(`#btn-page${originpager}`).removeAttr('disabled');
-					} else {
-						// remove check page
-						pagination.find(`#timerCheck${originpager}`).prop('checked', false);
-						pagination.find(`#btn-page${originpager}`).attr('disabled', 'disabled');
-						morePage = false;
-					}
-					// add Timers
-					pagination.find(`#timerPage${originpager}`).val(timer);
-
-				} else {
-					// clean table void
-					pre_vi.find('.picture-box').attr('src', "/resources/images/pictures/000_6464.bmp")
-					pre_vi.find('.dmsTab span#dmsId').text(`${pages.filter('.idColumn').text()}`).next().text(``).next().text('').attr('type', '')
-					pre_vi.find(`#msg${i}`).children().each(function () {
-						$(this).attr('msg', '').children().each(function () {
-							$(this).find('[id*=box]').text("")
-						})
-					})
-					pagination.find(`#timerCheck${i}`).prop('checked', false);
-					pagination.find(`#btn-page${i}`).attr('disabled', 'disabled');
-					pagination.find(`#timerPage${i}`).val(0);
-					morePage = false;
+					pmv.add_page(imgId, imgId2, img, img2, timer, line1.text(), line2.text(), line3.text());
 				}
 			}
 
-			$('#btnEdit').prop('disabled', false);
-			$('#btnDelete').prop('disabled', false);
+			listPMV.push(pmv);
 
-			// select message
-			selectMessage();
+			// Start rotation for tables
+			if ($(this).siblings().addBack().filter('td[timer="0.0"]').length < campos * 4)
+				changeMsg($(this), campos);
+			else {
+				let elmt = $(this).addClass('active');
+				for (let idx = 1; idx < campos; idx++) {
+					elmt = elmt.loopNext().addClass('active');
+				}
+			}
+
+
+			// Add on click pre-visualization
+			tr.click(function () {
+				pmvActive = pmv.clone();
+				pageActive = 0;
+
+				changeEquipInfo();
+				editPMV.find(`[id^=timerCheck]`).prop('disabled', true);
+
+				btnEdit.prop('disabled', false);
+				btnDelete.prop('disabled', false);
+
+				$('#selectedId').text(id);
+				document.forms.dialogForm.deleteID.value = id;
+			})
 		})
-	})
 
-	// load first table
-	tableRender();
-}
+		// load first table
+		tableRender();
+	}
 
-// func to start rotation tables. Only tables
-const changeMsg = msg => {
-	if (msg.index() > 2) {
-		let timer = msg.attr("timer");
-		let text1 = msg.loopNext();
-		let text2 = text1.loopNext();
-		let text3 = text2.loopNext();
-		let pg = text3.loopNext();
-		if (timer) {
-			msg.addClass('active');
-			text1.addClass('active');
-			text2.addClass('active');
-			text3.addClass('active');
-			pg.addClass('active');
-			setTimeout(() => {
-				msg.removeClass('active');
-				text1.removeClass('active');
-				text2.removeClass('active');
-				text3.removeClass('active');
-				pg.removeClass('active');
-				changeMsg(pg.loopNext());
-			}, timer * 1000)
+	// func to start rotation tables. Only tables
+	const changeMsg = (msg, campos) => {
+		if (msg.index() > 2) {
+			let timer = msg.attr("timer");
+			if (timer) {
+				let elmt = [msg.addClass('active')];
+				for (let idx = 0; idx < campos - 1; idx++) {
+					elmt.push(elmt[idx].loopNext().addClass('active'));
+				}
+				setTimeout(() => {
+					for (const e of elmt) {
+						e.removeClass('active');
+					}
+					changeMsg(elmt.pop().loopNext(), campos);
+				}, timer * 1000)
+			} else {
+				for (let idx = 0; idx < campos; idx++) {
+					msg = msg.next();
+				}
+				changeMsg(msg, campos);
+			}
 		} else
-			changeMsg(pg.loopNext());
-	} else
-		changeMsg(msg.loopNext());
-}
+			changeMsg(msg.loopNext(), campos);
+	}
 
-// transform string to char in message pmv
-const upTextToChar = (elmt, id) => {
-	let textFull = elmt.val();
-	for (const idx in textFull) {
-		if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
-			const char = textFull[idx];
+	// transform string to char in message pmv
+	const upTextToChar = (elmt, id) => {
+		let textFull = elmt.val();
+		for (const idx in textFull) {
+			if (Object.hasOwnProperty.call(textFull, idx) && idx < 12) {
+				const char = textFull[idx];
 
-			$('.equip-info.active').find(`.message${id}`).attr('msg', textFull).find(`div > span[id^=box]`)[idx].innerText = char;
+				equipInfo.find(`.message${id}`).attr('msg', textFull).find(`div > span[id^=box]`)[idx].innerText = char;
+			}
+		}
+		for (let index = 11; index >= textFull.length; index--) {
+			equipInfo.find(`.message${id} div > span[id^=box]`)[index].innerText = "";
 		}
 	}
-	for (let index = 11; index >= textFull.length; index--) {
-		$('.equip-info.active').find(`.message${id} div > span[id^=box]`)[index].innerText = "";
+
+	const changeDriver = () => {
+
+		cancel();
+
+		switch (selectDriver.val()) {
+			case "1":
+				pmvBoard.removeClass(['driver2', 'driver3']);
+
+				table.load('/dms/messages/message-driver1.xhtml', () => {
+					// Main loading
+					init_table(5);
+				})
+
+				break;
+
+			case "2":
+				pmvBoard.addClass('driver2')
+					.removeClass('driver3');
+
+				table.load('/dms/messages/message-driver2.xhtml', () => {
+					// Main loading
+					init_table(4);
+				})
+
+				break;
+
+			case "3":
+				pmvBoard.addClass('driver3')
+					.removeClass('driver2');
+
+				table.load('/dms/messages/message-driver3.xhtml', () => {
+					// Main loading
+					init_table(6);
+				})
+
+				break;
+
+			default:
+				break;
+		}
 	}
+
+	$(function () {
+		// request table
+		changeDriver();
+
+		// change and pre-save page
+		editPMV.on('click', 'label', function () {
+			if (equipInfo.hasClass('editing')) {
+				savePMV();
+			}
+
+			pageActive = Number($(this).text()) - 1
+
+			updateMessage();
+		}).find('[id^=timerCheck]').change(function () {
+			// disable or enable other page
+			let check = $(this);
+			let page = Number(check.parent().parent().siblings().eq(1).text()) - 1
+			if (check.prop('checked')) {
+				check.parent().next().prop('disabled', false).parent().next().prop('disabled', false)
+					.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
+
+				if (pmvActive.len() <= page)
+					pmvActive.add_page_default();
+			} else {
+				check.parent().next().prop('disabled', true).parent().next().prop('disabled', true)
+					.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
+
+				if (pmvActive.len() > page) {
+					pmvActive.remove_page(page)
+					pageActive = Number($('[id^=btn-page]:checked+label').text()) >= page ? page - 1 : Number($('[id^=btn-page]:checked+label').text()) - 1
+
+					updateMessage();
+				}
+
+			}
+			timerPage.each(function () {
+				if (!$(this).prop('disabled'))
+					$(this).val(function () { return Number($(this).val()) || 10; });
+			})
+		})
+
+		// hidden img and open list
+		picture.click(function () {
+			if (equipInfo.hasClass('editing')) {
+				picture.removeClass('selected')
+				$(this).addClass('selected')
+				$('#list-images').css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
+			}
+		})
+
+		// change field image
+		listImage.on('click', 'div > img[id-img]', function (e) {
+			e.currentTarget.ondragstart = function () { return false }
+			equipInfo.find('#child-img .picture-box.selected').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') }).removeClass('selected')
+			listImage.css('display', 'none')
+		})
+
+		// change field type
+		typeInput.change(function () {
+			equipInfo.find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
+		})
+		// change field name
+		nameInput.on('keyup change', function () {
+			equipInfo.find('.dmsTab span#dmsName').text($(this).val())
+		})
+		for (let line = 1; line <= 3; line++) {
+			// change field msg line
+			$(`#message-box${line}`).on('keyup change', function () {
+				upTextToChar($(this), line);
+			})
+		}
+		// if change timer
+		timerPage.on('keyup change', function () {
+			pmvActive.change_timer(Number($(this).siblings().eq(2).text()) - 1, Number($(this).val()));
+		})
+
+		
+		toast = new bootstrap.Toast(document.getElementById('liveToast'))
+		
+		pmvResize();
+		$(window).resize(pmvResize);
+		window.returnAlert = returnAlert;
+		
+		btnCreate.click(newMsg);
+		btnEdit.click(editMsg);
+		btnCancel.click(cancel);
+		btnSave.click(selectMessage);
+		selectDriver.change(changeDriver);
+	})
 }
 
-$(function () {
-	// request table
-	$("#tabelaReal").load('/dms/messages/message-full.xhtml', () => {
-		// Main loading
-		init();
-	})
-
-	// change and pre-save page
-	$('.edit-pmv-page').on('click', 'label', function () {
-		$(`.equip-info.equip${$(this).text()}`).addClass('active').siblings().removeClass('active');
-
-		updateMessage();
-
-	}).find('[id^=timerCheck]').change(function () {
-		// disable or enable other page
-		let check = $(this);
-		if (check.prop('checked'))
-			check.parent().next().prop('disabled', false).next().prop('disabled', false)
-				.parent().parent().next().find('input[id^=timerCheck]').prop('disabled', false);
-		else
-			check.parent().next().prop('disabled', true).next().prop('disabled', true)
-				.parent().parent().next().find('input[id^=timerCheck]').prop({ disabled: true, checked: false }).trigger('change');
-		$('[id^=timerPage]').each(function () {
-			if (!$(this).prop('disabled'))
-				$(this).val(function () { return Number($(this).val()) || 1; });
-		})
-		selectMessage();
-	})
-
-	// hidden img and open list
-	$('#image-div').click(function () {
-		$(this).css('display', 'none').next().css('display', 'block').find('div > img[id-img]').on('dragstart', e => { e.preventDefault() })
-	})
-
-	// change field image
-	$('#list-images').on('click', 'div > img[id-img]', function (e) {
-		e.currentTarget.ondragstart = function () { return false }
-		$('.equip-info.active').find('#child-img img[id-img]').attr({ src: $(this).attr('src'), 'id-img': $(this).attr('id-img') })
-		$('#list-images').css('display', 'none').prev().css('display', 'block')
-		selectMessage();
-	})
-
-	// change field type
-	$('#type-input').change(function () {
-		$('.equip-info.active').find('.dmsTab span#dmsType').attr('type', $(this).val()).text($(this).find('option:selected').text())
-		selectMessage();
-	})
-	// change field name
-	$('#name-input').on('keyup change', function () {
-		$('.equip-info.active').find('.dmsTab span#dmsName').text($(this).val())
-		selectMessage();
-	})
-	for (let line = 1; line <= 3; line++) {
-		// change field msg line
-		$(`#message-box${line}`).on('keyup change', function () {
-			upTextToChar($(this), line);
-			selectMessage();
-		})
-	}
-	// if change timer
-	$('[id^=timerPage]').on('keyup change', function () {
-		selectMessage();
-	})
-
-	toast = new bootstrap.Toast(document.getElementById('liveToast'))
-	modal = new bootstrap.Modal(document.getElementById('deleteModal'))
-
-	$('#btnCreate').click(newMsg);
-	$('#btnEdit').click(editMsg);
-	$('#btnCr2').click(cancel);
-})
+main();

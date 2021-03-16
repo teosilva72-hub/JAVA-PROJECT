@@ -1,4 +1,10 @@
-let filds = class filds{
+let rodovia = class rodovia{
+	constructor(highway, state){
+		this.highway = highway;
+		this.state = state;
+	}
+}
+/*let filds = class filds{
 	
 	constructor(idOcc, typeOcc, origin, situation, startDateEvent, startHourEvent, startMinuteEvent,
 	endDateEvent, endHourEvent, endMinute, causeProblable, descrMainProblable, descrInternalProblable,
@@ -72,4 +78,4 @@ let filds = class filds{
 	
 	
 }
-console.log(filds)
+console.log(filds)*/

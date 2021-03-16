@@ -4,88 +4,22 @@ body {
   height: 100% !important;
 }
 
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} */
+
 /*DIV PMV BOARD*/
 .pmv-board {
   border: none;
   margin-top: 1.5%;
 }
 
-.equip-info {
-  font-size: 5px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) scale(1.5);
-  display: none;
-}
-
-.equip-info.active {
-  display: revert;
-}
-
-#page-pmv {
-  position: relative;
-}
-
-.equip-info .tableStyle {
-  position: relative;
-  font-size: 10px;
-  width: 250px;
-  height: 69px;
-  border: none;
-  background: #333333;
-  border-right: 6px solid #00fa9a;
-  border-radius: 0;
-}
-
-.dms-name {
-  margin-bottom: -5px;
-}
-
-.dmsTab p {
-  height: 15px;
-}
-
-.border-table {
-  border-top-style: solid;
-  height: 17px;
-  border-left-style: solid;
-  background-color: #5d5d5d;
-  border-color: #000000;
-  border-width: 1px;
-}
-
-.border-table-right.bottom {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.border-table-right {
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.padding-pmv {
-  padding-left: 0px;
-  margin-left: -5px;
-  margin-top: 3px;
-}
-
-.ui-graphic-image {
-  width: 52px;
-  height: 52px;
-}
-
-.msg-pos {
-  position: absolute;
-  right: 5px;
-  bottom: 3px;
-}
-
-.table-message {
-  width: 150px;
-  color: yellow;
+.equip-info.editing .picture-box {
+  cursor: pointer;
 }
 
 /*TABLES EQUIP PREVIEW*/
@@ -112,10 +46,6 @@ body {
   left: 5px;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .message-title-div {
   text-align: center;
   color: #000;
@@ -124,42 +54,10 @@ body {
 .selectType {
   text-align-last: center;
   text-align: center;
-  height: 25px !important;
   padding: 0px;
-  font-size: 9pt;
   border: solid 1px #767676;
   border-radius: 25px;
   background: white;
-  -webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
-  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
-}
-
-/* INPUT ICONS */
-
-.fa-keyboard,
-.fa-file-signature,
-.fa-key,
-.fa-th-large {
-  margin-top: 8px;
-  margin-left: 5px;
-  font-size: 18px !important;
-}
-
-#name-div {
-  margin-top: 0;
-}
-
-#input-message-1 {
-  resize: none;
-}
-
-#input-message-2 {
-  resize: none;
-}
-
-#input-message-3 {
-  resize: none;
 }
 
 /*Font Size and Height - Inputs*/
@@ -168,11 +66,19 @@ body {
 }
 
 /*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
+.picture-box.selected {
+  border-style: solid;
+  border-image: linear-gradient(to right, red, orange) 1;
+  border-width: 2px;
+}
+
 #list-images {
   display: none;
   width: fit-content;
   overflow: auto;
   height: auto;
+  position: relative;
+  top: 8px;
 }
 
 .listbox {
@@ -186,10 +92,6 @@ body {
 .btn-available {
   background-color: #a8a8a8 !important;
   color: black !important;
-}
-
-.fa {
-  color: white;
 }
 
 #table-edit,
@@ -227,20 +129,27 @@ body {
   margin-top: 10px;
 }
 
+.displayInput {
+  height: fit-content;
+}
+
 .conf2Btn {
   margin-top: 10px !important;
 }
 
 .inputDesign {
   text-align: center;
-  height: 25px;
   font-size: 9pt;
   border: solid 1px #767676;
   border-radius: 25px;
   background: white;
-  -webkit-box-shadow: 1px rgba(0, 0, 0, 0.55);
-  -moz-box-shadow: 0px 2px 5px -2px rgba(0, 0, 0, 0.55);
-  box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.55);
+}
+
+.confInput .input-group * {
+  height: 25px;
+  font-size: 10px;
+  min-width: 60px;
+  display: block;
 }
 
 select {
@@ -261,26 +170,44 @@ select {
   z-index: 999;
 }
 
-.text-timer {
-  font-size: 12px;
-}
-
 .edit-pmv-page {
   position: absolute;
   top: 125px;
   display: none;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .edit-pmv-page.active {
   display: block;
 }
 
+.edit-pmv-page > div {
+  min-width: 300px;
+}
+
+.timerBtn {
+  padding: 0;
+}
+
 .page-button {
-  width: 25px;
+  height: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: 10px;
 }
 
 .bar-width {
-  width: 80px;
+  width: 50px;
+}
+
+.check-timer {
+  border-bottom-left-radius: 0;
+}
+
+.text-timer {
+  padding-left: 3px;
+  border-bottom-right-radius: 0;
 }
 
 .bar-width .input-group-text {
@@ -290,7 +217,7 @@ select {
 .edit-field {
   position: relative;
   display: none;
-  top: 143px;
+  top: 60px;
 }
 
 .edit-field.active {
@@ -341,10 +268,6 @@ tbody tr {
 
 .table-responsive {
   position: relative;
-}
-
-#image-div {
-  cursor: pointer;
 }
 
 @keyframes fade {

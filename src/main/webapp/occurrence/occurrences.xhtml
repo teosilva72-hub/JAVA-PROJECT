@@ -25,15 +25,7 @@
 
 
 		<!-- Script -->
-		<h:outputScript name="occ.js" library="js/occ" />
-		<h:outputScript name="class_occ.js" library="js/occ" />
-		<h:outputScript name="controller_occ.js" library="js/occ" />
-		<h:outputScript name="datepicker.js" library="js/datepicker" />
-		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
-		<h:outputScript name="jquery.validate.min.js"
-			library="js/jquery-validation" />
-		<h:outputScript name="additional-methods.min.js"
-			library="js/jquery-validation" />
+		
 			
 		<script type="text/javascript">
 			$(document)
@@ -923,7 +915,7 @@
 								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
 									disabled="#{occurrencesBean.fields}"
-									class="form-control inputDesign" pt:placeholder="0+020"
+									class="form-control inputDesign" pt:placeholder="025+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
 							<!-- RODOVIA -->
@@ -1729,7 +1721,15 @@
 		</div>
 		</section>
 		<!-- Final do conteudo do site -->
-
+		<h:outputScript name="occ.js" library="js/occ" />
+		<h:outputScript name="class_occ.js" library="js/occ" />
+		<h:outputScript name="controller_occ.js" library="js/occ" />
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
 		<script>
 			//Inicio dos comandos JavaScript
 			//getFilename();
@@ -1742,8 +1742,6 @@
 			onload(); //Oculta o formulario 2 e 3
 			
 		</script>
-				
-		<h:outputScript name="jspdf.debug.js"  library="pdf-debug"  />
-			
+		
 	</ui:define>
 </ui:composition>

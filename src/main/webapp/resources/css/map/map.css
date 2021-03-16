@@ -998,6 +998,15 @@ z-index: 10030;
 .addbox {
   width: 110%;
 }
+
+#bodyeqp {
+margin-top: -4%;
+}
+
+#bodyadd {
+margin-top: -4%;
+}
+
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */
@@ -1018,44 +1027,6 @@ text-align: center;
 
 .check-dir {
 	margin-left: 10%;
-}
-
-#chk1{
-	float: left;
-}
-
-#chk2 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk3 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk4 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk5 {
-	float: left;
-}
-
-#chk6 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk7 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk8 {
-	margin-left: 1%;
-	float: left;
 }
 
 .road-dir {

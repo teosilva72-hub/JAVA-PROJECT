@@ -69,7 +69,7 @@ public class EquipmentsDAO {
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM pmv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, number_lanes, name, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sos_equipment WHERE visible = 1";	
@@ -95,11 +95,45 @@ public class EquipmentsDAO {
 
 			if (rs != null) {
 				while (rs.next()) {			
-
+					
+				  // FOR GENERICS	
 				  Equipments eq = new Equipments();
 				  
+				  //FOR SAT
+				  SAT sat = new SAT();
+				  
+				  //FOR PMV
+				  DMS pmv = new DMS();
+				  
+				  if(mod.getModule().equals(ModulesEnum.SAT.getModule())) {
+				 
+				  sat.setEquip_id(rs.getInt("equip_id"));
+				  sat.setTable_id(mod.getModule().toLowerCase());
+				  sat.setNumber_lanes(rs.getInt("number_lanes"));
+				  sat.setNome(rs.getString("name"));		
+				  sat.setKm(rs.getString("km"));
+				  sat.setDir_lane1(rs.getString("dir_lane1"));
+				  sat.setDir_lane2(rs.getString("dir_lane2"));
+				  sat.setDir_lane3(rs.getString("dir_lane3"));
+				  sat.setDir_lane4(rs.getString("dir_lane4"));
+				  sat.setDir_lane5(rs.getString("dir_lane5"));
+				  sat.setDir_lane6(rs.getString("dir_lane6"));
+				  sat.setDir_lane7(rs.getString("dir_lane7"));
+				  sat.setDir_lane8(rs.getString("dir_lane8"));
+				  sat.setMapWidth(rs.getInt("map_width"));															
+				  sat.setMapPosX(rs.getInt("map_posX"));
+				  sat.setMapPosY(rs.getInt("map_posY"));
+				  sat.setLinearWidth(rs.getInt("linear_width"));
+				  sat.setLinearPosX(rs.getInt("linear_posX"));
+				  sat.setLinearPosY(rs.getInt("linear_posY"));		
+				  sat.setPosicao(rs.getString("position"));	
+				  
+				  equips.add(sat);
+  
+				  } else {
+				  
 				  eq.setEquip_id(rs.getInt("equip_id"));
-				  eq.setTable_id(mod.getModule().toLowerCase());
+				  eq.setTable_id(mod.getModule().toLowerCase()); 
 				  eq.setNome(rs.getString("name"));		
 				  eq.setKm(rs.getString("km"));	
 				  eq.setMapWidth(rs.getInt("map_width"));															
@@ -113,8 +147,8 @@ public class EquipmentsDAO {
 				  equips.add(eq);
 				    
 				}
-			}
-
+			 }
+		  }
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
@@ -314,10 +348,10 @@ public class EquipmentsDAO {
 		ArrayList<SAT> lista = new ArrayList<SAT>();
 		TranslationMethods translator = new TranslationMethods();
 		
-		String dir1 = " ", dir2 = " ";
+		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
 
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, linear_width, " +
-				   "linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1," +
+				   "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -337,6 +371,12 @@ public class EquipmentsDAO {
 					
 					dir1 = translator.CheckDirection1(rs.getString(7));
 					dir2 = translator.CheckDirection2(rs.getString(7));
+					dir3 = translator.CheckDirection3(rs.getString(7));
+					dir4 = translator.CheckDirection4(rs.getString(7));
+					dir5 = translator.CheckDirection5(rs.getString(7));
+					dir6 = translator.CheckDirection6(rs.getString(7));
+					dir7 = translator.CheckDirection7(rs.getString(7));
+					dir8 = translator.CheckDirection8(rs.getString(7));
 					
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
@@ -347,6 +387,12 @@ public class EquipmentsDAO {
 					sat.setNumFaixas(rs.getInt(6));
 					sat.setSentido1(dir1);		
 					sat.setSentido2(dir2);
+					sat.setSentido3(dir3);		
+					sat.setSentido4(dir4);
+					sat.setSentido5(dir5);		
+					sat.setSentido6(dir6);
+					sat.setSentido7(dir7);		
+					sat.setSentido8(dir8);
 					sat.setLinearWidth(rs.getInt(8));						
 					sat.setLinearPosX(rs.getInt(9));
 					sat.setLinearPosY(rs.getInt(10));
