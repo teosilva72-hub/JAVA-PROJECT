@@ -39,7 +39,7 @@ async function main() {
 
 	const pmvResize = () => {
 		let scale = Math.min(0.9 / (equipInfo.outerWidth() / pmvBoard.outerWidth()), 1.5);
-		equipInfo.css('transform', `scale(${scale})`);
+		equipInfo.css('transform', `translateX(-50%) scale(${scale})`);
 	}
 
 	// Select message in pre-view

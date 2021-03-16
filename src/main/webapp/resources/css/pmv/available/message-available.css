@@ -217,7 +217,7 @@ select {
 .edit-field {
   position: relative;
   display: none;
-  top: 60px;
+  top: 145px;
 }
 
 .edit-field.active {
