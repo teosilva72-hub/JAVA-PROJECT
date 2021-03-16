@@ -998,6 +998,15 @@ z-index: 10030;
 .addbox {
   width: 110%;
 }
+
+#bodyeqp {
+margin-top: -4%;
+}
+
+#bodyadd {
+margin-top: -4%;
+}
+
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */
@@ -1018,14 +1027,6 @@ text-align: center;
 
 .check-dir {
 	margin-left: 10%;
-}
-
-#direction1 {
-	float: right;
-}
-
-#direction2 {
-	float: right;
 }
 
 .road-dir {

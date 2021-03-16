@@ -4,12 +4,14 @@ public class Modules {
 	
 	private int moduleID;
 	private String module;	
+	private double battery_voltage;	
 	private boolean enabled;
 		
-	public Modules(int moduleID, String module, boolean enabled) {
+	public Modules(int moduleID, String module, double battery_voltage, boolean enabled) {
 		
 		this.moduleID = moduleID;
-		this.module = module;		
+		this.module = module;	
+		this.battery_voltage = battery_voltage;
 		this.enabled = enabled;
 	}
 	
@@ -30,7 +32,15 @@ public class Modules {
 	public void setModule(String module) {
 		this.module = module;
 	}
-		
+				
+	public double getBattery_voltage() {
+		return battery_voltage;
+	}
+
+	public void setBattery_voltage(double battery_voltage) {
+		this.battery_voltage = battery_voltage;
+	}
+
 	public boolean isEnabled() {
 		return enabled;
 	}

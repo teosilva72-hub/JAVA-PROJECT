@@ -348,10 +348,10 @@ public class EquipmentsDAO {
 		ArrayList<SAT> lista = new ArrayList<SAT>();
 		TranslationMethods translator = new TranslationMethods();
 		
-		String dir1 = " ", dir2 = " ";
+		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
 
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, linear_width, " +
-				   "linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1," +
+				   "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -371,6 +371,12 @@ public class EquipmentsDAO {
 					
 					dir1 = translator.CheckDirection1(rs.getString(7));
 					dir2 = translator.CheckDirection2(rs.getString(7));
+					dir3 = translator.CheckDirection3(rs.getString(7));
+					dir4 = translator.CheckDirection4(rs.getString(7));
+					dir5 = translator.CheckDirection5(rs.getString(7));
+					dir6 = translator.CheckDirection6(rs.getString(7));
+					dir7 = translator.CheckDirection7(rs.getString(7));
+					dir8 = translator.CheckDirection8(rs.getString(7));
 					
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
@@ -381,6 +387,12 @@ public class EquipmentsDAO {
 					sat.setNumFaixas(rs.getInt(6));
 					sat.setSentido1(dir1);		
 					sat.setSentido2(dir2);
+					sat.setSentido3(dir3);		
+					sat.setSentido4(dir4);
+					sat.setSentido5(dir5);		
+					sat.setSentido6(dir6);
+					sat.setSentido7(dir7);		
+					sat.setSentido8(dir8);
 					sat.setLinearWidth(rs.getInt(8));						
 					sat.setLinearPosX(rs.getInt(9));
 					sat.setLinearPosY(rs.getInt(10));

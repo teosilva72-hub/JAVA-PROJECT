@@ -33,7 +33,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("DATALIST30: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
@@ -94,7 +94,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println(select);
+			//System.out.println("DATA LIST 30 SQL: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -134,7 +134,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+	//	System.out.println("DATA LIST 45: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
@@ -195,7 +195,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("30MINALL: "+select);
+			//System.out.println("DATA LIST 45 SQL : "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -234,7 +234,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("DATALIST08: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
@@ -296,7 +296,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("30MINALL: "+select);
+			//System.out.println("DATA LIST 08 SQL: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -335,7 +335,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("DATA 45 IND: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
@@ -395,7 +395,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("30MINSOL: "+select);
+			//System.out.println("DATA IND 45 SQL: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -432,7 +432,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("DATA IND 08: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
@@ -495,7 +495,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("30MINSOL: "+select);
+			//System.out.println("DATA 08 SQL: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -537,7 +537,7 @@ public class SATinformationsDAO {
 	//Obter datas formatadas para os dados
 	currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 	
-	//System.out.println(currentDate);
+	//System.out.println("DATALISTSTAT 30: "+currentDate);
 				
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
@@ -554,7 +554,7 @@ public class SATinformationsDAO {
 						
 			rs = ps.executeQuery();
 			
-			//System.out.println("STATUS45DATA30: "+select);
+			//System.out.println("STATUS DATA 45 LIST: "+select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -592,7 +592,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("STATUS DATA 08 LIST: "+currentDate);
 					
 		String select ="SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
@@ -608,11 +608,9 @@ public class SATinformationsDAO {
 				ps.setString(1, currentDate);	
 				ps.setString(2, currentDate);	
 				
-				//System.out.println("STATUS45DATA08: "+select);
-							
 				rs = ps.executeQuery();
 				
-				//System.out.println("STATUS08HSQL: "+select);
+				//System.out.println("STATUS 08 LIST SQL: "+select);
 				
 				if (rs != null) {
 					while (rs.next()) {
@@ -650,7 +648,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("STAT LIST 45: "+currentDate);
 					
 		String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
@@ -667,7 +665,7 @@ public class SATinformationsDAO {
 							
 				rs = ps.executeQuery();
 				
-				//System.out.println("STATUS45DATA01: "+select);
+				//System.out.println("STATUS 45 LIST SQL: "+select);
 				
 				if (rs != null) {
 					while (rs.next()) {
@@ -705,7 +703,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("STAT IND 45: "+currentDate);
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
@@ -719,7 +717,7 @@ public class SATinformationsDAO {
 			ps.setInt(1, equip);	
 			ps.setString(2, currentDate);	
 			
-			//System.out.println("STATUS45DATA: "+select);
+			//System.out.println("STATUS IND 45 SQL: "+select);
 						
 			rs = ps.executeQuery();
 						
@@ -756,7 +754,7 @@ public class SATinformationsDAO {
 		//Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
-		//System.out.println(currentDate);
+		//System.out.println("STAT IND 08: "+currentDate);
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
@@ -773,7 +771,7 @@ public class SATinformationsDAO {
 			ps.setString(2, currentDate);	
 			ps.setString(3, currentDate);	
 			
-			//System.out.println("STATUS08DATA: "+select);
+			//System.out.println("STATUS 08 IND SQL: "+select);
 						
 			rs = ps.executeQuery();
 						
