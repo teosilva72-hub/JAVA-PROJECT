@@ -1,0 +1,110 @@
+.equip-info {
+  font-size: 5px;
+  display: inline-block;
+}
+
+#page-pmv {
+  position: relative;
+  text-align: center;
+}
+
+.equip-info .tableStyle {
+  position: relative;
+  font-size: 10px;
+  width: 250px;
+  height: 69px;
+  border: none;
+  background: #333333;
+  border-right: 6px solid #00fa9a;
+  border-radius: 0;
+}
+
+.dms-name {
+  margin-bottom: -5px;
+}
+
+.dmsTab p {
+  height: 15px;
+}
+
+.border-table {
+  border-top-style: solid;
+  height: 17px;
+  border-left-style: solid;
+  background-color: #5d5d5d;
+  border-color: #000000;
+  border-width: 1px;
+}
+
+.border-table-right.bottom {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.border-table-right {
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.padding-pmv {
+  padding-left: 0px;
+  margin-left: -5px;
+  margin-top: 3px;
+}
+
+.picture-box {
+  width: 52px;
+  height: 52px;
+}
+
+.msg-pos {
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+}
+
+.table-message {
+  width: 150px;
+  color: yellow;
+}
+
+.equip-info .second-img {
+  display: none;
+}
+
+.pmv-board.driver2 .equip-info .msg-pos {
+  bottom: 10px !important;
+}
+
+.pmv-board.driver2 .equip-info .message2 {
+  border-bottom-style: solid !important;
+}
+
+.pmv-board.driver2 .equip-info .message3 {
+  display: none !important;
+}
+
+.pmv-board.driver2 #input-message-3 {
+  display: none !important;
+}
+
+.pmv-board.driver3 .equip-info .msg-pos {
+  right: 55px !important;
+}
+
+.pmv-board.driver3 .equip-info .padding-pmv {
+  margin-left: -10px !important;
+}
+
+.pmv-board.driver3 .equip-info .second-img {
+  display: revert !important;
+  margin-right: 5px;
+  padding-left: 0px;
+  margin-top: 3px;
+}
+
+.pmv-board.driver3 .equip-info .table-message {
+  width: 110px !important;
+}

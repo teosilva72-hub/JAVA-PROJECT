@@ -9,7 +9,11 @@
 
 	<ui:define name="default-stylesheet">
 		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
-		<h:outputStylesheet name="message-activate.css" library="css/pmv/activate" />
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css/pmv/activate" name="message-activate.css" />
+		<h:outputStylesheet library="css/pmv" name="layoutPMV.css" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -65,22 +69,25 @@
 								</div>
 								<div class="card-body">
 									<div id="page-pmv">
-										<div class="equip-info">
 
+										<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2">
+		
 											<!-- Table with DIV -->
-
-											<div class="container tableStyle card shadow-lg">
+		
+											<div class="container tableStyle card">
 												<div class="dms-name card-header py-0">
-													<div class="text-center dmsTab">
+													<div class="text-center dmsTab#{item.equip_id}">
+														<span class="mb-0 text-white" id="dmsId"></span> - <span
+															id="dmsName"></span> - <span id="dmsType" type=""></span>
 													</div>
 												</div>
 												<div class="row text-center card-body p-0">
 													<div id="child-img" class="col-2 padding-pmv">
 														<img src="/resources/images/pictures/#{pmvMessage.image}"
-															class="ui-graphic-image picture-box" id-img="0" />
+															class="picture-box primary" id-img="0" />
 													</div>
 													<div id="child-msg" class="col-auto msg-pos">
-														<div id="msg#{index.index}" class="table-message">
+														<div id="message" class="table-message">
 															<div class="row border-table-right message1" msg="">
 																<div class="col-1 px-0 border-table">
 																	<span id="box-1"></span>
@@ -197,17 +204,21 @@
 															</div>
 														</div>
 													</div>
+													<div id="child-img" class="col-2 second-img ms-auto">
+														<img src="/resources/images/pictures/#{pmvMessage.image}"
+															class="picture-box secondary" id-img="0" />
+													</div>
 												</div>
 											</div>
-
+		
 										</div>
 									</div>
 
-									<div id="messages-list">
+									<div id="messages-list" class="mt-3">
 										<select id="available-id" class="form-select" size="6"
 											aria-label="select message">
 											<option value="0" selected="select">Default</option>
-											<c:forEach items="#{pmvMessage.messages}" var="opt">
+											<c:forEach items="#{pmvMessage.messages_d1}" var="opt">
 												<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
 													#{opt.nome}</option>
 											</c:forEach>
@@ -247,7 +258,7 @@
 						</div>
 					</div>
 					<!-- FINAL DA TABELA SELECAO -->
-					<!-- INÍCIO DA TABELA ESTADO ATUAL -->
+					<!-- INICIO DA TABELA ESTADO ATUAL -->
 					<div class="col-md atual">
 						<div class="equip-content" id="one">
 							<h:outputLabel class="label-header-content"
@@ -357,7 +368,7 @@
 						</div>
 					</div>
 					<!-- FINAL DA TABELA ESTADO ATUAL -->
-					<!-- INÍCIO DA TABELA NOVO ESTADO -->
+					<!-- INICIO DA TABELA NOVO ESTADO -->
 					<div class="col-md">
 						<div class="equip-content-2" id="two">
 							<h:outputLabel class="label-header-content-2"
@@ -527,6 +538,6 @@
 	</ui:define>
 
 	<ui:define name="jscript">
-		<h:outputScript name="msgAtv.js" library="js/dms" />
+		<h:outputScript name="msgAtv.js" pt:type="module" library="js/dms" />
 	</ui:define>
 </ui:composition>
