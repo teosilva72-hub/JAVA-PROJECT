@@ -2,15 +2,23 @@
 /* eslint-disable */
 /**
 */
+export enum PaginaType {
+  Type1,
+  Type2,
+  Type3,
+}
+/**
+*/
 export class PMV {
   free(): void;
 /**
 * @param {number} id
 * @param {string} type_alert
 * @param {string} name
+* @param {number} page_type
 * @returns {PMV}
 */
-  static new(id: number, type_alert: string, name: string): PMV;
+  static new(id: number, type_alert: string, name: string, page_type: number): PMV;
 /**
 * @returns {number}
 */
@@ -26,6 +34,10 @@ export class PMV {
 */
   name(value: string): string;
 /**
+* @returns {number}
+*/
+  type_page(): number;
+/**
 * @param {number} idx
 * @returns {Pagina}
 */
@@ -36,13 +48,15 @@ export class PMV {
   len(): number;
 /**
 * @param {number} image_id
+* @param {number} image_id_2
 * @param {string} image
+* @param {string} image_2
 * @param {number} timer
 * @param {string} line1
 * @param {string} line2
 * @param {string} line3
 */
-  add_page(image_id: number, image: string, timer: number, line1: string, line2: string, line3: string): void;
+  add_page(image_id: number, image_id_2: number, image: string, image_2: string, timer: number, line1: string, line2: string, line3: string): void;
 /**
 */
   add_page_default(): void;
@@ -60,9 +74,11 @@ export class PMV {
 /**
 * @param {number} idx
 * @param {number} image_id
+* @param {number} image_id_2
 * @param {string} image
+* @param {string} image_2
 */
-  change_image(idx: number, image_id: number, image: string): void;
+  change_image(idx: number, image_id: number, image_id_2: number, image: string, image_2: string): void;
 /**
 * @param {number} idx
 * @param {number} timer
@@ -86,13 +102,15 @@ export class Pagina {
 */
   string(): string;
 /**
+* @param {number} idx
 * @returns {number}
 */
-  image_id(): number;
+  image_id(idx: number): number;
 /**
+* @param {number} idx
 * @returns {string}
 */
-  image(): string;
+  image(idx: number): string;
 /**
 * @returns {number}
 */
@@ -116,23 +134,24 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_pagina_free: (a: number) => void;
   readonly pagina_string: (a: number, b: number) => void;
-  readonly pagina_image_id: (a: number) => number;
-  readonly pagina_image: (a: number, b: number) => void;
+  readonly pagina_image_id: (a: number, b: number) => number;
+  readonly pagina_image: (a: number, b: number, c: number) => void;
   readonly pagina_timer: (a: number) => number;
   readonly pagina_line: (a: number, b: number, c: number) => void;
   readonly pagina_line_char: (a: number, b: number, c: number) => number;
   readonly __wbg_pmv_free: (a: number) => void;
-  readonly pmv_new: (a: number, b: number, c: number, d: number, e: number) => number;
+  readonly pmv_new: (a: number, b: number, c: number, d: number, e: number, f: number) => number;
   readonly pmv_id: (a: number) => number;
   readonly pmv_type_alert: (a: number, b: number, c: number, d: number) => void;
   readonly pmv_name: (a: number, b: number, c: number, d: number) => void;
+  readonly pmv_type_page: (a: number) => number;
   readonly pmv_page: (a: number, b: number) => number;
   readonly pmv_len: (a: number) => number;
-  readonly pmv_add_page: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number) => void;
+  readonly pmv_add_page: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number, i: number, j: number, k: number, l: number, m: number, n: number) => void;
   readonly pmv_add_page_default: (a: number) => void;
   readonly pmv_remove_page: (a: number, b: number) => void;
   readonly pmv_change_page: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
-  readonly pmv_change_image: (a: number, b: number, c: number, d: number, e: number) => void;
+  readonly pmv_change_image: (a: number, b: number, c: number, d: number, e: number, f: number, g: number, h: number) => void;
   readonly pmv_change_timer: (a: number, b: number, c: number) => void;
   readonly pmv_next: (a: number) => number;
   readonly pmv_clone: (a: number) => number;

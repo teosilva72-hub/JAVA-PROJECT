@@ -31,7 +31,7 @@
                 <f:facet rendered="#{index.first}" name="header">
                     #{dmsLabels.dms_available_messages_table_col_image}
                 </f:facet>
-                <h:graphicImage id="picture-table#{index.index + 1}" value="/resources/images/pictures/#{page.image}"
+                <h:graphicImage styleClass="picture-table" value="/resources/images/pictures/#{page.image}"
                     width="25" height="25" />
                 <h:inputHidden value="#{page.id_image}" id="hiddenField" />
             </h:column>
@@ -57,7 +57,7 @@
                 <f:facet rendered="#{index.first}" name="header">
                     #{dmsLabels.dms_available_messages_table_col_image}
                 </f:facet>
-                <h:graphicImage id="picture-table#{index.index + 1}_2" value="/resources/images/pictures/#{page.image2}"
+                <h:graphicImage styleClass="picture-table_2" value="/resources/images/pictures/#{page.image2}"
                     width="25" height="25" />
                 <h:inputHidden value="#{page.id_image2}" id="hiddenField_2" />
             </h:column>

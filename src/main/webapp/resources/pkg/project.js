@@ -81,6 +81,9 @@ function passStringToWasm0(arg, malloc, realloc) {
 }
 /**
 */
+export const PaginaType = Object.freeze({ Type1:1,"1":"Type1",Type2:2,"2":"Type2",Type3:3,"3":"Type3", });
+/**
+*/
 export class PMV {
 
     static __wrap(ptr) {
@@ -105,14 +108,15 @@ export class PMV {
     * @param {number} id
     * @param {string} type_alert
     * @param {string} name
+    * @param {number} page_type
     * @returns {PMV}
     */
-    static new(id, type_alert, name) {
+    static new(id, type_alert, name, page_type) {
         var ptr0 = passStringToWasm0(type_alert, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
         var ptr1 = passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-        var ret = wasm.pmv_new(id, ptr0, len0, ptr1, len1);
+        var ret = wasm.pmv_new(id, ptr0, len0, ptr1, len1, page_type);
         return PMV.__wrap(ret);
     }
     /**
@@ -159,6 +163,13 @@ export class PMV {
         }
     }
     /**
+    * @returns {number}
+    */
+    type_page() {
+        var ret = wasm.pmv_type_page(this.ptr);
+        return ret;
+    }
+    /**
     * @param {number} idx
     * @returns {Pagina}
     */
@@ -175,22 +186,26 @@ export class PMV {
     }
     /**
     * @param {number} image_id
+    * @param {number} image_id_2
     * @param {string} image
+    * @param {string} image_2
     * @param {number} timer
     * @param {string} line1
     * @param {string} line2
     * @param {string} line3
     */
-    add_page(image_id, image, timer, line1, line2, line3) {
+    add_page(image_id, image_id_2, image, image_2, timer, line1, line2, line3) {
         var ptr0 = passStringToWasm0(image, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        var ptr1 = passStringToWasm0(line1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr1 = passStringToWasm0(image_2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len1 = WASM_VECTOR_LEN;
-        var ptr2 = passStringToWasm0(line2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr2 = passStringToWasm0(line1, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len2 = WASM_VECTOR_LEN;
-        var ptr3 = passStringToWasm0(line3, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var ptr3 = passStringToWasm0(line2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len3 = WASM_VECTOR_LEN;
-        wasm.pmv_add_page(this.ptr, image_id, ptr0, len0, timer, ptr1, len1, ptr2, len2, ptr3, len3);
+        var ptr4 = passStringToWasm0(line3, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len4 = WASM_VECTOR_LEN;
+        wasm.pmv_add_page(this.ptr, image_id, image_id_2, ptr0, len0, ptr1, len1, timer, ptr2, len2, ptr3, len3, ptr4, len4);
     }
     /**
     */
@@ -221,12 +236,16 @@ export class PMV {
     /**
     * @param {number} idx
     * @param {number} image_id
+    * @param {number} image_id_2
     * @param {string} image
+    * @param {string} image_2
     */
-    change_image(idx, image_id, image) {
+    change_image(idx, image_id, image_id_2, image, image_2) {
         var ptr0 = passStringToWasm0(image, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         var len0 = WASM_VECTOR_LEN;
-        wasm.pmv_change_image(this.ptr, idx, image_id, ptr0, len0);
+        var ptr1 = passStringToWasm0(image_2, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        var len1 = WASM_VECTOR_LEN;
+        wasm.pmv_change_image(this.ptr, idx, image_id, image_id_2, ptr0, len0, ptr1, len1);
     }
     /**
     * @param {number} idx
@@ -288,19 +307,21 @@ export class Pagina {
         }
     }
     /**
+    * @param {number} idx
     * @returns {number}
     */
-    image_id() {
-        var ret = wasm.pagina_image_id(this.ptr);
+    image_id(idx) {
+        var ret = wasm.pagina_image_id(this.ptr, idx);
         return ret;
     }
     /**
+    * @param {number} idx
     * @returns {string}
     */
-    image() {
+    image(idx) {
         try {
             const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-            wasm.pagina_image(retptr, this.ptr);
+            wasm.pagina_image(retptr, this.ptr, idx);
             var r0 = getInt32Memory0()[retptr / 4 + 0];
             var r1 = getInt32Memory0()[retptr / 4 + 1];
             return getStringFromWasm0(r0, r1);

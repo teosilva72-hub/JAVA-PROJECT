@@ -9,7 +9,11 @@
 
 	<ui:define name="default-stylesheet">
 		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+	</ui:define>
+
+	<ui:define name="head">
 		<h:outputStylesheet library="css/pmv/available" name="message-available.css" />
+		<h:outputStylesheet library="css/pmv" name="layoutPMV.css" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -32,7 +36,7 @@
 						<div class="card-body position-relative responsive">
 							<div id="page-pmv">
 
-								<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id} mt-3">
+								<div id="#{item.table_id}#{item.equip_id}" class="equip-info mt-3">
 
 									<!-- Table with DIV -->
 
@@ -46,7 +50,7 @@
 										<div class="row text-center card-body p-0">
 											<div id="child-img" class="col-2 padding-pmv">
 												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="ui-graphic-image picture-box" id-img="0" />
+													class="picture-box primary" id-img="0" />
 											</div>
 											<div id="child-msg" class="col-auto msg-pos">
 												<div id="message" class="table-message">
@@ -168,7 +172,7 @@
 											</div>
 											<div id="child-img" class="col-2 second-img ms-auto">
 												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="ui-graphic-image picture-box" id-img="0" />
+													class="picture-box secondary" id-img="0" />
 											</div>
 										</div>
 									</div>
@@ -181,18 +185,20 @@
 								<div class="row">
 									<c:forEach begin="1" end="5" var="idx">
 										<div class="col timerBtn">
-											<div class="input-group mb-3 bar-width">
-												<!-- Checkbox -->
-												<div class="input-group-text">
-													<input id="timerCheck#{idx}" class="form-check-input mt-0"
-														type="checkbox" value="#{idx}"
-														aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+											<div class="btn-group-vertical" role="group" aria-label="timerGroup">
+												<div class="input-group bar-width">
+													<!-- Checkbox -->
+													<div class="input-group-text check-timer">
+														<input id="timerCheck#{idx}" class="form-check-input mt-0"
+															type="checkbox" value="#{idx}"
+															aria-label="Checkbox for timer#{idx}" disabled="disabled" />
+													</div>
+													<!-- Timer -->
+													<input id="timerPage#{idx}" type="number"
+														class="form-control form-control-sm text-timer pe-0 border-start-0"
+														aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
+														disabled="disabled" min="1" max="60" />
 												</div>
-												<!-- Timer -->
-												<input id="timerPage#{idx}" type="number"
-													class="form-control form-control-sm text-timer pe-0 border-start-0"
-													aria-label="timer#{idx}" title="Timer #{idx}" placeholder="0"
-													disabled="disabled" min="1" max="60" />
 												<!-- Button -->
 												<input class="btn-check" name="btn-pages" id="btn-page#{idx}"
 													type="radio" value="#{idx}" />
@@ -205,112 +211,106 @@
 							</div>
 							<div class="row edit-field">
 								<!-- id input -->
-								<div class="col-3">
-									<div id="image-div">
-										<a id="link-image"><svg width="80" height="80" fill="currentColor"
-												class="bi bi-images" viewBox="0 0 16 16">
-												<path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-												<path
-													d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z" />
-											</svg></a>
-									</div>
-									<div id="list-images">
-										<div class="listbox" id="picture-id">
-											<c:forEach items="#{pmvMessage.pictures}" var="p">
-												<div>
-													<img src="/resources/images/pictures/#{p.image}" width="60"
-														height="60" id-img="#{p.id}" />
-												</div>
-											</c:forEach>
-										</div>
+								<div class="col-3" id="list-images">
+									<div class="listbox" id="picture-id">
+										<c:forEach items="#{pmvMessage.pictures}" var="p">
+											<div>
+												<img src="/resources/images/pictures/#{p.image}" width="60" height="60"
+													id-img="#{p.id}" />
+											</div>
+										</c:forEach>
 									</div>
 								</div>
-								<div class="row col-9">
-
-									<div class="col-12 confInput">
-										<div id="id-div">
-											<span class="iconeSpan"><i class="fas fa-key"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="id-group">#{dmsLabels.dms_available_messages_id_placeholder}</span>
-												<input id="id-input" class="form-control inputDesign id"
-													disabled="disabled" type="text"
-													placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+								<div class="col displayInput">
+									<div class="row">
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<div class="input-group">
+													<span class="input-group-text"
+														id="id-group">#{dmsLabels.dms_available_messages_id_placeholder}</span>
+													<input id="id-input" class="form-control inputDesign id"
+														disabled="disabled" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_id_placeholder}" />
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- end id input -->
-									<!-- Type Select -->
-									<div class="col-12 confInput">
-										<div id="id-div">
-											<span class="iconeSpan"><i class="fas fa-th-large"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="type-group">Type</span>
-												<select name="tipo" id="type-input" class="form-control selectType">
-													<option value="" disabled="disabled" selected="selected">Type
-													</option>
-													<c:forEach items="#{pmvMessage.type}" var="opt">
-														<option value="#{opt.value}">#{opt.label}</option>
-													</c:forEach>
-												</select>
+										<!-- end id input -->
+										<!-- Type Select -->
+										<div class="col-12 confInput">
+											<div id="id-div">
+												<div class="input-group">
+													<span class="input-group-text" id="type-group">Type</span>
+													<select name="tipo" id="type-input" class="form-control selectType">
+														<option value="" disabled="disabled" selected="selected">Type
+														</option>
+														<c:forEach items="#{pmvMessage.type}" var="opt">
+															<option value="#{opt.value}">#{opt.label}</option>
+														</c:forEach>
+													</select>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- End Type Select -->
-									<!-- input name -->
-									<div class="col-12 confInput">
-										<div id="name-div">
-											<span class="iconeSpan"><i class="fas fa-file-signature"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="name-group">#{dmsLabels.dms_available_messages_name_placeholder}</span>
-												<input id="name-input" class="form-control name inputDesign" type="text"
-													placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
-													maxlength="15" autocomplete="off" />
+										<!-- End Type Select -->
+										<!-- input name -->
+										<div class="col-12 confInput">
+											<div id="name-div">
+												<div class="input-group">
+													<span class="input-group-text"
+														id="name-group">#{dmsLabels.dms_available_messages_name_placeholder}</span>
+													<input id="name-input" class="form-control name inputDesign"
+														type="text"
+														placeholder="#{dmsLabels.dms_available_messages_name_placeholder}"
+														maxlength="15" autocomplete="off" />
+												</div>
+											</div>
+
+										</div>
+										<!-- end input name -->
+
+										<!-- message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-1">
+												<div class="input-group">
+													<span class="input-group-text"
+														id="msg1-group">#{dmsLabels.dms_available_lines_line1}</span>
+
+													<input id="message-box1"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
+														autocomplete="off" />
+												</div>
 											</div>
 										</div>
+										<!-- end message input -->
+										<div class="col-12 confInput">
+											<div id="input-message-2">
+												<div class="input-group">
+													<span class="input-group-text"
+														id="msg2-group">#{dmsLabels.dms_available_lines_line2}</span>
 
-									</div>
-									<!-- end input name -->
-
-									<!-- message input -->
-									<div class="col-12 confInput">
-										<div id="input-message-1">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="msg1-group">#{dmsLabels.dms_available_lines_line1}</span>
-
-												<input id="message-box1" class="form-control message-input inputDesign"
-													maxlength="12" autoResize="false" resizable="false" type="text"
-													placeholder="#{dmsLabels.dms_available_messages_msg1_placeholder}"
-													autocomplete="off" />
+													<input id="message-box2"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
+														autocomplete="off">
+													</input>
+												</div>
 											</div>
 										</div>
-									</div>
-									<!-- end message input -->
-									<div class="col-12 confInput">
-										<div id="input-message-2">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="msg2-group">#{dmsLabels.dms_available_lines_line2}</span>
+										<div class="col-12 confInput">
+											<div id="input-message-3">
+												<div class="input-group">
+													<span class="input-group-text"
+														id="msg3-group">#{dmsLabels.dms_available_lines_line3}</span>
 
-												<input id="message-box2" class="form-control message-input inputDesign"
-													maxlength="12" autoResize="false" resizable="false" type="text"
-													placeholder="#{dmsLabels.dms_available_messages_msg2_placeholder}"
-													autocomplete="off">
-												</input>
-											</div>
-										</div>
-									</div>
-									<div class="col-12 confInput">
-										<div id="input-message-3">
-											<span class="iconeSpan"><i class="fas fa-keyboard"></i></span>
-											<div class="input-group">
-												<span class="input-group-text" id="msg3-group">#{dmsLabels.dms_available_lines_line3}</span>
-
-												<input id="message-box3" class="form-control message-input inputDesign"
-													maxlength="12" autoResize="false" resizable="false" type="text"
-													placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
-													autocomplete="off">
-												</input>
+													<input id="message-box3"
+														class="form-control message-input inputDesign" maxlength="12"
+														autoResize="false" resizable="false" type="text"
+														placeholder="#{dmsLabels.dms_available_messages_msg3_placeholder}"
+														autocomplete="off">
+													</input>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -376,7 +376,8 @@
 								</button>
 							</div>
 							<h:form id="btn-form">
-								<select id="selectDriver" class="form-select float-start w-25 ms-2" aria-label="Select Driver">
+								<select id="selectDriver" class="form-select float-start w-25 ms-2"
+									aria-label="Select Driver">
 									<option value="1">Driver 1</option>
 									<option value="2">Driver 2</option>
 									<option value="3">Driver 3</option>

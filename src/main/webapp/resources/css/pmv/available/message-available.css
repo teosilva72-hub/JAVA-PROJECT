@@ -4,13 +4,13 @@ body {
   height: 100% !important;
 }
 
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
 
 /*DIV PMV BOARD*/
 .pmv-board {
@@ -18,77 +18,8 @@ input[type=number]::-webkit-inner-spin-button {
   margin-top: 1.5%;
 }
 
-.equip-info {
-  font-size: 5px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%) scale(1.5);
-}
-
-#page-pmv {
-  position: relative;
-}
-
-.equip-info .tableStyle {
-  position: relative;
-  font-size: 10px;
-  width: 250px;
-  height: 69px;
-  border: none;
-  background: #333333;
-  border-right: 6px solid #00fa9a;
-  border-radius: 0;
-}
-
-.dms-name {
-  margin-bottom: -5px;
-}
-
-.dmsTab p {
-  height: 15px;
-}
-
-.border-table {
-  border-top-style: solid;
-  height: 17px;
-  border-left-style: solid;
-  background-color: #5d5d5d;
-  border-color: #000000;
-  border-width: 1px;
-}
-
-.border-table-right.bottom {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.border-table-right {
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.padding-pmv {
-  padding-left: 0px;
-  margin-left: -5px;
-  margin-top: 3px;
-}
-
-.ui-graphic-image {
-  width: 52px;
-  height: 52px;
-}
-
-.msg-pos {
-  position: absolute;
-  right: 5px;
-  bottom: 3px;
-}
-
-.table-message {
-  width: 150px;
-  color: yellow;
+.equip-info.editing .picture-box {
+  cursor: pointer;
 }
 
 /*TABLES EQUIP PREVIEW*/
@@ -129,44 +60,25 @@ input[type=number]::-webkit-inner-spin-button {
   background: white;
 }
 
-/* INPUT ICONS */
-
-.fa-keyboard,
-.fa-file-signature,
-.fa-key,
-.fa-th-large {
-  margin-top: 8px;
-  margin-left: 5px;
-  font-size: 18px !important;
-}
-
-#name-div {
-  margin-top: 0;
-}
-
-#input-message-1 {
-  resize: none;
-}
-
-#input-message-2 {
-  resize: none;
-}
-
-#input-message-3 {
-  resize: none;
-}
-
 /*Font Size and Height - Inputs*/
 .input-group input {
   font-size: 10px;
 }
 
 /*DIV OCULTA PARA LISTAS DE IMAGENS (SELECONELISTBOX)*/
+.picture-box.selected {
+  border-style: solid;
+  border-image: linear-gradient(to right, red, orange) 1;
+  border-width: 2px;
+}
+
 #list-images {
   display: none;
   width: fit-content;
   overflow: auto;
   height: auto;
+  position: relative;
+  top: 8px;
 }
 
 .listbox {
@@ -180,10 +92,6 @@ input[type=number]::-webkit-inner-spin-button {
 .btn-available {
   background-color: #a8a8a8 !important;
   color: black !important;
-}
-
-.fa {
-  color: white;
 }
 
 #table-edit,
@@ -219,6 +127,10 @@ input[type=number]::-webkit-inner-spin-button {
 
 .confInput {
   margin-top: 10px;
+}
+
+.displayInput {
+  height: fit-content;
 }
 
 .conf2Btn {
@@ -271,7 +183,7 @@ select {
 }
 
 .edit-pmv-page > div {
-  min-width: 340px;
+  min-width: 300px;
 }
 
 .timerBtn {
@@ -279,15 +191,23 @@ select {
 }
 
 .page-button {
-  width: 25px;
+  height: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: 10px;
 }
 
 .bar-width {
-  width: 65px;
+  width: 50px;
+}
+
+.check-timer {
+  border-bottom-left-radius: 0;
 }
 
 .text-timer {
   padding-left: 3px;
+  border-bottom-right-radius: 0;
 }
 
 .bar-width .input-group-text {
@@ -297,7 +217,7 @@ select {
 .edit-field {
   position: relative;
   display: none;
-  top: 143px;
+  top: 60px;
 }
 
 .edit-field.active {
@@ -348,45 +268,6 @@ tbody tr {
 
 .table-responsive {
   position: relative;
-}
-
-#image-div {
-  cursor: pointer;
-}
-
-.equip-info .second-img {
-  display: none;
-}
-
-.equip-info > .driver2 .msg-pos {
-  bottom: 10px !important;
-}
-
-.equip-info > .driver2 .message2 {
-  border-bottom-style: solid !important;
-}
-
-.equip-info > .driver2 .message3 {
-  display: none !important;
-}
-
-.equip-info > .driver3 .msg-pos {
-  right: 55px !important;
-}
-
-.equip-info > .driver3 .padding-pmv {
-  margin-left: -10px !important;
-}
-
-.equip-info > .driver3 .second-img {
-  display: revert !important;
-  margin-right: 5px;
-  padding-left: 0px;
-  margin-top: 3px;
-}
-
-.equip-info > .driver3 .table-message {
-  width: 110px !important;
 }
 
 @keyframes fade {
