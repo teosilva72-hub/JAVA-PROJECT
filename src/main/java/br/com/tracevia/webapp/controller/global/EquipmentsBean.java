@@ -238,12 +238,8 @@ public class EquipmentsBean implements Serializable {
 	    sat.setNumFaixas(Integer.parseInt(parameterMap.get("lanes")));
 	    
 	    sat.setSentido1(parameterMap.get("direction1"));
-	    
-	    
-	    System.out.println("NUM FAIXA: "+sat.getNumFaixas());
-	    
-	    System.out.println("DIR: "+sat.getNumFaixas());
-	    
+	    	    
+	    // DEFINE DIRECTIONS
 	    defineDirections(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido1()));
 	    
 	    
@@ -437,7 +433,7 @@ public class EquipmentsBean implements Serializable {
 	}
 	
     
-    //DEFINIÇÃO PARA SALVAR SATS
+    //DEFINIï¿½ï¿½O PARA SALVAR SATS
     public void defineDirections(SAT sat, int numberLanes, int dir1){
     	
     	

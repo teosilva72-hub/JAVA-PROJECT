@@ -34,6 +34,7 @@
 			library="js/jquery-validation" />
 		<h:outputScript name="additional-methods.min.js"
 			library="js/jquery-validation" />
+			
 		<script type="text/javascript">
 			$(document)
 					.ready(
@@ -1254,7 +1255,7 @@
 														<div class="dropdown">
 
 															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 
 																<i class="far fa-trash-alt"></i>
@@ -1298,7 +1299,7 @@
 														<span>#{occLabels.occ_delete}</span>
 														<div class="dropdown">
 															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="far fa-trash-alt"></i>
 															</button>
@@ -1317,10 +1318,10 @@
 														<span>#{occLabels.occ_download}</span>
 														<div class="dropdown">
 															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	data-bs-toggle="tooltip" data-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1356,10 +1357,10 @@
 														<span>#{occLabels.occ_download}</span>
 														<div class="dropdown">
 															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	data-bs-toggle="tooltip" data-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1739,9 +1740,9 @@
 			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
 			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
 			onload(); //Oculta o formulario 2 e 3
+			
 		</script>
-		
-		<h:outputScript name="bootstrap-5.bundle.min.js"  library="bootstrap/js"  />		
+				
 		<h:outputScript name="jspdf.debug.js"  library="pdf-debug"  />
 			
 	</ui:define>

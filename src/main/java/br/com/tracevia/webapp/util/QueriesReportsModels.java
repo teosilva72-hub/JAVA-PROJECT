@@ -12,7 +12,7 @@ public class QueriesReportsModels {
 	//CONST
 	/////////////////
 
-	//CRIAÇÃO DE PROCEDURES
+	//CRIAÃ‡ÃƒO DE PROCEDURES
 	private static final String CALL_PROCEDURE_05_MIN = "CALL TemporaryDateTime05( ?, ?)";
 	private static final String CALL_PROCEDURE_06_MIN = "CALL TemporaryDateTime06( ?, ?)";
 	private static final String CALL_PROCEDURE_10_MIN = "CALL TemporaryDateTime10( ?, ?)";
@@ -22,7 +22,7 @@ public class QueriesReportsModels {
 	private static final String CALL_PROCEDURE_06_HOURS = "CALL TemporaryDateTimeSixHours( ?, ?)";	
 	private static final String CALL_PROCEDURE_DAYS = "CALL TemporaryDates( ?, ?)";
 
- //CABEÇALHO QUERIES
+ //CABEÃ‡ALHO QUERIES
   private static final String QUERY_HEADER_05_MIN = "SELECT DATE_FORMAT(data, '%Y-%m-%d') AS data, " + 
   "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(data) - TIME_TO_SEC(data)%(05*60))),'%H:%i'), ' - '), " +
   "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(data) + 240 ) - TIME_TO_SEC(data)%(05*60))),'%H:%i')) AS intervals, ";
@@ -58,7 +58,7 @@ public class QueriesReportsModels {
   private static final String QUERY_HEADER_MONTHS = "SELECT DATE_FORMAT(data, '%M') AS month, ";
   
   /////////////////////// DATETIME ////////////////////////////////////////
-  //CABEÇALHO QUERIES
+  //CABEÃ‡ALHO QUERIES
   private static final String QUERY_HEADER_05_MIN_DATETIME  = "SELECT DATE_FORMAT(datetime_, '%Y-%m-%d') AS data, " + 
   "CONCAT(CONCAT(DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(datetime_) - TIME_TO_SEC(datetime_)%(05*60))),'%H:%i'), ' - '), " +
   "DATE_FORMAT((SEC_TO_TIME((TIME_TO_SEC(datetime_) + 240 ) - TIME_TO_SEC(datetime_)%(05*60))),'%H:%i')) AS intervals, ";
@@ -951,14 +951,14 @@ public class QueriesReportsModels {
 	//BUILD QUERY
 	////////////////////
 
-	/* *** Sobrecarga de métodos *** */
+	/* *** Sobrecarga de mÃ©todos *** */
 
 	/**
-	 * Método para gerar criar uma query modulada
-	 * @param queryHeader - Cabeçalho da query
-	 * @param queryMain - Conteúdo principal da query
+	 * MÃ©todo para gerar criar uma query modulada
+	 * @param queryHeader - CabeÃ§alho da query
+	 * @param queryMain - ConteÃºdo principal da query
 	 * @param queryFromTable - Especificando a tabela
-	 * @param queryGroupOrder - Ordenação
+	 * @param queryGroupOrder - OrdenaÃ§Ã£o
 	 * @return query
 	 */
 	//public String BuildQuery(String queryHeader, String queryMain, String queryFromTable, String leftJoinStart, String leftJoinCondition, String leftJoinEnd, String queryGroupOrder) { 	   

@@ -108,7 +108,7 @@ public class LoginAccountBean {
 		
    public String loginValidation() throws Exception {
 	   
-	   load = new LoadStartupModules(); //Carregar os módulos
+	   load = new LoadStartupModules(); //Carregar os mï¿½dulos
 	  	   
 	   boolean status = false, inMemory = false, isName = false;	
 	   InMemoryAuthentication memoryAuth = new InMemoryAuthentication();
@@ -121,7 +121,7 @@ public class LoginAccountBean {
 	   
 	    //IF SUCCESS ON AUTH GET SERVER INFORMATION
 	   
-	   System.out.println(addr.getHostAddress());
+	  // System.out.println(addr.getHostAddress());
 	    isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
 	    
 	    //CHANGES
@@ -163,7 +163,7 @@ public class LoginAccountBean {
 	  
 	  status = dao.UserValidation(user.getUsername());
 	  
-	  //caso seja verdadeiro passar usuário e senha para validação
+	  //caso seja verdadeiro passar usuï¿½rio e senha para validaï¿½ï¿½o
 	  	  
 	  if(status) {
 	  
@@ -250,13 +250,13 @@ public boolean permissionAdminOrSuper(int roleID) {
 		 LoginAccountDAO dao = new LoginAccountDAO();
 		 UserAccount usr = new UserAccount();
 		 
-		 //Caso não seja e-mail válido
+		 //Caso nï¿½o seja e-mail vï¿½lido
 	 	  if(!user.getEmail().matches(EMAIL_PATTERN))  		  
 	 		 message.ErrorMessage(locale1.getStringKey("email_recovery_invalid_header"), locale1.getStringKey("email_recovery_invalid_body"));
 	 		  	 		  
 		 else {	  
 		  
-			  //Senão faz isso ...
+			  //Senï¿½o faz isso ...
 										
 		 usr = dao.emailValidation(user.getEmail());
 		 			

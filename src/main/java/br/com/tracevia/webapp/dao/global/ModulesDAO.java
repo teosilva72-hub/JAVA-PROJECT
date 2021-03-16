@@ -32,8 +32,8 @@ public class ModulesDAO {
 	
 	
 	/**
-	 * Método para criado para obter uma lista com módulos ativos no sistema.	  
-	 * @return uma lista com módulos ativos
+	 * Mï¿½todo para criado para obter uma lista com mï¿½dulos ativos no sistema.	  
+	 * @return uma lista com mï¿½dulos ativos
 	 * @throws Exception
 	 * @see list
 	 **/
@@ -46,7 +46,7 @@ public class ModulesDAO {
 		
 		try {			
 					
-			query = "SELECT module, enabled FROM tracevia_core.modules WHERE enabled = 1";		
+			query = "SELECT module, battery_voltage, enabled FROM tracevia_core.modules WHERE enabled = 1";		
 			
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -58,7 +58,8 @@ public class ModulesDAO {
 
 				  Modules mod = new Modules();
 					
-				  mod.setModule(rs.getString("module"));		
+				  mod.setModule(rs.getString("module"));	
+				  mod.setBattery_voltage(rs.getDouble("battery_voltage"));
 				  mod.setEnabled(rs.getBoolean("enabled"));		
 				  modules.add(mod);
 				    
