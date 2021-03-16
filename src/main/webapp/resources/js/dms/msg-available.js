@@ -37,6 +37,11 @@ async function main() {
 		return this.next(selector).length ? this.next(selector) : this.siblings(selector).addBack(selector).first();
 	}
 
+	const pmvResize = () => {
+		let scale = Math.min(0.9 / (equipInfo.outerWidth() / pmvBoard.outerWidth()), 1.5);
+		equipInfo.css('transform', `translateX(-50%) scale(${scale})`);
+	}
+
 	// Select message in pre-view
 	const selectMessage = () => {
 		savePMV();
@@ -507,10 +512,13 @@ async function main() {
 			pmvActive.change_timer(Number($(this).siblings().eq(2).text()) - 1, Number($(this).val()));
 		})
 
+		
 		toast = new bootstrap.Toast(document.getElementById('liveToast'))
-
+		
+		pmvResize();
+		$(window).resize(pmvResize);
 		window.returnAlert = returnAlert;
-
+		
 		btnCreate.click(newMsg);
 		btnEdit.click(editMsg);
 		btnCancel.click(cancel);
