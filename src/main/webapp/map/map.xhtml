@@ -474,7 +474,7 @@
 
 						</div>
 
-						<div class="modal-body">
+						<div class="modal-body" id="bodyadd">
 
 							<br />
 
@@ -505,7 +505,7 @@
 
 						</div>
 
-						<div class="modal-body">
+						<div class="modal-body" id="bodyeqp">
 
 							<!-- EQUIPMENT ID -->
 							<div class="form-row">
@@ -617,10 +617,10 @@
 							
 							<!-- TRACKS -->
 
-							<div class="form-row satInputs" style="display:none;">
-								<div class="form-group col-md-2 input-field">
+							<div class="form-row satInputs" style="display: none;">
+								<div class="form-group col-md-12 input-field">
 									<div class="select-field">
-										<select name="lanes" id="lanes" size="1">
+										<select name="lanes" id="lanes" size="1" style="width:100%;">
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="lane" value="#{equipsBean.lanes}"
 												varStatus="laneStatus">
@@ -638,10 +638,10 @@
 
 								<!-- DIRECTION 1 -->
 
-								<div class="form-group col-md-4 ml-5 input-field">
+								<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction1" id="direction1" size="1">
-											<option value="">#{mapLabels.map_creation_select_lanes}</option>
+											<option value="">#{mapLabels.map_creation_dropdown_dir1}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}"
 												varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
@@ -656,10 +656,10 @@
 
 								<!-- DIRECTION 2 -->
 
-								<div class="form-group col-md-4 input-field">
+								<div class="form-group col-md-3	 input-field">
 									<div class="select-field">
-									  <select name ="direction2" id="direction2" size="1" disabled="disabled">
-										<option value="">#{mapLabels.map_creation_select_lanes}</option>
+										<select name="direction2" id="direction2" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir2}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}"
 												varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
@@ -667,10 +667,114 @@
 										</select>
 									</div>
 									<div class="error-label">
-										<label for="direction2" class="error" id="direction1-error"></label>
+										<label for="direction2" class="error" id="direction2-error"></label>
+									</div>
+								</div>
+
+
+								<!-- DIRECTION 3 -->
+
+								<div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction3" id="direction3" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction3" class="error" id="direction3-error"></label>
+									</div>
+								</div>
+							
+							<!-- DIRECTION 4 -->
+								<div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction4" id="direction4" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction4" class="error" id="direction4-error"></label>
 									</div>
 								</div>
 							</div>
+								<!-- DIRECTION 5 -->
+				          <div class="form-row satInputs">
+								<div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction5" id="direction5" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction5" class="error" id="direction5-error"></label>
+									</div>
+								</div>
+							
+							 <!-- DIRECTION 6 -->
+						
+							<div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction6" id="direction6" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction6" class="error" id="direction6-error"></label>
+									</div>
+								</div>
+						     
+						     <!-- DIRECTION 7 -->
+						   <div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction7" id="direction7" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction7" class="error" id="direction7-error"></label>
+									</div>
+								</div>
+								
+							<!-- DIRECTION 8 -->	
+							
+							<div class="form-group col-md-3 input-field">
+									<div class="select-field">
+										<select name="direction8" id="direction8" size="1">
+											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
+											<ui:repeat var="dir" value="#{equipsBean.dir}"
+												varStatus="dirStatus">
+												<option value="#{dir.value}">#{dir.label}</option>
+											</ui:repeat>
+										</select>
+									</div>
+									<div class="error-label">
+										<label for="direction8" class="error" id="direction80
+										.-error"></label>
+										<label for="direction8" class="error" id="direction8-error"></label>
+									</div>
+								</div>
+								
+						     </div>  
 						</div>
 
 							<!-- MODAL BUTTONS -->
@@ -1242,25 +1346,45 @@
 				$('.satInputs').hide();			
 			}, false);
 			
-			
-		    document.getElementById("direction1").addEventListener("click",
-		    function() {
-		    var dir1 = document.getElementById("direction1");
-		    var dir2 = document.getElementById("direction2");
-			var selectVAL1 = dir1.value;
-			if ( selectVAL1 == 1 ) {
-				dir2.value = 2;
-			    } else if ( selectVAL1 == 2){
-			    dir2.value = 1;
-			    } else if ( selectVAL1 == 3){
-			    dir2.value = 4;	
-			    } else if ( selectVAL1 == 4){
-			    dir2.value = 3;	
-			    }			
-			}, false);
-			
-		    
-		    
+		    document.getElementById("lanes").addEventListener("click",
+					function() {
+					var satLanes = document.getElementById("lanes");
+					var selectVAL = satLanes.options[lanes.selectedIndex].value;
+					if ( selectVAL == 3 ){ 
+						$('#direction3').show();
+					} if (selectVAL == 4) {
+						$('#direction3').show();
+						$('#direction4').show();
+					} if (selectVAL == 5) {
+						$('#direction3').show();
+						$('#direction4').show();
+						$('#direction5').show();
+					} if (selectVAL == 6) {
+						$('#direction3').show();
+						$('#direction4').show();
+						$('#direction5').show();
+						$('#direction6').show();
+					} if (selectVAL == 7) {
+						$('#direction3').show();
+						$('#direction4').show();
+						$('#direction5').show();
+						$('#direction6').show();
+						$('#direction7').show();
+					} if (selectVAL == 8) {
+						$('#direction3').show();
+						$('#direction4').show();
+						$('#direction5').show();
+						$('#direction6').show();
+						$('#direction7').show();
+						$('#direction8').show();
+					} else
+						$('#direction3').hide();
+						$('#direction4').hide();
+						$('#direction5').hide();
+						$('#direction6').hide();
+						$('#direction7').hide();
+						$('#direction8').hide();
+					}, false);
 			//SAT LANES INPUTS END
 			
 			// MODAL EQUIPMENT SIZE

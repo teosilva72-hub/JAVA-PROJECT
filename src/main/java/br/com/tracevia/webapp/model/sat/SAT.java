@@ -13,6 +13,12 @@ public class SAT extends Equipments {
 	private int statusInterval;
 	private String sentido1;
 	private String sentido2;
+	private String sentido3;
+	private String sentido4;
+	private String sentido5;
+	private String sentido6;
+	private String sentido7;
+	private String sentido8;
 	private String faixa1;
 	private String faixa2;
 	private String faixa3;
@@ -27,7 +33,7 @@ public class SAT extends Equipments {
 			String posicao, int linearPosX, int linearPosY, int linearWidth,
 			int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY, int status,
 			boolean notificacao, boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2,
-			int velocidadeS2, String sentido1, String sentido2, int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
+			int velocidadeS2, String sentido1, String sentido2, String sentido3, String sentido4, String sentido5, String sentido6, String sentido7, String sentido8, int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
 			String faixa7, String faixa8) {
 		super(equip_id, table_id, creation_date, creation_username, number_lanes, nome, estrada, cidade, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8,
 				posicao, linearPosX, linearPosY, linearWidth, mapPosX, mapPosY, mapWidth, height, dlgPosX, dlgPosY, status, notificacao,
@@ -40,6 +46,12 @@ public class SAT extends Equipments {
 		this.velocidadeS2 = velocidadeS2;
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
+		this.sentido1 = sentido3;
+		this.sentido2 = sentido4;
+		this.sentido1 = sentido5;
+		this.sentido2 = sentido6;
+		this.sentido1 = sentido7;
+		this.sentido2 = sentido8;
 		this.statusInterval = statusInterval; 
 		this.faixa1 = faixa1;
 		this.faixa2 = faixa2;
@@ -108,6 +120,58 @@ public class SAT extends Equipments {
 
 	public void setSentido2(String sentido2) {
 		this.sentido2 = sentido2;
+	}
+	
+	public String getSentido3() {
+		return sentido3;
+	}
+
+	public void setSentido3(String sentido3) {
+		this.sentido3 = sentido3;
+	}
+
+	public String getSentido4() {
+		return sentido4;
+	}
+
+	public void setSentido4(String sentido4) {
+		this.sentido4 = sentido4;
+	}
+	
+	public void setSentido51(String sentido5) {
+		this.sentido5 = sentido5;
+	}
+
+	public String getSentido5() {
+		return sentido5;
+	}
+
+	public void setSentido5(String sentido5) {
+		this.sentido5 = sentido5;
+	}
+	
+	public String getSentido6() {
+		return sentido6;
+	}
+
+	public void setSentido6(String sentido6) {
+		this.sentido6 = sentido6;
+	}
+
+	public String getSentido7() {
+		return sentido7;
+	}
+
+	public void setSentido7(String sentido7) {
+		this.sentido7 = sentido7;
+	}
+	
+	public String getSentido8() {
+		return sentido8;
+	}
+
+	public void setSentido8(String sentido8) {
+		this.sentido8 = sentido8;
 	}
 
 	public int getStatusInterval() {
