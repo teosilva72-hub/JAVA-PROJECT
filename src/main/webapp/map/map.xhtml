@@ -60,6 +60,7 @@
 				</button>
 
 				<button type="button" id="addequip" class="add_equip"
+				onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 					title="Add Equipment" data-toggle="modal" data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 
 			</div>
@@ -352,6 +353,7 @@
 										posX="#{item.mapPosX}" posY="#{item.mapPosY}"
 										item-width="#{item.mapWidth}" posLinearX="#{item.linearPosX}"
 										status="#{satMapView.satStatus.get(loop.index).status}"
+										status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" 
 										vel1="#{satMapView.satListValues.get(loop.index).velocidadeS1}"
 										vel2="#{satMapView.satListValues.get(loop.index).velocidadeS2}">
 
@@ -674,7 +676,7 @@
 
 								<!-- DIRECTION 3 -->
 
-								<div class="form-group col-md-3 input-field" style="display:none;">
+								<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction3" id="direction3" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
@@ -690,7 +692,7 @@
 								</div>
 							
 							<!-- DIRECTION 4 -->
-								<div class="form-group col-md-3 input-field" style="display:none;">
+								<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction4" id="direction4" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
@@ -707,7 +709,7 @@
 							</div>
 								<!-- DIRECTION 5 -->
 				          <div class="form-row satInputs">
-								<div class="form-group col-md-3 input-field" style="display:none;">
+								<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction5" id="direction5" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
@@ -724,7 +726,7 @@
 							
 							 <!-- DIRECTION 6 -->
 						
-							<div class="form-group col-md-3 input-field" style="display:none;">
+							<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction6" id="direction6" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
@@ -740,7 +742,7 @@
 								</div>
 						     
 						     <!-- DIRECTION 7 -->
-						   <div class="form-group col-md-3 input-field" style="display:none;">
+						   <div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction7" id="direction7" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
@@ -757,7 +759,7 @@
 								
 							<!-- DIRECTION 8 -->	
 							
-							<div class="form-group col-md-3 input-field" style="display:none;">
+							<div class="form-group col-md-3 input-field">
 									<div class="select-field">
 										<select name="direction8" id="direction8" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
@@ -1008,7 +1010,7 @@
 						 	<div class="form-row satInputs" style="display:none;">
 								<div class="form-group col-md-2 input-field">
 									<div class="select-field">
-										<select name="lanes" id="lanes" size="1">
+										<select name="lanesEdit" id="lanesEdit" size="1">
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="lane" value="#{equipsBean.lanes}"
 												varStatus="laneStatus">
@@ -1017,7 +1019,7 @@
 										</select>
 									</div>
 									<div class="error-label">
-										<label for="lanes" class="error" id="lanes-error"></label>
+										<label for="lanesEdit" class="error" id="lanes-error-edit"></label>
 									</div>
 								</div>
 
@@ -1028,7 +1030,7 @@
 
 								<div class="form-group col-md-4 ml-5 input-field">
 									<div class="select-field">
-										<select name="direction1" id="direction1" size="1">
+										<select name="direction1ed" id="direction1ed" size="1">
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}"
 												varStatus="dirStatus">
@@ -1037,7 +1039,7 @@
 										</select>
 									</div>
 									<div class="error-label">
-										<label for="direction1" class="error" id="direction1-error"></label>
+										<label for="direction1ed" class="error" id="direction1ed-error"></label>
 									</div>
 								</div>
 								
@@ -1047,7 +1049,7 @@
 
 								<div class="form-group col-md-4 input-field">
 									<div class="select-field">
-										<select name="direction2" id="direction2" size="1"
+										<select name="direction2ed" id="direction2ed" size="1"
 											disabled="disabled">
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}"
@@ -1057,7 +1059,7 @@
 										</select>
 									</div>
 									<div class="error-label">
-										<label for="direction2" class="error" id="direction1-error"></label>
+										<label for="direction2ed" class="error" id="direction2ed-error"></label>
 									</div>
 								</div>
 							</div>
@@ -1340,51 +1342,66 @@
 			function() {
 			var equipsSEL = document.getElementById("equips");
 			var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-			if ( selectVAL == 9 ) 
+			if ( selectVAL == 9 ) {
 				$('.satInputs').show();
-				else
+			 			$("#lanes").change(
+						function() {
+						var satLanes = document.getElementById("lanes");
+						var selectSAT = satLanes.value;
+						 	   if (selectSAT == 2) { 
+							$('#direction3').hide();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 3) { 
+							$('#direction3').show();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 4) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 5) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 6) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 7) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').hide();
+						} else if (selectSAT == 8) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').show();
+						}});
+			}	else
 				$('.satInputs').hide();			
-			}, false);
-			
-		    document.getElementById("lanes").addEventListener("click",
-					function() {
-					var satLanes = document.getElementById("lanes");
-					var selectVAL = satLanes.options[lanes.selectedIndex].value;
-					if ( selectVAL == 3 ){ 
-						$('#direction3').show();
-					} else if (selectVAL == 4) {
-						$('#direction3').show();
-						$('#direction4').show();
-					} else if (selectVAL == 5) {
-						$('#direction3').show();
-						$('#direction4').show();
-						$('#direction5').show();
-					} else if (selectVAL == 6) {
-						$('#direction3').show();
-						$('#direction4').show();
-						$('#direction5').show();
-						$('#direction6').show();
-					} else if (selectVAL == 7) {
-						$('#direction3').show();
-						$('#direction4').show();
-						$('#direction5').show();
-						$('#direction6').show();
-						$('#direction7').show();
-					} else if (selectVAL == 8) {
-						$('#direction3').show();
-						$('#direction4').show();
-						$('#direction5').show();
-						$('#direction6').show();
-						$('#direction7').show();
-						$('#direction8').show();
-					} else
-						$('#direction3').hide();
-						$('#direction4').hide();
-						$('#direction5').hide();
-						$('#direction6').hide();
-						$('#direction7').hide();
-						$('#direction8').hide();
-					}, false);
+		    });
+
 			//SAT LANES INPUTS END
 			
 			// MODAL EQUIPMENT SIZE
