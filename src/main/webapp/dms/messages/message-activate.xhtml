@@ -23,18 +23,19 @@
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
 			<!-- INICIO DO FORMULARIO EQUIP -->
-			<div class="row">
-				<!-- GRID OPCOES INICIO -->
-				<div class="col-1" id="toogleMenu">
-					<button type="button" class="btn btn-warning" toggle="show">Mostrar</button>
-				</div>
-				<!-- GRID OPCOES FINAL -->
-			</div>
+			
 			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
 			<div class="row conteudoPag">
 				<!-- INICIO DA TABELA SELECAO -->
-				<div class="col-3 selecao" id="showOption">
-					<div class="message-block">
+				<div class="col-auto">
+					<div class="row">
+						<!-- GRID OPCOES INICIO -->
+						<div class="col-1" id="toogleMenu">
+							<button type="button" class="btn btn-warning" toggle="show">Mostrar</button>
+						</div>
+						<!-- GRID OPCOES FINAL -->
+					</div>
+					<div class="message-block" id="showOption">
 						<div id="label-message-content">
 							<span class="label-message-block">#{dmsLabels.dms_active_messages_label_selection}</span>
 						</div>
@@ -253,381 +254,389 @@
 				</div>
 				<!-- FINAL DA TABELA SELECAO -->
 				<!-- INICIO DA TABELA ESTADO ATUAL -->
-				<div class="col-md atual">
-					<div class="text-center" id="one">
-						<span class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
-						<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-							<input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
-								image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}"
-								image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}"
-								line2="#{item.message.pages[0].text2}" line3="#{item.message.pages[0].text3}"
-								timer="#{item.message.pages[0].timer}" />
-							<input type="hidden" name="page2" imageId="#{item.message.pages[1].id_image}"
-								image="#{item.message.pages[1].image}" imageId2="#{item.message.pages[1].id_image2}"
-								image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}"
-								line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}"
-								timer="#{item.message.pages[1].timer}" />
-							<input type="hidden" name="page3" imageId="#{item.message.pages[2].id_image}"
-								image="#{item.message.pages[2].image}" imageId2="#{item.message.pages[2].id_image2}"
-								image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
-								line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}"
-								timer="#{item.message.pages[2].timer}" />
-							<input type="hidden" name="page4" imageId="#{item.message.pages[3].id_image}"
-								image="#{item.message.pages[3].image}" imageId2="#{item.message.pages[3].id_image2}"
-								image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}"
-								line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}"
-								timer="#{item.message.pages[3].timer}" />
-							<input type="hidden" name="page5" imageId="#{item.message.pages[4].id_image}"
-								image="#{item.message.pages[4].image}" imageId2="#{item.message.pages[4].id_image2}"
-								image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
-								line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}"
-								timer="#{item.message.pages[4].timer}" />
-							<div class="option message-block">
-								<div class="check-select">
-									<input class="form-check-input" type="checkbox" id="check#{item.equip_id}" />
+				<div id="allPMV" class="row col">
+					<div class="col-md atual">
+						<div class="text-center" id="one">
+							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
+							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
+								<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}" name="#{item.nome}"
+									driver="#{item.message.driver}">
+									<input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
+										image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}"
+										image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}"
+										line2="#{item.message.pages[0].text2}" line3="#{item.message.pages[0].text3}"
+										timer="#{item.message.pages[0].timer}" />
+									<input type="hidden" name="page2" imageId="#{item.message.pages[1].id_image}"
+										image="#{item.message.pages[1].image}" imageId2="#{item.message.pages[1].id_image2}"
+										image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}"
+										line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}"
+										timer="#{item.message.pages[1].timer}" />
+									<input type="hidden" name="page3" imageId="#{item.message.pages[2].id_image}"
+										image="#{item.message.pages[2].image}" imageId2="#{item.message.pages[2].id_image2}"
+										image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
+										line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}"
+										timer="#{item.message.pages[2].timer}" />
+									<input type="hidden" name="page4" imageId="#{item.message.pages[3].id_image}"
+										image="#{item.message.pages[3].image}" imageId2="#{item.message.pages[3].id_image2}"
+										image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}"
+										line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}"
+										timer="#{item.message.pages[3].timer}" />
+									<input type="hidden" name="page5" imageId="#{item.message.pages[4].id_image}"
+										image="#{item.message.pages[4].image}" imageId2="#{item.message.pages[4].id_image2}"
+										image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
+										line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}"
+										timer="#{item.message.pages[4].timer}" />
 								</div>
-
-								<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
-
-									<!-- Table with DIV -->
-
-									<div class="tableStyle card">
-										<div class="dms-name card-header py-0">
-											<div class="text-center dmsTab#{item.equip_id}">
-												<span class="name">#{item.nome}</span>
-												<span class="km">#{item.km}</span>
+								<div class="option message-block">
+									<div class="check-select">
+										<input class="form-check-input" type="checkbox" id="check#{item.equip_id}" />
+									</div>
+	
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+	
+										<!-- Table with DIV -->
+	
+										<div class="tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+													<span class="name">#{item.nome}</span>
+													<span class="km">#{item.km}</span>
+												</div>
 											</div>
-										</div>
-										<div class="row text-center card-body p-0">
-											<div id="child-img" class="col-2 padding-pmv">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="picture-box primary" id-img="0" />
-											</div>
-											<div id="child-msg" class="col-auto msg-pos">
-												<div id="message" class="table-message">
-													<div class="row border-table-right message1" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-1"></span>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
 														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-2"></span>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
 														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-3"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-4"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-5"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-6"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-7"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-8"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-9"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-10"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-11"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-12"></span>
-														</div>
-													</div>
-													<div class="row border-table-right message2" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-13"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-14"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-15"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-16"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-17"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-18"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-19"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-20"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-21"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-22"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-23"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-24"></span>
-														</div>
-													</div>
-													<div class="row border-table-right bottom message3" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-25"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-26"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-27"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-28"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-29"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-30"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-31"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-32"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-33"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-34"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-35"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-36"></span>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-											<div id="child-img" class="col-2 second-img ms-auto">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="picture-box secondary" id-img="0" />
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
 											</div>
 										</div>
+	
 									</div>
-
 								</div>
-							</div>
-						</c:forEach>
+							</c:forEach>
+						</div>
 					</div>
-				</div>
-				<!-- FINAL DA TABELA ESTADO ATUAL -->
-				<!-- INICIO DA TABELA NOVO ESTADO -->
-				<div class="col-md">
-					<div class="text-center" id="two">
-						<span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
-						<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-							<input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
-								image="#{item.messageChange.pages[0].image}"
-								imageId2="#{item.messageChange.pages[0].id_image2}"
-								image2="#{item.messageChange.pages[0].image2}"
-								line1="#{item.messageChange.pages[0].text1}"
-								line2="#{item.messageChange.pages[0].text2}"
-								line3="#{item.messageChange.pages[0].text3}"
-								timer="#{item.messageChange.pages[0].timer}" />
-							<input type="hidden" name="page2" imageId="#{item.messageChange.pages[1].id_image}"
-								image="#{item.messageChange.pages[1].image}"
-								imageId2="#{item.messageChange.pages[1].id_image2}"
-								image2="#{item.messageChange.pages[1].image2}"
-								line1="#{item.messageChange.pages[1].text1}"
-								line2="#{item.messageChange.pages[1].text2}"
-								line3="#{item.messageChange.pages[1].text3}"
-								timer="#{item.messageChange.pages[1].timer}" />
-							<input type="hidden" name="page3" imageId="#{item.messageChange.pages[2].id_image}"
-								image="#{item.messageChange.pages[2].image}"
-								imageId2="#{item.messageChange.pages[2].id_image2}"
-								image2="#{item.messageChange.pages[2].image2}"
-								line1="#{item.messageChange.pages[2].text1}"
-								line2="#{item.messageChange.pages[2].text2}"
-								line3="#{item.messageChange.pages[2].text3}"
-								timer="#{item.messageChange.pages[2].timer}" />
-							<input type="hidden" name="page4" imageId="#{item.messageChange.pages[3].id_image}"
-								image="#{item.messageChange.pages[3].image}"
-								imageId2="#{item.messageChange.pages[3].id_image2}"
-								image2="#{item.messageChange.pages[3].image2}"
-								line1="#{item.messageChange.pages[3].text1}"
-								line2="#{item.messageChange.pages[3].text2}"
-								line3="#{item.messageChange.pages[3].text3}"
-								timer="#{item.messageChange.pages[3].timer}" />
-							<input type="hidden" name="page5" imageId="#{item.messageChange.pages[4].id_image}"
-								image="#{item.messageChange.pages[4].image}"
-								imageId2="#{item.messageChange.pages[4].id_image2}"
-								image2="#{item.messageChange.pages[4].image2}"
-								line1="#{item.messageChange.pages[4].text1}"
-								line2="#{item.messageChange.pages[4].text2}"
-								line3="#{item.messageChange.pages[4].text3}"
-								timer="#{item.messageChange.pages[4].timer}" />
-							<div class="option message-block">
-								<div class="check-select">
-									<input class="form-check-input" type="checkbox" id="checkChange#{item.equip_id}" />
+					<!-- FINAL DA TABELA ESTADO ATUAL -->
+					<!-- INICIO DA TABELA NOVO ESTADO -->
+					<div class="col-md">
+						<div class="text-center" id="two">
+							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
+							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
+								<div id="listChangePMV#{item.equip_id}" type="#{item.messageChange.tipo}"
+									name="#{item.nome}" driver="#{item.messageChange.driver}" status="#{item.msg_status}">
+									<input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
+										image="#{item.messageChange.pages[0].image}"
+										imageId2="#{item.messageChange.pages[0].id_image2}"
+										image2="#{item.messageChange.pages[0].image2}"
+										line1="#{item.messageChange.pages[0].text1}"
+										line2="#{item.messageChange.pages[0].text2}"
+										line3="#{item.messageChange.pages[0].text3}"
+										timer="#{item.messageChange.pages[0].timer}" />
+									<input type="hidden" name="page2" imageId="#{item.messageChange.pages[1].id_image}"
+										image="#{item.messageChange.pages[1].image}"
+										imageId2="#{item.messageChange.pages[1].id_image2}"
+										image2="#{item.messageChange.pages[1].image2}"
+										line1="#{item.messageChange.pages[1].text1}"
+										line2="#{item.messageChange.pages[1].text2}"
+										line3="#{item.messageChange.pages[1].text3}"
+										timer="#{item.messageChange.pages[1].timer}" />
+									<input type="hidden" name="page3" imageId="#{item.messageChange.pages[2].id_image}"
+										image="#{item.messageChange.pages[2].image}"
+										imageId2="#{item.messageChange.pages[2].id_image2}"
+										image2="#{item.messageChange.pages[2].image2}"
+										line1="#{item.messageChange.pages[2].text1}"
+										line2="#{item.messageChange.pages[2].text2}"
+										line3="#{item.messageChange.pages[2].text3}"
+										timer="#{item.messageChange.pages[2].timer}" />
+									<input type="hidden" name="page4" imageId="#{item.messageChange.pages[3].id_image}"
+										image="#{item.messageChange.pages[3].image}"
+										imageId2="#{item.messageChange.pages[3].id_image2}"
+										image2="#{item.messageChange.pages[3].image2}"
+										line1="#{item.messageChange.pages[3].text1}"
+										line2="#{item.messageChange.pages[3].text2}"
+										line3="#{item.messageChange.pages[3].text3}"
+										timer="#{item.messageChange.pages[3].timer}" />
+									<input type="hidden" name="page5" imageId="#{item.messageChange.pages[4].id_image}"
+										image="#{item.messageChange.pages[4].image}"
+										imageId2="#{item.messageChange.pages[4].id_image2}"
+										image2="#{item.messageChange.pages[4].image2}"
+										line1="#{item.messageChange.pages[4].text1}"
+										line2="#{item.messageChange.pages[4].text2}"
+										line3="#{item.messageChange.pages[4].text3}"
+										timer="#{item.messageChange.pages[4].timer}" />
 								</div>
-
-								<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
-
-									<!-- Table with DIV -->
-
-									<div class="tableStyle card">
-										<div class="dms-name card-header py-0">
-											<div class="text-center dmsTab#{item.equip_id}">
-												<span class="name">#{item.nome}</span>
-												<span class="km">#{item.km}</span>
+								<div class="option message-block">
+									<div class="check-select">
+										<input class="form-check-input" type="checkbox" disabled="disabled" id="check#{item.equip_id}_Change" />
+									</div>
+	
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+	
+										<!-- Table with DIV -->
+	
+										<div class="tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+													<span class="name">#{item.nome}</span>
+													<span class="km">#{item.km}</span>
+												</div>
 											</div>
-										</div>
-										<div class="row text-center card-body p-0">
-											<div id="child-img" class="col-2 padding-pmv">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="picture-box primary" id-img="0" />
-											</div>
-											<div id="child-msg" class="col-auto msg-pos">
-												<div id="message" class="table-message">
-													<div class="row border-table-right message1" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-1"></span>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
 														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-2"></span>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
 														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-3"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-4"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-5"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-6"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-7"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-8"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-9"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-10"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-11"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-12"></span>
-														</div>
-													</div>
-													<div class="row border-table-right message2" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-13"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-14"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-15"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-16"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-17"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-18"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-19"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-20"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-21"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-22"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-23"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-24"></span>
-														</div>
-													</div>
-													<div class="row border-table-right bottom message3" msg="">
-														<div class="col-1 px-0 border-table">
-															<span id="box-25"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-26"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-27"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-28"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-29"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-30"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-31"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-32"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-33"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-34"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-35"></span>
-														</div>
-														<div class="col-1 px-0 border-table">
-															<span id="box-36"></span>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-											<div id="child-img" class="col-2 second-img ms-auto">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
-													class="picture-box secondary" id-img="0" />
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
 											</div>
 										</div>
+	
 									</div>
-
 								</div>
-							</div>
-						</c:forEach>
+							</c:forEach>
+						</div>
 					</div>
 				</div>
 				<!-- FINAL DA TABELA NOVO ESTADO -->
@@ -669,7 +678,7 @@
 	</ui:define>
 
 	<ui:define name="default-plugins">
-		<h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" />
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
 	</ui:define>
 
 	<ui:define name="jscript">

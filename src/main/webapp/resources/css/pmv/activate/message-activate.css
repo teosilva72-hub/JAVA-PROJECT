@@ -42,6 +42,8 @@ body {
   font-size: 22px;
   font-weight: bold;
   color: white;
+  margin-bottom: 15px;
+  display: block;
 }
  
 
@@ -57,6 +59,17 @@ body {
   color: white;
 }
 
-.selecao {
+#showOption {
   display: none;
+}
+
+#allPMV {
+  overflow: auto;
+}
+
+
+/* TEMPORARY CSS */
+
+.temporaryboot {
+  left: -130px;
 }
