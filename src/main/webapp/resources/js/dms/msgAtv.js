@@ -46,11 +46,11 @@ async function main() {
 
 			if (pmv.len() > 1)
 				setTimeout(() => {
-					requestAnimationFrame(startAnimation);
+					startAnimation();
 				}, page.timer() * 1000);
 		}
 
-		requestAnimationFrame(startAnimation);
+		startAnimation();
 	}
 
 	const initAnimation = () => {
@@ -152,10 +152,13 @@ async function main() {
 			}
 		})
 
-		$('.option [id^=check]').change(function() {
+		$('.option [id^=check]').change(function () {
 			let check = $(this)
 			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
 		})
+
+		let opt = $("#available-id option").sort(function (a, b) { return a.value - b.value });
+		$("#available-id").append(opt);
 
 		pmvResize();
 		$(window).resize(pmvResize);
