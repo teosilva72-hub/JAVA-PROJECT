@@ -20,6 +20,14 @@
   border-radius: 0;
 }
 
+.equip-info .tableStyle.change {
+  border-right: 6px solid #00BFFF;
+}
+
+.equip-info .tableStyle.unchanged {
+  opacity: .6;
+}
+
 .dms-name {
   margin-bottom: -5px;
   height: 13px;
@@ -81,14 +89,17 @@
   display: none;
 }
 
+.driver2.equip-info .msg-pos,
 .driver2 .equip-info .msg-pos {
   bottom: 10px !important;
 }
 
+.driver2.equip-info .message2,
 .driver2 .equip-info .message2 {
   border-bottom-style: solid !important;
 }
 
+.driver2.equip-info .message3,
 .driver2 .equip-info .message3 {
   display: none !important;
 }
@@ -97,20 +108,24 @@
   display: none !important;
 }
 
+.driver3.equip-info .msg-pos,
 .driver3 .equip-info .msg-pos {
   right: 55px !important;
 }
 
+.driver3.equip-info .padding-pmv,
 .driver3 .equip-info .padding-pmv {
   margin-left: 2px !important;
 }
 
+.driver3.equip-info .second-img,
 .driver3 .equip-info .second-img {
   display: revert !important;
   margin-right: 33px;
   margin-top: 6px;
 }
 
+.driver3.equip-info .table-message,
 .driver3 .equip-info .table-message {
   width: 110px !important;
 }

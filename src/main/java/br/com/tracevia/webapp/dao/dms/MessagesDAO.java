@@ -443,7 +443,9 @@ public class MessagesDAO {
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
-
+		
+		mensagem.revision();
+		
 		return mensagem;
 	}
 
