@@ -7,6 +7,8 @@ async function main() {
 	await init();
 
 	const equipInfo = $('.equip-info');
+	const allChecks = $('.option [id^=check]')
+	const checksListAll = $('#checkListAll')
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -152,9 +154,13 @@ async function main() {
 			}
 		})
 
-		$('.option [id^=check]').change(function () {
+		allChecks.change(function () {
 			let check = $(this)
 			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
+		})
+
+		checksListAll.change(() => {
+			allChecks.prop('checked', checksListAll.prop('checked'))
 		})
 
 		let opt = $("#available-id option").sort(function (a, b) { return a.value - b.value });
