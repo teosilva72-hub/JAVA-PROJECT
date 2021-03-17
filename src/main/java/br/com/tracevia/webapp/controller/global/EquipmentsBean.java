@@ -233,69 +233,22 @@ public class EquipmentsBean implements Serializable {
 	    //For Equipment KM
 	    sat.setKm(parameterMap.get("km"));
 	    
-	    //For Direction Lane 1
-	    sat.setFaixa1(parameterMap.get("faixa1"));
-	    
-	    //For Direction Lane 2
-	    sat.setFaixa2(parameterMap.get("faixa2"));
-	    
-	    //For Direction Lane 3
-	    sat.setFaixa3(parameterMap.get("faixa3"));
-	    
-	    //For Direction Lane 4
-	    sat.setFaixa4(parameterMap.get("faixa4"));
-	    
-	    //For Direction Lane 5
-	    sat.setFaixa5(parameterMap.get("faixa5"));
-	    
-	    //For Direction Lane 6
-	    sat.setFaixa6(parameterMap.get("faixa6"));
-	    
-	    //For Direction Lane 7
-	    sat.setFaixa7(parameterMap.get("faixa7"));
-	    
-	    //For Direction Lane 8
-	    sat.setFaixa8(parameterMap.get("faixa8"));
-	    
 	    //For Equipment Width
 	    sat.setMapWidth(Integer.parseInt(parameterMap.get("width")));
 	    
 	    //For Number Lanes
 	    sat.setNumFaixas(Integer.parseInt(parameterMap.get("lanes")));
 	    
-	    //For Direction 1
-	    sat.setSentido1(parameterMap.get("direction1"));
-	    
-	    //For Direction 2
-	    sat.setSentido2(parameterMap.get("direction2"));
-	    
-	    //For Direction 3
-	    sat.setSentido3(parameterMap.get("direction3"));
-	    
-	    //For Direction 4
-	    sat.setSentido4(parameterMap.get("direction4"));
-	    
-	    //For Direction 5
-	    sat.setSentido5(parameterMap.get("direction5"));
-	    
-	    //For Direction 6
-	    sat.setSentido6(parameterMap.get("direction6"));
-	    
-	    //For Direction 7
-	    sat.setSentido7(parameterMap.get("direction7"));
-	    
-	    //For Direction 8
-	    sat.setSentido8(parameterMap.get("direction8"));
-	    
-	    defineDirections1(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido1()));
-	    defineDirections2(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido2()));
-	    defineDirections3(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido3()));
-	    defineDirections4(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido4()));
-	    defineDirections5(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido5()));
-	    defineDirections6(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido6()));
-	    defineDirections7(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido7()));
-	    defineDirections8(sat, sat.getNumFaixas(), Integer.parseInt(sat.getSentido8()));
-	   }else {
+	    defineDirections(sat, 1, parameterMap.get("direction1") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1")));
+	    defineDirections(sat, 2, parameterMap.get("direction2") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2")));
+	    defineDirections(sat, 3, parameterMap.get("direction3") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3")));
+	    defineDirections(sat, 4, parameterMap.get("direction4") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4")));
+	    defineDirections(sat, 5, parameterMap.get("direction5") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5")));
+	    defineDirections(sat, 6, parameterMap.get("direction6") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6")));
+	    defineDirections(sat, 7, parameterMap.get("direction7") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7")));
+	    defineDirections(sat, 8, parameterMap.get("direction8") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8")));
+	   
+	   } else {
 		   		   
 			//For Equipment ID
 			equip.setEquip_id(Integer.parseInt(parameterMap.get("equipId")));
@@ -487,300 +440,149 @@ public class EquipmentsBean implements Serializable {
 	
     
     //DEFINI��O PARA SALVAR SATS
-    public void defineDirections1(SAT sat, int numberLanes, int dir1){
-    	
-    	
+    public void defineDirections(SAT sat, int numberLane, int dir1){
+
     	switch(dir1) {
     	
     	case 1: 
     		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa1("N"); break;
-			
-			}; break;
-    	
+    		switch(numberLane) {
+    		case 1:
+    			sat.setFaixa1("N"); break;
+
+    		case 2:
+    			sat.setFaixa2("N"); break;
+    		
+    		case 3:
+    			sat.setFaixa3("N"); break;	
+    		
+    		case 4:
+    			sat.setFaixa4("N"); break;	
+    		
+    		case 5:
+    			sat.setFaixa5("N"); break;
+    		
+    		case 6:
+    			sat.setFaixa6("N"); break;
+    		
+    		case 7:
+    			sat.setFaixa7("N"); break;
+    		
+    		case 8:
+    			sat.setFaixa8("N"); break;
+    			
+    		default:
+    			break;
+    		}
+    		
+    		break;
+    	  		
+
     	case 2: 
     		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa1("S"); break;
-	
-			}; break;	
+    	    		
+    		switch(numberLane) {
+    		case 1:
+    			sat.setFaixa1("S"); break;
+
+    		case 2:
+    			sat.setFaixa2("S"); break;
+    		
+    		case 3:
+    			sat.setFaixa3("S"); break;	
+    		
+    		case 4:
+    			sat.setFaixa4("S"); break;	
+    		
+    		case 5:
+    			sat.setFaixa5("S"); break;
+    		
+    		case 6:
+    			sat.setFaixa6("S"); break;
+    		
+    		case 7:
+    			sat.setFaixa7("S"); break;
+    		
+    		case 8:
+    			sat.setFaixa8("S"); break;
+    			
+    		default:
+    			break;
+    		}
+    		
+    		break;
+
     		    		    	
     	case 3: 	
     		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa1("L"); break;
-	
-			}; break;
-      
-		
+    		   		
+    		switch(numberLane) {
+    		case 1:
+    			sat.setFaixa1("L"); break;
+
+    		case 2:
+    			sat.setFaixa2("L"); break;
+    		
+    		case 3:
+    			sat.setFaixa3("L"); break;	
+    		
+    		case 4:
+    			sat.setFaixa4("L"); break;	
+    		
+    		case 5:
+    			sat.setFaixa5("L"); break;
+    		
+    		case 6:
+    			sat.setFaixa6("L"); break;
+    		
+    		case 7:
+    			sat.setFaixa7("L"); break;
+    		
+    		case 8:
+    			sat.setFaixa8("L"); break;
+    			
+    		default:
+    			break;
+    		}
+    		
+    		break;
+
     	case 4: 
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa1("O");  break;
-	
-			}; break;   		
-    	
+    		    		
+    		switch(numberLane) {
+    		case 1:
+    			sat.setFaixa1("O"); break;
+
+    		case 2:
+    			sat.setFaixa2("O"); break;
+    		
+    		case 3:
+    			sat.setFaixa3("O"); break;	
+    		
+    		case 4:
+    			sat.setFaixa4("O"); break;	
+    		
+    		case 5:
+    			sat.setFaixa5("O"); break;
+    		
+    		case 6:
+    			sat.setFaixa6("O"); break;
+    		
+    		case 7:
+    			sat.setFaixa7("O"); break;
+    		
+    		case 8:
+    			sat.setFaixa8("O"); break;
+    			
+    		default:
+    			break;
+    		}
+    		
+    		break;
+    	  		
+
     	}
-     
-    	
 
     }
     
-public void defineDirections2(SAT sat, int numberLanes, int dir2){
-    	
-    	
-    	switch(dir2) {
-    	
-    	case 1: 
-    		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa2("N"); break;
-			
-			}; break;
-    	
-    	case 2: 
-    		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa2("S"); break;
-	
-			}; break;	
-    		    		    	
-    	case 3: 	
-    		
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa2("L"); break;
-	
-			}; break;
-      
-		
-    	case 4: 
-    		switch (numberLanes) {    		
-			case 2: sat.setFaixa2("O");  break;
-	
-			}; break;   		
-    	
-    	}
-    	
-	}
-
-public void defineDirections3(SAT sat, int numberLanes, int dir3){
-	
-	
-	switch(dir3) {
-	
-	case 1: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa3("N"); break;
-		
-		}; break;
-	
-	case 2: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa3("S"); break;
-
-		}; break;	
-		    		    	
-	case 3: 	
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa3("L"); break;
-
-		}; break;
-  
-	
-	case 4: 
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa3("O");  break;
-
-		}; break;   		
-	
-	}
-	
- }
-
-public void defineDirections4(SAT sat, int numberLanes, int dir4){
-	
-	
-	switch(dir4) {
-	
-	case 1: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa4("N"); break;
-		
-		}; break;
-	
-	case 2: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa4("S"); break;
-
-		}; break;	
-		    		    	
-	case 3: 	
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa4("L"); break;
-
-		}; break;
-  
-	
-	case 4: 
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa4("O");  break;
-
-		}; break;   		
-	
-	}
-	
- }
-
-public void defineDirections5(SAT sat, int numberLanes, int dir5){
-	
-	
-	switch(dir5) {
-	
-	case 1: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa5("N"); break;
-		
-		}; break;
-	
-	case 2: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa5("S"); break;
-
-		}; break;	
-		    		    	
-	case 3: 	
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa5("L"); break;
-
-		}; break;
-  
-	
-	case 4: 
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa5("O");  break;
-
-		}; break;   		
-	
-	}
-	
- }
-
-public void defineDirections6(SAT sat, int numberLanes, int dir6){
-	
-	
-	switch(dir6) {
-	
-	case 1: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa6("N"); break;
-		
-		}; break;
-	
-	case 2: 
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa6("S"); break;
-
-		}; break;	
-		    		    	
-	case 3: 	
-		
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa6("L"); break;
-
-		}; break;
-  
-	
-	case 4: 
-		switch (numberLanes) {    		
-		case 2: sat.setFaixa6("O");  break;
-
-		}; break;   		
-	
-	}
-}
-	public void defineDirections7(SAT sat, int numberLanes, int dir7){
-		
-		
-		switch(dir7) {
-		
-		case 1: 
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa7("N"); break;
-			
-			}; break;
-		
-		case 2: 
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa7("S"); break;
-
-			}; break;	
-			    		    	
-		case 3: 	
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa7("L"); break;
-
-			}; break;
-	  
-		
-		case 4: 
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa7("O");  break;
-
-			}; break;   		
-		
-		}
-	
- }
-	
-public void defineDirections8(SAT sat, int numberLanes, int dir8){
-		
-		
-		switch(dir8) {
-		
-		case 1: 
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa8("N"); break;
-			
-			}; break;
-		
-		case 2: 
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa8("S"); break;
-
-			}; break;	
-			    		    	
-		case 3: 	
-			
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa8("L"); break;
-
-			}; break;
-	  
-		
-		case 4: 
-			switch (numberLanes) {    		
-			case 2: sat.setFaixa8("O");  break;
-
-			}; break;   		
-		
-		}
-	
- }
-
 }

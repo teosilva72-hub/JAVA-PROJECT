@@ -656,7 +656,7 @@
 
 								<!-- DIRECTION 2 -->
 
-								<div class="form-group col-md-3	 input-field">
+								<div class="form-group col-md-3	 input-field" >
 									<div class="select-field">
 										<select name="direction2" id="direction2" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir2}</option>
@@ -674,7 +674,7 @@
 
 								<!-- DIRECTION 3 -->
 
-								<div class="form-group col-md-3 input-field">
+								<div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction3" id="direction3" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
@@ -690,7 +690,7 @@
 								</div>
 							
 							<!-- DIRECTION 4 -->
-								<div class="form-group col-md-3 input-field">
+								<div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction4" id="direction4" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
@@ -707,7 +707,7 @@
 							</div>
 								<!-- DIRECTION 5 -->
 				          <div class="form-row satInputs">
-								<div class="form-group col-md-3 input-field">
+								<div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction5" id="direction5" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
@@ -724,7 +724,7 @@
 							
 							 <!-- DIRECTION 6 -->
 						
-							<div class="form-group col-md-3 input-field">
+							<div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction6" id="direction6" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
@@ -740,7 +740,7 @@
 								</div>
 						     
 						     <!-- DIRECTION 7 -->
-						   <div class="form-group col-md-3 input-field">
+						   <div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction7" id="direction7" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
@@ -757,7 +757,7 @@
 								
 							<!-- DIRECTION 8 -->	
 							
-							<div class="form-group col-md-3 input-field">
+							<div class="form-group col-md-3 input-field" style="display:none;">
 									<div class="select-field">
 										<select name="direction8" id="direction8" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
@@ -1352,25 +1352,25 @@
 					var selectVAL = satLanes.options[lanes.selectedIndex].value;
 					if ( selectVAL == 3 ){ 
 						$('#direction3').show();
-					} if (selectVAL == 4) {
+					} else if (selectVAL == 4) {
 						$('#direction3').show();
 						$('#direction4').show();
-					} if (selectVAL == 5) {
+					} else if (selectVAL == 5) {
 						$('#direction3').show();
 						$('#direction4').show();
 						$('#direction5').show();
-					} if (selectVAL == 6) {
+					} else if (selectVAL == 6) {
 						$('#direction3').show();
 						$('#direction4').show();
 						$('#direction5').show();
 						$('#direction6').show();
-					} if (selectVAL == 7) {
+					} else if (selectVAL == 7) {
 						$('#direction3').show();
 						$('#direction4').show();
 						$('#direction5').show();
 						$('#direction6').show();
 						$('#direction7').show();
-					} if (selectVAL == 8) {
+					} else if (selectVAL == 8) {
 						$('#direction3').show();
 						$('#direction4').show();
 						$('#direction5').show();
