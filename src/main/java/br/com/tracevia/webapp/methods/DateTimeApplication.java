@@ -9,6 +9,10 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.sat.SAT;
 
 public class DateTimeApplication {
 	
@@ -195,19 +199,24 @@ public class DateTimeApplication {
 	
 	String currentDate = null;
 		
-     //formatar os minutos para que nao ocorra inconsistencias
-	if(minute >= 5 && minute < 20)
+	  //Subtract Hour
+    int hour = calendar.get(Calendar.HOUR) -1;
+		
+   //formatar os minutos para que nao ocorra inconsistencias
+	if(minute >= 0 && minute < 15) {
+	   calendar.set(Calendar.MINUTE, 45);
+	   calendar.set(Calendar.HOUR, hour);	
+	
+	}else if(minute >= 15 && minute < 30)
 		 calendar.set(Calendar.MINUTE, 0);
 	
-	else if(minute >= 20 && minute < 35)
+	else if(minute >= 30 && minute < 45)
 		 calendar.set(Calendar.MINUTE, 15);
 	
-	else if(minute >= 35 && minute < 50)
-		 calendar.set(Calendar.MINUTE, 30);
-	
-	else calendar.set(Calendar.MINUTE, 45);
-	
-	calendar.set(Calendar.SECOND, 0);
+	else if(minute >= 45 && minute < 59)			
+		  calendar.set(Calendar.MINUTE, 30);
+						
+	  calendar.set(Calendar.SECOND, 0);
 	     
 	//Data Atual
 	currentDate = dtFormatter.format(calendar.getTime());
@@ -1440,9 +1449,32 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			        return i;
 		}	
 		
+		///////////////////////////////////////////////////
+			
+		public void intervaloCountVehiclesName(String[][] matriz, List<? extends Equipments> listSats , String[] selectedEquips, int col, int lin, int period) { 
+			
+			int colName = col + 1; //Coluna do nome do equipamento
+			
+			for(int k = 0; k < listSats.size(); k++) {
+				
+			
+			
+			    for(int i = 0; i < selectedEquips.length; i++) {
+				
+				if(listSats.get(k).getEquip_id() == Integer.parseInt(selectedEquips[i])) {
+					
+					System.out.println(listSats.get(i).getEquip_id());
+			
+			       for (int j = 0; j < lin; j+= period)			       
+				          matriz[colName][j] = listSats.get(i).getNome();	      
+			
+			     }
+			
+			}
+			
+		}
+	}
 		
-		
-		
-		
-						
+		///////////////////////////////////////////////////
+									
    }

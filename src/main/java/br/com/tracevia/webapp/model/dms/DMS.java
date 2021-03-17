@@ -6,6 +6,8 @@ public class DMS extends Equipments {
 	
 	private int leds;	
 	private String dms_ip;
+	private Messages message;
+	private Messages messageChange;
 	private boolean stat;
 	private boolean msg_status;
 	
@@ -58,6 +60,22 @@ public class DMS extends Equipments {
 
 	public void setMsg_status(boolean msg_status) {
 		this.msg_status = msg_status;
+	}
+
+	public Messages getMessageChange() {
+		return messageChange;
+	}
+
+	public void setMessageChange(Messages messageChange) {
+		this.messageChange = messageChange;
+	}
+
+	public Messages getMessage() {
+		return message;
+	}
+
+	public void setMessage(Messages message) {
+		this.message = message;
 	}
 
 

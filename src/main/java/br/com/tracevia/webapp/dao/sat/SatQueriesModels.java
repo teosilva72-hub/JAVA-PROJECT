@@ -15,7 +15,7 @@ public class SatQueriesModels {
 	}
 		   
 	   /**
-	    * Método que retorna query de velocidade de acordo com parametros selecionados
+	    * MÃ©todo que retorna query de velocidade de acordo com parametros selecionados
 	    * @param station_id
 	    * @param vehicles
 	    * @return
@@ -37,7 +37,7 @@ public class SatQueriesModels {
 	   }
 	   
 	   /**
-	    * Método para criação da mainQuery tipo por eixos
+	    * MÃ©todo para criaÃ§Ã£o da mainQuery tipo por eixos
 	    * @param station_id - Id do equipamento
 	    * @param axles - array com axles selecionados
 	    * @param lanes - numero de faixas do equipamento
@@ -286,7 +286,7 @@ public class SatQueriesModels {
 	   	   
 	   
 	   /**
-	    * Método para criação da mainQuery tipo por classes
+	    * MÃ©todo para criaÃ§Ã£o da mainQuery tipo por classes
 	    * @param station_id - Id do equipamento
 	    * @param classes - array com as classes selecionadas
 	    * @param lanes - numero de faixas do equipamento
@@ -631,7 +631,7 @@ public class SatQueriesModels {
 	   
 	   
 	   /**
-	    * Método para criação da mainQuery pesagem
+	    * MÃ©todo para criaÃ§Ã£o da mainQuery pesagem
 	    * @param station_id - Id do equipamento
 	    * @param classes - array com as classes selecionadas
 	    * @param lanes - numero de faixas do equipamento
@@ -686,7 +686,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 2) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	       		
+       		/*MÃ‰DIA*/	       		
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -739,7 +739,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 2) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +  
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -752,7 +752,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 2) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -764,7 +764,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 2) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " +  
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -794,7 +794,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	
+       		/*MÃ‰DIA*/	
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -847,7 +847,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +  
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -860,7 +860,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -872,7 +872,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " +  
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -902,7 +902,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	
+       		/*MÃ‰DIA*/	
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -955,7 +955,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +  
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -968,7 +968,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -980,7 +980,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " +  
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -1010,7 +1010,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	
+       		/*MÃ‰DIA*/	
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -1063,7 +1063,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +   
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -1076,7 +1076,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -1088,7 +1088,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " + 
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -1118,7 +1118,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	
+       		/*MÃ‰DIA*/	
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -1171,7 +1171,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +  
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -1184,7 +1184,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -1196,7 +1196,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " +  
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -1226,7 +1226,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
        		"CONCAT('', '') AS CONCAT1, " +  
        		
-       		/*MÉDIA*/	
+       		/*MÃ‰DIA*/	
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
        		"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -1279,7 +1279,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(AVG(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
        		"CONCAT('', '') AS CONCAT4, " +  
        		
-       		/*MÁXIMA*/
+       		/*MÃXIMA*/
        		           	  				 
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
        		"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -1292,7 +1292,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MAX(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
        		"CONCAT('', '') AS CONCAT5, " +  
        		
-       		/*MÍNIMA*/
+       		/*MÃNIMA*/
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
        		"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -1304,7 +1304,7 @@ public class SatQueriesModels {
        		"IFNULL(ROUND(MIN(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
        		"CONCAT('', '') AS CONCAT6, " +  
        		
-       		/*DESVIO PADRÃO */				
+       		/*DESVIO PADRÃƒO */				
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
        		"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -1334,7 +1334,7 @@ public class SatQueriesModels {
   		    	"IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND eq.equip_id = '"+stations[st]+"', 1, NULL)),0),0) 'TOTALS2', " +
   		    	"CONCAT('', '') AS CONCAT1, " +  
   		    	
-  		    	/*MÉDIA*/	
+  		    	/*MÃ‰DIA*/	
   		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG AUTOS1', " +
   		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG COM1', " +
   		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'AVG MOTOS1', " +
@@ -1387,7 +1387,7 @@ public class SatQueriesModels {
   		    	"IFNULL(ROUND(AVG(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND eq.equip_id = '"+stations[st]+"' , (st.speed * 85 ) / 100, NULL)),0),0)'AVG 85th - TOTAL2', " +
   		    	"CONCAT('', '') AS CONCAT4, " +  
   		    	
-  		    	/*MÁXIMA*/
+  		    	/*MÃXIMA*/
   		    	           	  				 
   		    	"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX AUTOS1', " +
   		    	"IFNULL(ROUND(MAX(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MAX COM1', " +
@@ -1400,7 +1400,7 @@ public class SatQueriesModels {
   		    	"IFNULL(ROUND(MAX(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND eq.equip_id = '"+stations[st]+"' , st.speed, NULL)),0),0) 'MAX TOTALS2', " +
   		    	"CONCAT('', '') AS CONCAT5, " +  
   		    	
-  		    	/*MÍNIMA*/
+  		    	/*MÃNIMA*/
   		    	"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN AUTOS1', " +
   		    	"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN COM1', " +
   		    	"IFNULL(ROUND(MIN(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'MIN MOTOS1', " +
@@ -1412,7 +1412,7 @@ public class SatQueriesModels {
   		    	"IFNULL(ROUND(MIN(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL)),0),0) 'MIN TOTALS2', " +
   		    	"CONCAT('', '') AS CONCAT6, " +  	
   		    	
-  		    	/*DESVIO PADRÃO */				
+  		    	/*DESVIO PADRÃƒO */				
   		    	"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV AUTOS1', " +
   		    	"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10)) AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV COM1', " +
   		    	"IFNULL(ROUND(STD(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"') AND eq.equip_id = '"+stations[st]+"', st.speed, NULL )),0),0) 'DESV MOTOS1', " +
@@ -1663,29 +1663,18 @@ public class SatQueriesModels {
                           /////////////////////////////////
                           public String CountVehiclesMainQuery(String[] station_id) {
                     	   
-                    	   String query = "", total = "IFNULL(ROUND(SUM(IF((";
+                    	   String query = "";
                     	   
                     	                     	   
-                    	   for(int i = 0; i < station_id.length; i++) { 					
+                    	   for(int i = 0; i < station_id.length; i++)				
                     			 
-                    		    query+= " IFNULL(ROUND(SUM(IF(st.siteID = '"+station_id[i]+"', 1, NULL)), 0), 0) 'EQUIP "+(i+1)+"', " ;
-                                 
-                    		     //Adding total count
-                    			 total +="st.siteID = '"+station_id[i]+"'";
-                    			
-                    			if(station_id[i] != station_id[station_id.length-1])                    				
-                    				total += " OR ";
-                    			
-                    			else total += ")";
-                    			                    				
-                    			}
+                               query += " COUNT(IF(st.siteID = "+station_id[i]+", 1, NULL)) 'equip "+(i+1)+"', " ;
+                       		   		             
                     	               	                    	   
                     	   //Close total
-                    	       total += ", 1, NULL)), 0), 0) 'TOTAL' ";                    	   
+                    	       query += " COUNT(*) 'TOTAL' ";                    	   
                     	   
-                    	       //Adding total to query
-                    	       query += total;
-                    	                       	                       	   
+                    	                      	                       	                       	   
                     	   return query;
                     	   
                           }
@@ -2583,7 +2572,7 @@ public class SatQueriesModels {
                    
                    
                    /**
-            	    * Método para criação da mainQuery tipo por classes
+            	    * MÃ©todo para criaÃ§Ã£o da mainQuery tipo por classes
             	    * @param station_id - Id do equipamento
             	    * @param classes - array com as classes selecionadas
             	    * @param lanes - numero de faixas do equipamento

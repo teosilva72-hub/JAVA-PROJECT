@@ -56,7 +56,7 @@ public class DMSDAO {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
 
-		String sql = "SELECT equip_id, name, km FROM tracevia_app.pmv_equipment";
+		String sql = "SELECT equip_id, name, km, id_message, id_modify, driver FROM tracevia_app.pmv_equipment pmv INNER JOIN tracevia_app.pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
 				
 		try {
 			
@@ -70,10 +70,14 @@ public class DMSDAO {
 				while (rs.next()) {		
 					
 					DMS dms = new DMS();
+					MessagesDAO msg = new MessagesDAO();
 					
+					dms.setTable_id("DMS");				
 					dms.setEquip_id(rs.getInt(1));				
 					dms.setNome(rs.getString(2));
 					dms.setKm(rs.getString(3));
+					dms.setMessage(msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_message")));
+					dms.setMessageChange(msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_modify")));
 					
 					lista.add(dms);				
 				}				

@@ -33,20 +33,20 @@ public class GlobalReportsDAO {
 	 * @version: 1.1
 	 * @since 1.0		
 	 * @param query - consulta SQL
-	 * @param fieldsNumber - número de campos de acordo com a saída da query
-	 * @param registers - número de registros
-	 * @return array contendo dados do relatório
+	 * @param fieldsNumber - nï¿½mero de campos de acordo com a saï¿½da da query
+	 * @param registers - nï¿½mero de registros
+	 * @return array contendo dados do relatï¿½rio
 	 * @throws Exception
 	 */
 	
 	public String[][] ExecuteQuery(String query, int fieldsNumber, int registers) throws Exception {		
 			
-	    // NECESSITA DA CONSTRUÇÃO DE UMA MATRIZ PARA RECEBER OS DADOS DE SAÍDA DA QUERY
-		// FIELDSNUMBER SÃO O NUMERO DE CAMPOS DE ACORDO COM A QUERY A SER EXECUTADA -> RECEBE ESSE PARÂMETRO DO BEAN
-		/* REGISTERS SÃO O NÚMERO DE REGISTROS QUE A MATRIZ DEVERÁ POSSUIR. SUA CONSTRUÇÃO SE DEVE NA ESCOLHA DE DATA DE ÍNICIO, DATA DE FIM, 
-		MÊS, ANOS E ETC. */
+	    // NECESSITA DA CONSTRUï¿½ï¿½O DE UMA MATRIZ PARA RECEBER OS DADOS DE SAï¿½DA DA QUERY
+		// FIELDSNUMBER Sï¿½O O NUMERO DE CAMPOS DE ACORDO COM A QUERY A SER EXECUTADA -> RECEBE ESSE PARï¿½METRO DO BEAN
+		/* REGISTERS Sï¿½O O Nï¿½MERO DE REGISTROS QUE A MATRIZ DEVERï¿½ POSSUIR. SUA CONSTRUï¿½ï¿½O SE DEVE NA ESCOLHA DE DATA DE ï¿½NICIO, DATA DE FIM, 
+		Mï¿½S, ANOS E ETC. */
 		result = new String[fieldsNumber][registers];
-				
+							
 		try {
 			   //GET CONNECTION			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -71,7 +71,7 @@ public class GlobalReportsDAO {
 				     lin++;
 				     
 				    } 
-				 } else result = new String[0][0]; //CASO NÃO EXISTA REGISTROS REDEFINE TAMANHO DO ARRAY
+				 } else result = new String[0][0]; //CASO Nï¿½O EXISTA REGISTROS REDEFINE TAMANHO DO ARRAY
 				
 		}finally 
 		{

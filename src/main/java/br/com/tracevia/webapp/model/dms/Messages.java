@@ -6,35 +6,25 @@ import java.util.List;
 public class Messages {
 
 	private int id_message;
-	private int id_image;
 	private int id_modify;
 	private int equip;
 	private String id;
 	private String tipo;
 	private String nome;
-	private String image;
-	private String message1;
-	private String message2;
-	private String message3;
 	private List<Pages> pages;
-	private String tableImg;
-	private String tableMessage;
 	private boolean activeMessage;
+	private int driver;
 
-	public Messages(int id_message, int id_image, int id_modify, int equip, String id, String tipo, String nome,
-			String image, String texto1, String texto2, String texto3, String tableImg, String tableMessage,
-			boolean activeMessage) {
+	public Messages(int id_message, int id_modify, int equip, String id, String tipo, String nome,
+			boolean activeMessage, int driver) {
 		this.id_message = id_message;
-		this.id_image = id_image;
 		this.id_modify = id_modify;
 		this.equip = equip;
 		this.id = id;
 		this.tipo = tipo;
 		this.nome = nome;
-		this.image = image;
-		this.tableImg = tableImg;
-		this.tableMessage = tableMessage;
 		this.activeMessage = activeMessage;
+		this.driver = driver;
 		this.pages = new ArrayList<Pages>();
 	}
 
@@ -48,14 +38,6 @@ public class Messages {
 
 	public void setId_message(int id_message) {
 		this.id_message = id_message;
-	}
-
-	public int getId_image() {
-		return id_image;
-	}
-
-	public void setId_image(int id_image) {
-		this.id_image = id_image;
 	}
 
 	public List<Pages> getPages() {
@@ -86,14 +68,6 @@ public class Messages {
 		this.id = id;
 	}
 
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public String getTipo() {
 		return tipo;
 	}
@@ -110,20 +84,12 @@ public class Messages {
 		this.nome = nome;
 	}
 
-	public String getTableImg() {
-		return tableImg;
+	public int getDriver() {
+		return driver;
 	}
 
-	public void setTableImg(String tableImg) {
-		this.tableImg = tableImg;
-	}
-
-	public String getTableMessage() {
-		return tableMessage;
-	}
-
-	public void setTableMessage(String tableMessage) {
-		this.tableMessage = tableMessage;
+	public void setDriver(int driver) {
+		this.driver = driver;
 	}
 
 	public boolean isActiveMessage() {
@@ -188,30 +154,6 @@ public class Messages {
 		if (id_message != other.id_message)
 			return false;
 		return true;
-	}
-
-	public String getMessage3() {
-		return message3;
-	}
-
-	public void setMessage3(String message3) {
-		this.message3 = message3;
-	}
-
-	public String getMessage2() {
-		return message2;
-	}
-
-	public void setMessage2(String message2) {
-		this.message2 = message2;
-	}
-
-	public String getMessage1() {
-		return message1;
-	}
-
-	public void setMessage1(String message1) {
-		this.message1 = message1;
 	}
 
 	public class Pages {
