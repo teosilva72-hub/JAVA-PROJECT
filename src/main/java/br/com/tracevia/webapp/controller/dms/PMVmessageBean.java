@@ -1,7 +1,6 @@
 package br.com.tracevia.webapp.controller.dms;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.primefaces.context.RequestContext;
 
@@ -69,6 +67,7 @@ public class PMVmessageBean implements Serializable {
 	private List<Picture> pictures;
 	private Messages message;
 	// private HtmlDataTable dataTable;
+	private List<Messages> messages;
 	private List<Messages> messages_d1;
 	private List<Messages> messages_d2;
 	private List<Messages> messages_d3;
@@ -227,6 +226,14 @@ public class PMVmessageBean implements Serializable {
 
 	public void setMessage(Messages message) {
 		this.message = message;
+	}
+
+	public List<Messages> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Messages> messages) {
+		this.messages = messages;
 	}
 
 	public boolean isSubmit() {
@@ -456,6 +463,11 @@ public class PMVmessageBean implements Serializable {
 
 			messages_d3 = dao.mensagensDisponiveis("driver3");
 			messages_enumeration_d3 = enumeration.create(messages_d3);
+
+			messages = new ArrayList<Messages>();
+			messages.addAll(messages_d1);
+			messages.addAll(messages_d2);
+			messages.addAll(messages_d3);
 			
 			ArrayList<Equipments> list = new ArrayList<Equipments>();
 			list = equipDAO.listPMVSites();

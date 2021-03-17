@@ -214,7 +214,7 @@
 								<div id="messages-list">
 									<select id="available-id" class="form-select" size="6" aria-label="select message">
 										<option value="0" selected="select">Default</option>
-										<c:forEach items="#{pmvMessage.messages_d1}" var="opt">
+										<c:forEach items="#{pmvMessage.messages}" var="opt">
 											<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
 												#{opt.nome}</option>
 										</c:forEach>
