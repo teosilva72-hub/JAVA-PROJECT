@@ -59,13 +59,24 @@
 }
 
 /* Remove icon from periods select */
- .select-field select {
+ .select-field select, .select-direction select {
   /* for Firefox */
   -moz-appearance: none;
   /* for Chrome */
   -webkit-appearance: none;
   /* for IE */
   appearance: none;
+}
+
+/* custom style for types (input, select) */
+.select-direction select{
+	height: 40px;
+	border: 1px solid #343a40;
+	border-radius: 25px;
+	outline: none;
+	background: white;	
+	width: 100%;
+	padding-left: 30px;
 }
 
 /* validation classes style */
@@ -138,6 +149,70 @@
 	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
 }
 
-/*****************************************************/
+/***************************************************/
 /****************** FORM CLASSES ******************/
+/*************************************************/
+
 /*****************************************************/
+/****************** REPORT MODAL ********************/
+/***************************************************/
+
+/* modal dialog configuration */
+.modal-dialog {	
+	margin-top: 0px;	
+	bottom: 0;
+	left: 0;	
+	margin: auto;
+	border: 4px solid #212121;
+	margin-top: 88px;
+	border-radius: 5px;
+	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+	
+}
+
+/* form modal title settings */
+.modal-title {
+	color: black;
+	margin-left: 5%;
+}
+
+/* modal button on close hide effect */
+button.close{
+   outline: none;
+}
+
+/* form modal content style*/
+.modal-content {
+	background: #FFFFFF;
+}
+
+/* Alert Modal */
+.confirmation-modal{
+  margin-top: 200px !important;
+} 
+
+/* Extension Span */
+.extension{
+	color: green;
+	font-weight: 600;
+}
+
+/* modal title conf */
+.modal-alert-title{
+  color: #212121;	
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* modal message conf */
+.modal-alert-msg{
+ color: #212121;
+ font-size: 18px;
+ font-weight: 300;
+}
+
+/*****************************************************/
+/****************** REPORT MODAL ********************/
+/***************************************************/

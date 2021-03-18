@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.cfg.servers.Servers;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class RoadConcessionaireDAO {
@@ -21,17 +22,13 @@ public class RoadConcessionaireDAO {
 
 		String concessionarieName = "";
 
+		//TESTE
 		//if (serverAddress.equals("192.168.0.32") || serverAddress.equals("192.168.0.40"))
-		 //if(serverAddress.equals("192.168.3.198"))
-				
-		 if(serverAddress.equals(Servers.ServersViaSul.getServer()))		
+		 if(serverAddress.equals("192.168.3.199"))
 			conn = ConnectionFactory.connectToCCR();
-
-		else if (serverAddress.equals(Servers.ServerViaPaulista.getServer()))
-			conn = ConnectionFactory.connectToViaPaulista();
-
+	
 		else
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 		try {
 
@@ -67,7 +64,7 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
@@ -103,7 +100,7 @@ public class RoadConcessionaireDAO {
 		String query = "SELECT road_id, road_name FROM concessionaire_roads";
 
 		try {
-			conn = ConnectionFactory.connectToTraceviaApp();
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();

@@ -31,8 +31,8 @@ public class EquipmentsDAO {
 	private Connection conn;
 	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
-	private ResultSet rs;
-			
+	private ResultSet rs;	
+
 	/**
 	 * M�todo para criado para obter uma lista dos equipamentos metereol�gicos no sistema.	 
 	 * @param mod - parametro da classe Modules
@@ -350,8 +350,9 @@ public class EquipmentsDAO {
 		
 		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
 
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1," +
-				   "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
+				   "dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
+				   "position FROM sat_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -369,14 +370,14 @@ public class EquipmentsDAO {
 					
 					SAT sat = new SAT();
 					
-					dir1 = translator.CheckDirection1(rs.getString(7));
-					dir2 = translator.CheckDirection2(rs.getString(7));
-					dir3 = translator.CheckDirection3(rs.getString(7));
-					dir4 = translator.CheckDirection4(rs.getString(7));
-					dir5 = translator.CheckDirection5(rs.getString(7));
-					dir6 = translator.CheckDirection6(rs.getString(7));
-					dir7 = translator.CheckDirection7(rs.getString(7));
-					dir8 = translator.CheckDirection8(rs.getString(7));
+					dir1 = translator.CheckDirection(rs.getString(7));
+					dir2 = translator.CheckDirection(rs.getString(8));
+					dir3 = translator.CheckDirection(rs.getString(9));
+					dir4 = translator.CheckDirection(rs.getString(10));
+					dir5 = translator.CheckDirection(rs.getString(11));
+					dir6 = translator.CheckDirection(rs.getString(12));
+					dir7 = translator.CheckDirection(rs.getString(13));
+					dir8 = translator.CheckDirection(rs.getString(14));
 					
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
@@ -393,13 +394,13 @@ public class EquipmentsDAO {
 					sat.setSentido6(dir6);
 					sat.setSentido7(dir7);		
 					sat.setSentido8(dir8);
-					sat.setLinearWidth(rs.getInt(8));						
-					sat.setLinearPosX(rs.getInt(9));
-					sat.setLinearPosY(rs.getInt(10));
-					sat.setMapWidth(rs.getInt(11));						
-					sat.setMapPosX(rs.getInt(12));					
-					sat.setMapPosY(rs.getInt(13));	
-					sat.setPosicao(rs.getString(14));
+					sat.setLinearWidth(rs.getInt(15));						
+					sat.setLinearPosX(rs.getInt(16));
+					sat.setLinearPosY(rs.getInt(17));
+					sat.setMapWidth(rs.getInt(18));						
+					sat.setMapPosX(rs.getInt(19));					
+					sat.setMapPosY(rs.getInt(20));	
+					sat.setPosicao(rs.getString(21));
 					
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 					
@@ -896,20 +897,19 @@ public class EquipmentsDAO {
               public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
             		
           		
-          		boolean status = false;          		
-          		
-          		
+          		boolean status = false; 
+          		          		
           		try {
-          			
-          			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
-          					+"dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
-          					+ "map_width, map_posX, map_posY, visible)"
-          					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-          	           
-
-          			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-          			
-                      //Execute Register			
+          		
+          		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+          		
+       		    //INSERT
+        		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
+                + "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
+                + "map_width, map_posX, map_posY, visible) "
+                + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+           			           		         			          		          			          			
+                    //Execute Register			
           			ps = conn.prepareStatement(query);
           			
           			ps.setInt(1, equip.getEquip_id());
@@ -928,21 +928,20 @@ public class EquipmentsDAO {
           			ps.setString(14, equip.getFaixa6());	
           			ps.setString(15, equip.getFaixa7());	
           			ps.setString(16, equip.getFaixa8());	          			    			
-          			ps.setInt(17, equip.getMapWidth());
+          			ps.setInt(17, 100);
           			ps.setInt(18, 50); //posX
           			ps.setInt(19, 50); //posY
           			ps.setBoolean(20, true);
           			          			
-          			//System.out.println(sql);
-          			
           			int success = ps.executeUpdate();
-          			
+          			          			
           			if(success > 0)         				
-          				  status = true;							
+          				  status = true;		
+          			          		    		      
           	              											
-          		    } catch (SQLException sqle) {
-          			throw new Exception("Erro ao inserir dados " + sqle);
-          			
+          		} catch (SQLException sqle) {
+          		throw new Exception("Erro ao inserir dados " + sqle);        		    
+          		    
           		} finally {
           			ConnectionFactory.closeConnection(conn, ps);
           		}
@@ -984,7 +983,7 @@ public class EquipmentsDAO {
             			ps.setString(5, equip.getCidade());
             			ps.setString(6, equip.getEstrada());
             			ps.setString(7, equip.getKm());			
-            			ps.setInt(8, equip.getMapWidth());
+            			ps.setInt(8, 75);
             			ps.setInt(9, 50); //posX
             			ps.setInt(10, 50); //posY
             			ps.setBoolean(11, true);
@@ -2034,9 +2033,46 @@ ConnectionFactory.closeConnection(conn, ps);
 return positioned;
 }
 
-//---------------------------------------------------------- //
-//------- POSITION FOR EQUIPMENT FOR MAP / REALTIME ------- //
-//-------------------------------------------------------- //
+//-------------------------------------------------------------- //
+// ----------------- CHECK IF ID SAT EXISTS ------------------- //
+//------------------------------------------------------------ //
+
+public boolean checkExists(int id, String table) throws Exception {
+	
+		
+		boolean checked = false; 
+		          		
+		try {
+		
+		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		
+		//CHECK
+		String select = "SELECT equip_id FROM "+table+"_equipment WHERE equip_id = ?";
+		
+		ps = conn.prepareStatement(select);
+		ps.setInt(1, id);
+	          	
+		rs = ps.executeQuery();
+		 
+		if(rs.isBeforeFirst())
+			checked = true;
+	              											
+		} 
+		
+		catch (SQLException sqle) {
+		throw new Exception("Erro ao inserir dados " + sqle);        		    
+		    
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+		
+		return checked;	
+	}
+  
+  
+//-------------------------------------------------------------- //
+//----------------- CHECK IF ID SAT EXISTS ------------------- //
+//----------------------------------------------------------- //
 
 
 }

@@ -1,6 +1,12 @@
 var widthMax = 1000
 var heightMax = 1000
 
+$(function() {
+		setTimeout(function () {
+			$('#message-show').hide(); 		
+		}, 5000); 
+	});
+
 $(function () {
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
@@ -15,39 +21,7 @@ $(function () {
 	$(window).resize(function () {
 		$(".overflow").css("height", $(this).height() - 125)
 	})
-
-	//Validate
-	var form = document.querySelectorAll('form');
-	for (const f of form) {
-		f.addEventListener('submit', function (e) {
-			let count = 0
-			let requiredField = f.querySelectorAll('[requiredField]');
-			e.preventDefault()
-			if (requiredField.length) {
-				for (const required of requiredField) {
-					if (!required.value ||
-						(required.getAttribute('requiredField')) === 'number' &&
-						isNaN(required.value)) {
-
-						count++
-
-						required.style.border = "solid 2px red";
-					} else {
-						required.style.border = "solid 2px green";
-					};
-				};
-			};
-			if (!count) {
-				let data = {}
-				for (const inputForm of $(f).find('input, select')) {
-					data[inputForm.getAttribute('name')] = inputForm.value
-				}
-				$.post(f.getAttribute('action'), data)
-			}
-		});
-	};
-	//Validate End
-
+																
 	//FULLSCREEN
 	// $('.zoomFull').addClass('img-enlargeable').click(function () {
 	//	var src = this.getAttribute('target');
@@ -516,4 +490,24 @@ $(document).ready(function(){
  function DelName(){
 }
 //Delete Modal Name End
+
+
+//prevent modal form submit
+//use ajax to send data
+$('#register-equip-form').submit(function(e) {
+	e.preventDefault();
+});
+
+//Reload on Cancel Position
+function reloadAfterCancelPos(){
+	setTimeout(function() {
+	window.location.reload(1);
+  }, 2000); // 2 sec						
+}
+
+//Use validation on click button submit   
+//Create button
+function checkValidation(){	    	
+   $("#register-equip-form").valid();	        
+}
 

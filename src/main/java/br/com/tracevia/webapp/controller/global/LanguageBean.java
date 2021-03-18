@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.controller.global;
 import java.io.Serializable;
 import java.util.Locale;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -26,7 +27,7 @@ public class LanguageBean implements Serializable {
 	 private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");
 			
 	 //DEFAULT LANGUAGE
-	private Locale locale = Locale.getDefault();
+	private Locale locale = PORTUGUESE_BRAZILIAN;
 	  	
 	public Locale getLocale() {
 		return  (locale);
@@ -35,7 +36,7 @@ public class LanguageBean implements Serializable {
 	 public void setLocale(Locale locale) {
 		this.locale = locale;
 	}
-
+			 
 	public void English(ActionEvent event) {	  
 	   locale = ENGLISH;
 	   Locale.setDefault(locale);
