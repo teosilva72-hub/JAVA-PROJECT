@@ -348,6 +348,10 @@ function ScrollZoom(container) {
 				document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
 			}
 		}
+
+		if (equip.attr("class").includes('equip-box')) {
+
+		}
 	}
 	// EQUIPMENT POSITION END
 	
