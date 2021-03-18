@@ -1939,7 +1939,7 @@ if(rs > 0)
 
 }  // MTO Definitions END    
 
-if(table.equals("pmv")) { // PMV Definitions
+if(table.equals("dms")) { // PMV Definitions
 
 String queryDMS= "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
