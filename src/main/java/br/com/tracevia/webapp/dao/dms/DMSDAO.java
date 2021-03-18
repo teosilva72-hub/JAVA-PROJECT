@@ -56,7 +56,7 @@ public class DMSDAO {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
 
-		String sql = "SELECT equip_id, name, km, id_message, id_modify, driver, active FROM tracevia_app.pmv_equipment pmv INNER JOIN tracevia_app.pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
+		String sql = "SELECT equip_id, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM tracevia_app.pmv_equipment pmv INNER JOIN tracevia_app.pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
 
 		try {
 
@@ -75,10 +75,16 @@ public class DMSDAO {
 					boolean active = rs.getBoolean("active");
 					Messages message = msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_message"));
 
-					dms.setTable_id("DMS");
-					dms.setEquip_id(rs.getInt(1));
-					dms.setNome(rs.getString(2));
-					dms.setKm(rs.getString(3));
+					dms.setTable_id("dms");
+					dms.setEquip_id(rs.getInt("equip_id"));
+					dms.setNome(rs.getString("name"));
+					dms.setKm(rs.getString("km"));
+					dms.setLinearWidth(rs.getInt("linear_width"));
+					dms.setLinearPosX(rs.getInt("linear_posX"));
+					dms.setLinearPosY(rs.getInt("linear_posY"));
+					dms.setMapWidth(rs.getInt("map_width"));
+					dms.setMapPosX(rs.getInt("map_posX"));
+					dms.setMapPosY(rs.getInt("map_posY"));
 					dms.setMessage(message);
 					dms.setMsg_status(active);
 					if (active)

@@ -10,9 +10,10 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-		<h:outputStylesheet name="map.css" library="css/map" />
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
+		<h:outputStylesheet name="map.css" library="css/map" />
 
 		<!-- Script -->
 		<h:outputScript name="map.js" library="js/map" />
@@ -214,105 +215,193 @@
 							<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
 
 								<c:choose>
-									<c:when test="#{item.table_id eq 'pmv'}">
+									<c:when test="#{item.table_id eq 'dms'}">
+										<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}"
+											name="#{item.nome}" driver="#{item.message.driver}">
+											<input type="hidden" name="page1"
+												imageId="#{item.message.pages[0].id_image}"
+												image="#{item.message.pages[0].image}"
+												imageId2="#{item.message.pages[0].id_image2}"
+												image2="#{item.message.pages[0].image2}"
+												line1="#{item.message.pages[0].text1}"
+												line2="#{item.message.pages[0].text2}"
+												line3="#{item.message.pages[0].text3}"
+												timer="#{item.message.pages[0].timer}" />
+											<input type="hidden" name="page2"
+												imageId="#{item.message.pages[1].id_image}"
+												image="#{item.message.pages[1].image}"
+												imageId2="#{item.message.pages[1].id_image2}"
+												image2="#{item.message.pages[1].image2}"
+												line1="#{item.message.pages[1].text1}"
+												line2="#{item.message.pages[1].text2}"
+												line3="#{item.message.pages[1].text3}"
+												timer="#{item.message.pages[1].timer}" />
+											<input type="hidden" name="page3"
+												imageId="#{item.message.pages[2].id_image}"
+												image="#{item.message.pages[2].image}"
+												imageId2="#{item.message.pages[2].id_image2}"
+												image2="#{item.message.pages[2].image2}"
+												line1="#{item.message.pages[2].text1}"
+												line2="#{item.message.pages[2].text2}"
+												line3="#{item.message.pages[2].text3}"
+												timer="#{item.message.pages[2].timer}" />
+											<input type="hidden" name="page4"
+												imageId="#{item.message.pages[3].id_image}"
+												image="#{item.message.pages[3].image}"
+												imageId2="#{item.message.pages[3].id_image2}"
+												image2="#{item.message.pages[3].image2}"
+												line1="#{item.message.pages[3].text1}"
+												line2="#{item.message.pages[3].text2}"
+												line3="#{item.message.pages[3].text3}"
+												timer="#{item.message.pages[3].timer}" />
+											<input type="hidden" name="page5"
+												imageId="#{item.message.pages[4].id_image}"
+												image="#{item.message.pages[4].image}"
+												imageId2="#{item.message.pages[4].id_image2}"
+												image2="#{item.message.pages[4].image2}"
+												line1="#{item.message.pages[4].text1}"
+												line2="#{item.message.pages[4].text2}"
+												line3="#{item.message.pages[4].text3}"
+												timer="#{item.message.pages[4].timer}" />
+										</div>
 										<div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
 											posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}">
 
 											<!-- Table with DIV -->
 
-											<div class="container tableStyle card">
+											<div class="tableStyle card">
 												<div class="dms-name card-header py-0">
-													<div id="dmsTab#{item.equip_id}" class="text-center">
-														<p class="mb-0 text-white">#{item.nome} - #{item.km}</p>
+													<div class="text-center dmsTab#{item.equip_id}">
+														<span class="name">#{item.nome}</span>
+														<span class="km">#{item.km}</span>
 													</div>
 												</div>
 												<div class="row text-center card-body p-0">
 													<div id="child-img" class="col-2 padding-pmv">
-														<h:graphicImage
-															value="/resources/images/pictures/#{dmsMapsView.image[loop.index]}"
-															styleClass="ui-graphic-image" />
+														<img src="/resources/images/pictures/#{pmvMessage.image}"
+															class="picture-box primary" id-img="0" />
 													</div>
-													<div id="child-msg" class="col-auto">
-														<div id="msg#{item.equip_id}" class="table-message">
-															<div class="row border-table-right">
+													<div id="child-msg" class="col-auto msg-pos">
+														<div id="message" class="table-message">
+															<div class="row border-table-right message1" msg="">
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][0]}</div>
+																	<span id="box-1"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][1]}</div>
+																	<span id="box-2"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][2]}</div>
+																	<span id="box-3"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][3]}</div>
+																	<span id="box-4"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][4]}</div>
+																	<span id="box-5"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][5]}</div>
+																	<span id="box-6"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][6]}</div>
+																	<span id="box-7"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][7]}</div>
+																	<span id="box-8"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][8]}</div>
+																	<span id="box-9"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][9]}</div>
+																	<span id="box-10"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][0][10]}</div>
-																<div class="col-1 px-0 border-table r">
-																	#{dmsMapsView.letter[loop.index][0][11]}</div>
+																	<span id="box-11"></span>
+																</div>
+																<div class="col-1 px-0 border-table">
+																	<span id="box-12"></span>
+																</div>
 															</div>
-															<div class="row border-table-right">
+															<div class="row border-table-right message2" msg="">
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][0]}</div>
+																	<span id="box-13"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][1]}</div>
+																	<span id="box-14"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][2]}</div>
+																	<span id="box-15"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][3]}</div>
+																	<span id="box-16"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][4]}</div>
+																	<span id="box-17"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][5]}</div>
+																	<span id="box-18"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][6]}</div>
+																	<span id="box-19"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][7]}</div>
+																	<span id="box-20"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][8]}</div>
+																	<span id="box-21"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][9]}</div>
+																	<span id="box-22"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][10]}</div>
+																	<span id="box-23"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][1][11]}</div>
+																	<span id="box-24"></span>
+																</div>
 															</div>
-															<div class="row border-table-right bottom">
+															<div class="row border-table-right bottom message3" msg="">
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][0]}</div>
+																	<span id="box-25"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][1]}</div>
+																	<span id="box-26"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][2]}</div>
+																	<span id="box-27"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][3]}</div>
+																	<span id="box-28"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][4]}</div>
+																	<span id="box-29"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][5]}</div>
+																	<span id="box-30"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][6]}</div>
+																	<span id="box-31"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][7]}</div>
+																	<span id="box-32"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][8]}</div>
+																	<span id="box-33"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][9]}</div>
+																	<span id="box-34"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][10]}</div>
+																	<span id="box-35"></span>
+																</div>
 																<div class="col-1 px-0 border-table">
-																	#{dmsMapsView.letter[loop.index][2][11]}</div>
+																	<span id="box-36"></span>
+																</div>
 															</div>
 														</div>
+													</div>
+													<div id="child-img" class="col-2 second-img ml-auto">
+														<img src="/resources/images/pictures/#{pmvMessage.image}"
+															class="picture-box secondary" id-img="0" />
 													</div>
 												</div>
 											</div>
@@ -322,8 +411,7 @@
 									<c:when test="#{item.table_id eq 'sat'}">
 
 										<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
-											posX="#{item.mapPosX}" posY="#{item.mapPosY}"
-											item-width="#{item.mapWidth}"
+											posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}"
 											status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}"
 											status="#{satMapsView.satStatus.get(loop.index).status}">
 											<div id="sat#{item.equip_id}" class="table-sat card border-dark">
@@ -408,7 +496,8 @@
 												<div class="row">
 													<div class="equip-label-left">
 														<b>#{infoLabels.info_label_number_lanes}
-															:</b>&nbsp;#{item.numFaixas}&nbsp;</div>
+															:</b>&nbsp;#{item.numFaixas}&nbsp;
+													</div>
 												</div>
 
 												<div class="row">
@@ -419,7 +508,8 @@
 												<div class="row">
 													<div class="equip-label-left">
 														<b>#{infoLabels.info_label_direction2}
-															:</b>&nbsp;#{item.sentido2}&nbsp;&nbsp;&nbsp;</div>
+															:</b>&nbsp;#{item.sentido2}&nbsp;&nbsp;&nbsp;
+													</div>
 												</div>
 
 											</div>
@@ -1159,6 +1249,7 @@
 	<ui:define name="jscript">
 
 		<h:outputScript name="map.js" library="js/map" />
+		<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
 
 		<!-- Mudança -->
 
