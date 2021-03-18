@@ -1159,7 +1159,7 @@ public class EquipmentsDAO {
 
               }  // MTO Definitions END    
               
-              if(table.equals("pmv")) { // PMV Definitions
+              if(table.equals("dms")) { // PMV Definitions
 
             	  String queryDMS= "UPDATE pmv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
@@ -1480,7 +1480,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
     }  // MTO Definitions END    
     
-    if(table.equals("pmv")) { // PMV Definitions
+    if(table.equals("dms")) { // PMV Definitions
 
   	  DMS dms = new DMS();
 
@@ -1741,7 +1741,7 @@ if(table.equals("mto")) { // MTO Definitions
 
 }  // MTO Definitions END    
 
-if(table.equals("pmv")) { // PMV Definitions
+if(table.equals("dms")) { // PMV Definitions
 
   String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
 
