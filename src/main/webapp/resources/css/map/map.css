@@ -129,11 +129,6 @@ body {
   z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
 }
 
-.equip-box-sat {
-  position: absolute;
-  height: 75px;
-}
-
 .equip-info {
   position: absolute;
   font-size: 5px;
@@ -872,19 +867,6 @@ img.box-img[zoom] {
 .draggable .equip-box,
 .draggable .equip-info {
   transform: translate(-50%, -50%);
-}
-
-.dms-name {
-  margin-bottom: -5px;
-}
-
-.sat-name {
-  background-color: #00fa9a;
-}
-
-.padding-sat {
-  padding: 0;
-  width: 45px;
 }
 
 /* INPUT NUMBER ARROWS REMOVED */
