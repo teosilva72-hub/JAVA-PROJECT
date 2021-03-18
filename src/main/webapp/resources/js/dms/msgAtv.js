@@ -189,6 +189,7 @@ async function main() {
 			equipInfoView.trigger('change');
 			allChecks.prop('checked', false);
 			checksListAll.prop('checked', false);
+			pagePMV.removeClass(['driver1', 'driver2', 'driver3'])
 			pagePMV.addClass($(this).val())
 		})
 
