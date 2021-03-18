@@ -11,6 +11,7 @@ async function main() {
 	const allChecks = $('.option [id^=check]')
 	const checksListAll = $('#checkListAll')
 	const inputDriver = $('[name=typePMV]')
+	const pagePMV = $('#page-pmv')
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -188,6 +189,7 @@ async function main() {
 			equipInfoView.trigger('change');
 			allChecks.prop('checked', false);
 			checksListAll.prop('checked', false);
+			pagePMV.addClass($(this).val())
 		})
 
 		pmvResize();
