@@ -277,17 +277,8 @@ function ScrollZoom(container) {
 		if (equip.attr("class").includes('equip-box-sat')) {
 			let sat_status = equip.attr('status')
 			let interval =  Number(equip.attr('status-period'))
-			let fluxo1 = equip.find('[id^=img1FluxoTab]')
-			let fluxo = {
-				height: (width * 0.10) + "px",
-				border: "1px solid transparent",
-			}
-			fluxo1
-				.css(fluxo)
-				.css('margin-top', 7 + "px")
-				.next()
-				.css(fluxo)
-	
+					//TESTE		
+																
 			//Green Color > indica que o equipamento está conectado
 			if (sat_status > 0 && interval == 30) {
 				equip.find("[id^=satName]").css({
