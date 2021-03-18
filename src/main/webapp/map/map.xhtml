@@ -1,10 +1,16 @@
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/template/dashboard-rov-layout.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
 
 	<ui:define name="head">
 
@@ -14,14 +20,22 @@
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="map.css" library="css/map" />
+		<h:outputStylesheet library="css/validation" name="validation_style.css" />
 
 		<!-- Script -->
 		<h:outputScript name="map.js" library="js/map" />
 		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
+		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js" />
 
 	</ui:define>
 
 	<ui:define name="main-content">
+	
+	
+	<div id="message-show">
+			<pf:messages id="msgs" showDetail="true" autoUpdate="true"
+				closable="true" />
+		</div>
 
 		<!-- ALERTS SAVE -->
 
@@ -32,7 +46,19 @@
 		<div class="alert alert-danger" role="alert" style="display: none;" id="realcancel">
 			<p class="textAlert">#{mapLabels.map_alert_cancel}</p>
 		</div>
-
+		
+		<!-- SAVE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equipsave">
+			<p class="textAlert">#{mapLabels.map_alert_save_equipment}.</p>
+		</div>
+		
+		<!-- SAVE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equipsave-error">
+			<p class="textAlert">#{mapLabels.map_alert_save_error_equipment} : #{mapLabels.map_alert_save_error_already}</p>
+		</div>
+			
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
@@ -65,14 +91,16 @@
 				<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 				<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
-				<h:commandButton id="savePos" class="btn btn-dark form-draw-button save_pos"
-					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');"
-					action="#{equipsBean.definePosition}" title="Save Position">
+				<h:commandButton id="savePos"
+					class="btn btn-dark form-draw-button save_pos"
+					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');" >					
+					<f:ajax execute="@form" render="@none" listener="#{equipsBean.definePosition}" />
 				</h:commandButton>
 
 				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-draw-button cancel_pos"
 					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
+					<f:ajax render="#realcancel" onevent="reloadAfterCancelPos" />
 				</h:commandButton>
 			</h:form>
 
@@ -583,79 +611,67 @@
 
 	<ui:define name="modal-content">
 
-		<!-- Modal to Add Equipment -->
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* CREATE **************************************** -->
+		<!-- ************************************************************************************* -->
 
 		<div class="modal fade" id="modaladd" role="dialog">
-			<div class="modal-dialog">
+			<div class="modal-dialog" role="document">
 
 				<h:form class="modal-content" name="register-equip-form" id="register-equip-form">
 
-					<!-- Modal content-->
-
-					<div class="modal-content addbox">
-						<div class="modal-header text-center">
+					<div class="modal-header text-center">
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_creation_modal_title}</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" id="close-btn" class="close" data-dismiss="modal" 
+								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-
-						</div>
-
-						<div class="modal-body" id="bodyadd">
-
-							<br />
-
-							<!-- EQUIPMENTS OPTIONS -->
-							<h:outputLabel> #{mapLabels.map_creation_modal_select} </h:outputLabel>
-							<div class="row">
+						</div>						
+					      <div class="modal-body" id="bodyeqp">
+					
+							<!-- EQUIPMENTS OPTIONS -->													
 								<div class="form-row">
-									<div class="col-md-12">
-										<span for="equips" class="valid-icon-hidden"></span>
-										<select name="equips" id="equips" size="1" onclick="">
+								<div class="form-group col-md-12 select-field">								
+										<span><i class="fas fa-hdd"></i></span> <span for="equips"
+											class="valid-icon-hidden"></span> <select
+											name="equips" id="equips" size="1">
 											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 												<option value="#{eqp.value}">#{eqp.label}</option>
-											</ui:repeat>
+											</ui:repeat>											
 										</select>
-									</div>
-									<div>
+										</div>								
 										<div class="error-label">
 											<label for="equips" class="error" id="equips-error"></label>
-										</div>
-									</div>
-
-								</div>
-							</div>
+										</div>						   
+								   </div>
+								
 							<!-- EQUIPMENTS OPTIONS -->
-
-						</div>
-
-						<div class="modal-body" id="bodyeqp">
 
 							<!-- EQUIPMENT ID -->
 							<div class="form-row">
 								<div class="form-group col-md-12 input-field" id="contentEquipId">
-									<span><i class="fab fa-ideal"></i></span> <span class="valid-icon-hidden"></span>
-									<input requiredField="number" type="text" autocomplete="off" name="equipId"
-										id="equipId" placeholder="#{mapLabels.map_creation_input_equip_id}" />
+									<span><i class="fab fa-ideal"></i></span> <span for="equipId" 
+										class="valid-icon-hidden"></span> <input
+										type="text" autocomplete="off"
+										name="equipId" id="equipId"
+										placeholder="#{mapLabels.map_creation_input_equip_id}" />								
 								</div>
 								<div class="error-label">
 									<label for="equipId" class="error" id="equipId-error"></label>
 								</div>
 
 								<!-- EQUIPMENT ID -->
+												
 
 								<!-- EQUIPMENT NAME -->
 
 								<div class="form-group col-md-12 input-field">
-									<span><i class="fas fa-signature"></i></span> <span for="equipName"
-										class="valid-icon-hidden"></span> <input requiredField="" type="text"
-										autocomplete="off" name="equipName" id="equipName"
+									<span><i class="fas fa-signature"></i></span>
+										<input type="text" autocomplete="off"
+										name="equipName" id="equipName"
 										placeholder="#{mapLabels.map_creation_input_name}" />
-									<div class="error-label">
-										<label for="equip
-											Name" class="error" id="equipName-error"></label>
-									</div>
+									<div class="error-label"></div>
 								</div>
 							</div>
 							<!-- EQUIPMENT NAME -->
@@ -664,9 +680,8 @@
 							<div class="form-row">
 								<div class="form-group col-md-12 input-field">
 									<div class="select-field">
-										<span><i class="fas fa-city"></i></span> <span for="cities"
-											class="valid-icon-hidden"></span> <select requiredField="" name="cities"
-											id="cities" size="1">
+										<span><i class="fas fa-city"></i></span> 											
+											<select name="cities" id="cities" size="1">
 											<option value="">#{mapLabels.map_creation_select_city}</option>
 											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
 												<option value="#{city.value}">#{city.label}</option>
@@ -674,70 +689,48 @@
 										</select>
 									</div>
 									<div>
-										<div class="error-label">
-											<label for="cities" class="error" id="cities-error"></label>
-										</div>
+										<div class="error-label"></div>
 									</div>
+								</div>
 								</div>
 								<!-- CITY -->
 
 								<!-- ROAD -->
 
-								<div class="form-group col-md-12 input-field">
+	                            <div class="form-row">
+								<div class="form-group col-md-6 input-field">
 									<div class="select-field">
-										<span><i class="fas fa-road"></i></span> <span for="roads"
-											class="valid-icon-hidden"></span> <select requiredField="" name="roads"
-											id="roads" size="1">
+										<span><i class="fas fa-road"></i></span> 										
+											<select name="roads" id="roads" size="1">
 											<option value="">#{mapLabels.map_creation_select_road}</option>
 											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
 												<option value="#{road.value}">#{road.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div>
-										<div class="error-label">
-											<label for="road" class="error" id="road-error"></label>
-										</div>
-									</div>
-								</div>
-							</div>
+									 </div>									
+										<div class="error-label"></div>							
+								   </div>
+							 							   
 							<!-- ROAD -->
 
 							<!-- KM -->
 
-							<div class="form-row">
-								<div class="form-group col-md-4 input-field">
-									<span><i class="fas fa-sign"></i></span> <span for="km"
-										class="valid-icon-hidden"></span> <input requiredField="" type="text"
-										autocomplete="off" name="km" id="km" class="km"
-										placeholder="#{mapLabels.map_creation_input_km}" />
-									<div class="error-label">
-										<label for="km" class="error" id="km-error"></label>
-									</div>
-								</div>
-
-								<!-- KM -->
-
-								<!-- WIDTH -->
-
 								<div class="form-group col-md-6 input-field">
-									<span><i class="fas fa-arrows-alt-h"></i></span> <span for="width"
-										class="valid-icon-hidden"></span> <input requiredField="number" type="text"
-										autocomplete="off" name="width" id="width"
-										placeholder="#{mapLabels.map_creation_input_width}" />
-									<div class="error-label">
-										<label for="width" class="error" id="width-error"></label>
-									</div>
-								</div>
+									<span><i class="fas fa-sign"></i></span> 
+										<input type="text" autocomplete="off" name="km" id="km" class="km"
+										placeholder="#{mapLabels.map_creation_input_km}" />
+									<div class="error-label"></div>
+								</div>							
 							</div>
-
-							<!-- WIDTH -->
-
+							
+							<!-- KM -->
+																					
 							<!-- TRACKS -->
-
+														
 							<div class="form-row satInputs" style="display: none;">
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
+								<div class="form-group col-md-12 select-field">
+								<span><i class="fas fa-grip-lines"></i></span>
+									<span for="lanes" class="valid-icon-hidden"></span> 									
 										<select name="lanes" id="lanes" size="1" style="width:100%;">
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="lane" value="#{equipsBean.lanes}" varStatus="laneStatus">
@@ -749,14 +742,17 @@
 										<label for="lanes" class="error" id="lanes-error"></label>
 									</div>
 								</div>
-
-
+                              
 								<!-- TRACKS -->
+								
+								
+							<div class="form-row satInputs" style="display: none;">
 
 								<!-- DIRECTION 1 -->
 
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+								<div class="form-group col-md-3">
+									<div class="select-direction">
+									<span for="direction1" class="valid-icon-hidden"></span> 
 										<select name="direction1" id="direction1" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir1}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
@@ -772,8 +768,9 @@
 
 								<!-- DIRECTION 2 -->
 
-								<div class="form-group col-md-3	 input-field">
-									<div class="select-field">
+								<div class="form-group col-md-3">
+									<div class="select-direction">
+										<span for="direction2" class="valid-icon-hidden"></span> 
 										<select name="direction2" id="direction2" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir2}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
@@ -789,23 +786,21 @@
 
 								<!-- DIRECTION 3 -->
 
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+								<div class="form-group col-md-3">
+									<div class="select-direction">
 										<select name="direction3" id="direction3" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction3" class="error" id="direction3-error"></label>
-									</div>
+									</div>	
+									<div class="error-label"></div>							
 								</div>
-
-								<!-- DIRECTION 4 -->
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+							
+							<!-- DIRECTION 4 -->
+								<div class="form-group col-md-3">
+									<div class="select-direction">
 										<select name="direction4" id="direction4" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
@@ -813,99 +808,97 @@
 											</ui:repeat>
 										</select>
 									</div>
-									<div class="error-label">
-										<label for="direction4" class="error" id="direction4-error"></label>
-									</div>
+									<div class="error-label"></div>
 								</div>
-							</div>
-							<!-- DIRECTION 5 -->
-							<div class="form-row satInputs">
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+								</div>
+								
+						<div class="form-row satInputs2" style="display: none;">
+							
+						<!-- DIRECTION 5 -->
+				         <div class="form-group col-md-3">								
+									<div class="select-direction">
 										<select name="direction5" id="direction5" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction5" class="error" id="direction5-error"></label>
-									</div>
+									</div>								
 								</div>
-
-								<!-- DIRECTION 6 -->
-
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+							
+							 <!-- DIRECTION 6 -->
+						
+							<div class="form-group col-md-3">
+									<div class="select-direction">
 										<select name="direction6" id="direction6" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction6" class="error" id="direction6-error"></label>
-									</div>
+									</div>									
 								</div>
-
-								<!-- DIRECTION 7 -->
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+						     
+						     <!-- DIRECTION 7 -->
+						   <div class="form-group col-md-3">
+									<div class="select-direction">
 										<select name="direction7" id="direction7" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction7" class="error" id="direction7-error"></label>
-									</div>
+									</div>									
 								</div>
-
-								<!-- DIRECTION 8 -->
-
-								<div class="form-group col-md-3 input-field">
-									<div class="select-field">
+								
+							<!-- DIRECTION 8 -->	
+							
+							<div class="form-group col-md-3">
+									<div class="select-direction">
 										<select name="direction8" id="direction8" size="1">
 											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
 										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction8" class="error" id="direction80
-										.-error"></label>
-										<label for="direction8" class="error" id="direction8-error"></label>
-									</div>
+									</div>									
 								</div>
-
-							</div>
+							</div>						  
 						</div>
-
+																
 						<!-- MODAL BUTTONS -->
 
 						<div class="modal-footer">
-
-							<h:commandButton value="#{mapLabels.map_creation_btn_save_equipment}" id="btn-form-send"
-								class="btn btn-dark form-draw-button" action="#{equipsBean.createEquipment}">
-								<f:ajax execute="@all" render="@none" />
+						
+							<h:commandButton 
+								value="#{mapLabels.map_creation_btn_save_equipment}"
+								id="btn-form-send" class="btn btn-dark form-draw-button" >
+								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
+								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
+								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
+							</h:commandButton>			 									
+							
+							<h:commandButton
+								value="#{mapLabels.map_creation_btn_cancel_equipment}"
+								id="btn-form-reset" immediate="true" type="reset"
+								class="btn btn-dark form-draw-button  reset-btn" >
+								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
+								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8" />
 							</h:commandButton>
 
-							<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"
-								immediate="true" type="reset" class="btn btn-dark form-draw-button  reset-btn"
-								onclick="$('#modaladd').modal('hide');">
-								<f:ajax execute="@all" render="@none" />
-							</h:commandButton>
-
-						</div>
-					</div>
+						</div>				
 				</h:form>
 			</div>
 		</div>
+		
+	    <!-- ************************************************************************************* -->
+		<!-- ************************************* CREATE **************************************** -->
+		<!-- ************************************************************************************* -->
+		
+		
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* OPTION **************************************** -->
+		<!-- ************************************************************************************* -->
 
 		<!-- Modal for Options -->
 
@@ -969,214 +962,16 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* OPTION **************************************** -->
+		<!-- ************************************************************************************* -->
+		
+	  
 
-		<!-- Modal for editing-->
-
-		<div class="modal fade" id="editmodal" role="dialog">
-			<div class="modal-dialog">
-				<h:form class="modal-content" name="edit-equip-form" id="edit-equip-form">
-					<!-- Modal content-->
-					<div class="modal-content addbox">
-						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_edit_modal_title}</h4>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-
-						</div>
-
-						<div class="modal-body">
-
-							<!-- EQUIPMENT ID -->
-							<div class="form-row" style="margin-bottom: -23px;">
-								<div class="form-group col-md-12 input-field" id="contentEquipId">
-									<span><i class="fab fa-ideal"></i></span> <span for="equipId"
-										class="valid-icon-hidden"></span>
-									<h:inputText value="#{equipsBean.equip.equip_id}" autocomplete="off" name="equipId"
-										id="equipId" p:requiredField="number"
-										placeholder="#{mapLabels.map_creation_input_equip_id}" />
-								</div>
-								<div class="error-label">
-									<label for="equipId" class="error" id="equipId-error"></label>
-								</div>
-
-								<!-- EQUIPMENT ID -->
-
-								<!-- EQUIPMENT NAME -->
-
-								<div class="form-group col-md-12 input-field">
-									<span><i class="fas fa-signature"></i></span> <span for="equipName"
-										class="valid-icon-hidden"></span>
-									<h:inputText autocomplete="off" name="equipName" id="equipName" p:requiredField=""
-										value="#{equipsBean.equip.nome}"
-										placeholder="#{mapLabels.map_creation_input_name}" />
-									<div class="error-label">
-										<label for="equip
-											Name" class="error" id="equipName-error"></label>
-									</div>
-								</div>
-							</div>
-
-							<!-- EQUIPMENT NAME -->
-
-							<!-- CITY -->
-							<h:outputLabel id="lbl" value="#{equipsBean.equip.cidade}"></h:outputLabel>
-							<div class="form-row">
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-city"></i></span> <span for="cities"
-											class="valid-icon-hidden"></span>
-										<h:selectOneMenu name="cities" id="cities" p:requiredField=""
-											value="#{equipsBean.equip.cidade}">
-											<f:selectItem itemLabel="#{mapLabels.map_creation_select_city}"
-												itemValue="" />
-											<f:selectItems value="#{equipsBean.cities}" />
-										</h:selectOneMenu>
-									</div>
-									<div>
-										<div class="error-label">
-											<label for="cities" class="error" id="cities-error"></label>
-										</div>
-									</div>
-								</div>
-
-								<!-- CITY -->
-
-								<!-- ROAD -->
-
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-road"></i></span> <span for="roads"
-											class="valid-icon-hidden"></span>
-										<h:selectOneMenu name="roads" id="roads" p:requiredField=""
-											value="#{equipsBean.equip.estrada}">
-											<f:selectItem itemLabel="#{mapLabels.map_creation_select_road}"
-												itemValue="" />
-											<f:selectItems value="#{equipsBean.roads}" />
-										</h:selectOneMenu>
-									</div>
-									<div>
-										<div class="error-label">
-											<label for="road" class="error" id="road-error"></label>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- ROAD -->
-
-							<!-- KM -->
-
-							<div class="form-row">
-								<div class="form-group col-md-4 input-field">
-									<span><i class="fas fa-sign"></i></span> <span for="km"
-										class="valid-icon-hidden"></span>
-									<h:inputText value="#{equipsBean.equip.km}" autocomplete="off" name="km" id="km"
-										class="km" p:requiredField=""
-										placeholder="#{mapLabels.map_creation_input_km}" />
-									<div class="error-label">
-										<label for="km" class="error" id="km-error"></label>
-									</div>
-								</div>
-
-								<!-- KM -->
-
-								<!-- WIDTH -->
-
-								<div class="form-group col-md-4 input-field">
-									<span><i class="fas fa-arrows-alt-h"></i></span> <span for="width"
-										class="valid-icon-hidden"></span>
-									<h:inputText value="#{equipsBean.equip.mapWidth}" p:requiredField="number"
-										autocomplete="off" name="width" id="width"
-										placeholder="#{mapLabels.map_creation_input_width}" />
-									<div class="error-label">
-										<label for="width" class="error" id="width-error"></label>
-									</div>
-								</div>
-							</div>
-							<!-- WIDTH -->
-
-							<!-- TRACKS -->
-
-							<div class="form-row satInputs" style="display:none;">
-								<div class="form-group col-md-2 input-field">
-									<div class="select-field">
-										<select name="lanesEdit" id="lanesEdit" size="1">
-											<option value="">#{mapLabels.map_creation_select_lanes}</option>
-											<ui:repeat var="lane" value="#{equipsBean.lanes}" varStatus="laneStatus">
-												<option value="#{lane.value}">#{lane.label}</option>
-											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label">
-										<label for="lanesEdit" class="error" id="lanes-error-edit"></label>
-									</div>
-								</div>
-
-
-								<!-- TRACKS -->
-
-								<!-- DIRECTION 1 -->
-
-								<div class="form-group col-md-4 ml-5 input-field">
-									<div class="select-field">
-										<select name="direction1ed" id="direction1ed" size="1">
-											<option value="">#{mapLabels.map_creation_select_lanes}</option>
-											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
-												<option value="#{dir.value}">#{dir.label}</option>
-											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction1ed" class="error" id="direction1ed-error"></label>
-									</div>
-								</div>
-
-								<!-- DIRECTION 1 -->
-
-								<!-- DIRECTION 2 -->
-
-								<div class="form-group col-md-4 input-field">
-									<div class="select-field">
-										<select name="direction2ed" id="direction2ed" size="1" disabled="disabled">
-											<option value="">#{mapLabels.map_creation_select_lanes}</option>
-											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
-												<option value="#{dir.value}">#{dir.label}</option>
-											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label">
-										<label for="direction2ed" class="error" id="direction2ed-error"></label>
-									</div>
-								</div>
-							</div>
-
-							<!-- DIRECTION 2 -->
-
-						</div>
-
-						<!-- MODAL BUTTONS -->
-
-						<div class="modal-footer">
-							<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />
-							<h:commandButton value="#{mapLabels.map_creation_btn_save_equipment}" id="btn-form-send"
-								class="btn btn-dark form-draw-button" action="#{equipsBean.UpdateEquipment}"
-								type="submit" onclick=" sendType();">
-								<f:ajax execute="@form" render="@none" />
-							</h:commandButton>
-
-							<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"
-								immediate="true" type="reset" class="btn btn-dark form-draw-button  reset-btn"
-								onclick="$('#editmodal').modal('hide');">
-							</h:commandButton>
-
-						</div>
-
-					</div>
-				</h:form>
-			</div>
-		</div>
-
-		<!-- Modal for delete-->
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* DELETE **************************************** -->
+		<!-- ************************************************************************************* -->
 
 		<div class="modal fade" id="deletemodal" role="dialog">
 			<div class="modal-dialog">
@@ -1194,17 +989,18 @@
 
 							<h:outputLabel name="delete-equipName" id="delete-equipName"
 								value="Deletar'#{equipsBean.equip.nome}'"
-								style="font-size: #{equipsBean.equip.nome ? '12px' : '20px'}" />
+								style="font-size: '#{equipsBean.equip.nome ? '12px' : '20px'}'" />
 						</div>
 
 						<div class="modal-footer">
 							<div class="form-row">
-								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}" />
-								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}" />
-								<h:commandButton value="#{mapLabels.map_creation_btn_yes_equipment}"
-									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"
-									action="#{equipsBean.DeleteEquipment}" onclick="deleteParameters();">
-									<f:ajax execute="@all" render="@none" />
+								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}"/>
+								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}"/>
+								<h:commandButton
+									value="#{mapLabels.map_creation_btn_yes_equipment}"
+									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"								
+									onclick="deleteParameters();">
+									<f:ajax execute="@all" render="@none" listener="#{equipsBean.DeleteEquipment}" />
 								</h:commandButton>
 
 								<h:commandButton value="#{mapLabels.map_creation_btn_no_equipment}"
@@ -1218,6 +1014,14 @@
 				</h:form>
 			</div>
 		</div>
+		
+	    <!-- ************************************************************************************* -->
+		<!-- ************************************* DELETE **************************************** -->
+		<!-- ************************************************************************************* -->
+		
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* SIZE ****************************************** -->
+		<!-- ************************************************************************************* -->
 
 		<!-- Modal Size Equipments -->
 		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
@@ -1243,19 +1047,92 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal Size Equipments End -->
+		
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* SIZE ****************************************** -->
+		<!-- ************************************************************************************* -->
 
 	</ui:define>
+	
+	
 
 	<ui:define name="jscript">
-
-		<h:outputScript name="map.js" library="js/map" />
-		<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
-
+	
+	<h:outputScript name="map.js" library="js/map" />
+		
+	
 		<!-- Mudança -->
 
 		<script>
-			function borderEquip(id) {
+	
+		/////////////////////////////
+		//VALIDATION FORM
+		////////////////////////////
+		
+		userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
+				'#{validatorMessages.validator_number_message}', '#{requiredMessages.required_user_interface_lanes_number}', 
+				'#{requiredMessages.required_user_interface_direction1}', '#{requiredMessages.required_user_interface_direction2}');
+					
+		//Validate elements on change value
+	    //In this case check if the element is valid
+	    validateOnChange('#equips');
+	    validateOnChange('#equipId');
+	    validateOnChange('#lanes');
+	    validateOnChange('#direction1');
+	    validateOnChange('#direction2');
+	    
+	  //Reset Fields on close modal
+		resetFieldOnModalClose('#modaladd', 'equips');
+		resetFieldOnModalClose('#modaladd', 'equipId');
+		resetFieldOnModalClose('#modaladd', 'equipName ');
+		resetFieldOnModalClose('#modaladd', 'roads');
+		resetFieldOnModalClose('#modaladd', 'cities');
+		resetFieldOnModalClose('#modaladd', 'km');
+		resetFieldOnModalClose('#modaladd', 'lanes');
+		resetFieldOnModalClose('#modaladd', 'direction1');
+		resetFieldOnModalClose('#modaladd', 'direction2');
+		resetFieldOnModalClose('#modaladd', 'direction3');
+		resetFieldOnModalClose('#modaladd', 'direction4');
+		resetFieldOnModalClose('#modaladd', 'direction5');
+		resetFieldOnModalClose('#modaladd', 'direction6');
+		resetFieldOnModalClose('#modaladd', 'direction7');
+		resetFieldOnModalClose('#modaladd', 'direction8');
+		 //Reset Fields on close modal
+						
+		//Remove validation icons
+	    //click reset button action		 
+	    removeValidationIcon("reset-btn", 'equips');
+	    removeValidationIcon("reset-btn", 'equipId');
+	    removeValidationIcon("reset-btn", 'lanes');
+	    removeValidationIcon("reset-btn", 'direction1');
+	    removeValidationIcon("reset-btn", 'direction2');
+	    
+	    //Clean Form validation on close modal
+        cleanValidationOnModalClose("#register-equip-form", '#modaladd');
+	    
+        //Reset validation form
+        //click reset button action
+        resetFormValidation("#register-equip-form", "reset-btn");	
+        resetFormValidation("#register-equip-form", "close-btn");	
+                    
+	    //Dismiss modal function
+	    $("#modaladd").on("hidden.bs.modal", function() {
+	    	$('.satInputs').hide();		
+		    $('.satInputs2').hide();		    
+	      });
+	    
+	    //reset form function
+	    $(".reset-btn").on("click", function() {	    		    
+	    	$('.satInputs').hide();		
+		    $('.satInputs2').hide();
+		    $('#modaladd').modal('hide');
+	      }); 	 
+	    		    
+        /////////////////////////////
+		//VALIDATION FORM
+		////////////////////////////
+	
+			function borderEquip(id){
 				var equipBorder = document.getElementById(id);
 				equipBorder.style.border = "1px solid black"
 				equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
@@ -1264,13 +1141,20 @@
 					equipBorder.style.borderImage = ""
 				}, 2500);
 			}
-			$(function () {
-
+        
+			$(function() {
+				
 				let match = RegExp(/newId=(\w+)/)
+				let match2nd = RegExp(/value=(false)/)
 				let get = match.exec(location.href)
+				let get2nd = match2nd.exec(location.href)							
+				
 				if (get) {
 					borderEquip(get[1])
-				}
+					alert('#equipsave');
+				}								
+				else if(get2nd[1] == 'false')
+					alert('#equipsave-error');				 			
 			})
 
 			function hiddenBtns() {
@@ -1285,7 +1169,7 @@
 				$(a).css("display", "block");
 				setTimeout(function () {
 					$(a).fadeOut('fast');
-				}, 1000);
+				}, 2000);
 				hiddenPosition();
 			}
 

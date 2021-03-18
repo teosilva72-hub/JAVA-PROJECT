@@ -24,9 +24,9 @@
 .error-label {
 	border: 1px solid transparent;
 	font-size: 12px;
-	height: 20px;
-	margin-top: -10px;
-	margin-left: 20px;
+    margin-top: -14px;
+    margin-left: 20px;
+    margin-bottom: 4px;
 }
 
 /* invalid class style */
@@ -60,3 +60,17 @@
  {
   margin-left: 90% !important;
 }
+
+
+
+/* ONLY FOR SAT DIRECTIONS *** */
+.select-direction .valid-icon-hidden,
+.select-direction .valid-icon-visible{
+	position: absolute;
+	margin-left: 70% !important;    
+    margin-top: 9px;	 
+}
+
+label#direction1-error, label#direction2-error {
+    margin-top: 15px;
+} 

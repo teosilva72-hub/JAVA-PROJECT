@@ -1885,8 +1885,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 			
 			//DISPLAY INFO ON TABLE
 			displayEquipInfo = equip+"  "+km+"  "+road;			
@@ -1927,8 +1927,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			// Create Fields 
 			CreateFields(type); 
@@ -1965,8 +1965,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Directions array
 			String[] dir1 = new String[1];
@@ -2053,8 +2053,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes); 
@@ -2096,8 +2096,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder header
 			//ReorderTableHeaderForAxles(satReport.axles);  
@@ -2176,8 +2176,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes);    		
@@ -2220,8 +2220,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes);    		
@@ -2261,8 +2261,8 @@ public class SatReportsController {
 					lane1 = info.getFaixa1();
 
 					//Directions 
-					direction1 = tm.CheckDirection1(lane1);
-					direction2 = tm.CheckDirection2(lane1);
+					direction1 = tm.CheckDirection(lane1);
+					direction2 = tm.Check2ndDirection(lane1);
 
 					//Colunas que iniciam Sentido 1 e Sentido 2
 					int iniDir1 = 8, iniDir2 = 15;		
@@ -2302,8 +2302,8 @@ public class SatReportsController {
 					lane1 = info.getFaixa1();
 
 					//Directions 
-					direction1 = tm.CheckDirection1(lane1);
-					direction2 = tm.CheckDirection2(lane1);
+					direction1 = tm.CheckDirection(lane1);
+					direction2 = tm.Check2ndDirection(lane1);
 
 					//Colunas que iniciam Sentido 1 e Sentido 2
 					int iniDir1 = 20, iniDir2 = 39;	  		

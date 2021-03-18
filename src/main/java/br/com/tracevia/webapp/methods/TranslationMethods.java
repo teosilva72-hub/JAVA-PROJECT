@@ -343,9 +343,11 @@ public String periodName(String period) {
 	}
 
    
-   public String CheckDirection1(String sentido) throws Exception {
+   public String CheckDirection(String sentido) throws Exception {
 
 	   String direction = "";
+	   
+	   try {
 	   
 		if (sentido.equals("N")) 			
 			direction = localeDirections.getStringKey("directions_north");
@@ -357,14 +359,23 @@ public String periodName(String period) {
 			direction = localeDirections.getStringKey("directions_east");		
 		
 		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_west");		
+			direction = localeDirections.getStringKey("directions_west");	
 		
+	   }catch(NullPointerException ex) {
+		   
+		   //NULL POINTER EXCEPTION QUANDO VALOR FOR NULO
+		   //NÃO MOSTRAR ERRO
+	   }
+		
+				
 		return direction;
 	  }
    
-   public String CheckDirection2(String sentido) throws Exception {
+   public String Check2ndDirection(String sentido) throws Exception {
 
 	   String direction = "";
+	   
+	   try {
 	   
 		if (sentido.equals("N")) 			
 			direction = localeDirections.getStringKey("directions_south");
@@ -376,124 +387,18 @@ public String periodName(String period) {
 			direction = localeDirections.getStringKey("directions_west");		
 		
 		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
+			direction = localeDirections.getStringKey("directions_east");	
 		
+	   }catch(NullPointerException ex) {
+		   
+		   //NULL POINTER EXCEPTION QUANDO VALOR FOR NULO
+		   //NÃO MOSTRAR ERRO
+	   }
+		
+				
 		return direction;
 	  }
    
-   public String CheckDirection3(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckDirection4(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckDirection5(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckDirection6(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckDirection7(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckDirection8(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_east");		
-		
-		return direction;
-	  }
    
    public String CheckHeaderDirection1(String sentido) throws Exception {
 
@@ -532,122 +437,9 @@ public String periodName(String period) {
 		
 		return direction;
 	  }
-   
-   public String CheckHeaderDirection3(String sentido) throws Exception {
 
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
-   	
-   public String CheckHeaderDirection4(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
    
-   public String CheckHeaderDirection5(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckHeaderDirection6(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckHeaderDirection7(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
-   
-   public String CheckHeaderDirection8(String sentido) throws Exception {
-
-	   String direction = "";
-	   
-		if (sentido.equals("N")) 			
-			direction = localeDirections.getStringKey("directions_tab_south");
-				
-		if(sentido.equals("S"))		  
-			direction = localeDirections.getStringKey("directions_tab_north");
-				
-		if (sentido.equals("L")) 		
-			direction = localeDirections.getStringKey("directions_tab_west");		
-		
-		if (sentido.equals("O"))			
-			direction = localeDirections.getStringKey("directions_tab_east");		
-		
-		return direction;
-	  }
-   
-	//Abreviação do Mês
+     //Abreviação do Mês
 	public String MonthAbbreviation(String selectedMes) {
 
 		String selectMonth = "";				
