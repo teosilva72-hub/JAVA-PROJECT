@@ -410,8 +410,9 @@
 									</c:when>
 									<c:when test="#{item.table_id eq 'sat'}">
 
-										<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark"
-											posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}"
+										<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
+											posX="#{item.mapPosX}" posY="#{item.mapPosY}"
+											item-width="#{item.mapWidth}"
 											status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}"
 											status="#{satMapsView.satStatus.get(loop.index).status}">
 											<div id="sat#{item.equip_id}" class="table-sat card border-dark">
@@ -1484,8 +1485,7 @@
 			//SAT LANES INPUTS END
 
 			// MODAL EQUIPMENT SIZE
-			$(".dprbtn")
-				.click(
+			$(".dprbtn").click(
 					function () {
 						var url = $('.draggable').find(
 							"[id^=" + $(this).attr('from')
