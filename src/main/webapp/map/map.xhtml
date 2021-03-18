@@ -1153,8 +1153,9 @@
 					borderEquip(get[1])
 					alert('#equipsave');
 				}								
-				else if(get2nd == 'false')
-					alert('#equipsave-error');				 			
+				else if(get2nd) 
+					    if(get2nd[1] == 'false')
+					       alert('#equipsave-error');				 			
 			})
 
 			function hiddenBtns() {

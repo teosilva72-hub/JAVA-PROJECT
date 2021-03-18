@@ -25,10 +25,13 @@ public class RoadConcessionaireDAO {
 		//TESTE
 		//if (serverAddress.equals("192.168.0.32") || serverAddress.equals("192.168.0.40"))
 		 if(serverAddress.equals("192.168.3.199"))
+			 //if(serverAddress.equals(Servers.ServersViaSul.getServer()))
 			conn = ConnectionFactory.connectToCCR();
-	
-		else
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		 
+		 //if(serverAddress.equals(Servers.ServersViaPaulista.getServer()))
+			//conn = ConnectionFactory.connectToViaPaulista();
+				
+		else conn = ConnectionFactory.connectToTraceviaApp();
 
 		try {
 
@@ -60,7 +63,7 @@ public class RoadConcessionaireDAO {
 
 		ArrayList<SelectItem> city = new ArrayList<SelectItem>();
 
-		String query = "SELECT city_id, city_name FROM concessionaire_cities";
+		String query = "SELECT city_id, city_name FROM concessionaire_cities city_id <> 0";
 
 		try {
 
@@ -97,7 +100,7 @@ public class RoadConcessionaireDAO {
 
 		ArrayList<SelectItem> roads = new ArrayList<SelectItem>();
 
-		String query = "SELECT road_id, road_name FROM concessionaire_roads";
+		String query = "SELECT road_id, road_name FROM concessionaire_roads WHERE road_id <> 0";
 
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
