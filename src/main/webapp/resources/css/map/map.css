@@ -1016,4 +1016,12 @@ text-align: center;
 }
 /* CHECKBOXS END */
 
+/* TABLE SAT */
 
+.table-sat {
+	-webkit-box-shadow: initial !important;
+	-moz-box-shadow: initial !important;
+	box-shadow: initial !important;
+}
+
+/* TABLE SAT END */
