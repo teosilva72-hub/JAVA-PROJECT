@@ -12,54 +12,18 @@ body {
   bottom: 60px;
   right: 5px;
   left: 5px;
+  margin-top: 10px;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
-/*DIV onde esta List Container*/
 #messages-list {
   position: relative;
-  margin-top: 20px;
+  margin-top: 100px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/*DIV das mensagens*/
-.message-content {
-  position: absolute;
-  border: 1px solid #a9a9a9;
-  border-radius: 5px;
-  width: 27%;
-  height: 250px;
-  margin-left: 9%;
-  margin-top: 10%;
-  background: #87ceeb; /*#F8F8FF;*/
+.check-select {
   float: left;
-}
-
-.ui-selectonemenu {
-  width: 100%;
-  margin-top: 1%;
-  margin-left: 5px;
-}
-
-/*CONTEUDO PRINCIPAL ACTIVATE*/
-
-.equip-content-2 {
-  width: 100%;
-  height: 100%;
-  overflow: auto;
+  margin-top: 7%;
+  margin-right: 70px;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
@@ -68,274 +32,20 @@ body {
   width: 95%;
   height: 100px;
   margin-left: 2.5%;
-}
-
-.option-1 {
-  border: none;
-  width: 95%;
-  height: 100px;
-  margin-left: 2.5%;
-}
-
-.check-select {
-  float: left;
-  margin-top: 8%;
-  margin-left: 1.5%;
-  border: 1px solid transparent;
-  width: 25px;
-  height: 25px;
-}
-
-.equip-info-2 {
   position: relative;
-  border: none;
-  background: #222222;
-  box-shadow: 5px 5px 4px gray;
-  border-right: 6px solid #00fa9a;
-  width: 90%;
-  height: 82px;
-  margin: 2.5px;
-  margin-left: 4.5%;
-  opacity: 0.7;
-}
-
-.equip-info-updating {
-  position: relative;
-  border: none;
-  background: #222222;
-  box-shadow: 5px 5px 4px gray;
-  border-right: 6px solid #00bfff;
-  width: 90%;
-  height: 82px;
-  margin: 2.5px;
-  margin-left: 8%;
-  opacity: 0.7;
-}
-
-.equip-info-updating-2 {
-  position: relative;
-  border: none;
-  background: #222222;
-  box-shadow: 5px 5px 4px gray;
-  border-right: 6px solid #ffff00;
-  width: 90%;
-  height: 82px;
-  margin: 2.5px;
-  margin-left: 4.5%;
-  opacity: 0.7;
-}
-
-.equi-info-restore {
-  border-right: 6px solid #00fa9a;
-}
-
-/*Conteudo para o name - km info*/
-.name-block {
-  width: 100%;
-  height: 18px;
-  color: #fff;
-  font-size: 12px;
-  margin-top: 0%;
-  text-align: center;
-  border: none;
-  float: left;
-}
-
-/* DIVs Abrangem nome e o km (Inside DIV name-block) */
-.name {
-  border: none;
-  width: 30%;
-  float: left;
-  margin-left: 20%;
-}
-
-.km {
-  border: none;
-  width: 30%;
-  float: right;
-  margin-right: 20%;
-}
-
-/*DIV Abrange table-img e table-message*/
-.equip-core {
-  border: none;
-  float: left;
-  width: 100%;
-  height: 65px;
-}
-
-/*table de imagem*/
-.table-img {
-  margin-top: 0%;
-  margin-left: 1%;
-  width: 60px;
-  height: 60px;
-  float: left;
-}
-
-.ui-graphic-board {
-  width: 100%;
-  height: 58px;
-}
-
-/*IMAGEM PMV*/
-.ui-button {
-  width: 100px;
-  text-align: center;
-}
-
-.ui-dialog-titlebar {
-  background: #ffff00;
-  color: #555;
-}
-
-.ui-dialog-title {
-  margin-left: 150px;
-}
-
-#messages-activate {
-  border: none;
-  border-radius: 10px;
-  width: 56%;
-  height: 390px;
-  float: left;
-  margin-top: 1.5%;
-  margin-left: 8%;
-  background: #ffe4c4;
-}
-
-#message-selected {
-  float: left;
-  border: 1px solid transparent;
-  width: 95%;
-  height: 100%;
-  margin-top: 2.5%;
-  margin-left: 2%;
-  background: #f5f5f5;
-  color: black;
-}
-
-#graphic {
-  float: left;
-  border: none;
-  width: 40%;
-  height: 70px;
-  margin-left: 2%;
-  margin-top: 1%;
-  opacity: 0.7;
-}
-
-#text {
-  float: left;
-  border: none;
-  width: 50%;
-  height: 70px;
-  margin-left: 1%;
-  margin-top: 1%;
-  font-size: 16px;
-}
-
-#row1,
-#row2,
-#row3 {
-  float: left;
-  margin-left: 4%;
-  margin-top: 0.5%;
-}
-
-
-/*CONTAINER DAS IMAGENS - SELECTONELISTBOX*/
-.ui-selectlistbox-listcontainer {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* ITENS - SELECTONELISTBOX*/
-.ui-selectlistbox-item {
-  width: 100%;
-  height: 58px;
-}
-
-.ui-selectlistbox-listcontainer {
-  height: 232px !important;
-}
-
-/* Plus Button - Selection Available Messages */
-
-/* HEADER OPTION */
-#header-option {
-  border: none;
-  height: 50px;
-  width: 61%;
-  margin-left: 2.5%;
-}
-
-#select-all {
-  border: none;
-  width: 20%;
-  height: 35px;
-  margin-left: 1.5%;
-  margin-top: 0.75%;
-  float: left;
 }
 
 /* HEADER OPTION */
 
 /*Equips Content labels header*/
-.label-header-content,
-.label-header-content-2 {
+.label-header-content {
   font-size: 22px;
   font-weight: bold;
   color: white;
-  text-align: center;
+  margin-bottom: 15px;
+  display: block;
 }
-
-/*Equips Content labels header*/
-
-/* Buttons Selection */
-.buttons-action {
-  position: relative;
-  float: right;
-  border: none;
-  height: 140px;
-  width: 120px;
-  margin-top: 2.5%;
-  margin-right: 6%;
-}
-
-#btn-select,
-#btn-cancel,
-#btn-reset,
-#btn-apply {
-  margin-top: 5%;
-  margin-left: 14%;
-  width: 85px;
-  text-align: center;
-  color: #fff !important;
-}
-
-/* Buttons Selection */
-.fa-minus-square {
-  color: #343a40;
-}
-
-/*Bootstap secondary Button*/
-.icon:disabled {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-/*Bootstap Primary Button*/
-.icon:enabled {
-  color: #fff;
-  background-color: #343a40;
-  border-color: #343a40;
-}
-
-#btn-hide-list {
-  margin-top: 2.5%;
-}
+ 
 
 /*LABEL MESSAGE BLOCK DIV CONTENT*/
 #label-message-content {
@@ -349,53 +59,17 @@ body {
   color: white;
 }
 
-/* DIV SELE��O TIPO DE MENSAGEM */
-
-/*Modal Changes*/
-.modal {
-  position: fixed;
-  margin-top: 6%;
-  margin-right: 0px;
-  margin-bottom: 0;
-  margin-left: 0;
-  z-index: 10040;
-  overflow: auto;
-  overflow-y: auto;
-  vertical-align: top;
-}
-/*Modal Changes*/
-.img-modal {
-  margin-left: 32.5%;
-}
-
-.conteudo {
-  margin-top: -30px;
-}
-.jumbotron {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.selecao {
+#showOption {
   display: none;
 }
 
-.form-control:focus {
-  border-bottom: 2px solid #1c86ee; /*#dc3545*/
-  box-shadow: 2px 2px 2px #1c86ee;
+#allPMV {
+  overflow: auto;
 }
 
-.paginator {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  font-size: 10px;
-  margin-bottom: 1%;
-  margin-left: 0%;
-}
 
-.page1 {
-  position: absolute;
-  margin-left: 30px;
-  margin-top: 10px;
+/* TEMPORARY CSS */
+
+.temporaryboot {
+  left: -130px;
 }

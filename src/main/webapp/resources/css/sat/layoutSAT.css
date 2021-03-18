@@ -1,0 +1,124 @@
+@charset "ISO-8859-1";
+
+/* sat info div*/
+.sat-info-bagde {
+  position: absolute;
+  top: -4px;
+  margin-left: -8px;
+  background-color: #1e90ff;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 11px;
+  min-width: 11px;
+  display: block;
+  border-radius: 50%;
+  float: left;
+  cursor: pointer;
+  z-index: 3;
+  text-indent: 0px;
+  text-decoration: none;
+  font-size: 9px;
+  border: 1px solid black;
+}
+
+/* sat info icon hover */
+.sat-info-bagde:hover {
+  text-decoration: none;
+  background: #ffc107;
+  color: #555;
+}
+
+/* sat info icon focus */
+.sat-info-bagde:focus {
+  background: #000080;
+  outline: none;
+}
+
+/* EQUIPS SATS*/
+.equip-box-sat {
+  position: absolute;
+  z-index: 1000; /* n�mero m�ximo � 9999 */
+  height: 75px;
+  width: 100px;
+}
+
+.satName {
+  font-size: 10px;
+}
+
+/*Table Sat*/
+.table-sat {
+  width: 95%;
+  text-align: center;
+  table-layout: auto !important;
+  color: #212121;
+  font-size: 10px;
+  font-weight: bold;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.75);
+}
+
+.padding-sat {
+  padding: 0;
+  width: 45px;
+}
+
+/*REAL TIME SAT*/
+
+#fluxos {
+  margin-top: 0px !important;
+  margin-left: 0px;
+  opacity: 0.8;
+  border: 1px solid transparent;
+}
+
+#fluxos div {
+  height: 9px;
+}
+
+.fluxo-1-margin {
+  margin: 3px;
+}
+
+.fluxo-2-margin {
+  margin: 4px;
+}
+
+.padding-sat .km {
+  font-size: 7px;
+}
+
+.sat-cars {
+  float: left;
+  font-size: 10px;
+  /*color: #878d8d;*/
+  margin-top: 3px;
+  margin-left: 0.75px;
+}
+
+.sat-speed {
+  float: left;
+  font-size: 10px;
+  margin-top: 3.5px;
+  margin-left: 0.75px;
+  /*color: #878d8d;*/
+}
+
+.equip-label-left {
+  margin-left: 10px;
+}
+
+.popover-header {
+  background: #007bff !important;
+  color: white;
+  font-size: 12px;
+}
+
+.popover-body {
+  font-size: 12px;
+}
+
+.on-mouse-hover {
+  cursor: pointer;
+}

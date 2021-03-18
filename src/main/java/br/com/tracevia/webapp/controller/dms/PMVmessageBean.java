@@ -1,7 +1,6 @@
 package br.com.tracevia.webapp.controller.dms;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.primefaces.context.RequestContext;
 
@@ -69,6 +67,7 @@ public class PMVmessageBean implements Serializable {
 	private List<Picture> pictures;
 	private Messages message;
 	// private HtmlDataTable dataTable;
+	private List<Messages> messages;
 	private List<Messages> messages_d1;
 	private List<Messages> messages_d2;
 	private List<Messages> messages_d3;
@@ -227,6 +226,14 @@ public class PMVmessageBean implements Serializable {
 
 	public void setMessage(Messages message) {
 		this.message = message;
+	}
+
+	public List<Messages> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Messages> messages) {
+		this.messages = messages;
 	}
 
 	public boolean isSubmit() {
@@ -456,6 +463,11 @@ public class PMVmessageBean implements Serializable {
 
 			messages_d3 = dao.mensagensDisponiveis("driver3");
 			messages_enumeration_d3 = enumeration.create(messages_d3);
+
+			messages = new ArrayList<Messages>();
+			messages.addAll(messages_d1);
+			messages.addAll(messages_d2);
+			messages.addAll(messages_d3);
 			
 			ArrayList<Equipments> list = new ArrayList<Equipments>();
 			list = equipDAO.listPMVSites();
@@ -583,134 +595,6 @@ public class PMVmessageBean implements Serializable {
 		this.image = String.valueOf(picture.getImage());
 	}
 
-	public void updateMessages(AjaxBehaviorEvent event) throws AbortProcessingException {
-
-		try {
-
-			MessagesDAO dao = new MessagesDAO();
-
-			messages_d1 = dao.mensagensDisponiveis("driver1");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void createAvailableMessage() throws Exception { // TODO: Nao esta sendo usado na pagina mensagem available,
-															// possivelmente possa ser removido esse metodo
-
-		boolean result;
-		MessagesDAO dao = new MessagesDAO();
-		FacesContext context = FacesContext.getCurrentInstance();
-
-		MessagesUtil message = new MessagesUtil();
-
-		for (int i = 0; i < message1.length(); i++) {
-			if (message1.charAt(i) != Character.MIN_VALUE)
-				chars1[i] = message1.charAt(i);
-		}
-
-		for (int i = 0; i < message2.length(); i++) {
-			if (message2.charAt(i) != Character.MIN_VALUE)
-				chars2[i] = message2.charAt(i);
-		}
-
-		for (int i = 0; i < message3.length(); i++) {
-			if (message3.charAt(i) != Character.MIN_VALUE)
-				chars3[i] = message3.charAt(i);
-		}
-
-		// Sem selecionar imagem
-		if (picture == null)
-			picture = new Picture(0);
-
-		// Pegar Usu�rio na sess�o
-		String user = (String) context.getExternalContext().getSessionMap().get("user");
-
-		result = dao.insertMessage(picture.getId(), user, tipo, nome, message1, message2, message3);
-
-		if (result) {
-			message.InfoMessage(localeMessage.getStringKey("dms_available_message_register"), " ");
-			messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
-			cleanSelection();
-		}
-
-		else
-			message.ErrorMessage(localeMessage.getStringKey("dms_available_message_register_error"), " ");
-	}
-
-	public void updateAvailableMessage() throws Exception {
-
-		boolean result;
-		MessagesDAO dao = new MessagesDAO();
-		FacesContext context = FacesContext.getCurrentInstance();
-
-		MessagesUtil message = new MessagesUtil();
-
-		if (picture == null)
-			picture = new Picture(idPicture); // Caso n�o seja selecionado nenhum novo id
-
-		// Pegar Usu�rio na sess�o
-		String user = (String) context.getExternalContext().getSessionMap().get("user");
-
-		result = dao.updateMessage(picture.getId(), user, tipo, nome, message1, message2, message3, idMessage);
-
-		if (result) {
-			message.InfoMessage(localeMessage.getStringKey("dms_available_message_update"), " ");
-			messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
-		}
-
-		else
-			message.InfoMessage(localeMessage.getStringKey("dms_available_message_update_error"), " ");
-
-		cleanSelection();
-	}
-
-	// Deletar Registro
-	public void deleteRegister() throws Exception {
-
-		boolean response;
-		int active;
-
-		MessagesDAO dao = new MessagesDAO();
-
-		MessagesUtil message = new MessagesUtil();
-
-		if (rowKey != 0) {
-
-			// Verifica se a mensagem est� ativa
-			active = dao.verifyRegisterIsActive(rowKey);
-
-			if (active == 0) { // Caso n�o esteja ativa segue para exclus�o
-				response = dao.removeRegister(rowKey);
-
-				if (response) {
-					messages_d1 = dao.mensagensDisponiveis("driver1"); // Atualiza lista de mensagens
-					message.InfoMessage(localeMessage.getStringKey("dms_available_message_delete_sucess"), " ");
-				}
-
-				else
-					message.InfoMessage(localeMessage.getStringKey("dms_available_message_delete_error"), " ");
-
-			} else
-				message.ErrorMessage(localeMessage.getStringKey("dms_available_message_delete_error_in_use_header"),
-						localeMessage.getStringKey("dms_available_message_delete_error_in_use_body"));
-
-		} else
-			message.WarningMessage(localeMessage.getStringKey("dms_activation_message_activation_not_found"), " ");
-
-	}
-
-	public void messageActions() throws Exception {
-
-		// cleanSelection(); // Limpar antes
-
-		if (actionType.equals("edit"))
-			updateAvailableMessage();
-
-		else
-			createAvailableMessage();
-	}
 
 	/*
 	 * public void completarArray(int ini, int tam, char[] array) {
@@ -719,151 +603,6 @@ public class PMVmessageBean implements Serializable {
 	 */
 
 	/* Mensagens Disponiveis Box */
-
-	public void messageRowOne() {
-
-		int tam = message1.length();
-
-		if (tam > i && tam < 13) {
-
-			chars1[i] = message1.charAt(i);
-			i++;
-		}
-
-		else if (tam < i && tam > (-1)) {
-			chars1[i - 1] = Character.MIN_VALUE;
-			i--;
-		}
-	}
-
-	public void messageRowTwo() {
-
-		int tam = message2.length();
-
-		if (tam > j && tam < 13) {
-
-			chars2[j] = message2.charAt(j);
-			j++;
-		}
-
-		else if (tam < j && tam > (-1)) {
-			chars2[j - 1] = Character.MIN_VALUE;
-			j--;
-		}
-
-	}
-
-	public void messageRowThree() {
-
-		int tam = message3.length();
-
-		if (tam > k && tam < 13) {
-
-			chars3[k] = message3.charAt(k);
-			k++;
-		}
-
-		else if (tam < k && tam > (-1)) {
-			chars3[k - 1] = Character.MIN_VALUE;
-			k--;
-		}
-	}
-
-	/* Mensagens Disponiveis Box */
-
-	public void editMessage() throws Exception {
-
-		StringBuilder sb = new StringBuilder();
-		StringBuilder sb1 = new StringBuilder();
-		StringBuilder sb2 = new StringBuilder();
-
-		MessagesDAO dao = new MessagesDAO();
-		Messages message = new Messages();
-		MessagesUtil messageUtil = new MessagesUtil();
-
-		if (rowKey != 0) {
-
-			create = true;
-			editable = true;
-			delete = true;
-			select = true;
-			submit = false;
-			inputs = false;
-
-			actionType = "edit";
-
-			RequestContext.getCurrentInstance().execute("imageEnabled();"); // Executar Javascript
-
-			message = dao.mensagensDisponivelById(rowKey);
-
-			this.image = String.valueOf(message.getImage());
-
-			picture = new Picture(message.getId_image());
-			idPicture = picture.getId();
-
-			// Image
-			this.tipo = message.getTipo();
-			this.nome = message.getNome();
-			this.idMessage = String.valueOf(message.getId_message()); // TODO: corrigir
-
-			for (int i = 0; i < message.getPages().get(0).getText1().length(); i++) {
-
-				if (message.getPages().get(0).getText1().charAt(i) != Character.MIN_VALUE) {
-					chars1[i] = message.getPages().get(0).getText1().charAt(i);
-					lmt1++;
-
-				}
-			}
-
-			for (int i = 0; i < message.getPages().get(0).getText2().length(); i++) {
-				if (message.getPages().get(0).getText2().charAt(i) != Character.MIN_VALUE) {
-					chars2[i] = message.getPages().get(0).getText2().charAt(i);
-					lmt2++;
-
-				}
-			}
-
-			for (int i = 0; i < message.getPages().get(0).getText3().length(); i++) {
-				if (message.getPages().get(0).getText3().charAt(i) != Character.MIN_VALUE) {
-					chars3[i] = message.getPages().get(0).getText3().charAt(i);
-					lmt3++;
-
-				}
-			}
-
-			message1 = sb.append(chars1).toString();
-			message2 = sb1.append(chars2).toString();
-			message3 = sb2.append(chars3).toString();
-
-			i = lmt1; // ponteiro primeira linha
-			j = lmt2; // ponteiro segunda linha
-			k = lmt3; // ponteiro terceira linha
-
-			// System.out.println("I: "+i);
-			// System.out.println("J: "+j);
-			// System.out.println("K: "+k);
-
-		} else {
-
-			messageUtil.WarningMessage(localeMessage.getStringKey("dms_activation_message_activation_not_found"), " ");
-
-			RequestContext.getCurrentInstance().execute("PF('bui').hide()"); // Executar Javascript
-		}
-	}
-
-	public void createMessage() { // Todo: Provalvemente ele já esta obsoleto
-
-		actionType = "create";
-		create = true; // Unlock items
-		editable = true;
-		delete = true;
-		select = true;
-		submit = false;
-		inputs = false;
-
-		RequestContext.getCurrentInstance().execute("imageEnabled();"); // Executar Javascript
-
-	}
 
 	public int initCharsFromEdit() {
 
@@ -874,36 +613,6 @@ public class PMVmessageBean implements Serializable {
 
 		return value;
 	}
-
-	public void cleanSelection() {
-
-		image = "000_6464.bmp";
-		chars1 = new char[12];
-		chars2 = new char[12];
-		chars3 = new char[12];
-		idMessage = null;
-		tipo = null;
-		nome = null;
-		picture = new Picture();
-		picture.setId(0);
-		create = false; // enabled
-		select = false; // enabled
-		editable = true; // disabled
-		delete = true; // disabled
-		submit = true; // disabled
-		inputs = true; // disabled
-		message1 = null;
-		message2 = null;
-		message3 = null;
-		i = 0;
-		j = 0;
-		k = 0;
-		lmt1 = 0;
-		lmt2 = 0;
-		lmt3 = 0;
-	}
-
-	/* Message Creation Available */
 
 	/* Messages Activate */
 

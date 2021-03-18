@@ -273,6 +273,59 @@ function ScrollZoom(container) {
 			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
 			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 		});
+
+		if (equip.attr("class").includes('equip-box-sat')) {
+			let sat_status = equip.attr('status')
+			let interval =  Number(equip.attr('status-period'))
+			let fluxo1 = equip.find('[id^=img1FluxoTab]')
+			let fluxo = {
+				height: (width * 0.10) + "px",
+				border: "1px solid transparent",
+			}
+			fluxo1
+				.css(fluxo)
+				.css('margin-top', 7 + "px")
+				.next()
+				.css(fluxo)
+	
+			//Green Color > indica que o equipamento está conectado
+			if (sat_status > 0 && interval == 30) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00FF0D',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
+	
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 45) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00BFFF',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 8) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FFFF00',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
+			}
+			//Red Color > indica que o equipamento está sem comunicação
+			else {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FF0000',
+					color: 'white'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
+			}
+		}
+
+		if (equip.attr("class").includes('equip-box')) {
+
+		}
 	}
 	// EQUIPMENT POSITION END
 	

@@ -1,24 +1,9 @@
 import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let listPMV = [];
-let listChangePMV = [];
 
 async function main() {
 	await init();
-
-	const equipInfo = $('.equip-info');
-	const allChecks = $('.option [id^=check]')
-	const checksListAll = $('#checkListAll')
-
-	const pmvResize = () => {
-		equipInfo.css('transform', function () {
-			let scale = Math.min(0.9 / (equipInfo.outerWidth() / $(this).closest('.message-block').outerWidth()), Number($(this).attr('scale')));
-			return `translateX(-50%) scale(${scale})`;
-		});
-
-		$('#allPMV').height($('.jumbotron').height() - 16)
-	}
-
 	const animationPMV = (img1, img2, message, pmv) => {
 		let at = 300
 		let driver = pmv.type_page()
@@ -57,19 +42,7 @@ async function main() {
 
 	const initAnimation = () => {
 		listPMV.forEach(pmv => {
-			const tablePMV = $(`#one #dms${pmv.id()}`);
-
-			tablePMV.addClass(`driver${pmv.type_page()}`)
-
-			const img1 = tablePMV.find('.picture-box.primary')
-			const img2 = tablePMV.find('.picture-box.secondary')
-			const message = tablePMV.find('#message')
-
-			animationPMV(img1, img2, message, pmv)
-		});
-
-		listChangePMV.forEach(pmv => {
-			const tablePMV = $(`#two #dms${pmv.id()}`);
+			const tablePMV = $(`#dms${pmv.id()}`);
 
 			tablePMV.addClass(`driver${pmv.type_page()}`)
 
@@ -82,7 +55,7 @@ async function main() {
 	}
 
 	const collectPMV = () => {
-		$('[id^=listPMV], [id^=listChangePMV]').each(function () {
+		$('[id^=listPMV]').each(function () {
 			let data = $(this);
 			let driver;
 
@@ -127,12 +100,7 @@ async function main() {
 						);
 				})
 
-				if (data.attr('id').startsWith("listPMV"))
-					listPMV.push(pmv);
-				else {
-					listChangePMV.push(pmv);
-					data.next().find('.tableStyle').addClass(data.attr('status') == "true" ? "unchanged" : "change")
-				}
+				listPMV.push(pmv);
 
 			}
 			data.remove()
@@ -142,32 +110,6 @@ async function main() {
 	$(function () {
 		collectPMV();
 		initAnimation();
-
-		$('#toogleMenu button[toggle]').click(function () {
-			if ($(this).attr('toggle') === 'show') {
-				$(this).text('Ocultar').attr('toggle', "hide")
-				$('#showOption').css("display", "block")
-				pmvResize();
-			} else {
-				$(this).text('Mostrar').attr('toggle', "show")
-				$('#showOption').css("display", "none")
-			}
-		})
-
-		allChecks.change(function () {
-			let check = $(this)
-			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
-		})
-
-		checksListAll.change(() => {
-			allChecks.prop('checked', checksListAll.prop('checked'))
-		})
-
-		let opt = $("#available-id option").sort(function (a, b) { return a.value - b.value });
-		$("#available-id").append(opt);
-
-		pmvResize();
-		$(window).resize(pmvResize);
 	})
 }
 

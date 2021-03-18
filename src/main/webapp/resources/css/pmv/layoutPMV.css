@@ -1,6 +1,7 @@
 .equip-info {
   font-size: 5px;
-  display: inline-block;
+  position: absolute;
+  left: 50%;
 }
 
 #page-pmv {
@@ -15,16 +16,31 @@
   height: 69px;
   border: none;
   background: #333333;
-  border-right: 6px solid #00fa9a;
+  border-right: 6px solid rgb(255, 0, 0);
   border-radius: 0;
+}
+
+.equip-info .tableStyle.change {
+  border-right: 6px solid rgb(255, 0, 0);
+}
+
+.equip-info .tableStyle.unchanged {
+  opacity: .6;
 }
 
 .dms-name {
   margin-bottom: -5px;
+  height: 13px;
 }
 
-.dmsTab p {
-  height: 15px;
+.name {
+  float: left;
+  margin-left: 25%;
+}
+
+.km {
+  float: right;
+  margin-right: 25%;
 }
 
 .border-table {
@@ -49,9 +65,8 @@
 }
 
 .padding-pmv {
-  padding-left: 0px;
-  margin-left: -5px;
-  margin-top: 3px;
+  margin-left: 7px;
+  margin-top: 6px;
 }
 
 .picture-box {
@@ -74,37 +89,43 @@
   display: none;
 }
 
-.pmv-board.driver2 .equip-info .msg-pos {
+.driver2.equip-info .msg-pos,
+.driver2 .equip-info .msg-pos {
   bottom: 10px !important;
 }
 
-.pmv-board.driver2 .equip-info .message2 {
+.driver2.equip-info .message2,
+.driver2 .equip-info .message2 {
   border-bottom-style: solid !important;
 }
 
-.pmv-board.driver2 .equip-info .message3 {
+.driver2.equip-info .message3,
+.driver2 .equip-info .message3 {
   display: none !important;
 }
 
-.pmv-board.driver2 #input-message-3 {
+.driver2 #input-message-3 {
   display: none !important;
 }
 
-.pmv-board.driver3 .equip-info .msg-pos {
+.driver3.equip-info .msg-pos,
+.driver3 .equip-info .msg-pos {
   right: 55px !important;
 }
 
-.pmv-board.driver3 .equip-info .padding-pmv {
-  margin-left: -10px !important;
+.driver3.equip-info .padding-pmv,
+.driver3 .equip-info .padding-pmv {
+  margin-left: 2px !important;
 }
 
-.pmv-board.driver3 .equip-info .second-img {
+.driver3.equip-info .second-img,
+.driver3 .equip-info .second-img {
   display: revert !important;
-  margin-right: 5px;
-  padding-left: 0px;
-  margin-top: 3px;
+  margin-right: 33px;
+  margin-top: 6px;
 }
 
-.pmv-board.driver3 .equip-info .table-message {
+.driver3.equip-info .table-message,
+.driver3 .equip-info .table-message {
   width: 110px !important;
 }

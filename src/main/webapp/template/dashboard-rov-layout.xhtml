@@ -72,15 +72,14 @@
             </svg>
           </button>
 
-          
+
           <a class="brand-text navbar-brand col-auto" href="#">Tracevia</a>
-          
+
         </div>
 
         <div class="col-3 ms-auto ml-auto justify-content-end navbar-toggler" id="navbarSupportedContent">
-          <button class="profileToggler" type="button" data-toggle="collapse"
-            data-target="#navbarMaximizeMenu" aria-controls="navbarMaximizeMenu" aria-expanded="false"
-            aria-label="Toggle navigation">
+          <button class="profileToggler" type="button" data-toggle="collapse" data-target="#navbarMaximizeMenu"
+            aria-controls="navbarMaximizeMenu" aria-expanded="false" aria-label="Toggle navigation">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ellipsis-v" width="30" height="30"
               role="img" viewBox="0 0 192 512">
               <path fill="currentColor"
@@ -151,8 +150,8 @@
 
           <!-- Notificações -->
 
-            <ul class="navbar-nav header-menu" id="notification" >
-            <li class="nav-item dropdown" >
+          <ul class="navbar-nav header-menu" id="notification">
+            <li class="nav-item dropdown">
               <a class="nav-link p-0" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"
                 title="#{dashboardLabels.dashboard_navbar_icon_notifications_title}">
@@ -162,10 +161,10 @@
                     d="M439.39 362.29c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71zM67.53 368c21.22-27.97 44.42-74.33 44.53-159.42 0-.2-.06-.38-.06-.58 0-61.86 50.14-112 112-112s112 50.14 112 112c0 .2-.06.38-.06.58.11 85.1 23.31 131.46 44.53 159.42H67.53zM224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64z">
                   </path>
                 </svg>
-                
+
               </a>
-                           
-           </li>
+
+            </li>
           </ul>
 
           <ul class="navbar-nav header-image">
@@ -253,7 +252,7 @@
             <div class="dropdown-divider"></div>
 
             <h:form>
-              <h:commandLink class="dropdown-item" value="" action="#{loginAccount.LogOut}" ajax="false">
+              <h:commandLink class="dropdown-item" action="#{loginAccount.LogOut}" ajax="false">
                 <i class="fas fa-fw fa-sign-out-alt"></i>
                 <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_logout}</span>
               </h:commandLink>
@@ -632,14 +631,14 @@
     </div> <!-- End Wrapper -->
 
     <!-- Loading -->
-	<ui:insert name="loading">
-	    <div class="loading">
-	      <div class="loading-animation" role="status">
-	        <h:graphicImage url="/resources/images/gifs/loading.gif" />
-	        <span class="sr-only">Loading...</span>
-	      </div>
-	    </div>
-	</ui:insert>
+    <ui:insert name="loading">
+      <div class="loading">
+        <div class="loading-animation" role="status">
+          <h:graphicImage url="/resources/images/gifs/loading.gif" />
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+    </ui:insert>
 
     <ui:insert name="default-content">
 
@@ -723,14 +722,13 @@
     <footer class=" page-footer font-small indigo">
 
       <div class="footer-copyright text-center py-3 bg-mattBlackDark">
-        <p>© 2021 Tracevia Copyright: <a href="https://tracevia.com.br/" class="link-address">&nbsp;www.tracevia.com.br </a></p>
+        <p>© 2021 Tracevia Copyright: <a href="https://tracevia.com.br/" class="link-address">&nbsp;www.tracevia.com.br
+          </a></p>
       </div>
       <!-- Copyright -->
 
     </footer>
 
-    <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
-    <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
     <ui:insert name="default-plugins">
       <h:outputScript name="jquery.dataTables.min.js" library="js/datatables" />
       <h:outputScript name="dataTables.bootstrap4.min.js" library="js/datatables" />
@@ -738,11 +736,13 @@
       <h:outputScript name="all.min.js" library="font-awesome/js" />
       <h:outputScript name="jssip.js" library="js/sip" />
     </ui:insert>
+    <h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+    <h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
     <h:outputScript name="jquery.slimscroll.min.js" library="js/jquery-slim-scroll" />
     <h:outputScript name="dashboard-right.js" library="js/dashboard" />
 
     <script>
-       
+
       function sidenavAction() {
         document.getElementById("sidenav2").style.display = "none";
         document.getElementById("sidenav3").style.display = "none";
