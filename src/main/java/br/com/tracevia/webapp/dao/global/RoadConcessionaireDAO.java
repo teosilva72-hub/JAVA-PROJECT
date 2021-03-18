@@ -63,7 +63,7 @@ public class RoadConcessionaireDAO {
 
 		ArrayList<SelectItem> city = new ArrayList<SelectItem>();
 
-		String query = "SELECT city_id, city_name FROM concessionaire_cities city_id <> 0";
+		String query = "SELECT city_id, city_name FROM concessionaire_cities WHERE city_id <> 0";
 
 		try {
 
