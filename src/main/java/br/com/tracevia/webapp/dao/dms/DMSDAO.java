@@ -56,7 +56,7 @@ public class DMSDAO {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
 
-		String sql = "SELECT equip_id, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM tracevia_app.pmv_equipment pmv INNER JOIN tracevia_app.pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
+		String sql = "SELECT equip_id, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM pmv_equipment pmv INNER JOIN pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
 
 		try {
 
