@@ -7,8 +7,10 @@ async function main() {
 	await init();
 
 	const equipInfo = $('.equip-info');
+	const equipInfoView = $('#one .equip-info, #two .equip-info');
 	const allChecks = $('.option [id^=check]')
 	const checksListAll = $('#checkListAll')
+	const inputDriver = $('[name=typePMV]')
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -157,17 +159,40 @@ async function main() {
 		allChecks.change(function () {
 			let check = $(this)
 			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
+
+			let checks = allChecks.filter(function () {
+				return !$(this).prop('disabled')
+			})
+
+			if (checks.toArray().reduce(function (a, b, c) { return (c !== 1 ? a : $(a).prop('checked')) && $(b).prop('checked') }))
+				checksListAll.prop('checked', true);
+			else
+				checksListAll.prop('checked', false);
 		})
 
 		checksListAll.change(() => {
-			allChecks.prop('checked', checksListAll.prop('checked'))
+			allChecks.filter(function () {
+				return !$(this).prop('disabled')
+			}).prop('checked', checksListAll.prop('checked')).trigger('change')
 		})
 
-		let opt = $("#available-id option").sort(function (a, b) { return a.value - b.value });
-		$("#available-id").append(opt);
+		$('#one .equip-info').change(function () {
+			let equip = $(this);
+
+			equip.prev().find('input').prop('disabled', equip.hasClass('unable'))
+		})
+
+		inputDriver.change(function () {
+			equipInfoView.addClass('unable');
+			equipInfoView.filter(`.${$(this).val()}`).removeClass('unable');
+			equipInfoView.trigger('change');
+			allChecks.prop('checked', false);
+			checksListAll.prop('checked', false);
+		})
 
 		pmvResize();
 		$(window).resize(pmvResize);
+		inputDriver.filter('#typePMV1').trigger('change');
 	})
 }
 

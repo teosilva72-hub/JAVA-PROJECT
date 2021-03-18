@@ -28,17 +28,21 @@
   opacity: .6;
 }
 
+.equip-info.unable {
+  opacity: .4;
+}
+
 .dms-name {
   margin-bottom: -5px;
   height: 13px;
 }
 
-.name {
+.namePMV {
   float: left;
   margin-left: 25%;
 }
 
-.km {
+.kmPMV {
   float: right;
   margin-right: 25%;
 }

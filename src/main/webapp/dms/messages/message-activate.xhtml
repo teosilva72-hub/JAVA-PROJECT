@@ -23,7 +23,7 @@
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
 			<!-- INICIO DO FORMULARIO EQUIP -->
-			
+
 			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
 			<div class="row conteudoPag">
 				<!-- INICIO DA TABELA SELECAO -->
@@ -51,6 +51,23 @@
 												for="checkListAll">#{dmsLabels.dms_active_messages_select_all}</label>
 										</div>
 										<!-- FINAL DO CHECK BOX TOPO -->
+									</div>
+									<div class="col typePMV">
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV1"
+												value="driver1" checked="checked" />
+											<label class="form-check-label" for="typePMV1">T1</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV2"
+												value="driver2" />
+											<label class="form-check-label" for="typePMV2">T2</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV3"
+												value="driver3" />
+											<label class="form-check-label" for="typePMV3">T3</label>
+										</div>
 									</div>
 								</div>
 								<!-- INICIO SELECT OPTION -->
@@ -257,32 +274,38 @@
 				<div id="allPMV" class="row col">
 					<div class="col-md atual">
 						<div class="text-center" id="one">
-							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
+							<span
+								class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
 								<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}" name="#{item.nome}"
 									driver="#{item.message.driver}">
 									<input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
-										image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}"
+										image="#{item.message.pages[0].image}"
+										imageId2="#{item.message.pages[0].id_image2}"
 										image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}"
 										line2="#{item.message.pages[0].text2}" line3="#{item.message.pages[0].text3}"
 										timer="#{item.message.pages[0].timer}" />
 									<input type="hidden" name="page2" imageId="#{item.message.pages[1].id_image}"
-										image="#{item.message.pages[1].image}" imageId2="#{item.message.pages[1].id_image2}"
+										image="#{item.message.pages[1].image}"
+										imageId2="#{item.message.pages[1].id_image2}"
 										image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}"
 										line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}"
 										timer="#{item.message.pages[1].timer}" />
 									<input type="hidden" name="page3" imageId="#{item.message.pages[2].id_image}"
-										image="#{item.message.pages[2].image}" imageId2="#{item.message.pages[2].id_image2}"
+										image="#{item.message.pages[2].image}"
+										imageId2="#{item.message.pages[2].id_image2}"
 										image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
 										line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}"
 										timer="#{item.message.pages[2].timer}" />
 									<input type="hidden" name="page4" imageId="#{item.message.pages[3].id_image}"
-										image="#{item.message.pages[3].image}" imageId2="#{item.message.pages[3].id_image2}"
+										image="#{item.message.pages[3].image}"
+										imageId2="#{item.message.pages[3].id_image2}"
 										image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}"
 										line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}"
 										timer="#{item.message.pages[3].timer}" />
 									<input type="hidden" name="page5" imageId="#{item.message.pages[4].id_image}"
-										image="#{item.message.pages[4].image}" imageId2="#{item.message.pages[4].id_image2}"
+										image="#{item.message.pages[4].image}"
+										imageId2="#{item.message.pages[4].id_image2}"
 										image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
 										line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}"
 										timer="#{item.message.pages[4].timer}" />
@@ -291,16 +314,16 @@
 									<div class="check-select">
 										<input class="form-check-input" type="checkbox" id="check#{item.equip_id}" />
 									</div>
-	
+
 									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
-	
+
 										<!-- Table with DIV -->
-	
+
 										<div class="tableStyle card">
 											<div class="dms-name card-header py-0">
 												<div class="text-center dmsTab#{item.equip_id}">
-													<span class="name">#{item.nome}</span>
-													<span class="km">#{item.km}</span>
+													<span class="namePMV">#{item.nome}</span>
+													<span class="kmPMV">#{item.km}</span>
 												</div>
 											</div>
 											<div class="row text-center card-body p-0">
@@ -432,7 +455,7 @@
 												</div>
 											</div>
 										</div>
-	
+
 									</div>
 								</div>
 							</c:forEach>
@@ -445,7 +468,8 @@
 							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
 								<div id="listChangePMV#{item.equip_id}" type="#{item.messageChange.tipo}"
-									name="#{item.nome}" driver="#{item.messageChange.driver}" status="#{item.msg_status}">
+									name="#{item.nome}" driver="#{item.messageChange.driver}"
+									status="#{item.msg_status}">
 									<input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
 										image="#{item.messageChange.pages[0].image}"
 										imageId2="#{item.messageChange.pages[0].id_image2}"
@@ -489,13 +513,14 @@
 								</div>
 								<div class="option message-block">
 									<div class="check-select">
-										<input class="form-check-input" type="checkbox" disabled="disabled" id="check#{item.equip_id}_Change" />
+										<input class="form-check-input" type="checkbox" disabled="disabled"
+											id="check#{item.equip_id}_Change" />
 									</div>
-	
+
 									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
-	
+
 										<!-- Table with DIV -->
-	
+
 										<div class="tableStyle card">
 											<div class="dms-name card-header py-0">
 												<div class="text-center dmsTab#{item.equip_id}">
@@ -632,7 +657,7 @@
 												</div>
 											</div>
 										</div>
-	
+
 									</div>
 								</div>
 							</c:forEach>
