@@ -129,51 +129,6 @@ body {
   z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
 }
 
-.equip-info {
-  position: absolute;
-  font-size: 5px;
-}
-
-.equip-info .tableStyle {
-  position: relative;
-  font-size: 10px;
-  width: 250px;
-	height: 69px;
-  border: none;
-  background: #333333;
-  border-right: 6px solid #00fa9a;
-  border-radius: 0;
-}
-
-.border-table {
-  border-top-style: solid;
-  height: 17px;
-  border-left-style: solid;
-  background-color: #5d5d5d;
-  border-color: #000000;
-  border-width: 1px;
-}
-
-.border-table-right.bottom {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.border-table-right {
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-#dmsTab p {
-  height: 15px;
-}
-
-.padding-pmv {
-  padding: 3px;
-}
-
 .card {
   z-index: 9999;
 }
@@ -259,15 +214,6 @@ body {
   border: none;
 }
 
-/* TABLES MSG EQUIP PREVIEW */
-.table-message {
-  position: absolute;
-  margin-top: 10%;
-  margin-left: 65%;
-  width: 150px;
-  color: yellow;
-}
-/* TABLES MSG EQUIP PREVIEW */
 
 /* TABLES IMG EQUIP PREVIEW */
 .table-img {
@@ -1025,3 +971,18 @@ text-align: center;
 }
 
 /* TABLE SAT END */
+.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+  margin-left: 1px !important;
+}
+
+.driver3.equip-info .second-img, .driver3 .equip-info .second-img {
+  margin-right: 36px !important;
+}
+
+.driver3.equip-info .msg-pos, .driver3 .equip-info .msg-pos {
+  right: 51px !important;
+}
+
+.padding-pmv {
+  margin-left: 4px !important;
+}
