@@ -52,18 +52,6 @@ async function main() {
 
 			animationPMV(img1, img2, message, pmv)
 		});
-
-		listChangePMV.forEach(pmv => {
-			const tablePMV = $(`#two #dms${pmv.id()}`);
-
-			tablePMV.addClass(`driver${pmv.type_page()}`)
-
-			const img1 = tablePMV.find('.picture-box.primary')
-			const img2 = tablePMV.find('.picture-box.secondary')
-			const message = tablePMV.find('#message')
-
-			animationPMV(img1, img2, message, pmv)
-		});
 	}
 
 	const collectPMV = () => {
