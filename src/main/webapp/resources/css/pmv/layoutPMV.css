@@ -16,12 +16,12 @@
   height: 69px;
   border: none;
   background: #333333;
-  border-right: 6px solid #00fa9a;
+  border-right: 6px solid rgb(255, 0, 0);
   border-radius: 0;
 }
 
 .equip-info .tableStyle.change {
-  border-right: 6px solid #00BFFF;
+  border-right: 6px solid rgb(255, 0, 0);
 }
 
 .equip-info .tableStyle.unchanged {
