@@ -253,6 +253,9 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment Name
 		    dms.setNome(parameterMap.get("equipName"));
 		    
+		     //For Equipment IP
+		    dms.setDms_ip(parameterMap.get("dmsIp"));
+		    
 		    //For Equipment City
 		    dms.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
 		    
@@ -412,10 +415,7 @@ public class EquipmentsBean implements Serializable {
 		 dms = new DMS();
 		 
 		 int moduleId = getModuleByName(equipTable);
-		 
-		 System.out.println(moduleId);
-		 
-		 
+		 	 
 		 if(moduleId == 8) {
 		 
 		 dms = dao.EquipDMSSearchMap(equipId, equipTable);
@@ -429,8 +429,7 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+dms.getEstrada()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+dms.getKm()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#visible-edit').attr('checked', "+dms.isVisible()+");");	
-		 		 		
+				 		 		
 		 
 	     } else if(moduleId == 9) {
 			 
@@ -452,8 +451,7 @@ public class EquipmentsBean implements Serializable {
 			 RequestContext.getCurrentInstance().execute("$('#direction6-edit').val('"+sat.getFaixa6()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#direction7-edit').val('"+sat.getFaixa7()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#direction8-edit').val('"+sat.getFaixa8()+"');");				
-			 RequestContext.getCurrentInstance().execute("$('#visible-edit').attr('checked', "+sat.isVisible()+");");	
-			 		 
+						 		 
 		 }
 		 
 		 else {
@@ -467,8 +465,7 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+equip.getEstrada()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+equip.getKm()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#visible-edit').attr('checked', "+equip.isVisible()+");");	
-		 		
+				 		
 		 }
 				 
          //RequestContext.getCurrentInstance().update("delete-equip-form:delete-equipName");
@@ -485,22 +482,157 @@ public class EquipmentsBean implements Serializable {
 	}
 	
 	public void UpdateEquipment() throws Exception {
-			
-		boolean update = false;
+				
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		
+		DateTimeApplication dta = new DateTimeApplication();
+			    
+		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+				
+		 boolean update = false;
+		  		 
+		 EquipmentsDAO dao = new EquipmentsDAO();
+		 
+		 DMS dms = new DMS();
+		 SAT sat = new SAT();
+		 Equipments equip = new Equipments();
 		
 		 int equipId = getEquipId();		 
-		 String equipTable = getEquipTable();
+		 String equipTable = parameterMap.get("equipTableUpdate");
 		 
-		// System.out.println(equipTable);
-		 RequestContext.getCurrentInstance().execute("history.go(0)");
+		//CHECK MODULES	
+		int moduleId = getModuleByName(equipTable);
+			
+		System.out.println("MOD: "+moduleId);
+								 		  		 
+		 if(moduleId != 0 && moduleId == 8) {		
+			 
+			     String table = defineTableById(moduleId);
+	 		 
+	    		//For Equipment CreationDate
+			    dms.setCreation_date(dta.currentTimeDBformat());
+						    
+			    //For Equipment CreationUsername		
+				dms.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+				
+				//DMS ID
+				dms.setEquip_id(equipId);
+				
+				//For Equipment Name
+			    dms.setNome(parameterMap.get("equipName"));
+			    
+			     //For Equipment IP
+			    dms.setDms_ip(parameterMap.get("dmsIp"));
+			    
+			    //For Equipment City
+			    dms.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+			    
+			    //For Equipment Road
+			    dms.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+			    
+			    //For Equipment KM
+			    dms.setKm(parameterMap.get("km"));
+			    
+			    int type = (parameterMap.get("dmsType") == "" ? 0 : Integer.parseInt(parameterMap.get("dmsType")));
+			  
+			    //DMS TYPE
+			    defineDMStype(dms, type);
+		 						   			 
+			    update = dao.EquipDMSUpdateMap(dms, table);
+			    
+			    System.out.println(update);
+		     	 
+	     	    if(update)	     		
+	     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+equipTable+(parameterMap.get("equipId"))+"'");
+	     	 	   
+	     		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
+	    	 		
+			
+	     } else if(moduleId != 0 && moduleId == 9) {
+	    	 
+	    	String table = defineTableById(moduleId);
+			 
+	    	sat.setCreation_date(dta.currentTimeDBformat());
+			    
+	  	    //For Equipment CreationUsername		
+	  		sat.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+	  		
+	  		//SAT ID
+	  		sat.setEquip_id(equipId);
+	  		
+	  		//For Equipment Name
+	  	    sat.setNome(parameterMap.get("equipName"));
+	  	    
+	  	    //For Equipment City
+	  	    sat.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+	  	    
+	  	    //For Equipment Road
+	  	    sat.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+	  	    
+	  	    //For Equipment KM
+	  	    sat.setKm(parameterMap.get("km"));
+	  	  
+	  	   //For Number Lanes
+	  	    sat.setNumFaixas(parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
+	  	 	  	    		   
+	  	    //SET LANES DEFINITION
+	  	    defineDirection(sat, 1, parameterMap.get("direction1") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1")));
+	  	    defineDirection(sat, 2, parameterMap.get("direction2") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2")));
+	  	    defineDirection(sat, 3, parameterMap.get("direction3") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3")));
+	  	    defineDirection(sat, 4, parameterMap.get("direction4") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4")));
+	  	    defineDirection(sat, 5, parameterMap.get("direction5") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5")));
+	  	    defineDirection(sat, 6, parameterMap.get("direction6") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6")));
+	  	    defineDirection(sat, 7, parameterMap.get("direction7") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7")));
+	  	    defineDirection(sat, 8, parameterMap.get("direction8") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8")));
+	  	    
+	  	    update = dao.EquipSATUpdateMap(sat, table);
+	     	 
+	     	    if(update)	     		
+	     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+equipTable+(parameterMap.get("equipId"))+"'");
+	     	 	   
+	     		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
+	    	 			 
+	     }else if((moduleId != 0 && (moduleId != 9 && moduleId != 8))) {
+	    	 
+	    	    String table = defineTableById(moduleId);
+	    	    
+	    	    System.out.println("TABLE: "+table);
+	    	 
+	    		//For Equipment ID
+				equip.setEquip_id(equipId);
+				 
+				//For Equipment CreationDate
+			    equip.setCreation_date(dta.currentTimeDBformat());
+						    
+			    //For Equipment CreationUsername		
+				 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+				
+				//For Equipment Name
+			    equip.setNome(parameterMap.get("equipName"));
+					    
+			    //For Equipment City
+			    equip.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+			    
+			    //For Equipment Road
+			    equip.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+			    
+			    //For Equipment KM
+			    equip.setKm(parameterMap.get("km"));	
+			    
+			    //MENSAGEM UPDATED
+			    update = dao.EquipUpdateMap(equip, table);
+			    
+			    System.out.println(update);
+			    
+			    if(update)	     		
+		     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+equipTable+(parameterMap.get("equipId"))+"'");
+		     	 	   
+		     		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
+		    	 	
+		 }
 		 
-		 EquipmentsDAO dao = new EquipmentsDAO();
-		 		 
-		 update = dao.EquipUpdateMap(equip, equipTable);
-		    
-		 //System.out.println("UP"+update);
-	    //For Equipment ID
-		
+				
 	}
 	
 	public void DeleteEquipment() throws Exception {
@@ -603,7 +735,7 @@ public class EquipmentsBean implements Serializable {
   		
   		case "cftv": moduleId = 1 ; break;
   		case "colas": moduleId = 2 ; break;
-  		case"comms": moduleId = 3 ; break;
+  		case "comms": moduleId = 3 ; break;
   		case "dai": moduleId = 4 ; break;
   		case "lpr": moduleId = 5 ; break;
   		case "mto": moduleId = 6 ; break;
