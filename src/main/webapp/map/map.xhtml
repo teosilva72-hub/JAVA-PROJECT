@@ -1247,35 +1247,35 @@
 			//ZOOM EVENT
 			document.getElementById("zoomIn").addEventListener("click",
 				function () {
-					zoomIn('overflow')
+					zoomIn($('section.overflow'))
 				}, false);
 			document.getElementById("zoomOut").addEventListener("click",
 				function () {
-					zoomOut('overflow')
+					zoomOut($('section.overflow'))
 				}, false);
 			document.getElementById("zoomIn1").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs1')
+					$('#frame1')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut1").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs1')
+					$('#frame1')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 			document.getElementById("zoomIn2").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs2')
+					$('#frame2')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut2").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs2')
+					$('#frame2')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 			document.getElementById("zoomIn3").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs3')
+					$('#frame3')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut3").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs3')
+					$('#frame3')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 
 			//Coefficient Script
