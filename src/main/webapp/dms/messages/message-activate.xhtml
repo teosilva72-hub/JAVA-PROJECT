@@ -73,7 +73,7 @@
 								<!-- INICIO SELECT OPTION -->
 								<div id="selection-div">
 									<div id="mt-2">
-										<select id="selection-list" class="form-select" aria-label="select type">
+										<select id="selectionType" class="form-select" aria-label="select type">
 											<option value="All" selected="selected">All</option>
 											<c:forEach items="#{pmvMessage.type}" var="opt">
 												<option value="#{opt.value}">#{opt.label}</option>
@@ -229,10 +229,10 @@
 								</div>
 
 								<div id="messages-list">
-									<select id="available-id" class="form-select" size="6" aria-label="select message">
+									<select id="availableMessage" class="form-select" size="6" aria-label="select message">
 										<option value="0" selected="select">Default</option>
 										<c:forEach items="#{pmvMessage.messages}" var="opt">
-											<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
+											<option value="#{opt.id_message}" type="#{opt.tipo}" driver="driver#{opt.driver}">#{opt.id_message} - #{opt.tipo} -
 												#{opt.nome}</option>
 										</c:forEach>
 									</select>

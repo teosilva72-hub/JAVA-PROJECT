@@ -12,6 +12,8 @@ async function main() {
 	const checksListAll = $('#checkListAll')
 	const inputDriver = $('[name=typePMV]')
 	const pagePMV = $('#page-pmv')
+	const selectType = $("#selectionType")
+	const availableMessage = $(`#availableMessage option`)
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -185,8 +187,18 @@ async function main() {
 			equipInfoView.trigger('change');
 			allChecks.prop('checked', false);
 			checksListAll.prop('checked', false);
-			pagePMV.removeClass(['driver1', 'driver2', 'driver3'])
-			pagePMV.addClass($(this).val())
+			pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
+			availableMessage.filter('[driver]').hide().filter(`[driver=${$(this).val()}]`).show();
+			selectType.val('All');
+		})
+
+		selectType.change(function() {
+			let type = $(this).val();
+			let msg = availableMessage.filter(`[driver=${inputDriver.filter(':checked').val()}]`);
+			if (type === "All")
+				msg.show();
+			else
+				msg.hide().filter(`[type=${type}]`).show();
 		})
 
 		pmvResize();
