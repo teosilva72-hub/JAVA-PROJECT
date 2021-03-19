@@ -1,7 +1,13 @@
 let rodovia = class rodovia{
 	constructor(highway, state){
-		this.highway = highway;
-		this.state = state;
+		this._highway = highway;
+		this._state = state;
+	}
+	get highway(){
+		return this._highway;
+	}
+	get state(){
+		return this._state;
 	}
 }
 /*let filds = class filds{

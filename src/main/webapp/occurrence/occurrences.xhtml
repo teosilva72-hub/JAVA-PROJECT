@@ -23,10 +23,6 @@
 		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
 		<h:outputStylesheet library="css/commom" name="commons.css" />
 
-
-		<!-- Script -->
-		
-			
 		<script type="text/javascript">
 			$(document)
 					.ready(
@@ -160,7 +156,7 @@
 														eventoRodovia : {
 															required : "#{occLabels.campo_obrigatorio}"
 														},
-														eventoEstado : {
+														eventoEstado1 : {
 															required : "#{occLabels.campo_obrigatorio}"
 														},
 														eventoSentido : {
@@ -657,7 +653,7 @@
 											onclick="bloquerTable(); fileTotalHidden()">
 											<f:ajax execute="@form"
 												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
-											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
+											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado1 eventoEstado :eventoSentido :eventoFaixa :outrosEventos
 											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
 											    	:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoHoraFinal :acaoEndMinute :danoDescr2 :actionDescr3 :actionDescr4
 											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
@@ -685,7 +681,7 @@
 									style="display: block;">
 									<!-- Icon PDF -->
 									<h:commandLink class="btnPdf" id="pdfId"
-										disabled="#{occurrencesBean.pdf}" data-bs-toggle="tooltip"
+										disabled="#{occurrencesBean.pdf}" data-toggle="tooltip"
 										data-bs-placement="top" title="#{occLabels.occ_download_file}"
 										action="#{occurrencesBean.downloadPdf}">
 										<i class="fas fa-file-pdf pdf-shadow"></i>
@@ -915,7 +911,7 @@
 								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
 									disabled="#{occurrencesBean.fields}"
-									class="form-control inputDesign" pt:placeholder="025+020"
+									class="form-control inputDesign" pt:placeholder="0+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
 							<!-- RODOVIA -->
@@ -932,13 +928,15 @@
 							<!-- ESTADO -->
 							<div class="form-group col-md-5">
 								<em for="inputCity">#{occLabels.occ_register_Estado}</em>
-								<h:selectOneMenu value="#{occurrencesBean.data.local_state}"
+								<h:inputHidden value="#{occurrencesBean.data.local_state}"
 									id="eventoEstado" name="eventoEstado"
 									class="form-control inputDesign"
-									disabled="#{occurrencesBean.fields}">
-									<f:selectItem itemLabel="select" itemValue="" />
-									<f:selectItems value="#{occurrencesBean.estado_locais}" />
-								</h:selectOneMenu>
+									disabled="#{occurrencesBean.fields}"/>
+									<h:inputText value="#{occurrencesBean.data.local_state}"
+									id="eventoEstado1" name="eventoEstado1"
+									class="form-control inputDesign" disabled="true"/>
+									<span style="display: none;" class="errorInputs" id="eventoState">
+										#{occLabels.occ_error_input}</span>
 							</div>
 							<!-- SENTIDO -->
 							<div class="form-group col-md-3">
@@ -1313,7 +1311,7 @@
 																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-placement="right"
+																	data-toggle="tooltip" data-bs-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1352,7 +1350,7 @@
 																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-placement="right"
+																	data-toggle="tooltip" data-bs-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1505,7 +1503,7 @@
 							<div class="form-group col-md-3">
 								<em for="inputEmail4">#{occLabels.occ_register_gravidade}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.damage_gravity}"
-									name="unityDamage" id="unityDamage"
+									name="danoUnidade" id="danoGravidade"
 									disabled="#{occurrencesBean.fields}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="select" itemValue="" />
@@ -1517,7 +1515,7 @@
 							<div class="form-group col-md-3">
 								<em for="inputEmail4">#{occLabels.occ_damage_unity}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.damageUnity}"
-									name="danoGravidade" id="danoGravidade"
+									name="unityDamage" id="unityDamage"
 									disabled="#{occurrencesBean.fields}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="select" itemValue="" />
@@ -1721,6 +1719,9 @@
 		</div>
 		</section>
 		<!-- Final do conteudo do site -->
+		
+		
+<!-- Script -->
 		<h:outputScript name="occ.js" library="js/occ" />
 		<h:outputScript name="class_occ.js" library="js/occ" />
 		<h:outputScript name="controller_occ.js" library="js/occ" />
@@ -1730,7 +1731,9 @@
 			library="js/jquery-validation" />
 		<h:outputScript name="additional-methods.min.js"
 			library="js/jquery-validation" />
-		<script>
+		<h:outputScript name="bootstrap.bundle.min.js"
+			library="bootstrap/js" />
+<script>
 			//Inicio dos comandos JavaScript
 			//getFilename();
 
@@ -1740,8 +1743,6 @@
 			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
 			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
 			onload(); //Oculta o formulario 2 e 3
-			
 		</script>
-		
 	</ui:define>
 </ui:composition>
