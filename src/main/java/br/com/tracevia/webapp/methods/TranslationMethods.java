@@ -32,7 +32,7 @@ public class TranslationMethods {
 		String converteOcc = "";
 		
 		switch(occ){
-		
+			//
 			case "Eventos" : converteOcc = localeOcc.getStringKey("occ_titulo_evento"); break;
 			case "Data, Início, Fim" : converteOcc = localeOcc.getStringKey("occ_titulo_data_inicio_fim"); break;
 			case "Causa Provável" : converteOcc = localeOcc.getStringKey("occ_titulo_causa_provavel"); break;
