@@ -123,8 +123,12 @@ public class Messages {
 		this.pages.add(new Pages());
 	}
 
-	public void revision() {
+	public boolean revision() {
 		boolean revision = false;
+		
+		if (pages.size() == 0)
+			return false;
+
 		for (Pages page : pages) {
 			if (page.contain && page.timer != 0 && !revision)
 				continue;
@@ -132,6 +136,8 @@ public class Messages {
 				revision = true;
 			page.timer = 0;
 		}
+
+		return true;
 	}
 
 	@Override
