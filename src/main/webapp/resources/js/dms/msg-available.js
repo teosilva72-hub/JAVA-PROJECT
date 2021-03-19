@@ -509,7 +509,7 @@ async function main() {
 		}
 		// if change timer
 		timerPage.on('keyup change', function () {
-			pmvActive.change_timer(Number($(this).siblings().eq(2).text()) - 1, Number($(this).val()));
+			pmvActive.change_timer(Number($(this).parent().next().next().text()) - 1, Number($(this).val()));
 		})
 
 		
