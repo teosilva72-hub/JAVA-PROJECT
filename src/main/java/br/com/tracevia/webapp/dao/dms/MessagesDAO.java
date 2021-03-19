@@ -351,7 +351,6 @@ public class MessagesDAO {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
-						mensagem.setDriver(1);
 
 						for (int i = 0; i < 5; i++) {
 							int idx = i + 1;
@@ -381,7 +380,6 @@ public class MessagesDAO {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
-						mensagem.setDriver(2);
 
 						for (int i = 0; i < 5; i++) {
 							int idx = i + 1;
@@ -414,7 +412,6 @@ public class MessagesDAO {
 						mensagem.setId_message(rs.getInt("id_message"));
 						mensagem.setTipo(rs.getString("type"));
 						mensagem.setNome(rs.getString("name"));
-						mensagem.setDriver(3);
 
 						for (int i = 0; i < 5; i++) {
 							int idx = i + 1;
@@ -435,6 +432,8 @@ public class MessagesDAO {
 				break;
 
 			default:
+				mensagem.setPages(0);
+
 				break;
 			}
 
@@ -443,8 +442,11 @@ public class MessagesDAO {
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
+
+		mensagem.setDriver(driver);
 		
-		mensagem.revision();
+		if (!mensagem.revision())
+			mensagem.setPages(0);
 		
 		return mensagem;
 	}
