@@ -3,7 +3,6 @@ package br.com.tracevia.webapp.util;
 import java.sql.Connection;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
 import java.sql.*;
 

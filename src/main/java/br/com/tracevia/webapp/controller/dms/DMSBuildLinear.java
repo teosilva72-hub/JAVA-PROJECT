@@ -76,7 +76,7 @@ public class DMSBuildLinear {
 														
 				for(Messages m : messagesDisplay){
 																																		
-				  image[e] = m.getImage();	
+				  image[e] = "";	
 				  				  					  					  						 																			
 				  for(int n = 0; n < m.getPages().get(0).getText1().length(); n++) 
 						  letter[e][0][n] = m.getPages().get(0).getText1().charAt(n);        

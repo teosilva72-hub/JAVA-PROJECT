@@ -9,7 +9,11 @@
 
 	<ui:define name="default-stylesheet">
 		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
-		<h:outputStylesheet name="message-activate.css" library="css/pmv/activate" />
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css/pmv/activate" name="message-activate.css" />
+		<h:outputStylesheet library="css/pmv" name="layoutPMV.css" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -18,458 +22,656 @@
 
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
-			<!-- INÍCIO DO FORMULARIO EQUIP -->
-			<h:form id="formSelect">
-				<div class="row">
-					<!-- GRID OPÇÕES INICIO -->
-					<div class="col-1" id="toogleMenu">
-						<button type="button" class="btn btn-warning" toggle="show">Mostrar</button>
+			<!-- INICIO DO FORMULARIO EQUIP -->
+
+			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
+			<div class="row conteudoPag">
+				<!-- INICIO DA TABELA SELECAO -->
+				<div class="col-auto">
+					<div class="row">
+						<!-- GRID OPCOES INICIO -->
+						<div class="col-1" id="toogleMenu">
+							<button type="button" class="btn btn-warning" toggle="show">Mostrar</button>
+						</div>
+						<!-- GRID OPCOES FINAL -->
 					</div>
-					<!-- GRID OPÇÕES FINAL -->
-				</div>
-				<!-- INÍCIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
-				<div class="row conteudoPag">
-					<!-- INÍCIO DA TABELA SELECAO -->
-					<div class="col-3 selecao" id="showOption">
-						<div id="message-block">
-							<div id="label-message-content">
-								<span
-									class="label-message-block">#{dmsLabels.dms_active_messages_label_selection}</span>
-							</div>
-							<!-- INÍCIO DO PAINEL -->
-							<div class="card border-dark mb-3">
-								<div class="card-header">
-									<div class="row">
-										<div class="col-sm">
-											<!-- INÍCIO DO CHECK BOX TOPO -->
-											<div class="form-check form-switch">
-												<input type="checkbox" class="form-check-input" id="checkListAll" />
-												<label class="form-check-label"
-													for="checkListAll">#{dmsLabels.dms_active_messages_select_all}</label>
-											</div>
-											<!-- FINAL DO CHECK BOX TOPO -->
+					<div class="message-block" id="showOption">
+						<div id="label-message-content">
+							<span class="label-message-block">#{dmsLabels.dms_active_messages_label_selection}</span>
+						</div>
+						<!-- INICIO DO PAINEL -->
+						<div class="card border-dark mb-3">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-sm">
+										<!-- INICIO DO CHECK BOX TOPO -->
+										<div class="form-check form-switch">
+											<input type="checkbox" class="form-check-input" id="checkListAll" />
+											<label class="form-check-label"
+												for="checkListAll">#{dmsLabels.dms_active_messages_select_all}</label>
+										</div>
+										<!-- FINAL DO CHECK BOX TOPO -->
+									</div>
+									<div class="col typePMV">
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV1"
+												value="driver1" checked="checked" />
+											<label class="form-check-label" for="typePMV1">T1</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV2"
+												value="driver2" />
+											<label class="form-check-label" for="typePMV2">T2</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV3"
+												value="driver3" />
+											<label class="form-check-label" for="typePMV3">T3</label>
 										</div>
 									</div>
-									<!-- INICIO SELECT OPTION -->
-									<div id="selection-div">
-										<div id="mt-2">
-											<select id="selection-list" class="form-select" aria-label="select type">
-												<option value="All" selected="selected">All</option>
-												<c:forEach items="#{pmvMessage.type}" var="opt">
-													<option value="#{opt.value}">#{opt.label}</option>
-												</c:forEach>
-											</select>
-										</div>
-									</div>
-									<!-- FINAL SELECT OPTION -->
 								</div>
-								<div class="card-body">
-									<div id="page-pmv">
-										<div class="equip-info">
+								<!-- INICIO SELECT OPTION -->
+								<div id="selection-div">
+									<div id="mt-2">
+										<select id="selection-list" class="form-select" aria-label="select type">
+											<option value="All" selected="selected">All</option>
+											<c:forEach items="#{pmvMessage.type}" var="opt">
+												<option value="#{opt.value}">#{opt.label}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<!-- FINAL SELECT OPTION -->
+							</div>
+							<div class="card-body">
+								<div id="page-pmv">
 
-											<!-- Table with DIV -->
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.5">
 
-											<div class="container tableStyle card shadow-lg">
-												<div class="dms-name card-header py-0">
-													<div class="text-center dmsTab">
-													</div>
+										<!-- Table with DIV -->
+
+										<div class="tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
 												</div>
-												<div class="row text-center card-body p-0">
-													<div id="child-img" class="col-2 padding-pmv">
-														<img src="/resources/images/pictures/#{pmvMessage.image}"
-															class="ui-graphic-image picture-box" id-img="0" />
-													</div>
-													<div id="child-msg" class="col-auto msg-pos">
-														<div id="msg#{index.index}" class="table-message">
-															<div class="row border-table-right message1" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-1"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-2"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-3"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-4"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-5"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-6"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-7"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-8"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-9"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-10"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-11"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-12"></span>
-																</div>
+											</div>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
 															</div>
-															<div class="row border-table-right message2" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-13"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-14"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-15"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-16"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-17"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-18"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-19"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-20"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-21"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-22"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-23"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-24"></span>
-																</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
 															</div>
-															<div class="row border-table-right bottom message3" msg="">
-																<div class="col-1 px-0 border-table">
-																	<span id="box-25"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-26"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-27"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-28"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-29"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-30"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-31"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-32"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-33"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-34"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-35"></span>
-																</div>
-																<div class="col-1 px-0 border-table">
-																	<span id="box-36"></span>
-																</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
+														</div>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
+														</div>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
 															</div>
 														</div>
 													</div>
 												</div>
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
 											</div>
-
 										</div>
-									</div>
 
-									<div id="messages-list">
-										<select id="available-id" class="form-select" size="6"
-											aria-label="select message">
-											<option value="0" selected="select">Default</option>
-											<c:forEach items="#{pmvMessage.messages}" var="opt">
-												<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
-													#{opt.nome}</option>
-											</c:forEach>
-										</select>
 									</div>
-									<!-- INICIO DOS BOTÔES -->
-									<div class="btn-group btn-group-sm mt-2 d-flex" role="group" aria-label="button menu">
-										<h:commandButton value="#{dmsLabels.dms_active_messages_btn_apply}"
-											id="send-message" disabled="#{interfaces.send}"
-											class="btn btn-secondary confBtn">
-											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target" value="#updateModal" />
-											<f:ajax execute="@form" render="@none" />
-										</h:commandButton>
-										<h:commandButton value="#{dmsLabels.dms_active_messages_btn_preview}"
-											id="btn-up" disabled="#{interfaces.checkbox}"
-											action="#{interfaces.aplicarMensagens}" onclick="sumirMsg();"
-											class="btn btn-secondary">
-											<f:ajax execute="@form" render="@form" />
-										</h:commandButton>
-										<h:commandButton value="#{dmsLabels.dms_active_messages_btn_clean}"
-											id="btn-clean" disabled="#{interfaces.checkbox}"
-											action="#{interfaces.limparMensagens}" class="btn btn-secondary ">
-											<f:ajax execute="@form" render="@form" />
-										</h:commandButton>
-										<h:commandButton value="#{dmsLabels.dms_active_messages_btn_reset}"
-											id="btn-refresh" action="#{interfaces.resetMessages}"
-											disabled="#{interfaces.checkbox}" class="btn btn-secondary">
-											<f:ajax execute="@form" render="@form" />
-										</h:commandButton>
-									</div>
-
-									<!-- FINAL DOS BOTÔES -->
 								</div>
+
+								<div id="messages-list">
+									<select id="available-id" class="form-select" size="6" aria-label="select message">
+										<option value="0" selected="select">Default</option>
+										<c:forEach items="#{pmvMessage.messages}" var="opt">
+											<option value="#{opt.id_message}">#{opt.id_message} - #{opt.tipo} -
+												#{opt.nome}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<!-- INICIO DOS BOTÔES -->
+								<div class="btn-group btn-group-sm mt-2 d-flex" role="group" aria-label="button menu">
+									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_apply}"
+										id="send-message" disabled="#{interfaces.send}"
+										class="btn btn-secondary confBtn">
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target" value="#updateModal" />
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_preview}" id="btn-up"
+										disabled="#{interfaces.checkbox}" action="#{interfaces.aplicarMensagens}"
+										onclick="sumirMsg();" class="btn btn-secondary">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
+									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_clean}" id="btn-clean"
+										disabled="#{interfaces.checkbox}" action="#{interfaces.limparMensagens}"
+										class="btn btn-secondary ">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
+									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_reset}" id="btn-refresh"
+										action="#{interfaces.resetMessages}" disabled="#{interfaces.checkbox}"
+										class="btn btn-secondary">
+										<f:ajax execute="@form" render="@form" />
+									</h:commandButton>
+								</div>
+
+								<!-- FINAL DOS BOTÔES -->
 							</div>
-							<!-- FINAL DO PAINEL -->
 						</div>
+						<!-- FINAL DO PAINEL -->
 					</div>
-					<!-- FINAL DA TABELA SELECAO -->
-					<!-- INÍCIO DA TABELA ESTADO ATUAL -->
+				</div>
+				<!-- FINAL DA TABELA SELECAO -->
+				<!-- INICIO DA TABELA ESTADO ATUAL -->
+				<div id="allPMV" class="row col">
 					<div class="col-md atual">
-						<div class="equip-content" id="one">
-							<h:outputLabel class="label-header-content"
-								value="#{dmsLabels.dms_active_messages_label_current_state}" />
+						<div class="text-center" id="one">
+							<span
+								class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-								<div class="option">
+								<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}" name="#{item.nome}"
+									driver="#{item.message.driver}">
+									<input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
+										image="#{item.message.pages[0].image}"
+										imageId2="#{item.message.pages[0].id_image2}"
+										image2="#{item.message.pages[0].image2}" line1="#{item.message.pages[0].text1}"
+										line2="#{item.message.pages[0].text2}" line3="#{item.message.pages[0].text3}"
+										timer="#{item.message.pages[0].timer}" />
+									<input type="hidden" name="page2" imageId="#{item.message.pages[1].id_image}"
+										image="#{item.message.pages[1].image}"
+										imageId2="#{item.message.pages[1].id_image2}"
+										image2="#{item.message.pages[1].image2}" line1="#{item.message.pages[1].text1}"
+										line2="#{item.message.pages[1].text2}" line3="#{item.message.pages[1].text3}"
+										timer="#{item.message.pages[1].timer}" />
+									<input type="hidden" name="page3" imageId="#{item.message.pages[2].id_image}"
+										image="#{item.message.pages[2].image}"
+										imageId2="#{item.message.pages[2].id_image2}"
+										image2="#{item.message.pages[2].image2}" line1="#{item.message.pages[2].text1}"
+										line2="#{item.message.pages[2].text2}" line3="#{item.message.pages[2].text3}"
+										timer="#{item.message.pages[2].timer}" />
+									<input type="hidden" name="page4" imageId="#{item.message.pages[3].id_image}"
+										image="#{item.message.pages[3].image}"
+										imageId2="#{item.message.pages[3].id_image2}"
+										image2="#{item.message.pages[3].image2}" line1="#{item.message.pages[3].text1}"
+										line2="#{item.message.pages[3].text2}" line3="#{item.message.pages[3].text3}"
+										timer="#{item.message.pages[3].timer}" />
+									<input type="hidden" name="page5" imageId="#{item.message.pages[4].id_image}"
+										image="#{item.message.pages[4].image}"
+										imageId2="#{item.message.pages[4].id_image2}"
+										image2="#{item.message.pages[4].image2}" line1="#{item.message.pages[4].text1}"
+										line2="#{item.message.pages[4].text2}" line3="#{item.message.pages[4].text3}"
+										timer="#{item.message.pages[4].timer}" />
+								</div>
+								<div class="option message-block">
 									<div class="check-select">
-										<p:selectBooleanCheckbox id="check#{item.equip_id}" itemLabel=""
-											value="#{interfaces.state[loop.index]}" class="ui-checkbox-equip">
-											<p:ajax listener="#{interfaces.checkBoxSelection}" />
-										</p:selectBooleanCheckbox>
+										<input class="form-check-input" type="checkbox" id="check#{item.equip_id}" />
 									</div>
-									<div id="#{item.equip_id}" class="equip-info">
-										<div class="name-block">
-											<div class="name">#{item.nome}</div>
-											<div class="km">#{item.km}</div>
+
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+
+										<!-- Table with DIV -->
+
+										<div class="tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+													<span class="namePMV">#{item.nome}</span>
+													<span class="kmPMV">#{item.km}</span>
+												</div>
+											</div>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
+														</div>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
+														</div>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
+											</div>
 										</div>
-										<div class="equip-core">
-											<table id="dms#{item.equip_id}" class="table-img">
-												<tr>
-													<td class="image-block">
-														<h:graphicImage
-															value="/resources/images/pictures/#{interfaces.image[loop.index]}"
-															styleClass="ui-graphic-board" />
-													</td>
-												</tr>
-											</table>
-											<table class="table-message">
-												<tr>
-													<td>#{interfaces.letter[loop.index][0][0]}</td>
-													<td>#{interfaces.letter[loop.index][0][1]}</td>
-													<td>#{interfaces.letter[loop.index][0][2]}</td>
-													<td>#{interfaces.letter[loop.index][0][3]}</td>
-													<td>#{interfaces.letter[loop.index][0][4]}</td>
-													<td>#{interfaces.letter[loop.index][0][5]}</td>
-													<td>#{interfaces.letter[loop.index][0][6]}</td>
-													<td>#{interfaces.letter[loop.index][0][7]}</td>
-													<td>#{interfaces.letter[loop.index][0][8]}</td>
-													<td>#{interfaces.letter[loop.index][0][9]}</td>
-													<td>#{interfaces.letter[loop.index][0][10]}</td>
-													<td>#{interfaces.letter[loop.index][0][11]}</td>
-												</tr>
-												<tr>
-													<td>#{interfaces.letter[loop.index][1][0]}</td>
-													<td>#{interfaces.letter[loop.index][1][1]}</td>
-													<td>#{interfaces.letter[loop.index][1][2]}</td>
-													<td>#{interfaces.letter[loop.index][1][3]}</td>
-													<td>#{interfaces.letter[loop.index][1][4]}</td>
-													<td>#{interfaces.letter[loop.index][1][5]}</td>
-													<td>#{interfaces.letter[loop.index][1][6]}</td>
-													<td>#{interfaces.letter[loop.index][1][7]}</td>
-													<td>#{interfaces.letter[loop.index][1][8]}</td>
-													<td>#{interfaces.letter[loop.index][1][9]}</td>
-													<td>#{interfaces.letter[loop.index][1][10]}</td>
-													<td>#{interfaces.letter[loop.index][1][11]}</td>
-												</tr>
-												<tr>
-													<td>#{interfaces.letter[loop.index][2][0]}</td>
-													<td>#{interfaces.letter[loop.index][2][1]}</td>
-													<td>#{interfaces.letter[loop.index][2][2]}</td>
-													<td>#{interfaces.letter[loop.index][2][3]}</td>
-													<td>#{interfaces.letter[loop.index][2][4]}</td>
-													<td>#{interfaces.letter[loop.index][2][5]}</td>
-													<td>#{interfaces.letter[loop.index][2][6]}</td>
-													<td>#{interfaces.letter[loop.index][2][7]}</td>
-													<td>#{interfaces.letter[loop.index][2][8]}</td>
-													<td>#{interfaces.letter[loop.index][2][9]}</td>
-													<td>#{interfaces.letter[loop.index][2][10]}</td>
-													<td>#{interfaces.letter[loop.index][2][11]}</td>
-												</tr>
-											</table>
-										</div>
+
 									</div>
-									<p:dialog header="#{msgs.pmv_modal_info_title}"
-										widgetVar="infoModal#{item.table_id}" modal="true" height="200"
-										showEffect="slide" hideEffect="slide" closable="false" resizable="false">
-										<br />
-										<table class="table-info">
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_equip_id}</b></td>
-												<td id="id" class="table-col2">#{item.equip_id}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_name}</b></td>
-												<td id="name" class="table-col2">#{item.nome}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_city}</b></td>
-												<td id="city" class="table-col2">#{item.cidade}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_road}</b></td>
-												<td id="road" class="table-col2">#{item.estrada}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_km}</b></td>
-												<td id="km" class="table-col2">#{item.km}</td>
-											</tr>
-										</table>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default"
-												onclick="PF('infoModal#{item.table_id}').hide()">#{msgs.pmv_modal_close}</button>
-										</div>
-									</p:dialog>
 								</div>
 							</c:forEach>
 						</div>
 					</div>
 					<!-- FINAL DA TABELA ESTADO ATUAL -->
-					<!-- INÍCIO DA TABELA NOVO ESTADO -->
+					<!-- INICIO DA TABELA NOVO ESTADO -->
 					<div class="col-md">
-						<div class="equip-content-2" id="two">
-							<h:outputLabel class="label-header-content-2"
-								value="#{dmsLabels.dms_active_messages_label_new_state}" />
+						<div class="text-center" id="two">
+							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-								<div class="option-1">
-									<div id="1#{item.equip_id}" class="equip-info-2">
-										<div class="name-block">
-											<div class="name">#{item.nome}</div>
-											<div class="km">#{item.km}</div>
-										</div>
-										<div class="equip-core">
-											<table id="#{item.table_id}" class="table-img">
-												<tr>
-													<td class="image-block">
-														<h:graphicImage
-															value="/resources/images/pictures/#{interfaces.image1[loop.index]}"
-															styleClass="ui-graphic-board" />
-													</td>
-												</tr>
-											</table>
-											<table class="table-message">
-												<tr>
-													<td>#{interfaces.letter1[loop.index][0][0]}</td>
-													<td>#{interfaces.letter1[loop.index][0][1]}</td>
-													<td>#{interfaces.letter1[loop.index][0][2]}</td>
-													<td>#{interfaces.letter1[loop.index][0][3]}</td>
-													<td>#{interfaces.letter1[loop.index][0][4]}</td>
-													<td>#{interfaces.letter1[loop.index][0][5]}</td>
-													<td>#{interfaces.letter1[loop.index][0][6]}</td>
-													<td>#{interfaces.letter1[loop.index][0][7]}</td>
-													<td>#{interfaces.letter1[loop.index][0][8]}</td>
-													<td>#{interfaces.letter1[loop.index][0][9]}</td>
-													<td>#{interfaces.letter1[loop.index][0][10]}</td>
-													<td>#{interfaces.letter1[loop.index][0][11]}</td>
-												</tr>
-
-												<tr>
-													<td>#{interfaces.letter1[loop.index][1][0]}</td>
-													<td>#{interfaces.letter1[loop.index][1][1]}</td>
-													<td>#{interfaces.letter1[loop.index][1][2]}</td>
-													<td>#{interfaces.letter1[loop.index][1][3]}</td>
-													<td>#{interfaces.letter1[loop.index][1][4]}</td>
-													<td>#{interfaces.letter1[loop.index][1][5]}</td>
-													<td>#{interfaces.letter1[loop.index][1][6]}</td>
-													<td>#{interfaces.letter1[loop.index][1][7]}</td>
-													<td>#{interfaces.letter1[loop.index][1][8]}</td>
-													<td>#{interfaces.letter1[loop.index][1][9]}</td>
-													<td>#{interfaces.letter1[loop.index][1][10]}</td>
-													<td>#{interfaces.letter1[loop.index][1][11]}</td>
-												</tr>
-												<tr>
-													<td>#{interfaces.letter1[loop.index][2][0]}</td>
-													<td>#{interfaces.letter1[loop.index][2][1]}</td>
-													<td>#{interfaces.letter1[loop.index][2][2]}</td>
-													<td>#{interfaces.letter1[loop.index][2][3]}</td>
-													<td>#{interfaces.letter1[loop.index][2][4]}</td>
-													<td>#{interfaces.letter1[loop.index][2][5]}</td>
-													<td>#{interfaces.letter1[loop.index][2][6]}</td>
-													<td>#{interfaces.letter1[loop.index][2][7]}</td>
-													<td>#{interfaces.letter1[loop.index][2][8]}</td>
-													<td>#{interfaces.letter1[loop.index][2][9]}</td>
-													<td>#{interfaces.letter1[loop.index][2][10]}</td>
-													<td>#{interfaces.letter1[loop.index][2][11]}</td>
-												</tr>
-											</table>
-										</div>
+								<div id="listChangePMV#{item.equip_id}" type="#{item.messageChange.tipo}"
+									name="#{item.nome}" driver="#{item.messageChange.driver}"
+									status="#{item.msg_status}">
+									<input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
+										image="#{item.messageChange.pages[0].image}"
+										imageId2="#{item.messageChange.pages[0].id_image2}"
+										image2="#{item.messageChange.pages[0].image2}"
+										line1="#{item.messageChange.pages[0].text1}"
+										line2="#{item.messageChange.pages[0].text2}"
+										line3="#{item.messageChange.pages[0].text3}"
+										timer="#{item.messageChange.pages[0].timer}" />
+									<input type="hidden" name="page2" imageId="#{item.messageChange.pages[1].id_image}"
+										image="#{item.messageChange.pages[1].image}"
+										imageId2="#{item.messageChange.pages[1].id_image2}"
+										image2="#{item.messageChange.pages[1].image2}"
+										line1="#{item.messageChange.pages[1].text1}"
+										line2="#{item.messageChange.pages[1].text2}"
+										line3="#{item.messageChange.pages[1].text3}"
+										timer="#{item.messageChange.pages[1].timer}" />
+									<input type="hidden" name="page3" imageId="#{item.messageChange.pages[2].id_image}"
+										image="#{item.messageChange.pages[2].image}"
+										imageId2="#{item.messageChange.pages[2].id_image2}"
+										image2="#{item.messageChange.pages[2].image2}"
+										line1="#{item.messageChange.pages[2].text1}"
+										line2="#{item.messageChange.pages[2].text2}"
+										line3="#{item.messageChange.pages[2].text3}"
+										timer="#{item.messageChange.pages[2].timer}" />
+									<input type="hidden" name="page4" imageId="#{item.messageChange.pages[3].id_image}"
+										image="#{item.messageChange.pages[3].image}"
+										imageId2="#{item.messageChange.pages[3].id_image2}"
+										image2="#{item.messageChange.pages[3].image2}"
+										line1="#{item.messageChange.pages[3].text1}"
+										line2="#{item.messageChange.pages[3].text2}"
+										line3="#{item.messageChange.pages[3].text3}"
+										timer="#{item.messageChange.pages[3].timer}" />
+									<input type="hidden" name="page5" imageId="#{item.messageChange.pages[4].id_image}"
+										image="#{item.messageChange.pages[4].image}"
+										imageId2="#{item.messageChange.pages[4].id_image2}"
+										image2="#{item.messageChange.pages[4].image2}"
+										line1="#{item.messageChange.pages[4].text1}"
+										line2="#{item.messageChange.pages[4].text2}"
+										line3="#{item.messageChange.pages[4].text3}"
+										timer="#{item.messageChange.pages[4].timer}" />
+								</div>
+								<div class="option message-block">
+									<div class="check-select">
+										<input class="form-check-input" type="checkbox" disabled="disabled"
+											id="check#{item.equip_id}_Change" />
 									</div>
-									<p:dialog header="#{msgs.pmv_modal_info_title}"
-										widgetVar="infoModal#{item.table_id}" modal="true" height="200"
-										showEffect="slide" hideEffect="slide" closable="false" resizable="false">
-										<br />
-										<table class="table-info">
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_equip_id}</b></td>
-												<td id="id" class="table-col2">#{item.equip_id}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_name}</b></td>
-												<td id="name" class="table-col2">#{item.nome}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_city}</b></td>
-												<td id="city" class="table-col2">#{item.cidade}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_road}</b></td>
-												<td id="road" class="table-col2">#{item.estrada}</td>
-											</tr>
-											<tr>
-												<td class="table-col1"><b>#{msgs.pmv_modal_km}</b></td>
-												<td id="km" class="table-col2">#{item.km}</td>
-											</tr>
-										</table>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default"
-												onclick="PF('infoModal#{item.table_id}').hide()">#{msgs.pmv_modal_close}</button>
+
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.4">
+
+										<!-- Table with DIV -->
+
+										<div class="tableStyle card">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+													<span class="namePMV">#{item.nome}</span>
+													<span class="kmPMV">#{item.km}</span>
+												</div>
+											</div>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
+														</div>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
+														</div>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
+											</div>
 										</div>
-									</p:dialog>
+
+									</div>
 								</div>
 							</c:forEach>
 						</div>
 					</div>
-					<!-- FINAL DA TABELA NOVO ESTADO -->
 				</div>
-				<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
-			</h:form>
+				<!-- FINAL DA TABELA NOVO ESTADO -->
+			</div>
+			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
 		</div>
 		<!-- FINAL DO FORMULARIO EQUIP -->
 		<!-- INICIO DO FORUMARIO MODAL -->
 		<h:form id="modalForm">
-			<!-- INÍCIO DO MODAL -->
+			<!-- INICIO DO MODAL -->
 			<div class="modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -498,35 +700,13 @@
 			</div>
 			<!-- FINAL DO MODAL -->
 		</h:form>
-		<!-- FINAL DO FORUMARIO MODAL -->
-		<!-- INÍCIO DO FORMULARIO LOADING -->
-		<h:form id="statusForm">
-			<!-- INÍCIO DO MODAL LOADING -->
-			<div class="modal" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-body">
-							<h:graphicImage class="img-modal" value="/resources/images/gifs/loading.gif" width="auto"
-								height="auto" />
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- FINAL DO MODAL LOADING -->
-		</h:form>
-		<!-- FINAL DO FORUMARIO LOADING -->
-		<script>
-			seleccaoHidden();
-
-		</script>
 	</ui:define>
 
 	<ui:define name="default-plugins">
-		<h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" />
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
 	</ui:define>
 
 	<ui:define name="jscript">
-		<h:outputScript name="msgAtv.js" library="js/dms" />
+		<h:outputScript name="msgAtv.js" pt:type="module" library="js/dms" />
 	</ui:define>
 </ui:composition>

@@ -31,8 +31,8 @@ public class EquipmentsDAO {
 	private Connection conn;
 	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
-	private ResultSet rs;
-			
+	private ResultSet rs;	
+
 	/**
 	 * M�todo para criado para obter uma lista dos equipamentos metereol�gicos no sistema.	 
 	 * @param mod - parametro da classe Modules
@@ -69,7 +69,7 @@ public class EquipmentsDAO {
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM pmv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, number_lanes, name, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sos_equipment WHERE visible = 1";	
@@ -95,11 +95,45 @@ public class EquipmentsDAO {
 
 			if (rs != null) {
 				while (rs.next()) {			
-
+					
+				  // FOR GENERICS	
 				  Equipments eq = new Equipments();
 				  
+				  //FOR SAT
+				  SAT sat = new SAT();
+				  
+				  //FOR PMV
+				  DMS pmv = new DMS();
+				  
+				  if(mod.getModule().equals(ModulesEnum.SAT.getModule())) {
+				 
+				  sat.setEquip_id(rs.getInt("equip_id"));
+				  sat.setTable_id(mod.getModule().toLowerCase());
+				  sat.setNumber_lanes(rs.getInt("number_lanes"));
+				  sat.setNome(rs.getString("name"));		
+				  sat.setKm(rs.getString("km"));
+				  sat.setDir_lane1(rs.getString("dir_lane1"));
+				  sat.setDir_lane2(rs.getString("dir_lane2"));
+				  sat.setDir_lane3(rs.getString("dir_lane3"));
+				  sat.setDir_lane4(rs.getString("dir_lane4"));
+				  sat.setDir_lane5(rs.getString("dir_lane5"));
+				  sat.setDir_lane6(rs.getString("dir_lane6"));
+				  sat.setDir_lane7(rs.getString("dir_lane7"));
+				  sat.setDir_lane8(rs.getString("dir_lane8"));
+				  sat.setMapWidth(rs.getInt("map_width"));															
+				  sat.setMapPosX(rs.getInt("map_posX"));
+				  sat.setMapPosY(rs.getInt("map_posY"));
+				  sat.setLinearWidth(rs.getInt("linear_width"));
+				  sat.setLinearPosX(rs.getInt("linear_posX"));
+				  sat.setLinearPosY(rs.getInt("linear_posY"));		
+				  sat.setPosicao(rs.getString("position"));	
+				  
+				  equips.add(sat);
+  
+				  } else {
+				  
 				  eq.setEquip_id(rs.getInt("equip_id"));
-				  eq.setTable_id(mod.getModule().toLowerCase());
+				  eq.setTable_id(mod.getModule().toLowerCase()); 
 				  eq.setNome(rs.getString("name"));		
 				  eq.setKm(rs.getString("km"));	
 				  eq.setMapWidth(rs.getInt("map_width"));															
@@ -113,8 +147,8 @@ public class EquipmentsDAO {
 				  equips.add(eq);
 				    
 				}
-			}
-
+			 }
+		  }
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
@@ -314,10 +348,11 @@ public class EquipmentsDAO {
 		ArrayList<SAT> lista = new ArrayList<SAT>();
 		TranslationMethods translator = new TranslationMethods();
 		
-		String dir1 = " ", dir2 = " ";
+		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
 
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, linear_width, " +
-				   "linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM sat_equipment eq " +
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
+				   "dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
+				   "position FROM sat_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -335,8 +370,14 @@ public class EquipmentsDAO {
 					
 					SAT sat = new SAT();
 					
-					dir1 = translator.CheckDirection1(rs.getString(7));
-					dir2 = translator.CheckDirection2(rs.getString(7));
+					dir1 = translator.CheckDirection(rs.getString(7));
+					dir2 = translator.CheckDirection(rs.getString(8));
+					dir3 = translator.CheckDirection(rs.getString(9));
+					dir4 = translator.CheckDirection(rs.getString(10));
+					dir5 = translator.CheckDirection(rs.getString(11));
+					dir6 = translator.CheckDirection(rs.getString(12));
+					dir7 = translator.CheckDirection(rs.getString(13));
+					dir8 = translator.CheckDirection(rs.getString(14));
 					
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
@@ -347,13 +388,19 @@ public class EquipmentsDAO {
 					sat.setNumFaixas(rs.getInt(6));
 					sat.setSentido1(dir1);		
 					sat.setSentido2(dir2);
-					sat.setLinearWidth(rs.getInt(8));						
-					sat.setLinearPosX(rs.getInt(9));
-					sat.setLinearPosY(rs.getInt(10));
-					sat.setMapWidth(rs.getInt(11));						
-					sat.setMapPosX(rs.getInt(12));					
-					sat.setMapPosY(rs.getInt(13));	
-					sat.setPosicao(rs.getString(14));
+					sat.setSentido3(dir3);		
+					sat.setSentido4(dir4);
+					sat.setSentido5(dir5);		
+					sat.setSentido6(dir6);
+					sat.setSentido7(dir7);		
+					sat.setSentido8(dir8);
+					sat.setLinearWidth(rs.getInt(15));						
+					sat.setLinearPosX(rs.getInt(16));
+					sat.setLinearPosY(rs.getInt(17));
+					sat.setMapWidth(rs.getInt(18));						
+					sat.setMapPosX(rs.getInt(19));					
+					sat.setMapPosY(rs.getInt(20));	
+					sat.setPosicao(rs.getString(21));
 					
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 					
@@ -850,20 +897,19 @@ public class EquipmentsDAO {
               public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
             		
           		
-          		boolean status = false;          		
-          		
-          		
+          		boolean status = false; 
+          		          		
           		try {
-          			
-          			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
-          					+"dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
-          					+ "map_width, map_posX, map_posY, visible)"
-          					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-          	           
-
-          			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-          			
-                      //Execute Register			
+          		
+          		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+          		
+       		    //INSERT
+        		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
+                + "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
+                + "map_width, map_posX, map_posY, visible) "
+                + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+           			           		         			          		          			          			
+                    //Execute Register			
           			ps = conn.prepareStatement(query);
           			
           			ps.setInt(1, equip.getEquip_id());
@@ -882,21 +928,20 @@ public class EquipmentsDAO {
           			ps.setString(14, equip.getFaixa6());	
           			ps.setString(15, equip.getFaixa7());	
           			ps.setString(16, equip.getFaixa8());	          			    			
-          			ps.setInt(17, equip.getMapWidth());
+          			ps.setInt(17, 100);
           			ps.setInt(18, 50); //posX
           			ps.setInt(19, 50); //posY
           			ps.setBoolean(20, true);
           			          			
-          			//System.out.println(sql);
-          			
           			int success = ps.executeUpdate();
-          			
+          			          			
           			if(success > 0)         				
-          				  status = true;							
+          				  status = true;		
+          			          		    		      
           	              											
-          		    } catch (SQLException sqle) {
-          			throw new Exception("Erro ao inserir dados " + sqle);
-          			
+          		} catch (SQLException sqle) {
+          		throw new Exception("Erro ao inserir dados " + sqle);        		    
+          		    
           		} finally {
           			ConnectionFactory.closeConnection(conn, ps);
           		}
@@ -938,7 +983,7 @@ public class EquipmentsDAO {
             			ps.setString(5, equip.getCidade());
             			ps.setString(6, equip.getEstrada());
             			ps.setString(7, equip.getKm());			
-            			ps.setInt(8, equip.getMapWidth());
+            			ps.setInt(8, 75);
             			ps.setInt(9, 50); //posX
             			ps.setInt(10, 50); //posY
             			ps.setBoolean(11, true);
@@ -1113,7 +1158,7 @@ public class EquipmentsDAO {
 
               }  // MTO Definitions END    
               
-              if(table.equals("pmv")) { // PMV Definitions
+              if(table.equals("dms")) { // PMV Definitions
 
             	  String queryDMS= "UPDATE pmv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
@@ -1434,7 +1479,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
     }  // MTO Definitions END    
     
-    if(table.equals("pmv")) { // PMV Definitions
+    if(table.equals("dms")) { // PMV Definitions
 
   	  DMS dms = new DMS();
 
@@ -1695,7 +1740,7 @@ if(table.equals("mto")) { // MTO Definitions
 
 }  // MTO Definitions END    
 
-if(table.equals("pmv")) { // PMV Definitions
+if(table.equals("dms")) { // PMV Definitions
 
   String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
 
@@ -1893,7 +1938,7 @@ if(rs > 0)
 
 }  // MTO Definitions END    
 
-if(table.equals("pmv")) { // PMV Definitions
+if(table.equals("dms")) { // PMV Definitions
 
 String queryDMS= "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
@@ -1988,9 +2033,46 @@ ConnectionFactory.closeConnection(conn, ps);
 return positioned;
 }
 
-//---------------------------------------------------------- //
-//------- POSITION FOR EQUIPMENT FOR MAP / REALTIME ------- //
-//-------------------------------------------------------- //
+//-------------------------------------------------------------- //
+// ----------------- CHECK IF ID SAT EXISTS ------------------- //
+//------------------------------------------------------------ //
+
+public boolean checkExists(int id, String table) throws Exception {
+	
+		
+		boolean checked = false; 
+		          		
+		try {
+		
+		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		
+		//CHECK
+		String select = "SELECT equip_id FROM "+table+"_equipment WHERE equip_id = ?";
+		
+		ps = conn.prepareStatement(select);
+		ps.setInt(1, id);
+	          	
+		rs = ps.executeQuery();
+		 
+		if(rs.isBeforeFirst())
+			checked = true;
+	              											
+		} 
+		
+		catch (SQLException sqle) {
+		throw new Exception("Erro ao inserir dados " + sqle);        		    
+		    
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+		
+		return checked;	
+	}
+  
+  
+//-------------------------------------------------------------- //
+//----------------- CHECK IF ID SAT EXISTS ------------------- //
+//----------------------------------------------------------- //
 
 
 }

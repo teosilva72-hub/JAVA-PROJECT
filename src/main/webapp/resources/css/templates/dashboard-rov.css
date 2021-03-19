@@ -106,8 +106,8 @@ footer {
 .header-image > li > a {
   position: relative;
   display: block;
-  width: 50px;
-  height: 50px;
+  width: 47px;
+  height: 45px;
   line-height: 50px;
   text-align: center;
   -moz-border-radius: 50%;
@@ -242,7 +242,7 @@ footer {
  
  
  .dropdown-nofit-checked{background: #87CEFA;}
-  .dropdown-nofit-unchecked{background: #f8f9fa;}
+ .dropdown-nofit-unchecked{background: #f8f9fa;}
  
 /* DROPDOWN ITEM STYLES */
 
@@ -324,7 +324,7 @@ footer {
 }
 
 .wrapper {
-  margin-top: 60px;
+  margin-top: 65px;
   
 }
 
@@ -418,6 +418,7 @@ footer {
   opacity: 0;
   /* animate the transition */
   transition: all 0.5s ease-in-out;
+  margin-top: -5px;
 }
 
 /* display .overlay when it has the .active class */

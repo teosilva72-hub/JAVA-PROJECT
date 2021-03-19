@@ -6,35 +6,25 @@ import java.util.List;
 public class Messages {
 
 	private int id_message;
-	private int id_image;
 	private int id_modify;
 	private int equip;
 	private String id;
 	private String tipo;
 	private String nome;
-	private String image;
-	private String message1;
-	private String message2;
-	private String message3;
 	private List<Pages> pages;
-	private String tableImg;
-	private String tableMessage;
 	private boolean activeMessage;
+	private int driver;
 
-	public Messages(int id_message, int id_image, int id_modify, int equip, String id, String tipo, String nome,
-			String image, String texto1, String texto2, String texto3, String tableImg, String tableMessage,
-			boolean activeMessage) {
+	public Messages(int id_message, int id_modify, int equip, String id, String tipo, String nome,
+			boolean activeMessage, int driver) {
 		this.id_message = id_message;
-		this.id_image = id_image;
 		this.id_modify = id_modify;
 		this.equip = equip;
 		this.id = id;
 		this.tipo = tipo;
 		this.nome = nome;
-		this.image = image;
-		this.tableImg = tableImg;
-		this.tableMessage = tableMessage;
 		this.activeMessage = activeMessage;
+		this.driver = driver;
 		this.pages = new ArrayList<Pages>();
 	}
 
@@ -48,14 +38,6 @@ public class Messages {
 
 	public void setId_message(int id_message) {
 		this.id_message = id_message;
-	}
-
-	public int getId_image() {
-		return id_image;
-	}
-
-	public void setId_image(int id_image) {
-		this.id_image = id_image;
 	}
 
 	public List<Pages> getPages() {
@@ -86,14 +68,6 @@ public class Messages {
 		this.id = id;
 	}
 
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
-
 	public String getTipo() {
 		return tipo;
 	}
@@ -110,20 +84,12 @@ public class Messages {
 		this.nome = nome;
 	}
 
-	public String getTableImg() {
-		return tableImg;
+	public int getDriver() {
+		return driver;
 	}
 
-	public void setTableImg(String tableImg) {
-		this.tableImg = tableImg;
-	}
-
-	public String getTableMessage() {
-		return tableMessage;
-	}
-
-	public void setTableMessage(String tableMessage) {
-		this.tableMessage = tableMessage;
+	public void setDriver(int driver) {
+		this.driver = driver;
 	}
 
 	public boolean isActiveMessage() {
@@ -134,14 +100,27 @@ public class Messages {
 		this.activeMessage = activeMessage;
 	}
 
-	public void setPages(String text1, String text2, String text3, int id_image, String image,
-			float timer, int idx, int page) {
+	// Driver 1
+	public void setPages(String text1, String text2, String text3, int id_image, String image, float timer, int idx) {
 		Pages pages = new Pages(text1, text2, text3, id_image, image, timer, idx);
-		this.pages.add(page, pages);
+		this.pages.add(pages);
+	}
+	
+	// Driver 2
+	public void setPages(String text1, String text2, int id_image, String image, float timer, int idx) {
+		Pages pages = new Pages(text1, text2, id_image, image, timer, idx);
+		this.pages.add(pages);
+	}
+	
+	// Driver 3
+	public void setPages(String text1, String text2, String text3, int id_image, String image, int id_image2, String image2, float timer, int idx) {
+		Pages pages = new Pages(text1, text2, text3, id_image, image, id_image2, image2, timer, idx);
+		this.pages.add(pages);
 	}
 
+	// Void
 	public void setPages(int page) {
-		this.pages.add(page, new Pages());
+		this.pages.add(new Pages());
 	}
 
 	public void revision() {
@@ -151,7 +130,7 @@ public class Messages {
 				continue;
 			else
 				revision = true;
-				page.timer = 0;
+			page.timer = 0;
 		}
 	}
 
@@ -177,30 +156,6 @@ public class Messages {
 		return true;
 	}
 
-	public String getMessage3() {
-		return message3;
-	}
-
-	public void setMessage3(String message3) {
-		this.message3 = message3;
-	}
-
-	public String getMessage2() {
-		return message2;
-	}
-
-	public void setMessage2(String message2) {
-		this.message2 = message2;
-	}
-
-	public String getMessage1() {
-		return message1;
-	}
-
-	public void setMessage1(String message1) {
-		this.message1 = message1;
-	}
-
 	public class Pages {
 		private Boolean contain;
 		private String text1;
@@ -209,10 +164,12 @@ public class Messages {
 		private float timer;
 		private int id_image;
 		private String image;
+		private int id_image2;
+		private String image2;
 		private int page;
 
-		public Pages(String text1, String text2, String text3, int id_image, String image,
-				float timer, int page) {
+		// Driver 1
+		public Pages(String text1, String text2, String text3, int id_image, String image, float timer, int page) {
 			this.text1 = text1;
 			this.text2 = text2;
 			this.text3 = text3;
@@ -222,13 +179,42 @@ public class Messages {
 			this.page = page;
 			this.contain = true;
 		}
+		
+		// Driver 2
+		public Pages(String text1, String text2, int id_image, String image, float timer, int page) {
+			this.text1 = text1;
+			this.text2 = text2;
+			this.id_image = id_image;
+			this.image = image;
+			this.timer = timer;
+			this.page = page;
+			this.contain = true;
+		}
+		
+		// Driver 3
+		public Pages(String text1, String text2, String text3, int id_image, String image, int id_image2, String image2,
+				float timer, int page) {
+			this.text1 = text1;
+			this.text2 = text2;
+			this.text3 = text3;
+			this.id_image = id_image;
+			this.image = image;
+			this.id_image2 = id_image2;
+			this.image2 = image2;
+			this.timer = timer;
+			this.page = page;
+			this.contain = true;
+		}
 
+		// Void
 		public Pages() {
 			this.text1 = "";
 			this.text2 = "";
 			this.text3 = "";
 			this.id_image = 0;
 			this.image = "000_6464.bmp";
+			this.id_image2 = 0;
+			this.image2 = "000_6464.bmp";
 			this.timer = 0;
 			this.page = 0;
 			this.contain = false;
@@ -256,6 +242,14 @@ public class Messages {
 
 		public String getImage() {
 			return image;
+		}
+
+		public int getId_image2() {
+			return id_image2;
+		}
+
+		public String getImage2() {
+			return image2;
 		}
 
 		public Boolean getContain() {

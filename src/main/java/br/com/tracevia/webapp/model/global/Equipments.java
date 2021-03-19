@@ -12,10 +12,19 @@ public class Equipments {
 	private String table_id;
 	private String creation_date;
 	private String creation_username;
+	private int number_lanes;
 	private String nome;
 	private String estrada;	
 	private String cidade;	
 	private String km;
+	private String dir_lane1;
+    private String dir_lane2;
+	private String dir_lane3;
+	private String dir_lane4;
+	private String dir_lane5;
+	private String dir_lane6;
+	private String dir_lane7;
+	private String dir_lane8;
 	private String posicao;
 	private int linearPosX;
 	private int linearPosY;
@@ -30,7 +39,8 @@ public class Equipments {
 	private boolean notificacao;
 	private boolean visible;
 		
-	public Equipments(int equip_id, String table_id, String creation_date, String creation_username, String nome, String estrada, String cidade, String km, String posicao,
+	public Equipments(int equip_id, String table_id, String creation_date, String creation_username, int number_lanes, String nome, String estrada, String cidade, String km,
+	String dir_lane1, String dir_lane2, String dir_lane3, String dir_lane4, String dir_lane5, String dir_lane6, String dir_lane7, String dir_lane8, String posicao,
     int linearPosX, int linearPosY, int linearWidth, int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY,
 	  int status, boolean notificacao, boolean visible) {
 		
@@ -38,10 +48,19 @@ public class Equipments {
 		this.table_id = table_id;
 		this.creation_date = creation_date;
 		this.creation_username = creation_username;
+		this.number_lanes = number_lanes;
 		this.nome = nome;
 		this.estrada = estrada;
 		this.cidade = cidade;
 		this.km = km;
+		this.dir_lane1 = dir_lane1;
+		this.dir_lane1 = dir_lane2;
+		this.dir_lane1 = dir_lane3;
+		this.dir_lane1 = dir_lane4;
+		this.dir_lane1 = dir_lane5;
+		this.dir_lane1 = dir_lane6;
+		this.dir_lane1 = dir_lane7;
+		this.dir_lane1 = dir_lane8;
 		this.posicao = posicao;
 		this.linearPosX = linearPosX;
 		this.linearPosY = linearPosY;
@@ -90,7 +109,15 @@ public class Equipments {
 		public void setCreation_username(String creation_username) {
 			this.creation_username = creation_username;
 		}
-
+		
+		public int getNumber_lanes () {
+			return number_lanes;
+		}
+		
+		public void setNumber_lanes(int number_lanes) {
+			this.number_lanes = number_lanes;
+		}
+				
 		public String getNome() {
 			return nome;
 		}
@@ -121,6 +148,70 @@ public class Equipments {
 
 		public void setKm(String km) {
 			this.km = km;
+		}
+		
+		public String getDir_lane1() {
+			return dir_lane1;
+		}
+
+		public void setDir_lane1(String dir_lane1) {
+			this.dir_lane1 = dir_lane1;
+		}
+
+		public String getDir_lane2() {
+			return dir_lane2;
+		}
+
+		public void setDir_lane2(String dir_lane2) {
+			this.dir_lane2 = dir_lane2;
+		}
+
+		public String getDir_lane3() {
+			return dir_lane3;
+		}
+
+		public void setDir_lane3(String dir_lane3) {
+			this.dir_lane3 = dir_lane3;
+		}
+
+		public String getDir_lane4() {
+			return dir_lane4;
+		}
+
+		public void setDir_lane4(String dir_lane4) {
+			this.dir_lane4 = dir_lane4;
+		}
+
+		public String getDir_lane5() {
+			return dir_lane5;
+		}
+
+		public void setDir_lane5(String dir_lane5) {
+			this.dir_lane5 = dir_lane5;
+		}
+
+		public String getDir_lane6() {
+			return dir_lane6;
+		}
+
+		public void setDir_lane6(String dir_lane6) {
+			this.dir_lane6 = dir_lane6;
+		}
+
+		public String getDir_lane7() {
+			return dir_lane7;
+		}
+
+		public void setDir_lane7(String dir_lane7) {
+			this.dir_lane7 = dir_lane7;
+		}
+
+		public String getDir_lane8() {
+			return dir_lane8;
+		}
+
+		public void setDir_lane8(String dir_lane8) {
+			this.dir_lane8 = dir_lane8;
 		}
 
 		public String getPosicao() {

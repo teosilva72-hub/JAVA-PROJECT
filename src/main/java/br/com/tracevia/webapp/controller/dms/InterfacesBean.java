@@ -309,8 +309,8 @@ public class InterfacesBean implements Serializable {
 
 						if (m.isActiveMessage()) {
 
-							image[e] = m.getImage();
-							image1[e] = m.getImage();
+							image[e] = "";
+							image1[e] = "";
 
 							for (int n = 0; n < m.getPages().get(0).getText1().length(); n++) {
 								letter[e][0][n] = m.getPages().get(0).getText1().charAt(n);
@@ -339,9 +339,9 @@ public class InterfacesBean implements Serializable {
 							RequestContext.getCurrentInstance()
 									.execute("uncheckedOpacityNormalShadow('1" + equips[e] + "');");
 
-							image[e] = m.getImage(); // IF IS INACTIVE MUST REPEAT THE MESSAGE
-							image1[e] = msg.getImage();
-							imageAux[e] = msg.getImage();
+							image[e] = ""; // IF IS INACTIVE MUST REPEAT THE MESSAGE
+							image1[e] = "";
+							imageAux[e] = "";
 
 							// IF IS INACTIVE MUST REPEAT THE ACTIVE MESSAGE ON THIS PART
 							for (int n = 0; n < m.getPages().get(0).getText1().length(); n++)
@@ -419,7 +419,7 @@ public class InterfacesBean implements Serializable {
 	public void loadMessageInformation(AjaxBehaviorEvent event) throws AbortProcessingException {
 
 		this.messageID = message.getId_message();
-		this.imagem = String.valueOf(message.getImage());
+		this.imagem = String.valueOf("");
 		this.texto1 = message.getPages().get(0).getText1();
 		this.texto2 = message.getPages().get(0).getText2();
 		this.texto3 = message.getPages().get(0).getText3();

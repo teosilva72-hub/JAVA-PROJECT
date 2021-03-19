@@ -9,6 +9,10 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.sat.SAT;
 
 public class DateTimeApplication {
 	
@@ -34,7 +38,7 @@ public class DateTimeApplication {
 	private static DateFormat dtFormatter;
 					
 	/**
-	 * Método para obter a data e hora atual do sistema	 
+	 * Mï¿½todo para obter a data e hora atual do sistema	 
 	 * @autor Wellington - 2020-07-21	 
 	 * @param dateFormat - Formato para data - Ex.: (dd/MM/yyyy HH:mm:ss)
 	 * @return data formatada
@@ -64,7 +68,7 @@ public class DateTimeApplication {
 						
 	}
 	
-	/*Calcular Diferença entre dias */
+	/*Calcular Diferenï¿½a entre dias */
 	public long diferencaDias(String inicio, String fim) throws ParseException {
 		
 		dtFormatter =  new SimpleDateFormat (DATE_TIME_FORMAT_DATE_VIEW);			
@@ -151,8 +155,8 @@ public class DateTimeApplication {
 	 * 
 	 * @param calendar - Instancia Calendar
 	 * @param minute - minuto atual
-	 * @param currentDate - Variavél para ser preenchida com data atual
-	 * @param currentDateSub - Variavél para ser preenchida com data atual com um minuto e um segundo a menos
+	 * @param currentDate - Variavï¿½l para ser preenchida com data atual
+	 * @param currentDateSub - Variavï¿½l para ser preenchida com data atual com um minuto e um segundo a menos
 	 */
 	public String getCurrentDateDados15(Calendar calendar, int minute) {
 	
@@ -173,6 +177,46 @@ public class DateTimeApplication {
 	else calendar.set(Calendar.MINUTE, 45);
 	
 	calendar.set(Calendar.SECOND, 0);
+	     
+	//Data Atual
+	currentDate = dtFormatter.format(calendar.getTime());
+   
+   return currentDate;
+   
+	}
+	
+	
+	/**
+	 * 
+	 * @param calendar - Instancia Calendar
+	 * @param minute - minuto atual
+	 * @param currentDate - Variavï¿½l para ser preenchida com data atual
+	 * @param currentDateSub - Variavï¿½l para ser preenchida com data atual com um minuto e um segundo a menos
+	 */
+	public String getCurrentDateDados15CCR(Calendar calendar, int minute) {
+	
+	dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_DATABASE);
+	
+	String currentDate = null;
+		
+	  //Subtract Hour
+    int hour = calendar.get(Calendar.HOUR) -1;
+		
+   //formatar os minutos para que nao ocorra inconsistencias
+	if(minute >= 0 && minute < 15) {
+	   calendar.set(Calendar.MINUTE, 45);
+	   calendar.set(Calendar.HOUR, hour);	
+	
+	}else if(minute >= 15 && minute < 30)
+		 calendar.set(Calendar.MINUTE, 0);
+	
+	else if(minute >= 30 && minute < 45)
+		 calendar.set(Calendar.MINUTE, 15);
+	
+	else if(minute >= 45 && minute < 59)			
+		  calendar.set(Calendar.MINUTE, 30);
+						
+	  calendar.set(Calendar.SECOND, 0);
 	     
 	//Data Atual
 	currentDate = dtFormatter.format(calendar.getTime());
@@ -214,8 +258,8 @@ public class DateTimeApplication {
 	 * 
 	 * @param calendar - Instancia Calendar
 	 * @param minute - minuto atual
-	 * @param currentDate - Variavél para ser preenchida com data atual
-	 * @param currentDateSub - Variavél para ser preenchida com data atual com um minuto e um segundo a menos
+	 * @param currentDate - Variavï¿½l para ser preenchida com data atual
+	 * @param currentDateSub - Variavï¿½l para ser preenchida com data atual com um minuto e um segundo a menos
 	 */
 	public String getCurrentDateDados30(Calendar calendar, int minute) {
 	
@@ -524,47 +568,47 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		// Preencher dias - Proporcional ao intervalo de tempo
 		public void preencherDataPorPeriodo(String matriz[][], int col, int lin,  int range, String dtInicio) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 			
 			int inc = 0;
 			int day = 1;
 						
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
 			String diaIni = dtInicio.substring(8, 10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 		
 			// Novo Objeto - auxiliar
 			//YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 										
 				for (int i = 0; i < lin; i++) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth)
 					dia = 1; 
 			
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -590,7 +634,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				  // }	//System.out.println("P: "+p);				
 			     }
 			
-			//dia++; // Incrementar o dia até limite do intervalo entre dias	
+			//dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias	
 		 
 	}
 		
@@ -601,35 +645,35 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		// Preencher dias - Proporcional ao intervalo de tempo
 		public void preencherDias(String matriz[][], int col, String dtInicio, int daysInMonth) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 									
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String mesIni = dtInicio.substring(5, 7);
 			String diaIni = dtInicio.substring(8, 10);
 			
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
 			
 			// Novo Objeto - auxiliar
 			//YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 										
 				for (int i = 0; i < daysInMonth; i++) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth)
 					dia = 1; 
 			
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -1405,9 +1449,32 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			        return i;
 		}	
 		
+		///////////////////////////////////////////////////
+			
+		public void intervaloCountVehiclesName(String[][] matriz, List<? extends Equipments> listSats , String[] selectedEquips, int col, int lin, int period) { 
+			
+			int colName = col + 1; //Coluna do nome do equipamento
+			
+			for(int k = 0; k < listSats.size(); k++) {
+				
+			
+			
+			    for(int i = 0; i < selectedEquips.length; i++) {
+				
+				if(listSats.get(k).getEquip_id() == Integer.parseInt(selectedEquips[i])) {
+					
+					System.out.println(listSats.get(i).getEquip_id());
+			
+			       for (int j = 0; j < lin; j+= period)			       
+				          matriz[colName][j] = listSats.get(i).getNome();	      
+			
+			     }
+			
+			}
+			
+		}
+	}
 		
-		
-		
-		
-						
+		///////////////////////////////////////////////////
+									
    }

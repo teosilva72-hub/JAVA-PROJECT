@@ -15,7 +15,15 @@ $(function () {
     adjustSidebar();
   });
 
-  $(".loading").hide()
+  $(".loading").hide();
+  
+  //UPDATE NOTIFICATIONS NUMBER ON LOAD
+  $("#notification").load('/template/dashboard-rov-notifications.xhtml' , () => {
+  
+          notificationBadge();
+  });
+  
+  
 });
 
 $('#dismiss, .overlay').on('click', function () {

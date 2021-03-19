@@ -1,6 +1,12 @@
 var widthMax = 1000
 var heightMax = 1000
 
+$(function() {
+		setTimeout(function () {
+			$('#message-show').hide(); 		
+		}, 5000); 
+	});
+
 $(function () {
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
@@ -15,39 +21,7 @@ $(function () {
 	$(window).resize(function () {
 		$(".overflow").css("height", $(this).height() - 125)
 	})
-
-	//Validate
-	var form = document.querySelectorAll('form');
-	for (const f of form) {
-		f.addEventListener('submit', function (e) {
-			let count = 0
-			let requiredField = f.querySelectorAll('[requiredField]');
-			e.preventDefault()
-			if (requiredField.length) {
-				for (const required of requiredField) {
-					if (!required.value ||
-						(required.getAttribute('requiredField')) === 'number' &&
-						isNaN(required.value)) {
-
-						count++
-
-						required.style.border = "solid 2px red";
-					} else {
-						required.style.border = "solid 2px green";
-					};
-				};
-			};
-			if (!count) {
-				let data = {}
-				for (const inputForm of $(f).find('input, select')) {
-					data[inputForm.getAttribute('name')] = inputForm.value
-				}
-				$.post(f.getAttribute('action'), data)
-			}
-		});
-	};
-	//Validate End
-
+																
 	//FULLSCREEN
 	// $('.zoomFull').addClass('img-enlargeable').click(function () {
 	//	var src = this.getAttribute('target');
@@ -133,7 +107,7 @@ $(function () {
 
 		equip.dblclick(function () {
 			posReset();
-			
+
 			id = equip.attr('id').match(/\d+/g)[0];
 			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 			toDrag = `#${equip.attr('id')}`
@@ -299,6 +273,50 @@ function ScrollZoom(container) {
 			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
 			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 		});
+
+		if (equip.attr("class").includes('equip-box-sat')) {
+			let sat_status = equip.attr('status')
+			let interval =  Number(equip.attr('status-period'))
+					//TESTE		
+																
+			//Green Color > indica que o equipamento está conectado
+			if (sat_status > 0 && interval == 30) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00FF0D',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
+	
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 45) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00BFFF',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 8) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FFFF00',
+					color: 'black'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
+			}
+			//Red Color > indica que o equipamento está sem comunicação
+			else {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FF0000',
+					color: 'white'
+				});
+				document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
+			}
+		}
+
+		if (equip.attr("class").includes('equip-box')) {
+
+		}
 	}
 	// EQUIPMENT POSITION END
 	
@@ -516,4 +534,24 @@ $(document).ready(function(){
  function DelName(){
 }
 //Delete Modal Name End
+
+
+//prevent modal form submit
+//use ajax to send data
+$('#register-equip-form').submit(function(e) {
+	e.preventDefault();
+});
+
+//Reload on Cancel Position
+function reloadAfterCancelPos(){
+	setTimeout(function() {
+	window.location.reload(1);
+  }, 2000); // 2 sec						
+}
+
+//Use validation on click button submit   
+//Create button
+function checkValidation(){	    	
+   $("#register-equip-form").valid();	        
+}
 

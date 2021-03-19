@@ -19,7 +19,8 @@
 			content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 		<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
-		<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />
+		<h:outputStylesheet name="fontawesome.min.css"
+			library="font-awesome/css" />
 		<h:outputStylesheet name="login.css" library="css/login" />
 
 		<!-- USE JQUERY RESOURCES AND VALIDATION -->
@@ -37,6 +38,7 @@
 	 function setTopo(){
 	    $(window).scrollTop(0);
 	}
+	
 	 //Call setTopo()
 	$(window).bind('scroll', setTopo);	 
 	 
@@ -156,10 +158,7 @@
 						</div>
 
 					</div>
-					<h:outputScript name="popper.min.js" library="js/popper" />
-					<h:outputScript name="bootstrap.bundle.min.js"
-						library="bootstrap/js" />
-					<h:outputScript name="all.min.js" library="font-awesome/js" />
+
 				</h:form>
 				<div class="trademark">
 					<div class="col-12">
@@ -169,14 +168,22 @@
 				</div>
 			</div>
 		</div>
-
+		<h:outputScript name="popper.min.js" library="js/popper" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />-->
+		<h:outputScript name="all.min.js" library="font-awesome/js" /> 
 		<script type="text/javascript">
 	
 	//Passar parametrôs para o arquivo externo
 	validateLogin('#{requiredMessages.login_username_input_field}', '#{validatorMessages.validator_login_username_minlength}',
       '#{validatorMessages.validator_login_username_maxlength}', '#{requiredMessages.login_password_input_field}',
       '#{validatorMessages.validator_login_password_minlength}', '#{validatorMessages.validator_login_password_maxlength}');
-	   	  
+	  
+	 //cancela a são do botão enter
+	  document.addEventListener("keydown", function(e) {
+	  if(e.keyCode === 13) {
+	    e.preventDefault(); 
+	  }
+	});
 	</script>
 
 	</h:body>

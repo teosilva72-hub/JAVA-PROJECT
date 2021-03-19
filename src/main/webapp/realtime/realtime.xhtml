@@ -8,9 +8,8 @@
 
 	<ui:define name="head">
 
-		<h:outputStylesheet name="equip-info.css" library="css/commom" />
 		<h:outputStylesheet name="realtime.css" library="css/realtime" />
-		<h:outputStylesheet name="equip-info.css" library="css/commons" />
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 
 		<!-- Script -->
 		<h:outputScript name="realtime.js" library="js/realtime" />
@@ -41,7 +40,7 @@
 			    var n = data.getSeconds();
 			    var minute = data.getMinutes();
 			                          		
-			     if (minute == 16 || minute == 31 || minute == 46 || minute == 1) {         	        	
+			     if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {         	        	
 			           if (n &lt; 4) 		        	   
 			            location.href = location.href.replace("#", "")
 			     }
@@ -88,7 +87,7 @@
 					<h:graphicImage class="scaled" id="map" value="#{loginAccount.linearMapUI}" />
 
 				</div>
-
+							
 				<!-- Carrega os equipamentos -->
 
 				<c:forEach items="#{listEquips.equips}" var="loadItem">

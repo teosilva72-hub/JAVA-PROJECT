@@ -129,56 +129,6 @@ body {
   z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
 }
 
-.equip-box-sat {
-  position: absolute;
-  height: 75px;
-}
-
-.equip-info {
-  position: absolute;
-  font-size: 5px;
-}
-
-.equip-info .tableStyle {
-  position: relative;
-  font-size: 10px;
-  width: 250px;
-	height: 69px;
-  border: none;
-  background: #333333;
-  border-right: 6px solid #00fa9a;
-  border-radius: 0;
-}
-
-.border-table {
-  border-top-style: solid;
-  height: 17px;
-  border-left-style: solid;
-  background-color: #5d5d5d;
-  border-color: #000000;
-  border-width: 1px;
-}
-
-.border-table-right.bottom {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.border-table-right {
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-#dmsTab p {
-  height: 15px;
-}
-
-.padding-pmv {
-  padding: 3px;
-}
-
 .card {
   z-index: 9999;
 }
@@ -264,15 +214,6 @@ body {
   border: none;
 }
 
-/* TABLES MSG EQUIP PREVIEW */
-.table-message {
-  position: absolute;
-  margin-top: 10%;
-  margin-left: 65%;
-  width: 150px;
-  color: yellow;
-}
-/* TABLES MSG EQUIP PREVIEW */
 
 /* TABLES IMG EQUIP PREVIEW */
 .table-img {
@@ -391,7 +332,7 @@ table {
 .equip-status {
   height: 4px;
   width: 4px;
-  background-color: #00ff0d;
+  background-color: rgb(255, 0, 0);
   border-radius: 50%;
   margin-left: -2px;
 }
@@ -828,6 +769,9 @@ img.box-img[zoom] {
   text-decoration: none;
 }
 
+[id$="equips"] {
+  width: 100%;
+}
 [id$="equipId"] {
   width: 100%;
 }
@@ -835,25 +779,16 @@ img.box-img[zoom] {
   width: 100%;
 }
 [id$="width"] {
-  width: 130%;
+  width: 100%;
 }
 [id$="km"] {
-  width: 80%;
+  width: 100%;
 }  
 [id$="cities"] {
   width: 100%;
 } 
 [id$="roads"] {
   width: 100%;
-}
-
-#equips {
- margin-left: 15px;
- width: 150%;
- border: 1px solid #343a40;
- border-radius: 25px;
- background: white;
- padding-left: 10px;
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -872,19 +807,6 @@ img.box-img[zoom] {
 .draggable .equip-box,
 .draggable .equip-info {
   transform: translate(-50%, -50%);
-}
-
-.dms-name {
-  margin-bottom: -5px;
-}
-
-.sat-name {
-  background-color: #00fa9a;
-}
-
-.padding-sat {
-  padding: 0;
-  width: 45px;
 }
 
 /* INPUT NUMBER ARROWS REMOVED */
@@ -996,13 +918,22 @@ z-index: 10030;
 }
 
 .addbox {
-  width: 110%;
+  margin-top: 0%;
 }
+
+#bodyeqp {
+margin-top: 0%;
+}
+
+#bodyadd {
+margin-top: 0%;
+}
+
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */
 
-#realsave, #realcancel {
+#realsave, #realcancel, #equipsave, #equipsave-error {
 height: 23px;
 }
 
@@ -1020,47 +951,43 @@ text-align: center;
 	margin-left: 10%;
 }
 
-#chk1{
-	float: left;
-}
-
-#chk2 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk3 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk4 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk5 {
-	float: left;
-}
-
-#chk6 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk7 {
-	margin-left: 2%;
-	float: left;
-}
-
-#chk8 {
-	margin-left: 1%;
-	float: left;
-}
-
 .road-dir {
 	margin-left: 4px;
 }
 /* CHECKBOXS END */
 
+/* MODAL NEW */
+.satInputs2{
+	border: 1px solid transparent;
+	height: 44px;	
+}
 
+#modaladd{
+	margin-top: -25px;
+}
+
+/* MODAL NEW */
+/* TABLE SAT */
+
+.table-sat {
+	-webkit-box-shadow: initial !important;
+	-moz-box-shadow: initial !important;
+	box-shadow: initial !important;
+}
+
+/* TABLE SAT END */
+.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+  margin-left: 1px !important;
+}
+
+.driver3.equip-info .second-img, .driver3 .equip-info .second-img {
+  margin-right: 37px !important;
+}
+
+.driver3.equip-info .msg-pos, .driver3 .equip-info .msg-pos {
+  right: 51px !important;
+}
+
+.padding-pmv {
+  margin-left: 4px !important;
+}

@@ -25,14 +25,8 @@
 
 
 		<!-- Script -->
-		<h:outputScript name="occ.js" library="js/occ" />
-		<h:outputScript name="pdf.js" library="js/occ" />
-		<h:outputScript name="datepicker.js" library="js/datepicker" />
-		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
-		<h:outputScript name="jquery.validate.min.js"
-			library="js/jquery-validation" />
-		<h:outputScript name="additional-methods.min.js"
-			library="js/jquery-validation" />
+		
+			
 		<script type="text/javascript">
 			$(document)
 					.ready(
@@ -66,7 +60,7 @@
 														},
 														descricaoCausa : {
 															minlength : 1,
-															maxlength : 50
+															maxlength : 1000
 														},
 														outrosEventos : {
 															minlength : 3,
@@ -78,19 +72,19 @@
 														},
 														descricaoCausa2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descrDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														trasitoExtKm : {
 															minlength : 1,
@@ -98,11 +92,11 @@
 														},
 														danoDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														acaoDescr : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														/*new inputs*/
 														damageAmount : {
@@ -115,23 +109,23 @@
 														},
 														danoDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														envolvDescr2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descrDescr1 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descricaoCausa2 : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														},
 														descricaoCausa : {
 															minlength : 4,
-															maxlength : 50
+															maxlength : 1000
 														}
 
 													},
@@ -921,7 +915,7 @@
 								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
 									disabled="#{occurrencesBean.fields}"
-									class="form-control inputDesign" pt:placeholder="0+020"
+									class="form-control inputDesign" pt:placeholder="025+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
 							<!-- RODOVIA -->
@@ -1253,7 +1247,7 @@
 														<div class="dropdown">
 
 															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 
 																<i class="far fa-trash-alt"></i>
@@ -1297,7 +1291,7 @@
 														<span>#{occLabels.occ_delete}</span>
 														<div class="dropdown">
 															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="far fa-trash-alt"></i>
 															</button>
@@ -1316,10 +1310,10 @@
 														<span>#{occLabels.occ_download}</span>
 														<div class="dropdown">
 															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	data-bs-toggle="tooltip" data-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1355,10 +1349,10 @@
 														<span>#{occLabels.occ_download}</span>
 														<div class="dropdown">
 															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-bs-toggle="dropdown"
+																id="dropdownMenuButton" data-toggle="dropdown"
 																aria-expanded="false">
 																<i class="fas fa-cloud-download-alt iconFile"
-																	data-bs-toggle="tooltip" data-bs-placement="right"
+																	data-bs-toggle="tooltip" data-placement="right"
 																	title="Download"></i>
 															</button>
 															<ul class="dropdown-menu"
@@ -1727,7 +1721,15 @@
 		</div>
 		</section>
 		<!-- Final do conteudo do site -->
-
+		<h:outputScript name="occ.js" library="js/occ" />
+		<h:outputScript name="class_occ.js" library="js/occ" />
+		<h:outputScript name="controller_occ.js" library="js/occ" />
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
 		<script>
 			//Inicio dos comandos JavaScript
 			//getFilename();
@@ -1738,10 +1740,8 @@
 			tableBloqueada(); //Função Tabela Oculta [Desabilita o editar]
 			selecaoTable(); //Função que pega o id da tabela e coloca nos inputs[]
 			onload(); //Oculta o formulario 2 e 3
+			
 		</script>
 		
-		<h:outputScript name="bootstrap.bundle.min.js"  library="bootstrap/js"  />		
-		<h:outputScript name="jspdf.debug.js"  library="pdf-debug"  />
-			
 	</ui:define>
 </ui:composition>

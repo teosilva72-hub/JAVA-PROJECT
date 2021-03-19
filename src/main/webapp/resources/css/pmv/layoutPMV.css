@@ -1,0 +1,135 @@
+.equip-info {
+  font-size: 5px;
+  position: absolute;
+  left: 50%;
+}
+
+#page-pmv {
+  position: relative;
+  text-align: center;
+}
+
+.equip-info .tableStyle {
+  position: relative;
+  font-size: 10px;
+  width: 250px;
+  height: 69px;
+  border: none;
+  background: #333333;
+  border-right: 6px solid #ff0000; /*#00fa9a;*/
+  border-radius: 0;
+}
+
+.equip-info .tableStyle.change {
+  border-right: 6px solid #00BFFF;
+}
+
+.equip-info .tableStyle.unchanged {
+  opacity: .6;
+}
+
+.equip-info.unable {
+  opacity: .4;
+}
+
+.dms-name {
+  margin-bottom: -5px;
+  height: 13px;
+}
+
+.namePMV {
+  float: left;
+  margin-left: 25%;
+}
+
+.kmPMV {
+  float: right;
+  margin-right: 25%;
+}
+
+.border-table {
+  border-top-style: solid;
+  height: 17px;
+  border-left-style: solid;
+  background-color: #5d5d5d;
+  border-color: #000000;
+  border-width: 1px;
+}
+
+.border-table-right.bottom {
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.border-table-right {
+  border-right-style: solid;
+  border-width: 1px;
+  border-color: #000000;
+}
+
+.padding-pmv {
+  margin-left: 7px;
+  margin-top: 6px;
+}
+
+.picture-box {
+  width: 52px;
+  height: 52px;
+}
+
+.msg-pos {
+  position: absolute;
+  right: 5px;
+  bottom: 3px;
+}
+
+.table-message {
+  width: 150px;
+  color: yellow;
+}
+
+.equip-info .second-img {
+  display: none;
+}
+
+.driver2.equip-info .msg-pos,
+.driver2 .equip-info .msg-pos {
+  bottom: 10px !important;
+}
+
+.driver2.equip-info .message2,
+.driver2 .equip-info .message2 {
+  border-bottom-style: solid !important;
+}
+
+.driver2.equip-info .message3,
+.driver2 .equip-info .message3 {
+  display: none !important;
+}
+
+.driver2 #input-message-3 {
+  display: none !important;
+}
+
+.driver3.equip-info .msg-pos,
+.driver3 .equip-info .msg-pos {
+  right: 55px !important;
+}
+
+.driver3.equip-info .padding-pmv,
+.driver3 .equip-info .padding-pmv {
+  margin-left: 2px !important;
+}
+
+.driver3.equip-info .second-img,
+.driver3 .equip-info .second-img {
+  display: revert !important;
+  margin-right: 33px;
+  margin-top: 6px;
+}
+
+.driver3.equip-info .table-message,
+.driver3 .equip-info .table-message {
+  width: 110px !important;
+}

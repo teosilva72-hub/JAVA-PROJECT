@@ -61,13 +61,13 @@ public class SatReportsController {
 
 	int periodRange, daysInMonth, daysCount;  
 
-	// Variável que recebe o número de registros esperados para uma consula SQL (de acordo com períodos)
+	// Varivel que recebe o nmero de registros esperados para uma consula SQL (de acordo com perodos)
 	private static int numRegisters;	
 
-	// Variável que recebe o número de campos de uma consulta SQL
+	// Varivel que recebe o nmero de campos de uma consulta SQL
 	private static int fieldsNumber;	
 
-	String[] fields, fieldObjectValues, fieldsAux, fieldObjAux; //Nome dos campos // Valores de cada campo -> Atribuidos a variavéis do modelo  
+	String[] fields, fieldObjectValues, fieldsAux, fieldObjAux; //Nome dos campos // Valores de cada campo -> Atribuidos a variavis do modelo  
 
 	String[][] resultQuery; 
 
@@ -390,7 +390,7 @@ public class SatReportsController {
 	//////DESENHAR TABLES 	
 
 	/**
-	 * Método para criar os headers
+	 * Mtodo para criar os headers
 	 * @param field - headers
 	 * @param objectValue - Valores de cada header estanciados em objetos
 	 */
@@ -419,7 +419,7 @@ public class SatReportsController {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
-		/**** CONTAGEM VEÍCULOS ****/			
+		/**** CONTAGEM VECULOS ****/			
 		if(type.equals("1")) {
 
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"), listSats.get(0).getNome(), localeLabel.getStringKey("sat_reports_general_total")};
@@ -427,7 +427,7 @@ public class SatReportsController {
 
 		}
 
-		/**** CONTAGEM DE VEICULOS POR PERÍODO ****/
+		/**** CONTAGEM DE VEICULOS POR PERODO ****/
 		if(type.equals("2")) {
 
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"), 
@@ -453,7 +453,7 @@ public class SatReportsController {
 
 		}
 
-		/**** FLUXO PERÍODO  ****/
+		/**** FLUXO PERODO  ****/
 		if(type.equals("4")) {
 
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"), localeLabel.getStringKey("sat_reports_general_equipment"),
@@ -606,11 +606,11 @@ public class SatReportsController {
     ////BUILD REPORTS
 
 	// REPORTS MODELS
-	// Recebe uma String que define qual o relátorio vai ser chamado
+	// Recebe uma String que define qual o reltorio vai ser chamado
 
 	/**
-	 * Método par criar um relatório de acordo com tipo
-	 * @param type tipo do relatório 
+	 * Mtodo par criar um relatrio de acordo com tipo
+	 * @param type tipo do relatrio 
 	 * @throws Exception
 	 */	
 	public void GetReports(String type) throws Exception{
@@ -629,7 +629,7 @@ public class SatReportsController {
 		
 		String startDate = null, endDate = null, data_anterior = null;
 
-		/*** Obter parâmetros que vem no submit de cada pesquisa ***/
+		/*** Obter parmetros que vem no submit de cada pesquisa ***/
 
 		//Get request values for multiple fields selection
 		Map<String, String[]> parameterMap = (Map<String, String[]>) externalContext.getRequestParameterValuesMap();
@@ -683,7 +683,7 @@ public class SatReportsController {
 		/**** FLUXO MENSAL  ****/
 		if(type.equals("3")) {
 
-			// QUANTOS DIAS POSSUI O RESPECTIVO MÊS
+			// QUANTOS DIAS POSSUI O RESPECTIVO MS
 			YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(satReport.getYear()), Integer.parseInt(satReport.getMonth()));					
 			daysInMonth = yearMonthObject.lengthOfMonth();
 
@@ -694,16 +694,16 @@ public class SatReportsController {
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
 
-			//NÚMERO DE REGISTROS PARA A SAÍDA DE DADOS			
+			//NMERO DE REGISTROS PARA A SADA DE DADOS			
 			setNumRegisters((daysInMonth * periodRange)); 				
 
 		}
 
-		/**** FLUXO POR PERÍODO ****/
+		/**** FLUXO POR PERODO ****/
 
 		else if(type.equals("4")) {
 
-			// QUANTOS DIAS POSSUI O RESPECTIVO MÊS
+			// QUANTOS DIAS POSSUI O RESPECTIVO MS
 			YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(satReport.getYear()), Integer.parseInt(satReport.getMonth()));
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
@@ -714,8 +714,8 @@ public class SatReportsController {
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
 
-			//NÚMERO DE REGISTROS PARA A SAÍDA DE DADOS					
-			setNumRegisters(((daysInMonth * periodRange) * satReport.equipments.length)); // Número de registros
+			//NMERO DE REGISTROS PARA A SADA DE DADOS					
+			setNumRegisters(((daysInMonth * periodRange) * satReport.equipments.length)); // Nmero de registros
 
 		}
 
@@ -723,7 +723,7 @@ public class SatReportsController {
 
 		else {
 
-			//RETORNA NÚMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
+			//RETORNA NMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
 			setNumRegisters(dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod())); 
 			
 			//System.out.println(getNumRegisters());
@@ -743,13 +743,13 @@ public class SatReportsController {
 		start = dta.DateTimeToStringIni(startDate); 
 		end = dta.DateTimeToStringFim(endDate); 
 
-		/** TODO RELATÓRIO PASSA POR AQUI!!! **/
+		/** TODO RELATRIO PASSA POR AQUI!!! **/
 
-		//NÚMERO DE CAMPOS PARA A SAÍDA DE DADOS
-		//LEVA EM CONSIDERAÇÃO NÚMERO DE CAMPOS DA QUERY
+		//NMERO DE CAMPOS PARA A SADA DE DADOS
+		//LEVA EM CONSIDERAO NMERO DE CAMPOS DA QUERY
 		setFieldsNumber(fieldsNumber(type));
 
-		//SELECIONA UMA PROCEDURE DE ACORDO COM PERÍODO SELECIONADO
+		//SELECIONA UMA PROCEDURE DE ACORDO COM PERODO SELECIONADO
 		//procedure = models.SelectProcedureByPeriod(satReport.getPeriod());	
 		
 		resultQuery = new String[getFieldsNumber()][getNumRegisters()];
@@ -759,9 +759,9 @@ public class SatReportsController {
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
 		
-		//System.out.println(query); //debug
+		System.out.println(query); //debug
 
-		//EXECUÇÃO DA QUERY
+		//EXECUO DA QUERY
 		String[][] auxResult = dao.ExecuteQuery(query, getFieldsNumber(), getNumRegisters());
 		
 		//CASO EXISTA REGISTROS ENTRA AQUI
@@ -813,7 +813,7 @@ public class SatReportsController {
 		for(int j = 0; j < lin; j++) {
 		   for(int i = 0; i < col; i++) {
 		
-		// CASO NÃO EXISTA VALOR >>>>>>> PASSA	   
+		// CASO NO EXISTA VALOR >>>>>>> PASSA	   
 		if(auxResult[0][j] != null)	 {  
 		
 		if(satReport.getPeriod().equals("01 hour") || satReport.getPeriod().equals("06 hours"))
@@ -825,7 +825,7 @@ public class SatReportsController {
 			    			 
 			}
 		
-			// Restrição caso não haja dados nos primeiros registros
+			// Restrio caso no haja dados nos primeiros registros
 			if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
 				
 				if(satReport.getPeriod().equals("24 hours"))
@@ -887,19 +887,19 @@ public class SatReportsController {
 			    resultQuery[i][p] = auxResult[i][j];	 
 			
 			
-		   } // CASO NÃO EXISTA VALOR >>>>>>> PASSA
+		   } // CASO NO EXISTA VALOR >>>>>>> PASSA
 		   }
 		}
 		
 		  //// NEW METHOD
 
-			//SAÍDA PARA A TABELA
+			//SADA PARA A TABELA
 			OutPutResult(type);
 			
-			//SAÍDA DO EXCEL
+			//SADA DO EXCEL
 			ExcelOutPut(type, model);
 
-			//BOTÃO DE LIMPAR 
+			//BOTO DE LIMPAR 
 			setClearBool(false);
 
 			//LINK DE DOWNLOAD DO EXCEL
@@ -958,7 +958,7 @@ public class SatReportsController {
 
 		satReport.setPeriod(parameterMap.get("period"));
 
-		// Quantos dias possui o respectivo mês
+		// Quantos dias possui o respectivo ms
 		YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(parameterMap.get("year")), Integer.parseInt(parameterMap.get("month")));
 		int daysInMonth = yearMonthObject.lengthOfMonth();
 
@@ -999,20 +999,20 @@ public class SatReportsController {
 
 	/**
 	 * @author Wellington 10/09/2020
-	 * Método para criar uma Query a ser executada  
+	 * Mtodo para criar uma Query a ser executada  
 	 * @param models - Objeto do tipo QuerieReportsModels
 	 * @param mainQuery - Query principal a ser adicionada
 	 * @return
 	 */
 
-	/*** TO VBV USE WHERE CLAUSE WITH TWO PARAMETERS ***/
+	/*** COUNT VEHICLES ***/
 	public String BuildMainQuery(QueriesReportsModels models, String mainQuery, String index) {    	 
 
 		String query = null;
 
-		query = models.BuildQueryIndex(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR), models.useIndex(index),
+		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR),
 				models.whereClauseDate(start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrder(satReport.getPeriod()));
-
+		
 		return query;
 	}
 	
@@ -1069,9 +1069,7 @@ public class SatReportsController {
 
 	/*** TO VBV USE WHERE CLAUSE WITH TWO PARAMETERS ***/
 	public String BuildMainQuery(QueriesReportsModels models, String mainQuery) {    
-		
-		System.out.println("TABLE: "+RoadConcessionaire.tableCCR);
-
+				
 		String query = null;
 
 		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR),
@@ -1132,11 +1130,11 @@ public class SatReportsController {
 
 	/**********************************************************************************************************/
 
-    /////// CONSTRUÇÃO DA QUERY
+    /////// CONSTRUO DA QUERY
 
 	/**
-	 * Método que retorna um query específica de acordo com tipo
-	 * @param type - Tipo de específico do relatório
+	 * Mtodo que retorna um query especfica de acordo com tipo
+	 * @param type - Tipo de especfico do relatrio
 	 * @param models - Objeto do tipo QueriesReportsModels
 	 * @param satModels - Objeto do tipo SatQueriesModels
 	 * @return query
@@ -1159,7 +1157,7 @@ public class SatReportsController {
 		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
 		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
 		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
-		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeCCRMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break; //MUDANÇA CCR
+		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeCCRMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break; //MUDANA CCR
 		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
 		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break; 
 		case "9": query = BuildMainQueryLLType2(models, satModels.CCRClasses(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
@@ -1175,7 +1173,7 @@ public class SatReportsController {
 
 	}
 
-     /////// CONSTRUÇÃO DA QUERY  
+     /////// CONSTRUO DA QUERY  
 
 	///////////////////////////////////
 	//QUERY FOR METHODS
@@ -1193,19 +1191,19 @@ public class SatReportsController {
 
 	/**
 	 * @author Wellington 10/09/2020
-	 * Método para gerenciar construtores a fim de criar saidas de dados dinamicamente.
-	 * @param type - Tipo do satReport (Define qual é a sua finalidade)
+	 * Mtodo para gerenciar construtores a fim de criar saidas de dados dinamicamente.
+	 * @param type - Tipo do satReport (Define qual  a sua finalidade)
 	 */
 
 	//PREENCHER SAIDA DE DADOS 
-	// POR TIPO DE RELATÓRIO
+	// POR TIPO DE RELATRIO
 	public void OutPutResult(String type) {  
 
-		//ACESSAR DADOS DO RELATÓRIOF
+		//ACESSAR DADOS DO RELATRIOF
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 
-		//FIELDS EXTERNOS ARMAZENADOS NA REQUISIÇÃO
+		//FIELDS EXTERNOS ARMAZENADOS NA REQUISIO
 		fields = (String[]) externalContext.getSessionMap().get("fields");
 		fieldObjectValues =  (String[]) externalContext.getSessionMap().get("fieldsObject");
 
@@ -1259,7 +1257,7 @@ public class SatReportsController {
 			//FLUXO POR PERIODO CONSTRUCTOR		
 			 weighingBuilder();
 			 
-			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
+			//REORDERNAR HEADERS DE ACORDO COM SELEO => CHECKBOXES DE CLASSES
 			//if(satReport.classes.length < 13)
 			//   ReorderTableHeaderForWeighing(satReport.classes);  
 			
@@ -1274,7 +1272,7 @@ public class SatReportsController {
 			//CLASS TYPE CONSTRUCTOR 
 			classesBuilder();    
 			
-			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE CLASSES
+			//REORDERNAR HEADERS DE ACORDO COM SELEO => CHECKBOXES DE CLASSES
 			//if(satReport.classes.length < 13)
 			//ReorderTableHeaderForClasses(satReport.classes);
 
@@ -1289,7 +1287,7 @@ public class SatReportsController {
 			//AXLE TYPE CONSTRUCTOR
 			axlesBuilder();
 			
-			//REORDERNAR HEADERS DE ACORDO COM SELEÇÃO => CHECKBOXES DE AXLES
+			//REORDERNAR HEADERS DE ACORDO COM SELEO => CHECKBOXES DE AXLES
 			//if(satReport.axles.length < 9)
 			//ReorderTableHeaderForAxles(satReport.axles);
 
@@ -1559,7 +1557,7 @@ public class SatReportsController {
 			}
 		}
 	
-	//REORDENAR TABLE FRONT END - CONTAGEM VEÍCULOS
+	//REORDENAR TABLE FRONT END - CONTAGEM VECULOS
 	public void ReorderTableHeaderForCountVehicles(String[] equipments) {
 		
 			fields = new String[(3 + equipments.length)];
@@ -1588,7 +1586,7 @@ public class SatReportsController {
 				}   
 			  }
 					
-			//PREENCHER VARIÁVEIS DOS SATS
+			//PREENCHER VARIVEIS DOS SATS
              for(int i = 0; i < equipments.length; i++) {	
 
 				fields[i+2] = satNames[i];
@@ -1655,7 +1653,7 @@ public class SatReportsController {
 	//DIRECTIONS METHODS
 	/////////////////////////////////  
 
-	//CARREGAR DIREÇÕES DB
+	//CARREGAR DIREES DB
 	public void loadDirections() throws Exception{			
 
 		equipDAO  = new EquipmentsDAO();
@@ -1669,7 +1667,7 @@ public class SatReportsController {
 
 	}
 
-	//POPULAR DIREÇÕES -> Internacionalização
+	//POPULAR DIREES -> Internacionalizao
 	public void popDirections(String faixa1) {
 
 		if (faixa1.equals("N")) {
@@ -1722,7 +1720,7 @@ public class SatReportsController {
 	//SAIDA DE DADOS
 	/////////////////////////////////      
 
-	/////// FIELDS NUMBER - SAÍDA DE DADO
+	/////// FIELDS NUMBER - SADA DE DADO
 
 	public Integer fieldsNumber(String type) {
 
@@ -1733,13 +1731,13 @@ public class SatReportsController {
 
 		int fields = 0;
 
-		/**** CONTAGEM VEÍCULOS ****/		
+		/**** CONTAGEM VECULOS ****/		
 		if(type.equals("1")) {    		
 				fields =  (3 + satReport.equipments.length);		
 
 		}
 
-		/**** CONTAGEM VEÍCULOS ****/		
+		/**** CONTAGEM VECULOS ****/		
 		if(type.equals("2")) {    
 			fields = length;   
 			
@@ -1750,7 +1748,7 @@ public class SatReportsController {
 			fields = (length + 2);    		 
 		}
 
-		/**** FLUXO PERÍODO  ****/
+		/**** FLUXO PERODO  ****/
 		if(type.equals("4")) {    		
 			fields = 69;    		 
 		}
@@ -1805,7 +1803,7 @@ public class SatReportsController {
 		return fields;    	 
 	}
 
-     /////// FIELDS NUMBER - SAÍDA DE DADO 
+     /////// FIELDS NUMBER - SADA DE DADO 
 
 	/**********************************************************************************************************/
 
@@ -1860,7 +1858,7 @@ public class SatReportsController {
 			model.StandardStyles(); //Set Style
 			model.StandardBorders(); // Set Borders
 						
-			//Chamada ao Método padrão do Excel
+			//Chamada ao Mtodo padro do Excel
 			model.StandardExcelModel(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 					RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
 					col, colStartDate, colEndDate, resultQuery);
@@ -1887,8 +1885,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 			
 			//DISPLAY INFO ON TABLE
 			displayEquipInfo = equip+"  "+km+"  "+road;			
@@ -1929,8 +1927,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			// Create Fields 
 			CreateFields(type); 
@@ -1967,8 +1965,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Directions array
 			String[] dir1 = new String[1];
@@ -2055,8 +2053,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes); 
@@ -2098,8 +2096,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder header
 			//ReorderTableHeaderForAxles(satReport.axles);  
@@ -2178,8 +2176,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes);    		
@@ -2222,8 +2220,8 @@ public class SatReportsController {
 			lane1 = info.getFaixa1();
 
 			//Directions 
-			direction1 = tm.CheckDirection1(lane1);
-			direction2 = tm.CheckDirection2(lane1);
+			direction1 = tm.CheckDirection(lane1);
+			direction2 = tm.Check2ndDirection(lane1);
 
 			//Reorder Tables
 			//ReorderTableHeaderForClasses(satReport.classes);    		
@@ -2263,8 +2261,8 @@ public class SatReportsController {
 					lane1 = info.getFaixa1();
 
 					//Directions 
-					direction1 = tm.CheckDirection1(lane1);
-					direction2 = tm.CheckDirection2(lane1);
+					direction1 = tm.CheckDirection(lane1);
+					direction2 = tm.Check2ndDirection(lane1);
 
 					//Colunas que iniciam Sentido 1 e Sentido 2
 					int iniDir1 = 8, iniDir2 = 15;		
@@ -2304,8 +2302,8 @@ public class SatReportsController {
 					lane1 = info.getFaixa1();
 
 					//Directions 
-					direction1 = tm.CheckDirection1(lane1);
-					direction2 = tm.CheckDirection2(lane1);
+					direction1 = tm.CheckDirection(lane1);
+					direction2 = tm.Check2ndDirection(lane1);
 
 					//Colunas que iniciam Sentido 1 e Sentido 2
 					int iniDir1 = 20, iniDir2 = 39;	  		
