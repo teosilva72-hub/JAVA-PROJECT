@@ -20,6 +20,10 @@
   border-radius: 0;
 }
 
+.equip-info .tableStyle.on {
+  border-right: 6px solid #00fa9a;
+}
+
 .equip-info .tableStyle.change {
   border-right: 6px solid #00BFFF;
 }
