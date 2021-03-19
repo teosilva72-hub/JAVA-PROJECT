@@ -937,7 +937,7 @@ public class OccurrencesBean {
 		boolean updateTable = true;
 		//passando valores das varaveis para o banco de dados
 		dao.editTable(updateTable, nameUser, nivelUser, data.getData_number());			
-
+//
 		//btn
 		fields = false;
 		reset = false;
