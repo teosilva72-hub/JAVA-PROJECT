@@ -229,13 +229,44 @@
 								</div>
 
 								<div id="messages-list">
-									<select id="availableMessage" class="form-select" size="6" aria-label="select message">
+									<select id="availableMessage" class="form-select" size="6"
+										aria-label="select message">
 										<option value="0" selected="select">Default</option>
-										<c:forEach items="#{pmvMessage.messages}" var="opt">
-											<option value="#{opt.id_message}" type="#{opt.tipo}" driver="driver#{opt.driver}">#{opt.id_message} - #{opt.tipo} -
-												#{opt.nome}</option>
-										</c:forEach>
+
 									</select>
+									<c:forEach items="#{pmvMessage.messages}" var="opt">
+										<div id="listSelectPMV#{opt.id_message}" type="#{opt.tipo}" name="#{opt.nome}"
+											driver="#{opt.driver}">
+											<input type="hidden" name="page1" imageId="#{opt.pages[0].id_image}"
+												image="#{opt.pages[0].image}" imageId2="#{opt.pages[0].id_image2}"
+												image2="#{opt.pages[0].image2}" line1="#{opt.pages[0].text1}"
+												line2="#{opt.pages[0].text2}" line3="#{opt.pages[0].text3}"
+												timer="#{opt.pages[0].timer}" />
+											<input type="hidden" name="page2" imageId="#{opt.pages[1].id_image}"
+												image="#{opt.pages[1].image}" imageId2="#{opt.pages[1].id_image2}"
+												image2="#{opt.pages[1].image2}" line1="#{opt.pages[1].text1}"
+												line2="#{opt.pages[1].text2}" line3="#{opt.pages[1].text3}"
+												timer="#{opt.pages[1].timer}" />
+											<input type="hidden" name="page3" imageId="#{opt.pages[2].id_image}"
+												image="#{opt.pages[2].image}" imageId2="#{opt.pages[2].id_image2}"
+												image2="#{opt.pages[2].image2}" line1="#{opt.pages[2].text1}"
+												line2="#{opt.pages[2].text2}" line3="#{opt.pages[2].text3}"
+												timer="#{opt.pages[2].timer}" />
+											<input type="hidden" name="page4" imageId="#{opt.pages[3].id_image}"
+												image="#{opt.pages[3].image}" imageId2="#{opt.pages[3].id_image2}"
+												image2="#{opt.pages[3].image2}" line1="#{opt.pages[3].text1}"
+												line2="#{opt.pages[3].text2}" line3="#{opt.pages[3].text3}"
+												timer="#{opt.pages[3].timer}" />
+											<input type="hidden" name="page5" imageId="#{opt.pages[4].id_image}"
+												image="#{opt.pages[4].image}" imageId2="#{opt.pages[4].id_image2}"
+												image2="#{opt.pages[4].image2}" line1="#{opt.pages[4].text1}"
+												line2="#{opt.pages[4].text2}" line3="#{opt.pages[4].text3}"
+												timer="#{opt.pages[4].timer}" />
+										</div>
+										<option value="#{opt.id_message}" type="#{opt.tipo}"
+											driver="driver#{opt.driver}">#{opt.id_message} - #{opt.tipo} -
+											#{opt.nome}</option>
+									</c:forEach>
 								</div>
 								<!-- INICIO DOS BOTÔES -->
 								<div class="btn-group btn-group-sm mt-2 d-flex" role="group" aria-label="button menu">

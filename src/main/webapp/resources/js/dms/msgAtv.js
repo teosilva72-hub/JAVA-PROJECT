@@ -2,6 +2,8 @@ import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let listPMV = [];
 let listChangePMV = [];
+let listSelectPMV = [];
+let animationPreview = 0;
 
 async function main() {
 	await init();
@@ -13,7 +15,6 @@ async function main() {
 	const inputDriver = $('[name=typePMV]')
 	const pagePMV = $('#page-pmv')
 	const selectType = $("#selectionType")
-	const availableMessage = $(`#availableMessage option`)
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -24,7 +25,7 @@ async function main() {
 		$('#allPMV').height($('.jumbotron').height() - 16)
 	}
 
-	const animationPMV = (img1, img2, message, pmv) => {
+	const animationPMV = (img1, img2, message, pmv, preview) => {
 		let at = 300
 		let driver = pmv.type_page()
 
@@ -51,10 +52,16 @@ async function main() {
 				})
 			})
 
-			if (pmv.len() > 1)
-				setTimeout(() => {
+			let id;
+
+			if (pmv.len() > 1) {
+				id = setTimeout(() => {
 					startAnimation();
 				}, page.timer() * 1000);
+
+				if (preview)
+					animationPreview = id;
+			}
 		}
 
 		startAnimation();
@@ -70,7 +77,7 @@ async function main() {
 			const img2 = tablePMV.find('.picture-box.secondary')
 			const message = tablePMV.find('#message')
 
-			animationPMV(img1, img2, message, pmv)
+			animationPMV(img1, img2, message, pmv, false)
 		});
 
 		listChangePMV.forEach(pmv => {
@@ -82,12 +89,12 @@ async function main() {
 			const img2 = tablePMV.find('.picture-box.secondary')
 			const message = tablePMV.find('#message')
 
-			animationPMV(img1, img2, message, pmv)
+			animationPMV(img1, img2, message, pmv, false)
 		});
 	}
 
 	const collectPMV = () => {
-		$('[id^=listPMV], [id^=listChangePMV]').each(function () {
+		$('[id^=listPMV], [id^=listChangePMV], [id^=listSelectPMV]').each(function () {
 			let data = $(this);
 			let driver;
 
@@ -114,7 +121,7 @@ async function main() {
 			}
 
 			if (driver) {
-				let pmv = PMV.new(Number(data.attr('id').match(/\d+/g)[0]) || 0, data.attr('type') || "", data.attr('name') || "", driver);
+				let pmv = PMV.new(Number((data.attr('id').match(/\d+/g) || [0])[0]), data.attr('type') || "", data.attr('name') || "", driver);
 
 				data.children().each(function () {
 					let page = $(this);
@@ -134,14 +141,28 @@ async function main() {
 
 				if (data.attr('id').startsWith("listPMV"))
 					listPMV.push(pmv);
-				else {
+				else if (data.attr('id').startsWith("listChangePMV")) {
 					listChangePMV.push(pmv);
 					data.next().find('.tableStyle').addClass(data.attr('status') == "true" ? "unchanged" : "change")
+				} else {
+					listSelectPMV.push(pmv);
+					data.next().val(listSelectPMV.length - 1)
 				}
 
 			}
 			data.remove()
 		})
+	}
+
+	const previewPMV = idx => {
+		clearTimeout(animationPreview)
+		pagePMV.find('.dmsTab').text(listSelectPMV[idx].type_alert('&this'))
+
+		const img1 = pagePMV.find('.picture-box.primary')
+		const img2 = pagePMV.find('.picture-box.secondary')
+		const message = pagePMV.find('#message')
+
+		animationPMV(img1, img2, message, listSelectPMV[idx], true)
 	}
 
 	$(function () {
@@ -159,11 +180,13 @@ async function main() {
 			}
 		})
 
+		$('#messages-list > option').appendTo($(`#availableMessage`));
+
 		allChecks.filter(":enabled").change(function () {
 			let check = $(this)
 			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
 
-			let verif = allChecks.filter(":enabled").map(function(a, b) { return $(b).prop('checked') }).toArray()
+			let verif = allChecks.filter(":enabled").map(function (a, b) { return $(b).prop('checked') }).toArray()
 
 			if (verif.reduce(function (a, b) { return a && b }))
 				checksListAll.prop('checked', true);
@@ -182,23 +205,27 @@ async function main() {
 		})
 
 		inputDriver.change(function () {
-			equipInfoView.addClass('unable');
-			equipInfoView.filter(`.${$(this).val()}`).removeClass('unable');
+			equipInfoView.addClass('unable').filter(`.${$(this).val()}`).removeClass('unable');
 			equipInfoView.trigger('change');
 			allChecks.prop('checked', false);
 			checksListAll.prop('checked', false);
 			pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
-			availableMessage.filter('[driver]').hide().filter(`[driver=${$(this).val()}]`).show();
+			$(`#availableMessage option`).filter('option[driver]').hide().filter(`option[driver=${$(this).val()}]`).show();
 			selectType.val('All');
 		})
 
-		selectType.change(function() {
+		selectType.change(function () {
 			let type = $(this).val();
-			let msg = availableMessage.filter(`[driver=${inputDriver.filter(':checked').val()}]`);
+			let msg = $(`#availableMessage option`).filter(`option[driver=${inputDriver.filter(':checked').val()}]`);
 			if (type === "All")
 				msg.show();
 			else
 				msg.hide().filter(`[type=${type}]`).show();
+		})
+
+		$(`#availableMessage`).change(function() {
+			let idx = $(this).val();
+			previewPMV(idx);
 		})
 
 		pmvResize();
