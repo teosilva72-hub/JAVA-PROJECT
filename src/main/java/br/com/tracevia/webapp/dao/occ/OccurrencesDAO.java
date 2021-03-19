@@ -208,7 +208,7 @@ public class OccurrencesDAO {
 		return status;
 
 	}
-	
+
 	//m�todo atualizar ocorr�ncia 
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());

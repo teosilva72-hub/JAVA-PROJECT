@@ -157,7 +157,7 @@
 			<!-- Imagem 1 -->
 			<div class="squarebox" id="divs" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs1">
-					<iframe class="grid-img" id="frame1" src="http://localhost:8080/map/mapView.xhtml" />
+					<iframe class="grid-img" id="frame1" src="http://localhost:80/map/mapView.xhtml"/>
 				</section>
 				<button type="button" id="zoomIn1" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
 					title="Zoom In">
@@ -172,10 +172,11 @@
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
+			
 			<!-- Imagem 2 -->
 			<div class="squarebox1" id="divs1" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs2">
-					<iframe class="grid-img" id="frame2" src="http://localhost:8080/map/mapView.xhtml" />
+					<iframe class="grid-img" id="frame2" src="http://localhost:80/map/mapView.xhtml" />
 				</section>
 				<button type="button" id="zoomIn2" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
 					title="Zoom In">
@@ -191,10 +192,11 @@
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
+			
 			<!-- Imagem 3 -->
 			<div class="squarebox2" id="divs2" scroll-zoom="0.5" max-scale="4">
 				<section id="zoomDivs3">
-					<iframe class="grid-img" id="frame3" src="http://localhost:8080/map/mapView.xhtml" />
+					<iframe class="grid-img" id="frame3" src="http://localhost:80/map/mapView.xhtml" />
 				</section>
 				<button type="button" id="zoomIn3" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
 					title="Zoom In">
@@ -210,7 +212,6 @@
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
-
 		</div>
 
 		<!-- OVERFLOW -->
@@ -609,12 +610,12 @@
 
 	</ui:define>
 
-	<ui:define name="modal-content">
+	
 
 		<!-- ************************************************************************************* -->
 		<!-- ************************************* CREATE **************************************** -->
 		<!-- ************************************************************************************* -->
-
+	<ui:define name="modal-content">
 		<div class="modal fade" id="modaladd" role="dialog">
 			<div class="modal-dialog" role="document">
 
@@ -1346,7 +1347,7 @@
 
 		<!-- Modal Size Equipments -->
 		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog" id="moddialog">
+			<div class="modal-dialog">
 				<div class="modal-content modal-sm">
 					<div class="modal-header" id="modheaderpad">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1382,7 +1383,6 @@
 	<h:outputScript name="map.js" library="js/map" />
 	<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
 		
-	
 		<!-- Mudança -->
 
 		<script>
@@ -1561,35 +1561,35 @@
 			//ZOOM EVENT
 			document.getElementById("zoomIn").addEventListener("click",
 				function () {
-					zoomIn('overflow')
+					zoomIn($('section.overflow'))
 				}, false);
 			document.getElementById("zoomOut").addEventListener("click",
 				function () {
-					zoomOut('overflow')
+					zoomOut($('section.overflow'))
 				}, false);
 			document.getElementById("zoomIn1").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs1')
+					$('#frame1')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut1").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs1')
+					$('#frame1')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 			document.getElementById("zoomIn2").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs2')
+					$('#frame2')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut2").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs2')
+					$('#frame2')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 			document.getElementById("zoomIn3").addEventListener("click",
 				function () {
-					zoomIn('zoomDivs3')
+					$('#frame3')[0].contentWindow.zoomIn("section.overflow")
 				}, false);
 			document.getElementById("zoomOut3").addEventListener("click",
 				function () {
-					zoomOut('zoomDivs3')
+					$('#frame3')[0].contentWindow.zoomOut("section.overflow")
 				}, false);
 
 			//Coefficient Script

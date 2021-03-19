@@ -1,6 +1,12 @@
 var widthMax = 1000
 var heightMax = 1000
 
+$(function() {
+		setTimeout(function () {
+			$('#message-show').hide(); 		
+		}, 5000); 
+	});
+
 $(function () {
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
@@ -11,111 +17,84 @@ $(function () {
 	barResize()
 	//Scroll Zoom Map Full END
 
-	//Validate
-	var form = document.querySelectorAll('form');
-	for (const f of form) {
-		f.addEventListener('submit', function (e) {
-			let count = 0
-			let requiredField = f.querySelectorAll('[requiredField]');
-			e.preventDefault()
-			if (requiredField.length) {
-				for (const required of requiredField) {
-					if (!required.value ||
-						(required.getAttribute('requiredField')) === 'number' &&
-						isNaN(required.value)) {
-
-						count++
-
-						required.style.border = "solid 2px red";
-					} else {
-						required.style.border = "solid 2px green";
-					};
-				};
-			};
-			if (!count) {
-				let data = {}
-				for (const inputForm of $(f).find('input, select')) {
-					data[inputForm.getAttribute('name')] = inputForm.value
-				}
-				$.post(f.getAttribute('action'), data)
-			}
-		});
-	};
-	//Validate End
-
+	$(".overflow").css("height", $(this).height())
+	$(window).resize(function () {
+		$(".overflow").css("height", $(this).height())
+	})
+																
 	//FULLSCREEN
-	$('.zoomFull').addClass('img-enlargeable').click(function () {
-		var src = this.getAttribute('target');
-		var modal;
-		let pos = { top: 0, left: 0, x: 0, y: 0 }
-		let img = $('<img />').attr('src', src).addClass('box-img')
-		let frame = $('<div></div>').css({
-			width: '90%', height: '90%',
-			transform: 'translate(-50%, -50%)',
-			position: 'relative',
-			top: '50%', left: '50%',
-			overflow: 'hidden',
-		}).append(img)
+	// $('.zoomFull').addClass('img-enlargeable').click(function () {
+	//	var src = this.getAttribute('target');
+	//	var modal;
+	//	let pos = { top: 0, left: 0, x: 0, y: 0 }
+	//	let img = $('<img />').attr('src', src).addClass('box-img')
+	//	let frame = $('<div></div>').css({
+	//		width: '90%', height: '90%',
+	//		transform: 'translate(-50%, -50%)',
+	//		position: 'relative',
+	//		top: '50%', left: '50%',
+	//		overflow: 'hidden',
+	//	}).append(img)
 
-		function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
+	//	function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
 
-		modal = $('<div></div>').css({
-			background: 'RGBA(0,0,0,1.0)',
-			width: '100%', height: '100%',
-			position: 'fixed',
-			zIndex: '10000',
-			top: '0', left: '0',
-		}).append(frame).click(function () { removeModal(); }).appendTo('body')
+	//	modal = $('<div></div>').css({
+	//		background: 'RGBA(0,0,0,1.0)',
+	//		width: '100%', height: '100%',
+	//		position: 'fixed',
+	//		zIndex: '10000',
+	//		top: '0', left: '0',
+	//	}).append(frame).click(function () { removeModal(); }).appendTo('body')
 		//Zoom
-		img.click(function (e) { e.stopPropagation() })
-			.on("dragstart", function () { return false })
-			.on("mousedown", function (down) {
-				if (down.target.hasAttribute("zoom")) {
-					pos = {
-						left: frame.scrollLeft(),
-						top: frame.scrollTop(),
-						x: down.clientX,
-						y: down.clientY,
-					};
-					img.on("mousemove", function (move) {
-						img.css({ "cursor": "grabbing" })
-							.off("mouseup").on("mouseup", function () {
-								img.css({ "cursor": "zoom-out" }).off("mousemove")
-							})
-						const dx = move.clientX - pos.x;
-						const dy = move.clientY - pos.y;
-						frame
-							.scrollTop(pos.top - dy)
-							.scrollLeft(pos.left - dx)
-					}).off("mouseup").on("mouseup", function () {
-						img.css({ "cursor": "zoom-in" }).off("mousemove")
-						this.toggleAttribute("zoom")
-					})
-				} else {
-					img.off("mouseup").on("mouseup", function (e) {
-						let click = {
-							top: (e.pageY - img.offset().top) / img.height(),
-							left: (e.pageX - img.offset().left) / img.width(),
-						}
-						this.toggleAttribute("zoom")
-						img.css({ "cursor": "zoom-out" })
-						frame
-							.scrollLeft(
-								click.left * e.target.scrollWidth - frame.width() / 2
-							).scrollTop(
-								click.top * e.target.scrollHeight - frame.height() / 2
+	//	img.click(function (e) { e.stopPropagation() })
+	//		.on("dragstart", function () { return false })
+	//		.on("mousedown", function (down) {
+	//			if (down.target.hasAttribute("zoom")) {
+	//				pos = {
+	//					left: frame.scrollLeft(),
+	//					top: frame.scrollTop(),
+	//					x: down.clientX,
+	//					y: down.clientY,
+	//				};
+	//				img.on("mousemove", function (move) {
+	//					img.css({ "cursor": "grabbing" })
+	//						.off("mouseup").on("mouseup", function () {
+	//							img.css({ "cursor": "zoom-out" }).off("mousemove")
+	//						})
+	//					const dx = move.clientX - pos.x;
+	//					const dy = move.clientY - pos.y;
+	//					frame
+	//						.scrollTop(pos.top - dy)
+	//						.scrollLeft(pos.left - dx)
+	//				}).off("mouseup").on("mouseup", function () {
+	//					img.css({ "cursor": "zoom-in" }).off("mousemove")
+	//					this.toggleAttribute("zoom")
+	//				})
+	//			} else {
+	//				img.off("mouseup").on("mouseup", function (e) {
+	//					let click = {
+	//						top: (e.pageY - img.offset().top) / img.height(),
+	//						left: (e.pageX - img.offset().left) / img.width(),
+	//					}
+	//					this.toggleAttribute("zoom")
+	//					img.css({ "cursor": "zoom-out" })
+	//					frame
+	//						.scrollLeft(
+	//							click.left * e.target.scrollWidth - frame.width() / 2
+	//						).scrollTop(
+	//							click.top * e.target.scrollHeight - frame.height() / 2
 
-							)
+	//						)
 
-					})
-				}
-			});
+	//				})
+	//			}
+	//		});
 
 		// handling ESC
-		$('body').on('keyup.modal-close', function (e) {
-			if (e.key === 'Escape') { removeModal(); }
-		});
-	});
+	//	$('body').on('keyup.modal-close', function (e) {
+	//		if (e.key === 'Escape') { removeModal(); }
+	//	});
+//	});
 	// FULLSCREEN END
 
 	// POS EQUIP
@@ -127,6 +106,8 @@ $(function () {
 		resizeEquip(equip.closest('[scroll-zoom]'))
 
 		equip.dblclick(function () {
+			posReset();
+
 			id = equip.attr('id').match(/\d+/g)[0];
 			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 			toDrag = `#${equip.attr('id')}`
@@ -138,8 +119,6 @@ $(function () {
 			posEquip(equip)
 		})
 
-		$('zoomIn').click(function () { zoomInFactor(toDrag, 0.01) })
-		$('zoomOut').click(function () { zoomInFactor(toDrag, 0.01) })
 	})
 	
 	//Equipments change sizes END
@@ -149,6 +128,10 @@ $(function () {
 	})
 
 })
+
+function posReset() {
+	$(toDrag).off('mousedown');
+}
 
 function ScrollZoom(container) {
 	let max_scale = Number(container.attr('max-scale')) || 4
@@ -215,7 +198,7 @@ function ScrollZoom(container) {
 
 // SIZE BAR EQUIPMENTS
 
-function barResize(){
+ function barResize(){
 
 	let size = $('.bar')
 	let input = size.find('input')
@@ -249,7 +232,8 @@ function barResize(){
 	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
 	
 	input.change(function () {
-		resizeEquip($(`${input.attr("from")}`))
+		resizeEquip($(`${input.attr("from")}`).parent())
+		console.log($(`${input.attr("from")}`).parent())
 	})
 }
 
@@ -287,6 +271,50 @@ function barResize(){
 			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
 			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 		});
+
+		if (equip.attr("class").includes('equip-box-sat')) {
+			let sat_status = equip.attr('status')
+			let interval =  Number(equip.attr('status-period'))
+					//TESTE		
+																
+			//Green Color > indica que o equipamento está conectado
+			if (sat_status > 0 && interval == 30) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00FF0D',
+					color: 'black'
+				});
+
+	
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 45) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#00BFFF',
+					color: 'black'
+				});
+
+			}
+			//SeaGreen Color > indica que o equipamento está com perca de pacotes
+			else if (sat_status > 0 && interval == 8) {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FFFF00',
+					color: 'black'
+				});
+
+			}
+			//Red Color > indica que o equipamento está sem comunicação
+			else {
+				equip.find("[id^=satName]").css({
+					"background-color": '#FF0000',
+					color: 'white'
+				});
+
+			}
+		}
+
+		if (equip.attr("class").includes('equip-box')) {
+
+		}
 	}
 	// EQUIPMENT POSITION END
 	
@@ -346,62 +374,19 @@ function mapMove(ele) {
 }
 
 //TODO: ZOOM VARS // compartilhar escala
-var zoom = 1;
-
-var zoomEquip = 1;
-
-var zoomStep = 1;
-var zoomMin = 1;
-var zoomMax = 7;
-var left = 1;
-var top = 1;
-var leftStep = 3;
-var topStep = 3;
-var ZoomEquipStep = 0.20;
-
+var up = $.Event("DOMMouseScroll",{delta:100}); 
+var down = $.Event("DOMMouseScroll",{delta:-100});
+ 
 function zoomIn(id) {
 
-	if (zoom < zoomMax) {
-		zoom += zoomStep;
-		left += leftStep;
-		document.getElementById(id).style.transform = "scale(" + zoom + ")";
-	}
-	//alert(zoom);
+	$(id).trigger(up);
+
 };
 
 function zoomOut(id) {
 
-	if (zoom > zoomMin) {
-		zoom -= zoomStep;
-		left += leftStep;
-
-		document.getElementById(id).style.transform = "scale(" + zoom + ")";
-		//document.getElementById(id).style.marginRight =  left + "%";
-	}
-}
-
-function zoomInFactor(id, factor) {
-	if (zoom < zoomMax) {
-		if (zoomEquip < 1.2500000000000002) {
-			zoomEquip += (factor);
-			left += leftStep;
-			top += topStep;
-			document.getElementById(id).style.transform = "scale(" + zoomEquip + ")";
-			//document.getElementById(id).style.marginTop = top +"%";
-		}
-		//alert('nothing');
-	}
+	$(id).trigger(down);
 };
-
-function zoomOutFactor(id, factor) {
-	if (zoom > zoomMin) {
-		zoomEquip -= (factor);
-		left += leftStep;
-
-		document.getElementById(id).style.transform = "scale(" + zoomEquip + ")";
-		//document.getElementById(id).style.marginRight =  left + "%";
-	}
-}
 
 // Drop Element	
 
@@ -461,32 +446,67 @@ function dragEquip() {
 	}
 
 	//closeDragElement();
-}
-
-function closeDragElement() {
+	function closeDragElement() {
 	// Stop moving when mouse button is released:
 	$(document)
 		.off("mouseup")
 		.off("mousemove")
 }
 
+}
+
+
 //Drag/Drop Element END
 
 
-// iFrame Position
+// Map div Iframe Reload
+$(document).ready(function(){
+	$('#fulldiv1').click(function(){
+		$('#frame1').attr('src',$('#frame1').attr('src'));
+	return false;
+	});
+});
 
-var documentWidth = parent.window.innerWidth;
-       var documentHeight = parent.window.innerHeight;
-       var iframeWidth = window.innerWidth;
-       var iframeHeight = window.innerHeight;
-       // Get Left Position
-       var iframeX1 = window.parent.document.getElementById('frame1').offsetLeft;
-	   var iframeX2 = window.parent.document.getElementById('frame2').offsetLeft;
-	   var iframeX3 = window.parent.document.getElementById('frame3').offsetLeft;
-       // Get Top Position
-       var iframeY1 = window.parent.document.getElementById('frame1').offsetTop;
-	   var iframeY2 = window.parent.document.getElementById('frame2').offsetTop;
-	   var iframeY3 = window.parent.document.getElementById('frame3').offsetTop;
+$(document).ready(function(){
+	$('#fulldiv2').click(function(){
+		$('#frame2').attr('src',$('#frame2').attr('src'));
+	return false;
+	});
+});
 
-	   
-//iFrame Position End
+$(document).ready(function(){
+	$('#fulldiv3').click(function(){
+		$('#frame3').attr('src',$('#frame3').attr('src'));
+	return false;
+	});
+});
+
+
+
+// Map div Iframe Reload END
+
+//Delete Modal Name
+ function DelName(){
+}
+//Delete Modal Name End
+
+
+//prevent modal form submit
+//use ajax to send data
+$('#register-equip-form').submit(function(e) {
+	e.preventDefault();
+});
+
+//Reload on Cancel Position
+function reloadAfterCancelPos(){
+	setTimeout(function() {
+	window.location.reload(1);
+  }, 2000); // 2 sec						
+}
+
+//Use validation on click button submit   
+//Create button
+function checkValidation(){	    	
+   $("#register-equip-form").valid();	        
+}
+
