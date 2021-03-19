@@ -146,12 +146,15 @@ async function main() {
 					data.next().find('.tableStyle').addClass(data.attr('status') == "true" ? "unchanged" : "change")
 				} else {
 					listSelectPMV.push(pmv);
-					data.next().val(listSelectPMV.length - 1)
+					data.next().val(listSelectPMV.length)
 				}
 
 			}
 			data.remove()
 		})
+		let pmv = PMV.new(0, "", "", PaginaType.Type3)
+		pmv.add_page_default();
+		listSelectPMV.unshift(pmv);
 	}
 
 	const previewPMV = idx => {
@@ -212,6 +215,7 @@ async function main() {
 			pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
 			$(`#availableMessage option`).filter('option[driver]').hide().filter(`option[driver=${$(this).val()}]`).show();
 			selectType.val('All');
+			previewPMV(0);
 		})
 
 		selectType.change(function () {
