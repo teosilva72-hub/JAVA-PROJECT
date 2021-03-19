@@ -26,7 +26,7 @@ async function main() {
 	}
 
 	const animationPMV = (img1, img2, message, pmv, preview) => {
-		let at = 300
+		let at = 400
 		let driver = pmv.type_page()
 
 		const startAnimation = () => {
