@@ -114,50 +114,6 @@ body {
   z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
 }
 
-.equip-box-sat {
-  position: absolute;
-  height: 75px;
-}
-
-.equip-info {
-  position: absolute;
-  font-size: 5px;
-}
-
-.equip-info .tableStyle {
-  position: relative;
-  font-size: 10px;
-  width: 250px;
-  border: none;
-  background: #333333;
-  border-right: 6px solid #00fa9a;
-  border-radius: 0;
-}
-
-.border-table {
-  border-top-style: solid;
-  height: 17px;
-  border-left-style: solid;
-  background-color: #5d5d5d;
-  border-color: #000000;
-  border-width: 1px;
-}
-
-.border-table-right.bottom {
-  border-bottom-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.border-table-right {
-  border-right-style: solid;
-  border-width: 1px;
-  border-color: #000000;
-}
-
-.padding-pmv {
-  padding: 3px;
-}
 
 .card {
   z-index: 9999;
@@ -170,19 +126,18 @@ body {
   border: none;
 }
 
+.equip-imageSPD {
+  margin-top: -17%;
+  width: 70%;
+  height: 50%;
+  border: none;
+}
+
 .equip-imagePOST {
   vertical-align: top;
   margin-top: -20%;
   width: 100%;
   height: 50%;
-  border: none;
-}
-
-.equip-imageCAM {
-  vertical-align: top;
-  margin-top: -20%;
-  width: 80%;
-  height: 30%;
   border: none;
 }
 
@@ -218,8 +173,10 @@ body {
   border: none;
 }
 
+
 .ui-graphic-image {
   width: 52px;
+  height: 52px;
 }
 
 .equip-graphic {
@@ -243,14 +200,9 @@ body {
   border: none;
 }
 
+
 /* TABLES MSG EQUIP PREVIEW */
-.table-message {
-  position: absolute;
-  margin-top: 10%;
-  margin-left: 65%;
-  width: 150px;
-  color: yellow;
-}
+
 /* TABLES MSG EQUIP PREVIEW */
 
 /* TABLES IMG EQUIP PREVIEW */
@@ -451,21 +403,37 @@ main > div:first-child {
   transform: translate(-50%, -50%);
 }
 
-.dms-name {
-  margin-bottom: -5px;
-}
-
-.sat-name {
-  background-color: #00fa9a;
-}
-
-.padding-sat {
-  padding: 0;
-  width: 45px;
-}
-
 .imgSize {
 	width: 80px;
 }
 
 /* MODAL SIZE EQUIP END */
+
+/* TABLE SAT */
+
+.table-sat {
+	-webkit-box-shadow: initial !important;
+	-moz-box-shadow: initial !important;
+	box-shadow: initial !important;
+}
+
+/* TABLE SAT END */
+
+/* PMV */
+.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+  margin-left: 1px !important;
+}
+
+.driver3.equip-info .second-img, .driver3 .equip-info .second-img {
+  margin-right: 37px !important;
+}
+
+.driver3.equip-info .msg-pos, .driver3 .equip-info .msg-pos {
+  right: 51px !important;
+}
+
+.padding-pmv {
+  margin-left: 4px !important;
+}
+
+/* PMV END */
