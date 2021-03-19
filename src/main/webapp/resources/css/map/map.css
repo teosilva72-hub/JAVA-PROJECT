@@ -768,6 +768,7 @@ img.box-img[zoom] {
   border: solid #dd380d 1px;
   text-decoration: none;
 }
+/* CREATION */
 
 [id$="equips"] {
   width: 100%;
@@ -775,10 +776,13 @@ img.box-img[zoom] {
 [id$="equipId"] {
   width: 100%;
 }
-[id$="equipName"] {
+[id$="dmsType"] {
   width: 100%;
 }
-[id$="width"] {
+[id$="dmsIp"] {
+  width: 100%;
+}
+[id$="equipName"] {
   width: 100%;
 }
 [id$="km"] {
@@ -789,6 +793,37 @@ img.box-img[zoom] {
 } 
 [id$="roads"] {
   width: 100%;
+}
+
+/* EDIT */
+
+[id$="equips-edit"] {
+  width: 100%;
+}
+[id$="equipId-edit"] {
+  width: 100%;
+}
+[id$="dmsType-edit"] {
+  width: 100%;
+}
+[id$="dmsIp-edit"] {
+  width: 100%;
+}
+[id$="equipName-edit"] {
+  width: 100%;
+}
+
+[id$="cities-edit"] {
+  width: 100%;
+} 
+[id$="roads-edit"] {
+  width: 100%;
+}
+[id$="km-edit"] {
+  width: 100%;
+}  
+[id$="width-edit"] {
+  width: 100%;   
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -956,12 +991,6 @@ text-align: center;
 }
 /* CHECKBOXS END */
 
-/* MODAL NEW */
-.satInputs2{
-	border: 1px solid transparent;
-	height: 44px;	
-}
-
 #modaladd{
 	margin-top: -25px;
 }
@@ -990,4 +1019,12 @@ text-align: center;
 
 .padding-pmv {
   margin-left: 4px !important;
+}
+
+.dmsHidden {
+  display: none;  
+}
+  
+.dmsHidden-edit {
+  display: none;
 }

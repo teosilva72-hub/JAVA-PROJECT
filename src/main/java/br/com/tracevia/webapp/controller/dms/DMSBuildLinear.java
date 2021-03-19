@@ -63,7 +63,7 @@ public class DMSBuildLinear {
 			DMS dms = new DMS();
 			dmsList = dms.listEquipments("pmv");			
 			
-			messagesDisplay = messageDao.selectActivesMessages();
+			//messagesDisplay = messageDao.selectActivesMessages();
 						
 			letter = new char[dmsList.size()][3][12];
 			image = new String[dmsList.size()];

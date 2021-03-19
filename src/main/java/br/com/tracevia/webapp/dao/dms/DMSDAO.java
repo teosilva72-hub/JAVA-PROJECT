@@ -56,7 +56,7 @@ public class DMSDAO {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
 
-		String sql = "SELECT equip_id, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM pmv_equipment pmv INNER JOIN pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
+		String sql = "SELECT equip_id, ip_equip, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM pmv_equipment pmv INNER JOIN pmv_messages_active act WHERE act.id_equip = pmv.equip_id ORDER BY pmv.equip_id ASC";
 
 		try {
 
@@ -77,6 +77,7 @@ public class DMSDAO {
 
 					dms.setTable_id("dms");
 					dms.setEquip_id(rs.getInt("equip_id"));
+					dms.setDms_ip(rs.getString("ip_equip"));
 					dms.setNome(rs.getString("name"));
 					dms.setKm(rs.getString("km"));
 					dms.setLinearWidth(rs.getInt("linear_width"));

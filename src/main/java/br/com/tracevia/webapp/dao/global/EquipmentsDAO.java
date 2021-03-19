@@ -109,17 +109,17 @@ public class EquipmentsDAO {
 				 
 				  sat.setEquip_id(rs.getInt("equip_id"));
 				  sat.setTable_id(mod.getModule().toLowerCase());
-				  sat.setNumber_lanes(rs.getInt("number_lanes"));
+				  sat.setNumFaixas(rs.getInt("number_lanes"));
 				  sat.setNome(rs.getString("name"));		
 				  sat.setKm(rs.getString("km"));
-				  sat.setDir_lane1(rs.getString("dir_lane1"));
-				  sat.setDir_lane2(rs.getString("dir_lane2"));
-				  sat.setDir_lane3(rs.getString("dir_lane3"));
-				  sat.setDir_lane4(rs.getString("dir_lane4"));
-				  sat.setDir_lane5(rs.getString("dir_lane5"));
-				  sat.setDir_lane6(rs.getString("dir_lane6"));
-				  sat.setDir_lane7(rs.getString("dir_lane7"));
-				  sat.setDir_lane8(rs.getString("dir_lane8"));
+				  sat.setFaixa1(rs.getString("dir_lane1"));
+				  sat.setFaixa2(rs.getString("dir_lane2"));
+				  sat.setFaixa3(rs.getString("dir_lane3"));
+				  sat.setFaixa4(rs.getString("dir_lane4"));
+				  sat.setFaixa5(rs.getString("dir_lane5"));
+				  sat.setFaixa6(rs.getString("dir_lane6"));
+				  sat.setFaixa7(rs.getString("dir_lane7"));
+				  sat.setFaixa8(rs.getString("dir_lane8"));
 				  sat.setMapWidth(rs.getInt("map_width"));															
 				  sat.setMapPosX(rs.getInt("map_posX"));
 				  sat.setMapPosY(rs.getInt("map_posY"));
@@ -386,14 +386,14 @@ public class EquipmentsDAO {
 					sat.setEstrada(rs.getString(4));
 					sat.setKm(rs.getString(5));
 					sat.setNumFaixas(rs.getInt(6));
-					sat.setSentido1(dir1);		
-					sat.setSentido2(dir2);
-					sat.setSentido3(dir3);		
-					sat.setSentido4(dir4);
-					sat.setSentido5(dir5);		
-					sat.setSentido6(dir6);
-					sat.setSentido7(dir7);		
-					sat.setSentido8(dir8);
+					sat.setFaixa1(dir1);		
+					sat.setFaixa2(dir2);
+					sat.setFaixa3(dir3);		
+					sat.setFaixa4(dir4);
+					sat.setFaixa5(dir5);		
+					sat.setFaixa6(dir6);
+					sat.setFaixa7(dir7);		
+					sat.setFaixa8(dir8);
 					sat.setLinearWidth(rs.getInt(15));						
 					sat.setLinearPosX(rs.getInt(16));
 					sat.setLinearPosY(rs.getInt(17));
@@ -955,6 +955,63 @@ public class EquipmentsDAO {
       	  // --------------------------------------------------- //
               
               
+             // --------------------------------------------------- //
+      	    // ------- CREATE DMS FOR MAP / REALTIME ------- //
+      	   // --------------------------------------------------- //
+                
+                public boolean EquipDMSRegisterMap(DMS equip, String table) throws Exception {
+              		
+            		
+            		boolean status = false; 
+            		          		
+            		try {
+            		
+            		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+            		
+         		    //INSERT
+          		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
+                  + "map_width, map_posX, map_posY, driver, visible) "
+                  + "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+             			           		         			          		          			          			
+                      //Execute Register			
+            			ps = conn.prepareStatement(query);
+            			
+            			ps.setInt(1, equip.getEquip_id());
+            			ps.setString(2, equip.getCreation_date());
+            			ps.setString(3, equip.getCreation_username());      
+            			ps.setString(4, equip.getDms_ip());   
+            			ps.setString(5, equip.getNome());
+            			ps.setString(6, equip.getCidade());
+            			ps.setString(7, equip.getEstrada());
+            			ps.setString(8, equip.getKm());            		          			    			
+            			ps.setInt(9, 200); // map Width
+            			ps.setInt(10, 50); //posX
+            			ps.setInt(11, 50); //posY
+            			ps.setInt(12,  equip.getDms_type()); //driver
+            			ps.setBoolean(13, true);
+            			          			
+            			int success = ps.executeUpdate();
+            			          			
+            			if(success > 0)         				
+            				  status = true;		
+            			          		    		      
+            	              											
+            		} catch (SQLException sqle) {
+            		throw new Exception("Erro ao inserir dados " + sqle);        		    
+            		    
+            		} finally {
+            			ConnectionFactory.closeConnection(conn, ps);
+            		}
+            		
+            		return status;	
+            	}
+                
+                
+              // --------------------------------------------------- //
+        	   // ------- CREATE DMS FOR MAP / REALTIME ------- //
+        	  // --------------------------------------------------- //
+              
+              
               // --------------------------------------------------- //
       	    // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
       	   // --------------------------------------------------- //
@@ -1479,64 +1536,6 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
     }  // MTO Definitions END    
     
-    if(table.equals("dms")) { // PMV Definitions
-
-  	  DMS dms = new DMS();
-
-  	  String queryDMS= "SELECT equip_id, name, city, road, km, map_width, visible FROM pmv_equipment WHERE equip_id = ? ";
-
-  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(queryDMS);
-  	  ps.setInt(1,  id);
-  	  rs = ps.executeQuery();
-
-  	  if(rs != null) {
-  		  while(rs.next()){
-
-  			  dms.setEquip_id(rs.getInt(1));
-  			  dms.setNome(rs.getString(2));
-  			  dms.setCidade(rs.getString(3));
-  			  dms.setEstrada(rs.getString(4));
-  			  dms.setKm(rs.getString(5));
-  			  dms.setMapWidth(rs.getInt(6));
-  			  dms.setVisible(rs.getBoolean(7));            			            			  
-
-  		  }
-  	  }
-
-  	  return dms;            	  
-
-    }  // PMV Definitions END    
-    
-    if(table.equals("sat")) { // SAT Definitions
-
-  	  SAT sat = new SAT();
-
-  	  String querySAT= "SELECT equip_id, name, city, road, km, map_width, visible FROM sat_equipment WHERE equip_id = ? ";
-
-  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(querySAT);
-  	  ps.setInt(1,  id);
-  	  rs = ps.executeQuery();
-
-  	  if(rs != null) {
-  		  while(rs.next()){
-
-  			  sat.setEquip_id(rs.getInt(1));
-  			  sat.setNome(rs.getString(2));
-  			  sat.setCidade(rs.getString(3));
-  			  sat.setEstrada(rs.getString(4));
-  			  sat.setKm(rs.getString(5));
-  			  sat.setMapWidth(rs.getInt(6));
-  			  sat.setVisible(rs.getBoolean(7));            			            			  
-
-  		  }
-  	  }
-
-  	  return sat;            	  
-
-    }  // SAT Definitions END    
-    
     if(table.equals("sos")) { // SOS Definitions
 
   	  SOS sos = new SOS();
@@ -1637,6 +1636,78 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   
     return null;
 }
+
+public SAT EquipSatSearchMap(int id, String table) throws Exception { 
+	
+	  	  SAT sat = new SAT();
+
+	  	  String querySAT= "SELECT equip_id, name, city, road, km, map_width, number_lanes, " 
+	  	  		+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, " 
+	  	  		+ "visible FROM sat_equipment WHERE equip_id = ? ";
+
+	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	  	  ps = conn.prepareStatement(querySAT);
+	  	  ps.setInt(1,  id);
+	  	  rs = ps.executeQuery();
+
+	  	  if(rs != null) {
+	  		  while(rs.next()){
+
+	  			  sat.setEquip_id(rs.getInt(1));
+	  			  sat.setNome(rs.getString(2));
+	  			  sat.setCidade(rs.getString(3));
+	  			  sat.setEstrada(rs.getString(4));
+	  			  sat.setKm(rs.getString(5));
+	  			  sat.setMapWidth(rs.getInt(6));
+	  			  sat.setNumFaixas(rs.getInt(7));
+	  			  
+	  			  defineDirectionNumber(sat, 1, rs.getString(8));
+	  			  defineDirectionNumber(sat, 2, rs.getString(9));
+	  			  defineDirectionNumber(sat, 3, rs.getString(10));
+	  			  defineDirectionNumber(sat, 4, rs.getString(11));
+	  			  defineDirectionNumber(sat, 5, rs.getString(12));
+	  			  defineDirectionNumber(sat, 6, rs.getString(13));
+	  			  defineDirectionNumber(sat, 7, rs.getString(14));
+	  			  defineDirectionNumber(sat, 8, rs.getString(15));	  			  
+	  			  
+	  			  sat.setVisible(rs.getBoolean(16));            			            			  
+
+	  		  }
+	  	  }
+
+	  	  return sat;            	  
+	}
+
+ public DMS EquipDMSSearchMap(int id, String table) throws Exception { 
+		
+	  	  DMS dms = new DMS();
+
+	  	  String queryDMS= "SELECT equip_id, ip_equip, name, city, road, km, map_width, driver, visible FROM pmv_equipment WHERE equip_id = ? ";
+
+	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	  	  ps = conn.prepareStatement(queryDMS);
+	  	  ps.setInt(1,  id);
+	  	  rs = ps.executeQuery();
+
+	  	  if(rs != null) {
+	  		  while(rs.next()){
+
+	  			  dms.setEquip_id(rs.getInt(1));
+	  			  dms.setDms_ip(rs.getString(2));
+	  			  dms.setNome(rs.getString(3));	  			  
+	  			  dms.setCidade(rs.getString(4));
+	  			  dms.setEstrada(rs.getString(5));
+	  			  dms.setKm(rs.getString(6));
+	  			  dms.setMapWidth(rs.getInt(7));
+	  			  dms.setVisible(rs.getBoolean(8));    
+	  			  dms.setVisible(rs.getBoolean(9));  
+
+	  		  }
+	  	  }
+
+	  	  return dms;            	  
+
+     }
 
 
 //--------------------------------------------------- //
@@ -2075,4 +2146,80 @@ public boolean checkExists(int id, String table) throws Exception {
 //----------------------------------------------------------- //
 
 
+//DEFINE DIRECTIONS VALUES
+public void defineDirectionNumber(SAT sat, int numberLane, String dir){
+	
+	try {
+	
+    switch(dir) {
+	
+	case "N": 
+		
+		switch (numberLane) { 
+		
+		case 1: sat.setFaixa1("1"); break;
+		case 2: sat.setFaixa2("1"); break;
+		case 3: sat.setFaixa3("1"); break;
+		case 4: sat.setFaixa4("1"); break;
+		case 5: sat.setFaixa5("1"); break;
+		case 6: sat.setFaixa6("1"); break;
+		case 7: sat.setFaixa7("1"); break;
+		case 8: sat.setFaixa8("1"); break;
+		
+		}; break;
+	
+	case "S": 
+		
+        switch (numberLane) { 
+		
+		case 1: sat.setFaixa1("2"); break;
+		case 2: sat.setFaixa2("2"); break;
+		case 3: sat.setFaixa3("2"); break;
+		case 4: sat.setFaixa4("2"); break;
+		case 5: sat.setFaixa5("2"); break;
+		case 6: sat.setFaixa6("2"); break;
+		case 7: sat.setFaixa7("2"); break;
+		case 8: sat.setFaixa8("2"); break;
+		
+		}; break;	
+		    		    	
+	case "L": 	
+		
+        switch (numberLane) { 
+		
+		case 1: sat.setFaixa1("3"); break;
+		case 2: sat.setFaixa2("3"); break;
+		case 3: sat.setFaixa3("3"); break;
+		case 4: sat.setFaixa4("3"); break;
+		case 5: sat.setFaixa5("3"); break;
+		case 6: sat.setFaixa6("3"); break;
+		case 7: sat.setFaixa7("3"); break;
+		case 8: sat.setFaixa8("3"); break;
+		
+		}; break;
+  
+	
+	case "O": 
+        
+		switch (numberLane) { 
+		
+		case 1: sat.setFaixa1("4"); break;
+		case 2: sat.setFaixa2("4"); break;
+		case 3: sat.setFaixa3("4"); break;
+		case 4: sat.setFaixa4("4"); break;
+		case 5: sat.setFaixa5("4"); break;
+		case 6: sat.setFaixa6("4"); break;
+		case 7: sat.setFaixa7("4"); break;
+		case 8: sat.setFaixa8("4"); break;
+		
+		}; break;
+				
+	} //SWITCH END
+    
+	}catch (NullPointerException e) {
+		// TODO: handle exception
+	}
+   
+   } 
+  
 }

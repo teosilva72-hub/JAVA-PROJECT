@@ -538,9 +538,7 @@ $(document).ready(function(){
 
 //prevent modal form submit
 //use ajax to send data
-$('#register-equip-form').submit(function(e) {
-	e.preventDefault();
-});
+
 
 //Reload on Cancel Position
 function reloadAfterCancelPos(){
@@ -551,7 +549,18 @@ function reloadAfterCancelPos(){
 
 //Use validation on click button submit   
 //Create button
-function checkValidation(){	    	
-   $("#register-equip-form").valid();	        
+function checkValidation(){	 
+
+ $('#register-equip-form').valid();		
+
+}
+
+//Use validation on click button submit   
+//Create button
+function checkValidationEdit(){	 
+
+ $('#edit-equip-form').valid();	
+	
+
 }
 

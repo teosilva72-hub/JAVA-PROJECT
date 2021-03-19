@@ -2,26 +2,16 @@
 	//// CHECK IF ID EXISTS
 	////////////////////////////////////////////////////	
 
-function userInterfaceformValidation(form, equips_message, id_message, number_message, lanes_message, direction1_message, direction2_message){
+function userInterfaceformValidation(form, equips_message, id_message, number_message){
 		
-		 $(form).validate({		    	                   
+       $(form).validate({	                 	    	                   
 		         rules: {
 		          equips: {
 	                 required: true  
 	                                                
                    }, equipId : {                  
                      required: true,
-                     number: true
-                                                                  
-                   },                   
-                    lanes : {                  
-                     required: true                     
-                   }, 
-                    direction1 : {                  
-                     required: true                     
-                   }, 
-                    direction2 : {                  
-                     required: true                     
+                     number: true                                                                  
                    }
                                  
 		         },
@@ -31,11 +21,7 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
 		              equips: { required: equips_message },
 		              equipId: { required: id_message,
 		                         number: number_message
-		               },		             
-		              lanes: { required: lanes_message },
-		              direction1: { required: direction1_message },
-		              direction2: { required: direction2_message }
-		             
+		               }	             
                      },		       
 		            
 		            errorClass : "error",
@@ -85,10 +71,9 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
                  
                  }                  
 		     });
+		 	    			     
 	}//   End Validation Form
-	
-	
-	
+		
 	/////////////////////////////////////////////////
 	///// VALIDATE FIELDS BY ID ON CHANGE
 	////////////////////////////////////////////////

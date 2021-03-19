@@ -526,7 +526,7 @@ public class MessagesDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(
-					"SELECT id_message, id_image, text1, text2, text3 FROM tracevia_app.pmv_messages_available WHERE id_message = (SELECT id_message FROM tracevia_app.pmv_messages_active WHERE id_equip = ?)");
+					"SELECT id_message, id_image, text1, text2, text3 FROM pmv_messages_available WHERE id_message = (SELECT id_message FROM pmv_messages_active WHERE id_equip = ?)");
 			ps.setInt(1, equip);
 
 			rs = ps.executeQuery();
@@ -556,8 +556,8 @@ public class MessagesDAO {
 
 		try {
 
-			String sql = "SELECT d.id_image, d.text1, d.text2, d.text3, a.id_modify FROM tracevia_app.pmv_messages_available d "
-					+ "INNER JOIN tracevia_app.pmv_messages_active a "
+			String sql = "SELECT d.id_image, d.text1, d.text2, d.text3, a.id_modify FROM pmv_messages_available d "
+					+ "INNER JOIN pmv_messages_active a "
 					+ "ON a.id_modify = d.id_message WHERE id_equip = ? ";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -593,7 +593,7 @@ public class MessagesDAO {
 		try { // Todo: Atualmente incompativel
 
 			String sql = "SELECT d.id_image, d.text1, d.text2, d.text3, a.id_equip, a.id_modify, a.active_status "
-					+ "FROM tracevia_app.pmv_messages_available d " + "INNER JOIN tracevia_app.pmv_messages_active a "
+					+ "FROM pmv_messages_available d " + "INNER JOIN pmv_messages_active a "
 					+ "ON a.id_message = d.id_message ";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -637,7 +637,7 @@ public class MessagesDAO {
 			 * Date(); String strDate = dfm.format(date); s
 			 */
 
-			String sql = "UPDATE tracevia_app.pmv_messages_active SET id_modify = ?, active_status = ? WHERE id_equip = ?";
+			String sql = "UPDATE pmv_messages_active SET id_modify = ?, active_status = ? WHERE id_equip = ?";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -674,8 +674,8 @@ public class MessagesDAO {
 
 		try {
 
-			String query = "SELECT p.name, m.active_status  FROM tracevia_app.pmv_messages_active m "
-					+ "INNER JOIN tracevia_app.pmv_equipment p ON p.equip_id = m.id_equip " + "WHERE m.id_equip IN(";
+			String query = "SELECT p.name, m.active_status  FROM pmv_messages_active m "
+					+ "INNER JOIN pmv_equipment p ON p.equip_id = m.id_equip " + "WHERE m.id_equip IN(";
 
 			for (int i = 0; i < count; i++) {
 				query += "'" + equip[i] + "'";
@@ -732,7 +732,7 @@ public class MessagesDAO {
 
 		try {
 
-			String sql = "UPDATE tracevia_app.pmv_messages_available SET enabled = 0 WHERE id_message = ?";
+			String sql = "UPDATE pmv_messages_available SET enabled = 0 WHERE id_message = ?";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -762,8 +762,8 @@ public class MessagesDAO {
 
 		try {
 
-			String sql = "SELECT COUNT(ac.active_status) AS status FROM tracevia_app.pmv_messages_available av "
-					+ "INNER JOIN tracevia_app.pmv_messages_active ac ON ac.id_message = av.id_message "
+			String sql = "SELECT COUNT(ac.active_status) AS status FROM pmv_messages_available av "
+					+ "INNER JOIN pmv_messages_active ac ON ac.id_message = av.id_message "
 					+ "WHERE av.id_message = ? AND ac.active_status IN(0,1) ";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -801,7 +801,7 @@ public class MessagesDAO {
 	 * try {
 	 * 
 	 * String sql =
-	 * "DELETE FROM tracevia_app.pmv_messages_available WHERE id_message = ?";
+	 * "DELETE FROM pmv_messages_available WHERE id_message = ?";
 	 * 
 	 * conn =
 	 * ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -847,7 +847,7 @@ public class MessagesDAO {
 				// sql = "UPDATE tb_mensagens_ativas SET id_mensagem = '"+msg[i]+"' WHERE
 				// id_equip = '"+equip[i]+"' ";
 
-				sql = "UPDATE tracevia_app.pmv_messages_active SET id_modify = '" + msg[i]
+				sql = "UPDATE pmv_messages_active SET id_modify = '" + msg[i]
 						+ "', active_status = false WHERE id_equip = '" + equip[i] + "' ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -893,10 +893,10 @@ public class MessagesDAO {
 
 			for (int i = 0; i < count; i++) {
 
-				sql = "UPDATE tracevia_app.pmv_messages_active SET id_message = '" + msg + "' WHERE id_equip = '"
+				sql = "UPDATE pmv_messages_active SET id_message = '" + msg + "' WHERE id_equip = '"
 						+ equip[i] + "' ";
 
-				// sql = "UPDATE tracevia_app.pmv_messages_active SET id_modify = '"+msg+"',
+				// sql = "UPDATE pmv_messages_active SET id_modify = '"+msg+"',
 				// active_status = false WHERE id_equip = '"+equip[i]+"' ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);

@@ -20,20 +20,34 @@ public class MTO extends Equipments{
 	private int bateria_sts;
 	private int volts_line;
 		
-	
 
-	
-
-	public MTO(int equip_id, String table_id, String creation_date, String creation_username, int number_lanes, String nome,
-			String estrada, String cidade, String km, String dir_lane1, String dir_lane2, String dir_lane3, String dir_lane4, String dir_lane5, String dir_lane6, String dir_lane7, String dir_lane8,
-			String posicao, int linearPosX, int linearPosY, int linearWidth,
-			int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY, int status,
-			boolean notificacao, boolean visible, int leds, String dms_ip, boolean stat, boolean msg_status) {
-		super(equip_id, table_id, creation_date, creation_username, number_lanes, nome, estrada, cidade, km, 
-				dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8,
-				posicao, linearPosX, linearPosY, linearWidth, mapPosX, mapPosY, mapWidth, height, dlgPosX, dlgPosY, status, notificacao,
+	public MTO(int equip_id, String table_id, String creation_date, String creation_username, String nome,
+			String estrada, String cidade, String km, String posicao, int linearPosX, int linearPosY, int mapPosX,
+			int mapPosY, int mapWidth, int height, int linearWidth, int dlgPosX, int dlgPosY, int status,
+			boolean notificacao, boolean visible, String data_hora, String data, String intervalos, int monthOrDay,
+			int press_atmosferica, int umi_relativa, int taxa_precipitacao, int taxa_precipitacao1h,
+			int velocidadeMed_vento, int direcao_vento, int temp_ar, int visibilidade, int status2, int bateria_sts,
+			int volts_line) {
+		
+		super(equip_id, table_id, creation_date, creation_username, nome, estrada, cidade, km, posicao, linearPosX,
+				linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY, status, notificacao,
 				visible);
 		
+		this.data_hora = data_hora;
+		this.data = data;
+		this.intervalos = intervalos;
+		this.monthOrDay = monthOrDay;
+		this.press_atmosferica = press_atmosferica;
+		this.umi_relativa = umi_relativa;
+		this.taxa_precipitacao = taxa_precipitacao;
+		this.taxa_precipitacao1h = taxa_precipitacao1h;
+		this.velocidadeMed_vento = velocidadeMed_vento;
+		this.direcao_vento = direcao_vento;
+		this.temp_ar = temp_ar;
+		this.visibilidade = visibilidade;
+		status = status2;
+		this.bateria_sts = bateria_sts;
+		this.volts_line = volts_line;
 	}
 
 	public MTO() {}
