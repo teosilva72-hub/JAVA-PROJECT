@@ -157,24 +157,20 @@ async function main() {
 			}
 		})
 
-		allChecks.change(function () {
+		allChecks.filter(":enabled").change(function () {
 			let check = $(this)
 			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
 
-			let checks = allChecks.filter(function () {
-				return !$(this).prop('disabled')
-			})
+			let verif = allChecks.filter(":enabled").map(function(a, b) { return $(b).prop('checked') }).toArray()
 
-			if (checks.toArray().reduce(function (a, b, c) { return (c !== 1 ? a : $(a).prop('checked')) && $(b).prop('checked') }))
+			if (verif.reduce(function (a, b) { return a && b }))
 				checksListAll.prop('checked', true);
 			else
 				checksListAll.prop('checked', false);
 		})
 
 		checksListAll.change(() => {
-			allChecks.filter(function () {
-				return !$(this).prop('disabled')
-			}).prop('checked', checksListAll.prop('checked')).trigger('change')
+			allChecks.filter(":enabled").prop('checked', checksListAll.prop('checked')).trigger('change')
 		})
 
 		$('#one .equip-info').change(function () {
