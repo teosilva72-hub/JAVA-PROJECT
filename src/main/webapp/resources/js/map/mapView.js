@@ -17,9 +17,9 @@ $(function () {
 	barResize()
 	//Scroll Zoom Map Full END
 
-	$(".overflow").css("height", $(this).height() - 125)
+	$(".overflow").css("height", $(this).height())
 	$(window).resize(function () {
-		$(".overflow").css("height", $(this).height() - 125)
+		$(".overflow").css("height", $(this).height())
 	})
 																
 	//FULLSCREEN
@@ -119,8 +119,6 @@ $(function () {
 			posEquip(equip)
 		})
 
-		$('zoomIn').click(function () { zoomInFactor(toDrag, 0.01) })
-		$('zoomOut').click(function () { zoomInFactor(toDrag, 0.01) })
 	})
 	
 	//Equipments change sizes END
@@ -376,62 +374,19 @@ function mapMove(ele) {
 }
 
 //TODO: ZOOM VARS // compartilhar escala
-var zoom = 1;
-
-var zoomEquip = 1;
-
-var zoomStep = 1;
-var zoomMin = 1;
-var zoomMax = 7;
-var left = 1;
-var top = 1;
-var leftStep = 3;
-var topStep = 3;
-var ZoomEquipStep = 0.20;
-
+var up = $.Event("DOMMouseScroll",{delta:100}); 
+var down = $.Event("DOMMouseScroll",{delta:-100});
+ 
 function zoomIn(id) {
 
-	if (zoom < zoomMax) {
-		zoom += zoomStep;
-		left += leftStep;
-		document.getElementById(id).style.transform = "scale(" + zoom + ")";
-	}
-	//alert(zoom);
+	$(id).trigger(up);
+
 };
 
 function zoomOut(id) {
 
-	if (zoom > zoomMin) {
-		zoom -= zoomStep;
-		left += leftStep;
-
-		document.getElementById(id).style.transform = "scale(" + zoom + ")";
-		//document.getElementById(id).style.marginRight =  left + "%";
-	}
-}
-
-function zoomInFactor(id, factor) {
-	if (zoom < zoomMax) {
-		if (zoomEquip < 1.2500000000000002) {
-			zoomEquip += (factor);
-			left += leftStep;
-			top += topStep;
-			document.getElementById(id).style.transform = "scale(" + zoomEquip + ")";
-			//document.getElementById(id).style.marginTop = top +"%";
-		}
-		//alert('nothing');
-	}
+	$(id).trigger(down);
 };
-
-function zoomOutFactor(id, factor) {
-	if (zoom > zoomMin) {
-		zoomEquip -= (factor);
-		left += leftStep;
-
-		document.getElementById(id).style.transform = "scale(" + zoomEquip + ")";
-		//document.getElementById(id).style.marginRight =  left + "%";
-	}
-}
 
 // Drop Element	
 
