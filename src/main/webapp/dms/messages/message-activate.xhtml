@@ -28,7 +28,7 @@
 			<div class="row conteudoPag">
 				<!-- INICIO DA TABELA SELECAO -->
 				<div class="col-auto">
-					<div class="row">
+					<div class="row float-start">
 						<!-- GRID OPCOES INICIO -->
 						<div class="col-auto" id="toogleMenu">
 							<button type="button" class="btn btn-light" toggle="show">Mostrar</button>
@@ -237,7 +237,7 @@
 								</div>
 
 								<div id="messages-list">
-									<select id="availableMessage" class="form-select" size="6"
+									<select id="availableMessage" class="form-select" size="7"
 										aria-label="select message">
 										<option value="0" selected="selected" style="display: none;">Default</option>
 									</select>
@@ -271,7 +271,7 @@
 												timer="#{opt.pages[4].timer}" />
 										</div>
 										<option value="#{opt.id_message}" type="#{opt.tipo}"
-											driver="driver#{opt.driver}">#{opt.nome} - #{opt.tipo}</option>
+											driver="driver#{opt.driver}">#{opt.nome} - #{pmvMessage.translateType(opt.tipo)}</option>
 									</c:forEach>
 								</div>
 								<!-- INICIO DOS BOTÔES -->
