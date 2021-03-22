@@ -1237,30 +1237,7 @@ public class EquipmentsDAO {
             		  updated = true;           	  
 
               }  // PMV Definitions END    
-              
-              if(table.equals("sat")) { // SAT Definitions
-
-            	  String querySAT= "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
-
-            	  
-            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-            	  
-            	  ps = conn.prepareStatement(querySAT);
-            	  
-            	  ps.setString(1,  equip.getNome());
-            	  ps.setString(2,  equip.getCidade());
-            	  ps.setString(3,  equip.getEstrada());
-            	  ps.setString(4,  equip.getKm());
-            	  ps.setInt(5,     equip.getMapWidth());
-            	  ps.setInt(6,  equip.getEquip_id());        			            			  
-
-            	  int rs = ps.executeUpdate();
-
-            	  if (rs > 0) 
-            		  updated = true;               	  
-
-              }  // SAT Definitions END    
-              
+                            
               if(table.equals("sos")) { // SOS Definitions
 
             	  String querySOS= "UPDATE sos_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
@@ -1339,7 +1316,56 @@ public class EquipmentsDAO {
 			}
             
               return updated;
-         }
+         }                 
+         
+		 public boolean EquipSATUpdateMap(SAT sat, String table) throws Exception {    
+			    
+			 
+			    boolean updated = false;
+			    		            	  
+	            	  String querySAT= "SELECT sat_equipment SET equip_id = ?, name = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
+	          	  	  		+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+	          	  	  		+ " FROM sat_equipment WHERE equip_id = ? ";
+	            	  
+	            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	            	  
+	            	  ps = conn.prepareStatement(querySAT);
+	            	  	            	  
+	            	  ps.setInt(1, sat.getEquip_id());
+	            	  ps.setString(2, sat.getNome());
+	            	  ps.setString(3, sat.getCidade());
+	            	  ps.setString(4, sat.getEstrada());
+	            	  ps.setString(5, sat.getKm());
+	            	  ps.setInt(6, sat.getMapWidth());
+	            	  ps.setInt(7, sat.getNumFaixas());
+	            	  ps.setString(8, sat.getFaixa1());  
+	            	  ps.setString(9, sat.getFaixa1()); 		  
+	            	  ps.setString(10, sat.getFaixa1()); 
+	            	  ps.setString(11, sat.getFaixa1()); 
+	            	  ps.setString(12, sat.getFaixa1()); 
+	            	  ps.setString(13, sat.getFaixa1()); 
+	            	  ps.setString(14, sat.getFaixa1()); 
+	            	  ps.setString(15, sat.getFaixa1()); 	            
+	            		            			  
+	            	  int rs = ps.executeUpdate();
+
+	            	  if (rs > 0) 
+	            		  updated = true;               	  
+		    
+			    
+			    return updated;
+			    
+			    
+			}
+		
+			public boolean EquipDMSUpdateMap(Equipments equip, String table) throws Exception {    
+			    
+				 
+			    boolean updated = false;
+			    
+			    
+			    return updated;
+			}
          
   
 //--------------------------------------------------- //
@@ -1636,6 +1662,11 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   
     return null;
 }
+
+
+
+
+
 
 public SAT EquipSatSearchMap(int id, String table) throws Exception { 
 	

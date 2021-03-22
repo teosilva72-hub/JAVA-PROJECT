@@ -610,11 +610,9 @@
 
 	</ui:define>
 
-	
-
-		<!-- ************************************************************************************* -->
-		<!-- ************************************* CREATE **************************************** -->
-		<!-- ************************************************************************************* -->
+	<!-- ************************************************************************************* -->
+	<!-- ************************************* CREATE **************************************** -->
+	<!-- ************************************************************************************* -->
 	<ui:define name="modal-content">
 		<div class="modal fade" id="modaladd" role="dialog">
 			<div class="modal-dialog" role="document">
@@ -996,7 +994,7 @@
 
 					<div class="modal-header text-center">
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_edit_modal_title}</h4>
-							<button type="button" id="close-btn" class="close" data-dismiss="modal" 
+							<button type="button" id="close-btn-edit" class="close" data-dismiss="modal" 
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
@@ -1265,21 +1263,22 @@
 						<!-- MODAL BUTTONS -->
 
 						<div class="modal-footer">
+						<h:inputHidden id="equipTableUpdate" value="#{equipsBean.equipTable}" />
 						
 							<h:commandButton 
-								value="#{mapLabels.map_creation_btn_save_equipment}"
-								id="btn-form-send" class="btn btn-dark form-draw-button" >
-								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
-								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
-								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
+								value="#{mapLabels.map_creation_btn_update_equipment}" 
+								id="btn-form-send-edit" class="btn btn-dark form-draw-button" >
+								<f:ajax execute="@form" render=":equips-edit :equipId-edit :equipName-edit :cities-edit :roads-edit :km-edit
+								:lanes-edit :direction1-edit :direction2-edit :direction3-edit :direction4-edit :direction5-edit :direction6-edit :direction7-edit : direction8-edit"
+								listener="#{equipsBean.UpdateEquipment}" onevent="sendType" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
 								value="#{mapLabels.map_creation_btn_cancel_equipment}"
 								id="btn-form-reset" immediate="true" type="reset"
-								class="btn btn-dark form-draw-button  reset-btn" >
-								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
-								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8" />
+								class="btn btn-dark form-draw-button  reset-btn-edit" >
+								<f:ajax execute="@form" render=":equips-edit :equipId-edit :equipName-edit :cities-edit :roads-edit :km-edit
+								:lanes-edit :direction1-edit :direction2-edit :direction3-edit :direction4-edit :direction5-edit :direction6-edit :direction7-edit : direction8-edit" />
 							</h:commandButton>
 
 						</div>				
@@ -1429,9 +1428,9 @@
         //Reset validation form
         //click reset button action
         resetFormValidation("#register-equip-form", "reset-btn");	
-        resetFormValidation("#register-equip-form", "close-btn");	
-                    
-	    //Dismiss modal function
+        resetFormValidation("#register-equip-form", "close-btn");
+        
+        //Dismiss modal function
 	    $("#modaladd").on("hidden.bs.modal", function() {
 	    	$('.satInputs').hide();				  
 	      });
@@ -1440,6 +1439,59 @@
 	    $(".reset-btn").on("click", function() {	    		    
 	    	$('.satInputs').hide();			  
 		    $('#modaladd').modal('hide');
+	      }); 	 
+        
+        //EQUIP EDITION
+        
+        userInterfaceformValidation('#edit-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
+				'#{validatorMessages.validator_number_message}');
+					
+		//Validate elements on change value
+	    //In this case check if the element is valid
+	    validateOnChange('#equips-edit');
+	    validateOnChange('#equipId-edit');	   
+	    
+	    //Reset Fields on close modal
+		resetFieldOnModalClose('#editmodal', 'equips-edit');
+		resetFieldOnModalClose('#editmodal', 'equipId-edit');
+		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
+		resetFieldOnModalClose('#editmodal', 'equipName-edit');
+		resetFieldOnModalClose('#editmodal', 'roads-edit');
+		resetFieldOnModalClose('#editmodal', 'cities-edit');
+		resetFieldOnModalClose('#editmodal', 'km-edit');
+		resetFieldOnModalClose('#editmodal', 'lanes-edit');
+		resetFieldOnModalClose('#editmodal', 'direction1-edit');
+		resetFieldOnModalClose('#editmodal', 'direction2-edit');
+		resetFieldOnModalClose('#editmodal', 'direction3-edit');
+		resetFieldOnModalClose('#editmodal', 'direction4-edit');
+		resetFieldOnModalClose('#editmodal', 'direction5-edit');
+		resetFieldOnModalClose('#editmodal', 'direction6-edit');
+		resetFieldOnModalClose('#editmodal', 'direction7-edit');
+		resetFieldOnModalClose('#editmodal', 'direction8-edit');
+		 //Reset Fields on close modal
+						
+		//Remove validation icons
+	    //click reset button action		 
+	    removeValidationIcon("reset-btn-edit", 'equips-edit');
+	    removeValidationIcon("reset-btn-edit", 'equipId-edit');
+		    
+	    //Clean Form validation on close modal
+        cleanValidationOnModalClose("#edit-equip-form", '#editmodal');
+	    
+        //Reset validation form
+        //click reset button action
+        resetFormValidation("#edit-equip-form", "reset-btn-edit");	
+        resetFormValidation("#edit-equip-form", "close-btn-edit");
+          	    
+	    //Dismiss modal function
+	    $("#editmodal").on("hidden.bs.modal", function() {
+	    	$('.satInputs-edit').hide();				  
+	      });
+	    
+	    //reset form function
+	    $(".reset-btn-edit").on("click", function() {	    		    
+	    	$('.satInputs-edit').hide();			  
+		    $('#editmodal').modal('hide');
 	      }); 	 
 	    		    
         /////////////////////////////
@@ -1693,7 +1745,7 @@
 
 			//SAT LANES INPUTS END
 			
-			document.getElementById('editequip').addEventListener("click",
+			$('#editmodal').on('shown.bs.modal',
 				function () {
 					var equipsSEL = document.getElementById("equips-edit");
 					var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
