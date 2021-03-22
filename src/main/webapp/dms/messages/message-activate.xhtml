@@ -30,8 +30,16 @@
 				<div class="col-auto">
 					<div class="row">
 						<!-- GRID OPCOES INICIO -->
-						<div class="col-1" id="toogleMenu">
-							<button type="button" class="btn btn-warning" toggle="show">Mostrar</button>
+						<div class="col-auto" id="toogleMenu">
+							<button type="button" class="btn btn-light" toggle="show">Mostrar</button>
+						</div>
+						<div class="col-auto">
+							<h:form>
+								<input type="hidden" name="dmsChanges" id="dmsChanges" />
+								<h:commandButton value="Salvar" type="button" class="btn btn-light" id="btn-save">
+									<f:ajax execute="@form" listener="#{interfaces.activateMessage}" />
+								</h:commandButton>
+							</h:form>
 						</div>
 						<!-- GRID OPCOES FINAL -->
 					</div>
@@ -231,11 +239,10 @@
 								<div id="messages-list">
 									<select id="availableMessage" class="form-select" size="6"
 										aria-label="select message">
-										<option value="0" selected="select">Default</option>
-
+										<option value="0" selected="selected" style="display: none;">Default</option>
 									</select>
 									<c:forEach items="#{pmvMessage.messages}" var="opt">
-										<div id="listSelectPMV#{opt.id_message}" type="#{opt.tipo}" name="#{opt.nome}"
+										<div id="listSelectPMV#{opt.id_message}" idMessage="#{opt.id_message}" type="#{opt.tipo}" name="#{opt.nome}"
 											driver="#{opt.driver}">
 											<input type="hidden" name="page1" imageId="#{opt.pages[0].id_image}"
 												image="#{opt.pages[0].image}" imageId2="#{opt.pages[0].id_image2}"
@@ -264,34 +271,17 @@
 												timer="#{opt.pages[4].timer}" />
 										</div>
 										<option value="#{opt.id_message}" type="#{opt.tipo}"
-											driver="driver#{opt.driver}">#{opt.id_message} - #{opt.tipo} -
-											#{opt.nome}</option>
+											driver="driver#{opt.driver}">#{opt.nome} - #{opt.tipo}</option>
 									</c:forEach>
 								</div>
 								<!-- INICIO DOS BOTÔES -->
 								<div class="btn-group btn-group-sm mt-2 d-flex" role="group" aria-label="button menu">
-									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_apply}"
-										id="send-message" disabled="#{interfaces.send}"
-										class="btn btn-secondary confBtn">
-										<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target" value="#updateModal" />
-										<f:ajax execute="@form" render="@none" />
-									</h:commandButton>
-									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_preview}" id="btn-up"
-										disabled="#{interfaces.checkbox}" action="#{interfaces.aplicarMensagens}"
-										onclick="sumirMsg();" class="btn btn-secondary">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
-									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_clean}" id="btn-clean"
-										disabled="#{interfaces.checkbox}" action="#{interfaces.limparMensagens}"
-										class="btn btn-secondary ">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
-									<h:commandButton value="#{dmsLabels.dms_active_messages_btn_reset}" id="btn-refresh"
-										action="#{interfaces.resetMessages}" disabled="#{interfaces.checkbox}"
-										class="btn btn-secondary">
-										<f:ajax execute="@form" render="@form" />
-									</h:commandButton>
+									<button id="btn-apply" disabled="disabled"
+										class="btn btn-secondary">#{dmsLabels.dms_active_messages_btn_apply}</button>
+									<button id="btn-clear"
+										class="btn btn-secondary ">#{dmsLabels.dms_active_messages_btn_clean}</button>
+									<button id="btn-reset"
+										class="btn btn-secondary">#{dmsLabels.dms_active_messages_btn_reset}</button>
 								</div>
 
 								<!-- FINAL DOS BOTÔES -->
@@ -308,7 +298,7 @@
 							<span
 								class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-								<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}" name="#{item.nome}"
+								<div id="listPMV#{item.equip_id}" idMessage="#{item.message.id_message}" type="#{item.message.tipo}" name="#{item.nome}"
 									driver="#{item.message.driver}">
 									<input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
 										image="#{item.message.pages[0].image}"
@@ -498,7 +488,7 @@
 						<div class="text-center" id="two">
 							<span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
 							<c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-								<div id="listChangePMV#{item.equip_id}" type="#{item.messageChange.tipo}"
+								<div id="listChangePMV#{item.equip_id}" idMessage="#{item.messageChange.id_message}" type="#{item.messageChange.tipo}"
 									name="#{item.nome}" driver="#{item.messageChange.driver}"
 									status="#{item.msg_status}">
 									<input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
@@ -700,37 +690,6 @@
 			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
 		</div>
 		<!-- FINAL DO FORMULARIO EQUIP -->
-		<!-- INICIO DO FORUMARIO MODAL -->
-		<h:form id="modalForm">
-			<!-- INICIO DO MODAL -->
-			<div class="modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title">#{dmsLabels.user_update_modal_title}</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<p>#{dmsLabels.user_update_modal_body}</p>
-						</div>
-						<div class="modal-footer">
-							<button id="submit" type="button" class="btn btn-dark"
-								jsf:action="#{interfaces.sendMessageToActivation}" data-dismiss="modal"
-								data-toggle="modal" data-target="#statusModal">
-								#{dmsLabels.user_update_modal_btn_yes}
-								<f:ajax execute="@form" render="@none" />
-							</button>
-							<button type="button" class="btn btn-dark"
-								data-dismiss="modal">#{dmsLabels.user_update_modal_btn_no}</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- FINAL DO MODAL -->
-		</h:form>
 	</ui:define>
 
 	<ui:define name="default-plugins">

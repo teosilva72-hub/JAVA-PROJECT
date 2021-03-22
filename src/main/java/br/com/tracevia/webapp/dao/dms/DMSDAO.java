@@ -106,4 +106,44 @@ public class DMSDAO {
 		return lista;
 	}
 
+	public void changeActivateMessage(int idDMS, int idMSG) throws Exception {
+
+		String sql1 = "SELECT id_message FROM pmv_messages_active WHERE id_equip = ?;";
+		String sql2 = "UPDATE pmv_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(sql1);
+
+			ps.setInt(1, idDMS);
+
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst()) {
+				rs.next();
+
+				ps = conn.prepareStatement(sql2);
+
+				if (rs.getInt("id_message") == idMSG) {
+					ps.setInt(1, 0);
+					ps.setInt(2, 1);
+				} else {
+					ps.setInt(1, idMSG);
+					ps.setInt(2, 0);
+				}
+
+				ps.setInt(3, idDMS);
+
+				ps.executeUpdate();
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+	}
+
 }
