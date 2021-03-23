@@ -6,15 +6,14 @@ let timeChangePMV = [];
 let saveChangePMV = [];
 let listSelectPMV = [];
 let animationPreview = 0;
+let toast;
 
 let changedPMV = {};
 
 async function main() {
 	await init();
 
-	const equipInfo = $('.equip-info');
-	const equipInfoView = $('#one .equip-info, #two .equip-info');
-	const allChecks = $('.option [id^=check]');
+	const allPMV = $('#allPMV')
 	const checksListAll = $('#checkListAll');
 	const inputDriver = $('[name=typePMV]');
 	const pagePMV = $('#page-pmv');
@@ -23,6 +22,9 @@ async function main() {
 	const reset = $('#btn-reset');
 	const clear = $('#btn-clear');
 	const dmsChanges = $('#dmsChanges');
+	let equipInfo = $('.equip-info');
+	let equipInfoView = $('#one .equip-info, #two .equip-info');
+	let allChecks = $('.option [id^=check]');
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -30,7 +32,16 @@ async function main() {
 			return `translateX(-50%) scale(${scale})`;
 		});
 
-		$('#allPMV').height($('.jumbotron').height() - 16)
+		allPMV.height($('.jumbotron').height() - 16)
+	}
+
+	const returnAlert = msg => {
+		load();
+		
+		dmsChanges.val('')
+
+		$('#msgToastNotification').text(msg);
+		toast.show();
 	}
 
 	const animationPMV = (img1, img2, message, arr, idx) => {
@@ -105,6 +116,15 @@ async function main() {
 	}
 
 	const collectPMV = () => {
+		listPMV = [];
+		listChangePMV = [];
+
+		if (!listSelectPMV.length) {
+			let pmv = PMV.new(0, "", "", PaginaType.Type3)
+			pmv.add_page_default();
+			listSelectPMV.push(pmv);
+		}
+
 		$('[id^=listPMV], [id^=listChangePMV], [id^=listSelectPMV]').each(function () {
 			let data = $(this);
 			let driver;
@@ -158,15 +178,12 @@ async function main() {
 					timeChangePMV.push(0);
 					data.next().find('.tableStyle').addClass(data.attr('status') == "true" ? "unchanged" : "change")
 				} else {
-					listSelectPMV.push(pmv);
 					data.next().val(listSelectPMV.length)
+					listSelectPMV.push(pmv);
 				}
 			}
 			data.remove()
 		})
-		let pmv = PMV.new(0, "", "", PaginaType.Type3)
-		pmv.add_page_default();
-		listSelectPMV.unshift(pmv);
 		saveChangePMV = listChangePMV.slice(0);
 	}
 
@@ -181,7 +198,7 @@ async function main() {
 		animationPMV(img1, img2, message, listSelectPMV, idx)
 	}
 
-	const applyPMV = () => {
+	const applyPMV = (selectBTN) => {
 		let idx = $(`#availableMessage`).val();
 		let selected = $('#two .option input:checked');
 
@@ -191,7 +208,25 @@ async function main() {
 			const tablePMV = select.parent().next();
 			const id = tablePMV.attr('id').match(/\d+/g)[0];
 
-			listChangePMV[idxChange] = listSelectPMV[idx];
+			switch (selectBTN) {
+				case 1:
+					listChangePMV[idxChange] = listSelectPMV[idx];
+
+					break;
+
+				case 2:
+					listChangePMV[idxChange] = listSelectPMV[0];
+
+					break;
+
+				case 3:
+					listChangePMV[idxChange] = listPMV[idxChange];
+
+					break;
+
+				default:
+					break;
+			}
 
 			if (saveChangePMV[idxChange].id() !== listChangePMV[idxChange].id()) {
 				tablePMV.children().first().addClass('preview')
@@ -212,66 +247,58 @@ async function main() {
 		dmsChanges.val(JSON.stringify(changedPMV));
 	}
 
-	const clearPMV = () => {
-		let selected = $('#two .option input:checked');
+	const load = () => {
+		allPMV.load('/dms/messages/equipment-list.xhtml', () => {
+			collectPMV();
+			initAnimation();
 
-		selected.each(function () {
-			const select = $(this);
-			const idxChange = select.val();
-			const tablePMV = select.parent().next();
-			const id = tablePMV.attr('id').match(/\d+/g)[0];
+			$('#messages-list > option').appendTo($(`#availableMessage`));
 
-			listChangePMV[idxChange] = listSelectPMV[0];
+			equipInfo = $('.equip-info');
+			equipInfoView = $('#one .equip-info, #two .equip-info');
+			allChecks = $('.option [id^=check]');
 
-			if (saveChangePMV[idxChange].id() !== listChangePMV[idxChange].id()) {
-				tablePMV.children().first().addClass('preview')
-				changedPMV[id] = String(listChangePMV[idxChange].id());
-			}
-			else {
-				tablePMV.children().first().removeClass('preview')
-				delete changedPMV[id];
-			}
+			allChecks.filter(":enabled").change(function () {
+				let check = $(this)
+				$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
 
-			const img1 = tablePMV.find('.picture-box.primary')
-			const img2 = tablePMV.find('.picture-box.secondary')
-			const message = tablePMV.find('#message')
+				let verif = allChecks.filter(":enabled").map(function (a, b) { return $(b).prop('checked') }).toArray()
 
-			clearTimeout(timeChangePMV[idxChange])
-			animationPMV(img1, img2, message, listChangePMV, idxChange)
-		});
+				if (verif.reduce(function (a, b) { return a && b }))
+					checksListAll.prop('checked', true);
+				else
+					checksListAll.prop('checked', false);
+			})
 
-		dmsChanges.val(JSON.stringify(changedPMV));
-	}
+			checksListAll.change(() => {
+				allChecks.filter(":enabled").prop('checked', checksListAll.prop('checked')).trigger('change')
+			})
 
-	const resetPMV = () => {
-		let selected = $('#two .option input:checked');
+			$('#one .equip-info').change(function () {
+				let equip = $(this);
 
-		selected.each(function () {
-			const select = $(this);
-			const idxChange = select.val();
-			const tablePMV = select.parent().next();
-			const id = tablePMV.attr('id').match(/\d+/g)[0];
+				equip.prev().find('input').prop('disabled', equip.hasClass('unable'))
+			})
 
-			listChangePMV[idxChange] = saveChangePMV[idxChange];
+			inputDriver.change(function () {
+				equipInfoView.addClass('unable').filter(`.${$(this).val()}`).removeClass('unable');
+				equipInfoView.trigger('change');
+				allChecks.prop('checked', false);
+				checksListAll.prop('checked', false);
+				pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
+				$(`#availableMessage option`).filter('option[driver]').hide().filter(`option[driver=${$(this).val()}]`).show();
+				$(`#availableMessage`).val(0).trigger('change');
+				selectType.val('All');
+				previewPMV(0);
+			})
 
-			delete changedPMV[id];
-
-			tablePMV.children().first().removeClass('preview')
-
-			const img1 = tablePMV.find('.picture-box.primary')
-			const img2 = tablePMV.find('.picture-box.secondary')
-			const message = tablePMV.find('#message')
-
-			clearTimeout(timeChangePMV[idxChange])
-			animationPMV(img1, img2, message, listChangePMV, idxChange)
-		});
-
-		dmsChanges.val(JSON.stringify(changedPMV));
+			pmvResize();
+			inputDriver.filter(':checked').trigger('change');
+		})
 	}
 
 	$(function () {
-		collectPMV();
-		initAnimation();
+		load();
 
 		$('#toogleMenu button[toggle]').click(function () {
 			if ($(this).attr('toggle') === 'show') {
@@ -282,42 +309,6 @@ async function main() {
 				$(this).text('Mostrar').attr('toggle', "show")
 				$('#showOption').css("display", "none")
 			}
-		})
-
-		$('#messages-list > option').appendTo($(`#availableMessage`));
-
-		allChecks.filter(":enabled").change(function () {
-			let check = $(this)
-			$(`#${check.attr('id')}_Change`).prop('checked', check.prop('checked'))
-
-			let verif = allChecks.filter(":enabled").map(function (a, b) { return $(b).prop('checked') }).toArray()
-
-			if (verif.reduce(function (a, b) { return a && b }))
-				checksListAll.prop('checked', true);
-			else
-				checksListAll.prop('checked', false);
-		})
-
-		checksListAll.change(() => {
-			allChecks.filter(":enabled").prop('checked', checksListAll.prop('checked')).trigger('change')
-		})
-
-		$('#one .equip-info').change(function () {
-			let equip = $(this);
-
-			equip.prev().find('input').prop('disabled', equip.hasClass('unable'))
-		})
-
-		inputDriver.change(function () {
-			equipInfoView.addClass('unable').filter(`.${$(this).val()}`).removeClass('unable');
-			equipInfoView.trigger('change');
-			allChecks.prop('checked', false);
-			checksListAll.prop('checked', false);
-			pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
-			$(`#availableMessage option`).filter('option[driver]').hide().filter(`option[driver=${$(this).val()}]`).show();
-			$(`#availableMessage`).val(0).trigger('change');
-			selectType.val('All');
-			previewPMV(0);
 		})
 
 		selectType.change(function () {
@@ -343,12 +334,13 @@ async function main() {
 				apply.prop('disabled', false);
 		})
 
-		pmvResize();
+		toast = new bootstrap.Toast(document.getElementById('liveToast'))
+
 		$(window).resize(pmvResize);
-		inputDriver.filter('#typePMV1').trigger('change');
-		apply.click(applyPMV);
-		clear.click(clearPMV);
-		reset.click(resetPMV);
+		window.returnAlert = returnAlert;
+		apply.click(() => { applyPMV(1) });
+		clear.click(() => { applyPMV(2) });
+		reset.click(() => { applyPMV(3) });
 	})
 }
 

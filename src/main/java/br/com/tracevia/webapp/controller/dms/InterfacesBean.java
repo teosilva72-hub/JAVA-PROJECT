@@ -10,6 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
+
 import com.google.gson.Gson;
 
 import br.com.tracevia.webapp.controller.global.LanguageBean;
@@ -239,17 +242,17 @@ public class InterfacesBean implements Serializable {
 	@PostConstruct
 	public void initialize() {
 
-		try {			
+		try {
 			imagem = "000_6464.bmp";
-			
+
 			checkbox = true;
 			send = true;
-			
+
 			locale = new LocaleUtil();
 			locale.getResourceBundle(LocaleUtil.MESSAGES_PMV);
-			
+
 			DMSDAO dmsDAO = new DMSDAO();
-			
+
 			dmsList = dmsDAO.idsDMS();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -259,16 +262,28 @@ public class InterfacesBean implements Serializable {
 	public void activateMessage() throws Exception {
 
 		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
+		int count = 0;
 		DMSDAO dmsDAO = new DMSDAO();
 		Gson gson = new Gson();
 
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 		Map<String, String> dms = gson.fromJson(params.get("dmsChanges"), Map.class);
 
-		for (String idDMS : dms.keySet()) {
-			int idMSG = Integer.parseInt(dms.get(idDMS));
+		if (dms != null && dms.size() > 0)
+			for (String idDMS : dms.keySet()) {
+				int idMSG = Integer.parseInt(dms.get(idDMS));
 
-			dmsDAO.changeActivateMessage(Integer.parseInt(idDMS), idMSG);
-		}
+				if (dmsDAO.changeActivateMessage(Integer.parseInt(idDMS), idMSG))
+					count++;
+			}
+
+		if (count > 0)
+			request.execute("returnAlert('Change action successfully carried out with " + count + " changes!');");
+		else if (dms == null || dms.size() == 0)
+			request.execute("returnAlert('No changes to send!');");
+		else
+			request.execute("returnAlert('Change action failed!');");
 	}
+
 }
