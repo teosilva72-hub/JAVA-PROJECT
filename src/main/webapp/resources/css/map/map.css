@@ -190,6 +190,10 @@ table {
   color: #00ff0d;
 }
 
+.equip-box-sat { 
+  height: auto!important;
+}
+
 /* MENU TEST */
 .factorMenu {
   position: absolute;

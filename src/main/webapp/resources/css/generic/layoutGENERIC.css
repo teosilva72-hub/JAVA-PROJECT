@@ -33,9 +33,13 @@
 
 /* GENERIC EQUIPMENTS  */
 
+.equip-header {
+  margin-top: -40%;
+}
+
 .equip-box {
   position: absolute;
-  font-size: 5px;
+  font-size: 10px;
   background: transparent;
   border-right: none;
   float: left;
