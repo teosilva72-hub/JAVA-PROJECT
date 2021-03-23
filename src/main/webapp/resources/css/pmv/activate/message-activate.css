@@ -45,11 +45,11 @@ body {
   margin-bottom: 15px;
   display: block;
 }
- 
 
 /*LABEL MESSAGE BLOCK DIV CONTENT*/
 #label-message-content {
-  margin-top: 2.5%;
+  padding-left: 230px;
+  margin-bottom: 10px;
 }
 
 /*LABEL MESSAGE BLOCK*/
@@ -70,7 +70,6 @@ body {
 #allPMV {
   overflow: auto;
 }
-
 
 /* TEMPORARY CSS */
 

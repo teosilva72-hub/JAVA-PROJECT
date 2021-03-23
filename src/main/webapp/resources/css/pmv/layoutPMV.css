@@ -28,6 +28,16 @@
   border-right: 6px solid #00BFFF;
 }
 
+.equip-info .tableStyle.preview {
+  border-image: linear-gradient(16deg, #ff0000 45%, #00BFFF 60%) 1 100%;
+  opacity: 1 !important;
+}
+
+.equip-info .tableStyle.on.preview {
+  border-image: linear-gradient(16deg, #00fa9a 45%, #00BFFF 60%) 1 100%;
+}
+  
+
 .equip-info .tableStyle.unchanged {
   opacity: .6;
 }
@@ -91,6 +101,7 @@
 .table-message {
   width: 150px;
   color: yellow;
+  text-transform: uppercase;
 }
 
 .equip-info .second-img {
@@ -99,7 +110,13 @@
 
 .driver2.equip-info .msg-pos,
 .driver2 .equip-info .msg-pos {
-  bottom: 10px !important;
+  bottom: 7px !important;
+}
+
+.driver2.equip-info .message1,
+.driver2 .equip-info .message1 {
+  margin-bottom: 6px !important;
+  border-bottom-style: solid !important;
 }
 
 .driver2.equip-info .message2,

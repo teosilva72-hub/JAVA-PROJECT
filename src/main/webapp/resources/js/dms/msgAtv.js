@@ -2,19 +2,27 @@ import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let listPMV = [];
 let listChangePMV = [];
+let timeChangePMV = [];
+let saveChangePMV = [];
 let listSelectPMV = [];
 let animationPreview = 0;
+
+let changedPMV = {};
 
 async function main() {
 	await init();
 
 	const equipInfo = $('.equip-info');
 	const equipInfoView = $('#one .equip-info, #two .equip-info');
-	const allChecks = $('.option [id^=check]')
-	const checksListAll = $('#checkListAll')
-	const inputDriver = $('[name=typePMV]')
-	const pagePMV = $('#page-pmv')
-	const selectType = $("#selectionType")
+	const allChecks = $('.option [id^=check]');
+	const checksListAll = $('#checkListAll');
+	const inputDriver = $('[name=typePMV]');
+	const pagePMV = $('#page-pmv');
+	const selectType = $("#selectionType");
+	const apply = $('#btn-apply');
+	const reset = $('#btn-reset');
+	const clear = $('#btn-clear');
+	const dmsChanges = $('#dmsChanges');
 
 	const pmvResize = () => {
 		equipInfo.css('transform', function () {
@@ -25,8 +33,9 @@ async function main() {
 		$('#allPMV').height($('.jumbotron').height() - 16)
 	}
 
-	const animationPMV = (img1, img2, message, pmv, preview) => {
+	const animationPMV = (img1, img2, message, arr, idx) => {
 		let at = 400
+		let pmv = arr[idx].clone()
 		let driver = pmv.type_page()
 
 		const startAnimation = () => {
@@ -59,8 +68,10 @@ async function main() {
 					startAnimation();
 				}, page.timer() * 1000);
 
-				if (preview)
+				if (arr === listSelectPMV)
 					animationPreview = id;
+				else if (arr === listChangePMV)
+					timeChangePMV[idx] = id;
 			}
 		}
 
@@ -68,8 +79,8 @@ async function main() {
 	}
 
 	const initAnimation = () => {
-		listPMV.forEach(pmv => {
-			const tablePMV = $(`#one #dms${pmv.id()}`);
+		listPMV.forEach((pmv, idx, arr) => {
+			const tablePMV = $(`#one .equip-info:eq(${idx})`);
 
 			tablePMV.addClass(`driver${pmv.type_page()}`)
 
@@ -77,11 +88,11 @@ async function main() {
 			const img2 = tablePMV.find('.picture-box.secondary')
 			const message = tablePMV.find('#message')
 
-			animationPMV(img1, img2, message, pmv, false)
+			animationPMV(img1, img2, message, arr, idx)
 		});
 
-		listChangePMV.forEach(pmv => {
-			const tablePMV = $(`#two #dms${pmv.id()}`);
+		listChangePMV.forEach((pmv, idx, arr) => {
+			const tablePMV = $(`#two .equip-info:eq(${idx})`);
 
 			tablePMV.addClass(`driver${pmv.type_page()}`)
 
@@ -89,7 +100,7 @@ async function main() {
 			const img2 = tablePMV.find('.picture-box.secondary')
 			const message = tablePMV.find('#message')
 
-			animationPMV(img1, img2, message, pmv, false)
+			animationPMV(img1, img2, message, arr, idx)
 		});
 	}
 
@@ -121,7 +132,7 @@ async function main() {
 			}
 
 			if (driver) {
-				let pmv = PMV.new(Number((data.attr('id').match(/\d+/g) || [0])[0]), data.attr('type') || "", data.attr('name') || "", driver);
+				let pmv = PMV.new(Number(data.attr('idMessage') || 0), data.attr('type') || "", data.attr('name') || "", driver);
 
 				data.children().each(function () {
 					let page = $(this);
@@ -142,22 +153,24 @@ async function main() {
 				if (data.attr('id').startsWith("listPMV"))
 					listPMV.push(pmv);
 				else if (data.attr('id').startsWith("listChangePMV")) {
+					data.next().find('input').val(listChangePMV.length)
 					listChangePMV.push(pmv);
+					timeChangePMV.push(0);
 					data.next().find('.tableStyle').addClass(data.attr('status') == "true" ? "unchanged" : "change")
 				} else {
 					listSelectPMV.push(pmv);
 					data.next().val(listSelectPMV.length)
 				}
-
 			}
 			data.remove()
 		})
 		let pmv = PMV.new(0, "", "", PaginaType.Type3)
 		pmv.add_page_default();
 		listSelectPMV.unshift(pmv);
+		saveChangePMV = listChangePMV.slice(0);
 	}
 
-	const previewPMV = idx => {
+	const previewPMV = (idx) => {
 		clearTimeout(animationPreview)
 		pagePMV.find('.dmsTab').text(listSelectPMV[idx].type_alert('&this'))
 
@@ -165,7 +178,95 @@ async function main() {
 		const img2 = pagePMV.find('.picture-box.secondary')
 		const message = pagePMV.find('#message')
 
-		animationPMV(img1, img2, message, listSelectPMV[idx], true)
+		animationPMV(img1, img2, message, listSelectPMV, idx)
+	}
+
+	const applyPMV = () => {
+		let idx = $(`#availableMessage`).val();
+		let selected = $('#two .option input:checked');
+
+		selected.each(function () {
+			const select = $(this);
+			const idxChange = select.val();
+			const tablePMV = select.parent().next();
+			const id = tablePMV.attr('id').match(/\d+/g)[0];
+
+			listChangePMV[idxChange] = listSelectPMV[idx];
+
+			if (saveChangePMV[idxChange].id() !== listChangePMV[idxChange].id()) {
+				tablePMV.children().first().addClass('preview')
+				changedPMV[id] = String(listChangePMV[idxChange].id());
+			} else {
+				tablePMV.children().first().removeClass('preview')
+				delete changedPMV[id];
+			}
+
+			const img1 = tablePMV.find('.picture-box.primary')
+			const img2 = tablePMV.find('.picture-box.secondary')
+			const message = tablePMV.find('#message')
+
+			clearTimeout(timeChangePMV[idxChange])
+			animationPMV(img1, img2, message, listChangePMV, idxChange)
+		});
+
+		dmsChanges.val(JSON.stringify(changedPMV));
+	}
+
+	const clearPMV = () => {
+		let selected = $('#two .option input:checked');
+
+		selected.each(function () {
+			const select = $(this);
+			const idxChange = select.val();
+			const tablePMV = select.parent().next();
+			const id = tablePMV.attr('id').match(/\d+/g)[0];
+
+			listChangePMV[idxChange] = listSelectPMV[0];
+
+			if (saveChangePMV[idxChange].id() !== listChangePMV[idxChange].id()) {
+				tablePMV.children().first().addClass('preview')
+				changedPMV[id] = String(listChangePMV[idxChange].id());
+			}
+			else {
+				tablePMV.children().first().removeClass('preview')
+				delete changedPMV[id];
+			}
+
+			const img1 = tablePMV.find('.picture-box.primary')
+			const img2 = tablePMV.find('.picture-box.secondary')
+			const message = tablePMV.find('#message')
+
+			clearTimeout(timeChangePMV[idxChange])
+			animationPMV(img1, img2, message, listChangePMV, idxChange)
+		});
+
+		dmsChanges.val(JSON.stringify(changedPMV));
+	}
+
+	const resetPMV = () => {
+		let selected = $('#two .option input:checked');
+
+		selected.each(function () {
+			const select = $(this);
+			const idxChange = select.val();
+			const tablePMV = select.parent().next();
+			const id = tablePMV.attr('id').match(/\d+/g)[0];
+
+			listChangePMV[idxChange] = saveChangePMV[idxChange];
+
+			delete changedPMV[id];
+
+			tablePMV.children().first().removeClass('preview')
+
+			const img1 = tablePMV.find('.picture-box.primary')
+			const img2 = tablePMV.find('.picture-box.secondary')
+			const message = tablePMV.find('#message')
+
+			clearTimeout(timeChangePMV[idxChange])
+			animationPMV(img1, img2, message, listChangePMV, idxChange)
+		});
+
+		dmsChanges.val(JSON.stringify(changedPMV));
 	}
 
 	$(function () {
@@ -214,27 +315,40 @@ async function main() {
 			checksListAll.prop('checked', false);
 			pagePMV.removeClass(['driver1', 'driver2', 'driver3']).addClass($(this).val())
 			$(`#availableMessage option`).filter('option[driver]').hide().filter(`option[driver=${$(this).val()}]`).show();
+			$(`#availableMessage`).val(0).trigger('change');
 			selectType.val('All');
 			previewPMV(0);
 		})
 
 		selectType.change(function () {
 			let type = $(this).val();
-			let msg = $(`#availableMessage option`).filter(`option[driver=${inputDriver.filter(':checked').val()}]`);
+			let select = $(`#availableMessage`);
+			let msg = select.children().filter(`option[driver=${inputDriver.filter(':checked').val()}]`);
 			if (type === "All")
 				msg.show();
-			else
+			else {
 				msg.hide().filter(`[type=${type}]`).show();
+				if (type != select.find(':selected').attr('type'))
+					select.val(0).trigger('change');
+			}
 		})
 
-		$(`#availableMessage`).change(function() {
+		$(`#availableMessage`).change(function () {
 			let idx = $(this).val();
 			previewPMV(idx);
+
+			if (idx == 0)
+				apply.prop('disabled', true);
+			else
+				apply.prop('disabled', false);
 		})
 
 		pmvResize();
 		$(window).resize(pmvResize);
 		inputDriver.filter('#typePMV1').trigger('change');
+		apply.click(applyPMV);
+		clear.click(clearPMV);
+		reset.click(resetPMV);
 	})
 }
 
