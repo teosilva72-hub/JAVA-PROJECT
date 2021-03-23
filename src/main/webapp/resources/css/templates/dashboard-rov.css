@@ -807,4 +807,23 @@ input.apple-switch:checked:before {
   background: #555;
 }
 
+
+ /* CUSTOM SCROLL */
+ 
+/* Call Box Alert */ 
+ 
+#navCall {
+	animation-name: callalert !important;
+	animation-duration: 2s !important;
+	animation-iteration-count: infinite;
+}
+ 
+@keyframes callalert {
+	 from {background-color: red;}
+  to {background-color: blue;}
+}
+
+/* Call Box Alert END */ 
+
 /* CUSTOM SCROLL */
+
