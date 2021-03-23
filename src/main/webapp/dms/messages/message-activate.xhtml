@@ -241,7 +241,7 @@
 										aria-label="select message">
 										<option value="0" selected="selected" style="display: none;">Default</option>
 									</select>
-									<c:forEach items="#{pmvMessage.messages}" var="opt">
+									<c:forEach items="#{pmvMessage.messages}" var="opt" varStatus="status">
 										<div id="listSelectPMV#{opt.id_message}" idMessage="#{opt.id_message}"
 											type="#{opt.tipo}" name="#{opt.nome}" driver="#{opt.driver}">
 											<input type="hidden" name="page1" imageId="#{opt.pages[0].id_image}"
@@ -270,7 +270,7 @@
 												line2="#{opt.pages[4].text2}" line3="#{opt.pages[4].text3}"
 												timer="#{opt.pages[4].timer}" />
 										</div>
-										<option value="#{opt.id_message}" type="#{opt.tipo}"
+										<option value="#{status.index + 1}" type="#{opt.tipo}"
 											driver="driver#{opt.driver}">#{opt.nome} -
 											#{pmvMessage.translateType(opt.tipo)}</option>
 									</c:forEach>
