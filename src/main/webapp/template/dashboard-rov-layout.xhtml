@@ -678,9 +678,20 @@
 
     <ui:insert name="modal-content"></ui:insert>
 
-    <!-- TOAST ACCEPT/DIMISS CALL -->
-    
-    <!-- TOAST ACCEPT/DIMISS CALL END -->
+    <!-- TOAST -->
+    <div class="p-3 toast-end-bottom" style="z-index: 1100">
+			<div id="liveToast" class="toast hide bg-white align-items-center" role="alert" aria-live="assertive"
+				aria-atomic="true">
+				<div class="d-flex">
+					<div class="toast-body">
+						<span id="msgToastNotification"></span>
+					</div>
+					<button type="button" class="btn-close me-2 my-auto ms-auto ml-auto mr-2" data-bs-dismiss="toast"
+						aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+    <!-- TOAST END -->
 
   
 
