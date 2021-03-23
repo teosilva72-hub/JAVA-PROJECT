@@ -106,7 +106,8 @@ public class DMSDAO {
 		return lista;
 	}
 
-	public void changeActivateMessage(int idDMS, int idMSG) throws Exception {
+	public boolean changeActivateMessage(int idDMS, int idMSG) throws Exception {
+		boolean success = false;
 
 		String sql1 = "SELECT id_message FROM pmv_messages_active WHERE id_equip = ?;";
 		String sql2 = "UPDATE pmv_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
@@ -137,13 +138,17 @@ public class DMSDAO {
 				ps.setInt(3, idDMS);
 
 				ps.executeUpdate();
+				success = true;
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			success = false;
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
+
+		return success;
 	}
 
 }
