@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
+import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 public class Equipments {
 
 	private int equip_id;
 	private String table_id;
+	private String equip_type;
 	private String creation_date;
 	private String creation_username;
 	private String update_date;
@@ -32,13 +34,14 @@ public class Equipments {
 	private boolean notificacao;
 	private boolean visible;
 
-	public Equipments(int equip_id, String table_id, String creation_date, String creation_username, String update_date,
-			String update_username, String nome, String estrada, String cidade, String km, String posicao,
-			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height, int linearWidth,
-			int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
-
+	public Equipments(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
+			String update_date, String update_username, String nome, String estrada, String cidade, String km,
+			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
+			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
+		
 		this.equip_id = equip_id;
 		this.table_id = table_id;
+		this.equip_type = equip_type;
 		this.creation_date = creation_date;
 		this.creation_username = creation_username;
 		this.update_date = update_date;
@@ -62,10 +65,7 @@ public class Equipments {
 		this.visible = visible;
 	}
 
-
 	public Equipments() {}
-
-
 
 
 	public int getEquip_id() {
@@ -86,7 +86,14 @@ public class Equipments {
 	public void setTable_id(String table_id) {
 		this.table_id = table_id;
 	}
+	
+	public String getEquip_type() {
+		return equip_type;
+	}
 
+	public void setEquip_type(String equip_type) {
+		this.equip_type = equip_type;
+	}
 
 	public String getCreation_date() {
 		return creation_date;
@@ -298,7 +305,7 @@ public class Equipments {
 	}
 
 
-	//Linear Generic equipments
+	//BUILD GENERIC EQUIPMENTS
 	public List<Equipments> listEquipments(String modulo) throws Exception {
 
 		List<Equipments> lista = new ArrayList<Equipments>();	
@@ -308,12 +315,22 @@ public class Equipments {
 		return lista;
 	}
 
-	//Linear SAT equipments
+	//BUILD SAT EQUIPMENTS
 	public List<? extends Equipments> listSatEquipments() throws Exception {
 
 		List<SAT> lista = new ArrayList<SAT>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			
 		lista.addAll(dao.buildSatEquipmentsInterface());						
+
+		return lista;
+	}
+		
+	//BUILD DMS EQUIPMENTS
+    public List<? extends Equipments> listDMSEquipments() throws Exception {
+
+		List<DMS> lista = new ArrayList<DMS>();	
+		EquipmentsDAO dao = new EquipmentsDAO();			
+		lista.addAll(dao.buildDMSEquipmentsInterface());						
 
 		return lista;
 	}

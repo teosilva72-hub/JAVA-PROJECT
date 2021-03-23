@@ -8,12 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
+import br.com.tracevia.webapp.dao.dms.MessagesDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.Modules;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
@@ -308,6 +310,7 @@ public class EquipmentsDAO {
 					equip.setEquip_id(rs.getInt(1));
 					equip.setTable_id(modulo);
 					equip.setNome(rs.getString(2));
+					equip.setEquip_type(getModule(modulo));
 					equip.setCidade(rs.getString(3));
 					equip.setEstrada(rs.getString(4));
 					equip.setKm(rs.getString(5));
@@ -349,6 +352,7 @@ public class EquipmentsDAO {
 		TranslationMethods translator = new TranslationMethods();
 		
 		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
+		String sentido1 = "", sentido2 = "";
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				   "dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
@@ -370,6 +374,9 @@ public class EquipmentsDAO {
 					
 					SAT sat = new SAT();
 					
+					sentido1 = translator.CheckDirection(rs.getString(7));
+					sentido2 = translator.Check2ndDirection(rs.getString(7));
+					
 					dir1 = translator.CheckDirection(rs.getString(7));
 					dir2 = translator.CheckDirection(rs.getString(8));
 					dir3 = translator.CheckDirection(rs.getString(9));
@@ -378,7 +385,7 @@ public class EquipmentsDAO {
 					dir6 = translator.CheckDirection(rs.getString(12));
 					dir7 = translator.CheckDirection(rs.getString(13));
 					dir8 = translator.CheckDirection(rs.getString(14));
-					
+													
 					sat.setEquip_id(rs.getInt(1));
 					sat.setTable_id("sat");
 					sat.setNome(rs.getString(2));
@@ -386,6 +393,7 @@ public class EquipmentsDAO {
 					sat.setEstrada(rs.getString(4));
 					sat.setKm(rs.getString(5));
 					sat.setNumFaixas(rs.getInt(6));
+					sat.setEquip_type(ModulesEnum.SAT.getModule());
 					sat.setFaixa1(dir1);		
 					sat.setFaixa2(dir2);
 					sat.setFaixa3(dir3);		
@@ -394,6 +402,8 @@ public class EquipmentsDAO {
 					sat.setFaixa6(dir6);
 					sat.setFaixa7(dir7);		
 					sat.setFaixa8(dir8);
+					sat.setSentido1(sentido1);
+					sat.setSentido2(sentido2);
 					sat.setLinearWidth(rs.getInt(15));						
 					sat.setLinearPosX(rs.getInt(16));
 					sat.setLinearPosY(rs.getInt(17));
@@ -426,18 +436,22 @@ public class EquipmentsDAO {
 	
 	// ---- SAT INTERFACE EQUIPMENTS ---- //
 	
-	// ---- DMS LINEAR INTERFACE EQUIPMENTS ---- //
 	
-	public ArrayList<Equipments> buildLinearDMSEquipments(String modulo) throws Exception {
+	// ---- DMS INTERFACE EQUIPMENTS ---- //
+	
+	public ArrayList<DMS> buildDMSEquipmentsInterface() throws Exception {
 
-		ArrayList<Equipments> lista = new ArrayList<Equipments>();
-
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
-				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
-				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
-				   "WHERE visible = 1 ";
-				
+		ArrayList<DMS> lista = new ArrayList<DMS>();
+	
+		String sql = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active "
+				+ "FROM pmv_equipment eq " 
+				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
+				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
+				+ "WHERE visible = 1 "
+				+ "ORDER BY eq.equip_id ASC"; 
+		       				
 		try {
 			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -449,28 +463,36 @@ public class EquipmentsDAO {
 
 				while (rs.next()) {
 					
-					Equipments equip = new Equipments();
+					DMS dms = new DMS();
+					MessagesDAO msg = new MessagesDAO();
 					
-					equip.setEquip_id(rs.getInt(1));
-					equip.setTable_id(modulo);
-					equip.setNome(rs.getString(2));
-					equip.setCidade(rs.getString(3));
-					equip.setEstrada(rs.getString(4));
-					equip.setKm(rs.getString(5));
-					equip.setLinearWidth(rs.getInt(6));	
-					//equip.setHeight((int) (equip.getLinearWidth()*0.232));
-					equip.setLinearPosX(rs.getInt(7));
-					equip.setLinearPosY(rs.getInt(8));									
-					equip.setPosicao(rs.getString(9));
+					boolean active = rs.getBoolean("active");
+					Messages message = msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_message"));
+										
+					dms.setEquip_id(rs.getInt(1));	
+					dms.setTable_id("dms");
+					dms.setDms_ip(rs.getString(2));
+					dms.setDms_type(rs.getInt(3));
+					dms.setEquip_type(ModulesEnum.PMV.getModule());
+					dms.setNome(rs.getString(4));
+					dms.setCidade(rs.getString(5));
+					dms.setEstrada(rs.getString(6));
+					dms.setKm(rs.getString(7));				
+					dms.setLinearWidth(rs.getInt(8));						
+					dms.setLinearPosX(rs.getInt(9));
+					dms.setLinearPosY(rs.getInt(10));
+					dms.setMapWidth(rs.getInt(11));						
+					dms.setMapPosX(rs.getInt(12));					
+					dms.setMapPosY(rs.getInt(13));	
+					dms.setMessage(message);
+					dms.setMsg_status(active);
 					
-					/*if(dms.getPosicao().equals("horizontal")) {
-						dms.setHorizontal(true);
-					}else {
-						dms.setHorizontal(false);
-					}						
-					*/
-					
-					lista.add(equip);
+					if (active)
+						dms.setMessageChange(message);
+					else
+						dms.setMessageChange(msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_modify")));
+										
+					lista.add(dms);
 				}				
 			}
 
@@ -483,63 +505,7 @@ public class EquipmentsDAO {
 		return lista;
 	}
 	
-	// --- DMS MAP INTERFACE EQUIPMENTS --- //
-	
-	public ArrayList<Equipments> buildMapDMSEquipments(String modulo) throws Exception {
-
-		ArrayList<Equipments> lista = new ArrayList<Equipments>();
-
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, map_width, " +
-				   "map_posX, map_posY, position FROM "+modulo+"_equipment eq " +
-				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
-				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
-				   "WHERE visible = 1 ";
-		try {
-			
-			
-			 //GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-						
-			if (rs != null) {
-
-				while (rs.next()) {
-					
-					Equipments equip = new Equipments();
-					
-					equip.setEquip_id(rs.getInt(1));	
-					equip.setTable_id(modulo);
-					equip.setNome(rs.getString(2));
-					equip.setCidade(rs.getString(3));
-					equip.setEstrada(rs.getString(4));
-					equip.setKm(rs.getString(5));
-					equip.setMapWidth(rs.getInt(6));	
-					equip.setHeight((int) (equip.getMapWidth()*0.232));	
-					equip.setMapPosX(rs.getInt(7));
-					equip.setMapPosY(rs.getInt(8));					
-					equip.setPosicao(rs.getString(9));
-					
-					/*if(dms.getPosicao().equals("horizontal")) {
-						dms.setHorizontal(true);
-					}else {
-						dms.setHorizontal(false);
-					}						
-					*/
-					
-					lista.add(equip);
-				}				
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-
-		return lista;
-	}
+	// ---- DMS INTERFACE EQUIPMENTS ---- //
 	
 	
     //Equipments Options for Selection	
@@ -2337,5 +2303,28 @@ public void defineDirectionNumber(SAT sat, int numberLane, String dir){
 	}
    
    } 
+
+public String getModule(String type) { 
+	
+	String module = null;
+	
+	switch(type) {
+	
+	case "cftv": module = ModulesEnum.CFTV.getModule() ; break;
+	case "colas": module = ModulesEnum.COLAS.getModule(); ; break;
+	case"comms": module = ModulesEnum.COMMS.getModule(); ; break;
+	case "dai": module = ModulesEnum.DAI.getModule(); ; break;
+	case "lpr": module = ModulesEnum.LPR.getModule(); ; break;
+	case "mto": module = ModulesEnum.MTO.getModule(); ; break;
+	case "dms": module = ModulesEnum.PMV.getModule(); ; break;
+	case "sat": module = ModulesEnum.SAT.getModule(); ; break;
+	case "sos": module = ModulesEnum.SOS.getModule(); ; break;
+	case "speed": module = ModulesEnum.SPEED.getModule(); ; break;
+	case "wim": module = ModulesEnum.WIM.getModule(); ; break;
+	
+	}
+	
+	return module;
+}
   
 }

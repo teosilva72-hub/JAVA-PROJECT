@@ -604,14 +604,14 @@ public class EquipmentsBean implements Serializable {
 	  	    else sat.setNumFaixas(2);
 	  	 	  	    		   
 	  	    //SET LANES DEFINITION
-	  	    defineDirection(sat, 1, parameterMap.get("direction1-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")));
-	  	    defineDirection(sat, 2, parameterMap.get("direction2-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")));
-	  	    defineDirection(sat, 3, parameterMap.get("direction3-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")));
-	  	    defineDirection(sat, 4, parameterMap.get("direction4-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction4-edit")));
-	  	    defineDirection(sat, 5, parameterMap.get("direction5-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction5-edit")));
-	  	    defineDirection(sat, 6, parameterMap.get("direction6-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction6-edit")));
-	  	    defineDirection(sat, 7, parameterMap.get("direction7-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")));
-	  	    defineDirection(sat, 8, parameterMap.get("direction8-edit") == null ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
+	  	    defineDirection(sat, 1, parameterMap.get("direction1-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")));
+	  	    defineDirection(sat, 2, parameterMap.get("direction2-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")));
+	  	    defineDirection(sat, 3, parameterMap.get("direction3-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")));
+	  	    defineDirection(sat, 4, parameterMap.get("direction4-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4-edit")));
+	  	    defineDirection(sat, 5, parameterMap.get("direction5-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5-edit")));
+	  	    defineDirection(sat, 6, parameterMap.get("direction6-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6-edit")));
+	  	    defineDirection(sat, 7, parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")));
+	  	    defineDirection(sat, 8, parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
 	  	    
 	  	    update = dao.EquipSATUpdateMap(sat, table);
 	     	 
