@@ -391,6 +391,12 @@ footer {
   color: rgba(240, 15, 70, 1);
 }
 
+#call-box {
+	position: absolute;
+	right: 50px;
+	bottom: 0px;
+}
+
 #dismiss {
   width: 35px;
   height: 35px;

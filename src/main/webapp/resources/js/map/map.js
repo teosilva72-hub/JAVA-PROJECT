@@ -514,8 +514,16 @@ function checkValidation(){
 //Create button
 function checkValidationEdit(){	 
 
- $('#edit-equip-form').valid();	
-	
+ $('#edit-equip-form').valid();		
+
+}
+
+function closeModal(modalId, button){
+$(button).click(function(){
+
+ $(modalId).modal('hide');
+
+});
 
 }
 

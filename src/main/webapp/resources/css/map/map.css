@@ -275,59 +275,6 @@ table {
   text-decoration: none;
 }
 
-/* BUTTONS POSITION EQUIPS*/
-
-.save_pos {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 12px;
-  font-weight: 100;
-  padding: 10px;
-  background-color: #343a40;
-  text-decoration: none;
-  display: none;
-  cursor: pointer;
-  text-align: center;
-  margin-left: 1%;
-}
-
-.save_pos:hover {
-  background: #212529;
-  border: solid #5c5d5e 1px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-.cancel_pos {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 12px;
-  font-weight: 100;
-  padding: 10px;
-  background-color: #343a40;
-  text-decoration: none;
-  display: none;
-  cursor: pointer;
-  text-align: center;
-}
-
-.cancel_pos:hover {
-  background: #212529;
-  border: solid #5c5d5e 1px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
 /*INTERNAL CONTENT OF EQUIPMENT*/
 .equip-status {
   height: 4px;
@@ -809,7 +756,7 @@ img.box-img[zoom] {
 [id$="dmsIp-edit"] {
   width: 100%;
 }
-[id$="equipName-edit"] {
+[id$="equipNameEdit"] {
   width: 100%;
 }
 
@@ -824,6 +771,10 @@ img.box-img[zoom] {
 }  
 [id$="width-edit"] {
   width: 100%;   
+}
+
+[id$="cancelPos"] {
+    margin-left: 14px;
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -938,6 +889,7 @@ input[type="number"] {
 
 #modaladd {
 z-index: 10030;
+margin-top: 0%;
 }
 
 #OPmodal {
@@ -946,6 +898,7 @@ z-index: 10030;
 
 #editmodal {
 z-index: 10030;
+margin-top: -2.5%;
 }
 
 #deletemodal {
@@ -968,7 +921,8 @@ margin-top: 0%;
 
 /* ALERTS STYLE */
 
-#realsave, #realcancel, #equipsave, #equipsave-error {
+#realsave, #realcancel, #equip-save, #equip-save-error, 
+#equip-update, #equip-update-error, #equip-delete, #equip-delete-error {
 height: 23px;
 }
 
@@ -1030,3 +984,18 @@ text-align: center;
 .dmsHidden-edit {
   display: none;
 }
+
+/* Disabled bubttons on edit modal */
+input#equipId-edit:disabled, input#dmsType-edit:disabled {
+opacity: 0.7;
+ }
+
+/* MODAL CANCEL DELETE */
+.cancel{	
+	margin-left: 7px;
+} 
+/* DELETE MODAL MESSAGE POS*/
+.delete-message{
+	margin-left: 20%;
+}
+
