@@ -118,7 +118,7 @@ footer {
   -moz-transition: background-color 0.3s;
   -o-transition: background-color 0.3s;
   -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s; 
+  transition: background-color 0.3s;
 }
 
 #profile-img {
@@ -152,8 +152,8 @@ footer {
   min-width: 16px;
   min-height: 16px;
   font-size: 12px;
-  border-radius: 100%; 
-  display: none; 
+  border-radius: 100%;
+  display: none;
 }
 
 .header-menu > li > a .header-badge-msg {
@@ -168,7 +168,7 @@ footer {
   min-height: 16px;
   font-size: 12px;
   border-radius: 100%;
-  display: none; 
+  display: none;
 }
 
 .brand-text {
@@ -214,36 +214,42 @@ footer {
 }
 
 /* DROPDOWN ITEM STYLES */
-.dropdown-item{
+.dropdown-item {
   border-bottom: 1px solid white !important;
   margin-bottom: 0px !important;
 }
 
-.dropdown-item:hover{background: #E6E6FA !important;}
-.dropdown-item:active{background: #212529 !important;}
-
-.navbar .dropdown.show .notif-dropdown a { 
-  background-color: #BADA55;
+.dropdown-item:hover {
+  background: #e6e6fa !important;
+}
+.dropdown-item:active {
+  background: #212529 !important;
 }
 
- .dropdown-notif{
- max-height: 262px !important;
- overflow-y: auto;
- }
- 
- 
- .dropdown-notif-style{
- width: 100%; 
- font-size: 10px; 
- font-weight: bold; 
- margin-bottom: 5px; 
- height: auto; 
- }
- 
- 
- .dropdown-nofit-checked{background: #87CEFA;}
- .dropdown-nofit-unchecked{background: #f8f9fa;}
- 
+.navbar .dropdown.show .notif-dropdown a {
+  background-color: #bada55;
+}
+
+.dropdown-notif {
+  max-height: 262px !important;
+  overflow-y: auto;
+}
+
+.dropdown-notif-style {
+  width: 100%;
+  font-size: 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  height: auto;
+}
+
+.dropdown-nofit-checked {
+  background: #87cefa;
+}
+.dropdown-nofit-unchecked {
+  background: #f8f9fa;
+}
+
 /* DROPDOWN ITEM STYLES */
 
 /*Menu Dropdown items*/
@@ -325,7 +331,6 @@ footer {
 
 .wrapper {
   margin-top: 65px;
-  
 }
 
 .wrapper .sideMenu {
@@ -391,6 +396,12 @@ footer {
   color: rgba(240, 15, 70, 1);
 }
 
+#call-box {
+  position: absolute;
+  right: 50px;
+  bottom: 0px;
+}
+
 #dismiss {
   width: 35px;
   height: 35px;
@@ -419,6 +430,31 @@ footer {
   /* animate the transition */
   transition: all 0.5s ease-in-out;
   margin-top: -5px;
+}
+
+.btn-close {
+  box-sizing: content-box;
+  width: 1em;
+  height: 1em;
+  padding: 0.25em 0.25em;
+  color: #000;
+  background: transparent
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e")
+    center/1em auto no-repeat;
+  border: 0;
+  border-radius: 0.25rem;
+  opacity: 0.5;
+}
+
+.toast {
+  width: 350px;
+  max-width: 100%;
+}
+
+.toast-end-bottom {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 
 /* display .overlay when it has the .active class */
@@ -749,7 +785,7 @@ input.apple-switch:checked:before {
   transform: translate(-90%, -60%);
 }
 
- /* CUSTOM SCROLL */
+/* CUSTOM SCROLL */
 
 /* width */
 ::-webkit-scrollbar {
@@ -758,17 +794,17 @@ input.apple-switch:checked:before {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+  background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+  background: #555;
 }
 
- /* CUSTOM SCROLL */
+/* CUSTOM SCROLL */

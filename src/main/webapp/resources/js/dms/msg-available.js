@@ -160,8 +160,7 @@ async function main() {
 
 		cancel();
 
-		$('#msgToastNotification').text(msg);
-		toast.show();
+		alertToast(msg);
 	}
 
 	// Cancel message in menu
@@ -511,9 +510,6 @@ async function main() {
 		timerPage.on('keyup change', function () {
 			pmvActive.change_timer(Number($(this).parent().next().next().text()) - 1, Number($(this).val()));
 		})
-
-		
-		toast = new bootstrap.Toast(document.getElementById('liveToast'))
 		
 		pmvResize();
 		$(window).resize(pmvResize);
