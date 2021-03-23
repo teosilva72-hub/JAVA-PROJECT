@@ -154,3 +154,38 @@
 .driver3 .equip-info .table-message {
   width: 110px !important;
 }
+
+/* sat info div*/
+.dms-info-bagde {
+  position: absolute;
+  top: -6px;
+  margin-left: -25px;
+  background-color: #1e90ff;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 14px;
+  min-width: 14px;
+  display: block;
+  border-radius: 50%;
+  float: left;
+  cursor: pointer;
+  z-index: 3;
+  text-indent: 0px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+/* sat info icon hover */
+.dms-info-bagde:hover {
+  text-decoration: none;
+  background: #ffc107;
+  color: #555;
+}
+
+/* sat info icon focus */
+.dms-info-bagde:focus {
+  background: #000080;
+  outline: none;
+}

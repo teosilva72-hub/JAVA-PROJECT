@@ -19,6 +19,7 @@
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
+		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 		<h:outputStylesheet library="css/validation" name="validation_style.css" />
 
@@ -55,17 +56,34 @@
 		//AUTO UPDATE PAGE INTERVAL
 		///////////////////////////////////
 		
+		
+		  //POPOVER TASKS => SAT
+			  
+			  		$(function () {
+ 
+			  			$('[data-toggle="popover"]').popover({	
+			  				html : true,      
+			  				content: function() {        
+			  					var content = $(this).attr("data-popover-content");        
+			  					return $(content).children(".popover-body").html();     
+			  				},      
+			  				title: function() {        
+			  					var title = $(this).attr("data-popover-content");        
+			  					return $(title).children(".popover-header").html();      
+			  				} 
+			  			  }); 
+			  		   });		
+			         $(function () {
+			       $('[data-toggle="tooltip"]').tooltip()
+			      })
+			      
+			  //POPOVER TASKS => SAT
+		
 		</script>
 
 	</ui:define>
 
 	<ui:define name="main-content">
-	
-	
-	<div id="message-show">
-			<pf:messages id="msgs" showDetail="true" autoUpdate="true"
-				closable="true" />
-		</div>
 		
 		<!--  ******************************************************************************************************* -->
 
@@ -84,7 +102,7 @@
 		<!-- SAVE EQUIP -->
 		<div class="alert alert-success" role="alert" style="display: none;"
 			id="equip-save">
-			<p class="textAlert">#{mapLabels.map_alert_save_equipment}.</p>
+			<p class="textAlert">#{mapLabels.map_alert_save_equipment}</p>
 		</div>
 		
 		<!-- SAVE EQUIP ERROR -->
@@ -98,7 +116,7 @@
 		<!-- UPDATE EQUIP -->
 		<div class="alert alert-success" role="alert" style="display: none;"
 			id="equip-update">
-			<p class="textAlert">#{mapLabels.map_alert_update_equipment}.</p>
+			<p class="textAlert">#{mapLabels.map_alert_update_equipment}</p>
 		</div>
 		
 		<!-- UPDATE EQUIP ERROR -->
@@ -112,7 +130,7 @@
 		<!-- DELETE EQUIP -->
 		<div class="alert alert-success" role="alert" style="display: none;"
 			id="equip-delete">
-			<p class="textAlert">#{mapLabels.map_alert_delete_equipment}.</p>
+			<p class="textAlert">#{mapLabels.map_alert_delete_equipment}</p>
 		</div>
 		
 		<!-- DELETE EQUIP ERROR -->
@@ -176,7 +194,12 @@
 			</h:form>
 			
 			<!--  ******************************************************************************************************* -->
-
+			
+			<!-- 	<button class="btn btn-success" data-html="true" data-toggle="popover" 
+										data-trigger="focus"
+										 data-popover-content="#hi">Teste</button> -->
+										 
+			
 		</div>
 
 		<!-- WEB ZOOM END -->
@@ -324,10 +347,12 @@
 				</button>
 			</div>
 		</div>
-
+		
+		
+		
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
-
+											
 			<!-- START SECTION -->
 			<div id="zoomtext" scale="1" class="section">
 				<!-- MAP FRONT IMAGE -->
@@ -338,12 +363,12 @@
 			<div id="labelPos">
 				<label id="posX"></label> <label id="posY"></label>
 			</div>
-
-			<!-- Drag Items -->
-
+			
+			<!-- Drag Items -->			
+		
 			<div class="draggable" id="equipAll">
-
-				<c:forEach items="#{listEquips.equips}" var="loadItem">
+			
+			<c:forEach items="#{listEquips.equips}" var="loadItem">
 
 					<ui:fragment rendered="#{loadItem.value}">
 
@@ -354,7 +379,7 @@
 								<c:choose>
 									<c:when test="#{item.table_id eq 'dms'}">
 										<div id="listPMV#{item.equip_id}" type="#{item.message.tipo}"
-											name="#{item.nome}" driver="#{item.message.driver}">
+											name="#{item.nome}" driver="#{item.message.driver}">																
 											<input type="hidden" name="page1"
 												imageId="#{item.message.pages[0].id_image}"
 												image="#{item.message.pages[0].image}"
@@ -406,9 +431,11 @@
 
 											<!-- Table with DIV -->
 
-											<div class="tableStyle card">
-												<div class="dms-name card-header py-0">
-													<div class="text-center dmsTab#{item.equip_id}">
+											<div class="tableStyle card">										
+												<div class="dms-name card-header py-0">											
+													<div class="text-center dmsTab#{item.equip_id}">													
+													<a role="button" class="dms-info-bagde" data-toggle="popover" 
+									                 data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>													
 														<span class="namePMV">#{item.nome}</span>
 														<span class="kmPMV">#{item.km}</span>
 													</div>
@@ -542,11 +569,59 @@
 													</div>
 												</div>
 											</div>
-
 										</div>
-									</c:when>
-									<c:when test="#{item.table_id eq 'sat'}">
+										
+										<div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
+											<div class="popover-header">#{infoLabels.info_label_header}</div>
 
+											<div class="popover-body">
+											
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_equip_module}
+															:</b>&nbsp;#{item.equip_type}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_equip_id}
+															:</b>&nbsp;#{item.equip_id}</div>
+												</div>
+												
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_name}
+															:</b>&nbsp;#{item.nome}</div>
+												</div>
+												
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_equip_ip}
+															:</b>&nbsp;#{item.dms_ip}</div>
+												</div>
+												
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_equip_driver}
+															:</b>&nbsp;#{item.dms_type}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_highway}
+															:</b>&nbsp;#{item.estrada}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_km}
+															:</b>&nbsp;#{item.km}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_city}
+															:</b>&nbsp;#{item.cidade}&nbsp;&nbsp;&nbsp;</div>
+												</div>
+											</div>
+										</div>
+										
+									</c:when>										
+																		
+									<c:when test="#{item.table_id eq 'sat'}">
+									
 										<div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
 											posX="#{item.mapPosX}" posY="#{item.mapPosY}"
 											item-width="#{item.mapWidth}"
@@ -557,16 +632,16 @@
 													class="satName card-header p-0 border-dark">
 													<div id="satTab#{item.equip_id}" class="text-center">
 														<p class="mb-0">#{item.nome} - #{item.km}</p>
-													</div>
-													<a tabindex="0" class="sat-info-bagde" role="button"
-														data-html="true" data-toggle="popover" data-trigger="focus"
-														data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
-
-												</div>
+													</div>																																 
+									
+									         <a role="button" class="sat-info-bagde" data-toggle="popover" 
+									         data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
+									
+											 </div>
 												<div class="row text-center card-body p-0 mx-0">
 													<div class="col-5 padding-sat border-right border-bottom border-dark on-mouse-hover"
 														data-toggle="tooltip" data-placement="left"
-														title="#{item.faixa1}">
+														title="#{item.sentido1}">
 														<i class="fas fa-car sat-cars"
 															title="#{realtimeLabels.realtime_sat_cars_icon_title}"></i>
 														<span
@@ -574,7 +649,7 @@
 													</div>
 													<div class="col-7 padding-sat border-bottom border-dark on-mouse-hover"
 														data-toggle="tooltip" data-placement="right"
-														title="#{item.faixa1}">
+														title="#{item.sentido1}">
 														<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
 														<span
 															id="speed1">#{satMapsView.satListValues.get(loop.index).velocidadeS1}</span><span
@@ -582,7 +657,7 @@
 													</div>
 													<div class="col-5 padding-sat border-right border-dark on-mouse-hover"
 														data-toggle="tooltip" data-placement="left"
-														title="#{item.faixa2}">
+														title="#{item.sentido2}">
 														<i class="fas fa-car sat-cars"
 															title="#{realtimeLabels.realtime_sat_speed_icon_title}"></i>
 														<span
@@ -599,13 +674,18 @@
 
 											</div>
 											<!-- HTML to write -->
-
+																						
 										</div>
 
 										<div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
 											<div class="popover-header">#{infoLabels.info_label_header}</div>
 
 											<div class="popover-body">
+											
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_equip_module}
+															:</b>&nbsp;#{item.equip_type}</div>
+												</div>
 
 												<div class="row">
 													<div class="equip-label-left"><b>#{infoLabels.info_label_equip_id}
@@ -654,15 +734,18 @@
 										</div>
 
 									</c:when>
+									
 									<c:otherwise>
 										<div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-											posY="#{item.mapPosY}" item-width="#{item.mapWidth}"
-											class="equip-box #{item.table_id}">
-											<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">
+											posY="#{item.mapPosY}" item-width="#{item.mapWidth}" class="equip-box #{item.table_id}">	
+																		         
+											<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">		<!-- HEADER -->									
 												<p class="col-auto mb-0 pr-1">#{item.nome}</p>
 												<span id="#{item.table_id}Status1" class="equip-status"></span>
 												<p class="col-12 mb-0">#{item.km}</p>
-											</div>
+											</div> <!---->
+											
+											
 
 											<c:if test="#{item.table_id eq 'cftv'}">
 												<h:graphicImage class="equip-image"
@@ -700,7 +783,50 @@
 												<h:graphicImage class="equip-image"
 													value="/resources/images/equips/wim.png" />
 											</c:if>
+											 
+								
+										
+										 <a role="button" class="generic-info-bagde" data-toggle="popover" 
+									         data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
+										</div>	
+										
+										<div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
+											<div class="popover-header">#{infoLabels.info_label_header}</div>
+
+											<div class="popover-body">
+											
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_equip_module}
+															:</b>&nbsp;#{item.equip_type}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_equip_id}
+															:</b>&nbsp;#{item.equip_id}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"> <b>#{infoLabels.info_label_name}
+															:</b>&nbsp;#{item.nome}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_highway}
+															:</b>&nbsp;#{item.estrada}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_km}
+															:</b>&nbsp;#{item.km}</div>
+												</div>
+
+												<div class="row">
+													<div class="equip-label-left"><b>#{infoLabels.info_label_city}
+															:</b>&nbsp;#{item.cidade}&nbsp;&nbsp;&nbsp;</div>
+												</div>
+											</div>
 										</div>
+																				
 									</c:otherwise>
 								</c:choose>
 
@@ -2111,7 +2237,9 @@
 			  $('#km-edit').mask('000+000'); 	// KM MASK				
 			  $('#dmsIp-edit').mask('000.000.000.000'); //IP MASK
 			  
-
+			  
+			
+			  
 		</script>
 	</ui:define>
 

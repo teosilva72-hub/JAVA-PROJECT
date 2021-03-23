@@ -40,8 +40,7 @@ async function main() {
 		
 		dmsChanges.val('')
 
-		$('#msgToastNotification').text(msg);
-		toast.show();
+		alertToast(msg);
 	}
 
 	const animationPMV = (img1, img2, message, arr, idx) => {
@@ -333,8 +332,6 @@ async function main() {
 			else
 				apply.prop('disabled', false);
 		})
-
-		toast = new bootstrap.Toast(document.getElementById('liveToast'))
 
 		$(window).resize(pmvResize);
 		window.returnAlert = returnAlert;

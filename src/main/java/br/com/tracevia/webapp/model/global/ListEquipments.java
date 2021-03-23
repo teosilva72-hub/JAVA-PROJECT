@@ -90,7 +90,7 @@ public class ListEquipments {
 				Colas colas = new Colas();
 				COMMS comms = new COMMS();
 				DAI dai = new DAI();
-				DMSDAO dms = new DMSDAO();
+				DMS dms = new DMS();
 				LPR lpr =  new LPR();
 				MTO mto =  new MTO();
 				SAT sat = new SAT();
@@ -111,7 +111,7 @@ public class ListEquipments {
 					equips.add(new listEquips(load.isEn_dai(), dai.listEquipments("dai"), load.getVoltage_dai()));
 					
 					if(load.isEn_pmv())
-					equips.add(new listEquips(load.isEn_pmv(), dms.idsDMS(), load.getVoltage_pmv()));
+					equips.add(new listEquips(load.isEn_pmv(), dms.listDMSEquipments(), load.getVoltage_pmv()));
 					
 					if(load.isEn_lpr())
 					equips.add(new listEquips(load.isEn_lpr(), lpr.listEquipments("lpr"), load.getVoltage_lpr()));

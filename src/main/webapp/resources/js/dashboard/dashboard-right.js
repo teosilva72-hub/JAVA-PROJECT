@@ -22,9 +22,15 @@ $(function () {
   
           notificationBadge();
   });
-  
+
+  toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
   
 });
+
+const alertToast = msg => {
+  $('#msgToastNotification').text(msg);
+  toast.show();
+}
 
 $('#dismiss, .overlay').on('click', function () {
   // hide sidebar

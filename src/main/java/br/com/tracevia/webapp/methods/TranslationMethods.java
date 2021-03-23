@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.methods;
 
+import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
@@ -536,6 +537,6 @@ public String periodName(String period) {
 			
 			return selectMonth;
 		}
-	
+			
 	 	
 }
