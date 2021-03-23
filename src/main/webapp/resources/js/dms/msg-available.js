@@ -153,14 +153,14 @@ async function main() {
 	}
 
 	const returnAlert = msg => {
+		alertToast(msg);
+
 		changeDriver();
 
 		btnEdit.prop('disabled', true);
 		btnDelete.prop('disabled', true);
 
 		cancel();
-
-		alertToast(msg);
 	}
 
 	// Cancel message in menu

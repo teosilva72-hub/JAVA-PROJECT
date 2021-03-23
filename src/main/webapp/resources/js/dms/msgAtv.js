@@ -36,11 +36,11 @@ async function main() {
 	}
 
 	const returnAlert = msg => {
-		load();
+		alertToast(msg);
 		
 		dmsChanges.val('')
-
-		alertToast(msg);
+		
+		load();
 	}
 
 	const animationPMV = (img1, img2, message, arr, idx) => {
