@@ -26,6 +26,36 @@
 		<h:outputScript name="map.js" library="js/map" />
 		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
 		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js" />
+		
+		
+		<script>
+		
+        ////////////////////////////////////
+		//AUTO UPDATE PAGE INTERVAL
+		///////////////////////////////////
+		
+		setTimeout(() => {			
+			setInterval(() => {
+				
+			    var data = new Date();
+			    var n = data.getSeconds();
+			    var minute = data.getMinutes();
+			                          		
+			     if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {         	        	
+			           if (n &lt; 4) 
+			        	   
+			            location.href = location.href.replace('#','');			            
+			            
+			     }
+			     
+			}, 3000)
+		}, 4000)
+	
+		////////////////////////////////////
+		//AUTO UPDATE PAGE INTERVAL
+		///////////////////////////////////
+		
+		</script>
 
 	</ui:define>
 
@@ -36,8 +66,10 @@
 			<pf:messages id="msgs" showDetail="true" autoUpdate="true"
 				closable="true" />
 		</div>
+		
+		<!--  ******************************************************************************************************* -->
 
-		<!-- ALERTS SAVE -->
+		<!-- ALERTS POSITION -->
 
 		<div class="alert alert-success" role="alert" style="display: none;" id="realsave">
 			<p class="textAlert">#{mapLabels.map_alert_success}.</p>
@@ -47,18 +79,50 @@
 			<p class="textAlert">#{mapLabels.map_alert_cancel}</p>
 		</div>
 		
+		<!--  ******************************************************************************************************* -->
+		
 		<!-- SAVE EQUIP -->
 		<div class="alert alert-success" role="alert" style="display: none;"
-			id="equipsave">
+			id="equip-save">
 			<p class="textAlert">#{mapLabels.map_alert_save_equipment}.</p>
 		</div>
 		
 		<!-- SAVE EQUIP ERROR -->
 		<div class="alert alert-danger" role="alert" style="display: none;" 
-			id="equipsave-error">
+			id="equip-save-error">
 			<p class="textAlert">#{mapLabels.map_alert_save_error_equipment} : #{mapLabels.map_alert_save_error_already}</p>
 		</div>
-			
+		
+		<!--  ******************************************************************************************************* -->
+		
+		<!-- UPDATE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equip-update">
+			<p class="textAlert">#{mapLabels.map_alert_update_equipment}.</p>
+		</div>
+		
+		<!-- UPDATE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equip-update-error">
+			<p class="textAlert">#{mapLabels.map_alert_update_error_equipment}</p>
+		</div>
+		
+	    <!--  ******************************************************************************************************* -->
+		
+		<!-- DELETE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equip-delete">
+			<p class="textAlert">#{mapLabels.map_alert_delete_equipment}.</p>
+		</div>
+		
+		<!-- DELETE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equip-delete-error">
+			<p class="textAlert">#{mapLabels.map_alert_delete_error_equipment}</p>
+		</div>
+
+       <!--  ******************************************************************************************************* -->
+       
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
@@ -78,35 +142,46 @@
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
-				<button type="button" id="addequip" class="add_equip"
+				<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
 					onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 					title="Add Equipment" data-toggle="modal"
 					data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 
 			</div>
-
+			
+             <!--  ******************************************************************************************************* -->
+			
 			<h:form id="real">
 
 				<h:inputHidden id="equipIdPos" value="#{equipsBean.equipId}" />
 				<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 				<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
-				<h:commandButton id="savePos"
-					class="btn btn-dark form-draw-button save_pos"
+				
+		     <!--  ******************************************************************************************************* -->
+				
+				<h:commandButton id="savePos" style="display:none;"
+					class="btn btn-dark form-modal-draw-button save_pos"
 					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');" >					
 					<f:ajax execute="@form" render="@none" listener="#{equipsBean.definePosition}" />
 				</h:commandButton>
+				
+		     <!--  ******************************************************************************************************* -->
 
-				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-draw-button cancel_pos"
+				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button cancel_pos"
 					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
 					<f:ajax render="#realcancel" onevent="reloadAfterCancelPos" />
 				</h:commandButton>
 			</h:form>
+			
+			<!--  ******************************************************************************************************* -->
 
 		</div>
 
 		<!-- WEB ZOOM END -->
+		
+		<!-- HABILITAR EQUIPAMENTOS DISPONIVEIS -->
 
 		<!-- DropDown Equip Size Menu -->
 		<div class="dropleft">
@@ -117,30 +192,66 @@
 			<div class="dropdown-menu" id="szselect" aria-labelledby="dropdownMenuButton">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropall" from="draggable">#{mapLabels.map_size_select_all}</button>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_cftv}">	
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropcftv" from="cftv">#{mapLabels.map_size_select_cftv}</button>
+				</ui:fragment>
+					
+				 <ui:fragment rendered="#{loginAccount.load.en_colas}">	
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropcolas" from="colas">#{mapLabels.map_size_select_colas}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_comms}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropcomms" from="comms">#{mapLabels.map_size_select_comms}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_dai}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropdai" from="dai">#{mapLabels.map_size_select_dai}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_lpr}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="droplpr" from="lpr">#{mapLabels.map_size_select_lpr}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_mto}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropmto" from="mto">#{mapLabels.map_size_select_mto}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_pmv}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="droppmv" from="dms">#{mapLabels.map_size_select_dms}</button>
+				 </ui:fragment>
+					
+				 <ui:fragment rendered="#{loginAccount.load.en_sat}">	
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropsat" from="sat">#{mapLabels.map_size_select_sat}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_sos}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropsos" from="sos">#{mapLabels.map_size_select_sos}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_speed}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropspeed" from="speed">#{mapLabels.map_size_select_speed}</button>
+				</ui:fragment>
+				
+				 <ui:fragment rendered="#{loginAccount.load.en_wim}">
 				<button class="dropdown-item dprbtn" data-toggle="modal" data-target="#sizeeqps" data-backdrop="false"
 					id="dropwim" from="wim">#{mapLabels.map_size_select_wim}</button>
+				</ui:fragment>
 			</div>
 		</div>
+		
+		<!--  ******************************************************************************************************* -->
+		
 		<!-- DropDown Equip Size Menu END -->
 
 		<!-- WEB ZOOM DIVIDE -->
@@ -219,14 +330,11 @@
 
 			<!-- START SECTION -->
 			<div id="zoomtext" scale="1" class="section">
-
 				<!-- MAP FRONT IMAGE -->
 				<h:graphicImage class="grab-map" width="100%" value="/resources/images/map/tuxpan/tuxpan.png" />
-
 			</div>
 
 			<!-- Label -->
-
 			<div id="labelPos">
 				<label id="posX"></label> <label id="posY"></label>
 			</div>
@@ -613,282 +721,332 @@
 	<!-- ************************************************************************************* -->
 	<!-- ************************************* CREATE **************************************** -->
 	<!-- ************************************************************************************* -->
-	<ui:define name="modal-content">
-		<div class="modal fade" id="modaladd" role="dialog">
-			<div class="modal-dialog" role="document">
+	
+	<ui:define name="modal-content"> <!-- MODAL CONTENT UI -->
+	
+		<div class="modal fade" id="modaladd" role="dialog"> <!-- MODAL ADD -->
+			<div class="modal-dialog" role="document"> <!-- MODAL DIALOG -->
 
-				<h:form class="modal-content" name="register-equip-form" id="register-equip-form">
+				<h:form class="modal-content" name="register-equip-form" id="register-equip-form"> <!-- FORM -->
 
-					<div class="modal-header text-center">
+					<div class="modal-header text-center"> <!-- MODAL HEADER -->	
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_creation_modal_title}</h4>
 							<button type="button" id="close-btn" class="close" data-dismiss="modal" 
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-						</div>						
-					      <div class="modal-body" id="bodyeqp">
+						</div> <!---->						
+					      <div class="modal-body" id="bodyeqp"> <!-- MODAL BODY -->	
+					      
+					       <!--  ******************************************************************************************************* -->
 					
-							<!-- EQUIPMENTS OPTIONS -->													
-								<div class="form-row">
-								<div class="form-group col-md-12 select-field">								
-										<span><i class="fas fa-hdd"></i></span> <span for="equips"
-											class="valid-icon-hidden"></span> <select
+							<!-- ***** EQUIPMENTS OPTIONS ***** -->	
+																			
+								<div class="form-row"> <!-- ROW -->	 
+								<div class="form-group col-md-12 select-field">	<!-- SELECT DIV -->								
+										<span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON --> <span for="equips" 	
+											class="valid-icon-hidden"></span> <!-- SPAN VALIDATION --> <select
 											name="equips" id="equips" size="1">
 											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 												<option value="#{eqp.value}">#{eqp.label}</option>
 											</ui:repeat>											
-										</select>
-										</div>								
-										<div class="error-label">
+										</select>  <!-- SELECT -->	
+										</div> <!---->								
+										<div class="error-label"> <!-- ERROR DIV -->	
 											<label for="equips" class="error" id="equips-error"></label>
-										</div>						   
-								   </div>
+										</div>  <!---->	 					   
+								   </div>  <!---->
 								
 							<!-- EQUIPMENTS OPTIONS -->
+							
+							 <!--  ******************************************************************************************************* -->
 
 							<!-- EQUIPMENT ID -->
-							<div class="form-row">
-								<div class="form-group col-md-12 input-field" id="contentEquipId">
-									<span><i class="fab fa-ideal"></i></span> <span for="equipId" 
-										class="valid-icon-hidden"></span> <input
+							
+							<div class="form-row"> <!-- ROW -->	
+								<div class="form-group col-md-12 input-field" id="contentEquipId"> <!-- INPUT DIV -->
+									<span><i class="fab fa-ideal"></i></span><!-- SPAN ICON --> <span for="equipId" 
+										class="valid-icon-hidden"></span><!-- SPAN VALIDATION --> <input
 										type="text" autocomplete="off"
 										name="equipId" id="equipId"
-										placeholder="#{mapLabels.map_creation_input_equip_id}" />								
-								</div>
-								<div class="error-label">
+										placeholder="#{mapLabels.map_creation_input_equip_id}" /> <!-- INPUT -->							
+								</div> <!---->
+								<div class="error-label"> <!-- ERROR DIV -->	 
 									<label for="equipId" class="error" id="equipId-error"></label>
-								</div>
-
+								</div> <!---->
+                             </div> <!----> 
+                             
 								<!-- EQUIPMENT ID -->
+								
+								 <!--  ******************************************************************************************************* -->
 
 							<!-- DMS TYPE -->
-							<div class="form-group col-md-12 select-field dmsHidden">
-								<span><i class="fas fa-th-list"></i></span> <span for="dmsType"
-									class="valid-icon-hidden"></span> <select name="dmsType"
+							
+							<div class="form-row dmsHidden"> <!-- ROW -->	   
+							<div class="form-group col-md-12 select-field dmsHidden"> <!-- SELECT DIV -->
+								<span><i class="fas fa-th-list"></i></span><!-- SPAN ICON --> <span for="dmsType"
+									class="valid-icon-hidden"></span><!-- SPAN VALIDATION --> <select name="dmsType"
 									id="dmsType" size="1">									
 									<option value="">#{mapLabels.map_creation_select_dms_type}</option>
 									<ui:repeat var="tp" value="#{equipsBean.dmsType}"
 										varStatus="tpStatus">
 										<option value="#{tp.value}">#{tp.label}</option>
 									</ui:repeat>
-								</select>
-							</div>
-							<div class="error-label"></div>
-
+								</select> <!-- SELECT -->	
+							</div> <!----> 
+							<div class="error-label"><!-- ERROR DIV --></div> <!----> 
+                            </div> <!----> 
+                            
 							<!-- DMS TYPE -->
+							
+							 <!--  ******************************************************************************************************* -->
 
 							<!-- DMS IP ADDRESS -->
-
-								<div class="form-group col-md-12 input-field dmsHidden">
-									<span><i class="fas fa-signature"></i></span>
+							
+                               <div class="form-row dmsHidden"> <!-- ROW -->
+								 <div class="form-group col-md-12 input-field "> <!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
 										<input type="text" autocomplete="off"
 										name="dmsIp" id="dmsIp"
-										placeholder="#{mapLabels.map_dms_ip_address_place_holder}" />
-									<div class="error-label"></div>
-								</div>
+										placeholder="#{mapLabels.map_dms_ip_address_place_holder}" /> <!-- INPUT -->									
+								</div> <!----> 
+								<div class="error-label"> <!-- INPUT --> </div> <!----> 
+							  </div> <!----> 
+												
+							<!-- ***** DMS IP ADDRESS ***** -->
 							
-							<!-- DMS IP ADDRESS -->
+							 <!--  ******************************************************************************************************* -->
+														
+							<!-- ***** EQUIPMENT NAME ***** -->
 							
-							
-							<!-- EQUIPMENT NAME -->
-
-								<div class="form-group col-md-12 input-field">
-									<span><i class="fas fa-signature"></i></span>
+                               <div class="form-row"> <!-- ROW -->
+								 <div class="form-group col-md-12 input-field"> <!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
+									<span for="equipName" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
 										<input type="text" autocomplete="off"
 										name="equipName" id="equipName"
-										placeholder="#{mapLabels.map_creation_input_name}" />
-									<div class="error-label"></div>
-								</div>
-							</div>
-							<!-- EQUIPMENT NAME -->
+										placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->									
+								 </div>	<!----> 	
+								   <div class="error-label"> <!-- ERROR DIV -->  
+									  <label for="equipName" class="error" id="equipName-error"></label>
+									</div> <!----> 			
+							  </div> <!----> 
+							  
+							<!-- ***** EQUIPMENT NAME ***** -->
+							
+							 <!--  ******************************************************************************************************* -->
 
-							<!-- CITY -->
-							<div class="form-row">
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-city"></i></span> 											
+							<!-- ***** CITY ***** -->
+							
+							<div class="form-row"> <!-- ROW --> 
+								<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
+										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->											
 											<select name="cities" id="cities" size="1">
 											<option value="">#{mapLabels.map_creation_select_city}</option>
 											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
 												<option value="#{city.value}">#{city.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div>
-										<div class="error-label"></div>
-									</div>
-								</div>
-								</div>
-								<!-- CITY -->
+										</select> <!-- SELECT --> 									
+								   </div>  <!----> 								
+										<div class="error-label"> <!-- ERROR DIV -->  </div>  <!----> 								
+							      </div>  <!----> 
+							
+								<!-- ***** CITY ***** -->
+								
+								 <!--  ******************************************************************************************************* -->
 
-								<!-- ROAD -->
+								<!-- ***** ROAD ***** -->
 
-	                            <div class="form-row">
-								<div class="form-group col-md-6 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-road"></i></span> 										
+	                            <div class="form-row"> <!-- ROW --> 
+								  <div class="form-group col-md-6 select-field"> <!-- SELECT DIV --> 										
+										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 											
 											<select name="roads" id="roads" size="1">
 											<option value="">#{mapLabels.map_creation_select_road}</option>
 											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
 												<option value="#{road.value}">#{road.label}</option>
 											</ui:repeat>
-										</select>
-									 </div>									
-										<div class="error-label"></div>							
-								   </div>
-							 							   
-							<!-- ROAD -->
-
-							<!-- KM -->
-
-								<div class="form-group col-md-6 input-field">
-									<span><i class="fas fa-sign"></i></span> 
-										<input type="text" autocomplete="off" name="km" id="km" maxlength="7" class="km"
-										placeholder="#{mapLabels.map_creation_input_km}" />
-									<div class="error-label"></div>
-								</div>							
-							</div>
+										</select>  <!-- SELECT -->											
+                                    </div>	<!----> 
+												   
+							<!-- ***** ROAD ***** -->
 							
-							<!-- KM -->
+							 <!--  ******************************************************************************************************* -->
+
+							<!-- ***** KM ***** -->
+
+								<div class="form-group col-md-6 input-field"> <!-- ROW --> 
+									<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->
+										<input type="text" autocomplete="off" name="km" id="km" maxlength="7" class="km"
+										placeholder="#{mapLabels.map_creation_input_km}" />	<!-- INPUT --> 								
+								</div> <!----> 										
+							</div> <!----> 	
+							
+							<!-- ***** KM ***** -->
+							
+							 <!--  ******************************************************************************************************* -->
 																					
-							<!-- TRACKS -->
+							<!-- ***** TRACKS ***** -->
 														
-							<div class="form-row satInputs" style="display: none;">
-								<div class="form-group col-md-12 select-field">
-								<span><i class="fas fa-grip-lines"></i></span>
-									<span for="lanes" class="valid-icon-hidden"></span> 									
-										<select name="lanes" id="lanes" size="1" style="width:100%;">
+							<div class="form-row satInputs" style="display: none;"> <!-- ROW -->
+								<div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
+								<span><i class="fas fa-grip-lines"></i></span> <!-- SPAN ICON -->														
+										<select name="lanes" id="lanes" size="1" style="width:100%;"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="lane" value="#{equipsBean.lanes}" varStatus="laneStatus">
 												<option value="#{lane.value}">#{lane.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!---->   
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR-LABEL --> </div> <!----> 
+								</div> <!----> 
                               
-								<!-- TRACKS -->
+								<!-- ***** TRACKS ***** -->
 								
+								 <!--  ******************************************************************************************************* -->
 								
-							<div class="form-row satInputs" style="display: none;">
+							<!-- ***** DIRECTION LANES ***** -->	
+							
+							<div class="form-row satInputs" style="display: none;"> <!-- ROW --> 
 
-								<!-- DIRECTION 1 -->
+								<!-- ***** DIRECTION 1 ***** -->
 
-								<div class="form-group col-md-3">
-									<div class="select-direction">								
-										<select name="direction1" id="direction1" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction1" id="direction1" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir1}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 
+								<!-- ***** DIRECTION 2 ***** -->
 
-								<!-- DIRECTION 2 -->
-
-								<div class="form-group col-md-3">
-									<div class="select-direction">									
-										<select name="direction2" id="direction2" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction2" id="direction2" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir2}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 
+								<!-- ***** DIRECTION 3 ***** -->
 
-								<!-- DIRECTION 3 -->
-
-								<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction3" id="direction3" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction3" id="direction3" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>	
-									<div class="error-label"></div>							
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 							
-							<!-- DIRECTION 4 -->
-								<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction4" id="direction4" size="1">
+							<!-- ***** DIRECTION 4 ***** -->
+							
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction4" id="direction4" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>											
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 	
+								
+								 <!--  ******************************************************************************************************* -->			
 							
-						<!-- DIRECTION 5 -->
-				         <div class="form-group col-md-3">								
-									<div class="select-direction">
-										<select name="direction5" id="direction5" size="1">
+						<!-- ***** DIRECTION 5 ***** -->
+						
+				         <div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction5" id="direction5" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>								
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 							
-							 <!-- DIRECTION 6 -->
+							 <!-- ***** DIRECTION 6 ***** -->
 						
-							<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction6" id="direction6" size="1">
+							<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction6" id="direction6" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 						     
-						     <!-- DIRECTION 7 -->
-						   <div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction7" id="direction7" size="1">
+						     <!-- ***** DIRECTION 7 ***** -->
+						     
+						  <div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction7" id="direction7" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
 								
-							<!-- DIRECTION 8 -->	
+								 <!--  ******************************************************************************************************* -->
+								
+							<!-- ***** DIRECTION 8 ***** -->	
 							
-							<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction8" id="direction8" size="1">
+						<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction8" id="direction8" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
-							</div>						  
-						</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+							</div> <!-- ROW LANES --> 						  
+						</div> <!----> 
+						
+						 <!--  ******************************************************************************************************* --> 
 																
-						<!-- MODAL BUTTONS -->
+						<!-- ***** MODAL BUTTONS ***** -->
 
 						<div class="modal-footer">
 						
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_save_equipment}"
-								id="btn-form-send" class="btn btn-dark form-draw-button" >
+								id="btn-form-send" class="btn btn-dark form-modal-draw-button" >
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
@@ -897,7 +1055,7 @@
 							<h:commandButton
 								value="#{mapLabels.map_creation_btn_cancel_equipment}"
 								id="btn-form-reset" immediate="true" type="reset"
-								class="btn btn-dark form-draw-button  reset-btn" >
+								class="btn btn-dark form-modal-draw-button reset-btn" >
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8" />
 							</h:commandButton>
@@ -913,15 +1071,14 @@
 		
 		
 		<!-- ************************************************************************************* -->
-		<!-- ************************************* OPTION **************************************** -->
+		<!-- ************************************ OPTIONS **************************************** -->
 		<!-- ************************************************************************************* -->
 
-		<!-- Modal for Options -->
-
-		<div class="modal fade" id="OPmodal" role="dialog">
-			<div class="modal-dialog">
+	
+		<div class="modal fade" id="OPmodal" role="dialog"> <!-- OPTIONS MODAL -->
+			<div class="modal-dialog"> <!-- MODAL DIALOG -->
 				<!-- Modal Label-->
-				<div class="modal-content">
+				<div class="modal-content"> <!-- MODAL CONTENT -->
 					<div class="modal-header text-center">
 						<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -930,355 +1087,403 @@
 
 					</div>
 
-					<div class="modal-body">
+					<div class="modal-body"> <!-- MODAL BODY -->
+											
+						<h:form id="form-modal-submit"> <!-- FORM OPTIONS -->
 
-						<br />
+							<div class="form-row"> <!-- ROW -->
+								<div class="form-group col-md-4 text-center"> <!-- FORM GROUP EDIT BUTTON -->
 
-						<h:form id="form-modal-submit">
-
-							<!-- EQUIPMENTS OPTIONS -->
-							<div class="form-row">
-								<div class="form-group col-md-4">
-
+                                    <!-- INPUT HIDDEN VALUES -->
 									<h:inputHidden id="equipCod" value="#{equipsBean.equipId}" />
 									<h:inputHidden id="equipTable" value="#{equipsBean.equipTable}" />
-									<h:commandButton value="#{mapLabels.map_creation_btn_edit_equipment}" id="editequip"
-										onclick="sendToBean()" class="btn btn-dark form-draw-button editbtn"
+									
+									 <!-- EDIT BUTTON -->
+									 
+									<h:commandButton value="#{mapLabels.map_creation_btn_edit_equipment}"
+										onclick="sendToBean(); $('#OPmodal').modal('toggle');" class="btn btn-dark form-modal-draw-button"
 										action="#{equipsBean.SearchEquipment}">
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#editmodal" />
 										<f:ajax execute="@form" render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
-								edit-equip-form:roads edit-equip-form:km edit-equip-form:width"  />
-									</h:commandButton>
-								</div>
-								<div class="form-group col-md-4">
+								         edit-equip-form:roads edit-equip-form:km edit-equip-form:width"  />
+									</h:commandButton> <!----> 
+								</div> <!----> 
+								
+								<div class="form-group col-md-4 text-center"> <!-- FORM GROUP POSITION BUTTON -->
+								
+								     <!-- INPUT HIDDEN VALUES -->
 									<h:inputHidden id="positionX" />
 									<h:inputHidden id="positionY" />
-									<h:commandButton value="#{mapLabels.map_creation_btn_move_equipment}" id="moveequip"
-										onclick="$('#OPmodal').modal('hide'); dragEquip(); hiddenBtns(); "
-										class="btn btn-dark form-draw-button posbtn">
+									
+									<!-- POSITION BUTTON -->
+									<h:commandButton value="#{mapLabels.map_creation_btn_move_equipment}"
+										onclick="dragEquip(); hiddenBtns(); $('#OPmodal').modal('hide');"
+										class="btn btn-dark form-modal-draw-button btn-pos">
 										<f:ajax execute="@form" render="@none" />
-									</h:commandButton>
-								</div>
+									</h:commandButton> <!---->
+								</div> <!---->
 
-								<div class="form-group col-md-4">
-									<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}"
-										action="#{equipsBean.runDel}" id="delequip"
-										class="btn btn-dark form-draw-button delbtn">
+								<div class="form-group col-md-4 text-center"> <!-- FORM GROUP DELETE BUTTON -->
+																 								
+								    <!-- DELETE BUTTON -->								
+									<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}" 
+										action="#{equipsBean.runDel}" onclick="sendToBean(); $('#OPmodal').modal('hide');"
+										class="btn btn-dark form-modal-draw-button">
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#deletemodal" />
-										<f:ajax execute="@form" render="delete-equip-form:delete-equipName" />
-									</h:commandButton>
-								</div>
-							</div>
-						</h:form>
-						<!-- EQUIPMENTS OPTIONS -->
-
-					</div>
-				</div>
-			</div>
-		</div>
+										<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
+									</h:commandButton> <!---->
+								</div> <!---->
+							</div> <!---->
+						</h:form> <!---->						
+					</div> <!---->
+				</div> <!---->
+			</div> <!----> 
+		</div> <!---->
 		
 		<!-- ************************************************************************************* -->
-		<!-- ************************************* OPTION **************************************** -->
+		<!-- ************************************ OPTIONS **************************************** -->
 		<!-- ************************************************************************************* -->
 		
 		<!-- ************************************************************************************* -->
 		<!-- ************************************* EDITION *************************************** -->
 		<!-- ************************************************************************************* -->
 
-		<div class="modal fade" id="editmodal" role="dialog">
-			<div class="modal-dialog" role="document">
+		<div class="modal fade" id="editmodal" role="dialog"> <!-- MODAL ADD -->
+			<div class="modal-dialog" role="document"> <!-- MODAL DIALOG -->
 
-				<h:form class="modal-content" name="edit-equip-form" id="edit-equip-form">
+				<h:form class="modal-content" name="edit-equip-form" id="edit-equip-form"> <!-- FORM -->
 
-					<div class="modal-header text-center">
+					<div class="modal-header text-center"> <!-- MODAL HEADER -->	
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_edit_modal_title}</h4>
-							<button type="button" id="close-btn-edit" class="close" data-dismiss="modal" 
+							<button type="button" id="close-btn" class="close" data-dismiss="modal" 
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-						</div>						
-					      <div class="modal-body" id="bodyeqp">
+						</div> <!---->						
+					      <div class="modal-body" id="bodyeqp"> <!-- MODAL BODY -->	
+					      
+					       <!--  ******************************************************************************************************* -->
 					
-							<!-- EQUIPMENTS OPTIONS -->													
-								<div class="form-row">
-								<div class="form-group col-md-12 select-field">								
-										<span><i class="fas fa-hdd"></i></span> <span for="equips"
-											class="valid-icon-hidden"></span> <select
+							<!-- ***** EQUIPMENTS OPTIONS ***** -->	
+																			
+								<div class="form-row"> <!-- ROW -->	 
+								<div class="form-group col-md-6 select-field">	<!-- SELECT DIV -->								
+										<span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON --> <span for="equips-edit" 	
+											class="valid-icon-hidden"></span> <!-- SPAN VALIDATION --> <select
 											name="equips-edit" id="equips-edit" size="1" disabled="true" >
 											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 												<option value="#{eqp.value}">#{eqp.label}</option>
 											</ui:repeat>											
-										</select>
-										</div>								
-										<div class="error-label">
-											<label for="equips-edit" class="error" id="equips-edit-error"></label>
-										</div>						   
-								   </div>
+										</select>  <!-- SELECT -->	
+										</div> <!---->								   
 								
 							<!-- EQUIPMENTS OPTIONS -->
+							
+							 <!--  ******************************************************************************************************* -->
 
 							<!-- EQUIPMENT ID -->
-							<div class="form-row">
-								<div class="form-group col-md-12 input-field" id="contentEquipId">
-									<span><i class="fab fa-ideal"></i></span> <span for="equipId" 
-										class="valid-icon-hidden"></span> <input
-										type="text" autocomplete="off"
+														
+								<div class="form-group col-md-6 input-field" id="contentEquipId"> <!-- INPUT DIV -->
+									<span><i class="fab fa-ideal"></i></span><!-- SPAN ICON --> <span for="equipId-edit" 
+										class="valid-icon-hidden"></span><!-- SPAN VALIDATION --> <input
+										type="text" autocomplete="off" disabled="true"
 										name="equipId-edit" id="equipId-edit"
-										placeholder="#{mapLabels.map_creation_input_equip_id}" />								
-								</div>
-								<div class="error-label">
-									<label for="equipId-edit" class="error" id="equipId-edit-error"></label>
-								</div>
-
-							<!-- EQUIPMENT ID -->
+										placeholder="#{mapLabels.map_creation_input_equip_id}" /> <!-- INPUT -->							
+								</div> <!---->                    
+                             </div>  <!---->
+                             
+								<!-- EQUIPMENT ID -->
+								
+						   <!--  ******************************************************************************************************* -->
 
 							<!-- DMS TYPE -->
-							<div class="form-group col-md-12 select-field dmsHidden-edit">
-								<span><i class="fas fa-th-list"></i></span> <span for="dmsType"
-									class="valid-icon-hidden"></span> <select name="dmsType-edit"
-									id="dmsType-edit" size="1">									
+							
+							<div class="form-row dmsHidden-edit"> <!-- ROW -->	   
+							<div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
+								<span><i class="fas fa-th-list"></i></span><!-- SPAN ICON --> <span for="dmsType-edit"
+									class="valid-icon-hidden"></span><!-- SPAN VALIDATION --> <select name="dmsType-edit"
+									id="dmsType-edit" size="1" disabled="true" >									
 									<option value="">#{mapLabels.map_creation_select_dms_type}</option>
 									<ui:repeat var="tp" value="#{equipsBean.dmsType}"
 										varStatus="tpStatus">
 										<option value="#{tp.value}">#{tp.label}</option>
 									</ui:repeat>
-								</select>
-							</div>
-							<div class="error-label"></div>
-
+								</select> <!-- SELECT -->	
+							</div> <!----> 
+							<div class="error-label"><!-- ERROR DIV --></div> <!----> 
+                            </div> <!----> 
+                            
 							<!-- DMS TYPE -->
+							
+							 <!--  ******************************************************************************************************* -->
 
 							<!-- DMS IP ADDRESS -->
-
-								<div class="form-group col-md-12 input-field dmsHidden-edit">
-									<span><i class="fas fa-signature"></i></span>
+							
+                               <div class="form-row dmsHidden-edit"> <!-- ROW -->
+								 <div class="form-group col-md-12 input-field "> <!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
 										<input type="text" autocomplete="off"
 										name="dmsIp-edit" id="dmsIp-edit"
-										placeholder="#{mapLabels.map_dms_ip_address_place_holder}" />
-									<div class="error-label"></div>
-								</div>
+										placeholder="#{mapLabels.map_dms_ip_address_place_holder}" /> <!-- INPUT -->									
+								</div> <!----> 
+								<div class="error-label"> <!-- ERRO DIV --> </div> <!----> 
+							  </div> <!----> 
+												
+							<!-- ***** DMS IP ADDRESS ***** -->
 							
-							<!-- DMS IP ADDRESS -->
+							 <!--  ******************************************************************************************************* -->
 														
-							<!-- EQUIPMENT NAME -->
-
-								<div class="form-group col-md-12 input-field">
-									<span><i class="fas fa-signature"></i></span>
+							<!-- ***** EQUIPMENT NAME ***** -->
+							
+                               <div class="form-row"> <!-- ROW -->
+								 <div class="form-group col-md-12 input-field"> <!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
+									<span for="equipNameEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
 										<input type="text" autocomplete="off"
-										name="equipName-edit" id="equipName-edit"
-										placeholder="#{mapLabels.map_creation_input_name}" />
-									<div class="error-label"></div>
-								</div>
-							</div>
-							<!-- EQUIPMENT NAME -->
+										name="equipNameEdit" id="equipNameEdit"
+										placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->									
+								 </div>	<!----> 	
+								   <div class="error-label"> <!-- ERROR DIV -->  
+									  <label for="equipNameEdit" class="error" id="equipNameEdit-error"></label>
+									</div> <!----> 			
+							  </div> <!----> 
+							  
+							<!-- ***** EQUIPMENT NAME ***** -->
+							
+							 <!--  ******************************************************************************************************* -->
 
-							<!-- CITY -->
-							<div class="form-row">
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-city"></i></span> 											
+							<!-- ***** CITY ***** -->
+							<div class="form-row"> <!-- ROW --> 
+								<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
+										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->											
 											<select name="cities-edit" id="cities-edit" size="1">
 											<option value="">#{mapLabels.map_creation_select_city}</option>
 											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
 												<option value="#{city.value}">#{city.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div>
-										<div class="error-label"></div>
-									</div>
-								</div>
-								</div>
-								<!-- CITY -->
+										</select> <!-- SELECT --> 									
+								   </div>  <!----> 								
+										<div class="error-label"> <!-- ERROR DIV -->  </div>  <!----> 								
+							      </div>  <!----> 
+							
+								<!-- ***** CITY ***** -->
+								
+								 <!--  ******************************************************************************************************* -->
 
-								<!-- ROAD -->
+								<!-- ***** ROAD ***** -->
 
-	                            <div class="form-row">
-								<div class="form-group col-md-12 input-field">
-									<div class="select-field">
-										<span><i class="fas fa-road"></i></span> 										
+	                            <div class="form-row"> <!-- ROW --> 
+								  <div class="form-group col-md-12 select-field"> <!-- SELECT DIV --> 										
+										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 											
 											<select name="roads-edit" id="roads-edit" size="1">
 											<option value="">#{mapLabels.map_creation_select_road}</option>
 											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
 												<option value="#{road.value}">#{road.label}</option>
 											</ui:repeat>
-										</select>
-									 </div>									
-										<div class="error-label"></div>							
-								   </div>
-							 	</div>								 			   
-							<!-- ROAD -->
-
-							<!-- KM -->
-                              <div class="form-row">
-								<div class="form-group col-md-4 input-field">
-									<span><i class="fas fa-sign"></i></span> 
-										<input type="text" autocomplete="off" name="km-edit" id="km-edit" maxlength="7" class="km"
-										placeholder="#{mapLabels.map_creation_input_km}" />
-									<div class="error-label"></div>
-								</div>							
-														
-								<div class="form-group col-md-4 input-field">
-									<span><i class="fas fa-arrows-alt-h"></i></span>
-										<input type="text" autocomplete="off" name="width-edit" id="width-edit" 
-										placeholder="#{mapLabels.map_creation_input_width}" />
-									<div class="error-label"></div>
-								</div>											
-							</div>
+										</select>  <!-- SELECT --> 	
+									 </div>	<!----> 									
+										<div class="error-label"> <!-- ERROR DIV --> </div>		
+									</div>
+										   
+							<!-- ***** ROAD ***** -->
 							
-							<!-- KM -->
-																					
-							<!-- TRACKS -->
+							 <!--  ******************************************************************************************************* -->
+                            							  
+							  <!-- ***** KM ***** -->
+							  
+							   <div class="form-row"> <!-- ROW --> 
+								<div class="form-group col-md-6 input-field"> <!-- INPUT DIV --> 
+									<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->  
+										<input type="text" autocomplete="off" name="km-edit" id="km-edit" maxlength="7" class="km"
+										placeholder="#{mapLabels.map_creation_input_km}" /> <!-- INPUT -->
+									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
+								</div> <!---->							
 														
-							<div class="form-row satInputs-edit" style="display: none;">
-								<div class="form-group col-md-12 select-field">
-								<span><i class="fas fa-grip-lines"></i></span>																		
-										<select name="lanes-edit" id="lanes-edit" size="1" style="width:100%;">
+								<div class="form-group col-md-6 input-field"> <!-- INPUT DIV -->
+									<span><i class="fas fa-arrows-alt-h"></i></span> <!-- SPAN ICON --> 
+										<input type="text" autocomplete="off" name="width-edit" id="width-edit" 
+										placeholder="#{mapLabels.map_creation_input_width}" /> <!-- INPUT -->
+									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
+								</div> <!---->					
+							</div> <!----> 	
+							
+							<!-- ***** KM ***** -->
+							
+							 <!--  ******************************************************************************************************* -->
+																					
+							<!-- ***** TRACKS ***** -->
+														
+							<div class="form-row satInputs-edit" style="display: none;"> <!-- ROW -->
+								<div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
+								<span><i class="fas fa-grip-lines"></i></span> <!-- SPAN ICON -->														
+										<select name="lanes-edit" id="lanes-edit" size="1" style="width:100%;"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_select_lanes}</option>
 											<ui:repeat var="lane" value="#{equipsBean.lanes}" varStatus="laneStatus">
 												<option value="#{lane.value}">#{lane.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!---->   
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR-LABEL --> </div> <!----> 
+								</div> <!----> 
                               
-								<!-- TRACKS -->
+							<!-- ***** TRACKS ***** -->
+							
+							 <!--  ******************************************************************************************************* -->
 								
-								
-							<div class="form-row satInputs-edit" style="display: none;">
+							<!-- ***** DIRECTION LANES ***** -->	
+							
+							<div class="form-row satInputs-edit" style="display: none;"> <!-- ROW --> 
 
-								<!-- DIRECTION 1 -->
+								<!-- ***** DIRECTION 1 ***** -->
 
-								<div class="form-group col-md-3">
-									<div class="select-direction">									
-										<select name="direction1-edit" id="direction1-edit" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction1-edit" id="direction1-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir1}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 
+								<!-- ***** DIRECTION 2 ***** -->
 
-								<!-- DIRECTION 2 -->
-
-								<div class="form-group col-md-3">
-									<div class="select-direction">										
-										<select name="direction2-edit" id="direction2-edit" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction2-edit" id="direction2-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir2}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 
+								<!-- ***** DIRECTION 3 ***** -->
 
-								<!-- DIRECTION 3 -->
-
-								<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction3-edit" id="direction3-edit" size="1">
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction3-edit" id="direction3-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir3}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>	
-									<div class="error-label"></div>							
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 							
-							<!-- DIRECTION 4 -->
-								<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction4-edit" id="direction4-edit" size="1">
+							<!-- ***** DIRECTION 4 ***** -->
+							
+								<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction4-edit" id="direction4-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir4}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>
-									<div class="error-label"></div>
-								</div>											
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 		
+								
+						      <!--  ******************************************************************************************************* -->		
 							
-						<!-- DIRECTION 5 -->
-				         <div class="form-group col-md-3">								
-									<div class="select-direction">
-										<select name="direction5-edit" id="direction5-edit" size="1">
+						<!-- ***** DIRECTION 5 ***** -->
+						
+				         <div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction5-edit" id="direction5-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir5}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>								
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 							
-							 <!-- DIRECTION 6 -->
+							 <!-- ***** DIRECTION 6 ***** -->
 						
-							<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction6-edit" id="direction6-edit" size="1">
+							<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction6-edit" id="direction6-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir6}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+								 <!--  ******************************************************************************************************* -->
 						     
-						     <!-- DIRECTION 7 -->
-						   <div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction7-edit" id="direction7-edit" size="1">
+						     <!-- ***** DIRECTION 7 ***** -->
+						     
+						  <div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction7-edit" id="direction7-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir7}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
 								
-							<!-- DIRECTION 8 -->	
+								 <!--  ******************************************************************************************************* -->
+								
+							<!-- ***** DIRECTION 8 ***** -->	
 							
-							<div class="form-group col-md-3">
-									<div class="select-direction">
-										<select name="direction8-edit" id="direction8-edit" size="1">
+						<div class="form-group col-md-3"> <!-- GROUP -->
+									<div class="select-direction"> <!-- SELECT DIV -->	 							
+										<select name="direction8-edit" id="direction8-edit" size="1"> <!-- SELECT -->
 											<option value="">#{mapLabels.map_creation_dropdown_dir8}</option>
 											<ui:repeat var="dir" value="#{equipsBean.dir}" varStatus="dirStatus">
 												<option value="#{dir.value}">#{dir.label}</option>
 											</ui:repeat>
-										</select>
-									</div>									
-								</div>
-							</div>						  
-						</div>
-																
-						<!-- MODAL BUTTONS -->
-
-						<div class="modal-footer">
-						<h:inputHidden id="equipTableUpdate" value="#{equipsBean.equipTable}" />
+										</select> <!----> 
+									</div> <!----> 
+									<div class="error-label"> <!-- ERROR DIV --> </div>
+								</div> <!----> 
+								
+							</div> <!-- ROW LANES --> 						  
+						</div> <!---->  
 						
+						 <!--  ******************************************************************************************************* -->
+																
+						<!-- ***** MODAL BUTTONS ***** -->
+
+						<div class="modal-footer">						
+						
+						<h:inputHidden id="equipId1" value="#{equipsBean.equipId}" />		
+						<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />					
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_update_equipment}" 
-								id="btn-form-send-edit" class="btn btn-dark form-draw-button" >
-								<f:ajax execute="@form" render=":equips-edit :equipId-edit :equipName-edit :cities-edit :roads-edit :km-edit
-								:lanes-edit :direction1-edit :direction2-edit :direction3-edit :direction4-edit :direction5-edit :direction6-edit :direction7-edit : direction8-edit"
-								listener="#{equipsBean.UpdateEquipment}" onevent="sendType" />
+								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
 								value="#{mapLabels.map_creation_btn_cancel_equipment}"
 								id="btn-form-reset" immediate="true" type="reset"
-								class="btn btn-dark form-draw-button  reset-btn-edit" >
-								<f:ajax execute="@form" render=":equips-edit :equipId-edit :equipName-edit :cities-edit :roads-edit :km-edit
-								:lanes-edit :direction1-edit :direction2-edit :direction3-edit :direction4-edit :direction5-edit :direction6-edit :direction7-edit : direction8-edit" />
+								class="btn btn-dark form-modal-draw-button reset-btn-edit" data-dismiss="modal">								
 							</h:commandButton>
 
 						</div>				
@@ -1294,47 +1499,56 @@
 		<!-- ************************************* DELETE **************************************** -->
 		<!-- ************************************************************************************* -->
 
-		<div class="modal fade" id="deletemodal" role="dialog">
-			<div class="modal-dialog">
-				<h:form class="modal-content" id="delete-equip-form">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_confirm_title}</h4>
+		<div class="modal fade" id="deletemodal" role="dialog"> <!-- MODAL DELETE -->
+			<div class="modal-dialog"> <!-- MODAL DIALOG -->
+				<h:form class="modal-content" id="delete-equip-form"> <!-- MODAL CONTENT -->					
+					<div class="modal-content"> <!-- MODAL CONTENT -->
+						<div class="modal-header text-center"> <!-- MODAL HEADER -->
+							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_delete_title}</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 
 						</div>
-						<div class="modal-body">
+						<div class="modal-body"> <!-- MODAL BODY -->
 
-							<h:outputLabel name="delete-equipName" id="delete-equipName"
-								value="Deletar'#{equipsBean.equip.nome}'"
-								style="font-size: '#{equipsBean.equip.nome ? '12px' : '20px'}'" />
+                           <div class="row"> <!-- ROW -->
+                           <div  class="col-12"> <!-- COLS -->
+                           <span class="delete-message text-dark">  #{mapLabels.map_option_modal_delete_message}</span> 
+                           <span id="del-equip-name" class="text-danger font-weight-bold"> </span> <span class="text-dark font-weight-bold">  ? </span> <!-- MESSAGE SPAN -->
+                           </div> <!---->                                                 
+                           </div><!----> 
+                           						
 						</div>
 
-						<div class="modal-footer">
-							<div class="form-row">
+						<div class="modal-footer"> <!-- MODAL FOOTER -->
+							<div class="form-row"> <!-- ROW -->
+							
+							    <!-- INPUT HIDDEN VALUES -->
 								<h:inputHidden id="equipDel" value="#{equipsBean.equipId}"/>
 								<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}"/>
+								
+								<!-- DELETE BUTTON  -->
 								<h:commandButton
 									value="#{mapLabels.map_creation_btn_yes_equipment}"
-									id="btn-form-delete-yes" class="btn btn-dark form-draw-button"								
+									id="btn-form-delete-yes" class="btn btn-dark form-modal-draw-button"								
 									onclick="deleteParameters();">
 									<f:ajax execute="@all" render="@none" listener="#{equipsBean.DeleteEquipment}" />
-								</h:commandButton>
+								</h:commandButton> <!---->
 
+                                 <!-- CANCEL BUTTON -->
 								<h:commandButton value="#{mapLabels.map_creation_btn_no_equipment}"
-									id="btn-form-delete-no" immediate="true" type="reset"
-									class="btn btn-dark form-draw-button  reset-btn"
+									id="btn-form-delete-no" immediate="true" data-dismiss="modal"
+									class="btn btn-dark form-modal-draw-button cancel" 
 									onclick="$('#deletemodal').modal('hide');">
-								</h:commandButton>
-							</div>
-						</div>
-					</div>
+									<f:ajax execute="@form" render="@none"/>
+								</h:commandButton> <!---->
+							</div> <!---->
+						</div> <!---->
+					</div> <!---->
 				</h:form>
-			</div>
-		</div>
+			</div> <!---->
+		</div> <!---->
 		
 	    <!-- ************************************************************************************* -->
 		<!-- ************************************* DELETE **************************************** -->
@@ -1343,31 +1557,32 @@
 		<!-- ************************************************************************************* -->
 		<!-- ************************************* SIZE ****************************************** -->
 		<!-- ************************************************************************************* -->
-
-		<!-- Modal Size Equipments -->
-		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content modal-sm">
-					<div class="modal-header" id="modheaderpad">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		
+		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true"> <!-- FORM GROUP EDIT BUTTON -->
+			<div class="modal-dialog"> <!-- MODAL -->
+				<div class="modal-content modal-sm"> <!-- MODAL CONTENT -->
+					<div class="modal-header" id="modheaderpad"> <!-- MODAL HEADER -->
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <!-- BUTTON DISMISS -->
 							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
+						</button> <!---->
+						
+					</div> <!---->
+					<div class="modal-body"> <!-- MODAL BODY -->
 						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
 							class="imgSize" />
-					</div>
-					<div class="modal-footer" id="modborderpad">
+						</div> <!---->
+						
+					<div class="modal-footer" id="modborderpad"> <!-- MODAL FOOTER -->
 						<form class="bar">
 							<div class="bar-ball">
 								<label for="bar-size" style="display: none;">#{mapLabels.map_size_equip_modal}</label>
-								<input type="number" id="bar-size" value="1" min="1" max="2" hidden="" />
-							</div>
+								<input type="number" id="bar-size" value="1" min="1" max="2" hidden="" /> <!-- INPUT MODBORDERPAD -->
+							</div> <!---->
 						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+					</div> <!---->
+				</div> <!---->
+			</div> <!---->
+		</div><!---->
 		
 		<!-- ************************************************************************************* -->
 		<!-- ************************************* SIZE ****************************************** -->
@@ -1391,12 +1606,13 @@
 		////////////////////////////
 		
 		userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
-				'#{validatorMessages.validator_number_message}');
+				'#{validatorMessages.validator_number_message}', '#{validatorMessages.validator_global_maxlength}');
 					
 		//Validate elements on change value
 	    //In this case check if the element is valid
 	    validateOnChange('#equips');
-	    validateOnChange('#equipId');	   
+	    validateOnChange('#equipId');	
+	    validateOnChange('#equipName');	
 	    
 	    //Reset Fields on close modal
 		resetFieldOnModalClose('#modaladd', 'equips');
@@ -1421,6 +1637,7 @@
 	    //click reset button action		 
 	    removeValidationIcon("reset-btn", 'equips');
 	    removeValidationIcon("reset-btn", 'equipId');
+	    removeValidationIcon("reset-btn", 'equipName');
 		    
 	    //Clean Form validation on close modal
         cleanValidationOnModalClose("#register-equip-form", '#modaladd');
@@ -1443,19 +1660,17 @@
         
         //EQUIP EDITION
         
-        userInterfaceformValidation('#edit-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
-				'#{validatorMessages.validator_number_message}');
+        userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}');
 					
 		//Validate elements on change value
-	    //In this case check if the element is valid
-	    validateOnChange('#equips-edit');
-	    validateOnChange('#equipId-edit');	   
+	    //In this case check if the element is valid	   
+	    validateOnChange('#equipNameEdit');	   
 	    
 	    //Reset Fields on close modal
 		resetFieldOnModalClose('#editmodal', 'equips-edit');
 		resetFieldOnModalClose('#editmodal', 'equipId-edit');
 		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
-		resetFieldOnModalClose('#editmodal', 'equipName-edit');
+		resetFieldOnModalClose('#editmodal', 'equipNameEdit');
 		resetFieldOnModalClose('#editmodal', 'roads-edit');
 		resetFieldOnModalClose('#editmodal', 'cities-edit');
 		resetFieldOnModalClose('#editmodal', 'km-edit');
@@ -1471,9 +1686,8 @@
 		 //Reset Fields on close modal
 						
 		//Remove validation icons
-	    //click reset button action		 
-	    removeValidationIcon("reset-btn-edit", 'equips-edit');
-	    removeValidationIcon("reset-btn-edit", 'equipId-edit');
+	    //click reset button action	
+	    removeValidationIcon("reset-btn-edit", 'equipNameEdit');
 		    
 	    //Clean Form validation on close modal
         cleanValidationOnModalClose("#edit-equip-form", '#editmodal');
@@ -1508,21 +1722,76 @@
 				}, 2500);
 			}
         
-			$(function() {
+        // *********************************************************** //
+        
+            //SAVE URL RESPONSE
+               $(function() {
+            	   
+            	 //SAVE EQUIP				
+   				let newIdMatch = RegExp(/newId=(\w+)/)
+   				let saveMatch = RegExp(/save=(false)/)
+   				
+   				let getNewId = newIdMatch.exec(location.href)
+   				let getSave = saveMatch.exec(location.href)	
+									
 				
-				let match = RegExp(/newId=(\w+)/)
-				let match2nd = RegExp(/value=(false)/)
-				let get = match.exec(location.href)
-				let get2nd = match2nd.exec(location.href)							
-				
-				if (get) {
-					borderEquip(get[1])
-					alert('#equipsave');
+				if (getNewId) {
+					borderEquip(getNewId[1])
+					alert('#equip-save');
 				}								
-				else if(get2nd) 
-					    if(get2nd[1] == 'false')
-					       alert('#equipsave-error');				 			
+				else if(getSave) 
+					    if(getSave[1] == 'false')
+					       alert('#equip-save-error');				 			
 			})
+
+			//SAVE URL RESPONSE
+			
+      // *********************************************************** //
+      
+        //UPDATE URL RESPONSE
+               $(function() {
+            	   
+            	 //DELETE EQUIP				
+   				let updatedIdMatch = RegExp(/updatedId=(\w+)/)
+   				let updateMatch = RegExp(/update=(false)/)
+   				
+   				let getUpdatedId = updatedIdMatch.exec(location.href)
+   				let getUpdate = updateMatch.exec(location.href)								
+				
+				if (getUpdatedId) {
+					borderEquip(getUpdatedId[1])
+					alert('#equip-update');
+				}								
+				else if(getUpdate) 
+					    if(getUpdate[1] == 'false')
+					       alert('#equip-update-error');				 			
+			})
+
+			//UPDATE URL RESPONSE
+			
+			   // *********************************************************** //
+        
+            //DELETE URL RESPONSE
+               $(function() {
+            	   
+            	 //DELETE EQUIP				
+   				let deletedIdMatch = RegExp(/deletedId=(\w+)/)
+   				let deleteMatch = RegExp(/delete_=(false)/)
+   				
+   				let getDeletedId = deletedIdMatch.exec(location.href)
+   				let getDelete = deleteMatch.exec(location.href)	
+								
+				if (getDeletedId) {					
+					alert('#equip-delete');
+				}								
+				else if(getDelete) 
+					    if(getDelete[1] == 'false')
+					       alert('#equip-delete-error');				 			
+			})
+
+			//DELETE URL RESPONSE
+			
+      // *********************************************************** //
 
 			function hiddenBtns() {
 				document.getElementById("topButtons").style.display = "none";
@@ -1546,6 +1815,8 @@
 				posReset();
 				showBtns();
 			}
+			
+			//VARS
 			var id, type, toDrag;
 
 			function sendToBean() {
@@ -1557,11 +1828,12 @@
 
 			function sendToBeanDel() {
 
-				document.getElementById('delete-equip-form:delete-equipName').innerText = type + id;
+				document.getElementById('delete-equip-form:del-equip-name').innerText = type + id;
 
 			}
 
 			function sendType() {
+				document.getElementById('edit-equip-form:equipId1').value = id;
 				document.getElementById('edit-equip-form:equipTable1').value = type;
 			}
 
@@ -1569,7 +1841,12 @@
 				document.getElementById('delete-equip-form:equipDel').value = id;
 				document.getElementById('delete-equip-form:tableDel').value = type;
 			}
-
+			
+			function deleteInfo() {
+				document.getElementById('delete-equip-form:equipIdDel').value = id;
+				document.getElementById('delete-equip-form:equipTableDel').value = type;
+			}
+		
 			/////////////MAP/GRID HIDE AND SHOW
 
 			$("#divide").click(function () {
@@ -1592,9 +1869,9 @@
 				$(".map-options").show();
 			});
 
-			$(".posbtn").click(function () {
+			$(".btn-pos").click(function () {
 				$(".save_pos").show();
-				$(".cancel_pos").show();
+				$(".cancel_pos").show();			
 			});
 
 			$(".add_equip").click(function () {
@@ -1603,13 +1880,7 @@
 			});
 
 			///MAP/GRID HIDE AND SHOW END						
-
-			//EQUIPMENTS HIDE/SHOW
-
-			$("#moveequip").click(function () {
-				$('#OPmodal').modal('hide');
-			});
-
+					
 			//ZOOM EVENT
 			document.getElementById("zoomIn").addEventListener("click",
 				function () {
@@ -1837,7 +2108,9 @@
 			
 			  $('#km').mask('000+000'); 	// KM MASK				
 			  $('#dmsIp').mask('000.000.000.000'); //IP MASK
-
+			  $('#km-edit').mask('000+000'); 	// KM MASK				
+			  $('#dmsIp-edit').mask('000.000.000.000'); //IP MASK
+			  
 
 		</script>
 	</ui:define>
