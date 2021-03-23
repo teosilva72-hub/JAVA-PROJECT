@@ -740,12 +740,10 @@
 											posY="#{item.mapPosY}" item-width="#{item.mapWidth}" class="equip-box #{item.table_id}">	
 																		         
 											<div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-1">		<!-- HEADER -->									
-												<p class="col-auto mb-0 pr-1">#{item.nome}</p>
-												<p class="col-12 mb-0">#{item.km}</p>
+												<p class="teste col-auto mb-0 pr-1">#{item.nome}</p>
+												
 											</div> <!---->
 											
-											
-
 											<c:if test="#{item.table_id eq 'cftv'}">
 												<h:graphicImage class="equip-image"
 													value="/resources/images/equips/camera.png" />
@@ -782,13 +780,11 @@
 												<h:graphicImage class="equip-image"
 													value="/resources/images/equips/wim.png" />
 											</c:if>
-											 
-								
-										
-										 <a role="button" class="generic-info-bagde" data-toggle="popover" 
+																										
+										   <a role="button" class="generic-info-bagde" data-toggle="popover" 
 									         data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
-											 <span id="#{item.table_id}Status1" class="equip-status"></span>
-										</div>	
+											 <span id="#{item.table_id}Status1" class="equip-status"></span>										
+										</div>
 										
 										<div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
 											<div class="popover-header">#{infoLabels.info_label_header}</div>

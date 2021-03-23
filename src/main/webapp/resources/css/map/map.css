@@ -910,6 +910,10 @@ opacity: 0.7;
 }
 
 .popover{
-	z-index: 1000;
+	z-index: 10040;
 }
 
+
+.teste{
+	font-size: 15px;
+}
