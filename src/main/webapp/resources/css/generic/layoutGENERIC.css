@@ -34,12 +34,15 @@
 /* GENERIC EQUIPMENTS  */
 
 .equip-header {
-  margin-top: -40%;
+  margin-top: -55%;
+  text-align: center;
+  display: block;
+  opacity: 0;
 }
 
 .equip-box {
   position: absolute;
-  font-size: 10px;
+  font-size: 14px;
   background: transparent;
   border-right: none;
   float: left;

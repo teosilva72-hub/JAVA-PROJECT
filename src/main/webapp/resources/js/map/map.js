@@ -1,5 +1,6 @@
 var widthMax = 1000
 var heightMax = 1000
+var scale = 1;
 
 $(function() {
 		setTimeout(function () {
@@ -137,8 +138,8 @@ function ScrollZoom(container) {
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
 	let pos = zoom_point = { x: 0, y: 0 }
-	let scale = scale_diff = 1
-
+	let scale_diff = 1
+	
 	target.css('transform-origin', '0 0')
 	container.on("mousewheel DOMMouseScroll", scrolled)
 
@@ -169,10 +170,14 @@ function ScrollZoom(container) {
 			scale = Math.max(1, Math.min(max_scale, scale))
 			scale_diff = scale / scale_diff
 			target.attr('scale', scale)
+			
+			console.log(scale);
 
 			update()
 			resizeEquip(container)
 		}
+		
+		
 	}
 
 	function update() {
@@ -182,6 +187,8 @@ function ScrollZoom(container) {
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
 			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
 
+        showGenericName();
+        
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
 
@@ -189,7 +196,8 @@ function ScrollZoom(container) {
 				{
 					top: Number(equip.css('top').replace('px', '')) * scale_diff,
 					left: Number(equip.css('left').replace('px', '')) * scale_diff
-				}
+					
+			  }
 			)
 		})
 	}
@@ -527,3 +535,12 @@ $(button).click(function(){
 
 }
 
+/**/
+function showGenericName(){
+
+if(scale > 2)
+  $('.equip-header').css('opacity', 1);
+  
+  else  $('.equip-header').css('opacity', 0);
+  
+}

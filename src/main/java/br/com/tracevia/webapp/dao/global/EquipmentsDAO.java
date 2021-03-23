@@ -938,6 +938,9 @@ public class EquipmentsDAO {
           		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
                   + "map_width, map_posX, map_posY, driver, visible) "
                   + "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          		
+          		String queryActive = "INSERT INTO "+table+"_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
+                        + "values ( ?,?,?,?,?,?)";
              			           		         			          		          			          			
                       //Execute Register			
             			ps = conn.prepareStatement(query);
@@ -958,8 +961,22 @@ public class EquipmentsDAO {
             			          			
             			int success = ps.executeUpdate();
             			          			
-            			if(success > 0)         				
-            				  status = true;		
+            			if(success > 0) {
+            				
+            				ps = conn.prepareStatement(queryActive);
+            				
+            				ps.setInt(1, equip.getEquip_id());
+                			ps.setInt(2, 0);            			
+                			ps.setString(3, equip.getCreation_username());    
+                			ps.setString(4, equip.getCreation_date());
+                			ps.setInt(5, 0);   
+                			ps.setInt(6, 1);
+                			            			          			
+                			int success2 = ps.executeUpdate();
+            				
+            				if(success2 > 0)
+            					status = true;	
+            			}            				  	
             			          		    		      
             	              											
             		} catch (SQLException sqle) {
@@ -1847,14 +1864,25 @@ if(table.equals("mto")) { // MTO Definitions
 if(table.equals("dms")) { // PMV Definitions
 
   String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
+  String queryDMSActive = "DELETE FROM pmv_messages_active WHERE id_equip = ?";
 
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+ 
   ps = conn.prepareStatement(queryDMS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;          	            	  
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryDMSActive);
+	  ps.setInt(1,  id);
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;  
+  
+  }	          	            	  
 
 }  // PMV Definitions END    
 
