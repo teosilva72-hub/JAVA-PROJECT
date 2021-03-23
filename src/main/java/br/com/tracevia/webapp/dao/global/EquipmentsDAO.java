@@ -971,7 +971,7 @@ public class EquipmentsDAO {
          		    //INSERT
           		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
                   + "map_width, map_posX, map_posY, driver, visible) "
-                  + "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                  + "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?)";
              			           		         			          		          			          			
                       //Execute Register			
             			ps = conn.prepareStatement(query);
@@ -1073,8 +1073,7 @@ public class EquipmentsDAO {
               
               
          public boolean EquipUpdateMap(Equipments equip, String table) throws Exception {    
-              
-         	 
+                       	 
              boolean updated = false;
         	 
         	 try { //GET SLQException           
@@ -1209,6 +1208,9 @@ public class EquipmentsDAO {
             	  ps.setInt(6,  equip.getEquip_id());        			            			  
 
             	  int rs = ps.executeUpdate();
+            	  
+            	  System.out.println(queryMTO);
+            	  System.out.println(equip.getNome()+"\n"+equip.getEquip_id());
 
             	  if (rs > 0) 
             		  updated = true;          	  
@@ -1319,50 +1321,93 @@ public class EquipmentsDAO {
          }                 
          
 		 public boolean EquipSATUpdateMap(SAT sat, String table) throws Exception {    
-			    
-			 
-			    boolean updated = false;
-			    		            	  
-	            	  String querySAT= "SELECT sat_equipment SET equip_id = ?, name = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
-	          	  	  		+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
-	          	  	  		+ " FROM sat_equipment WHERE equip_id = ? ";
-	            	  
-	            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-	            	  
-	            	  ps = conn.prepareStatement(querySAT);
-	            	  	            	  
-	            	  ps.setInt(1, sat.getEquip_id());
-	            	  ps.setString(2, sat.getNome());
-	            	  ps.setString(3, sat.getCidade());
-	            	  ps.setString(4, sat.getEstrada());
-	            	  ps.setString(5, sat.getKm());
-	            	  ps.setInt(6, sat.getMapWidth());
-	            	  ps.setInt(7, sat.getNumFaixas());
-	            	  ps.setString(8, sat.getFaixa1());  
-	            	  ps.setString(9, sat.getFaixa1()); 		  
-	            	  ps.setString(10, sat.getFaixa1()); 
-	            	  ps.setString(11, sat.getFaixa1()); 
-	            	  ps.setString(12, sat.getFaixa1()); 
-	            	  ps.setString(13, sat.getFaixa1()); 
-	            	  ps.setString(14, sat.getFaixa1()); 
-	            	  ps.setString(15, sat.getFaixa1()); 	            
-	            		            			  
-	            	  int rs = ps.executeUpdate();
+			    			 
+			 boolean updated = false;
 
-	            	  if (rs > 0) 
-	            		  updated = true;               	  
-		    
+			 String querySAT= "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
+					 + "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+					 + " WHERE equip_id = ? ";
+
+			 try {
+
+				 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+				 ps = conn.prepareStatement(querySAT);
+				 
+				 ps.setString(1, sat.getNome());
+				 ps.setString(2, sat.getCidade());
+				 ps.setString(3, sat.getEstrada());
+				 ps.setString(4, sat.getKm());
+				 ps.setInt(5, sat.getMapWidth());
+				 ps.setInt(6, sat.getNumFaixas());
+				 ps.setString(7, sat.getFaixa1());  
+				 ps.setString(8, sat.getFaixa2()); 		  
+				 ps.setString(9, sat.getFaixa3()); 
+				 ps.setString(10, sat.getFaixa4()); 
+				 ps.setString(11, sat.getFaixa5()); 
+				 ps.setString(12, sat.getFaixa6()); 
+				 ps.setString(13, sat.getFaixa7()); 
+				 ps.setString(14, sat.getFaixa8()); 	
+				 ps.setInt(15, sat.getEquip_id());
+
+				 int rs = ps.executeUpdate();
+
+				 if (rs > 0) 
+					 updated = true;   
+
+
+			 }catch(SQLException sqle) {
+
+				 sqle.printStackTrace();
+			 }
+			 finally { //Close Connection
+
+				 ConnectionFactory.closeConnection(conn, ps);
+
+			 }
 			    
-			    return updated;
-			    
+			    return updated;			    
 			    
 			}
 		
-			public boolean EquipDMSUpdateMap(Equipments equip, String table) throws Exception {    
+			public boolean EquipDMSUpdateMap(DMS dms, String table) throws Exception {    
 			    
 				 
 			    boolean updated = false;
 			    
+			    String queryDMS = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
+						 + " WHERE equip_id = ? ";
+
+				 try {
+
+					 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+					 ps = conn.prepareStatement(queryDMS);
+					
+					 ps.setString(1, dms.getDms_ip());
+					 ps.setInt(2, dms.getDms_type());
+					 ps.setString(3, dms.getNome());
+					 ps.setString(4, dms.getCidade());
+					 ps.setString(5, dms.getEstrada());
+					 ps.setString(6, dms.getKm());
+					 ps.setInt(7, dms.getMapWidth());
+					 ps.setInt(8, dms.getEquip_id());
+					            
+					 int rs = ps.executeUpdate();
+
+					 if (rs > 0) 
+						 updated = true;   
+
+
+				 }catch(SQLException sqle) {
+
+					 sqle.printStackTrace();
+				 }
+				 finally { //Close Connection
+
+					 ConnectionFactory.closeConnection(conn, ps);
+
+				 }			    
 			    
 			    return updated;
 			}
@@ -1388,7 +1433,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   	  
   	  CFTV cftv = new CFTV();
   	  
-  	  String queryCftv = "SELECT equip_id, name, city, road, km, map_width, visible FROM cftv_equipment WHERE equip_id = ? ";
+  	  String queryCftv = "SELECT equip_id, name, city, road, km, map_width FROM cftv_equipment WHERE equip_id = ? ";
   	              	  
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
@@ -1405,7 +1450,6 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  cftv.setEstrada(rs.getString(4));
   			  cftv.setKm(rs.getString(5));
   			  cftv.setMapWidth(rs.getInt(6));
-  			  cftv.setVisible(rs.getBoolean(7));            			            			  
   			  
   		  }
   	  }
@@ -1418,7 +1462,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  Colas colas = new Colas();
 
-  	  String queryColas= "SELECT equip_id, name, city, road, km, map_width, visible FROM colas_equipment WHERE equip_id = ? ";
+  	  String queryColas= "SELECT equip_id, name, city, road, km, map_widthFROM colas_equipment WHERE equip_id = ? ";
 
   	 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
@@ -1435,8 +1479,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  colas.setEstrada(rs.getString(4));
   			  colas.setKm(rs.getString(5));
   			  colas.setMapWidth(rs.getInt(6));
-  			  colas.setVisible(rs.getBoolean(7));            			            			  
-
+  			   
   		  }
   	  }
 
@@ -1448,7 +1491,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  COMMS comms = new COMMS();
 
-  	  String queryCOMMS= "SELECT equip_id, name, city, road, km, map_width, visible FROM comms_equipment WHERE equip_id = ? ";
+  	  String queryCOMMS= "SELECT equip_id, name, city, road, km, map_width FROM comms_equipment WHERE equip_id = ? ";
 
   	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
@@ -1464,8 +1507,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  comms.setCidade(rs.getString(3));
   			  comms.setEstrada(rs.getString(4));
   			  comms.setKm(rs.getString(5));
-  			  comms.setMapWidth(rs.getInt(6));
-  			  comms.setVisible(rs.getBoolean(7));            			            			  
+  			  comms.setMapWidth(rs.getInt(6));  			         			            			  
 
   		  }
   	  }
@@ -1478,7 +1520,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  DAI dai = new DAI();
 
-  	  String queryDAI= "SELECT equip_id, name, city, road, km, map_width, visible FROM dai_equipment WHERE equip_id = ? ";
+  	  String queryDAI= "SELECT equip_id, name, city, road, km, map_width FROM dai_equipment WHERE equip_id = ? ";
 
   	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
@@ -1495,8 +1537,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  dai.setEstrada(rs.getString(4));
   			  dai.setKm(rs.getString(5));
   			  dai.setMapWidth(rs.getInt(6));
-  			  dai.setVisible(rs.getBoolean(7));            			            			  
-
+  			  
   		  }
   	  }
 
@@ -1508,7 +1549,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  LPR lpr = new LPR();
 
-  	  String queryLPR= "SELECT equip_id, name, city, road, km, map_width, visible FROM lpr_equipment WHERE equip_id = ? ";
+  	  String queryLPR= "SELECT equip_id, name, city, road, km, map_width FROM lpr_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryLPR);
@@ -1523,8 +1564,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  lpr.setCidade(rs.getString(3));
   			  lpr.setEstrada(rs.getString(4));
   			  lpr.setKm(rs.getString(5));
-  			  lpr.setMapWidth(rs.getInt(6));
-  			  lpr.setVisible(rs.getBoolean(7));            			            			  
+  			  lpr.setMapWidth(rs.getInt(6));  			        			            			  
 
   		  }
   	  }
@@ -1537,7 +1577,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  MTO mto = new MTO();
 
-  	  String queryMTO= "SELECT equip_id, name, city, road, km, map_width, visible FROM mto_equipment WHERE equip_id = ? ";
+  	  String queryMTO= "SELECT equip_id, name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryMTO);
@@ -1552,8 +1592,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  mto.setCidade(rs.getString(3));
   			  mto.setEstrada(rs.getString(4));
   			  mto.setKm(rs.getString(5));
-  			  mto.setMapWidth(rs.getInt(6));
-  			  mto.setVisible(rs.getBoolean(7));            			            			  
+  			  mto.setMapWidth(rs.getInt(6));  		      			            			  
 
   		  }
   	  }
@@ -1566,7 +1605,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  SOS sos = new SOS();
 
-  	  String querySOS= "SELECT equip_id, name, city, road, km, map_width, visible FROM sos_equipment WHERE equip_id = ? ";
+  	  String querySOS= "SELECT equip_id, name, city, road, km, map_width FROM sos_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(querySOS);
@@ -1581,8 +1620,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  sos.setCidade(rs.getString(3));
   			  sos.setEstrada(rs.getString(4));
   			  sos.setKm(rs.getString(5));
-  			  sos.setMapWidth(rs.getInt(6));
-  			  sos.setVisible(rs.getBoolean(7));            			            			  
+  			  sos.setMapWidth(rs.getInt(6));  			        			            			  
 
   		  }
   	  }
@@ -1595,7 +1633,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  Speed speed = new Speed();
 
-  	  String querySpeed= "SELECT equip_id, name, city, road, km, map_width, visible FROM speed_equipment WHERE equip_id = ? ";
+  	  String querySpeed= "SELECT equip_id, name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(querySpeed);
@@ -1610,8 +1648,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  speed.setCidade(rs.getString(3));
   			  speed.setEstrada(rs.getString(4));
   			  speed.setKm(rs.getString(5));
-  			  speed.setMapWidth(rs.getInt(6));
-  			  speed.setVisible(rs.getBoolean(7));            			            			  
+  			  speed.setMapWidth(rs.getInt(6));  			       			            			  
 
   		  }
   	  }
@@ -1624,7 +1661,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  WIM wim = new WIM();
 
-  	  String queryWIM= "SELECT equip_id, name, city, road, km, map_width, visible FROM wim_equipment WHERE equip_id = ? ";
+  	  String queryWIM= "SELECT equip_id, name, city, road, km, map_width FROM wim_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  ps = conn.prepareStatement(queryWIM);
@@ -1639,8 +1676,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   			  wim.setCidade(rs.getString(3));
   			  wim.setEstrada(rs.getString(4));
   			  wim.setKm(rs.getString(5));
-  			  wim.setMapWidth(rs.getInt(6));
-  			  wim.setVisible(rs.getBoolean(7));            			            			  
+  			  wim.setMapWidth(rs.getInt(6));  			             			            			  
 
   		  }
   	  }
@@ -1668,13 +1704,13 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
 
 
-public SAT EquipSatSearchMap(int id, String table) throws Exception { 
+     public SAT EquipSatSearchMap(int id, String table) throws Exception { 
 	
 	  	  SAT sat = new SAT();
 
 	  	  String querySAT= "SELECT equip_id, name, city, road, km, map_width, number_lanes, " 
-	  	  		+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, " 
-	  	  		+ "visible FROM sat_equipment WHERE equip_id = ? ";
+	  	  		+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
+	  	  		+ " FROM sat_equipment WHERE equip_id = ? ";
 
 	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 	  	  ps = conn.prepareStatement(querySAT);
@@ -1692,6 +1728,8 @@ public SAT EquipSatSearchMap(int id, String table) throws Exception {
 	  			  sat.setMapWidth(rs.getInt(6));
 	  			  sat.setNumFaixas(rs.getInt(7));
 	  			  
+	  			 
+	  			  
 	  			  defineDirectionNumber(sat, 1, rs.getString(8));
 	  			  defineDirectionNumber(sat, 2, rs.getString(9));
 	  			  defineDirectionNumber(sat, 3, rs.getString(10));
@@ -1700,8 +1738,7 @@ public SAT EquipSatSearchMap(int id, String table) throws Exception {
 	  			  defineDirectionNumber(sat, 6, rs.getString(13));
 	  			  defineDirectionNumber(sat, 7, rs.getString(14));
 	  			  defineDirectionNumber(sat, 8, rs.getString(15));	  			  
-	  			  
-	  			  sat.setVisible(rs.getBoolean(16));            			            			  
+	  			  	  			         			            			  
 
 	  		  }
 	  	  }
@@ -1713,7 +1750,7 @@ public SAT EquipSatSearchMap(int id, String table) throws Exception {
 		
 	  	  DMS dms = new DMS();
 
-	  	  String queryDMS= "SELECT equip_id, ip_equip, name, city, road, km, map_width, driver, visible FROM pmv_equipment WHERE equip_id = ? ";
+	  	  String queryDMS= "SELECT equip_id, ip_equip, name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";
 
 	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 	  	  ps = conn.prepareStatement(queryDMS);
@@ -1730,9 +1767,8 @@ public SAT EquipSatSearchMap(int id, String table) throws Exception {
 	  			  dms.setEstrada(rs.getString(5));
 	  			  dms.setKm(rs.getString(6));
 	  			  dms.setMapWidth(rs.getInt(7));
-	  			  dms.setVisible(rs.getBoolean(8));    
-	  			  dms.setVisible(rs.getBoolean(9));  
-
+	  			  dms.setDms_type(rs.getInt(8));    
+	  			 
 	  		  }
 	  	  }
 
@@ -2172,9 +2208,43 @@ public boolean checkExists(int id, String table) throws Exception {
 	}
   
   
-//-------------------------------------------------------------- //
-//----------------- CHECK IF ID SAT EXISTS ------------------- //
+//------------------------------------------------------------- //
+//----------------------- EQUIP NAME  ------------------------ //
 //----------------------------------------------------------- //
+
+public String equipmentName(int id, String table) throws Exception {
+	
+	
+	String name = ""; 
+	          		
+	try {
+	
+	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	
+	//CHECK
+	String select = "SELECT name FROM "+table+"_equipment WHERE equip_id = ?";
+	
+	ps = conn.prepareStatement(select);
+	ps.setInt(1, id);
+          	
+	rs = ps.executeQuery();
+	 
+	 if(rs.isBeforeFirst())
+	   while(rs.next()) {
+		
+		name = rs.getString(1);              											
+	  } 
+	}
+	
+	catch (SQLException sqle) {
+	throw new Exception("Erro ao inserir dados " + sqle);        		    
+	    
+	} finally {
+		ConnectionFactory.closeConnection(conn, ps);
+	}
+	
+	return name;	
+}
 
 
 //DEFINE DIRECTIONS VALUES
@@ -2183,6 +2253,21 @@ public void defineDirectionNumber(SAT sat, int numberLane, String dir){
 	try {
 	
     switch(dir) {
+	
+    case "":  
+    	
+    switch (numberLane) { 
+	
+	case 1: sat.setFaixa1(""); break;
+	case 2: sat.setFaixa2(""); break;
+	case 3: sat.setFaixa3(""); break;
+	case 4: sat.setFaixa4(""); break;
+	case 5: sat.setFaixa5(""); break;
+	case 6: sat.setFaixa6(""); break;
+	case 7: sat.setFaixa7(""); break;
+	case 8: sat.setFaixa8(""); break;
+	
+	}; break;
 	
 	case "N": 
 		
