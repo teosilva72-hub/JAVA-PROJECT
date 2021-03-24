@@ -104,7 +104,7 @@ public class OccurrencesDAO {
 			ps.setString(61, data.getActionInter());
 			ps.setString(62, data.getDamage_amount()); 
 			ps.setString(63, data.getStatusAction()); 
-			ps.setString(64, data.getDamageUnity()); 
+			ps.setString(64, data.getDamageUnity());
 
 			int res = ps.executeUpdate();
 			
@@ -219,10 +219,11 @@ public class OccurrencesDAO {
 				"local_state = ?, direction = ?, lane = ?, others = ?, local_condition = ?, traffic = ?, characteristic = ?, interference = ?, " +
 				"signaling = ?, conductor_condition = ?, descrTitleDescr = ?, descrDescr = ?, envolvTypo = ?, envolvWhen = ?, envolvDescr = ?, " +
 				"procedureName = ?, procedureDescr = ?, trafficHour = ?, trafficMinute = ?, trafficKm = ?, trafficTrackInterrupted= ?, damageDate= ?, " + 
-				" damegeType = ?, damageGravity = ?, damageDescr = ?, actionType = ?, actionStart = ?, actionEnd = ?, actionDuration = ?, actionDescr = ?, " +
+				"damegeType = ?, damageGravity = ?, damageDescr = ?, actionType = ?, actionStart = ?, actionEnd = ?, actionDuration = ?, actionDescr = ?, " +
 				"actionStartData = ?, actionStartHour = ?, actionStartMinute = ?, actionEndData = ?, actionEndHour = ?, actionEndMinute = ?, trackStartDate = ?, " +
 				"trackStartHour = ?, trackStartMinute = ?, trackEndData = ?, trackEndHour = ?, trackEndMinute = ?, damageDescriptionInternal = ?, causeDescrInter = ?, "+
-				"descriptionInter = ?, involvedInter = ?, actionInter = ?, damage_amount = ?, statusAction = ?, damageUnitySelect = ? WHERE occ_number = ?";
+				"descriptionInter = ?, involvedInter = ?, actionInter = ?, damage_amount = ?, statusAction = ?, damageUnitySelect = ?, typeHour1 = ?, "+
+				"typeHour2 = ?, typeHour3 = ?, typeHour4 = ?, typeHour5 = ?, typeHour6 = ? WHERE occ_number = ?";
 
 		DateTimeApplication dtm = new DateTimeApplication();
 		
@@ -295,7 +296,13 @@ public class OccurrencesDAO {
 			ps.setString(61, data.getDamage_amount());
 			ps.setString(62, data.getStatusAction());
 			ps.setString(63, data.getDamageUnity());
-			ps.setString(64, data.getData_number());
+			ps.setString(64, data.getTypeHour1());
+			ps.setString(65, data.getTypeHour2());
+			ps.setString(66, data.getTypeHour3());
+			ps.setString(67, data.getTypeHour4());
+			ps.setString(68, data.getTypeHour5());
+			ps.setString(69, data.getTypeHour6());
+			ps.setString(70, data.getData_number());
 
 			int answer = ps.executeUpdate();
 
@@ -450,7 +457,7 @@ public class OccurrencesDAO {
 	public ArrayList<OccurrencesData> listarOcorrencias() throws Exception {
 
 		String query = "SELECT d.occ_number, dt.value_, " +
-				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute) 'datetime', " +
+				"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
 				"dt1.value_, dt2.value_ FROM occ_data d " +
 				"INNER JOIN occ_details dt ON d.type = dt.detail_id " +
 				"INNER JOIN occ_details dt1 ON d.cause = dt1.detail_id " +
@@ -524,7 +531,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, local_files, editTable, nameUser " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, typeHour1, typeHour2, typeHour3, typeHour4, typeHour5, typeHour6, local_files, editTable, nameUser " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -602,9 +609,15 @@ public class OccurrencesDAO {
 					occ.setDamage_amount(rs.getString(62));
 					occ.setStatusAction(rs.getString(63));
 					occ.setDamageUnity(rs.getString(64));
-					occ.setLocalFiles(rs.getString(65));
-					occ.setEditTable(rs.getBoolean(66));
-					occ.setNameUser(rs.getString(67));
+					occ.setTypeHour1(rs.getString(65));
+					occ.setTypeHour2(rs.getString(66));
+					occ.setTypeHour3(rs.getString(67));
+					occ.setTypeHour4(rs.getString(68));
+					occ.setTypeHour5(rs.getString(69));
+					occ.setTypeHour6(rs.getString(70));
+					occ.setLocalFiles(rs.getString(71));
+					occ.setEditTable(rs.getBoolean(72));
+					occ.setNameUser(rs.getString(73));
 
 				}
 
