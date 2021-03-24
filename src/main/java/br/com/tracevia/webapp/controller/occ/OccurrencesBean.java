@@ -74,7 +74,7 @@ public class OccurrencesBean {
 
 	OccurrencesDAO dao;
 	LocaleUtil occLabel, occMessages;
-
+	//
 	private boolean save, edit, new_, reset, fields,
 	table, alterar, pdf;
 
@@ -84,7 +84,6 @@ public class OccurrencesBean {
 	minutePdf, secondPdf, dayPdf, hourPdf, nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
-
 	private File arquivos[], directory, fileWay;
 	private int bytes, total, situation, idUpload;
 	private int value, value1, value2, content, nivelUser;
@@ -97,8 +96,14 @@ public class OccurrencesBean {
 
 	private List<SelectItem> rodovias, estado_locais, sentidos, faixas, tipos, origens, estados, causa_provaveis, condicao_locais, 
 	condicao_de_trafegos, caracteristica_da_secoes, interferencia_da_faixas, sinalizacoes, estado_condutores, horas, minutos, actions,
-	actionState, trackInterrupted, damageType, damageUnity, involvedType, damage_gravity;
-
+	actionState, trackInterrupted, damageType, damageUnity, involvedType, damage_gravity, typeHour1;
+	
+	public List<SelectItem> getTypeHour1() {
+		return typeHour1;
+	}
+	public void setTypeHour1(List<SelectItem> typeHour1) {
+		this.typeHour1 = typeHour1;
+	}
 	public List<SelectItem> getEstado_locais() {
 		return estado_locais;
 	}
@@ -505,17 +510,15 @@ public class OccurrencesBean {
 			involvedType = dao.dropDownFieldValues("involvedType");
 			damage_gravity = dao.dropDownFieldValues("damageSeverity");
 
-			//select option hours and minutes
-
+			//AM/PM
+			typeHour1 = new ArrayList<SelectItem>();
+			typeHour1.add(new SelectItem("am", "am"));
+			typeHour1.add(new SelectItem("pm", "pm"));
 			//hours
 			horas = new  ArrayList<SelectItem>();
 
-			for(int h = 0; h < 24; h++) {				
+			for(int h = 1; h < 13; h++) {				
 
-				if (h < 10)
-					horas.add(new SelectItem("0"+String.valueOf(h), "0"+String.valueOf(h)));
-
-				else 
 					horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
 
 			}
@@ -598,7 +601,7 @@ public class OccurrencesBean {
 			pdf = true;
 			listarFile = null;
 			total = 0;
-
+			
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
@@ -643,7 +646,7 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("resetForm()");
 			RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-			RequestContext.getCurrentInstance().execute("updateOcc()");
+			
 
 			//listar ocorrencia
 			occurrences = dao.listarOcorrencias();
@@ -882,7 +885,7 @@ public class OccurrencesBean {
 	public void btnEnable() throws Exception {
 
 		//executando as funÃ§Ãµes javascript
-		RequestContext.getCurrentInstance().execute("validatorRodovia()");
+		RequestContext.getCurrentInstance().execute("inputs()");
 		RequestContext.getCurrentInstance().execute("disableEdit()");
 		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		RequestContext.getCurrentInstance().execute("uploadFile()");
@@ -904,7 +907,7 @@ public class OccurrencesBean {
 			localPath = localPath(occNumber);
 			createFileFolder(mainPath, localPath);	
 			//executando javascript
-			RequestContext.getCurrentInstance().execute("validatorRodovia()");
+			RequestContext.getCurrentInstance().execute("inputs()");
 			RequestContext.getCurrentInstance().execute("listingFile()");
 			RequestContext.getCurrentInstance().execute("disableEdit()");
 			RequestContext.getCurrentInstance().execute("resetForm()");
@@ -947,7 +950,7 @@ public class OccurrencesBean {
 		pdf = true;
 
 		//executando funÃ§Ãµes javascript
-		RequestContext.getCurrentInstance().execute("validatorRodovia()");
+		RequestContext.getCurrentInstance().execute("inputs()");
 		RequestContext.getCurrentInstance().execute("alterBtnReset()");
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
 		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
@@ -1541,13 +1544,13 @@ public class OccurrencesBean {
 	}
 	//mÃ©todo download PDF
 	public String[] downloadPdf() throws Exception {
-		// criaÃ§Ã£o do documento
+		// criação do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
 
 		try {
-			//caminho onde Ã© gerado o pdf
+			//caminho onde é gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\mateu\\Downloads\\"+"OCC_"+data.getData_number()+".pdf"));
 			//gera o arquivo
 			document.open();
@@ -1561,17 +1564,17 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
 			//Editando o tipo de fonte do titulo
-			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("RelatÃ³rio da OcorrÃªncia"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
+			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("Relatório da Ocorrência"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
 			Paragraph evento = new Paragraph(new Phrase(20F , trad.occLabels("Eventos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, InÃ­cio, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa ProvÃ¡vel"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, Início, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa Provável"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph eventoLocal = new Paragraph(new Phrase(20F , trad.occLabels("Evento Local"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph detalhes = new Paragraph(new Phrase(20F , trad.occLabels("Detalhes"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("DescriÃ§Ã£o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("Descrição"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph envolvidos = new Paragraph(new Phrase(20F , trad.occLabels("Envolvidos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("TrÃ¢nsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("Trânsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph danos = new Paragraph(new Phrase(20F , trad.occLabels("Danos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("AÃ§Ã£o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
 
@@ -1579,7 +1582,7 @@ public class OccurrencesBean {
 			Image image2 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
 
 			System.out.println(RoadConcessionaire.externalImagePath);
-			//ediÃ§Ã£o das imagens
+			//edição das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(420, 800);
@@ -1612,10 +1615,10 @@ public class OccurrencesBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph("Occ NÂº: "+data.getData_number()+"        "
+			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
 					+ trad.occLabels("Tipo")+(": ")+ getPdf.getType()+"         "
 					+ trad.occLabels("Origem")+(": ")+getPdf.getOrigin()+"          "
-					+ trad.occLabels("SituaÃ§Ã£o")+(": ")+getPdf.getState_occurrences()+"\n"
+					+ trad.occLabels("Situação")+(": ")+getPdf.getState_occurrences()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"
 					));
@@ -1632,14 +1635,14 @@ public class OccurrencesBean {
 			document.add(new Paragraph(dateHour+"\n"+"\n"));
 			//data e hora inicial
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getStart_date()
-			+"             "+("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()
+			+"             "+("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()+"  "+data.getTypeHour1()
 			+"             "+ ("Final")+": "+data.getEnd_date()+"             "+
-			("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+"\n"
+			("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+" "+data.getTypeHour2()+"\n"
 			+"_____________________________________________________________________________"
 			+"\n\n"));
 
 
-			//causa provÃ¡vel e descriÃ§Ã£o principal e interna.
+			//causa provável e descrição principal e interna.
 			/*Rectangle causePr= new Rectangle(577, 310, 10, 610); // you can resize rectangle 
 			causePr.enableBorderSide(1);
 			causePr.enableBorderSide(2);
@@ -1650,7 +1653,7 @@ public class OccurrencesBean {
 			document.add(causePr);*/
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Causa")+": "+getPdf.getCause()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÃ§Ã£o")+": "+data.getCause_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getCause_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1669,7 +1672,7 @@ public class OccurrencesBean {
 					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
 					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
-					+ trad.occLabels("ObservaÃ§Ã£o")+": "+data.getOthers()+"\n"
+					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1683,16 +1686,16 @@ public class OccurrencesBean {
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-			document.add(new Paragraph("CondiciÃ³n local: "+getPdf.getLocal_condition()+"  "
-					+ trad.occLabels("CondiciÃ³n del trÃ¡fico")+": "+getPdf.getTraffic()+"   "
-					+ trad.occLabels("CaracterÃ­stica")+": "+getPdf.getCharacteristic()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("InterferÃªncia Faixa")+": "+getPdf.getInterference()+"     "
-					+trad.occLabels("SinalizaÃ§Ã£o")+": "+getPdf.getSignaling()+"     "
-					+trad.occLabels("SituaÃ§Ã£o Condutor")+": "+ getPdf.getConductor_condition()));
+			document.add(new Paragraph("Condición local: "+getPdf.getLocal_condition()+"  "
+					+ trad.occLabels("Condición del tráfico")+": "+getPdf.getTraffic()+"   "
+					+ trad.occLabels("Característica")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Interferência Faixa")+": "+getPdf.getInterference()+"     "
+					+trad.occLabels("Sinalização")+": "+getPdf.getSignaling()+"     "
+					+trad.occLabels("Situação Condutor")+": "+ getPdf.getConductor_condition()));
 
-			//final da primeira pÃ¡gina
+			//final da primeira página
 
-			document.newPage();//inicio da segunda pÃ¡gina
+			document.newPage();//inicio da segunda página
 			Rectangle rowPage1 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage1.setBorderColor(BaseColor.BLACK);
 			rowPage1.setBorderWidth(2);
@@ -1713,8 +1716,8 @@ public class OccurrencesBean {
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);*/
 			document.add(new Paragraph(description+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Titulo DescriÃ§Ã£o")+": "+ data.getDescription_title()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÃ§Ã£o")+": "+data.getDescription_text()+"\n"
+			document.add(new Paragraph(trad.occLabels("Titulo Descrição")+": "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDescription_text()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1729,11 +1732,11 @@ public class OccurrencesBean {
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÃ§Ã£o")+": "+ data.getInvolved_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 			
-			//TrÃ¢nsito
+			//Trânsito
 			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
 			track1.enableBorderSide(1);
 			track1.enableBorderSide(2);
@@ -1743,12 +1746,12 @@ public class OccurrencesBean {
 			track1.setBorderWidth(1);
 			document.add(track1);*/
 			document.add(new Paragraph(track+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute() + "             "
-					+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute() + "\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
+			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
-			document.add(new Paragraph(trad.occLabels("ExtensÃ£o(KM)")+": "+data.getTraffic_extension()+"            "
+			document.add(new Paragraph(trad.occLabels("Extensão(KM)")+": "+data.getTraffic_extension()+"            "
 					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
-			document.newPage();//inicio da terceira pÃ¡gina
+			document.newPage();//inicio da terceira página
 			
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage2.setBorderColor(BaseColor.BLACK);
@@ -1774,12 +1777,12 @@ public class OccurrencesBean {
 			document.add(damage1);*/
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     Gravedad: "+getPdf.getDamage_gravity()+"     Unidad: "+getPdf.getDamageUnity()
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "+trad.occLabels("Gravidade")+": "+getPdf.getDamage_gravity()+"     "+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
 			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÃ§Ã£o")+": "+data.getDemage_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-			//aÃ§tion
+			//açtion
 			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
 			action1.enableBorderSide(1);
 			action1.enableBorderSide(2);
@@ -1790,10 +1793,10 @@ public class OccurrencesBean {
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("SituaÃ§Ã£o")+": "+getPdf.getStatusAction()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()
-			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÃ§Ã£o")+": "+data.getAction_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getAction_description()+"\n"
 					+"_____________________________________________________________________________\n"));
 			//darken date and time
 			int day1 = LocalDateTime.now().getDayOfMonth();
@@ -1814,7 +1817,7 @@ public class OccurrencesBean {
 
 			//assinatura
 			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
-					+ "                                    "+trad.occLabels("Data do relatÃ³rio")+":"+dayPdf+"/"+monthPdf+"/"+year1+"     Hora: "+hourPdf+":"+minutePdf+":"+secondPdf));
+					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
 
 		}
 		catch(DocumentException de) {
@@ -1830,7 +1833,7 @@ public class OccurrencesBean {
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
 
-		//chamando valores do usuÃ¡rio de outro controller
+		//chamando valores do usuário de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
 
@@ -1838,7 +1841,7 @@ public class OccurrencesBean {
 		userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 
-		//se a variavel situaÃ§Ã£o for igual a 30 ou 31 acessamos a essa condiÃ§Ã£o
+		//se a variavel situação for igual a 30 ou 31 acessamos a essa condição
 		if(situation == 31 || situation == 30) {
 			//btns
 			save = true;
@@ -1849,11 +1852,11 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//executando funÃ§Ãµes js
+			//executando funções js
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
-			//senÃ£o acessa a essa condiÃ§Ã£o
+			//senão acessa a essa condição
 		}else if(userName.equals(data.getNameUser())){
 
 			//btn
@@ -1870,8 +1873,8 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//senÃ£o se o nivel de acesso do usuÃ¡rio for igual a 1 ou igual a 6
-			//tem permissÃ£o para acessar a condiÃ§Ã£o
+			//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6
+			//tem permissão para acessar a condição
 		}else if((data.getEditTable() == false)) {
 
 			//btn
@@ -1887,10 +1890,10 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("fileTotal()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//senÃ£o se for igual a true acesso bloqueado para realizar ediÃ§Ã£o
+			//senão se for igual a true acesso bloqueado para realizar edição
 		}else if((data.getEditTable() == true)) {
 
-			//executando funÃ§Ã£o javascript
+			//executando função javascript
 
 			save = true;
 			alterar = true;
@@ -1901,7 +1904,7 @@ public class OccurrencesBean {
 			table = true;
 
 			//se o nome do usuario local, for igual o nome da pessoa que esta editando
-			//a ocorrencia acessa pode acessar a essa condiÃ§Ã£o
+			//a ocorrencia acessa pode acessar a essa condição
 			if(userName.equals(data.getNameUser())){
 
 				//btn
@@ -1917,8 +1920,8 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 
-				//senÃ£o se o nivel de acesso do usuÃ¡rio for igual a 1 ou igual a 6
-				//tem permissÃ£o para acessar a condiÃ§Ã£o
+				//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6
+				//tem permissão para acessar a condição
 			}else {
 				//btn menu
 				save = true;
@@ -1928,13 +1931,13 @@ public class OccurrencesBean {
 				fields = true;
 				edit = true;
 				table = true;
-				//executando funÃ§Ãµes js
+				//executando funções js
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			}
 			int id = getValue();
 
-			//criando caminho da seleÃ§Ã£o da pasta.
+			//criando caminho da seleção da pasta.
 			way = pathSQL;
 
 			//caminho criado
@@ -1957,7 +1960,7 @@ public class OccurrencesBean {
 
 			}
 		}
-		//passando valor final do mÃ©todo para a variavel tableFile
+		//passando valor final do método para a variavel tableFile
 		return tableFile;
 
 	}

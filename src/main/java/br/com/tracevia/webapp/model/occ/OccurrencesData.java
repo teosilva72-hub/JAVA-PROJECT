@@ -72,6 +72,12 @@ public class OccurrencesData {
 	private String localFiles;
 	private Boolean editTable;
 	private String nameUser;
+	private String typeHour1;
+	private String typeHour2; 
+	private String typeHour3;
+	private String typeHour4;
+	private String typeHour5;
+	private String typeHour6;
 
 	public OccurrencesData(int data_id, String data_number, String type, String origin, String state_occurrences,
 			String start_date, String start_hour, String start_minute, String end_date, String end_hour,
@@ -88,9 +94,10 @@ public class OccurrencesData {
 			String actionEndMinute, String trackStartDate, String trackStartHour, String trackStartMinute,
 			String trackEndDate, String trackEndHour, String trackEndMinute, String damageDescriptionMain,
 			String damageDescriptionInternal, String damageUnity, String causeDescrInter, String descriptionInter,
-			String involvedInter, String actionInter, String statusAction, String localFiles, Boolean editTable, String nameUser)
+			String involvedInter, String actionInter, String statusAction, String localFiles, Boolean editTable,
+			String nameUser, String typeHour1, String typeHour2, String typeHour3, String typeHour4, String typeHour5, String typeHour6)
 	{
-
+		
 		this.data_id = data_id;
 		this.data_number = data_number;
 		this.type = type;
@@ -162,9 +169,75 @@ public class OccurrencesData {
 		this.localFiles = localFiles;
 		this.editTable = editTable;
 		this.nameUser = nameUser;
+		this.typeHour1 = typeHour1;
+		this.typeHour2 = typeHour2;
+		this.typeHour3 = typeHour3;
+		this.typeHour4 = typeHour4;
+		this.typeHour5 = typeHour5;
+		this.typeHour6 = typeHour6;
 	}
 
 	
+	public String getTypeHour1() {
+		return typeHour1;
+	}
+
+
+	public void setTypeHour1(String typeHour1) {
+		this.typeHour1 = typeHour1;
+	}
+
+
+	public String getTypeHour2() {
+		return typeHour2;
+	}
+
+
+	public void setTypeHour2(String typeHour2) {
+		this.typeHour2 = typeHour2;
+	}
+
+
+	public String getTypeHour3() {
+		return typeHour3;
+	}
+
+
+	public void setTypeHour3(String typeHour3) {
+		this.typeHour3 = typeHour3;
+	}
+
+
+	public String getTypeHour4() {
+		return typeHour4;
+	}
+
+
+	public void setTypeHour4(String typeHour4) {
+		this.typeHour4 = typeHour4;
+	}
+
+
+	public String getTypeHour5() {
+		return typeHour5;
+	}
+
+
+	public void setTypeHour5(String typeHour5) {
+		this.typeHour5 = typeHour5;
+	}
+
+
+	public String getTypeHour6() {
+		return typeHour6;
+	}
+
+
+	public void setTypeHour6(String typeHour6) {
+		this.typeHour6 = typeHour6;
+	}
+
+
 	public String getNameUser() {
 		return nameUser;
 	}

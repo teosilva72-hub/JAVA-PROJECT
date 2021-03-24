@@ -68,6 +68,8 @@ public class TranslationMethods {
 			case "Assinatura" : converteOcc = localeOcc.getStringKey("occ_assinatura"); break;
 			case "Data do relatório" : converteOcc = localeOcc.getStringKey("occ_relatorio"); break;
 			case "Relatório da Ocorrência" : converteOcc = localeOcc.getStringKey("occ_title_pdf"); break;
+			case "Gravidade" : converteOcc = localeOcc.getStringKey("occ_register_gravidade"); break;
+			case "Unidade" : converteOcc = localeOcc.getStringKey("occ_damage_unity"); break;
 			
 		}
 		
