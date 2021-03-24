@@ -3,12 +3,17 @@ var heightMax = 1000
 var scale = 1;
 
 $(function() {
-		setTimeout(function () {
-			$('#message-show').hide(); 		
-		}, 5000); 
-	});
+	setTimeout(function () {
+		$('#message-show').hide(); 		
+	}, 5000);
 
-$(function () {
+	$('#divide').on('click', () =>  {
+		$('#frame1')[0].contentWindow.setPosition(0, 250)
+		$('#frame2')[0].contentWindow.setPosition(1000, 250)
+		$('#frame3')[0].contentWindow.setPosition(2000, 50)
+		
+	})
+
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
 		let map = $(this)
@@ -380,8 +385,6 @@ function mapMove(ele) {
 		.mousedown(mouseDownHandler)
 }
 
-//TODO: ZOOM VARS // compartilhar escala
-
 var up = $.Event("DOMMouseScroll",{delta:100}); 
 var down = $.Event("DOMMouseScroll",{delta:-100});
  
@@ -395,6 +398,18 @@ function zoomOut(id) {
 
 	id.trigger(down);
 };
+
+function setPosition(posX) {
+	const element = $('section.overflow')
+
+	for (let idx = 0; idx < 2; idx++) {
+		zoomIn(element)
+	}
+
+	element
+		.scrollTop(element.outerHeight(true) / 2)
+		.scrollLeft(posX)
+}
 
 // Drop Element	
 
