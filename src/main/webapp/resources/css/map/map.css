@@ -6,7 +6,6 @@ body {
   height: 100%;
 }
 
-
 /*Road Map Image for Background */
 
 .img > div {
@@ -95,96 +94,8 @@ body {
   margin-left: -15px;
 }
 
-/* GENERIC EQUIPMENTS  */
-
-.equip-name {
-  /* width: auto;
-   height: auto; 
-   margin-top: 1%;
-   text-align: center;
-   border: none;*/
-  margin-top: 0%;
-  overflow: hidden;
-  background: transparent;
-  color: black;
-  font-weight: bold;
-  width: 99%;
-  height: 20%;
-  text-align: center;
-  border: none;
-  margin: 0 auto; /* or margin: 0 auto 0 auto */
-  font-size: 12px;
-}
-/* EQUIPS WITH IMAGE USAGE*/
-
-.equip-box {
-  position: absolute;
-  font-size: 5px;
-  background: transparent;
-  border-right: none;
-  float: left;
-  border: none;
-  width: 20px !important;
-  height: 35px !important;
-  z-index: 9999; /* MAXIMUM NUMBER IS 9999 */
-}
-
 .card {
   z-index: 9999;
-}
-
-.equip-image {
-  margin-top: -17%;
-  width: 70%;
-  height: 40%;
-  border: none;
-}
-
-.equip-imageSPD {
-  margin-top: -17%;
-  width: 70%;
-  height: 50%;
-  border: none;
-}
-
-.equip-imagePOST {
-  vertical-align: top;
-  margin-top: -20%;
-  width: 100%;
-  height: 50%;
-  border: none;
-}
-
-.equip-imageDAI {
-  vertical-align: top;
-  margin-top: -20%;
-  width: 80%;
-  height: 30%;
-  border: none;
-}
-
-.equip-imageLPR{
-  vertical-align: top;
-  margin-top: -20%;
-  width: 100%;
-  height: 35%;
-  border: none;
-}
-
-.equip-imageCOLAS {
-  vertical-align: top;
-  margin-top: -20%;
-  width: 100%;
-  height: 40%;
-  border: none;
-}
-
-.equip-imageCOMMS {
-  vertical-align: top;
-  margin-top: -20%;
-  width: 120%;
-  height: 75%;
-  border: none;
 }
 
 
@@ -275,70 +186,12 @@ table {
   text-decoration: none;
 }
 
-/* BUTTONS POSITION EQUIPS*/
-
-.save_pos {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 12px;
-  font-weight: 100;
-  padding: 10px;
-  background-color: #343a40;
-  text-decoration: none;
-  display: none;
-  cursor: pointer;
-  text-align: center;
-  margin-left: 1%;
-}
-
-.save_pos:hover {
-  background: #212529;
-  border: solid #5c5d5e 1px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-.cancel_pos {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  color: #ffffff;
-  font-family: Arial;
-  font-size: 12px;
-  font-weight: 100;
-  padding: 10px;
-  background-color: #343a40;
-  text-decoration: none;
-  display: none;
-  cursor: pointer;
-  text-align: center;
-}
-
-.cancel_pos:hover {
-  background: #212529;
-  border: solid #5c5d5e 1px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-/*INTERNAL CONTENT OF EQUIPMENT*/
-.equip-status {
-  height: 4px;
-  width: 4px;
-  background-color: rgb(255, 0, 0);
-  border-radius: 50%;
-  margin-left: -2px;
-}
-
 .fa-circle {
   color: #00ff0d;
+}
+
+.equip-box-sat { 
+  height: auto!important;
 }
 
 /* MENU TEST */
@@ -768,6 +621,7 @@ img.box-img[zoom] {
   border: solid #dd380d 1px;
   text-decoration: none;
 }
+/* CREATION */
 
 [id$="equips"] {
   width: 100%;
@@ -775,10 +629,13 @@ img.box-img[zoom] {
 [id$="equipId"] {
   width: 100%;
 }
-[id$="equipName"] {
+[id$="dmsType"] {
   width: 100%;
 }
-[id$="width"] {
+[id$="dmsIp"] {
+  width: 100%;
+}
+[id$="equipName"] {
   width: 100%;
 }
 [id$="km"] {
@@ -789,6 +646,41 @@ img.box-img[zoom] {
 } 
 [id$="roads"] {
   width: 100%;
+}
+
+/* EDIT */
+
+[id$="equips-edit"] {
+  width: 100%;
+}
+[id$="equipId-edit"] {
+  width: 100%;
+}
+[id$="dmsType-edit"] {
+  width: 100%;
+}
+[id$="dmsIp-edit"] {
+  width: 100%;
+}
+[id$="equipNameEdit"] {
+  width: 100%;
+}
+
+[id$="cities-edit"] {
+  width: 100%;
+} 
+[id$="roads-edit"] {
+  width: 100%;
+}
+[id$="km-edit"] {
+  width: 100%;
+}  
+[id$="width-edit"] {
+  width: 100%;   
+}
+
+[id$="cancelPos"] {
+    margin-left: 14px;
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -842,7 +734,7 @@ input[type="number"] {
 #moddialog {
 	position: fixed;
 	right: 20px;
-	top: 80px;	
+	top: 113px;	
 }
 
 #modheaderpad {
@@ -903,6 +795,7 @@ input[type="number"] {
 
 #modaladd {
 z-index: 10030;
+margin-top: 0%;
 }
 
 #OPmodal {
@@ -911,6 +804,7 @@ z-index: 10030;
 
 #editmodal {
 z-index: 10030;
+margin-top: -2.5%;
 }
 
 #deletemodal {
@@ -933,7 +827,8 @@ margin-top: 0%;
 
 /* ALERTS STYLE */
 
-#realsave, #realcancel, #equipsave, #equipsave-error {
+#realsave, #realcancel, #equip-save, #equip-save-error, 
+#equip-update, #equip-update-error, #equip-delete, #equip-delete-error {
 height: 23px;
 }
 
@@ -955,12 +850,6 @@ text-align: center;
 	margin-left: 4px;
 }
 /* CHECKBOXS END */
-
-/* MODAL NEW */
-.satInputs2{
-	border: 1px solid transparent;
-	height: 44px;	
-}
 
 #modaladd{
 	margin-top: -25px;
@@ -993,4 +882,42 @@ text-align: center;
 .padding-pmv {
   margin-left: 4px !important;
 }
-/* PMV END */
+
+.dmsHidden {
+  display: none;  
+}
+  
+.dmsHidden-edit {
+  display: none;
+}
+
+/* Disabled bubttons on edit modal */
+input#equipId-edit:disabled, input#dmsType-edit:disabled {
+opacity: 0.7;
+ }
+
+/* MODAL CANCEL DELETE */
+.cancel{	
+	margin-left: 7px;
+} 
+/* DELETE MODAL MESSAGE POS*/
+.delete-message{
+	margin-left: 20%;
+}
+
+/* EQUIPMENTS INFO TOOLTIPS */
+
+.tooltip > .tooltip-inner {background-color: #007bff;}
+
+.tooltip.show {
+    opacity: 1;
+}
+
+.popover{
+	z-index: 10040;
+}
+
+
+.teste{
+	font-size: 15px;
+}

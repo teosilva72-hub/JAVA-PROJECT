@@ -153,15 +153,14 @@ async function main() {
 	}
 
 	const returnAlert = msg => {
+		alertToast(msg);
+
 		changeDriver();
 
 		btnEdit.prop('disabled', true);
 		btnDelete.prop('disabled', true);
 
 		cancel();
-
-		$('#msgToastNotification').text(msg);
-		toast.show();
 	}
 
 	// Cancel message in menu
@@ -509,11 +508,8 @@ async function main() {
 		}
 		// if change timer
 		timerPage.on('keyup change', function () {
-			pmvActive.change_timer(Number($(this).siblings().eq(2).text()) - 1, Number($(this).val()));
+			pmvActive.change_timer(Number($(this).parent().next().next().text()) - 1, Number($(this).val()));
 		})
-
-		
-		toast = new bootstrap.Toast(document.getElementById('liveToast'))
 		
 		pmvResize();
 		$(window).resize(pmvResize);

@@ -11,14 +11,6 @@ public class SAT extends Equipments {
 	private int quantidadeS2;	
 	private int velocidadeS2;
 	private int statusInterval;
-	private String sentido1;
-	private String sentido2;
-	private String sentido3;
-	private String sentido4;
-	private String sentido5;
-	private String sentido6;
-	private String sentido7;
-	private String sentido8;
 	private String faixa1;
 	private String faixa2;
 	private String faixa3;
@@ -27,32 +19,27 @@ public class SAT extends Equipments {
 	private String faixa6;
 	private String faixa7;
 	private String faixa8;
-	
-	public SAT(int equip_id, String table_id, String creation_date, String creation_username, int number_lanes, String nome,
-			String estrada, String cidade, String km, String dir_lane1, String dir_lane2, String dir_lane3, String dir_lane4, String dir_lane5, String dir_lane6, String dir_lane7, String dir_lane8,
-			String posicao, int linearPosX, int linearPosY, int linearWidth,
-			int mapPosX, int mapPosY, int mapWidth, int height, int dlgPosX, int dlgPosY, int status,
-			boolean notificacao, boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2,
-			int velocidadeS2, String sentido1, String sentido2, String sentido3, String sentido4, String sentido5, String sentido6, String sentido7, String sentido8, int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5, String faixa6,
-			String faixa7, String faixa8) {
-		super(equip_id, table_id, creation_date, creation_username, number_lanes, nome, estrada, cidade, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8,
-				posicao, linearPosX, linearPosY, linearWidth, mapPosX, mapPosY, mapWidth, height, dlgPosX, dlgPosY, status, notificacao,
-				visible);
+	private String sentido1;
+	private String sentido2;
+		
+	public SAT(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
+			String update_date, String update_username, String nome, String estrada, String cidade, String km,
+			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
+			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible, int numFaixas,
+			int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2, int statusInterval, String faixa1,
+			String faixa2, String faixa3, String faixa4, String faixa5, String faixa6, String faixa7, String faixa8,
+			String sentido1, String sentido2) {
+		
+		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
+				estrada, cidade, km, posicao, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				dlgPosX, dlgPosY, status, notificacao, visible);
 		
 		this.numFaixas = numFaixas;
 		this.quantidadeS1 = quantidadeS1;
 		this.velocidadeS1 = velocidadeS1;
 		this.quantidadeS2 = quantidadeS2;
 		this.velocidadeS2 = velocidadeS2;
-		this.sentido1 = sentido1;
-		this.sentido2 = sentido2;
-		this.sentido1 = sentido3;
-		this.sentido2 = sentido4;
-		this.sentido1 = sentido5;
-		this.sentido2 = sentido6;
-		this.sentido1 = sentido7;
-		this.sentido2 = sentido8;
-		this.statusInterval = statusInterval; 
+		this.statusInterval = statusInterval;
 		this.faixa1 = faixa1;
 		this.faixa2 = faixa2;
 		this.faixa3 = faixa3;
@@ -61,6 +48,8 @@ public class SAT extends Equipments {
 		this.faixa6 = faixa6;
 		this.faixa7 = faixa7;
 		this.faixa8 = faixa8;
+		this.sentido1 = sentido1;
+		this.sentido2 = sentido2;
 	}
 
 	public SAT() {
@@ -105,75 +94,7 @@ public class SAT extends Equipments {
 	public void setVelocidadeS2(int velocidadeS2) {
 		this.velocidadeS2 = velocidadeS2;
 	}
-		
-	public String getSentido1() {
-		return sentido1;
-	}
-
-	public void setSentido1(String sentido1) {
-		this.sentido1 = sentido1;
-	}
-
-	public String getSentido2() {
-		return sentido2;
-	}
-
-	public void setSentido2(String sentido2) {
-		this.sentido2 = sentido2;
-	}
-	
-	public String getSentido3() {
-		return sentido3;
-	}
-
-	public void setSentido3(String sentido3) {
-		this.sentido3 = sentido3;
-	}
-
-	public String getSentido4() {
-		return sentido4;
-	}
-
-	public void setSentido4(String sentido4) {
-		this.sentido4 = sentido4;
-	}
-	
-	public void setSentido51(String sentido5) {
-		this.sentido5 = sentido5;
-	}
-
-	public String getSentido5() {
-		return sentido5;
-	}
-
-	public void setSentido5(String sentido5) {
-		this.sentido5 = sentido5;
-	}
-	
-	public String getSentido6() {
-		return sentido6;
-	}
-
-	public void setSentido6(String sentido6) {
-		this.sentido6 = sentido6;
-	}
-
-	public String getSentido7() {
-		return sentido7;
-	}
-
-	public void setSentido7(String sentido7) {
-		this.sentido7 = sentido7;
-	}
-	
-	public String getSentido8() {
-		return sentido8;
-	}
-
-	public void setSentido8(String sentido8) {
-		this.sentido8 = sentido8;
-	}
-
+			
 	public int getStatusInterval() {
 		return statusInterval;
 	}
@@ -230,5 +151,23 @@ public class SAT extends Equipments {
 	public void setFaixa8(String faixa8) {
 		this.faixa8 = faixa8;
 	}
+
+	public String getSentido1() {
+		return sentido1;
+	}
+
+	public void setSentido1(String sentido1) {
+		this.sentido1 = sentido1;
+	}
+
+	public String getSentido2() {
+		return sentido2;
+	}
+
+	public void setSentido2(String sentido2) {
+		this.sentido2 = sentido2;
+	}
+	
+	
 		
 }
