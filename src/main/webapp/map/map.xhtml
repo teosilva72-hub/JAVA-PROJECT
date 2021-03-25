@@ -651,7 +651,7 @@
 														title="#{item.sentido1}">
 														<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
 														<span
-															id="speed1">#{satMapsView.satListValues.get(loop.index).velocidadeS1}</span><span
+															id="spd1">#{satMapsView.satListValues.get(loop.index).velocidadeS1}</span><span
 															class="km"> km/h</span>
 													</div>
 													<div class="col-5 padding-sat border-right border-dark on-mouse-hover"
@@ -666,7 +666,7 @@
 														data-placement="right" title="#{item.sentido2}">
 														<i class="fas fa-tachometer-alt sat-speed" title="km/h"></i>
 														<span
-															id="speed2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span
+															id="spd2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span
 															class="km"> km/h</span>
 													</div>
 												</div>
@@ -1218,11 +1218,12 @@
                                     <!-- INPUT HIDDEN VALUES -->
 									<h:inputHidden id="equipCod" value="#{equipsBean.equipId}" />
 									<h:inputHidden id="equipTable" value="#{equipsBean.equipTable}" />
+									<input type="hidden" value="map" id="interface-search" name="interface-search" />
 									
 									 <!-- EDIT BUTTON -->
 									 
 									<h:commandButton value="#{mapLabels.map_creation_btn_edit_equipment}"
-										onclick="sendToBean(); $('#OPmodal').modal('toggle');" class="btn btn-dark form-modal-draw-button"
+										onclick="sendToBean(); $('#OPmodal').modal('toggle'); hideEditDirections();" class="btn btn-dark form-modal-draw-button"
 										action="#{equipsBean.SearchEquipment}">
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#editmodal" />
@@ -1719,7 +1720,6 @@
 
 	<ui:define name="jscript">
 	
-	<h:outputScript name="map.js" library="js/map" />
 	<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
 		
 		<!-- Mudança -->
@@ -1971,6 +1971,15 @@
 				document.getElementById('delete-equip-form:equipIdDel').value = id;
 				document.getElementById('delete-equip-form:equipTableDel').value = type;
 			}
+			
+			function hideEditDirections(){
+				$('#direction3-edit').hide(); 
+				$('#direction4-edit').hide(); 
+				$('#direction5-edit').hide(); 
+				$('#direction6-edit').hide(); 
+				$('#direction7-edit').hide(); 
+				$('#direction8-edit').hide();
+			}
 		
 			/////////////MAP/GRID HIDE AND SHOW
 
@@ -2152,7 +2161,8 @@
 						$('.dmsHidden-edit').hide();
 						$("#lanes-edit").change(
 							function () {
-								var satLanes = document.getElementById("lanes-edit");
+								var satLanes = document.getElementById("lanes-edit");								
+								console.log(satLanes)
 								var selectSAT = satLanes.value;
 								if (selectSAT == 2) {
 									$('#direction3-edit').hide();

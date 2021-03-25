@@ -411,6 +411,15 @@ public class EquipmentsBean implements Serializable {
 	
 	public void SearchEquipment() throws Exception {
 		
+		 FacesContext facesContext = FacesContext.getCurrentInstance();
+		 ExternalContext externalContext = facesContext.getExternalContext();
+		
+		 Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+							 
+		 //INTERFACES
+		 String interfaceView = parameterMap.get("interface-search");		   		
+				 
+		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
 		 EquipmentsDAO dao = new EquipmentsDAO();
@@ -422,7 +431,7 @@ public class EquipmentsBean implements Serializable {
 		  
 		 if(moduleId == 8) {
 		 
-		 dms = dao.EquipDMSSearchMap(equipId, equipTable);
+		 dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView);
 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
@@ -437,7 +446,7 @@ public class EquipmentsBean implements Serializable {
 		 
 	     } else if(moduleId == 9) {
 			 
-			 sat = dao.EquipSatSearchMap(equipId, equipTable);
+			 sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView);
 			 
 			 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 			 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
@@ -446,21 +455,37 @@ public class EquipmentsBean implements Serializable {
 			 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+sat.getEstrada()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+sat.getKm()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction1-edit').val('"+sat.getFaixa1()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction2-edit').val('"+sat.getFaixa2()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction3-edit').val('"+sat.getFaixa3()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction4-edit').val('"+sat.getFaixa4()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction5-edit').val('"+sat.getFaixa5()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction6-edit').val('"+sat.getFaixa6()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction7-edit').val('"+sat.getFaixa7()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#direction8-edit').val('"+sat.getFaixa8()+"');");				
+			 RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
+			 			 
+			 if(!sat.getFaixa1().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
+			 
+			 if(!sat.getFaixa2().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction2-edit').show(); $('#direction2-edit').val('"+sat.getFaixa2()+"');");	
+
+			 if(!sat.getFaixa3().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction3-edit').show(); $('#direction3-edit').val('"+sat.getFaixa3()+"');");	
+
+			 if(!sat.getFaixa4().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction4-edit').show(); $('#direction4-edit').val('"+sat.getFaixa4()+"');");	
+
+			 if(!sat.getFaixa5().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction5-edit').show(); $('#direction5-edit').val('"+sat.getFaixa5()+"');");	
+
+			 if(!sat.getFaixa6().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction6-edit').show(); $('#direction6-edit').val('"+sat.getFaixa6()+"');");	
+
+			 if(!sat.getFaixa7().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction7-edit').show(); $('#direction7-edit').val('"+sat.getFaixa7()+"');");	
+
+			 if(!sat.getFaixa8().equals(""))			 
+			 RequestContext.getCurrentInstance().execute("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
 						 		 
 		 }
 		 
 		 else {
 			 		 
-		 equip = dao.EquipSearchMap(equipId, equipTable); 
+		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView); 
 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
@@ -708,8 +733,10 @@ public class EquipmentsBean implements Serializable {
 		// System.out.println("Y: "+posY);
 			 
 		 EquipmentsDAO dao = new EquipmentsDAO();		
-		
+		 		
 		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView);
+		 
+		
 			
 	}
 	

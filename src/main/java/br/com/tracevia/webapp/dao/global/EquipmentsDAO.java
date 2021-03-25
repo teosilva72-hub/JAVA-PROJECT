@@ -1390,10 +1390,10 @@ public class EquipmentsDAO {
 				 
 			    boolean updated = false;
 			    
-			    String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
+			    String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ? " 
 						 + " WHERE equip_id = ? ";
 			    
-			    String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ? " 
+			    String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
 						 + " WHERE equip_id = ? ";
 
 				 try {
@@ -1438,12 +1438,12 @@ public class EquipmentsDAO {
 // ------- UPDATE EQUIPMENT FOR MAP / REALTIME ------- //
 // --------------------------------------------------- //
          
-       //---------------------------------------------------  //
-      // ------- SEARCH EQUIPMENT FOR MAP / REALTIME ------- //
-     // --------------------------------------------------- //
+//---------------------------------------------------  //
+// ------- SEARCH EQUIPMENT FOR MAP / REALTIME ------- //
+// --------------------------------------------------- //
     
     
-public Equipments EquipSearchMap(int id, String table) throws Exception {    
+public Equipments EquipSearchMap(int id, String table, String interfacesView) throws Exception {    
     
 //System.out.println(table);
 	
@@ -1454,11 +1454,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
   	  
   	  CFTV cftv = new CFTV();
   	  
-  	  String queryCftv = "SELECT equip_id, name, city, road, km, map_width FROM cftv_equipment WHERE equip_id = ? ";
+  	  String queryCftvLinear = "SELECT equip_id, name, city, road, km, linear_width FROM cftv_equipment WHERE equip_id = ? ";
+  	  
+  	  String queryCftvMap = "SELECT equip_id, name, city, road, km, map_width FROM cftv_equipment WHERE equip_id = ? ";
   	              	  
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
-  	  ps = conn.prepareStatement(queryCftv);
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryCftvLinear);
+  	  
+  	  else ps = conn.prepareStatement(queryCftvMap);
+  		    		  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
   	  
@@ -1483,11 +1489,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  Colas colas = new Colas();
 
-  	  String queryColas= "SELECT equip_id, name, city, road, km, map_widthFROM colas_equipment WHERE equip_id = ? ";
+  	 String queryColasLinear = "SELECT equip_id, name, city, road, km, linear_width FROM colas_equipment WHERE equip_id = ? ";
+  	  
+  	 String queryColasMap = "SELECT equip_id, name, city, road, km, map_width FROM colas_equipment WHERE equip_id = ? ";
 
   	 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
-  	  ps = conn.prepareStatement(queryColas);
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryColasLinear);
+  	  
+  	  else   ps = conn.prepareStatement(queryColasMap);
+  	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1512,11 +1524,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  COMMS comms = new COMMS();
 
-  	  String queryCOMMS= "SELECT equip_id, name, city, road, km, map_width FROM comms_equipment WHERE equip_id = ? ";
+  	  String queryCOMMSLinear = "SELECT equip_id, name, city, road, km, linear_width FROM comms_equipment WHERE equip_id = ? ";
+  	  
+	  String queryCOMMSMap = "SELECT equip_id, name, city, road, km, map_width FROM comms_equipment WHERE equip_id = ? ";
 
-  	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
-  	  ps = conn.prepareStatement(queryCOMMS);
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryCOMMSLinear);
+  	  
+   	  else  ps = conn.prepareStatement(queryCOMMSMap);
+  	 
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1541,11 +1559,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  DAI dai = new DAI();
 
-  	  String queryDAI= "SELECT equip_id, name, city, road, km, map_width FROM dai_equipment WHERE equip_id = ? ";
+  	  String queryDAILinear = "SELECT equip_id, name, city, road, km, linear_width FROM dai_equipment WHERE equip_id = ? ";
+  	  
+  	 String queryDAIMap = "SELECT equip_id, name, city, road, km, map_width FROM dai_equipment WHERE equip_id = ? ";
 
-  	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	
-  	  ps = conn.prepareStatement(queryDAI);
+  	 if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryDAILinear);
+  	 
+  	 else ps = conn.prepareStatement(queryDAIMap);
+  	 
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1570,10 +1594,18 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  LPR lpr = new LPR();
 
-  	  String queryLPR= "SELECT equip_id, name, city, road, km, map_width FROM lpr_equipment WHERE equip_id = ? ";
+  	  String queryLPRLinear = "SELECT equip_id, name, city, road, km, linear_width FROM lpr_equipment WHERE equip_id = ? ";
+  	  
+  	  String queryLPRMap = "SELECT equip_id, name, city, road, km, map_width FROM lpr_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(queryLPR);
+  	  
+  	
+   	 if(interfacesView.equals("linear"))
+   	  ps = conn.prepareStatement(queryLPRLinear);
+   	 
+   	 else ps = conn.prepareStatement(queryLPRMap);
+ 
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1598,10 +1630,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  MTO mto = new MTO();
 
-  	  String queryMTO= "SELECT equip_id, name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
+  	  String queryMTOLinear = "SELECT equip_id, name, city, road, km, linear_width FROM mto_equipment WHERE equip_id = ? ";
+  	  
+  	  String queryMTOMap = "SELECT equip_id, name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(queryMTO);
+  	  
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryMTOLinear);
+  	  
+  	  else ps = conn.prepareStatement(queryMTOMap);
+  	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1626,10 +1665,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  SOS sos = new SOS();
 
-  	  String querySOS= "SELECT equip_id, name, city, road, km, map_width FROM sos_equipment WHERE equip_id = ? ";
+  	  String querySOSLinear = "SELECT equip_id, name, city, road, km, linear_width FROM sos_equipment WHERE equip_id = ? ";
+  	  
+  	  String querySOSMap = "SELECT equip_id, name, city, road, km, map_width FROM sos_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(querySOS);
+  	  
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(querySOSLinear);
+  	  
+  	  else ps = conn.prepareStatement(querySOSMap);
+  	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1654,10 +1700,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  Speed speed = new Speed();
 
-  	  String querySpeed= "SELECT equip_id, name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";
+  	  String querySpeedLinear = "SELECT equip_id, name, city, road, km, linear_width FROM speed_equipment WHERE equip_id = ? ";
+  	  
+  	  String querySpeedMap = "SELECT equip_id, name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(querySpeed);
+  	 
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(querySpeedLinear);
+  	  
+  	  else ps = conn.prepareStatement(querySpeedMap);
+  	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1682,10 +1735,17 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
   	  WIM wim = new WIM();
 
-  	  String queryWIM= "SELECT equip_id, name, city, road, km, map_width FROM wim_equipment WHERE equip_id = ? ";
-
+  	  String queryWIMLinear = "SELECT equip_id, name, city, road, km, linear_width FROM wim_equipment WHERE equip_id = ? ";
+  	  
+  	  String queryWIMMap = "SELECT equip_id, name, city, road, km, map_width FROM wim_equipment WHERE equip_id = ? ";
+  	 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-  	  ps = conn.prepareStatement(queryWIM);
+  	  
+  	  if(interfacesView.equals("linear"))
+  	  ps = conn.prepareStatement(queryWIMLinear);
+  	  
+  	  else ps = conn.prepareStatement(queryWIMMap);
+  	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
 
@@ -1725,16 +1785,26 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 
 
 
-     public SAT EquipSatSearchMap(int id, String table) throws Exception { 
+     public SAT EquipSatSearchMap(int id, String table, String interfaceView) throws Exception { 
 	
 	  	  SAT sat = new SAT();
 
-	  	  String querySAT= "SELECT equip_id, name, city, road, km, map_width, number_lanes, " 
+	  	  String querySATLinear = "SELECT equip_id, name, city, road, km, linear_width, number_lanes, " 
 	  	  		+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
 	  	  		+ " FROM sat_equipment WHERE equip_id = ? ";
+	  	  
+	  	  String querySATMap = "SELECT equip_id, name, city, road, km, map_width, number_lanes, " 
+		  	  		+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
+		  	  		+ " FROM sat_equipment WHERE equip_id = ? ";
+
 
 	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-	  	  ps = conn.prepareStatement(querySAT);
+	  	  
+	  	 if(interfaceView.equals("linear"))
+	  	  ps = conn.prepareStatement(querySATLinear);
+	  	 
+	  	 else  ps = conn.prepareStatement(querySATMap);
+	  		 
 	  	  ps.setInt(1,  id);
 	  	  rs = ps.executeQuery();
 
@@ -1748,9 +1818,7 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 	  			  sat.setKm(rs.getString(5));
 	  			  sat.setMapWidth(rs.getInt(6));
 	  			  sat.setNumFaixas(rs.getInt(7));
-	  			  
-	  			 
-	  			  
+	  			  	  			 	  			  
 	  			  defineDirectionNumber(sat, 1, rs.getString(8));
 	  			  defineDirectionNumber(sat, 2, rs.getString(9));
 	  			  defineDirectionNumber(sat, 3, rs.getString(10));
@@ -1767,14 +1835,21 @@ public Equipments EquipSearchMap(int id, String table) throws Exception {
 	  	  return sat;            	  
 	}
 
- public DMS EquipDMSSearchMap(int id, String table) throws Exception { 
+ public DMS EquipDMSSearchMap(int id, String table, String interfaceView) throws Exception { 
 		
 	  	  DMS dms = new DMS();
 
-	  	  String queryDMS= "SELECT equip_id, ip_equip, name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";
+	  	  String queryDMSLinear = "SELECT equip_id, ip_equip, name, city, road, km, linear_width, driver FROM pmv_equipment WHERE equip_id = ? ";
+	  	  
+	  	  String queryDMSMap = "SELECT equip_id, ip_equip, name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	  	
 
 	  	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-	  	  ps = conn.prepareStatement(queryDMS);
+	  	  
+	  	  if(interfaceView.equals("linear"))
+	  	  ps = conn.prepareStatement(queryDMSLinear);
+	  	  
+	  	  else  ps = conn.prepareStatement(queryDMSMap);
+	  	  
 	  	  ps.setInt(1,  id);
 	  	  rs = ps.executeQuery();
 
@@ -2009,8 +2084,7 @@ public boolean EquipPositionMap(int id, String table, int posX, int posY, String
 	boolean positioned = false;
 
 try { //GET SLQException
-
-
+	
 if(table.equals("cftv")) { // CFTV Definitions
  
 String queryCftvLinear = "UPDATE cftv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ? ";
@@ -2158,8 +2232,8 @@ String queryDMSMap = "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE 
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-if(positionView.equals("linear"))
-ps = conn.prepareStatement(queryDMSLinear);
+if(positionView.equals("linear")) 
+	ps = conn.prepareStatement(queryDMSLinear);
 
 else ps = conn.prepareStatement(queryDMSMap);
 
@@ -2169,7 +2243,7 @@ ps.setInt(3,  id);
 int rs =  ps.executeUpdate();
 
 if(rs > 0)
-	positioned = true;          	            	  
+	positioned = true;    
 
 }  // PMV Definitions END    
 
@@ -2199,13 +2273,13 @@ if(rs > 0)
 
 if(table.equals("sos")) { // SOS Definitions
 
-String querySOSMap = "UPDATE sos_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+String querySOSLinear = "UPDATE sos_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
-String querySOSLinear = "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String querySOSMap = "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-if(positionView.equals("linear"))
+if(positionView.equals("linear")) 
 ps = conn.prepareStatement(querySOSLinear);
 
 else ps = conn.prepareStatement(querySOSMap);

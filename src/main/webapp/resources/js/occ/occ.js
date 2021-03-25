@@ -757,20 +757,48 @@ function valueOcc(){
 	document.getElementById("selectedId").value = value;
 	//alert(value)
 }
-///////ADD FILE//////////////////////////////////////////////////
+///////ADD FILE/////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
+var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+            isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+        if (isSuccess) { //yes
+            
+
+			return [true];
+        }
+        else { //no
+            //warning
+			return [false, extension];
+        }
+    }
+}
+//////////////////////////////////////////////////////////
 function myFunction(){
 	$(document).ready(function() {
 		if (window.File && window.FileList && window.FileReader) {
 			$("#myFile").on("change", function(e) {
-				var files = e.target.files,
+				var target = e.target;
+				var files = target.files,
 				filesLength = files.length;
 				for (var i = 0; i < filesLength; i++) {
 					var f = files[i]
 					var fileReader = new FileReader();
 					fileReader.onload = (function(e) {
+						var g = readURL(target);
+						var result;
+						if(g[0])
+						result = e.target.result;
+						else
+						result = "/resources/icons/diversos/file.png";
+
 						var file = e.target;
 						$("<span class=\"pip\">" +
-						"<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+						"<img class=\"imageThumb\" src=\"" + result + "\" title=\"" + file.name + "\"/>" +
 						"<br/><span class=\"remove\"><i class=\"fas fa-times\"></i></span>" +
 						"</span>").insertAfter("#myFile");
 						$(".remove").click(function(){
@@ -789,15 +817,23 @@ function myFunction2(){
 	$(document).ready(function() {
 		if (window.File && window.FileList && window.FileReader) {
 			$("#myFile2").on("change", function(e) {
-				var files = e.target.files,
+				var target = e.target;
+				var files = target.files,
 				filesLength = files.length;
 				for (var i = 0; i < filesLength; i++) {
 					var f = files[i]
 					var fileReader = new FileReader();
 					fileReader.onload = (function(e) {
+						var g = readURL(target);
+						var result;
+						if(g[0])
+						result = e.target.result;
+						else
+						result = "/resources/icons/diversos/file.png";
+
 						var file = e.target;
 						$("<span class=\"pip\">" +
-						"<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+						"<img class=\"imageThumb\" src=\"" + result + "\" title=\"" + file.name + "\"/>" +
 						"<br/><span class=\"remove\"><i class=\"fas fa-times\"></i></span>" +
 						"</span>").insertAfter("#myFile2");
 						$(".remove").click(function(){
@@ -812,6 +848,7 @@ function myFunction2(){
 		}
 	});	
 }
+
 
 /*BTN DESCRIPTION ACTION - OCULTA BTN E TEXTEAREA*///////////////////////////////////
 function hiddenActionDescription1(){                                             ///            ///
@@ -1027,6 +1064,9 @@ function hiddenSave(){
 	var save = 	document.getElementById("save").style.display = "none";
 
 }
+function uploadFile1(){
+	document.getElementById("uploadFile1").style.display = "block";
+}
 //desativa o envio de dados pela tecla enter
 document.addEventListener("keydown", function(e) {
   if(e.keyCode === 13) {
@@ -1075,3 +1115,32 @@ setTimeout(function() {
    $('#msgFinished').fadeOut('fast');
 }, 5000);
 /////////////////////////////////////
+var upload = document.getElementById("myFile");
+upload.addEventListener("change", function(e) {
+    var size = upload.files[0].size;
+    if(size < 5242880) { //1MB         
+		document.getElementById("errorFileSize").style.display = "none";
+		document.getElementById("btnUpload").style.display = "block";       
+
+    } else {           
+      upload.value = ""; //Limpa o campo  
+		document.getElementById("errorFileSize").style.display = "block";  
+		document.getElementById("btnUpload").style.display = "none";       
+    }
+    e.preventDefault();
+});
+var upload2 = document.getElementById("myFile2");
+upload2.addEventListener("change", function(e) {
+    var size = upload2.files[0].size;
+
+    if(size < 5242880) {
+		document.getElementById("errorFileSize2").style.display = "none";
+		document.getElementById("btnUpdate").style.display = "block"; 
+    } else {           
+      upload2.value = ""; //Limpa o campo  
+		document.getElementById("errorFileSize2").style.display = "block";       
+		document.getElementById("btnUpdate").style.display = "none";       
+    
+}
+    e.preventDefault();
+});
