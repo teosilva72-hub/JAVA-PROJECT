@@ -872,8 +872,8 @@ public class EquipmentsDAO {
        		    //INSERT
         		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, name, city, road, km, "
                 + "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
-                + "map_width, map_posX, map_posY, visible) "
-                + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, visible) "
+                + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
            			           		         			          		          			          			
                     //Execute Register			
           			ps = conn.prepareStatement(query);
@@ -894,16 +894,18 @@ public class EquipmentsDAO {
           			ps.setString(14, equip.getFaixa6());	
           			ps.setString(15, equip.getFaixa7());	
           			ps.setString(16, equip.getFaixa8());	          			    			
-          			ps.setInt(17, 100);
-          			ps.setInt(18, 50); //posX
-          			ps.setInt(19, 50); //posY
-          			ps.setBoolean(20, true);
+          			ps.setInt(17, 100); // Linear Width
+          			ps.setInt(18, 50); // Linear posX
+          			ps.setInt(19, 50); // Linear posY
+          			ps.setInt(20, 100); // Map Width
+          			ps.setInt(21, 50); // Map posX
+          			ps.setInt(22, 50); // Map posY
+          			ps.setBoolean(23, true);
           			          			
           			int success = ps.executeUpdate();
           			          			
           			if(success > 0)         				
-          				  status = true;		
-          			          		    		      
+          				  status = true;	          			          		    		      
           	              											
           		} catch (SQLException sqle) {
           		throw new Exception("Erro ao inserir dados " + sqle);        		    
@@ -936,8 +938,8 @@ public class EquipmentsDAO {
             		
          		    //INSERT
           		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
-                  + "map_width, map_posX, map_posY, driver, visible) "
-                  + "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                  + "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, driver, visible) "
+                  + "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
           		
           		String queryActive = "INSERT INTO "+table+"_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
                         + "values ( ?,?,?,?,?,?)";
@@ -952,12 +954,15 @@ public class EquipmentsDAO {
             			ps.setString(5, equip.getNome());
             			ps.setString(6, equip.getCidade());
             			ps.setString(7, equip.getEstrada());
-            			ps.setString(8, equip.getKm());            		          			    			
-            			ps.setInt(9, 200); // map Width
-            			ps.setInt(10, 50); //posX
-            			ps.setInt(11, 50); //posY
-            			ps.setInt(12,  equip.getDms_type()); //driver
-            			ps.setBoolean(13, true);
+            			ps.setString(8, equip.getKm());       			
+            			ps.setInt(9, 250); // Linear Width
+              			ps.setInt(10, 50); // Linear posX
+              			ps.setInt(11, 50); // Linear posY
+              			ps.setInt(12, 250); // Map Width
+              			ps.setInt(13, 50); // Map posX
+              			ps.setInt(14, 50); // Map posY
+            			ps.setInt(15,  equip.getDms_type()); //driver
+            			ps.setBoolean(16, true);
             			          			
             			int success = ps.executeUpdate();
             			          			
@@ -1007,10 +1012,10 @@ public class EquipmentsDAO {
             		
             		try {
             			
-            			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, name, city, road, km, map_width, map_posX, map_posY, visible)"
-            					+ " values  ( ?,?,?,?,?,?,?,?,?,?,?)";
+            			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
+            					+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, visible)"
+            					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             	           
-
             			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             			
                         //Execute Register			
@@ -1022,13 +1027,14 @@ public class EquipmentsDAO {
             			ps.setString(4, equip.getNome());
             			ps.setString(5, equip.getCidade());
             			ps.setString(6, equip.getEstrada());
-            			ps.setString(7, equip.getKm());			
-            			ps.setInt(8, 75);
-            			ps.setInt(9, 50); //posX
-            			ps.setInt(10, 50); //posY
-            			ps.setBoolean(11, true);
-            			          			
-            			//System.out.println(sql);
+            			ps.setString(7, equip.getKm());	
+            			ps.setInt(8, 250); // Linear Width
+              			ps.setInt(9, 50); // Linear posX
+              			ps.setInt(10, 50); // Linear posY
+              			ps.setInt(11, 250); // Map Width
+              			ps.setInt(12, 50); // Map posX
+              			ps.setInt(13, 50); // Map posY
+            			ps.setBoolean(14, true);
             			
             			int success = ps.executeUpdate();
             			
@@ -1055,7 +1061,7 @@ public class EquipmentsDAO {
          // --------------------------------------------------- //
               
               
-         public boolean EquipUpdateMap(Equipments equip, String table) throws Exception {    
+         public boolean EquipUpdateMap(Equipments equip, String table, String updateView) throws Exception {    
                        	 
              boolean updated = false;
         	 
@@ -1064,11 +1070,16 @@ public class EquipmentsDAO {
             	 
               if(table.equals("cftv")) { // CFTV Definitions            	  
             	  
-            	  String queryCftv = "UPDATE cftv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String queryCftvLinear = "UPDATE cftv_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String queryCftvMap = "UPDATE cftv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
             	              	  
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryCftv);
+            	  if(updateView.equals("linear"))
+            	  ps = conn.prepareStatement(queryCftvLinear);
+            	  
+            	  else  ps = conn.prepareStatement(queryCftvMap);
             	 
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1086,11 +1097,16 @@ public class EquipmentsDAO {
               
               if(table.equals("colas")) { // COLAS Definitions
 
-            	  String queryColas= "UPDATE colas_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String queryColasLinear = "UPDATE colas_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String queryColasMap = "UPDATE colas_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryColas);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryColasLinear);
+                	  
+                	  else  ps = conn.prepareStatement(queryColasMap);
             	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1108,11 +1124,16 @@ public class EquipmentsDAO {
               
               if(table.equals("comms")) { // COMMS Definitions
 
-            	  String queryCOMMS= "UPDATE comms_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String queryCOMMSLinear = "UPDATE comms_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
+            	  String queryCOMMSMap = "UPDATE comms_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryCOMMS);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryCOMMSLinear);
+                	  
+                	  else  ps = conn.prepareStatement(queryCOMMSMap);
 
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1130,12 +1151,16 @@ public class EquipmentsDAO {
               
               if(table.equals("dai")) { // DAI Definitions
 
-            	  String queryDAI= "UPDATE dai_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
-
+            	  String queryDAILinear = "UPDATE dai_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+            	  
+            	  String queryDAIMap = "UPDATE dai_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
             	  
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryDAI);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryDAILinear);
+                	  
+                	  else  ps = conn.prepareStatement(queryDAIMap);
 
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1153,13 +1178,18 @@ public class EquipmentsDAO {
               
               if(table.equals("lpr")) { // LPR Definitions
 
-            	  String queryLPR= "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
+            	  String queryLPRLinear = "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+            	  
+            	  String queryLPRMap = "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
 
             	 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryLPR);
-
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryLPRLinear);
+                	  
+                	  else  ps = conn.prepareStatement(queryLPRMap);
+            	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
             	  ps.setString(3,  equip.getEstrada());
@@ -1177,12 +1207,17 @@ public class EquipmentsDAO {
               
               if(table.equals("mto")) { // MTO Definitions
 
-            	  String queryMTO= "UPDATE mto_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String queryMTOLinear = "UPDATE mto_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String queryMTOMap = "UPDATE mto_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryMTO);
-            	  
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryMTOLinear);
+                	  
+                  else  ps = conn.prepareStatement(queryMTOMap);
+            	             	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
             	  ps.setString(3,  equip.getEstrada());
@@ -1191,45 +1226,25 @@ public class EquipmentsDAO {
             	  ps.setInt(6,  equip.getEquip_id());        			            			  
 
             	  int rs = ps.executeUpdate();
-            	  
-            	  System.out.println(queryMTO);
-            	  System.out.println(equip.getNome()+"\n"+equip.getEquip_id());
-
+            	 
             	  if (rs > 0) 
             		  updated = true;          	  
 
               }  // MTO Definitions END    
-              
-              if(table.equals("dms")) { // PMV Definitions
-
-            	  String queryDMS= "UPDATE pmv_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
-
-          
-            	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-            	  
-            	  ps = conn.prepareStatement(queryDMS);
-            	  
-            	  ps.setString(1,  equip.getNome());
-            	  ps.setString(2,  equip.getCidade());
-            	  ps.setString(3,  equip.getEstrada());
-            	  ps.setString(4,  equip.getKm());
-            	  ps.setInt(5,     equip.getMapWidth());
-            	  ps.setInt(6,  equip.getEquip_id());       			            			  
-
-            	  int rs = ps.executeUpdate();
-
-            	  if (rs > 0) 
-            		  updated = true;           	  
-
-              }  // PMV Definitions END    
+           
                             
               if(table.equals("sos")) { // SOS Definitions
 
-            	  String querySOS= "UPDATE sos_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String querySOSLinear = "UPDATE sos_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String querySOSMap = "UPDATE sos_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(querySOS);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(querySOSLinear);
+                	  
+                	  else  ps = conn.prepareStatement(querySOSMap);
             	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1247,11 +1262,16 @@ public class EquipmentsDAO {
               
               if(table.equals("speed")) { // SPEED Definitions
 
-            	  String querySpeed= "UPDATE speed_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String querySpeedLinear = "UPDATE speed_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String querySpeedMap = "UPDATE speed_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(querySpeed);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(querySpeedLinear);
+                	  
+                	  else  ps = conn.prepareStatement(querySpeedMap);
             	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1269,11 +1289,16 @@ public class EquipmentsDAO {
               
               if(table.equals("wim")) { // WIM Definitions
 
-            	  String queryWIM= "UPDATE wim_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+            	  String queryWIMLinear = "UPDATE wim_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+            	  
+            	  String queryWIMMap= "UPDATE wim_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
-            	  ps = conn.prepareStatement(queryWIM);
+            	  if(updateView.equals("linear"))
+                	  ps = conn.prepareStatement(queryWIMLinear);
+                	  
+                	  else  ps = conn.prepareStatement(queryWIMMap);
             	  
             	  ps.setString(1,  equip.getNome());
             	  ps.setString(2,  equip.getCidade());
@@ -1303,11 +1328,15 @@ public class EquipmentsDAO {
               return updated;
          }                 
          
-		 public boolean EquipSATUpdateMap(SAT sat, String table) throws Exception {    
+		 public boolean EquipSATUpdateMap(SAT sat, String table, String updateView) throws Exception {    
 			    			 
 			 boolean updated = false;
 
-			 String querySAT= "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
+			 String querySATLinear = "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ?, number_lanes = ?, " 
+					 + "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+					 + " WHERE equip_id = ? ";
+			 
+			 String querySATMap = "UPDATE sat_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
 					 + "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
 					 + " WHERE equip_id = ? ";
 
@@ -1315,13 +1344,16 @@ public class EquipmentsDAO {
 
 				 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-				 ps = conn.prepareStatement(querySAT);
+				 if(updateView.equals("linear"))
+				 ps = conn.prepareStatement(querySATLinear);
+				 
+				 else ps = conn.prepareStatement(querySATMap);
 				 
 				 ps.setString(1, sat.getNome());
 				 ps.setString(2, sat.getCidade());
 				 ps.setString(3, sat.getEstrada());
-				 ps.setString(4, sat.getKm());
-				 ps.setInt(5, sat.getMapWidth());
+				 ps.setString(4, sat.getKm());			
+				 ps.setInt(5, sat.getMapWidth());				 
 				 ps.setInt(6, sat.getNumFaixas());
 				 ps.setString(7, sat.getFaixa1());  
 				 ps.setString(8, sat.getFaixa2()); 		  
@@ -1353,27 +1385,33 @@ public class EquipmentsDAO {
 			    
 			}
 		
-			public boolean EquipDMSUpdateMap(DMS dms, String table) throws Exception {    
+			public boolean EquipDMSUpdateMap(DMS dms, String table, String updateView) throws Exception {    
 			    
 				 
 			    boolean updated = false;
 			    
-			    String queryDMS = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
+			    String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
+						 + " WHERE equip_id = ? ";
+			    
+			    String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ? " 
 						 + " WHERE equip_id = ? ";
 
 				 try {
 
 					 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-					 ps = conn.prepareStatement(queryDMS);
+					 if(updateView.equals("linear"))
+					 ps = conn.prepareStatement(queryDMSLinear);
+					 
+					 else ps = conn.prepareStatement(queryDMSMap);
 					
 					 ps.setString(1, dms.getDms_ip());
 					 ps.setInt(2, dms.getDms_type());
 					 ps.setString(3, dms.getNome());
 					 ps.setString(4, dms.getCidade());
 					 ps.setString(5, dms.getEstrada());
-					 ps.setString(6, dms.getKm());
-					 ps.setInt(7, dms.getMapWidth());
+					 ps.setString(6, dms.getKm());									 
+					 ps.setInt(7, dms.getMapWidth());	 
 					 ps.setInt(8, dms.getEquip_id());
 					            
 					 int rs = ps.executeUpdate();
@@ -1966,7 +2004,7 @@ return deleted;
 //-------------------------------------------------------- //
 
 
-public boolean EquipPositionMap(int id, String table, int posX, int posY) throws Exception {    
+public boolean EquipPositionMap(int id, String table, int posX, int posY, String positionView) throws Exception {    
 	
 	boolean positioned = false;
 
@@ -1975,10 +2013,17 @@ try { //GET SLQException
 
 if(table.equals("cftv")) { // CFTV Definitions
  
-String queryCftv = "UPDATE cftv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ? ";
+String queryCftvLinear = "UPDATE cftv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ? ";
+
+String queryCftvMap = "UPDATE cftv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ? ";
            	  
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryCftv);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryCftvLinear);
+
+else ps = conn.prepareStatement(queryCftvMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -1991,10 +2036,17 @@ if(rs > 0)
 
 if(table.equals("colas")) { // COLAS Definitions
 
-String queryColas= "UPDATE colas_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryColasLinear = "UPDATE colas_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryColasMap = "UPDATE colas_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryColas);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryColasLinear);
+
+else ps = conn.prepareStatement(queryColasMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2007,10 +2059,17 @@ if(rs > 0)
 
 if(table.equals("comms")) { // COMMS Definitions
 
-String queryCOMMS= "UPDATE comms_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryCOMMSLinear = "UPDATE comms_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryCOMMSMap = "UPDATE comms_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryCOMMS);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryCOMMSLinear);
+
+else ps = conn.prepareStatement(queryCOMMSMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2023,10 +2082,17 @@ if(rs > 0)
 
 if(table.equals("dai")) { // DAI Definitions
 
-String queryDAI= "UPDATE dai_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryDAILinear = "UPDATE dai_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryDAIMap = "UPDATE dai_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryDAI);;
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryDAILinear);
+
+else ps = conn.prepareStatement(queryDAIMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2039,10 +2105,17 @@ if(rs > 0)
 
 if(table.equals("lpr")) { // LPR Definitions
 
-String queryLPR= "UPDATE lpr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryLPRLinear = "UPDATE lpr_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryLPRMap = "UPDATE lpr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryLPR);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryLPRLinear);
+
+else ps = conn.prepareStatement(queryLPRMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2055,10 +2128,17 @@ if(rs > 0)
 
 if(table.equals("mto")) { // MTO Definitions
 
-String queryMTO= "UPDATE mto_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryMTOLinear = "UPDATE mto_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryMTOMap = "UPDATE mto_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryMTO);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryMTOLinear);
+
+else ps = conn.prepareStatement(queryMTOMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2072,10 +2152,17 @@ if(rs > 0)
 
 if(table.equals("dms")) { // PMV Definitions
 
-String queryDMS= "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryDMSLinear = "UPDATE pmv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryDMSMap = "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryDMS);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryDMSLinear);
+
+else ps = conn.prepareStatement(queryDMSMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2088,10 +2175,18 @@ if(rs > 0)
 
 if(table.equals("sat")) { // SAT Definitions
 
-String querySAT= "UPDATE sat_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String querySATLinear = "UPDATE sat_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String querySATMap = "UPDATE sat_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(querySAT);
+
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(querySATLinear);
+
+else ps = conn.prepareStatement(querySATMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2104,10 +2199,17 @@ if(rs > 0)
 
 if(table.equals("sos")) { // SOS Definitions
 
-String querySOS= "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String querySOSMap = "UPDATE sos_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String querySOSLinear = "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(querySOS);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(querySOSLinear);
+
+else ps = conn.prepareStatement(querySOSMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2120,10 +2222,17 @@ if(rs > 0)
 
 if(table.equals("speed")) { // SPEED Definitions
 
-String querySpeed= "UPDATE speed_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String querySpeedLinear = "UPDATE speed_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String querySpeedMap = "UPDATE speed_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(querySpeed);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(querySpeedLinear);
+
+else ps = conn.prepareStatement(querySpeedMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
@@ -2136,10 +2245,17 @@ if(rs > 0)
 
 if(table.equals("wim")) { // WIM Definitions
 
-String queryWIM= "UPDATE wim_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryWIMLinear = "UPDATE wim_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+
+String queryWIMMap = "UPDATE wim_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-ps = conn.prepareStatement(queryWIM);
+
+if(positionView.equals("linear"))
+ps = conn.prepareStatement(queryWIMLinear);
+
+else ps = conn.prepareStatement(queryWIMMap);
+
 ps.setInt(1,  posX);
 ps.setInt(2,  posY);
 ps.setInt(3,  id);
