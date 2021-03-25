@@ -1223,7 +1223,7 @@
 									 <!-- EDIT BUTTON -->
 									 
 									<h:commandButton value="#{mapLabels.map_creation_btn_edit_equipment}"
-										onclick="sendToBean(); $('#OPmodal').modal('toggle');" class="btn btn-dark form-modal-draw-button"
+										onclick="sendToBean(); $('#OPmodal').modal('toggle'); hideEditDirections();" class="btn btn-dark form-modal-draw-button"
 										action="#{equipsBean.SearchEquipment}">
 										<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#editmodal" />
@@ -1970,6 +1970,15 @@
 			function deleteInfo() {
 				document.getElementById('delete-equip-form:equipIdDel').value = id;
 				document.getElementById('delete-equip-form:equipTableDel').value = type;
+			}
+			
+			function hideEditDirections(){
+				$('#direction3-edit').hide(); 
+				$('#direction4-edit').hide(); 
+				$('#direction5-edit').hide(); 
+				$('#direction6-edit').hide(); 
+				$('#direction7-edit').hide(); 
+				$('#direction8-edit').hide();
 			}
 		
 			/////////////MAP/GRID HIDE AND SHOW
