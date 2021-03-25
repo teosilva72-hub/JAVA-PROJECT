@@ -174,7 +174,7 @@ function ScrollZoom(container) {
 			let equip = $(this)
 			let scale = Number(equip.attr('item-width')) / equip.width()
 			
-			equip.css('transform', `scale(${scale * (Number($('#bar-size').val()) || 1)}) translate(-50%, -100%)`)
+			equip.css('transform', `scale(${scale * (Number($('#bar-size').val()) || 1)}) translate(-50%, -60px)`)
 		})
 	}
 	
@@ -204,8 +204,8 @@ function ScrollZoom(container) {
 		let interval =  Number(equip.attr('status-period'))
 		let fluxo1 = equip.find('[id^=img1FluxoTab]')
 		let fluxo2 = fluxo1.next()
-		let speed1 = Number(equip.find('#speed1').text())
-		let speed2 = Number(equip.find('#speed2').text())
+		let spd1 = Number(equip.find('#spd1').text())
+		let spd2 = Number(equip.find('#spd2').text())
 
 		//Green Color > indica que o equipamento está conectado
 		if (sat_status > 0 && interval == 30) {
@@ -242,22 +242,22 @@ function ScrollZoom(container) {
 		}
 
 		// VELOCIDADE SENTIDO 1
-		if (speed1 != 0) {
-			if (speed1 > 0 && speed1 < 31) {
+		if (spd1 != 0) {
+			if (spd1 > 0 && spd1 < 31) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_red.png')",
 					animation: 'myMove 150s linear infinite',
 					'animation-direction': "reverse"
 				})
 			}
-			else if (speed1 > 30 && speed1 < 61) {
+			else if (spd1 > 30 && spd1 < 61) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')",
 					animation: 'myMove 60s linear infinite',
 					'animation-direction': "reverse"
 				})
 			}
-			else if (speed1 > 60) {
+			else if (spd1 > 60) {
 				fluxo1.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_green.png')",
 					animation: 'myMove 20s linear infinite',
@@ -274,20 +274,20 @@ function ScrollZoom(container) {
 		}
 
 		//VELOCIDADE SENTIDO 2
-		if (speed2 != 0) {
-			if (speed2 > 0 && speed2 < 31) {
+		if (spd2 != 0) {
+			if (spd2 > 0 && spd2 < 31) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_red.png')",
 					animation: 'myMove 150s linear infinite'				
 				})
 			}
-			else if (speed2 > 30 && speed2 < 61) {
+			else if (spd2 > 30 && spd2 < 61) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')",
 					animation: 'myMove 60s linear infinite'				
 				})
 			}
-			else if (speed2 > 60) {
+			else if (spd2 > 60) {
 				fluxo2.css({
 					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_green.png')",
 					animation: 'myMove 20s linear infinite'
@@ -479,7 +479,7 @@ $(button).click(function(){
 /**/
 function showGenericName(){
 
-if(scale > 2)
+if(scale > 1.3)
   $('.equip-header').css('opacity', 1);
   
   else  $('.equip-header').css('opacity', 0);
