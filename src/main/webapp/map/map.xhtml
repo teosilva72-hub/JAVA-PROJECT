@@ -27,8 +27,7 @@
 		<h:outputScript name="map.js" library="js/map" />
 		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
 		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js" />
-		
-		
+				
 		<script>
 		
         ////////////////////////////////////
@@ -44,12 +43,13 @@
 			                          		
 			     if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {         	        	
 			           if (n &lt; 4) 
-			        	   
-			            location.href = location.href.replace('#','');			            
+			    
+			           location.href = location.protocol + '//' + location.host + location.pathname
 			            
 			     }
 			     
 			}, 3000)
+			
 		}, 4000)
 	
 		////////////////////////////////////
@@ -175,6 +175,7 @@
 				<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 				<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 				<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
+				<input type="hidden" id="positionView" name="positionView" value="map" />
 				
 		     <!--  ******************************************************************************************************* -->
 				
@@ -347,9 +348,7 @@
 				</button>
 			</div>
 		</div>
-		
-		
-		
+				
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
 											
@@ -838,7 +837,7 @@
 
 		</section>
 
-	</ui:define>
+	</ui:define> 
 
 	<!-- ************************************************************************************* -->
 	<!-- ************************************* CREATE **************************************** -->
@@ -1293,7 +1292,11 @@
 								<div class="form-row"> <!-- ROW -->	 
 								<div class="form-group col-md-6 select-field">	<!-- SELECT DIV -->								
 										<span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON --> <span for="equips-edit" 	
-											class="valid-icon-hidden"></span> <!-- SPAN VALIDATION --> <select
+											class="valid-icon-hidden"></span> <!-- SPAN VALIDATION --> 
+											
+											<input type="hidden" value="map" id="interface" name="interface" />
+											
+											<select
 											name="equips-edit" id="equips-edit" size="1" disabled="true" >
 											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">

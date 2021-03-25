@@ -37,7 +37,7 @@
 /* EQUIPS SATS*/
 .equip-box-sat {
   position: absolute;
-  z-index: 1000; /* n�mero m�ximo � 9999 */
+  z-index: 1; /* n�mero m�ximo � 9999 */
   height: 75px;
   width: 100px;
 }

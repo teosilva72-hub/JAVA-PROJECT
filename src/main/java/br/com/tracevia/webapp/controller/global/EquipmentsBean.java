@@ -230,7 +230,7 @@ public class EquipmentsBean implements Serializable {
 	   	   
 	   //EQUIP ID
 	   int equipId = (parameterMap.get("equipId") == "" ? 0 : Integer.parseInt(parameterMap.get("equipId")));
-	   	   	   
+	 	   	   	   
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 	   //DMS CHECKING
 	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -255,7 +255,7 @@ public class EquipmentsBean implements Serializable {
 		    dms.setDms_ip(parameterMap.get("dmsIp"));
 		    
 		    //For Equipment Type
-			dms.setDms_type(Integer.parseInt(parameterMap.get("dmsType")));
+			dms.setDms_type(parameterMap.get("dmsType") == "" ? 1 :Integer.parseInt(parameterMap.get("dmsType")));
 			    
 		    //For Equipment City
 		    dms.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
@@ -516,6 +516,9 @@ public class EquipmentsBean implements Serializable {
 		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
+		 
+		 //INTERFACES
+		 String interfaceView = parameterMap.get("interface");		   		
 				 
 		//CHECK MODULES	
 		int moduleId = getModuleByName(equipTable);
@@ -549,16 +552,16 @@ public class EquipmentsBean implements Serializable {
 			    //For Equipment KM
 			    dms.setKm(parameterMap.get("km-edit"));
 			    
-			    //For Equipment Map Width
+			    //For Equipment Map Width / Linear Width
 			    dms.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
 			    
 			    //DMS Type
-			    int type = (parameterMap.get("dmsType-edit") == null ? 0 : Integer.parseInt(parameterMap.get("dmsType-edit")));
+			    int type = (parameterMap.get("dmsType-edit") == null ? 1 : Integer.parseInt(parameterMap.get("dmsType-edit")));
 			  
 			    //DMS TYPE
 			    defineDMStype(dms, type);
 		 						   			 
-			    update = dao.EquipDMSUpdateMap(dms, table);
+			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView);
 			  		     	 
 	     	    if(update)	     		
 	     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
@@ -592,7 +595,7 @@ public class EquipmentsBean implements Serializable {
 	  	    //For Equipment KM
 	  	    sat.setKm(parameterMap.get("km-edit"));
 	  	    
-	  	   //For Equipment Map Width
+	  	   //For Equipment Map Width / Linear Width
 		    sat.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
 	  	  
 	  	   //For Number Lanes
@@ -613,7 +616,7 @@ public class EquipmentsBean implements Serializable {
 	  	    defineDirection(sat, 7, parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")));
 	  	    defineDirection(sat, 8, parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
 	  	    
-	  	    update = dao.EquipSATUpdateMap(sat, table);
+	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView);
 	     	 
 	  	  if(update)	     		
     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
@@ -647,11 +650,11 @@ public class EquipmentsBean implements Serializable {
 			    //For Equipment KM
 			    equip.setKm(parameterMap.get("km-edit"));	
 			    
-			    //For Equipment Map Width
-			   equip.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
+			    //For Equipment Map Width / Linear Width
+			    equip.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
 			    
 			    //MENSAGEM UPDATED
-			    update = dao.EquipUpdateMap(equip, table);
+			    update = dao.EquipUpdateMap(equip, table, interfaceView);
 			    			    
 			    if(update)	     		
 		     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
@@ -685,24 +688,29 @@ public class EquipmentsBean implements Serializable {
 	public void definePosition() throws Exception {
 		
 		 boolean position = false;
+		 
+		 FacesContext facesContext = FacesContext.getCurrentInstance();
+		 ExternalContext externalContext = facesContext.getExternalContext();
+		 
+		 Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+		 
+		 //INTERFACES
+		 String interfaceView = parameterMap.get("positionView");		
 		
 		 int equipId = getEquipId();		
-		 int posX = getPositionX();
-		 int posY = getPositionY();
+		 int posX = getPositionX(); // MAP / LINEAR
+		 int posY = getPositionY(); // MAP / LINEAR 
 		 String equipTable = getEquipTable();
-		 
-		// System.out.println("EQUIP: "+equipId);
+	
+		 // System.out.println("EQUIP: "+equipId);
 		 ////System.out.println("TABLE: "+equipTable);
 		/// System.out.println("X: "+posX);
 		// System.out.println("Y: "+posY);
-		 
+			 
 		 EquipmentsDAO dao = new EquipmentsDAO();		
 		
-		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY);
-		 
-		 //System.out.println("Positioned: "+position);
-		 
-		
+		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView);
+			
 	}
 	
 	public String defineTableById(int id) { 

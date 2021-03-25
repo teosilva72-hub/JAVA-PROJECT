@@ -29,6 +29,8 @@ public class ControleDeAcesso implements Filter {
 		boolean master = false;
 		int userRole = 0; 
 		String restrictedPath = "/users/"; //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
+		String restrictedMap = "/map/map.xhtml"; //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
+		String restrictedRealtime = "/realtime/realtime.xhtml";  //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
 				
 		loginAccount = new LoginAccountBean();
 				
@@ -64,7 +66,7 @@ public class ControleDeAcesso implements Filter {
 	  if(loggedIn || loginRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
 				|| resourceRequestImages || resourceRequestJs) {	
 			
-				if(path.contains(restrictedPath) && !master)
+				if((path.contains(restrictedPath) || path.contains(restrictedMap) || path.contains(restrictedRealtime)) && !master)
 				response.sendRedirect(restrictedURI);
 					
 			else chain.doFilter(request, response);	

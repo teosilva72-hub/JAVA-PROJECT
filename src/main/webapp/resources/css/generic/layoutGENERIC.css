@@ -44,11 +44,10 @@
   position: absolute;
   font-size: 14px;
   background: transparent;
-  border-right: none;
-  float: left;
+  border-right: none;  
   border: none;
   width: 75px !important;
-  z-index: 999; /* MAXIMUM NUMBER IS 9999 */
+
 }
 
 /*INTERNAL CONTENT OF EQUIPMENT*/
