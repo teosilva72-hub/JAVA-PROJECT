@@ -1608,17 +1608,17 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
 			//Editando o tipo de fonte do titulo
-			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("Relat�rio da Ocorr�ncia"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
+			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("Relatório da Ocorrência"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
 			Paragraph evento = new Paragraph(new Phrase(20F , trad.occLabels("Eventos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, In�cio, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa Prov�vel"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, Início, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa Provável"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph eventoLocal = new Paragraph(new Phrase(20F , trad.occLabels("Evento Local"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph detalhes = new Paragraph(new Phrase(20F , trad.occLabels("Detalhes"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("Descri��o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("Descrição"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph envolvidos = new Paragraph(new Phrase(20F , trad.occLabels("Envolvidos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("Tr�nsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("Trânsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph danos = new Paragraph(new Phrase(20F , trad.occLabels("Danos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("A��o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
 
@@ -1659,10 +1659,10 @@ public class OccurrencesBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph("Occ N�: "+data.getData_number()+"        "
+			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
 					+ trad.occLabels("Tipo")+(": ")+ getPdf.getType()+"         "
 					+ trad.occLabels("Origem")+(": ")+getPdf.getOrigin()+"          "
-					+ trad.occLabels("Situa��o")+(": ")+getPdf.getState_occurrences()+"\n"
+					+ trad.occLabels("Situação")+(": ")+getPdf.getState_occurrences()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"
 					));
@@ -1697,7 +1697,7 @@ public class OccurrencesBean {
 			document.add(causePr);*/
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Causa")+": "+getPdf.getCause()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Descri��o")+": "+data.getCause_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getCause_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1716,7 +1716,7 @@ public class OccurrencesBean {
 					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
 					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
-					+ trad.occLabels("Observa��o")+": "+data.getOthers()+"\n"
+					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1730,12 +1730,12 @@ public class OccurrencesBean {
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-			document.add(new Paragraph("Condici�n local: "+getPdf.getLocal_condition()+"  "
-					+ trad.occLabels("Condici�n del tr�fico")+": "+getPdf.getTraffic()+"   "
-					+ trad.occLabels("Caracter�stica")+": "+getPdf.getCharacteristic()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Interfer�ncia Faixa")+": "+getPdf.getInterference()+"     "
-					+trad.occLabels("Sinaliza��o")+": "+getPdf.getSignaling()+"     "
-					+trad.occLabels("Situa��o Condutor")+": "+ getPdf.getConductor_condition()));
+			document.add(new Paragraph("Condição Local: "+getPdf.getLocal_condition()+"  "
+					+ trad.occLabels("Condição Tráfego")+": "+getPdf.getTraffic()+"   "
+					+ trad.occLabels("Característica")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Interferência Faixa")+": "+getPdf.getInterference()+"     "
+					+trad.occLabels("Sinalização")+": "+getPdf.getSignaling()+"     "
+					+trad.occLabels("Situação Condutor")+": "+ getPdf.getConductor_condition()));
 
 			//final da primeira p�gina
 
@@ -1760,8 +1760,8 @@ public class OccurrencesBean {
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);*/
 			document.add(new Paragraph(description+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Titulo Descri��o")+": "+ data.getDescription_title()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Descri��o")+": "+data.getDescription_text()+"\n"
+			document.add(new Paragraph(trad.occLabels("Titulo Descrição")+": "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDescription_text()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1776,7 +1776,7 @@ public class OccurrencesBean {
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Descri��o")+": "+ data.getInvolved_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 			
@@ -1793,7 +1793,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
 			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
-			document.add(new Paragraph(trad.occLabels("Extens�o(KM)")+": "+data.getTraffic_extension()+"            "
+			document.add(new Paragraph(trad.occLabels("Extensão(KM)")+": "+data.getTraffic_extension()+"            "
 					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
 			document.newPage();//inicio da terceira p�gina
 			
@@ -1823,7 +1823,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph(""));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "+trad.occLabels("Gravidade")+": "+getPdf.getDamage_gravity()+"     "+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
 			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
-			document.add(new Paragraph(trad.occLabels("Descri��o")+": "+data.getDemage_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 			//a�tion
@@ -1837,10 +1837,10 @@ public class OccurrencesBean {
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("Situa��o")+": "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
 			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Descri��o")+": "+data.getAction_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getAction_description()+"\n"
 					+"_____________________________________________________________________________\n"));
 			//darken date and time
 			int day1 = LocalDateTime.now().getDayOfMonth();
@@ -1861,7 +1861,7 @@ public class OccurrencesBean {
 
 			//assinatura
 			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
-					+ "                                    "+trad.occLabels("Data do relat�rio")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
+					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
 
 		}
 		catch(DocumentException de) {
