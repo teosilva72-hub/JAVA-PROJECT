@@ -78,6 +78,8 @@ public class OccurrencesData {
 	private String typeHour4;
 	private String typeHour5;
 	private String typeHour6;
+	private String lastDateHour;
+	private String lastUser;
 
 	public OccurrencesData(int data_id, String data_number, String type, String origin, String state_occurrences,
 			String start_date, String start_hour, String start_minute, String end_date, String end_hour,
@@ -95,7 +97,8 @@ public class OccurrencesData {
 			String trackEndDate, String trackEndHour, String trackEndMinute, String damageDescriptionMain,
 			String damageDescriptionInternal, String damageUnity, String causeDescrInter, String descriptionInter,
 			String involvedInter, String actionInter, String statusAction, String localFiles, Boolean editTable,
-			String nameUser, String typeHour1, String typeHour2, String typeHour3, String typeHour4, String typeHour5, String typeHour6)
+			String nameUser, String typeHour1, String typeHour2, String typeHour3, String typeHour4, String typeHour5,
+			String typeHour6, String lastDateHour, String lastUser)
 	{
 		
 		this.data_id = data_id;
@@ -175,9 +178,32 @@ public class OccurrencesData {
 		this.typeHour4 = typeHour4;
 		this.typeHour5 = typeHour5;
 		this.typeHour6 = typeHour6;
+		this.lastDateHour = lastDateHour;
+		this.lastUser = lastUser;
+	
 	}
 
 	
+	public String getLastDateHour() {
+		return lastDateHour;
+	}
+
+
+	public void setLastDateHour(String lastDateHour) {
+		this.lastDateHour = lastDateHour;
+	}
+
+
+	public String getLastUser() {
+		return lastUser;
+	}
+
+
+	public void setLastUser(String lastUser) {
+		this.lastUser = lastUser;
+	}
+
+
 	public String getTypeHour1() {
 		return typeHour1;
 	}
