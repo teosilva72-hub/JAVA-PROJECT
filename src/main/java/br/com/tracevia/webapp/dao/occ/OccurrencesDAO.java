@@ -208,7 +208,31 @@ public class OccurrencesDAO {
 		return status;
 
 	}
+	public boolean lastUser(String id, String lastData, String user) throws Exception {
+		
+		boolean status = false;
+		
+		String query = "UPDATE occ_data SET lastDateUser = ?, lastUser = ? WHERE occ_number = ?";
+		DateTimeApplication dtm = new DateTimeApplication();
+		try {
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, lastData);
+			ps.setString(2, user);
+			ps.setString(3, id);
+			
+			int answer = ps.executeUpdate();
 
+			if(answer > 0) 
+				status = true;
+		}catch (SQLException alterarOcorrencia){
+			throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}	
+		
+		return status;
+	}
 	//m�todo atualizar ocorr�ncia 
 	public boolean atualizarOcorrencia(OccurrencesData data) throws Exception {
 		// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
@@ -531,7 +555,7 @@ public class OccurrencesDAO {
 				"trafficKm, trafficTrackInterrupted, damageDate, damegeType, damageGravity, damageDescr, actionType, actionStart, actionEnd, " +
 				"actionDuration, actionDescr, actionStartData, actionStartHour, actionStartMinute, actionEndData, actionEndHour, actionEndMinute, trackStartDate, " + 
 				"trackStartHour, trackStartMinute, trackEndData, trackEndHour, trackEndMinute, damageDescriptionInternal, causeDescrInter, descriptionInter, " + 
-				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, typeHour1, typeHour2, typeHour3, typeHour4, typeHour5, typeHour6, local_files, editTable, nameUser " +
+				"involvedInter, actionInter, damage_amount, statusAction, damageUnitySelect, typeHour1, typeHour2, typeHour3, typeHour4, typeHour5, typeHour6, local_files, editTable, nameUser, lastDateUser " +
 				"FROM occ_data WHERE occ_number = ?";
 		DateTimeApplication dtm = new DateTimeApplication();
 
@@ -618,6 +642,7 @@ public class OccurrencesDAO {
 					occ.setLocalFiles(rs.getString(71));
 					occ.setEditTable(rs.getBoolean(72));
 					occ.setNameUser(rs.getString(73));
+					occ.setLastDateHour(rs.getString(74));
 
 				}
 
