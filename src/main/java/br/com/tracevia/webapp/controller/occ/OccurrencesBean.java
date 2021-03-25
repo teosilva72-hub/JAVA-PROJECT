@@ -12,12 +12,18 @@ import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
@@ -75,11 +81,11 @@ public class OccurrencesBean {
 	OccurrencesDAO dao;
 	LocaleUtil occLabel, occMessages;
 	//
-	private boolean save, edit, new_, reset, fields,
+	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
 
 	private String action, title_modal, message_modal, idUpdate;
-
+	
 	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	minutePdf, secondPdf, dayPdf, hourPdf, nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
@@ -161,6 +167,13 @@ public class OccurrencesBean {
 	}
 	public List<SelectItem> getDamageUnity() {
 		return damageUnity;
+	}
+	
+	public boolean isEnableBtn() {
+		return enableBtn;
+	}
+	public void setEnableBtn(boolean enableBtn) {
+		this.enableBtn = enableBtn;
 	}
 	public boolean isPdf() {
 		return pdf;
@@ -718,8 +731,19 @@ public class OccurrencesBean {
 		total = 0;
 
 	}
+	
+	Timestamp timestamp = null;
+	Timestamp timestamp2 = null;
+	
 	public void getRowValue() throws Exception {
 
+		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		 Date date = new Date();
+		 Calendar calendar = Calendar.getInstance();
+		 calendar.setTime(date);
+		 calendar.add(calendar.MINUTE, -5);
+		 Date b = calendar.getTime();
+		 
 		try {
 
 			//chamando valores do usu√°rio de outro controller
@@ -750,7 +774,16 @@ public class OccurrencesBean {
 
 			//transformando em int
 			situation = Integer.parseInt(x);
-
+			System.out.println(data.getLastDateHour());
+			
+			 Date parsedDate = dateFormat.parse(data.getLastDateHour());
+			 timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			 timestamp2 = new java.sql.Timestamp(b.getTime());
+			 System.out.println(timestamp +" <");
+			 System.out.println(timestamp2 + "<<");
+			 System.out.println((timestamp.after(timestamp2)+" antes"));
+			 System.out.println((timestamp.before(timestamp2)+" depois"));
+			 System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
 
 			ex.printStackTrace();
@@ -796,7 +829,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 
 				//sen√£o se for igual a false acesso liberado para realizar edi√ß√£o
-			}else if((data.getEditTable() == false)) {
+			}else if((data.getEditTable() == false)|| timestamp.before(timestamp2)) {
 
 				//btn
 				save = true;
@@ -811,8 +844,8 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 
 				//sen√£o se for igual a true acesso bloqueado para realizar edi√ß√£o
-			}else if((data.getEditTable() == true)) {
-
+			}else if((data.getEditTable() == true && timestamp.after(timestamp2))) {
+				
 				//executando fun√ß√£o javascript
 				RequestContext.getCurrentInstance().execute("msgUser()");
 
@@ -929,7 +962,7 @@ public class OccurrencesBean {
 	public void btnEdit() throws Exception {
 
 		OccurrencesDAO dao = new OccurrencesDAO();
-
+		
 		//pegando valores dos usu√°rios de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
@@ -940,7 +973,7 @@ public class OccurrencesBean {
 		boolean updateTable = true;
 		//passando valores das varaveis para o banco de dados
 		dao.editTable(updateTable, nameUser, nivelUser, data.getData_number());			
-//
+		enableBtn = true;
 		//btn
 		fields = false;
 		reset = false;
@@ -950,7 +983,9 @@ public class OccurrencesBean {
 		pdf = true;
 
 		//executando fun√ß√µes javascript
-		RequestContext.getCurrentInstance().execute("inputs()");
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnEnable();");
+		request.execute("inputs()");
 		RequestContext.getCurrentInstance().execute("alterBtnReset()");
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
 		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
@@ -1003,6 +1038,8 @@ public class OccurrencesBean {
 		listingUpdate();
 
 		//executando fun√ß√µes javascript
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnEnable();");
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
 		RequestContext.getCurrentInstance().execute("msgSaveFile()");
@@ -1047,6 +1084,8 @@ public class OccurrencesBean {
 	public String[] listingUpdate() {
 
 		//executar javascript
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnEnable();");
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
 		RequestContext.getCurrentInstance().execute("listUpdateFile1()");
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
@@ -1096,7 +1135,8 @@ public class OccurrencesBean {
 	}
 	//m√©todo listar arquivos quando clicamos na tablea
 	public String[] TableFile() {
-
+		System.out.println(timestamp+" <a");
+		System.out.println(timestamp2+" <b");
 		//pegando o status da ocorr√™ncia		
 		String b = data.getState_occurrences();
 		//tranformando o valor do status da ocorr√™ncia  em inteiro
@@ -1133,7 +1173,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 			}
 			//sen√£o se o valor do atributo editTable for igual 0 (false), acessos a condi√ß√£o
-		}else if(data.getEditTable() == false) {
+		}else if(data.getEditTable() == false || timestamp.before(timestamp2)) {
 
 			//btn
 			save = true;
@@ -1150,7 +1190,7 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("fileTotal()");
 
 			//sen√£o se for igual a true acesso bloqueado para realizar edi√ß√£o
-		}else if(data.getEditTable() == true ) {
+		}else if(data.getEditTable() == true && timestamp.after(timestamp2)) {
 
 			RequestContext.getCurrentInstance().execute("msgUser()");
 
@@ -1302,7 +1342,8 @@ public class OccurrencesBean {
 
 			//se existir arquivos dentro da pasta, acessamos a condi√ß√£o
 			if(check) {
-
+				RequestContext request = RequestContext.getCurrentInstance();
+				request.execute("btnEnable();");
 				//pegando o arquivo
 				File currentFile = new File(fileWay, file);
 				//execute o delete
@@ -1321,6 +1362,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("msgDelete()");
 				RequestContext.getCurrentInstance().execute("bloquerTable()");
 				RequestContext.getCurrentInstance().execute("alterarBtn()");
+				
 				//listando arquivos
 				listingUpdate();
 			}
@@ -1456,6 +1498,8 @@ public class OccurrencesBean {
 	}
 	public void downloadUpdate(String fileName) throws Exception {
 		//js
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnEnable();");
 		RequestContext.getCurrentInstance().execute("bloquerTable()");	
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("msgDownload()");
@@ -1544,13 +1588,13 @@ public class OccurrencesBean {
 	}
 	//m√©todo download PDF
 	public String[] downloadPdf() throws Exception {
-		// criaÁ„o do documento
+		// criaÔøΩÔøΩo do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
 
 
 		try {
-			//caminho onde È gerado o pdf
+			//caminho onde ÔøΩ gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\mateu\\Downloads\\"+"OCC_"+data.getData_number()+".pdf"));
 			//gera o arquivo
 			document.open();
@@ -1564,17 +1608,17 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
 			//Editando o tipo de fonte do titulo
-			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("RelatÛrio da OcorrÍncia"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
+			Paragraph pTitulo = new Paragraph(new Phrase(20F , trad.occLabels("RelatÔøΩrio da OcorrÔøΩncia"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
 			Paragraph evento = new Paragraph(new Phrase(20F , trad.occLabels("Eventos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, InÌcio, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa Prov·vel"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph dateHour = new Paragraph(new Phrase(20F , trad.occLabels("Data, InÔøΩcio, Fim"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph causeProbable = new Paragraph(new Phrase(20F , trad.occLabels("Causa ProvÔøΩvel"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph eventoLocal = new Paragraph(new Phrase(20F , trad.occLabels("Evento Local"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph detalhes = new Paragraph(new Phrase(20F , trad.occLabels("Detalhes"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("DescriÁ„o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph description = new Paragraph(new Phrase(20F , trad.occLabels("DescriÔøΩÔøΩo"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph envolvidos = new Paragraph(new Phrase(20F , trad.occLabels("Envolvidos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("Tr‚nsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph track = new Paragraph(new Phrase(20F , trad.occLabels("TrÔøΩnsito"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 			Paragraph danos = new Paragraph(new Phrase(20F , trad.occLabels("Danos"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
-			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("AÁ„o"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
+			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("AÔøΩÔøΩo"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
 
@@ -1582,7 +1626,7 @@ public class OccurrencesBean {
 			Image image2 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
 
 			System.out.println(RoadConcessionaire.externalImagePath);
-			//ediÁ„o das imagens
+			//ediÔøΩÔøΩo das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(420, 800);
@@ -1615,10 +1659,10 @@ public class OccurrencesBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph("Occ N∫: "+data.getData_number()+"        "
+			document.add(new Paragraph("Occ NÔøΩ: "+data.getData_number()+"        "
 					+ trad.occLabels("Tipo")+(": ")+ getPdf.getType()+"         "
 					+ trad.occLabels("Origem")+(": ")+getPdf.getOrigin()+"          "
-					+ trad.occLabels("SituaÁ„o")+(": ")+getPdf.getState_occurrences()+"\n"
+					+ trad.occLabels("SituaÔøΩÔøΩo")+(": ")+getPdf.getState_occurrences()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"
 					));
@@ -1642,7 +1686,7 @@ public class OccurrencesBean {
 			+"\n\n"));
 
 
-			//causa prov·vel e descriÁ„o principal e interna.
+			//causa provÔøΩvel e descriÔøΩÔøΩo principal e interna.
 			/*Rectangle causePr= new Rectangle(577, 310, 10, 610); // you can resize rectangle 
 			causePr.enableBorderSide(1);
 			causePr.enableBorderSide(2);
@@ -1653,7 +1697,7 @@ public class OccurrencesBean {
 			document.add(causePr);*/
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Causa")+": "+getPdf.getCause()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÁ„o")+": "+data.getCause_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("DescriÔøΩÔøΩo")+": "+data.getCause_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1672,7 +1716,7 @@ public class OccurrencesBean {
 					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
 					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
-					+ trad.occLabels("ObservaÁ„o")+": "+data.getOthers()+"\n"
+					+ trad.occLabels("ObservaÔøΩÔøΩo")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1686,16 +1730,16 @@ public class OccurrencesBean {
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-			document.add(new Paragraph("CondiciÛn local: "+getPdf.getLocal_condition()+"  "
-					+ trad.occLabels("CondiciÛn del tr·fico")+": "+getPdf.getTraffic()+"   "
-					+ trad.occLabels("CaracterÌstica")+": "+getPdf.getCharacteristic()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("InterferÍncia Faixa")+": "+getPdf.getInterference()+"     "
-					+trad.occLabels("SinalizaÁ„o")+": "+getPdf.getSignaling()+"     "
-					+trad.occLabels("SituaÁ„o Condutor")+": "+ getPdf.getConductor_condition()));
+			document.add(new Paragraph("CondiciÔøΩn local: "+getPdf.getLocal_condition()+"  "
+					+ trad.occLabels("CondiciÔøΩn del trÔøΩfico")+": "+getPdf.getTraffic()+"   "
+					+ trad.occLabels("CaracterÔøΩstica")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("InterferÔøΩncia Faixa")+": "+getPdf.getInterference()+"     "
+					+trad.occLabels("SinalizaÔøΩÔøΩo")+": "+getPdf.getSignaling()+"     "
+					+trad.occLabels("SituaÔøΩÔøΩo Condutor")+": "+ getPdf.getConductor_condition()));
 
-			//final da primeira p·gina
+			//final da primeira pÔøΩgina
 
-			document.newPage();//inicio da segunda p·gina
+			document.newPage();//inicio da segunda pÔøΩgina
 			Rectangle rowPage1 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage1.setBorderColor(BaseColor.BLACK);
 			rowPage1.setBorderWidth(2);
@@ -1716,8 +1760,8 @@ public class OccurrencesBean {
 			descriptions.setBorderWidth(1);
 			document.add(descriptions);*/
 			document.add(new Paragraph(description+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Titulo DescriÁ„o")+": "+ data.getDescription_title()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÁ„o")+": "+data.getDescription_text()+"\n"
+			document.add(new Paragraph(trad.occLabels("Titulo DescriÔøΩÔøΩo")+": "+ data.getDescription_title()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("DescriÔøΩÔøΩo")+": "+data.getDescription_text()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 
@@ -1732,11 +1776,11 @@ public class OccurrencesBean {
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÁ„o")+": "+ data.getInvolved_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("DescriÔøΩÔøΩo")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
 			
-			//Tr‚nsito
+			//TrÔøΩnsito
 			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
 			track1.enableBorderSide(1);
 			track1.enableBorderSide(2);
@@ -1749,9 +1793,9 @@ public class OccurrencesBean {
 			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
 			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
-			document.add(new Paragraph(trad.occLabels("Extens„o(KM)")+": "+data.getTraffic_extension()+"            "
+			document.add(new Paragraph(trad.occLabels("ExtensÔøΩo(KM)")+": "+data.getTraffic_extension()+"            "
 					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
-			document.newPage();//inicio da terceira p·gina
+			document.newPage();//inicio da terceira pÔøΩgina
 			
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage2.setBorderColor(BaseColor.BLACK);
@@ -1779,10 +1823,10 @@ public class OccurrencesBean {
 			document.add(new Paragraph(""));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "+trad.occLabels("Gravidade")+": "+getPdf.getDamage_gravity()+"     "+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
 			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÁ„o")+": "+data.getDemage_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("DescriÔøΩÔøΩo")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-			//aÁtion
+			//aÔøΩtion
 			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
 			action1.enableBorderSide(1);
 			action1.enableBorderSide(2);
@@ -1793,10 +1837,10 @@ public class OccurrencesBean {
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("SituaÁ„o")+": "+getPdf.getStatusAction()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("SituaÔøΩÔøΩo")+": "+getPdf.getStatusAction()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
 			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("DescriÁ„o")+": "+data.getAction_description()+"\n"
+			document.add(new Paragraph(trad.occLabels("DescriÔøΩÔøΩo")+": "+data.getAction_description()+"\n"
 					+"_____________________________________________________________________________\n"));
 			//darken date and time
 			int day1 = LocalDateTime.now().getDayOfMonth();
@@ -1817,7 +1861,7 @@ public class OccurrencesBean {
 
 			//assinatura
 			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
-					+ "                                    "+trad.occLabels("Data do relatÛrio")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
+					+ "                                    "+trad.occLabels("Data do relatÔøΩrio")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
 
 		}
 		catch(DocumentException de) {
@@ -1829,11 +1873,12 @@ public class OccurrencesBean {
 		document.close();
 
 		//getRowValue();
-
+		System.out.println(timestamp+" <a");
+		System.out.println(timestamp2+" <b");
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
 
-		//chamando valores do usu·rio de outro controller
+		//chamando valores do usuÔøΩrio de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
 
@@ -1841,7 +1886,7 @@ public class OccurrencesBean {
 		userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
 
-		//se a variavel situaÁ„o for igual a 30 ou 31 acessamos a essa condiÁ„o
+		//se a variavel situaÔøΩÔøΩo for igual a 30 ou 31 acessamos a essa condiÔøΩÔøΩo
 		if(situation == 31 || situation == 30) {
 			//btns
 			save = true;
@@ -1852,11 +1897,11 @@ public class OccurrencesBean {
 			edit = true;
 			table = true;
 
-			//executando funÁıes js
+			//executando funÔøΩÔøΩes js
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
-			//sen„o acessa a essa condiÁ„o
+			//senÔøΩo acessa a essa condiÔøΩÔøΩo
 		}else if(userName.equals(data.getNameUser())){
 
 			//btn
@@ -1873,9 +1918,9 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//sen„o se o nivel de acesso do usu·rio for igual a 1 ou igual a 6
-			//tem permiss„o para acessar a condiÁ„o
-		}else if((data.getEditTable() == false)) {
+			//senÔøΩo se o nivel de acesso do usuÔøΩrio for igual a 1 ou igual a 6
+			//tem permissÔøΩo para acessar a condiÔøΩÔøΩo
+		}else if((data.getEditTable() == false)||timestamp.before(timestamp2)) {
 
 			//btn
 			save = true;
@@ -1890,10 +1935,10 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("fileTotal()");
 			RequestContext.getCurrentInstance().execute("msgDownload()");
 
-			//sen„o se for igual a true acesso bloqueado para realizar ediÁ„o
-		}else if((data.getEditTable() == true)) {
+			//senÔøΩo se for igual a true acesso bloqueado para realizar ediÔøΩÔøΩo
+		}else if((data.getEditTable() == true && timestamp.after(timestamp2))) {
 
-			//executando funÁ„o javascript
+			//executando funÔøΩÔøΩo javascript
 
 			save = true;
 			alterar = true;
@@ -1904,7 +1949,7 @@ public class OccurrencesBean {
 			table = true;
 
 			//se o nome do usuario local, for igual o nome da pessoa que esta editando
-			//a ocorrencia acessa pode acessar a essa condiÁ„o
+			//a ocorrencia acessa pode acessar a essa condiÔøΩÔøΩo
 			if(userName.equals(data.getNameUser())){
 
 				//btn
@@ -1920,8 +1965,8 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("fileTotal()");
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 
-				//sen„o se o nivel de acesso do usu·rio for igual a 1 ou igual a 6
-				//tem permiss„o para acessar a condiÁ„o
+				//senÔøΩo se o nivel de acesso do usuÔøΩrio for igual a 1 ou igual a 6
+				//tem permissÔøΩo para acessar a condiÔøΩÔøΩo
 			}else {
 				//btn menu
 				save = true;
@@ -1931,13 +1976,13 @@ public class OccurrencesBean {
 				fields = true;
 				edit = true;
 				table = true;
-				//executando funÁıes js
+				//executando funÔøΩÔøΩes js
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			}
 			int id = getValue();
 
-			//criando caminho da seleÁ„o da pasta.
+			//criando caminho da seleÔøΩÔøΩo da pasta.
 			way = pathSQL;
 
 			//caminho criado
@@ -1960,9 +2005,42 @@ public class OccurrencesBean {
 
 			}
 		}
-		//passando valor final do mÈtodo para a variavel tableFile
+		//passando valor final do mÔøΩtodo para a variavel tableFile
 		return tableFile;
 
 	}
+	public void enableUser() throws Exception {
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
 
+		//passando os valores predeterminados para as variveis
+		String nameUser = (String) facesContext.getExternalContext().getSessionMap().get("user");
+		int day1 = LocalDateTime.now().getDayOfMonth();
+		String dia = String.valueOf(day1);
+		int year1 = LocalDateTime.now().getYear();
+		String ano = String.valueOf(year1);
+		int month1 = LocalDateTime.now().getMonthValue();
+		String mes = String.valueOf(month1);
+		int hora = LocalDateTime.now().getHour();
+		String hour = String.valueOf(hora);
+		int min = LocalDateTime.now().getMinute();
+		String minute = String.valueOf(min);
+		int sec = LocalDateTime.now().getSecond();
+		String second = String.valueOf(sec);
+		String date = dia+"/"+mes+"/"+ano+" "+hora+":"+minute+":"+second;
+		
+		OccurrencesDAO occ = new OccurrencesDAO();
+		String id = data.getData_number();
+		String lastData = date;
+		String user = nameUser;
+		occ.lastUser(id, lastData, user);
+		
+		TimeUnit.MINUTES.sleep(1);
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnEnable();");
+		request.execute("inputs()");
+		System.out.println("pronto");
+		
+	}
 }

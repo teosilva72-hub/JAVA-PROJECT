@@ -338,7 +338,7 @@ function eventValidator(){
 		document.getElementById("editModalVoltar").style.display = "block";
 		document.getElementById("editarBtn").style.display = "none";
 		
-		return mostrarTab1();
+		//return mostrarTab1();
 	}
 		TrackValidator();
 		ActionValidator();
@@ -447,6 +447,11 @@ function TrackValidator(){
 		
 }
 ///////////////////////////////////////////////////////////
+///usuário online
+function btnEnable(){
+	$('[id$=btn-enable-user]').click();
+	eventValidator();
+}
 
 function ActionValidator(){
 	
@@ -1069,3 +1074,4 @@ setTimeout(function() {
 setTimeout(function() {
    $('#msgFinished').fadeOut('fast');
 }, 5000);
+/////////////////////////////////////
