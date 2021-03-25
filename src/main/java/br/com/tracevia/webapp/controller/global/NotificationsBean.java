@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,7 @@ public class NotificationsBean {
     private int equipId;
     private int stateId;
     private String type;
+	private long timestamp;
 	
 	public List<Notifications> getNotifications() {
 		return notifications;
@@ -43,6 +45,16 @@ public class NotificationsBean {
 
 	public void setNotifCount(int notifCount) {
 		this.notifCount = notifCount;
+	}
+		
+	public long getTimestamp() {
+		setTimestamp();
+
+		return timestamp;
+	}
+
+	public void setTimestamp() {
+		this.timestamp = System.currentTimeMillis();
 	}
 			
 	public int getEquipId() {

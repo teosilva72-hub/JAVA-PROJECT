@@ -68,7 +68,7 @@ footer {
   position: fixed;
   left: 0;
   bottom: 0;
-  height: 50px;
+  height: 38px;
   width: 100%;
   z-index: 1030;
 }
@@ -381,6 +381,10 @@ footer {
   margin-left: 0.5rem;
 }
 
+.footer-copyright p{
+	margin-top: -7px;
+}
+
 .page-footer .footer-copyright {
   overflow: hidden;
   color: rgba(255, 193, 7, 1);
@@ -399,7 +403,9 @@ footer {
 #call-box {
   position: absolute;
   right: 50px;
+  top: 5px;
   bottom: 0px;
+
 }
 
 #dismiss {
