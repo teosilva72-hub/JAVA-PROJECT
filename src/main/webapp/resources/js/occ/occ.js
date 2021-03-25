@@ -28,7 +28,7 @@ $(function() {
         showButtonPanel:true,
 		changeMonth: false,
         changeYear: false,
-		dateFormat: 'dd/mm/yy',
+		dateFormat: 'mm/dd/yy',
 		//minDate: '12/12/2000',
         //maxDate: '12/12/2020',
 		numberOfMonths: 1,
@@ -47,7 +47,7 @@ $(function() {
         showButtonPanel:true,
 		changeMonth: false,
         changeYear: false,
-		dateFormat: 'dd/mm/yy',
+		dateFormat: 'mm/dd/yy',
 		//minDate: '12/12/2000',
         //maxDate: '12/12/2020',
 		numberOfMonths: 1,
@@ -242,15 +242,23 @@ function eventValidator(){
 	var eventDateStart = document.getElementById("dataInicial").value;
 	var eventHourStart = document.getElementById("horaInicial").value;
 	var eventMinuteStart = document.getElementById("minutoInicial").value;
-	var eventStart = (eventDateStart + eventHourStart + eventMinuteStart);
-	
+	var amPmStart = document.getElementById("typeHour1").value;
 	//final
 	var eventDateEnd = document.getElementById("dataFinal").value;
 	var eventHourEnd = document.getElementById("horaFinal").value;
 	var eventMinuteEnd = document.getElementById("minutoFinal").value;
-	var eventEnd = (eventDateEnd + eventHourEnd + eventMinuteEnd);
+	var amPmEnd = document.getElementById("typeHour2").value;
+	//formatar data
 	
-	if(eventStart != "" && eventEnd==""){
+	
+	var eventStart = (eventDateStart +' '+ eventHourStart +':'+ eventMinuteStart+' '+amPmStart);
+    var eventEnd = (eventDateEnd +' '+ eventHourEnd +':'+ eventMinuteEnd+' '+amPmEnd);	
+	var aDate = new Date(eventStart).getTime();
+	var bDate = new Date(eventEnd).getTime();
+	
+	
+	console.log(eventStart+" <<event>> "+eventEnd)
+	if(aDate != "" && bDate==""){
 
 		//mostra borda verde
 		document.getElementById("dataInicial").style.border = "";
@@ -279,7 +287,7 @@ function eventValidator(){
 		
 		comparationDate();
 		
-	}else if(eventStart <= eventEnd){
+	}else if(aDate <= bDate){
 		//borda verde
 		document.getElementById("dataInicial").style.border = "";
 		document.getElementById("horaInicial").style.border = "";
@@ -307,7 +315,7 @@ function eventValidator(){
 		
 		comparationDate();
 	
-	}else if(eventStart > eventEnd){
+	}else if(aDate > bDate){
 		
 		//borda vermelha de erro
 		document.getElementById("dataInicial").style.border = "";
@@ -332,7 +340,8 @@ function eventValidator(){
 		
 		return mostrarTab1();
 	}
-		
+		TrackValidator();
+		ActionValidator();
 }
 
 function TrackValidator(){
@@ -343,15 +352,18 @@ function TrackValidator(){
 	var trackDateStart = document.getElementById("trackDateStart").value;
 	var trackHourStart = document.getElementById("trackHourStart").value;
 	var trackMinuteStart = document.getElementById("trackMinuteStart").value;
-	var trackStart = (trackDateStart + trackHourStart + trackMinuteStart);
-	
+	var trackAmPm = document.getElementById("typeHour3").value;
+	var trackStart = (trackDateStart+' '+ trackHourStart+':' + trackMinuteStart+' ' + trackAmPm);
 	//final
 	var trackDateEnd = document.getElementById("trackDateEnd").value;
 	var trackHourEnd = document.getElementById("trackHourEnd").value;
 	var trackMinuteEnd = document.getElementById("trackMinuteEnd").value;
-	var trackEnd = (trackDateEnd + trackHourEnd + trackMinuteEnd);
-	
-	if(trackStart != "" && trackEnd==""){
+	var amPmTrack = document.getElementById("typeHour4").value;
+	var trackEnd = (trackDateEnd+' '+ trackHourEnd+':' + trackMinuteEnd+' ' + amPmTrack);
+	console.log(trackStart + "<<track>>" + trackEnd);
+	var xDate = new Date(trackStart).getTime();
+	var yDate = new Date(trackEnd).getTime();
+	if(xDate != "" && yDate==""){
 		
 		document.getElementById("trackDateStart").style.border = "";
 		document.getElementById("trackHourStart").style.border = "";
@@ -379,7 +391,7 @@ function TrackValidator(){
 		
 		comparationDate();
 		
-	}else if(trackStart <= trackEnd){
+	}else if(xDate <= yDate){
 		
 		document.getElementById("trackDateStart").style.border = "";
 		document.getElementById("trackHourStart").style.border = "";
@@ -407,7 +419,7 @@ function TrackValidator(){
 		
 		comparationDate();
 	
-	}else if(trackStart > trackEnd){
+	}else if(xDate > yDate){
 	
 		
 		document.getElementById("trackDateStart").style.border = "";
@@ -442,15 +454,21 @@ function ActionValidator(){
 	var actionDateStart = document.getElementById("acaoData").value;
 	var actionHourStart = document.getElementById("acaoInicio").value;
 	var actionMinuteStart = document.getElementById("acaoDuracao").value;
-	var actionStart = (actionDateStart + actionHourStart + actionMinuteStart);
+	var actionAmPm = document.getElementById("typeHour5").value;
+	var actionStart = (actionDateStart+' ' + actionHourStart+':' + actionMinuteStart+' '+actionAmPm);
 	
 	//final
 	var actionDateEnd = document.getElementById("acaoDataFinal").value;
 	var actionHourEnd = document.getElementById("acaoHoraFinal").value;
 	var actionMinuteEnd = document.getElementById("acaoEndMinute").value;
-	var actionEnd = (actionDateEnd + actionHourEnd + actionMinuteEnd);
+	var amPmAction = document.getElementById("typeHour6").value;
+	var actionEnd = (actionDateEnd+' ' + actionHourEnd+':' + actionMinuteEnd+' '+amPmAction);
 	
-	if(actionStart != "" && actionEnd==""){
+	console.log(actionStart + "<<action>>" + actionEnd);
+	var dateX = new Date(actionStart).getTime();
+	var dateY = new Date(actionEnd).getTime();
+	
+	if(dateX != "" && dateY==""){
 		
 		
 		document.getElementById("acaoData").style.border = "";
@@ -479,7 +497,7 @@ function ActionValidator(){
 		
 		comparationDate();
 		
-	}else if(actionStart <= actionEnd){
+	}else if(dateX <= dateY){
 		
 		document.getElementById("acaoData").style.border = "";
 		document.getElementById("acaoInicio").style.border = "";
@@ -507,7 +525,7 @@ function ActionValidator(){
 		
 		comparationDate();
 	
-	}else if(actionStart > actionEnd){
+	}else if(dateX > dateY){
 		
 		document.getElementById("acaoData").style.border = "solid red 2px";
 		document.getElementById("acaoInicio").style.border = "solid red 2px";
