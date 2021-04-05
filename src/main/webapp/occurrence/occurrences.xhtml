@@ -1246,7 +1246,8 @@
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
-									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
+									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p><br></br>
+									<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
 								</div>
 								<!-- BTN UPLOAD FILE -->
 								<div class="col-md-12">
@@ -1264,7 +1265,9 @@
 								<div class="form-group col-md-9 field" align="left">
 									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
-									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
+									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p><br></br>
+									<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
+									
 								</div>
 								<!-- BTN UPDATE FILE -->
 								<div class="col-md-3">

@@ -1344,7 +1344,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("alterarBtn()");
 				
 				//listando arquivos
-				listingUpdate();
+				listFiles();
 			}
 
 			//capturar 
@@ -1382,7 +1382,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("mostrarTab2()");
 				RequestContext.getCurrentInstance().execute("msgDelete()");
 				RequestContext.getCurrentInstance().execute("bloquerTable()");
-
+				RequestContext.getCurrentInstance().execute("uploadFile1()");
 			}
 
 			//capturar

@@ -70,7 +70,7 @@ public class TranslationMethods {
 			case "Relatório da Ocorrência" : converteOcc = localeOcc.getStringKey("occ_title_pdf"); break;
 			case "Gravidade" : converteOcc = localeOcc.getStringKey("occ_register_gravidade"); break;
 			case "Unidade" : converteOcc = localeOcc.getStringKey("occ_damage_unity"); break;
-			
+			case "Condição Tráfego" : converteOcc = localeOcc.getStringKey("occ_register_cond_trafego");
 		}
 		
 		return converteOcc;
