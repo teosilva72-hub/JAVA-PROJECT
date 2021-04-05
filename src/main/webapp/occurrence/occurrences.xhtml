@@ -462,6 +462,45 @@
 					<!-- final da tabela oculta -->
 				</div>
 				<!-- Final da lista -->
+				
+				
+				
+					<!-- FILE FORM -->
+		<h:form id="form-file">
+			
+			<!-- MODAL DOWNLOAD -->			
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+				<div class="modal-dialog confirmation-modal">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{satLabels.sat_reports_modal_alert_download_title}</h5>
+						</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{satLabels.sat_reports_modal_alert_download_file_excel} <span
+									class="extension">#{satLabels.sat_reports_modal_alert_extension_txt}</span> ?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{satLabels.sat_reports_modal_alert_btn_yes}"								
+								class="btn btn-dark form-draw-button" action="#{occurrencesBean.downloadPdf}" />
+							<h:commandButton
+								value="#{satLabels.sat_reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- MODAL DOWNLOAD END -->
+
+		</h:form>
+		<!-- FILE FORM -->
+				
 			</div>
 			<!-- Final do lado direito -->
 			<!-- Inicio do lado esquerdo -->
@@ -689,9 +728,11 @@
 									<!-- Icon PDF -->
 									<h:commandLink class="btnPdf" id="pdfId"
 										disabled="#{occurrencesBean.pdf}" data-toggle="tooltip"
-										data-bs-placement="top" title="#{occLabels.occ_download_file}"
-										action="#{occurrencesBean.downloadPdf}">
+										data-bs-placement="top" title="#{occLabels.occ_download_file}">
 										<i class="fas fa-file-pdf pdf-shadow"></i>
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+			                            <f:passThroughAttribute name="data-target" value="#modalDownload" />
+			                            <f:ajax execute="@form" render="@none" />
 									</h:commandLink>
 								</div>
 								<!-- final do pdf -->

@@ -810,7 +810,7 @@ public class EquipmentsBean implements Serializable {
     //DEFINE DIRECTIONS VALUES
     public void defineDirection(SAT sat, int numberLane, int dir){
     	
-    	System.out.println("DIR: "+dir);
+    	//System.out.println("DIR: "+dir);
     	  
         switch(dir) {
         
