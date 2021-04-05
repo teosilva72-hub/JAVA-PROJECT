@@ -551,7 +551,7 @@ public class OccurrencesBean {
 			mainPath = "C:\\Tracevia\\";
 			pathImage = "http://localhost:8081/occ/";
 			downloadPath = "file:///C:/Tracevia/";
-			pathDownload = "C:\\Users\\mateu\\Downloads\\";
+			pathDownload = "C:\\Users\\%USERNAME%\\Downloads\\";
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -1608,11 +1608,13 @@ public class OccurrencesBean {
 			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
-
-			Image image1 = Image.getInstance("C:\\Users\\wellington\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\traceviaLayout.png");
-			Image image2 = Image.getInstance("C:\\Users\\wellington\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
-
-			System.out.println(RoadConcessionaire.externalImagePath);
+			
+			System.out.println("IMAGE: "+RoadConcessionaire.externalImagePath);
+			
+			Image image1 = Image.getInstance("%APPDATA%\\Tracevia\\customers\\logo\\tracevia.jpg");
+			Image image2 = Image.getInstance(RoadConcessionaire.externalImagePath);
+			
+								
 			//edi��o das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
@@ -1865,7 +1867,7 @@ public class OccurrencesBean {
 		// DOWNLOAD
 		
 		externalContext.setResponseContentType("application/pdf");
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"teste.pdf\"");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getData_number()+".pdf\"");
 		
 		externalContext.setResponseContentLength(baos.size());
 	      

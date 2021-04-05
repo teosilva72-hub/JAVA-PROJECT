@@ -79,7 +79,7 @@ public class RoadConcessionaire {
 	
 	public RoadConcessionaire() {
 		
-		externalImagePath = "C:/Tracevia/Software/External/Excel/Images/";	
+		externalImagePath = "%APPDATA%\\Tracevia\\customers\\logo\\";	
 		
 	}
 	
@@ -91,7 +91,7 @@ public class RoadConcessionaire {
 		
 		 roadConcessionaire = dao.IdentifyRoadConcessionarie(serverAddress);	
 		 
-		//Caso contrario não acontece nada
+		//Caso contrario nï¿½o acontece nada
 		 if(!roadConcessionaire.equals("")) 
 			 checkRoadConcessionaire = true;	 
 				
