@@ -66,7 +66,7 @@ public class RoadConcessionaire {
 	public static String classNotIdentifiedAxl8;
 	public static String classNotIdentifiedAxl9;
 	public static String externalImagePath;	
-	public static String externaloLogoExcelPath;
+	public static String externalDefaultLogo;
 	public static String mapUI;
 	public static String linearMapUI;
 	public static String tableVBV;
@@ -79,7 +79,9 @@ public class RoadConcessionaire {
 	
 	public RoadConcessionaire() {
 		
-		externalImagePath = "%APPDATA%\\Tracevia\\customers\\logo\\";	
+		externalImagePath = System.getenv("APPDATA")+"\\Tracevia\\customers\\logo\\";
+		externalDefaultLogo = System.getenv("APPDATA")+"\\Tracevia\\customers\\logo\\tracevia.jpg";
+			
 		
 	}
 	
@@ -363,7 +365,7 @@ public class RoadConcessionaire {
 			tableStatus = ViaSulTables.ViaSulStatus.getTable();
 			tableLL = ViaSulTables.ViaSulLL.getTable();
 			tableCCR = ViaSulTables.ViaSulCCR.getTable();
-			
+						
 		}
 
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tracevia.getConcessionaire())) {
