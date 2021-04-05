@@ -812,7 +812,7 @@ function myFunction(){
 					fileReader.readAsDataURL(f);
 				}
 			});
-		} else{
+		} else{ 
 			alert("Your browser doesn't support to File API")
 		}
 	});	
