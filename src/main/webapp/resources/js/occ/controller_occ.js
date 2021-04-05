@@ -112,4 +112,8 @@ function mask(){
         }
     }, false);
 }
+function downloadPdf(){
+	var id = document.getElementById("occNumber");
+	if(id.value == "") return false;
+}
 //////////////////////////////////////////////////////////

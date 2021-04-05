@@ -795,6 +795,7 @@ function myFunction(){
 						result = e.target.result;
 						else
 						result = "/resources/icons/diversos/file.png";
+						$(target).css("display", "none");
 
 						var file = e.target;
 						$("<span class=\"pip\">" +
@@ -802,7 +803,10 @@ function myFunction(){
 						"<br/><span class=\"remove\"><i class=\"fas fa-times\"></i></span>" +
 						"</span>").insertAfter("#myFile");
 						$(".remove").click(function(){
-							$(this).parent(".pip").remove();
+							$(".pip").remove();
+							target.value = "";
+							$(".pip").remove();
+							$(target).css("display", "block");
 						});
 					});
 					fileReader.readAsDataURL(f);
@@ -830,14 +834,16 @@ function myFunction2(){
 						result = e.target.result;
 						else
 						result = "/resources/icons/diversos/file.png";
-
+						$(target).css("display", "none");
 						var file = e.target;
 						$("<span class=\"pip\">" +
 						"<img class=\"imageThumb\" src=\"" + result + "\" title=\"" + file.name + "\"/>" +
 						"<br/><span class=\"remove\"><i class=\"fas fa-times\"></i></span>" +
 						"</span>").insertAfter("#myFile2");
 						$(".remove").click(function(){
-							$(this).parent(".pip").remove();
+							target.value = "";
+							$(".pip").remove();
+							$(target).css("display", "block");
 						});
 					});
 					fileReader.readAsDataURL(f);
@@ -1114,33 +1120,45 @@ setTimeout(function() {
 setTimeout(function() {
    $('#msgFinished').fadeOut('fast');
 }, 5000);
-/////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 var upload = document.getElementById("myFile");
 upload.addEventListener("change", function(e) {
-    var size = upload.files[0].size;
-    if(size < 5242880) { //1MB         
-		document.getElementById("errorFileSize").style.display = "none";
-		document.getElementById("btnUpload").style.display = "block";       
+    var file = upload2.files;
+		var x = true;
+		for(f of file){
+			if(f.size > 5242880){
+				x = false;
+			}
+		}
 
-    } else {           
-      upload.value = ""; //Limpa o campo  
-		document.getElementById("errorFileSize").style.display = "block";  
-		document.getElementById("btnUpload").style.display = "none";       
-    }
-    e.preventDefault();
-});
-var upload2 = document.getElementById("myFile2");
-upload2.addEventListener("change", function(e) {
-    var size = upload2.files[0].size;
-
-    if(size < 5242880) {
+    if(x) {
 		document.getElementById("errorFileSize2").style.display = "none";
 		document.getElementById("btnUpdate").style.display = "block"; 
-    } else {           
-      upload2.value = ""; //Limpa o campo  
+    }else {           
+      	upload2.value = ""; //Limpa o campo  
 		document.getElementById("errorFileSize2").style.display = "block";       
-		document.getElementById("btnUpdate").style.display = "none";       
-    
-}
+		document.getElementById("btnUpdate").style.display = "block"; 
+	}
+    e.preventDefault();
+});
+//update
+var upload2 = document.getElementById("myFile2");
+	upload2.addEventListener("change", function(e) {
+		var file = upload2.files;
+		var x = true;
+		for(f of file){
+			if(f.size > 5242880){
+				x = false;
+			}
+		}
+
+    if(x) {
+		document.getElementById("errorFileSize2").style.display = "none";
+		document.getElementById("btnUpdate").style.display = "block"; 
+    }else {           
+      	upload2.value = ""; //Limpa o campo  
+		document.getElementById("errorFileSize2").style.display = "block";       
+		document.getElementById("btnUpdate").style.display = "block"; 
+	}
     e.preventDefault();
 });
