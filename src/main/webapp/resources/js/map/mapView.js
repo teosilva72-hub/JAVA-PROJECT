@@ -72,7 +72,7 @@ function ScrollZoom(container) {
 	}
 
 	function update() {
-		target.css('transform', `tranlate(-50%, -70%) scale(${scale})`)
+		target.css('transform', `scale(${scale})`)
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
