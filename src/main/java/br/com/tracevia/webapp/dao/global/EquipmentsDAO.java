@@ -857,7 +857,7 @@ public class EquipmentsDAO {
               ////LOUIS
 
              // --------------------------------------------------- //
-    	    // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
+    	    // ------- CREATE EQUIPMENT SAT FOR MAP / REALTIME ------- //
     	   // --------------------------------------------------- //
               
               public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
@@ -919,7 +919,7 @@ public class EquipmentsDAO {
               
               
             // --------------------------------------------------- //
-      	   // ------- CREATE EQUIPMENT FOR MAP / REALTIME ------- //
+      	   // ------- CREATE EQUIPMENT SAT FOR MAP / REALTIME ------- //
       	  // --------------------------------------------------- //
               
               
