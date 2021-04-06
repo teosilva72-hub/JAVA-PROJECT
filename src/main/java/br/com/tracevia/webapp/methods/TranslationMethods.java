@@ -75,6 +75,7 @@ public class TranslationMethods {
 		
 		return converteOcc;
 	}
+	
 	public String listOcc(String occ) {
 		
 		String converteOcc = "";
@@ -116,7 +117,7 @@ public class TranslationMethods {
 		
 		//var
 		String converteOcc = "";
-		
+				
 		switch(occ){
 		
 		//Rodovia

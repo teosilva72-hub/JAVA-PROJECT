@@ -26,8 +26,16 @@ public class LanguageBean implements Serializable {
 	// private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
 	 private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");
 			
-	 //DEFAULT LANGUAGE
-	private Locale locale = PORTUGUESE_BRAZILIAN;
+	 // DEFAULT LANGUAGE
+	private Locale locale = Locale.getDefault();
+			
+	@PostConstruct
+	public void initializer() {
+		
+	  // DEFAULT LANGUAGE PT-BR	
+	  Locale.setDefault(PORTUGUESE_BRAZILIAN);
+		
+	}		
 	  	
 	public Locale getLocale() {
 		return  (locale);
