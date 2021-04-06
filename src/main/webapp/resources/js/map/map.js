@@ -265,7 +265,7 @@ function ScrollZoom(container) {
 	}
 
 	function update() {
-		target.css('transform', `scale(${scale})`)
+		target.css('transform', `translate(-50%, -70%) scale(${scale})`)
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
@@ -338,7 +338,7 @@ function ScrollZoom(container) {
 			let equip = $(this)
 			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
 			
-			equip.css('transform', `scale(${scale})`).attr('scale', scale)
+			equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
 		})
 	}
 	
@@ -348,7 +348,7 @@ function ScrollZoom(container) {
 			let equip = $(this)
 			let scaleA = equip.attr('scale')
 			
-			equip.css('transform', `scale(${scaleA * Math.sqrt(scale)}`)
+			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * Math.sqrt(scale)}`)
 		})
 	}
 	
