@@ -185,7 +185,7 @@ $(function() {
 	// POS EQUIP
 
 	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this).attr('scale', 1)
+		let equip = $(this)
 
 		posEquip(equip)
 		resizeEquipScale(equip.closest('[scroll-zoom]'))
@@ -336,9 +336,9 @@ function ScrollZoom(container) {
 	function resizeEquipScale(container) {
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
-			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1
+			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
 			
-			equip.css('transform', `scale(${scale)})`).attr('scale', scale)
+			equip.css('transform', `scale(${scale})`).attr('scale', scale)
 		})
 	}
 	
