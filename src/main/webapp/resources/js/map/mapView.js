@@ -251,8 +251,8 @@ function setPosition(posX, posY) {
 		}
 	
 		element
-			.scrollTop(posY)
-			.scrollLeft(posX)
+			.scrollLeft(posX * element[0].scrollWidth)
+			.scrollTop(posY * element[0].scrollHeight)
 	} 
 }
 
