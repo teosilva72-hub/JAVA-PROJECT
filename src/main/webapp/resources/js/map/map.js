@@ -8,9 +8,9 @@ $(function() {
 	}, 5000);
 
 	$('#divide').on('click', () =>  {
-		$('#frame1')[0].contentWindow.setPosition(0, 250)
-		$('#frame2')[0].contentWindow.setPosition(1000, 250)
-		$('#frame3')[0].contentWindow.setPosition(2000, 50)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.5)
+		$('#frame2')[0].contentWindow.setPosition(0.3, 0.5)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.1)
 		
 	})
 	
@@ -185,10 +185,10 @@ $(function() {
 	// POS EQUIP
 
 	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
+		let equip = $(this).attr('scale', 1)
 
 		posEquip(equip)
-		resizeEquip(equip.closest('[scroll-zoom]'))
+		resizeEquipScale(equip.closest('[scroll-zoom]'))
 
 		equip.dblclick(function () {
 			posReset();
@@ -208,7 +208,7 @@ $(function() {
 	//Equipments change sizes END
 
 	$('#coefSize').change(function () {
-		resizeEquip($('[scroll-zoom]'))
+		resizeEquipScale($('[scroll-zoom]'))
 	})
 
 })
@@ -323,7 +323,7 @@ function ScrollZoom(container) {
 	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
 	
 	input.change(function () {
-		resizeEquip($(`${input.attr("from")}`).parent())
+		resizeEquipScale($(`${input.attr("from")}`).parent())
 		console.log($(`${input.attr("from")}`).parent())
 	})
 }
@@ -333,12 +333,22 @@ function ScrollZoom(container) {
 // SCALE EQUIPS
 
 	//RESIZE EQUIPMENT
+	function resizeEquipScale(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1
+			
+			equip.css('transform', `scale(${scale)})`).attr('scale', scale)
+		})
+	}
+	
+	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
-			let scale = Number(equip.attr('item-width')) / equip.width()
+			let scaleA = equip.attr('scale')
 			
-			equip.css('transform', `scale(${scale * (Number($('#bar-size').val()) || 1)})`)
+			equip.css('transform', `scale(${scaleA * Math.sqrt(scale)}`)
 		})
 	}
 	
@@ -478,16 +488,20 @@ function zoomOut(id) {
 	id.trigger(down);
 };
 
-function setPosition(posX) {
-	const element = $('section.overflow')
+function setPosition(posX, posY) {
+	if (scale == 1) {
+		const element = $('section.overflow')
+	
+		for (let idx = 0; idx < 2; idx++) {
+			zoomIn(element)
+		}
+	
+		console.log(posY, element[0].scrollHeight)
 
-	for (let idx = 0; idx < 2; idx++) {
-		zoomIn(element)
-	}
-
-	element
-		.scrollTop(element.outerHeight(true) / 2)
-		.scrollLeft(posX)
+		element
+			.scrollTop(posY * element[0].scrollHeight)
+			.scrollLeft(posX * element[0].scrollWidth)
+	} 
 }
 
 // Drop Element	
