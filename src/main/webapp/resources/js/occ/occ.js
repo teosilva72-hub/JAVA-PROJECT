@@ -816,7 +816,7 @@ function myFunction(){
 			alert("Your browser doesn't support to File API")
 		}
 	});	
-}
+}   
 function myFunction2(){
 	$(document).ready(function() {
 		if (window.File && window.FileList && window.FileReader) {
