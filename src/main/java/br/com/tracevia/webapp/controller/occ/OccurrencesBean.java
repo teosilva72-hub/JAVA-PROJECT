@@ -1,74 +1,54 @@
 package br.com.tracevia.webapp.controller.occ;
-import com.itextpdf.text.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
+import java.io.OutputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 
-import org.jboss.logging.Cause;
 import org.primefaces.context.RequestContext;
-import org.snmp4j.util.TableListener;
-
-import br.com.tracevia.webapp.controller.global.UserAccountBean;
-import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
-import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.global.UserAccount;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
-import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
-import br.com.tracevia.webapp.util.LocaleUtil;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import br.com.tracevia.webapp.controller.global.UserAccountBean;
+import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
+import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
+import br.com.tracevia.webapp.util.LocaleUtil;
+
 @ManagedBean(name="occurrencesBean")
 @ViewScoped
 public class OccurrencesBean {
@@ -80,7 +60,7 @@ public class OccurrencesBean {
 
 	OccurrencesDAO dao;
 	LocaleUtil occLabel, occMessages;
-	//
+		
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
 
@@ -569,9 +549,9 @@ public class OccurrencesBean {
 
 			//paths
 			mainPath = "C:\\Tracevia\\";
-			pathImage = "http://localhost:8081/occ/";
+			pathImage = "http://localhost:80/occ/";
 			downloadPath = "file:///C:/Tracevia/";
-			pathDownload = "C:\\Users\\mateu\\Downloads\\";
+			pathDownload = System.getenv("USERPROFILE") + "\\Downloads\\";
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -1588,16 +1568,23 @@ public class OccurrencesBean {
 	}
 	//método download PDF
 	public String[] downloadPdf() throws Exception {
+		
 		// cria��o do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
-
-
-		try {
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
+				
+		try {			 	  
+	        
 			//caminho onde � gerado o pdf
-			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\mateu\\Downloads\\"+"OCC_"+data.getData_number()+".pdf"));
-			//gera o arquivo
-			document.open();
+			PdfWriter writer = PdfWriter.getInstance(document, baos);
+											
+			//gera o arquivo		
+			document.open();			
 
 			//formato da folha
 			document.setPageSize(PageSize.A4);
@@ -1621,11 +1608,10 @@ public class OccurrencesBean {
 			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
-
-			Image image1 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\traceviaLayout.png");
-			Image image2 = Image.getInstance("C:\\Users\\mateu\\eclipse-workspace\\tracevia-application\\src\\main\\webapp\\resources\\images\\home\\tuxpan.png");
-
-			System.out.println(RoadConcessionaire.externalImagePath);
+								
+			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
+			Image image2 = Image.getInstance(RoadConcessionaire.externalImagePath);
+											
 			//edi��o das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
@@ -1862,7 +1848,8 @@ public class OccurrencesBean {
 			//assinatura
 			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
 					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
-
+			
+			
 		}
 		catch(DocumentException de) {
 			System.err.println(de.getMessage());
@@ -1870,18 +1857,34 @@ public class OccurrencesBean {
 		catch(IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
+		
 		document.close();
+		
+		
+		// DOWNLOAD
+		
+		externalContext.setResponseContentType("application/pdf");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getData_number()+".pdf\"");
+		
+		externalContext.setResponseContentLength(baos.size());
+	      
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+	     baos.writeTo(responseOutputStream);
+	     responseOutputStream.flush();
+	     responseOutputStream.close();
+
+	
+	     facesContext.responseComplete();  
+	     
+	    // DOWNLOAD
+	
 
 		//getRowValue();
 		System.out.println(timestamp+" <a");
 		System.out.println(timestamp2+" <b");
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
-
-		//chamando valores do usu�rio de outro controller
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();	
-
+	
 		//pegando os valores de outro controller e armazenado dentro das variaveis: (userName e nivelUser)
 		userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
@@ -1980,6 +1983,7 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			}
+			
 			int id = getValue();
 
 			//criando caminho da sele��o da pasta.

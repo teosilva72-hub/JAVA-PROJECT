@@ -16,6 +16,85 @@ $(function() {
 	})
 	barResize()
 	//Scroll Zoom Map Full END
+	
+		
+	$('[id$="btn-edit"]').click(function btnEdit() {
+		setTimeout(() => {
+			
+					var equipsSEL = document.getElementById("equips-edit");
+					var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
+					if (selectVAL == 9) {
+						$('.satInputs-edit').show(); // DIV FAIXAS 1	
+						$('.dmsHidden-edit').hide();
+						$("#lanes-edit").change(
+							function () {
+								var satLanes = document.getElementById("lanes-edit");								
+								console.log(satLanes)
+								var selectSAT = satLanes.value;
+								if (selectSAT == 2) {
+									$('#direction3-edit').hide();
+									$('#direction4-edit').hide();
+									$('#direction5-edit').hide();
+									$('#direction6-edit').hide();
+									$('#direction7-edit').hide();
+									$('#direction8-edit').hide();
+								} else if (selectSAT == 3) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').hide();
+									$('#direction5-edit').hide();
+									$('#direction6-edit').hide();
+									$('#direction7-edit').hide();
+									$('#direction8-edit').hide();
+								} else if (selectSAT == 4) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').show();
+									$('#direction5-edit').hide();
+									$('#direction6-edit').hide();
+									$('#direction7-edit').hide();
+									$('#direction8-edit').hide();
+								} else if (selectSAT == 5) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').show();
+									$('#direction5-edit').show();
+									$('#direction6-edit').hide();
+									$('#direction7-edit').hide();
+									$('#direction8').hide();
+								} else if (selectSAT == 6) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').show();
+									$('#direction5-edit').show();
+									$('#direction6-edit').show();
+									$('#direction7-edit').hide();
+									$('#direction8-edit').hide();
+								} else if (selectSAT == 7) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').show();
+									$('#direction5-edit').show();
+									$('#direction6-edit').show();
+									$('#direction7-edit').show();
+									$('#direction8-edit').hide();
+								} else if (selectSAT == 8) {
+									$('#direction3-edit').show();
+									$('#direction4-edit').show();
+									$('#direction5-edit').show();
+									$('#direction6-edit').show();
+									$('#direction7-edit').show();
+									$('#direction8-edit').show();
+								}
+							});
+					} else if (selectVAL == 8) {							
+										  
+						    $('.dmsHidden-edit').show(); // DIV DMS TYPE	
+						    $('.satInputs-edit').hide(); 
+							
+					} else {
+						
+						 $('.dmsHidden-edit').hide();	
+						 $('.satInputs-edit').hide(); 
+					}
+					
+		}, 100)
+				});
 
 	$(".overflow").css("height", $(this).height() - 125)
 	$(window).resize(function () {

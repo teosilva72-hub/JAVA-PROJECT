@@ -16,7 +16,7 @@ function inputs(){
         else if(selectHighway == 2){state.value = "Veracruz"; state1.value = "Veracruz";}
         else if(selectHighway == 3){state.value = "CDMX"; state1.value = "CDMX";}
             
-    }, false);
+    }, false);    
     ////////////////////////////////////////////////////////////////////////////////////////////
    //executando função para adicionar condição no input quantidade
    mask();
@@ -111,5 +111,9 @@ function mask(){
             });
         }
     }, false);
+}
+function downloadPdf(){
+	var id = document.getElementById("occNumber");
+	if(id.value == "") return false;
 }
 //////////////////////////////////////////////////////////

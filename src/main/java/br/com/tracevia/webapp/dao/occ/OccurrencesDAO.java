@@ -159,7 +159,7 @@ public class OccurrencesDAO {
 					SelectItem listarDrop = new SelectItem();
 					listarDrop.setValue(rs.getInt(1));
 					listarDrop.setLabel(occTranslation.occurrencesTranslator(rs.getString(2)));
-					
+															
 					listarDropDownValue.add(listarDrop);
 				}
 			}
