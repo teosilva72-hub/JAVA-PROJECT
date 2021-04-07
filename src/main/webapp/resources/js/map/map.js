@@ -184,11 +184,12 @@ $(function() {
 
 	// POS EQUIP
 
+	resizeEquipScale($('[scroll-zoom]'))
+
 	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 		let equip = $(this)
 
 		posEquip(equip)
-		resizeEquipScale(equip.closest('[scroll-zoom]'))
 
 		equip.dblclick(function () {
 			posReset();
