@@ -1030,7 +1030,7 @@ public class EquipmentsDAO {
             			ps.setString(7, equip.getKm());	
             			ps.setInt(8, 30); // Linear Width
               			ps.setInt(9, 30); // Linear posX
-              			ps.setInt(10, 100); // Linear posY
+              			ps.setInt(10, 500); // Linear posY
               			ps.setInt(11, 20); // Map Width
               			ps.setInt(12, 50); // Map posX
               			ps.setInt(13, 50); // Map posY
