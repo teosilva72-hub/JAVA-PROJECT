@@ -349,7 +349,7 @@ function ScrollZoom(container) {
 			let equip = $(this)
 			let scaleA = equip.attr('scale')
 			
-			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * Math.sqrt(scale)}`)
+			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
 		})
 	}
 	

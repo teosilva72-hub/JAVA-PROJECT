@@ -15,7 +15,7 @@ $(function() {
 		$(".overflow").css("height", $(this).height())
 	})
 
-	resizeEquip($('[scroll-zoom]'))
+	resizeEquipScale($('[scroll-zoom]'))
 
 	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 		let equip = $(this)
@@ -97,12 +97,22 @@ function ScrollZoom(container) {
 // SCALE EQUIPS
 
 	//RESIZE EQUIPMENT
+	function resizeEquipScale(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
+			
+			equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
+		})
+	}
+	
+	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
-			let scale = Number(equip.attr('item-width')) / equip.width()
+			let scaleA = equip.attr('scale')
 			
-			equip.css('transform', `translate(-50%, -70%) scale(${scale * (Number($('#bar-size').val()) || 1)})`)
+			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
 		})
 	}
 	
