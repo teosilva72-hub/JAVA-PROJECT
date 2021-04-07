@@ -1028,9 +1028,9 @@ public class EquipmentsDAO {
             			ps.setString(5, equip.getCidade());
             			ps.setString(6, equip.getEstrada());
             			ps.setString(7, equip.getKm());	
-            			ps.setInt(8, 50); // Linear Width
-              			ps.setInt(9, 50); // Linear posX
-              			ps.setInt(10, 50); // Linear posY
+            			ps.setInt(8, 30); // Linear Width
+              			ps.setInt(9, 30); // Linear posX
+              			ps.setInt(10, 100); // Linear posY
               			ps.setInt(11, 20); // Map Width
               			ps.setInt(12, 50); // Map posX
               			ps.setInt(13, 50); // Map posY
