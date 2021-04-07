@@ -696,11 +696,6 @@ img.box-img[zoom] {
   bottom: 50px;
 }
 
-.draggable .equip-box,
-.draggable .equip-info {
-  transform: translate(-50%, -50%);
-}
-
 /* INPUT NUMBER ARROWS REMOVED */
 	
 /* Chrome, SAfari, Edge, Opera */

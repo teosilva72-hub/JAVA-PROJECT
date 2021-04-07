@@ -79,6 +79,8 @@ function ScrollZoom(container) {
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
 			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
 
+		showGenericName();
+
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
 
@@ -273,3 +275,14 @@ function reloadAfterCancelPos(){
 	window.location.reload(1);
   }, 2000); // 2 sec						
 }
+
+/**/
+function showGenericName(){
+
+	if(scale > 1.3)
+	  $('.equip-header').css('opacity', 1);
+	  
+	  else  $('.equip-header').css('opacity', 0);
+	  
+	}
+	
