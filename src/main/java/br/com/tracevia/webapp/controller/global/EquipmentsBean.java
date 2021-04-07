@@ -486,7 +486,7 @@ public class EquipmentsBean implements Serializable {
 		 else {
 			 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView); 
-		 
+		 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
@@ -776,9 +776,9 @@ public class EquipmentsBean implements Serializable {
 		case "mto": table="mto"      ; break;
 		case "dms": table="pmv"      ; break;
 		case "sat": table="sat"      ; break;
-		case "sos":table="sos"       ; break;
-		case "speed":table="speed"   ; break;
-		case "wim":table="wim"       ; break;
+		case "sos": table="sos"       ; break;
+		case "speed": table="speed"   ; break;
+		case "wim": table="wim"       ; break;
 		}
 		
 		return table;
@@ -800,7 +800,7 @@ public class EquipmentsBean implements Serializable {
   		case "sat": moduleId = 9 ; break;
   		case "sos": moduleId = 10  ; break;
   		case "speed":moduleId = 11 ; break;
-  		case "wim": moduleId = 12 ; break;
+  		case "wim" : moduleId = 13 ; break;
   		}
   		
   		return moduleId;
