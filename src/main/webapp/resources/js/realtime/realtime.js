@@ -101,11 +101,12 @@ $(function() {
 		$(".overflow").css("height", $(this).height() - 125)
 	})
 
+	resizeEquipScale($('[scroll-zoom]'))
+
 	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 		let equip = $(this)
 
 		posEquip(equip)
-		resizeEquip(equip.closest('[scroll-zoom]'))
 
 		equip.dblclick(function () {
 			posReset();
@@ -125,7 +126,7 @@ $(function() {
 	//Equipments change sizes END
 
 	$('#coefSize').change(function () {
-		resizeEquip($('[scroll-zoom]'))
+		resizeEquipScale($('[scroll-zoom]'))
 	})
 
 })
@@ -238,7 +239,7 @@ function ScrollZoom(container) {
 	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
 	
 	input.change(function () {
-		resizeEquip($(`${input.attr("from")}`).parent())
+		resizeEquipScale($(`${input.attr("from")}`).parent())
 		console.log($(`${input.attr("from")}`).parent())
 	})
 }
@@ -248,12 +249,22 @@ function ScrollZoom(container) {
 // SCALE EQUIPS
 
 	//RESIZE EQUIPMENT
+	function resizeEquipScale(container) {
+		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
+			
+			equip.css('transform', `translate(-50%, -60px) scale(${scale})`).attr('scale', scale)
+		})
+	}
+	
+	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
-			let scale = Number(equip.attr('item-width')) / equip.width()
+			let scaleA = equip.attr('scale')
 			
-			equip.css('transform', `scale(${scale * (Number($('#bar-size').val()) || 1)}) translate(-50%, -60px)`)
+			equip.css('transform', `translate(-50%, -60px) scale(${scaleA * scale}`)
 		})
 	}
 	
