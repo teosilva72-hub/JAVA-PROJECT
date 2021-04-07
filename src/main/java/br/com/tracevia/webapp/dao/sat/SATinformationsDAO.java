@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -585,11 +586,11 @@ public class SATinformationsDAO {
 		DateTimeApplication dta = new DateTimeApplication();
 		
 		String currentDate = null;
-			
+	
 		Calendar calendar = Calendar.getInstance();	
 		int minute = calendar.get(Calendar.MINUTE);
-		
-		//Obter datas formatadas para os dados
+				
+		// Obter datas formatadas para os dados
 		currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 		
 		//System.out.println("STATUS DATA 08 LIST: "+currentDate);
