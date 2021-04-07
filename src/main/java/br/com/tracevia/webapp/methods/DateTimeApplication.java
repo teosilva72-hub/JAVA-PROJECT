@@ -198,26 +198,24 @@ public class DateTimeApplication {
 	dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_DATABASE);
 	
 	String currentDate = null;
-		
-	  //Subtract Hour
-    int hour = calendar.get(Calendar.HOUR) -1;
-		
+		          		
    //formatar os minutos para que nao ocorra inconsistencias
 	if(minute >= 0 && minute < 15) {
+	  
 	   calendar.set(Calendar.MINUTE, 45);
-	   calendar.set(Calendar.HOUR, hour);	
-	
-	}else if(minute >= 15 && minute < 30)
-		 calendar.set(Calendar.MINUTE, 0);
+	   calendar.add(Calendar.HOUR_OF_DAY, -1);
+	  	   	
+	}else if(minute >= 15 && minute < 30)		
+		 calendar.set(Calendar.MINUTE, 0);	   
 	
 	else if(minute >= 30 && minute < 45)
 		 calendar.set(Calendar.MINUTE, 15);
 	
-	else if(minute >= 45 && minute < 59)			
-		  calendar.set(Calendar.MINUTE, 30);
-						
-	  calendar.set(Calendar.SECOND, 0);
-	     
+	 else if(minute >= 45 && minute <= 59)			
+		 calendar.set(Calendar.MINUTE, 30);
+		   						
+	      calendar.set(Calendar.SECOND, 0);
+	    	     
 	//Data Atual
 	currentDate = dtFormatter.format(calendar.getTime());
    
