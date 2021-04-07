@@ -398,11 +398,6 @@ main > div:first-child {
   padding: 0;
 }
 
-.draggable .equip-box,
-.draggable .equip-info {
-  transform: translate(-50%, -50%);
-}
-
 .imgSize {
 	width: 80px;
 }
