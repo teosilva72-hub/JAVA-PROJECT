@@ -254,7 +254,7 @@ function ScrollZoom(container) {
 			let equip = $(this)
 			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
 			
-			equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
+			equip.css('transform', `translate(-50%, -60px) scale(${scale})`).attr('scale', scale)
 		})
 	}
 	
