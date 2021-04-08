@@ -457,28 +457,28 @@ public class EquipmentsBean implements Serializable {
 			 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
 			 			 
-			 if(!sat.getFaixa1().equals(""))			 
+			 if(sat.getFaixa1() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
 			 
-			 if(!sat.getFaixa2().equals(""))			 
+			 if(sat.getFaixa2() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction2-edit').show(); $('#direction2-edit').val('"+sat.getFaixa2()+"');");	
 
-			 if(!sat.getFaixa3().equals(""))			 
+			 if(sat.getFaixa3() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction3-edit').show(); $('#direction3-edit').val('"+sat.getFaixa3()+"');");	
 
-			 if(!sat.getFaixa4().equals(""))			 
+			 if(sat.getFaixa4() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction4-edit').show(); $('#direction4-edit').val('"+sat.getFaixa4()+"');");	
 
-			 if(!sat.getFaixa5().equals(""))			 
+			 if(sat.getFaixa5() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction5-edit').show(); $('#direction5-edit').val('"+sat.getFaixa5()+"');");	
 
-			 if(!sat.getFaixa6().equals(""))			 
+			 if(sat.getFaixa6() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction6-edit').show(); $('#direction6-edit').val('"+sat.getFaixa6()+"');");	
 
-			 if(!sat.getFaixa7().equals(""))			 
+			 if(sat.getFaixa7() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction7-edit').show(); $('#direction7-edit').val('"+sat.getFaixa7()+"');");	
 
-			 if(!sat.getFaixa8().equals(""))			 
+			 if(sat.getFaixa8() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
 						 		 
 		 }
@@ -739,6 +739,23 @@ public class EquipmentsBean implements Serializable {
 		
 			
 	}
+
+	public void setAll(String map) throws Exception {
+		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
+
+		EquipmentsDAO dao = new EquipmentsDAO();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		String w = params.get("width-edit");
+
+		String module = getEquipTable();
+		int width = w == "" ? 100 : Integer.parseInt(w);
+
+		dao.setWidthMap(module.equals("dms") ? "pmv" : module , map, width);
+
+		request.execute("alertToast('all equipment updated!');");
+	}
 	
 	public String defineTableById(int id) { 
 		
@@ -820,12 +837,12 @@ public class EquipmentsBean implements Serializable {
     		
     		case 1: sat.setFaixa1("N"); break;
 			case 2: sat.setFaixa2("S"); break;
-			case 3: sat.setFaixa3(""); break;
-			case 4: sat.setFaixa4(""); break;
-			case 5: sat.setFaixa5(""); break;
-			case 6: sat.setFaixa6(""); break;
-			case 7: sat.setFaixa7(""); break;
-			case 8: sat.setFaixa8(""); break;
+			case 3: sat.setFaixa3(null); break;
+			case 4: sat.setFaixa4(null); break;
+			case 5: sat.setFaixa5(null); break;
+			case 6: sat.setFaixa6(null); break;
+			case 7: sat.setFaixa7(null); break;
+			case 8: sat.setFaixa8(null); break;
 			
 			}; break;
             	

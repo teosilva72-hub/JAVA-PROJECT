@@ -220,6 +220,30 @@ public class EquipmentsDAO {
 
 		return lista;
 	}
+
+	public void setWidthMap(String modulo, String map, int width) throws Exception {
+
+		String sql = "UPDATE " + modulo + "_equipment SET " + map + "_width = ? WHERE equip_id > 0;";
+
+		try {
+
+		   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, width);
+
+			ps.executeUpdate();
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao inserir dados " + sqle);        		    
+				
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+
+
+	}
 	
 	// ---- MAP INTERFACE EQUIPMENTS ---- //
 	
@@ -861,8 +885,7 @@ public class EquipmentsDAO {
     	   // --------------------------------------------------- //
               
               public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
-            		
-          		
+            		          		
           		boolean status = false; 
           		          		
           		try {
@@ -895,8 +918,8 @@ public class EquipmentsDAO {
           			ps.setString(15, equip.getFaixa7());	
           			ps.setString(16, equip.getFaixa8());	          			    			
           			ps.setInt(17, 100); // Linear Width
-          			ps.setInt(18, 50); // Linear posX
-          			ps.setInt(19, 50); // Linear posY
+          			ps.setInt(18, 37); // Linear posX
+          			ps.setInt(19, 107); // Linear posY
           			ps.setInt(20, 75); // Map Width
           			ps.setInt(21, 50); // Map posX
           			ps.setInt(22, 50); // Map posY
@@ -956,8 +979,8 @@ public class EquipmentsDAO {
             			ps.setString(7, equip.getEstrada());
             			ps.setString(8, equip.getKm());       			
             			ps.setInt(9,  150); // Linear Width
-              			ps.setInt(10, 50); // Linear posX
-              			ps.setInt(11, 50); // Linear posY
+              			ps.setInt(10, 30); // Linear posX
+              			ps.setInt(11, 100); // Linear posY
               			ps.setInt(12, 75); // Map Width
               			ps.setInt(13, 50); // Map posX
               			ps.setInt(14, 50); // Map posY
@@ -1028,9 +1051,9 @@ public class EquipmentsDAO {
             			ps.setString(5, equip.getCidade());
             			ps.setString(6, equip.getEstrada());
             			ps.setString(7, equip.getKm());	
-            			ps.setInt(8, 50); // Linear Width
-              			ps.setInt(9, 50); // Linear posX
-              			ps.setInt(10, 50); // Linear posY
+            			ps.setInt(8, 30); // Linear Width
+              			ps.setInt(9, 30); // Linear posX
+              			ps.setInt(10, 500); // Linear posY
               			ps.setInt(11, 20); // Map Width
               			ps.setInt(12, 50); // Map posX
               			ps.setInt(13, 50); // Map posY
