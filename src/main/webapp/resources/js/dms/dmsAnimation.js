@@ -1,6 +1,6 @@
 import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
-let listPMV = [];
+let listPMV;
 
 window.reloadPMV = 0;
 
@@ -65,6 +65,8 @@ async function initPMV() {
 	}
 
 	const collectPMV = () => {
+		listPMV = [];
+
 		$('[id^=listPMV]').each(function () {
 			let data = $(this);
 			let driver;
