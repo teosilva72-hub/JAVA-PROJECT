@@ -621,14 +621,6 @@ $(document).ready(function(){
 //prevent modal form submit
 //use ajax to send data
 
-
-//Reload on Cancel Position
-function reloadAfterCancelPos(){
-	setTimeout(function() {
-	window.location.reload(1);
-  }, 2000); // 2 sec						
-}
-
 //Use validation on click button submit   
 //Create button
 function checkValidation(){	 

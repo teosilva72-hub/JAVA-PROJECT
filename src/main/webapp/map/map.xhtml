@@ -191,7 +191,7 @@
 				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button cancel_pos"
 					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
-					<f:ajax render="#realcancel" onevent="reloadAfterCancelPos" />
+					<f:ajax render="#realcancel" onevent="init" />
 				</h:commandButton>
 			</h:form>
 			
