@@ -285,7 +285,7 @@ public class EquipmentsBean implements Serializable {
 	   		   
 	   		   if(checked) {
 					request.execute("alert('#equip-save');");
-			   		request.execute("borderEquip(" + equipTable + equipId + ");");
+			   		request.execute("borderEquip('" + equipTable + equipId + "');");
 				  }
 	   	 	   
 	   		  else 
@@ -357,7 +357,7 @@ public class EquipmentsBean implements Serializable {
    		   
    		   if(checked) {
 			request.execute("alert('#equip-save');");
-			   request.execute("borderEquip(" + equipTable + equipId + ");");
+			   request.execute("borderEquip('" + equipTable + equipId + "');");
 		  }
    	 	   
    		  else  request.execute("alert('#equip-save-error');");
@@ -410,7 +410,7 @@ public class EquipmentsBean implements Serializable {
 	    		   
 	    		  if(checked) {
 					request.execute("alert('#equip-delete');");
-			   		request.execute("borderEquip(" + equipTable + equipId + ");");
+			   		request.execute("borderEquip('" + equipTable + equipId + "');");
 				  }
 	    	 	   
 	    		   else  request.execute("alert('#equip-save-error');");
@@ -607,7 +607,7 @@ public class EquipmentsBean implements Serializable {
 				
 			    if(update) {
 					request.execute("alert('#equip-update');");
-					request.execute("borderEquip(" + equipTable + equipId + ");");
+					request.execute("borderEquip('" + equipTable + equipId + "');");
 				} else {
 					request.execute("alert('#equip-update-error');");
 				}
@@ -666,7 +666,7 @@ public class EquipmentsBean implements Serializable {
 			
 			if(update) {
 				request.execute("alert('#equip-update');");
-				request.execute("borderEquip(" + equipTable + equipId + ");");
+				request.execute("borderEquip('" + equipTable + equipId + "');");
 			} else {
 				request.execute("alert('#equip-update-error');");
 			}
@@ -708,7 +708,7 @@ public class EquipmentsBean implements Serializable {
 
 			    if(update) {
 					request.execute("alert('#equip-update');");
-					request.execute("borderEquip(" + equipTable + equipId + ");");
+					request.execute("borderEquip('" + equipTable + equipId + "');");
 				} else {
 					request.execute("alert('#equip-update-error');");
 				}
@@ -735,7 +735,7 @@ public class EquipmentsBean implements Serializable {
 
 		 if(delete) {
 			 request.execute("alert('#equip-delete');");
-			 request.execute("borderEquip(" + equipTable + equipId + ");");
+			 request.execute("borderEquip('" + equipTable + equipId + "');");
 		 } else {
 			 request.execute("alert('#equip-delete-error');");
 		 }
