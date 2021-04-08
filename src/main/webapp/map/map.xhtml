@@ -191,7 +191,7 @@
 				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button cancel_pos"
 					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
-					<f:ajax render="#realcancel" onevent="init" />
+					<f:ajax render="#realcancel" onevent="onEventFunction" />
 				</h:commandButton>
 			</h:form>
 			
@@ -974,7 +974,7 @@
 												value="Todos"
 												id="btn-form-all-equip"
 												class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
-												<f:ajax execute="@all" listener='#{equipsBean.setAll("map")}' onevent="init"></f:ajax>
+												<f:ajax execute="@all" listener='#{equipsBean.setAll("map")}' onevent="onEventFunction"></f:ajax>
 											</h:commandButton>
 										</div>
 									</div>
@@ -1150,7 +1150,7 @@
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_update_equipment}" p:data-toggle="modal" p:data-target="#editmodal" 
 								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
-								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="init" />
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventFunction" />
 							</h:commandButton>			 									
 							
 							<h:commandButton

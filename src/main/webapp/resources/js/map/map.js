@@ -30,6 +30,23 @@ const init = () => {
 	})
 }
 
+const onEventFunction = data => {
+    var status = data.status; // Can be "begin", "complete" or "success".
+
+    switch (status) {
+        case "begin":
+            break;
+
+        case "complete":
+            break;
+
+        case "success":
+			init();
+
+            break;
+    }
+}
+
 $(function() {
 	init();
 
