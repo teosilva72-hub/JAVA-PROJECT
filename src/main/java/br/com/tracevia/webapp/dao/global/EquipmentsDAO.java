@@ -220,6 +220,30 @@ public class EquipmentsDAO {
 
 		return lista;
 	}
+
+	public void setWidthMap(String modulo, String map, int width) throws Exception {
+
+		String sql = "UPDATE " + modulo + "_equipment SET " + map + "_width = ? WHERE equip_id > 0;";
+
+		try {
+
+		   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, width);
+
+			ps.executeUpdate();
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao inserir dados " + sqle);        		    
+				
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+
+
+	}
 	
 	// ---- MAP INTERFACE EQUIPMENTS ---- //
 	
@@ -955,11 +979,7 @@ public class EquipmentsDAO {
             			ps.setString(7, equip.getEstrada());
             			ps.setString(8, equip.getKm());       			
             			ps.setInt(9,  150); // Linear Width
-              			ps.setInt(10, 30); // Linear posX              			
               			ps.setInt(11, 100); // Linear posY
-              			ps.setInt(12, 75); // Map Width
-              			ps.setInt(13, 50); // Map posX
-              			ps.setInt(14, 50); // Map posY
             			ps.setInt(15,  equip.getDms_type()); //driver
             			ps.setBoolean(16, true);
             			          			

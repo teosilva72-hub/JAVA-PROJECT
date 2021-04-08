@@ -27,6 +27,8 @@ $(function() {
 		})
 
 	})
+
+	initPMV();
 })
 
 function ScrollZoom(container) {

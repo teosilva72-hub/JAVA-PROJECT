@@ -129,6 +129,7 @@ $(function() {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
 
+	initPMV();
 })
 
 function posReset() {

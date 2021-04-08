@@ -206,6 +206,7 @@ public class EquipmentsBean implements Serializable {
 						
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 	    ExternalContext externalContext = facesContext.getExternalContext();
+		RequestContext request = RequestContext.getCurrentInstance();
 	    
 	    DateTimeApplication dta = new DateTimeApplication();
 	  	    
@@ -272,18 +273,23 @@ public class EquipmentsBean implements Serializable {
 		    defineDMStype(dms, type);
 		  		    		    
 	   	    checked =  equipDAO.checkExists(dms.getEquip_id(), table);
+
+			request.execute("init();");
 	   	 
 	   	    if(checked)
-	   		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+			   request.execute("alert('#equip-save-error');");
 	   	    	 
 	   	      else {
 	   		 
 	   		   checked = equipDAO.EquipDMSRegisterMap(dms, table);
 	   		   
-	   		   if(checked)
-	   		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+(parameterMap.get("equipId"))+"'");
+	   		   if(checked) {
+					request.execute("alert('#equip-save');");
+			   		request.execute("updated = '" + equipTable + equipId + "';");
+				  }
 	   	 	   
-	   		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+	   		  else 
+				request.execute("alert('#equip-save-error');");
 	  	 	    		    			    		 
 	   	      }
 	   	    
@@ -339,18 +345,22 @@ public class EquipmentsBean implements Serializable {
 	    
 	    
    	    checked =  equipDAO.checkExists(sat.getEquip_id(), table);
+
+		   request.execute("init();");
    	 
    	    if(checked)
-   		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+   		   request.execute("alert('#equip-save-error');");
    	    	 
    	      else {
    		 
    		   checked = equipDAO.EquipSATRegisterMap(sat, table);
    		   
-   		   if(checked)
-   		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+(parameterMap.get("equipId"))+"'");
+   		   if(checked) {
+			request.execute("alert('#equip-save');");
+			   request.execute("updated = '" + equipTable + equipId + "';");
+		  }
    	 	   
-   		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+   		  else  request.execute("alert('#equip-save-error');");
   	 	    		    			    		 
    	      }
    	    
@@ -388,18 +398,22 @@ public class EquipmentsBean implements Serializable {
 		    equip.setKm(parameterMap.get("km"));		 
 	    	 
 	    	checked =  equipDAO.checkExists(equip.getEquip_id(), table);
+
+			request.execute("init();");
 	    	 
 	    	if(checked)
-	    		 RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+			request.execute("alert('#equip-save-error');");
 	    	 
 	    	else {
 	    	
 	    		  checked = equipDAO.EquipRegisterMap(equip, table);
 	    		   
-	    		  if(checked)
-	    		  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?newId="+table+(parameterMap.get("equipId"))+"'");
+	    		  if(checked) {
+					request.execute("alert('#equip-delete');");
+			   		request.execute("updated = '" + equipTable + equipId + "';");
+				  }
 	    	 	   
-	    		   else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?save=false'");
+	    		   else  request.execute("alert('#equip-save-error');");
 	   	 	    		    			    		 
 	    	      }  //VALIDATION
 	           
@@ -526,6 +540,7 @@ public class EquipmentsBean implements Serializable {
 				
 		 FacesContext facesContext = FacesContext.getCurrentInstance();
 		 ExternalContext externalContext = facesContext.getExternalContext();
+		 RequestContext request = RequestContext.getCurrentInstance();
 		
 		 DateTimeApplication dta = new DateTimeApplication();
 			    
@@ -588,10 +603,14 @@ public class EquipmentsBean implements Serializable {
 		 						   			 
 			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView);
 			  		     	 
-	     	    if(update)	     		
-	     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
-	     	 	   
-	     		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
+				request.execute("init();");
+				
+			    if(update) {
+					request.execute("alert('#equip-update');");
+					request.execute("updated = '" + equipTable + equipId + "';");
+				} else {
+					request.execute("alert('#equip-update-error');");
+				}
 	    	 		
 			
 	     } else if(moduleId != 0 && moduleId == 9) {
@@ -643,11 +662,15 @@ public class EquipmentsBean implements Serializable {
 	  	    
 	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView);
 	     	 
-	  	  if(update)	     		
-    		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
-    	 	   
-    		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
-   	 		
+			request.execute("init();");
+			
+			if(update) {
+				request.execute("alert('#equip-update');");
+				request.execute("updated = '" + equipTable + equipId + "';");
+			} else {
+				request.execute("alert('#equip-update-error');");
+			}
+		
 	  	  
 	     }else if((moduleId != 0 && (moduleId != 9 && moduleId != 8))) {
 	    	 
@@ -681,10 +704,14 @@ public class EquipmentsBean implements Serializable {
 			    //MENSAGEM UPDATED
 			    update = dao.EquipUpdateMap(equip, table, interfaceView);
 			    			    
-			    if(update)	     		
-		     		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?updatedId="+equipTable+equipId+"'");
-		     	 	   
-		     		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?update=false'");
+				request.execute("init();");
+
+			    if(update) {
+					request.execute("alert('#equip-update');");
+					request.execute("updated = '" + equipTable + equipId + "';");
+				} else {
+					request.execute("alert('#equip-update-error');");
+				}
 		    	 		
 		 }
 		 
@@ -698,15 +725,20 @@ public class EquipmentsBean implements Serializable {
 		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
+		 RequestContext request = RequestContext.getCurrentInstance();
 		 					 		 
 		 EquipmentsDAO dao = new EquipmentsDAO();
 		 		 
 		 delete = dao.EquipDeleteMap(equipId, equipTable);
 			 
-		  if(delete)	     		
-    		   RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?deletedId="+equipTable+equipId+"'");
-    	 	   
-    		  else  RequestContext.getCurrentInstance().execute("location.href=location.protocol + '//' + location.host + location.pathname+'?delete_=false'");
+		 request.execute("init();");
+
+		 if(delete) {
+			 request.execute("alert('#equip-delete');");
+			 request.execute("updated = '" + equipTable + equipId + "';");
+		 } else {
+			 request.execute("alert('#equip-delete-error');");
+		 }
    	 	
 	    }
 	
@@ -738,6 +770,23 @@ public class EquipmentsBean implements Serializable {
 		 
 		
 			
+	}
+
+	public void setAll(String map) throws Exception {
+		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
+
+		EquipmentsDAO dao = new EquipmentsDAO();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		String w = params.get("width-edit");
+
+		String module = getEquipTable();
+		int width = w == "" ? 100 : Integer.parseInt(w);
+
+		dao.setWidthMap(module.equals("dms") ? "pmv" : module , map, width);
+
+		request.execute("alertToast('all equipment updated!');");
 	}
 	
 	public String defineTableById(int id) { 

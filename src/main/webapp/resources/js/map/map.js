@@ -1,8 +1,58 @@
 var widthMax = 1000
 var heightMax = 1000
+var updated = '';
 var scale = 1;
 
+const init = () => {
+	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		resizeEquipScale($('[scroll-zoom]'))
+
+		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+	
+			posEquip(equip)
+	
+			equip.dblclick(function () {
+				posReset();
+	
+				id = equip.attr('id').match(/\d+/g)[0];
+				type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+				toDrag = `#${equip.attr('id')}`
+	
+				$('#OPmodal').modal('toggle');
+			});
+	
+			$(window).resize(function () {
+				posEquip(equip)
+			})
+		})
+
+		borderEquip(updated);
+
+		initPMV();
+	})
+}
+
+const onEventFunction = data => {
+    var status = data.status;
+
+    switch (status) {
+        case "begin":
+            break;
+
+        case "complete":
+            break;
+
+        case "success":
+			init();
+
+            break;
+    }
+}
+
 $(function() {
+	init();
+
 	setTimeout(function () {
 		$('#message-show').hide(); 		
 	}, 5000);
@@ -184,27 +234,7 @@ $(function() {
 
 	// POS EQUIP
 
-	resizeEquipScale($('[scroll-zoom]'))
-
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-
-		posEquip(equip)
-
-		equip.dblclick(function () {
-			posReset();
-
-			id = equip.attr('id').match(/\d+/g)[0];
-			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
-			toDrag = `#${equip.attr('id')}`
-
-			$('#OPmodal').modal('toggle');
-		});
-
-		$(window).resize(function () {
-			posEquip(equip)
-		})
-	})
+	
 	
 	//Equipments change sizes END
 
@@ -610,14 +640,6 @@ $(document).ready(function(){
 
 //prevent modal form submit
 //use ajax to send data
-
-
-//Reload on Cancel Position
-function reloadAfterCancelPos(){
-	setTimeout(function() {
-	window.location.reload(1);
-  }, 2000); // 2 sec						
-}
 
 //Use validation on click button submit   
 //Create button
