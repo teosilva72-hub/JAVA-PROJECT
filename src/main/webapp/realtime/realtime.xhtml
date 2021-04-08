@@ -16,9 +16,9 @@
 	    <h:outputStylesheet library="css/validation" name="validation_style.css" />
 
 		<!-- Script -->
-		<h:outputScript name="realtime.js" library="js/realtime" />
-		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />
-		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js" />
+		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
+		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
+		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js?version=#{notificationsView.timestamp}" />
 
 		<style>
 			@keyframes myMove {
@@ -1502,7 +1502,7 @@
 
 	<ui:define name="jscript">
 	
-	<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
+	<h:outputScript name="dmsAnimation.js?version=#{notificationsView.timestamp}" p:type="module" library="js/dms" />
 		
 		<!-- Mudança -->
 

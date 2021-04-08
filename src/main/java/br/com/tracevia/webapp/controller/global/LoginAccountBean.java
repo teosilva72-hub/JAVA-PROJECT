@@ -3,10 +3,12 @@ package br.com.tracevia.webapp.controller.global;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -41,7 +43,18 @@ public class LoginAccountBean {
 	String mapUI, linearMapUI; 
 		
 	InetAddress addr;
-					
+	
+	@ManagedProperty("#{language}")
+	private LanguageBean language; 
+	 					
+	public LanguageBean getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(LanguageBean language) {
+		this.language = language;
+	}
+
 	public UserAccount getUser() {
 		return user;
 	}
@@ -198,8 +211,7 @@ public class LoginAccountBean {
      }        
 
 public void LogOut() throws IOException {
-	
-	
+					
 	FacesContext context = FacesContext.getCurrentInstance();   
 	context.addMessage(null,
 	new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
@@ -208,8 +220,9 @@ public void LogOut() throws IOException {
     externalContext.getFlash().setKeepMessages(true);
     externalContext.invalidateSession();
     externalContext.redirect("login.xhtml");
+     
 	
-}
+ }
 
 public String forgetPasswordRedirect() {	
 	
