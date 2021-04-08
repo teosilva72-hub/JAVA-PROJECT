@@ -1,5 +1,6 @@
 var widthMax = 1000
 var heightMax = 1000
+var updated = '';
 var scale = 1;
 
 const init = () => {
@@ -26,12 +27,14 @@ const init = () => {
 			})
 		})
 
+		borderEquip(updated);
+
 		initPMV();
 	})
 }
 
 const onEventFunction = data => {
-    var status = data.status; // Can be "begin", "complete" or "success".
+    var status = data.status;
 
     switch (status) {
         case "begin":
