@@ -2,7 +2,7 @@ import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let listPMV = [];
 
-async function main() {
+async function initPMV() {
 	await init();
 	const animationPMV = (img1, img2, message, pmv) => {
 		let at = 300
@@ -113,4 +113,4 @@ async function main() {
 	})
 }
 
-main();
+window.initPMV = initPMV;

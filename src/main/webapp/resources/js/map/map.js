@@ -2,7 +2,37 @@ var widthMax = 1000
 var heightMax = 1000
 var scale = 1;
 
+const init = () => {
+	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		resizeEquipScale($('[scroll-zoom]'))
+
+		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+	
+			posEquip(equip)
+	
+			equip.dblclick(function () {
+				posReset();
+	
+				id = equip.attr('id').match(/\d+/g)[0];
+				type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+				toDrag = `#${equip.attr('id')}`
+	
+				$('#OPmodal').modal('toggle');
+			});
+	
+			$(window).resize(function () {
+				posEquip(equip)
+			})
+		})
+
+		initPMV();
+	})
+}
+
 $(function() {
+	init();
+
 	setTimeout(function () {
 		$('#message-show').hide(); 		
 	}, 5000);
@@ -184,27 +214,7 @@ $(function() {
 
 	// POS EQUIP
 
-	resizeEquipScale($('[scroll-zoom]'))
-
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-
-		posEquip(equip)
-
-		equip.dblclick(function () {
-			posReset();
-
-			id = equip.attr('id').match(/\d+/g)[0];
-			type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
-			toDrag = `#${equip.attr('id')}`
-
-			$('#OPmodal').modal('toggle');
-		});
-
-		$(window).resize(function () {
-			posEquip(equip)
-		})
-	})
+	
 	
 	//Equipments change sizes END
 
