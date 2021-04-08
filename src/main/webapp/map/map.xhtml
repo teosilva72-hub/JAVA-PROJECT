@@ -703,7 +703,7 @@
 						
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_save_equipment}"
-								id="btn-form-send" class="btn btn-dark form-modal-draw-button" >
+								id="btn-form-send" class="btn btn-dark form-modal-draw-button" p:data-toggle="modal" p:data-target="#editmodal" >
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
@@ -1148,9 +1148,9 @@
 						<h:inputHidden id="equipId1" value="#{equipsBean.equipId}" />		
 						<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />
 							<h:commandButton 
-								value="#{mapLabels.map_creation_btn_update_equipment}" 
+								value="#{mapLabels.map_creation_btn_update_equipment}" p:data-toggle="modal" p:data-target="#editmodal" 
 								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
-								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" />
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="init" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
@@ -1396,74 +1396,6 @@
         
         // *********************************************************** //
         
-            //SAVE URL RESPONSE
-               $(function() {
-            	   
-            	 //SAVE EQUIP				
-   				let newIdMatch = RegExp(/newId=(\w+)/)
-   				let saveMatch = RegExp(/save=(false)/)
-   				
-   				let getNewId = newIdMatch.exec(location.href)
-   				let getSave = saveMatch.exec(location.href)	
-									
-				
-				if (getNewId) {
-					borderEquip(getNewId[1])
-					alert('#equip-save');
-				}								
-				else if(getSave) 
-					    if(getSave[1] == 'false')
-					       alert('#equip-save-error');				 			
-			})
-
-			//SAVE URL RESPONSE
-			
-      // *********************************************************** //
-      
-        //UPDATE URL RESPONSE
-               $(function() {
-            	   
-            	 //DELETE EQUIP				
-   				let updatedIdMatch = RegExp(/updatedId=(\w+)/)
-   				let updateMatch = RegExp(/update=(false)/)
-   				
-   				let getUpdatedId = updatedIdMatch.exec(location.href)
-   				let getUpdate = updateMatch.exec(location.href)								
-				
-				if (getUpdatedId) {
-					borderEquip(getUpdatedId[1])
-					alert('#equip-update');
-				}								
-				else if(getUpdate) 
-					    if(getUpdate[1] == 'false')
-					       alert('#equip-update-error');				 			
-			})
-
-			//UPDATE URL RESPONSE
-			
-			   // *********************************************************** //
-        
-            //DELETE URL RESPONSE
-               $(function() {
-            	   
-            	 //DELETE EQUIP				
-   				let deletedIdMatch = RegExp(/deletedId=(\w+)/)
-   				let deleteMatch = RegExp(/delete_=(false)/)
-   				
-   				let getDeletedId = deletedIdMatch.exec(location.href)
-   				let getDelete = deleteMatch.exec(location.href)	
-								
-				if (getDeletedId) {					
-					alert('#equip-delete');
-				}								
-				else if(getDelete) 
-					    if(getDelete[1] == 'false')
-					       alert('#equip-delete-error');				 			
-			})
-
-			//DELETE URL RESPONSE
-			
-      // *********************************************************** //
 
 			function hiddenBtns() {
 				document.getElementById("topButtons").style.display = "none";
