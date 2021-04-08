@@ -703,7 +703,7 @@
 						
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_save_equipment}"
-								id="btn-form-send" class="btn btn-dark form-modal-draw-button" p:data-toggle="modal" p:data-target="#editmodal" >
+								id="btn-form-send" class="btn btn-dark form-modal-draw-button" p:data-toggle="modal" p:data-target="#modaladd" >
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
@@ -1204,7 +1204,7 @@
 								<!-- DELETE BUTTON  -->
 								<h:commandButton
 									value="#{mapLabels.map_creation_btn_yes_equipment}"
-									id="btn-form-delete-yes" class="btn btn-dark form-modal-draw-button"								
+									id="btn-form-delete-yes" class="btn btn-dark form-modal-draw-button" p:data-toggle="modal" p:data-target="#deletemodal"								
 									onclick="deleteParameters();">
 									<f:ajax execute="@all" render="@none" listener="#{equipsBean.DeleteEquipment}" />
 								</h:commandButton> <!---->
