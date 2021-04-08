@@ -2,31 +2,41 @@ import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
 let listPMV = [];
 
+window.reloadPMV = 0;
+
 async function initPMV() {
 	await init();
 	const animationPMV = (img1, img2, message, pmv) => {
 		let at = 300
 		let driver = pmv.type_page()
+		let reload = window.reloadPMV;
 
 		const startAnimation = () => {
+			if (window.reloadPMV != reload) {
+				return;
+			}
+
 			let page = pmv.next();
+			let image1 = [page.image(0), page.image_id(0)]
+			let image2 = [page.image(1), page.image_id(1)]
 
 			img1.fadeOut()
 			setTimeout(() => {
-				img1.attr({ src: page.image(0), 'id-img': page.image_id(0) }).fadeIn()
+				img1.attr({ src: image1[0], 'id-img': image1[1] }).fadeIn()
 			}, at)
 			if (driver == 3) {
 				img2.fadeOut()
 				setTimeout(() => {
-					img2.attr({ src: page.image(1), 'id-img': page.image_id(1) }).fadeIn()
+					img2.attr({ src: image2[0], 'id-img': image2[1] }).fadeIn()
 				}, at)
 			}
 
 			message.children().each(function (line) {
 				$(this).children().each(function (index) {
 					let char = $(this).find('span[id^=box]').fadeOut()
+					let c = page.line_char(line + 1, index);
 					setTimeout(() => {
-						char.text(page.line_char(line + 1, index)).fadeIn()
+						char.text(c).fadeIn()
 					}, at)
 				})
 			})
@@ -108,6 +118,8 @@ async function initPMV() {
 	}
 
 	$(function () {
+		window.reloadPMV++;
+
 		collectPMV();
 		initAnimation();
 	})
