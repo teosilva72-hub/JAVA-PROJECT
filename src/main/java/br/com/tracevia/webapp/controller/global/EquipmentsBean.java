@@ -739,6 +739,23 @@ public class EquipmentsBean implements Serializable {
 		
 			
 	}
+
+	public void setAll(String map) throws Exception {
+		FacesContext context = FacesContext.getCurrentInstance();
+		RequestContext request = RequestContext.getCurrentInstance();
+
+		EquipmentsDAO dao = new EquipmentsDAO();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		String w = params.get("width-edit");
+
+		String module = getEquipTable();
+		int width = w == "" ? 100 : Integer.parseInt(w);
+
+		dao.setWidthMap(module.equals("dms") ? "pmv" : module , map, width);
+
+		request.execute("alertToast('all equipment updated!');");
+	}
 	
 	public String defineTableById(int id) { 
 		

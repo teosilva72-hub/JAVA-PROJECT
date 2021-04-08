@@ -1427,14 +1427,25 @@
 										<input type="text" autocomplete="off" name="km-edit" id="km-edit" maxlength="7" class="km"
 										placeholder="#{mapLabels.map_creation_input_km}" /> <!-- INPUT -->
 									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
-								</div> <!---->							
-														
+								</div> <!---->	
+								
 								<div class="form-group col-md-6 input-field"> <!-- INPUT DIV -->
 									<span><i class="fas fa-arrows-alt-h"></i></span> <!-- SPAN ICON --> 
-										<input type="text" autocomplete="off" name="width-edit" id="width-edit" 
+									<div class="input-group mb-3">
+										<input class="form-control" type="text" autocomplete="off" name="width-edit" id="width-edit" 
 										placeholder="#{mapLabels.map_creation_input_width}" /> <!-- INPUT -->
+										<div class="input-group-append">
+											<h:commandButton
+												value="Todos"
+												id="btn-form-all-equip"
+												class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
+												<f:ajax execute="@all" listener='#{equipsBean.setAll("map")}'></f:ajax>
+											</h:commandButton>
+										</div>
+									</div>
 									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
-								</div> <!---->					
+								</div> <!---->	
+								
 							</div> <!----> 	
 							
 							<!-- ***** KM ***** -->
@@ -1597,10 +1608,10 @@
 																
 						<!-- ***** MODAL BUTTONS ***** -->
 
-						<div class="modal-footer">						
+						<div class="modal-footer">			
 						
 						<h:inputHidden id="equipId1" value="#{equipsBean.equipId}" />		
-						<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />					
+						<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_update_equipment}" 
 								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
