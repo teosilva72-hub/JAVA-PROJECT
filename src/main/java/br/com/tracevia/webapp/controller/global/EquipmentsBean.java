@@ -285,7 +285,7 @@ public class EquipmentsBean implements Serializable {
 	   		   
 	   		   if(checked) {
 					request.execute("alert('#equip-save');");
-			   		request.execute("updated = '" + equipTable + equipId + "';");
+			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	   	 	   
 	   		  else 
@@ -357,7 +357,7 @@ public class EquipmentsBean implements Serializable {
    		   
    		   if(checked) {
 			request.execute("alert('#equip-save');");
-			   request.execute("updated = '" + equipTable + equipId + "';");
+			   request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 		  }
    	 	   
    		  else  request.execute("alert('#equip-save-error');");
@@ -410,7 +410,7 @@ public class EquipmentsBean implements Serializable {
 	    		   
 	    		  if(checked) {
 					request.execute("alert('#equip-delete');");
-			   		request.execute("updated = '" + equipTable + equipId + "';");
+			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	    	 	   
 	    		   else  request.execute("alert('#equip-save-error');");
