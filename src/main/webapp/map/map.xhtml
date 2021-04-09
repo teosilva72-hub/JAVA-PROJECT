@@ -1126,7 +1126,7 @@
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_update_equipment}" p:data-toggle="modal" p:data-target="#editmodal" 
 								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
-								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventFunction" />
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
