@@ -31,6 +31,7 @@ const init = () => {
 		borderEquip(updated);
 
 		setInfoEquip();
+		showGenericName();
 		initPMV();
 	})
 }
