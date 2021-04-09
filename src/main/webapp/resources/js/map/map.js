@@ -6,6 +6,7 @@ var scale = 1;
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
+		resizeEquip($('[scroll-zoom]'))
 
 		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
