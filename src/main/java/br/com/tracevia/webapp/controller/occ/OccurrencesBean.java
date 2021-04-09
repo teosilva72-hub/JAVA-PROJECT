@@ -1646,9 +1646,9 @@ public class OccurrencesBean {
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
 			document.add(new Paragraph("Occ Nº: "+data.getData_number()+"        "
-					+ trad.occLabels("Tipo")+(": ")+ getPdf.getType()+"         "
-					+ trad.occLabels("Origem")+(": ")+getPdf.getOrigin()+"          "
-					+ trad.occLabels("Situação")+(": ")+getPdf.getState_occurrences()+"\n"
+					+ trad.occLabels("Tipo")+(": ")+ trad.occurrencesTranslator(getPdf.getType())+"         "
+					+ trad.occLabels("Origem")+(": ")+ trad.occurrencesTranslator(getPdf.getOrigin())+"          "
+					+ trad.occLabels("Situação")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"
 					));
@@ -1665,9 +1665,9 @@ public class OccurrencesBean {
 			document.add(new Paragraph(dateHour+"\n"+"\n"));
 			//data e hora inicial
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getStart_date()
-			+"             "+("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()+"  "+data.getTypeHour1()
-			+"             "+ ("Final")+": "+data.getEnd_date()+"             "+
-			("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+" "+data.getTypeHour2()+"\n"
+			+"             "+trad.occLabels("Inicial")+(": ")+data.getStart_hour()+":"+data.getStart_minute()+"  "+data.getTypeHour1()
+			+"             "+ trad.occLabels("Final")+": "+data.getEnd_date()+"             "+
+			trad.occLabels("Final")+": "+data.getEnd_hour()+":"+data.getEnd_minute()+" "+data.getTypeHour2()+"\n"
 			+"_____________________________________________________________________________"
 			+"\n\n"));
 
@@ -1682,7 +1682,7 @@ public class OccurrencesBean {
 			causePr.setBorderWidth(1);
 			document.add(causePr);*/
 			document.add(new Paragraph(causeProbable+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Causa")+": "+getPdf.getCause()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Causa")+": "+trad.occurrencesTranslator(getPdf.getCause())+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getCause_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
@@ -1700,7 +1700,7 @@ public class OccurrencesBean {
 			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
 					+ trad.occLabels("Rodovia")+": "+getPdf.getHighway()+"            "
 					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
+			document.add(new Paragraph(trad.occLabels("Sentido")+": "+trad.occurrencesTranslator(getPdf.getDirection())+"                         "
 					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
 					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
@@ -1716,12 +1716,12 @@ public class OccurrencesBean {
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-			document.add(new Paragraph("Condição Local: "+getPdf.getLocal_condition()+"  "
-					+ trad.occLabels("Condição Tráfego")+": "+getPdf.getTraffic()+"   "
-					+ trad.occLabels("Característica")+": "+getPdf.getCharacteristic()+"\n\n"));
+			document.add(new Paragraph("Condição Local: "+ trad.occurrencesTranslator(getPdf.getLocal_condition())+"  "
+					+ trad.occLabels("Condição Tráfego")+": "+ trad.occurrencesTranslator(getPdf.getTraffic())+"   "
+					+ trad.occLabels("Característica")+": "+trad.occurrencesTranslator(getPdf.getCharacteristic())+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Interferência Faixa")+": "+getPdf.getInterference()+"     "
-					+trad.occLabels("Sinalização")+": "+getPdf.getSignaling()+"     "
-					+trad.occLabels("Situação Condutor")+": "+ getPdf.getConductor_condition()));
+					+trad.occLabels("Sinalização")+": "+trad.occurrencesTranslator(getPdf.getSignaling())+"     "
+					+trad.occLabels("Situação Condutor")+": "+ trad.occurrencesTranslator(getPdf.getConductor_condition())));
 
 			//final da primeira p�gina
 
@@ -1761,7 +1761,7 @@ public class OccurrencesBean {
 			envolvido.setBorderWidth(1);
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getInvolved_type())+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
@@ -1780,7 +1780,7 @@ public class OccurrencesBean {
 			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
 			document.add(new Paragraph(trad.occLabels("Extensão(KM)")+": "+data.getTraffic_extension()+"            "
-					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
+					+trad.occLabels("Pista Interrompida")+": "+ trad.occurrencesTranslator(getPdf.getTraffic_stopped())+"\n\n"));
 			document.newPage();//inicio da terceira p�gina
 			
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
@@ -1807,7 +1807,9 @@ public class OccurrencesBean {
 			document.add(damage1);*/
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "+trad.occLabels("Gravidade")+": "+getPdf.getDamage_gravity()+"     "+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getDamage_type_damage())+"     "
+			+trad.occLabels("Gravidade")+": "+ trad.occurrencesTranslator(getPdf.getDamage_gravity())+"     "
+			+trad.occLabels("Unidade")+": "+trad.occurrencesTranslator(getPdf.getDamageUnity())
 			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
@@ -1823,9 +1825,14 @@ public class OccurrencesBean {
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
-			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getAction_type())+"             "
+			+trad.occLabels("Situação")+": "+trad.occurrencesTranslator(getPdf.getStatusAction())+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()
+			+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()
+			+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()
+			+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()
+			+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getAction_description()+"\n"
 					+"_____________________________________________________________________________\n"));
 			//darken date and time
