@@ -48,10 +48,18 @@ public class LocaleUtil {
 	     return locale;	   
 	 }
 	 
+	 		 
 	 public ResourceBundle getResourceBundle(String resource){
 		 
 	       return resourceBundle = ResourceBundle.getBundle(resource + currentLocale().toString()); 
 	 }
+	 
+	 // USE ONLY TO EXIT DEPEND ON LANGUAGE
+	 public ResourceBundle getResourceBundleLogout(String resource, Locale locale){
+		 
+	       return resourceBundle = ResourceBundle.getBundle(resource + locale.toString()); 
+	 }
+	 
 	 
 	 public String getStringKey(String key){
 		 

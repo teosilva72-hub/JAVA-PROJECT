@@ -979,11 +979,7 @@ public class EquipmentsDAO {
             			ps.setString(7, equip.getEstrada());
             			ps.setString(8, equip.getKm());       			
             			ps.setInt(9,  150); // Linear Width
-              			ps.setInt(10, 30); // Linear posX
               			ps.setInt(11, 100); // Linear posY
-              			ps.setInt(12, 75); // Map Width
-              			ps.setInt(13, 50); // Map posX
-              			ps.setInt(14, 50); // Map posY
             			ps.setInt(15,  equip.getDms_type()); //driver
             			ps.setBoolean(16, true);
             			          			
