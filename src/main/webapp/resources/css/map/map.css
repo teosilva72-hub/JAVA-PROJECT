@@ -194,7 +194,8 @@ table {
   height: auto!important;
 }
 
-.equip-box {
+.equip-box,
+.equip-info {
   transform-origin: 50% 70% !important;
 }
 

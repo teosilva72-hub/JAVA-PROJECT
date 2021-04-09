@@ -111,7 +111,8 @@ body {
   border: none;
 }
 
-.equip-box {
+.equip-box,
+.equip-info {
   transform-origin: 50% 70% !important;
 }
 
