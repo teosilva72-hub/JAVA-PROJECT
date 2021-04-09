@@ -56,30 +56,6 @@
 		//AUTO UPDATE PAGE INTERVAL
 		///////////////////////////////////
 		
-		
-		  //POPOVER TASKS => SAT
-			  
-			  		$(function () {
- 
-			  			$('[data-toggle="popover"]').popover({	
-			  				html : true,
-							trigger: 'hover',
-			  				content: function() {        
-			  					var content = $(this).attr("data-popover-content");        
-			  					return $(content).children(".popover-body").html();     
-			  				},      
-			  				title: function() {        
-			  					var title = $(this).attr("data-popover-content");        
-			  					return $(title).children(".popover-header").html();      
-			  				} 
-			  			  }); 
-			  		   });		
-			         $(function () {
-			       $('[data-toggle="tooltip"]').tooltip()
-			      })
-			      
-			  //POPOVER TASKS => SAT
-		
 		</script>
 
 	</ui:define>
@@ -351,7 +327,7 @@
 		</div>
 				
 		<!-- OVERFLOW -->
-		<section class="overflow" scroll-zoom="0.5" max-scale="4" id="content">
+		<section class="overflow" scroll-zoom="2.5" max-scale="12" id="content">
 											
 			<!-- START SECTION -->
 			<div id="zoomtext" scale="1" class="section">
@@ -1150,7 +1126,7 @@
 							<h:commandButton 
 								value="#{mapLabels.map_creation_btn_update_equipment}" p:data-toggle="modal" p:data-target="#editmodal" 
 								id="btn-form-send-edit" class="btn btn-dark form-modal-draw-button" onclick="sendType();" >
-								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventFunction" />
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
@@ -1385,8 +1361,8 @@
 		////////////////////////////
 	
 			function borderEquip(id){
-				if (id != '') {
-					var equipBorder = document.getElementById(id);
+				var equipBorder = document.getElementById(id);
+				if (equipBorder != null) {
 					equipBorder.style.border = "2px solid black"
 					equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
 					setTimeout(function () {

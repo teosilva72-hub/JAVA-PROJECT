@@ -111,6 +111,9 @@ body {
   border: none;
 }
 
+.equip-box {
+  transform-origin: 50% 70% !important;
+}
 
 /* TABLES MSG EQUIP PREVIEW */
 

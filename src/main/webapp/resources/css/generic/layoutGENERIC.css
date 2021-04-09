@@ -47,7 +47,7 @@
   border-right: none;  
   border: none;
   width: 75px !important;
-
+  transform-origin: 50% 90%;
 }
 
 /*INTERNAL CONTENT OF EQUIPMENT*/
