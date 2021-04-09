@@ -9,19 +9,19 @@ const init = () => {
 
 		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
-	
+
 			posEquip(equip)
-	
+
 			equip.dblclick(function () {
 				posReset();
-	
+
 				id = equip.attr('id').match(/\d+/g)[0];
 				type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 				toDrag = `#${equip.attr('id')}`
-	
+
 				$('#OPmodal').modal('toggle');
 			});
-	
+
 			$(window).resize(function () {
 				posEquip(equip)
 			})
@@ -29,118 +29,135 @@ const init = () => {
 
 		borderEquip(updated);
 
+		setInfoEquip();
 		initPMV();
 	})
 }
 
 const onEventFunction = data => {
-    var status = data.status;
+	var status = data.status;
 
-    switch (status) {
-        case "begin":
-            break;
+	switch (status) {
+		case "begin":
+			break;
 
-        case "complete":
-            break;
+		case "complete":
+			break;
 
-        case "success":
+		case "success":
 			init();
 
-            break;
-    }
+			break;
+	}
 }
 
-$(function() {
+const setInfoEquip = () => {
+	$('[data-toggle="popover"]').popover({
+		html: true,
+		trigger: 'hover',
+		content: function () {
+			var content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},
+		title: function () {
+			var title = $(this).attr("data-popover-content");
+			return $(title).children(".popover-header").html();
+		}
+	});
+	$('[data-toggle="tooltip"]').tooltip()
+}
+
+$(function () {
 	init();
 
 	setTimeout(function () {
-		$('#message-show').hide(); 		
+		$('#message-show').hide();
 	}, 5000);
 
-	$('#divide').on('click', () =>  {
+	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.5)
 		$('#frame2')[0].contentWindow.setPosition(0.3, 0.5)
 		$('#frame3')[0].contentWindow.setPosition(1, 0.1)
-		
+
 	})
-	
+
 	$('[id$="btn-edit"]').click(function btnEdit() {
 		setTimeout(() => {
-			
-					var equipsSEL = document.getElementById("equips-edit");
-					var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
-					if (selectVAL == 9) {
-						$('.satInputs-edit').show(); // DIV FAIXAS 1	
-						$('.dmsHidden-edit').hide();
-						$("#lanes-edit").change(
-							function () {
-								var satLanes = document.getElementById("lanes-edit");								
-								console.log(satLanes)
-								var selectSAT = satLanes.value;
-								if (selectSAT == 2) {
-									$('#direction3-edit').hide();
-									$('#direction4-edit').hide();
-									$('#direction5-edit').hide();
-									$('#direction6-edit').hide();
-									$('#direction7-edit').hide();
-									$('#direction8-edit').hide();
-								} else if (selectSAT == 3) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').hide();
-									$('#direction5-edit').hide();
-									$('#direction6-edit').hide();
-									$('#direction7-edit').hide();
-									$('#direction8-edit').hide();
-								} else if (selectSAT == 4) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').show();
-									$('#direction5-edit').hide();
-									$('#direction6-edit').hide();
-									$('#direction7-edit').hide();
-									$('#direction8-edit').hide();
-								} else if (selectSAT == 5) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').show();
-									$('#direction5-edit').show();
-									$('#direction6-edit').hide();
-									$('#direction7-edit').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 6) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').show();
-									$('#direction5-edit').show();
-									$('#direction6-edit').show();
-									$('#direction7-edit').hide();
-									$('#direction8-edit').hide();
-								} else if (selectSAT == 7) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').show();
-									$('#direction5-edit').show();
-									$('#direction6-edit').show();
-									$('#direction7-edit').show();
-									$('#direction8-edit').hide();
-								} else if (selectSAT == 8) {
-									$('#direction3-edit').show();
-									$('#direction4-edit').show();
-									$('#direction5-edit').show();
-									$('#direction6-edit').show();
-									$('#direction7-edit').show();
-									$('#direction8-edit').show();
-								}
-							});
-					} else if (selectVAL == 8) {							
-										  
-						    $('.dmsHidden-edit').show(); // DIV DMS TYPE	
-						    $('.satInputs-edit').hide(); 
-							
-					} else {
-						
-						 $('.dmsHidden-edit').hide();	
-						 $('.satInputs-edit').hide(); 
-					}
-					
+
+			var equipsSEL = document.getElementById("equips-edit");
+			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
+			if (selectVAL == 9) {
+				$('.satInputs-edit').show(); // DIV FAIXAS 1	
+				$('.dmsHidden-edit').hide();
+				$("#lanes-edit").change(
+					function () {
+						var satLanes = document.getElementById("lanes-edit");
+						console.log(satLanes)
+						var selectSAT = satLanes.value;
+						if (selectSAT == 2) {
+							$('#direction3-edit').hide();
+							$('#direction4-edit').hide();
+							$('#direction5-edit').hide();
+							$('#direction6-edit').hide();
+							$('#direction7-edit').hide();
+							$('#direction8-edit').hide();
+						} else if (selectSAT == 3) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').hide();
+							$('#direction5-edit').hide();
+							$('#direction6-edit').hide();
+							$('#direction7-edit').hide();
+							$('#direction8-edit').hide();
+						} else if (selectSAT == 4) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').show();
+							$('#direction5-edit').hide();
+							$('#direction6-edit').hide();
+							$('#direction7-edit').hide();
+							$('#direction8-edit').hide();
+						} else if (selectSAT == 5) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').show();
+							$('#direction5-edit').show();
+							$('#direction6-edit').hide();
+							$('#direction7-edit').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 6) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').show();
+							$('#direction5-edit').show();
+							$('#direction6-edit').show();
+							$('#direction7-edit').hide();
+							$('#direction8-edit').hide();
+						} else if (selectSAT == 7) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').show();
+							$('#direction5-edit').show();
+							$('#direction6-edit').show();
+							$('#direction7-edit').show();
+							$('#direction8-edit').hide();
+						} else if (selectSAT == 8) {
+							$('#direction3-edit').show();
+							$('#direction4-edit').show();
+							$('#direction5-edit').show();
+							$('#direction6-edit').show();
+							$('#direction7-edit').show();
+							$('#direction8-edit').show();
+						}
+					});
+			} else if (selectVAL == 8) {
+
+				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
+				$('.satInputs-edit').hide();
+
+			} else {
+
+				$('.dmsHidden-edit').hide();
+				$('.satInputs-edit').hide();
+			}
+
 		}, 100)
-				});
+	});
 
 
 	//Scroll Zoom Map Full
@@ -156,7 +173,7 @@ $(function() {
 	$(window).resize(function () {
 		$(".overflow").css("height", $(this).height() - 125)
 	})
-																
+
 	//FULLSCREEN
 	// $('.zoomFull').addClass('img-enlargeable').click(function () {
 	//	var src = this.getAttribute('target');
@@ -180,7 +197,7 @@ $(function() {
 	//		zIndex: '10000',
 	//		top: '0', left: '0',
 	//	}).append(frame).click(function () { removeModal(); }).appendTo('body')
-		//Zoom
+	//Zoom
 	//	img.click(function (e) { e.stopPropagation() })
 	//		.on("dragstart", function () { return false })
 	//		.on("mousedown", function (down) {
@@ -225,17 +242,17 @@ $(function() {
 	//			}
 	//		});
 
-		// handling ESC
+	// handling ESC
 	//	$('body').on('keyup.modal-close', function (e) {
 	//		if (e.key === 'Escape') { removeModal(); }
 	//	});
-//	});
+	//	});
 	// FULLSCREEN END
 
 	// POS EQUIP
 
-	
-	
+
+
 	//Equipments change sizes END
 
 	$('#coefSize').change(function () {
@@ -254,7 +271,7 @@ function ScrollZoom(container) {
 	let target = container.children().first()
 	let pos = zoom_point = { x: 0, y: 0 }
 	let scale_diff = 1
-	
+
 	target.css('transform-origin', '0 0')
 	container.on("mousewheel DOMMouseScroll", scrolled)
 
@@ -285,14 +302,14 @@ function ScrollZoom(container) {
 			scale = Math.max(1, Math.min(max_scale, scale))
 			scale_diff = scale / scale_diff
 			target.attr('scale', scale)
-			
+
 			console.log(scale);
 
 			update()
 			resizeEquip(container)
 		}
-		
-		
+
+
 	}
 
 	function update() {
@@ -302,8 +319,8 @@ function ScrollZoom(container) {
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
 			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
 
-        showGenericName();
-        
+		showGenericName();
+
 		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
 			let equip = $(this)
 
@@ -311,8 +328,8 @@ function ScrollZoom(container) {
 				{
 					top: Number(equip.css('top').replace('px', '')) * scale_diff,
 					left: Number(equip.css('left').replace('px', '')) * scale_diff
-					
-			  }
+
+				}
 			)
 		})
 	}
@@ -320,7 +337,7 @@ function ScrollZoom(container) {
 
 // SIZE BAR EQUIPMENTS
 
- function barResize(){
+function barResize() {
 
 	let size = $('.bar')
 	let input = size.find('input')
@@ -328,31 +345,31 @@ function ScrollZoom(container) {
 	let max = Number(input.attr('max'))
 	let value = Number(input.val())
 	let width = size.width()
-	
-	size.on('touchstart mousedown', function(e) {
-	    let clientX = (e.touches || [e])[0].clientX
-	    let offSetLeft = size.offset().left
-	    let pos = clientX - offSetLeft
+
+	size.on('touchstart mousedown', function (e) {
+		let clientX = (e.touches || [e])[0].clientX
+		let offSetLeft = size.offset().left
+		let pos = clientX - offSetLeft
 		width = size.width()
 		input = size.find('input')
-	    let por = Math.min(1, Math.max(0, pos / width))
-	    let newVal = por * (max - min) + min
-	    
-	    size.children().first().css("left", `${por * 100}%`).find('input').attr('value', newVal).trigger("change")
-	
-	    $(document).on('touchmove mousemove', function(e) {
-	        clientX = (e.touches || [e])[0].clientX
+		let por = Math.min(1, Math.max(0, pos / width))
+		let newVal = por * (max - min) + min
+
+		size.children().first().css("left", `${por * 100}%`).find('input').attr('value', newVal).trigger("change")
+
+		$(document).on('touchmove mousemove', function (e) {
+			clientX = (e.touches || [e])[0].clientX
 			offSetLeft = size.offset().left
-	        pos = clientX - offSetLeft
+			pos = clientX - offSetLeft
 			input = size.find('input')
-	        por = Math.min(1, Math.max(0, pos / width))
-	        newVal = por * (max - min) + min
-	 		input.attr('value', newVal).trigger('change').parent().css('left', `${por * 100}%`)
-	    }).on("mouseup touchend", () => {
-	        $(document).off("touchmove mousemove")
-	    })
-	}).children().first().css("left", `${(value-min)/ (max-min) * 100}%`)
-	
+			por = Math.min(1, Math.max(0, pos / width))
+			newVal = por * (max - min) + min
+			input.attr('value', newVal).trigger('change').parent().css('left', `${por * 100}%`)
+		}).on("mouseup touchend", () => {
+			$(document).off("touchmove mousemove")
+		})
+	}).children().first().css("left", `${(value - min) / (max - min) * 100}%`)
+
 	input.change(function () {
 		resizeEquipScale($(`${input.attr("from")}`).parent())
 		console.log($(`${input.attr("from")}`).parent())
@@ -363,93 +380,93 @@ function ScrollZoom(container) {
 
 // SCALE EQUIPS
 
-	//RESIZE EQUIPMENT
-	function resizeEquipScale(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
-			let equip = $(this)
-			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
-			
-			equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
-		})
-	}
-	
-	//RESIZE EQUIPMENT
-	function resizeEquip(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
-			let equip = $(this)
-			let scaleA = equip.attr('scale')
-			
-			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
-		})
-	}
-	
-	//RESIZE EQUIPMENT END
-	
-	// EQUIPMENT POSITION
-	function posEquip(equip) {
-		let zoomTarget = equip.closest('[scroll-zoom]').children().first()
-		let zoomTargetImg = zoomTarget.find('img')
-		let scale = Number(zoomTarget.attr('scale'))
-		let pos = {
-			x: Number(equip.attr('posX')),
-			y: Number(equip.attr('posY'))
-		}
-	
-		pos.centX = pos.x / widthMax * scale
-		pos.centY = pos.y / heightMax * scale
-	
-		//Pos X and Pos Y
-		equip.css({
-			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
-		});
+//RESIZE EQUIPMENT
+function resizeEquipScale(container) {
+	container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equip = $(this)
+		let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
 
-		if (equip.attr("class").includes('equip-box-sat')) {
-			let sat_status = equip.attr('status')
-			let interval =  Number(equip.attr('status-period'))
-					//TESTE		
-																
-			//Green Color > indica que o equipamento está conectado
-			if (sat_status > 0 && interval == 30) {
-				equip.find("[id^=satName]").css({
-					"background-color": '#00FF0D',
-					color: 'black'
-				});
-				document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
-	
-			}
-			//SeaGreen Color > indica que o equipamento está com perca de pacotes
-			else if (sat_status > 0 && interval == 45) {
-				equip.find("[id^=satName]").css({
-					"background-color": '#00BFFF',
-					color: 'black'
-				});
-				document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
-			}
-			//SeaGreen Color > indica que o equipamento está com perca de pacotes
-			else if (sat_status > 0 && interval == 8) {
-				equip.find("[id^=satName]").css({
-					"background-color": '#FFFF00',
-					color: 'black'
-				});
-				document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
-			}
-			//Red Color > indica que o equipamento está sem comunicação
-			else {
-				equip.find("[id^=satName]").css({
-					"background-color": '#FF0000',
-					color: 'white'
-				});
-				document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
-			}
-		}
+		equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
+	})
+}
 
-		if (equip.attr("class").includes('equip-box')) {
+//RESIZE EQUIPMENT
+function resizeEquip(container) {
+	container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equip = $(this)
+		let scaleA = equip.attr('scale')
+
+		equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
+	})
+}
+
+//RESIZE EQUIPMENT END
+
+// EQUIPMENT POSITION
+function posEquip(equip) {
+	let zoomTarget = equip.closest('[scroll-zoom]').children().first()
+	let zoomTargetImg = zoomTarget.find('img')
+	let scale = Number(zoomTarget.attr('scale'))
+	let pos = {
+		x: Number(equip.attr('posX')),
+		y: Number(equip.attr('posY'))
+	}
+
+	pos.centX = pos.x / widthMax * scale
+	pos.centY = pos.y / heightMax * scale
+
+	//Pos X and Pos Y
+	equip.css({
+		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
+		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
+	});
+
+	if (equip.attr("class").includes('equip-box-sat')) {
+		let sat_status = equip.attr('status')
+		let interval = Number(equip.attr('status-period'))
+		//TESTE		
+
+		//Green Color > indica que o equipamento está conectado
+		if (sat_status > 0 && interval == 30) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#00FF0D',
+				color: 'black'
+			});
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
 
 		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (sat_status > 0 && interval == 45) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#00BFFF',
+				color: 'black'
+			});
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
+		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (sat_status > 0 && interval == 8) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FFFF00',
+				color: 'black'
+			});
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
+		}
+		//Red Color > indica que o equipamento está sem comunicação
+		else {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FF0000',
+				color: 'white'
+			});
+			document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
+		}
 	}
-	// EQUIPMENT POSITION END
-	
+
+	if (equip.attr("class").includes('equip-box')) {
+
+	}
+}
+// EQUIPMENT POSITION END
+
 // SCALE EQUIPS END
 
 //MAP MOVE CURSOR
@@ -505,9 +522,9 @@ function mapMove(ele) {
 		.mousedown(mouseDownHandler)
 }
 
-var up = $.Event("DOMMouseScroll",{delta:100}); 
-var down = $.Event("DOMMouseScroll",{delta:-100});
- 
+var up = $.Event("DOMMouseScroll", { delta: 100 });
+var down = $.Event("DOMMouseScroll", { delta: -100 });
+
 function zoomIn(id) {
 
 	id.trigger(up);
@@ -522,17 +539,17 @@ function zoomOut(id) {
 function setPosition(posX, posY) {
 	if (scale == 1) {
 		const element = $('section.overflow')
-	
+
 		for (let idx = 0; idx < 2; idx++) {
 			zoomIn(element)
 		}
-	
+
 		console.log(posY, element[0].scrollHeight)
 
 		element
 			.scrollTop(posY * element[0].scrollHeight)
 			.scrollLeft(posX * element[0].scrollWidth)
-	} 
+	}
 }
 
 // Drop Element	
@@ -594,11 +611,11 @@ function dragEquip() {
 
 	//closeDragElement();
 	function closeDragElement() {
-	// Stop moving when mouse button is released:
-	$(document)
-		.off("mouseup")
-		.off("mousemove")
-}
+		// Stop moving when mouse button is released:
+		$(document)
+			.off("mouseup")
+			.off("mousemove")
+	}
 
 }
 
@@ -607,24 +624,24 @@ function dragEquip() {
 
 
 // Map div Iframe Reload
-$(document).ready(function(){
-	$('#fulldiv1').click(function(){
-		$('#frame1').attr('src',$('#frame1').attr('src'));
-	return false;
+$(document).ready(function () {
+	$('#fulldiv1').click(function () {
+		$('#frame1').attr('src', $('#frame1').attr('src'));
+		return false;
 	});
 });
 
-$(document).ready(function(){
-	$('#fulldiv2').click(function(){
-		$('#frame2').attr('src',$('#frame2').attr('src'));
-	return false;
+$(document).ready(function () {
+	$('#fulldiv2').click(function () {
+		$('#frame2').attr('src', $('#frame2').attr('src'));
+		return false;
 	});
 });
 
-$(document).ready(function(){
-	$('#fulldiv3').click(function(){
-		$('#frame3').attr('src',$('#frame3').attr('src'));
-	return false;
+$(document).ready(function () {
+	$('#fulldiv3').click(function () {
+		$('#frame3').attr('src', $('#frame3').attr('src'));
+		return false;
 	});
 });
 
@@ -633,7 +650,7 @@ $(document).ready(function(){
 // Map div Iframe Reload END
 
 //Delete Modal Name
- function DelName(){
+function DelName() {
 }
 //Delete Modal Name End
 
@@ -643,35 +660,35 @@ $(document).ready(function(){
 
 //Use validation on click button submit   
 //Create button
-function checkValidation(){	 
+function checkValidation() {
 
- $('#register-equip-form').valid();		
+	$('#register-equip-form').valid();
 
 }
 
 //Use validation on click button submit   
 //Create button
-function checkValidationEdit(){	 
+function checkValidationEdit() {
 
- $('#edit-equip-form').valid();		
+	$('#edit-equip-form').valid();
 
 }
 
-function closeModal(modalId, button){
-$(button).click(function(){
+function closeModal(modalId, button) {
+	$(button).click(function () {
 
- $(modalId).modal('hide');
+		$(modalId).modal('hide');
 
-});
+	});
 
 }
 
 /**/
-function showGenericName(){
+function showGenericName() {
 
-if(scale > 2)
-  $('.equip-header').css('opacity', 1);
-  
-  else  $('.equip-header').css('opacity', 0);
-  
+	if (scale > 2)
+		$('.equip-header').css('opacity', 1);
+
+	else $('.equip-header').css('opacity', 0);
+
 }

@@ -56,30 +56,6 @@
 		//AUTO UPDATE PAGE INTERVAL
 		///////////////////////////////////
 		
-		
-		  //POPOVER TASKS => SAT
-			  
-			  		$(function () {
- 
-			  			$('[data-toggle="popover"]').popover({	
-			  				html : true,
-							trigger: 'hover',
-			  				content: function() {        
-			  					var content = $(this).attr("data-popover-content");        
-			  					return $(content).children(".popover-body").html();     
-			  				},      
-			  				title: function() {        
-			  					var title = $(this).attr("data-popover-content");        
-			  					return $(title).children(".popover-header").html();      
-			  				} 
-			  			  }); 
-			  		   });		
-			         $(function () {
-			       $('[data-toggle="tooltip"]').tooltip()
-			      })
-			      
-			  //POPOVER TASKS => SAT
-		
 		</script>
 
 	</ui:define>
