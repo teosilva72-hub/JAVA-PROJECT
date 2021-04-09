@@ -272,7 +272,7 @@ function ScrollZoom(container) {
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
 	let pos = zoom_point = { x: 0, y: 0 }
-	let scale_diff = 1
+	let scale_diff = scale_prev = 1
 
 	target.css('transform-origin', '0 0')
 	container.on("mousewheel DOMMouseScroll", scrolled)
@@ -297,7 +297,7 @@ function ScrollZoom(container) {
 		delta = Math.max(-1, Math.min(1, delta)) // cap the delta to [-1,1] for cross browser consistency
 
 		if (scale != max_scale || delta == -1) {
-			scale_diff = scale
+			scale_diff = scale_prev = scale
 
 			// apply zoom
 			scale += delta * factor * scale
@@ -318,8 +318,10 @@ function ScrollZoom(container) {
 		target.css('transform', `scale(${scale})`)
 
 		container
-			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
-			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
+			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
+			.scrollLeft(pos.x * container[0].scrollWidth - zoom_point.x / scale_prev)
+
+			console.log(zoom_point.y, zoom_point.x)
 
 		showGenericName();
 
