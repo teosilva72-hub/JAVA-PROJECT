@@ -120,9 +120,9 @@ body {
   cursor: -moz-grabbing;
 }
 
-.draggable .equip-box,
-.draggable .equip-info {
-  transform: translate(-50%, -50%);  
+/* .equip-box, */
+.equip-info {
+  transform-origin: 50% 100%;
 }
 
 /* **********************  MODAL CONTENTS ***********************************/
