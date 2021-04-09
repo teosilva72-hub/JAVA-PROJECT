@@ -194,6 +194,10 @@ table {
   height: auto!important;
 }
 
+.equip-box {
+  transform-origin: 50% 70% !important;
+}
+
 /* MENU TEST */
 .factorMenu {
   position: absolute;
