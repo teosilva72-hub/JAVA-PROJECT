@@ -1180,84 +1180,18 @@
 		//VALIDATION FORM
 		////////////////////////////
 	
-			function borderEquip(id){
+		function borderEquip(id){
 				var equipBorder = document.getElementById(id);
-				equipBorder.style.border = "2px solid black"
-				equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
-				setTimeout(function () {
-					equipBorder.style.border = ""
-					equipBorder.style.borderImage = ""
-				}, 2500);
+				if (equipBorder != null) {
+					equipBorder.style.border = "2px solid black"
+					equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
+					setTimeout(function () {
+						equipBorder.style.border = ""
+						equipBorder.style.borderImage = ""
+					}, 2500);
+				}
 			}
         
-        // *********************************************************** //
-        
-            //SAVE URL RESPONSE
-               $(function() {
-            	   
-            	 //SAVE EQUIP				
-   				let newIdMatch = RegExp(/newId=(\w+)/)
-   				let saveMatch = RegExp(/save=(false)/)
-   				
-   				let getNewId = newIdMatch.exec(location.href)
-   				let getSave = saveMatch.exec(location.href)	
-									
-				
-				if (getNewId) {
-					borderEquip(getNewId[1])
-					alert('#equip-save');
-				}								
-				else if(getSave) 
-					    if(getSave[1] == 'false')
-					       alert('#equip-save-error');				 			
-			})
-
-			//SAVE URL RESPONSE
-			
-      // *********************************************************** //
-      
-        //UPDATE URL RESPONSE
-               $(function() {
-            	   
-            	 //DELETE EQUIP				
-   				let updatedIdMatch = RegExp(/updatedId=(\w+)/)
-   				let updateMatch = RegExp(/update=(false)/)
-   				
-   				let getUpdatedId = updatedIdMatch.exec(location.href)
-   				let getUpdate = updateMatch.exec(location.href)								
-				
-				if (getUpdatedId) {
-					borderEquip(getUpdatedId[1])
-					alert('#equip-update');
-				}								
-				else if(getUpdate) 
-					    if(getUpdate[1] == 'false')
-					       alert('#equip-update-error');				 			
-			})
-
-			//UPDATE URL RESPONSE
-			
-			   // *********************************************************** //
-        
-            //DELETE URL RESPONSE
-               $(function() {
-            	   
-            	 //DELETE EQUIP				
-   				let deletedIdMatch = RegExp(/deletedId=(\w+)/)
-   				let deleteMatch = RegExp(/delete_=(false)/)
-   				
-   				let getDeletedId = deletedIdMatch.exec(location.href)
-   				let getDelete = deleteMatch.exec(location.href)	
-								
-				if (getDeletedId) {					
-					alert('#equip-delete');
-				}								
-				else if(getDelete) 
-					    if(getDelete[1] == 'false')
-					       alert('#equip-delete-error');				 			
-			})
-
-			//DELETE URL RESPONSE
 			
       // *********************************************************** //
 
