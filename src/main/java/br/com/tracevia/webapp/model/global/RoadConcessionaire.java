@@ -229,8 +229,8 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = Tuxpan.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = Tuxpan.NOT_ID_CLASS_9AXLES.getClasse();	
 			externalImagePath += "tuxpan.png";
-			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.png";
-			mapUI = "/resources/images/map/tuxpan/tuxpan_tampico_light.png";
+			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.webp";
+			mapUI = "/resources/images/map/tuxpan/tuxpan.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
