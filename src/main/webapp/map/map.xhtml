@@ -333,16 +333,6 @@
 			<div id="zoomtext" scale="1" class="section">
 				<!-- MAP FRONT IMAGE -->
 				<h:graphicImage class="grab-map" width="100%" value="#{loginAccount.mapUI}" />
-
-				<!-- Plaque -->
-
-				<div>
-					<c:forEach begin="1" end="20" var="item">
-						<div class="plaque km#{item * 5}">
-							<img width="75" src="/resources/images/plaques/#{item * 5}km.webp" />
-						</div>
-					</c:forEach>
-				</div>
 			</div>
 
 			<!-- Label -->
@@ -354,6 +344,16 @@
 		
 			<div class="draggable" id="equipAll">
 			
+			</div>
+
+			<!-- Plaque -->
+
+			<div>
+				<c:forEach begin="1" end="20" var="item">
+					<div class="plaque km#{item * 5}">
+						<img width="75" src="/resources/images/plaques/#{item * 5}km.webp" />
+					</div>
+				</c:forEach>
 			</div>
 
 		</section>
