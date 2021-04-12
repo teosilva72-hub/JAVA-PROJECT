@@ -756,7 +756,19 @@ input[type="number"] {
    overflow-y: auto;
 }
 
+.plaque {
+  position: absolute;
+}
 
+.km5 {
+  left: 100px;
+  top: 100px;
+}
+
+.km10 {
+  left: 200px;
+  top: 200px;
+}
 
 .modal-backdrop.in {
     opacity: 0 !important;
