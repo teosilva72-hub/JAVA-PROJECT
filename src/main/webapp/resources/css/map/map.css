@@ -759,107 +759,107 @@ input[type="number"] {
 .plaque {
   position: absolute;
   transform: translateX(-50%) scale(0.2);
-  transform-origin: 50% 10%;
+  transform-origin: 50% 0%;
 }
 
 .km5 {
-  left: 80px;
-  top: 453px;
+  left: 50px;
+  top: 620px;
 }
 
 .km10 {
-  left: 150px;
-  top: 459px;
+  left: 100px;
+  top: 630px;
 }
 
 .km15 {
-  left: 225px;
-  top: 465px;
+  left: 150px;
+  top: 650px;
 }
 
 .km20 {
-  left: 310px;
-  top: 462px;
+  left: 200px;
+  top: 655px;
 }
 
 .km25 {
-  left: 391px;
-  top: 447px;
+  left: 250px;
+  top: 615px;
 }
 
 .km30 {
-  left: 475px;
-  top: 435px;
+  left: 300px;
+  top: 605px;
 }
 
 .km35 {
-  left: 560px;
-  top: 435px;
+  left: 350px;
+  top: 570px;
 }
 
 .km40 {
-  left: 640px;
-  top: 453px;
+  left: 400px;
+  top: 570px;
 }
 
 .km45 {
-  left: 617px;
-  top: 45px;
+  left: 450px;
+  top: 620px;
 }
 
 .km50 {
-  left: 745px;
-  top: 467px;
+  left: 500px;
+  top: 630px;
 }
 
 .km55 {
-  left: 810px;
-  top: 437px;
+  left: 570px;
+  top: 615px;
 }
 
 .km60 {
-  left: 875px;
-  top: 412px;
+  left: 600px;
+  top: 555px;
 }
 
 .km65 {
-  left: 900px;
-  top: 420px;
+  left: 650px;
+  top: 510px;
 }
 
 .km70 {
-  left: 900px;
-  top: 410px;
+  left: 700px;
+  top: 500px;
 }
 
 .km75 {
-  left: 900px;
-  top: 390px;
+  left: 750px;
+  top: 470px;
 }
 
 .km80 {
-  left: 900px;
-  top: 380px;
+  left: 800px;
+  top: 445px;
 }
 
 .km85 {
-  left: 900px;
-  top: 370px;
+  left: 850px;
+  top: 440px;
 }
 
 .km90 {
   left: 900px;
-  top: 340px;
+  top: 370px;
 }
 
 .km95 {
-  left: 900px;
-  top: 360px;
+  left: 950px;
+  top: 390px;
 }
 
 .km100 {
-  left: 900px;
-  top: 350px;
+  left: 990px;
+  top: 370px;
 }
 
 .modal-backdrop.in {
