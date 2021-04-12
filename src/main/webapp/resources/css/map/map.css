@@ -758,16 +758,113 @@ input[type="number"] {
 
 .plaque {
   position: absolute;
+  transform: translateX(-50%) scale(0.2);
+  transform-origin: 50% 10%;
 }
 
 .km5 {
-  left: 100px;
-  top: 100px;
+  left: 52px;
+  top: 556px;
 }
 
 .km10 {
-  left: 200px;
-  top: 200px;
+  left: 158px;
+  top: 480px;
+}
+
+.km15 {
+  left: 254px;
+  top: 490px;
+}
+
+.km20 {
+  left: 338px;
+  top: 490px;
+}
+
+.km25 {
+  left: 453px;
+  top: 480px;
+}
+
+.km30 {
+  left: 559px;
+  top: 460px;
+}
+
+.km35 {
+  left: 669px;
+  top: 450px;
+}
+
+.km35 {
+  left: 670px;
+  top: 450px;
+}
+
+.km40 {
+  left: 785px;
+  top: 450px;
+}
+
+.km45 {
+  left: 910px;
+  top: 480px;
+}
+
+.km50 {
+  left: 900px;
+  top: 490px;
+}
+
+.km55 {
+  left: 900px;
+  top: 450px;
+}
+
+.km60 {
+  left: 900px;
+  top: 420px;
+}
+
+.km65 {
+  left: 900px;
+  top: 420px;
+}
+
+.km70 {
+  left: 900px;
+  top: 410px;
+}
+
+.km75 {
+  left: 900px;
+  top: 390px;
+}
+
+.km80 {
+  left: 900px;
+  top: 380px;
+}
+
+.km85 {
+  left: 900px;
+  top: 370px;
+}
+
+.km90 {
+  left: 900px;
+  top: 340px;
+}
+
+.km95 {
+  left: 900px;
+  top: 360px;
+}
+
+.km100 {
+  left: 900px;
+  top: 350px;
 }
 
 .modal-backdrop.in {
