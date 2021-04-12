@@ -1760,12 +1760,12 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(new Paragraph("KM: "+data.getKilometer()+"            "
 					+ trad.occLabels("Rodovia")+": "+getPdf.getHighway()+"            "
 					+ trad.occLabels("Estado")+": "+data.getLocal_state()+"\n\n"));
-			document.add(new Paragraph(trad.occLabels("Sentido")+": "+trad.occurrencesTranslator(getPdf.getDirection())+"                         "
+			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirection()+"                         "
 					+ trad.occLabels("Faixa")+": "+getPdf.getLane()+"                 "
 					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-
+			System.out.println("TESTANDO");
 			//Detalhes
 			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
 			details.enableBorderSide(1);
@@ -1776,12 +1776,12 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			details.setBorderWidth(1);
 			document.add(details);*/
 			document.add(new Paragraph(detalhes+"\n"+"\n"));
-			document.add(new Paragraph("Condição Local: "+ trad.occurrencesTranslator(getPdf.getLocal_condition())+"  "
-					+ trad.occLabels("Condição Tráfego")+": "+ trad.occurrencesTranslator(getPdf.getTraffic())+"   "
-					+ trad.occLabels("Característica")+": "+trad.occurrencesTranslator(getPdf.getCharacteristic())+"\n\n"));
+			document.add(new Paragraph("Condição Local: "+ getPdf.getLocal_condition()+"  "
+					+ trad.occLabels("Condição Tráfego")+": "+ getPdf.getTraffic()+"   "
+					+ trad.occLabels("Característica")+": "+getPdf.getCharacteristic()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Interferência Faixa")+": "+getPdf.getInterference()+"     "
-					+trad.occLabels("Sinalização")+": "+trad.occurrencesTranslator(getPdf.getSignaling())+"     "
-					+trad.occLabels("Situação Condutor")+": "+ trad.occurrencesTranslator(getPdf.getConductor_condition())));
+					+trad.occLabels("Sinalização")+": "+getPdf.getSignaling()+"     "
+					+trad.occLabels("Situação Condutor")+": "+ getPdf.getConductor_condition()));
 
 			//final da primeira p�gina
 
@@ -1821,7 +1821,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			envolvido.setBorderWidth(1);
 			document.add(envolvido);*/
 			document.add(new Paragraph(envolvidos+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getInvolved_type())+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
@@ -1840,7 +1840,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
 			document.add(new Paragraph(trad.occLabels("Extensão(KM)")+": "+data.getTraffic_extension()+"            "
-					+trad.occLabels("Pista Interrompida")+": "+ trad.occurrencesTranslator(getPdf.getTraffic_stopped())+"\n\n"));
+					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
 			document.newPage();//inicio da terceira p�gina
 			
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
@@ -1867,9 +1867,9 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(damage1);*/
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getDamage_type_damage())+"     "
-			+trad.occLabels("Gravidade")+": "+ trad.occurrencesTranslator(getPdf.getDamage_gravity())+"     "
-			+trad.occLabels("Unidade")+": "+trad.occurrencesTranslator(getPdf.getDamageUnity())
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "
+			+trad.occLabels("Gravidade")+": "+ getPdf.getDamage_gravity()+"     "
+			+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
 			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
@@ -1885,8 +1885,8 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(action1);*/
 			document.add(new Paragraph(action+"\n"+"\n"));
 
-			document.add(new Paragraph(trad.occLabels("Tipo")+": "+trad.occurrencesTranslator(getPdf.getAction_type())+"             "
-			+trad.occLabels("Situação")+": "+trad.occurrencesTranslator(getPdf.getStatusAction())+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "
+			+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()
 			+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()
 			+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
@@ -2076,6 +2076,9 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 
 			}
 		}
+		
+		
+		
 		//passando valor final do m�todo para a variavel tableFile
 		return tableFile;
 
