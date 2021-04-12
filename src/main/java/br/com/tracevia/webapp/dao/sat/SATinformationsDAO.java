@@ -223,6 +223,9 @@ public class SATinformationsDAO {
 	}
 	
    public List<SAT> dataInfo08() throws Exception {
+	   
+		//LIMIT OF EQUIPS TO CHECK
+		int limit = satNumbers();
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
@@ -284,8 +287,9 @@ public class SATinformationsDAO {
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
-	    "GROUP BY d.NOME_ESTACAO " +
-	    "ORDER BY d.DATA_HORA";
+	    "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
+	    "ORDER BY d.DATA_HORA ASC " +
+	    "LIMIT "+ limit +" ";
 					
 	  try {
 			
@@ -582,6 +586,9 @@ public class SATinformationsDAO {
 	//LISTAR TODOS EQUIPAMENTOS POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
 	public List<SAT> statusByData08() throws Exception {
 		
+		//LIMIT OF EQUIPS TO CHECK
+		int limit = satNumbers();
+		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
 		
@@ -598,9 +605,10 @@ public class SATinformationsDAO {
 		String select ="SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
 				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
-				       "GROUP BY d.NOME_ESTACAO " +
-					   "ORDER BY d.DATA_HORA";
-		
+				       "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
+				       "ORDER BY d.DATA_HORA ASC " +
+				       "LIMIT "+ limit +" ";
+				    		
 		try {
 			
 			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -743,7 +751,7 @@ public class SATinformationsDAO {
     
   //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
     public SAT statusByData08(int equip) throws Exception {
-		
+    	    			
 		SAT sat = new SAT();
 		DateTimeApplication dta = new DateTimeApplication();
 		
@@ -791,6 +799,38 @@ public class SATinformationsDAO {
 
 				
 		return sat;
+		
+	}	
+        
+    
+  //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
+    public Integer satNumbers() throws Exception {
+    	
+    	int qtde = 0;
+				
+	String select = "SELECT COUNT(*) 'Qtde' FROM sat_equipment WHERE visible = 1";
+			      	    	  					
+	  try {
+			
+		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);									
+			rs = ps.executeQuery();
+						
+			if (rs != null) {
+				while (rs.next()) {
+				
+					qtde = rs.getInt(1);									
+														
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return qtde;
 		
 	}	
 	

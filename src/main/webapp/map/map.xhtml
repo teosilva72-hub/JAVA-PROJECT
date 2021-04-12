@@ -299,7 +299,7 @@
 					<span><i class="fas fa-minus-square fa-1x"></i></span>
 				</button>
 				<button type="button" id="fulldiv2" class="zoomFull"
-					target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
+					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
 					data-placement="bottom" title="Fullscreen View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
@@ -319,7 +319,7 @@
 					<span><i class="fas fa-minus-square fa-1x"></i></span>
 				</button>
 				<button type="button" id="fulldiv3" class="zoomFull"
-					target="/Tracevia/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
+					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
 					data-placement="bottom" title="Fullscreen View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
@@ -345,6 +345,16 @@
 			<div class="draggable" id="equipAll">
 			
 
+			</div>
+
+			<!-- Plaque -->
+
+			<div>
+				<c:forEach begin="1" end="20" var="item">
+					<div class="plaque km#{item}">
+						<img src="/resources/images/map/tuxpan/#{item}km.webp">
+					</div>
+				</c:forEach>
 			</div>
 
 		</section>
