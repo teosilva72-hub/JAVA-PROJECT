@@ -1432,6 +1432,11 @@ public class OccurrencesBean {
 	}
 	//método baixar arquivos
 	public void download(String fileName) throws Exception {
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		OccurrencesDAO dao = new OccurrencesDAO();
 		data = new OccurrencesData();
@@ -1454,22 +1459,37 @@ public class OccurrencesBean {
 		String arquivos = url.getQuery();
 
 		//caminho onde o arquivo serÃ¡ guardado
-		File file = new File(pathDownload+fileName);
+		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
-		FileOutputStream fos = new FileOutputStream(file);
+		//FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
 
 		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
 		while ((bytes = is.read()) != -1) {
 			//subscreve/ copia o arquivo atual
-			fos.write(bytes);
+			baos.write(bytes);
 		}
 
 		//fechando o comando downlod
 		is.close();
-		fos.close();
+		//fos.close();
+		
+externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+		
+		externalContext.setResponseContentLength(baos.size());
+	      
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+	     baos.writeTo(responseOutputStream);
+	     responseOutputStream.flush();
+	     responseOutputStream.close();
+
+	
+	     facesContext.responseComplete();  
+	     
+	    // DOWNLOAD
+
 
 		//executando funções js
 		RequestContext.getCurrentInstance().execute("bloquerTable()");
@@ -1484,6 +1504,12 @@ public class OccurrencesBean {
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("msgDownload()");
 		RequestContext.getCurrentInstance().execute("alterarBtn()");
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
+		
 		//pegando o id
 		int id = getValue();
 
@@ -1495,23 +1521,42 @@ public class OccurrencesBean {
 		String arquivos = url.getQuery();
 
 		//caminho onde o arquivo serÃ¡ guardado
-		File file = new File(pathDownload+fileName);
+		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
-		FileOutputStream fos = new FileOutputStream(file);
+		//FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
 		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
 		while ((bytes = is.read()) != -1) {
-			fos.write(bytes);
+			baos.write(bytes);
 		}
 		//parando o download
 		is.close();
-		fos.close();
+		// DOWNLOAD
+		
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+		
+		externalContext.setResponseContentLength(baos.size());
+	      
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+	     baos.writeTo(responseOutputStream);
+	     responseOutputStream.flush();
+	     responseOutputStream.close();
+
+	
+	     facesContext.responseComplete();  
+	     
+	    // DOWNLOAD
 
 	}
 	//download quando fizer o clique em alguma linha da tabela
 	public void downloadUpdateTable(String fileName) throws Exception {
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		//pegando o id
 		int id = getValue();
@@ -1524,19 +1569,34 @@ public class OccurrencesBean {
 		String arquivos = url.getQuery();
 
 		//caminho onde o arquivo serÃ¡ guardado
-		File file = new File(pathDownload+fileName);
+		//File file = new File(pathDownload+fileName);
 
 		InputStream is = url.openStream();
-		FileOutputStream fos = new FileOutputStream(file);
+		//FileOutputStream fos = new FileOutputStream(file);
 
 		int bytes = 0;
 		//enquanto o byte faz a leitura do arquivo o qual é diferente de -1
 		while ((bytes = is.read()) != -1) {
-			fos.write(bytes);
+			baos.write(bytes);
 		}
 		//fechando o download
 		is.close();
-		fos.close();
+		//fos.close();
+		// DOWNLOAD
+		
+				externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+				
+				externalContext.setResponseContentLength(baos.size());
+			      
+				OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+			     baos.writeTo(responseOutputStream);
+			     responseOutputStream.flush();
+			     responseOutputStream.close();
+
+			
+			     facesContext.responseComplete();  
+			     
+			    // DOWNLOAD
 
 		//se a variavel situação for igual a 30 ou 31 acessamos a condição
 		if(situation == 31 || situation == 30) {
