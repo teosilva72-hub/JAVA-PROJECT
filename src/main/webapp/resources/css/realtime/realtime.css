@@ -120,6 +120,112 @@ body {
   cursor: -moz-grabbing;
 }
 
+.plaque {
+  position: absolute;
+  transform: translateX(-50%) scale(0.2);
+  transform-origin: 50% 10%;
+}
+
+.km5 {
+  left: 360px;
+  top: 253px;
+}
+
+.km10 {
+  left: 150px;
+  top: 253px;
+}
+
+.km15 {
+  left: 225px;
+  top: 253px;
+}
+
+.km20 {
+  left: 310px;
+  top: 253px;
+}
+
+.km25 {
+  left: 391px;
+  top: 253px;
+}
+
+.km30 {
+  left: 475px;
+  top: 488px;
+}
+
+.km35 {
+  left: 560px;
+  top: 488px;
+}
+
+.km40 {
+  left: 640px;
+  top: 488px;
+}
+
+.km45 {
+  left: 617px;
+  top: 488px;
+}
+
+.km50 {
+  left: 745px;
+  top: 488px;
+}
+
+.km55 {
+  left: 810px;
+  top: 488px;
+}
+
+.km60 {
+  left: 875px;
+  top: 488px;
+}
+
+.km65 {
+  left: 900px;
+  top: 730px;
+}
+
+.km70 {
+  left: 900px;
+  top: 730px;
+}
+
+.km75 {
+  left: 900px;
+  top: 730px;
+}
+
+.km80 {
+  left: 900px;
+  top: 730px;
+}
+
+.km85 {
+  left: 900px;
+  top: 730px;
+}
+
+.km90 {
+  left: 900px;
+  top: 730px;
+}
+
+.km95 {
+  left: 900px;
+  top: 730px;
+}
+
+.km100 {
+  left: 900px;
+  top: 730px;
+}
+
 /* .equip-box, */
 .equip-info {
   transform-origin: 50% 100%;

@@ -8,20 +8,21 @@ const init = () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
 
-			equip.dblclick(function () {
-				posReset();
+			if (!equip.attr('class').includes('plaque'))
+				equip.dblclick(function () {
+					posReset();
 
-				id = equip.attr('id').match(/\d+/g)[0];
-				type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
-				toDrag = `#${equip.attr('id')}`
+					id = equip.attr('id').match(/\d+/g)[0];
+					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+					toDrag = `#${equip.attr('id')}`
 
-				$('#OPmodal').modal('toggle');
-			});
+					$('#OPmodal').modal('toggle');
+				});
 
 			$(window).resize(function () {
 				posEquip(equip)
@@ -71,6 +72,13 @@ const setInfoEquip = () => {
 
 
 $(function() {
+	$('.plaque').each(function() {
+		let plaque = $(this)
+
+		plaque.attr('posX', plaque.css('left').replace("px", ""))
+		plaque.attr('posY', plaque.css('top').replace("px", ""))
+	})
+
 	init();
 
 	setTimeout(function () {
@@ -260,7 +268,7 @@ function ScrollZoom(container) {
 
         showGenericName();
         
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -321,22 +329,40 @@ function ScrollZoom(container) {
 
 	//RESIZE EQUIPMENT
 	function resizeEquipScale(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let max = 0;
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+		let plaque = $('.plaque');
+		let scale;
+
+		equips.each(function () {
 			let equip = $(this)
-			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
+			let width = Number(equip.attr('item-width'))
+			scale = (width / equip.width()) * (Number($('#bar-size').val()) || 1);
 			
+			max += width;
+
 			equip.css('transform', `translate(-50%, -60px) scale(${scale})`).attr('scale', scale)
 		})
+
+		scale = ((max / equips.length) / plaque.width()) * (Number($('#bar-size').val()) || 1);
+		plaque.css('transform', `translateX(-50%) scale(${scale})`).attr('scale', scale)
 	}
 	
 	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+		let plaque = $('.plaque');
+		let scaleA;
+
+		equips.each(function () {
 			let equip = $(this)
-			let scaleA = equip.attr('scale')
+			scaleA = equip.attr('scale')
 			
 			equip.css('transform', `translate(-50%, -60px) scale(${scaleA * scale}`)
 		})
+
+		scaleA = plaque.attr('scale');
+		plaque.css('transform', `translateX(-50%) scale(${scaleA * scale})`)
 	}
 	
 	//RESIZE EQUIPMENT END

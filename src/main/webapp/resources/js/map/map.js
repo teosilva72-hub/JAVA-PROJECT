@@ -329,8 +329,6 @@ function ScrollZoom(container) {
 			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
 			.scrollLeft(pos.x * container[0].scrollWidth - zoom_point.x / scale_prev)
 
-			console.log(zoom_point.y, zoom_point.x)
-
 		showGenericName();
 
 		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
