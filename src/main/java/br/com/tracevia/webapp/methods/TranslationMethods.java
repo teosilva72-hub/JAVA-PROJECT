@@ -258,7 +258,7 @@ public class TranslationMethods {
 		case "Alto" : converteOcc = localeOcc.getStringKey("damageSeverity1"); break;
 		case "Medio" : converteOcc = localeOcc.getStringKey("damageSeverity2"); break;
 		case "Bajo" : converteOcc = localeOcc.getStringKey("damageSeverity3"); break;
-
+  
 		}
 		
 		return converteOcc;
