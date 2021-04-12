@@ -378,7 +378,7 @@ public class OccurrencesDAO {
 	
 	//m�todo PDF
 	public OccurrencesData submitPdf(int PdfGet) throws Exception {
-
+		TranslationMethods trad = new TranslationMethods();
 		OccurrencesData occ = new OccurrencesData();
 
 		//script onde pegamos os valores dos atributos
@@ -422,22 +422,22 @@ public class OccurrencesDAO {
 					occ.setOrigin(rs.getString(2));
 					occ.setState_occurrences(rs.getString(3));
 					occ.setCause(rs.getString(4));
-					occ.setHighway(rs.getString(5));
+					occ.setHighway(trad.occurrencesTranslator(rs.getString(5)));
 					occ.setLocal_state(rs.getString(6));
-					occ.setDirection(rs.getString(7));
+					occ.setDirection(trad.occurrencesTranslator(rs.getString(7)));
 					occ.setLane(rs.getString(8));
-					occ.setLocal_condition(rs.getString(9));
-					occ.setTraffic(rs.getString(10));
-					occ.setInterference(rs.getString(11));
-					occ.setSignaling(rs.getString(12));
-					occ.setConductor_condition(rs.getString(13));
-					occ.setInvolved_type(rs.getString(14));
-					occ.setTraffic_stopped(rs.getString(15));
-					occ.setDamage_type_damage(rs.getString(16));
-					occ.setDamage_gravity(rs.getString(17));
-					occ.setDamageUnity(rs.getString(18));
-					occ.setAction_type(rs.getString(19));
-					occ.setStatusAction(rs.getString(20));
+					occ.setLocal_condition(trad.occurrencesTranslator(rs.getString(9)));
+					occ.setTraffic(trad.occurrencesTranslator(rs.getString(10)));
+					occ.setInterference(trad.occurrencesTranslator(rs.getString(11)));
+					occ.setSignaling(trad.occurrencesTranslator(rs.getString(12)));
+					occ.setConductor_condition(trad.occurrencesTranslator(rs.getString(13)));
+					occ.setInvolved_type(trad.occurrencesTranslator(rs.getString(14)));
+					occ.setTraffic_stopped(trad.occurrencesTranslator(rs.getString(15)));
+					occ.setDamage_type_damage(trad.occurrencesTranslator(rs.getString(16)));
+					occ.setDamage_gravity(trad.occurrencesTranslator(rs.getString(17)));
+					occ.setDamageUnity(trad.occurrencesTranslator(rs.getString(18)));
+					occ.setAction_type(trad.occurrencesTranslator(rs.getString(19)));
+					occ.setStatusAction(trad.occurrencesTranslator(rs.getString(20)));
 					occ.setCharacteristic(rs.getString(21));
 				}
 			}
