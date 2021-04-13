@@ -188,6 +188,8 @@ $(function () {
 	$('#mapDivide').css('height', area)
 		.find('.grid-img').css('height', area / 3)
 	$(window).resize(function () {
+		area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
+		
 		$(".overflow").css("height", $(this).height() - 125)
 		$('#mapDivide').css('height', area)
 			.find('.grid-img').css('height', area / 3)
