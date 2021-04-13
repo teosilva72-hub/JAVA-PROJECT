@@ -141,6 +141,25 @@
 					onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 					title="Add Equipment" data-toggle="modal"
 					data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
+					
+					<button type="button" id="sosAnimation"	class="btn btn-dark form-modal-draw-button" title="SOS animation" onclick="animation()">
+					<span> TEST CALL </span>
+				   </button>
+				   
+				   <script>
+				   
+				   function animation(){
+				      $('#sos17').addClass('call-box-action').find('.equip-status').css('background-color', 'blue');
+				      
+				    setTimeout(() => {
+				    	 $('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
+				    }, 
+				     5000
+				    )
+				   
+				   }
+				   
+				   </script>
 
 			</div>
 			
