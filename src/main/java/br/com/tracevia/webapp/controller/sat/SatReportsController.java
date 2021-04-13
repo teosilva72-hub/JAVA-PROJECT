@@ -725,10 +725,9 @@ public class SatReportsController {
 
 			//RETORNA NMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
 			setNumRegisters(dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod())); 
-			
-			//System.out.println(getNumRegisters());
-
+						
 			//CONTAGEM DOS DIAS
+			if(satReport.getStartDate() != null && satReport.getEndDate() != null)
 			daysCount = ((int) dta.diferencaDias(satReport.getStartDate(), satReport.getEndDate()) + 1);
 
 			//INTERVALO POR PERIODO

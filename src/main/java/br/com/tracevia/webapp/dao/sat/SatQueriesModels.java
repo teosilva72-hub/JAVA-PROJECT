@@ -1664,18 +1664,28 @@ public class SatQueriesModels {
                           public String CountVehiclesMainQuery(String[] station_id) {
                     	   
                     	   String query = "";
+                    	   String total = " SUM(";
                     	   
                     	                     	   
-                    	   for(int i = 0; i < station_id.length; i++)				
+                    	   for(int i = 0; i < station_id.length; i++) {				
                     			 
-                               query += " COUNT(IF(st.siteID = "+station_id[i]+", 1, NULL)) 'equip "+(i+1)+"', " ;
+                               query += " SUM(st.siteID = "+station_id[i]+") 'equip "+(i+1)+"', " ;
                        		   		             
                     	               	                    	   
-                    	   //Close total
-                    	       query += " COUNT(*) 'TOTAL' ";                    	   
+                    	       //Adding total count
+              			        total +="st.siteID = '"+station_id[i]+"'";
+              			
+              			       if(station_id[i] != station_id[station_id.length-1])                    				
+              				    total += " OR ";
+              			
+                    	   }
                     	   
-                    	                      	                       	                       	   
-                    	   return query;
+                    	        total += ") 'TOTAL' ";
+                    	   
+                    	        query += total;                    	                                              	                       	   
+                    	   
+                    	        return query;  	 
+                    	   
                     	   
                           }
                                                                               

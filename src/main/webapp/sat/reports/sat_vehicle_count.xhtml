@@ -34,7 +34,7 @@
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/validation-forms/reports"
 			name="sat-reports.js" />
-
+			
 	</ui:define>
 
 	<ui:define name="main-content">
@@ -65,6 +65,15 @@
 				</c:forEach>
 
 			</h:dataTable>
+			
+			<!-- <div id="disableTable">
+			    <div class="load-message">
+			    <div class="col-2">
+			    <span>#{satLabels.sat_reports_loading_message}</span>	
+				<h:graphicImage value="/resources/images/gifs/ajax_loader.gif" />				
+				</div>		
+				</div>	
+			</div> -->
 
 			<!-- BUTTONS FORM -->
 
@@ -293,9 +302,9 @@
 					<div class="modal-footer">
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}"
-							id="btn-form-send" action="#{satReportsBean.GetReports(1)}"
-							class="btn btn-dark form-modal-draw-button" />
-
+							id="btn-form-send"
+							class="btn btn-dark form-modal-draw-button" action="#{satReportsBean.GetReports(1)}" />	
+												
 							<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
 							id="btn-form-reset" immediate="true" type="reset"
 							class="btn btn-dark form-modal-draw-button reset-btn">							
@@ -340,8 +349,7 @@
 	    //Validation Methods - needs to use
 	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}');
 	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
-	  
-	    
+	  	    
 	    satReportsValidationModel1('#report-form', '#dateStart', '#{requiredMessages.required_sat_reports_select_equipments}', 
 	    		'#{requiredMessages.required_sat_reports_select_vehicles}', '#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_input_date_start }', '#{requiredMessages.required_sat_reports_input_date_end}', '#{validatorMessages.validator_valid_date}');
 	  	 	   	    
@@ -373,7 +381,26 @@
 	    //Reset validation form
 	    //click reset button action
 	    resetFormValidation("#report-form", "reset-btn");
-	    	    
+	    
+	    const onEventFunction = data => {
+	    	var status = data.status;
+
+	    	switch (status) {
+	    		case "begin":
+	    			if($('#report-form').valid())
+	    				console.log('HIE')
+	    			    
+	    			break;
+
+	    		case "complete":
+	    			break;
+
+	    		case "success":	    			
+	    			break;
+	    	}
+	    }
+	    	 	    	 
+	 
 	    </script>
 
 		<!-- SCRIPT DEFINITIONS -->

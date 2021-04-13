@@ -6,8 +6,8 @@ $(document).ready(function () {
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
         "bInfo": false,
-        "deferRender": true
-    })
+        "deferRender": true        
+   });
 
 
     $('.dataTables_length').removeClass('bs-select');

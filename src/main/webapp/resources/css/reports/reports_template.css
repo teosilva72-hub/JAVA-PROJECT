@@ -230,3 +230,32 @@ hr{
 #vehicle-count-table{
 	margin-top: 5%;
 }
+
+
+#disableTable {  
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 18px;
+  color: white;
+  background-color: #21212188;
+  display: none;
+  z-index: 10300;
+  width: 100vw;
+  height: 100vh;
+}
+
+#disableTable.active {
+  display: revert;
+}
+
+.load-message{
+  position: absolute;  
+   top: 50%;
+   left: 45%;	
+}
+
