@@ -90,9 +90,9 @@ $(function () {
 	}, 5000);
 
 	$('#divide').on('click', () => {
-		$('#frame1')[0].contentWindow.setPosition(0, 0.5)
-		$('#frame2')[0].contentWindow.setPosition(0.3, 0.5)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.1)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.7)
+		$('#frame2')[0].contentWindow.setPosition(0.4, 0.75)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.2)
 
 	})
 
@@ -189,7 +189,7 @@ $(function () {
 		.find('.grid-img').css('height', area / 3)
 	$(window).resize(function () {
 		area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
-		
+
 		$(".overflow").css("height", $(this).height() - 125)
 		$('#mapDivide').css('height', area)
 			.find('.grid-img').css('height', area / 3)
