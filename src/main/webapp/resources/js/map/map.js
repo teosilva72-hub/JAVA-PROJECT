@@ -78,6 +78,11 @@ $(function () {
 		plaque.attr('posY', plaque.css('top').replace("px", ""))
 	})
 
+	let area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
+
+	$('#mapDivide').css('height', area)
+		.find('.grid-img').css('height', area / 3)
+
 	init();
 
 	setTimeout(function () {

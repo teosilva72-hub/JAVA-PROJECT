@@ -487,27 +487,6 @@ img.box-img[zoom] {
   float: left;
   position: relative;
   width: 80%;
-  height: 60%;
-  left: 10%;
-  background-size: cover;
-  overflow: hidden;
-}
-
-.squarebox1 {
-  float: left;
-  position: relative;
-  width: 80%;
-  height: 60%;
-  left: 10%;
-  background-size: cover;
-  overflow: hidden;
-}
-
-.squarebox2 {
-  float: left;
-  position: relative;
-  width: 80%;
-  height: 60%;
   left: 10%;
   background-size: cover;
   overflow: hidden;
