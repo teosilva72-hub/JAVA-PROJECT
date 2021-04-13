@@ -822,7 +822,7 @@ input.apple-switch:checked:before {
 	animation-name: callalert !important;
 	animation-duration: 2s !important;
 	animation-iteration-count: infinite;
-	transform: rotateX(171deg);
+	transform: rotateX(358deg);
 }
  
 @keyframes callalert {
