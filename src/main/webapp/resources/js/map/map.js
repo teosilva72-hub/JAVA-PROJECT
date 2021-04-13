@@ -1,4 +1,3 @@
-let area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
 var widthMax = 1000
 var heightMax = 1000
 var updated = '';
@@ -72,6 +71,8 @@ const setInfoEquip = () => {
 }
 
 $(function () {
+	var area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
+
 	$('.plaque').each(function() {
 		let plaque = $(this)
 
