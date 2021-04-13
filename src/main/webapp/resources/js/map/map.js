@@ -1,3 +1,4 @@
+let area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
 var widthMax = 1000
 var heightMax = 1000
 var updated = '';
@@ -77,8 +78,6 @@ $(function () {
 		plaque.attr('posX', plaque.css('left').replace("px", ""))
 		plaque.attr('posY', plaque.css('top').replace("px", ""))
 	})
-
-	let area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
 
 	$('#mapDivide').css('height', area)
 		.find('.grid-img').css('height', area / 3)
@@ -185,8 +184,12 @@ $(function () {
 	//Scroll Zoom Map Full END
 
 	$(".overflow").css("height", $(this).height() - 125)
+	$('#mapDivide').css('height', area)
+		.find('.grid-img').css('height', area / 3)
 	$(window).resize(function () {
 		$(".overflow").css("height", $(this).height() - 125)
+		$('#mapDivide').css('height', area)
+			.find('.grid-img').css('height', area / 3)
 	})
 
 	//FULLSCREEN
