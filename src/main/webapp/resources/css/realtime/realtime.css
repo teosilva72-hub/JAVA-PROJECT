@@ -120,9 +120,110 @@ body {
   cursor: -moz-grabbing;
 }
 
-.draggable .equip-box,
-.draggable .equip-info {
-  transform: translate(-50%, -50%);  
+.plaque {
+  position: absolute;
+  transform: translateX(-50%) scale(0.2);
+  transform-origin: 50% 10%;
+}
+
+.km5 {
+  left: 193px;
+  top: 253px;
+}
+
+.km10 {
+  left: 318px;
+  top: 253px;
+}
+
+.km15 {
+  left: 443px;
+  top: 253px;
+}
+
+.km20 {
+  left: 570px;
+  top: 253px;
+}
+
+.km25 {
+  left: 695px;
+  top: 253px;
+}
+
+.km30 {
+  left: 820px;
+  top: 253px;
+}
+
+.km35 {
+  left: 65px;
+  top: 488px;
+}
+
+.km40 {
+  left: 193px;
+  top: 488px;
+}
+
+.km45 {
+  left: 318px;
+  top: 488px;
+}
+
+.km50 {
+  left: 443px;
+  top: 488px;
+}
+
+.km55 {
+  left: 570px;
+  top: 488px;
+}
+
+.km60 {
+  left: 695px;
+  top: 488px;
+}
+
+.km65 {
+  left: 820px;
+  top: 488px;
+}
+
+.km70 {
+  left: 65px;
+  top: 730px;
+}
+
+.km75 {
+  left: 193px;
+  top: 730px;
+}
+
+.km80 {
+  left: 318px;
+  top: 730px;
+}
+
+.km85 {
+  left: 443px;
+  top: 730px;
+}
+
+.km90 {
+  left: 570px;
+  top: 730px;
+}
+
+.km95 {
+  left: 695px;
+  top: 730px;
+}
+
+.km100 {
+  left: 820px;
+  top: 730px;
 }
 
 /* **********************  MODAL CONTENTS ***********************************/
@@ -318,3 +419,28 @@ opacity: 0.7;
 }
 
 p{ color: black; }
+
+/* .equip-box, */
+.equip-info {
+  transform-origin: 50% 100%;
+}
+
+.equip-box.speed {
+  transform-origin: 50% 55%;
+}
+
+.equip-box.dai {
+  transform-origin: 50% 109%;
+}
+
+.equip-box.colas {
+  transform-origin: 50% 135%;
+}
+
+.equip-box.wim {
+  transform-origin: 50% 129%;
+}
+
+.equip-box.lpr {
+  transform-origin: 50% 182%;
+}

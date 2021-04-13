@@ -81,13 +81,13 @@ html, body{
 /*Fim do design dos elementos inputs e textarea*/
 
 	#tab1{
-		height: 470px;
+		height: 450px;
 	}
 	#tab2{
-		height: 470px;
+		height: 450px;
 	}
 	#tab3{
-		height: 470px;
+		height: 450px;
 		
 	}
 	.btnConf{
@@ -218,7 +218,7 @@ tr{
 	
 cursor: pointer;
 }
-/*Animação da tela de abertura*/
+/*Animaï¿½ï¿½o da tela de abertura*/
 
 /* ini: Preloader */
  
@@ -233,7 +233,7 @@ cursor: pointer;
 }
 #preloader .inner {
     position: absolute;
-    top: 50%; /* centralizar a parte interna do preload (onde fica a animação)*/
+    top: 50%; /* centralizar a parte interna do preload (onde fica a animaï¿½ï¿½o)*/
     left: 50%;
     transform: translate(-50%, -50%);  
 }

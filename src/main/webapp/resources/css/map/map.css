@@ -194,7 +194,8 @@ table {
   height: auto!important;
 }
 
-.equip-box {
+.equip-box,
+.equip-info {
   transform-origin: 50% 70% !important;
 }
 
@@ -755,7 +756,111 @@ input[type="number"] {
    overflow-y: auto;
 }
 
+.plaque {
+  position: absolute;
+  transform: translateX(-50%) scale(0.2);
+  transform-origin: 50% 0%;
+}
 
+.km5 {
+  left: 50px;
+  top: 620px;
+}
+
+.km10 {
+  left: 100px;
+  top: 630px;
+}
+
+.km15 {
+  left: 150px;
+  top: 650px;
+}
+
+.km20 {
+  left: 200px;
+  top: 655px;
+}
+
+.km25 {
+  left: 250px;
+  top: 615px;
+}
+
+.km30 {
+  left: 300px;
+  top: 605px;
+}
+
+.km35 {
+  left: 350px;
+  top: 570px;
+}
+
+.km40 {
+  left: 400px;
+  top: 570px;
+}
+
+.km45 {
+  left: 450px;
+  top: 620px;
+}
+
+.km50 {
+  left: 500px;
+  top: 630px;
+}
+
+.km55 {
+  left: 570px;
+  top: 615px;
+}
+
+.km60 {
+  left: 600px;
+  top: 555px;
+}
+
+.km65 {
+  left: 650px;
+  top: 510px;
+}
+
+.km70 {
+  left: 700px;
+  top: 500px;
+}
+
+.km75 {
+  left: 750px;
+  top: 470px;
+}
+
+.km80 {
+  left: 800px;
+  top: 445px;
+}
+
+.km85 {
+  left: 850px;
+  top: 440px;
+}
+
+.km90 {
+  left: 900px;
+  top: 370px;
+}
+
+.km95 {
+  left: 950px;
+  top: 390px;
+}
+
+.km100 {
+  left: 990px;
+  top: 370px;
+}
 
 .modal-backdrop.in {
     opacity: 0 !important;
