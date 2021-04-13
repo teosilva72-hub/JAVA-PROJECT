@@ -83,6 +83,7 @@ body {
 .grid-img {
   width: 100%;
   height: 230px;
+  box-shadow: 0px 0px 8px black;
 }
 
 .grid-container {
@@ -487,6 +488,7 @@ img.box-img[zoom] {
   float: left;
   position: relative;
   width: 80%;
+  padding-right: 10px;
   left: 10%;
   background-size: cover;
   overflow: hidden;
