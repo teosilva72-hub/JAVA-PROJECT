@@ -52,7 +52,7 @@
 
 /*INTERNAL CONTENT OF EQUIPMENT*/
 .equip-status {
-  background-color: rgb(255, 0, 0);
+  background-color: #00FF00;
   border-radius: 100%;
   padding: 6px;
   position: absolute;
