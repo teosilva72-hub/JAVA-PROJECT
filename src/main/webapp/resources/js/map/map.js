@@ -81,6 +81,18 @@ $(function () {
 		plaque.attr('posY', plaque.css('top').replace("px", ""))
 	})
 
+	$('#fulldiv1').on('click', function() {
+		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
+	})
+
+	$('#fulldiv2').on('click', function() {
+		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
+	})
+
+	$('#fulldiv3').on('click', function() {
+		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
+	})
+
 	$('#mapDivide').css('height', area)
 		.find('.grid-img').css('height', area / 3)
 
@@ -663,31 +675,6 @@ function dragEquip() {
 //Drag/Drop Element END
 
 
-// Map div Iframe Reload
-$(document).ready(function () {
-	$('#fulldiv1').click(function () {
-		$('#frame1').attr('src', $('#frame1').attr('src'));
-		return false;
-	});
-});
-
-$(document).ready(function () {
-	$('#fulldiv2').click(function () {
-		$('#frame2').attr('src', $('#frame2').attr('src'));
-		return false;
-	});
-});
-
-$(document).ready(function () {
-	$('#fulldiv3').click(function () {
-		$('#frame3').attr('src', $('#frame3').attr('src'));
-		return false;
-	});
-});
-
-
-
-// Map div Iframe Reload END
 
 //Delete Modal Name
 function DelName() {

@@ -264,9 +264,9 @@ function zoomOut(id) {
 };
 
 function setPosition(posX, posY) {
-	if (scale == 1) {
-		const element = $('section.overflow')
 	
+		const element = $('section.overflow')
+		zoomOut(element);
 		for (let idx = 0; idx < 2; idx++) {
 			zoomIn(element)
 		}
@@ -274,7 +274,7 @@ function setPosition(posX, posY) {
 		element
 			.scrollLeft(posX * element[0].scrollWidth)
 			.scrollTop(posY * element[0].scrollHeight)
-	} 
+
 }
 
 //Reload on Cancel Position
