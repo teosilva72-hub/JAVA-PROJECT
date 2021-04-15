@@ -104,6 +104,7 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
 				$('.dmsHidden-edit').hide();
+				$('.mtoHidden-edit').hide();
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -163,11 +164,19 @@ $(function () {
 			} else if (selectVAL == 8) {
 
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
+				$('.mtoHidden-edit').hide();	
+				$('.satInputs-edit').hide();
+
+			} else if (selectVAL == 6) {
+
+				$('.mtoHidden-edit').show();	
+				$('.dmsHidden-edit').hide();	
 				$('.satInputs-edit').hide();
 
 			} else {
 
 				$('.dmsHidden-edit').hide();
+				$('.mtoHidden-edit').hide();
 				$('.satInputs-edit').hide();
 			}
 
