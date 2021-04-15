@@ -24,18 +24,18 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.meteo.vs.VS;
-import br.com.tracevia.webapp.model.meteo.vs.VsReports;
-import br.com.tracevia.webapp.model.meteo.vs.VsReports.Builder;
+import br.com.tracevia.webapp.model.meteo.sv.SV;
+import br.com.tracevia.webapp.model.meteo.sv.SvReports;
+import br.com.tracevia.webapp.model.meteo.sv.SvReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
-@ManagedBean(name="vsReportsBean")
+@ManagedBean(name="svReportsBean")
 @RequestScoped
-public class VsReportsController {
+public class SvReportsController {
 	
-	private VsReports vsReport;
+	private SvReports svReport;
 	private List<SelectItem> equipments;
 	private List<SelectItem> months;
 	private List<SelectItem> years;
@@ -44,7 +44,7 @@ public class VsReportsController {
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
 		
-	LocaleUtil localeLabel, localeCalendar, localeVs;
+	LocaleUtil localeLabel, localeCalendar, localSV;
 			
 	int periodRange, daysInMonth, daysCount, start_month, end_month;  
 		
@@ -64,12 +64,12 @@ public class VsReportsController {
 	
 	ExcelModels model;
 	
-	public VsReports getSvReport() {
-		return vsReport;
+	public SvReports getSvReport() {
+		return svReport;
 	}
 
-	public void setSvReport(VsReports vsReport) {
-		this.vsReport = vsReport;
+	public void setSvReport(SvReports svReport) {
+		this.svReport = svReport;
 	}
 
 	public List<SelectItem> getEquipments() {
@@ -136,30 +136,30 @@ public class VsReportsController {
 	public void initialize() {
 		
 		localeLabel = new LocaleUtil();	
-		localeLabel.getResourceBundle(LocaleUtil.LABELS_VS);
+		localeLabel.getResourceBundle(LocaleUtil.LABELS_SV);
 		
 		localeCalendar = new LocaleUtil();	
 		localeCalendar.getResourceBundle(LocaleUtil.LABELS_CALENDAR);
 		
-		localeVs = new LocaleUtil();
-		localeVs.getResourceBundle(LocaleUtil.MESSAGES_VS);
+		localSV = new LocaleUtil();
+		localSV.getResourceBundle(LocaleUtil.MESSAGES_SV);
 				
 		/* EQUIPMENTS SELECTION */
-		vsReport = new VsReports();
+		svReport = new SvReports();
 		equipments = new ArrayList<SelectItem>();
 						
-		List<? extends Equipments> listVs = new ArrayList<VS>();  
+		List<? extends Equipments> listSv = new ArrayList<SV>();  
 		
 		try {
 			
 			 EquipmentsDAO dao = new EquipmentsDAO();		 
-			 listVs = dao.EquipmentSelectOptions("vs");
+			 listSv = dao.EquipmentSelectOptions("sv");
 						 
 		} catch (Exception e1) {			
 			e1.printStackTrace();
 		}
 				
-		for (Equipments e : listVs) {
+		for (Equipments e : listSv) {
 			SelectItem s = new SelectItem();
 			s.setValue(e.getEquip_id());
 			s.setLabel(e.getNome());
@@ -189,18 +189,18 @@ public class VsReportsController {
 		/* PERIODS FLOW */
 		
 		periods = new ArrayList<SelectItem>();			
-		periods.add(new SelectItem("05 minutes", localeLabel.getStringKey("vs_reports_select_periods_five_minutes")));
-		periods.add(new SelectItem("06 minutes", localeLabel.getStringKey("vs_reports_select_periods_six_minutes")));
-		periods.add(new SelectItem("10 minutes", localeLabel.getStringKey("vs_reports_select_periods_teen_minutes")));
-		periods.add(new SelectItem("15 minutes", localeLabel.getStringKey("vs_reports_select_periods_fifteen_minutes")));
-		periods.add(new SelectItem("30 minutes", localeLabel.getStringKey("vs_reports_select_periods_thirty_minutes")));  
-		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("vs_reports_select_periods_one_hour")));
-		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("vs_reports_select_periods_six_hours")));
-		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("vs_reports_select_periods_twenty_four_hours")));
+		periods.add(new SelectItem("05 minutes", localeLabel.getStringKey("sv_reports_select_periods_five_minutes")));
+		periods.add(new SelectItem("06 minutes", localeLabel.getStringKey("sv_reports_select_periods_six_minutes")));
+		periods.add(new SelectItem("10 minutes", localeLabel.getStringKey("sv_reports_select_periods_teen_minutes")));
+		periods.add(new SelectItem("15 minutes", localeLabel.getStringKey("sv_reports_select_periods_fifteen_minutes")));
+		periods.add(new SelectItem("30 minutes", localeLabel.getStringKey("sv_reports_select_periods_thirty_minutes")));  
+		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("sv_reports_select_periods_one_hour")));
+		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("sv_reports_select_periods_six_hours")));
+		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("sv_reports_select_periods_twenty_four_hours")));
 		
-		module = "vs";
+		module = "sv";
 		
-		table = "vs_data";
+		table = "sv_data";
 		
 		//Disabled
 		clearBool = true;
@@ -247,18 +247,18 @@ public void CreateFields(String type) {
 	   
 	   if(type.equals("1")) {
 		   
-			field = new String[] {localeLabel.getStringKey("vs_reports_year_month"),
-					    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
-						localeLabel.getStringKey("vs_reports_general_visibility")};
+			field = new String[] {localeLabel.getStringKey("sv_reports_year_month"),
+					    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
+						localeLabel.getStringKey("sv_reports_general_visibility")};
 						
 			fieldObjectValues = new String[] { "month", "ambient_temperature", "visibility"};
 	   }
 	   
 	   if(type.equals("2")) {
 		   
-		   field = new String[] {localeLabel.getStringKey("vs_reports_general_day_month"),
-				    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
-					localeLabel.getStringKey("vs_reports_general_visibility")};
+		   field = new String[] {localeLabel.getStringKey("sv_reports_general_day_month"),
+				    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
+					localeLabel.getStringKey("sv_reports_general_visibility")};
 					
 		            fieldObjectValues = new String[] { "dayOfTheMonth", "ambient_temperature", "visibility"};
 			
@@ -266,9 +266,9 @@ public void CreateFields(String type) {
 	   
 	   if(type.equals("3")) {
 			   
-		   field = new String[] {localeLabel.getStringKey("vs_reports_general_date"), localeLabel.getStringKey("vs_reports_general_interval"), 
-				    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
-					localeLabel.getStringKey("vs_reports_general_visibility")};
+		   field = new String[] {localeLabel.getStringKey("sv_reports_general_date"), localeLabel.getStringKey("sv_reports_general_interval"), 
+				    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
+					localeLabel.getStringKey("sv_reports_general_visibility")};
 			
 			
 			fieldObjectValues = new String[] { "date", "dateTime", "ambient_temperature", "visibility"}; 
@@ -306,21 +306,21 @@ public void CreateFields(String type) {
 			Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
 			
 			//Single Selection
-			vsReport.setEquipment(parameterMap.get("equip"));
+			svReport.setEquipment(parameterMap.get("equip"));
 			
-			vsReport.setStartDate(parameterMap.get("dateStart"));
+			svReport.setStartDate(parameterMap.get("dateStart"));
 			
-			vsReport.setEndDate(parameterMap.get("dateEnd"));
+			svReport.setEndDate(parameterMap.get("dateEnd"));
 			
-			vsReport.setStartMonth(parameterMap.get("start_month"));
+			svReport.setStartMonth(parameterMap.get("start_month"));
 						
-			vsReport.setEndMonth(parameterMap.get("end_month"));
+			svReport.setEndMonth(parameterMap.get("end_month"));
 								
-			vsReport.setYear(parameterMap.get("year"));
+			svReport.setYear(parameterMap.get("year"));
 			
-			vsReport.setMonth(parameterMap.get("month"));
+			svReport.setMonth(parameterMap.get("month"));
 			
-			vsReport.setPeriod(parameterMap.get("periods"));
+			svReport.setPeriod(parameterMap.get("periods"));
 													
 			 //Initialize ResultList
 		     resultList = new ArrayList<Builder>();	
@@ -328,14 +328,14 @@ public void CreateFields(String type) {
 		    	 if(type.equals("1")) {
 		    		    			    	
 		    	// Quantos dias possui o respectivo m�s
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(vsReport.getYear()), Integer.parseInt(vsReport.getEndMonth()));
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(svReport.getYear()), Integer.parseInt(svReport.getEndMonth()));
 				int daysInEndMonth = yearMonthObject.lengthOfMonth();
 											
-				vsReport.setStartDate("01/"+vsReport.getStartMonth()+"/"+vsReport.getYear());
-				vsReport.setEndDate(daysInEndMonth+"/"+vsReport.getEndMonth()+"/"+vsReport.getYear());
+				svReport.setStartDate("01/"+svReport.getStartMonth()+"/"+svReport.getYear());
+				svReport.setEndDate(daysInEndMonth+"/"+svReport.getEndMonth()+"/"+svReport.getYear());
 				
-				end_month = Integer.parseInt(vsReport.getEndMonth());
-				start_month = Integer.parseInt(vsReport.getStartMonth());
+				end_month = Integer.parseInt(svReport.getEndMonth());
+				start_month = Integer.parseInt(svReport.getStartMonth());
 				
 				setNumRegisters((end_month - start_month) + 1);
 				
@@ -346,11 +346,11 @@ public void CreateFields(String type) {
 		    	 else if(type.equals("2")) {
 		  		    	 
 				// Quantos dias possui o respectivo m�s
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(vsReport.getYear()), Integer.parseInt(vsReport.getMonth()));
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(svReport.getYear()), Integer.parseInt(svReport.getMonth()));
 				daysInMonth = yearMonthObject.lengthOfMonth();
 				
-				vsReport.setStartDate("01/"+vsReport.getMonth()+"/"+vsReport.getYear());
-				vsReport.setEndDate(daysInMonth+"/"+vsReport.getMonth()+"/"+vsReport.getYear());
+				svReport.setStartDate("01/"+svReport.getMonth()+"/"+svReport.getYear());
+				svReport.setEndDate(daysInMonth+"/"+svReport.getMonth()+"/"+svReport.getYear());
 				
 				setNumRegisters(daysInMonth);				
 				    	
@@ -358,25 +358,25 @@ public void CreateFields(String type) {
 		    	 
 		    	 else if(type.equals("3")) {
 		    		 
-		    		 vsReport.setStartDate(parameterMap.get("dateStart"));
-		    		 vsReport.setEndDate(parameterMap.get("dateEnd"));
+		    		 svReport.setStartDate(parameterMap.get("dateStart"));
+		    		 svReport.setEndDate(parameterMap.get("dateEnd"));
 		    		 
-		    		 daysCount = ((int) dta.diferencaDias(vsReport.getStartDate(), vsReport.getEndDate()) + 1);
+		    		 daysCount = ((int) dta.diferencaDias(svReport.getStartDate(), svReport.getEndDate()) + 1);
 		    		 
 		    		//Registros de acordo com sele��o - importante
-		 			setNumRegisters(dta.RegistersNumbers(vsReport.getStartDate(), vsReport.getEndDate(), vsReport.getPeriod()));
+		 			setNumRegisters(dta.RegistersNumbers(svReport.getStartDate(), svReport.getEndDate(), svReport.getPeriod()));
 		 		 	 			
-		 			periodRange = dta.periodsRange(vsReport.getPeriod());
+		 			periodRange = dta.periodsRange(svReport.getPeriod());
 		 		    	    	    	   
 		    	   }
 		    		   				    
 			//Chamar Procedure de acordo com per�odo selecionado
-			//procedure = models.SelectProcedureByPeriod(vsReport.getPeriod());	
+			//procedure = models.SelectProcedureByPeriod(svReport.getPeriod());	
 		    	 
-    		startDate = dta.StringDBDateFormat(vsReport.getStartDate());
-			endDate = dta.StringDBDateFormat(vsReport.getEndDate());
+    		startDate = dta.StringDBDateFormat(svReport.getStartDate());
+			endDate = dta.StringDBDateFormat(svReport.getEndDate());
 			data_anterior = startDate;
-			mes_inicial = vsReport.getStartMonth();	
+			mes_inicial = svReport.getStartMonth();	
 			month_start_date = "01";
 			
 			start = dta.DateTimeToStringIni(startDate); 
@@ -413,11 +413,11 @@ public void CreateFields(String type) {
 			lin = auxResult[0].length;
 			col = auxResult.length;
 						
-			if(vsReport.getPeriod().equals("month"))
+			if(svReport.getPeriod().equals("month"))
 		       dta.preencherDias(resultQuery, 0, startDate, daysInMonth);
 			
-			else if (vsReport.getPeriod().equals("year"))
-				dta.preencherDataMes(resultQuery, 0, vsReport.getStartMonth(), vsReport.getEndMonth());
+			else if (svReport.getPeriod().equals("year"))
+				dta.preencherDataMes(resultQuery, 0, svReport.getStartMonth(), svReport.getEndMonth());
 			
 			//DATAS
 			else {
@@ -426,28 +426,28 @@ public void CreateFields(String type) {
 			
 			//PERIODOS
 			//NEW
-			if(vsReport.getPeriod().equals("05 minutes"))			
+			if(svReport.getPeriod().equals("05 minutes"))			
 				 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
 						
-			if(vsReport.getPeriod().equals("06 minutes"))			
+			if(svReport.getPeriod().equals("06 minutes"))			
 			     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
 			
-			if(vsReport.getPeriod().equals("10 minutes"))		
+			if(svReport.getPeriod().equals("10 minutes"))		
 				dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
 			   			
-			if(vsReport.getPeriod().equals("15 minutes"))		
+			if(svReport.getPeriod().equals("15 minutes"))		
 			    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
 			
-			if(vsReport.getPeriod().equals("30 minutes"))		
+			if(svReport.getPeriod().equals("30 minutes"))		
 				dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
 				   		        			
-			if(vsReport.getPeriod().equals("01 hour")) 	
+			if(svReport.getPeriod().equals("01 hour")) 	
 				dta.preencherHora(resultQuery, 1, getNumRegisters());
 			
-			if(vsReport.getPeriod().equals("06 hours"))	
+			if(svReport.getPeriod().equals("06 hours"))	
 			    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
 			
-			 if(vsReport.getPeriod().equals("24 hours"))
+			 if(svReport.getPeriod().equals("24 hours"))
 			    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
 			 
 			}
@@ -458,22 +458,22 @@ public void CreateFields(String type) {
 		    // CASO N�O EXISTA VALOR >>>>>>> PASSA	   
 		    if(auxResult[0][j] != null)	 { 
 						
-			if(vsReport.getPeriod().equals("01 hour") || vsReport.getPeriod().equals("06 hours"))
+			if(svReport.getPeriod().equals("01 hour") || svReport.getPeriod().equals("06 hours"))
 				   hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				
-			else if(!vsReport.getPeriod().equals("24 hours") && !vsReport.getPeriod().equals("01 hour") && !vsReport.getPeriod().equals("06 hours")
-					&& !vsReport.getPeriod().equals("year") && !vsReport.getPeriod().equals("month") ) {
+			else if(!svReport.getPeriod().equals("24 hours") && !svReport.getPeriod().equals("01 hour") && !svReport.getPeriod().equals("06 hours")
+					&& !svReport.getPeriod().equals("year") && !svReport.getPeriod().equals("month") ) {
 				    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));	
 				    
 				}
 						
-			  if(!vsReport.getPeriod().equals("year") &&  !vsReport.getPeriod().equals("month")) {
+			  if(!svReport.getPeriod().equals("year") &&  !svReport.getPeriod().equals("month")) {
 
 				// Restri��o caso n�o haja dados nos primeiros registros
 				if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
 					
-					if(vsReport.getPeriod().equals("24 hours"))
+					if(svReport.getPeriod().equals("24 hours"))
 						iterator = (int) dta.daysDifference(startDate, auxResult[0][j]);
 
 					else iterator = dta.daysDifference(startDate, auxResult[0][j], periodRange);	
@@ -483,7 +483,7 @@ public void CreateFields(String type) {
 
 				} else if (!auxResult[0][j].equals(data_anterior)) {								
 												
-					if(vsReport.getPeriod().equals("24 hours"))
+					if(svReport.getPeriod().equals("24 hours"))
 						iterator = (int) dta.daysDifference(data_anterior, auxResult[0][j]);
 					   
 					else iterator = dta.daysDifference(data_anterior, auxResult[0][j], periodRange);	
@@ -493,38 +493,38 @@ public void CreateFields(String type) {
 							
 				data_anterior = auxResult[0][j];
 				
-				 if(vsReport.getPeriod().equals("05 minutes"))	{
+				 if(svReport.getPeriod().equals("05 minutes"))	{
 					 p = dta.index05Minutes(hr, minuto);
 					 p = p + pos;
 				 }
-				 else if(vsReport.getPeriod().equals("06 minutes")) {	
+				 else if(svReport.getPeriod().equals("06 minutes")) {	
 						 p = dta.index06Minutes(hr, minuto);
 						 p = p + pos;
 				 }
-				 else if(vsReport.getPeriod().equals("10 minutes")) {
+				 else if(svReport.getPeriod().equals("10 minutes")) {
 				    	 p = dta.index10Minutes(hr, minuto);
 				    	 p = p + pos;
 				 }
-				 else if(vsReport.getPeriod().equals("15 minutes")) {	
+				 else if(svReport.getPeriod().equals("15 minutes")) {	
 						 p = dta.index15Minutes(hr, minuto);
 				         p = p + pos;
 								
 				 }
-				 else if(vsReport.getPeriod().equals("30 minutes")) {	
+				 else if(svReport.getPeriod().equals("30 minutes")) {	
 						 p = dta.index30Minutes(hr, minuto);
 						 p = p + pos;
 				 }
-				 else if(vsReport.getPeriod().equals("01 hour"))				
+				 else if(svReport.getPeriod().equals("01 hour"))				
 					p = pos + hr;
 							
-				else if(vsReport.getPeriod().equals("06 hours")) {
+				else if(svReport.getPeriod().equals("06 hours")) {
 					
 					p = dta.index06Hours(hr);				
 					p = pos + p;
 					
 				}
 				
-				else if(vsReport.getPeriod().equals("24 hours"))
+				else if(svReport.getPeriod().equals("24 hours"))
 					     p = pos;
 				 
 					if(i > 1 )
@@ -535,7 +535,7 @@ public void CreateFields(String type) {
 			  //////////////////////////////////
 			  /////////////// YEAR REPORT 
 			  ////////////////////////////////
-			  else if(vsReport.getPeriod().equals("year")) {	
+			  else if(svReport.getPeriod().equals("year")) {	
 				  				  				  
 				      if((mes_inicial != null) && Integer.parseInt(mes_inicial) != Integer.parseInt(auxResult[0][j])) {
 							
@@ -561,7 +561,7 @@ public void CreateFields(String type) {
 			  //////////////////////////////////
 			  /////////////// MONTH REPORT 
 			  ////////////////////////////////
-			  else if(vsReport.getPeriod().equals("month")){				
+			  else if(svReport.getPeriod().equals("month")){				
 				  
 				    if((month_start_date != null) && Integer.parseInt(month_start_date) != Integer.parseInt(auxResult[0][j])) {
 				    							
@@ -608,7 +608,7 @@ public void CreateFields(String type) {
 			
 			//CASO CONTRARIO ENTRA AQUI
 		} else {
-			      message.InfoMessage(localeVs.getStringKey("vs_message_records_not_found_title"), localeVs.getStringKey("vs_message_records_not_found"));
+			      message.InfoMessage(localSV.getStringKey("sv_message_records_not_found_title"), localSV.getStringKey("sv_message_records_not_found"));
 		          CreateFields(type);  
 		          
 		          //EXECUTE JS
@@ -673,8 +673,8 @@ if(type.equals("3")) {
    public String BuildMainQuery(QueriesReportsModels models, String mainQuery, String index) {    	 
 
 	   String query = null;
-	   query = models.BuildQueryIndexType2(models.QueryDateTimeHeader(vsReport.getPeriod()), mainQuery, models.QueryFromMeteoTable(vsReport.getPeriod(), table), models.useIndex(index),
-				models.innerJoinSv(), models.whereClauseWeatherEquipDate(vsReport.getEquipment(), start, end), models.QueryWeatherGroupAndOrder(vsReport.getPeriod()));
+	   query = models.BuildQueryIndexType2(models.QueryDateTimeHeader(svReport.getPeriod()), mainQuery, models.QueryFromMeteoTable(svReport.getPeriod(), table), models.useIndex(index),
+				models.innerJoinSv(), models.whereClauseWeatherEquipDate(svReport.getEquipment(), start, end), models.QueryWeatherGroupAndOrder(svReport.getPeriod()));
 	   
 	   System.out.println(query);
 
@@ -695,9 +695,9 @@ if(type.equals("3")) {
 		
 	     switch(type) {
 	     
-	     case "1": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "2": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "3": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "1": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "2": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "3": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
 	     case "4": ; break;	   
 	     default: query = null; break;
 	       	    	     
@@ -771,9 +771,9 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_year"); 
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -789,8 +789,8 @@ if(type.equals("3")) {
 		  model.StandardStyles();
 		  model.StandardBorders();
 		      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
+		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
@@ -801,9 +801,9 @@ if(type.equals("3")) {
  		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
  		   		 
- 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
+ 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
  		  excel_title = localeLabel.getStringKey("excel_report_weather_title_month");
  		  
  		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -819,8 +819,8 @@ if(type.equals("3")) {
  		  model.StandardStyles();
  		  model.StandardBorders();
  		      		      		    		    		    		  
- 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
- 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
+ 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
+ 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
  				  col, colStartDate, colEndDate, resultQuery);
  		  
  	    }
@@ -830,9 +830,9 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_periods");
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:I4", "J1:L4"};
@@ -848,8 +848,8 @@ if(type.equals("3")) {
 		  model.StandardStyles();
 		  model.StandardBorders();
 		      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
+		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
@@ -899,7 +899,7 @@ if(type.equals("3")) {
   		ExternalContext externalContext = facesContext.getExternalContext();
 
   		//Reset object => call on click reset button
-  		vsReport = new VsReports();
+  		svReport = new SvReports();
 
   		//System.out.println("reset");
   		
@@ -919,7 +919,7 @@ if(type.equals("3")) {
   		
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
- 		      resultList.add(new VsReports.Builder().month(resultQuery[0][k]) 
+ 		      resultList.add(new SvReports.Builder().month(resultQuery[0][k]) 
  		    		   .EnvTemperature(resultQuery[1][k] == null? 0.0 : Double.parseDouble(resultQuery[1][k]))             
  		               .visibility(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])));
  		       		       		    	    			    				 
@@ -930,7 +930,7 @@ if(type.equals("3")) {
   			
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
-  	 		      resultList.add(new VsReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
+  	 		      resultList.add(new SvReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
   	 		    	 .EnvTemperature(resultQuery[1][k] == null? 0.0 : Double.parseDouble(resultQuery[1][k]))             
   	                 .visibility(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])));
   	 		    		    			    				 
@@ -942,7 +942,7 @@ if(type.equals("3")) {
   			
   		  for(int k = 0; k < getNumRegisters(); k++) {      
 				 
- 		      resultList.add(new VsReports.Builder().date(resultQuery[0][k]) 
+ 		      resultList.add(new SvReports.Builder().date(resultQuery[0][k]) 
                 .dateTime(resultQuery[1][k])               
                 .EnvTemperature(resultQuery[2][k] == null? 0.0 : Double.parseDouble(resultQuery[2][k]))            
                 .visibility(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));

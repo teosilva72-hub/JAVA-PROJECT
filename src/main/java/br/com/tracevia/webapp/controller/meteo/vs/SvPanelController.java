@@ -13,19 +13,19 @@ import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.vs.VS;
-import br.com.tracevia.webapp.model.meteo.vs.VsPanel;
+import br.com.tracevia.webapp.model.meteo.sv.SV;
+import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 
-@ManagedBean(name="vsPanelBean")
+@ManagedBean(name="svPanelBean")
 @RequestScoped
-public class VsPanelController {
+public class SvPanelController {
 	
-	private VsPanel panel;
+	private SvPanel panel;
 	private List<SelectItem> equipments;
 	
-	LocaleUtil localeLabel, localeCalendar, localeVs;
+	LocaleUtil localeLabel, localeCalendar, localeSV;
 	
 	MessagesUtil message;
 	
@@ -50,11 +50,11 @@ public class VsPanelController {
 		this.station_name = station_name;
 	}
 
-	public VsPanel getPanel() {
+	public SvPanel getPanel() {
 		return panel;
 	}
 	
-	public void setPanel(VsPanel panel) {
+	public void setPanel(SvPanel panel) {
 		this.panel = panel;
 	}
 
@@ -66,21 +66,21 @@ public class VsPanelController {
 	public void initialize() {
 		
 		localeLabel = new LocaleUtil();	
-		localeLabel.getResourceBundle(LocaleUtil.LABELS_VS);
+		localeLabel.getResourceBundle(LocaleUtil.LABELS_SV);
 		
-		localeVs = new LocaleUtil();	
-		localeVs.getResourceBundle(LocaleUtil.MESSAGES_VS);
+		localeSV = new LocaleUtil();	
+		localeSV.getResourceBundle(LocaleUtil.MESSAGES_SV);
 		
 		/* EQUIPMENTS SELECTION */
-		panel = new VsPanel();
+		panel = new SvPanel();
 		equipments = new ArrayList<SelectItem>();	
 								
-		List<? extends Equipments> listVS = new ArrayList<VS>();  
+		List<? extends Equipments> listVS = new ArrayList<SV>();  
 					
 		try {
 			
 			 dao = new EquipmentsDAO();		 
-			 listVS = dao.EquipmentSelectOptions("vs");
+			 listVS = dao.EquipmentSelectOptions("sv");
 			 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();
@@ -115,13 +115,13 @@ public class VsPanelController {
 			
 			message = new MessagesUtil();
 			mtoDao = new MeteoDAO();
-			panel = new VsPanel();
+			panel = new SvPanel();
 					
-			panel = mtoDao.VsPanelInformation(station);
+			panel = mtoDao.SvPanelInformation(station);
 														
 			if(panel == null) {
 				
-			   panel = new VsPanel(); // Inst�ncia o objeto novamente.
+			   panel = new SvPanel(); // Inst�ncia o objeto novamente.
 			   initPanelZero(panel);
 			  		  
 			 }		
@@ -142,8 +142,8 @@ public class VsPanelController {
 										
 			mtoDao = new MeteoDAO();	
 			message = new MessagesUtil();
-			panel = new VsPanel();				
-			panel = mtoDao.VsPanelInformation(station);	
+			panel = new SvPanel();				
+			panel = mtoDao.SvPanelInformation(station);	
 						
 			//Nome do Equipamento
 			for(SelectItem s : equipments) {							
@@ -153,9 +153,9 @@ public class VsPanelController {
 						
 			if(panel == null) {
 				
-				panel = new VsPanel();	// Inst�ncia o objeto novamente.
+				panel = new SvPanel();	// Inst�ncia o objeto novamente.
 				initPanelZero(panel);				
-				message.InfoMessage(localeVs.getStringKey("vs_message_records_not_found_title"),localeVs.getStringKey("vs_message_equipment_no_data"));
+				message.InfoMessage(localeSV.getStringKey("sv_message_records_not_found_title"),localeSV.getStringKey("sv_message_equipment_no_data"));
 			}
 			
 			RequestContext.getCurrentInstance().execute("checkMtoStatus();");			
@@ -168,9 +168,8 @@ public class VsPanelController {
 	}	
 	
 	//PREENCHER CASO N�O HAJA VALORES
-	public void initPanelZero(VsPanel panel) {
-			
-		station_name = "Default";
+	public void initPanelZero(SvPanel panel) {
+					
 		panel.setAmbient_temperature(0);
 		panel.setVisibility(0);
 		panel.setStatus(0);

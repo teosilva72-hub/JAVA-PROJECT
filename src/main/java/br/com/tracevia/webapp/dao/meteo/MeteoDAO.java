@@ -7,8 +7,7 @@ import java.sql.SQLException;
 
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
-import br.com.tracevia.webapp.model.meteo.rs.RsPanel;
-import br.com.tracevia.webapp.model.meteo.vs.VsPanel;
+import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class MeteoDAO {
@@ -32,9 +31,7 @@ public class MeteoDAO {
 			ps.setString(1, station_id);		
 						
 			rs = ps.executeQuery();
-			
-			System.out.println(select);
-			
+						
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 										
@@ -49,6 +46,7 @@ public class MeteoDAO {
 					panel.setStatus(rs.getInt(9));
 					panel.setBattery(rs.getInt(10));
 					panel.setLine_volts(rs.getInt(11));
+					panel.setRoad_temperature(rs.getInt(12));
 				
 				}				
 			 } else panel = null;	//DEFINE A V�RI�VEL COMO NULA
@@ -61,50 +59,13 @@ public class MeteoDAO {
 		return panel;
 		
 	}
-	
-	public RsPanel RsPanelInformation(String station_id) throws Exception {
+			
+	public SvPanel SvPanelInformation(String station_id) throws Exception {
 		
-		RsPanel panel = new RsPanel();
+		SvPanel panel = new SvPanel();
 						
 		//QUERY
-		String select = MeteoQueriesModels.RV_PANEL_QUERY;
-				
-		    try {
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, station_id);		
-						
-			rs = ps.executeQuery();
-						
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {						
-			
-					panel.setRoad_temperature(rs.getDouble(1));					
-					panel.setStatus(rs.getInt(2));
-					panel.setBattery(rs.getInt(3));
-					panel.setLine_volts(rs.getInt(4));
-				
-				}
-				
-			 } else panel = null;	//DEFINE A V�RI�VEL COMO NULA
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
-
-				
-		return panel;
-		
-	}
-	
-	public VsPanel VsPanelInformation(String station_id) throws Exception {
-		
-		VsPanel panel = new VsPanel();
-						
-		//QUERY
-		String select = MeteoQueriesModels.SV_PANEL_QUERY;
+		String select = MeteoQueriesModels.VS_PANEL_QUERY;
 				
 		    try {
 			

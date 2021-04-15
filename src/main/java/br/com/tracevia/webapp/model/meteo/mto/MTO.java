@@ -15,6 +15,7 @@ public class MTO extends Equipments{
 	private int velocidadeMed_vento;
 	private int direcao_vento;
 	private double temp_ar;
+	private double temp_estrada;	
 	private int visibilidade;
 	private int status;
 	private int bateria_sts;
@@ -26,7 +27,7 @@ public class MTO extends Equipments{
 			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible,
 			String data_hora, String data, String intervalos, int monthOrDay, int press_atmosferica, int umi_relativa,
 			int taxa_precipitacao, int taxa_precipitacao1h, int velocidadeMed_vento, int direcao_vento, double temp_ar,
-			int visibilidade, int status2, int bateria_sts, int volts_line) {
+			double temp_estrada, int visibilidade, int status2, int bateria_sts, int volts_line) {
 		
 		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
 				estrada, cidade, km, posicao, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
@@ -43,8 +44,8 @@ public class MTO extends Equipments{
 		this.velocidadeMed_vento = velocidadeMed_vento;
 		this.direcao_vento = direcao_vento;
 		this.temp_ar = temp_ar;
-		this.visibilidade = visibilidade;
-		status = status2;
+		this.temp_estrada = temp_estrada;
+		this.visibilidade = visibilidade;	
 		this.bateria_sts = bateria_sts;
 		this.volts_line = volts_line;
 	
@@ -153,7 +154,6 @@ public class MTO extends Equipments{
 			this.direcao_vento = direcao_vento;
 		}
 
-
 		public double getTemp_ar() {
 			return temp_ar;
 		}
@@ -162,7 +162,14 @@ public class MTO extends Equipments{
 		public void setTemp_ar(double temp_ar) {
 			this.temp_ar = temp_ar;
 		}
+				
+		public double getTemp_estrada() {
+			return temp_estrada;
+		}
 
+		public void setTemp_estrada(double temp_estrada) {
+			this.temp_estrada = temp_estrada;
+		}
 
 		public int getVisibilidade() {
 			return visibilidade;

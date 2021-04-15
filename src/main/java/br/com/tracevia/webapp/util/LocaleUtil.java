@@ -13,8 +13,7 @@ public class LocaleUtil {
 	public static final String LABELS_USERS = "bundle.labels.users.labels_users_";
 	public static final String LABELS_SAT = "bundle.labels.sat.labels_sat_";
 	public static final String LABELS_MTO = "bundle.labels.meteo.mto.labels_mto_";
-	public static final String LABELS_RS = "bundle.labels.meteo.rs.labels_rs_";
-	public static final String LABELS_VS = "bundle.labels.meteo.vs.labels_vs_";
+	public static final String LABELS_SV = "bundle.labels.meteo.sv.labels_sv_";
 	public static final String LABELS_CALENDAR = "bundle.labels.system.calendar.labels_calendar_";
 	public static final String LABELS_DIRECTIONS = "bundle.labels.system.directions.labels_directions_";
 	public static final String LABELS_EXCEL = "bundle.labels.system.excel.labels_excel_";
@@ -35,8 +34,7 @@ public class LocaleUtil {
 	public static final String MESSAGES_MAPS = "bundle.messages.system.maps.labels_maps_";
 	public static final String MESSAGES_REALTIME = "bundle.messages.system.realtime.labels_realtime_";	
 	public static final String MESSAGES_MTO = "bundle.messages.meteo.mto.messages_mto_";	
-	public static final String MESSAGES_RS = "bundle.messages.meteo.rs.messages_rs_";	
-	public static final String MESSAGES_VS = "bundle.messages.meteo.vs.messages_vs_";	
+	public static final String MESSAGES_SV = "bundle.messages.meteo.sv.messages_sv_";	
 	public static final String MESSAGES_SAT = "bundle.messages.sat.messages_sat_";	
 
 			

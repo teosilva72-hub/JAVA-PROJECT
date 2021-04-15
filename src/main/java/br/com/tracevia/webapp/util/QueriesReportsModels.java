@@ -165,24 +165,22 @@ public class QueriesReportsModels {
 	private static final String FROM_TABLE_DATE_SAT_VBV_CCR = " FROM sat_vbv_ccr st " ;
 
     //FROM TABLES REFERENCE		
-	private static final String FROM_TABLE_MTO = " FROM mto_data st ";
-	private static final String FROM_TABLE_RV = " FROM rs_data st ";
-	private static final String FROM_TABLE_SV = " FROM vs_data st ";
+	private static final String FROM_TABLE_MTO = " FROM mto_data st ";	
+	private static final String FROM_TABLE_SV = " FROM sv_data st ";
 
 	//LEFT JOIN TABLE REFERENCE
 	private static final String LEFT_JOIN_START_SAT = "LEFT JOIN sat_vbv AS st ";
 	private static final String LEFT_JOIN_START_TABLE_SAT = "LEFT JOIN tb_vbv AS st ";
 	private static final String LEFT_JOIN_START_SAT_TABLE_LL = "LEFT JOIN tb_vbv_ll AS st ";
 	private static final String LEFT_JOIN_START_SAT_TABLE_CCR = "LEFT JOIN tb_vbv_ccr AS st ";
-	private static final String LEFT_JOIN_START_MTO = "LEFT JOIN weather_station AS st ";
+	private static final String LEFT_JOIN_START_MTO = "LEFT JOIN mto_data AS st ";
 
 	//LEFT JOIN SAT EQUIPMENT TABLE REFERENCE
 	private static final String LEFT_JOIN_END_SAT_EQUIP = "LEFT JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
 	private static final String LEFT_JOIN_END_MTO_EQUIP = "LEFT JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
 	private static final String INNER_JOIN_END_SAT_EQUIP = "INNER JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
 	private static final String INNER_JOIN_END_MTO_EQUIP = "INNER JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
-	private static final String INNER_JOIN_END_RV_EQUIP = "INNER JOIN rs_equipment as eq ON eq.equip_id = st.station_id ";
-	private static final String INNER_JOIN_END_SV_EQUIP = "INNER JOIN vs_equipment as eq ON eq.equip_id = st.station_id ";
+	private static final String INNER_JOIN_END_SV_EQUIP = "INNER JOIN sv_equipment as eq ON eq.equip_id = st.station_id ";
 	
 	//LEFT JOIN PERIOD 05 MINUTES
 		private static final String LEFT_JOIN_CONDITION_05_MIN = "ON DATE(st.data) = DATE(tmp.datetime_05) AND HOUR(st.data) = HOUR(tmp.datetime_05) AND " +
@@ -706,10 +704,7 @@ public class QueriesReportsModels {
 					if(table.equals("mto_data")) 
 						return FROM_TABLE_MTO;
 
-					if(table.equals("rs_data"))
-						return FROM_TABLE_RV;
-
-					if(table.equals("vs_data"))
+					if(table.equals("sv_data"))
 						return FROM_TABLE_SV;
 					
 					return null;								 
@@ -872,11 +867,6 @@ public class QueriesReportsModels {
 	
 	public String innerJoinMto() {
 		return INNER_JOIN_END_MTO_EQUIP;
-		
-	}
-	
-	public String innerJoinRv() {
-		return INNER_JOIN_END_RV_EQUIP;
 		
 	}
 	

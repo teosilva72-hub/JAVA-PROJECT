@@ -13,24 +13,14 @@ public class MeteoQueriesModels {
 			+ "visibility, "
 			+ "status, "
 			+ "battery_status, "
-			+ "line_volts "
+			+ "line_volts, "
+			+ "road_temperature "
 			+ "FROM mto_data "
 			+ "WHERE station_id = ? AND DATE(datetime_) = DATE(NOW()) "
 			+ "ORDER BY DATE(datetime_) DESC LIMIT 1";
-	
-	
-	public static String RV_PANEL_QUERY = "SELECT "
-			+ "road_temperature, "			
-			+ "status, "
-			+ "battery_status, "
-			+ "line_volts "
-			+ "FROM rv_data "
-			+ "WHERE station_id = ? AND DATE(datetime_) = DATE(NOW()) "
-			+ "ORDER BY DATE(datetime_) DESC LIMIT 1";
-	
-	
-	public static String SV_PANEL_QUERY = "SELECT "			
-			+ "room_temperature, "
+			
+	public static String VS_PANEL_QUERY = "SELECT "			
+			+ "ambient_temperature, "
 			+ "visibility, "
 			+ "status, "
 			+ "battery_status, "
@@ -48,20 +38,13 @@ public class MeteoQueriesModels {
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.wind_direction, NULL)),0),0) AS wind_direction, " +			 
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.precipitation_rate, NULL)),0),0) AS precipitation_rate, " +
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.precipitation_rate_hour, NULL)),0),0) AS preciptation_rate_hour, " +
-			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.visibility, NULL)),0),0) AS visibility ";	
+			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.visibility, NULL)),0),0) AS visibility " + 
+			    "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', FORMAT((st.road_temperature), 2), NULL)) AS DECIMAL(3,1)),0) AS temperatura ";
 		
 		return query;
 	
 	}
-	
-     public String RvMainQuery(String station_id) {
-		
-		String query = "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', FORMAT((st.road_temperature), 2), NULL)) AS DECIMAL(3,1)),0) AS temperatura ";
-			 		
-		return query;
-	
-	}
-     
+	         
      public String SvMainQuery(String station_id) {
  		
  		String query = "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', FORMAT((st.ambient_temperature), 2), NULL)) AS DECIMAL(3,1)),0), "

@@ -13,7 +13,7 @@
 	
 	<f:metadata>	
 
-	<f:viewParam id="act1" name="equip" value="#{vsPanelBean.station}" /> 
+	<f:viewParam id="act1" name="equip" value="#{svPanelBean.station}" /> 
 		          
     </f:metadata>
 	
@@ -54,8 +54,8 @@
 									<span for="equip"
 										class="valid-icon-hidden"></span> 							    					    
 									<select name="equip" id="equip">	
-									  <option value="" >#{vsLabels.vs_reports_select_station}</option>																	      
-										<ui:repeat var="eqp"  value="#{vsPanelBean.equipments}"  varStatus="eqpStatus" >
+									  <option value="" >#{svLabels.sv_reports_select_station}</option>																	      
+										<ui:repeat var="eqp"  value="#{svPanelBean.equipments}"  varStatus="eqpStatus" >
 											<option value="#{eqp.value}" > #{eqp.label} </option>	                                  
 		                                </ui:repeat> 
 		                            </select>										    							   														
@@ -65,15 +65,15 @@
 							<!-- Final barra de pesquisa -->
 							<!-- Botão barra de pesquisa -->
 							<div class="col-2">	     
-								<h:commandButton id="btn-search-tab" class="btn btn-dark btnConf" value="#{vsLabels.vs_reports_btn_search}"
-								action="#{vsPanelBean.GetPanelInformation}" />	
+								<h:commandButton id="btn-search-tab" class="btn btn-dark btnConf" value="#{svLabels.sv_reports_btn_search}"
+								action="#{svPanelBean.GetPanelInformation}" />	
 								    		
 							</div>
 						<!-- Final do botão barra de pesquisa -->
 						<!-- Inicio da barra de informação -->
 						<div class="col-sm">	     
 							<div class="alert alert-dark" role="alert">
-							 	<h:outputLabel id="stat" class="stationName" value="#{vsPanelBean.station_name}" />
+							 	<h:outputLabel id="stat" class="stationName" value="#{svPanelBean.station_name}" />
 							</div>
 						</div>
 						<!-- Final barra de informação -->
@@ -89,8 +89,8 @@
 				     		<div class="card card-temp">
 								<div class="card-body temperatura-rsv">
 									<div>
-										<h:outputLabel value="#{vsLabels.vs_panel_station_ambient_temperature}" />
-										<h1>#{vsPanelBean.panel.ambient_temperature}°C</h1>									
+										<h:outputLabel value="#{svLabels.sv_panel_station_ambient_temperature}" />
+										<h1>#{svPanelBean.panel.ambient_temperature}°C</h1>									
 									</div>
 								</div>
 							</div>
@@ -99,8 +99,8 @@
 				     		 <!-- Inicio do card 8 -->
 				     		<div class="card card-vis visibilidade-rsv maxHeight">
 								<div class="card-body">
-									<h:outputLabel value="#{vsLabels.vs_panel_station_visibility}" />
-									<h1>#{vsPanelBean.panel.visibility}</h1>
+									<h:outputLabel value="#{svLabels.sv_panel_station_visibility}" />
+									<h1>#{svPanelBean.panel.visibility}</h1>
 								</div>
 							</div>
 							<!-- Final do card 8 -->
@@ -110,12 +110,12 @@
 				     		<div class="card card-ene energia-rsv">
 								<div class="card-body">
 									<div class=" ">												
-										<h5 class=""><h:outputLabel value="#{vsLabels.vs_panel_station_status} : " />
+										<h5 class=""><h:outputLabel value="#{svLabels.sv_panel_station_status} : " />
 											<label id="status" ></label> <!-- JSF LABEL NOT WORK HERE -->
-											<h:inputHidden id="hidden" value="#{vsPanelBean.panel.status}" />
+											<h:inputHidden id="hidden" value="#{svPanelBean.panel.status}" />
 						 				</h5>						 				
-										<h5 class="status-volts">#{vsLabels.vs_panel_station_line_volts} : #{vsPanelBean.panel.line_volts}</h5>
-										<h5 class="status-battery">#{vsLabels.vs_panel_station_battery} : #{vsPanelBean.panel.battery}</h5>
+										<h5 class="status-volts">#{svLabels.sv_panel_station_line_volts} : #{svPanelBean.panel.line_volts}</h5>
+										<h5 class="status-battery">#{svLabels.sv_panel_station_battery} : #{svPanelBean.panel.battery}</h5>
 								
 									</div>
 								</div>

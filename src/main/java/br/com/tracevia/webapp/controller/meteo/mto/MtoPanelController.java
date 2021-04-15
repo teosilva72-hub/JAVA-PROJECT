@@ -179,7 +179,8 @@ public class MtoPanelController {
 		panel.setVisibility(0);
 		panel.setStatus(0);
 		panel.setBattery(0);
-		panel.setLine_volts(0);	
+		panel.setLine_volts(0);		
+		panel.setRoad_temperature(0);
 		
 	}
 

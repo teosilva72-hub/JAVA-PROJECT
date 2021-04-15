@@ -91,56 +91,26 @@
 				       </ui:fragment> 
 				       
 				       <!--  MTO  -->	
-				       
-				       <!--  RV  -->	
-				       
-				     <ui:fragment rendered="#{loginAccount.load.en_rs}">
-				     
-				     <li class="nav-item ml-2">
-                        <a class="nav-link" href="#rsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-bolt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_rs}</span></a>
-					       <ul class="collapse list-unstyled ml-3" id="rsSubmenu">	
-					       
-					          <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSYear}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_year}</span>                                      
-                               </h:commandLink>
-						      </li>   	
-						       <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSMonth}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_month}</span>                                      
-                               </h:commandLink>
-						      </li>   	
-						        <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSPeriod}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_period}</span>                                      
-                               </h:commandLink>
-						      </li>  					       					    
-					      </ul>
-				       </li>
-				       
-				     </ui:fragment>
-				       
-				       <!--  RV  -->	
-				    				       	
+				       				    				    				       	
 				       <!--  SV  -->
-				     <ui:fragment rendered="#{loginAccount.load.en_vs}">
+				     <ui:fragment rendered="#{loginAccount.load.en_sv}">
 				     <li class="nav-item ml-2">
-                        <a class="nav-link" href="#vsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_vs}</span></a>
+                        <a class="nav-link" href="#vsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
 					       <ul class="collapse list-unstyled ml-3" id="vsSubmenu">	
 					       
 					         <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSYear}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_year}</span>                                      
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToSVYear}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_year}</span>                                      
                                </h:commandLink>
 						      </li>   	
 						       <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSMonth}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_month}</span>                                      
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToSVMonth}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_month}</span>                                      
                                </h:commandLink>
 						      </li>   	
 						        <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSPeriod}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_period}</span>                                      
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToSVPeriod}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_period}</span>                                      
                                </h:commandLink>
 						      </li>			       					    
 					      </ul>
@@ -297,13 +267,7 @@
              <li class="nav-item">
                 <a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
                 <i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span></a>
-                <ul class="collapse list-unstyled" id="realTimeSubmenu">
-                  <li class="nav-item ml-2">
-                 <a class="nav-link" href="#"><i class="fas fa-map-marked-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_giz_map}</span></a> 
-                   </li>                    
-                     <li class="nav-item ml-2">
-                        <a class="nav-link" href="#"><i class="fas fa-toolbox icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_maintenance}</span></a>
-                     </li>  
+                <ul class="collapse list-unstyled" id="realTimeSubmenu">                
                      <li class="nav-item ml-2">                        
                      <h:commandLink class="nav-link" action="#{navigationController.redirectToUserMap}" value="" >
                         <i class="fas fa-map-marker icon icon"></i><span class="text">Map</span>                                                                    
@@ -374,30 +338,15 @@
 					     </ul>
 				     </li>     
 				     </ui:fragment>
-				     
-				      <ui:fragment rendered="#{loginAccount.load.en_rs}">
+				     				 				     
+				     <ui:fragment rendered="#{loginAccount.load.en_sv}">
 				     <li class="nav-item ml-2">
-                        <a class="nav-link" href="#rsUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-bolt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_rs}</span></a>
-					       <ul class="collapse list-unstyled ml-3" id="rsUiSubmenu">
-					       
-					       <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSPanel}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_panel_rs}</span>                                      
-                               </h:commandLink>
-						      </li>	    
-						      						    
-					    </ul>
-				     </li>
-				     </ui:fragment>
-				     
-				     <ui:fragment rendered="#{loginAccount.load.en_vs}">
-				     <li class="nav-item ml-2">
-                        <a class="nav-link" href="#vsUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_vs}</span></a>
+                        <a class="nav-link" href="#vsUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
 					       <ul class="collapse list-unstyled ml-3" id="vsUiSubmenu">
 					       
 					       <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSPanel}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_panel_vs}</span>                                      
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToSVPanel}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>                                      
                                </h:commandLink>
 						      </li>	    
 						      						    

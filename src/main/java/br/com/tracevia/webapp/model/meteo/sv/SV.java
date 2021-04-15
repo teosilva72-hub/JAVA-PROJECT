@@ -1,8 +1,8 @@
-package br.com.tracevia.webapp.model.meteo.vs;
+package br.com.tracevia.webapp.model.meteo.sv;
 
 import br.com.tracevia.webapp.model.global.Equipments;
 
-public class VS extends Equipments {
+public class SV extends Equipments {
 	
 	private String data_hora;
 	private String data;
@@ -14,7 +14,7 @@ public class VS extends Equipments {
 	private int bateria_sts;
 	private int volts_line;
 				
-	public VS(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
+	public SV(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
 			String update_date, String update_username, String nome, String estrada, String cidade, String km,
 			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
 			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible,
@@ -36,7 +36,7 @@ public class VS extends Equipments {
 	}
 
 
-	public VS() {}
+	public SV() {}
 
 
 	public String getData_hora() {

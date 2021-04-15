@@ -3563,7 +3563,7 @@ public class ExcelModels {
 
 		}
 
-		if(module.equals("mto") || module.equals("rs") || module.equals("vs") ) {
+		if(module.equals("mto") || module.equals("sv") ) {
 
 			if(type.equals("1"))
 				sheetName = localeExcel.getStringKey("excel_single_mto_year_sheet_name");

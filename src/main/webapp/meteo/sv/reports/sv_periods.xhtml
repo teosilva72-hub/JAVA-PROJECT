@@ -14,7 +14,7 @@
 	<f:metadata>
 
 		<!-- Create Table Header -->
-		<f:viewAction action="#{vsReportsBean.CreateFields(3)}" />
+		<f:viewAction action="#{svReportsBean.CreateFields(3)}" />
 
 	</f:metadata>
 
@@ -45,7 +45,7 @@
 		
 		<!-- REPORTS LABEL INFORMATION -->
 		 <div class="text-dark text-center font-weight-bold report-title" >
-	      <h:outputText value="#{vsLabels.vs_reports_name_periods}" />	
+	      <h:outputText value="#{svLabels.sv_reports_name_periods}" />	
 	     </div>
 
 		<!-- TABLE DIV CONTENT -->
@@ -53,12 +53,12 @@
 
 			<!-- TABLE -->
 			<h:dataTable id="weather-period-table"
-				value="#{vsReportsBean.resultList}" var="weather"
+				value="#{svReportsBean.resultList}" var="weather"
 				autocomplete="off"
 				styleClass="table table-striped table-bordered table-dark custom-table text-center"
 				cellspacing="0" width="100%" headerClass="custom-table-header">
 
-				<c:forEach items="#{vsReportsBean.columns}" var="header"
+				<c:forEach items="#{svReportsBean.columns}" var="header"
 					varStatus="loop">
 					<h:column>
 						<f:facet name="header">#{header.field}</f:facet>
@@ -80,7 +80,7 @@
 						<h:commandButton id="btn-tab-search"
 							class="btn btn-dark draw-button fas fa-search fa-3x" value=""
 							data-toggle="tooltip" data-placement="bottom"
-							title="#{vsLabels.vs_reports_btn_search}">
+							title="#{svLabels.sv_reports_btn_search}">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target"
 								value="#modalReportOptions" />
@@ -94,8 +94,8 @@
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
-							disabled="#{vsReportsBean.clearBool}"
-							title="#{vsLabels.vs_reports_btn_clean}">
+							disabled="#{svReportsBean.clearBool}"
+							title="#{svLabels.sv_reports_btn_clean}">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
 							<f:ajax execute="@form" render="@none" />
@@ -106,11 +106,11 @@
 					<!-- BUTTON EXCEL DIV -->
 					<div id="btn-excel">
 						<h:commandButton id="excel-act" value=""
-							disabled="#{vsReportsBean.excelBool}"
+							disabled="#{svReportsBean.excelBool}"
 							class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 							data-placement="bottom"
-							title="#{vsLabels.vs_reports_btn_excel}"
-							action="#{vsReportsBean.download}" widgetVar="excelWgt">
+							title="#{svLabels.sv_reports_btn_excel}"
+							action="#{svReportsBean.download}" widgetVar="excelWgt">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target" value="#modalDownload" />
 							<f:ajax execute="@form" render="@none" />
@@ -127,19 +127,19 @@
 					<div class="modal-dialog confirmation-modal">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{vsLabels.vs_reports_modal_alert_clear_title}</h5>
+								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{svLabels.sv_reports_modal_alert_clear_title}</h5>
 							</div>
 							<div class="modal-body">
-								<p class="modal-alert-msg">#{vsLabels.vs_reports_modal_alert_clear_table}</p>
+								<p class="modal-alert-msg">#{svLabels.sv_reports_modal_alert_clear_table}</p>
 							</div>
 							<div class="modal-footer">
 								<h:commandButton
-									value="#{vsLabels.vs_reports_modal_alert_btn_yes}"
-									action="#{vsReportsBean.resetFormValues(3)}"
+									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
+									action="#{svReportsBean.resetFormValues(3)}"
 									class="btn btn-dark form-draw-button" />
 
 								<h:commandButton
-									value="#{vsLabels.vs_reports_modal_alert_btn_no}"
+									value="#{svLabels.sv_reports_modal_alert_btn_no}"
 									class="btn btn-dark form-draw-button">
 									<f:passThroughAttribute name="data-dismiss" value="modal" />
 									<f:ajax execute="@form" render="@none" />
@@ -162,22 +162,22 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title modal-alert-title"
-									id="donwloadModalLabel">#{vsLabels.vs_reports_modal_alert_download_title}</h5>
+									id="donwloadModalLabel">#{svLabels.sv_reports_modal_alert_download_title}</h5>
 							</div>
 							<div class="modal-body">
 								<p class="modal-alert-msg">
-									#{vsLabels.vs_reports_modal_alert_download_file_excel} <span
-										class="extension">#{vsLabels.vs_reports_modal_alert_extension_xlsx}</span>
+									#{svLabels.sv_reports_modal_alert_download_file_excel} <span
+										class="extension">#{svLabels.sv_reports_modal_alert_extension_xlsx}</span>
 									?
 								</p>
 							</div>
 							<div class="modal-footer">
 								<h:commandButton p:onclose="download"
-									value="#{vsLabels.vs_reports_modal_alert_btn_yes}"
-									action="#{vsReportsBean.download}"
+									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
+									action="#{svReportsBean.download}"
 									class="btn btn-dark form-draw-button" />
 								<h:commandButton
-									value="#{vsLabels.vs_reports_modal_alert_btn_no}"
+									value="#{svLabels.sv_reports_modal_alert_btn_no}"
 									class="btn btn-dark form-draw-button">
 									<f:passThroughAttribute name="data-dismiss" value="modal" />
 									<f:ajax execute="@form" render="@none" />
@@ -198,7 +198,7 @@
 				<div class="modal-dialog" role="document">
 					<h:form class="modal-content" name="report-form" id="report-form">
 						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{vsLabels.vs_reports_modal_title}</h4>
+							<h4 class="modal-title w-100 font-weight-bold">#{svLabels.sv_reports_modal_title}</h4>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -211,8 +211,8 @@
 									<span><i class="fas fa-hdd"></i></span> <span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip"
 										id="equip">
-										<option value="">#{vsLabels.vs_reports_select_station}</option>
-										<ui:repeat var="eqp" value="#{vsReportsBean.equipments}"
+										<option value="">#{svLabels.sv_reports_select_station}</option>
+										<ui:repeat var="eqp" value="#{svReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
@@ -228,8 +228,8 @@
 									<span><i class="fas fa-clock"></i></span> <span for="periods"
 										class="valid-icon-hidden"></span> <select name="periods"
 										id="periods" size="1">
-										<option value="">#{vsLabels.vs_reports_select_periods}</option>
-										<ui:repeat var="per" value="#{vsReportsBean.periods}"
+										<option value="">#{svLabels.sv_reports_select_periods}</option>
+										<ui:repeat var="per" value="#{svReportsBean.periods}"
 											varStatus="perStatus">
 											<option value="#{per.value}">#{per.label}</option>
 										</ui:repeat>
@@ -246,7 +246,7 @@
 										for="dateStart" class="valid-icon-hidden"></span> <input
 										type="text" class="datepicker" autocomplete="off"
 										name="dateStart" id="dateStart"
-										placeholder="#{vsLabels.vs_reports_input_date_start_placeholder}" />
+										placeholder="#{svLabels.sv_reports_input_date_start_placeholder}" />
 								</div>
 								<div class="error-label">
 									<label for="dateStart" class="error" id="dateStart-error"></label>
@@ -259,7 +259,7 @@
 										for="dateEnd" class="valid-icon-hidden"></span> <input
 										type="text" class="datepicker" autocomplete="off"
 										name="dateEnd" id="dateEnd"
-										placeholder="#{vsLabels.vs_reports_input_date_end_placeholder}" />
+										placeholder="#{svLabels.sv_reports_input_date_end_placeholder}" />
 								</div>
 								<div class="error-label">
 									<label for="dateEnd" class="error" id="dateEnd-error" />
@@ -268,11 +268,11 @@
 
 						</div>
 						<div class="modal-footer">
-							<h:commandButton value="#{vsLabels.vs_reports_form_btn_send}"
-								id="btn-form-send" action="#{vsReportsBean.GetReports(3)}"
+							<h:commandButton value="#{svLabels.sv_reports_form_btn_send}"
+								id="btn-form-send" action="#{svReportsBean.GetReports(3)}"
 								class="btn btn-dark form-modal-draw-button" />
 
-							<h:commandButton value="#{vsLabels.vs_reports_form_btn_reset}"
+							<h:commandButton value="#{svLabels.sv_reports_form_btn_reset}"
 								id="btn-form-reset" immediate="true" type="reset"
 								class="btn btn-dark form-modal-draw-button reset-btn">
 								<f:ajax execute="@form"

@@ -14,8 +14,7 @@ import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.lpr.LPR;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
-import br.com.tracevia.webapp.model.meteo.rs.RS;
-import br.com.tracevia.webapp.model.meteo.vs.VS;
+import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
@@ -118,11 +117,10 @@ public class ListEquipments {
 				DMS dms = new DMS();
 				LPR lpr =  new LPR();
 				MTO mto =  new MTO();
-				VS vs = new VS();
+				SV sv = new SV();
 				SAT sat = new SAT();
 				SOS sos = new SOS();
-				Speed speed =  new Speed();
-				RS rs = new RS();
+				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
 				
 				if(load.isEn_cftv())			
@@ -145,12 +143,9 @@ public class ListEquipments {
 					
 					if(load.isEn_mto())
 					equips.add(new listEquips(load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));
-										
-					if(load.isEn_rs())
-						equips.add(new listEquips(load.isEn_rs(), load.isEn_meteo(), rs.listEquipments("rs"), load.getVoltage_rs()));
-					
-					if(load.isEn_vs())
-					equips.add(new listEquips(load.isEn_vs(), load.isEn_meteo(), vs.listEquipments("vs"), load.getVoltage_vs()));
+											
+					if(load.isEn_sv())
+					equips.add(new listEquips(load.isEn_sv(), load.isEn_meteo(), sv.listEquipments("sv"), load.getVoltage_sv()));
 											
 					if(load.isEn_sat())
 					equips.add(new listEquips(load.isEn_sat(), sat.listSatEquipments(), load.getVoltage_sat()));

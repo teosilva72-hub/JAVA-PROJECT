@@ -86,18 +86,10 @@ public class NavigationBean {
  		return navigation_page;
  	}     
      
-    //RS PANEL 
-     public String redirectToRSPanel() {
- 		
-  		navigation_page = "/meteo/rs/panel/rs_panel.xhtml?faces-redirect=true";		
-  		
-  		return navigation_page;
-  	}
-     
-    //VS PANEL 
+      //SV PANEL 
      public String redirectToVSPanel() {
  		
-  		navigation_page = "/meteo/vs/panel/vs_panel.xhtml?faces-redirect=true";		
+  		navigation_page = "/meteo/sv/panel/sv_panel.xhtml?faces-redirect=true";		
   		
   		return navigation_page;
   	}
@@ -158,49 +150,26 @@ public class NavigationBean {
  		
  		return navigation_page;
  	}
-    
-     /* RS REPORTS */
-          
-     public String redirectToRSYear() {
+   
+     /* SV REPORTS */
+     
+     public String redirectToSVYear() {
  		
-    	 navigation_page = "/meteo/rs/reports/rs_year.xhtml?faces-redirect=true";		
+    	 navigation_page = "/meteo/sv/reports/sv_year.xhtml?faces-redirect=true";		
 		
 		return navigation_page;
 	}
      
-     public String redirectToRSMonth() {
+     public String redirectToSVMonth() {
  		
-    	 navigation_page = "/meteo/rs/reports/rs_month.xhtml?faces-redirect=true";		
- 		
- 		return navigation_page;
- 	}
-     
-     public String redirectToRSPeriod() {
- 		
- 		navigation_page = "/meteo/rs/reports/rs_periods.xhtml?faces-redirect=true";		
+    	 navigation_page = "/meteo/sv/reports/sv_month.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
  	}
      
-     /* VS REPORTS */
-     
-     public String redirectToVSYear() {
+     public String redirectToSVPeriod() {
  		
-    	 navigation_page = "/meteo/vs/reports/vs_year.xhtml?faces-redirect=true";		
-		
-		return navigation_page;
-	}
-     
-     public String redirectToVSMonth() {
- 		
-    	 navigation_page = "/meteo/vs/reports/vs_month.xhtml?faces-redirect=true";		
- 		
- 		return navigation_page;
- 	}
-     
-     public String redirectToVSPeriod() {
- 		
- 		navigation_page = "/meteo/vs/reports/vs_periods.xhtml?faces-redirect=true";		
+ 		navigation_page = "/meteo/sv/reports/sv_periods.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
  	}

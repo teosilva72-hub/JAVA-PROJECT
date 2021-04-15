@@ -300,7 +300,7 @@ public class EquipmentsBean implements Serializable {
 	   //SAT CHECKING
 	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	   
-	   if((moduleID != 0 && moduleID == 10) && (equipId != 0)) {
+	   if((moduleID != 0 && moduleID == 9) && (equipId != 0)) {
 		   		 			   		   
 		String table = defineTableById(moduleID);
 	   		 
@@ -371,7 +371,7 @@ public class EquipmentsBean implements Serializable {
 	   //GENERIC CHECKING
 	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
    		    
-	   else if((moduleID != 0 && (moduleID != 10 && moduleID != 8)) && (equipId != 0)) {
+	   else if((moduleID != 0 && (moduleID != 9 && moduleID != 8)) && (equipId != 0)) {
 		   		  		   
 		   //EQUIP TABLE BY MODULE
 		   String table = defineTableById(moduleID);
@@ -458,7 +458,7 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
 				 		 		
 		 
-	     } else if(moduleId == 10) {
+	     } else if(moduleId == 9) {
 			 
 			 sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView);
 			 
@@ -497,11 +497,13 @@ public class EquipmentsBean implements Serializable {
 						 		 
 		 }
 		 
-		 else {
+	     else {		
 			 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView); 
 		 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
+		 
+		// if(moduleId == 12)
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+equip.getCidade()+"');");	
@@ -613,7 +615,7 @@ public class EquipmentsBean implements Serializable {
 				}
 	    	 		
 			
-	     } else if(moduleId != 0 && moduleId == 10) {
+	     } else if(moduleId != 0 && moduleId == 9) {
 	    	 
 	    	// Table definition
 	    	String table = defineTableById(moduleId);
@@ -672,7 +674,7 @@ public class EquipmentsBean implements Serializable {
 			}
 		
 	  	  
-	     }else if((moduleId != 0 && (moduleId != 10 && moduleId != 8))) {
+	     }else if((moduleId != 0 && (moduleId != 9 && moduleId != 8))) {
 	    	 
 	    	    // Table definition
 		    	String table = defineTableById(moduleId);
@@ -799,13 +801,12 @@ public class EquipmentsBean implements Serializable {
 		case 4: table="dai"    ; break;
 		case 5: table="lpr"    ; break;
 		case 6: table="mto"    ; break;
-		case 8: table="pmv"    ; break;
-		case 9: table="rs"    ; break;
-		case 10: table="sat"    ; break;
-		case 11: table="sos"    ; break;
-		case 12: table="speed"  ; break;
-		case 13: table="vs"    ; break;
-		case 15: table="wim"    ; break;
+		case 8: table="pmv"    ; break;	
+		case 9: table="sat"    ; break;
+		case 10: table="sos"    ; break;
+		case 11: table="speed"  ; break;
+		case 12: table="sv"    ; break;
+		case 14: table="wim"    ; break;
 		}
 		
 		return table;
@@ -823,12 +824,11 @@ public class EquipmentsBean implements Serializable {
 		case "dai": table="dai"      ; break;
 		case "lpr": table="lpr"      ; break;
 		case "mto": table="mto"      ; break;
-		case "dms": table="pmv"      ; break;
-		case "rs": table="rs"      ; break;
+		case "dms": table="pmv"      ; break;	
 		case "sat": table="sat"      ; break;
 		case "sos": table="sos"       ; break;
 		case "speed": table="speed"   ; break;
-		case "vs": table="vs"    ; break;
+		case "sv": table="sv"    ; break;
 		case "wim": table="wim"       ; break;
 		}
 		
@@ -847,13 +847,12 @@ public class EquipmentsBean implements Serializable {
   		case "dai": moduleId = 4 ; break;
   		case "lpr": moduleId = 5 ; break;
   		case "mto": moduleId = 6 ; break;
-  		case "dms": moduleId = 8 ; break;
-  		case "rs": moduleId = 9 ; break;
-  		case "sat": moduleId = 10 ; break;
-  		case "sos": moduleId = 11  ; break;
-  		case "speed": moduleId = 12 ; break;
-  		case "vs": moduleId = 13 ; break;
-  		case "wim" : moduleId = 15 ; break;
+  		case "dms": moduleId = 8 ; break;  	
+  		case "sat": moduleId = 9 ; break;
+  		case "sos": moduleId = 10  ; break;
+  		case "speed": moduleId = 11 ; break;
+  		case "sv": moduleId = 12 ; break;
+  		case "wim" : moduleId = 14 ; break;
   		}
   		
   		return moduleId;

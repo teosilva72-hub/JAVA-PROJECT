@@ -1,6 +1,6 @@
-package br.com.tracevia.webapp.model.meteo.vs;
+package br.com.tracevia.webapp.model.meteo.sv;
 
-public class VsReports {
+public class SvReports {
 	
 	 //Builder Pattern
 	public static class Builder{
@@ -114,7 +114,7 @@ public class VsReports {
 	private String date;
 	private String dateTime;
 					
-	public VsReports(String month, String startMonth, String endMonth, String year, String equipment, String period,
+	public SvReports(String month, String startMonth, String endMonth, String year, String equipment, String period,
 		String startDate, String endDate, int[] equipments, String date, String dateTime) {
 		
 		this.month = month;
@@ -130,7 +130,7 @@ public class VsReports {
 		this.dateTime = dateTime;
 	}
 		
-	public VsReports() {}
+	public SvReports() {}
 
 	public String getMonth() {
 		return month;

@@ -1,6 +1,6 @@
-package br.com.tracevia.webapp.model.meteo.vs;
+package br.com.tracevia.webapp.model.meteo.sv;
 
-public class VsPanel {
+public class SvPanel {
 	
 	private String equip;
 	private String equipName;
@@ -10,7 +10,7 @@ public class VsPanel {
 	private int battery;
 	private int status;
 	
-	public VsPanel(String equip, String equipName, double ambient_temperature, int visibility, int line_volts, int battery,
+	public SvPanel(String equip, String equipName, double ambient_temperature, int visibility, int line_volts, int battery,
 			int status) {
 		
 		this.equip = equip;
@@ -22,7 +22,7 @@ public class VsPanel {
 		this.status = status;
 	}
 	
-	public VsPanel() {}
+	public SvPanel() {}
 
 
 	public String getEquip() {
