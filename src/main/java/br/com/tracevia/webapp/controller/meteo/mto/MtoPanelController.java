@@ -103,7 +103,7 @@ public class MtoPanelController {
 	 
 		InitializePanelValues();  //Initialize Panel Values
 		
-	}  else initPanelZero(panel);
+	}  else { station_name = "Default"; initPanelZero(panel); }
 		
 	}
 	
@@ -168,8 +168,7 @@ public class MtoPanelController {
 	
 	//PREENCHER CASO N�O HAJA VALORES
 	public void initPanelZero(MtoPanel panel) {
-		
-		station_name = "Default";
+				
 		panel.setAtmPressure(0);
 		panel.setRelative_humidity(0);
 		panel.setPreciptation_rate(0);

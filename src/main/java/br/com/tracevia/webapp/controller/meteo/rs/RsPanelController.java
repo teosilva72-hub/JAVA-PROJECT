@@ -104,7 +104,7 @@ import br.com.tracevia.webapp.model.meteo.rs.RsPanel;
 			
 			}
 			
-			else initPanelZero(panel);
+			else { initPanelZero(panel); station_name = "Default"; }
 								
 		}
 		
@@ -168,9 +168,8 @@ import br.com.tracevia.webapp.model.meteo.rs.RsPanel;
 		}	
 		
 		//PREENCHER CASO N�O HAJA VALORES
-		public void initPanelZero(RsPanel panel) {
-				
-			station_name = "Default";
+		public void initPanelZero(RsPanel panel) {			
+			
 			panel.setRoad_temperature(0);		
 			panel.setStatus(0);
 			panel.setBattery(0);

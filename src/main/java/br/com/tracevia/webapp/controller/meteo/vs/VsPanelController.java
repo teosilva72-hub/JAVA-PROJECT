@@ -103,7 +103,7 @@ public class VsPanelController {
 	    //Initialize Panel Values
 		InitializePanelValues();
 		
-	} else initPanelZero(panel);
+	} else { station_name = "Default"; initPanelZero(panel); }
 		
 		
 	}
