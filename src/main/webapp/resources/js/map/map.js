@@ -93,6 +93,7 @@ $(function () {
 		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
 	})
 
+
 	$('#mapDivide').css('height', area)
 		.find('.grid-img').css('height', area / 3)
 
@@ -103,9 +104,9 @@ $(function () {
 	}, 5000);
 
 	$('#divide').on('click', () => {
-		$('#frame1')[0].contentWindow.setPosition(0, 0.7)
-		$('#frame2')[0].contentWindow.setPosition(0.4, 0.75)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.2)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
+		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
 
 	})
 
