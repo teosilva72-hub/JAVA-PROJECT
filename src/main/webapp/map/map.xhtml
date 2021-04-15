@@ -290,7 +290,7 @@
 					<span><i class="fas fa-minus-square fa-1x"></i></span>
 				</button>
 				<button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom"
-					title="Fullscreen View">
+					title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
@@ -310,7 +310,7 @@
 				</button>
 				<button type="button" id="fulldiv2" class="zoomFull"
 					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
-					data-placement="bottom" title="Fullscreen View">
+					data-placement="bottom" title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
@@ -330,7 +330,7 @@
 				</button>
 				<button type="button" id="fulldiv3" class="zoomFull"
 					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
-					data-placement="bottom" title="Fullscreen View">
+					data-placement="bottom" title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
@@ -1880,7 +1880,7 @@
 				function () {
 					var equipsSEL = document.getElementById("equips");
 					var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-					if (selectVAL == 9) {
+					if (selectVAL == 10) {
 						$('.satInputs').show(); // DIV FAIXAS 1	
 						$('.dmsHidden').hide();
 						$('.mtoHidden').hide();
@@ -1959,7 +1959,6 @@
 					}
 
 				});
-
 			//SAT LANES INPUTS END
 
 			// MODAL EQUIPMENT SIZE
@@ -1975,10 +1974,50 @@
 						"." + $(this).attr('from'))
 				});
 			// MODAL EQUIPMENT SIZE END
-
-			$('#km').mask('000+000'); 	// KM MASK	
-			$('#km-edit').mask('000+000'); 	// KM MASK				
-
+			
+			  $('#km').mask('000+000'); 	// KM MASK	
+			  $('#km-edit').mask('000+000'); 	// KM MASK
+			  
+			  function statusColors(){
+			      $('#sos2').find('.equip-status').css('background-color', 'orange');
+			      $('#sos7').find('.equip-status').css('background-color', 'red');
+			      $('#sos14').find('.equip-status').css('background-color', 'orange');
+			      $('#sos16').find('.equip-status').css('background-color', 'red');
+			      $('#sos22').find('.equip-status').css('background-color', 'orange');
+			      $('#sos25').find('.equip-status').css('background-color', 'orange');
+			      $('#sos33').find('.equip-status').css('background-color', 'red');
+			      $('#sos37').find('.equip-status').css('background-color', 'orange');
+			      $('#sos40').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#colas2').find('.equip-status').css('background-color', 'red');
+			      $('#colas3').find('.equip-status').css('background-color', 'orange');
+			      $('#colas5').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
+			      
+			      $('#dai1').find('.equip-status').css('background-color', 'red');
+			      $('#dai5').find('.equip-status').css('background-color', 'orange');
+			      $('#dai6').find('.equip-status').css('background-color', 'orange');
+			      $('#dai9').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#lpr4').find('.equip-status').css('background-color', 'red');
+			      $('#lpr7').find('.equip-status').css('background-color', 'red');
+			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#wim4').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#speed5').find('.equip-status').css('background-color', 'orange');
+			      $('#speed6').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#dms1 .tableStyle').addClass('on')
+			      $('#dms3 .tableStyle').addClass('on')
+			      $('#dms4 .tableStyle').addClass('on')
+			      $('#dms5 .tableStyle').addClass('on')
+			      $('#dms6 .tableStyle').addClass('on')	
+			  }
+			 	  
 		</script>
 	</ui:define>
 

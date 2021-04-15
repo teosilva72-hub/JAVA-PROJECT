@@ -8,6 +8,7 @@ $(function() {
 		let map = $(this)
 		ScrollZoom(map)
 		mapMove(map)
+		
 	})
 
 	$(".overflow").css("height", $(this).height())
@@ -29,6 +30,7 @@ $(function() {
 	})
 
 	initPMV();
+	statusColors();
 })
 
 function ScrollZoom(container) {
@@ -264,17 +266,19 @@ function zoomOut(id) {
 };
 
 function setPosition(posX, posY) {
-	if (scale == 1) {
+	
 		const element = $('section.overflow')
-	
-		for (let idx = 0; idx < 2; idx++) {
+		zoomIn(element);
+		setTimeout(() => {
+			zoomOut(element);
+			for (let idx = 0; idx < 2; idx++) {
 			zoomIn(element)
-		}
-	
-		element
+			element
 			.scrollLeft(posX * element[0].scrollWidth)
 			.scrollTop(posY * element[0].scrollHeight)
-	} 
+		}
+		}, 1) 
+
 }
 
 //Reload on Cancel Position

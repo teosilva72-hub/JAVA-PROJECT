@@ -57,32 +57,106 @@
 				     </li>
 				     </ui:fragment>
 				     				     
-				     <ui:fragment rendered="#{loginAccount.load.en_mto}">
+				     <ui:fragment rendered="#{loginAccount.load.en_meteo}"> <!-- METEO -->
+				     				     
+				       <li class="nav-item ml-2"> <!-- LIST -->
+                        <a class="nav-link" href="#meteoSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="meteoSubmenu"> <!-- UL LIST -->						    
+					  				
+					  	<!--  MTO  -->			
+					  				
+					  <ui:fragment rendered="#{loginAccount.load.en_mto}">	
+					  			     
 				      <li class="nav-item ml-2">
                         <a class="nav-link" href="#mtoSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-cloud icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
 					       <ul class="collapse list-unstyled ml-3" id="mtoSubmenu">	
 					        <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToWeatherYear}" value="" >
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToMTOYear}" value="" >
                                   <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_year}</span>                                      
                                </h:commandLink>
 						      </li>   	
 						       <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToWeatherMonth}" value="" >
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToMTOMonth}" value="" >
                                   <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_month}</span>                                      
                                </h:commandLink>
 						      </li>   	
 						        <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToWeatherPeriod}" value="" >
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToMTOPeriod}" value="" >
                                   <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_period}</span>                                      
                                </h:commandLink>
 						      </li>   	  							      					   
-					    </ul>
-				     </li>     
+					      </ul>
+				       </li>  
+				       
+				       </ui:fragment> 
+				       
+				       <!--  MTO  -->	
+				       
+				       <!--  RV  -->	
+				       
+				     <ui:fragment rendered="#{loginAccount.load.en_rs}">
+				     
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#rsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-bolt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_rs}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="rsSubmenu">	
+					       
+					          <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSYear}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_year}</span>                                      
+                               </h:commandLink>
+						      </li>   	
+						       <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSMonth}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_month}</span>                                      
+                               </h:commandLink>
+						      </li>   	
+						        <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSPeriod}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_period}</span>                                      
+                               </h:commandLink>
+						      </li>  					       					    
+					      </ul>
+				       </li>
+				       
 				     </ui:fragment>
+				       
+				       <!--  RV  -->	
+				    				       	
+				       <!--  SV  -->
+				     <ui:fragment rendered="#{loginAccount.load.en_vs}">
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#vsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_vs}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="vsSubmenu">	
+					       
+					         <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSYear}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_year}</span>                                      
+                               </h:commandLink>
+						      </li>   	
+						       <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSMonth}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_month}</span>                                      
+                               </h:commandLink>
+						      </li>   	
+						        <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSPeriod}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_period}</span>                                      
+                               </h:commandLink>
+						      </li>			       					    
+					      </ul>
+				       </li>
+				     
+				     </ui:fragment>
+				       <!--  SV  -->
+				       				       
+				       </ul> <!---->
+				     </li> <!---->
+				       
+				     </ui:fragment> <!---->
 				     
 				      <ui:fragment rendered="#{loginAccount.load.en_occ}">
 				      <li class="nav-item ml-2">
-                        <a class="nav-link" href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-cloud icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+                        <a class="nav-link" href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i class="far fa-file-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
 					       <ul class="collapse list-unstyled ml-3" id="occSubmenu">						   
 					    </ul>
 				     </li>     
@@ -94,8 +168,8 @@
 					       <ul class="collapse list-unstyled ml-3" id="pmvSubmenu">						   
 					    </ul>
 				     </li>
-				     </ui:fragment>
-				     		
+				     </ui:fragment>				     			         
+				  				     		
 				    <ui:fragment rendered="#{loginAccount.load.en_sat}"> 				     
 				     <li class="nav-item ml-2">
                         <a class="nav-link" href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hdd icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
@@ -164,7 +238,7 @@
 					    </ul>
 				     </li>  
 				     </ui:fragment>
-				     
+				     				   				     
 				     <ui:fragment rendered="#{loginAccount.load.en_videowall}">
 				       <li class="nav-item ml-2">
                         <a class="nav-link" href="#videowallSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-play-circle icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>
@@ -282,18 +356,59 @@
 				     </li>
 				     </ui:fragment>
 				     				     
+				  	     <ui:fragment rendered="#{loginAccount.load.en_meteo}"> <!-- METEOROLOGICOS -->
+				     				     
+				      <li class="nav-item ml-2"> <!-- LIST -->
+                         <a class="nav-link" href="#meteoUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="meteoUiSubmenu"> <!-- UL LIST -->	
+				     			     				     
 				     <ui:fragment rendered="#{loginAccount.load.en_mto}">
 				      <li class="nav-item ml-2">
-                        <a class="nav-link" href="#mtoSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-cloud icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
-					       <ul class="collapse list-unstyled ml-3" id="mtoSubmenu">	
+                        <a class="nav-link" href="#mtoUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-cloud icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="mtoUiSubmenu">	
 					        <li class="nav-item">
-						       <h:commandLink class="nav-link" action="#{navigationController.redirectToWeatherPanel}" value="" >
-                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel}</span>                                      
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToMTOPanel}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>                                      
                                </h:commandLink>
 						      </li>	      			   
 					     </ul>
 				     </li>     
 				     </ui:fragment>
+				     
+				      <ui:fragment rendered="#{loginAccount.load.en_rs}">
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#rsUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-bolt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_rs}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="rsUiSubmenu">
+					       
+					       <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToRSPanel}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_rs_sub_menu_panel_rs}</span>                                      
+                               </h:commandLink>
+						      </li>	    
+						      						    
+					    </ul>
+				     </li>
+				     </ui:fragment>
+				     
+				     <ui:fragment rendered="#{loginAccount.load.en_vs}">
+				     <li class="nav-item ml-2">
+                        <a class="nav-link" href="#vsUiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_vs}</span></a>
+					       <ul class="collapse list-unstyled ml-3" id="vsUiSubmenu">
+					       
+					       <li class="nav-item">
+						       <h:commandLink class="nav-link" action="#{navigationController.redirectToVSPanel}" value="" >
+                                  <i class="fas fa-chevron-circle-right icon icon-sub"></i><span class="text">#{dashboardLabels.dashboard_sidebar_vs_sub_menu_panel_vs}</span>                                      
+                               </h:commandLink>
+						      </li>	    
+						      						    
+					    </ul>
+				     </li>
+				     </ui:fragment>
+				     
+				       </ul> <!---->
+				     </li> <!---->
+				     
+				     </ui:fragment> <!---->
 				     
 				     <ui:fragment rendered="#{loginAccount.load.en_occ}">
 				        <li class="nav-item ml-2">
@@ -325,7 +440,7 @@
 					    </ul>
 				     </li>
 				     </ui:fragment>
-				     		
+				     				    				     		
 				    <ui:fragment rendered="#{loginAccount.load.en_sat}"> 				     
 				     <li class="nav-item ml-2">
                         <a class="nav-link" href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-hdd icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
@@ -349,7 +464,7 @@
 					    </ul>
 				     </li>  
 				     </ui:fragment>
-				     
+				     				  				     
 				     <ui:fragment rendered="#{loginAccount.load.en_videowall}">
 				       <li class="nav-item ml-2">
                         <a class="nav-link" href="#videowallSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-play-circle icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>

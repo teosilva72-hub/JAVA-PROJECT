@@ -315,7 +315,7 @@ public class ExcelModels {
 		standardStyle1 = workbook.createCellStyle();				
 		standardStyle1.setFont(fontBody);
 		standardStyle1.setAlignment(HorizontalAlignment.CENTER);
-		standardStyle1.setFillBackgroundColor(IndexedColors.WHITE.getIndex()); // Cor na seleção da célula
+		standardStyle1.setFillBackgroundColor(IndexedColors.WHITE.getIndex()); // Cor na seleï¿½ï¿½o da cï¿½lula
 
 		subHeaderStyle = workbook.createCellStyle();									
 		subHeaderStyle.setFont(fontSubHeader);				
@@ -459,7 +459,7 @@ public class ExcelModels {
 
 	public void countFlowBorders() {
 
-		//APLICAÇÃO BORDAS			
+		//APLICAï¿½ï¿½O BORDAS			
 		spreadSheet.applyBorderAllStyle(headerStyle, BorderStyle.THIN);
 		spreadSheet.applyBorderAllStyle(tableHeaderStyle, BorderStyle.THIN);
 		spreadSheet.applyBorderAllStyle(datePeriodStyle, BorderStyle.THIN);	
@@ -496,7 +496,7 @@ public class ExcelModels {
 	public void StandardExcelModel(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -539,10 +539,10 @@ public class ExcelModels {
 			// Criar Linhas
 			spreadSheet.createRows(sheet, row, 0, 4);
 
-			//Criar Células
+			//Criar Cï¿½lulas
 			spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-			//Mesclar Células		
+			//Mesclar Cï¿½lulas		
 			for(int i = 0; i < mergeCells.length; i++)
 				spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -556,9 +556,9 @@ public class ExcelModels {
 			spreadSheet.createRows(sheet, row, 0, 3);
 			spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
-			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Período
+			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Perï¿½odo
 
 			spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 			spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -628,7 +628,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas		
+			spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas		
 
 			spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
 
@@ -659,7 +659,7 @@ public class ExcelModels {
 			for(int d = 0; d < daysCount; d++) {
 
 				//SheetName
-				String sheetName_ = String.valueOf(sheetName[d]); // Criação das tabs
+				String sheetName_ = String.valueOf(sheetName[d]); // Criaï¿½ï¿½o das tabs
 				sheet = workbook.createSheet(sheetName_);	
 
 				//Imagem
@@ -668,10 +668,10 @@ public class ExcelModels {
 				// Criar Linhas
 				spreadSheet.createRows(sheet, row, 0, 4);
 
-				//Criar Células
+				//Criar Cï¿½lulas
 				spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-				//Mesclar Células		
+				//Mesclar Cï¿½lulas		
 				for(int i = 0; i < mergeCells.length; i++)
 					spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -685,10 +685,10 @@ public class ExcelModels {
 				spreadSheet.createRows(sheet, row, 0, 3);
 				spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
 				spreadSheet.getCell(sheet, row, 0, colStartDate, localeExcel.getStringKey("excel_report_from")+": " + dateRange[d]+ DateTimeApplication.HOUR_TIME_FORMAT_START_DATE +
-						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Período
+						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Perï¿½odo
 
 				spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 				spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -752,7 +752,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas		
+				spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas		
 
 				spreadSheet.fillDataRange(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, d, range); // Preencher a colunas
 
@@ -776,7 +776,7 @@ public class ExcelModels {
 	public void StandardExcelModelWithoutTotal(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -816,10 +816,10 @@ public class ExcelModels {
 			// Criar Linhas
 			spreadSheet.createRows(sheet, row, 0, 4);
 
-			//Criar Células
+			//Criar Cï¿½lulas
 			spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-			//Mesclar Células		
+			//Mesclar Cï¿½lulas		
 			for(int i = 0; i < mergeCells.length; i++)
 				spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -833,9 +833,9 @@ public class ExcelModels {
 			spreadSheet.createRows(sheet, row, 0, 3);
 			spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
-			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Período
+			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Perï¿½odo
 
 			spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 			spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -899,7 +899,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas
+			spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o nï¿½mero de linhas
 
 			if(period.equals("month"))									
 				spreadSheet.fillDataSingleMonthReport(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
@@ -909,7 +909,7 @@ public class ExcelModels {
 
 				
 			else spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
-
+				
 			spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 0); 		
 			spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol);	    
 
@@ -931,7 +931,7 @@ public class ExcelModels {
 			for(int d = 0; d < daysCount; d++) {
 
 				//SheetName
-				String sheetName_ = String.valueOf(sheetName[d]); // Criação das tabs
+				String sheetName_ = String.valueOf(sheetName[d]); // Criaï¿½ï¿½o das tabs
 				sheet = workbook.createSheet(sheetName_);	
 
 				//Imagem
@@ -940,10 +940,10 @@ public class ExcelModels {
 				// Criar Linhas
 				spreadSheet.createRows(sheet, row, 0, 4);
 
-				//Criar Células
+				//Criar Cï¿½lulas
 				spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-				//Mesclar Células		
+				//Mesclar Cï¿½lulas		
 				for(int i = 0; i < mergeCells.length; i++)
 					spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -957,10 +957,10 @@ public class ExcelModels {
 				spreadSheet.createRows(sheet, row, 0, 3);
 				spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
 				spreadSheet.getCell(sheet, row, 0, colStartDate, localeExcel.getStringKey("excel_report_from")+": " + dateRange[d]+ DateTimeApplication.HOUR_TIME_FORMAT_START_DATE +
-						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Período
+						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Perï¿½odo
 
 				spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 				spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -1024,7 +1024,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas		
+				spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o nï¿½mero de linhas		
 
 				spreadSheet.fillDataRange(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, d, range); // Preencher a colunas
 
@@ -1041,7 +1041,7 @@ public class ExcelModels {
 	public void ExcelModelDirections(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery, int iniDir1, int iniDir2 ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -1106,10 +1106,10 @@ public class ExcelModels {
 			// Criar Linhas
 			spreadSheet.createRows(sheet, row, 0, 4);
 
-			//Criar Células
+			//Criar Cï¿½lulas
 			spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-			//Mesclar Células		
+			//Mesclar Cï¿½lulas		
 			for(int i = 0; i < mergeCells.length; i++)
 				spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -1123,9 +1123,9 @@ public class ExcelModels {
 			spreadSheet.createRows(sheet, row, 0, 3);
 			spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
-			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Período
+			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Perï¿½odo
 
 			spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 			spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -1193,7 +1193,7 @@ public class ExcelModels {
 
 			/* FIRST GROUP DATA */
 
-			spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, 1); // Preencher a colunas
 
@@ -1219,7 +1219,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir1, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, iniDir1); // Preencher a colunas
 
@@ -1245,7 +1245,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir2, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, iniDir2); // Preencher a colunas
 
@@ -1286,7 +1286,7 @@ public class ExcelModels {
 			for(int d = 0; d < daysCount; d++) {
 
 				//SheetName
-				String sheetName_ = String.valueOf(sheetName[d]); // Criação das tabs
+				String sheetName_ = String.valueOf(sheetName[d]); // Criaï¿½ï¿½o das tabs
 				sheet = workbook.createSheet(sheetName_);	
 
 				//Imagem
@@ -1295,10 +1295,10 @@ public class ExcelModels {
 				// Criar Linhas
 				spreadSheet.createRows(sheet, row, 0, 4);
 
-				//Criar Células
+				//Criar Cï¿½lulas
 				spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-				//Mesclar Células		
+				//Mesclar Cï¿½lulas		
 				for(int i = 0; i < mergeCells.length; i++)
 					spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -1312,10 +1312,10 @@ public class ExcelModels {
 				spreadSheet.createRows(sheet, row, 0, 3);
 				spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
 				spreadSheet.getCell(sheet, row, 0, colStartDate, localeExcel.getStringKey("excel_report_from")+": " + dateRange[d]+ DateTimeApplication.HOUR_TIME_FORMAT_START_DATE +
-						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Período
+						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Perï¿½odo
 
 				spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 				spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -1384,7 +1384,7 @@ public class ExcelModels {
 
 				/* FIRST GROUP DATA */
 
-				spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, d, range, 1); // Preencher a colunas
 
@@ -1410,7 +1410,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir1, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, iniDir1); // Preencher a colunas
 
@@ -1436,7 +1436,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir2, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, iniDir2); // Preencher a colunas
 
@@ -1456,7 +1456,7 @@ public class ExcelModels {
 	public void ExcelModelDirectionsSubHeader(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery, int iniDir1, int iniDir2) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -1525,10 +1525,10 @@ public class ExcelModels {
 			// Criar Linhas
 			spreadSheet.createRows(sheet, row, 0, 4);
 
-			//Criar Células
+			//Criar Cï¿½lulas
 			spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-			//Mesclar Células		
+			//Mesclar Cï¿½lulas		
 			for(int i = 0; i < mergeCells.length; i++)
 				spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -1542,9 +1542,9 @@ public class ExcelModels {
 			spreadSheet.createRows(sheet, row, 0, 3);
 			spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+			spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
-			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Período
+			spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Perï¿½odo
 
 			spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 			spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -1633,7 +1633,7 @@ public class ExcelModels {
 
 			/* FIRST GROUP DATA */
 
-			spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, 1); // Preencher a colunas
 
@@ -1681,7 +1681,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir1, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, iniDir1); // Preencher a colunas
 
@@ -1729,7 +1729,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir2, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
+			spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o nï¿½mero de linhas	
 
 			spreadSheet.fillDataSingleDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, iniDir2); // Preencher a colunas
 
@@ -1772,7 +1772,7 @@ public class ExcelModels {
 			for(int d = 0; d < daysCount; d++) {
 
 				//SheetName
-				String sheetName_ = String.valueOf(sheetName[d]); // Criação das tabs
+				String sheetName_ = String.valueOf(sheetName[d]); // Criaï¿½ï¿½o das tabs
 				sheet = workbook.createSheet(sheetName_);	
 
 				//Imagem
@@ -1781,10 +1781,10 @@ public class ExcelModels {
 				// Criar Linhas
 				spreadSheet.createRows(sheet, row, 0, 4);
 
-				//Criar Células
+				//Criar Cï¿½lulas
 				spreadSheet.createCells(sheet, row, 0, length, 0, 3);
 
-				//Mesclar Células		
+				//Mesclar Cï¿½lulas		
 				for(int i = 0; i < mergeCells.length; i++)
 					spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -1798,10 +1798,10 @@ public class ExcelModels {
 				spreadSheet.createRows(sheet, row, 0, 3);
 				spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
 
-				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Título
+				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // Tï¿½tulo
 
 				spreadSheet.getCell(sheet, row, 0, colStartDate, localeExcel.getStringKey("excel_report_from")+": " + dateRange[d]+ DateTimeApplication.HOUR_TIME_FORMAT_START_DATE +
-						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Período
+						"\n"+localeExcel.getStringKey("excel_report_to")+": " + dateRange[d] + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Perï¿½odo
 
 				spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
 				spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
@@ -1892,7 +1892,7 @@ public class ExcelModels {
 
 				/* FIRST GROUP DATA */
 
-				spreadSheet.createRows(sheet, row, ini, total); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row, ini, total); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirections(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, d, range, 1); // Preencher a colunas
 
@@ -1941,7 +1941,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir1, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, d, range, iniDir1); // Preencher a colunas
 
@@ -1989,7 +1989,7 @@ public class ExcelModels {
 				spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir2, headerCells, length, tableHeaderStyle);
 
-				spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o número de linhas	
+				spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o nï¿½mero de linhas	
 
 				spreadSheet.fillDataRangeDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, d, range, iniDir2); // Preencher a colunas
 
@@ -2010,7 +2010,7 @@ public class ExcelModels {
 	public void ExcelModelCountFlow(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -2030,7 +2030,7 @@ public class ExcelModels {
 		headerCells = new Cell[length];
 		cellData = new Cell[length][registers];
 
-		//Mesclar Células		
+		//Mesclar Cï¿½lulas		
 		for(int i = 0; i < mergeCells.length; i++)
 			spreadSheet.mergeCells(sheet, mergeCells[i]);
 
@@ -2063,7 +2063,7 @@ public class ExcelModels {
 		spreadSheet.setStyle(sheet, row, 2, 2, backgroundColorSubHeader, 2, 4);
 		spreadSheet.setStyle(sheet, row, 2, 2, backgroundColorSubHeader2, 5, 7);			
 
-		spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas
+		spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o nï¿½mero de linhas
 
 		spreadSheet.fillDataSingleFlow(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registers); // Preencher a colunas
 
@@ -2079,7 +2079,7 @@ public class ExcelModels {
 	public void ExcelModelPeriodFlow(int fieldsNumber, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String[] direction1, String[] direction2, String month, String year, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -2120,7 +2120,7 @@ public class ExcelModels {
 		spreadSheet.columnsWidth(sheet, 63, 4500);
 		spreadSheet.columnsWidth(sheet, 67, 4500);
 
-		//Espaço em branco
+		//Espaï¿½o em branco
 		spreadSheet.columnsWidth(sheet, 14, 1300);
 		spreadSheet.columnsWidth(sheet, 23, 1300);
 		spreadSheet.columnsWidth(sheet, 32, 1300);
@@ -2135,7 +2135,7 @@ public class ExcelModels {
 			spreadSheet.mergeCells(sheet, mergeCells[i]);
 
 		//ROW				
-		spreadSheet.createRows(sheet, row, 0, 4); // Criar o número de linhas
+		spreadSheet.createRows(sheet, row, 0, 4); // Criar o nï¿½mero de linhas
 
 		//ROW 0		
 		spreadSheet.createCell(sheet, row, 0, 0, localeExcel.getStringKey("excel_report_period_flow_header"));
@@ -2403,7 +2403,7 @@ public class ExcelModels {
 			spreadSheet.setStyle(sheet, row, 4, subHeaderStyle, i);	
 
 		//ROW DATA
-		spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas 
+		spreadSheet.createRows(sheet, row, ini, rowMax); // Criar o nï¿½mero de linhas 
 
 		//Numbers
 		for(int r = ini; r <= rowMax; r++)		
@@ -2435,7 +2435,7 @@ public class ExcelModels {
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String abbrDir1, String abbrDir2,
 			String month, String year, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
-		dta = new DateTimeApplication(); // Métodos Date and Time	
+		dta = new DateTimeApplication(); // Mï¿½todos Date and Time	
 		tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
@@ -2455,7 +2455,7 @@ public class ExcelModels {
 		String sheetName =  localeExcel.getStringKey("excel_single_sat_sheet_base_name");
 		sheet = workbook.createSheet(sheetName);
 
-		spreadSheet.createRows(sheet, row, 1, 2); // Criar o número de linhas
+		spreadSheet.createRows(sheet, row, 1, 2); // Criar o nï¿½mero de linhas
 
 		spreadSheet.createCell(sheet, row, 1, 0, "");
 		spreadSheet.createCell(sheet, row, 1, 1, localeExcel.getStringKey("excel_report_monthly_flow_date"));
@@ -3563,7 +3563,7 @@ public class ExcelModels {
 
 		}
 
-		if(module.equals("mto")) {
+		if(module.equals("mto") || module.equals("rs") || module.equals("vs") ) {
 
 			if(type.equals("1"))
 				sheetName = localeExcel.getStringKey("excel_single_mto_year_sheet_name");
