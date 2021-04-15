@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.mto;
+package br.com.tracevia.webapp.controller.meteo.mto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.mto.MTO;
+import br.com.tracevia.webapp.model.meteo.mto.MTO;
 
 @ManagedBean(name="mtoMapsView")
 @ViewScoped

@@ -1,11 +1,11 @@
-package br.com.tracevia.webapp.model.mto;
+package br.com.tracevia.webapp.model.meteo.mto;
 
 public class MtoPanel {
 	
 	private String equip;	
 	private int atmPressure;
 	private int relative_humidity;
-	private int temperature;
+	private double temperature;
 	private int wind_direction;
 	private int wind_speed;
 	private int preciptation_rate;
@@ -16,7 +16,7 @@ public class MtoPanel {
 	private int status;
 	private String equipName;
 	
-	public MtoPanel(String equip, int atmPressure, int relative_humidity, int temperature, int wind_direction,
+	public MtoPanel(String equip, int atmPressure, int relative_humidity, double temperature, int wind_direction,
 			int wind_speed, int preciptation_rate, int preciptation_rate_hour, int visibility, int line_volts,
 			int battery, int status, String equipName) {
 		
@@ -61,11 +61,11 @@ public class MtoPanel {
 		this.relative_humidity = relative_humidity;
 	}
 
-	public int getTemperature() {
+	public double getTemperature() {
 		return temperature;
 	}
 
-	public void setTemperature(int temperature) {
+	public void setTemperature(double temperature) {
 		this.temperature = temperature;
 	}
 

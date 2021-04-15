@@ -160,20 +160,14 @@ public class QueriesReportsModels {
 	private static final String FROM_TABLE_10_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
 	private static final String FROM_TABLE_15_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
 	private static final String FROM_TABLE_30_MIN_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
-	private static final String FROM_TABLE_01_HOUR_SAT_VBV_CCR = " FROM sat_vbv_ccr st  ";
+	private static final String FROM_TABLE_01_HOUR_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
 	private static final String FROM_TABLE_06_HOURS_SAT_VBV_CCR = " FROM sat_vbv_ccr st ";
 	private static final String FROM_TABLE_DATE_SAT_VBV_CCR = " FROM sat_vbv_ccr st " ;
 
     //FROM TABLES REFERENCE		
-	private static final String FROM_TABLE_05_MIN_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_06_MIN_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_10_MIN_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_15_MIN_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_30_MIN_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_01_HOUR_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_06_HOURS_MTO = " FROM weather_station st ";
-	private static final String FROM_TABLE_DATE_MTO = " FROM weather_station st " ;
-
+	private static final String FROM_TABLE_MTO = " FROM mto_data st ";
+	private static final String FROM_TABLE_RV = " FROM rs_data st ";
+	private static final String FROM_TABLE_SV = " FROM vs_data st ";
 
 	//LEFT JOIN TABLE REFERENCE
 	private static final String LEFT_JOIN_START_SAT = "LEFT JOIN sat_vbv AS st ";
@@ -187,6 +181,8 @@ public class QueriesReportsModels {
 	private static final String LEFT_JOIN_END_MTO_EQUIP = "LEFT JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
 	private static final String INNER_JOIN_END_SAT_EQUIP = "INNER JOIN sat_equipment as eq ON eq.equip_id = st.siteID ";
 	private static final String INNER_JOIN_END_MTO_EQUIP = "INNER JOIN mto_equipment as eq ON eq.equip_id = st.station_id ";
+	private static final String INNER_JOIN_END_RV_EQUIP = "INNER JOIN rs_equipment as eq ON eq.equip_id = st.station_id ";
+	private static final String INNER_JOIN_END_SV_EQUIP = "INNER JOIN vs_equipment as eq ON eq.equip_id = st.station_id ";
 	
 	//LEFT JOIN PERIOD 05 MINUTES
 		private static final String LEFT_JOIN_CONDITION_05_MIN = "ON DATE(st.data) = DATE(tmp.datetime_05) AND HOUR(st.data) = HOUR(tmp.datetime_05) AND " +
@@ -326,37 +322,37 @@ public class QueriesReportsModels {
 		       "ORDER BY MONTH(data) ASC";
 		
 		//QUERIES GROUP AND ORDER BY PERIODSNEW MTO		
-				private static final String GROUP_AND_ORDER_TABLE_05_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_05_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC ";
 
-				private static final String GROUP_AND_ORDER_TABLE_06_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_06_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC ";
 
-				private static final String GROUP_AND_ORDER_TABLE_10_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_10_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC ";
 
-				private static final String GROUP_AND_ORDER_TABLE_15_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_15_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC ";
 
-				private static final String GROUP_AND_ORDER_TABLE_30_MIN_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_30_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC ";
 
-				private static final String GROUP_AND_ORDER_TABLE_01_HOUR_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_01_HOUR_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC "; 
 
-				private static final String GROUP_AND_ORDER_TABLE_06_HOURS_MTO = "GROUP BY DATE(datetime_), sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
+				private static final String GROUP_AND_ORDER_TABLE_06_HOURS_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC "; 
 
 				private static final String GROUP_AND_ORDER_TABLE_DAYS_MTO = "GROUP BY DAY(datetime_) " +
 						"ORDER BY DAY(datetime_) ASC";
 
-				private static final String GROUP_AND_ORDER_TABLE_DATE_MTO = "GROUP BY DATE(datetime_) " +
+				private static final String GROUP_AND_ORDER_TABLE_DATE_METEO = "GROUP BY DATE(datetime_) " +
 						"ORDER BY DATE(datetime_) ASC";
 
-				private static final String GROUP_AND_ORDER_TABLE_MONTHS_MTO = "GROUP BY DAY(datetime_) " +
+				private static final String GROUP_AND_ORDER_TABLE_MONTHS_METEO = "GROUP BY DAY(datetime_) " +
 						"ORDER BY DAY(datetime_) ASC";
 
-				private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_MTO = "GROUP BY MONTH(datetime_) " +
+				private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_METEO = "GROUP BY MONTH(datetime_) " +
 				       "ORDER BY MONTH(datetime_) ASC";
 		
 		//INDEX
@@ -705,34 +701,18 @@ public class QueriesReportsModels {
 		}
 		
 		//TABLE FROM  METHOD SELECTION
-				public String QueryFromMtoTable(String period, String table) {
+				public String QueryFromMeteoTable(String period, String table) {
+					
+					if(table.equals("mto_data")) 
+						return FROM_TABLE_MTO;
 
-					if(period.equals("05 minutes"))
-						return FROM_TABLE_05_MIN_MTO;
+					if(table.equals("rs_data"))
+						return FROM_TABLE_RV;
 
-					if(period.equals("06 minutes"))
-						return FROM_TABLE_06_MIN_MTO;
-
-					if(period.equals("10 minutes"))
-						return FROM_TABLE_10_MIN_MTO;
-
-					if(period.equals("15 minutes"))
-						return FROM_TABLE_15_MIN_MTO;
-
-					if(period.equals("30 minutes"))
-						return FROM_TABLE_30_MIN_MTO;
-
-					if(period.equals("01 hour"))
-						return FROM_TABLE_01_HOUR_MTO;
-
-					if(period.equals("06 hours"))
-						return FROM_TABLE_06_HOURS_MTO;
-
-					if(period.equals("24 hours") || period.equals("year") || period.equals("month"))
-						return FROM_TABLE_DATE_MTO;
-						
-					return null;
-									 
+					if(table.equals("vs_data"))
+						return FROM_TABLE_SV;
+					
+					return null;								 
 					        
 				}
 		
@@ -818,34 +798,34 @@ public class QueriesReportsModels {
 		public String QueryWeatherGroupAndOrder(String period) {
 
 			if(period.equals("05 minutes"))
-				return GROUP_AND_ORDER_TABLE_05_MIN_MTO;
+				return GROUP_AND_ORDER_TABLE_05_MIN_METEO;
 
 			if(period.equals("06 minutes"))
-				return GROUP_AND_ORDER_TABLE_06_MIN_MTO;
+				return GROUP_AND_ORDER_TABLE_06_MIN_METEO;
 
 			if(period.equals("10 minutes"))
-				return GROUP_AND_ORDER_TABLE_10_MIN_MTO;
+				return GROUP_AND_ORDER_TABLE_10_MIN_METEO;
 
 			if(period.equals("15 minutes"))
-				return GROUP_AND_ORDER_TABLE_15_MIN_MTO;
+				return GROUP_AND_ORDER_TABLE_15_MIN_METEO;
 
 			if(period.equals("30 minutes"))
-				return GROUP_AND_ORDER_TABLE_30_MIN_MTO;
+				return GROUP_AND_ORDER_TABLE_30_MIN_METEO;
 
 			if(period.equals("01 hour"))
-				return GROUP_AND_ORDER_TABLE_01_HOUR_MTO;
+				return GROUP_AND_ORDER_TABLE_01_HOUR_METEO;
 
 			if(period.equals("06 hours"))
-				return GROUP_AND_ORDER_TABLE_06_HOURS_MTO;
+				return GROUP_AND_ORDER_TABLE_06_HOURS_METEO;
 
 			if(period.equals("24 hours"))
-				return GROUP_AND_ORDER_TABLE_DATE_MTO;
+				return GROUP_AND_ORDER_TABLE_DATE_METEO;
 
 			if(period.equals("month"))
-				return GROUP_AND_ORDER_TABLE_MONTHS_MTO;
+				return GROUP_AND_ORDER_TABLE_MONTHS_METEO;
 
 			if(period.equals("year"))
-				return GROUP_AND_ORDER_TABLE_MONTH_YEAR_MTO;		
+				return GROUP_AND_ORDER_TABLE_MONTH_YEAR_METEO;		
 
 			return null;
 		}
@@ -892,6 +872,16 @@ public class QueriesReportsModels {
 	
 	public String innerJoinMto() {
 		return INNER_JOIN_END_MTO_EQUIP;
+		
+	}
+	
+	public String innerJoinRv() {
+		return INNER_JOIN_END_RV_EQUIP;
+		
+	}
+	
+	public String innerJoinSv() {
+		return INNER_JOIN_END_SV_EQUIP;
 		
 	}
 
@@ -979,8 +969,8 @@ public class QueriesReportsModels {
 	} 
 	
   ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
-   public String BuildQueryIndexType2(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String innerJoin, String whereClause, String queryGroupOrder) { 	   
-	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
+   public String BuildQueryIndexType2(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String innerJoin, String whereClause, String queryGroupOrder) { 	
+	   	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
   } 
    	
    ///////// WHERE CLAUSE WITH ONE PARAMETER

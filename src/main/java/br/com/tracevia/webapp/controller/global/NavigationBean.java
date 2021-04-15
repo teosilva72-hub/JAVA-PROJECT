@@ -78,14 +78,29 @@ public class NavigationBean {
  		return navigation_page;
  	}
     
-    //MTO
-    
-     public String redirectToWeatherPanel() {
+     //MTO PANEL    
+     public String redirectToMTOPanel() {
 		
- 		navigation_page = "/mto/panel/weather_panel.xhtml?faces-redirect=true";		
+ 		navigation_page = "/meteo/mto/panel/mto_panel.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
- 	}
+ 	}     
+     
+    //RS PANEL 
+     public String redirectToRSPanel() {
+ 		
+  		navigation_page = "/meteo/rs/panel/rs_panel.xhtml?faces-redirect=true";		
+  		
+  		return navigation_page;
+  	}
+     
+    //VS PANEL 
+     public String redirectToVSPanel() {
+ 		
+  		navigation_page = "/meteo/vs/panel/vs_panel.xhtml?faces-redirect=true";		
+  		
+  		return navigation_page;
+  	}
     
     /* USER INTERFACE */
      
@@ -123,29 +138,73 @@ public class NavigationBean {
    
      /* MTO REPORTS */
    
-     public String redirectToWeatherYear() {
+     public String redirectToMTOYear() {
 		
-    	 navigation_page = "/mto/reports/weather_year.xhtml?faces-redirect=true";		
+    	 navigation_page = "/meteo/mto/reports/mto_year.xhtml?faces-redirect=true";		
 		
 		return navigation_page;
 	}
      
-     public String redirectToWeatherMonth() {
+     public String redirectToMTOMonth() {
  		
-    	 navigation_page = "/mto/reports/weather_month.xhtml?faces-redirect=true";		
+    	 navigation_page = "/meteo/mto/reports/mto_month.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
  	}
      
-     public String redirectToWeatherPeriod() {
+     public String redirectToMTOPeriod() {
  		
- 		navigation_page = "/mto/reports/weather_periods.xhtml?faces-redirect=true";		
+ 		navigation_page = "/meteo/mto/reports/mto_periods.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
  	}
     
-     /* MTO REPORTS */
-        
+     /* RS REPORTS */
+          
+     public String redirectToRSYear() {
+ 		
+    	 navigation_page = "/meteo/rs/reports/rs_year.xhtml?faces-redirect=true";		
+		
+		return navigation_page;
+	}
+     
+     public String redirectToRSMonth() {
+ 		
+    	 navigation_page = "/meteo/rs/reports/rs_month.xhtml?faces-redirect=true";		
+ 		
+ 		return navigation_page;
+ 	}
+     
+     public String redirectToRSPeriod() {
+ 		
+ 		navigation_page = "/meteo/rs/reports/rs_periods.xhtml?faces-redirect=true";		
+ 		
+ 		return navigation_page;
+ 	}
+     
+     /* VS REPORTS */
+     
+     public String redirectToVSYear() {
+ 		
+    	 navigation_page = "/meteo/vs/reports/vs_year.xhtml?faces-redirect=true";		
+		
+		return navigation_page;
+	}
+     
+     public String redirectToVSMonth() {
+ 		
+    	 navigation_page = "/meteo/vs/reports/vs_month.xhtml?faces-redirect=true";		
+ 		
+ 		return navigation_page;
+ 	}
+     
+     public String redirectToVSPeriod() {
+ 		
+ 		navigation_page = "/meteo/vs/reports/vs_periods.xhtml?faces-redirect=true";		
+ 		
+ 		return navigation_page;
+ 	}
+             
     /* SAT REPORTS */
    
    public String redirectToCountVehicles() {

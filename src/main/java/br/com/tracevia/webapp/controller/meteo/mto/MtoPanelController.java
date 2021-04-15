@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.mto;
+package br.com.tracevia.webapp.controller.meteo.mto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
-import org.apache.poi.hssf.util.PaneInformation;
 import org.primefaces.context.RequestContext;
 
-import com.google.protobuf.Value;
-
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
-import br.com.tracevia.webapp.dao.mto.MtoDAO;
+import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.mto.MTO;
-import br.com.tracevia.webapp.model.mto.MtoPanel;
+import br.com.tracevia.webapp.model.meteo.mto.MTO;
+import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 
@@ -33,7 +30,7 @@ public class MtoPanelController {
 	MessagesUtil message;
 	
 	EquipmentsDAO dao;
-	MtoDAO mtoDao;	
+	MeteoDAO mtoDao;	
 	
 	private String station, station_name;
 			
@@ -89,6 +86,8 @@ public class MtoPanelController {
 			e1.printStackTrace();
 		}
 				
+		if(!listMto.isEmpty()) {
+		
 		for (Equipments e : listMto) {
 			SelectItem s = new SelectItem();
 			s.setValue(e.getEquip_id());
@@ -101,25 +100,27 @@ public class MtoPanelController {
 		
 		station_name = listMto.get(0).getNome();
 		
-	    //Initialize Panel Values
-		InitializePanel();
+	 
+		InitializePanelValues();  //Initialize Panel Values
+		
+	}  else initPanelZero(panel);
 		
 	}
 	
 	//Inicializar Painel
-	public void InitializePanel(){
+	public void InitializePanelValues(){
 		
 		try {					
 			
 			message = new MessagesUtil();
-			mtoDao = new MtoDAO();
+			mtoDao = new MeteoDAO();
 			panel = new MtoPanel();
 					
-			panel = mtoDao.WeatherPanelInformation(station);
+			panel = mtoDao.MtoPanelInformation(station);
 														
 			if(panel == null) {
 				
-			   panel = new MtoPanel(); // Instância o objeto novamente.
+			   panel = new MtoPanel(); // Instï¿½ncia o objeto novamente.
 			   initPanelZero(panel);
 			  		  
 			 }		
@@ -133,25 +134,25 @@ public class MtoPanelController {
 	
 	//Information to Update
 	public void GetPanelInformation(){
+		
 		try {
 											
 			if(station != null) {
 										
-			mtoDao = new MtoDAO();	
+			mtoDao = new MeteoDAO();	
 			message = new MessagesUtil();
 			panel = new MtoPanel();				
-			panel = mtoDao.WeatherPanelInformation(station);	
+			panel = mtoDao.MtoPanelInformation(station);	
 						
 			//Nome do Equipamento
 			for(SelectItem s : equipments) {							
 				if(station.equals(String.valueOf(s.getValue())))			
 					station_name = s.getLabel();				
-				
 			}
 						
 			if(panel == null) {
 				
-				panel = new MtoPanel();	// Instância o objeto novamente.
+				panel = new MtoPanel();	// Instï¿½ncia o objeto novamente.
 				initPanelZero(panel);				
 				message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"),localeMto.getStringKey("mto_message_equipment_no_data"));
 			}
@@ -165,9 +166,10 @@ public class MtoPanelController {
 		}		
 	}	
 	
-	//PREENCHER CASO NÃO HAJA VALORES
+	//PREENCHER CASO Nï¿½O HAJA VALORES
 	public void initPanelZero(MtoPanel panel) {
 		
+		station_name = "Default";
 		panel.setAtmPressure(0);
 		panel.setRelative_humidity(0);
 		panel.setPreciptation_rate(0);

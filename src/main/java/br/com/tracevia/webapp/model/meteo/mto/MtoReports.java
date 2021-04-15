@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.model.mto;
+package br.com.tracevia.webapp.model.meteo.mto;
 
 public class MtoReports {
 		
@@ -12,7 +12,7 @@ public class MtoReports {
 			private int dayOfTheMonth;
 			private int atmPressure;
 			private int relative_humidity;
-			private int temperature;
+			private double temperature;
 			private int wind_direction;
 			private int wind_speed;
 			private int preciptation_rate;
@@ -57,7 +57,7 @@ public class MtoReports {
 				return this;			
 			}
 			
-			public Builder temperature(int temperature) {
+			public Builder temperature(double temperature) {
 				this.temperature = temperature;			
 				return this;			
 			}
@@ -128,7 +128,7 @@ public class MtoReports {
 				return relative_humidity;
 			}
 
-			public int getTemperature() {
+			public double getTemperature() {
 				return temperature;
 			}
 

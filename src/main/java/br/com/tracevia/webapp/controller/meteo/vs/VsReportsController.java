@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.mto;
+package br.com.tracevia.webapp.controller.meteo.vs;
 
 import java.io.IOException;
 import java.time.YearMonth;
@@ -17,25 +17,25 @@ import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.GlobalReportsDAO;
-import br.com.tracevia.webapp.dao.mto.MtoQueriesModels;
+import br.com.tracevia.webapp.dao.meteo.MeteoQueriesModels;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.ExcelModels;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.mto.MtoReports;
-import br.com.tracevia.webapp.model.mto.MtoReports.Builder;
-import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.meteo.vs.VS;
+import br.com.tracevia.webapp.model.meteo.vs.VsReports;
+import br.com.tracevia.webapp.model.meteo.vs.VsReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
-@ManagedBean(name="mtoReportsBean")
+@ManagedBean(name="vsReportsBean")
 @RequestScoped
-public class MtoReportsController {
+public class VsReportsController {
 	
-	private MtoReports mtoReport;
+	private VsReports vsReport;
 	private List<SelectItem> equipments;
 	private List<SelectItem> months;
 	private List<SelectItem> years;
@@ -44,17 +44,14 @@ public class MtoReportsController {
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
 		
-	LocaleUtil localeLabel, localeCalendar, localeMto;
+	LocaleUtil localeLabel, localeCalendar, localeVs;
 			
 	int periodRange, daysInMonth, daysCount, start_month, end_month;  
 		
 	String procedure, query, queryCount, module, fileName, currentDate, direction1, direction2, table; 
-	
-	// Variável que recebe o número de registros esperados para uma consula SQL (de acordo com períodos)
-     private static int numRegisters;	
-
-	// Variável que recebe o número de campos de uma consulta SQL
-	private static int fieldsNumber;	
+		
+    private int numRegisters;	
+	private int fieldsNumber;	
 	
 	private boolean clearBool, excelBool;
 	
@@ -66,15 +63,15 @@ public class MtoReportsController {
 	String[][] resultQuery;
 	
 	ExcelModels model;
-
-	public MtoReports getMtoReport() {
-		return mtoReport;
-	}
-
-	public void setMtoReport(MtoReports mtoReport) {
-		this.mtoReport = mtoReport;
-	}
 	
+	public VsReports getSvReport() {
+		return vsReport;
+	}
+
+	public void setSvReport(VsReports vsReport) {
+		this.vsReport = vsReport;
+	}
+
 	public List<SelectItem> getEquipments() {
 		return equipments;
 	}
@@ -103,20 +100,20 @@ public class MtoReportsController {
 		return periods;
 	}	
 	
-	public static int getNumRegisters() {
+	public int getNumRegisters() {
 		return numRegisters;
 	}
 
-	public static void setNumRegisters(int numRegisters) {
-		MtoReportsController.numRegisters = numRegisters;
+	public void setNumRegisters(int numRegisters) {
+		this.numRegisters = numRegisters;
 	}
 
-	public static int getFieldsNumber() {
+	public int getFieldsNumber() {
 		return fieldsNumber;
 	}
 
-	public static void setFieldsNumber(int fieldsNumber) {
-		MtoReportsController.fieldsNumber = fieldsNumber;
+	public void setFieldsNumber(int fieldsNumber) {
+		this.fieldsNumber = fieldsNumber;
 	}
 
 	public boolean isClearBool() {
@@ -139,30 +136,30 @@ public class MtoReportsController {
 	public void initialize() {
 		
 		localeLabel = new LocaleUtil();	
-		localeLabel.getResourceBundle(LocaleUtil.LABELS_MTO);
+		localeLabel.getResourceBundle(LocaleUtil.LABELS_VS);
 		
 		localeCalendar = new LocaleUtil();	
 		localeCalendar.getResourceBundle(LocaleUtil.LABELS_CALENDAR);
 		
-		localeMto = new LocaleUtil();
-		localeMto.getResourceBundle(LocaleUtil.MESSAGES_MTO);
+		localeVs = new LocaleUtil();
+		localeVs.getResourceBundle(LocaleUtil.MESSAGES_VS);
 				
 		/* EQUIPMENTS SELECTION */
-		mtoReport = new MtoReports();
-		equipments = new ArrayList<SelectItem>();		
-				
-		List<? extends Equipments> listSats = new ArrayList<SAT>();  
+		vsReport = new VsReports();
+		equipments = new ArrayList<SelectItem>();
+						
+		List<? extends Equipments> listVs = new ArrayList<VS>();  
 		
 		try {
 			
 			 EquipmentsDAO dao = new EquipmentsDAO();		 
-			 listSats = dao.EquipmentSelectOptions("mto");
+			 listVs = dao.EquipmentSelectOptions("vs");
 						 
 		} catch (Exception e1) {			
 			e1.printStackTrace();
 		}
 				
-		for (Equipments e : listSats) {
+		for (Equipments e : listVs) {
 			SelectItem s = new SelectItem();
 			s.setValue(e.getEquip_id());
 			s.setLabel(e.getNome());
@@ -192,18 +189,18 @@ public class MtoReportsController {
 		/* PERIODS FLOW */
 		
 		periods = new ArrayList<SelectItem>();			
-		periods.add(new SelectItem("05 minutes", localeLabel.getStringKey("mto_reports_select_periods_five_minutes")));
-		periods.add(new SelectItem("06 minutes", localeLabel.getStringKey("mto_reports_select_periods_six_minutes")));
-		periods.add(new SelectItem("10 minutes", localeLabel.getStringKey("mto_reports_select_periods_teen_minutes")));
-		periods.add(new SelectItem("15 minutes", localeLabel.getStringKey("mto_reports_select_periods_fifteen_minutes")));
-		periods.add(new SelectItem("30 minutes", localeLabel.getStringKey("mto_reports_select_periods_thirty_minutes")));  
-		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("mto_reports_select_periods_one_hour")));
-		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("mto_reports_select_periods_six_hours")));
-		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("mto_reports_select_periods_twenty_four_hours")));
+		periods.add(new SelectItem("05 minutes", localeLabel.getStringKey("vs_reports_select_periods_five_minutes")));
+		periods.add(new SelectItem("06 minutes", localeLabel.getStringKey("vs_reports_select_periods_six_minutes")));
+		periods.add(new SelectItem("10 minutes", localeLabel.getStringKey("vs_reports_select_periods_teen_minutes")));
+		periods.add(new SelectItem("15 minutes", localeLabel.getStringKey("vs_reports_select_periods_fifteen_minutes")));
+		periods.add(new SelectItem("30 minutes", localeLabel.getStringKey("vs_reports_select_periods_thirty_minutes")));  
+		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("vs_reports_select_periods_one_hour")));
+		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("vs_reports_select_periods_six_hours")));
+		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("vs_reports_select_periods_twenty_four_hours")));
 		
-		module = "mto";
+		module = "vs";
 		
-		table = "weather_stations";
+		table = "vs_data";
 		
 		//Disabled
 		clearBool = true;
@@ -219,7 +216,7 @@ public class MtoReportsController {
 //////DESENHAR TABLES 	
 
 /**
-* Método para criar os headers
+* Mï¿½todo para criar os headers
 * @param field - headers
 * @param objectValue - Valores de cada header estanciados em objetos
 */
@@ -250,40 +247,31 @@ public void CreateFields(String type) {
 	   
 	   if(type.equals("1")) {
 		   
-			field = new String[] {localeLabel.getStringKey("mto_reports_year_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
+			field = new String[] {localeLabel.getStringKey("vs_reports_year_month"),
+					    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
+						localeLabel.getStringKey("vs_reports_general_visibility")};
 						
-			fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"};
+			fieldObjectValues = new String[] { "month", "ambient_temperature", "visibility"};
 	   }
 	   
 	   if(type.equals("2")) {
 		   
-		   field = new String[] {localeLabel.getStringKey("mto_reports_general_day_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
-			
-		  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"};
+		   field = new String[] {localeLabel.getStringKey("vs_reports_general_day_month"),
+				    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
+					localeLabel.getStringKey("vs_reports_general_visibility")};
+					
+		            fieldObjectValues = new String[] { "dayOfTheMonth", "ambient_temperature", "visibility"};
 			
 		   }
 	   
 	   if(type.equals("3")) {
 			   
-		   field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
+		   field = new String[] {localeLabel.getStringKey("vs_reports_general_date"), localeLabel.getStringKey("vs_reports_general_interval"), 
+				    localeLabel.getStringKey("vs_reports_general_ambient_temperature"),
+					localeLabel.getStringKey("vs_reports_general_visibility")};
 			
 			
-			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
+			fieldObjectValues = new String[] { "date", "dateTime", "ambient_temperature", "visibility"}; 
 			
 	      }	   
 	       
@@ -297,13 +285,13 @@ public void CreateFields(String type) {
  
    }
 
-	public void GetReports(String type) throws Exception{
+	        public void GetReports(String type) throws Exception{
 		
 		    FacesContext facesContext = FacesContext.getCurrentInstance();
 	        ExternalContext externalContext = facesContext.getExternalContext();
 	    
 		    QueriesReportsModels models = new QueriesReportsModels();
-		    MtoQueriesModels mtoModels = new MtoQueriesModels();	    
+		    MeteoQueriesModels mtoModels = new MeteoQueriesModels();	    
 		    DateTimeApplication dta = new DateTimeApplication();
 		    
 			GlobalReportsDAO dao = new GlobalReportsDAO();	
@@ -318,36 +306,36 @@ public void CreateFields(String type) {
 			Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
 			
 			//Single Selection
-			mtoReport.setEquipment(parameterMap.get("equip"));
+			vsReport.setEquipment(parameterMap.get("equip"));
 			
-			mtoReport.setStartDate(parameterMap.get("dateStart"));
+			vsReport.setStartDate(parameterMap.get("dateStart"));
 			
-			mtoReport.setEndDate(parameterMap.get("dateEnd"));
+			vsReport.setEndDate(parameterMap.get("dateEnd"));
 			
-			mtoReport.setStartMonth(parameterMap.get("start_month"));
+			vsReport.setStartMonth(parameterMap.get("start_month"));
 						
-			mtoReport.setEndMonth(parameterMap.get("end_month"));
+			vsReport.setEndMonth(parameterMap.get("end_month"));
 								
-			mtoReport.setYear(parameterMap.get("year"));
+			vsReport.setYear(parameterMap.get("year"));
 			
-			mtoReport.setMonth(parameterMap.get("month"));
+			vsReport.setMonth(parameterMap.get("month"));
 			
-			mtoReport.setPeriod(parameterMap.get("periods"));
+			vsReport.setPeriod(parameterMap.get("periods"));
 													
 			 //Initialize ResultList
 		     resultList = new ArrayList<Builder>();	
 		 		    	 
 		    	 if(type.equals("1")) {
 		    		    			    	
-		    	// Quantos dias possui o respectivo mês
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getEndMonth()));
+		    	// Quantos dias possui o respectivo mï¿½s
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(vsReport.getYear()), Integer.parseInt(vsReport.getEndMonth()));
 				int daysInEndMonth = yearMonthObject.lengthOfMonth();
 											
-				mtoReport.setStartDate("01/"+mtoReport.getStartMonth()+"/"+mtoReport.getYear());
-				mtoReport.setEndDate(daysInEndMonth+"/"+mtoReport.getEndMonth()+"/"+mtoReport.getYear());
+				vsReport.setStartDate("01/"+vsReport.getStartMonth()+"/"+vsReport.getYear());
+				vsReport.setEndDate(daysInEndMonth+"/"+vsReport.getEndMonth()+"/"+vsReport.getYear());
 				
-				end_month = Integer.parseInt(mtoReport.getEndMonth());
-				start_month = Integer.parseInt(mtoReport.getStartMonth());
+				end_month = Integer.parseInt(vsReport.getEndMonth());
+				start_month = Integer.parseInt(vsReport.getStartMonth());
 				
 				setNumRegisters((end_month - start_month) + 1);
 				
@@ -357,12 +345,12 @@ public void CreateFields(String type) {
 		    	 
 		    	 else if(type.equals("2")) {
 		  		    	 
-				// Quantos dias possui o respectivo mês
-				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(mtoReport.getYear()), Integer.parseInt(mtoReport.getMonth()));
+				// Quantos dias possui o respectivo mï¿½s
+				YearMonth yearMonthObject = YearMonth.of(Integer.parseInt(vsReport.getYear()), Integer.parseInt(vsReport.getMonth()));
 				daysInMonth = yearMonthObject.lengthOfMonth();
 				
-				mtoReport.setStartDate("01/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
-				mtoReport.setEndDate(daysInMonth+"/"+mtoReport.getMonth()+"/"+mtoReport.getYear());
+				vsReport.setStartDate("01/"+vsReport.getMonth()+"/"+vsReport.getYear());
+				vsReport.setEndDate(daysInMonth+"/"+vsReport.getMonth()+"/"+vsReport.getYear());
 				
 				setNumRegisters(daysInMonth);				
 				    	
@@ -370,32 +358,32 @@ public void CreateFields(String type) {
 		    	 
 		    	 else if(type.equals("3")) {
 		    		 
-		    		 mtoReport.setStartDate(parameterMap.get("dateStart"));
-		    		 mtoReport.setEndDate(parameterMap.get("dateEnd"));
+		    		 vsReport.setStartDate(parameterMap.get("dateStart"));
+		    		 vsReport.setEndDate(parameterMap.get("dateEnd"));
 		    		 
-		    		 daysCount = ((int) dta.diferencaDias(mtoReport.getStartDate(), mtoReport.getEndDate()) + 1);
+		    		 daysCount = ((int) dta.diferencaDias(vsReport.getStartDate(), vsReport.getEndDate()) + 1);
 		    		 
-		    		//Registros de acordo com seleção - importante
-		 			setNumRegisters(dta.RegistersNumbers(mtoReport.getStartDate(), mtoReport.getEndDate(), mtoReport.getPeriod()));
+		    		//Registros de acordo com seleï¿½ï¿½o - importante
+		 			setNumRegisters(dta.RegistersNumbers(vsReport.getStartDate(), vsReport.getEndDate(), vsReport.getPeriod()));
 		 		 	 			
-		 			periodRange = dta.periodsRange(mtoReport.getPeriod());
+		 			periodRange = dta.periodsRange(vsReport.getPeriod());
 		 		    	    	    	   
 		    	   }
 		    		   				    
-			//Chamar Procedure de acordo com período selecionado
-			//procedure = models.SelectProcedureByPeriod(mtoReport.getPeriod());	
+			//Chamar Procedure de acordo com perï¿½odo selecionado
+			//procedure = models.SelectProcedureByPeriod(vsReport.getPeriod());	
 		    	 
-    		startDate = dta.StringDBDateFormat(mtoReport.getStartDate());
-			endDate = dta.StringDBDateFormat(mtoReport.getEndDate());
+    		startDate = dta.StringDBDateFormat(vsReport.getStartDate());
+			endDate = dta.StringDBDateFormat(vsReport.getEndDate());
 			data_anterior = startDate;
-			mes_inicial = mtoReport.getStartMonth();	
+			mes_inicial = vsReport.getStartMonth();	
 			month_start_date = "01";
 			
 			start = dta.DateTimeToStringIni(startDate); 
 			end = dta.DateTimeToStringFim(endDate); 
 			
-			//NÚMERO DE CAMPOS PARA A SAÍDA DE DADOS
-			//LEVA EM CONSIDERAÇÃO NÚMERO DE CAMPOS DA QUERY
+			//Nï¿½MERO DE CAMPOS PARA A SAï¿½DA DE DADOS
+			//LEVA EM CONSIDERAï¿½ï¿½O Nï¿½MERO DE CAMPOS DA QUERY
 			setFieldsNumber(fieldsNumber(type));
 			
 			resultQuery = new String[getFieldsNumber()][getNumRegisters()];
@@ -405,7 +393,7 @@ public void CreateFields(String type) {
 																			
 			System.out.println(query); //debug
 
-			//EXECUÇÃO DA QUERY
+			//EXECUï¿½ï¿½O DA QUERY
 			String[][] auxResult = dao.ExecuteQuery(query, getFieldsNumber(), getNumRegisters());
 			
 			//CASO EXISTA REGISTROS ENTRA AQUI
@@ -425,11 +413,11 @@ public void CreateFields(String type) {
 			lin = auxResult[0].length;
 			col = auxResult.length;
 						
-			if(mtoReport.getPeriod().equals("month"))
+			if(vsReport.getPeriod().equals("month"))
 		       dta.preencherDias(resultQuery, 0, startDate, daysInMonth);
 			
-			else if (mtoReport.getPeriod().equals("year"))
-				dta.preencherDataMes(resultQuery, 0, mtoReport.getStartMonth(), mtoReport.getEndMonth());
+			else if (vsReport.getPeriod().equals("year"))
+				dta.preencherDataMes(resultQuery, 0, vsReport.getStartMonth(), vsReport.getEndMonth());
 			
 			//DATAS
 			else {
@@ -438,28 +426,28 @@ public void CreateFields(String type) {
 			
 			//PERIODOS
 			//NEW
-			if(mtoReport.getPeriod().equals("05 minutes"))			
+			if(vsReport.getPeriod().equals("05 minutes"))			
 				 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
 						
-			if(mtoReport.getPeriod().equals("06 minutes"))			
+			if(vsReport.getPeriod().equals("06 minutes"))			
 			     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
 			
-			if(mtoReport.getPeriod().equals("10 minutes"))		
+			if(vsReport.getPeriod().equals("10 minutes"))		
 				dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
 			   			
-			if(mtoReport.getPeriod().equals("15 minutes"))		
+			if(vsReport.getPeriod().equals("15 minutes"))		
 			    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
 			
-			if(mtoReport.getPeriod().equals("30 minutes"))		
+			if(vsReport.getPeriod().equals("30 minutes"))		
 				dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
 				   		        			
-			if(mtoReport.getPeriod().equals("01 hour")) 	
+			if(vsReport.getPeriod().equals("01 hour")) 	
 				dta.preencherHora(resultQuery, 1, getNumRegisters());
 			
-			if(mtoReport.getPeriod().equals("06 hours"))	
+			if(vsReport.getPeriod().equals("06 hours"))	
 			    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
 			
-			 if(mtoReport.getPeriod().equals("24 hours"))
+			 if(vsReport.getPeriod().equals("24 hours"))
 			    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
 			 
 			}
@@ -467,25 +455,25 @@ public void CreateFields(String type) {
 			for(int j = 0; j < lin; j++) {
 			   for(int i = 0; i < col; i++) {
 				 
-		    // CASO NÃO EXISTA VALOR >>>>>>> PASSA	   
+		    // CASO Nï¿½O EXISTA VALOR >>>>>>> PASSA	   
 		    if(auxResult[0][j] != null)	 { 
 						
-			if(mtoReport.getPeriod().equals("01 hour") || mtoReport.getPeriod().equals("06 hours"))
+			if(vsReport.getPeriod().equals("01 hour") || vsReport.getPeriod().equals("06 hours"))
 				   hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				
-			else if(!mtoReport.getPeriod().equals("24 hours") && !mtoReport.getPeriod().equals("01 hour") && !mtoReport.getPeriod().equals("06 hours")
-					&& !mtoReport.getPeriod().equals("year") && !mtoReport.getPeriod().equals("month") ) {
+			else if(!vsReport.getPeriod().equals("24 hours") && !vsReport.getPeriod().equals("01 hour") && !vsReport.getPeriod().equals("06 hours")
+					&& !vsReport.getPeriod().equals("year") && !vsReport.getPeriod().equals("month") ) {
 				    hr = Integer.parseInt(auxResult[1][j].substring(0, 2));
 				    minuto =  Integer.parseInt(auxResult[1][j].substring(3, 5));	
 				    
 				}
 						
-			  if(!mtoReport.getPeriod().equals("year") &&  !mtoReport.getPeriod().equals("month")) {
+			  if(!vsReport.getPeriod().equals("year") &&  !vsReport.getPeriod().equals("month")) {
 
-				// Restrição caso não haja dados nos primeiros registros
+				// Restriï¿½ï¿½o caso nï¿½o haja dados nos primeiros registros
 				if ((startDate != null) && (!auxResult[0][j].equals(startDate))) {   // Executa uma unica vez
 					
-					if(mtoReport.getPeriod().equals("24 hours"))
+					if(vsReport.getPeriod().equals("24 hours"))
 						iterator = (int) dta.daysDifference(startDate, auxResult[0][j]);
 
 					else iterator = dta.daysDifference(startDate, auxResult[0][j], periodRange);	
@@ -495,7 +483,7 @@ public void CreateFields(String type) {
 
 				} else if (!auxResult[0][j].equals(data_anterior)) {								
 												
-					if(mtoReport.getPeriod().equals("24 hours"))
+					if(vsReport.getPeriod().equals("24 hours"))
 						iterator = (int) dta.daysDifference(data_anterior, auxResult[0][j]);
 					   
 					else iterator = dta.daysDifference(data_anterior, auxResult[0][j], periodRange);	
@@ -505,48 +493,49 @@ public void CreateFields(String type) {
 							
 				data_anterior = auxResult[0][j];
 				
-				 if(mtoReport.getPeriod().equals("05 minutes"))	{
+				 if(vsReport.getPeriod().equals("05 minutes"))	{
 					 p = dta.index05Minutes(hr, minuto);
 					 p = p + pos;
 				 }
-				 else if(mtoReport.getPeriod().equals("06 minutes")) {	
+				 else if(vsReport.getPeriod().equals("06 minutes")) {	
 						 p = dta.index06Minutes(hr, minuto);
 						 p = p + pos;
 				 }
-				 else if(mtoReport.getPeriod().equals("10 minutes")) {
+				 else if(vsReport.getPeriod().equals("10 minutes")) {
 				    	 p = dta.index10Minutes(hr, minuto);
 				    	 p = p + pos;
 				 }
-				 else if(mtoReport.getPeriod().equals("15 minutes")) {	
+				 else if(vsReport.getPeriod().equals("15 minutes")) {	
 						 p = dta.index15Minutes(hr, minuto);
 				         p = p + pos;
 								
 				 }
-				 else if(mtoReport.getPeriod().equals("30 minutes")) {	
+				 else if(vsReport.getPeriod().equals("30 minutes")) {	
 						 p = dta.index30Minutes(hr, minuto);
 						 p = p + pos;
 				 }
-				 else if(mtoReport.getPeriod().equals("01 hour"))				
+				 else if(vsReport.getPeriod().equals("01 hour"))				
 					p = pos + hr;
 							
-				else if(mtoReport.getPeriod().equals("06 hours")) {
+				else if(vsReport.getPeriod().equals("06 hours")) {
 					
 					p = dta.index06Hours(hr);				
 					p = pos + p;
 					
 				}
 				
-				else if(mtoReport.getPeriod().equals("24 hours"))
+				else if(vsReport.getPeriod().equals("24 hours"))
 					     p = pos;
 				 
 					if(i > 1 )
 					    resultQuery[i][p] = auxResult[i][j];
 				 
 			  }
+			  
 			  //////////////////////////////////
 			  /////////////// YEAR REPORT 
 			  ////////////////////////////////
-			  else if(mtoReport.getPeriod().equals("year")) {	
+			  else if(vsReport.getPeriod().equals("year")) {	
 				  				  				  
 				      if((mes_inicial != null) && Integer.parseInt(mes_inicial) != Integer.parseInt(auxResult[0][j])) {
 							
@@ -568,10 +557,11 @@ public void CreateFields(String type) {
 							 resultQuery[i][p] = auxResult[i][j];	
 					   		
 					}
+			  
 			  //////////////////////////////////
 			  /////////////// MONTH REPORT 
 			  ////////////////////////////////
-			  else if(mtoReport.getPeriod().equals("month")){				
+			  else if(vsReport.getPeriod().equals("month")){				
 				  
 				    if((month_start_date != null) && Integer.parseInt(month_start_date) != Integer.parseInt(auxResult[0][j])) {
 				    							
@@ -593,17 +583,17 @@ public void CreateFields(String type) {
 			  /////////////// MONTH REPORT 
 			  ////////////////////////////////			    
 			  
-				   } // CASO NÃO EXISTA VALOR >>>>>>> PASSA	 
+				   } // CASO Nï¿½O EXISTA VALOR >>>>>>> PASSA	 
 			     }
 			   }	
 		
-				//SAÍDA PARA A TABELA
+				//SAï¿½DA PARA A TABELA
 				OutputResult(type);
 				
-				//SAÍDA DO EXCEL
+				//SAï¿½DA DO EXCEL
 				ExcelOutPut(type, model);
 
-				//BOTÃO DE LIMPAR 
+				//BOTï¿½O DE LIMPAR 
 				setClearBool(false);
 
 				//LINK DE DOWNLOAD DO EXCEL
@@ -618,7 +608,7 @@ public void CreateFields(String type) {
 			
 			//CASO CONTRARIO ENTRA AQUI
 		} else {
-			      message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"), localeMto.getStringKey("mto_message_records_not_found"));
+			      message.InfoMessage(localeVs.getStringKey("vs_message_records_not_found_title"), localeVs.getStringKey("vs_message_records_not_found"));
 		          CreateFields(type);  
 		          
 		          //EXECUTE JS
@@ -634,7 +624,7 @@ public void CreateFields(String type) {
 //SAIDA DE DADOS
 /////////////////////////////////      
 
-/////// FIELDS NUMBER - SAÍDA DE DADO
+/////// FIELDS NUMBER - SAï¿½DA DE DADO
 
 public Integer fieldsNumber(String type) {
 
@@ -645,13 +635,13 @@ public Integer fieldsNumber(String type) {
 
 int fields = 0;
 
-/**** CONTAGEM VEÍCULOS ****/		
+/**** CONTAGEM VEï¿½CULOS ****/		
 if(type.equals("1")) {    		
 	fields = length;		
 
 }
 
-/**** CONTAGEM VEÍCULOS ****/		
+/**** CONTAGEM VEï¿½CULOS ****/		
 if(type.equals("2")) {    
 	fields = length;   
 	
@@ -665,7 +655,7 @@ if(type.equals("3")) {
 	return fields;    	 
 }
 
- /////// FIELDS NUMBER - SAÍDA DE DADO 
+ /////// FIELDS NUMBER - SAï¿½DA DE DADO 
 
 /**********************************************************************************************************/
    
@@ -675,7 +665,7 @@ if(type.equals("3")) {
 
    /**
     * @author Wellington 10/09/2020
-    * Método para criar uma Query a ser executada  
+    * Mï¿½todo para criar uma Query a ser executada  
     * @param models - Objeto do tipo QuerieReportsModels
     * @param mainQuery - Query principal a ser adicionada
     * @return
@@ -683,29 +673,31 @@ if(type.equals("3")) {
    public String BuildMainQuery(QueriesReportsModels models, String mainQuery, String index) {    	 
 
 	   String query = null;
-	   query = models.BuildQueryIndexType2(models.QueryDateTimeHeader(mtoReport.getPeriod()), mainQuery, models.QueryFromMtoTable(mtoReport.getPeriod(), table), models.useIndex(index),
-				models.innerJoinMto(), models.whereClauseWeatherEquipDate(mtoReport.getEquipment(), start, end), models.QueryWeatherGroupAndOrder(mtoReport.getPeriod()));
+	   query = models.BuildQueryIndexType2(models.QueryDateTimeHeader(vsReport.getPeriod()), mainQuery, models.QueryFromMeteoTable(vsReport.getPeriod(), table), models.useIndex(index),
+				models.innerJoinSv(), models.whereClauseWeatherEquipDate(vsReport.getEquipment(), start, end), models.QueryWeatherGroupAndOrder(vsReport.getPeriod()));
+	   
+	   System.out.println(query);
 
 	   return query;
    }
   
    /**
-    * Método que retorna um query específica de acordo com tipo
-    * @param type - Tipo de específico do relatório
+    * Mï¿½todo que retorna um query especï¿½fica de acordo com tipo
+    * @param type - Tipo de especï¿½fico do relatï¿½rio
     * @param models - Objeto do tipo QueriesReportsModels
     * @param satModels - Objeto do tipo SatQueriesModels
     * @return
    * @throws Exception 
     */
-   public String SelectQueryType(String type, QueriesReportsModels models, MtoQueriesModels mtoModels) throws Exception {   
+   public String SelectQueryType(String type, QueriesReportsModels models, MeteoQueriesModels mtoModels) throws Exception {   
   	
 	    String query = null;
 		
 	     switch(type) {
 	     
-	     case "1": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "2": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "3": query = BuildMainQuery(models, mtoModels.WeatherMainQuery(mtoReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "1": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "2": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "3": query = BuildMainQuery(models, mtoModels.SvMainQuery(vsReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
 	     case "4": ; break;	   
 	     default: query = null; break;
 	       	    	     
@@ -718,11 +710,11 @@ if(type.equals("3")) {
    
   public void OutputResult(String type) {  
 	  
-	//ACESSAR DADOS DO RELATÓRIOF
+	//ACESSAR DADOS DO RELATï¿½RIOF
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 
-		//FIELDS EXTERNOS ARMAZENADOS NA REQUISIÇÃO
+		//FIELDS EXTERNOS ARMAZENADOS NA REQUISIï¿½ï¿½O
 		field = (String[]) externalContext.getSessionMap().get("fields");
 		fieldObjectValues =  (String[]) externalContext.getSessionMap().get("fieldsObject");
    
@@ -751,40 +743,8 @@ if(type.equals("3")) {
 	   
 	   }
 			
-    }
-	   	   
-   
-   public void ReorderTableHeaderPeriod() {
-   	 
-  	 if(mtoReport.getPeriod().equals("24 hours")) {
-  		 
-  		 field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-			localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-			localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-			localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-			localeLabel.getStringKey("mto_reports_general_visibility")};
-			
-			
-			fieldObjectValues = new String[] { "date", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
-			  		 
-  		 
-  	 } else {
-  		 
-  		 field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
-			
-			
-			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
-
-  	      }
-      
-      }
-      
+    }  	   
+     
    public void ExcelOutPut(String type, ExcelModels model) throws IOException, Exception {
    	  
  	  FacesContext facesContext = FacesContext.getCurrentInstance();		
@@ -811,9 +771,9 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_year"); 
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -829,8 +789,8 @@ if(type.equals("3")) {
 		  model.StandardStyles();
 		  model.StandardBorders();
 		      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
@@ -841,9 +801,9 @@ if(type.equals("3")) {
  		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
  		   		 
- 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
+ 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
  		  excel_title = localeLabel.getStringKey("excel_report_weather_title_month");
  		  
  		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -859,8 +819,8 @@ if(type.equals("3")) {
  		  model.StandardStyles();
  		  model.StandardBorders();
  		      		      		    		    		    		  
- 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
- 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+ 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
+ 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
  				  col, colStartDate, colEndDate, resultQuery);
  		  
  	    }
@@ -870,9 +830,9 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(mtoReport.getEquipment(), module);    		 
+		  info = dao.EquipReportInfo(vsReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(mtoReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(vsReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_periods");
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:I4", "J1:L4"};
@@ -880,16 +840,16 @@ if(type.equals("3")) {
 		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000}; 		   
 		   colStartDate = 9; colEndDate = 11;
 		 		  
-		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
-		      		      		  
-		  ReorderTableHeaderPeriod();	
-	
+		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";	
+		  
+		  System.out.println(info.getNome());
+		
 		  model.StandardFonts();
 		  model.StandardStyles();
 		  model.StandardBorders();
 		      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, vsReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, vsReport.getStartDate(), vsReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
@@ -939,7 +899,7 @@ if(type.equals("3")) {
   		ExternalContext externalContext = facesContext.getExternalContext();
 
   		//Reset object => call on click reset button
-  		mtoReport = new MtoReports();
+  		vsReport = new VsReports();
 
   		//System.out.println("reset");
   		
@@ -959,15 +919,9 @@ if(type.equals("3")) {
   		
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
- 		      resultList.add(new MtoReports.Builder().month(resultQuery[0][k]) 
-                .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
-                .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
-                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
-                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
-                .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
-                .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
-                .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));  		 
+ 		      resultList.add(new VsReports.Builder().month(resultQuery[0][k]) 
+ 		    		   .EnvTemperature(resultQuery[1][k] == null? 0.0 : Double.parseDouble(resultQuery[1][k]))             
+ 		               .visibility(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])));
  		       		       		    	    			    				 
  		 }  		   		 
   		}
@@ -976,15 +930,9 @@ if(type.equals("3")) {
   			
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
-  	 		      resultList.add(new MtoReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
-                    .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
-                    .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
-	                .temperature(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
-	                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
-                    .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
-                    .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
-                    .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
+  	 		      resultList.add(new VsReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
+  	 		    	 .EnvTemperature(resultQuery[1][k] == null? 0.0 : Double.parseDouble(resultQuery[1][k]))             
+  	                 .visibility(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k])));
   	 		    		    			    				 
   	 		 }
   			
@@ -994,16 +942,10 @@ if(type.equals("3")) {
   			
   		  for(int k = 0; k < getNumRegisters(); k++) {      
 				 
- 		      resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
-                .dateTime(resultQuery[1][k]) 
-                .atmPressure(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  
-                .relative_humidity(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
-                .temperature(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
-                .windDir(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
-                .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
-                .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-                .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
-                .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
+ 		      resultList.add(new VsReports.Builder().date(resultQuery[0][k]) 
+                .dateTime(resultQuery[1][k])               
+                .EnvTemperature(resultQuery[2][k] == null? 0.0 : Double.parseDouble(resultQuery[2][k]))            
+                .visibility(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k])));
  		    		    			    				 
  		 }
 		    	
