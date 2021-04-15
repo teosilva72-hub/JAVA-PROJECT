@@ -8,6 +8,7 @@ $(function() {
 		let map = $(this)
 		ScrollZoom(map)
 		mapMove(map)
+		
 	})
 
 	$(".overflow").css("height", $(this).height())
@@ -29,6 +30,7 @@ $(function() {
 	})
 
 	initPMV();
+	statusColors();
 })
 
 function ScrollZoom(container) {
@@ -36,7 +38,7 @@ function ScrollZoom(container) {
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
 	let pos = zoom_point = { x: 0, y: 0 }
-	let scale_diff = 1
+	let scale_diff = scale_prev = 1
 
 	target.css('transform-origin', '0 0')
 	container.on("mousewheel DOMMouseScroll", scrolled)
@@ -45,7 +47,9 @@ function ScrollZoom(container) {
 		let offset = target.offset()
 
 		zoom_point.x = e.pageX - offset.left
-		zoom_point.y = e.pageY - offset.top
+		zoom_point.y = e.pageY / (scale * 1.6) - offset.top
+
+		console.log("isso " + scale)
 
 		pos = {
 			x: zoom_point.x / (target.width() * scale),
@@ -61,7 +65,7 @@ function ScrollZoom(container) {
 		delta = Math.max(-1, Math.min(1, delta)) // cap the delta to [-1,1] for cross browser consistency
 
 		if (scale != max_scale || delta == -1) {
-			scale_diff = scale
+			scale_diff = scale_prev = scale
 
 			// apply zoom
 			scale += delta * factor * scale
@@ -69,27 +73,31 @@ function ScrollZoom(container) {
 			scale_diff = scale / scale_diff
 			target.attr('scale', scale)
 
+
 			update()
 			resizeEquip(container)
 		}
+
+
 	}
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
 
 		container
-			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
-			.scrollLeft(pos.x * container[0].scrollWidth - container.width() / 2)
+			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
+			.scrollLeft(pos.x * container[0].scrollWidth - zoom_point.x / scale_prev)
 
 		showGenericName();
 
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
 				{
 					top: Number(equip.css('top').replace('px', '')) * scale_diff,
 					left: Number(equip.css('left').replace('px', '')) * scale_diff
+
 				}
 			)
 		})
@@ -258,17 +266,19 @@ function zoomOut(id) {
 };
 
 function setPosition(posX, posY) {
-	if (scale == 1) {
+	
 		const element = $('section.overflow')
-	
-		for (let idx = 0; idx < 2; idx++) {
+		zoomIn(element);
+		setTimeout(() => {
+			zoomOut(element);
+			for (let idx = 0; idx < 2; idx++) {
 			zoomIn(element)
-		}
-	
-		element
+			element
 			.scrollLeft(posX * element[0].scrollWidth)
 			.scrollTop(posY * element[0].scrollHeight)
-	} 
+		}
+		}, 1) 
+
 }
 
 //Reload on Cancel Position

@@ -34,6 +34,7 @@ const init = () => {
 		setInfoEquip();
 		showGenericName();
 		initPMV();
+		statusColors();
 	})
 }
 

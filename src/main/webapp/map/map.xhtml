@@ -152,11 +152,13 @@
 				      $('#sos17').addClass('call-box-action').find('.equip-status').css('background-color', 'blue');
 				      
 				    setTimeout(() => {
-				    	 $('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
+				      $('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
 				    }, 
 				     5000
 				    )				   
 				  }
+				   
+				   
 				   
 				   </script>
 
@@ -298,13 +300,13 @@
 					<span><i class="fas fa-minus-square fa-1x"></i></span>
 				</button>
 				<button type="button" id="fulldiv1" class="zoomFull" data-toggle="tooltip" data-placement="bottom"
-					title="Fullscreen View">
+					title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
 			
 			<!-- Imagem 2 -->
-			<div class="squarebox1" id="divs1">
+			<div class="squarebox" id="divs1">
 				<section id="zoomDivs2">
 					<iframe class="grid-img" id="frame2" src="http://localhost:80/map/mapView.xhtml" />
 				</section>
@@ -318,13 +320,13 @@
 				</button>
 				<button type="button" id="fulldiv2" class="zoomFull"
 					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte2.png" data-toggle="tooltip"
-					data-placement="bottom" title="Fullscreen View">
+					data-placement="bottom" title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
 			
 			<!-- Imagem 3 -->
-			<div class="squarebox2" id="divs2">
+			<div class="squarebox" id="divs2">
 				<section id="zoomDivs3">
 					<iframe class="grid-img" id="frame3" src="http://localhost:80/map/mapView.xhtml" />
 				</section>
@@ -338,7 +340,7 @@
 				</button>
 				<button type="button" id="fulldiv3" class="zoomFull"
 					target="/resources/images/map/tuxpan/mapa_completo_tuxpan_parte3.png" data-toggle="tooltip"
-					data-placement="bottom" title="Fullscreen View">
+					data-placement="bottom" title="Reset View">
 					<span> <i class="fas fa-expand-arrows-alt"></i></span>
 				</button>
 			</div>
@@ -1629,7 +1631,6 @@
 					}
 					
 				});
-
 			//SAT LANES INPUTS END
 			
 				// MODAL EQUIPMENT SIZE
@@ -1647,8 +1648,48 @@
 			// MODAL EQUIPMENT SIZE END
 			
 			  $('#km').mask('000+000'); 	// KM MASK	
-			  $('#km-edit').mask('000+000'); 	// KM MASK				
-						  
+			  $('#km-edit').mask('000+000'); 	// KM MASK
+			  
+			  function statusColors(){
+			      $('#sos2').find('.equip-status').css('background-color', 'orange');
+			      $('#sos7').find('.equip-status').css('background-color', 'red');
+			      $('#sos14').find('.equip-status').css('background-color', 'orange');
+			      $('#sos16').find('.equip-status').css('background-color', 'red');
+			      $('#sos22').find('.equip-status').css('background-color', 'orange');
+			      $('#sos25').find('.equip-status').css('background-color', 'orange');
+			      $('#sos33').find('.equip-status').css('background-color', 'red');
+			      $('#sos37').find('.equip-status').css('background-color', 'orange');
+			      $('#sos40').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#colas2').find('.equip-status').css('background-color', 'red');
+			      $('#colas3').find('.equip-status').css('background-color', 'orange');
+			      $('#colas5').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
+			      
+			      $('#dai1').find('.equip-status').css('background-color', 'red');
+			      $('#dai5').find('.equip-status').css('background-color', 'orange');
+			      $('#dai6').find('.equip-status').css('background-color', 'orange');
+			      $('#dai9').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#lpr4').find('.equip-status').css('background-color', 'red');
+			      $('#lpr7').find('.equip-status').css('background-color', 'red');
+			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#wim4').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#speed5').find('.equip-status').css('background-color', 'orange');
+			      $('#speed6').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#dms1 .tableStyle').addClass('on')
+			      $('#dms3 .tableStyle').addClass('on')
+			      $('#dms4 .tableStyle').addClass('on')
+			      $('#dms5 .tableStyle').addClass('on')
+			      $('#dms6 .tableStyle').addClass('on')	
+			  }
+			 	  
 		</script>
 	</ui:define>
 

@@ -34,6 +34,7 @@ const init = () => {
 		setInfoEquip();
 		showGenericName();
 		initPMV();
+		statusColors();	
 	})
 }
 
@@ -71,12 +72,30 @@ const setInfoEquip = () => {
 }
 
 $(function () {
+	var area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
+
 	$('.plaque').each(function() {
 		let plaque = $(this)
 
 		plaque.attr('posX', plaque.css('left').replace("px", ""))
 		plaque.attr('posY', plaque.css('top').replace("px", ""))
 	})
+
+	$('#fulldiv1').on('click', function() {
+		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
+	})
+
+	$('#fulldiv2').on('click', function() {
+		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
+	})
+
+	$('#fulldiv3').on('click', function() {
+		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
+	})
+
+
+	$('#mapDivide').css('height', area)
+		.find('.grid-img').css('height', area / 3)
 
 	init();
 
@@ -85,9 +104,9 @@ $(function () {
 	}, 5000);
 
 	$('#divide').on('click', () => {
-		$('#frame1')[0].contentWindow.setPosition(0, 0.5)
-		$('#frame2')[0].contentWindow.setPosition(0.3, 0.5)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.1)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
+		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
 
 	})
 
@@ -180,8 +199,14 @@ $(function () {
 	//Scroll Zoom Map Full END
 
 	$(".overflow").css("height", $(this).height() - 125)
+	$('#mapDivide').css('height', area)
+		.find('.grid-img').css('height', area / 3)
 	$(window).resize(function () {
+		area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
+
 		$(".overflow").css("height", $(this).height() - 125)
+		$('#mapDivide').css('height', area)
+			.find('.grid-img').css('height', area / 3)
 	})
 
 	//FULLSCREEN
@@ -651,31 +676,6 @@ function dragEquip() {
 //Drag/Drop Element END
 
 
-// Map div Iframe Reload
-$(document).ready(function () {
-	$('#fulldiv1').click(function () {
-		$('#frame1').attr('src', $('#frame1').attr('src'));
-		return false;
-	});
-});
-
-$(document).ready(function () {
-	$('#fulldiv2').click(function () {
-		$('#frame2').attr('src', $('#frame2').attr('src'));
-		return false;
-	});
-});
-
-$(document).ready(function () {
-	$('#fulldiv3').click(function () {
-		$('#frame3').attr('src', $('#frame3').attr('src'));
-		return false;
-	});
-});
-
-
-
-// Map div Iframe Reload END
 
 //Delete Modal Name
 function DelName() {

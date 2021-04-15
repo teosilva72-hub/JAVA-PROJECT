@@ -142,8 +142,7 @@
 
        <!--  ******************************************************************************************************* -->
        
-       </div>     
-       
+       </div>    
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
@@ -219,7 +218,10 @@
 		<section class="overflow" scroll-zoom="0.5" max-scale="5" id="content" >			
 		
             <!-- START SECTION -->
-			<div id="zoomtext" scale="1" class="section">				
+			<div id="zoomtext" scale="1" class="section">	
+				<div class="boxs"></div>			
+				<div class="boxs1"></div>	
+				<div class="boxs2"></div>	
 				<h:graphicImage class="grab-map" value="#{loginAccount.linearMapUI}" /> <!-- MAP FRONT IMAGE -->
 			</div>
 																
@@ -1423,7 +1425,49 @@
 			
 			  $('#km').mask('000+000'); 	// KM MASK	
 			  $('#km-edit').mask('000+000'); 	// KM MASK				
-						  
+			
+			  
+			  function statusColors(){
+			      $('#sos2').find('.equip-status').css('background-color', 'orange');
+			      $('#sos7').find('.equip-status').css('background-color', 'red');
+			      $('#sos14').find('.equip-status').css('background-color', 'orange');
+			      $('#sos16').find('.equip-status').css('background-color', 'red');
+			      $('#sos22').find('.equip-status').css('background-color', 'orange');
+			      $('#sos25').find('.equip-status').css('background-color', 'orange');
+			      $('#sos33').find('.equip-status').css('background-color', 'red');
+			      $('#sos37').find('.equip-status').css('background-color', 'orange');
+			      $('#sos40').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#colas2').find('.equip-status').css('background-color', 'red');
+			      $('#colas3').find('.equip-status').css('background-color', 'orange');
+			      $('#colas5').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
+			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
+			      
+			      $('#dai1').find('.equip-status').css('background-color', 'red');
+			      $('#dai5').find('.equip-status').css('background-color', 'orange');
+			      $('#dai6').find('.equip-status').css('background-color', 'orange');
+			      $('#dai9').find('.equip-status').css('background-color', 'red');
+			      
+			      $('#lpr4').find('.equip-status').css('background-color', 'red');
+			      $('#lpr7').find('.equip-status').css('background-color', 'red');
+			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#wim4').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#speed5').find('.equip-status').css('background-color', 'orange');
+			      $('#speed6').find('.equip-status').css('background-color', 'orange');
+			      
+			      $('#dms1 .tableStyle').addClass('on')
+			      $('#dms3 .tableStyle').addClass('on')
+			      $('#dms4 .tableStyle').addClass('on')
+			      $('#dms5 .tableStyle').addClass('on')
+			      $('#dms6 .tableStyle').addClass('on')	
+			  }
+			 	  
+			  
 		</script>
 	</ui:define>
 
