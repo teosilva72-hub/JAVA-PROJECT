@@ -70,7 +70,7 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][index].setCellValue(values[auxCol][index]); 
 					            	
-					            	else if(values[auxCol][lin] != null && values[auxCol][lin].contains("."))
+					            	else if(values[auxCol][index] != null && values[auxCol][index].contains("."))
 					            		cells[col][index].setCellValue(values[auxCol][index] == null ? 0 : Double.parseDouble(values[auxCol][index]));
 					            	
 					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));

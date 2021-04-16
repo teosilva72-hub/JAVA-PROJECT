@@ -38,8 +38,8 @@ public class MeteoQueriesModels {
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.wind_direction, NULL)),0),0) AS wind_direction, " +			 
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.precipitation_rate, NULL)),0),0) AS precipitation_rate, " +
 			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.precipitation_rate_hour, NULL)),0),0) AS preciptation_rate_hour, " +
-			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.visibility, NULL)),0),0) AS visibility " + 
-			    "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', FORMAT((st.road_temperature), 2), NULL)) AS DECIMAL(3,1)),0) AS temperatura ";
+			    "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.visibility, NULL)),0),0) AS visibility, " + 
+			    "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', FORMAT((st.road_temperature), 2), NULL)) AS DECIMAL(3,1)),0) AS temperatura_area ";
 		
 		return query;
 	

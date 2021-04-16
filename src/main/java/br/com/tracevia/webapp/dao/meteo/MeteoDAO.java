@@ -16,6 +16,40 @@ public class MeteoDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
+	
+	public String MtoPanelType(String station_id) throws Exception {
+		
+		String type = "";
+						
+		   //QUERY
+		   String select = "SELECT type FROM mto_equipment WHERE equip_id = ? ";
+				
+		    try {
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);				
+			ps.setString(1, station_id);		
+						
+			rs = ps.executeQuery();
+						
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+										
+					type = rs.getString(1);
+				
+				}				
+			 }
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+				
+		return type;
+		
+	}
+	
 	public MtoPanel MtoPanelInformation(String station_id) throws Exception {
 				
 		MtoPanel panel = new MtoPanel();
@@ -97,6 +131,8 @@ public class MeteoDAO {
 		return panel;
 		
 	}
+	
+	
 	
 	
 }

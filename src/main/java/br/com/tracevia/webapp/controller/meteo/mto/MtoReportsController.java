@@ -40,6 +40,7 @@ public class MtoReportsController {
 	private List<SelectItem> months;
 	private List<SelectItem> years;
 	private List<SelectItem> periods;
+	private List<SelectItem> types;
 		
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
@@ -57,9 +58,9 @@ public class MtoReportsController {
 	private static int fieldsNumber;	
 	
 	private boolean clearBool, excelBool;
-	
+		
 	//Dates
-	String start, end;
+	String start, end, mtoType;
 		
      String[] field, fieldObjectValues;
 	
@@ -102,7 +103,11 @@ public class MtoReportsController {
 	public List<SelectItem> getPeriodsFlow() {
 		return periods;
 	}	
-	
+		
+	public List<SelectItem> getTypes() {
+		return types;
+	}
+
 	public static int getNumRegisters() {
 		return numRegisters;
 	}
@@ -200,6 +205,10 @@ public class MtoReportsController {
 		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("mto_reports_select_periods_one_hour")));
 		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("mto_reports_select_periods_six_hours")));
 		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("mto_reports_select_periods_twenty_four_hours")));
+				
+		types = new ArrayList<SelectItem>();
+		types.add(new SelectItem("WS", "WS"));
+		types.add(new SelectItem("RS", "RS"));
 		
 		module = "mto";
 		
@@ -249,43 +258,44 @@ public void CreateFields(String type) {
 	   FacesContext facesContext = FacesContext.getCurrentInstance();
 	   
 	   if(type.equals("1")) {
-		   
+			  
 			field = new String[] {localeLabel.getStringKey("mto_reports_year_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
 					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
 					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
 					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
+					localeLabel.getStringKey("mto_reports_general_visibility"), localeLabel.getStringKey("mto_reports_general_road_temperature") };
 						
 			fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"};
-	   }
-	   
-	   if(type.equals("2")) {
-		   
-		   field = new String[] {localeLabel.getStringKey("mto_reports_general_day_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
+					"preciptation_rate", "preciptation_rate_hour", "visibility", "road_temperature"};
 			
-		  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"};
-			
-		   }
-	   
-	   if(type.equals("3")) {
+		  }
+		  
+		  if(type.equals("2")) {
 			   
-		   field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
-					localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
-					localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
-					localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
-					localeLabel.getStringKey("mto_reports_general_visibility")};
-			
-			
-			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
-			
-	      }	   
+			   field = new String[] {localeLabel.getStringKey("mto_reports_general_day_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
+						localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
+						localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
+						localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
+						localeLabel.getStringKey("mto_reports_general_visibility"), localeLabel.getStringKey("mto_reports_general_road_temperature")};
+				
+			  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"preciptation_rate", "preciptation_rate_hour", "visibility", "road_temperature" };
+				
+			   }
+		   
+		   if(type.equals("3")) {
+				   
+			   field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
+						localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
+						localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
+						localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
+						localeLabel.getStringKey("mto_reports_general_visibility"), localeLabel.getStringKey("mto_reports_general_road_temperature")};
+				
+				
+				fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"preciptation_rate", "preciptation_rate_hour", "visibility", "road_temperature" }; 
+				
+		      }			 
 	       
 	        //Finally Draw Table
 	        drawTable(field, fieldObjectValues);	
@@ -305,7 +315,8 @@ public void CreateFields(String type) {
 		    QueriesReportsModels models = new QueriesReportsModels();
 		    MeteoQueriesModels mtoModels = new MeteoQueriesModels();	    
 		    DateTimeApplication dta = new DateTimeApplication();
-		    
+		    EquipmentsDAO equipDao = new EquipmentsDAO();	
+			    
 			GlobalReportsDAO dao = new GlobalReportsDAO();	
 			
 			MessagesUtil message = new MessagesUtil(); //Display messages
@@ -381,6 +392,19 @@ public void CreateFields(String type) {
 		 			periodRange = dta.periodsRange(mtoReport.getPeriod());
 		 		    	    	    	   
 		    	   }
+		    	 
+		    	
+		     // CHECK MTO TYPE	 
+		      mtoType = equipDao.EquipmentSelectMTOType(mtoReport.getEquipment());
+		     
+		      System.out.println(mtoType);
+		      
+		  	   //N�MERO DE CAMPOS PARA A SA�DA DE DADOS
+			   //LEVA EM CONSIDERA��O N�MERO DE CAMPOS DA QUERY					    	 
+		      if(!mtoType.equals("RS"))
+		    		setFieldsNumber(fieldsNumberWS(type));	 	
+		      
+		      else 	setFieldsNumber(fieldsNumber(type));
 		    		   				    
 			//Chamar Procedure de acordo com per�odo selecionado
 			//procedure = models.SelectProcedureByPeriod(mtoReport.getPeriod());	
@@ -393,10 +417,8 @@ public void CreateFields(String type) {
 			
 			start = dta.DateTimeToStringIni(startDate); 
 			end = dta.DateTimeToStringFim(endDate); 
-			
-			//N�MERO DE CAMPOS PARA A SA�DA DE DADOS
-			//LEVA EM CONSIDERA��O N�MERO DE CAMPOS DA QUERY
-			setFieldsNumber(fieldsNumber(type));
+						
+			System.out.println(getFieldsNumber());
 			
 			resultQuery = new String[getFieldsNumber()][getNumRegisters()];
 			
@@ -647,14 +669,12 @@ int fields = 0;
 
 /**** CONTAGEM VE�CULOS ****/		
 if(type.equals("1")) {    		
-	fields = length;		
-
+	fields = length;	
 }
 
 /**** CONTAGEM VE�CULOS ****/		
 if(type.equals("2")) {    
-	fields = length;   
-	
+	fields = length; 
 }
 
 /**** FLUXO MENSAL  ****/
@@ -668,6 +688,37 @@ if(type.equals("3")) {
  /////// FIELDS NUMBER - SA�DA DE DADO 
 
 /**********************************************************************************************************/
+
+/////// FIELDS NUMBER RS - SA�DA DE DADO
+
+public Integer fieldsNumberWS(String type) {
+
+int fields = 0;
+
+/**** CONTAGEM VE�CULOS ****/		
+if(type.equals("1")) {    		
+   fields = 9;
+	fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+			"preciptation_rate", "preciptation_rate_hour", "visibility"};
+}
+
+if(type.equals("2")) {    		
+	   fields = 9;
+	   fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+				"preciptation_rate", "preciptation_rate_hour", "visibility" };
+	}
+
+/**** FLUXO MENSAL  ****/
+if(type.equals("3")) {    		
+	fields = 10;  
+	fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+			"preciptation_rate", "preciptation_rate_hour", "visibility" }; 
+}
+
+return fields;    	 
+}
+
+/////// FIELDS NUMBER - SA�DA DE DADO 
    
    /* *********** */
    /* *** AUX *** */
@@ -730,13 +781,20 @@ if(type.equals("3")) {
   		   		       			 
   		   yearBuilder();
   		   
+  		  if(!mtoType.equals("RS")) 
+  		     field = ReorderTableDependMtoType(type);
+  		  		   
   		// DRAW TABLE -- BUILD HEADER
   		drawTable(field, fieldObjectValues);
+  		  		
 	   }
 	   
 	   if(type.equals("2")) { 
       			
 		   monthBuilder();
+		   
+		   if(!mtoType.equals("RS")) 
+			   field = ReorderTableDependMtoType(type);
 		   
 		// DRAW TABLE -- BUILD HEADER
 	  	 drawTable(field, fieldObjectValues);
@@ -745,6 +803,9 @@ if(type.equals("3")) {
 	   if(type.equals("3")) {
 		   			
 		 periodBuilder();
+		 
+		 if(!mtoType.equals("RS")) 
+			 field = ReorderTableDependMtoType(type);
 		   
 		// DRAW TABLE -- BUILD HEADER
 	  	 drawTable(field, fieldObjectValues);
@@ -787,17 +848,15 @@ if(type.equals("3")) {
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
 		  		     		  
-		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000}; 		   
+		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000, 4000}; 		   
 		   colStartDate = 8; colEndDate = 9;
 		 		  
 		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
-		      		      		  
-		  CreateFields("1");		
-	
+		      		     		 	
 		  model.StandardFonts();
 		  model.StandardStyles();
 		  model.StandardBorders();
-		      		      		    		    		    		  
+		  		  			      		      		    		    		    		  
 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
@@ -817,13 +876,11 @@ if(type.equals("3")) {
  		  
  		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
  		  		     		  
- 		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000}; 		   
+ 		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000, 4000}; 		   
  		   colStartDate = 8; colEndDate = 9;
  		 		  
  		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
- 		      		      		  
- 		  CreateFields("2");		
- 	
+ 	 	
  		  model.StandardFonts();
  		  model.StandardStyles();
  		  model.StandardBorders();
@@ -846,7 +903,7 @@ if(type.equals("3")) {
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:I4", "J1:L4"};
 		  		     		  
-		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000}; 		   
+		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000}; 		   
 		   colStartDate = 9; colEndDate = 11;
 		 		  
 		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
@@ -920,9 +977,58 @@ if(type.equals("3")) {
   		CreateFields(type);
 
   	}
+  	
+	//REORDENAR TABLE FRONT END - CONTAGEM VECULOS
+	public String[] ReorderTableDependMtoType(String type) {
+		
+		  if(type.equals("1")) {
+			   
+				field = new String[] {localeLabel.getStringKey("mto_reports_year_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
+						localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
+						localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
+						localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
+						localeLabel.getStringKey("mto_reports_general_visibility")};
+							
+				fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"preciptation_rate", "preciptation_rate_hour", "visibility"};
+		   }
+		   
+		   if(type.equals("2")) {
+			   
+			   field = new String[] {localeLabel.getStringKey("mto_reports_general_day_month"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
+						localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
+						localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
+						localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
+						localeLabel.getStringKey("mto_reports_general_visibility")};
+				
+			  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"preciptation_rate", "preciptation_rate_hour", "visibility"};
+				
+			   }
+		   
+		   if(type.equals("3")) {
+				   
+			   field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"), localeLabel.getStringKey("mto_reports_general_atmPressure"),
+						localeLabel.getStringKey("mto_reports_general_relative_humidity"), localeLabel.getStringKey("mto_reports_general_temperature"),
+						localeLabel.getStringKey("mto_reports_general_wind_direction"), localeLabel.getStringKey("mto_reports_general_wind_speed"),
+						localeLabel.getStringKey("mto_reports_general_preciptation_rate"), localeLabel.getStringKey("mto_reports_general_preciptation_rate_hour"),
+						localeLabel.getStringKey("mto_reports_general_visibility")};
+				
+				
+				fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"preciptation_rate", "preciptation_rate_hour", "visibility"}; 
+				
+		      }	
+		   
+				
+		   return field;
+		 
+	    }	  	
   	   
   		 //CONSTRUCTORS
   		public void yearBuilder() {
+  			
+  		if(mtoType.equals("RS")) {
   		
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
@@ -934,12 +1040,32 @@ if(type.equals("3")) {
                 .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
                 .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
                 .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));  		 
+                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+                .roadTemperature(resultQuery[9][k] == null? 0.0 : Double.parseDouble(resultQuery[9][k])));
  		       		       		    	    			    				 
- 		 }  		   		 
+ 		 } 
+  		  		 
+  			} else {
+  				
+  				 for(int k = 0; k < getNumRegisters(); k++) {      
+					 
+  		 		      resultList.add(new MtoReports.Builder().month(resultQuery[0][k]) 
+  		                .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
+  		                .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+  		                .temperature(resultQuery[3][k] == null? 0.0 : Double.parseDouble(resultQuery[3][k]))
+  		                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+  		                .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+  		                .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+  		                .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+  		                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
+  		 		       		       		    	    			    				 
+  		 		 }   				 				
+  			}
   		}
   		
   		public void monthBuilder() {
+  			
+  			if(mtoType.equals("RS")) {
   			
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
@@ -951,13 +1077,34 @@ if(type.equals("3")) {
                     .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
                     .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
                     .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
-                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
+                    .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+                    .roadTemperature(resultQuery[9][k] == null? 0.0 : Double.parseDouble(resultQuery[9][k])));
   	 		    		    			    				 
   	 		 }
+  			 
+  			} else {
+  				
+  				 for(int k = 0; k < getNumRegisters(); k++) {      
+					 
+  					resultList.add(new MtoReports.Builder().dayOfMonth(resultQuery[0][k] == null? 0 : Integer.parseInt(resultQuery[0][k])) 
+ 		                .atmPressure(resultQuery[1][k] == null? 0 : Integer.parseInt(resultQuery[1][k]))  
+ 		                .relative_humidity(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))
+ 		                .temperature(resultQuery[3][k] == null? 0.0 : Double.parseDouble(resultQuery[3][k]))
+ 		                .windDir(resultQuery[4][k] == null? 0 : Integer.parseInt(resultQuery[4][k]))
+ 		                .windSpeed(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+ 		                .preciptationRate(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+ 		                .preciptationRateHour(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+ 		                .visibility(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k])));
+ 		 		       		       		    	    			    				 
+ 		 		 }   		
+  				
+  			}
   			
   		}
   		
   		public void periodBuilder() {
+  			
+  			if(mtoType.equals("RS")) {
   			
   		  for(int k = 0; k < getNumRegisters(); k++) { 
   							 
@@ -970,10 +1117,30 @@ if(type.equals("3")) {
                 .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
                 .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
                 .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
-                .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
+                .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k]))
+                .roadTemperature(resultQuery[10][k] == null? 0.0 : Double.parseDouble(resultQuery[10][k])));
  		    		    			    				 
  		 }
+  		  
+  		} else {
+  				
+  			 for(int k = 0; k < getNumRegisters(); k++) {   
+  				 
+  			     resultList.add(new MtoReports.Builder().date(resultQuery[0][k]) 
+  		                .dateTime(resultQuery[1][k]) 
+  		                .atmPressure(resultQuery[2][k] == null? 0 : Integer.parseInt(resultQuery[2][k]))  
+  		                .relative_humidity(resultQuery[3][k] == null? 0 : Integer.parseInt(resultQuery[3][k]))
+  		                .temperature(resultQuery[4][k] == null? 0.0 : Double.parseDouble(resultQuery[4][k]))
+  		                .windDir(resultQuery[5][k] == null? 0 : Integer.parseInt(resultQuery[5][k]))
+  		                .windSpeed(resultQuery[6][k] == null? 0 : Integer.parseInt(resultQuery[6][k]))
+  		                .preciptationRate(resultQuery[7][k] == null? 0 : Integer.parseInt(resultQuery[7][k]))
+  		                .preciptationRateHour(resultQuery[8][k] == null? 0 : Integer.parseInt(resultQuery[8][k]))
+  		                .visibility(resultQuery[9][k] == null? 0 : Integer.parseInt(resultQuery[9][k])));
+	 		       		       		    	    			    				 
+	 		 }   	
+  				
+  	      }
 		    	
-   }		   
+     }		   
    
-   }
+  }

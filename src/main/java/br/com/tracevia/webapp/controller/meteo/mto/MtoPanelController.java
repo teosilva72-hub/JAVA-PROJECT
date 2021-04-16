@@ -32,7 +32,7 @@ public class MtoPanelController {
 	EquipmentsDAO dao;
 	MeteoDAO mtoDao;	
 	
-	private String station, station_name;
+	private String station, station_name, type;
 			
 	public String getStation() {
 		return station;
@@ -61,7 +61,15 @@ public class MtoPanelController {
 	public List<SelectItem> getEquipments() {
 		return equipments;
 	}
+	
+	public String getType() {
+		return type;
+	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+		
 	@PostConstruct
 	public void initialize() {
 		
@@ -98,8 +106,7 @@ public class MtoPanelController {
 		//Initialize with first register
 		station = String.valueOf(listMto.get(0).getEquip_id());
 		
-		station_name = listMto.get(0).getNome();
-		
+		station_name = listMto.get(0).getNome();		
 	 
 		InitializePanelValues();  //Initialize Panel Values
 		
@@ -115,6 +122,13 @@ public class MtoPanelController {
 			message = new MessagesUtil();
 			mtoDao = new MeteoDAO();
 			panel = new MtoPanel();
+			
+			type = mtoDao.MtoPanelType(station);
+					
+			if(!type.equals("RS"))
+			  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'none')");
+			
+			else  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'block')");
 					
 			panel = mtoDao.MtoPanelInformation(station);
 														
@@ -141,7 +155,15 @@ public class MtoPanelController {
 										
 			mtoDao = new MeteoDAO();	
 			message = new MessagesUtil();
-			panel = new MtoPanel();				
+			panel = new MtoPanel();		
+						
+			type = mtoDao.MtoPanelType(station);
+			
+			if(!type.equals("RS"))
+			  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'none')");
+			
+			else  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'block')");
+			
 			panel = mtoDao.MtoPanelInformation(station);	
 						
 			//Nome do Equipamento

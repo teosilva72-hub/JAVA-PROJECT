@@ -63,8 +63,8 @@ public class MtoReports {
 				return this;			
 			}
 			
-			public Builder roadTemperature(double temperature) {
-				this.temperature = temperature;			
+			public Builder roadTemperature(double road_temperature) {
+				this.road_temperature = road_temperature;			
 				return this;			
 			}
 			

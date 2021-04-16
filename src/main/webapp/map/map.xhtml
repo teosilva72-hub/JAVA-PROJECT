@@ -402,7 +402,7 @@
 
 						<div class="form-row">
 							<!-- ROW -->
-							<div class="form-group col-md-12 select-field" id="id-type">
+							<div class="form-group col-md-12 select-field" >
 								<!-- SELECT DIV -->
 								<span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON --> <span for="equips"
 									class="valid-icon-hidden"></span> <!-- SPAN VALIDATION --> <select name="equips"
@@ -412,29 +412,36 @@
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
 								</select> <!-- SELECT -->
+							</div>							
 							</div>
+							
+							<!-- ***** EQUIPMENTS OPTIONS ***** -->
+							
+							<!-- ***** MTO TYPE ***** -->
 
-							<div class="form-group col-md-6 select-field mtoHidden">
+                          <div class="form-row">
+                          
+							<div class="form-group col-md-12 select-field mtoHidden">
 								<!-- SELECT DIV -->
-								<span><i class="fas fa-hdd"></i></span><select name="equipsType"
-									id="equipsType" size="1">
-									<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
-									<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
+								<span><i class="fas fa-hdd"></i></span><select name="mtoType"
+									id="mtoType" size="1">
+									<option value="">#{mapLabels.map_creation_select_mto_type}</option>
+									<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
 								</select> <!-- SELECT -->
 							</div>
 
-							<!---->
+						     <!---->
 							<div class="error-label">
 								<!-- ERROR DIV -->
-								<label for="equips" class="error" id="equips-error"></label>
+								<label for="mtoType" class="error" id="mtoType-error"></label>
 							</div>
 							<!---->
 						</div>
 						<!---->
 
-						<!-- EQUIPMENTS OPTIONS -->
+						<!-- MTO TYPE -->
 
 						<!--  ******************************************************************************************************* -->
 
@@ -988,7 +995,7 @@
 								<input type="hidden" value="map" id="interface" name="interface" />
 
 								<select name="equips-edit" id="equips-edit" size="1" disabled="true">
-									<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
+									<option value="">#{mapLabels.map_creation_select_mto_type}</option>
 									<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
@@ -997,9 +1004,9 @@
 							<!---->
 
 							<!-- EQUIPMENTS OPTIONS -->
-
-							<!--  ******************************************************************************************************* -->
-
+							
+						   <!--  ******************************************************************************************************* -->
+						
 							<!-- EQUIPMENT ID -->
 
 							<div class="form-group col-md-6 input-field" id="contentEquipId">
@@ -1012,22 +1019,33 @@
 							<!---->
 						</div>
 						<!---->
+						
+						<!-- ***** MTO TYPE ***** -->
 
-						<div class="form-row">
+                          <div class="form-row">
+                          
 							<div class="form-group col-md-12 select-field mtoHidden-edit">
 								<!-- SELECT DIV -->
-								<span><i class="fas fa-hdd"></i></span><!-- SPAN ICON --><select name="equipsType"
-									id="equipsType" size="1">
+								<span><i class="fas fa-hdd"></i></span><select name="mtoType-edit"
+									id="mtoType-edit" size="1" disabled="true" >
 									<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
-									<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
+									<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
 								</select> <!-- SELECT -->
 							</div>
+
+							<!---->
+							<div class="error-label">
+								<!-- ERROR DIV -->
+								<label for="mtoType-edit" class="error" id="mtoType-edit-error"></label>
+							</div>
+							<!---->
 						</div>
+						<!---->
 
-						<!-- EQUIPMENT ID -->
-
+						<!-- MTO TYPE -->
+						
 						<!--  ******************************************************************************************************* -->
 
 						<!-- DMS TYPE -->
@@ -1880,7 +1898,7 @@
 				function () {
 					var equipsSEL = document.getElementById("equips");
 					var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-					if (selectVAL == 10) {
+					if (selectVAL == 9) {
 						$('.satInputs').show(); // DIV FAIXAS 1	
 						$('.dmsHidden').hide();
 						$('.mtoHidden').hide();
@@ -1940,19 +1958,16 @@
 									$('#direction8').show();
 								}
 							});
-					} else if (selectVAL == 8) {
-						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+					} else if (selectVAL == 8) {					
 						$('.dmsHidden').show(); // DIV DMS TYPE	
 						$('.mtoHidden').hide(); // DIV DMS TYPE	
 						$('.satInputs').hide();
 
-					} else if (selectVAL == 6) {
-						$('#id-type').addClass('col-md-6').removeClass('col-md-12').find('.valid-icon-visible').attr('style', 'margin-left: 80% !important;')
+					} else if (selectVAL == 6) {						
 						$('.mtoHidden').show();
 						$('.dmsHidden').hide();
 						$('.satInputs').hide();
-					} else {
-						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+					} else {						
 						$('.dmsHidden').hide();
 						$('.mtoHidden').hide();
 						$('.satInputs').hide();

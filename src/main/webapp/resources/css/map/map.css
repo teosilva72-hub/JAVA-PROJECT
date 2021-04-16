@@ -615,6 +615,9 @@ img.box-img[zoom] {
 [id$="equipsType"] {
   width: 100%;
 }
+[id$="mtoType"] {
+  width: 100%;
+}
 [id$="equipId"] {
   width: 100%;
 }
@@ -642,6 +645,11 @@ img.box-img[zoom] {
 [id$="equips-edit"] {
   width: 100%;
 }
+
+[id$="mtoType-edit"] {
+  width: 100%;
+}
+
 [id$="equipId-edit"] {
   width: 100%;
 }

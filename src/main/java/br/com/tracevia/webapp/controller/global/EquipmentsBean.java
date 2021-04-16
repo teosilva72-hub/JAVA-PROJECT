@@ -32,7 +32,7 @@ public class EquipmentsBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<SelectItem> cities, roads, module, lanes, dir, dmsType;
+	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, mtoType;
 
 	RoadConcessionaireDAO concessionaireDao;
 	
@@ -93,6 +93,14 @@ public class EquipmentsBean implements Serializable {
 
 	public void setDmsType(List<SelectItem> dmsType) {
 		this.dmsType = dmsType;
+	}
+		
+	public List<SelectItem> getMtoType() {
+		return mtoType;
+	}
+
+	public void setMtoType(List<SelectItem> mtoType) {
+		this.mtoType = mtoType;
 	}
 
 	public int getEquipId() {
@@ -168,6 +176,7 @@ public class EquipmentsBean implements Serializable {
       lanes = new  ArrayList<SelectItem>();
       dir = new ArrayList<SelectItem>();
       dmsType = new ArrayList<SelectItem>();
+      mtoType = new ArrayList<SelectItem>();
                
       try {
 			
@@ -194,7 +203,10 @@ public class EquipmentsBean implements Serializable {
  		
  		dmsType.add(new SelectItem(1, localeMap.getStringKey("map_dms_type_1")));   
  		dmsType.add(new SelectItem(2, localeMap.getStringKey("map_dms_type_2")));   
- 		dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3")));   
+ 		dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3"))); 
+ 		
+ 		mtoType.add(new SelectItem("WS", "WS")); 
+ 		mtoType.add(new SelectItem("RS", "RS")); 
  		 		 		 
       }catch(Exception ex){
 			ex.printStackTrace();
@@ -384,6 +396,9 @@ public class EquipmentsBean implements Serializable {
 					    
 		    //For Equipment CreationUsername		
 			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+			 
+			//For Equipment Type
+			equip.setEquip_type(parameterMap.get("mtoType"));
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
@@ -409,7 +424,7 @@ public class EquipmentsBean implements Serializable {
 	    		  checked = equipDAO.EquipRegisterMap(equip, table);
 	    		   
 	    		  if(checked) {
-					request.execute("alert('#equip-delete');");
+					request.execute("alert('#equip-save');");
 			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	    	 	   
@@ -503,7 +518,9 @@ public class EquipmentsBean implements Serializable {
 		 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
 		 
-		// if(moduleId == 12)
+		 if(moduleId == 6)
+			 RequestContext.getCurrentInstance().execute("$('#mtoType-edit').val('"+equip.getEquip_type()+"');");
+			 
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+equip.getCidade()+"');");	

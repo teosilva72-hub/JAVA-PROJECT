@@ -574,6 +574,43 @@ public class EquipmentsDAO {
    // --------------------------- //
 	
 	
+	   //Equipments Options for Selection	
+		public String EquipmentSelectMTOType(String equip) throws Exception {
+
+			String type = "";
+
+			String sql = "SELECT type FROM mto_equipment WHERE equip_id = ? ";
+					
+			try {
+								
+				 //GET CONNECTION			
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(sql);
+				ps.setString(1, equip);
+				
+				rs = ps.executeQuery();
+							
+				if (rs != null) {
+
+					while (rs.next()) {
+											
+					type = rs.getString("type");
+					
+					}				
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionFactory.closeConnection(conn, ps, rs);
+			}
+
+			return type;
+		}
+	
+	
+	
 	 //Equipments Options for Selection	
 		public Integer EquipmentSelectLanesNumber(String modulo, String equipID) throws Exception {
 
@@ -1812,20 +1849,20 @@ public Equipments EquipSearchMap(int id, String table, String interfacesView) th
 
     }  // SPEED Definitions END    
     
-    if(table.equals("sv")) { // VS Definitions
+    if(table.equals("sv")) { // SV Definitions
 
   	  SV sv = new SV();
 
-  	  String queryVSLinear = "SELECT equip_id, name, city, road, km, linear_width FROM vs_equipment WHERE equip_id = ? ";
+  	  String querySVLinear = "SELECT equip_id, name, city, road, km, linear_width FROM sv_equipment WHERE equip_id = ? ";
   	  
-  	  String queryVSMap = "SELECT equip_id, name, city, road, km, map_width FROM vs_equipment WHERE equip_id = ? ";
+  	  String querySVMap = "SELECT equip_id, name, city, road, km, map_width FROM sv_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  
   	  if(interfacesView.equals("linear"))
-  	  ps = conn.prepareStatement(queryVSLinear);
+  	  ps = conn.prepareStatement(querySVLinear);
   	  
-  	  else ps = conn.prepareStatement(queryVSMap);
+  	  else ps = conn.prepareStatement(querySVMap);
   	  
   	  ps.setInt(1,  id);
   	  rs = ps.executeQuery();
@@ -1845,7 +1882,7 @@ public Equipments EquipSearchMap(int id, String table, String interfacesView) th
 
   	  return sv;            	  
 
-    }  // VS Definitions END  
+    }  // SV Definitions END  
     
     if(table.equals("wim")) { // WIM Definitions
 
