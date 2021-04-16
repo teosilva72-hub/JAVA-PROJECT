@@ -400,6 +400,14 @@ text-align: center;
   display: none;
 }
 
+.mtoHidden {
+  display: none;
+}
+
+.mtoHidden-edit {
+  display: none;
+}
+
 /* Disabled bubttons on edit modal */
 input#equipId-edit:disabled, input#dmsType-edit:disabled {
 opacity: 0.7;

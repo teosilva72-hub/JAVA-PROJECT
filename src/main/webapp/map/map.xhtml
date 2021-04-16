@@ -1660,11 +1660,15 @@
 			//Dismiss modal function
 			$("#modaladd").on("hidden.bs.modal", function () {
 				$('.satInputs').hide();
+				$('.dmsHidden').hide();
+				$('.mtoHidden').hide();
 			});
 
 			//reset form function
 			$(".reset-btn").on("click", function () {
 				$('.satInputs').hide();
+				$('.dmsHidden').hide();
+				$('.mtoHidden').hide();
 				$('#modaladd').modal('hide');
 			});
 
@@ -1960,7 +1964,7 @@
 							});
 					} else if (selectVAL == 8) {					
 						$('.dmsHidden').show(); // DIV DMS TYPE	
-						$('.mtoHidden').hide(); // DIV DMS TYPE	
+						$('.mtoHidden').hide();
 						$('.satInputs').hide();
 
 					} else if (selectVAL == 6) {						
