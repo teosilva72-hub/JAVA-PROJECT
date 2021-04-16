@@ -158,7 +158,7 @@
 				</button>
 
 				<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
-					onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
+					onclick="defaultAdd()"
 					title="Add Equipment" data-toggle="modal"
 					data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 					
@@ -1216,12 +1216,16 @@
         
         //Dismiss modal function
 	    $("#modaladd").on("hidden.bs.modal", function() {
-	    	$('.satInputs').hide();				  
+	    	$('.satInputs').hide();	
+			$('.dmsHidden').hide();
+			$('.mtoHidden').hide();			  
 	      });
 	    
 	    //reset form function
 	    $(".reset-btn").on("click", function() {	    		    
-	    	$('.satInputs').hide();			  
+	    	$('.satInputs').hide();	
+			$('.dmsHidden').hide();
+			$('.mtoHidden').hide();		  
 		    $('#modaladd').modal('hide');
 	      }); 	 
         
@@ -1398,6 +1402,8 @@
 					if (selectVAL == 9) {
 						$('.satInputs').show(); // DIV FAIXAS 1	
 						$('.dmsHidden').hide();
+						$('.mtoHidden').hide();
+						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 						$("#lanes").change(
 							function () {
 								var satLanes = document.getElementById("lanes");
@@ -1455,7 +1461,7 @@
 							});
 					} else if (selectVAL == 8) {					
 						$('.dmsHidden').show(); // DIV DMS TYPE	
-						$('.mtoHidden').hide(); // DIV DMS TYPE	
+						$('.mtoHidden').hide();
 						$('.satInputs').hide();
 
 					} else if (selectVAL == 6) {						

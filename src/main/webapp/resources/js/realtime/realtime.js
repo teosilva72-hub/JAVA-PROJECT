@@ -105,6 +105,7 @@ $(function() {
 					if (selectVAL == 9) {
 						$('.satInputs-edit').show(); // DIV FAIXAS 1	
 						$('.dmsHidden-edit').hide();
+						$('.mtoHidden-edit').hide();
 						$("#lanes-edit").change(
 							function () {
 								var satLanes = document.getElementById("lanes-edit");								
@@ -161,15 +162,23 @@ $(function() {
 									$('#direction8-edit').show();
 								}
 							});
-					} else if (selectVAL == 8) {							
-										  
-						    $('.dmsHidden-edit').show(); // DIV DMS TYPE	
-						    $('.satInputs-edit').hide(); 
-							
+					} else if (selectVAL == 8) {
+
+						$('.dmsHidden-edit').show(); // DIV DMS TYPE	
+						$('.mtoHidden-edit').hide();	
+						$('.satInputs-edit').hide();
+		
+					} else if (selectVAL == 6) {
+		
+						$('.mtoHidden-edit').show();	
+						$('.dmsHidden-edit').hide();	
+						$('.satInputs-edit').hide();
+		
 					} else {
-						
-						 $('.dmsHidden-edit').hide();	
-						 $('.satInputs-edit').hide(); 
+		
+						$('.dmsHidden-edit').hide();
+						$('.mtoHidden-edit').hide();
+						$('.satInputs-edit').hide();
 					}
 					
 		}, 100)
@@ -672,4 +681,13 @@ if(scale > 1.3)
   
   else  $('.equip-header').css('opacity', 0);
   
+}
+
+function defaultAdd() {
+	$('#direction3').hide();
+	$('#direction4').hide();
+	$('#direction5').hide();
+	$('#direction6').hide();
+	$('#direction7').hide();
+	$('#direction8').hide();
 }
