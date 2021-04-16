@@ -294,9 +294,8 @@
 							 
 						<!-- ***** MTO TYPE ***** -->
 
-                          <div class="form-row">
-                          
-							<div class="form-group col-md-12 select-field mtoHidden">
+                          <div class="form-row mtoHidden">                          
+							<div class="form-group col-md-12 select-field">
 								<!-- SELECT DIV -->
 								<span><i class="fas fa-hdd"></i></span><select name="mtoType"
 									id="mtoType" size="1">
@@ -305,9 +304,7 @@
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
 								</select> <!-- SELECT -->
-							</div>
-
-								<!---->
+							</div><!---->
 							<div class="error-label">
 								<!-- ERROR DIV -->
 								<label for="mtoType" class="error" id="mtoType-error"></label>
@@ -320,7 +317,6 @@
 
 						<!--  ******************************************************************************************************* -->
 							 
-
 							<!-- EQUIPMENT ID -->
 							
 							<div class="form-row"> <!-- ROW -->	
@@ -741,7 +737,7 @@
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 												<option value="#{eqp.value}">#{eqp.label}</option>
 											</ui:repeat>											
-										</select>  <!-- SELECT -->	
+										</select>  <!-- SELECT -->											
 										</div> <!---->								   
 								
 							<!-- EQUIPMENTS OPTIONS -->
@@ -756,7 +752,8 @@
 										type="text" autocomplete="off" disabled="true"
 										name="equipId-edit" id="equipId-edit"
 										placeholder="#{mapLabels.map_creation_input_equip_id}" /> <!-- INPUT -->							
-								</div> <!---->                    
+								</div> <!---->  
+								<div class="error-label"><!-- ERROR DIV --></div>                  
                              </div>  <!---->
                              
 								<!-- EQUIPMENT ID -->
@@ -765,9 +762,8 @@
 						   
 						   <!-- ***** MTO TYPE ***** -->
 
-                          <div class="form-row">
-                          
-							<div class="form-group col-md-12 select-field mtoHidden-edit">
+                          <div class="form-row mtoHidden-edit">                          
+							<div class="form-group col-md-12 select-field ">
 								<!-- SELECT DIV -->
 								<span><i class="fas fa-hdd"></i></span><select name="mtoType-edit"
 									id="mtoType-edit" size="1" disabled="true" >
@@ -776,9 +772,7 @@
 										<option value="#{eqp.value}">#{eqp.label}</option>
 									</ui:repeat>
 								</select> <!-- SELECT -->
-							</div>
-
-							<!---->
+							</div><!---->
 							<div class="error-label">
 								<!-- ERROR DIV -->
 								<label for="mtoType-edit" class="error" id="mtoType-edit-error"></label>
