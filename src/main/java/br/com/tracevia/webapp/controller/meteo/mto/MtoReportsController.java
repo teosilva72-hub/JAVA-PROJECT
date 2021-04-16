@@ -309,6 +309,9 @@ public void CreateFields(String type) {
 
 	public void GetReports(String type) throws Exception{
 		
+		    //RESET ON RESTART
+		    resetFormValues(type);
+		
 		    FacesContext facesContext = FacesContext.getCurrentInstance();
 	        ExternalContext externalContext = facesContext.getExternalContext();
 	    
@@ -580,7 +583,7 @@ public void CreateFields(String type) {
 							 mes_inicial = null;
 						
 						}      
-				      else if(Integer.parseInt(mes_anterior) != Integer.parseInt(auxResult[0][j])) {							
+				      else if(!auxResult[0][j].equals(data_anterior)) {							
 							 p++;							
 						}
 												
@@ -592,25 +595,31 @@ public void CreateFields(String type) {
 					}
 			  //////////////////////////////////
 			  /////////////// MONTH REPORT 
-			  ////////////////////////////////
-			  else if(mtoReport.getPeriod().equals("month")){				
-				  
+			  ////////////////////////////////			  		  
+			
+			  else if(mtoReport.getPeriod().equals("month")){
+				  				 
 				    if((month_start_date != null) && Integer.parseInt(month_start_date) != Integer.parseInt(auxResult[0][j])) {
-				    							
-						p = Integer.parseInt(auxResult[0][j]) - Integer.parseInt(month_start_date);
+				    						
+						p = Integer.parseInt(auxResult[0][j]) - 1;
 						month_start_date = null;
+												  
 						
-					}else if(Integer.parseInt(data_anterior) != Integer.parseInt(auxResult[0][j])) {							
-						 p++;							
-					}
-											
+					 }else if((month_start_date != null) && Integer.parseInt(month_start_date) == Integer.parseInt(auxResult[0][j])) {
+						 p = 0;
+						 month_start_date = null;					
+				    
+					 }else if(!auxResult[0][j].equals(data_anterior)) {							
+						 p =  Integer.parseInt(auxResult[0][j]) - 1;				
+					 }
+															
 				     data_anterior = auxResult[0][j];
-				     
+				   				     			     			     
 				     if(i > 0) 
 						 resultQuery[i][p] = auxResult[i][j];		
 				  				  
 			  }
-			 				
+			
 			  //////////////////////////////////
 			  /////////////// MONTH REPORT 
 			  ////////////////////////////////			    
@@ -833,7 +842,7 @@ return fields;
  	     	     	  
  	  int[] col;
  	 
- 	  String equip = "", road = "", km = "", lanes = "", city = "", lane1 = " --- ";
+ 	  String equip = "", road = "", km = "", lanes = "", city = "";
  	  
  	  
  	 if(type.equals("1")) {
@@ -851,19 +860,18 @@ return fields;
 		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000, 4000}; 		   
 		   colStartDate = 8; colEndDate = 9;
 		 		  
-		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
+		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade();
 		      		     		 	
 		  model.StandardFonts();
 		  model.StandardStyles();
 		  model.StandardBorders();
 		  		  			      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
-				  col, colStartDate, colEndDate, resultQuery);
-		  
-	    }
- 	  
- 	      	     	   	  
+		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+				  col, colStartDate, colEndDate, resultQuery);		  
+	     
+ 	     }
+ 	   	      	     	   	  
  	  if(type.equals("2")) {
  		  
  		  EquipmentsDAO dao = new EquipmentsDAO();
@@ -879,14 +887,14 @@ return fields;
  		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000,4000, 4000}; 		   
  		   colStartDate = 8; colEndDate = 9;
  		 		  
- 		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
+ 		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade();
  	 	
  		  model.StandardFonts();
  		  model.StandardStyles();
  		  model.StandardBorders();
  		      		      		    		    		    		  
- 		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
- 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+ 		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
+ 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
  				  col, colStartDate, colEndDate, resultQuery);
  		  
  	    }
@@ -906,14 +914,14 @@ return fields;
 		   col = new int[] {3500, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000, 4000}; 		   
 		   colStartDate = 9; colEndDate = 11;
 		 		  
-		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade(); lanes = " --- ";
+		  equip = info.getNome(); road = info.getEstrada();  km = info.getKm(); city = info.getCidade();
 		 	
 		  model.StandardFonts();
 		  model.StandardStyles();
 		  model.StandardBorders();
 		      		      		    		    		    		  
-		  model.StandardExcelModelWithoutTotal(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
+		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, mtoReport.getPeriod(), dta.currentTime(), type, module,  				  
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, mtoReport.getStartDate(), mtoReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }

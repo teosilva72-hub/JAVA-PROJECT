@@ -517,7 +517,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			String startDt = "";
 			String endDt = "";
 			
-			int days=0;
+			int days = 0;
 			
 			startDt = StringDataBaseDateToBRFormat(startDate);
 			endDt = StringDataBaseDateToBRFormat(endDate);
