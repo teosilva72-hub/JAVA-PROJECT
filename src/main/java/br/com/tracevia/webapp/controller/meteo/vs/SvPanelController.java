@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.meteo.mto;
+package br.com.tracevia.webapp.controller.meteo.vs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +13,19 @@ import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.mto.MTO;
-import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
+import br.com.tracevia.webapp.model.meteo.sv.SV;
+import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 
-@ManagedBean(name="mtoPanelBean")
+@ManagedBean(name="svPanelBean")
 @RequestScoped
-public class MtoPanelController {
+public class SvPanelController {
 	
-	private MtoPanel panel;
+	private SvPanel panel;
 	private List<SelectItem> equipments;
 	
-	LocaleUtil localeLabel, localeCalendar, localeMto;
+	LocaleUtil localeLabel, localeCalendar, localeSV;
 	
 	MessagesUtil message;
 	
@@ -50,11 +50,11 @@ public class MtoPanelController {
 		this.station_name = station_name;
 	}
 
-	public MtoPanel getPanel() {
+	public SvPanel getPanel() {
 		return panel;
 	}
 	
-	public void setPanel(MtoPanel panel) {
+	public void setPanel(SvPanel panel) {
 		this.panel = panel;
 	}
 
@@ -66,29 +66,29 @@ public class MtoPanelController {
 	public void initialize() {
 		
 		localeLabel = new LocaleUtil();	
-		localeLabel.getResourceBundle(LocaleUtil.LABELS_MTO);
+		localeLabel.getResourceBundle(LocaleUtil.LABELS_SV);
 		
-		localeMto = new LocaleUtil();	
-		localeMto.getResourceBundle(LocaleUtil.MESSAGES_MTO);
+		localeSV = new LocaleUtil();	
+		localeSV.getResourceBundle(LocaleUtil.MESSAGES_SV);
 		
 		/* EQUIPMENTS SELECTION */
-		panel = new MtoPanel();
-		equipments = new ArrayList<SelectItem>();		
-				
-		List<? extends Equipments> listMto = new ArrayList<MTO>();  
+		panel = new SvPanel();
+		equipments = new ArrayList<SelectItem>();	
+								
+		List<? extends Equipments> listVS = new ArrayList<SV>();  
 					
 		try {
 			
 			 dao = new EquipmentsDAO();		 
-			 listMto = dao.EquipmentSelectOptions("mto");
+			 listVS = dao.EquipmentSelectOptions("sv");
 			 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();
 		}
-				
-		if(!listMto.isEmpty()) {
+			
+		if(!listVS.isEmpty()) {
 		
-		for (Equipments e : listMto) {
+		for (Equipments e : listVS) {
 			SelectItem s = new SelectItem();
 			s.setValue(e.getEquip_id());
 			s.setLabel(e.getNome());
@@ -96,14 +96,15 @@ public class MtoPanelController {
 		}
 					
 		//Initialize with first register
-		station = String.valueOf(listMto.get(0).getEquip_id());
+		station = String.valueOf(listVS.get(0).getEquip_id());
 		
-		station_name = listMto.get(0).getNome();
+		station_name = listVS.get(0).getNome();
 		
-	 
-		InitializePanelValues();  //Initialize Panel Values
+	    //Initialize Panel Values
+		InitializePanelValues();
 		
-	}  else { station_name = "Default"; initPanelZero(panel); }
+	} else { station_name = "Default"; initPanelZero(panel); }
+		
 		
 	}
 	
@@ -114,13 +115,13 @@ public class MtoPanelController {
 			
 			message = new MessagesUtil();
 			mtoDao = new MeteoDAO();
-			panel = new MtoPanel();
+			panel = new SvPanel();
 					
-			panel = mtoDao.MtoPanelInformation(station);
+			panel = mtoDao.SvPanelInformation(station);
 														
 			if(panel == null) {
 				
-			   panel = new MtoPanel(); // Inst�ncia o objeto novamente.
+			   panel = new SvPanel(); // Inst�ncia o objeto novamente.
 			   initPanelZero(panel);
 			  		  
 			 }		
@@ -141,8 +142,8 @@ public class MtoPanelController {
 										
 			mtoDao = new MeteoDAO();	
 			message = new MessagesUtil();
-			panel = new MtoPanel();				
-			panel = mtoDao.MtoPanelInformation(station);	
+			panel = new SvPanel();				
+			panel = mtoDao.SvPanelInformation(station);	
 						
 			//Nome do Equipamento
 			for(SelectItem s : equipments) {							
@@ -152,9 +153,9 @@ public class MtoPanelController {
 						
 			if(panel == null) {
 				
-				panel = new MtoPanel();	// Inst�ncia o objeto novamente.
+				panel = new SvPanel();	// Inst�ncia o objeto novamente.
 				initPanelZero(panel);				
-				message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"),localeMto.getStringKey("mto_message_equipment_no_data"));
+				message.InfoMessage(localeSV.getStringKey("sv_message_records_not_found_title"),localeSV.getStringKey("sv_message_equipment_no_data"));
 			}
 			
 			RequestContext.getCurrentInstance().execute("checkMtoStatus();");			
@@ -167,20 +168,13 @@ public class MtoPanelController {
 	}	
 	
 	//PREENCHER CASO N�O HAJA VALORES
-	public void initPanelZero(MtoPanel panel) {
-				
-		panel.setAtmPressure(0);
-		panel.setRelative_humidity(0);
-		panel.setPreciptation_rate(0);
-		panel.setPreciptation_rate_hour(0);
-		panel.setWind_speed(0);
-		panel.setWind_direction(0);  
-		panel.setTemperature(0);
+	public void initPanelZero(SvPanel panel) {
+					
+		panel.setAmbient_temperature(0);
 		panel.setVisibility(0);
 		panel.setStatus(0);
 		panel.setBattery(0);
-		panel.setLine_volts(0);		
-		panel.setRoad_temperature(0);
+		panel.setLine_volts(0);	
 		
 	}
 

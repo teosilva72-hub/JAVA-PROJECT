@@ -10,11 +10,10 @@ public enum ModulesEnum {
 	MTO("MTO"),
 	OCC("OCC"),
 	PMV("PMV"),
-	RS("RS"),
 	SAT("SAT"),
 	SOS("SOS"),
 	SPEED("SPEED"),
-	VS("VS"),
+	SV("SV"),
 	VIDEOWALL("VIDEOWALL"),
 	WIM("WIM");
 		

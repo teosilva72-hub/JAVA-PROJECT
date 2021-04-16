@@ -70,7 +70,12 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][index].setCellValue(values[auxCol][index]); 
 					            	
+					            	else if(values[auxCol][lin] != null && values[auxCol][lin].contains("."))
+					            		cells[col][index].setCellValue(values[auxCol][index] == null ? 0 : Double.parseDouble(values[auxCol][index]));
+					            	
 					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
+					            	
+					            	System.out.println(values[auxCol][index]);
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
@@ -103,9 +108,7 @@ public class ExcelSpreadSheet {
 			            		cells[col][lin].setCellValue(values[auxCol][lin] == null ? 0 : Double.parseDouble(values[auxCol][lin]));
 			            	
 			            	else cells[col][lin].setCellValue(values[auxCol][lin] == null ? 0 : Integer.parseInt(values[auxCol][lin]));
-			            	
-			            	System.out.println(values[auxCol][lin]);
-			            				            			            			          			            
+			            				            				            			            			          			            
 			            }catch(NullPointerException ex) {
 			            	ex.printStackTrace();
 			           }		            		

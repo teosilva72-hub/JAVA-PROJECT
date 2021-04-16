@@ -13,6 +13,7 @@ public class MtoReports {
 			private int atmPressure;
 			private int relative_humidity;
 			private double temperature;
+			private double road_temperature;
 			private int wind_direction;
 			private int wind_speed;
 			private int preciptation_rate;
@@ -58,6 +59,11 @@ public class MtoReports {
 			}
 			
 			public Builder temperature(double temperature) {
+				this.temperature = temperature;			
+				return this;			
+			}
+			
+			public Builder roadTemperature(double temperature) {
 				this.temperature = temperature;			
 				return this;			
 			}
@@ -130,6 +136,10 @@ public class MtoReports {
 
 			public double getTemperature() {
 				return temperature;
+			}
+						
+			public double getRoad_temperature() {
+				return road_temperature;
 			}
 
 			public int getWind_direction() {

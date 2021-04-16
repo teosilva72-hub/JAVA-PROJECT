@@ -10,10 +10,10 @@ import br.com.tracevia.webapp.dao.global.ModulesDAO;
 public class LoadStartupModules {  
 	
 	private List<Modules> modules;
-	private List<Equipments> cftv, colas, comms, dai, lpr, mto, pmv, vs, sat, sos, speed, rs, videowall, wim;
-	private boolean en_cftv, en_colas, en_comms, en_dai, en_lpr, en_meteo, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_vs, en_rs, en_wim;
+	private List<Equipments> cftv, colas, comms, dai, lpr, mto, pmv, sv, sat, sos, speed, videowall, wim;
+	private boolean en_cftv, en_colas, en_comms, en_dai, en_lpr, en_meteo, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_sv, en_wim;
 	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_lpr, voltage_mto, voltage_pmv, voltage_sat, voltage_sos, voltage_speed, voltage_videowall, 
-	voltage_vs, voltage_rs, voltage_wim;
+	voltage_sv, voltage_wim;
 
 	public List<Modules> getModules() {
 		return modules;
@@ -78,13 +78,13 @@ public class LoadStartupModules {
 	public void setPmv(List<Equipments> pmv) {
 		this.pmv = pmv;
 	}
-
-	public List<Equipments> getVs() {
-		return vs;
+	
+	public List<Equipments> getSv() {
+		return sv;
 	}
 
-	public void setVs(List<Equipments> vs) {
-		this.vs = vs;
+	public void setSv(List<Equipments> sv) {
+		this.sv = sv;
 	}
 
 	public List<Equipments> getSat() {
@@ -110,15 +110,7 @@ public class LoadStartupModules {
 	public void setSpeed(List<Equipments> speed) {
 		this.speed = speed;
 	}
-
-	public List<Equipments> getRs() {
-		return rs;
-	}
-
-	public void setRs(List<Equipments> rs) {
-		this.rs = rs;
-	}
-
+	
 	public List<Equipments> getVideowall() {
 		return videowall;
 	}
@@ -238,21 +230,13 @@ public class LoadStartupModules {
 	public void setEn_videowall(boolean en_videowall) {
 		this.en_videowall = en_videowall;
 	}
-
-	public boolean isEn_vs() {
-		return en_vs;
+	
+	public boolean isEn_sv() {
+		return en_sv;
 	}
 
-	public void setEn_vs(boolean en_vs) {
-		this.en_vs = en_vs;
-	}
-
-	public boolean isEn_rs() {
-		return en_rs;
-	}
-
-	public void setEn_rs(boolean en_rs) {
-		this.en_rs = en_rs;
+	public void setEn_sv(boolean en_sv) {
+		this.en_sv = en_sv;
 	}
 
 	public boolean isEn_wim() {
@@ -350,21 +334,13 @@ public class LoadStartupModules {
 	public void setVoltage_videowall(double voltage_videowall) {
 		this.voltage_videowall = voltage_videowall;
 	}
-
-	public double getVoltage_vs() {
-		return voltage_vs;
+	
+	public double getVoltage_sv() {
+		return voltage_sv;
 	}
 
-	public void setVoltage_vs(double voltage_vs) {
-		this.voltage_vs = voltage_vs;
-	}
-
-	public double getVoltage_rs() {
-		return voltage_rs;
-	}
-
-	public void setVoltage_rs(double voltage_rs) {
-		this.voltage_rs = voltage_rs;
+	public void setVoltage_sv(double voltage_sv) {
+		this.voltage_sv = voltage_sv;
 	}
 
 	public double getVoltage_wim() {
@@ -395,11 +371,10 @@ public class LoadStartupModules {
 			en_occ = false;
 			en_pmv = false;
 			en_meteo = false;
-			en_vs = false;
+			en_sv = false;
 			en_sat = false;
 			en_sos = false;
-			en_speed = false;
-			en_rs = false;
+			en_speed = false;			
 			en_videowall = false;
 			en_wim = false;	
 									
@@ -441,11 +416,10 @@ public class LoadStartupModules {
 		lpr = new ArrayList<Equipments>();
 		mto = new ArrayList<Equipments>();			
 		pmv = new ArrayList<Equipments>();
-		vs = new ArrayList<Equipments>();
+		sv = new ArrayList<Equipments>();
 		sat = new ArrayList<Equipments>();
 		sos = new ArrayList<Equipments>();
-		speed = new ArrayList<Equipments>();
-		rs = new ArrayList<Equipments>();
+		speed = new ArrayList<Equipments>();	
 		videowall = new ArrayList<Equipments>();
 		wim = new ArrayList<Equipments>();
 									
@@ -483,14 +457,9 @@ public class LoadStartupModules {
 				en_pmv = mod.isEnabled();
 			    voltage_pmv = mod.getBattery_voltage();
 			    
-		   }else if(mod.getModule().equals(ModulesEnum.RS.getModule()) && mod.isEnabled())	{		
-				en_rs = mod.isEnabled();
-				voltage_rs = mod.getBattery_voltage();
-				en_meteo = true;
-					
-		   }else if(mod.getModule().equals(ModulesEnum.VS.getModule()) && mod.isEnabled())	{		
-				en_vs = mod.isEnabled();
-				voltage_vs = mod.getBattery_voltage();
+		   }else if(mod.getModule().equals(ModulesEnum.SV.getModule()) && mod.isEnabled())	{		
+				en_sv = mod.isEnabled();
+				voltage_sv = mod.getBattery_voltage();
 				en_meteo = true;
 				
 		   }else if(mod.getModule().equals(ModulesEnum.SAT.getModule()) && mod.isEnabled())	{		
