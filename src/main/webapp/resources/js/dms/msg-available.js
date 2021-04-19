@@ -211,7 +211,6 @@ async function main() {
 		})
 
 		for (let i = 5; i >= 1; i--) {
-			console.log(pmvActive.len());
 			// add Timers
 			if (pmvActive.len() >= i && pmvActive.page(i - 1).timer() > .0) {
 				editPMV.find(`#timerPage${i}`).val(pmvActive.page(i - 1).timer());
