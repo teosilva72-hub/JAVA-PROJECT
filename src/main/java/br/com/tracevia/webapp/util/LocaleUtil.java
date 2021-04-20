@@ -19,6 +19,7 @@ public class LocaleUtil {
 	public static final String LABELS_EXCEL = "bundle.labels.system.excel.labels_excel_";
 	public static final String LABELS_PERIODS = "bundle.labels.system.periods.labels_periods_";
 	public static final String LABELS_OCC = "bundle.labels.occ.labels_occ_";
+	public static final String LABELS_EMAIL = "bundle.labels.email.labels_email_"; //notification send e-mail
 	public static final String LABELS_MAPS = "bundle.labels.system.maps.labels_maps_";
 	public static final String LABELS_REALTIME = "bundle.labels.system.realtime.labels_realtime_";	
 	
