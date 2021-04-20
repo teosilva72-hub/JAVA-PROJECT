@@ -5,7 +5,7 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
 	
-	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc;
+	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail;
 	
 	public TranslationMethods() {
 		
@@ -26,8 +26,37 @@ public class TranslationMethods {
 		
 		localeOcc = new LocaleUtil();
 		localeOcc.getResourceBundle(LocaleUtil.LABELS_OCC);
+		
+		localeEmail = new LocaleUtil();
+		localeEmail.getResourceBundle(LocaleUtil.LABELS_EMAIL);
 	
      }
+	public String notificationEmail(String email) {
+		
+		String Converts = "";
+		
+		switch(email) {
+		
+		case "Subject Matter" : Converts = localeEmail.getStringKey("subjetct_matter"); break;
+		case "Reason" : Converts = localeEmail.getStringKey("Reason"); break;
+		case "Text" : Converts = localeEmail.getStringKey("text_msg"); break;
+		case "msg" : Converts = localeEmail.getStringKey("msg_user"); break;
+		case "msg1" : Converts = localeEmail.getStringKey("msg_user1"); break;
+		case "msg2" : Converts = localeEmail.getStringKey("msg_user2"); break;
+		case "msg3" : Converts = localeEmail.getStringKey("msg_user3"); break;
+		case "msg4" : Converts = localeEmail.getStringKey("msg_user4"); break;
+		case "battery" : Converts = localeEmail.getStringKey("battery"); break;
+		case "batteryStatus" : Converts = localeEmail.getStringKey("batteryStatus"); break;
+		case "door" : Converts = localeEmail.getStringKey("door"); break;
+		case "open" : Converts = localeEmail.getStringKey("open"); break;
+		case "status" : Converts = localeEmail.getStringKey("status"); break;
+		case "Off-line" : Converts = localeEmail.getStringKey("Off-line"); break;
+		case "date" : Converts = localeEmail.getStringKey("date"); break;
+		case "hour" : Converts = localeEmail.getStringKey("hour"); break;
+		}
+		
+		return Converts;
+	}
 	public String occLabels(String occ) {
 		//var
 		String converteOcc = "";
