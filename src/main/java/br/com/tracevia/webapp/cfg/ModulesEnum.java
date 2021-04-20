@@ -12,7 +12,8 @@ public enum ModulesEnum {
 	PMV("PMV"),
 	SAT("SAT"),
 	SOS("SOS"),
-	SPEED("SPEED"), 
+	SPEED("SPEED"),
+	SV("SV"),
 	VIDEOWALL("VIDEOWALL"),
 	WIM("WIM");
 		

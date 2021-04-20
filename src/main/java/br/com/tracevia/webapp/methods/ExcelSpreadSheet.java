@@ -70,14 +70,19 @@ public class ExcelSpreadSheet {
 					            	if(col == 0 || col == 1)
 					            	cells[col][index].setCellValue(values[auxCol][index]); 
 					            	
+					            	else if(values[auxCol][index] != null && values[auxCol][index].contains("."))
+					            		cells[col][index].setCellValue(values[auxCol][index] == null ? 0 : Double.parseDouble(values[auxCol][index]));
+					            	
 					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
+					            	
+					            	System.out.println(values[auxCol][index]);
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
 					           }		            		
 					        }
 					   
-					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     }		    	  
 		              }			           
 			
@@ -97,10 +102,13 @@ public class ExcelSpreadSheet {
 			            try {
 			            				            	
 			            	if(col == 0 || col == 1)
-			            	cells[col][lin].setCellValue(values[auxCol][lin]); 
+			            	cells[col][lin].setCellValue(values[auxCol][lin]);			            			            
 			            	
-			            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
-			            				            			            			          			            
+			            	else if(values[auxCol][lin] != null && values[auxCol][lin].contains("."))
+			            		cells[col][lin].setCellValue(values[auxCol][lin] == null ? 0 : Double.parseDouble(values[auxCol][lin]));
+			            	
+			            	else cells[col][lin].setCellValue(values[auxCol][lin] == null ? 0 : Integer.parseInt(values[auxCol][lin]));
+			            				            				            			            			          			            
 			            }catch(NullPointerException ex) {
 			            	ex.printStackTrace();
 			           }		            		
@@ -108,7 +116,7 @@ public class ExcelSpreadSheet {
 			   
 			   
 			   
-			        auxCol++; //Coluna começa do indice 0 para percorrer o array
+			        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 			     }     	   
 		       }
 		
@@ -125,15 +133,18 @@ public class ExcelSpreadSheet {
 					            cells[col][lin] = row.createCell((short) col);	
 					            
 					            try {
+					            	
+					            	if(values[auxCol][lin] != null && values[auxCol][lin].contains("."))
+					            		cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Double.parseDouble(values[auxCol][lin]));
 					            				            	
-					            	cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
+					                else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
 					           }		            		
 					        }
 					   
-					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     }     	   
 				       }
 				
@@ -153,6 +164,9 @@ public class ExcelSpreadSheet {
 					            	
 					            	if(col == 0)
 						            	cells[col][lin].setCellValue(values[auxCol][lin]); 
+					            	
+					            	else if(values[auxCol][lin] != null && values[auxCol][lin].contains("."))
+					            		cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Double.parseDouble(values[auxCol][lin]));
 					            				            	
 					            	else cells[col][lin].setCellValue(values[auxCol][lin] == null? 0 : Integer.parseInt(values[auxCol][lin]));
 					            			          			            
@@ -161,11 +175,12 @@ public class ExcelSpreadSheet {
 					           }		            		
 					        }
 					   
-					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     }     	   
 				       }
 				
 				
+							
 				 //Convert Fiels to Integer
 				public void fillDataSingleFlow(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
 					 
@@ -190,7 +205,7 @@ public class ExcelSpreadSheet {
 					           }		            		
 					        }
 					   
-					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     }     	   
 				       }
 				
@@ -220,7 +235,7 @@ public class ExcelSpreadSheet {
 					           }		            		
 					        }
 					   
-					        auxCol++; //Coluna começa do indice 0 para percorrer o array
+					        auxCol++; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     }     	   
 				       }
 				
@@ -352,7 +367,7 @@ public class ExcelSpreadSheet {
 					     
 					     else auxCol++;
 					    	 
-					    // else auxCol=+3; //Coluna começa do indice 0 para percorrer o array
+					    // else auxCol=+3; //Coluna comeï¿½a do indice 0 para percorrer o array
 					     
 					     }     	   
 				       }
@@ -924,7 +939,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 			   }
 	}	
 	
-	//Borda para cabeçalho --->>> Não usar para o corpo da tabela
+	//Borda para cabeï¿½alho --->>> Nï¿½o usar para o corpo da tabela
 	public void  createHeaderBorder(int row1, int row2, int col1, int col2, BorderStyle style, BorderExtent ext) {
 		
 		PropertyTemplate prop = new PropertyTemplate();		
@@ -1020,7 +1035,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     	
     }
     
-    //SOBRECARGA DE MÉTODO
+    //SOBRECARGA DE Mï¿½TODO
     public void totalExcel(Sheet sheet, Row row, int startColumn, int length, int rowIni, int rowMax) {
     	    
 		int totalStartRow = rowIni + 1;	

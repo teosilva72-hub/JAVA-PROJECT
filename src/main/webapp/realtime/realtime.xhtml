@@ -158,7 +158,7 @@
 				</button>
 
 				<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
-					onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
+					onclick="defaultAdd()"
 					title="Add Equipment" data-toggle="modal"
 					data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
 					
@@ -291,6 +291,35 @@
 							<!-- EQUIPMENTS OPTIONS -->
 							
 							 <!--  ******************************************************************************************************* -->
+							 
+						<!-- ***** MTO TYPE ***** -->
+
+                          <div class="form-row">
+                          
+							<div class="form-group col-md-12 select-field mtoHidden">
+								<!-- SELECT DIV -->
+								<span><i class="fas fa-hdd"></i></span><select name="mtoType"
+									id="mtoType" size="1">
+									<option value="">#{mapLabels.map_creation_select_mto_type}</option>
+									<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
+										<option value="#{eqp.value}">#{eqp.label}</option>
+									</ui:repeat>
+								</select> <!-- SELECT -->
+							</div>
+
+								<!---->
+							<div class="error-label">
+								<!-- ERROR DIV -->
+								<label for="mtoType" class="error" id="mtoType-error"></label>
+							</div>
+							<!---->
+						</div>
+						<!---->
+
+						<!-- MTO TYPE -->
+
+						<!--  ******************************************************************************************************* -->
+							 
 
 							<!-- EQUIPMENT ID -->
 							
@@ -708,7 +737,7 @@
 											
 											<select
 											name="equips-edit" id="equips-edit" size="1" disabled="true" >
-											<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
+											<option value="">#{mapLabels.map_creation_select_mto_type}</option>
 											<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 												<option value="#{eqp.value}">#{eqp.label}</option>
 											</ui:repeat>											
@@ -733,6 +762,35 @@
 								<!-- EQUIPMENT ID -->
 								
 						   <!--  ******************************************************************************************************* -->
+						   
+						   <!-- ***** MTO TYPE ***** -->
+
+                          <div class="form-row">
+                          
+							<div class="form-group col-md-12 select-field mtoHidden-edit">
+								<!-- SELECT DIV -->
+								<span><i class="fas fa-hdd"></i></span><select name="mtoType-edit"
+									id="mtoType-edit" size="1" disabled="true" >
+									<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
+									<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
+										<option value="#{eqp.value}">#{eqp.label}</option>
+									</ui:repeat>
+								</select> <!-- SELECT -->
+							</div>
+
+							<!---->
+							<div class="error-label">
+								<!-- ERROR DIV -->
+								<label for="mtoType-edit" class="error" id="mtoType-edit-error"></label>
+							</div>
+							<!---->
+						</div>
+						<!---->
+
+						<!-- MTO TYPE -->
+						
+						<!--  ******************************************************************************************************* -->
+						   
 
 							<!-- DMS TYPE -->
 							
@@ -1158,12 +1216,16 @@
         
         //Dismiss modal function
 	    $("#modaladd").on("hidden.bs.modal", function() {
-	    	$('.satInputs').hide();				  
+	    	$('.satInputs').hide();	
+			$('.dmsHidden').hide();
+			$('.mtoHidden').hide();			  
 	      });
 	    
 	    //reset form function
 	    $(".reset-btn").on("click", function() {	    		    
-	    	$('.satInputs').hide();			  
+	    	$('.satInputs').hide();	
+			$('.dmsHidden').hide();
+			$('.mtoHidden').hide();		  
 		    $('#modaladd').modal('hide');
 	      }); 	 
         
@@ -1340,6 +1402,8 @@
 					if (selectVAL == 9) {
 						$('.satInputs').show(); // DIV FAIXAS 1	
 						$('.dmsHidden').hide();
+						$('.mtoHidden').hide();
+						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 						$("#lanes").change(
 							function () {
 								var satLanes = document.getElementById("lanes");
@@ -1395,15 +1459,19 @@
 									$('#direction8').show();
 								}
 							});
-					} else if (selectVAL == 8) {							
-										  
-						    $('.dmsHidden').show(); // DIV DMS TYPE	
-						    $('.satInputs').hide(); 
-							
-					} else {
-						
-						 $('.dmsHidden').hide();	
-						 $('.satInputs').hide(); 
+					} else if (selectVAL == 8) {					
+						$('.dmsHidden').show(); // DIV DMS TYPE	
+						$('.mtoHidden').hide();
+						$('.satInputs').hide();
+
+					} else if (selectVAL == 6) {						
+						$('.mtoHidden').show();
+						$('.dmsHidden').hide();
+						$('.satInputs').hide();
+					} else {						
+						$('.dmsHidden').hide();
+						$('.mtoHidden').hide();
+						$('.satInputs').hide();
 					}
 					
 				});

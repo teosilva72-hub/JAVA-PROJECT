@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
-import br.com.tracevia.webapp.controller.mto.MtoReportsController;
-import br.com.tracevia.webapp.controller.sat.SatReportsController;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.VBV;

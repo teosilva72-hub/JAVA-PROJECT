@@ -32,7 +32,7 @@ public class EquipmentsBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<SelectItem> cities, roads, module, lanes, dir, dmsType;
+	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, mtoType;
 
 	RoadConcessionaireDAO concessionaireDao;
 	
@@ -93,6 +93,14 @@ public class EquipmentsBean implements Serializable {
 
 	public void setDmsType(List<SelectItem> dmsType) {
 		this.dmsType = dmsType;
+	}
+		
+	public List<SelectItem> getMtoType() {
+		return mtoType;
+	}
+
+	public void setMtoType(List<SelectItem> mtoType) {
+		this.mtoType = mtoType;
 	}
 
 	public int getEquipId() {
@@ -168,6 +176,7 @@ public class EquipmentsBean implements Serializable {
       lanes = new  ArrayList<SelectItem>();
       dir = new ArrayList<SelectItem>();
       dmsType = new ArrayList<SelectItem>();
+      mtoType = new ArrayList<SelectItem>();
                
       try {
 			
@@ -194,7 +203,10 @@ public class EquipmentsBean implements Serializable {
  		
  		dmsType.add(new SelectItem(1, localeMap.getStringKey("map_dms_type_1")));   
  		dmsType.add(new SelectItem(2, localeMap.getStringKey("map_dms_type_2")));   
- 		dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3")));   
+ 		dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3"))); 
+ 		
+ 		mtoType.add(new SelectItem("WS", "WS")); 
+ 		mtoType.add(new SelectItem("RS", "RS")); 
  		 		 		 
       }catch(Exception ex){
 			ex.printStackTrace();
@@ -384,6 +396,9 @@ public class EquipmentsBean implements Serializable {
 					    
 		    //For Equipment CreationUsername		
 			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+			 
+			//For Equipment Type
+			equip.setEquip_type(parameterMap.get("mtoType"));
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
@@ -409,7 +424,7 @@ public class EquipmentsBean implements Serializable {
 	    		  checked = equipDAO.EquipRegisterMap(equip, table);
 	    		   
 	    		  if(checked) {
-					request.execute("alert('#equip-delete');");
+					request.execute("alert('#equip-save');");
 			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	    	 	   
@@ -497,11 +512,15 @@ public class EquipmentsBean implements Serializable {
 						 		 
 		 }
 		 
-		 else {
+	     else {		
 			 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView); 
 		 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
+		 
+		 if(moduleId == 6)
+			 RequestContext.getCurrentInstance().execute("$('#mtoType-edit').val('"+equip.getEquip_type()+"');");
+			 
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+equip.getCidade()+"');");	
@@ -767,9 +786,7 @@ public class EquipmentsBean implements Serializable {
 		 EquipmentsDAO dao = new EquipmentsDAO();		
 		 		
 		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView);
-		 
-		
-			
+		 		
 	}
 
 	public void setAll(String map) throws Exception {
@@ -801,11 +818,12 @@ public class EquipmentsBean implements Serializable {
 		case 4: table="dai"    ; break;
 		case 5: table="lpr"    ; break;
 		case 6: table="mto"    ; break;
-		case 8: table="pmv"    ; break;
+		case 8: table="pmv"    ; break;	
 		case 9: table="sat"    ; break;
-		case 10:table="sos"    ; break;
-		case 11:table="speed"  ; break;
-		case 13:table="wim"    ; break;
+		case 10: table="sos"    ; break;
+		case 11: table="speed"  ; break;
+		case 12: table="sv"    ; break;
+		case 14: table="wim"    ; break;
 		}
 		
 		return table;
@@ -823,10 +841,11 @@ public class EquipmentsBean implements Serializable {
 		case "dai": table="dai"      ; break;
 		case "lpr": table="lpr"      ; break;
 		case "mto": table="mto"      ; break;
-		case "dms": table="pmv"      ; break;
+		case "dms": table="pmv"      ; break;	
 		case "sat": table="sat"      ; break;
 		case "sos": table="sos"       ; break;
 		case "speed": table="speed"   ; break;
+		case "sv": table="sv"    ; break;
 		case "wim": table="wim"       ; break;
 		}
 		
@@ -845,11 +864,12 @@ public class EquipmentsBean implements Serializable {
   		case "dai": moduleId = 4 ; break;
   		case "lpr": moduleId = 5 ; break;
   		case "mto": moduleId = 6 ; break;
-  		case "dms": moduleId = 8 ; break;
+  		case "dms": moduleId = 8 ; break;  	
   		case "sat": moduleId = 9 ; break;
   		case "sos": moduleId = 10  ; break;
-  		case "speed":moduleId = 11 ; break;
-  		case "wim" : moduleId = 13 ; break;
+  		case "speed": moduleId = 11 ; break;
+  		case "sv": moduleId = 12 ; break;
+  		case "wim" : moduleId = 14 ; break;
   		}
   		
   		return moduleId;

@@ -261,6 +261,9 @@ body {
 [id$="equipId"] {
   width: 100%;
 }
+[id$="mtoType"] {
+  width: 100%;
+}
 [id$="dmsType"] {
   width: 100%;
 }
@@ -286,6 +289,9 @@ body {
   width: 100%;
 }
 [id$="equipId-edit"] {
+  width: 100%;
+}
+[id$="mtoType-edit"] {
   width: 100%;
 }
 [id$="dmsType-edit"] {
@@ -391,6 +397,14 @@ text-align: center;
 }
   
 .dmsHidden-edit {
+  display: none;
+}
+
+.mtoHidden {
+  display: none;
+}
+
+.mtoHidden-edit {
   display: none;
 }
 

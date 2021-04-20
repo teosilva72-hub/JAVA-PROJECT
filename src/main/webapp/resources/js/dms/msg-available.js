@@ -303,7 +303,7 @@ async function main() {
 
 			let pmv = PMV.new(id, type, name, pageType);
 
-			for (let i = 0; i < 5; i++) {
+			for (let i = 1; i <= 5; i++) {
 				const page = pages.filter('.pageTable' + i);
 				const verif = page.filter('td[active]').attr('active');
 				if (verif) {

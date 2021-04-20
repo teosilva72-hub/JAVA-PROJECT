@@ -7,14 +7,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.dao.dms.DMSDAO;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.lpr.LPR;
-import br.com.tracevia.webapp.model.mto.MTO;
+import br.com.tracevia.webapp.model.meteo.mto.MTO;
+import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
@@ -51,7 +51,8 @@ public class ListEquipments {
 	}
 	
 	public class listEquips {
-		private boolean value;	
+		private boolean value;
+		private boolean mainMenu;
 		private List<? extends Equipments> list;
 		private double voltage;
 		
@@ -61,10 +62,33 @@ public class ListEquipments {
 			this.voltage = voltage;
 		}
 		
+		
+		listEquips(boolean value, boolean mainMenu, List<? extends Equipments> list, double voltage) {
+			this.value = value;	
+			this.mainMenu = mainMenu;
+			this.list = list;
+			this.voltage = voltage;
+		}
+		
 		public boolean getValue() {
 			return value;
 		}
-			
+							
+		public boolean isMainMenu() {
+			return mainMenu;
+		}
+
+
+		public void setMainMenu(boolean mainMenu) {
+			this.mainMenu = mainMenu;
+		}
+
+
+		public void setValue(boolean value) {
+			this.value = value;
+		}
+
+
 		public List<? extends Equipments> getList() {
 			return list;
 		}
@@ -93,9 +117,10 @@ public class ListEquipments {
 				DMS dms = new DMS();
 				LPR lpr =  new LPR();
 				MTO mto =  new MTO();
+				SV sv = new SV();
 				SAT sat = new SAT();
 				SOS sos = new SOS();
-				Speed speed =  new Speed();
+				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
 				
 				if(load.isEn_cftv())			
@@ -117,8 +142,11 @@ public class ListEquipments {
 					equips.add(new listEquips(load.isEn_lpr(), lpr.listEquipments("lpr"), load.getVoltage_lpr()));
 					
 					if(load.isEn_mto())
-					equips.add(new listEquips(load.isEn_mto(), mto.listEquipments("mto"), load.getVoltage_mto()));
-					
+					equips.add(new listEquips(load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));
+											
+					if(load.isEn_sv())
+					equips.add(new listEquips(load.isEn_sv(), load.isEn_meteo(), sv.listEquipments("sv"), load.getVoltage_sv()));
+											
 					if(load.isEn_sat())
 					equips.add(new listEquips(load.isEn_sat(), sat.listSatEquipments(), load.getVoltage_sat()));
 					
@@ -127,7 +155,7 @@ public class ListEquipments {
 					
 					if(load.isEn_speed())
 					equips.add(new listEquips(load.isEn_speed(), speed.listEquipments("speed"), load.getVoltage_speed()));
-					
+									
 					if(load.isEn_wim())
 					equips.add(new listEquips(load.isEn_wim(), wim.listEquipments("wim"), load.getVoltage_wim()));
 				
