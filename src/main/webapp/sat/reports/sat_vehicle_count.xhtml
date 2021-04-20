@@ -175,9 +175,10 @@
 						<div class="modal-footer">
 							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+								p:data-toggle="modal" p:data-target="#modalDownload"
 								action="#{satReportsBean.download}"
 								class="btn btn-dark form-draw-button" />
-							<h:commandButton
+							<h:commandButton id="cancelDownload"
 								value="#{satLabels.sat_reports_modal_alert_btn_no}"
 								class="btn btn-dark form-draw-button">
 								<f:passThroughAttribute name="data-dismiss" value="modal" />
@@ -300,10 +301,14 @@
 						<!-- MODAL BUTTONS -->
 
 					<div class="modal-footer">
+						<button type="button" id="btn-form-confirm"
+						class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+						</button>
 
-						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}"
-							id="btn-form-send"
-							class="btn btn-dark form-modal-draw-button" action="#{satReportsBean.GetReports(1)}" />	
+						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
+							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+							<f:ajax execute="@form" render="@all" listener="#{satReportsBean.GetReports(1)}" onevent="onEventFunction" />
+						</h:commandButton>
 												
 							<h:commandButton value="#{mtoLabels.mto_reports_form_btn_reset}"
 							id="btn-form-reset" immediate="true" type="reset"
@@ -314,6 +319,10 @@
 					</div>
 				</h:form>
 			</div>
+		</div>
+
+		<div id="loading">
+			<span>#{satLabels.sat_reports_loading_message}...</span>
 		</div>
 
 		<!-- MODAL SUBMIT -->
@@ -381,25 +390,6 @@
 	    //Reset validation form
 	    //click reset button action
 	    resetFormValidation("#report-form", "reset-btn");
-	    
-	    const onEventFunction = data => {
-	    	var status = data.status;
-
-	    	switch (status) {
-	    		case "begin":
-	    			if($('#report-form').valid())
-	    				console.log('HIE')
-	    			    
-	    			break;
-
-	    		case "complete":
-	    			break;
-
-	    		case "success":	    			
-	    			break;
-	    	}
-	    }
-	    	 	    	 
 	 
 	    </script>
 
