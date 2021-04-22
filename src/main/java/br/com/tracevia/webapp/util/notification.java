@@ -1,8 +1,14 @@
 package br.com.tracevia.webapp.util;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
@@ -21,64 +27,84 @@ import javax.mail.internet.MimeMessage;
 import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
-import br.com.tracevia.webapp.dao.global.notificationDAO;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
 @ManagedBean(name="notification")
 @RequestScoped
 public class notification {
-	
+
 	//vars
 	boolean stat_battery, door, status;
 	int presence;
-	String temp, batteryStatus, door1, open, status1;
+	String temp, nameEquip, open, status1;
+	int idEquip;
 	//vars
-	
+
 	//getters and setters
+		private String dateHour;
 	
-	
-	public boolean isStat_battery() {
-		return stat_battery;
+	public String getNameEquip() {
+		return nameEquip;
 	}
 
-	public void setStat_battery(boolean stat_battery) {
-		this.stat_battery = stat_battery;
+	public void setNameEquip(String nameEquip) {
+		this.nameEquip = nameEquip;
 	}
 
-	public boolean isDoor() {
-		return door;
+	public int getIdEquip() {
+		return idEquip;
 	}
 
-	public void setDoor(boolean door) {
-		this.door = door;
+	public void setIdEquip(int idEquip) {
+		this.idEquip = idEquip;
 	}
+	//getters and setters
+	private Connection conn;		
+	private PreparedStatement ps;
+	private ResultSet rs;
 
-	public boolean isStatus() {
-		return status;
+	private List<Notifications> notifications;
+
+	LocaleUtil locale;
+	DateTimeApplication dta;
+
+
+	public void sendEmailUser() throws Exception {
+
+
+		Notifications not = new Notifications();
+
+		//Send e-mail
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		date();
+		EmailUtil x = new EmailUtil();
+		TranslationMethods trad = new TranslationMethods();
+		System.out.println("e-mail enviado");
+		//variables email
+		String to = "mateus.silva@tracevia.com.br"; //email
+		
+		String Subject = trad.notificationEmail("Subject Matter"); //Subject Matter
+		
+		String msgStatus = "<style body{color: black;}></style>"+
+				"<b>"+trad.notificationEmail("msg")+" "+
+				"<br><br></b>"+
+				dateHour+"   | "+
+				trad.notificationEmail("Reason")+"  "+
+				trad.notificationEmail("status")+"<b>  "+
+				trad.notificationEmail("Off-line")+"</b> "+"<br><br>" + 
+				"<b>"+trad.notificationEmail("msg1")+"<br>"+
+				trad.notificationEmail("msg2")+"</b><br><br>"+
+				trad.notificationEmail("msg3")+
+				"<br><br>"+trad.notificationEmail("msg4"); //contents
+		//send email
+		x.sendEmailHtml(to, Subject, msgStatus);
+
 	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public int getPresence() {
-		return presence;
-	}
-
-	public void setPresence(int presence) {
-		this.presence = presence;
-	}
-
-	public String getTemp() {
-		return temp;
-	}
-
-	public void setTemp(String temp) {
-		this.temp = temp;
-	}	//getters and setters
-	private String dateHour;
 	public String date() throws Exception {
 		TranslationMethods x = new TranslationMethods();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -97,38 +123,9 @@ public class notification {
 		String minute = String.valueOf(min);
 		int sec = LocalDateTime.now().getSecond();
 		String second = String.valueOf(sec);
-		dateHour = x.notificationEmail("date")+" "+dia+"/"+mes+"     "+ x.notificationEmail("hour")+" "+hora+":"+minute;
-		
-		return dateHour;
-	}
-	public void sendEmailUser() throws Exception {
-		Notifications not = new Notifications();
-		
-		//Send e-mail
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();	
-		date();
-		EmailUtil x = new EmailUtil();
-		notificationDAO z = new notificationDAO();
-		TranslationMethods trad = new TranslationMethods();
-		status = false;
-		
-		//condition 
-		
-		if(!status) {status1 = trad.notificationEmail("Reason")+trad.notificationEmail("status")+" <b> "+trad.notificationEmail("Off-line")+"</b><br>";
-		}else status1 = "";
-		Notifications q = new Notifications();
-		NotificationsDAO r = new NotificationsDAO();
-		//variables email
-		String to = "representante.com.sp@gmail.com, mateus.silva@tracevia.com.br"; //email
-		String nameUser = "Mateus Silva";
-		String Subject = trad.notificationEmail("Subject Matter"); //Subject Matter
-		String msgStatus = "<style>body{color: black;}</style>"+nameUser+" "+trad.notificationEmail("msg")+"<br>"+"<b>"+ dateHour+"</b>"+
-							"<br>" + status1 + 
-							trad.notificationEmail("msg1")+"<br>"+trad.notificationEmail("msg2")+"<br><br>"+
-							trad.notificationEmail("msg3")+"<br><br>"+trad.notificationEmail("msg4"); //contents
-		//send email
-		x.sendEmailHtml(to, Subject, msgStatus);
+		if(min < 10) minute = "0"+min;
+		dateHour = x.notificationEmail("date")+" <b>"+dia+"/"+mes+"     "+" "+hora+":"+minute+"</b>";
 
+		return dateHour;
 	}
 }
