@@ -119,12 +119,16 @@ body{
 	color: white;
 }
 .visibilidade{
+	width:100%;
 	background: url('/resources/images/estacao/visibilidade.gif') 0 0 no-repeat;
 	color: white;
+    background-size: cover;
 }
 .energia{
+    width:100%;
 	background: url('/resources/images/estacao/energia.gif') 0 0 no-repeat;
 	color: white;
+	background-size: cover;
 }
 
 /* custom style for types (input, select) */

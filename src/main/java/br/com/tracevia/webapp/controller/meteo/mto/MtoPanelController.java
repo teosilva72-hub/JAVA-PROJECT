@@ -193,8 +193,7 @@ public class MtoPanelController {
 				
 		panel.setAtmPressure(0);
 		panel.setRelative_humidity(0);
-		panel.setPreciptation_rate(0);
-		panel.setPreciptation_rate_hour(0);
+		panel.setAbsolute_preciptation(0);
 		panel.setWind_speed(0);
 		panel.setWind_direction(0);  
 		panel.setTemperature(0);
