@@ -74,6 +74,7 @@ public class RoadConcessionaire {
 	public static String tableCCR;
 	public static String tableDados15;
 	public static String tableStatus;
+	public static String plaque;
 	
 	EstradaObjectController estrada;
 	
@@ -129,6 +130,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
 		}	
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire())) {
@@ -165,6 +167,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
 		}
 		
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -199,6 +202,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
 						
 		}
 		
@@ -236,6 +240,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "tuxpan";
 							
 		}
 		
@@ -271,6 +276,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
 			
 		}
 
@@ -307,6 +313,7 @@ public class RoadConcessionaire {
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
         }
         
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire())) {
@@ -365,6 +372,7 @@ public class RoadConcessionaire {
 			tableStatus = ViaSulTables.ViaSulStatus.getTable();
 			tableLL = ViaSulTables.ViaSulLL.getTable();
 			tableCCR = ViaSulTables.ViaSulCCR.getTable();
+			plaque = "";
 						
 		}
 
@@ -401,6 +409,7 @@ public class RoadConcessionaire {
 		  tableStatus = TraceviaTables.TraceviaStatus.getTable();
 		  tableLL = TraceviaTables.TraceviaLL.getTable();
 	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
+	      plaque = "";
 				  
          }	
               		 

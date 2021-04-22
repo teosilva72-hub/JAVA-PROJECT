@@ -40,7 +40,8 @@ public class LoginAccountBean {
 	LocaleUtil locale, locale1, locale2;
 	
 	LoadStartupModules load;
-	String mapUI, linearMapUI; 
+	String mapUI, linearMapUI;
+	String plaque;
 		
 	InetAddress addr;
 	
@@ -85,6 +86,14 @@ public class LoginAccountBean {
 
 	public void setMapUI(String mapUI) {
 		this.mapUI = mapUI;
+	}
+
+	public String getPlaque() {
+		return plaque;
+	}
+
+	public void setPlaque(String plaque) {
+		this.plaque = plaque;
 	}
 	
 	public String getLinearMapUI() {
@@ -165,6 +174,8 @@ public class LoginAccountBean {
 			//NOT IN USE 
 			mapUI = RoadConcessionaire.mapUI; // Load Map
 			linearMapUI = RoadConcessionaire.linearMapUI;
+			
+			plaque = RoadConcessionaire.plaque;
 									
 		    return "/dashboard/dashboard.xhtml?faces-redirect=true"; 		    
 		    
