@@ -139,7 +139,7 @@ public class NotificationsDAO {
 							   
 							   if(rs.getBoolean("st.online_status") == true && rs.getBoolean("st.online_last_status") == false) {						
 									
-								   not = new Notifications();	
+								      not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
 									  not.setStatus(8); // OFF-LINE

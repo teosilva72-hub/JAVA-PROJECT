@@ -20,16 +20,15 @@
 	
 	<ui:define name="head" >
 	
-		<h:outputStylesheet library="css/datatables/custom"
-			name="table-style.css" />		
+		<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />		
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
 		<h:outputStylesheet library="css/forms" name="form-style.css" />	
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 
 		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
 		<h:outputScript library="js/datepicker" name="datepicker.js" />	
-		<h:outputScript library="js/validation-forms/reports"
-			name="sat-reports.js" />
+		<h:outputScript library="js/validation-forms/reports" name="sat-reports.js" />
+		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />
 		 	
 	</ui:define>
 	
@@ -369,11 +368,5 @@
 
 		<!-- SCRIPT DEFINITIONS -->
 	 
-	 </ui:define>
-	 
-	  <ui:define name="jscript">
-    <h:outputScript name="sat_reports_dataTable.js" library="js/reports" />	
-	</ui:define>
-	
-		
-	</ui:composition>	
+	 </ui:define>	
+</ui:composition>	
