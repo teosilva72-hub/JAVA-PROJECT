@@ -10,14 +10,13 @@ public class MtoReports {
 			private String dateTime;
 			private String status;
 			private int dayOfTheMonth;
-			private int atmPressure;
+			private double atmPressure;
 			private int relative_humidity;
 			private double temperature;
 			private double road_temperature;
-			private int wind_direction;
-			private int wind_speed;
-			private int preciptation_rate;
-			private int preciptation_rate_hour;
+			private double wind_direction;
+			private double wind_speed;
+			private double absolute_precipitation;		
 			private int visibility;
 			private int line_volts;
 			private int battery;
@@ -48,7 +47,7 @@ public class MtoReports {
 				return this;			
 			}
 			
-			public Builder atmPressure(int atmPressure) {
+			public Builder atmPressure(double atmPressure) {
 				this.atmPressure = atmPressure;			
 				return this;			
 			}
@@ -68,26 +67,21 @@ public class MtoReports {
 				return this;			
 			}
 			
-			public Builder windDir(int wind_direction) {
+			public Builder windDir(double wind_direction) {
 				this.wind_direction = wind_direction;			
 				return this;			
 			}
 			
-			public Builder windSpeed(int wind_speed) {
+			public Builder windSpeed(double wind_speed) {
 				this.wind_speed = wind_speed;			
 				return this;			
 			}
 			
-			public Builder preciptationRate(int preciptation_rate) {
-				this.preciptation_rate = preciptation_rate;			
+			public Builder absolutePreciptation(double absolute_precipitation) {
+				this.absolute_precipitation = absolute_precipitation;			
 				return this;			
 			}
-			
-			public Builder preciptationRateHour(int preciptation_rate_hour) {
-				this.preciptation_rate_hour = preciptation_rate_hour;			
-				return this;			
-			}
-			
+									
 			public Builder visibility(int visibility) {
 				this.visibility = visibility;			
 				return this;			
@@ -126,7 +120,7 @@ public class MtoReports {
 				return dayOfTheMonth;
 			}
 
-			public int getAtmPressure() {
+			public double getAtmPressure() {
 				return atmPressure;
 			}
 
@@ -142,20 +136,16 @@ public class MtoReports {
 				return road_temperature;
 			}
 
-			public int getWind_direction() {
+			public double getWind_direction() {
 				return wind_direction;
 			}
 
-			public int getWind_speed() {
+			public double getWind_speed() {
 				return wind_speed;
 			}
 
-			public int getPreciptation_rate() {
-				return preciptation_rate;
-			}
-
-			public int getPreciptation_rate_hour() {
-				return preciptation_rate_hour;
+			public double getAbsolute_precipitation() {
+				return absolute_precipitation;
 			}
 
 			public int getVisibility() {

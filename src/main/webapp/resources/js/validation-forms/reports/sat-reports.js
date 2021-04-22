@@ -84,6 +84,30 @@
 		
 	///////////////////////////////////////////////////////////////////////////////////////////////	
 	
+	const onEventFunction = data => {
+		var status = data.status;
+		let loading = $('#loading');
+		switch (status) {
+			case "begin":
+
+				loading.addClass('active')				
+				break;
+	
+			case "complete":
+				loading.removeClass('active')
+				break;
+	
+			case "success":
+				$('[id$=cancelDownload]').click()
+				break;
+		}
+	}
+
+	const verif = (form, success) => {
+		if ($(form).valid())
+			$(success).click()
+	}
+
 	////////////////////////////////////////
 	  ///// VALIDATION FORM 1	
 	////////////////////////////////////////

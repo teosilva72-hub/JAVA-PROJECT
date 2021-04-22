@@ -69,18 +69,17 @@ public class MeteoDAO {
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 										
-					panel.setAtmPressure(rs.getInt(1)/10);
+					panel.setAtmPressure(rs.getDouble(1));
 					panel.setRelative_humidity(rs.getInt(2));
-					panel.setPreciptation_rate(rs.getInt(3));
-					panel.setPreciptation_rate_hour(rs.getInt(4));
-					panel.setWind_speed(rs.getInt(5));
-					panel.setWind_direction(rs.getInt(6));  
-					panel.setTemperature(rs.getDouble(7));
-					panel.setVisibility(rs.getInt(8));
-					panel.setStatus(rs.getInt(9));
-					panel.setBattery(rs.getInt(10));
-					panel.setLine_volts(rs.getInt(11));
-					panel.setRoad_temperature(rs.getInt(12));
+					panel.setAbsolute_preciptation(rs.getDouble(3));				
+					panel.setWind_speed(rs.getDouble(4));
+					panel.setWind_direction(rs.getDouble(5));  
+					panel.setTemperature(rs.getDouble(6));
+					panel.setVisibility(rs.getInt(7));
+					panel.setStatus(rs.getInt(8));
+					panel.setBattery(rs.getInt(9));
+					panel.setLine_volts(rs.getInt(10));
+					panel.setRoad_temperature(rs.getDouble(11));
 				
 				}				
 			 } else panel = null;	//DEFINE A V�RI�VEL COMO NULA

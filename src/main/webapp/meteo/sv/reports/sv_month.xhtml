@@ -169,9 +169,10 @@
 							<div class="modal-footer">
 								<h:commandButton p:onclose="download"
 									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
+									p:data-toggle="modal" p:data-target="#modalDownload"
 									action="#{svReportsBean.download}"
 									class="btn btn-dark form-draw-button" />
-								<h:commandButton
+								<h:commandButton id="cancelDownload"
 									value="#{svLabels.sv_reports_modal_alert_btn_no}"
 									class="btn btn-dark form-draw-button">
 									<f:passThroughAttribute name="data-dismiss" value="modal" />
@@ -266,10 +267,14 @@
 						<!-- MODAL BUTTONS -->
 
 						<div class="modal-footer">
+							<button type="button" id="btn-form-confirm"
+							class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+							</button>
 
-							<h:commandButton value="#{svLabels.sv_reports_form_btn_send}"
-								id="btn-form-send" action="#{svReportsBean.GetReports(2)}"
-								class="btn btn-dark form-modal-draw-button" />
+							<h:commandButton value="#{svLabels.sv_reports_form_btn_send}" style="display: none;"
+								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+								<f:ajax execute="@form" render="@all" listener="#{svReportsBean.GetReports(2)}" onevent="onEventFunction" />
+							</h:commandButton>
 
 							<h:commandButton value="#{svLabels.sv_reports_form_btn_reset}"
 								id="btn-form-reset" immediate="true" type="reset"
@@ -284,6 +289,10 @@
 
 		</div>
 		<!-- TABLE DIV CONTENT -->
+
+		<div id="loading">
+			<span>#{satLabels.sat_reports_loading_message}...</span>
+		</div>
 
 		<script type='text/javascript'>
 			//Validation Methods
