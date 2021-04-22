@@ -74,28 +74,33 @@ public class notification {
 
 
 	public void sendEmailUser() throws Exception {
-		
+
 
 		Notifications not = new Notifications();
-		System.out.println(not.getEquipName()+" name equip");
+
 		//Send e-mail
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
 		date();
-		System.out.println(idEquip +" <<");
 		EmailUtil x = new EmailUtil();
 		TranslationMethods trad = new TranslationMethods();
 		System.out.println("e-mail enviado");
 		//variables email
-		String to = "representante.com.sp@gmail.com, mateus.silva@tracevia.com.br"; //email
-		String nameUser = "Mateus Silva";
+		String to = "mateus.silva@tracevia.com.br"; //email
+		
 		String Subject = trad.notificationEmail("Subject Matter"); //Subject Matter
-		String msgStatus = "<style>body{color: purple;}</style>"+nameUser+" "+trad.notificationEmail("msg")+"<br>"+"<b>"+ dateHour+"</b>"+
-				"<br>" + trad.notificationEmail("Reason")+
-				trad.notificationEmail("status")+" <b> "+
-				trad.notificationEmail("Off-line")+"</b><br>" + 
-				trad.notificationEmail("msg1")+"<br>"+trad.notificationEmail("msg2")+"<br><br>"+
-				trad.notificationEmail("msg3")+"<br><br>"+trad.notificationEmail("msg4"); //contents
+		
+		String msgStatus = "<style body{color: black;}></style>"+
+				"<b>"+trad.notificationEmail("msg")+" "+
+				"<br><br></b>"+
+				dateHour+"   | "+
+				trad.notificationEmail("Reason")+"  "+
+				trad.notificationEmail("status")+"<b>  "+
+				trad.notificationEmail("Off-line")+"</b> "+"<br><br>" + 
+				"<b>"+trad.notificationEmail("msg1")+"<br>"+
+				trad.notificationEmail("msg2")+"</b><br><br>"+
+				trad.notificationEmail("msg3")+
+				"<br><br>"+trad.notificationEmail("msg4"); //contents
 		//send email
 		x.sendEmailHtml(to, Subject, msgStatus);
 
@@ -118,7 +123,8 @@ public class notification {
 		String minute = String.valueOf(min);
 		int sec = LocalDateTime.now().getSecond();
 		String second = String.valueOf(sec);
-		dateHour = x.notificationEmail("date")+" "+dia+"/"+mes+"     "+" "+hora+":"+minute;
+		if(min < 10) minute = "0"+min;
+		dateHour = x.notificationEmail("date")+" <b>"+dia+"/"+mes+"     "+" "+hora+":"+minute+"</b>";
 
 		return dateHour;
 	}
