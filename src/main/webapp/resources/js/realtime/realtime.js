@@ -55,6 +55,11 @@ const onEventFunction = data => {
 	}
 }
 
+const verif = (form, success) => {
+	if ($(form).valid())
+		$(success).click()
+}
+
 const setInfoEquip = () => {
 	$('[data-toggle="popover"]').popover({
 		html: true,
@@ -646,22 +651,6 @@ function reloadAfterCancelPos(){
 	setTimeout(function() {
 	window.location.reload(1);
   }, 2000); // 2 sec						
-}
-
-//Use validation on click button submit   
-//Create button
-function checkValidation(){	 
-
- $('#register-equip-form').valid();		
-
-}
-
-//Use validation on click button submit   
-//Create button
-function checkValidationEdit(){	 
-
- $('#edit-equip-form').valid();		
-
 }
 
 function closeModal(modalId, button){

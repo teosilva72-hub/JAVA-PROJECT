@@ -285,8 +285,6 @@ public class EquipmentsBean implements Serializable {
 		    defineDMStype(dms, type);
 		  		    		    
 	   	    checked =  equipDAO.checkExists(dms.getEquip_id(), table);
-
-			request.execute("init();");
 	   	 
 	   	    if(checked)
 			   request.execute("alert('#equip-save-error');");
@@ -357,8 +355,6 @@ public class EquipmentsBean implements Serializable {
 	    
 	    
    	    checked =  equipDAO.checkExists(sat.getEquip_id(), table);
-
-		   request.execute("init();");
    	 
    	    if(checked)
    		   request.execute("alert('#equip-save-error');");
@@ -414,8 +410,6 @@ public class EquipmentsBean implements Serializable {
 	    	 
 	    	checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
-			request.execute("init();");
-	    	 
 	    	if(checked)
 			request.execute("alert('#equip-save-error');");
 	    	 

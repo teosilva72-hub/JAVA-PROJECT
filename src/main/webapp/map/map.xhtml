@@ -839,11 +839,14 @@
 
 					<div class="modal-footer">
 
-						<h:commandButton value="#{mapLabels.map_creation_btn_save_equipment}" id="btn-form-send"
-							class="btn btn-dark form-modal-draw-button" p:data-toggle="modal" p:data-target="#modaladd">
+						<button id="btn-form-confirm" class="btn btn-dark form-modal-draw-button" type="button"
+								onclick="verif('#register-equip-form', '[id$=btn-form-send]')">#{mapLabels.map_creation_btn_save_equipment}</button>
+
+						<h:commandButton id="btn-form-send"
+							p:data-toggle="modal" p:data-target="#modaladd">
 							<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
-								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
+								listener="#{equipsBean.createEquipment}" onevent="onEventFunction" />
 						</h:commandButton>
 
 						<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"

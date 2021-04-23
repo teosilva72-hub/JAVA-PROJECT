@@ -601,12 +601,15 @@
 
 						<div class="modal-footer">
 						
+							<button id="btn-form-confirm" class="btn btn-dark form-modal-draw-button" type="button"
+								onclick="verif('#register-equip-form', '[id$=btn-form-send]')">#{mapLabels.map_creation_btn_save_equipment}</button>	
+
 							<h:commandButton 
-								value="#{mapLabels.map_creation_btn_save_equipment}" p:data-toggle="modal" p:data-target="#modaladd"
-								id="btn-form-send" class="btn btn-dark form-modal-draw-button" >
+								p:data-toggle="modal" p:data-target="#modaladd" style="display: none;"
+								id="btn-form-send">
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
-								listener="#{equipsBean.createEquipment}" onevent="checkValidation" />
+								listener="#{equipsBean.createEquipment}" onevent="onEventFunction" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
@@ -1168,7 +1171,7 @@
 		//VALIDATION FORM
 		////////////////////////////
 		
-		userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
+		var crtvalid = userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
 				'#{validatorMessages.validator_number_message}', '#{validatorMessages.validator_global_maxlength}');
 					
 		//Validate elements on change value
@@ -1227,7 +1230,7 @@
         
         //EQUIP EDITION
         
-        userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}');
+        var edtvalid = userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}');
 					
 		//Validate elements on change value
 	    //In this case check if the element is valid	   

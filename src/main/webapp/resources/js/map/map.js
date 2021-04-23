@@ -55,6 +55,11 @@ const onEventFunction = data => {
 	}
 }
 
+const verif = (form, success) => {
+	if ($(form).valid())
+		$(success).click()
+}
+
 const setInfoEquip = () => {
 	$('[data-toggle="popover"]').popover({
 		html: true,
@@ -690,26 +695,6 @@ function dragEquip() {
 function DelName() {
 }
 //Delete Modal Name End
-
-
-//prevent modal form submit
-//use ajax to send data
-
-//Use validation on click button submit   
-//Create button
-function checkValidation() {
-
-	$('#register-equip-form').valid();
-
-}
-
-//Use validation on click button submit   
-//Create button
-function checkValidationEdit() {
-
-	$('#edit-equip-form').valid();
-
-}
 
 function closeModal(modalId, button) {
 	$(button).click(function () {

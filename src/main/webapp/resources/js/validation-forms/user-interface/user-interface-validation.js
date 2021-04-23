@@ -4,7 +4,7 @@
 
 function userInterfaceformValidation(form, equips_message, id_message, number_message, max_length_message){
 		
-       $(form).validate({	                 	    	                   
+       return $(form).validate({	                 	    	                   
 		         rules: {
 		          equips: {
 	                 required: true  
@@ -81,7 +81,7 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
 	
 	function userInterfaceEditformValidation(form, max_length_message){
 		
-       $(form).validate({	                 	    	                   
+       return $(form).validate({	                 	    	                   
 		         rules: {		         
                     equipNameEdit: {
                      maxlength: 10
@@ -168,6 +168,8 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
 function resetFieldOnModalClose(modalId, elem){
 	
 	   $(modalId).on("hide.bs.modal", function() {
+
+		$(this).find('form').validate().resetForm()
 	   
 	    //Hide span by class  
 	    $('span[for='+elem+']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
