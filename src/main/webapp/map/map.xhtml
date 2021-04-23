@@ -1456,10 +1456,13 @@
 
 						<h:inputHidden id="equipId1" value="#{equipsBean.equipId}" />
 						<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" />
-						<h:commandButton value="#{mapLabels.map_creation_btn_update_equipment}" p:data-toggle="modal"
-							p:data-target="#editmodal" id="btn-form-send-edit"
-							class="btn btn-dark form-modal-draw-button" onclick="sendType();">
-							<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" />
+
+						<button id="btn-form-confirm-edit" class="btn btn-dark form-modal-draw-button" type="button"
+								onclick="verif('#edit-equip-form', '[id$=btn-form-send-edit]')">#{mapLabels.map_creation_btn_update_equipment}</button>
+
+						<h:commandButton p:data-toggle="modal" p:data-target="#editmodal"
+							id="btn-form-send-edit" onclick="sendType();" style="display: none;">
+							<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventFunction"/>
 						</h:commandButton>
 
 						<h:commandButton value="#{mapLabels.map_creation_btn_cancel_equipment}" id="btn-form-reset"
