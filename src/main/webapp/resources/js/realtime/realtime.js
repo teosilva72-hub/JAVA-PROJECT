@@ -415,7 +415,6 @@ function ScrollZoom(container) {
 				"background-color": '#00FF0D',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
 
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
@@ -424,7 +423,6 @@ function ScrollZoom(container) {
 				"background-color": '#00BFFF',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 		else if (sat_status > 0 && interval == 8) {
@@ -432,7 +430,6 @@ function ScrollZoom(container) {
 				"background-color": '#FFFF00',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
 		}
 		//Red Color > indica que o equipamento está sem comunicação
 		else {
@@ -440,7 +437,6 @@ function ScrollZoom(container) {
 				"background-color": '#FF0000',
 				color: 'white'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
 		}
 
 		// VELOCIDADE SENTIDO 1
