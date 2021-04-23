@@ -289,8 +289,6 @@ public class EquipmentsBean implements Serializable {
 		    defineDMStype(dms, type);
 		  		    		    
 	   	    checked =  equipDAO.checkExists(dms.getEquip_id(), table);
-
-			request.execute("init();");
 	   	 
 	   	    if(checked)
 			   request.execute("alert('#equip-save-error');");
@@ -364,8 +362,6 @@ public class EquipmentsBean implements Serializable {
 	    
 	    
    	    checked =  equipDAO.checkExists(sat.getEquip_id(), table);
-
-		   request.execute("init();");
    	 
    	    if(checked)
    		   request.execute("alert('#equip-save-error');");
@@ -422,8 +418,6 @@ public class EquipmentsBean implements Serializable {
 	    	 
 	    	checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
-			request.execute("init();");
-	    	 
 	    	if(checked)
 			request.execute("alert('#equip-save-error');");
 	    	 
@@ -628,8 +622,6 @@ public class EquipmentsBean implements Serializable {
 			    defineDMStype(dms, type);
 		 						   			 
 			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView);
-			  		     	 
-				request.execute("init();");
 				
 			    if(update) {
 					request.execute("alert('#equip-update');");
@@ -687,8 +679,6 @@ public class EquipmentsBean implements Serializable {
 	  	    defineDirection(sat, 8, parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
 	  	    
 	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView);
-	     	 
-			request.execute("init();");
 			
 			if(update) {
 				request.execute("alert('#equip-update');");
@@ -729,8 +719,6 @@ public class EquipmentsBean implements Serializable {
 			    
 			    //MENSAGEM UPDATED
 			    update = dao.EquipUpdateMap(equip, table, interfaceView);
-			    			    
-				request.execute("init();");
 
 			    if(update) {
 					request.execute("alert('#equip-update');");

@@ -3,39 +3,21 @@ package br.com.tracevia.webapp.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
-import org.primefaces.context.RequestContext;
-
-import br.com.tracevia.webapp.dao.global.NotificationsDAO;
-import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Notifications;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
 @ManagedBean(name="notification")
 @RequestScoped
-public class notification {
+public class Notification {
 
 	//vars
 	boolean stat_battery, door, status;
@@ -62,6 +44,7 @@ public class notification {
 	public void setIdEquip(int idEquip) {
 		this.idEquip = idEquip;
 	}
+	
 	//getters and setters
 	private Connection conn;		
 	private PreparedStatement ps;
@@ -105,6 +88,8 @@ public class notification {
 		x.sendEmailHtml(to, Subject, msgStatus);
 
 	}
+	
+	
 	public String date() throws Exception {
 		TranslationMethods x = new TranslationMethods();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -128,4 +113,6 @@ public class notification {
 
 		return dateHour;
 	}
+	
+	
 }

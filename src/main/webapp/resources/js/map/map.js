@@ -55,6 +55,11 @@ const onEventFunction = data => {
 	}
 }
 
+const verif = (form, success) => {
+	if ($(form).valid())
+		$(success).click()
+}
+
 const setInfoEquip = () => {
 	$('[data-toggle="popover"]').popover({
 		html: true,
@@ -494,7 +499,6 @@ function posEquip(equip) {
 				"background-color": '#00FF0D',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#00FF0D';
 
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
@@ -503,7 +507,6 @@ function posEquip(equip) {
 				"background-color": '#00BFFF',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#00BFFF';
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 		else if (sat_status > 0 && interval == 8) {
@@ -511,7 +514,6 @@ function posEquip(equip) {
 				"background-color": '#FFFF00',
 				color: 'black'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#FFFF00';
 		}
 		//Red Color > indica que o equipamento está sem comunicação
 		else {
@@ -519,7 +521,6 @@ function posEquip(equip) {
 				"background-color": '#FF0000',
 				color: 'white'
 			});
-			document.getElementById(`status${equip.attr('id')}`).style.color = '#FF0000';
 		}
 	}
 
@@ -690,26 +691,6 @@ function dragEquip() {
 function DelName() {
 }
 //Delete Modal Name End
-
-
-//prevent modal form submit
-//use ajax to send data
-
-//Use validation on click button submit   
-//Create button
-function checkValidation() {
-
-	$('#register-equip-form').valid();
-
-}
-
-//Use validation on click button submit   
-//Create button
-function checkValidationEdit() {
-
-	$('#edit-equip-form').valid();
-
-}
 
 function closeModal(modalId, button) {
 	$(button).click(function () {
