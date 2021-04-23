@@ -13,15 +13,12 @@
 
 	<ui:define name="head">
 
-		<h:outputStylesheet library="css/datatables/custom"
-			name="table-style.css" />
+		<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="vbv_report.css" />
 		<h:outputStylesheet library="css/validation" name="validation_style.css" />
+		
+		<h:outputScript library="js/validation-forms/reports" name="vbv-report.js" />
 	
-	
-		<h:outputScript library="js/validation-forms/reports"
-			name="vbv-report.js" />
-
 	</ui:define>
 
 	<ui:define name="main-content">
@@ -223,6 +220,4 @@
 		<!-- SCRIPT DEFINITIONS -->
 
 	</ui:define>
-
-
 </ui:composition>

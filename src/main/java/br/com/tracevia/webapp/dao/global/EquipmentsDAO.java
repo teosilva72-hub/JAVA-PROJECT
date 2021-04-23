@@ -937,6 +937,14 @@ public class EquipmentsDAO {
                 + "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
                 + "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, visible) "
                 + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        		
+        		
+    			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
+    							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
+    							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
+    							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
+    					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    			        	                       		       
            			           		         			          		          			          			
                     //Execute Register			
           			ps = conn.prepareStatement(query);
@@ -967,8 +975,44 @@ public class EquipmentsDAO {
           			          			
           			int success = ps.executeUpdate();
           			          			
-          			if(success > 0)         				
-          				  status = true;	          			          		    		      
+          			if(success > 0) {    
+        				
+        				//Execute Register			
+            			ps = conn.prepareStatement(queryNotification);
+        			
+        			    ps.setInt(1, equip.getEquip_id());             		
+            			ps.setString(2, equip.getNome());
+            			ps.setString(3, equip.getEquip_type());
+            			ps.setInt(4, 0);
+            			ps.setInt(5, 1);
+            			ps.setInt(6, 0);
+            			ps.setString(7, null);
+            			ps.setInt(8, 0);
+            			ps.setInt(9, 1);
+            			ps.setInt(10, 0);
+            			ps.setString(11, null);
+            			ps.setInt(12, 0);
+            			ps.setInt(13, 1);
+            			ps.setInt(14, 0);
+            			ps.setString(15, null);
+            			ps.setInt(16, 0);
+            			ps.setInt(17, 1);
+            			ps.setInt(18, 0);
+            			ps.setString(19, null);
+            			ps.setInt(20, 0);
+            			ps.setInt(21, 1);
+            			ps.setInt(22, 0);
+            			ps.setString(23, null);
+            			ps.setInt(24, 0);
+            			ps.setInt(25, 1);
+            			ps.setInt(26, 0);
+            			ps.setString(27, null);   
+            			                    			
+            			int successNotif = ps.executeUpdate();
+            			
+            			if(successNotif > 0)                				
+        				     status = true;	            				  
+        			    }     				 	        			          		    		      
           	              											
           		} catch (SQLException sqle) {
           		throw new Exception("Erro ao inserir dados " + sqle);        		    
@@ -990,9 +1034,8 @@ public class EquipmentsDAO {
       	    // ------- CREATE DMS FOR MAP / REALTIME ------- //
       	   // --------------------------------------------------- //
                 
-                public boolean EquipDMSRegisterMap(DMS equip, String table) throws Exception {
-              		
-            		
+             public boolean EquipDMSRegisterMap(DMS equip, String table) throws Exception {
+              		            		
             		boolean status = false; 
             		          		
             		try {
@@ -1006,6 +1049,14 @@ public class EquipmentsDAO {
           		
           		String queryActive = "INSERT INTO "+table+"_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
                         + "values ( ?,?,?,?,?,?)";
+          		
+          		
+    			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
+    							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
+    							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
+    							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
+    					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    			        	                       		       
              			           		         			          		          			          			
                       //Execute Register			
             			ps = conn.prepareStatement(query);
@@ -1019,7 +1070,11 @@ public class EquipmentsDAO {
             			ps.setString(7, equip.getEstrada());
             			ps.setString(8, equip.getKm());       			
             			ps.setInt(9,  150); // Linear Width
+            			ps.setInt(10, 100); // Linear posX
               			ps.setInt(11, 100); // Linear posY
+              			ps.setInt(12, 15); // Map Width
+              			ps.setInt(13, 50); // Map posX
+              			ps.setInt(14, 50); // Map posY
             			ps.setInt(15,  equip.getDms_type()); //driver
             			ps.setBoolean(16, true);
             			          			
@@ -1038,8 +1093,44 @@ public class EquipmentsDAO {
                 			            			          			
                 			int success2 = ps.executeUpdate();
             				
-            				if(success2 > 0)
-            					status = true;	
+                			if(success2 > 0) {    
+                				
+                				//Execute Register			
+                    			ps = conn.prepareStatement(queryNotification);
+                			
+                			    ps.setInt(1, equip.getEquip_id());             		
+                    			ps.setString(2, equip.getNome());
+                    			ps.setString(3, equip.getEquip_type());
+                    			ps.setInt(4, 0);
+                    			ps.setInt(5, 1);
+                    			ps.setInt(6, 0);
+                    			ps.setString(7, null);
+                    			ps.setInt(8, 0);
+                    			ps.setInt(9, 1);
+                    			ps.setInt(10, 0);
+                    			ps.setString(11, null);
+                    			ps.setInt(12, 0);
+                    			ps.setInt(13, 1);
+                    			ps.setInt(14, 0);
+                    			ps.setString(15, null);
+                    			ps.setInt(16, 0);
+                    			ps.setInt(17, 1);
+                    			ps.setInt(18, 0);
+                    			ps.setString(19, null);
+                    			ps.setInt(20, 0);
+                    			ps.setInt(21, 1);
+                    			ps.setInt(22, 0);
+                    			ps.setString(23, null);
+                    			ps.setInt(24, 0);
+                    			ps.setInt(25, 1);
+                    			ps.setInt(26, 0);
+                    			ps.setString(27, null);   
+                    			                    			
+                    			int successNotif = ps.executeUpdate();
+                    			
+                    			if(successNotif > 0)                				
+                				     status = true;	            				  
+                			    }     				 	
             			}            				  	
             			          		    		      
             	              											
@@ -1075,7 +1166,13 @@ public class EquipmentsDAO {
         			String queryMTO = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, type, name, city, road, km, "
         					+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, visible)"
         					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        	                       		            		
+        			
+        			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
+        							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
+        							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
+        							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
+        					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        			        	                       		            		
             		try {
             	
             			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -1102,8 +1199,44 @@ public class EquipmentsDAO {
             			
             			int success = ps.executeUpdate();
             			
-            			if(success > 0)         				
-            				  status = true;		
+            			if(success > 0) {    
+            				
+            				//Execute Register			
+                			ps = conn.prepareStatement(queryNotification);
+            			
+            			    ps.setInt(1, equip.getEquip_id());             		
+                			ps.setString(2, equip.getNome());
+                			ps.setString(3, equip.getEquip_type());
+                			ps.setInt(4, 0);
+                			ps.setInt(5, 1);
+                			ps.setInt(6, 0);
+                			ps.setString(7, null);
+                			ps.setInt(8, 0);
+                			ps.setInt(9, 1);
+                			ps.setInt(10, 0);
+                			ps.setString(11, null);
+                			ps.setInt(12, 0);
+                			ps.setInt(13, 1);
+                			ps.setInt(14, 0);
+                			ps.setString(15, null);
+                			ps.setInt(16, 0);
+                			ps.setInt(17, 1);
+                			ps.setInt(18, 0);
+                			ps.setString(19, null);
+                			ps.setInt(20, 0);
+                			ps.setInt(21, 1);
+                			ps.setInt(22, 0);
+                			ps.setString(23, null);
+                			ps.setInt(24, 0);
+                			ps.setInt(25, 1);
+                			ps.setInt(26, 0);
+                			ps.setString(27, null);   
+                			                    			
+                			int successNotif = ps.executeUpdate();
+                			
+                			if(successNotif > 0)                				
+            				     status = true;	            				  
+            			    }     				 		
             			
             			} else {
             				
@@ -1128,9 +1261,45 @@ public class EquipmentsDAO {
                 			
                 			int success = ps.executeUpdate();
                 			
-                			if(success > 0)         				
-                				  status = true;		
-                			 				
+                			if(success > 0) {    
+                				
+                				//Execute Register			
+                    			ps = conn.prepareStatement(queryNotification);
+                			
+                			    ps.setInt(1, equip.getEquip_id());             		
+                    			ps.setString(2, equip.getNome());
+                    			ps.setString(3, equip.getEquip_type());
+                    			ps.setInt(4, 0);
+                    			ps.setInt(5, 1);
+                    			ps.setInt(6, 0);
+                    			ps.setString(7, null);
+                    			ps.setInt(8, 0);
+                    			ps.setInt(9, 1);
+                    			ps.setInt(10, 0);
+                    			ps.setString(11, null);
+                    			ps.setInt(12, 0);
+                    			ps.setInt(13, 1);
+                    			ps.setInt(14, 0);
+                    			ps.setString(15, null);
+                    			ps.setInt(16, 0);
+                    			ps.setInt(17, 1);
+                    			ps.setInt(18, 0);
+                    			ps.setString(19, null);
+                    			ps.setInt(20, 0);
+                    			ps.setInt(21, 1);
+                    			ps.setInt(22, 0);
+                    			ps.setString(23, null);
+                    			ps.setInt(24, 0);
+                    			ps.setInt(25, 1);
+                    			ps.setInt(26, 0);
+                    			ps.setString(27, null);   
+                    			                    			
+                    			int successNotif = ps.executeUpdate();
+                    			
+                    			if(successNotif > 0)                				
+                				     status = true;	
+                				  
+                			    }                			 				
             			    }
             	              											
             		    } catch (SQLException sqle) {
@@ -1786,7 +1955,7 @@ public Equipments EquipSearchMap(int id, String table, String interfacesView) th
   	  String querySOSLinear = "SELECT equip_id, name, city, road, km, linear_width FROM sos_equipment WHERE equip_id = ? ";
   	  
   	  String querySOSMap = "SELECT equip_id, name, city, road, km, map_width FROM sos_equipment WHERE equip_id = ? ";
-
+  	  
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  
   	  if(interfacesView.equals("linear"))
@@ -2041,84 +2210,155 @@ try { //GET SLQException
 if(table.equals("cftv")) { // CFTV Definitions
     
   String queryCftv = "DELETE FROM cftv_equipment WHERE equip_id = ? ";
+  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
               	  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryCftv);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.CFTV.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }	  
     
 }  // CFTV Definitions END    
 
 if(table.equals("colas")) { // COLAS Definitions
 
   String queryColas= "DELETE FROM colas_equipment WHERE equip_id = ?";
-
+  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryColas);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;            	  
-
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.COLAS.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+   }
 }  // COLAS Definitions END    
 
 if(table.equals("comms")) { // COMMS Definitions
 
   String queryCOMMS= "DELETE FROM comms_equipment WHERE equip_id = ?";
-
+  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryCOMMS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;              	  
-
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.COMMS.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+   }             	  
+ 
 }  // COMMS Definitions END    
 
 if(table.equals("dai")) { // DAI Definitions
 
-  String queryDAI= "DELETE FROM dai_equipment WHERE equip_id = ?";
+  String queryDAI = "DELETE FROM dai_equipment WHERE equip_id = ?";
+  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
 
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryDAI);;
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;           	  
+ if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.DAI.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }        	  
 
 } // DAI Definitions END    
 
 if(table.equals("lpr")) { // LPR Definitions
 
   String queryLPR= "DELETE FROM lpr_equipment WHERE equip_id = ?";
-
+  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryLPR);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;             	  
+ if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.LPR.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }           	  
 
 }  // LPR Definitions END    
 
 if(table.equals("mto")) { // MTO Definitions
 
-  String queryMTO= "DELETE FROM mto_equipment WHERE equip_id = ?";
+  String queryMTO = "DELETE FROM mto_equipment WHERE equip_id = ?";
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
 
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+   
   ps = conn.prepareStatement(queryMTO);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;
+ if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.MTO.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }           	  
             	  
 
 }  // MTO Definitions END    
@@ -2127,8 +2367,9 @@ if(table.equals("mto")) { // MTO Definitions
 if(table.equals("dms")) { // PMV Definitions
 
   String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
-  String queryDMSActive = "DELETE FROM pmv_messages_active WHERE id_equip = ?";
-
+  String queryDMSActive = "DELETE FROM pmv_messages_active WHERE id_equip = ?";  
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
  
   ps = conn.prepareStatement(queryDMS);
@@ -2142,8 +2383,18 @@ if(table.equals("dms")) { // PMV Definitions
 	  
 	  int rs2 =  ps.executeUpdate();
 	  
-	  if(rs2 > 0)
-		  deleted = true;  
+	  if(rs2 > 0) {
+		  	  
+		  ps = conn.prepareStatement(queryNotification);
+		  ps.setInt(1,  id);
+		  ps.setString(2, ModulesEnum.PMV.getModule());
+		  
+		  int rs3 =  ps.executeUpdate();
+		  
+		  if(rs3 > 0)
+			  deleted = true;
+		  
+	  }
   
   }	          	            	  
 
@@ -2152,48 +2403,85 @@ if(table.equals("dms")) { // PMV Definitions
 if(table.equals("sat")) { // SAT Definitions
 
   String querySAT= "DELETE FROM sat_equipment WHERE equip_id = ?";
-
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySAT);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true; 
+ if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.SAT.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }
   
 }  // SAT Definitions END    
 
 if(table.equals("sos")) { // SOS Definitions
 
   String querySOS= "DELETE FROM sos_equipment WHERE equip_id = ?";
-
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+   
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySOS);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;             	  
+  System.out.println(queryNotification);
+  
+ if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.SOS.getModule());
+		  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }           	  
 
 }  // SOS Definitions END    
 
 if(table.equals("speed")) { // SPEED Definitions
 
   String querySpeed= "DELETE FROM speed_equipment WHERE equip_id = ?";
-
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(querySpeed);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;            	  
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.SPEED.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }        	  
 
 }  // SPEED Definitions END   
 
 if(table.equals("sv")) { // SV Definitions
 
 	  String querySV = "DELETE FROM sv_equipment WHERE equip_id = ?";
+	  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+	  
 
 	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 	  ps = conn.prepareStatement(querySV);
@@ -2201,23 +2489,44 @@ if(table.equals("sv")) { // SV Definitions
 	 
 	  int rs =  ps.executeUpdate();
 	  
-	  if(rs > 0)
-		  deleted = true;
-	            	  
+	  if(rs > 0) {
+		  
+		  ps = conn.prepareStatement(queryNotification);
+		  ps.setInt(1,  id);
+		  ps.setString(2, ModulesEnum.SV.getModule());
+		  
+		  int rs2 =  ps.executeUpdate();
+		  
+		  if(rs2 > 0)
+			  deleted = true;
+		  
+	  }
 
 	}  // SV Definitions END   
 
 if(table.equals("wim")) { // WIM Definitions
 
   String queryWIM= "DELETE FROM wim_equipment WHERE equip_id = ?";
+  String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
+  
 
   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   ps = conn.prepareStatement(queryWIM);
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  if(rs > 0)
-	  deleted = true;            	  
+  if(rs > 0) {
+	  
+	  ps = conn.prepareStatement(queryNotification);
+	  ps.setInt(1,  id);
+	  ps.setString(2, ModulesEnum.WIM.getModule());
+	  
+	  int rs2 =  ps.executeUpdate();
+	  
+	  if(rs2 > 0)
+		  deleted = true;
+	  
+  }           	  
             	  
 
 }  // WIM Definitions END    

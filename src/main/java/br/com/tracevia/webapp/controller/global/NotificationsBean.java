@@ -146,13 +146,13 @@ public class NotificationsBean {
 	   
 	   //show/hide when 0 count
 	   if(notifCount == 0)
-		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");
-	  		       
+		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");	  		       
 	     	 			
 	}
 	
 	
 	//UPDATE STATUS NOTIFICATION
+	//ON READ EQUIPMENTS
 	public void updateNotificationStatus(int stateId, int equipId, String type) throws Exception {
 			
 		DateTimeApplication dta = new DateTimeApplication();
