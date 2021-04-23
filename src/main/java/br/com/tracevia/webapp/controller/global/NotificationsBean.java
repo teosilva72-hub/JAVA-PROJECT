@@ -1,7 +1,8 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,8 +14,11 @@ import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
+
 
 @ManagedBean(name="notificationsView")
 @RequestScoped
@@ -103,6 +107,8 @@ public class NotificationsBean {
 		NotificationsDAO dao = new NotificationsDAO();
 				
 		notifications = dao.Notifications();	
+		
+		sendNotificationEmail(notifications);
 					
 		if(notifications.isEmpty()) {
 			
@@ -169,7 +175,62 @@ public class NotificationsBean {
 	  
 	}
 	
-	
-	
+	//MATEUS UPDATE
+	public void sendNotificationEmail(List<Notifications> notif) throws Exception {
+		
+		String to, cc, salute, subject, message;
+		
+		EmailUtil mail = new EmailUtil();
+		DateTimeApplication dta = new DateTimeApplication();
+		
+		to = "mateus.silva@tracevia.com.br"; // To
+		
+		cc = "wellington.silva@tracevia.com.br"; //Contact
+		
+		subject = locale.getStringKey("stat_equipment_notification_subjetct_matter"); //Subject Matter
+		
+		salute = saluteEmail();
+		
+		message = "<style body{color: black;}></style>"+
+		        "<b>"+salute+" "+locale.getStringKey("stat_equipment_notification_dear")+", </b>" +			
+				"<br/><br/>" +
+		        "<b>"+locale.getStringKey("stat_equipment_notification_status")+"</b>: " +
+			    "<br/><br/>" ;
+				
+		         for (Notifications not : notif) {
+		        	 
+		           message+="\n"+ not.getDateTime() + " | <b style='color: red;'>" +not.getDescription()+"</b>";
+					
+				}
+		      
+		        message += "<br/><br/><b>"+locale.getStringKey("stat_equipment_notification_action_message")+"</b><br/><br/> " +
+		        locale.getStringKey("stat_equipment_notification_best_regards")+", <br/><br/>" +
+		        locale.getStringKey("stat_equipment_notification_team");		
+		    
+		       //send email
+		       mail.sendEmailHtml(to, cc, subject, message);
+		       
+	}
+		
+	  public String saluteEmail()
+      {
+          String mensagem = null;
+          
+          Calendar calendar = Calendar.getInstance();	
+          int hour = calendar.get(Calendar.HOUR_OF_DAY);   
+                
+          if (hour > 4 && hour < 12)
+              mensagem = locale.getStringKey("stat_equipment_notification_salute_good_morning");
+
+          else if (hour > 11 && hour < 18)
+        	  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_afternoon");
+          
+          else if(hour == 18)
+        	  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_evening");
+          
+          else  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_night");
+
+          return mensagem;
+      }
 
 }

@@ -41,26 +41,94 @@ public class EmailUtil {
 			return session;
 		}
 		
+	 
+	    //SEND EMAIL DEFAULT
 		public void sendEmail(String to, String assunto, String conteudo) throws AddressException, MessagingException {
 
 			String from = username;
 			
-			Session session = createSessionMail(); // Criando a Sessão
+			Session session = createSessionMail(); // Criando a Sessao
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 
-			//InternetAddress[] address = {new InternetAddress(to)}; - Envio para um destinatário
+			//InternetAddress[] address = {new InternetAddress(to)}; // Envio para um destinatario			
+			//InternetAddress[] address = InternetAddress.parse(to); // Multiplos destinatarios
 			
-			InternetAddress[] address = InternetAddress.parse(to); // Multiplus destinatários
-
-			message.setRecipients(Message.RecipientType.TO, address);        
+			InternetAddress[] EMAIL_TO = InternetAddress.parse(to); // TO EMAIL
+					
+            //TO
+			message.setRecipients(Message.RecipientType.TO, EMAIL_TO);  			 		     
 			message.setSentDate(new Date());
 			message.setSubject(assunto); 
 			message.setText(conteudo);	
-			//message.setContent(message, "text/html");
+			
+			/** Metodo para enviar a mensagem criada */         
 
-			/** Método para enviar a mensagem criada */     
+			Transport transport = session.getTransport("smtp");
+			transport.connect(host, username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();    
+
+		}
+				
+		 //SEND EMAIL DEFAULT WITH CONTACTS
+		public void sendEmail(String to, String cc, String assunto, String conteudo) throws AddressException, MessagingException {
+
+			String from = username;
+			
+			Session session = createSessionMail(); // Criando a Sessao
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+
+			//InternetAddress[] address = {new InternetAddress(to)}; // Envio para um destinatario			
+			//InternetAddress[] address = InternetAddress.parse(to); // Multiplos destinatarios
+			
+			InternetAddress[] EMAIL_TO = InternetAddress.parse(to); // TO EMAIL
+			InternetAddress[] EMAIL_CC = InternetAddress.parse(cc); // CONTACT
+			
+            //TO
+			message.setRecipients(Message.RecipientType.TO, EMAIL_TO);  
+			
+			//CC
+			message.setRecipients(Message.RecipientType.CC, EMAIL_CC);  
+				     
+			message.setSentDate(new Date());
+			message.setSubject(assunto); 
+			message.setText(conteudo);	
+			
+			/** Metodo para enviar a mensagem criada */         
+
+			Transport transport = session.getTransport("smtp");
+			transport.connect(host, username, password);
+			transport.sendMessage(message, message.getAllRecipients());
+			transport.close();    
+
+		}
+			
+		 //SEND EMAIL HTML
+		public void sendEmailHtml(String to, String assunto, String conteudo) throws AddressException, MessagingException {
+
+			String from = username;
+			
+			Session session = createSessionMail(); // Criando a Sessï¿½o
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(from));
+
+			//InternetAddress[] address = {new InternetAddress(to)}; // Envio para um destinatario			
+			//InternetAddress[] address = InternetAddress.parse(to); // Multiplos destinatarios
+			
+			InternetAddress[] EMAIL_TO = InternetAddress.parse(to); // TO EMAIL
+						
+            //TO
+			message.setRecipients(Message.RecipientType.TO, EMAIL_TO); 			     
+			message.setSentDate(new Date());
+			message.setSubject(assunto); 	
+			message.setContent(conteudo, "text/html");
+
+			/** Metodo para enviar a mensagem criada */     
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
@@ -69,27 +137,33 @@ public class EmailUtil {
 
 		}
 		
-		
-		public void sendEmailHtml(String to, String assunto, String conteudo) throws AddressException, MessagingException {
+		 //SEND EMAIL HTML WITH CONTACTS
+		public void sendEmailHtml(String to, String cc, String assunto, String conteudo) throws AddressException, MessagingException {
 
 			String from = username;
 			
-			Session session = createSessionMail(); // Criando a Sessão
+			Session session = createSessionMail(); // Criando a Sessï¿½o
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 
-			//InternetAddress[] address = {new InternetAddress(to)}; - Envio para um destinatário
+			//InternetAddress[] address = {new InternetAddress(to)}; // Envio para um destinatario			
+			//InternetAddress[] address = InternetAddress.parse(to); // Multiplos destinatarios
 			
-			InternetAddress[] address = InternetAddress.parse(to); // Multiplos destinatários
-
-			message.setRecipients(Message.RecipientType.TO, address);        
+			InternetAddress[] EMAIL_TO = InternetAddress.parse(to); // TO EMAIL
+			InternetAddress[] EMAIL_CC = InternetAddress.parse(cc); // CONTACT
+			
+            //TO
+			message.setRecipients(Message.RecipientType.TO, EMAIL_TO);  
+			
+			//CC
+			message.setRecipients(Message.RecipientType.CC, EMAIL_CC);  
+			
 			message.setSentDate(new Date());
-			message.setSubject(assunto); 
-			//message.setText(conteudo);	
+			message.setSubject(assunto); 		
 			message.setContent(conteudo, "text/html");
 
-			/** Método para enviar a mensagem criada */     
+			/** Metodo para enviar a mensagem criada */       
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
