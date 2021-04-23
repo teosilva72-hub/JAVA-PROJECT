@@ -72,9 +72,10 @@ public class notification {
 	LocaleUtil locale;
 	DateTimeApplication dta;
 
+	
 
 	public void sendEmailUser() throws Exception {
-
+teste();
 
 		Notifications not = new Notifications();
 
@@ -128,4 +129,45 @@ public class notification {
 
 		return dateHour;
 	}
+	 public List<Notifications> teste() throws Exception{
+			
+			List<Notifications> lista = new ArrayList<Notifications>();
+				  		
+		   String select = "SELECT st.equip_id , st.equip_name, st.equip_type, st.battery_status, st.battery_last_status, st.battery_viewed, st.battery_datetime,  "
+		   		+ " st.door_status, st.door_last_status, st.door_viewed, st.door_datetime, st.energy_status, st.energy_last_status, st.energy_viewed, st.energy_datetime,  "
+		   		+ "st.online_status, st.online_last_status, st.online_viewed, st.online_datetime, "
+				+ "st.presence_status, st.presence_last_status, st.presence_viewed, st.presence_datetime, "
+				+ "st.temperature_status, st.temperature_last_status, st.temperature_viewed, st.temperature_datetime  "
+				+ "FROM notifications_status st ";
+										
+					    try {
+					    				    				    	
+					    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+						ps = conn.prepareStatement(select);		
+						
+						rs = ps.executeQuery();
+						if (rs.isBeforeFirst()) {
+							
+							while (rs.next()) {
+								System.out.println(rs.next());
+								System.out.println("testando");
+								System.out.println(rs.getBoolean("st.online_status"));
+								System.out.println(rs.getInt("st.equip_id"));
+								Notifications not = null;
+								 not.setEquipId(rs.getInt("st.equip_id"));
+									      lista.add(not);								
+								   
+								   
+								  
+								   						
+						       }
+						    }					    		
+
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+			  return lista;
+		  } 	
 }
