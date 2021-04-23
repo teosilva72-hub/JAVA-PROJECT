@@ -13,6 +13,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
@@ -158,7 +159,7 @@ public class EquipmentsBean implements Serializable {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
-
+	
 	@PostConstruct
 	public void initialize() {
 		
@@ -276,6 +277,9 @@ public class EquipmentsBean implements Serializable {
 		    //For Equipment Road
 		    dms.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
 		    
+		    //For Equipment TYPE
+		    dms.setEquip_type(ModulesEnum.PMV.getModule());
+		    
 		    //For Equipment KM
 		    dms.setKm(parameterMap.get("km"));
 		    
@@ -303,7 +307,7 @@ public class EquipmentsBean implements Serializable {
 	  	 	    		    			    		 
 	   	      }
 	   	    
-	   	     sat = new SAT(); // RESET
+	   	    dms = new DMS(); // RESET
 		   }
 	 	   
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
@@ -325,7 +329,7 @@ public class EquipmentsBean implements Serializable {
 		
 		//For Equipment Name
 	    sat.setNome(parameterMap.get("equipName"));
-	    
+	    	    
 	    //For Equipment City
 	    sat.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
 	    
@@ -334,6 +338,9 @@ public class EquipmentsBean implements Serializable {
 	    
 	    //For Equipment KM
 	    sat.setKm(parameterMap.get("km"));
+	    
+	    //For Equipment TYPE
+	    sat.setEquip_type(ModulesEnum.SAT.getModule());
 	  
 	    //For Number Lanes
   	    int numLanes = (parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
@@ -366,6 +373,7 @@ public class EquipmentsBean implements Serializable {
    		   if(checked) {
 			request.execute("alert('#equip-save');");
 			   request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+			   
 		  }
    	 	   
    		  else  request.execute("alert('#equip-save-error');");
@@ -381,8 +389,8 @@ public class EquipmentsBean implements Serializable {
    		    
 	   else if((moduleID != 0 && (moduleID != 9 && moduleID != 8)) && (equipId != 0)) {
 		   		  		   
-		   //EQUIP TABLE BY MODULE
-		   String table = defineTableById(moduleID);
+		    //EQUIP TABLE BY MODULE
+		    String table = defineTableById(moduleID);
 		   		  		   		   
 			//For Equipment ID
 			equip.setEquip_id(equipId);
@@ -394,7 +402,7 @@ public class EquipmentsBean implements Serializable {
 			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 			 
 			//For Equipment Type
-			equip.setEquip_type(parameterMap.get("mtoType"));
+		    equip.setEquip_type(defineEquipType(table));
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
@@ -441,8 +449,7 @@ public class EquipmentsBean implements Serializable {
 							 
 		 //INTERFACES
 		 String interfaceView = parameterMap.get("interface-search");		   		
-				 
-		
+				 		
 		 int equipId = getEquipId();		 
 		 String equipTable = getEquipTable();
 		 EquipmentsDAO dao = new EquipmentsDAO();
@@ -737,10 +744,10 @@ public class EquipmentsBean implements Serializable {
 		boolean delete = false;
 		
 		 int equipId = getEquipId();		 
-		 String equipTable = getEquipTable();
+		 String equipTable = getEquipTable();	
 		 RequestContext request = RequestContext.getCurrentInstance();
 		 					 		 
-		 EquipmentsDAO dao = new EquipmentsDAO();
+		 EquipmentsDAO dao = new EquipmentsDAO();		
 		 		 
 		 delete = dao.EquipDeleteMap(equipId, equipTable);
 			 
@@ -970,6 +977,29 @@ public class EquipmentsBean implements Serializable {
 			case 3: dms.setDms_type(3); break;					
 			
         }
+    }
+    
+    //EQUIP TYPE DEFINITIONS
+    public String defineEquipType(String table) { 
+    	
+    	String type = null;
+    	
+    	switch(table) {
+    	
+    	case "cftv": type = ModulesEnum.CFTV.getModule() ; break;
+    	case "colas": type = ModulesEnum.COLAS.getModule(); ; break;
+    	case"comms": type = ModulesEnum.COMMS.getModule(); ; break;
+    	case "dai": type = ModulesEnum.DAI.getModule(); ; break;
+    	case "lpr": type = ModulesEnum.LPR.getModule(); ; break;    	 	
+    	case "mto": type = ModulesEnum.MTO.getModule(); ; break;
+    	case "sos": type = ModulesEnum.SOS.getModule(); ; break;
+    	case "speed": type = ModulesEnum.SPEED.getModule(); ; break;
+    	case "sv": type = ModulesEnum.SV.getModule(); ; break;
+    	case "wim": type = ModulesEnum.WIM.getModule(); ; break;
+    	
+    	}
+    	
+    	return type;
     }
     
 }
