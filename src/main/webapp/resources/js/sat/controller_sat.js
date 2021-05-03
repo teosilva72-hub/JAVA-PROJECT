@@ -32,7 +32,7 @@ $(function(){
 					var d = Math.random()
 					if(d < 0.9){
 						$(`#sat${i} [col=${a < 10? '0' + a: a}] [row=${b}] [id=${c}]`).addClass("online")
-					}else if(d >= 0.9 && d < 0.98){
+					}else if(d < 0.98){
 						$(`#sat${i} [col=${a < 10? '0' + a: a}] [row=${b}] [id=${c}]`).addClass("warning")
 					}
 										
