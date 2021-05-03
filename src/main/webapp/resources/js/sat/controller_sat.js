@@ -1,10 +1,11 @@
-/*function btnEnable(){
-	$('[id$=btn-enable-user]').click();
-	eventValidator();
-}//atualizar tela*/
-///////////////////////////////////////////////////////////
-var content = 6; /////quantidade de equipamento por página
-///////////////////////////////////////////////////////////
+var h = window.innerHeight |
+ document.documentElement.clientHeight
+ //document.body.clientHeight;
+
+var z = h / 175;
+
+var content = z + z%2; /////quantidade de equipamento por página
+
 function page(page){
 	var x = $("#page").children().hide()
 	
@@ -21,3 +22,7 @@ $(function(){
 	}
 })
 
+/*function btnEnable(){
+	$('[id$=btn-enable-user]').click();
+	eventValidator();
+}//atualizar tela*/
