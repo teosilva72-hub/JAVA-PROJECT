@@ -4,11 +4,12 @@ var h = window.innerHeight |
 
 var z = h / 175;
 
-var content = z + z%2; /////quantidade de equipamento por página
+var content = Math.ceil(z + z%2); /////quantidade de equipamento por página
 
 function page(page){
 	var x = $("#page").children().hide()
 	
+		console.log(content)
 	for(var i = content * (page - 1); i < content * page; i++){
 		x.eq(i).show()
 	}
