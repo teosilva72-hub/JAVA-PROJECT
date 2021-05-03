@@ -2,14 +2,12 @@ var h = window.innerHeight |
  document.documentElement.clientHeight
  //document.body.clientHeight;
 
-var z = Math.ceil(h / 168);
+var z = Math.floor((h - 160) / 168);
 
-var content = z + z%2; /////quantidade de equipamento por página
-
+var content = z * 2; /////quantidade de equipamento por página
 function page(page){
 	var x = $("#page").children().hide()
 	
-		console.log(content)
 	for(var i = content * (page - 1); i < content * page; i++){
 		x.eq(i).show()
 	}
