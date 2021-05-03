@@ -2,9 +2,9 @@ var h = window.innerHeight |
  document.documentElement.clientHeight
  //document.body.clientHeight;
 
-var z = h / 175;
+var z = Math.ceil(h / 168);
 
-var content = Math.ceil(z + z%2); /////quantidade de equipamento por página
+var content = z + z%2; /////quantidade de equipamento por página
 
 function page(page){
 	var x = $("#page").children().hide()
