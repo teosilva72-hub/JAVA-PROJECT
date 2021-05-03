@@ -61,6 +61,10 @@
   margin-left: 90% !important;
 }
 
+ .input-field-half .valid-icon-hidden, .input-field-half .valid-icon-visible,
+ .select-field-half .valid-icon-hidden, .select-field-half .valid-icon-visible{
+    margin-left: 82% !important;
+ }
 
 
 /* ONLY FOR SAT DIRECTIONS *** */

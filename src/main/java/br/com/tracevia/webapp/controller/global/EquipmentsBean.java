@@ -195,8 +195,7 @@ public class EquipmentsBean implements Serializable {
 			s.setLabel(String.valueOf(f)+" "+localeDirection.getStringKey("direction_lane_label"));
 			lanes.add(s);				
 		}
- 		
- 		
+ 		 		
  		dir.add(new SelectItem(1, localeDirection.getStringKey("directions_north")));   
  		dir.add(new SelectItem(2, localeDirection.getStringKey("directions_south")));   
  		dir.add(new SelectItem(3, localeDirection.getStringKey("directions_east")));   
@@ -272,10 +271,10 @@ public class EquipmentsBean implements Serializable {
 			dms.setDms_type(parameterMap.get("dmsType") == "" ? 1 :Integer.parseInt(parameterMap.get("dmsType")));
 			    
 		    //For Equipment City
-		    dms.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+		    dms.setCidade(parameterMap.get("cities"));
 		    
 		    //For Equipment Road
-		    dms.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+		    dms.setEstrada(parameterMap.get("roads"));
 		    
 		    //For Equipment TYPE
 		    dms.setEquip_type(ModulesEnum.PMV.getModule());
@@ -283,7 +282,7 @@ public class EquipmentsBean implements Serializable {
 		    //For Equipment KM
 		    dms.setKm(parameterMap.get("km"));
 		    
-		    int type = (parameterMap.get("dmsType") == "" ? 0 : Integer.parseInt(parameterMap.get("dmsType")));
+		    int type = (parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType")));
 		  
 		    //DMS TYPE
 		    defineDMStype(dms, type);
@@ -331,10 +330,10 @@ public class EquipmentsBean implements Serializable {
 	    sat.setNome(parameterMap.get("equipName"));
 	    	    
 	    //For Equipment City
-	    sat.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+	    sat.setCidade(parameterMap.get("cities"));
 	    
 	    //For Equipment Road
-	    sat.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+	    sat.setEstrada(parameterMap.get("roads"));
 	    
 	    //For Equipment KM
 	    sat.setKm(parameterMap.get("km"));
@@ -402,16 +401,19 @@ public class EquipmentsBean implements Serializable {
 			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 			 
 			//For Equipment Type
-		    equip.setEquip_type(defineEquipType(table));
+			 if(moduleID == 6)			
+				equip.setEquip_type(parameterMap.get("mtoType") == "" ? "WS" : parameterMap.get("mtoType"));			 
+			
+			 else equip.setEquip_type(defineEquipType(table)); // Other types
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
 				    
 		    //For Equipment City
-		    equip.setCidade(parameterMap.get("cities") == "" ? "0" : parameterMap.get("cities"));
+		    equip.setCidade(parameterMap.get("cities"));
 		    
 		    //For Equipment Road
-		    equip.setEstrada(parameterMap.get("roads") == "" ? "0" : parameterMap.get("roads"));
+		    equip.setEstrada(parameterMap.get("roads"));
 		    
 		    //For Equipment KM
 		    equip.setKm(parameterMap.get("km"));		 
@@ -468,9 +470,9 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+dms.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#dmsType-edit').val('"+dms.getDms_type()+"');");
 		 RequestContext.getCurrentInstance().execute("$('#dmsIp-edit').val('"+dms.getDms_ip()+"');");
-		 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+dms.getCidade()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+dms.getEstrada()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+dms.getKm()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+dms.getCidade()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+dms.getKm()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
 				 		 		
 		 
@@ -481,9 +483,9 @@ public class EquipmentsBean implements Serializable {
 			 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 			 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sat.getNome()+"');");			
-			 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+sat.getCidade()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+sat.getEstrada()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+sat.getKm()+"');");	
+			 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+sat.getCidade()+"');");	
+			 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+sat.getEstrada()+"');");	
+			 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sat.getKm()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
 			 			 
@@ -524,9 +526,9 @@ public class EquipmentsBean implements Serializable {
 			 
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#cities-edit').val('"+equip.getCidade()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#roads-edit').val('"+equip.getEstrada()+"');");	
-		 RequestContext.getCurrentInstance().execute("$('#km-edit').val('"+equip.getKm()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
 				 		
 		 }
@@ -604,13 +606,13 @@ public class EquipmentsBean implements Serializable {
 			    dms.setDms_ip(parameterMap.get("dmsIp-edit"));
 			    
 			   	//For Equipment City
-			    dms.setCidade(parameterMap.get("cities-edit") == "" ? "0" : parameterMap.get("cities-edit"));
+			    dms.setCidade(parameterMap.get("citiesEdit"));
 			    
 			    //For Equipment Road
-			    dms.setEstrada(parameterMap.get("roads-edit") == "" ? "0" : parameterMap.get("roads-edit"));
+			    dms.setEstrada(parameterMap.get("roadsEdit"));
 			    
 			    //For Equipment KM
-			    dms.setKm(parameterMap.get("km-edit"));
+			    dms.setKm(parameterMap.get("kmEdit"));
 			    
 			    //For Equipment Map Width / Linear Width
 			    dms.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
@@ -649,13 +651,13 @@ public class EquipmentsBean implements Serializable {
 	  	    sat.setNome(parameterMap.get("equipNameEdit"));
 	  	    
 	  	    //For Equipment City
-	  	    sat.setCidade(parameterMap.get("cities-edit") == "" ? "0" : parameterMap.get("cities-edit"));
+	  	    sat.setCidade(parameterMap.get("citiesEdit"));
 	  	    
 	  	    //For Equipment Road
-	  	    sat.setEstrada(parameterMap.get("roads-edit") == "" ? "0" : parameterMap.get("roads-edit"));
+	  	    sat.setEstrada(parameterMap.get("roadsEdit"));
 	  	    
 	  	    //For Equipment KM
-	  	    sat.setKm(parameterMap.get("km-edit"));
+	  	    sat.setKm(parameterMap.get("kmEdit"));
 	  	    
 	  	   //For Equipment Map Width / Linear Width
 		    sat.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
@@ -706,10 +708,10 @@ public class EquipmentsBean implements Serializable {
 			    equip.setNome(parameterMap.get("equipNameEdit"));
 					    
 			    //For Equipment City
-			    equip.setCidade(parameterMap.get("cities-edit") == "" ? "0" : parameterMap.get("cities-edit"));
+			    equip.setCidade(parameterMap.get("citiesEdit"));
 			    
 			    //For Equipment Road
-			    equip.setEstrada(parameterMap.get("roads-edit") == "" ? "0" : parameterMap.get("roads-edit"));
+			    equip.setEstrada(parameterMap.get("roadsEdit"));
 			    
 			    //For Equipment KM
 			    equip.setKm(parameterMap.get("km-edit"));	
@@ -963,9 +965,8 @@ public class EquipmentsBean implements Serializable {
     //DEFINE DIRECTIONS VALUES
     public void defineDMStype(DMS dms, int type){
     	    		
-    		switch (type) { 
+    		switch (type) {     		
     		
-    		case 0: dms.setDms_type(1); break;
     		case 1: dms.setDms_type(1); break;
 			case 2: dms.setDms_type(2); break;
 			case 3: dms.setDms_type(3); break;					
@@ -984,8 +985,7 @@ public class EquipmentsBean implements Serializable {
     	case "colas": type = ModulesEnum.COLAS.getModule(); ; break;
     	case"comms": type = ModulesEnum.COMMS.getModule(); ; break;
     	case "dai": type = ModulesEnum.DAI.getModule(); ; break;
-    	case "lpr": type = ModulesEnum.LPR.getModule(); ; break;    	 	
-    	case "mto": type = ModulesEnum.MTO.getModule(); ; break;
+    	case "lpr": type = ModulesEnum.LPR.getModule(); ; break;
     	case "sos": type = ModulesEnum.SOS.getModule(); ; break;
     	case "speed": type = ModulesEnum.SPEED.getModule(); ; break;
     	case "sv": type = ModulesEnum.SV.getModule(); ; break;

@@ -2,7 +2,8 @@
 	//// CHECK IF ID EXISTS
 	////////////////////////////////////////////////////	
 
-function userInterfaceformValidation(form, equips_message, id_message, number_message, max_length_message){
+function userInterfaceformValidation(form, equips_message, id_message, number_message, max_length_message, equip_name_message,
+	cities_message, roads_message, km_message){
 		
        return $(form).validate({	                 	    	                   
 		         rules: {
@@ -14,19 +15,34 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
                      number: true                                                                  
                    },
                     equipName: {
+					 required: true, 
                      maxlength: 10
-                    }                                 
+
+                    }, 
+					cities : {
+						required: true
+					},
+					roads : {
+						required: true
+					},
+					km : {
+						required: true	
+					}	
+				   
 		         },
 		         
 		          messages: {
 						
 		              equips: { required: equips_message },
-		              equipId: { required: id_message,
-		                         number: number_message
-		               }, equipName: {
-		                     maxlength: max_length_message
-		               }	             
-                    },		       
+		              equipId: { 
+						  required: id_message,
+		                  number: number_message
+		               }, equipName: { required: equip_name_message,  maxlength: max_length_message },
+					   cities: { required: cities_message },
+					    roads: { required: roads_message },
+					       km: { required: km_message }					
+											   
+                     },		       
 		            
 		            errorClass : "error",
                     validClass: "success",                  
@@ -79,20 +95,35 @@ function userInterfaceformValidation(form, equips_message, id_message, number_me
 	}//   End Validation Form
 	
 	
-	function userInterfaceEditformValidation(form, max_length_message){
+	function userInterfaceEditformValidation(form, max_length_message, equip_name_message, cities_message, roads_message, km_message){
 		
        return $(form).validate({	                 	    	                   
 		         rules: {		         
                     equipNameEdit: {
+				     required: true, 
                      maxlength: 10
-                    }                                 
+					 
+					}, 
+					citiesEdit : {
+						required: true
+					},
+					roadsEdit : {
+						required: true
+					},
+					kmEdit : {
+						required: true	
+					}                                                          
 		         },
 		         
 		          messages: {
 						
 		              equipNameEdit: {
-		                     maxlength: max_length_message
-		               }	             
+						     required: equip_name_message,
+		                     maxlength: max_length_message						
+		               },
+					   citiesEdit: { required: cities_message },
+					    roadsEdit: { required: roads_message },
+						   kmEdit: { required: km_message }			             
                     },		       
 		            
 		            errorClass : "error",

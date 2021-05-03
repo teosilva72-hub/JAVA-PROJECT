@@ -377,18 +377,20 @@
 														
 							<!-- ***** EQUIPMENT NAME ***** -->
 							
-                               <div class="form-row"> <!-- ROW -->
-								 <div class="form-group col-md-12 input-field"> <!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
-									<span for="equipName" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
-										<input type="text" autocomplete="off"
+							<div class="form-row"> <!-- ROW -->	
+								<div class="form-group col-md-12 input-field"> <!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span><!-- SPAN ICON --> <span for="equipName" 
+										class="valid-icon-hidden"></span><!-- SPAN VALIDATION --> <input
+										type="text" autocomplete="off"
 										name="equipName" id="equipName"
-										placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->									
-								 </div>	<!----> 	
-								   <div class="error-label"> <!-- ERROR DIV -->  
-									  <label for="equipName" class="error" id="equipName-error"></label>
-									</div> <!----> 			
-							  </div> <!----> 
+										placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->							
+								</div> <!---->
+								<div class="error-label"> <!-- ERROR DIV -->	 
+									<label for="equipName" class="error" id="equipName-error"></label>
+								</div> <!---->
+                             </div> <!----> 
+													  
+							  
 							  
 							<!-- ***** EQUIPMENT NAME ***** -->
 							
@@ -398,7 +400,8 @@
 							
 							<div class="form-row"> <!-- ROW --> 
 								<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
-										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->											
+										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->	
+										<span for="cities" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->										
 											<select name="cities" id="cities" size="1">
 											<option value="">#{mapLabels.map_creation_select_city}</option>
 											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
@@ -406,7 +409,9 @@
 											</ui:repeat>
 										</select> <!-- SELECT --> 									
 								   </div>  <!----> 								
-										<div class="error-label"> <!-- ERROR DIV -->  </div>  <!----> 								
+										<div class="error-label"> 											
+											<label for="cities" class="error" id="cities-error"></label>		
+										</div>  <!----> 								
 							      </div>  <!----> 
 							
 								<!-- ***** CITY ***** -->
@@ -414,34 +419,44 @@
 								 <!--  ******************************************************************************************************* -->
 
 								<!-- ***** ROAD ***** -->
-
-	                            <div class="form-row"> <!-- ROW --> 
-								  <div class="form-group col-md-6 select-field"> <!-- SELECT DIV --> 										
-										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 											
+								<div class="form-row">
+	                            <div class="col-md-6"> <!-- ROW --> 
+								  <div class="form-group  select-field-half"> <!-- SELECT DIV --> 										
+										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 
+										<span for="roads" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->											
 											<select name="roads" id="roads" size="1">
 											<option value="">#{mapLabels.map_creation_select_road}</option>
 											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
 												<option value="#{road.value}">#{road.label}</option>
 											</ui:repeat>
-										</select>  <!-- SELECT -->											
+										</select>  <!-- SELECT -->													
                                     </div>	<!----> 
-												   
+									<div class="error-label"> 										
+										<label for="roads" class="error" id="roads-error"></label>
+									</div>  <!----> 													
+								</div> <!---->
+
 							<!-- ***** ROAD ***** -->
 							
 							 <!--  ******************************************************************************************************* -->
 
 							<!-- ***** KM ***** -->
 
-								<div class="form-group col-md-6 input-field"> <!-- ROW --> 
+							<div class="col-md-6"> <!-- ROW --> 
+								<div class="form-group input-field-half"> <!-- ROW --> 
 									<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->
+									<span for="km" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
 										<input type="text" autocomplete="off" name="km" id="km" maxlength="7" class="km"
 										placeholder="#{mapLabels.map_creation_input_km}" />	<!-- INPUT --> 								
-								</div> <!----> 										
+								</div> <!----> 
+								<div class="error-label"> 										
+									<label for="km" class="error" id="km-error"></label>
+								</div>  <!----> 																							
 							</div> <!----> 	
+						 </div> <!---->
+						<!-- ***** KM ***** -->
 							
-							<!-- ***** KM ***** -->
-							
-							 <!--  ******************************************************************************************************* -->
+					    <!--  ******************************************************************************************************* -->
 																					
 							<!-- ***** TRACKS ***** -->
 														
@@ -790,7 +805,6 @@
 						
 						<!--  ******************************************************************************************************* -->
 						   
-
 							<!-- DMS TYPE -->
 							
 							<div class="form-row dmsHidden-edit"> <!-- ROW -->	   
@@ -829,19 +843,18 @@
 							 <!--  ******************************************************************************************************* -->
 														
 							<!-- ***** EQUIPMENT NAME ***** -->
-							
-                               <div class="form-row"> <!-- ROW -->
-								 <div class="form-group col-md-12 input-field"> <!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
-									<span for="equipNameEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
-										<input type="text" autocomplete="off"
-										name="equipNameEdit" id="equipNameEdit"
-										placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->									
-								 </div>	<!----> 	
-								   <div class="error-label"> <!-- ERROR DIV -->  
-									  <label for="equipNameEdit" class="error" id="equipNameEdit-error"></label>
-									</div> <!----> 			
-							  </div> <!----> 
+							                            							  
+							  <div class="form-row"> <!-- ROW --> 
+								<div class="form-group col-md-12 input-field">	 <!-- SELECT --> 								
+										<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->	
+										<span for="equipNameEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->									
+											<input type="text" autocomplete="off" name="equipNameEdit" id="equipNameEdit" 	
+											placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->																				
+								   </div>  <!----> 								
+										<div class="error-label"> 
+											<label for="equipNameEdit" class="error" id="equipNameEdit-error"></label>
+									   </div>  <!----> 								
+							      </div>  <!----> 
 							  
 							<!-- ***** EQUIPMENT NAME ***** -->
 							
@@ -850,15 +863,18 @@
 							<!-- ***** CITY ***** -->
 							<div class="form-row"> <!-- ROW --> 
 								<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
-										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->											
-											<select name="cities-edit" id="cities-edit" size="1">
+										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->	
+										<span for="citiesEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->										
+											<select name="citiesEdit" id="citiesEdit" size="1">
 											<option value="">#{mapLabels.map_creation_select_city}</option>
 											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
 												<option value="#{city.value}">#{city.label}</option>
 											</ui:repeat>
 										</select> <!-- SELECT --> 									
 								   </div>  <!----> 								
-										<div class="error-label"> <!-- ERROR DIV -->  </div>  <!----> 								
+										<div class="error-label"> 
+											<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
+									   </div>  <!----> 								
 							      </div>  <!----> 
 							
 								<!-- ***** CITY ***** -->
@@ -867,17 +883,20 @@
 
 								<!-- ***** ROAD ***** -->
 
-	                            <div class="form-row"> <!-- ROW --> 
+	                           <div class="form-row">                                  
 								  <div class="form-group col-md-12 select-field"> <!-- SELECT DIV --> 										
-										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 											
-											<select name="roads-edit" id="roads-edit" size="1">
+										<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 
+										<span for="roadsEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->											
+											<select name="roadsEdit" id="roadsEdit" size="1">
 											<option value="">#{mapLabels.map_creation_select_road}</option>
 											<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
 												<option value="#{road.value}">#{road.label}</option>
 											</ui:repeat>
 										</select>  <!-- SELECT --> 	
 									 </div>	<!----> 									
-										<div class="error-label"> <!-- ERROR DIV --> </div>		
+										<div class="error-label"> 
+											<label for="roadsEdit" class="error" id="roadsEdit-error"></label>	
+										</div>		
 									</div>
 										   
 							<!-- ***** ROAD ***** -->
@@ -887,14 +906,20 @@
 							  <!-- ***** KM ***** -->
 							  
 							   <div class="form-row"> <!-- ROW --> 
-								<div class="form-group col-md-6 input-field"> <!-- INPUT DIV --> 
+							      <div class="col-md-6"> <!-- COL -->
+								<div class="form-group input-field-half"> <!-- INPUT DIV --> 
 									<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->  
-										<input type="text" autocomplete="off" name="km-edit" id="km-edit" maxlength="7" class="km"
-										placeholder="#{mapLabels.map_creation_input_km}" /> <!-- INPUT -->
-									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
-								</div> <!---->							
-														
-								<div class="form-group col-md-6 input-field"> <!-- INPUT DIV -->
+									<span for="kmEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="kmEdit" id="kmEdit" maxlength="7" class="km"
+										placeholder="#{mapLabels.map_creation_input_km}" /> <!-- INPUT -->									
+								</div> <!---->		
+								<div class="error-label"> 
+									<label for="kmEdit" class="error" id="kmEdit-error"></label>	
+								</div> <!---->					
+							 </div> <!---->	
+												
+								<div class="col-md-6"> <!-- COL -->						
+								<div class="form-group input-field"> <!-- INPUT DIV -->
 									<span><i class="fas fa-arrows-alt-h"></i></span> <!-- SPAN ICON --> 
 									<div class="input-group mb-3">
 										<input class="form-control" type="text" autocomplete="off" name="width-edit" id="width-edit" 
@@ -911,6 +936,7 @@
 									<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
 								</div> <!---->					
 							</div> <!----> 	
+						</div> <!----> 	
 							
 							<!-- ***** KM ***** -->
 							
@@ -1174,14 +1200,19 @@
 		//VALIDATION FORM
 		////////////////////////////
 		
-		var crtvalid = userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
-				'#{validatorMessages.validator_number_message}', '#{validatorMessages.validator_global_maxlength}');
+		userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
+				'#{validatorMessages.validator_number_message}', '#{validatorMessages.validator_global_maxlength}',	'#{requiredMessages.required_user_interface_equip_name}', '#{requiredMessages.required_user_interface_cities}', 
+				'#{requiredMessages.required_user_interface_roads}', '#{requiredMessages.required_user_interface_km}');
+			
 					
 		//Validate elements on change value
 	    //In this case check if the element is valid
 	    validateOnChange('#equips');
 	    validateOnChange('#equipId');	
-	    validateOnChange('#equipName');	
+	    validateOnChange('#equipName');
+		validateOnChange('#cities');
+		validateOnChange('#roads');
+		validateOnChange('#km');	
 	    
 	    //Reset Fields on close modal
 		resetFieldOnModalClose('#modaladd', 'equips');
@@ -1207,6 +1238,9 @@
 	    removeValidationIcon("reset-btn", 'equips');
 	    removeValidationIcon("reset-btn", 'equipId');
 	    removeValidationIcon("reset-btn", 'equipName');
+		removeValidationIcon("reset-btn", 'cities');
+	    removeValidationIcon("reset-btn", 'roads');
+	    removeValidationIcon("reset-btn", 'km');	
 		    
 	    //Clean Form validation on close modal
         cleanValidationOnModalClose("#register-equip-form", '#modaladd');
@@ -1233,20 +1267,25 @@
         
         //EQUIP EDITION
         
-        var edtvalid = userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}');
-					
+        userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}', '#{requiredMessages.required_user_interface_equip_name}',
+           '#{requiredMessages.required_user_interface_cities}', '#{requiredMessages.required_user_interface_roads}', 
+		   '#{requiredMessages.required_user_interface_km}');
+							
 		//Validate elements on change value
 	    //In this case check if the element is valid	   
-	    validateOnChange('#equipNameEdit');	   
+	    validateOnChange('#equipNameEdit');
+		validateOnChange('#citiesEdit');
+        validateOnChange('#roadsEdit');
+        validateOnChange('#kmEdit');		   
 	    
 	    //Reset Fields on close modal
 		resetFieldOnModalClose('#editmodal', 'equips-edit');
 		resetFieldOnModalClose('#editmodal', 'equipId-edit');
 		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
 		resetFieldOnModalClose('#editmodal', 'equipNameEdit');
-		resetFieldOnModalClose('#editmodal', 'roads-edit');
-		resetFieldOnModalClose('#editmodal', 'cities-edit');
-		resetFieldOnModalClose('#editmodal', 'km-edit');
+		resetFieldOnModalClose('#editmodal', 'roadsEdit');
+		resetFieldOnModalClose('#editmodal', 'citiesEdit');
+		resetFieldOnModalClose('#editmodal', 'kmEdit');
 		resetFieldOnModalClose('#editmodal', 'lanes-edit');
 		resetFieldOnModalClose('#editmodal', 'direction1-edit');
 		resetFieldOnModalClose('#editmodal', 'direction2-edit');
@@ -1261,6 +1300,9 @@
 		//Remove validation icons
 	    //click reset button action	
 	    removeValidationIcon("reset-btn-edit", 'equipNameEdit');
+		removeValidationIcon("reset-btn-edit", 'citiesEdit');
+        removeValidationIcon("reset-btn-edit", 'roadsEdit');
+        removeValidationIcon("reset-btn-edit", 'kmEdit');	
 		    
 	    //Clean Form validation on close modal
         cleanValidationOnModalClose("#edit-equip-form", '#editmodal');
@@ -1494,7 +1536,7 @@
 			// MODAL EQUIPMENT SIZE END
 			
 			  $('#km').mask('000+000'); 	// KM MASK	
-			  $('#km-edit').mask('000+000'); 	// KM MASK				
+			  $('#kmEdit').mask('000+000'); 	// KM MASK				
 			
 			  
 			  function statusColors(){

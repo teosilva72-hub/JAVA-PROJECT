@@ -1,30 +1,30 @@
 package br.com.tracevia.webapp.cfg;
 
-public enum NotificationsStatusEnum {
+public enum NotificationsAlarmsEnum {
 	
-	BATTERY_CHARGED("1"),
-	BATTERY_LOW("2"),
-	DOOR_CLOSED("3"),
-	DOOR_OPENED("4"),
-	POWER_ON("5"),
-	POWER_OFF("6"),
-	ON_LINE("7"),
-	OFF_LINE("8"),
-	PRESENCE_FAR("9"),
-	PRESENCE_CLOSE("10"),
-	TEMPERATURE_HIGH("11"),
-	TEMPERATURE_LOW("12"),
-	TRACK_CONNECTED("13"),
-	TRACK_DESCONNECTED("14");
+	FULL_BATTERY(1),
+	LOW_BATTERY(2),
+	DOOR_CLOSED(3),
+	DOOR_OPENED(4),
+	POWER_ON(5),
+	POWER_OFF(6),
+	ONLINE(7),
+	OFFLINE(8),
+	NO_PRESENCE(9),
+	PRESENCE(10),
+	AMBIENT_TEMPERATURE(11),
+	HIGH_TEMPERATURE(12),
+	TRACK_CONNECTED(13),
+	TRACK_DESCONNECTED(14);
 
-	private String status; 	 
+	private int alarm; 	 
 	 
-    NotificationsStatusEnum(String status) {
-        this.status = status;
+    NotificationsAlarmsEnum(int alarm) {
+        this.alarm = alarm;
     }
  
-    public String getStatus() {
-        return status;
+    public int getAlarm() {
+        return alarm;
     }	
 
 }

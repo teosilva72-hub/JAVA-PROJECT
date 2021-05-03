@@ -243,11 +243,9 @@ footer {
   height: auto;
 }
 
-.dropdown-nofit-checked {
-  background: #87cefa;
-}
-.dropdown-nofit-unchecked {
-  background: #f8f9fa;
+.dropdown-nofit-alert {
+  background: #FFF0F5; /*LAVANDER BLUSH*/
+  
 }
 
 /* DROPDOWN ITEM STYLES */
@@ -771,16 +769,6 @@ input.apple-switch:checked:before {
 }
 
 /* Loading */
-
-.loading {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  background-color: white;
-  z-index: 1000;
-}
 
 .loading-animation {
   position: relative;

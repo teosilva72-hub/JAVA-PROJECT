@@ -125,7 +125,7 @@ public class LoginAccountBean {
 		} catch (UnknownHostException e) {			
 			    e.printStackTrace();
 		}
-				
+								
 	}
 		
    public String loginValidation() throws Exception {
