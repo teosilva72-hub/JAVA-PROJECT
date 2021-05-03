@@ -71,3 +71,7 @@ body {
 #btnPage{
 	margin-top: -10px;
 }
+#btnPage > label.active {
+	 background-color: yellow !important;
+	 color: black;
+}

@@ -43,14 +43,14 @@
 		<!-- btn atualização -->
 		<div class="btn-toolbar" role="toolbar"
 			aria-label="Toolbar with button groups">
-			<div id="btnPage" class="btn-group mr-2 pags" role="group"
+			<div id="btnPage" class="btn-group mr-2 pags btn-group-toggle" data-toggle="buttons" role="group"
 				aria-label="First group">
 				
 			</div>
 
-		</div>
+		</div><!-- final do btn paginação -->
 		<div class="row confRow" id="page">
-			<c:forEach var="sat" begin="1" end="49">
+			<c:forEach var="sat" begin="1" end="10">
 				<div class="col-6" id="sat#{sat}">
 					<div class="btn-group btnSat">
 						<div class="btn btn-danger">SAT #{sat}</div>
