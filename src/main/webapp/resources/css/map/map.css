@@ -663,13 +663,13 @@ img.box-img[zoom] {
   width: 100%;
 }
 
-[id$="cities-edit"] {
+[id$="citiesEdit"] {
   width: 100%;
 } 
-[id$="roads-edit"] {
+[id$="roadsEdit"] {
   width: 100%;
 }
-[id$="km-edit"] {
+[id$="kmEdit"] {
   width: 100%;
 }  
 [id$="width-edit"] {

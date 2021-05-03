@@ -1,20 +1,22 @@
 package br.com.tracevia.webapp.controller.global;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
@@ -27,13 +29,21 @@ public class NotificationsBean {
 	LocaleUtil locale;	
 	NotificationsTypeEnum types;
 			
-    private List<Notifications> notifications;
+    private List<Notifications> notifications; 
+    List<Notifications> notificationsEmail;
     private int notifCount;
     
     private int equipId;
     private int stateId;
     private String type;
 	private long timestamp;
+	
+	int delay;
+	int interval;
+	Timer timer;
+	
+	DateTimeApplication dta;
+	
 	
 	public List<Notifications> getNotifications() {
 		return notifications;
@@ -99,17 +109,20 @@ public class NotificationsBean {
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
+				
 	}
-			
+		
 	public void findNotifications() throws Exception {
 		
-		notifications = new ArrayList<Notifications>();		
+		notifications = new ArrayList<Notifications>();
 		NotificationsDAO dao = new NotificationsDAO();
-				
-		notifications = dao.Notifications();	
 		
-		sendNotificationEmail(notifications);
-					
+		interval = 1000;
+	    delay = 1000;
+		timer = new Timer();
+				
+		notifications = dao.Notifications();
+						
 		if(notifications.isEmpty()) {
 			
 		   Notifications not = new Notifications();
@@ -117,6 +130,7 @@ public class NotificationsBean {
 		   not.setEquipId(0);
 		   not.setType("void");
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
+		   not.setViewedBgColor("dropdown-nofit-unchecked"); 
 			
 		   notifications.add(not);
 		   		   				 
@@ -134,29 +148,7 @@ public class NotificationsBean {
 		notifCount = dao.notificationsCount();	
 				
 	}
-		
-	public void updateNotificationView() throws Exception {
-						
-		NotificationsDAO dao = new NotificationsDAO();
-		
-	   boolean isUpdated = dao.updateNotificationsView(stateId, equipId);
-	   
-	   if(isUpdated)
-	      countNotifications();
-	   
-	   //Update badge number
-	   RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");
-	   
-	   //Update badge notification color
-	   RequestContext.getCurrentInstance().execute("$('[id$="+type+""+equipId+"]').removeClass('dropdown-nofit-checked').addClass('dropdown-nofit-unchecked');");
-	   
-	   //show/hide when 0 count
-	   if(notifCount == 0)
-		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");	  		       
-	     	 			
-	}
-	
-	
+				
 	//UPDATE STATUS NOTIFICATION
 	//ON READ EQUIPMENTS
 	public void updateNotificationStatus(int stateId, int equipId, String type) throws Exception {
@@ -174,63 +166,6 @@ public class NotificationsBean {
 			dao.insertNotificationHistory(stateId, equipId, datetime, type);
 	  
 	}
-	
-	//MATEUS UPDATE
-	public void sendNotificationEmail(List<Notifications> notif) throws Exception {
-		
-		String to, cc, salute, subject, message;
-		
-		EmailUtil mail = new EmailUtil();
-		DateTimeApplication dta = new DateTimeApplication();
-		
-		to = "mateus.silva@tracevia.com.br"; // To
-		
-		cc = "wellington.silva@tracevia.com.br"; //Contact
-		
-		subject = locale.getStringKey("stat_equipment_notification_subjetct_matter"); //Subject Matter
-		
-		salute = saluteEmail();
-		
-		message = "<style body{color: black;}></style>"+
-		        "<b>"+salute+" "+locale.getStringKey("stat_equipment_notification_dear")+", </b>" +			
-				"<br/><br/>" +
-		        "<b>"+locale.getStringKey("stat_equipment_notification_status")+"</b>: " +
-			    "<br/><br/>" ;
 				
-		         for (Notifications not : notif) {
-		        	 
-		           message+="\n"+ not.getDateTime() + " | <b style='color: red;'>" +not.getDescription()+"</b>";
-					
-				}
-		      
-		        message += "<br/><br/><b>"+locale.getStringKey("stat_equipment_notification_action_message")+"</b><br/><br/> " +
-		        locale.getStringKey("stat_equipment_notification_best_regards")+", <br/><br/>" +
-		        locale.getStringKey("stat_equipment_notification_team");		
-		    
-		       //send email
-		       mail.sendEmailHtml(to, cc, subject, message);
-		       
-	}
-		
-	  public String saluteEmail()
-      {
-          String mensagem = null;
-          
-          Calendar calendar = Calendar.getInstance();	
-          int hour = calendar.get(Calendar.HOUR_OF_DAY);   
-                
-          if (hour > 4 && hour < 12)
-              mensagem = locale.getStringKey("stat_equipment_notification_salute_good_morning");
-
-          else if (hour > 11 && hour < 18)
-        	  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_afternoon");
-          
-          else if(hour == 18)
-        	  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_evening");
-          
-          else  mensagem = locale.getStringKey("stat_equipment_notification_salute_good_night");
-
-          return mensagem;
-      }
-
+	
 }

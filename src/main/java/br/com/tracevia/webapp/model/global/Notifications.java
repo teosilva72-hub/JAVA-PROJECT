@@ -10,9 +10,11 @@ public class Notifications {
 	private String dateTime;
 	private String type;
 	private String description;
+	private String km;
+	
 
 		
-	public Notifications(int status, int equipId, String viewedBgColor, String title, String equipName, String dateTime, String type, String description) {
+	public Notifications(int status, int equipId, String viewedBgColor, String title, String equipName, String dateTime, String type, String description, String km) {
 		
 		this.status = status;
 		this.equipId = equipId;
@@ -22,6 +24,7 @@ public class Notifications {
 		this.dateTime = dateTime;
 		this.type = type;
 		this.description = description;
+		this.km = km;
 	}
 	
 	public Notifications() {}	
@@ -77,6 +80,14 @@ public class Notifications {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getKm() {
+		return km;
+	}
+
+	public void setKm(String km) {
+		this.km = km;
 	}	
-	
+		
 }

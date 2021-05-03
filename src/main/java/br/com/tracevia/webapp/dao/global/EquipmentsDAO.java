@@ -939,12 +939,8 @@ public class EquipmentsDAO {
                 + "values  ( ?,?,?,?,?,?,?,?,?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         		
         		
-    			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
-    							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
-    							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
-    							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
-    					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    			        	                       		       
+        		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, equip_km) "        							
+				        + "VALUES (null, ?, ?, ?, ?)";       	       
            			           		         			          		          			          			
                     //Execute Register			
           			ps = conn.prepareStatement(query);
@@ -983,31 +979,8 @@ public class EquipmentsDAO {
         			    ps.setInt(1, equip.getEquip_id());             		
             			ps.setString(2, equip.getNome());
             			ps.setString(3, equip.getEquip_type());
-            			ps.setInt(4, 0);
-            			ps.setInt(5, 1);
-            			ps.setInt(6, 0);
-            			ps.setString(7, null);
-            			ps.setInt(8, 0);
-            			ps.setInt(9, 1);
-            			ps.setInt(10, 0);
-            			ps.setString(11, null);
-            			ps.setInt(12, 0);
-            			ps.setInt(13, 1);
-            			ps.setInt(14, 0);
-            			ps.setString(15, null);
-            			ps.setInt(16, 0);
-            			ps.setInt(17, 1);
-            			ps.setInt(18, 0);
-            			ps.setString(19, null);
-            			ps.setInt(20, 0);
-            			ps.setInt(21, 1);
-            			ps.setInt(22, 0);
-            			ps.setString(23, null);
-            			ps.setInt(24, 0);
-            			ps.setInt(25, 1);
-            			ps.setInt(26, 0);
-            			ps.setString(27, null);   
-            			                    			
+            			ps.setString(4, equip.getKm());
+            		      			            			                    			
             			int successNotif = ps.executeUpdate();
             			
             			if(successNotif > 0)                				
@@ -1050,13 +1023,9 @@ public class EquipmentsDAO {
           		String queryActive = "INSERT INTO "+table+"_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
                         + "values ( ?,?,?,?,?,?)";
           		
-          		
-    			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
-    							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
-    							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
-    							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
-    					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    			        	                       		       
+          		          		
+          		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, equip_km) "        							
+				        + "VALUES (null, ?, ?, ?, ?)";       	    	                       		       
              			           		         			          		          			          			
                       //Execute Register			
             			ps = conn.prepareStatement(query);
@@ -1101,31 +1070,8 @@ public class EquipmentsDAO {
                 			    ps.setInt(1, equip.getEquip_id());             		
                     			ps.setString(2, equip.getNome());
                     			ps.setString(3, equip.getEquip_type());
-                    			ps.setInt(4, 0);
-                    			ps.setInt(5, 1);
-                    			ps.setInt(6, 0);
-                    			ps.setString(7, null);
-                    			ps.setInt(8, 0);
-                    			ps.setInt(9, 1);
-                    			ps.setInt(10, 0);
-                    			ps.setString(11, null);
-                    			ps.setInt(12, 0);
-                    			ps.setInt(13, 1);
-                    			ps.setInt(14, 0);
-                    			ps.setString(15, null);
-                    			ps.setInt(16, 0);
-                    			ps.setInt(17, 1);
-                    			ps.setInt(18, 0);
-                    			ps.setString(19, null);
-                    			ps.setInt(20, 0);
-                    			ps.setInt(21, 1);
-                    			ps.setInt(22, 0);
-                    			ps.setString(23, null);
-                    			ps.setInt(24, 0);
-                    			ps.setInt(25, 1);
-                    			ps.setInt(26, 0);
-                    			ps.setString(27, null);   
-                    			                    			
+                    			ps.setString(4, equip.getKm());
+                    			                    			                    			
                     			int successNotif = ps.executeUpdate();
                     			
                     			if(successNotif > 0)                				
@@ -1167,12 +1113,10 @@ public class EquipmentsDAO {
         					+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, visible)"
         					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         			
-        			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, battery_status, battery_last_status, "
-        							+ "battery_viewed, battery_datetime, door_status, door_last_status, door_viewed, door_datetime, energy_status,	energy_last_status, "
-        							+ "energy_viewed, energy_datetime, online_status, online_last_status, online_viewed, online_datetime, presence_status, presence_last_status, "
-        							+ "presence_viewed, presence_datetime,	temperature_status,	temperature_last_status, temperature_viewed, temperature_datetime) "        							
-        					        + "VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        			        	                       		            		
+        			
+        			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, equip_km) "        							
+    				        + "VALUES (null, ?, ?, ?, ?)";       	
+        			       	                       		            		
             		try {
             	
             			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -1206,31 +1150,8 @@ public class EquipmentsDAO {
             			
             			    ps.setInt(1, equip.getEquip_id());             		
                 			ps.setString(2, equip.getNome());
-                			ps.setString(3, equip.getEquip_type());
-                			ps.setInt(4, 0);
-                			ps.setInt(5, 1);
-                			ps.setInt(6, 0);
-                			ps.setString(7, null);
-                			ps.setInt(8, 0);
-                			ps.setInt(9, 1);
-                			ps.setInt(10, 0);
-                			ps.setString(11, null);
-                			ps.setInt(12, 0);
-                			ps.setInt(13, 1);
-                			ps.setInt(14, 0);
-                			ps.setString(15, null);
-                			ps.setInt(16, 0);
-                			ps.setInt(17, 1);
-                			ps.setInt(18, 0);
-                			ps.setString(19, null);
-                			ps.setInt(20, 0);
-                			ps.setInt(21, 1);
-                			ps.setInt(22, 0);
-                			ps.setString(23, null);
-                			ps.setInt(24, 0);
-                			ps.setInt(25, 1);
-                			ps.setInt(26, 0);
-                			ps.setString(27, null);   
+                			ps.setString(3, equip.getEquip_type()); 
+                			ps.setString(4, equip.getKm());
                 			                    			
                 			int successNotif = ps.executeUpdate();
                 			
@@ -1268,32 +1189,9 @@ public class EquipmentsDAO {
                 			
                 			    ps.setInt(1, equip.getEquip_id());             		
                     			ps.setString(2, equip.getNome());
-                    			ps.setString(3, equip.getEquip_type());
-                    			ps.setInt(4, 0);
-                    			ps.setInt(5, 1);
-                    			ps.setInt(6, 0);
-                    			ps.setString(7, null);
-                    			ps.setInt(8, 0);
-                    			ps.setInt(9, 1);
-                    			ps.setInt(10, 0);
-                    			ps.setString(11, null);
-                    			ps.setInt(12, 0);
-                    			ps.setInt(13, 1);
-                    			ps.setInt(14, 0);
-                    			ps.setString(15, null);
-                    			ps.setInt(16, 0);
-                    			ps.setInt(17, 1);
-                    			ps.setInt(18, 0);
-                    			ps.setString(19, null);
-                    			ps.setInt(20, 0);
-                    			ps.setInt(21, 1);
-                    			ps.setInt(22, 0);
-                    			ps.setString(23, null);
-                    			ps.setInt(24, 0);
-                    			ps.setInt(25, 1);
-                    			ps.setInt(26, 0);
-                    			ps.setString(27, null);   
-                    			                    			
+                    			ps.setString(3, ModulesEnum.MTO.getModule());
+                    			ps.setString(4, equip.getKm());
+                    		                    			                    			
                     			int successNotif = ps.executeUpdate();
                     			
                     			if(successNotif > 0)                				
