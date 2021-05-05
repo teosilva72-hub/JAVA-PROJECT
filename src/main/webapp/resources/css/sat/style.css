@@ -23,6 +23,11 @@ body, html {
 	font-weight: bolder;
 	border: solid 1px gray;
 }/*hour icon*/
+.number:hover {
+	background: gray;
+	color: black;
+	border: solid 1px black;
+}/*hour icon*/
 .confRow {
 	margin-left: 1%;
 }/*linha principal*/
@@ -35,8 +40,8 @@ body, html {
 	margin-left: 0px;
 }/*linha principal dos minutos*/
 .l{
-	width: 4%;
 	border: solid black 1px;
+	width: 4%;
 	height: 100%;
 }/*coluna dos minutos*/
 .row-ll{
@@ -54,7 +59,9 @@ body, html {
 .ll.warning {
 	background: yellow;
 }/*últimas 8 horas*/
-
+.ll.none {
+	background: #4D4D3D;
+}/*não tem faixa*/
 .btnSat{
 	margin-top: 20px;
 }/*Botão sat*/
@@ -96,6 +103,7 @@ body, html {
 	width: 18px;
 	height: 18px;
 }/*icone btn info*/
+
 /*----------------------------*/
 /*ANIMAÇÃO LOADING*/ 
 #preloader { 
