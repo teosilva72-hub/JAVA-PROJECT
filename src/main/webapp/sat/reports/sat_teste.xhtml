@@ -28,12 +28,23 @@
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/sat" name="controller_sat.js" />
+		<h:outputScript library="js/sat" name="controller_teste.js" p:type="module"/>
 		<h:outputScript library="js/validation-forms/reports"
 			name="sat-reports.js" />
 
 	</ui:define>
 
 	<ui:define name="main-content">
+	<div id="preloader"><!-- inicio da animação -->
+			<div class="inner">
+				<!-- HTML DA ANIMAÇÃO MUITO LOUCA DO SEU PRELOADER! -->
+				<div class="bolas">
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div><!-- final da animação -->
 		<h:form id="enable">
 			<h:commandButton id="btn-enable-user" value="loop"
 				style="display: none;" type="buttom">
@@ -43,34 +54,32 @@
 		<!-- btn atualização -->
 		<div class="btn-toolbar" role="toolbar"
 			aria-label="Toolbar with button groups">
-			<div id="btnPage" class="btn-group mr-2 pags btn-group-toggle" data-toggle="buttons" role="group"
-				aria-label="First group">
-				
-			</div>
+			<div id="btnPage" class="btn-group mr-2 pags btn-group-toggle"
+				data-toggle="buttons" role="group" aria-label="First group"></div>
 
-		</div><!-- final do btn paginação -->
+		</div>
+		<!-- final do btn paginação -->
 		<div class="row confRow" id="page">
-			<c:forEach var="sat" begin="1" end="10">
+			<c:forEach var="sat" begin="1" end="49">
 				<div class="col-6" id="sat#{sat}">
 					<div class="btn-group btnSat">
-						<div class="btn btn-danger">SAT #{sat}</div>
-						<div class="btn btn-success">
+						<div class="btn btn-sat">SAT #{sat}</div>
+						<div class="btn btn-battery">
 							<svg aria-hidden="true" focusable="false" data-prefix="fas"
-								data-icon="car-battery"
-								role="img" width="22" height="22"
-								viewBox="0 0 512 512">
-							<path fill="currentColor"
+								class="betterySat" data-icon="car-battery" role="img" width="22"
+								height="22" viewBox="0 0 512 512"> <path
+								fill="currentColor"
 								d="M480 128h-32V80c0-8.84-7.16-16-16-16h-96c-8.84 0-16 7.16-16 16v48H192V80c0-8.84-7.16-16-16-16H80c-8.84 0-16 7.16-16 16v48H32c-17.67 0-32 14.33-32 32v256c0 17.67 14.33 32 32 32h448c17.67 0 32-14.33 32-32V160c0-17.67-14.33-32-32-32zM192 264c0 4.42-3.58 8-8 8H72c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h112c4.42 0 8 3.58 8 8v16zm256 0c0 4.42-3.58 8-8 8h-40v40c0 4.42-3.58 8-8 8h-16c-4.42 0-8-3.58-8-8v-40h-40c-4.42 0-8-3.58-8-8v-16c0-4.42 3.58-8 8-8h40v-40c0-4.42 3.58-8 8-8h16c4.42 0 8 3.58 8 8v40h40c4.42 0 8 3.58 8 8v16z"></path></svg>
 						</div>
-						<div class="btn btn-primary">
-							<svg aria-hidden="true" focusable="false" data-prefix="fas"
-								data-icon="info" width="15" height="15" role="img"
+						<button class="btn btn-primary btn-Info" data-container="body" data-toggle="popover" data-trigger="focus" data-placement="right" data-content="Right popover">
+							<svg aria-hidden="true" focusable="false" data-prefix="fas" class="btnInfo"
+								data-icon="info" role="img"
 								viewBox="0 0 192 512"> <path fill="currentColor"
 								d="M20 424.229h20V279.771H20c-11.046 0-20-8.954-20-20V212c0-11.046 8.954-20 20-20h112c11.046 0 20 8.954 20 20v212.229h20c11.046 0 20 8.954 20 20V492c0 11.046-8.954 20-20 20H20c-11.046 0-20-8.954-20-20v-47.771c0-11.046 8.954-20 20-20zM96 0C56.235 0 24 32.235 24 72s32.235 72 72 72 72-32.235 72-72S135.764 0 96 0z"></path></svg>
-						</div>
+						</button>
 					</div>
-					<div class="hours">
-						<div class="row row-number">
+					<div class="contendo"><!-- inicio do contendo -->
+						<div class="row row-number"><!--  inicio da linha das horas -->
 							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
 							<div class="number" id="h1">#{maintenanceSatView.hours[1]}</div>
 							<div class="number" id="h2">#{maintenanceSatView.hours[2]}</div>
@@ -95,77 +104,97 @@
 							<div class="number" id="h21">#{maintenanceSatView.hours[21]}</div>
 							<div class="number" id="h22">#{maintenanceSatView.hours[22]}</div>
 							<div class="number" id="h23">#{maintenanceSatView.hours[23]}</div>
-						</div>
+						</div><!-- final da linha das horas -->
 						<div class="row row-l">
 
-							<c:forEach var="value" begin="0" end="23">
+							<c:forEach var="value" begin="0" end="23"><!-- inicio da sat -->
 								<div class="l" col="#{maintenanceSatView.hours[value]}">
-									<div class="row row-ll" row="0">
+									<div class="row row-ll" row="0"><!-- row 1 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<!-- row 1 -->
-									<div class="row row-ll" row="1">
+									</div><!-- row 1 -->
+									<div class="row row-ll" row="1"><!-- row 2 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<!-- row 2 -->
-									<div class="row row-ll" row="2">
+									</div><!-- row 2 -->
+									<div class="row row-ll" row="2"><!-- row 3 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<!-- row3 -->
-									<div class="row row-ll" row="3">
+									</div><!-- row3 -->
+									<div class="row row-ll" row="3"><!-- row 4 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<!-- 4 -->
-									<div class="row row-ll" row="4">
+									</div><!-- 4 -->
+									<div class="row row-ll" row="4"><!-- row 5 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<!-- row 5 -->
-									<div class="row row-ll" row="5">
+									</div><!-- row 5 -->
+									<div class="row row-ll" row="5"><!-- row 6 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<div class="row row-ll" row="6">
+									</div><!-- row 6 -->
+									<div class="row row-ll" row="6"><!--  row 7 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<div class="row row-ll" row="7">
+									</div><!-- row 7 -->
+									<div class="row row-ll" row="7"><!-- row 8 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
-									<div class="row row-ll" row="8">
+									</div><!-- row 8 -->
+									<div class="row row-ll" row="8"> <!-- row 9 -->
 										<div class="ll" id="0"></div>
 										<div class="ll" id="15"></div>
 										<div class="ll" id="30"></div>
 										<div class="ll" id="45"></div>
-									</div>
+									</div><!-- row 9 -->
 								</div>
 							</c:forEach>
 
 						</div>
-					</div>
-				</div>
-				<!-- column 1 -->
+						<div class="row row-number"><!-- horas parte inferior do sat -->
+							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
+							<div class="number" id="h1">#{maintenanceSatView.hours[1]}</div>
+							<div class="number" id="h2">#{maintenanceSatView.hours[2]}</div>
+							<div class="number" id="h3">#{maintenanceSatView.hours[3]}</div>
+							<div class="number" id="h4">#{maintenanceSatView.hours[4]}</div>
+							<div class="number" id="h5">#{maintenanceSatView.hours[5]}</div>
+							<div class="number" id="h6">#{maintenanceSatView.hours[6]}</div>
+							<div class="number" id="h7">#{maintenanceSatView.hours[7]}</div>
+							<div class="number" id="h8">#{maintenanceSatView.hours[8]}</div>
+							<div class="number" id="h9">#{maintenanceSatView.hours[9]}</div>
+							<div class="number" id="h10">#{maintenanceSatView.hours[10]}</div>
+							<div class="number" id="h11">#{maintenanceSatView.hours[11]}</div>
+							<div class="number" id="h12">#{maintenanceSatView.hours[12]}</div>
+							<div class="number" id="h13">#{maintenanceSatView.hours[13]}</div>
+							<div class="number" id="h14">#{maintenanceSatView.hours[14]}</div>
+							<div class="number" id="h15">#{maintenanceSatView.hours[15]}</div>
+							<div class="number" id="h16">#{maintenanceSatView.hours[16]}</div>
+							<div class="number" id="h17">#{maintenanceSatView.hours[17]}</div>
+							<div class="number" id="h18">#{maintenanceSatView.hours[18]}</div>
+							<div class="number" id="h19">#{maintenanceSatView.hours[19]}</div>
+							<div class="number" id="h20">#{maintenanceSatView.hours[20]}</div>
+							<div class="number" id="h21">#{maintenanceSatView.hours[21]}</div>
+							<div class="number" id="h22">#{maintenanceSatView.hours[22]}</div>
+							<div class="number" id="h23">#{maintenanceSatView.hours[23]}</div>
+						</div><!-- horas parte inferior do sat -->
+					</div><!-- final do contendo -->
+				</div><!-- column 1 -->
 			</c:forEach>
 
 		</div>
