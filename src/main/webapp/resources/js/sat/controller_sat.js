@@ -46,17 +46,15 @@ $(function () {
 			let l = Math.random() * 7 + 2;
 			quantFaixas(i, parseInt(l)); //remove faixa
 		}
-		
 		$('.btn-sat').addClass('off');  //status sat
 		$('.btn-battery').addClass('off'); //status battery	
 });
 function quantFaixas(sat, faixas) {
-	if(faixas > 7) return;
     faixas = Math.max(2, Math.min(8, faixas));
-    let query = ",";
+    let query = "";
     for (let i = 8; i > faixas; i--)
-        query += `,[row=${i}]`;
-    $(`#sat${sat}`).find(query.replace(",,", "")).children().addClass("none");
+        query += `[row="${i}"]`;
+    $(`#sat${sat}`).find(query.replaceAll("][", "],[")).children().addClass("none");
 }
 //$("#sat2 [col=13] [row=5] [id=30]").addClass("online") //add info sat
 /*function btnEnable(){
