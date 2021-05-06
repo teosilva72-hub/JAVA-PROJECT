@@ -38,6 +38,42 @@
   </h:head>
 
   <h:body>
+  <div class="navbar navbar-expand-lg navbar-dark bg-mattBlackDark fixed-right" style="display:none;">
+  	<nav class="w-100 row">
+  	  <div class="wrapper d-flex">
+      <div class="sideMenu bg-mattBlackDark" id="sidenavPhone">
+
+        <div class="sidebar">
+
+          <div id="dismiss-phone">
+            <i class="fa fa-times"></i>
+          </div>
+
+          <div class="sidebar-header">
+            <h5>SOS</h5>
+          </div>
+
+            <div class="menu-mode">
+            <div class="company-info bg-mattBlackDarkLight">
+              <p>#{concessionaria}</p>
+            </div>
+
+            <ui:insert name="sidebar">
+              <ui:include src="#{navigationController.sidebar_page}" />
+            </ui:insert>
+          </div>
+        </div>
+      </div>
+     </div>
+  		
+  	
+  	</nav>
+  	
+  
+  </div>
+  
+  
+  
     <div class="navbar navbar-expand-lg navbar-dark bg-mattBlackDark fixed-top">
 
       <nav class="w-100 row">
@@ -700,20 +736,30 @@
       function sidenavAction() {
         document.getElementById("sidenav2").style.display = "none";
         document.getElementById("sidenav3").style.display = "none";
+        document.getElementById("sidenavPhone").style.display = "none";
         document.getElementById("sidenav").style.display = "block";
       }
 
       function sidenavAction2() {
         document.getElementById("sidenav3").style.display = "none";
         document.getElementById("sidenav").style.display = "none";
+        document.getElementById("sidenavPhone").style.display = "none";
         document.getElementById("sidenav2").style.display = "block";
       }
 
       function sidenavAction3() {
         document.getElementById("sidenav").style.display = "none";
         document.getElementById("sidenav2").style.display = "none";
+        document.getElementById("sidenavPhone").style.display = "none";
         document.getElementById("sidenav3").style.display = "block";
       }
+		
+      function sidenavActionPhones() {
+          document.getElementById("sidenav").style.display = "none";
+          document.getElementById("sidenav2").style.display = "none";
+          document.getElementById("sidenav3").style.display = "none";
+          document.getElementById("sidenavPhone").style.display = "block";
+        }
 
       function clicked(id) {
         var element = document.getElementById(id);
@@ -758,16 +804,6 @@
           e.stopPropagation();
           $("[id$=holdingcall]").show();
           $("[id$=callback]").hide();
-        });
-
-        $("#navCall").on('click', function (e) {
-          e.preventDefault()
-          $('#toastvoice').toast('show');
-        });
-
-        $("#navListCall").click(function (e) {
-          e.preventDefault()
-          $('#list-toast').toast('show');
         });
       })
       // Voice Menu Open End
