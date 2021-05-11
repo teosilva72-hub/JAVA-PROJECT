@@ -1,20 +1,26 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
+
 
 @ManagedBean(name="notificationsView")
 @RequestScoped
@@ -23,13 +29,21 @@ public class NotificationsBean {
 	LocaleUtil locale;	
 	NotificationsTypeEnum types;
 			
-    private List<Notifications> notifications;
+    private List<Notifications> notifications; 
+    List<Notifications> notificationsEmail;
     private int notifCount;
     
     private int equipId;
     private int stateId;
     private String type;
 	private long timestamp;
+	
+	int delay;
+	int interval;
+	Timer timer;
+	
+	DateTimeApplication dta;
+	
 	
 	public List<Notifications> getNotifications() {
 		return notifications;
@@ -95,15 +109,20 @@ public class NotificationsBean {
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
+				
 	}
-			
+		
 	public void findNotifications() throws Exception {
 		
-		notifications = new ArrayList<Notifications>();		
+		notifications = new ArrayList<Notifications>();
 		NotificationsDAO dao = new NotificationsDAO();
+		
+		interval = 1000;
+	    delay = 1000;
+		timer = new Timer();
 				
-		notifications = dao.Notifications();	
-					
+		notifications = dao.Notifications();
+						
 		if(notifications.isEmpty()) {
 			
 		   Notifications not = new Notifications();
@@ -111,6 +130,7 @@ public class NotificationsBean {
 		   not.setEquipId(0);
 		   not.setType("void");
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
+		   not.setViewedBgColor("dropdown-nofit-unchecked"); 
 			
 		   notifications.add(not);
 		   		   				 
@@ -128,31 +148,9 @@ public class NotificationsBean {
 		notifCount = dao.notificationsCount();	
 				
 	}
-		
-	public void updateNotificationView() throws Exception {
-						
-		NotificationsDAO dao = new NotificationsDAO();
-		
-	   boolean isUpdated = dao.updateNotificationsView(stateId, equipId);
-	   
-	   if(isUpdated)
-	      countNotifications();
-	   
-	   //Update badge number
-	   RequestContext.getCurrentInstance().execute("$('#badge-notif').text("+notifCount+")");
-	   
-	   //Update badge notification color
-	   RequestContext.getCurrentInstance().execute("$('[id$="+type+""+equipId+"]').removeClass('dropdown-nofit-checked').addClass('dropdown-nofit-unchecked');");
-	   
-	   //show/hide when 0 count
-	   if(notifCount == 0)
-		   RequestContext.getCurrentInstance().execute("$('#badge-notif').hide();");
-	  		       
-	     	 			
-	}
-	
-	
+				
 	//UPDATE STATUS NOTIFICATION
+	//ON READ EQUIPMENTS
 	public void updateNotificationStatus(int stateId, int equipId, String type) throws Exception {
 			
 		DateTimeApplication dta = new DateTimeApplication();
@@ -168,8 +166,6 @@ public class NotificationsBean {
 			dao.insertNotificationHistory(stateId, equipId, datetime, type);
 	  
 	}
+				
 	
-	
-	
-
 }

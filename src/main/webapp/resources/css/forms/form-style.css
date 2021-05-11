@@ -5,7 +5,7 @@
 /*****************************************************/
 
 /* custom style for types (input, select) */
-.input-field input, .select-field select, .checkbox-field select{
+.input-field input, .input-field-half input, .select-field select, .checkbox-field select, .select-field-half select{
 	height: 40px;
 	border: 1px solid #343a40;
 	border-radius: 25px;
@@ -40,7 +40,7 @@
 }
 
 /* style for span to be inside fields */
-.input-field span, .select-field span {
+.input-field span, .input-field-half span, .select-field span, .select-field-half span {
 	position: absolute;
 	top: 7px;
 	z-index: 1;
@@ -52,14 +52,14 @@
 }
 
 /* style for fields (FOCUS) */
-.input-field input:focus, .select-field select:focus, .checkbox-field select:focus
-	.select-checkbox-menu button:focus {
+.input-field input:focus, .input-field-half input:focus, .select-field select:focus, .checkbox-field select:focus
+	.select-checkbox-menu button:focus, .select-field-half select:focus {
 	border: 2px solid #1C86EE; /*#dc3545*/
 	box-shadow: 1px 1px 1px 1px #1C86EE;
 }
 
 /* Remove icon from periods select */
- .select-field select, .select-direction select {
+ .select-field select, .select-direction select, .select-field-half select {
   /* for Firefox */
   -moz-appearance: none;
   /* for Chrome */

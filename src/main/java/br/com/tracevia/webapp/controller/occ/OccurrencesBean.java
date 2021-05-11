@@ -1342,9 +1342,8 @@ public class OccurrencesBean {
 				RequestContext.getCurrentInstance().execute("msgDelete()");
 				RequestContext.getCurrentInstance().execute("bloquerTable()");
 				RequestContext.getCurrentInstance().execute("alterarBtn()");
-				
+				listingUpdate();
 				//listando arquivos
-				listFiles();
 			}
 
 			//capturar 

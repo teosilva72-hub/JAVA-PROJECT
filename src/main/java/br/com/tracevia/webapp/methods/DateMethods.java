@@ -313,54 +313,54 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 	  //Preencher os Dias
 		public String[] dateForDays(String dtInicio, String dtFim, int tam) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 			
 			data = new String[tam];
 
-			// mês e ano da dataInicial
+			// mï¿½s e ano da dataInicial
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
 			String diaIni = dtInicio.substring(8, 10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
 			// Novo Objeto - auxiliar
 			YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de dias
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de dias
 			for (int i = 0; i < tam; i++) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth) {
 					dia = 1; // reseta o dia
-					mes++; // incrementa o mês
+					mes++; // incrementa o mï¿½s
 
 					if (mes > 12) {
 						mes = 1;
 						ano++;
-					} // caso for verdade - reseta o mês e incrementa o ano
+					} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-					// Quantos dias o mês possui - atualiza os dados
+					// Quantos dias o mï¿½s possui - atualiza os dados
 					yearMonthNew = YearMonth.of(ano, mes);
 					daysInMonth = yearMonthNew.lengthOfMonth();
 				}
 
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -372,7 +372,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 
 				maxDay = i; // ultimo valor
 				data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados				
-				dia++; // Incrementar o dia até limite do intervalo entre dias
+				dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 								
 			}	
 			
@@ -457,17 +457,14 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								
 			return hora;
 		}
-		
-		
-		
-		
+						
 		public String[] preencherDataHora(String dtInicio, String dtFim, int tamanho) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 			
 			data = new String[tamanho];
 
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
@@ -477,46 +474,46 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 			// String mesFim = dtFim.substring(5,7);
 			// String diaFim = dtFim.substring(8,10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
 			// Novo Objeto - auxiliar
 			YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 			for (int i = 0; i < tamanho; i += 25) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth) {
 					dia = 1; // reseta o dia
-					mes++; // incrementa o mês
+					mes++; // incrementa o mï¿½s
 
 					if (mes > 12) {
 						mes = 1;
 						ano++;
-					} // caso for verdade - reseta o mês e incrementa o ano
+					} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-					// Quantos dias o mês possui - atualiza os dados
+					// Quantos dias o mï¿½s possui - atualiza os dados
 					yearMonthNew = YearMonth.of(ano, mes);
 					daysInMonth = yearMonthNew.lengthOfMonth();
 				}
 
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -527,7 +524,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					mth = "";
 
 				data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-				dia++; // Incrementar o dia até limite do intervalo entre dias
+				dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 			}
 			
 			return data;
@@ -535,11 +532,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 		
 		public String[] preencherDataHora2(String dtInicio, String dtFim, int tamanho) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 			
 			data = new String[tamanho];
 
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
@@ -549,46 +546,46 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 			// String mesFim = dtFim.substring(5,7);
 			// String diaFim = dtFim.substring(8,10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
 			// Novo Objeto - auxiliar
 			YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 			for (int i = 0; i < tamanho; i += 24) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth) {
 					dia = 1; // reseta o dia
-					mes++; // incrementa o mês
+					mes++; // incrementa o mï¿½s
 
 					if (mes > 12) {
 						mes = 1;
 						ano++;
-					} // caso for verdade - reseta o mês e incrementa o ano
+					} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-					// Quantos dias o mês possui - atualiza os dados
+					// Quantos dias o mï¿½s possui - atualiza os dados
 					yearMonthNew = YearMonth.of(ano, mes);
 					daysInMonth = yearMonthNew.lengthOfMonth();
 				}
 
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -599,7 +596,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					mth = "";
 
 				data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-				dia++; // Incrementar o dia até limite do intervalo entre dias
+				dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 			}
 			
 			return data;
@@ -610,54 +607,54 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 
 			data = new String[tamanho];
 			
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
 			String diaIni = dtInicio.substring(8, 10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
 			// Novo Objeto - auxiliar
 			YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 			for (int i = 0; i < tamanho; i += 97) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth) {
 					dia = 1; // reseta o dia
-					mes++; // incrementa o mês
+					mes++; // incrementa o mï¿½s
 
 					if (mes > 12) {
 						mes = 1;
 						ano++;
-					} // caso for verdade - reseta o mês e incrementa o ano
+					} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-					// Quantos dias o mês possui - atualiza os dados
+					// Quantos dias o mï¿½s possui - atualiza os dados
 					yearMonthNew = YearMonth.of(ano, mes);
 					daysInMonth = yearMonthNew.lengthOfMonth();
 				}
 
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -668,7 +665,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					mth = "";
 
 				data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-				dia++; // Incrementar o dia até limite do intervalo entre dias
+				dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 
 			}
 			
@@ -699,56 +696,56 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 		// Preencher dias - Proporcional ao intervalo de tempo
 		public void FillExcelDataByHora(String dtInicio, String dtFim, int tam) {
 
-			String da, mth; // Formatar apresentação
+			String da, mth; // Formatar apresentaï¿½ï¿½o
 			data_excel = new String[tam];
 			data_cabecalho = new String[tam];			
 			
-			// dia, mês e ano da dataInicial
+			// dia, mï¿½s e ano da dataInicial
 
 			String anoIni = dtInicio.substring(0, 4);
 			String mesIni = dtInicio.substring(5, 7);
 			String diaIni = dtInicio.substring(8, 10);
 
-			// dia inicial - conversão para inteiro
+			// dia inicial - conversï¿½o para inteiro
 			int dayIni = Integer.parseInt(diaIni);
 
-			// mes inicial - conversão para inteiro
+			// mes inicial - conversï¿½o para inteiro
 			int mthIni = Integer.parseInt(mesIni);
 
-			// ano inicial - conversão para inteiro
+			// ano inicial - conversï¿½o para inteiro
 			int yearIni = Integer.parseInt(anoIni);
 
-			int dia = dayIni; // inicializar variável do dia
-			int mes = mthIni; // inicializar variável do mês
-			int ano = yearIni; // inicializar variável do ano
+			int dia = dayIni; // inicializar variï¿½vel do dia
+			int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+			int ano = yearIni; // inicializar variï¿½vel do ano
 
-			// Quantos dias possui o respectivo mês
+			// Quantos dias possui o respectivo mï¿½s
 			YearMonth yearMonthObject = YearMonth.of(ano, mes);
 			int daysInMonth = yearMonthObject.lengthOfMonth();
 
 			// Novo Objeto - auxiliar
 			YearMonth yearMonthNew;
 
-			// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+			// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 			// intervalos por hora x 24 horas)
 			for (int i = 0; i < tam; i++) {
 
-				// Caso o dia seja maior que total de dias no mês
+				// Caso o dia seja maior que total de dias no mï¿½s
 				if (dia > daysInMonth) {
 					dia = 1; // reseta o dia
-					mes++; // incrementa o mês
+					mes++; // incrementa o mï¿½s
 
 					if (mes > 12) {
 						mes = 1;
 						ano++;
-					} // caso for verdade - reseta o mês e incrementa o ano
+					} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-					// Quantos dias o mês possui - atualiza os dados
+					// Quantos dias o mï¿½s possui - atualiza os dados
 					yearMonthNew = YearMonth.of(ano, mes);
 					daysInMonth = yearMonthNew.lengthOfMonth();
 				}
 
-				// Formata apresentação da String
+				// Formata apresentaï¿½ï¿½o da String
 				if (dia <= 9)
 					da = "0";
 				else
@@ -768,59 +765,59 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 		// NOVO RELATORIO CONTAGEM 
 				public void preencherDataExcel(String dtInicio, String dtFim, int tam) {
 
-					String da, mth; // Formatar apresentação
+					String da, mth; // Formatar apresentaï¿½ï¿½o
 					
 					int length = tam * 24;
 					int pos = 0;
 					
 					data_hora = new String[length];							
 					
-					// dia, mês e ano da dataInicial
+					// dia, mï¿½s e ano da dataInicial
 
 					String anoIni = dtInicio.substring(0, 4);
 					String mesIni = dtInicio.substring(5, 7);
 					String diaIni = dtInicio.substring(8, 10);
 
-					// dia inicial - conversão para inteiro
+					// dia inicial - conversï¿½o para inteiro
 					int dayIni = Integer.parseInt(diaIni);
 
-					// mes inicial - conversão para inteiro
+					// mes inicial - conversï¿½o para inteiro
 					int mthIni = Integer.parseInt(mesIni);
 
-					// ano inicial - conversão para inteiro
+					// ano inicial - conversï¿½o para inteiro
 					int yearIni = Integer.parseInt(anoIni);
 
-					int dia = dayIni; // inicializar variável do dia
-					int mes = mthIni; // inicializar variável do mês
-					int ano = yearIni; // inicializar variável do ano
+					int dia = dayIni; // inicializar variï¿½vel do dia
+					int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+					int ano = yearIni; // inicializar variï¿½vel do ano
 
-					// Quantos dias possui o respectivo mês
+					// Quantos dias possui o respectivo mï¿½s
 					YearMonth yearMonthObject = YearMonth.of(ano, mes);
 					int daysInMonth = yearMonthObject.lengthOfMonth();
 
 					// Novo Objeto - auxiliar
 					YearMonth yearMonthNew;
 
-					// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+					// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 					// intervalos por hora x 24 horas)
 					for (int i = 1; i <=tam; i++) {
 
-						// Caso o dia seja maior que total de dias no mês
+						// Caso o dia seja maior que total de dias no mï¿½s
 						if (dia > daysInMonth) {
 							dia = 1; // reseta o dia
-							mes++; // incrementa o mês
+							mes++; // incrementa o mï¿½s
 
 							if (mes > 12) {
 								mes = 1;
 								ano++;
-							} // caso for verdade - reseta o mês e incrementa o ano
+							} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-							// Quantos dias o mês possui - atualiza os dados
+							// Quantos dias o mï¿½s possui - atualiza os dados
 							yearMonthNew = YearMonth.of(ano, mes);
 							daysInMonth = yearMonthNew.lengthOfMonth();
 						}
 
-						// Formata apresentação da String
+						// Formata apresentaï¿½ï¿½o da String
 						if (dia <= 9)
 							da = "0";
 						else
@@ -830,7 +827,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						else
 							mth = "";
 						
-						for(int d=pos; d < (i*24); d++ ) // pos se inicia com zero --- (i (dias) * 24) >>> índice máximo por dia
+						for(int d=pos; d < (i*24); d++ ) // pos se inicia com zero --- (i (dias) * 24) >>> ï¿½ndice mï¿½ximo por dia
 						data_hora[d] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados	
 						
 						if(i != tam) {	pos += 24; //a cada passagem incrementa 24
@@ -1041,7 +1038,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					return selectMonth;
 				}
 				
-				//Abreviação do Mês
+				//Abreviaï¿½ï¿½o do Mï¿½s
 					public String abrevMes(String selectedMes) {
 
 						String selectMonth = "";				
@@ -1074,7 +1071,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return selectMonth;
 					}
 					
-					//Abreviação do Ano 
+					//Abreviaï¿½ï¿½o do Ano 
 					public String abrevAno(String ano) {		
 						return ano.substring(2,4);	
 					}
@@ -1597,56 +1594,56 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					// Preencher dias - Proporcional ao intervalo de tempo
 					public String[] preencherDataFluxo(String dtInicio, String dtFim, int tamanho) {
 
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 						
 						data = new String[tamanho];
 
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);
 
-						// dia inicial - conversão para inteiro
+						// dia inicial - conversï¿½o para inteiro
 						int dayIni = Integer.parseInt(diaIni);
 
-						// mes inicial - conversão para inteiro
+						// mes inicial - conversï¿½o para inteiro
 						int mthIni = Integer.parseInt(mesIni);
 
-						// ano inicial - conversão para inteiro
+						// ano inicial - conversï¿½o para inteiro
 						int yearIni = Integer.parseInt(anoIni);
 
-						int dia = dayIni; // inicializar variável do dia
-						int mes = mthIni; // inicializar variável do mês
-						int ano = yearIni; // inicializar variável do ano
+						int dia = dayIni; // inicializar variï¿½vel do dia
+						int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+						int ano = yearIni; // inicializar variï¿½vel do ano
 
-						// Quantos dias possui o respectivo mês
+						// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 						for (int i = 0; i < tamanho; i += 96) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth) {
 								dia = 1; // reseta o dia
-								mes++; // incrementa o mês
+								mes++; // incrementa o mï¿½s
 
 								if (mes > 12) {
 									mes = 1;
 									ano++;
-								} // caso for verdade - reseta o mês e incrementa o ano
+								} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-								// Quantos dias o mês possui - atualiza os dados
+								// Quantos dias o mï¿½s possui - atualiza os dados
 								yearMonthNew = YearMonth.of(ano, mes);
 								daysInMonth = yearMonthNew.lengthOfMonth();
 							}
 
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -1657,7 +1654,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								mth = "";
 
 							data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-							dia++; // Incrementar o dia até limite do intervalo entre dias
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 						}
 						
 						return data;
@@ -1666,45 +1663,45 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					// Preencher dias - Proporcional ao intervalo de tempo
 					public String[] preencherDataFluxoPeriodo(String dtInicio, String dtFim, int tamanho, int periodo) {
 
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 						
 						data = new String[tamanho];
 						
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);
 
-						// dia inicial - conversão para inteiro
+						// dia inicial - conversï¿½o para inteiro
 						int dayIni = Integer.parseInt(diaIni);
 
-						// mes inicial - conversão para inteiro
+						// mes inicial - conversï¿½o para inteiro
 						int mthIni = Integer.parseInt(mesIni);
 
-						// ano inicial - conversão para inteiro
+						// ano inicial - conversï¿½o para inteiro
 						int yearIni = Integer.parseInt(anoIni);
 
-						int dia = dayIni; // inicializar variável do dia
-						int mes = mthIni; // inicializar variável do mês
-						int ano = yearIni; // inicializar variável do ano
+						int dia = dayIni; // inicializar variï¿½vel do dia
+						int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+						int ano = yearIni; // inicializar variï¿½vel do ano
 
-						// Quantos dias possui o respectivo mês
+						// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						//YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 						for (int i = 0; i < tamanho; i += periodo) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth)
 								dia = 1; 
 						
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -1715,7 +1712,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								mth = "";
 
 							data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-							dia++; // Incrementar o dia até limite do intervalo entre dias							
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias							
 						}
 						
 						return data;
@@ -1737,11 +1734,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return dias;
 					}
 					
-					/** Método para calcular o número de dias entre duas datas (diário)	
+					/** Mï¿½todo para calcular o nï¿½mero de dias entre duas datas (diï¿½rio)	
 					 * @param dtInit - data inicial
 					 * @param dtEnd - data final	 
 					 * @throws ParseException 
-					 * @return int - retorna diferença entre duas datas */
+					 * @return int - retorna diferenï¿½a entre duas datas */
 					
 					public int daysDifference(String dtInit, String dtEnd) throws ParseException {
 												 
@@ -1755,11 +1752,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return days;
 					}
 					
-					/** Método para calcular o número de dias entre duas datas (Horário)	
+					/** Mï¿½todo para calcular o nï¿½mero de dias entre duas datas (Horï¿½rio)	
 					 * @param dtInit - data inicial
 					 * @param dtEnd - data final	 
 					 * @throws ParseException 
-					 * @return int - retorna diferença entre duas datas */
+					 * @return int - retorna diferenï¿½a entre duas datas */
 					
 					public int daysDifferenceHour(String dtInit, String dtEnd) throws ParseException {
 												 
@@ -1774,11 +1771,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return difference;
 					}
 					
-					/** Método para calcular o número de dias entre duas datas (Intervalo)
+					/** Mï¿½todo para calcular o nï¿½mero de dias entre duas datas (Intervalo)
 					 * @param dtInit - data inicial
 					 * @param dtEnd - data final	 
 					 * @throws ParseException 
-					 * @return int - retorna diferença entre duas datas */
+					 * @return int - retorna diferenï¿½a entre duas datas */
 					
 					public int daysDifferenceInterval(String dtInit, String dtEnd) throws ParseException {
 												 
@@ -1794,11 +1791,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					}
 					
 					//NOVO 10/12/2019
-					/** Método para calcular o número de dias entre duas datas (Horário)	
+					/** Mï¿½todo para calcular o nï¿½mero de dias entre duas datas (Horï¿½rio)	
 					 * @param dtInit - data inicial
 					 * @param dtEnd - data final	 
 					 * @throws ParseException 
-					 * @return int - retorna diferença entre duas datas */
+					 * @return int - retorna diferenï¿½a entre duas datas */
 					
 					public int daysDifferenceHours(String dtInit, String dtEnd) throws ParseException {
 												 
@@ -1813,9 +1810,9 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					//NOVO 
 					
 					
-					/** Método para comparar se quantidade de dias selecionados, 
-					 * está conforme com limite pré-estabelecido de dias para consulta.					 
-					 * @param dtInit - data de ínicio
+					/** Mï¿½todo para comparar se quantidade de dias selecionados, 
+					 * estï¿½ conforme com limite prï¿½-estabelecido de dias para consulta.					 
+					 * @param dtInit - data de ï¿½nicio
 					 * @param dtEnd - data de fim
 					 * @return void - retorno vazio
 					 * @throws ParseException
@@ -2038,7 +2035,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						
 						if(month == 3) {
 							if(locale.toString().equals("pt_BR"))
-							   rsMonth = "Março";
+							   rsMonth = "Marï¿½o";
 						
 							if(locale.toString().equals("es_ES") || locale.toString().equals("es_AR") ||
 									locale.toString().equals("es_MX"))
@@ -2163,7 +2160,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						
 					}
 					
-					//Abreviação do Mês
+					//Abreviaï¿½ï¿½o do Mï¿½s
 					public String abrevMes(int month) {
 
 						LanguageBean language = new LanguageBean();	
@@ -2275,7 +2272,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					}
 					
 					
-					//Abreviação do Mês
+					//Abreviaï¿½ï¿½o do Mï¿½s
 					public String translateMinutes(String minutes) {
 
 						LanguageBean language = new LanguageBean();	
@@ -2441,45 +2438,45 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					
 					public String[] fillDateHourlyCount(String dtInicio, String dtFim, int tamanho, int periodo) {
 
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 						
 						data = new String[tamanho];
 						
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);
 
-						// dia inicial - conversão para inteiro
+						// dia inicial - conversï¿½o para inteiro
 						int dayIni = Integer.parseInt(diaIni);
 
-						// mes inicial - conversão para inteiro
+						// mes inicial - conversï¿½o para inteiro
 						int mthIni = Integer.parseInt(mesIni);
 
-						// ano inicial - conversão para inteiro
+						// ano inicial - conversï¿½o para inteiro
 						int yearIni = Integer.parseInt(anoIni);
 
-						int dia = dayIni; // inicializar variável do dia
-						int mes = mthIni; // inicializar variável do mês
-						int ano = yearIni; // inicializar variável do ano
+						int dia = dayIni; // inicializar variï¿½vel do dia
+						int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+						int ano = yearIni; // inicializar variï¿½vel do ano
 
-						// Quantos dias possui o respectivo mês
+						// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						//YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 					
 						for (int i = 0; i < tamanho; i += periodo) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth) {
 								dia = 1;  
-							    mes++; // incrementa o mês
+							    mes++; // incrementa o mï¿½s
 							}
 							
 							if (mes > 12) {
@@ -2487,7 +2484,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								ano++;
 							} 
 						
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -2498,7 +2495,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								mth = "";
 
 							data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-							dia++; // Incrementar o dia até limite do intervalo entre dias	
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias	
 													
 						}
 						
@@ -2507,44 +2504,44 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					
 					public String[] fillDateDailyCount(String dtInicio, String dtFim, int tamanho, int periodo) {
 
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 						
 						data = new String[tamanho];
 						
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);
 
-						// dia inicial - conversão para inteiro
+						// dia inicial - conversï¿½o para inteiro
 						int dayIni = Integer.parseInt(diaIni);
 
-						// mes inicial - conversão para inteiro
+						// mes inicial - conversï¿½o para inteiro
 						int mthIni = Integer.parseInt(mesIni);
 
-						// ano inicial - conversão para inteiro
+						// ano inicial - conversï¿½o para inteiro
 						int yearIni = Integer.parseInt(anoIni);
 
-						int dia = dayIni; // inicializar variável do dia
-						int mes = mthIni; // inicializar variável do mês
-						int ano = yearIni; // inicializar variável do ano
+						int dia = dayIni; // inicializar variï¿½vel do dia
+						int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+						int ano = yearIni; // inicializar variï¿½vel do ano
 
-						// Quantos dias possui o respectivo mês
+						// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 						for (int i = 0; i < tamanho; i += periodo) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth) {
 								dia = 1;  
-							    mes++; // incrementa o mês
+							    mes++; // incrementa o mï¿½s
 							}
 							
 							if (mes > 12) {
@@ -2552,11 +2549,11 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								ano++;
 							} 
 							
-							// Quantos dias o mês possui - atualiza os dados
+							// Quantos dias o mï¿½s possui - atualiza os dados
 							yearMonthNew = YearMonth.of(ano, mes);
 							daysInMonth = yearMonthNew.lengthOfMonth();
 						
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -2568,7 +2565,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 
 							data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
 							maxDay = i;													
-							dia++; // Incrementar o dia até limite do intervalo entre dias							
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias							
 						}
 						
 						data[maxDay] = "TOTAL";	
@@ -2576,57 +2573,57 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return data;
 					}
 										
-					// Excel SpreadSheet Cabeçalho e Folhas
+					// Excel SpreadSheet Cabeï¿½alho e Folhas
 					public void fillExcelSheetName(String dtInicio, String dtFim, String[] data_excel, int tam) {
 								
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);			
 
-						// dia inicial - conversão para inteiro
+						// dia inicial - conversï¿½o para inteiro
 						int dayIni = Integer.parseInt(diaIni);
 
-						// mes inicial - conversão para inteiro
+						// mes inicial - conversï¿½o para inteiro
 						int mthIni = Integer.parseInt(mesIni);
 
-						// ano inicial - conversão para inteiro
+						// ano inicial - conversï¿½o para inteiro
 						int yearIni = Integer.parseInt(anoIni);
 
-						int dia = dayIni; // inicializar variável do dia
-						int mes = mthIni; // inicializar variável do mês
-						int ano = yearIni; // inicializar variável do ano
+						int dia = dayIni; // inicializar variï¿½vel do dia
+						int mes = mthIni; // inicializar variï¿½vel do mï¿½s
+						int ano = yearIni; // inicializar variï¿½vel do ano
 
-						// Quantos dias possui o respectivo mês
+						// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 						for (int i = 0; i < tam; i++) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth) {
 								dia = 1; // reseta o dia
-								mes++; // incrementa o mês
+								mes++; // incrementa o mï¿½s
 
 								if (mes > 12) {
 									mes = 1;
 									ano++;
-								} // caso for verdade - reseta o mês e incrementa o ano
+								} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-								// Quantos dias o mês possui - atualiza os dados
+								// Quantos dias o mï¿½s possui - atualiza os dados
 								yearMonthNew = YearMonth.of(ano, mes);
 								daysInMonth = yearMonthNew.lengthOfMonth();
 							}
 
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -2637,52 +2634,52 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								mth = "";
 
 							data_excel[i] = da + dia + "-" + mth + mes + "-" + ano; // Preenche os dados						
-							dia++; // Incrementar o dia até limite do intervalo entre dias
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias
 						}
 					}
 									
 					
-					// Excel SpreadSheet Cabeçalho e Folhas
+					// Excel SpreadSheet Cabeï¿½alho e Folhas
 					public void fillExcelDateHeader(String dtInicio, String dtFim, String[] data_cabecalho, int tam) {
 								
-						String da, mth; // Formatar apresentação
+						String da, mth; // Formatar apresentaï¿½ï¿½o
 
-						// dia, mês e ano da dataInicial
+						// dia, mï¿½s e ano da dataInicial
 
 						String anoIni = dtInicio.substring(0, 4);
 						String mesIni = dtInicio.substring(5, 7);
 						String diaIni = dtInicio.substring(8, 10);
 											
-						int dia = Integer.parseInt(diaIni); // inicializar variável do dia
-						int mes = Integer.parseInt(mesIni); // inicializar variável do mês
-						int ano = Integer.parseInt(anoIni); // inicializar variável do ano
-												// Quantos dias possui o respectivo mês
+						int dia = Integer.parseInt(diaIni); // inicializar variï¿½vel do dia
+						int mes = Integer.parseInt(mesIni); // inicializar variï¿½vel do mï¿½s
+						int ano = Integer.parseInt(anoIni); // inicializar variï¿½vel do ano
+												// Quantos dias possui o respectivo mï¿½s
 						YearMonth yearMonthObject = YearMonth.of(ano, mes);
 						int daysInMonth = yearMonthObject.lengthOfMonth();
 
 						// Novo Objeto - auxiliar
 						YearMonth yearMonthNew;
 
-						// Preencher o número de posições proporcional ao intervalo de 15 minutos (4
+						// Preencher o nï¿½mero de posiï¿½ï¿½es proporcional ao intervalo de 15 minutos (4
 						// intervalos por hora x 24 horas)
 						for (int i = 0; i < tam; i++) {
 
-							// Caso o dia seja maior que total de dias no mês
+							// Caso o dia seja maior que total de dias no mï¿½s
 							if (dia > daysInMonth) {
 								dia = 1; // reseta o dia
-								mes++; // incrementa o mês
+								mes++; // incrementa o mï¿½s
 
 								if (mes > 12) {
 									mes = 1;
 									ano++;
-								} // caso for verdade - reseta o mês e incrementa o ano
+								} // caso for verdade - reseta o mï¿½s e incrementa o ano
 
-								// Quantos dias o mês possui - atualiza os dados
+								// Quantos dias o mï¿½s possui - atualiza os dados
 								yearMonthNew = YearMonth.of(ano, mes);
 								daysInMonth = yearMonthNew.lengthOfMonth();
 							}
 
-							// Formata apresentação da String
+							// Formata apresentaï¿½ï¿½o da String
 							if (dia <= 9)
 								da = "0";
 							else
@@ -2693,7 +2690,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 								mth = "";
 					
 							data_cabecalho[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
-							dia++; // Incrementar o dia até limite do intervalo entre dias							
+							dia++; // Incrementar o dia atï¿½ limite do intervalo entre dias							
 						}
 					}
 					
@@ -2747,15 +2744,15 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					    return dateAux;
 					}
 		     
-		           //NOVO MÉTODO 12/12/2019
+		           //NOVO Mï¿½TODO 12/12/2019
 		     
 		     //NOVO 13/12/2019
 		     
-		 	/** Método para calcular o número de dias entre duas datas	
+		 	/** Mï¿½todo para calcular o nï¿½mero de dias entre duas datas	
 		 	 * @param dtInit - data inicial
 		 	 * @param dtEnd - data final	 
 		 	 * @throws ParseException 
-		 	 * @return int - retorna diferença entre duas datas */
+		 	 * @return int - retorna diferenï¿½a entre duas datas */
 		 	
 		 	public int daysHourDifference(String dtInit, String dtEnd) throws ParseException {
 		 		

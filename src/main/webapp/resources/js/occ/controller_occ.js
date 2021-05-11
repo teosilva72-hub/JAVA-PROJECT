@@ -5,10 +5,13 @@ function inputs(){
     var highway = document.getElementById("eventoRodovia");
     var state = document.getElementById("eventoEstado");
     var state1 = document.getElementById("eventoEstado1");
+	var nav = document.querySelector(".sideMenuToggler");
+	var home = document.getElementById("navbarHome");
+	var logout = document.getElementById("navbarDropdown4");
     //passando valor para a classe rodovia
     var x = new rodovia(highway.value, state.value);
-    console.log(x);
-     //determina a cidade correspondente a rodovia selecionada
+
+    //determina a cidade correspondente a rodovia selecionada
     highway.addEventListener("change", function(e){
         e.preventDefault();
         var selectHighway = highway.value;
@@ -21,9 +24,6 @@ function inputs(){
    //executando função para adicionar condição no input quantidade
    mask();
     ////////////////////////////////////////////////////////////////////////////////////////////
-	var nav = document.querySelector(".sideMenuToggler");
-	var home = document.getElementById("navbarHome");
-	var logout = document.getElementById("navbarDropdown4");
 	nav.disabled = true;
 	home.style.display = "none";
 	logout.style.display = "none";
