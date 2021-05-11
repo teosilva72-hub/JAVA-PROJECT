@@ -43,26 +43,6 @@ const connectSOS = async function(request) {
 	client.onreceive = function(m) {
 		response = JSON.parse(m.body);
 		client.disconnect()
-<<<<<<< HEAD
-	};
-	
-	var on_connect = function() {
-		client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest_51", durable:false},`"${request}"`)
-	};
-	
-	client.connect('tracevia', 'trcv1234', on_connect, on_error, '/');
-	
-	while (true) {
-		if (response != null && response != undefined)
-			return response
-		await sleep(800);
-		
-	};
-	
-};
-
-//GetAllEquipmentStates
-=======
 	}
 	
 	var on_connect = function() {
@@ -127,4 +107,3 @@ $(function() {
 
 // GetAllEquipmentStates
 // GetAllAlarmTypes
->>>>>>> 29be0bcd315cf04bc6b4558b140536e0617febb2
