@@ -27,7 +27,10 @@ const consumeStates = (callback, exchange) => {
 	var on_error =  function() {
 	    console.log('error');
 		setTimeout(() => {
-			consumeStates()
+			consumeStates((message) => {
+				response = JSON.parse(message.body)
+				changeStates(response)
+			}, "states")
 		}, 500)
 	};
 		

@@ -1,8 +1,27 @@
+var ws = new WebSocket(`ws://192.168.0.51:15674/ws`);
+var client = Stomp.over(ws);
+var response;
+var loginAccount = {
+    user: 'a',
+    pass: 'a'
+}
+var on_connect = function() {
+    client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest", durable: false}, `"LogIn;${loginAccount.user};${loginAccount.pass}"`)
+};
+
+client.onreceive = function(m) {
+    response = JSON.parse(m.body);
+    client.disconnect()
+}
+
+client.connect("tracevia", "trcv1234", on_connect);
+// {"Identity":"LogIn","SIPAccount1":"401","SIPPassword":"Sip401","ErrorID":0}
+
 var user = {
     //  User Name
-    "User" : "132",
+    "User" : response.SIPAccount1 || "123",
     //  Password
-    "Pass" : "i68Oi68O",
+    "Pass" : response.SIPPassword || "i68Oi68O",
     //  Auth Realm
     "Realm"   : "192.168.0.5",
     // Display Name
