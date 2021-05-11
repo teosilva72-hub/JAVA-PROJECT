@@ -4,9 +4,47 @@ const USER = "tracevia"
 const PASS = "trcv1234"
 const PORT = 15674
 
-var on_error =  function() {
+let on_error =  function() {
     console.log('error');
 };
+
+const changeStates = response => {
+	let name = response.EquipmentName
+	let status = response.EquipmentStateID
+	
+	switch (status) {
+		case 1:
+			status = 'active'
+			break
+		
+		case 4:
+			status = 'alert'
+			break
+			
+		case 5:
+			status = 'warning'
+			break
+			
+		default:
+			status = ''
+			break
+	}
+
+	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
+}
+
+const callback_states_default = message => {
+	let response = JSON.parse(message.body)
+	changeStates(response)
+}
+
+const callback_alarms_default = message => {
+	let response = JSON.parse(message.body)
+}
+
+const callback_calls_default = message => {
+	let response = JSON.parse(message.body)
+}
 
 function sleep(time) {
     return new Promise(r => setTimeout(r, time))
@@ -19,19 +57,29 @@ const getStomp = () => {
 
 const consumeStates = (callback, exchange) => {
 	var client = getStomp();
+	var count = 0
 	
 	var on_connect = function() {
+		count = 0
 		client.subscribe(`/exchange/sos_${exchange}/sos_${exchange}`, callback)
 	};
 	
 	var on_error =  function() {
 	    console.log('error');
-		setTimeout(() => {
+		count++
+
+		if (count > 3)
+			setTimeout(() => {
+				consumeStates((message) => {
+					response = JSON.parse(message.body)
+					changeStates(response)
+				}, "states")
+			}, 500)
+		else
 			consumeStates((message) => {
 				response = JSON.parse(message.body)
 				changeStates(response)
 			}, "states")
-		}, 500)
 	};
 		
 	client.heartbeat.outgoing = PING
@@ -39,9 +87,42 @@ const consumeStates = (callback, exchange) => {
 	client.connect(USER, PASS, on_connect, on_error, '/');
 }
 
-const connectSOS = async function(request) {	
+const consume = ({ callback_calls, callback_alarms, callback_states = callback_states_default } = {}) => {
 	var client = getStomp();
-	var response = null;
+	var count = 0
+
+	var on_connect = function() {
+		count = 0
+
+		client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
+		client.subscribe(`/exchange/sos_alarms/sos_alarms`, message => {
+			response = JSON.parse(message.body)
+		})
+		client.subscribe(`/exchange/sos_calls/sos_calls`, message => {
+			response = JSON.parse(message.body)
+		})
+	};
+
+	var on_error =  function() {
+	    console.log('error');
+		count++
+
+		if (count > 3)
+			setTimeout(() => {
+				consume()
+			}, 1000)
+		else
+			consume()
+	};
+
+	client.heartbeat.outgoing = PING
+
+	client.connect(USER, PASS, on_connect, on_error, '/');
+}
+
+const connectSOS = async function(request) {	
+	let client = getStomp();
+	let response = null;
 	
 	client.onreceive = function(m) {
 		response = JSON.parse(m.body);
@@ -64,44 +145,16 @@ const connectSOS = async function(request) {
 
 const initSOS = async () => {
 	let response = await connectSOS('GetAllEquipmentStates')
-	let name;
-	let status;
-
-	let changeStates = response => {
-		name = response.EquipmentName
-		status = response.EquipmentStateID
-		
-		switch (status) {
-			case 1:
-				status = 'active'
-				break
-			
-			case 4:
-				status = 'alert'
-				break
-				
-			case 5:
-				status = 'warning'
-				break
-				
-			default:
-				status = ''
-				break
-		}
-
-		$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
-	}
 
 	if (Array.isArray(response)) {
 		for (const r of response) {
 			changeStates(r)
 		}
+	} else {
+		changeStates(response)
 	}
 
-	consumeStates((message) => {
-		response = JSON.parse(message.body)
-		changeStates(response)
-	}, "states")
+	consume()
 }
 
 $(function() {
