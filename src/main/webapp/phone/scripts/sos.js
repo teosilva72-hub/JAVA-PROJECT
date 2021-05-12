@@ -42,8 +42,8 @@ const callsIcomming = async response => {
 	let status = response.CallStateID
 	let name;
 
-	let response = await connectSOS("GetAllEquipments")
-	for (const r of response)
+	let allEquip = await connectSOS("GetAllEquipments")
+	for (const r of allEquip)
 		if (equipID == r.ID) {
 			name = r.MasterName
 			break
