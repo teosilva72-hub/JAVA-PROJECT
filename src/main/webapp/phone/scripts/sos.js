@@ -37,7 +37,7 @@ const changeStates = response => {
 	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
-const callsIcomming = async response => {
+const callsIncoming = async response => {
 	let equipID = response.EquipmentID
 	let status = response.CallStateID
 	let name;
@@ -53,6 +53,7 @@ const callsIcomming = async response => {
 	
 	switch (status) {
 		case 1: // Atendido
+		case 3: // Finalizado
 		case 5: // Deligado
 			equip.removeClass(`call-box-action`)
 			break
@@ -78,7 +79,7 @@ const callback_alarms_default = message => {
 
 const callback_calls_default = message => {
 	let response = JSON.parse(message.body)
-	callsIcomming(response)
+	callsIncoming(response)
 }
 
 function sleep(time) {
