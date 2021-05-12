@@ -37,15 +37,17 @@ const changeStates = response => {
 	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
-const callsIcomming = response => {
+const callsIcomming = async response => {
 	let equipID = response.EquipmentID
 	let status = response.CallStateID
+	let name;
 
-	let name = connectSOS("GetAllEquipments").then(response => {
-		for (const r of response)
-			if (equipID == r.ID)
-				return r.MasterName
-	})
+	let response = await connectSOS("GetAllEquipments")
+	for (const r of response)
+		if (equipID == r.ID) {
+			name = r.MasterName
+			break
+		}
 
 	let equip = $(`#${name.toLowerCase()}`)
 	
@@ -76,6 +78,7 @@ const callback_alarms_default = message => {
 
 const callback_calls_default = message => {
 	let response = JSON.parse(message.body)
+	callsIcomming(response)
 }
 
 function sleep(time) {
@@ -119,7 +122,7 @@ const consumeStates = (callback, exchange) => {
 	client.connect(USER, PASS, on_connect, on_error, '/');
 }
 
-const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default }) => {
+const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default } = {}) => {
 	var client = getStomp();
 	var count = 0
 
