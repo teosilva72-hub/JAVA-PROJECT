@@ -16,6 +16,10 @@ const changeStates = response => {
 		case 1:
 			status = 'active'
 			break
+
+		case 3:
+			status = 'using'
+			break
 		
 		case 4:
 			status = 'alert'
@@ -31,6 +35,34 @@ const changeStates = response => {
 	}
 
 	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
+}
+
+const callsIcomming = response => {
+	let equipID = response.EquipmentID
+	let status = response.CallStateID
+
+	let name = connectSOS("GetAllEquipments").then(response => {
+		for (const r of response)
+			if (equipID == r.ID)
+				return r.MasterName
+	})
+
+	let equip = $(`#${name.toLowerCase()}`)
+	
+	switch (status) {
+		case 1: // Atendido
+		case 5: // Deligado
+			equip.removeClass(`call-box-action`)
+			break
+		
+		case 4: // Chamando
+			equip.addClass(`call-box-action`)
+			break
+			
+		default:
+			status = ''
+			break
+	}
 }
 
 const callback_states_default = message => {
@@ -87,7 +119,7 @@ const consumeStates = (callback, exchange) => {
 	client.connect(USER, PASS, on_connect, on_error, '/');
 }
 
-const consume = ({ callback_calls, callback_alarms, callback_states = callback_states_default } = {}) => {
+const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default }) => {
 	var client = getStomp();
 	var count = 0
 
@@ -95,12 +127,8 @@ const consume = ({ callback_calls, callback_alarms, callback_states = callback_s
 		count = 0
 
 		client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
-		client.subscribe(`/exchange/sos_alarms/sos_alarms`, message => {
-			response = JSON.parse(message.body)
-		})
-		client.subscribe(`/exchange/sos_calls/sos_calls`, message => {
-			response = JSON.parse(message.body)
-		})
+		client.subscribe(`/exchange/sos_alarms/sos_alarms`, callback_alarms)
+		client.subscribe(`/exchange/sos_calls/sos_calls`, callback_calls)
 	};
 
 	var on_error =  function() {
