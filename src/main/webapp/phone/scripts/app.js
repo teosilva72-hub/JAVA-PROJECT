@@ -464,7 +464,7 @@ async function initPhone() {
                         render      : {
                             remote : { audio: $('#audioRemote').get()[0] }
                         },
-                        RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
+                        RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'false'} ]}
                     }
                 });
             }
@@ -647,6 +647,46 @@ async function initPhone() {
     $('.sipLogClear').click(function(event) {
         event.preventDefault();
         ctxSip.logClear();
+    });
+
+    
+
+    $('#sip-logitems').delegate('.sip-logitem .btnCall', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        ctxSip.phoneCallButtonPressed(sessionid);
+        return false;
+    });
+
+    $('#sip-logitems').delegate('.sip-logitem .btnHoldResume', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        ctxSip.phoneHoldButtonPressed(sessionid);
+        return false;
+    });
+
+    $('#sip-logitems').delegate('.sip-logitem .btnHangUp', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        ctxSip.sipHangUp(sessionid);
+        return false;
+    });
+
+    $('#sip-logitems').delegate('.sip-logitem .btnTransfer', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        ctxSip.sipTransfer(sessionid);
+        return false;
+    });
+
+    $('#sip-logitems').delegate('.sip-logitem .btnMute', 'click', function(event) {
+        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
+        ctxSip.phoneMuteButtonPressed(sessionid);
+        return false;
+    });
+
+    $('#sip-logitems').delegate('.sip-logitem', 'dblclick', function(event) {
+        event.preventDefault();
+
+        var uri = $(this).data('uri');
+        $('#numDisplay').val(uri);
+        ctxSip.phoneCallButtonPressed();
     });
 
     $('#sldVolume').on('change', function() {
