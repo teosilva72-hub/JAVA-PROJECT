@@ -46,7 +46,7 @@ const getEquipFromID = async id => {
 }
 
 const callsIncoming = async response => {
-	let equip = getEquipFromID(response.EquipmentID)
+	let equip = await getEquipFromID(response.EquipmentID)
 	let status = response.CallStateID
 
 

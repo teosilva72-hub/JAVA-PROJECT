@@ -701,16 +701,16 @@ async function initPhone() {
     consume({
         callback_calls = message => {
             let response = JSON.parse(message.body);
-            let equip = getEquipFromID(response.EquipmentID);
-
-            response.displayName = equip.MasterName;
-            response.direction = 'Incoming';
-            response.ctxid = equip.ID;
-            response.remoteIdentity = {
-                uri: equip.IP
-            }
-
-            ctxSip.logCall(response, "ringing")
+            getEquipFromID(response.EquipmentID).then(equip => {
+                response.displayName = equip.MasterName;
+                response.direction = 'Incoming';
+                response.ctxid = equip.ID;
+                response.remoteIdentity = {
+                    uri: equip.IP
+                }
+    
+                ctxSip.logCall(response, "ringing")
+            });
         }
     })
 
