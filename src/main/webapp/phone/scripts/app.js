@@ -707,7 +707,7 @@ async function initPhone() {
             response.direction = 'Incoming';
             response.ctxid = equip.ID;
             response.remoteIdentity = {
-                uri = equip.IP
+                uri: equip.IP
             }
 
             ctxSip.logCall(response, "ringing")
