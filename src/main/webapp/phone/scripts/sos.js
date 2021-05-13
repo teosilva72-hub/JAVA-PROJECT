@@ -37,7 +37,7 @@ const changeStates = response => {
 	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
-const getEquipFromID = id => {
+const getEquipFromID = async id => {
 	let allEquip = await connectSOS("GetAllEquipments")
 	for (const r of allEquip)
 		if (id == r.ID) {
