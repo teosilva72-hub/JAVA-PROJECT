@@ -1,6 +1,6 @@
 var ws = new WebSocket(`ws://192.168.0.51:15674/ws`);
 var client = Stomp.over(ws);
-var user = {};
+var user;
 var loginAccount = {
     user: 'a',
     pass: 'a'

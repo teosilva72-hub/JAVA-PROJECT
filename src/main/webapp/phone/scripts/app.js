@@ -2,12 +2,19 @@
 
 var ctxSip;
 
-$(document).ready(function() {
+const sleep = t => {
+    return new Promise(r => setTimeout(r, t))
+}
+
+async function initPhone() {
 
 
     if (typeof(user) === 'undefined') {
         user = JSON.parse(localStorage.getItem('SIPCreds'));
     }
+
+    while (user === undefined || user === null)
+        await sleep(500)
 
     ctxSip = {
 
@@ -799,4 +806,6 @@ $(document).ready(function() {
         this.stop  = stop; //function() { stop; }
     };
 
-});
+};
+
+initPhone()
