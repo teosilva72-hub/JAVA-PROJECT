@@ -699,7 +699,7 @@ async function initPhone() {
 
     // receiver rabbitmq
     consume({
-        callback_calls = message => {
+        callback_calls: message => {
             let response = JSON.parse(message.body);
             getEquipFromID(response.EquipmentID).then(equip => {
                 response.displayName = equip.MasterName;
