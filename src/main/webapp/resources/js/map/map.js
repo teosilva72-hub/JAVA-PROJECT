@@ -308,6 +308,7 @@ $(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
 
+	initSOS()
 })
 
 function posReset() {

@@ -653,44 +653,6 @@ async function initPhone() {
         ctxSip.logClear();
     });
 
-    $('#sip-logitems').delegate('.sip-logitem .btnCall', 'click', function(event) {
-        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
-        ctxSip.phoneCallButtonPressed(sessionid);
-        return false;
-    });
-
-    $('#sip-logitems').delegate('.sip-logitem .btnHoldResume', 'click', function(event) {
-        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
-        ctxSip.phoneHoldButtonPressed(sessionid);
-        return false;
-    });
-
-    $('#sip-logitems').delegate('.sip-logitem .btnHangUp', 'click', function(event) {
-        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
-        ctxSip.sipHangUp(sessionid);
-        return false;
-    });
-
-    $('#sip-logitems').delegate('.sip-logitem .btnTransfer', 'click', function(event) {
-        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
-        ctxSip.sipTransfer(sessionid);
-        return false;
-    });
-
-    $('#sip-logitems').delegate('.sip-logitem .btnMute', 'click', function(event) {
-        var sessionid = $(this).closest('.sip-logitem').data('sessionid');
-        ctxSip.phoneMuteButtonPressed(sessionid);
-        return false;
-    });
-
-    $('#sip-logitems').delegate('.sip-logitem', 'dblclick', function(event) {
-        event.preventDefault();
-
-        var uri = $(this).data('uri');
-        $('#numDisplay').val(uri);
-        ctxSip.phoneCallButtonPressed();
-    });
-
     $('#sldVolume').on('change', function() {
 
         var v      = $(this).val() / 100,
@@ -734,6 +696,23 @@ async function initPhone() {
     setTimeout(function() {
         ctxSip.logShow();
     }, 3000);
+
+    // receiver rabbitmq
+    consume({
+        callback_calls = message => {
+            let response = JSON.parse(message.body);
+            let equip = getEquipFromID(response.EquipmentID);
+
+            response.displayName = equip.MasterName;
+            response.direction = 'Incoming';
+            response.ctxid = equip.ID;
+            response.remoteIdentity = {
+                uri = equip.IP
+            }
+
+            ctxSip.logCall(response, "ringing")
+        }
+    })
 
 
     /**

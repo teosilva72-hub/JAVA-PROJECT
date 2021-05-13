@@ -37,29 +37,30 @@ const changeStates = response => {
 	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
-const callsIncoming = async response => {
-	let equipID = response.EquipmentID
-	let status = response.CallStateID
-	let name;
-
+const getEquipFromID = id => {
 	let allEquip = await connectSOS("GetAllEquipments")
 	for (const r of allEquip)
-		if (equipID == r.ID) {
-			name = r.MasterName
-			break
+		if (id == r.ID) {
+			return r
 		}
+}
 
-	let equip = $(`#${name.toLowerCase()}`)
+const callsIncoming = async response => {
+	let equip = getEquipFromID(response.EquipmentID)
+	let status = response.CallStateID
+
+
+	let elmt = $(`#${equip.MasterName.toLowerCase()}`)
 	
 	switch (status) {
 		case 1: // Atendido
 		case 3: // Finalizado
 		case 5: // Deligado
-			equip.removeClass(`call-box-action`)
+			elmt.removeClass(`call-box-action`)
 			break
 		
 		case 4: // Chamando
-			equip.addClass(`call-box-action`)
+			elmt.addClass(`call-box-action`)
 			break
 			
 		default:
@@ -188,10 +189,6 @@ const initSOS = async () => {
 
 	consume()
 }
-
-$(function() {
-	initSOS()
-})
 
 // GetAllEquipmentStates
 // GetAllAlarmTypes
