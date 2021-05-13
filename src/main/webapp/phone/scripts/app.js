@@ -2,10 +2,6 @@
 
 var ctxSip;
 
-const sleep = t => {
-    return new Promise(r => setTimeout(r, t))
-}
-
 async function initPhone() {
 
 
