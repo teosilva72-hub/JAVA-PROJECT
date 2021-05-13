@@ -703,7 +703,7 @@ async function initPhone() {
                 response.direction = 'Incoming';
                 response.ctxid = equip.ID;
                 response.remoteIdentity = {
-                    uri: `${MasterSIP}@${equip.IP}`
+                    uri: `${equip.MasterSIP}@${equip.IP}`
                 }
     
                 ctxSip.logCall(response, "ringing")
