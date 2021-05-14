@@ -753,7 +753,7 @@ async function initPhone() {
                 let direction = 'incoming';
                 let status;
 
-                switch(equip.CallStateID) {
+                switch(response.CallStateID) {
                     case 1:
                         status = "answered";
                         ctxSip.stopRingbackTone();
