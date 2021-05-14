@@ -131,9 +131,12 @@ const consume = ({ callback_calls = callback_calls_default, callback_alarms = ca
 	var on_connect = function() {
 		count = 0
 
-		client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
-		client.subscribe(`/exchange/sos_alarms/sos_alarms`, callback_alarms)
-		client.subscribe(`/exchange/sos_calls/sos_calls`, callback_calls)
+		if (typeof callback_states == "function")
+			client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
+		if (typeof callback_alarms == "function")
+			client.subscribe(`/exchange/sos_alarms/sos_alarms`, callback_alarms)
+		if (typeof callback_calls == "function")
+			client.subscribe(`/exchange/sos_calls/sos_calls`, callback_calls)
 	};
 
 	var on_error =  function() {

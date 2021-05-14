@@ -245,6 +245,8 @@ async function initPhone() {
                 };
             }
 
+            calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
+
             if (status === 'ended') {
                 calllog[log.id].stop = log.time;
             }
@@ -318,8 +320,6 @@ async function initPhone() {
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute"><i class="fa fa-fw fa-microphone"></i></button>';
                     i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 }
-                if ((item.status === 'ringing' && item.flow === 'incoming') || item.owner)
-                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 i += '</div>';
             }
             i += '</div>';
@@ -424,7 +424,16 @@ async function initPhone() {
 
             var s = ctxSip.Sessions[sessionid];
             // s.terminate();
-            if (!s) {
+            if (s.service) {
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
+                            ctxSip.logCall(s, 'ended')
+                            
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
+                        }
+                });
+            } else if (!s) {
                 return;
             } else if (s.startTime) {
                 s.bye();
@@ -456,7 +465,7 @@ async function initPhone() {
                 connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                     if (response.UserID == loginAccount.ID) {
                         ctxSip.Sessions[sessionid].owner = true;
-                        ctxSip.callActiveID = newSess.ctxid;
+                        ctxSip.callActiveID = sessionid;
 
                         ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
                     }
@@ -746,6 +755,8 @@ async function initPhone() {
 
     // receiver rabbitmq
     consume({
+        callback_states: null,
+        callback_alarms: null,
         callback_calls: message => {
             let response = JSON.parse(message.body);
 
@@ -759,6 +770,13 @@ async function initPhone() {
                         ctxSip.stopRingbackTone();
                         ctxSip.stopRingTone();
                         ctxSip.setCallSessionStatus('Answered');
+                        break
+
+                    case 3:
+                        status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('');
                         break
 
                     case 4:
@@ -776,7 +794,7 @@ async function initPhone() {
                 response.displayName = equip.MasterName;
                 response.direction = direction;
                 response.service = true;
-                response.ctxid = `${Date.parse(response.StartDate)}id${equip.ID}`;
+                response.ctxid = `${Date.parse(response.StartDate).toString().substr(0, 10)}id${equip.ID}`;
                 response.remoteIdentity = {
                     uri: `${equip.MasterSIP}@${equip.IP}`,
                     displayName: equip.MasterName

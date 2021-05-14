@@ -19,9 +19,10 @@ connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(response => {
 
     return connectSOS("GetAllUsers")
 }).then(response => {
-    loginAccount.ID = response.forEach(r => {
-        if(r.Name == loginAccount.user && r.Password == loginAccount.pass)
-            return r.ID
-    })
+    for(r of response)
+        if(r.Name == loginAccount.user && r.Password == loginAccount.pass) {
+            loginAccount.ID = r.ID
+            break
+        }
 })
 // {"Identity":"LogIn","SIPAccount1":"401","SIPPassword":"Sip401","ErrorID":0}
