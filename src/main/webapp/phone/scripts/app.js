@@ -459,7 +459,7 @@ async function initPhone() {
 
                         ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
                     }
-                }); // !
+                });
             } else if (!s) {
 
                 $("#numDisplay").val("");
@@ -755,6 +755,10 @@ async function initPhone() {
                 switch(equip.CallStateID) {
                     case 1:
                         status = "answered";
+                        ctxSip.stopRingbackTone();
+                        ctxSip.stopRingTone();
+                        ctxSip.setCallSessionStatus('Answered');
+                        ctxSip.callActiveID = newSess.ctxid;
                         break
 
                     case 4:
@@ -763,6 +767,10 @@ async function initPhone() {
 
                     case 5:
                         status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('Rejected');
+                        ctxSip.callActiveID = null;
                         break
                 }
 
@@ -777,7 +785,7 @@ async function initPhone() {
 
                 response.on = () => {}
     
-                if (status = "ringing") {
+                if (status == "ringing") {
                     ctxSip.newSession(response)
                 } else {
                     ctxSip.logCall(response, status)
