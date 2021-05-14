@@ -87,7 +87,7 @@ async function initPhone() {
         newSession : function(newSess) {
 
             newSess.displayName = newSess.remoteIdentity.displayName || newSess.remoteIdentity.uri.user;
-            newSess.ctxid       = ctxSip.getUniqueID();
+            newSess.ctxid       = newSess.ctxid || ctxSip.getUniqueID();
 
             var status;
 
@@ -312,12 +312,14 @@ async function initPhone() {
                 i += '<div class="btn-group btn-group-xs pull-right">';
                 if (item.status === 'ringing' && item.flow === 'incoming') {
                     i += '<button class="btn btn-xs btn-success btnCall" title="Call"><i class="fa fa-phone"></i></button>';
-                } else {
+                } else if (item.owner) {
                     i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><i class="fa fa-pause"></i></button>';
                     i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute"><i class="fa fa-fw fa-microphone"></i></button>';
+                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 }
-                i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
+                if ((item.status === 'ringing' && item.flow === 'incoming') || item.owner)
+                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 i += '</div>';
             }
             i += '</div>';
@@ -450,7 +452,15 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid],
                 target = $("#numDisplay").val();
 
-            if (!s) {
+            if (s.service) {
+                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                    if (response.UserID == loginAccount.ID) {
+                        ctxSip.Sessions[sessionid].owner = true;
+
+                        ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
+                    }
+                }); // !
+            } else if (!s) {
 
                 $("#numDisplay").val("");
                 ctxSip.sipCall(target);
@@ -464,7 +474,7 @@ async function initPhone() {
                         render      : {
                             remote : { audio: $('#audioRemote').get()[0] }
                         },
-                        RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'false'} ]}
+                        RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
                     }
                 });
             }
@@ -739,14 +749,39 @@ async function initPhone() {
             let response = JSON.parse(message.body);
 
             getEquipFromID(response.EquipmentID).then(equip => {
-                response.displayName = equip.MasterName;
-                response.direction = 'Incoming';
-                response.ctxid = equip.ID;
-                response.remoteIdentity = {
-                    uri: `${equip.MasterSIP}@${equip.IP}`
+                let direction = 'incoming';
+                let status;
+
+                switch(equip.CallStateID) {
+                    case 1:
+                        status = "answered";
+                        break
+
+                    case 4:
+                        status = "ringing";
+                        break
+
+                    case 5:
+                        status = "ended";
+                        break
                 }
+
+                response.displayName = equip.MasterName;
+                response.direction = direction;
+                response.service = true;
+                response.ctxid = `${Date.parse(response.StartDate)}id${equip.ID}`;
+                response.remoteIdentity = {
+                    uri: `${equip.MasterSIP}@${equip.IP}`,
+                    displayName: equip.MasterName
+                }
+
+                response.on = () => {}
     
-                ctxSip.logCall(response, "ringing")
+                if (status = "ringing") {
+                    ctxSip.newSession(response)
+                } else {
+                    ctxSip.logCall(response, status)
+                }
             });
         }
     })

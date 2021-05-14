@@ -16,5 +16,12 @@ connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(response => {
         // WebSocket URL
         "WSServer"  : "ws://192.168.0.5:8088/asterisk/ws"
     };
+
+    return connectSOS("GetAllUsers")
+}).then(response => {
+    loginAccount.ID = response.forEach(r => {
+        if(r.Name == loginAccount.user && r.Password == loginAccount.pass)
+            return r.ID
+    })
 })
 // {"Identity":"LogIn","SIPAccount1":"401","SIPPassword":"Sip401","ErrorID":0}
