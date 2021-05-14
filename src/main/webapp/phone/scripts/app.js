@@ -456,6 +456,7 @@ async function initPhone() {
                 connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                     if (response.UserID == loginAccount.ID) {
                         ctxSip.Sessions[sessionid].owner = true;
+                        ctxSip.callActiveID = newSess.ctxid;
 
                         ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
                     }
@@ -758,7 +759,6 @@ async function initPhone() {
                         ctxSip.stopRingbackTone();
                         ctxSip.stopRingTone();
                         ctxSip.setCallSessionStatus('Answered');
-                        ctxSip.callActiveID = newSess.ctxid;
                         break
 
                     case 4:
@@ -770,7 +770,6 @@ async function initPhone() {
                         ctxSip.stopRingTone();
                         ctxSip.stopRingbackTone();
                         ctxSip.setCallSessionStatus('Rejected');
-                        ctxSip.callActiveID = null;
                         break
                 }
 
