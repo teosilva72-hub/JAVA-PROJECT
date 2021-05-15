@@ -59,5 +59,5 @@ function quantFaixas(sat, faixas) {
 //$("#sat2 [col=13] [row=5] [id=30]").addClass("online") //add info sat
 /*function btnEnable(){
 	$('[id$=btn-enable-user]').click();
-	eventValidator();
+	
 }//atualizar tela*/
