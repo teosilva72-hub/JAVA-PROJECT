@@ -22,7 +22,7 @@ async function initPhone() {
             registerExpires : 30,
             traceSip        : true,
             log             : {
-                level : 0,
+                level : 1,
             }
         },
         ringtone     : document.getElementById('ringtone'),
@@ -192,7 +192,7 @@ async function initPhone() {
         // getUser media request refused or device was not present
         getUserMediaFailure : function(e) {
             window.console.error('getUserMedia failed:', e);
-            ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
+            // ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
         },
 
         getUserMediaSuccess : function(stream) {
@@ -226,8 +226,8 @@ async function initPhone() {
         logCall : function(session, status) {
 
             var log = {
-                    clid : session.displayName,
-                    uri  : session.remoteIdentity.uri.toString(),
+                    clid : session.displayName || "Desconhecido",
+                    uri  : (session.remoteIdentity.uri || "Desconhecido").toString(),
                     id   : session.ctxid,
                     time : new Date().getTime()
                 },
@@ -241,7 +241,8 @@ async function initPhone() {
                     clid  : log.clid,
                     uri   : log.uri,
                     start : log.time,
-                    flow  : session.direction
+                    flow  : session.direction,
+                    bdid  : session.EquipmentID
                 };
             }
 
@@ -357,6 +358,13 @@ async function initPhone() {
                 // empty existing logs
                 $('#sip-logitems').empty();
 
+                for (const log of Object.entries(calllog))
+                    if (log[1].owner && (log[1].status !== 'ended' && log[1].status !== 'missed') && log[1].session == "finish") {
+                        ctxSip.sipHangUp(log[0], log[1].bdid)
+
+                        return
+                    }
+
                 // JS doesn't guarantee property order so
                 // create an array with the start time as
                 // the key and sort by that.
@@ -420,21 +428,27 @@ async function initPhone() {
             s.refer(target);
         },
 
-        sipHangUp : function(sessionid) {
+        sipHangUp : function(sessionid, id) {
 
             var s = ctxSip.Sessions[sessionid];
             // s.terminate();
-            if (s.service) {
+            if (!s && id) {
+                ctxSip.logCall({ctxid: sessionid, remoteIdentity: {}}, 'ended')
                 connectSOS(`GetAllActiveCalls`).then(response => {
                     for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
-                            ctxSip.logCall(s, 'ended')
-                            
-                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
-                        }
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == id)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${id}`)
                 });
-            } else if (!s) {
+
                 return;
+            } else if (s.service) {
+                ctxSip.logCall(s, 'ended')
+                ctxSip.callActiveID = null;
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
+                });
             } else if (s.startTime) {
                 s.bye();
             } else if (s.reject) {
@@ -461,7 +475,12 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid],
                 target = $("#numDisplay").val();
 
-            if (s.service) {
+            if (!s) {
+
+                $("#numDisplay").val("");
+                ctxSip.sipCall(target);
+
+            } else if (s.service) {
                 connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                     if (response.UserID == loginAccount.ID) {
                         ctxSip.Sessions[sessionid].owner = true;
@@ -470,11 +489,6 @@ async function initPhone() {
                         ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
                     }
                 });
-            } else if (!s) {
-
-                $("#numDisplay").val("");
-                ctxSip.sipCall(target);
-
             } else if (s.accept && !s.startTime) {
 
                 s.accept({
@@ -513,7 +527,7 @@ async function initPhone() {
         },
 
 
-        setError : function(err, title, msg, closable) {
+        setError : function(err, title, msg, closable) { // TODO: Corrigir a modal ou talvez remover completamente a mesma
 
             // Show modal if err = true
             if (err === true) {
@@ -551,7 +565,7 @@ async function initPhone() {
             } else if (navigator.getUserMedia) {
                 return true;
             } else {
-                ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
+                // ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
                 window.console.error("WebRTC support not found");
                 return false;
             }
@@ -576,7 +590,7 @@ async function initPhone() {
         ctxSip.setStatus("Disconnected");
 
         // disable phone
-        ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
+        // ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
 
         // remove existing sessions
         $("#sessions > .session").each(function(i, session) {
@@ -593,6 +607,11 @@ async function initPhone() {
         var closePhone = function() {
             // stop the phone on unload
             localStorage.removeItem('ctxPhone');
+            let log = JSON.parse(localStorage.getItem('sipCalls'))
+            for (const l of Object.entries(log)) {
+                log[l[0]].session = "finish"
+            }
+            localStorage.setItem('sipCalls', JSON.stringify(log))
             ctxSip.phone.stop();
         };
 
@@ -612,12 +631,12 @@ async function initPhone() {
     });
 
     ctxSip.phone.on('registrationFailed', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 
     ctxSip.phone.on('unregistered', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 
@@ -810,9 +829,6 @@ async function initPhone() {
             });
         }
     })
-
-    // 
-
 
     /**
      * Stopwatch object used for call timers
