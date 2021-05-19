@@ -226,8 +226,8 @@ async function initPhone() {
         logCall : function(session, status) {
 
             var log = {
-                    clid : session.displayName,
-                    uri  : session.remoteIdentity.uri.toString(),
+                    clid : session.displayName || "Desconhecido",
+                    uri  : (session.remoteIdentity.uri || "Desconhecido").toString(),
                     id   : session.ctxid,
                     time : new Date().getTime()
                 },
@@ -241,7 +241,8 @@ async function initPhone() {
                     clid  : log.clid,
                     uri   : log.uri,
                     start : log.time,
-                    flow  : session.direction
+                    flow  : session.direction,
+                    bdid  : session.EquipmentID
                 };
             }
 
@@ -357,6 +358,13 @@ async function initPhone() {
                 // empty existing logs
                 $('#sip-logitems').empty();
 
+                for (const log of Object.entries(calllog))
+                    if (log[1].owner && (log[1].status !== 'ended' && log[1].status !== 'missed') && log[1].session == "finish") {
+                        ctxSip.sipHangUp(log[0], log[1].bdid)
+
+                        return
+                    }
+
                 // JS doesn't guarantee property order so
                 // create an array with the start time as
                 // the key and sort by that.
@@ -420,21 +428,27 @@ async function initPhone() {
             s.refer(target);
         },
 
-        sipHangUp : function(sessionid) {
+        sipHangUp : function(sessionid, id) {
 
             var s = ctxSip.Sessions[sessionid];
             // s.terminate();
-            if (s.service) {
+            if (!s && id) {
+                ctxSip.logCall({ctxid: sessionid, remoteIdentity: {}}, 'ended')
                 connectSOS(`GetAllActiveCalls`).then(response => {
                     for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
-                            ctxSip.logCall(s, 'ended')
-                            
-                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
-                        }
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == id)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${id}`)
                 });
-            } else if (!s) {
+
                 return;
+            } else if (s.service) {
+                ctxSip.logCall(s, 'ended')
+                ctxSip.callActiveID = null;
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
+                });
             } else if (s.startTime) {
                 s.bye();
             } else if (s.reject) {
@@ -593,6 +607,11 @@ async function initPhone() {
         var closePhone = function() {
             // stop the phone on unload
             localStorage.removeItem('ctxPhone');
+            let log = JSON.parse(localStorage.getItem('sipCalls'))
+            for (const l of Object.entries(log)) {
+                log[l[0]].session = "finish"
+            }
+            localStorage.setItem('sipCalls', JSON.stringify(log))
             ctxSip.phone.stop();
         };
 
@@ -810,9 +829,6 @@ async function initPhone() {
             });
         }
     })
-
-    // 
-
 
     /**
      * Stopwatch object used for call timers
