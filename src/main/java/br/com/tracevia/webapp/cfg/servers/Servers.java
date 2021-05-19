@@ -3,7 +3,7 @@ package br.com.tracevia.webapp.cfg.servers;
 public enum Servers {
 		
 	ServerViaPaulista("10.12.32.227"),
-	ServersViaSul("10.161.0.17");
+	ServerViaSul("10.161.0.17");
 	
 	private String server;
 	

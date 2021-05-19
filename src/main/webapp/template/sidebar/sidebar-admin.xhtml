@@ -249,7 +249,12 @@
              <li class="nav-item">
                 <a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
                 <i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span></a>
-                <ul class="collapse list-unstyled" id="realTimeSubmenu">                           
+                <ul class="collapse list-unstyled" id="realTimeSubmenu">  
+                      <li class="nav-item ml-2">                        
+                         <h:commandLink class="nav-link" action="#{navigationController.redirectToMap}" value="" >
+                            <i class="fas fa-map-marker icon icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>                                                                    
+                        </h:commandLink>                     
+                     </li>                                              
                      <li class="nav-item ml-2">                        
                          <h:commandLink class="nav-link" action="#{navigationController.redirectToRealTime}" value="" >
                         <i class="fas fa-stopwatch icon icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>                                                                    
@@ -427,31 +432,8 @@
         </ul>
           </h:form>
           
-          <script>
-          
-          function checked(id, bool) {
-         	  var element = document.getElementById(id);    
-         	      	  
-         	  if (!bool) {
-         		  element.style.display = "none";
-         	  } else {
-         		  element.style.display = "block";
-         	  }
-          }
-
-          function showElements(){
-
- 	       document.getElementById("btnLayers").classList.remove("hidden");
- 	       document.getElementById("btnLayers").classList.add("show");
- 	       document.getElementById("btnEquips").classList.remove("hidden");
- 	    }	    
- 		 	
- 	</script>
- 	     
-          
-          
- </ui:composition>
-		
-</h:body>
-	
+         <h:outputScript name="dashboard-submenus.js" library="js/dashboard" />   
+                    
+ </ui:composition>		
+</h:body>	
 </html>

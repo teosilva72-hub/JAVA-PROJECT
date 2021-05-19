@@ -21,18 +21,14 @@ public class RoadConcessionaireDAO {
 	public String IdentifyRoadConcessionarie(String serverAddress) throws Exception {
 
 		String concessionarieName = "";
-
-		//TESTE
-		//if (serverAddress.equals("192.168.0.32") || serverAddress.equals("192.168.0.40"))
-		//if (serverAddress.equals("10.102.98.56"))
-		 //if(serverAddress.equals("192.168.3.195"))
-		 if(serverAddress.equals(Servers.ServersViaSul.getServer()))
+		
+		  if(serverAddress.equals(Servers.ServerViaSul.getServer()))
 		       conn = ConnectionFactory.connectToCCR();
 		 
-		     //if(serverAddress.equals(Servers.ServersViaPaulista.getServer()))
-			//conn = ConnectionFactory.connectToViaPaulista();
+		  if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
+		       conn = ConnectionFactory.connectToViaPaulista();
 				
-		else conn = ConnectionFactory.connectToTraceviaApp();
+		  else conn = ConnectionFactory.connectToTraceviaApp();
 
 		try {
 
