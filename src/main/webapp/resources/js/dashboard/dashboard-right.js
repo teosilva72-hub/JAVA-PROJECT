@@ -67,6 +67,14 @@ function notificationBadge(){
 }
 
 
+const showCallbox = action => {
+	$("#sipClient > .calls-client").addClass(action).css('bottom', action == 'showing' ? 40 : '')
+	setTimeout(() => {
+	    $("#sipClient > .calls-client").removeClass(action)
+	}, 2000)
+}
+
+
 //NOTIFICATIONS  BADGE
 
 //Accept a Call Button

@@ -837,10 +837,27 @@ input.apple-switch:checked:before {
     height: 400px;
     width: 280px;
     right: 25px;
-    bottom: 40px;
+    bottom: -335px;
     background-color: white;
     border: 1px solid black;
     border-radius: 1%;
+}
+
+.calls-client.hiding {
+	animation: showCallbox 2s 1 reverse;
+}
+
+.calls-client.showing {
+	animation: showCallbox 2s 1;
+}
+
+@keyframes showCallbox {
+	from {
+		bottom: -335px;
+	}
+	to {
+		bottom: 40px;
+	}
 }
 
 /* Call Box Alert END */ 
