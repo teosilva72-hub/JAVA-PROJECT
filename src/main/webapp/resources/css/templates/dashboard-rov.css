@@ -42,6 +42,7 @@ body,
 .nav-link.active .text {
   color: #ec6271;
 }
+
 * {
   font-family: "Poppins", sans-serif;
 }
@@ -244,8 +245,11 @@ footer {
 }
 
 .dropdown-nofit-alert {
-  background: #FFF0F5; /*LAVANDER BLUSH*/
-  
+  background: #FFF0F5; /*LAVANDER BLUSH*/  
+}
+
+.dropdown-nofit-none {
+  background: #FFFFFF; /*LAVANDER BLUSH*/  
 }
 
 /* DROPDOWN ITEM STYLES */

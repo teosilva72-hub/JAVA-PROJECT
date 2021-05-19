@@ -7,8 +7,7 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
-	xmlns:pf="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	template="/template/dashboard-rov-layout.xhtml">
 	
 	<f:metadata>	
@@ -20,27 +19,18 @@
 	<ui:define name="head" >
 	
 	<h:outputStylesheet name="mto_panel.css" library="css/mto" />
-	<h:outputScript name="mto-panel.js" library="js/validation-forms/mto" />
-	
-	<script>
-	
-	$(function() {
-		setTimeout(function () {
-			$('#message-div').hide(); 		
-		}, 5000); 
-	});
+	<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+	<h:outputScript library="js/validation-forms/panel" name="sv-panel-validation.js" />	
 		
-	</script>
-
 	</ui:define>
 	
 	 <ui:define name="main-content" >
 	 
-	  <!-- Mensagem parte superior -->
-	    <div id="message-div" >
-			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-		</div>
-	 
+		<!-- INFO MESSAGE DIV -->		
+		 <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
+	       <b>#{svMessages.sv_message_records_not_found_title}</b> : #{svMessages.sv_message_records_not_found}
+	    </div> <!---->
+	          		
 	 	 <!-- Inicio da estrutura do conteudo -->
 	 	
 			<div class="jumbotron jumbotron-fluid">
@@ -128,20 +118,26 @@
 			  </h:form>
 			</div>
 			<!-- Final da estrutura do conteudo --> 
+
+				 <!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 	
+			<input type="hidden" name="requiredEquipmentMsg" value="#{requiredMessages.required_sv_reports_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+		
+		</form> <!----> 	 	
 							
-		<!-- CHANGE STATUSSS -->
+	 <!-- CHANGE STATUSSS -->
 		
 	<script type='text/javascript'>
 			
-		checkMtoStatus();		
-		weatherStationValidation("#panel", '#{requiredMessages.required_mto_reports_select_equipments}');
-				
-		//Validate on change value
-		validateOnChange('#equip');
+		checkMtoStatus();	
 						
-		</script>
-		
-		<!-- CHANGE STATUSSS -->
+   </script>
+				
+	 <!-- CHANGE STATUSSS -->
 	 
 	 </ui:define>	
 </ui:composition>	

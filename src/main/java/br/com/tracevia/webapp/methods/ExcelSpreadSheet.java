@@ -74,9 +74,7 @@ public class ExcelSpreadSheet {
 					            		cells[col][index].setCellValue(values[auxCol][index] == null ? 0 : Double.parseDouble(values[auxCol][index]));
 					            	
 					            	else cells[col][index].setCellValue(values[auxCol][index] == null? 0 : Integer.parseInt(values[auxCol][index]));
-					            	
-					            	System.out.println(values[auxCol][index]);
-					            			          			            
+					            						           					            			          			            
 					            }catch(NullPointerException ex) {
 					            	ex.printStackTrace();
 					           }		            		
@@ -242,9 +240,7 @@ public class ExcelSpreadSheet {
 				public void fillDataSinglePeriodFlow(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
 					 
 					int rowLenght = startRow + endRow ;
-					int auxCol = colStart;
-					
-					///System.out.println(maxCol);
+					int auxCol = colStart;							
 									
 					for(int col = colStart; col < maxCol; col++) {
 					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
@@ -666,8 +662,7 @@ public class ExcelSpreadSheet {
 	      for (int lin = lin1; lin <= lin2; lin++) { 
 		      row = sheet.getRow(lin);		
 		        row.createCell(c);
-		        
-		       // System.out.println(lin);
+		        		     
 	    }
 	  }
    }

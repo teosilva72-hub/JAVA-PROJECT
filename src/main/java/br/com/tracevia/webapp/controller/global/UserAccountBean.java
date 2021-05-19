@@ -2,6 +2,7 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -57,6 +58,7 @@ public class UserAccountBean implements Serializable {
 		
 		LocaleUtil localeEmail, localeUsers;
 		
+		String lastUsername, lastEmail; // Aux to user for check		
 				
 		public DataModel<UserAccount> getUserDataModel() {
 			return userDataModel;
@@ -103,13 +105,15 @@ public class UserAccountBean implements Serializable {
 			
 			localeUsers = new LocaleUtil();
 			localeUsers.getResourceBundle(LocaleUtil.MESSAGES_USERS);
+			
+			listarUsuarios(); // listar usuÃ¡rios ao inicializar						
 									
 		}
 		
 		public void cadastroUsuario() {
-
+								
 			String generatedPass = "";		
-			boolean response = false;
+			boolean response = false, email = false, usernameCheck = false, emailCheck = false;
 			MessagesUtil message = new MessagesUtil();
 			
 			//Get external application contents
@@ -135,62 +139,103 @@ public class UserAccountBean implements Serializable {
 				//Encriptar password para MD5
 				user.setPassword(encrypt.encryptPassword(generatedPass));
 				
-				//Salvar usuário da sessão que criou usuário
+				//Salvar usuï¿½rio da sessï¿½o que criou usuï¿½rio
 				user.setCreatedBy((String) facesContext.getExternalContext().getSessionMap().get("user"));
 				
 				//Gerar Assunto do Cadastro
-				String assunto = cadMail.createRegisterSubject();
+				String assunto = cadMail.registerSubject();
 				
 				//Gerar a mensagem de cadastro
-				String mensagem = cadMail.createRegisterMessage(user.getName(), user.getUsername(), generatedPass);
-								
-				response = dao.cadastroUsuario(user);
-								
-				if(response) {
-					
-					mail.sendEmail(user.getEmail(), assunto , mensagem); //Método para enviar email
-										
-					message.InfoMessage(localeEmail.getStringKey("email_user_register_sucess"), localeEmail.getStringKey("email_user_register_sucess_confirmation")+": "+user.getEmail());
-					clearFields(); // 
-				} else message.ErrorMessage(localeEmail.getStringKey("users_register_failed_register_header"), localeEmail.getStringKey("users_register_failed_register_body"));
+				String mensagem = cadMail.registerMessage(user.getName(), user.getUsername(), generatedPass);
+												
+                emailCheck = dao.checkEmail(user.getEmail());
+                
+                if(!emailCheck) {
+                	                	                	
+                	usernameCheck = dao.checkUsername(user.getUsername());
+                	
+                	if(!usernameCheck) {
+                		                	                		                                		
+                		response = dao.cadastroUsuario(user);                		              	
+						
+        				if(response) {        					
+        					
+        					email = mail.sendEmailHtml(user.getEmail(), assunto , mensagem); //MÃ©todo para enviar email
+        						
+        					if(email) {	
+        						        
+        						  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
+        						  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
+        						  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
+        						  RequestContext.getCurrentInstance().execute("$('#success #mail').html('"+user.getEmail()+"'); ");
+        						  
+        						  RequestContext.getCurrentInstance().execute("$('#form-register')[0].reset();"); // reset form
+        						          		
+        						  //Remove Validation icons
+        						  RequestContext.getCurrentInstance().execute("$('span[for=fullname]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  RequestContext.getCurrentInstance().execute("$('span[for=jobPosition]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  RequestContext.getCurrentInstance().execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  RequestContext.getCurrentInstance().execute("$('span[for=username]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  RequestContext.getCurrentInstance().execute("$('span[for=permissions]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						        	        						        						  
+        						  clearFields(); // limpar objeto user  
+        						  
+        						  assunto = ""; mensagem = "";
+        						 
+        					}	    					
+        					      					
+        					
+        				} else {
+        					
+        					  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
+        					  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
+        					  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+        				}        				               		
+                		
+                	} else {
+                		
+                		  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
+                		  RequestContext.getCurrentInstance().execute("showUsernameErrorMessage();");	
+    					  RequestContext.getCurrentInstance().execute("hideUsernameErrorMessage();");	
+                   }
+                }else {
+                	
+                	  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
+                	  RequestContext.getCurrentInstance().execute("showEmailErrorMessage();");	
+					  RequestContext.getCurrentInstance().execute("hideEmailErrorMessage();");	
+                }						     
+            
+				 listarUsuarios(); //listar apÃ³s cadastrar
 
 
-		    } // caso contrario não faz nada
+		    } // caso contrario nÃ£o faz nada
 
 			}catch(Exception ex) {
-
+				
 				ex.printStackTrace();
+
+				  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
+				  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
+				  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+				
 			}		
 		}		
 
 		//Criar metodos daqui
 		public void listarUsuarios() {
-
-			String parametro;
-
-			if(isSelectAll()) //O checkbox selecionado
-				parametro = "Todos";
-			
-			else parametro = getParametro();
-												
+		
 			try {
 				
 				dao = new UserAccountDAO();
 				user = new UserAccount();	
-				MessagesUtil message = new MessagesUtil();
-					
+							
 			    usersList = new ArrayList<UserAccount>();
 
-				usersList = dao.BuscarUsuarios(parametro);
+				usersList = dao.BuscarUsuarios();
+							
+			    userDataModel = new ListDataModel<UserAccount>(usersList);
 				
-				if(usersList.isEmpty())
-					message.InfoMessage(localeUsers.getStringKey("users_list_records_not_found"), " ");
-				
-				else userDataModel = new ListDataModel<UserAccount>(usersList);
-				
-				//Limpar campos
-				cleanPanelSelection();
-
+			
 			}catch(Exception ex) {
 				ex.printStackTrace();
 			}		
@@ -198,8 +243,8 @@ public class UserAccountBean implements Serializable {
 		
 		public String usuarioInfoToUp() throws Exception {
 
-			String parametro = getSendParametro();
-								
+			String parametro = getSendParametro();			
+											
 				dao = new UserAccountDAO();
 				user = new UserAccount();	
 				
@@ -213,38 +258,22 @@ public class UserAccountBean implements Serializable {
 				user.getEmail();
 				user.getUsername();
 				user.getPermission_id();
-				user.isActiveStatus();
-								
-				clearSearchDataTable();				
-				
-				return "update_user.xhtml";
+				user.isActiveStatus();					
+				lastUsername = user.getUsername();
+				lastEmail = user.getEmail();
+							
+				return "/users/update_user.xhtml?faces-redirect=true";
 			
 				}
 							
 			return null;
 		}
-		
-		
-		public void clearSearchDataTable() throws Exception {
+				
 			
-			try {
-			
-			if (userDataModel.isRowAvailable())		{			   
-			     userDataModel = new ListDataModel<UserAccount>();	// Clean DataModel		
-			     usersList = new ArrayList<UserAccount>();	
-			     parametro = null;
-			}
-			else {  userDataModel = new ListDataModel<UserAccount>(); parametro = null; }	// Clean DataModel
-			
-			}catch(Exception ex){}
-		}
-		
 		public void excluirUsuario() {
 
 			boolean response = false;
-			
-			MessagesUtil message = new MessagesUtil();
-
+		
 			try {
 				
 				dao = new UserAccountDAO();
@@ -258,65 +287,116 @@ public class UserAccountBean implements Serializable {
 						              
 					usersList = new ArrayList<UserAccount>();									
 					userDataModel = new ListDataModel<UserAccount>();
-										
-				} else message.ErrorMessage(localeUsers.getStringKey("users_delete_failed_delete_header"), localeUsers.getStringKey("users_delete_failed_delete_body"));
-						
-
-			}catch(Exception ex) {
-				ex.printStackTrace();				
-			}		
-		}
-		
-		public void atualizarCadastro() {
-			
-			boolean response = false;
-			
-			MessagesUtil message = new MessagesUtil();
-
-			try {
-
-				dao = new UserAccountDAO();
-								
-				response = dao.atualizar(user);	
-			
-				if(response) {
 					
-					 message.InfoMessage(localeUsers.getStringKey("users_update_success_update"), " " );
-					 user = new UserAccount(); //resetar objeto
-					 clearFields();
+					  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
+					  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
+										
 				} 
-			
+				
 			}catch(Exception ex) {
 				ex.printStackTrace();
 				
-				message.ErrorMessage(localeUsers.getStringKey("users_update_failed_update_header"), localeUsers.getStringKey("users_update_failed_update_body") );	
-
-			}		
+				 RequestContext.getCurrentInstance().execute("showErrorMessage();");	
+				 RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+				
+			}	
+			
+			listarUsuarios(); // listar usuÃ¡rios
 		}
+		
+          public void atualizarCadastro() {
+								
+			boolean response = false, emailCheck = false, usernameCheck = false;
+			
+			//Get external application contents
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext externalContext = facesContext.getExternalContext();
+		
+			try {
+
+				dao = new UserAccountDAO();						
+				
+				  // USER ID -> Needs to access this method				
+				 user.setUserID(externalContext.getRequestParameterMap().get("myUserId"));
+				 										
+				   emailCheck = dao.checkEmailToUpdate(user.getEmail(), lastEmail);
+				                
+	                if(!emailCheck) {	                	
+	            	                	
+	                	usernameCheck = dao.checkUsernameToUpdate(user.getUsername(), lastUsername);
+	                		                	
+	                	if(!usernameCheck) {
+	                		             		                		
+	                		response = dao.atualizar(user);	
+	            			
+	        				if(response) {
+	        					
+	        					  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
+	        					  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
+	        					 
+	        					  RequestContext.getCurrentInstance().execute("redirecToSearch();");	  //redirect to table					  
+	        					  				
+	        				} 
+	        			
+	                		
+	                	} else {
+                		
+              		  RequestContext.getCurrentInstance().execute("showUsernameErrorMessage();");	
+  					  RequestContext.getCurrentInstance().execute("hideUsernameErrorMessage();");  					   
+  					  
+                 }
+	                	
+              }else {
+              	
+              	  RequestContext.getCurrentInstance().execute("showEmailErrorMessage();");	
+				  RequestContext.getCurrentInstance().execute("hideEmailErrorMessage();");	
+				  
+			   }	           								
+				
+			}catch(Exception ex) {
+				ex.printStackTrace();				
+					
+				  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
+				  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+			}	
+			
+			listarUsuarios(); // listar usuÃ¡rios
+		}
+
 				
 		public String cancelUpdate() {
 			
-			  clearFields();
-			  user = new UserAccount(); //Resetar usuário
+			user = new UserAccount();
+			
+			listarUsuarios(); // listar usuÃ¡rios
+						 			  
+			return "/users/panel_user.xhtml?faces-redirect=true";
+			
+		}
+		
+           public String backPanel() {
+			
+			user = new UserAccount();
+			
+			listarUsuarios(); // listar usuÃ¡rios
+						 			  
+			return "/users/panel_user.xhtml?faces-redirect=true";
+			
+		}
+		
+		public String newUser() {
 			  
-			return "panel_user.xhtml?faces-redirect=true";
+			return  "/users/register_user.xhtml?faces-redirect=true";	
 			
 		}
 			
 		public void clearFields(){
 			
-			user = new UserAccount();
+			user = new UserAccount();			
 			
-			setUser_id(null);
-			setDate_register(null);
-			setName(null);	  
-			setJob_position(null);
-			setEmail(null);
-			setUsername(null);
-			setRole_permission(null);
-			setStatus(false);
 		}
-				
+		
+						
 		public void changePassword() {
 						
 			boolean response = false;
@@ -326,30 +406,52 @@ public class UserAccountBean implements Serializable {
 			FacesContext context = FacesContext.getCurrentInstance();			
 
 			String usuario = (String) context.getExternalContext().getSessionMap().get("user");
-			
+					
 			EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
 
+			String password = encrypt.encryptPassword(user.getPassword());
 			String newPassword = encrypt.encryptPassword(user.getNewPassword());
 			String confPassword = encrypt.encryptPassword(user.getConfPassword());
 
 			try {
 
-				UserAccountDAO dao = new UserAccountDAO();				
+				UserAccountDAO dao = new UserAccountDAO();	
+				
+				if(!password.equals(newPassword)) {
 				
 				 if(newPassword.equals(confPassword)) {				
 
 						response  = dao.changePassword(usuario, newPassword );
 
-						if(response) {				
-							message.InfoMessage(localeUsers.getStringKey("users_change_password_success"), " " );
-							resetChangePassword();						
+						if(response) {		
+							
+							 RequestContext.getCurrentInstance().execute("showSuccessMessage();");
+							 RequestContext.getCurrentInstance().execute("hideSuccessMessage();");
+							 
+							  RequestContext.getCurrentInstance().execute("$('#change-password-form')[0].reset();"); // reset form
+				          		
+    						  //Remove Validation icons
+    						  RequestContext.getCurrentInstance().execute("$('span[for=password]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+    						  RequestContext.getCurrentInstance().execute("$('span[for=newPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+    						  RequestContext.getCurrentInstance().execute("$('span[for=confPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+    						 						
+							  resetChangePassword(); // Reset Password		
 
-				 }else message.ErrorMessage(localeUsers.getStringKey("users_change_password_failed_header"), localeUsers.getStringKey("users_change_password_failed_body"));
-
-				}else  message.ErrorMessage(localeUsers.getStringKey("users_change_password_confirm_header"), localeUsers.getStringKey("users_change_password_confirm_body"));
+				      }						
+				} // ELSE NOT NECESSARY BECAUSE JQUERY VALIDATOR DO IT
+				 
+			}else {
+				
+				 RequestContext.getCurrentInstance().execute("showChangeErrorMessage();");
+				 RequestContext.getCurrentInstance().execute("hideChangeErrorMessage();");
+			}
+				
 
 			}catch(Exception ex) {
 				ex.printStackTrace();
+				
+				 RequestContext.getCurrentInstance().execute("showErrorMessage();");
+				 RequestContext.getCurrentInstance().execute("hideErrorMessage();");
 			}			
 		}
 				
@@ -364,16 +466,8 @@ public class UserAccountBean implements Serializable {
 			 RequestContext.getCurrentInstance().update("dialog-form:modal-text");   
 			 			 
 		 }
-		 
-		 
-		/*Limpar a Seleção do Panel Users*/
-		public void cleanPanelSelection() {
+		 		 
 			
-			setParametro("");
-			setSelectAll(false);
-			
-		}
-		
 		public boolean isSelectAll() {
 			return selectAll;
 		}

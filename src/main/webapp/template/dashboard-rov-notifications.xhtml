@@ -29,7 +29,7 @@
 
                   <c:forEach items="#{notificationsView.notifications}" var="item" varStatus="loop">
 
-                    <h:commandLink value="" class="dropdown-item text-font dropdown-notif-style #{item.viewedBgColor}" id="#{item.type}#{item.equipId}">
+                    <h:commandLink value="" class="dropdown-item text-font dropdown-notif-style #{item.viewedBgColor}" id="#{item.equipType}#{item.equipId}">
                   
                       <div style="font-size: 10px; margin-left: 0px;">
                         #{item.dateTime}
@@ -45,6 +45,6 @@
                   </c:forEach>
                 </h:form>
               </div>
-            </li>
-                     
+            </li>        
+                                
 </ui:composition>

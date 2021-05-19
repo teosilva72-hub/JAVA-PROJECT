@@ -13,17 +13,15 @@ import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 @ManagedBean(name = "satMapsView")
 @ViewScoped
 public class SATBuildMaps {
 	
-
-
 	static List<? extends Equipments> satList;
 	List<SAT> satListValues, satStatus;
-	
 
 	public List<? extends Equipments> getSatList() {
 		return satList;
@@ -46,13 +44,12 @@ public class SATBuildMaps {
 
 	public void CreateLinearEquipment() {
 				
-		NotificationsBean notif = new NotificationsBean();
-
 		try {
 
 			try {
 
 				SATinformationsDAO satDAO = new SATinformationsDAO();  
+				NotificationsBean notif = new NotificationsBean();
  
 				boolean status30 = true, values30 = true, status45 = false, values45 = false, status08 = false,
 						values08 = false;
@@ -66,6 +63,7 @@ public class SATBuildMaps {
 				// LISTAR AUXILIARES
 				List<SAT> satListValuesAux = new ArrayList<SAT>();
 				List<SAT> satListStatusAux = new ArrayList<SAT>();
+				List<Notifications> listStatus = new ArrayList<Notifications>();
 
 				// SAT OBJECT
 				SAT sat = new SAT();
@@ -74,7 +72,8 @@ public class SATBuildMaps {
 				// SAT EQUIPMENTS
 				//////////////////////////////
 				satList = sat.listSatEquipments();
-
+				listStatus = notif.getNotificationStatus(NotificationsTypeEnum.SAT.getType());							
+				
 				////////////////////////////////////////////////////////////////////////////////////////////
 				///// SAT STATUS
 				///////////////////////////////////////////////////////////////////////////////////////////
@@ -95,8 +94,8 @@ public class SATBuildMaps {
 						status30 = false;						
 					    status45 = true;
 					
-				 // CASO N�O HAJA DADOS DOS ULTIMOS 45 MINUTOS 
-				 // VERIFICA SE H� DADOS DAS ULTIMAS 8 HORAS
+				 // CASO NÃO HAJA DADOS DOS ULTIMOS 45 MINUTOS 
+				 // VERIFICA SE HÁ DADOS DAS ULTIMAS 8 HORAS
 				}else {
 						
 						satListStatusAux = satDAO.statusByData08();
@@ -133,9 +132,12 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								satListStatusAux.remove(r);
 								pass = false;
-								
+																				
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								//TECNICAMENTE NAO PRECISA COMPARAR IDs PORQUE AO CRIAR EQUIPAMENTO
+								//CRIA - SE UMA INSTÂNCIA NA TABELA DE NOTIFICAÇÕES
+								if(listStatus.get(s).getStatus() == 1)
+								     notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								break;
 
@@ -154,8 +156,8 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
-
+								if(listStatus.get(s).getStatus() == 1)
+								    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 								
 							}
 							
@@ -170,6 +172,7 @@ public class SATBuildMaps {
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
+								if(listStatus.get(s).getStatus() == 0)
 								notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
@@ -198,7 +201,8 @@ public class SATBuildMaps {
 								pass = false;
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(listStatus.get(s).getStatus() == 1)
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
 								break;
@@ -218,7 +222,8 @@ public class SATBuildMaps {
 								satStatus.add(satListObj);
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(listStatus.get(s).getStatus() == 1)
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								
 							}
@@ -235,7 +240,8 @@ public class SATBuildMaps {
 									satStatus.add(satListObj);
 									
 									//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-									notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+									if(listStatus.get(s).getStatus() == 1)
+									   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 									
 								}
@@ -251,7 +257,8 @@ public class SATBuildMaps {
 								  satStatus.add(satListObj1);
 								  
 								//NESSE CASO ATUALIZA PARA OFFLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								  if(listStatus.get(s).getStatus() == 0)
+								      notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								  
 						         }
@@ -280,7 +287,8 @@ public class SATBuildMaps {
 								pass = false;
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(listStatus.get(s).getStatus() == 1)
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
 								break;
@@ -301,7 +309,8 @@ public class SATBuildMaps {
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(listStatus.get(s).getStatus() == 0)
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 							
 						}
@@ -314,7 +323,9 @@ public class SATBuildMaps {
 				}else { intializeNullStatus(satList); 
 				
 				for (int s = 0; s < satList.size(); s++) {
-					notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+					
+					if(listStatus.get(s).getStatus() == 0)
+					    notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 				}	
 				

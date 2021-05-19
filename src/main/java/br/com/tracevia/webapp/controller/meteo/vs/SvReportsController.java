@@ -43,7 +43,9 @@ public class SvReportsController {
 		
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
-		
+	
+	String jsTableId;
+			
 	LocaleUtil localeLabel, localeCalendar, localSV;
 			
 	int periodRange, daysInMonth, daysCount, start_month, end_month;  
@@ -324,6 +326,8 @@ public void CreateFields(String type) {
 			svReport.setMonth(parameterMap.get("month"));
 			
 			svReport.setPeriod(parameterMap.get("periods"));
+			
+			jsTableId = parameterMap.get("jsTable");
 													
 			 //Initialize ResultList
 		     resultList = new ArrayList<Builder>();	
@@ -613,14 +617,19 @@ public void CreateFields(String type) {
 				//UPDATE BUTTON GENERATE EXCEL
 				RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
 				
+				//UPDATE TABLE JQUERY ON RELOAD PAGE
+				RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"');");	
+				
 			
 			//CASO CONTRARIO ENTRA AQUI
 		} else {
-			      message.InfoMessage(localSV.getStringKey("sv_message_records_not_found_title"), localSV.getStringKey("sv_message_records_not_found"));
-		          CreateFields(type);  
-		          
+		      		          
 		          //EXECUTE JS
 				  RequestContext.getCurrentInstance().execute("hideMessage();");
+				  
+				  //UPDATE TABLE JQUERY ON RELOAD PAGE
+				  RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"'); showMessage();");			  
+				  
 				  
 	           }	     
 	      }

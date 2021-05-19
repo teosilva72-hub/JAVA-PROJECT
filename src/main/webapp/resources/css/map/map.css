@@ -227,7 +227,7 @@ table {
   transform: scale(1.2);
 }
 
-.factorMenu:focus {
+.factorMenu:active {
   outline: 0;
 }
 
@@ -248,7 +248,7 @@ table {
   transition: background-color 0.3s;
 }
 
-.zoomButton:focus {
+.zoomButton:active {
   outline: 0;
   color: #555;
 }
@@ -271,7 +271,7 @@ table {
   cursor: pointer;
 }
 
-.zoomFull:focus {
+.zoomFull:active {
   outline: 0;
   color: #555;
 }
@@ -290,11 +290,10 @@ table {
   -moz-transition: background-color 0.3s;
   -o-transition: background-color 0.3s;
   -webkit-transition: background-color 0.3s;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s; 
 }
 
-.fullBodys:focus {
-  outline: 0;
+.fullBodys:active {
   color: #555;
 }
 
@@ -316,18 +315,22 @@ table {
 #divide {
   margin-left: -3px;
   margin-top: 2px;
+  outline: none;
 }
 #zoomIn {
   margin-left: 55px;
   margin-top: 2px;
+  outline: none;
 }
 #zoomOut {
   margin-left: 95px;
   margin-top: 2px;
+  outline: none;
 }
 #fullbody {
   margin-left: 135px;
   margin-top: 2px;
+  outline: none;
 }
 
 #addequip {
@@ -360,48 +363,57 @@ table {
   margin-top: -120px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 #zoomOut1 {
   margin-top: -100px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 #fulldiv1 {
   margin-top: -80px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 
 #zoomIn2 {
   margin-top: -160px;
   margin-left: -60px;
-  position: fixed;	
+  position: fixed;
+  outline: none;	
 }
 #zoomOut2 {
   margin-top: -140px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 #fulldiv2 {
   margin-top: -120px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 
 #zoomIn3 {
   margin-top: -160px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 #zoomOut3 {
   margin-top: -140px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 #fulldiv3 {
   margin-top: -120px;
   margin-left: -60px;
   position: fixed;
+  outline: none;
 }
 
 /* MAP DIVISION/SHOW BUTTON */

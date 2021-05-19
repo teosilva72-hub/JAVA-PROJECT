@@ -27,6 +27,10 @@ background: #FFF0F5; /*#A9D0F5*/
 color: #000;
 }
 
+.custom-table-header table.dataTable thead tr[role="row"]{
+    visibility: collapse !important;
+}
+
 /*BootStrap Table Striped - SELECTED ROW */
 
 /* TABLE SORTING */

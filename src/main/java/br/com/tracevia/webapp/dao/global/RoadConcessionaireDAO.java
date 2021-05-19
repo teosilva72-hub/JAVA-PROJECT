@@ -24,14 +24,15 @@ public class RoadConcessionaireDAO {
 
 		//TESTE
 		//if (serverAddress.equals("192.168.0.32") || serverAddress.equals("192.168.0.40"))
-		// if(serverAddress.equals("192.168.3.199"))
-			 //if(serverAddress.equals(Servers.ServersViaSul.getServer()))
-			//conn = ConnectionFactory.connectToCCR();
+		//if (serverAddress.equals("10.102.98.56"))
+		 //if(serverAddress.equals("192.168.3.195"))
+		 if(serverAddress.equals(Servers.ServersViaSul.getServer()))
+		       conn = ConnectionFactory.connectToCCR();
 		 
-		 //if(serverAddress.equals(Servers.ServersViaPaulista.getServer()))
+		     //if(serverAddress.equals(Servers.ServersViaPaulista.getServer()))
 			//conn = ConnectionFactory.connectToViaPaulista();
 				
-		 conn = ConnectionFactory.connectToTraceviaApp();
+		else conn = ConnectionFactory.connectToTraceviaApp();
 
 		try {
 

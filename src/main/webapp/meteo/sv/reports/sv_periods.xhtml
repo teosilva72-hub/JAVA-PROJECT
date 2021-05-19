@@ -8,7 +8,6 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
-	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
 	<f:metadata>
@@ -28,31 +27,31 @@
 
 		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
 		<h:outputScript library="js/datepicker" name="datepicker.js" />
-		<h:outputScript library="js/validation-forms/reports" name="mto-reports.js" />
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/reports/sv" name="sv-periods-validation.js" />	
 		<h:outputScript name="mto_reports_dataTable.js" library="js/reports" />
 
 	</ui:define>
-	
-	<!-- Subistiuição do loading -->
-	<ui:define name="loading"></ui:define>
-
-	<ui:define name="main-content">
-	
-	    <!-- Mensagem parte superior -->
-	    <div id="message-div">
-			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-		</div>
 		
-		<!-- REPORTS LABEL INFORMATION -->
+	<ui:define name="main-content"> <!-- MAIN CONTENT TEMPLATE --> 
+	
+	<!-- ********************************************************************************************************************* -->
+		  	
+	  <div class="table-container">   <!-- TABLE DIV CONTENT --> 		
+	     <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->
+	  	   
+		<!-- INFO MESSAGE DIV --> 	
+		 <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
+           <b>#{svMessages.sv_message_records_not_found_title}</b> : #{svMessages.sv_message_records_not_found}
+        </div> <!---->
+               		
+		<!-- REPORTS LABEL INFORMATION --> 
 		 <div class="text-dark text-center font-weight-bold report-title" >
 	      <h:outputText value="#{svLabels.sv_reports_name_periods}" />	
 	     </div>
-
-		<!-- TABLE DIV CONTENT -->
-		<div class="table-container">
-
+	
 			<!-- TABLE -->
-			<h:dataTable id="weather-period-table"
+			<h:dataTable id="sv-period-table"
 				value="#{svReportsBean.resultList}" var="weather"
 				autocomplete="off"
 				styleClass="table table-striped table-bordered table-dark custom-table text-center"
@@ -66,17 +65,19 @@
 					</h:column>
 				</c:forEach>
 
-			</h:dataTable>
-			<!-- TABLE -->
-
-			<!-- BUTTONS FORM -->
-			<h:form id="form-btns">
-
-				<!-- BUTTONS DIV CONTENT -->
-				<div id="buttons">
-
-					<!-- BUTTON SEARCH DIV -->
-					<div id="btn-search" class="text-center">
+			</h:dataTable> <!---->					
+			</h:form> <!---->
+			
+			<!---->
+			
+			<!-- ********************************************************************************************************************* -->
+			
+			<!-- BUTTONS -->
+			
+			<h:form id="form-btns"> <!-- BUTTONS FORM -->				
+				<div id="buttons"> <!-- BUTTONS DIV CONTENT -->
+				
+					<div id="btn-search" class="text-center"> 	<!-- BUTTON SEARCH DIV -->
 						<h:commandButton id="btn-tab-search"
 							class="btn btn-dark draw-button fas fa-search fa-3x" value=""
 							data-toggle="tooltip" data-placement="bottom"
@@ -86,11 +87,9 @@
 								value="#modalReportOptions" />
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
-					</div>
-					<!-- BUTTON SEARCH DIV -->
-
-					<!-- BUTTON RESET DIV -->
-					<div id="btn-reset">
+					</div> <!---->
+										
+					<div id="btn-reset"> <!-- BUTTON RESET DIV -->
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
@@ -100,11 +99,9 @@
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
-					</div>
-					<!-- BUTTON RESET DIV -->
-
-					<!-- BUTTON EXCEL DIV -->
-					<div id="btn-excel">
+					</div> <!---->
+								
+					<div id="btn-excel"> 	<!-- BUTTON EXCEL DIV -->
 						<h:commandButton id="excel-act" value=""
 							disabled="#{svReportsBean.excelBool}"
 							class="fas fa-file-excel fa-2x" data-toggle="tooltip"
@@ -115,82 +112,16 @@
 							<f:passThroughAttribute name="data-target" value="#modalDownload" />
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
-					</div>
-					<!-- BUTTON EXCEL DIV -->
-
-				</div>
-				<!-- BUTTONS DIV CONTENT -->
-
-				<!-- MODAL CLEAR -->
-				<div class="modal fade" id="modalClear" tabindex="-1"
-					aria-labelledby="clearModalLabel" aria-hidden="true">
-					<div class="modal-dialog confirmation-modal">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{svLabels.sv_reports_modal_alert_clear_title}</h5>
-							</div>
-							<div class="modal-body">
-								<p class="modal-alert-msg">#{svLabels.sv_reports_modal_alert_clear_table}</p>
-							</div>
-							<div class="modal-footer">
-								<h:commandButton
-									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
-									action="#{svReportsBean.resetFormValues(3)}"
-									class="btn btn-dark form-draw-button" />
-
-								<h:commandButton
-									value="#{svLabels.sv_reports_modal_alert_btn_no}"
-									class="btn btn-dark form-draw-button">
-									<f:passThroughAttribute name="data-dismiss" value="modal" />
-									<f:ajax execute="@form" render="@none" />
-								</h:commandButton>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- MODAL CLEAR END -->
-			</h:form>
-			<!-- BUTTONS FORM -->
-
-			<!-- EXCEL FORM -->
-			<h:form id="form-excel">
-
-				<!-- MODAL DOWNLOAD -->
-				<div class="modal fade" id="modalDownload" tabindex="-1"
-					aria-labelledby="downloadModalLabel" aria-hidden="true">
-					<div class="modal-dialog confirmation-modal">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title modal-alert-title"
-									id="donwloadModalLabel">#{svLabels.sv_reports_modal_alert_download_title}</h5>
-							</div>
-							<div class="modal-body">
-								<p class="modal-alert-msg">
-									#{svLabels.sv_reports_modal_alert_download_file_excel} <span
-										class="extension">#{svLabels.sv_reports_modal_alert_extension_xlsx}</span>
-									?
-								</p>
-							</div>
-							<div class="modal-footer">
-								<h:commandButton p:onclose="download"
-									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
-									p:data-toggle="modal" p:data-target="#modalDownload"
-									action="#{svReportsBean.download}"
-									class="btn btn-dark form-draw-button" />
-								<h:commandButton id="cancelDownload"
-									value="#{svLabels.sv_reports_modal_alert_btn_no}"
-									class="btn btn-dark form-draw-button">
-									<f:passThroughAttribute name="data-dismiss" value="modal" />
-									<f:ajax execute="@form" render="@none" />
-								</h:commandButton>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- MODAL DOWNLOAD END -->
-
-			</h:form>
-			<!-- EXCEL FORM -->
+					</div> <!---->				
+				</div> <!---->
+			</h:form> <!---->
+			</div><!---->
+			
+			 <!---->
+			  
+			  <!-- ********************************************************************************************************************* -->
+			  
+			 <!--  MODALS -->			
 
 			<!-- MODAL SUBMIT -->
 
@@ -266,16 +197,19 @@
 									<label for="dateEnd" class="error" id="dateEnd-error" />
 								</div>
 							</div>
-
-						</div>
-						<div class="modal-footer">
+                            
+							 <input type="hidden" name="jsTable" value="sv-periods-table" />	  
+							 
+						</div> <!---->		
+								
+						<div class="modal-footer"> <!-- MODAL BUTTONS -->
 							<button type="button" id="btn-form-confirm"
-							class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+							class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{svLabels.sv_reports_form_btn_send}
 							</button>
 
 							<h:commandButton value="#{svLabels.sv_reports_form_btn_send}" style="display: none;"
 								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-								<f:ajax execute="@form" render="@all" listener="#{svReportsBean.GetReports(3)}" onevent="onEventFunction" />
+								<f:ajax execute="@form" render="form-table form-btns" listener="#{svReportsBean.GetReports(3)}" onevent="onEventFunction" />
 							</h:commandButton>
 
 							<h:commandButton value="#{svLabels.sv_reports_form_btn_reset}"
@@ -285,62 +219,97 @@
 									render=":equip :periods :dateStart :dateEnd" />
 							</h:commandButton>
 						</div>
-					</h:form>
-				</div>
-			</div>
-			<!-- MODAL SUBMIT -->
-		</div>
-		<!-- TABLE DIV CONTENT -->
+					</h:form> <!---->
+				</div> <!----> 
+			</div> <!---->			
+				
+		        <!-- ********************************************************************************************************************* -->
+													
+				<div class="modal fade" id="modalClear" tabindex="-1" 
+					aria-labelledby="clearModalLabel" aria-hidden="true"> <!-- MODAL CLEAR -->
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" name="form-clear" id="form-clear" >
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{svLabels.sv_reports_modal_alert_clear_title}</h5>
+							</div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">#{svLabels.sv_reports_modal_alert_clear_table}</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton
+									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
+									action="#{svReportsBean.resetFormValues(3)}"
+									class="btn btn-dark form-draw-button" />
 
-		<div id="loading">
+								<h:commandButton
+									value="#{svLabels.sv_reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+								</div>
+							</h:form> <!---->
+						</div> <!---->
+					</div> <!---->
+								
+				 <!-- ********************************************************************************************************************* -->									       
+           						
+				<div class="modal fade" id="modalDownload" tabindex="-1"
+					aria-labelledby="downloadModalLabel" aria-hidden="true"> <!-- MODAL DOWNLOAD -->
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" name="form-download" id="form-download">
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title"
+									id="donwloadModalLabel">#{svLabels.sv_reports_modal_alert_download_title}</h5>
+							</div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">
+									#{svLabels.sv_reports_modal_alert_download_file_excel} <span
+										class="extension">#{svLabels.sv_reports_modal_alert_extension_xlsx}</span>
+									?
+								</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton p:onclose="download"
+									value="#{svLabels.sv_reports_modal_alert_btn_yes}"
+									p:data-toggle="modal" p:data-target="#modalDownload"
+									action="#{svReportsBean.download}"
+									class="btn btn-dark form-draw-button" />
+								<h:commandButton id="cancelDownload"
+									value="#{svLabels.sv_reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+							</div>
+						</h:form> <!---->
+					   </div> <!---->
+					</div> <!---->
+					
+					<!---->
+
+         <!-- ********************************************************************************************************************* -->
+				
+		<div id="loading"> <!-- LOADING MESSAGE -->
 			<span>#{satLabels.sat_reports_loading_message}...</span>
 		</div>
 
-		<script type='text/javascript'>
-	
-		//Validation Methods
-		//Validate a form and insert messages
-		weatherValidationModel3("#report-form", '#dateStart', "#{requiredMessages.required_mto_reports_select_equipments}", "#{requiredMessages.required_mto_reports_select_year}",
-				"#{requiredMessages.required_mto_reports_select_start_month}", "#{requiredMessages.required_mto_reports_select_end_month}",
-				'#{validatorMessages.validator_valid_date}');
-
+	 <!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 	
+			<input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+			<input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
+			<input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
+			<input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_sv_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+			<input type="hidden" name="requiredPeriodsMsg" value="#{requiredMessages.required_sv_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->
+			<input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_sv_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
+			<input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_sv_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
+			<input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
 			
-	    //Define Datepicker locale
-	    $('.datepicker').datepickerLocale('#{language.locale}');
+			</form> <!----> 	 	
 		
-	    //Validation Methods - needs to use
-	    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_max_date}');
-	    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', '#{validatorMessages.validator_start_date_greater_than_end_date_header}');
-	       	    		        	   
-		
-		//Validate on change value
-		validateOnChange('#equip');
-		validateOnChange('#periods');
-		validateOnChange('#dateStart');
-		validateOnChange('#dateEnd');
-
-		//Reset Fields on close modal
-		resetFieldOnModalClose('#modalReportOptions', 'equip');
-		resetFieldOnModalClose('#modalReportOptions', 'periods');
-		resetFieldOnModalClose('#modalReportOptions', 'dateStart');
-		resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
-
-		//Remove validation icons
-		//click reset button action
-		
-		removeValidationIcon("reset-btn", 'equip');
-		removeValidationIcon("reset-btn", 'periods');
-		removeValidationIcon("reset-btn", 'dateStart');
-		removeValidationIcon("reset-btn", 'dateEnd');
-
-		//Clean Form validation on close modal
-        cleanValidationOnModalClose("#report-form", '#modalReportOptions');
-
-		//Reset validation form
-		//click reset button action
-		resetFormValidation("#report-form", "reset-btn");
-		
-		</script>
-
-	</ui:define>
+  </ui:define>
 </ui:composition>

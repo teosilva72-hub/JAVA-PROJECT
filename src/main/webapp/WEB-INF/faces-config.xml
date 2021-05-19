@@ -124,7 +124,7 @@
         </resource-bundle>
         				
 		<resource-bundle>
-          <base-name>bundle.messages.system.email.messages_dashboard</base-name>           
+          <base-name>bundle.messages.system.email.messages_email</base-name>           
           <var>emailMessages</var>        
         </resource-bundle>
         

@@ -55,6 +55,9 @@ public class LoginAccountDAO {
 		}
 
 		try {
+			
+			//Verifica condições
+			if(isEmail || isUserName) {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -67,17 +70,10 @@ public class LoginAccountDAO {
 				ps.setString(1, userParam);
 				rs = ps.executeQuery();
 			
-
-			if (rs != null) {
-				while (rs.next()) {
-
-					validation = true; // Existe
-
-				}
-			}
-
-			else
-				validation = false;
+				if (rs.next() != false)
+					validation = true; // Existe				
+				
+			}				
 
 		} catch (SQLException sqle) {
 			throw new Exception(sqle);
@@ -89,7 +85,7 @@ public class LoginAccountDAO {
 
 	}
 
-	public UserAccount emailValidation(String email) throws Exception {
+	public UserAccount emailValidation(String email, String roadConcessionaire) throws Exception {
 
 		UserAccount user = new UserAccount();
 
@@ -101,7 +97,7 @@ public class LoginAccountDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn = ConnectionFactory.useConnection(roadConcessionaire);
 
 			ps = conn.prepareStatement(query);
 			ps.setString(1, email);
@@ -171,7 +167,7 @@ public class LoginAccountDAO {
 	}
 
 	@SuppressWarnings("static-access")
-	public boolean changePassword(String usuario, String senha, int id) throws Exception {
+	public boolean changePassword(String usuario, String senha, int id, String roadConcessionaire) throws Exception {
 
 		boolean status = false;
 
@@ -182,7 +178,7 @@ public class LoginAccountDAO {
 
 			String sql = "UPDATE users_register SET  password = ? WHERE username = ? and user_id = ?";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn = ConnectionFactory.useConnection(roadConcessionaire);
 
 			ps = conn.prepareStatement(sql);
 

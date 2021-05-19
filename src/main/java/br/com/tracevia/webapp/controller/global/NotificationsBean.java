@@ -29,8 +29,8 @@ public class NotificationsBean {
 	LocaleUtil locale;	
 	NotificationsTypeEnum types;
 			
-    private List<Notifications> notifications; 
-    List<Notifications> notificationsEmail;
+    private List<Notifications> notifications;  
+    private static List<Notifications> notificationStatus;  
     private int notifCount;
     
     private int equipId;
@@ -43,8 +43,7 @@ public class NotificationsBean {
 	Timer timer;
 	
 	DateTimeApplication dta;
-	
-	
+		
 	public List<Notifications> getNotifications() {
 		return notifications;
 	}
@@ -52,7 +51,11 @@ public class NotificationsBean {
 	public void setNotifications(List<Notifications> notifications) {
 		this.notifications = notifications;
 	}	
-		
+			
+	public static List<Notifications> getNotificationStatus() {
+		return notificationStatus;
+	}
+
 	public int getNotifCount() {
 		return notifCount;
 	}
@@ -100,12 +103,12 @@ public class NotificationsBean {
 		
 		locale = new LocaleUtil();
 		locale.getResourceBundle(LocaleUtil.MESSAGES_NOTIFICATIONS);
-		
+			
 		try {
 			
 			findNotifications();
 			countNotifications();
-			
+				
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
@@ -117,27 +120,36 @@ public class NotificationsBean {
 		notifications = new ArrayList<Notifications>();
 		NotificationsDAO dao = new NotificationsDAO();
 		
-		interval = 1000;
-	    delay = 1000;
 		timer = new Timer();
 				
 		notifications = dao.Notifications();
-						
+										
 		if(notifications.isEmpty()) {
-			
+									
 		   Notifications not = new Notifications();
 			
 		   not.setEquipId(0);
-		   not.setType("void");
+		   not.setEquipType("none");
 		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
-		   not.setViewedBgColor("dropdown-nofit-unchecked"); 
+		   not.setViewedBgColor("dropdown-nofit-none"); 
 			
 		   notifications.add(not);
-		   		   				 
+		   				   		   				 
 		}
 				
 					
 	}
+	
+	public List<Notifications> getNotificationStatus(String type) throws Exception {
+		
+		notificationStatus = new ArrayList<Notifications>();
+		NotificationsDAO dao = new NotificationsDAO();
+						
+		return notificationStatus = dao.NotificationStatus(type);		
+		
+		
+	}
+	
 	
 	public void countNotifications() throws Exception {
 		
@@ -146,7 +158,7 @@ public class NotificationsBean {
 		notifCount = 0;
 				
 		notifCount = dao.notificationsCount();	
-				
+		
 	}
 				
 	//UPDATE STATUS NOTIFICATION
