@@ -58,13 +58,21 @@ var url      = '/phone/phone.html',
 //NOTIFICATIONS BADGE
 function notificationBadge(){
 
-  var badge = Number( document.getElementById('badge-notif').innerHTML);
+  /*var badge = Number( document.getElementById('badge-notif').innerHTML);
     
   if(badge > 0)
   document.getElementById('badge-notif').style.display = 'block';
 
-  else document.getElementById('badge-notif').style.display = 'none';
+  else document.getElementById('badge-notif').style.display = 'none';*/
   
+}
+
+
+const showCallbox = action => {
+	$("#sipClient > .calls-client").addClass(action).css('bottom', action == 'showing' ? 40 : '')
+	setTimeout(() => {
+	    $("#sipClient > .calls-client").removeClass(action)
+	}, 2000)
 }
 
 

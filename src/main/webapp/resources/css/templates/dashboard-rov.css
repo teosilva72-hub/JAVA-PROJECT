@@ -424,6 +424,20 @@ footer {
   overflow: hidden;
 }
 
+#dismiss-phone {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  /* top right corner of the sidebar */
+  top: 10px;
+  right: -5px;
+}
+
+#dismiss-phone:hover {
+  color: #ffffff;
+  overflow: hidden;
+}
+
 .overlay {
   display: none;
   position: fixed;
@@ -820,6 +834,34 @@ input.apple-switch:checked:before {
 @keyframes callalert {
 	 from {background-color: red;}
   to {background-color: blue;}
+}
+
+.calls-client {
+	position: fixed;
+    height: 400px;
+    width: 280px;
+    right: 25px;
+    bottom: -335px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 1%;
+}
+
+.calls-client.hiding {
+	animation: showCallbox 2s 1 reverse;
+}
+
+.calls-client.showing {
+	animation: showCallbox 2s 1;
+}
+
+@keyframes showCallbox {
+	from {
+		bottom: -335px;
+	}
+	to {
+		bottom: 40px;
+	}
 }
 
 /* Call Box Alert END */ 

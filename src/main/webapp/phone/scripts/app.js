@@ -2,12 +2,15 @@
 
 var ctxSip;
 
-$(document).ready(function() {
+async function initPhone() {
 
 
     if (typeof(user) === 'undefined') {
         user = JSON.parse(localStorage.getItem('SIPCreds'));
     }
+
+    while (user === undefined || user === null)
+        await sleep(500)
 
     ctxSip = {
 
@@ -19,7 +22,7 @@ $(document).ready(function() {
             registerExpires : 30,
             traceSip        : true,
             log             : {
-                level : 0,
+                level : 1,
             }
         },
         ringtone     : document.getElementById('ringtone'),
@@ -84,7 +87,7 @@ $(document).ready(function() {
         newSession : function(newSess) {
 
             newSess.displayName = newSess.remoteIdentity.displayName || newSess.remoteIdentity.uri.user;
-            newSess.ctxid       = ctxSip.getUniqueID();
+            newSess.ctxid       = newSess.ctxid || ctxSip.getUniqueID();
 
             var status;
 
@@ -189,7 +192,7 @@ $(document).ready(function() {
         // getUser media request refused or device was not present
         getUserMediaFailure : function(e) {
             window.console.error('getUserMedia failed:', e);
-            ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
+            // ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
         },
 
         getUserMediaSuccess : function(stream) {
@@ -223,8 +226,8 @@ $(document).ready(function() {
         logCall : function(session, status) {
 
             var log = {
-                    clid : session.displayName,
-                    uri  : session.remoteIdentity.uri.toString(),
+                    clid : session.displayName || "Desconhecido",
+                    uri  : (session.remoteIdentity.uri || "Desconhecido").toString(),
                     id   : session.ctxid,
                     time : new Date().getTime()
                 },
@@ -238,9 +241,12 @@ $(document).ready(function() {
                     clid  : log.clid,
                     uri   : log.uri,
                     start : log.time,
-                    flow  : session.direction
+                    flow  : session.direction,
+                    bdid  : session.EquipmentID
                 };
             }
+
+            calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
 
             if (status === 'ended') {
                 calllog[log.id].stop = log.time;
@@ -309,12 +315,12 @@ $(document).ready(function() {
                 i += '<div class="btn-group btn-group-xs pull-right">';
                 if (item.status === 'ringing' && item.flow === 'incoming') {
                     i += '<button class="btn btn-xs btn-success btnCall" title="Call"><i class="fa fa-phone"></i></button>';
-                } else {
+                } else if (item.owner) {
                     i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><i class="fa fa-pause"></i></button>';
                     i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute"><i class="fa fa-fw fa-microphone"></i></button>';
+                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 }
-                i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 i += '</div>';
             }
             i += '</div>';
@@ -351,6 +357,13 @@ $(document).ready(function() {
 
                 // empty existing logs
                 $('#sip-logitems').empty();
+
+                for (const log of Object.entries(calllog))
+                    if (log[1].owner && (log[1].status !== 'ended' && log[1].status !== 'missed') && log[1].session == "finish") {
+                        ctxSip.sipHangUp(log[0], log[1].bdid)
+
+                        return
+                    }
 
                 // JS doesn't guarantee property order so
                 // create an array with the start time as
@@ -415,12 +428,27 @@ $(document).ready(function() {
             s.refer(target);
         },
 
-        sipHangUp : function(sessionid) {
+        sipHangUp : function(sessionid, id) {
 
             var s = ctxSip.Sessions[sessionid];
             // s.terminate();
-            if (!s) {
+            if (!s && id) {
+                ctxSip.logCall({ctxid: sessionid, remoteIdentity: {}}, 'ended')
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == id)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${id}`)
+                });
+
                 return;
+            } else if (s.service) {
+                ctxSip.logCall(s, 'ended')
+                ctxSip.callActiveID = null;
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID)
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
+                });
             } else if (s.startTime) {
                 s.bye();
             } else if (s.reject) {
@@ -452,6 +480,15 @@ $(document).ready(function() {
                 $("#numDisplay").val("");
                 ctxSip.sipCall(target);
 
+            } else if (s.service) {
+                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                    if (response.UserID == loginAccount.ID) {
+                        ctxSip.Sessions[sessionid].owner = true;
+                        ctxSip.callActiveID = sessionid;
+
+                        ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
+                    }
+                });
             } else if (s.accept && !s.startTime) {
 
                 s.accept({
@@ -490,7 +527,7 @@ $(document).ready(function() {
         },
 
 
-        setError : function(err, title, msg, closable) {
+        setError : function(err, title, msg, closable) { // TODO: Corrigir a modal ou talvez remover completamente a mesma
 
             // Show modal if err = true
             if (err === true) {
@@ -528,7 +565,7 @@ $(document).ready(function() {
             } else if (navigator.getUserMedia) {
                 return true;
             } else {
-                ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
+                // ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
                 window.console.error("WebRTC support not found");
                 return false;
             }
@@ -553,7 +590,7 @@ $(document).ready(function() {
         ctxSip.setStatus("Disconnected");
 
         // disable phone
-        ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
+        // ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
 
         // remove existing sessions
         $("#sessions > .session").each(function(i, session) {
@@ -570,6 +607,11 @@ $(document).ready(function() {
         var closePhone = function() {
             // stop the phone on unload
             localStorage.removeItem('ctxPhone');
+            let log = JSON.parse(localStorage.getItem('sipCalls'))
+            for (const l of Object.entries(log)) {
+                log[l[0]].session = "finish"
+            }
+            localStorage.setItem('sipCalls', JSON.stringify(log))
             ctxSip.phone.stop();
         };
 
@@ -589,12 +631,12 @@ $(document).ready(function() {
     });
 
     ctxSip.phone.on('registrationFailed', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 
     ctxSip.phone.on('unregistered', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 
@@ -645,6 +687,8 @@ $(document).ready(function() {
         event.preventDefault();
         ctxSip.logClear();
     });
+
+    
 
     $('#sip-logitems').delegate('.sip-logitem .btnCall', 'click', function(event) {
         var sessionid = $(this).closest('.sip-logitem').data('sessionid');
@@ -728,6 +772,63 @@ $(document).ready(function() {
         ctxSip.logShow();
     }, 3000);
 
+    // receiver rabbitmq
+    consume({
+        callback_states: null,
+        callback_alarms: null,
+        callback_calls: message => {
+            let response = JSON.parse(message.body);
+
+            getEquipFromID(response.EquipmentID).then(equip => {
+                let direction = 'incoming';
+                let status;
+
+                switch(response.CallStateID) {
+                    case 1:
+                        status = "answered";
+                        ctxSip.stopRingbackTone();
+                        ctxSip.stopRingTone();
+                        ctxSip.setCallSessionStatus('Answered');
+                        break
+
+                    case 3:
+                        status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('');
+                        break
+
+                    case 4:
+                        status = "ringing";
+                        break
+
+                    case 5:
+                        status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('Rejected');
+                        break
+                }
+
+                response.displayName = equip.MasterName;
+                response.direction = direction;
+                response.service = true;
+                response.ctxid = `${Date.parse(response.StartDate).toString().substr(0, 10)}id${equip.ID}`;
+                response.remoteIdentity = {
+                    uri: `${equip.MasterSIP}@${equip.IP}`,
+                    displayName: equip.MasterName
+                }
+
+                response.on = () => {}
+    
+                if (status == "ringing") {
+                    ctxSip.newSession(response)
+                } else {
+                    ctxSip.logCall(response, status)
+                }
+            });
+        }
+    })
 
     /**
      * Stopwatch object used for call timers
@@ -799,4 +900,6 @@ $(document).ready(function() {
         this.stop  = stop; //function() { stop; }
     };
 
-});
+};
+
+initPhone()

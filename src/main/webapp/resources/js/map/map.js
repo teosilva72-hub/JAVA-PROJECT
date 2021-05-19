@@ -116,7 +116,7 @@ $(function () {
 	})
 
 	$('#fulldiv3').on('click', function() {
-		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.12)
 	})
 
 
@@ -128,7 +128,7 @@ $(function () {
 	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
 		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.15)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.12)
 
 	})
 
@@ -325,6 +325,7 @@ $(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
 
+	initSOS()
 })
 
 function posReset() {
