@@ -22,7 +22,7 @@ async function initPhone() {
             registerExpires : 30,
             traceSip        : true,
             log             : {
-                level : 0,
+                level : 1,
             }
         },
         ringtone     : document.getElementById('ringtone'),
@@ -192,7 +192,7 @@ async function initPhone() {
         // getUser media request refused or device was not present
         getUserMediaFailure : function(e) {
             window.console.error('getUserMedia failed:', e);
-            ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
+            // ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
         },
 
         getUserMediaSuccess : function(stream) {
@@ -475,7 +475,12 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid],
                 target = $("#numDisplay").val();
 
-            if (s.service) {
+            if (!s) {
+
+                $("#numDisplay").val("");
+                ctxSip.sipCall(target);
+
+            } else if (s.service) {
                 connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                     if (response.UserID == loginAccount.ID) {
                         ctxSip.Sessions[sessionid].owner = true;
@@ -484,11 +489,6 @@ async function initPhone() {
                         ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
                     }
                 });
-            } else if (!s) {
-
-                $("#numDisplay").val("");
-                ctxSip.sipCall(target);
-
             } else if (s.accept && !s.startTime) {
 
                 s.accept({
@@ -527,7 +527,7 @@ async function initPhone() {
         },
 
 
-        setError : function(err, title, msg, closable) {
+        setError : function(err, title, msg, closable) { // TODO: Corrigir a modal ou talvez remover completamente a mesma
 
             // Show modal if err = true
             if (err === true) {
@@ -565,7 +565,7 @@ async function initPhone() {
             } else if (navigator.getUserMedia) {
                 return true;
             } else {
-                ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
+                // ctxSip.setError(true, 'Unsupported Browser.', 'Your browser does not support the features required for this phone.');
                 window.console.error("WebRTC support not found");
                 return false;
             }
@@ -590,7 +590,7 @@ async function initPhone() {
         ctxSip.setStatus("Disconnected");
 
         // disable phone
-        ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
+        // ctxSip.setError(true, 'Websocket Disconnected.', 'An Error occurred connecting to the websocket.');
 
         // remove existing sessions
         $("#sessions > .session").each(function(i, session) {
@@ -631,12 +631,12 @@ async function initPhone() {
     });
 
     ctxSip.phone.on('registrationFailed', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 
     ctxSip.phone.on('unregistered', function(e) {
-        ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
+        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
         ctxSip.setStatus("Error: Registration Failed");
     });
 

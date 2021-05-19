@@ -832,6 +832,17 @@ input.apple-switch:checked:before {
   to {background-color: blue;}
 }
 
+.calls-client {
+	position: fixed;
+    height: 400px;
+    width: 280px;
+    right: 25px;
+    bottom: 40px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 1%;
+}
+
 /* Call Box Alert END */ 
 
 /* CUSTOM SCROLL */
