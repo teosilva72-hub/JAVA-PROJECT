@@ -73,15 +73,16 @@ public class NotificationsDAO {
 								   
 								  not = new Notifications();	
 								  								 										
-								  not.setEquipId(rs.getInt("st.equip_id"));
-								  not.setStatus(NotificationsAlarmsEnum.LOW_BATTERY.getAlarm()); // LOWW BATTERY
-								  not.setType("battery"); //Type Notification							 							  
+								  not.setEquipId(rs.getInt("st.equip_id"));		
+								  not.setStatus(1); // STATUS
+								  not.setAlarmType(NotificationsAlarmsEnum.LOW_BATTERY.getAlarm()); // LOWW BATTERY
+								  not.setEquipType(rs.getString("st.equip_type")); //Type Notification							 							  
 								  not.setViewedBgColor("dropdown-nofit-alert"); 								  
 																  
-								  if(!rs.getString("st.battery_datetime").equals(""))
+								  if(!rs.getString("st.battery_datetime").equals(" "))
 								    not.setDateTime(dta.formatterDateTime(rs.getString("st.battery_datetime")));
 								  
-								  else  not.setDateTime("");
+								  else  not.setDateTime(dta.currentViewDateTime());
 								  
 								  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+			
 								  locale.getStringKey("stat_equipment_notification_low_battery_description"));
@@ -99,14 +100,15 @@ public class NotificationsDAO {
 								   not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
-									  not.setStatus(NotificationsAlarmsEnum.DOOR_OPENED.getAlarm()); // DOOR OPENED
-									  not.setType(rs.getString("st.equip_type")); //Type Equip
+								      not.setStatus(1); // STATUS
+								      not.setAlarmType(NotificationsAlarmsEnum.DOOR_OPENED.getAlarm()); // DOOR OPENED
+									  not.setEquipType(rs.getString("st.equip_type")); //Type Notification									
 									  not.setViewedBgColor("dropdown-nofit-alert"); 									  
 									  
-									  if(!rs.getString("st.door_datetime").equals(""))
+									  if(!rs.getString("st.door_datetime").equals(" "))
 									     not.setDateTime(dta.formatterDateTime(rs.getString("st.door_datetime")));
 									  
-									  else  not.setDateTime("");
+									  else  not.setDateTime(dta.currentViewDateTime());
 									 
 									  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+				
 									  locale.getStringKey("stat_equipment_notification_door_open_description"));
@@ -124,14 +126,15 @@ public class NotificationsDAO {
 								   not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
-									  not.setStatus(NotificationsAlarmsEnum.POWER_OFF.getAlarm()); // POWER OFF
-									  not.setType(rs.getString("st.equip_type")); //Type Equip
-									  not.setViewedBgColor("dropdown-nofit-alert"); 										  								  
-																		  
-									  if(!rs.getString("st.energy_datetime").equals(""))
+								      not.setStatus(1); // STATUS
+								      not.setAlarmType(NotificationsAlarmsEnum.POWER_OFF.getAlarm()); // POWER OFF
+									  not.setEquipType(rs.getString("st.equip_type")); //Type Notification									
+									  not.setViewedBgColor("dropdown-nofit-alert"); 					
+																		
+									  if(!rs.getString("st.energy_datetime").equals(" "))
 									  not.setDateTime(dta.formatterDateTime(rs.getString("st.energy_datetime")));
 									  
-									  else  not.setDateTime("");
+									  else  not.setDateTime(dta.currentViewDateTime());
 									  
 									  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+					
 									  locale.getStringKey("stat_equipment_notification_power_off_description"));
@@ -149,14 +152,15 @@ public class NotificationsDAO {
 								      not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
-									  not.setStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm()); // OFF-LINE
-									  not.setType(rs.getString("st.equip_type")); //Type Equip
-									  not.setViewedBgColor("dropdown-nofit-alert"); 			 
-									  
-									  if(!rs.getString("st.online_datetime").equals(""))
+								      not.setStatus(1); // STATUS
+									  not.setAlarmType(NotificationsAlarmsEnum.OFFLINE.getAlarm()); // OFF-LINE
+									  not.setEquipType(rs.getString("st.equip_type")); //Type Notification									
+									  not.setViewedBgColor("dropdown-nofit-alert");				
+										 									  
+									  if(!rs.getString("st.online_datetime").equals(" "))
 									  not.setDateTime(dta.formatterDateTime(rs.getString("st.online_datetime")));
 									  
-									  else  not.setDateTime("");
+									  else  not.setDateTime(dta.currentViewDateTime());
 									  
 									  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+		
 									  locale.getStringKey("stat_equipment_notification_offline_description"));
@@ -172,14 +176,15 @@ public class NotificationsDAO {
 								      not = new Notifications();	
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
-									  not.setStatus(NotificationsAlarmsEnum.PRESENCE.getAlarm()); // PRESENCE 
-									  not.setType(rs.getString("st.equip_type")); //Type Equip
+								      not.setStatus(1); // STATUS
+									  not.setAlarmType(NotificationsAlarmsEnum.PRESENCE.getAlarm()); // PRESENCE 
+									  not.setEquipType(rs.getString("st.equip_type")); //Type Equip
 									  not.setViewedBgColor("dropdown-nofit-alert"); 	
 																	  
-									  if(!rs.getString("st.presence_datetime").equals(""))
+									  if(!rs.getString("st.presence_datetime").equals(" "))
 									     not.setDateTime(dta.formatterDateTime(rs.getString("st.presence_datetime")));
 									  
-									  else  not.setDateTime("");
+									  else  not.setDateTime(dta.currentViewDateTime());
 									  
 									  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+			
 									  locale.getStringKey("stat_equipment_notification_presence_description"));
@@ -197,14 +202,15 @@ public class NotificationsDAO {
 								      not = new Notifications();									   
 								   
 								      not.setEquipId(rs.getInt("st.equip_id"));
-									  not.setStatus(NotificationsAlarmsEnum.HIGH_TEMPERATURE.getAlarm()); // TEMPERATURE LOW
-									  not.setType(rs.getString("st.equip_type")); //Type Equip
+								      not.setStatus(1); // STATUS
+									  not.setAlarmType(NotificationsAlarmsEnum.HIGH_TEMPERATURE.getAlarm()); // TEMPERATURE LOW
+									  not.setEquipType(rs.getString("st.equip_type")); //Type Equip
 									  not.setViewedBgColor("dropdown-nofit-alert"); 	
 									  									  									
-									  if(!rs.getString("st.temperature_datetime").equals(""))
+									  if(!rs.getString("st.temperature_datetime").equals(" "))
 									    not.setDateTime(dta.formatterDateTime(rs.getString("st.temperature_datetime")));
 									  
-									  else  not.setDateTime("");
+									  else  not.setDateTime(dta.currentViewDateTime());
 									  
 									  not.setDescription(rs.getString("st.equip_name") + " " + rs.getString("st.equip_km") + " - "	+		
 									  locale.getStringKey("stat_equipment_notification_high_temperature_description"));
@@ -221,6 +227,47 @@ public class NotificationsDAO {
 		  return lista;
 	  } 	
      
+     
+     public List<Notifications> NotificationStatus(String type) throws Exception{
+ 		
+ 		List<Notifications> lista = new ArrayList<Notifications>();
+ 			  		
+ 	   String select = "SELECT equip_id, online_status FROM notifications_status WHERE equip_type = ? ";
+ 									
+ 				    try {
+ 				    				    				    	
+ 				    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+ 					
+ 					ps = conn.prepareStatement(select);		
+ 					ps.setString(1, type);
+ 					
+ 					rs = ps.executeQuery();
+ 																												
+ 					if (rs.isBeforeFirst()) {
+ 						while (rs.next()) {
+ 							
+ 							Notifications not = new Notifications();	
+ 								  								 										
+ 								  not.setEquipId(rs.getInt("equip_id"));		
+ 								  not.setStatus(rs.getInt("online_status")); // STATUS
+ 								  
+ 								  if(not.getStatus() == 0)
+ 								  not.setAlarmType(NotificationsAlarmsEnum.ONLINE.getAlarm()); // ONLINE
+ 								  
+ 								  else  not.setAlarmType(NotificationsAlarmsEnum.OFFLINE.getAlarm()); // OFFLINE								  
+ 								 								  																														
+ 							      lista.add(not); 							
+ 							   
+ 						    }
+ 					     }					    		
+
+ 				} catch (SQLException e) {
+ 					e.printStackTrace();
+ 				}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+ 		  return lista;
+ 	  } 	
+      
           
      public Integer notificationsCount() throws Exception {
     	 

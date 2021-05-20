@@ -195,6 +195,10 @@ float: right;
 margin-right: 8%;
 }
 
+#form-new\:btn-add{
+	margin-left: 7%;
+}
+
 .edit-icon, .trash-alt-icon{
 color: #fff;
 font-size: 24px;

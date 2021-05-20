@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.util;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -43,8 +44,12 @@ public class EmailUtil {
 		
 	 
 	    //SEND EMAIL DEFAULT
-		public void sendEmail(String to, String assunto, String conteudo) throws AddressException, MessagingException {
+		public boolean sendEmail(String to, String assunto, String conteudo) {
 
+			boolean response = false;
+			
+			try {				
+			
 			String from = username;
 			
 			Session session = createSessionMail(); // Criando a Sessao
@@ -68,13 +73,32 @@ public class EmailUtil {
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
 			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();    
+			transport.close();  
+			
+			response = true;
+
+			}catch(AddressException addressEx) {				 
+				addressEx.printStackTrace();
+
+			}catch(AuthenticationFailedException authEx) {
+				authEx.printStackTrace();
+
+			}catch( MessagingException mesEx) {
+
+				mesEx.printStackTrace();
+			} 
+
+			return response;	
 
 		}
 				
 		 //SEND EMAIL DEFAULT WITH CONTACTS
-		public void sendEmail(String to, String cc, String assunto, String conteudo) throws AddressException, MessagingException {
+		public boolean sendEmail(String to, String cc, String assunto, String conteudo) {
 
+			boolean response = false;
+			
+			try {
+			
 			String from = username;
 			
 			Session session = createSessionMail(); // Criando a Sessao
@@ -103,13 +127,32 @@ public class EmailUtil {
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
 			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();    
+			transport.close(); 
+			
+			response = true;
+
+			}catch(AddressException addressEx) {				 
+				addressEx.printStackTrace();
+
+			}catch(AuthenticationFailedException authEx) {
+				authEx.printStackTrace();
+
+			}catch( MessagingException mesEx) {
+
+				mesEx.printStackTrace();
+			} 
+
+			return response;
 
 		}
 			
 		 //SEND EMAIL HTML
-		public void sendEmailHtml(String to, String assunto, String conteudo) throws AddressException, MessagingException {
-
+		public boolean sendEmailHtml(String to, String assunto, String conteudo){
+			
+			boolean response = false;
+			
+			try {			
+			
 			String from = username;
 			
 			Session session = createSessionMail(); // Criando a Sess�o
@@ -132,13 +175,32 @@ public class EmailUtil {
 
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();    
+			transport.sendMessage(message, message.getAllRecipients());					
+			transport.close(); 
+
+			response = true;
+			
+			}catch(AddressException addressEx) {				 
+				     addressEx.printStackTrace();
+				
+			}catch(AuthenticationFailedException authEx) {
+				     authEx.printStackTrace();
+			
+			}catch( MessagingException mesEx) {
+				
+				mesEx.printStackTrace();
+			} 
+			
+			return response;
 
 		}
 		
 		 //SEND EMAIL HTML WITH CONTACTS
-		public void sendEmailHtml(String to, String cc, String assunto, String conteudo) throws AddressException, MessagingException {
+		public boolean sendEmailHtml(String to, String cc, String assunto, String conteudo) {
+			
+			boolean response = false;
+			
+			try {
 
 			String from = username;
 			
@@ -168,9 +230,23 @@ public class EmailUtil {
 			Transport transport = session.getTransport("smtp");
 			transport.connect(host, username, password);
 			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();    
+			transport.close();   
+			
+			response = true;
+			
+			}catch(AddressException addressEx) {				 
+				addressEx.printStackTrace();
+
+			}catch(AuthenticationFailedException authEx) {
+				authEx.printStackTrace();
+
+			}catch( MessagingException mesEx) {
+
+				mesEx.printStackTrace();
+			} 
+
+			return response;
 
 		}
-
-
+		
 }

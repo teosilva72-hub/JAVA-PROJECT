@@ -352,8 +352,8 @@ async function initPhone() {
 
             if (calllog !== null) {
 
-                $('#sip-splash').addClass('hide');
-                $('#sip-log').removeClass('hide');
+                $('#sip-splash').addClass('hide'); // ! Remover essa linha futuramente
+                $('#sip-log').removeClass('hide'); // ! Remover essa linha futuramente
 
                 // empty existing logs
                 $('#sip-logitems').empty();
@@ -383,10 +383,10 @@ async function initPhone() {
                     ctxSip.logItem(v);
                 });
 
-            } else {
-                $('#sip-splash').removeClass('hide');
-                $('#sip-log').addClass('hide');
-            }
+            } else { // ! Remover essa linha futuramente
+                $('#sip-splash').removeClass('hide'); // ! Remover essa linha futuramente
+                $('#sip-log').addClass('hide'); // ! Remover essa linha futuramente
+            } // ! Remover essa linha futuramente
         },
 
         /**
@@ -642,10 +642,21 @@ async function initPhone() {
 
     ctxSip.phone.on('invite', function (incomingSession) {
 
-        var s = incomingSession;
+        // var s = incomingSession;
 
-        s.direction = 'incoming';
-        ctxSip.newSession(s);
+        // s.direction = 'incoming';
+        // ctxSip.newSession(s);
+
+        incomingSession.accept({
+            media : {
+                stream      : ctxSip.Stream,
+                constraints : { audio : true, video : false },
+                render      : {
+                    remote : { audio: $('#audioRemote').get()[0] }
+                },
+                RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
+            }
+        });
     });
 
     // Auto-focus number input on backspace.

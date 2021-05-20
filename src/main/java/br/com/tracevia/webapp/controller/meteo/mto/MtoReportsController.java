@@ -44,8 +44,10 @@ public class MtoReportsController {
 		
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
+	
+	String jsTableId;
 		
-	LocaleUtil localeLabel, localeCalendar, localeMto;
+	LocaleUtil localeLabel, localeCalendar;
 			
 	int periodRange, daysInMonth, daysCount, start_month, end_month;  
 		
@@ -148,10 +150,7 @@ public class MtoReportsController {
 		
 		localeCalendar = new LocaleUtil();	
 		localeCalendar.getResourceBundle(LocaleUtil.LABELS_CALENDAR);
-		
-		localeMto = new LocaleUtil();
-		localeMto.getResourceBundle(LocaleUtil.MESSAGES_MTO);
-				
+					
 		/* EQUIPMENTS SELECTION */
 		mtoReport = new MtoReports();
 		equipments = new ArrayList<SelectItem>();		
@@ -348,6 +347,8 @@ public void CreateFields(String type) {
 			mtoReport.setMonth(parameterMap.get("month"));
 			
 			mtoReport.setPeriod(parameterMap.get("periods"));
+			
+			jsTableId = parameterMap.get("jsTable");
 													
 			 //Initialize ResultList
 		     resultList = new ArrayList<Builder>();	
@@ -647,16 +648,21 @@ public void CreateFields(String type) {
 				//UPDATE BUTTON GENERATE EXCEL
 				RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
 				
-			
+				//UPDATE TABLE JQUERY ON RELOAD PAGE
+				RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"');");	
+								
 			//CASO CONTRARIO ENTRA AQUI
-		} else {
-			      message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"), localeMto.getStringKey("mto_message_records_not_found"));
-		          CreateFields(type);  
-		          
+				
+		} else {					      
+				      			 		          
 		          //EXECUTE JS
 				  RequestContext.getCurrentInstance().execute("hideMessage();");
 				  
-	           }	     
+				  //UPDATE TABLE JQUERY ON RELOAD PAGE
+				   RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"'); showMessage(); ");	
+							  
+	           }	
+								   
 	      }
 			
 			

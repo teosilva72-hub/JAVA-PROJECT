@@ -1,52 +1,100 @@
 
-function validateLogin(usernameRequired, usernameMinLenght, usernameMaxLenght,
- passwordRequired, passwordMinLenght, passwordMaxLenght) {
-	
-	$('#form-login').validate({
-		rules:{
-			username:{
-				required: true,	
-				minlength: 4,
-				maxlength: 80
-			},	
-			password:{
-				required: true,	
-				minlength: 3,
-				maxlength: 15
-			}	   
-	    },
-	    
-	     messages: {
-            username: {
-                required: usernameRequired,
-                minlength: usernameMinLenght,
-                maxlength: usernameMaxLenght
-            },
+//VALIDATION DEFINITIONS
 
-         password: {
-                required: passwordRequired,
-                minlength: passwordMinLenght,
-                maxlength: passwordMaxLenght
-            }
-	      },
-          
-          errorClass : "error-login",
-          // use highlight and unhighlight
-          highlight: function(element, errorClass) {
-           $(element).addClass(errorClass);
-           $(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
-           $(element.form).find("select").addClass('invalid');
-           $(element.form).find("input").addClass('invalid');
-           },
-          unhighlight: function(element, errorClass) {
-           $(element).removeClass(errorClass);
-           $(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
-           $(element.form).find("select").removeClass('invalid');
-           $(element.form).find("input").removeClass('invalid');           
-           $(element.form).find("select").addClass('valid');
-           $(element.form).find("input").addClass('valid');
-           
-          } 	
-	});	
-	
-  }
+$(function() {
+
+    let validation = document.forms.validation;
+
+    for (messages of validation)
+        window[messages.name] = messages.value
+      
+    validateLogin('#form-login', usernameMsg, usernameMinLengthMsg, usernameMaxLengthMsg, passwordMsg, 
+        passwordMinLengthMsg, passwordMaxLengthMsg);        
+       
+   //Validate elements on change value
+   //In this case check if the element is valid
+   validateOnChange('#username');
+   validateOnChange('#password');                            
+       
+});
+
+/***********************************/
+
+ //cancela a são do botão enter
+ document.addEventListener("keydown", function(e) {
+    if(e.keyCode === 13) {
+      e.preventDefault(); 
+    }
+  });
+
+/***********************************/
+
+//RESET MESSAGE DISPLAY	
+function hideNotFoundMessage() {
+    setTimeout(function () {
+        $('#notFound').hide();
+    }, 5000);
+}
+
+//SHOW MESSAGE DISPLAY	
+function showNotFoundMessage() {
+    $('#notFound').show();
+}
+
+/********************************/
+
+//RESET MESSAGE DISPLAY	
+function hideLoginErrorMessage() {
+    setTimeout(function () {
+        $('#loginError').hide();
+    }, 5000);
+}
+
+//SHOW MESSAGE DISPLAY	
+function showLoginErrorMessage() {
+    $('#loginError').show();
+}
+
+/********************************/
+
+//RESET MESSAGE DISPLAY	
+function hideInactiveErrorMessage() {
+    setTimeout(function () {
+        $('#inactiveError').hide();
+    }, 5000);
+}
+
+//SHOW MESSAGE DISPLAY	
+function showInactiveErrorMessage() {
+    $('#inactiveError').show();
+}
+
+/********************************/
+
+//RESET MESSAGE DISPLAY	
+function hideConnectionErrorMessage() {
+    setTimeout(function () {
+        $('#connectionError').hide();
+    }, 5000);
+}
+
+//SHOW MESSAGE DISPLAY	
+function showConnectionErrorMessage() {
+    $('#connectionError').show();
+}
+
+   /********************************/
+
+       //RESET MESSAGE DISPLAY	
+        function hideLogoutMessage() {
+          setTimeout(function () {
+            $('#logout').hide();
+         }, 5000);
+       }
+
+     //SHOW MESSAGE DISPLAY	
+      function showLogoutMessage() {
+      $('#logout').show();
+      }
+
+     /********************************/
