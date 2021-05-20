@@ -113,7 +113,11 @@ public class NavigationBean {
 	}
    
    public String redirectToPanelUsers() {
-		
+	   
+	   UserAccountBean user = new UserAccountBean();
+	   
+	    user.listarUsuarios(); // listar usuarios
+	    
  		navigation_page = "/users/panel_user.xhtml?faces-redirect=true";		
  		
  		return navigation_page;
@@ -293,12 +297,7 @@ public class NavigationBean {
 		return navigation_page;
 	}
    
-   
-   
-   
-   
-   
-   
+      
    //******************* CCR REPORTS **************************** //
    
    /* SAT REPORTS */

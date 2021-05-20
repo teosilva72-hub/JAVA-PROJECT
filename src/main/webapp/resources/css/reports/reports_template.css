@@ -216,6 +216,7 @@ body {
 /* modal button on close hide effect */
 button.close{
    outline: none;
+   font-weight:400;
 }
 
 /* form modal content style*/

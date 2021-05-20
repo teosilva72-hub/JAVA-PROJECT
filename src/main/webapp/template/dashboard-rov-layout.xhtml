@@ -34,8 +34,6 @@
       <h:outputScript name="jquery.mask.js?version=#{notificationsView.timestamp}" library="js/jquery-mask" />
     </ui:insert>
 
-
-
     <ui:insert name="head" />
 
   </h:head>
@@ -110,8 +108,7 @@
               </path>
             </svg>
           </button>
-
-
+          
           <a class="brand-text navbar-brand col-auto" href="#">Tracevia</a>
 
         </div>
@@ -215,7 +212,7 @@
 
                 <h:form>
 
-                  <h:commandLink class="dropdown-item" value="" action="#{loginAccount.LogOut}" ajax="false">
+                  <h:commandLink class="dropdown-item" value="" action="#{loginAccount.LogOut}" ajax="false" >
                     <i class="fas fa-fw fa-sign-out-alt"></i>
                     <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_logout}</span>
                   </h:commandLink>
@@ -224,7 +221,7 @@
             </li>
           </ul>
         </div>
-
+        
         <ul class="dropdown-menu dropdown-menu-right navbar-toggler border " id="navbarMaximizeMenu">
           <li class="square" id="square-profile-maxsize"></li>
           <li class="nav-item dropdown">
@@ -753,9 +750,7 @@
       </div>
     </div>
     <!-- TOAST END -->
-
-
-
+ 
     <!-- Footer -->
     <footer class=" page-footer font-small indigo">
 
@@ -794,6 +789,9 @@
     <h:outputScript name="bootstrap.bundle.min.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
     <h:outputScript name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
     <h:outputScript name="all.min.js?version=#{notificationsView.timestamp}" library="font-awesome/js" />
+    <h:outputScript name="jquery.slimscroll.min.js?version=#{notificationsView.timestamp}" library="js/jquery-slim-scroll" />
+    <h:outputScript name="dashboard-right.js" library="js/dashboard" />
+    
     <ui:insert name="default-plugins">
       <h:outputScript name="jquery.dataTables.min.js?version=#{notificationsView.timestamp}" library="js/datatables" />
       <h:outputScript name="dataTables.bootstrap4.min.js?version=#{notificationsView.timestamp}"
@@ -812,95 +810,9 @@
     <script type="text/javascript" src="/phone/scripts/config.js"></script>
     <script type="text/javascript" src="/phone/scripts/app.js"></script>
 
-    <script>
-
-      notificationBadge();
-
-      function sidenavAction() {
-        document.getElementById("sidenav2").style.display = "none";
-        document.getElementById("sidenav3").style.display = "none";
-        document.getElementById("sidenavPhone").style.display = "none";
-        document.getElementById("sidenav").style.display = "block";
-      }
-
-      function sidenavAction2() {
-        document.getElementById("sidenav3").style.display = "none";
-        document.getElementById("sidenav").style.display = "none";
-        document.getElementById("sidenavPhone").style.display = "none";
-        document.getElementById("sidenav2").style.display = "block";
-      }
-
-      function sidenavAction3() {
-        document.getElementById("sidenav").style.display = "none";
-        document.getElementById("sidenav2").style.display = "none";
-        document.getElementById("sidenavPhone").style.display = "none";
-        document.getElementById("sidenav3").style.display = "block";
-      }
-
-      function sidenavActionPhones() {
-        document.getElementById("sidenav").style.display = "none";
-        document.getElementById("sidenav2").style.display = "none";
-        document.getElementById("sidenav3").style.display = "none";
-        document.getElementById("sidenavPhone").style.display = "block";
-      }
-
-      function clicked(id) {
-        var element = document.getElementById(id);
-        if (element.style.display === "none") {
-          element.style.display = "block";
-        } else {
-          element.style.display = "none";
-        }
-      }
-
-      function toggleBtnEquips() {
-        $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
-      };
-
-
-      /*  function reloadNotifications(){
-            var container = document.getElementById("testess");
-             container.innerHTML = " ";
-                        
-           //this line is to watch the result in console , you can remove it later	
-           alert("Refreshed"); 
-        }*/
-
-      //Scroll stucked on Top  ==> FOR SCROLL
-      /* function setTopo(){
-          $(window).scrollTop(0);
-      }
-       //Call setTopo()
-      $(window).bind('scroll', setTopo);*/
-      // Voice Menu Open
-      $(function () {
-
-        $("[id$=holdingcall]").click(function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          $("[id$=callback]").show();
-          $("[id$=holdingcall]").hide();
-        });
-
-        $("[id$=callback]").click(function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          $("[id$=holdingcall]").show();
-          $("[id$=callback]").hide();
-        });
-      })
-      // Voice Menu Open End
-
-      // Visibility Equipments
-      $('[toggle]').click(function () {
-        $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
-      })
-      // Visibility Equipments End
-
-    </script>
-
     <!-- Import JavaScript from another pages -->
-    <ui:insert name="jscript"></ui:insert>
+    <ui:insert name="jscript">      
+    </ui:insert>
 
   </h:body>
 </f:view>

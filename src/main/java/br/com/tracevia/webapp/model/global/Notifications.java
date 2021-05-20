@@ -3,81 +3,83 @@ package br.com.tracevia.webapp.model.global;
 public class Notifications {
 	
 	private int status;
-	private int equipId;
-	private String viewedBgColor;
-	private String title;
+	private int equipId;	
+	private int alarmType;
 	private String equipName;
-	private String dateTime;
-	private String type;
+	private String equipType;
+	private String dateTime;	
 	private String description;
 	private String km;
-	
-
-		
-	public Notifications(int status, int equipId, String viewedBgColor, String title, String equipName, String dateTime, String type, String description, String km) {
+	private String viewedBgColor;
+			
+	public Notifications(int status, int equipId, int alarmType, String equipName, String equipType, String dateTime,
+			String description, String km, String viewedBgColor) {
 		
 		this.status = status;
 		this.equipId = equipId;
-		this.viewedBgColor = viewedBgColor;
-		this.title = title;
+		this.alarmType = alarmType;
 		this.equipName = equipName;
+		this.equipType = equipType;
 		this.dateTime = dateTime;
-		this.type = type;
 		this.description = description;
 		this.km = km;
+		this.viewedBgColor = viewedBgColor;
 	}
-	
-	public Notifications() {}	
-	
+
+	public Notifications() {}
+
 	public int getStatus() {
 		return status;
 	}
+
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
 	public int getEquipId() {
 		return equipId;
 	}
-	public void setEquipId(int notifEquipId) {
-		this.equipId = notifEquipId;
-	}	
-	
-	public String getViewedBgColor() {
-		return viewedBgColor;
+
+	public void setEquipId(int equipId) {
+		this.equipId = equipId;
 	}
 
-	public void setViewedBgColor(String viewedBgColor) {
-		this.viewedBgColor = viewedBgColor;
+	public int getAlarmType() {
+		return alarmType;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setAlarmType(int alarmType) {
+		this.alarmType = alarmType;
 	}
 
 	public String getEquipName() {
 		return equipName;
 	}
+
 	public void setEquipName(String equipName) {
 		this.equipName = equipName;
 	}
+
+	public String getEquipType() {
+		return equipType;
+	}
+
+	public void setEquipType(String equipType) {
+		this.equipType = equipType;
+	}
+
 	public String getDateTime() {
 		return dateTime;
 	}
+
 	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -88,6 +90,16 @@ public class Notifications {
 
 	public void setKm(String km) {
 		this.km = km;
+	}
+
+	public String getViewedBgColor() {
+		return viewedBgColor;
+	}
+
+	public void setViewedBgColor(String viewedBgColor) {
+		this.viewedBgColor = viewedBgColor;
 	}	
+	
+	
 		
 }

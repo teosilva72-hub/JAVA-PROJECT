@@ -7,6 +7,17 @@ body {
   margin: 0 auto;
 }
 
+/* **********************  KEY MOVES ***********************************/
+
+@keyframes myMove {
+	from {
+			background-position: 100% 0;
+			background-repeat: repeat;
+}to {
+		background-position: 0% 0;
+	}
+}
+
 /* **********************  MAP OPTIONS DIV ***********************************/
 
 .messages{
@@ -33,6 +44,7 @@ body {
 	top: 8%;
 	background-color: transparent;
 	box-shadow: 0px 0px 1px black;
+	display: none;
 } /*primeira div*/
 
 .boxs1{
@@ -42,6 +54,7 @@ body {
 	top: 8%;
 	background-color: transparent;
 	box-shadow: 0px 0px 1px black;
+	display: none;
 } /*segunda div*/
 .boxs2{
 	width: 100%;
@@ -50,6 +63,7 @@ body {
 	top: 8%;
 	background-color: transparent;
 	box-shadow: 0px 0px 1px black;
+	display: none;
 } /*segunda div*/
 
 #content {
@@ -74,8 +88,7 @@ body {
 }
 
 /* ZOOM FOCUS */
-.zoomButton:focus {
-  outline: 0;
+.zoomButton:active {
   color: #555;
 }
 
@@ -83,12 +96,14 @@ body {
 #zoomIn {
   margin-left: 45px;
   margin-top: 2px;
+  outline: none;
 }
 
 /* ZOOM OUT BUTTON */
 #zoomOut {
   margin-left: 85px;
   margin-top: 2px;
+  outline: none;
 }
 
 /* ADD EQUIP BUTTON */
@@ -101,6 +116,11 @@ body {
 /* CANCEL POS BUTTON */
 #cancelPos {
   margin-left: 15px;
+}
+
+/* CANCEL POS BUTTON */
+#real\:savePos {
+  margin-left: 10%;
 }
 
 /* **********************  MAP CONTENT ***********************************/
@@ -338,6 +358,11 @@ margin-top: 0%;
 
 #OPmodal {
 z-index: 10030;
+}
+
+.btn-all-equip{
+  width: 70px;
+  padding-left: 10px !important;
 }
 
 #editmodal {

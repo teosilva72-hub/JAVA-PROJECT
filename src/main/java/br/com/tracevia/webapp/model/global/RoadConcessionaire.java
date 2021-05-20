@@ -2,7 +2,6 @@ package br.com.tracevia.webapp.model.global;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
-import br.com.tracevia.webapp.cfg.tables.ViaPaulistaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.BahiaNorte;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
@@ -80,8 +79,10 @@ public class RoadConcessionaire {
 	
 	public RoadConcessionaire() {
 		
-		externalImagePath = System.getenv("APPDATA")+"\\Tracevia\\customers\\logo\\";
-		externalDefaultLogo = System.getenv("APPDATA")+"\\Tracevia\\customers\\logo\\tracevia.jpg";
+		externalImagePath = "C:\\Tracevia\\Software\\External\\Logo\\";
+		externalDefaultLogo = "C:\\Tracevia\\Software\\External\\Logo\\tracevia.jpg";
+		
+		//System.getenv("APPDATA")+
 			
 		
 	}

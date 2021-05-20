@@ -59,8 +59,10 @@ public class SatReportsController {
 	//Locale Docs
 	LocaleUtil localeLabel, localeCalendar, localeDir, localeSat;  
 
-	int periodRange, daysInMonth, daysCount;  
-
+	int periodRange, daysInMonth, daysCount; 
+	
+	String jsTableId, jsTableScrollHeight;
+ 
 	// Varivel que recebe o nmero de registros esperados para uma consula SQL (de acordo com perodos)
 	private static int numRegisters;	
 
@@ -614,6 +616,9 @@ public class SatReportsController {
 	 * @throws Exception
 	 */	
 	public void GetReports(String type) throws Exception{
+		
+		//RESET ON RESTART
+	    resetFormValues(type);
 
 		//Get external application contents
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -672,6 +677,12 @@ public class SatReportsController {
 
 		//param for year
 		satReport.setYear(parameterMap2.get("year"));
+		
+		//Table id
+		jsTableId = parameterMap2.get("jsTable");
+		
+		//Table Scroll Height 
+		 jsTableScrollHeight = parameterMap2.get("jsTableScrollHeight");
 
 		/**** Single Params ***/
 
@@ -758,7 +769,7 @@ public class SatReportsController {
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
 		
-		System.out.println(query); //debug
+		//System.out.println(query); //debug
 
 		//EXECUO DA QUERY
 		String[][] auxResult = dao.ExecuteQuery(query, getFieldsNumber(), getNumRegisters());
@@ -909,14 +920,19 @@ public class SatReportsController {
 
 			//UPDATE BUTTON GENERATE EXCEL
 			RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
+			
+			//UPDATE TABLE JQUERY ON RELOAD PAGE
+			RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"', '"+jsTableScrollHeight+"');");	
 
 			//CASO CONTRARIO ENTRA AQUI
 		} else {
-			      message.InfoMessage(localeSat.getStringKey("sat_message_records_not_found_title"), localeSat.getStringKey("sat_message_records_not_found"));
-		          CreateFields(type);  
-		          
+					    
 		          //EXECUTE JS
 				  RequestContext.getCurrentInstance().execute("hideMessage();");
+				  
+				  //UPDATE TABLE JQUERY ON RELOAD PAGE
+				  RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"', '"+jsTableScrollHeight+"'); showMessage();");	
+				  			     											
 	    }
 
 	}

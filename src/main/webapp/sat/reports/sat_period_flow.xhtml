@@ -8,7 +8,6 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 
-	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
 	<f:metadata>
@@ -27,20 +26,25 @@
 	
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/validation-forms/reports" name="sat-reports.js" />
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/reports/sat" name="sat-period-flow-validation.js" />
 		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />
 		
 	</ui:define>
 		 
-	  <ui:define name="main-content" >
-	 	
-	 <div class="table-container">
-	 
-	  <!-- Mensagem parte superior -->
-	   <div id="message-div">
-		 <pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-	</div>
-	 
+	  <ui:define name="main-content" > <!-- MAIN CONTENT TEMPLATE --> 
+	
+	<!-- ********************************************************************************************************************* -->
+		  	
+	  <div class="table-container">   <!-- TABLE DIV CONTENT --> 		
+	     <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->
+	  	   
+		<!-- INFO MESSAGE DIV -->		
+		 <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
+           <b>#{satMessages.sat_message_records_not_found_title}</b> : #{satMessages.sat_message_records_not_found}
+        </div> <!---->
+              		
+		<!-- REPORTS LABEL INFORMATION --> 
 	 <div class="text-dark text-center font-weight-bold report-title" >
 	 <h:outputText value="#{satLabels.sat_reports_name_period_flow}" />
 	 <hr></hr>
@@ -80,17 +84,19 @@
          </h:column> 
      </c:forEach>   
   	 	 
-    </h:dataTable>
-    
-  	<!-- BUTTONS FORM -->
-
-			<h:form id="form-btns">
+   	  </h:dataTable> <!---->					
+	</h:form> <!---->
 			
-				<!-- BUTTONS DIV CONTENT -->
-				<div id="buttons">
+			<!---->
+			
+			<!-- ********************************************************************************************************************* -->
+			
+			<!-- BUTTONS -->    	
 
-					<!-- BUTTON SEARCH DIV -->
-					<div id="btn-search" class="text-center">
+			<h:form id="form-btns"> <!-- BUTTONS FORM -->			
+				<div id="buttons"> <!-- BUTTONS DIV CONTENT -->
+					
+					<div id="btn-search" class="text-center"> <!-- BUTTON SEARCH DIV -->
 						<h:commandButton id="btn-tab-search"
 							class="btn btn-dark draw-button fas fa-search fa-3x" value=""
 							data-toggle="tooltip" data-placement="bottom"
@@ -100,10 +106,9 @@
 								value="#modalReportOptions" />
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
-					</div>
-
-					<!-- BUTTON RESET DIV -->
-					<div id="btn-reset">
+					</div> <!---->
+					
+					<div id="btn-reset"> <!-- BUTTON RESET DIV -->
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
@@ -113,99 +118,34 @@
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
 							<f:ajax execute="@form" render="@none" />
 						</h:commandButton>
-					</div>
+					</div><!---->
 					
-					<div id="btn-excel">
-				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
-					class="fas fa-file-excel fa-3x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
-					<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalDownload" />
-					<f:ajax execute="@form" render="@none" />
-				</h:commandButton>
-			</div>
+					<div id="btn-excel"> <!-- BUTTON EXCEL DIV -->
+				      <h:commandButton id="excel-act" value=""
+					    disabled="#{satReportsBean.excelBool}"
+					    class="fas fa-file-excel fa-3x" data-toggle="tooltip"
+					    data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					    action="#{satReportsBean.download}" widgetVar="excelWgt">
+					   <f:passThroughAttribute name="data-toggle" value="modal" />
+					   <f:passThroughAttribute name="data-target" value="#modalDownload" />
+					   <f:ajax execute="@form" render="@none" />
+				    </h:commandButton>
+			      </div> <!---->
 			
-				</div>
+				</div> <!---->
+			</h:form> <!---->
+		</div> <!---->
 
-				<!-- MODAL CLEAR -->			
-				<div class="modal fade" id="modalClear" tabindex="-1"
-					aria-labelledby="clearModalLabel" aria-hidden="true">
-					<div class="modal-dialog confirmation-modal">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{satLabels.sat_reports_modal_alert_clear_title}</h5>
-							</div>
-							<div class="modal-body">
-								<p class="modal-alert-msg">#{satLabels.sat_reports_modal_alert_clear_table}</p>
-							</div>
-							<div class="modal-footer">
-								<h:commandButton
-									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(4)}"
-									class="btn btn-dark form-draw-button" />
-									
-								<h:commandButton
-									value="#{satLabels.sat_reports_modal_alert_btn_no}"
-									class="btn btn-dark form-draw-button">
-									<f:passThroughAttribute name="data-dismiss" value="modal" />
-									<f:ajax execute="@form" render="@none" />
-								</h:commandButton>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- MODAL CLEAR END -->
-
-			</h:form>
-		</div>
-
-		<!-- BUTTONS FORM -->
-
-		<!-- EXCEL FORM -->
-		<h:form id="form-excel">
-			
-			<!-- MODAL DOWNLOAD -->			
-			<div class="modal fade" id="modalDownload" tabindex="-1"
-				aria-labelledby="downloadModalLabel" aria-hidden="true">
-				<div class="modal-dialog confirmation-modal">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{satLabels.sat_reports_modal_alert_download_title}</h5>
-						</div>
-						<div class="modal-body">
-							<p class="modal-alert-msg">
-								#{satLabels.sat_reports_modal_alert_download_file_excel} <span
-									class="extension">#{satLabels.sat_reports_modal_alert_extension_xlsx}</span> ?
-							</p>
-						</div>
-						<div class="modal-footer">
-							<h:commandButton p:onclose="download"
-								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-								p:data-toggle="modal" p:data-target="#modalDownload"
-								action="#{satReportsBean.download}"
-								class="btn btn-dark form-draw-button" />
-							<h:commandButton id="cancelDownload"
-								value="#{satLabels.sat_reports_modal_alert_btn_no}"
-								class="btn btn-dark form-draw-button">
-								<f:passThroughAttribute name="data-dismiss" value="modal" />
-								<f:ajax execute="@form" render="@none" />
-							</h:commandButton>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- MODAL DOWNLOAD END -->
-
-		</h:form>
-		
-		<!-- EXCEL FORM -->
-		
-			<!-- MODAL SUBMIT -->
+	   <!---->
+			  
+		 <!-- ********************************************************************************************************************* -->
+			  
+	     <!--  MODALS -->					
+			   
+		<!-- MODAL SUBMIT -->
 
 		<div class="modal fade" id="modalReportOptions" tabindex="-1"
-			role="dialog" aria-labelledby="myModalLabel">
+			role="dialog" aria-labelledby="myModalLabel"> 
 			<div class="modal-dialog" role="document">
 				<h:form class="modal-content" name="report-form"
 					id="report-form">
@@ -292,19 +232,21 @@
 								<div class="error-label">
 									<label for="year" class="error" id="year-error"></label>
 								</div>
-							</div>						
-						</div>
-
-						<!-- MODAL BUTTONS -->
-
-					<div class="modal-footer">
+							</div>	
+							
+							 <input type="hidden" name="jsTable" value="vehicle-period-flow-table" />	
+							 <input type="hidden" name="jsTableScrollHeight" value="35.3vh" />	
+												
+						</div> <!---->
+						
+					<div class="modal-footer"> <!-- MODAL BUTTONS -->
 						<button type="button" id="btn-form-confirm"
 						class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
 						</button>
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
 							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-							<f:ajax execute="@form" render="@all" listener="#{satReportsBean.GetReports(4)}" onevent="onEventFunction" />
+							<f:ajax execute="@form" render="form-table form-btns" listener="#{satReportsBean.GetReports(4)}" onevent="onEventFunction" />
 						</h:commandButton>
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
@@ -315,70 +257,97 @@
 								render=":equips :periods :month :year" />
 						</h:commandButton>
 					</div>
-				</h:form>
-			</div>
-		</div>
+			  </h:form> <!---->
+				</div> <!----> 
+			</div> <!---->	
+			
+			<!-- ********************************************************************************************************************* -->	
+								
+				<div class="modal fade" id="modalClear" tabindex="-1"
+					aria-labelledby="clearModalLabel" aria-hidden="true"> <!-- MODAL CLEAR -->	
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" name="form-clear" id="form-clear" >
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{satLabels.sat_reports_modal_alert_clear_title}</h5>
+							</div>
+							<div class="modal-body">
+								<p class="modal-alert-msg">#{satLabels.sat_reports_modal_alert_clear_table}</p>
+							</div>
+							<div class="modal-footer">
+								<h:commandButton
+									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+									action="#{satReportsBean.resetFormValues(4)}"
+									class="btn btn-dark form-draw-button" />
+									
+								<h:commandButton
+									value="#{satLabels.sat_reports_modal_alert_btn_no}"
+									class="btn btn-dark form-draw-button">
+									<f:passThroughAttribute name="data-dismiss" value="modal" />
+									<f:ajax execute="@form" render="@none" />
+								</h:commandButton>
+							</div>
+						</h:form>
+					</div>
+				</div> <!---->
+				
+				<!-- ********************************************************************************************************************* -->						
+					
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true"> <!-- MODAL DOWNLOAD -->	
+				<div class="modal-dialog confirmation-modal">
+					<h:form class="modal-content" name="form-download" id="form-download">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{satLabels.sat_reports_modal_alert_download_title}</h5>
+						</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{satLabels.sat_reports_modal_alert_download_file_excel} <span
+									class="extension">#{satLabels.sat_reports_modal_alert_extension_xlsx}</span> ?
+							</p>
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+								p:data-toggle="modal" p:data-target="#modalDownload"
+								action="#{satReportsBean.download}"
+								class="btn btn-dark form-draw-button" />
+							<h:commandButton id="cancelDownload"
+								value="#{satLabels.sat_reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div><!---->
+				
+			   <!---->
 
-		<!-- MODAL SUBMIT -->
-
-		<div id="loading">
+         <!-- ********************************************************************************************************************* -->
+						
+		<div id="loading"> <!-- LOADING MESSAGE -->
 			<span>#{satLabels.sat_reports_loading_message}...</span>
 		</div>
 		
-		<!-- SCRIPT DEFINITIONS -->
-
-		<script type="text/javascript">
-	  	     
-		 //Get equipments from backing bean
-		  //Create array
-		  var equipsArray = new Array();
+		 <!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	
 		
-		  //Use facelets tag
-		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp">
-		  equipsArray.push(#{eqp.value}); // Fill array
-		  </ui:repeat>
-		    
-		  //Call method to set checkbox all checked
-		  checkedByDefault('#equips', equipsArray);
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 		
+		  <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
+		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
+		  </ui:repeat> <!---->
 		  
-		  //Create / Define multiselect
-		  defineMultiselect('#equips', '#{satLabels.sat_reports_select_equipments}');
-
-	    //Validation Form			   
-		satReportsValidationModel4("#report-form", '#{requiredMessages.required_sat_reports_select_equipments}',
-		'#{requiredMessages.required_sat_reports_select_periods}', '#{requiredMessages.required_sat_reports_select_months}',
-		'#{requiredMessages.required_sat_reports_select_years}');
-
-	    //Validate elements on change value
-	    //In this case check if the element is valid
-	    validateOnChange('#equips');
-	    validateOnChange('#periods');
-	    validateOnChange('#month');
-	    validateOnChange('#year');
-		
-        //Reset Fields on close modal
-		resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
-        resetFieldOnModalClose('#modalReportOptions', 'periods');
-        resetFieldOnModalClose('#modalReportOptions', 'month');
-        resetFieldOnModalClose('#modalReportOptions', 'year');
-       
-       //Remove validation icons
-       //click reset button action	
-       removeValidationMultiselectIcon("reset-btn", 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
-       removeValidationIcon("reset-btn", 'periods');
-       removeValidationIcon("reset-btn", 'month');
-       removeValidationIcon("reset-btn", 'year');
-
-	    //Clean Form validation on close modal
-        cleanValidationOnModalClose("#report-form", '#modalReportOptions');
-           
-	   //Reset validation form
-      //click reset button action
-      resetFormValidation("#report-form", "reset-btn");
-
-		</script>
-
-		<!-- SCRIPT DEFINITIONS -->		
-			 	 
+		   <input type="hidden" name="equipmentSelectMsg" value="#{satLabels.sat_reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
+		   <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_sat_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENT MESSAGE -->
+		   <input type="hidden" name="requiredPeriodsMsg" value="#{requiredMessages.required_sat_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->	
+		   <input type="hidden" name="requiredMonthMsg" value="#{requiredMessages.required_sat_reports_select_months}" /> <!-- REQUIRED MONTHS MESSAGE -->
+		   <input type="hidden" name="requiredYearMsg" value="#{requiredMessages.required_sat_reports_select_years}" /> <!-- REQUIRED YEARS MESSAGE -->	
+		 
+		 </form> <!---->
+					 	 
    </ui:define>
 </ui:composition>	

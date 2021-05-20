@@ -1,97 +1,114 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf">
 
 <f:view locale="#{language.locale}">
 
 	<h:head>
 
-		<meta http-equiv="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<meta http-equiv="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
 		<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
-		<h:outputStylesheet name="fontawesome.min.css"
-			library="font-awesome/css" />
+		<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />
 		<h:outputStylesheet name="login.css" library="css/login" />
 
 		<title>#{loginLabels.login_forget_confirmation_title}</title>
+
 	</h:head>
 
 	<h:body>
 
-		<!-- Inicio da estrutura do site -->
 		<div class="jumbotron">
+			<!-- JUMBOTRON DIV -->
 			<div class="container">
+				<!-- CONTAINER DIV -->
 
-				<h:form prependId="false" id="form-reset">
-					<div class="row estrutura">
-						<!-- Inicio do lado direito da tela de logo -->
-						<div class="col-sm">
-							<div class="card ladoDireito">
+				<h:form prependId="false" id="form-confirmation">
+					<!-- FORM RESET -->
+
+					<div class="row structure">
+
+						<div class="col-sm-6">
+							<!-- COL IMAGE DIV -->
+							<div class="card leftSide">
+								<!-- LEFT SIDE CARD -->
 								<div class="card-body  imgLogo esconder">
-									<h:outputLabel
-										p:value="#{loginLabels.login_auth_label_version} 1.0"
-										id="version" />
+									<!-- IMAGE DIV -->
+									<h:outputLabel p:value="#{loginLabels.login_auth_label_version} 1.2" id="version" />
 								</div>
 							</div>
 						</div>
-						<!-- Final do lado direito da tela de logilogon -->
-						<!-- Inicio do lado esquerdo da tela de recuperar senha -->
-						<div class="col-sm">
-							<div class="card ladoEsquerdo">
+						<!---->
+
+						<!---->
+
+						<div class="col-sm-6">
+							<!-- COL FORMS DIV -->
+							<div class="card rightSide">
+								<!-- RIGHT SIDE CARD -->
 								<div class="card-body">
-									<div class="container">
+									<!-- CARD BODY -->
 
-										<!-- Inicio do input recuperar senha -->
-										<div class="row">
-											<div
-												class="col-md-8 col-md-12 col-sm-9 col-xs-12 form-box text-center">
-												<div class="reset-confirmation d-done">
-													<div class="mb-4"><br></br>
-														<h2 class="mb-3">#{loginLabels.login_forget_confirmation_title}</h2><hr></hr>
-														<h5 class="reset-confirmation-label">#{loginLabels.login_forget_confirmation_label}</h5>
-													</div>
-													<h:form>
-														<div>
-															<h:commandButton class="button btn"
-																value="#{loginLabels.login_forget_confirmation_btn_login}"
-																action="#{loginAccount.loginRedirect}" /><hr></hr>
-															<label class="espaco-confirmation"></label>
-														</div>
-													</h:form>
+									<div class="row">
+										<!-- FORM ROW -->
+										<div class="col-sm-12">
+											<!-- COL ROW -->
+											<div class="reset-confirmation d-done">
+												<!-- RESET CONFIRMATION -->
+												<div class="mb-4">
+													<br></br>
+													<h2 class="mb-3 text-center">
+														#{loginLabels.login_forget_confirmation_title}</h2>
+													<hr>
+													</hr>
+													<h5 class="reset-confirmation-label text-center">
+														#{loginLabels.login_forget_confirmation_label}</h5>
 												</div>
-											</div>
-										</div>
-										<!-- final input recuperar senha -->
-									</div>
-								</div>
-								<!-- Final do lado esquerdo da tela do site -->
-							</div>
-						</div>
 
-					</div>
-					<h:outputScript name="popper.min.js" library="js/popper" />
-					<h:outputScript name="bootstrap.bundle.min.js"
-						library="bootstrap/js" />
-					<h:outputScript name="all.min.js" library="font-awesome/js" />
-				</h:form>
+												<!---->
+
+												<div>
+													<h:commandButton class="button btn"
+														value="#{loginLabels.login_forget_confirmation_btn_login}"
+														action="#{loginAccount.loginRedirect}" />
+													<hr>
+													</hr>
+													<label class="espaco-confirmation"></label>
+												</div>
+												<!---->
+											</div>
+											<!---->
+										</div>
+										<!---->
+									</div>
+									<!---->
+
+								</div> <!-- CARD BODY -->
+							</div> <!-- RIGHT SIDE CARD -->
+						</div><!-- COL FORMS DIV -->
+
+					</div> <!-- ROW STRUCTURE DIV -->
+				</h:form> <!-- RESET FORM -->
+
+				<!---->
+
+				<br /> <!-- SPACE -->
 				<div class="trademark">
+					<!-- TRADEMARK -->
 					<div class="col-12">
-						<h:outputLabel class="tracevia" p:value="©2021 Tracevia"
-							id="trademark" />
+						<h:outputLabel class="tracevia" p:value="©2021 Tracevia" id="trademark" />
 					</div>
 				</div>
-			</div>
-		</div>
+				<!---->
 
+			</div>
+			<!---->
+		</div>
+		<!---->
 
 		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
 		<h:outputScript name="popper.min.js" library="js/popper" />
@@ -100,4 +117,5 @@
 
 	</h:body>
 </f:view>
+
 </html>

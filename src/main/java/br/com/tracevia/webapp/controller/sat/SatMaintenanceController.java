@@ -19,8 +19,8 @@ public void setHours(String[] hours) {
 	@PostConstruct
 	public void initializer() {
 		try {
-			hora =  LocalDateTime.now().getHour();
-			hours();
+			//hora =  LocalDateTime.now().getHour();
+			//hours();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

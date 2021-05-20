@@ -13,76 +13,34 @@
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="realtime.css" library="css/realtime" />
-	    <h:outputStylesheet library="css/validation" name="validation_style.css" />
-
+	  
 		<!-- Script -->
-		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}" />
+		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
 		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
-		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js?version=#{notificationsView.timestamp}" />
-
-		<style>
-			@keyframes myMove {
-				from {
-					background-position: 100% 0;
-					background-repeat: repeat;
-				}
-
-				to {
-					background-position: 0% 0;
-				}
-			}
-		</style>
-				
-		<script>
-		
-		////////////////////////////////////
-		//AUTO UPDATE PAGE INTERVAL
-		///////////////////////////////////
-		
-		setTimeout(() => {			
-			setInterval(() => {
-				
-			    var data = new Date();
-			    var n = data.getSeconds();
-			    var minute = data.getMinutes();
-			                          		
-			     if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {         	        	
-			           if (n &lt; 4) 		   
-			        	   
-			        	   location.href = location.protocol + '//' + location.host + location.pathname
-			     }
-			     
-			}, 3000)
-		}, 4000)
-	
-		////////////////////////////////////
-		//AUTO UPDATE PAGE INTERVAL
-		///////////////////////////////////
-		
-		$(function () {
-  $('[data-toggle="popover"]').popover({
-	  html : true,
-	  trigger: 'hover',
-      content: function() {
-        var content = $(this).attr("data-popover-content");
-        return $(content).children(".popover-body").html();
-      },
-      title: function() {
-        var title = $(this).attr("data-popover-content");
-        return $(title).children(".popover-header").html();
-      }
-  });
-  
-  });
-		$(function () {
-			  $('[data-toggle="tooltip"]').tooltip()
-	})
-			 
-    </script>
+		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
 
 	</ui:define>
 
 	<ui:define name="main-content">
+	
+		<!-- WEB ZOOM -->
+		<div class="map-options">
+			<div id="topButtons">
+				
+				<button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom In" data-trigger="hover" >
+					<span><i class="fas fa-plus-square fa-2x"></i></span>
+				</button>
+
+				<button type="button" id="zoomOut" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
+					title="Zoom Out" data-trigger="hover" >
+					<span><i class="fas fa-minus-square fa-2x"></i></span>
+				</button>
+			
+			</div>			
+		</div>
+		
+		 <!--  ******************************************************************************************************* -->		
 					
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="0.1" max-scale="1.5" id="content" >			
