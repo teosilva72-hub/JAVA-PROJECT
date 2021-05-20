@@ -25,6 +25,8 @@ $(function () {
   });
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
+
+  $("#sipClient.calls-client .sipStatus").click(showCallbox)
   
 });
 
@@ -68,10 +70,18 @@ function notificationBadge(){
 }
 
 
-const showCallbox = action => {
-	$("#sipClient > .calls-client").addClass(action).css('bottom', action == 'showing' ? 40 : '')
+const showCallbox = () => {
+  let client = $("#sipClient.calls-client")
+  let action;
+
+  if(client.hasClass('showing') || client.hasClass('show'))
+    action = 'hiding'
+  else
+    action = 'showing'
+
+	client.addClass(action).css('bottom', action == 'showing' ? 40 : '').removeClass('hide').removeClass('show')
 	setTimeout(() => {
-	    $("#sipClient > .calls-client").removeClass(action)
+	    client.removeClass(action).addClass(action == 'showing' ? "show" : 'hide')
 	}, 2000)
 }
 
