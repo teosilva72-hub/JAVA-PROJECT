@@ -205,6 +205,10 @@ async function initPhone() {
          * @param {string} status
          */
         setCallSessionStatus : function(status) {
+            if (status)
+                showStatesCallbox('close')
+            else
+                showStatesCallbox('open')
             $('#txtCallStatus').html(status);
         },
 

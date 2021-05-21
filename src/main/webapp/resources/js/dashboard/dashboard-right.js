@@ -69,19 +69,46 @@ function notificationBadge(){
   
 }
 
+var callBoxStatus = false;
 
 const showCallbox = () => {
   let client = $("#sipClient.calls-client")
   let action;
 
-  if(client.hasClass('showing') || client.hasClass('show'))
+  if(client.hasClass('showing') || client.hasClass('show')) {
     action = 'hiding'
-  else
+    callBoxStatus = false
+    if($('#txtCallStatus').html())
+      showStatesCallbox('close')
+  } else {
     action = 'showing'
+    callBoxStatus = true
+    showStatesCallbox('open')
+  }
 
 	client.addClass(action).css('bottom', action == 'showing' ? 40 : '').removeClass('hide').removeClass('show')
 	setTimeout(() => {
 	    client.removeClass(action).addClass(action == 'showing' ? "show" : 'hide')
+	}, 2000)
+}
+
+const showStatesCallbox = action => {
+  let client = $("#sipClient .sipStatus")
+  let action2;
+
+  if(action == 'open')
+    action2 = 'opening'
+  else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
+    return
+  else {
+    action2 = 'closing'
+    action = ''
+    client.removeClass('open')
+  }
+
+	client.addClass(action2)
+	setTimeout(() => {
+	    client.removeClass(action2).addClass(action)
 	}, 2000)
 }
 

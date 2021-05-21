@@ -11,14 +11,21 @@
   line-height: 18px;
 }
 #sipClient .sipStatus {
-  margin: 0 -15px 15px -15px;
+  margin: -28px -16px 0 -15px;
   padding: 5px 15px;
   background-color: #111;
   color: #999;
   cursor: pointer;
+  width: 100px;
+  margin-left: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 5px;
 }
 #sipClient #txtCallStatus {
   color: #fff;
+}
+#sipClient #phoneUI {
+  margin-top: 15px;
 }
 #sipClient #sip-dialpad {
   width: 292px;
@@ -61,7 +68,7 @@
   padding: 10px 8px;
 }
 #sipClient #sip-logitems {
-  height: 200px;
+  height: 228px;
   overflow: auto;
 }
 #sipClient #sldVolume {
@@ -96,4 +103,34 @@
   border-radius: 4px;
   -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
   box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.calls-client .sipStatus.open {
+  width: 280px !important;
+  margin-left: -16px !important;
+  border-radius: 2px 2px 0 0 !important;
+}
+
+.calls-client .sipStatus.opening {
+	animation: CallboxStates 2s 1;
+}
+
+.calls-client .sipStatus.closing {
+	animation: CallboxStates 2s 1 reverse;
+}
+
+@keyframes CallboxStates {
+  83% {
+    width: 263px;
+    margin-left: auto;
+  }
+	84% {
+		width: 264px;
+    margin-left: 0px;
+	}
+  100% {
+    width: 280px;
+    margin-left: -16px;
+    border-radius: 2px 2px 0 0;
+  }
 }
