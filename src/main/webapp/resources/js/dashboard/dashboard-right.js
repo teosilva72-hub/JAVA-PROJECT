@@ -78,7 +78,7 @@ const showCallbox = () => {
   if(client.hasClass('showing') || client.hasClass('show')) {
     action = 'hiding'
     callBoxStatus = false
-    if($('#txtCallStatus').html())
+    if(!$('#txtCallStatus').html())
       showStatesCallbox('close')
   } else {
     action = 'showing'
