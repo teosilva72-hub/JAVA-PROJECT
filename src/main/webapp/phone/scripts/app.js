@@ -388,7 +388,7 @@ async function initPhone() {
                 });
 
             } else {
-                $('#sip-log').html('<p class="text-muted text-center mt-4">Sem chamadas recentes.</p>')
+                $('#sip-logitems').html('<p class="text-muted text-center mt-4">Sem chamadas recentes.</p>')
 
                 $('#sip-splash').removeClass('hide'); // ! Remover essa linha futuramente
                 $('#sip-log').addClass('hide'); // ! Remover essa linha futuramente
