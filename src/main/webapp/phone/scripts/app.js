@@ -310,13 +310,13 @@ async function initPhone() {
 
 
             i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'" title="Double Click to Call">';
-            i += '<div class="clearfix"><div class="pull-left">';
+            i += '<div class="clearfix"><div class="float-left">';
             i += '<i class="fa fa-fw '+callIcon+' fa-fw"></i> <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
             i += '</div>';
-            i += '<div class="pull-right text-right"><em>'+item.clid+'</em><br>' + callLength+'</div></div>';
+            i += '<div class="float-right text-right"><em>'+item.clid+'</em><br>' + callLength+'</div></div>';
 
             if (callActive) {
-                i += '<div class="btn-group btn-group-xs pull-right">';
+                i += '<div class="btn-group btn-group-xs float-right">';
                 if (item.status === 'ringing' && item.flow === 'incoming') {
                     i += '<button class="btn btn-xs btn-success btnCall" title="Call"><i class="fa fa-phone"></i></button>';
                 } else if (item.owner) {
