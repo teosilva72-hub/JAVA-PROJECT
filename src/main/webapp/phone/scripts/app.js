@@ -387,17 +387,18 @@ async function initPhone() {
                     ctxSip.logItem(v);
                 });
 
-            } else { // ! Remover essa linha futuramente
+            } else {
+                $('#sip-log').html('<p class="text-muted text-center mt-4">Sem chamadas recentes.</p>')
+
                 $('#sip-splash').removeClass('hide'); // ! Remover essa linha futuramente
                 $('#sip-log').addClass('hide'); // ! Remover essa linha futuramente
-            } // ! Remover essa linha futuramente
+            }
         },
 
         /**
          * removes log items from localstorage and updates the UI
          */
         logClear : function() {
-
             localStorage.removeItem('sipCalls');
             ctxSip.logShow();
         },

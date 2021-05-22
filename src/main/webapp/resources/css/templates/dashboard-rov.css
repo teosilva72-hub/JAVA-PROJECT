@@ -844,7 +844,7 @@ input.apple-switch:checked:before {
   bottom: -362px;
   background-color: white;
   border: 1px solid black;
-  border-radius: 1%;
+  border-radius: 0 0 1% 1%;
 }
 
 .calls-client.hiding {
