@@ -701,12 +701,12 @@
 
             <div class="well-sip">
 
-              <div id="sip-log" class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="text-muted panel-title">Chamadas recentes<span class="pull-right sipLogClear"><i
+              <div id="sip-log" class="card">
+                <div class="card-header">
+                  <h4 class="text-muted card-text text-font">Chamadas recentes<span class="float-right sipLogClear"><i
                         class="fa fa-trash text-muted" title="Clear Log"></i></span></h4>
                 </div>
-                <div id="sip-logitems" class="list-group">
+                <div id="sip-logitems">
                   <p class="text-muted text-center">Sem chamadas recentes.</p>
                 </div>
               </div>
@@ -730,6 +730,11 @@
           </div>
 
         </div>
+
+        <audio id="ringtone" src="../phone/sounds/incoming.mp3" loop="loop"></audio>
+        <audio id="ringbacktone" src="../phone/sounds/outgoing.mp3" loop="loop"></audio>
+        <audio id="dtmfTone" src="../phone/sounds/dtmf.mp3"></audio>
+        <audio id="audioRemote"></audio>
       </section>
 
     </ui:insert>
