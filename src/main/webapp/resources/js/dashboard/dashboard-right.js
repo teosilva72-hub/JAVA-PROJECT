@@ -73,13 +73,16 @@ var callBoxStatus = false;
 
 const showCallbox = () => {
   let client = $("#sipClient.calls-client")
+  let callStatus = $('#txtCallStatus').html()
   let action;
 
   if(client.hasClass('showing') || client.hasClass('show')) {
     action = 'hiding'
     callBoxStatus = false
-    if(!$('#txtCallStatus').html())
+    if (!callStatus)
       showStatesCallbox('close')
+    else if (callStatus === 'Rejected')
+      ctxSip.setCallSessionStatus('');
   } else {
     action = 'showing'
     callBoxStatus = true
