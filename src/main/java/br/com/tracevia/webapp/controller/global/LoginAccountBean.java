@@ -13,7 +13,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.context.RequestContext;
+
 import br.com.tracevia.webapp.dao.global.LoginAccountDAO;
+import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.EmailModels;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.InMemoryAuthentication;
@@ -125,11 +128,11 @@ public class LoginAccountBean {
 		} catch (UnknownHostException e) {			
 			    e.printStackTrace();
 		}
-								
+									
 	}
 		
    public String loginValidation() throws Exception {
-	   
+	   	  	   
 	   load = new LoadStartupModules(); //Carregar os m�dulos
 	  	   
 	   boolean status = false, inMemory = false, isName = false;	
@@ -160,9 +163,13 @@ public class LoginAccountBean {
 		   
 		   //System.out.println("Memory: "+memoryAuth.getUsername());
 		   		   
-		   if(memoryAuth.getUsername() == null)
-			   message.ErrorMessage(locale.getStringKey("login_message_incorrect_password_header"), locale.getStringKey("login_message_incorrect_password_body"));
-			
+		   if(memoryAuth.getUsername() == null) {
+			   
+			   RequestContext.getCurrentInstance().execute("showLoginErrorMessage();");
+		       RequestContext.getCurrentInstance().execute("hideLoginErrorMessage();");
+		       
+		   }
+			 			
 		    else {		    	
 		   							   
 			context.getExternalContext().getSessionMap().put("user", memoryAuth.getUsername());
@@ -207,15 +214,32 @@ public class LoginAccountBean {
 			  
 			  return "/dashboard/dashboard.xhtml?faces-redirect=true"; 				 
 		  
-		  }	message.ErrorMessage(locale.getStringKey("login_message_inactive_user"), "" );  
+		  }	else {
+			  
+			   RequestContext.getCurrentInstance().execute("showInactiveErrorMessage();");
+		       RequestContext.getCurrentInstance().execute("hideInactiveErrorMessage();");			   
+		  }
 		  
-	    } else message.ErrorMessage(locale.getStringKey("login_message_incorrect_password_header"), locale.getStringKey("login_message_incorrect_password_body"));
+	    } else {
+	    	
+	    	  RequestContext.getCurrentInstance().execute("showLoginErrorMessage();");
+		      RequestContext.getCurrentInstance().execute("hideLoginErrorMessage();");	    
+	    }
 	  
-	  } else message.ErrorMessage(locale.getStringKey("login_message_user_not_found"), "" );
+	  } else {
+		  
+		   RequestContext.getCurrentInstance().execute("showNotFoundMessage();");
+	       RequestContext.getCurrentInstance().execute("hideNotFoundMessage();");		
+	  }
 	   
 	  } //Fim do Else - Do Nothing
 	   
-	 } else message.ErrorMessage(locale.getStringKey("login_message_server_connection_error"), " ");   
+	 } else {
+		 
+		   RequestContext.getCurrentInstance().execute("showConnectionErrorMessage();");
+	       RequestContext.getCurrentInstance().execute("hideConnectionErrorMessage();");	       
+		
+	 }
 	  	  	    
 	    return null;
 	    
@@ -224,26 +248,42 @@ public class LoginAccountBean {
 public void LogOut() throws IOException {
 					
 	FacesContext context = FacesContext.getCurrentInstance();   
-	context.addMessage(null,
-	new FacesMessage(FacesMessage.SEVERITY_INFO, locale.getStringKey("login_logout_message"), ""));
-    
+	    
     ExternalContext externalContext = context.getExternalContext();
     externalContext.getFlash().setKeepMessages(true);
     externalContext.invalidateSession();
-    externalContext.redirect("login.xhtml");
-     
-	
+    externalContext.redirect("login.xhtml");     
+     	
  }
 
-public String forgetPasswordRedirect() {	
+public String forgetPasswordRedirect() {
+	
+   user = new UserAccount(); // RESET
+	
+   RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form	
+   RequestContext.getCurrentInstance().execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); //Remove Validation icons
 	
 	return "/forget.xhtml?faces-redirect=true";
 
 }
-public String forgetConfirmationRedirect() {		
+
+public String forgetConfirmationRedirect() {	
+	
+	   user = new UserAccount(); // RESET
+	
+   RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form	
+   RequestContext.getCurrentInstance().execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); //Remove Validation icons
+	
 	return "/forget-confirmation.xhtml?faces-redirect=true";
 }
-public String loginRedirect() {		
+
+public String loginRedirect() {	
+	
+	   user = new UserAccount(); // RESET
+	
+   RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form
+   RequestContext.getCurrentInstance().execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); 	//Remove Validation icons
+	
 	return "/login.xhtml?faces-redirect=true";
 }
 
@@ -272,22 +312,20 @@ public boolean permissionAdminOrSuper(int roleID) {
 	try {
 
 		 LoginAccountDAO dao = new LoginAccountDAO();
+		 RoadConcessionaireDAO road = new RoadConcessionaireDAO();
 		 UserAccount usr = new UserAccount();
 		 
-		 //Caso n�o seja e-mail v�lido
-	 	  if(!user.getEmail().matches(EMAIL_PATTERN))  		  
-	 		 message.ErrorMessage(locale1.getStringKey("email_recovery_invalid_header"), locale1.getStringKey("email_recovery_invalid_body"));
-	 		  	 		  
-		 else {	  
-		  
-			  //Sen�o faz isso ...
-										
-		 usr = dao.emailValidation(user.getEmail());
+		 String roadConcessionaire = road.IdentifyRoadConcessionarie(addr.getHostAddress());
+											
+		 usr = dao.emailValidation(user.getEmail(), roadConcessionaire);
 		 			
-		if(usr.getUsername() == null)
-			message.ErrorMessage(locale1.getStringKey("email_recovery_not_found"), " " );
-				
-		else {
+		if(usr.getUsername() == null) {
+			
+			 RequestContext.getCurrentInstance().execute("showEmailInfoMessage();");
+		     RequestContext.getCurrentInstance().execute("hideEmailInfoMessage();");		     
+		         
+		  				
+		 }else {
 			
 			//Criar Senha
 			generatedPass = generate.generatePassword();
@@ -296,25 +334,27 @@ public boolean permissionAdminOrSuper(int roleID) {
 			usr.setPassword(encrypt.encryptPassword(generatedPass));
 
 			//Gerar Assunto do Cadastro
-			String assunto = changeMail.createRecoverySubject();
+			String assunto = changeMail.recoverySubject();
 			
 			//Gerar a mensagem de cadastro
-			String mensagem = changeMail.createRecoveryMessage(usr.getName(), usr.getUsername(), generatedPass);
+			String mensagem = changeMail.recoveryMessage(usr.getName(), usr.getUsername(), generatedPass);
 					
 		    //Alterar nova senha na base de dados
-		    response = dao.changePassword(usr.getUsername(), usr.getPassword(), usr.getUser_id());		
+		    response = dao.changePassword(usr.getUsername(), usr.getPassword(), usr.getUser_id(), roadConcessionaire);		
 		
 		if(response) {	
 							
-		mail.sendEmail(user.getEmail(), assunto, mensagem);	
-		
-		return "/forget-confirmation.xhtml?faces-redirect=true";
+		mail.sendEmailHtml(user.getEmail(), assunto, mensagem);	
+							
+		return forgetConfirmationRedirect();
 					
-	    }else message.ErrorMessage(locale1.getStringKey("email_recovery_unsuccess_send_header"), locale1.getStringKey("email_recovery_unsuccess_send_body") ); 
-		
-	   }			
-
-    }     	 	  
+	    }else {
+	    	
+	    	 RequestContext.getCurrentInstance().execute("showEmailRecoverySendErrorMessage();");
+		     RequestContext.getCurrentInstance().execute("hideEmailRecoverySendErrorMessage();");
+	    	
+	    }		
+	  }   	 	  
 	 	  
 	}catch(Exception ex) { 
 		ex.printStackTrace();

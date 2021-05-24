@@ -8,7 +8,6 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 
-	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
 	<f:metadata>	
@@ -20,27 +19,18 @@
 	<ui:define name="head" >
 	
 	<h:outputStylesheet name="mto_panel.css" library="css/mto" />
-	<h:outputScript name="mto-panel.js" library="js/validation-forms/mto" />
+	<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+	<h:outputScript library="js/validation-forms/panel" name="mto-panel-validation.js" />
 	
-	<script>
-	
-	$(function() {
-		setTimeout(function () {
-			$('#message-div').hide(); 		
-		}, 5000); 
-	});
-		
-	</script>
-
 	</ui:define>
 	
 	 <ui:define name="main-content" >
-	 
-	  <!-- Mensagem parte superior -->
-	    <div id="message-div" >
-			<pf:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" />
-		</div>
-	 
+	 	
+		<!-- INFO MESSAGE DIV -->		
+		<div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
+			<b>#{mtoMessages.mto_message_records_not_found_title}</b> : #{mtoMessages.mto_message_records_not_found}
+		 </div> <!---->
+		 
 	 	 <!-- Inicio da estrutura do conteudo -->
 	 	
 			<div class="jumbotron jumbotron-fluid">
@@ -137,8 +127,7 @@
 									<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_direction}" />								
 										<div class="direction-wind">
 											<h:graphicImage class="ponteiro" url="/resources/images/estacao/setaBussola.png" 
-											 style="
-											transform: rotate(#{mtoPanelBean.panel.wind_speed}deg);"/>
+											 style="transform: rotate(#{mtoPanelBean.panel.wind_speed}deg);"/>
 										</div>
 									
 								</div>
@@ -208,18 +197,25 @@
 			  </h:form>
 			</div>
 			<!-- Final da estrutura do conteudo --> 
+
+			
+		 <!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 	
+			<input type="hidden" name="requiredEquipmentMsg" value="#{requiredMessages.required_mto_reports_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+		
+		</form> <!----> 	 	
 							
 		<!-- CHANGE STATUSSS -->
 		
 	<script type='text/javascript'>
 			
 		checkMtoStatus();		
-		weatherStationValidation("#panel", '#{requiredMessages.required_mto_reports_select_equipments}');
-				
-		//Validate on change value
-		validateOnChange('#equip');
-						
-		</script>
+					
+  </script>
 		
 		<!-- CHANGE STATUSSS -->
 	 

@@ -6,15 +6,15 @@ var loginAccount = {
 connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(response => {
     user = {
         //  User Name
-        "User" : response.SIPAccount1 || "123",
+        "User" : response.SIPAccount1,
         //  Password
-        "Pass" : response.SIPPassword || "i68Oi68O",
+        "Pass" : response.SIPPassword,
         //  Auth Realm
-        "Realm"   : "192.168.0.5",
+        "Realm"   : "192.168.0.127",
         // Display Name
         "Display" : loginAccount.user,
         // WebSocket URL
-        "WSServer"  : "ws://192.168.0.5:8088/asterisk/ws"
+        "WSServer"  : "wss://192.168.0.127:8089/ws"
     };
 
     return connectSOS("GetAllUsers")

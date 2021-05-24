@@ -129,6 +129,17 @@ public class DateTimeApplication {
 				}
 					
 				//FORMATTER FOR DATETIME - DATABASE TO VIEW
+				
+				//FORMATTER FOR DATETIME - DATABASE TO VIEW
+				public String currentViewDateTime() {
+					
+					 DateTimeFormatter databasefmt = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_STANDARD_VIEW);			 
+										
+					 String currentDate = LocalDateTime.now().format(databasefmt);
+		 			    
+					 return  currentDate;
+				}
+					
 
 	//DATETIME TO STRING
 	public String DateTimeToString(Date data, String format) {
@@ -1461,7 +1472,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				
 				if(listSats.get(k).getEquip_id() == Integer.parseInt(selectedEquips[i])) {
 					
-					System.out.println(listSats.get(i).getEquip_id());
+					//System.out.println(listSats.get(i).getEquip_id());
 			
 			       for (int j = 0; j < lin; j+= period)			       
 				          matriz[colName][j] = listSats.get(i).getNome();	      

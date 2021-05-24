@@ -2,7 +2,7 @@
 $(function () {
   $('#user-table').DataTable({
     select: false,
-    "searching": false,
+    "searching": true,
     "autoWidth": true,
     "scrollY": "52.25vh",
     "scrollX": true,

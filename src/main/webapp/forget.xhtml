@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -8,132 +7,155 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf"
-	xmlns:pf="http://primefaces.org/ui">
+	xmlns:jsf="http://xmlns.jcp.org/jsf" >
 
 <f:view locale="#{language.locale}">
 
 	<h:head>
-		<meta http-equiv="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
-		<h:outputStylesheet name="fontawesome.min.css"
-			library="font-awesome/css" />
-		<h:outputStylesheet name="login.css" library="css/login" />
-
-		<script type="text/javascript">
-			//Método para validação do Email
-			jQuery.validator.addMethod("mail", function(value, element) { 
-			    var email = $('#email').val();	    
-			    var regex = new RegExp(/^[A-Za-z0-9_\-\.]+@[A-Za-z0-9_\-\.]{2,}\.[A-Za-z0-9]{3,}(\.[A-Za-z0-9])?/); 
-			    if(email.match(regex)) {  $('#email').removeClass('invalid').addClass('valid'); return true; }
-			    else     
-			    	$('#email').removeClass('valid').addClass('invalid');
-				    $('#email-error').parent().find('.error').fadeIn(500);	     
-			          return false;	 
-			}, "#{validatorMessages.validator_reset_password_email_invalid}");
-  			$(document).ready(function(){
-				$('#form-reset').validate({
-					rules:{
-						email:{
-							required: true,	
-							mail: true,
-							minlength: 4,
-							maxlength: 80
-						}			   
-	    			}
-				});	
 	
-  			});	
-  
- 		 </script>
+		<meta http-equiv="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		
+		<h:outputStylesheet name="bootstrap.min.css" library="bootstrap/css" />
+		<h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />
+		<h:outputStylesheet name="login.css" library="css/login" />
+		<h:outputStylesheet name="validation-style.css" library="css/validation" />
+		
+				<!-- USE JQUERY RESOURCES AND VALIDATION -->
+		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
+		<h:outputScript name="jquery.validate.min.js" library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js" library="js/jquery-validation" />
+		<h:outputScript name="validation-models.js" library="js/validation-forms/models" />
+		<h:outputScript name="forget-validation.js" library="js/validation-forms/login" />
+				 		
 		<title>#{loginLabels.login_forget_title}</title>
+		
 	</h:head>
 	<h:body>
-
-		<!-- Inicio da estrutura do site -->
-		<div class="jumbotron">
-			<div class="container">
-				<div id="message-show">
-					<pf:messages id="msgs" showDetail="true" autoUpdate="true"
-						closable="true" />
-				</div>
-
-				<h:form prependId="false" id="form-reset">
-					<div class="row estrutura">
-						<!-- Inicio do lado direito da tela de logo -->
-						<div class="col-sm">
-							<div class="card ladoDireito">
+		
+		<div class="jumbotron"> <!-- JUMBOTRON DIV -->
+		
+		  <!-- ALERT MESSAGE -->
+		  
+		      <div id="emailInfo" class="alert alert-info" role="alert" style="display: none;"> <!-- ALERT INFO -->
+				#{emailMessages.email_recovery_not_found}				
+			  </div><!---->
+			  		
+		      <div id="emailRecoveryError" class="alert alert-danger" role="alert" style="display: none;"> <!-- ALERT ERROR -->
+				#{emailMessages.email_recovery_invalid_header} - #{emailMessages.email_recovery_invalid_body}				
+			  </div><!---->
+			  
+			   <div id="emailRecoverySendError" class="alert alert-danger" role="alert" style="display: none;"> <!-- ALERT ERROR -->
+				#{emailMessages.email_recovery_unsuccess_send_header} - #{emailMessages.email_recovery_unsuccess_send_body}				
+			  </div><!---->			  			 
+             						  
+			   <div id="process" class="alert alert-info" role="alert" style="display: none;"> <!-- ALERT INFO -->
+				#{emailMessages.email_user_recovery_process_info}				
+			  </div><!---->
+			  						  
+			  <!---->
+			  
+			<div class="container"> <!-- CONTAINER DIV -->		
+				<h:form prependId="false" id="form-reset"> <!-- FORM RESET -->
+				
+					<div class="row structure"> <!-- ROW STRUCTURE -->
+					<div class="col-sm-6">
+							<!-- COL IMAGE DIV -->
+							<div class="card leftSide">
+								<!-- LEFT SIDE CARD -->
 								<div class="card-body  imgLogo esconder">
-									<h:outputLabel
-										p:value="#{loginLabels.login_auth_label_version} 1.0"
-										id="version" />
+									<!-- IMAGE DIV -->
+									<h:outputLabel p:value="#{loginLabels.login_auth_label_version} 1.2" id="version" />
 								</div>
 							</div>
-						</div>
-						<!-- Final do lado direito da tela de logilogon -->
-						<!-- Inicio do lado esquerdo da tela de recuperar senha -->
-						<div class="col-sm">
-							<div class="card ladoEsquerdo">
-								<div class="card-body">
-									<div class="container">
+						</div> 	<!---->
 
-										<!-- Inicio do input recuperar senha -->
-										<div class="row">
-											<div class="col-12">
-												<h4 class="mb-3 text-center">#{loginLabels.login_forget_title}</h4>
-											</div>
-											<div class="col-12">
-												<p class="mb-3 reset-information texte-center">#{loginLabels.login_forget_label_description}</p>
-											</div>
-											<div class="col-12 estruturaLogin">
-												<span class="iconeSpan"><i class="fa fa-user"></i></span>
-												<h:inputText class="form-control form-login" id="email"
-													autocomplete="off" p:type="email"
-													value="#{loginAccount.user.email}"
-													p:placeholder="#{loginLabels.login_forget_input_placeholder}" />
-												<label for="username" class="error" id="username-error"></label>
-											</div>
-											
-											<div class="col-12">
-												<h:commandButton class="button btn btn-send"
+						<!---->
+
+					<div class="col-sm-6"> <!-- COL FORMS DIV -->							
+							<div class="card rightSide"> 	<!-- RIGHT SIDE CARD -->
+								<div class="card-body"> <!-- CARD BODY -->
+									
+										<div class="row"> <!-- FORM ROW --> 
+									      <div class="col-sm-12"> <!-- TITLE -->
+									         <h4 class="mb-3 text-center">#{loginLabels.login_forget_title}</h4>
+									      </div> <!---->
+								        </div> <!---->
+
+                                         <!---->
+                                         
+									     <div class="row"> <!-- FORM ROW -->
+											<div class="col-sm-12">
+												<p class="mb-3 reset-information text-center">#{loginLabels.login_forget_label_description}</p>
+											</div><!---->
+										 </div><!---->
+
+									<div class="form-row"><!-- USERNAME FORM ROW -->
+										<div class="form-group col-sm-12 input-field">	<!-- FORM GROUP -->
+											<span><i class="fas fa-envelope"></i></span>	<!-- SPAN ICON -->
+											<span for="email" class="valid-icon-hidden"></span>	<!-- SPAN VALIDATION -->
+											<h:inputText class="form-control form-login" id="email"	name="email" autocomplete="off" p:type="text"
+												value="#{loginAccount.user.email}" p:placeholder="#{loginLabels.login_forget_input_placeholder}" />
+										</div> <!---->
+										  <div class="error-label">	<!-- ERROR LABEL -->
+											  <label for="email" class="error" id="email-error"></label>
+										 </div>	<!---->
+									</div><!---->
+
+                                    <!---->
+                                    
+                                     <div class="form-row"> <!-- BUTTON ROW -->								
+											<div class="col-sm-12">
+												<h:commandButton class="button btn btn-send" onclick="showEmailRecoveryProcessMessage();"
 													value="#{loginLabels.login_forget_btn_send}"
 													action="#{loginAccount.passwordRecovery}" />
-											</div>
-											<div class="col-12">
+											</div> <!---->
+										</div><!---->
+										
+										<!---->
+										
+										<div class="form-row"> <!-- BUTTON ROW -->			
+											<div class="col-sm-12"> 
 												<div class="reset-confirmation d-done">
-
 													<div class="back-to-login-link text-center">
-														#{loginLabels.login_forget_label_back_login} <a
-															href="login.xhtml" class="login-link">#{loginLabels.login_forget_link_back_login}</a>
+														#{loginLabels.login_forget_label_back_login}															
+														  <h:commandLink id="logout-two" class="login-link"
+									                        value="#{loginLabels.login_forget_link_back_login}"
+									                        action="#{loginAccount.loginRedirect}" ajax="true" />															
 													</div>
 												</div>
 											</div>
-										</div>
-										<!-- final input recuperar senha -->
-									</div>
-								</div>
-								<!-- Final do lado esquerdo da tela do site -->
-							</div>
-						</div>
+										</div><!---->										
+									
+									
+								</div>	<!-- COL FORMS DIV -->							
+							</div> <!-- RIGHT SIDE CARD -->
+						</div><!-- CARD BODY -->
 
-					</div>
-					<h:outputScript name="popper.min.js" library="js/popper" />
-					<h:outputScript name="bootstrap.bundle.min.js"
-						library="bootstrap/js" />
-					<h:outputScript name="all.min.js" library="font-awesome/js" />
-				</h:form>
-				<div class="trademark">
-					<div class="col-12">
-						<h:outputLabel class="tracevia" p:value="©2021 Tracevia"
-							id="trademark" />
-					</div>
-				</div>
+				  </div> <!-- ROW STRUCTURE DIV -->				
+				</h:form> <!-- FORM RESET -->
+				
+				<!---->
+				
+				<br/><!---->
+				<div class="trademark"> <!-- TRADEMARK DIV -->
+					<div class="col-sm-12">
+						<h:outputLabel class="tracevia" p:value="©2021 Tracevia" id="trademark" />
+					</div> <!---->
+				</div><!---->
+				
 			</div>
 		</div>
-
-
-		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
+		
+	  <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+	 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		
+		<input type="hidden" name="emailMsg" value="#{requiredMessages.login_email_input_field}" /> <!-- EMAIL REQUIRED MESSAGE -->	
+		<input type="hidden" name="emailMaxLengthMsg" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EMAIL MAX LENGTH MESSAGE -->
+		<input type="hidden" name="validatorEmail" value="#{validatorMessages.validator_email_message}" /> <!-- EMAIL VALIDATION MESSAGE -->	
+		
+	 </form> <!----> 	 		 
+				
 		<h:outputScript name="popper.min.js" library="js/popper" />
 		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
 		<h:outputScript name="all.min.js" library="font-awesome/js" />

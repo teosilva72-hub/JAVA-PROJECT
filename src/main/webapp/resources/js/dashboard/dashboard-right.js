@@ -1,4 +1,4 @@
-// OVERLAY SIDE BAR
+
 $(function () {
   $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
@@ -6,8 +6,10 @@ $(function () {
   });
 
   var adjustSidebar = function () {
-    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 150 })
-    $(".equips-div").slimScroll({ height: window.innerHeight - 150 })
+    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 20 })
+    $(".equips-div").slimScroll({ height: window.innerHeight - 20 })   
+      .css('height' , window.innerHeight - 200)
+       
   };
 
   adjustSidebar();
@@ -15,7 +17,6 @@ $(function () {
     adjustSidebar();
   });
 
-  $(".loading").hide();
   
   //UPDATE NOTIFICATIONS NUMBER ON LOAD
   $("#notification").load('/template/dashboard-rov-notifications.xhtml' , () => {
@@ -24,10 +25,12 @@ $(function () {
   });
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
+
+  $("#sipClient.calls-client .sipStatus").click(showCallbox)
   
 });
 
-const alertToast = msg => {
+var alertToast = msg => {
   $('#msgToastNotification').text(msg);
   toast.show();
 }
@@ -64,6 +67,53 @@ function notificationBadge(){
 
   else document.getElementById('badge-notif').style.display = 'none';*/
   
+}
+
+var callBoxStatus = false;
+
+const showCallbox = () => {
+  let client = $("#sipClient.calls-client")
+  let callStatus = $('#txtCallStatus').html()
+  let action;
+
+  if(client.hasClass('showing') || client.hasClass('show')) {
+    action = 'hiding'
+    callBoxStatus = false
+    if (!callStatus)
+      showStatesCallbox('close')
+    else if (callStatus === 'Rejected')
+      ctxSip.setCallSessionStatus('');
+  } else {
+    action = 'showing'
+    callBoxStatus = true
+    showStatesCallbox('open')
+  }
+
+	client.addClass(action).css('bottom', action == 'showing' ? 40 : '').removeClass('hide').removeClass('show')
+	setTimeout(() => {
+	    client.removeClass(action).addClass(action == 'showing' ? "show" : 'hide')
+	}, 2000)
+}
+
+const showStatesCallbox = action => {
+  let client = $("#sipClient .sipStatus")
+  let action2;
+
+  if(action == 'open') {
+    action2 = 'opening'
+    client.removeClass('closed')
+  } else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
+    return
+  else {
+    action2 = 'closing'
+    action = "closed"
+    client.removeClass('open')
+  }
+
+	client.addClass(action2)
+	setTimeout(() => {
+	    client.removeClass(action2).addClass(action)
+	}, 2000)
 }
 
 
@@ -154,3 +204,89 @@ function notificationBadge(){
 		//document.form.cor3.className = cor3 < comp ? 'red' : 'green';
 	//}
 //SIP BOOK-LIST END
+
+/*******************************************************************************/
+
+   function sidenavAction() {
+        document.getElementById("sidenav2").style.display = "none";
+        document.getElementById("sidenav3").style.display = "none";
+        document.getElementById("sidenav").style.display = "block";
+      }
+
+      function sidenavAction2() {
+        document.getElementById("sidenav3").style.display = "none";
+        document.getElementById("sidenav").style.display = "none";
+        document.getElementById("sidenav2").style.display = "block";
+      }
+
+      function sidenavAction3() {
+        document.getElementById("sidenav").style.display = "none";
+        document.getElementById("sidenav2").style.display = "none";
+        document.getElementById("sidenav3").style.display = "block";
+      }
+
+      function clicked(id) {
+        var element = document.getElementById(id);
+        if (element.style.display === "none") {
+          element.style.display = "block";
+        } else {
+          element.style.display = "none";
+        }
+      }
+
+      function toggleBtnEquips() {
+        $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
+      };
+
+
+      /*  function reloadNotifications(){
+            var container = document.getElementById("testess");
+             container.innerHTML = " ";
+                        
+           //this line is to watch the result in console , you can remove it later	
+           alert("Refreshed"); 
+        }*/
+
+      //Scroll stucked on Top  ==> FOR SCROLL
+      /* function setTopo(){
+          $(window).scrollTop(0);
+      }
+       //Call setTopo()
+      $(window).bind('scroll', setTopo);*/
+      // Voice Menu Open
+      $(function () {
+
+        $("[id$=holdingcall]").click(function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $("[id$=callback]").show();
+          $("[id$=holdingcall]").hide();
+        });
+
+        $("[id$=callback]").click(function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          $("[id$=holdingcall]").show();
+          $("[id$=callback]").hide();
+        });
+
+        $("#navCall").on('click', function (e) {
+          e.preventDefault()
+          $('#toastvoice').toast('show');
+        });
+
+        $("#navListCall").click(function (e) {
+          e.preventDefault()
+          $('#list-toast').toast('show');
+        });
+      })
+      // Voice Menu Open End
+
+      // Visibility Equipments
+      $('[toggle]').click(function () {
+        $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
+      })
+      // Visibility Equipments End
+      
+
+   

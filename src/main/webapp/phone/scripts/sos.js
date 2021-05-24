@@ -145,10 +145,18 @@ const consume = ({ callback_calls = callback_calls_default, callback_alarms = ca
 
 		if (count > 3)
 			setTimeout(() => {
-				consume()
+				consume({
+					callback_states: callback_states,
+					callback_alarms: callback_alarms,
+					callback_calls: callback_calls,
+				})
 			}, 1000)
 		else
-			consume()
+		consume({
+			callback_states: callback_states,
+			callback_alarms: callback_alarms,
+			callback_calls: callback_calls,
+		})
 	};
 
 	client.heartbeat.outgoing = PING

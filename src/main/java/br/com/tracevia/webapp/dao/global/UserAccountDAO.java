@@ -34,7 +34,142 @@ public class UserAccountDAO {
 			throw new Exception("erro: \n" + e.getMessage());
 		}
 	}
+	
+	
+	public boolean checkEmail(String email) throws Exception {
 
+		boolean response = false;
+
+		try {
+					
+			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
+			ps.setString(1, email);
+			
+			rs =  ps.executeQuery();
+			
+			if (rs.next() != false)
+			     response = true;
+			
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao consultar dados: " + sqle);
+
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+	
+	public boolean checkUsername(String username) throws Exception {
+
+		boolean response = false;
+
+		try {
+					
+			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(usernameCheck); //CHECK EMAIL EXISTS
+			ps.setString(1, username);
+			
+			rs =  ps.executeQuery();
+			
+			if (rs.next() != false)
+			     response = true;			
+		
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao consultar dados: " + sqle);
+
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+	
+	public boolean checkEmailToUpdate(String email, String lastEmail) throws Exception {
+
+		boolean response = false;
+		
+		String rsEmail = "";
+
+		try {
+					
+			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
+			ps.setString(1, email);
+			
+			rs =  ps.executeQuery();					
+			
+			if(rs.isBeforeFirst()) {
+			    while(rs.next()) {
+				  
+				   rsEmail = rs.getString("email");
+			   }			    
+			}
+						
+			if(!rsEmail.equals(lastEmail))
+			     response = true;				
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao consultar dados: " + sqle);
+
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+	
+	public boolean checkUsernameToUpdate(String username, String lastUsername) throws Exception {
+
+		boolean response = false;
+		
+		String rsUsername = "";
+
+		try {
+					
+			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+										
+			ps = conn.prepareStatement(usernameCheck); // CHECK EMAIL EXISTS
+			ps.setString(1, username);
+			
+			rs =  ps.executeQuery();
+			
+			if(rs.isBeforeFirst()) {
+			    while(rs.next()) {
+				  
+				   rsUsername = rs.getString("username");
+			   }			    
+			}
+						
+			if(!rsUsername.equals(lastUsername))
+			     response = true;	
+			
+		
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao consultar dados:  " + sqle);
+
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+	
+	
 	@SuppressWarnings("static-access")
 	public boolean cadastroUsuario(UserAccount user) throws Exception {
 
@@ -115,6 +250,7 @@ public class UserAccountDAO {
 		return status;
 	}
 
+
 	@SuppressWarnings("static-access")
 	public boolean atualizar(UserAccount usuario) throws Exception {
 
@@ -133,7 +269,7 @@ public class UserAccountDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(sql);
-
+					
 			ps.setString(1, usuario.getName());
 			ps.setString(2, usuario.getJob_position());
 			ps.setString(3, usuario.getEmail());
@@ -165,59 +301,29 @@ public class UserAccountDAO {
 		return status;
 	}
 
-	// Criar Metodos daqui
-	@SuppressWarnings("static-access")
-	public ArrayList<UserAccount> BuscarUsuarios(String parametro) throws Exception {
+	public ArrayList<UserAccount> BuscarUsuarios() throws Exception {
 		TranslationMethods trad = new TranslationMethods();
-
-		boolean isNumber = false, isName = false, isUserName = false;
-		String regexNumber = "^[0-9]+$", regexName = "^[^a-zA-Z\\u00C0-\\u00FF ]$", regexNick = "^[^0-9][^._]+$",
-				sql = "";
+	
+		String sql = "";
 
 		ArrayList<UserAccount> lista = new ArrayList<UserAccount>();
 
-		if (parametro.equals("Todos"))
+		
 			sql = "SELECT r.user_id, r.date_register, r.name, r.job_position, r.email, r.username, p.permission_role, pu.status "
 					+ "FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
-					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";
-		else {
-
-			isNumber = parametro.matches(regexNumber);
-			isName = parametro.matches(regexName);
-			isUserName = parametro.matches(regexNick);
-
-			sql = "SELECT r.user_id, r.date_register, r.name, r.job_position, r.email, r.username, p.permission_role, pu.status "
-					+ "FROM users_permission_user pu "
-					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
-					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";
-
-			if (isNumber)
-				sql += "WHERE pu.user_id = ? ";
-
-			else if (isName)
-				sql += "WHERE r.name LIKE ? ";
-
-			else if (isUserName)
-				sql += "WHERE r.username LIKE ? ";
-
-		}
+					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id ";	
 
 		try {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(sql);
-
-			if (isNumber)
-				ps.setInt(1, Integer.parseInt(parametro));
-
-			else if (isName || isUserName)
-				ps.setString(1, "%" + parametro + "%");
-
 			rs = ps.executeQuery();
+			
+			//System.out.println("sql");
 
-			if (rs != null) {
+			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 
 					UserAccount user = new UserAccount();
@@ -262,7 +368,7 @@ public class UserAccountDAO {
 			ps.setString(1, parametro);
 
 			rs = ps.executeQuery();
-
+					
 			if (rs != null) {
 				while (rs.next()) {
 

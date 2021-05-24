@@ -30,7 +30,7 @@ public class EquipmentsBean implements Serializable {
 
 	/**
 	 * 
-	 */
+	 **/
 	private static final long serialVersionUID = 1L;
 	
 	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, mtoType;
@@ -614,8 +614,11 @@ public class EquipmentsBean implements Serializable {
 			    //For Equipment KM
 			    dms.setKm(parameterMap.get("kmEdit"));
 			    
-			    //For Equipment Map Width / Linear Width
-			    dms.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
+			    //For Equipment Map Width / Linear Width			    			    
+			    if(parameterMap.get("width-edit") == "0")
+			    	 dms.setMapWidth(1);			    
+			    			
+			    else dms.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 			    
 			    //DMS Type
 			    int type = (parameterMap.get("dmsType-edit") == null ? 1 : Integer.parseInt(parameterMap.get("dmsType-edit")));
@@ -659,8 +662,11 @@ public class EquipmentsBean implements Serializable {
 	  	    //For Equipment KM
 	  	    sat.setKm(parameterMap.get("kmEdit"));
 	  	    
-	  	   //For Equipment Map Width / Linear Width
-		    sat.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
+	  	   //For Equipment Map Width / Linear Width			    			    
+		    if(parameterMap.get("width-edit") == "0")
+		    	sat.setMapWidth(1);	    
+	  	    	 
+		    else sat.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 	  	  
 	  	   //For Number Lanes
 	  	    int numLanes = (parameterMap.get("lanes-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes-edit")));
@@ -716,8 +722,11 @@ public class EquipmentsBean implements Serializable {
 			    //For Equipment KM
 			    equip.setKm(parameterMap.get("km-edit"));	
 			    
-			    //For Equipment Map Width / Linear Width
-			    equip.setMapWidth(parameterMap.get("width-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("width-edit")));
+			    //For Equipment Map Width / Linear Width			    			    
+			    if(parameterMap.get("width-edit") == "0")
+			    	 equip.setMapWidth(1);			    
+			    
+			    else equip.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 			    
 			    //MENSAGEM UPDATED
 			    update = dao.EquipUpdateMap(equip, table, interfaceView);

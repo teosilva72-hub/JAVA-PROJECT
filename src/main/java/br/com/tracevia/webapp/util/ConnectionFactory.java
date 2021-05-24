@@ -178,16 +178,16 @@ public class ConnectionFactory {
 			if (conn != null)
 				conn.close();
 		} catch (Exception e) {
-			System.out.println("Erro ao encerrar conex�o: "+e.getMessage());
+			System.out.println("Erro ao encerrar conexão: "+e.getMessage());
 		}
 	}
 	
 	
-	//Identificar conex�o com a Base de Dados
+	
 	public static Connection useConnection(String roadConcessionaire) throws Exception {
 		
 		Connection conn = null;
-				
+							
 		 //GET CONNECTION			
 	    if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
 	           conn = connectToCCR();

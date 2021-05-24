@@ -13,72 +13,13 @@
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="realtime.css" library="css/realtime" />
-	    <h:outputStylesheet library="css/validation" name="validation_style.css" />
+	    <h:outputStylesheet library="css/validation" name="validation-style.css" />
 
 		<!-- Script -->
 		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
 		<h:outputScript library="bootstrap/js" name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" />
-		<h:outputScript library="js/validation-forms/user-interface" name="user-interface-validation.js?version=#{notificationsView.timestamp}" />
-
-		<style>
-			@keyframes myMove {
-				from {
-					background-position: 100% 0;
-					background-repeat: repeat;
-				}
-
-				to {
-					background-position: 0% 0;
-				}
-			}
-		</style>
-				
-		<script>
-		
-		////////////////////////////////////
-		//AUTO UPDATE PAGE INTERVAL
-		///////////////////////////////////
-		
-		setTimeout(() => {			
-			setInterval(() => {
-				
-			    var data = new Date();
-			    var n = data.getSeconds();
-			    var minute = data.getMinutes();
-			                          		
-			     if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {         	        	
-			           if (n &lt; 4) 		   
-			        	   
-			        	   location.href = location.protocol + '//' + location.host + location.pathname
-			     }
-			     
-			}, 3000)
-		}, 4000)
-	
-		////////////////////////////////////
-		//AUTO UPDATE PAGE INTERVAL
-		///////////////////////////////////
-		
-		$(function () {
-  $('[data-toggle="popover"]').popover({
-	  html : true,
-	  trigger: 'hover',
-      content: function() {
-        var content = $(this).attr("data-popover-content");
-        return $(content).children(".popover-body").html();
-      },
-      title: function() {
-        var title = $(this).attr("data-popover-content");
-        return $(title).children(".popover-header").html();
-      }
-  });
-  
-  });
-		$(function () {
-			  $('[data-toggle="tooltip"]').tooltip()
-	})
-			 
-    </script>
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/user-interface" name="realtime-validation.js?version=#{notificationsView.timestamp}" />
 
 	</ui:define>
 
@@ -143,17 +84,18 @@
        <!--  ******************************************************************************************************* -->
        
        </div>    
+		
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
 				
 				<button type="button" id="zoomIn" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-					title="Zoom In">
+					title="Zoom In" data-trigger="hover" >
 					<span><i class="fas fa-plus-square fa-2x"></i></span>
 				</button>
 
 				<button type="button" id="zoomOut" class="zoomButton" data-toggle="tooltip" data-placement="bottom"
-					title="Zoom Out">
+					title="Zoom Out" data-trigger="hover" >
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
@@ -161,11 +103,7 @@
 					onclick="defaultAdd()"
 					title="Add Equipment" data-toggle="modal"
 					data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
-					
-						<button type="button" id="sosAnimation"	class="btn btn-dark form-modal-draw-button" title="SOS animation" onclick="animation()">
-					<span> TEST CALL </span>
-				   </button>
-				   
+														   
 				   <script>
 				   
 				   function animation(){
@@ -196,17 +134,17 @@
 		     <!--  ******************************************************************************************************* -->
 				
 				<h:commandButton id="savePos" style="display:none;"
-					class="btn btn-dark form-modal-draw-button save_pos"
+					class="btn btn-dark form-modal-draw-button"
 					value="#{mapLabels.map_position_btn_save_equipment}" onclick="alert('#realsave');" >					
 					<f:ajax execute="@form" render="@none" listener="#{equipsBean.definePosition}" />
 				</h:commandButton>
 				
 		     <!--  ******************************************************************************************************* -->
 
-				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button cancel_pos"
+				<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button"
 					value="#{mapLabels.map_position_btn_cancel_equipment}" onclick="alert('#realcancel');"
 					title="Cancel Change Position">
-					<f:ajax render="#realcancel" onevent="onEventFunction" />
+					<f:ajax render="#realcancel" onevent="onEventRealtimeFunction" />
 				</h:commandButton>
 			</h:form>
 			
@@ -247,9 +185,8 @@
 			</section>
 	</ui:define>
 	
-	
-	
-		<!-- ************************************************************************************* -->
+		
+	<!-- ************************************************************************************* -->
 	<!-- ************************************* CREATE **************************************** -->
 	<!-- ************************************************************************************* -->
 	
@@ -624,7 +561,7 @@
 								id="btn-form-send">
 								<f:ajax execute="@form" render=":equips :equipIds :equipName :cities :roads :km
 								:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
-								listener="#{equipsBean.createEquipment}" onevent="onEventFunction" />
+								listener="#{equipsBean.createEquipment}" onevent="onEventRealtimeFunction" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
@@ -693,9 +630,9 @@
 									<h:inputHidden id="positionY" />
 									
 									<!-- POSITION BUTTON -->
-									<h:commandButton value="#{mapLabels.map_creation_btn_move_equipment}"
+									<h:commandButton value="#{mapLabels.map_creation_btn_move_equipment}" id="position"
 										onclick="dragEquip(); hiddenBtns(); $('#OPmodal').modal('hide');"
-										class="btn btn-dark form-modal-draw-button btn-pos">
+										class="btn btn-dark form-modal-draw-button">
 										<f:ajax execute="@form" render="@none" />
 									</h:commandButton> <!---->
 								</div> <!---->
@@ -929,7 +866,7 @@
 												value="Todos"
 												id="btn-form-all-equip"
 												class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
-												<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventFunction"></f:ajax>
+												<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventRealtimeFunction"></f:ajax>
 											</h:commandButton>
 										</div>
 									</div>
@@ -1108,7 +1045,7 @@
 
 							<h:commandButton p:data-toggle="modal" p:data-target="#editmodal"
 								id="btn-form-send-edit" onclick="sendType();" style="display: none;">
-								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventFunction" />
+								<f:ajax execute="@all" render="@none" listener="#{equipsBean.UpdateEquipment}" onevent="onEventRealtimeFunction" />
 							</h:commandButton>			 									
 							
 							<h:commandButton
@@ -1194,393 +1131,22 @@
 		
 		<!-- Mudança -->
 
-		<script>
-	
-		/////////////////////////////
-		//VALIDATION FORM
-		////////////////////////////
-		
-		userInterfaceformValidation('#register-equip-form', '#{requiredMessages.required_user_interface_select_equipments}', '#{requiredMessages.required_user_interface_equip_id}',
-				'#{validatorMessages.validator_number_message}', '#{validatorMessages.validator_global_maxlength}',	'#{requiredMessages.required_user_interface_equip_name}', '#{requiredMessages.required_user_interface_cities}', 
-				'#{requiredMessages.required_user_interface_roads}', '#{requiredMessages.required_user_interface_km}');
+			<!-- ********************************************************************************************************************* -->
+								 	 
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 	
+			<input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_user_interface_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+			<input type="hidden" name="requiredEquipIdMsg" value="#{requiredMessages.required_user_interface_equip_id}" /> <!-- EQUIPMENT ID REQUIRED MESSAGE -->
+			<input type="hidden" name="validatorNumberMsg" value="#{validatorMessages.validator_number_message}" /> <!-- EQUIPMENT ID IS NUMBER VALIDATION MESSAGE -->
+			<input type="hidden" name="validatorMaxLenght" value="#{validatorMessages.validator_global_maxlength}" /> <!-- EQUIPMENT NAME LENGHT VALIDATION MESSAGE -->
+			<input type="hidden" name="requiredEquipmentNameMsg" value="#{requiredMessages.required_user_interface_equip_name}" /> <!-- EQUIPMENT NAME REQUIRED MESSAGE -->
+			<input type="hidden" name="requiredCitiesMsg" value="#{requiredMessages.required_user_interface_cities}" /> <!-- CITIES REQUIRED MESSAGE -->
+			<input type="hidden" name="requiredRoadsMsg" value="#{requiredMessages.required_user_interface_roads}" /> <!-- ROADS REQUIRED MESSAGE -->
+			<input type="hidden" name="requiredKmMsg" value="#{requiredMessages.required_user_interface_km}" /> <!-- KM REQUIRED MESSAGE -->
 			
-					
-		//Validate elements on change value
-	    //In this case check if the element is valid
-	    validateOnChange('#equips');
-	    validateOnChange('#equipId');	
-	    validateOnChange('#equipName');
-		validateOnChange('#cities');
-		validateOnChange('#roads');
-		validateOnChange('#km');	
-	    
-	    //Reset Fields on close modal
-		resetFieldOnModalClose('#modaladd', 'equips');
-		resetFieldOnModalClose('#modaladd', 'equipId');
-		resetFieldOnModalClose('#modaladd', 'dmsType ');
-		resetFieldOnModalClose('#modaladd', 'equipName ');
-		resetFieldOnModalClose('#modaladd', 'roads');
-		resetFieldOnModalClose('#modaladd', 'cities');
-		resetFieldOnModalClose('#modaladd', 'km');
-		resetFieldOnModalClose('#modaladd', 'lanes');
-		resetFieldOnModalClose('#modaladd', 'direction1');
-		resetFieldOnModalClose('#modaladd', 'direction2');
-		resetFieldOnModalClose('#modaladd', 'direction3');
-		resetFieldOnModalClose('#modaladd', 'direction4');
-		resetFieldOnModalClose('#modaladd', 'direction5');
-		resetFieldOnModalClose('#modaladd', 'direction6');
-		resetFieldOnModalClose('#modaladd', 'direction7');
-		resetFieldOnModalClose('#modaladd', 'direction8');
-		 //Reset Fields on close modal
-						
-		//Remove validation icons
-	    //click reset button action		 
-	    removeValidationIcon("reset-btn", 'equips');
-	    removeValidationIcon("reset-btn", 'equipId');
-	    removeValidationIcon("reset-btn", 'equipName');
-		removeValidationIcon("reset-btn", 'cities');
-	    removeValidationIcon("reset-btn", 'roads');
-	    removeValidationIcon("reset-btn", 'km');	
-		    
-	    //Clean Form validation on close modal
-        cleanValidationOnModalClose("#register-equip-form", '#modaladd');
-	    
-        //Reset validation form
-        //click reset button action
-        resetFormValidation("#register-equip-form", "reset-btn");	
-        resetFormValidation("#register-equip-form", "close-btn");
-        
-        //Dismiss modal function
-	    $("#modaladd").on("hidden.bs.modal", function() {
-	    	$('.satInputs').hide();	
-			$('.dmsHidden').hide();
-			$('.mtoHidden').hide();			  
-	      });
-	    
-	    //reset form function
-	    $(".reset-btn").on("click", function() {	    		    
-	    	$('.satInputs').hide();	
-			$('.dmsHidden').hide();
-			$('.mtoHidden').hide();		  
-		    $('#modaladd').modal('hide');
-	      }); 	 
-        
-        //EQUIP EDITION
-        
-        userInterfaceEditformValidation('#edit-equip-form', '#{validatorMessages.validator_global_maxlength}', '#{requiredMessages.required_user_interface_equip_name}',
-           '#{requiredMessages.required_user_interface_cities}', '#{requiredMessages.required_user_interface_roads}', 
-		   '#{requiredMessages.required_user_interface_km}');
-							
-		//Validate elements on change value
-	    //In this case check if the element is valid	   
-	    validateOnChange('#equipNameEdit');
-		validateOnChange('#citiesEdit');
-        validateOnChange('#roadsEdit');
-        validateOnChange('#kmEdit');		   
-	    
-	    //Reset Fields on close modal
-		resetFieldOnModalClose('#editmodal', 'equips-edit');
-		resetFieldOnModalClose('#editmodal', 'equipId-edit');
-		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
-		resetFieldOnModalClose('#editmodal', 'equipNameEdit');
-		resetFieldOnModalClose('#editmodal', 'roadsEdit');
-		resetFieldOnModalClose('#editmodal', 'citiesEdit');
-		resetFieldOnModalClose('#editmodal', 'kmEdit');
-		resetFieldOnModalClose('#editmodal', 'lanes-edit');
-		resetFieldOnModalClose('#editmodal', 'direction1-edit');
-		resetFieldOnModalClose('#editmodal', 'direction2-edit');
-		resetFieldOnModalClose('#editmodal', 'direction3-edit');
-		resetFieldOnModalClose('#editmodal', 'direction4-edit');
-		resetFieldOnModalClose('#editmodal', 'direction5-edit');
-		resetFieldOnModalClose('#editmodal', 'direction6-edit');
-		resetFieldOnModalClose('#editmodal', 'direction7-edit');
-		resetFieldOnModalClose('#editmodal', 'direction8-edit');
-		 //Reset Fields on close modal
-						
-		//Remove validation icons
-	    //click reset button action	
-	    removeValidationIcon("reset-btn-edit", 'equipNameEdit');
-		removeValidationIcon("reset-btn-edit", 'citiesEdit');
-        removeValidationIcon("reset-btn-edit", 'roadsEdit');
-        removeValidationIcon("reset-btn-edit", 'kmEdit');	
-		    
-	    //Clean Form validation on close modal
-        cleanValidationOnModalClose("#edit-equip-form", '#editmodal');
-	    
-        //Reset validation form
-        //click reset button action
-        resetFormValidation("#edit-equip-form", "reset-btn-edit");	
-        resetFormValidation("#edit-equip-form", "close-btn-edit");
-          	    
-	    //Dismiss modal function
-	    $("#editmodal").on("hidden.bs.modal", function() {
-	    	$('.satInputs-edit').hide();				  
-	      });
-	    
-	    //reset form function
-	    $(".reset-btn-edit").on("click", function() {	    		    
-	    	$('.satInputs-edit').hide();			  
-		    $('#editmodal').modal('hide');
-	      }); 	 
-	    		    
-        /////////////////////////////
-		//VALIDATION FORM
-		////////////////////////////
-	
-		function borderEquip(id){
-				var equipBorder = document.getElementById(id);
-				if (equipBorder != null) {
-					equipBorder.style.border = "2px solid black"
-					equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
-					setTimeout(function () {
-						equipBorder.style.border = ""
-						equipBorder.style.borderImage = ""
-					}, 2500);
-				}
-			}
-        
-			
-      // *********************************************************** //
+		</form> <!----> 	 	
 
-			function hiddenBtns() {
-				document.getElementById("topButtons").style.display = "none";
-			}
-
-			function showBtns() {
-				document.getElementById("topButtons").style.display = "block";
-			}
-			
-			function hideEditDirections(){
-				$('#direction3-edit').hide(); 
-				$('#direction4-edit').hide(); 
-				$('#direction5-edit').hide(); 
-				$('#direction6-edit').hide(); 
-				$('#direction7-edit').hide(); 
-				$('#direction8-edit').hide();
-			}
-
-			function alert(a) {
-				$('.map-options').css('display','none');
-				$(a).css("display", "block");				
-				setTimeout(function () {
-					$(a).fadeOut('fast');
-					$('.map-options').css('display','block');
-				}, 2000);
-				hiddenPosition();				
-			}
-
-			function hiddenPosition() {
-				document.getElementById("real:savePos").style.display = "none";
-				document.getElementById("real:cancelPos").style.display = "none";
-				posReset();
-				showBtns();			
-			}
-			
-			//VARS
-			var id, type, toDrag;
-
-			function sendToBean() {
-
-				document.getElementById('form-modal-submit:equipCod').value = id;
-				document.getElementById('form-modal-submit:equipTable').value = type;
-
-			}
-
-			function sendToBeanDel() {
-
-				document.getElementById('delete-equip-form:del-equip-name').innerText = type + id;
-			}
-
-			function sendType() {
-				document.getElementById('edit-equip-form:equipId1').value = id;
-				document.getElementById('edit-equip-form:equipTable1').value = type;
-			}
-
-			function deleteParameters() {
-				document.getElementById('delete-equip-form:equipDel').value = id;
-				document.getElementById('delete-equip-form:tableDel').value = type;
-			}
-			
-			function deleteInfo() {
-				document.getElementById('delete-equip-form:equipIdDel').value = id;
-				document.getElementById('delete-equip-form:equipTableDel').value = type;
-			}
-		
-			/////////////MAP/GRID HIDE AND SHOW
-
-			$("#cancelPos").click(function () {
-				$("#savePos").hide();
-				$("#cancelPos").hide();
-			});
-		
-			$(".btn-pos").click(function () {
-				$(".save_pos").show();
-				$(".cancel_pos").show();			
-			});
-
-			$(".add_equip").click(function () {
-				$(".save_pos").hide();
-				$(".cancel_pos").hide();
-			});
-
-			///MAP/GRID HIDE AND SHOW END						
-					
-			//ZOOM EVENT
-			document.getElementById("zoomIn").addEventListener("click",
-				function () {
-					zoomIn($('section.overflow'))
-				}, false);
-			document.getElementById("zoomOut").addEventListener("click",
-				function () {
-					zoomOut($('section.overflow'))
-				}, false);
-
-			//ZOOM EVENT
-
-			//SAT LANES INPUTS
-
-			document.getElementById("equips").addEventListener("click",
-				function () {			
-					var equipsSEL = document.getElementById("equips");
-					var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-					if (selectVAL == 9) {
-						$('.satInputs').show(); // DIV FAIXAS 1	
-						$('.dmsHidden').hide();
-						$('.mtoHidden').hide();
-						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
-						$("#lanes").change(
-							function () {
-								var satLanes = document.getElementById("lanes");
-								var selectSAT = satLanes.value;
-								if (selectSAT == 2) {
-									$('#direction3').hide();
-									$('#direction4').hide();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 3) {
-									$('#direction3').show();
-									$('#direction4').hide();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 4) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 5) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 6) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 7) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').show();
-									$('#direction8').hide();
-								} else if (selectSAT == 8) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').show();
-									$('#direction8').show();
-								}
-							});
-					} else if (selectVAL == 8) {					
-						$('.dmsHidden').show(); // DIV DMS TYPE	
-						$('.mtoHidden').hide();
-						$('.satInputs').hide();
-
-					} else if (selectVAL == 6) {						
-						$('.mtoHidden').show();
-						$('.dmsHidden').hide();
-						$('.satInputs').hide();
-					} else {						
-						$('.dmsHidden').hide();
-						$('.mtoHidden').hide();
-						$('.satInputs').hide();
-					}
-					
-				});
-
-			
-				// MODAL EQUIPMENT SIZE
-			$(".dprbtn").click(
-					function () {
-						var url = $('.draggable').find(
-							"[id^=" + $(this).attr('from')
-							+ "] img").attr("src")
-							|| "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-						let modal = $("#sizeeqps")
-						modal.find("img").attr("src", url);
-						modal.find("#bar-size").attr("from",
-							"." + $(this).attr('from'))
-					});
-			// MODAL EQUIPMENT SIZE END
-			
-			  $('#km').mask('000+000'); 	// KM MASK	
-			  $('#kmEdit').mask('000+000'); 	// KM MASK				
-			
-			  
-			  function statusColors(){
-			      $('#sos2').find('.equip-status').css('background-color', 'orange');
-			      $('#sos7').find('.equip-status').css('background-color', 'red');
-			      $('#sos14').find('.equip-status').css('background-color', 'orange');
-			      $('#sos16').find('.equip-status').css('background-color', 'red');
-			      $('#sos22').find('.equip-status').css('background-color', 'orange');
-			      $('#sos25').find('.equip-status').css('background-color', 'orange');
-			      $('#sos33').find('.equip-status').css('background-color', 'red');
-			      $('#sos37').find('.equip-status').css('background-color', 'orange');
-			      $('#sos40').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#colas2').find('.equip-status').css('background-color', 'red');
-			      $('#colas3').find('.equip-status').css('background-color', 'orange');
-			      $('#colas5').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
-			      
-			      $('#dai1').find('.equip-status').css('background-color', 'red');
-			      $('#dai5').find('.equip-status').css('background-color', 'orange');
-			      $('#dai6').find('.equip-status').css('background-color', 'orange');
-			      $('#dai9').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#lpr4').find('.equip-status').css('background-color', 'red');
-			      $('#lpr7').find('.equip-status').css('background-color', 'red');
-			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#wim4').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#speed5').find('.equip-status').css('background-color', 'orange');
-			      $('#speed6').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#dms1 .tableStyle').addClass('on')
-			      $('#dms3 .tableStyle').addClass('on')
-			      $('#dms4 .tableStyle').addClass('on')
-			      $('#dms5 .tableStyle').addClass('on')
-			      $('#dms6 .tableStyle').addClass('on')	
-			  }
-			 	  
-			  
-		</script>
 	</ui:define>
-
 </ui:composition>
