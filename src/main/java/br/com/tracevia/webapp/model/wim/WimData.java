@@ -13,9 +13,11 @@ public class WimData{
 	private String size;
 	private String weight;
 	private String dstAxes;
+	
+	private boolean status;
 
 	public WimData(int id, String serialNumber, String data, String hour, String classe, String numberAxes, String tableAxes,
-			String speed, String pbtTotal, String size, String weight, String dstAxes) {
+			String speed, String pbtTotal, String size, String weight, String dstAxes, boolean status) {
 		this.id = id;
 		this.serialNumber = serialNumber;
 		this.data = data;
@@ -28,9 +30,17 @@ public class WimData{
 		this.size = size;
 		this.weight = weight;
 		this.dstAxes = dstAxes;
+		this.status = status;
 	}
 	public WimData() {
 		
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	public int getId() {
 		return id;

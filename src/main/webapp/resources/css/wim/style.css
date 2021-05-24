@@ -40,7 +40,6 @@ html, body {
 	color: white;
 	box-shadow: 6px 6px 6px 5px rgba(0, 0, 0, 0.2);
 	transition: background 600ms ease-in-out;
-	
 }
 
 .col-md-3 {
@@ -67,8 +66,9 @@ html, body {
 	color: white;
 	box-shadow: 6px 6px 6px 5px rgba(0, 0, 0, 0.2);
 	border-color: #343a40;
-	transition: background 600ms ease-in-out;	
+	transition: background 600ms ease-in-out;
 }
+
 .span {
 	position: absolute;
 	top: 38px;
@@ -126,8 +126,9 @@ html, body {
 }
 
 .cardS {
+	background: #343a40;
 	text-align: center;
-	color: black;
+	color: white;
 	height: 23px;
 	border: solid 1px;
 }
@@ -160,7 +161,8 @@ span {
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 }
-.img3{
+
+.img3 {
 	border: solid 2px black;
 	width: 60%;
 	margin-left: 20%;
@@ -168,8 +170,8 @@ span {
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	
 }
+
 .jumbotron {
 	margin-top: -20px;
 	height: 100vh;
@@ -185,6 +187,8 @@ span {
 	text-align: center;
 	font-weight: 999;
 	font-size: 10pt;
+	background: #343a40;
+	color: white;
 }
 
 .tt {
@@ -208,8 +212,6 @@ span {
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	transition: background 3s ease-in-out;
-	
 }
 
 .titleColumn2-2 {
@@ -217,8 +219,14 @@ span {
 	font-weight: 200;
 	color: white;
 	font-weight: 200;
+	cursor: help;
 }
-
+.size{
+	width: 0%;
+	background: green;
+	color: white;
+	font-weight: 999;
+}
 .size.normal {
 	width: 50%;
 	background: green;
@@ -239,28 +247,35 @@ span {
 	color: black;
 	font-weight: 999;
 }
-.erro{
+
+.erro {
 	margin-top: -10px;
 }
+
 .col-md-3 {
 	padding: 0;
 }
-.alert1{
+
+.alert1 {
 	height: 15px;
 	width: 90%;
 	margin-left: 31px;
 }
-.cardS:hover{
-	background: #343a40;
-	color: white;
-}
-.eixos{
+
+.eixos {
 	cursor: pointer;
 }
-.cardS{
+
+.cardS {
+	font-weight: bolder;
 	cursor: pointer;
 }
-.cardWeight:hover{
-	background: #007bff;
-	transition: background 1s ease-in-out;
+
+.troca.active{
+	background: #DCD;
+	color: black;
+}
+
+.titleColumn2-2.active{
+	color: black;
 }

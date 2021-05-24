@@ -1,12 +1,52 @@
-.p1{
+.p1 {
 	margin-top: 5%;
 }
-.img3{
-	border: solid 2px black;
-    width: 22%;
-    margin-left: 39%;
-    margin-top: 1%;
+.img {
+	width: 85%;
+	margin-left: 7.5%;
+	margin-top: -8px;
 }
-.rowViewing{
+.img3 {
+	border: solid 2px black;
+	width: 30%;
+	margin-top: 2.5%;
+    margin-left: 35%;
+}
+.rowViewing {
 	margin-top: -15px;
+}
+.paleta {
+	position: relative;
+	top: -3px;
+	color: black;
+	margin-left: -33%;
+}
+.paleta.active {
+	color: white;
+}
+.borderColor {
+	margin-left: -21%;
+	position: relative;
+	width: 100%;
+}
+.btn-paleta.active {
+	background: #343a40;
+}
+.formBtnColor {
+	margin-top: 15%;
+}
+.btn-paleta {
+	width: 50%;
+	background: #DCD;
+	margin-top: -10px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+.chanceColor {
+	position: relative;
+	top: 16px;
+	margin-left: -24%;
+	font-weight: 999;
+	color: black;
 }

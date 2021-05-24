@@ -9,12 +9,13 @@ import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.controller.occ.OccurrencesBean;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
+import br.com.tracevia.webapp.model.wim.WimData;
 
 @ManagedBean(name="wimController")
 @ViewScoped
 public class wimController {
 	private int[] axes;
-	
+
 	public int[] getAxes() {
 		return axes;
 	}
@@ -50,12 +51,12 @@ public class wimController {
 	public void setDstAxes(int[] dstAxes) {
 		this.dstAxes = dstAxes;
 	}
-	private double rate;
+	private int rate;
 
-	public double getRate() {
+	public int getRate() {
 		return rate;
 	}
-	public void setRate(double rate) {
+	public void setRate(int rate) {
 		this.rate = rate;
 	}
 	private String rateTxt;
@@ -67,7 +68,7 @@ public class wimController {
 		this.rateTxt = rateTxt;
 	}
 	private String[] listarFile;
-	
+
 	public String[] getListarFile() {
 		return listarFile;
 	}
@@ -75,16 +76,16 @@ public class wimController {
 		this.listarFile = listarFile;
 	}
 	private int serialNumber;
-	
-	
+
+
 	public int getSerialNumber() {
 		return serialNumber;
 	}
 	public void setSerialNumber(int serialNumber) {
 		this.serialNumber = serialNumber;
 	}
-	private String dataHour, classe, eixo, speed, pbtTotal, size;
-	
+	private String dataHour, classe, eixo, speed, size;
+
 	public String getDataHour() {
 		return dataHour;
 	}
@@ -109,10 +110,11 @@ public class wimController {
 	public void setSpeed(String speed) {
 		this.speed = speed;
 	}
-	public String getPbtTotal() {
+	int pbtTotal;
+	public int getPbtTotal() {
 		return pbtTotal;
 	}
-	public void setPbtTotal(String pbtTotal) {
+	public void setPbtTotal(int pbtTotal) {
 		this.pbtTotal = pbtTotal;
 	}
 	public String getSize() {
@@ -125,7 +127,7 @@ public class wimController {
 	axl6W, axl7W, axl8W, axl9W, axl1D, axl2D, axl3D,
 	axl4D, axl5D,
 	axl6D, axl7D, axl8D, axl9D;
-	
+
 	public int getAxl1W() {
 		return axl1W;
 	}
@@ -234,77 +236,170 @@ public class wimController {
 	public void setAxl9D(int axl9d) {
 		axl9D = axl9d;
 	}
+	private WIMDAO dao = new WIMDAO();
+	private boolean color;
+
+	public boolean isColor() {
+		return color;
+	}
+	public void setColor(boolean color) {
+		this.color = color;
+	}
+	WimData data = new WimData();
+	private String silueta;
+		
+	public String getSilueta() {
+		return silueta;
+	}
+	public void setSilueta(String silueta) {
+		this.silueta = silueta;
+	}
+	private String[] pathImg;
+	
+	public String[] getPathImg() {
+		return pathImg;
+	}
+	public void setPathImg(String[] pathImg) {
+		this.pathImg = pathImg;
+	}
 	@PostConstruct
 	public void initalize(){
-		OccurrencesBean x = new OccurrencesBean();
+		colorInitial();
+		updateView();
+		rate();
+		updateView();
 		try {
 			dados();
+			siluetaRealtime();
+			listFiles();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		rate();
+	}
+	
+	public String[] listFiles() throws Exception{
+		int content = 0;
+		File arquivos[];
+		//local do armazenamento do arquivo
+		File directory = new File("C:\\teste\\cars\\");
+		//listar arquivos
+		arquivos = directory.listFiles();
+		listarFile = new String[arquivos.length];
+		//lopping para pegar arquivos dentro do diretorio
+		while (content != arquivos.length){
+			//pega arquivo pelo nome
+			listarFile[content] = arquivos[content].getName();
+			content++;
+		} 
+		String imagePath = "http://localhost:8081/teste/cars/";
+		pathImg = new String [2];
+		pathImg[0] = imagePath+listarFile[0];
+		pathImg[1] = imagePath+listarFile[1];
+		//passando valor do método para a variável
+		return listarFile;
+	}
+	public String siluetaRealtime() throws Exception{
+		String classe = dao.classe();
+		if(classe != "") {
+			if(classe.equals("2")) {
+				String img = "10.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E5")) {
+				String img = "1.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E2")) {
+				String img = "2.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E3")) {
+				String img = "3.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E4")) {
+				String img = "4.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E5")) {
+				String img = "5.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E6")) {
+				String img = "6.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}else if(classe.equals("E9")) {
+				String img = "9.png";
+				silueta = "http://localhost:8081/teste/sil/" + img;
+			}
+		}
+		return silueta;
+	}
+	//update View wim_Realtime
+	public void updateView() {
+		try {
+			
+			TimeUnit.SECONDS.sleep(1);
+			
+		}catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		try {
+			serialNumber = dao.serialNumber();
+			dados();
+			rate();
 			listFiles();
+			siluetaRealtime();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("btnUpdateView();");
+		System.out.println("atualizando");
+	}
+	//mudar cor dos inputs
+	public void colorInitial() {
+		try {
+			color = dao.searchColor();
+			RequestContext request = RequestContext.getCurrentInstance();
+			if(color == false) {
+				request.execute("color();");
+				rate();
+			}else {
+				request.execute("colorReplacement();");
+				rate();
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	//passando dados para o wim_realtime
-	
-	//wim_realtime
-	public void getInfo() throws Exception {
-		
-	}
-	public String[] listFiles() throws Exception{
-
-		int content = 0;
-		File arquivos[];
-		//local do armazenamento do arquivo
-		File directory = new File("C:\\teste\\");
-
-		//listar arquivos
-		arquivos = directory.listFiles();
-		listarFile = new String[arquivos.length];
-
-		//lopping para pegar arquivos dentro do diretorio
-		while (content != arquivos.length){
-			//pega arquivo pelo nome
-			listarFile[content] = arquivos[content].getName();	
-			content++;
-		} 
-		//passando valor do método para a variável
-		return listarFile;
-	}
-	public String image(int img){
-		String imagePath = "http://localhost:8081/teste/" + listarFile[img];
-		return imagePath;
-	}
-	//update View wim_Realtime
-	public void updateView() throws InterruptedException {
-		TimeUnit.SECONDS.sleep(59);
+	public boolean colorInput() throws Exception {
+		boolean x = false;
+		color = dao.searchColor();
 		RequestContext request = RequestContext.getCurrentInstance();
-		request.execute("btnUpdateView();");
+		if(color == false) {
+			request.execute("color();");
+			dao.color(true);
+			rate();
+		}else {
+			request.execute("colorReplacement();");
+			dao.color(false);
+			rate();
+		}
+		initalize();
+		return x;
 	}
-
 	//rate view wim.xhtml
 	public void rate() {
 		try {
-			WIMDAO x = new WIMDAO();
-			pbtTotal = x.pbtTotal();
+			pbtTotal = Integer.parseInt(dao.pbtTotal());
 			RequestContext request = RequestContext.getCurrentInstance();
-			rate = Integer.parseInt(pbtTotal);
-
-			if(rate < 1500) {
+			rate = pbtTotal; /**/
+			if(rate <= 1500) {
 				request.execute("sizeNormal();");
 				rateTxt = "Normal weight " + rate;
-
-			}else if(rate > 1500 && rate < 2500) {
+			}else if(rate > 1500 && rate <= 2500) {
 				request.execute("sizeAtenttion();");
 				rateTxt = "In tolerance " + rate;
-
 			}else {
 				request.execute("sizeAcima();");
 				rateTxt = "overweight " + rate;
@@ -317,32 +412,31 @@ public class wimController {
 	//dados
 	public void dados() {
 		try {
-			WIMDAO x = new WIMDAO();
 			//Viewing vehicle information
-			serialNumber = x.serialNumber();
-			dataHour = x.dateHour();
-			classe = x.classe();
-			eixo = x.eixo();
-			speed = x.speed();
-			pbtTotal = x.pbtTotal();
+			serialNumber = dao.serialNumber();
+			dataHour = dao.dateHour();
+			classe = dao.classe();
+			eixo = dao.eixo();
+			speed = dao.speed();
+			pbtTotal = Integer.parseInt(dao.pbtTotal());
 			//passando valor para Weight and Distance
-			axl1W = x.axl1W();
-			axl2W = x.axl2W();
-			axl3W = x.axl3W();
-			axl4W = x.axl4W();
-			axl5W = x.axl5W();
-			axl6W = x.axl6W();
-			axl7W = x.axl7W();
-			axl8W = x.axl8W();
-			axl9W = x.axl9W();
-			axl2D = x.axl2D();
-			axl3D = x.axl3D();
-			axl4D = x.axl4D();
-			axl5D = x.axl5D();
-			axl6D = x.axl6D();
-			axl7D = x.axl7D();
-			axl8D = x.axl8D();
-			axl9D = x.axl9D();
+			axl1W = dao.axl1W();
+			axl2W = dao.axl2W();
+			axl3W = dao.axl3W();
+			axl4W = dao.axl4W();
+			axl5W = dao.axl5W();
+			axl6W = dao.axl6W();
+			axl7W = dao.axl7W();
+			axl8W = dao.axl8W();
+			axl9W = dao.axl9W();
+			axl2D = dao.axl2D();
+			axl3D = dao.axl3D();
+			axl4D = dao.axl4D();
+			axl5D = dao.axl5D();
+			axl6D = dao.axl6D();
+			axl7D = dao.axl7D();
+			axl8D = dao.axl8D();
+			axl9D = dao.axl9D();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
