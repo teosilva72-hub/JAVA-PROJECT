@@ -92,7 +92,7 @@
   color: #bbb;
 }
 
-.calls-client .sipStatus.close {
+.calls-client .sipStatus.closed {
   width: fit-content !important;
 }
 
