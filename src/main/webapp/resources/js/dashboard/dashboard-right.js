@@ -99,13 +99,13 @@ const showStatesCallbox = action => {
   let client = $("#sipClient .sipStatus")
   let action2;
 
-  if(action == 'open')
+  if(action == 'open') {
     action2 = 'opening'
-  else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
+    client.removeClass('close')
+  } else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
     return
   else {
     action2 = 'closing'
-    action = ''
     client.removeClass('open')
   }
 

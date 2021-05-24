@@ -92,6 +92,10 @@
   color: #bbb;
 }
 
+.calls-client .sipStatus.close {
+  width: fit-content !important;
+}
+
 .calls-client .sipStatus.open {
   width: 280px !important;
   margin-left: -16px !important;
