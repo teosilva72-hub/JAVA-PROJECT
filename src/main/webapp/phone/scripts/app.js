@@ -91,13 +91,14 @@ async function initPhone() {
 
             var status;
 
-            if (newSess.direction === 'incoming') {
-                status = "Incoming: "+ newSess.displayName;
-                ctxSip.startRingTone();
-            } else {
-                status = "Trying: "+ newSess.displayName;
-                ctxSip.startRingbackTone();
-            }
+            if (!ctxSip.callActiveID)
+                if (newSess.direction === 'incoming') {
+                    status = "Incoming: "+ newSess.displayName;
+                    ctxSip.startRingTone();
+                } else {
+                    status = "Trying: "+ newSess.displayName;
+                    ctxSip.startRingbackTone();
+                }
 
             ctxSip.logCall(newSess, 'ringing');
 
@@ -476,33 +477,34 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid];
                 // target = $("#numDisplay").val();
 
-            if (!s) {
+            if (!ctxSip.callActiveID)
+                if (!s) {
 
-                // $("#numDisplay").val("");
-                // ctxSip.sipCall(target);
+                    // $("#numDisplay").val("");
+                    // ctxSip.sipCall(target);
 
-            } else if (s.service) {
-                ctxSip.callActiveID = sessionid;
-                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                    if (response.UserID == loginAccount.ID) {
-                        ctxSip.Sessions[sessionid].owner = true;
+                } else if (s.service) {
+                    ctxSip.callActiveID = sessionid;
+                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                        if (response.UserID == loginAccount.ID) {
+                            ctxSip.Sessions[sessionid].owner = true;
 
-                        ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
-                    }
-                });
-            } else if (s.accept && !s.startTime) {
+                            ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
+                        }
+                    });
+                } else if (s.accept && !s.startTime) {
 
-                // s.accept({
-                //     media : {
-                //         stream      : ctxSip.Stream,
-                //         constraints : { audio : true, video : false },
-                //         render      : {
-                //             remote : $('#audioRemote').get()[0]
-                //         },
-                //         RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
-                //     }
-                // });
-            }
+                    // s.accept({
+                    //     media : {
+                    //         stream      : ctxSip.Stream,
+                    //         constraints : { audio : true, video : false },
+                    //         render      : {
+                    //             remote : $('#audioRemote').get()[0]
+                    //         },
+                    //         RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
+                    //     }
+                    // });
+                }
         },
 
         phoneMuteButtonPressed : function (sessionid) {
