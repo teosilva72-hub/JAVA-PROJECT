@@ -420,6 +420,20 @@ footer {
   overflow: hidden;
 }
 
+#dismiss-phone {
+  width: 35px;
+  height: 35px;
+  position: absolute;
+  /* top right corner of the sidebar */
+  top: 10px;
+  right: -5px;
+}
+
+#dismiss-phone:hover {
+  color: #ffffff;
+  overflow: hidden;
+}
+
 .overlay {
   display: none;
   position: fixed;

@@ -2,12 +2,15 @@
 
 var ctxSip;
 
-$(document).ready(function() {
+async function initPhone() {
 
 
     if (typeof(user) === 'undefined') {
         user = JSON.parse(localStorage.getItem('SIPCreds'));
     }
+
+    while (user === undefined || user === null)
+        await sleep(500)
 
     ctxSip = {
 
@@ -84,7 +87,7 @@ $(document).ready(function() {
         newSession : function(newSess) {
 
             newSess.displayName = newSess.remoteIdentity.displayName || newSess.remoteIdentity.uri.user;
-            newSess.ctxid       = ctxSip.getUniqueID();
+            newSess.ctxid       = newSess.ctxid || ctxSip.getUniqueID();
 
             var status;
 
@@ -242,6 +245,8 @@ $(document).ready(function() {
                 };
             }
 
+            calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
+
             if (status === 'ended') {
                 calllog[log.id].stop = log.time;
             }
@@ -309,12 +314,12 @@ $(document).ready(function() {
                 i += '<div class="btn-group btn-group-xs pull-right">';
                 if (item.status === 'ringing' && item.flow === 'incoming') {
                     i += '<button class="btn btn-xs btn-success btnCall" title="Call"><i class="fa fa-phone"></i></button>';
-                } else {
+                } else if (item.owner) {
                     i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><i class="fa fa-pause"></i></button>';
                     i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute"><i class="fa fa-fw fa-microphone"></i></button>';
+                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 }
-                i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 i += '</div>';
             }
             i += '</div>';
@@ -419,7 +424,16 @@ $(document).ready(function() {
 
             var s = ctxSip.Sessions[sessionid];
             // s.terminate();
-            if (!s) {
+            if (s.service) {
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
+                            ctxSip.logCall(s, 'ended')
+                            
+                            return connectSOS(`TerminateCall;${loginAccount.ID};${s.EquipmentID}`)
+                        }
+                });
+            } else if (!s) {
                 return;
             } else if (s.startTime) {
                 s.bye();
@@ -447,7 +461,16 @@ $(document).ready(function() {
             var s      = ctxSip.Sessions[sessionid],
                 target = $("#numDisplay").val();
 
-            if (!s) {
+            if (s.service) {
+                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                    if (response.UserID == loginAccount.ID) {
+                        ctxSip.Sessions[sessionid].owner = true;
+                        ctxSip.callActiveID = sessionid;
+
+                        ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
+                    }
+                });
+            } else if (!s) {
 
                 $("#numDisplay").val("");
                 ctxSip.sipCall(target);
@@ -646,6 +669,8 @@ $(document).ready(function() {
         ctxSip.logClear();
     });
 
+    
+
     $('#sip-logitems').delegate('.sip-logitem .btnCall', 'click', function(event) {
         var sessionid = $(this).closest('.sip-logitem').data('sessionid');
         ctxSip.phoneCallButtonPressed(sessionid);
@@ -728,6 +753,66 @@ $(document).ready(function() {
         ctxSip.logShow();
     }, 3000);
 
+    // receiver rabbitmq
+    consume({
+        callback_states: null,
+        callback_alarms: null,
+        callback_calls: message => {
+            let response = JSON.parse(message.body);
+
+            getEquipFromID(response.EquipmentID).then(equip => {
+                let direction = 'incoming';
+                let status;
+
+                switch(response.CallStateID) {
+                    case 1:
+                        status = "answered";
+                        ctxSip.stopRingbackTone();
+                        ctxSip.stopRingTone();
+                        ctxSip.setCallSessionStatus('Answered');
+                        break
+
+                    case 3:
+                        status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('');
+                        break
+
+                    case 4:
+                        status = "ringing";
+                        break
+
+                    case 5:
+                        status = "ended";
+                        ctxSip.stopRingTone();
+                        ctxSip.stopRingbackTone();
+                        ctxSip.setCallSessionStatus('Rejected');
+                        break
+                }
+
+                response.displayName = equip.MasterName;
+                response.direction = direction;
+                response.service = true;
+                response.ctxid = `${Date.parse(response.StartDate).toString().substr(0, 10)}id${equip.ID}`;
+                response.remoteIdentity = {
+                    uri: `${equip.MasterSIP}@${equip.IP}`,
+                    displayName: equip.MasterName
+                }
+
+                response.on = () => {}
+    
+                if (status == "ringing") {
+                    ctxSip.newSession(response)
+                } else {
+                    ctxSip.logCall(response, status)
+                }
+            });
+        }
+    })
+
+    // 
+
 
     /**
      * Stopwatch object used for call timers
@@ -799,4 +884,6 @@ $(document).ready(function() {
         this.stop  = stop; //function() { stop; }
     };
 
-});
+};
+
+initPhone()
