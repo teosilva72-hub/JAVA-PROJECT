@@ -549,7 +549,7 @@ public class OccurrencesBean {
 
 			//paths
 			mainPath = "C:\\Tracevia\\";
-			pathImage = "http://localhost:80/occ/";
+			pathImage = "http://localhost:8081/occ/";
 			downloadPath = "file:///C:/Tracevia/";
 			pathDownload = System.getenv("USERPROFILE") + "\\Downloads\\";
 
@@ -1282,11 +1282,11 @@ public class OccurrencesBean {
 
 	//esse método não esta sendo aplicado, está aqui para futuros testes
 	//Buscando imagem
-	public String getImageUpload(String myImg) throws Exception{
 
+	public String getImageUpload(String myImg) throws Exception{
 		//gerando o caminho onde se encontra a imagem
 		OccurrencesBean pegar= new OccurrencesBean();
-		int id = pegar.pegarId();
+		int id = pegar.pegarId() - 1;
 		DateTimeApplication dddd = new DateTimeApplication();
 		LocalDate data = dddd.localeDate();
 		String imagePath = data.getYear()+"/"+data.getMonthValue()+"/"+"OCC_"+id+"/";
