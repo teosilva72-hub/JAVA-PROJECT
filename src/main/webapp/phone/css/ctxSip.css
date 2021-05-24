@@ -20,6 +20,9 @@
   margin-left: auto;
   border-top-left-radius: 10px;
   border-top-right-radius: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 #sipClient #txtCallStatus {
   color: #fff;

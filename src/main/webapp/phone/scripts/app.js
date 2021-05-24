@@ -524,13 +524,25 @@ async function initPhone() {
         phoneHoldButtonPressed : function(sessionid) {
 
             var s = ctxSip.Sessions[sessionid];
-            // ! Adicionar junto ao service
-            // if (s.service)
-            //     if (s.call.isOnHold().local === true) {
-            //         s.call.unhold();
-            //     } else {
-            //         s.call.hold();
-            //     }
+            let paused;
+
+            if (s.service) {
+                if (s.call.isOnHold().local === true) {
+                    s.call.unhold();
+                    paused = false;
+                } else {
+                    s.call.hold();
+                    paused = true;
+                }
+
+                connectSOS(`GetAllActiveCalls`).then(response => {
+                    for (const r of response)
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == id) {
+                            connectSOS(`HoldCall;${loginAccount.ID};${s.EquipmentID};${paused}`)
+                            break;
+                        }
+                });
+            }
         },
 
 
@@ -607,9 +619,9 @@ async function initPhone() {
 
     ctxSip.phone.on('registered', function(e) {
 
-        var closeEditorWarning = function() {
-            return 'If you close this window, you will not be able to make or receive calls from your browser.';
-        };
+        // var closeEditorWarning = function() {
+        //     return 'If you close this window, you will not be able to make or receive calls from your browser.';
+        // };
 
         var closePhone = function() {
             // stop the phone on unload
@@ -622,7 +634,7 @@ async function initPhone() {
             ctxSip.phone.stop();
         };
 
-        window.onbeforeunload = closeEditorWarning;
+        // window.onbeforeunload = closeEditorWarning;
         window.onunload       = closePhone;
 
         // This key is set to prevent multiple windows.
@@ -651,10 +663,16 @@ async function initPhone() {
 
         var s = incomingSession;
 
+        var closeEditorWarning = function() {
+            return 'If you close this window, you will not be able to make or receive calls from your browser.';
+        };
+
         // s.direction = 'incoming';
         // ctxSip.newSession(s);
 
         let session = ctxSip.Sessions[ctxSip.callActiveID]
+
+        window.onbeforeunload = closeEditorWarning;
 
         s.accept({
             media : {
@@ -677,6 +695,8 @@ async function initPhone() {
                         break;
                     }
             });
+
+            window.onbeforeunload = null;
         });
 
         ctxSip.Sessions[ctxSip.callActiveID].call = s
@@ -823,6 +843,10 @@ async function initPhone() {
                         ctxSip.stopRingbackTone();
                         ctxSip.stopRingTone();
                         ctxSip.setCallSessionStatus('Answered');
+                        break
+
+                    case 2:
+                        status = "holding";
                         break
 
                     case 3:
