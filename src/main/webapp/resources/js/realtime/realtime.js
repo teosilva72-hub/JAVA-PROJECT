@@ -928,16 +928,6 @@ $('#kmEdit').mask('000+000'); 	// KM MASK
 });
 
 function statusColors() {
-	$('#sos2').find('.equip-status').css('background-color', 'orange');
-	$('#sos7').find('.equip-status').css('background-color', 'red');
-	$('#sos14').find('.equip-status').css('background-color', 'orange');
-	$('#sos16').find('.equip-status').css('background-color', 'red');
-	$('#sos22').find('.equip-status').css('background-color', 'orange');
-	$('#sos25').find('.equip-status').css('background-color', 'orange');
-	$('#sos33').find('.equip-status').css('background-color', 'red');
-	$('#sos37').find('.equip-status').css('background-color', 'orange');
-	$('#sos40').find('.equip-status').css('background-color', 'red');
-
 	$('#colas2').find('.equip-status').css('background-color', 'red');
 	$('#colas3').find('.equip-status').css('background-color', 'orange');
 	$('#colas5').find('.equip-status').css('background-color', 'orange');
