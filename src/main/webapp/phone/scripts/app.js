@@ -699,6 +699,16 @@ async function initPhone() {
             window.onbeforeunload = null;
         });
 
+        s.on('hold', function(e) {
+            ctxSip.callActiveID = null;
+            ctxSip.logCall(session, 'holding');
+        });
+
+        s.on('unhold', function(e) {
+            ctxSip.logCall(session, 'resumed');
+            ctxSip.callActiveID = session.ctxid;
+        });
+
         ctxSip.Sessions[ctxSip.callActiveID].call = s
     });
 
