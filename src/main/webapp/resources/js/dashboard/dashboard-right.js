@@ -101,7 +101,7 @@ const showStatesCallbox = action => {
 
   if(action == 'open') {
     action2 = 'opening'
-    client.removeClass('close')
+    client.removeClass('closed')
   } else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
     return
   else {
