@@ -488,18 +488,9 @@ async function initPhone() {
 
                 } else if (s.service) {
                     ctxSip.callIncomingID = sessionid;
-                    connectSOS('GetAllActiveCalls').then(response => {
-                        for (const r of response)
-                            if (r.EquipmentID === s.EquipmentID && r.CallStateID === 4 && !r.AnsweredDate) {
-                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                                    if (response.UserID != loginAccount.ID)
-                                        ctxSip.callIncomingID = null;
-                                })
-                                
-                                return
-                            }
-
-                        ctxSip.callIncomingID = null;
+                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                        if (response.UserID != loginAccount.ID && response.UserID)
+                            ctxSip.callIncomingID = null;
                     })
                 } else if (s.accept && !s.startTime) {
 
