@@ -400,8 +400,10 @@ async function initPhone() {
          * removes log items from localstorage and updates the UI
          */
         logClear : function() {
-            localStorage.removeItem('sipCalls');
-            ctxSip.logShow();
+            if (!ctxSip.callActiveID) {
+                localStorage.removeItem('sipCalls');
+                ctxSip.logShow();
+            }
         },
 
         sipCall : function(target) {
@@ -529,7 +531,7 @@ async function initPhone() {
             let paused;
 
             if (s.service) {
-                if (s.call.isOnHold().local === true) {
+                if (s.call.isOnHold().local === true && !ctxSip.callActiveID) {
                     s.call.unhold();
                     paused = false;
                 } else {
@@ -739,14 +741,10 @@ async function initPhone() {
     //     return false;
     // });
 
-    $('#phoneUI .dropdown-menu').click(function(e) {
-        e.preventDefault();
-    });
-
     $('#phoneUI').delegate('.btnCall', 'click', function(event) {
-        ctxSip.phoneCallButtonPressed();
-        // to close the dropdown
-        return true;
+        // ctxSip.phoneCallButtonPressed();
+        // // to close the dropdown
+        // return true;
     });
 
     $('.sipLogClear').click(function(event) {
@@ -793,18 +791,18 @@ async function initPhone() {
     //     $('#numDisplay').val(uri);
     //     ctxSip.phoneCallButtonPressed();
     // });
-
-    $('#sldVolume').on('change', function() {
+    
+    $('#sldVolume').on('input', function() {
 
         var v      = $(this).val() / 100,
             // player = $('audio').get()[0],
             btn    = $('#btnVol'),
-            icon   = $('#btnVol').find('i'),
+            icon   = btn.find('svg'),
             active = ctxSip.callActiveID;
 
         // Set the object and media stream volumes
         if (ctxSip.Sessions[active]) {
-            ctxSip.Sessions[active].player.volume = v;
+            ctxSip.Sessions[active].call.player.volume = v;
             ctxSip.callVolume                     = v;
         }
 
@@ -815,20 +813,20 @@ async function initPhone() {
 
         if (v < 0.1) {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                 })
                 .addClass('btn btn-sm btn-danger');
-            icon.removeClass().addClass('fa fa-fw fa-volume-off');
+            icon.hide().eq(2).show()
         } else if (v < 0.8) {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                }).addClass('btn btn-sm btn-info');
-            icon.removeClass().addClass('fa fa-fw fa-volume-down');
+            icon.hide().eq(1).show()
         } else {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                }).addClass('btn btn-sm btn-primary');
-            icon.removeClass().addClass('fa fa-fw fa-volume-up');
+            icon.hide().eq(0).show()
         }
         return false;
     });
