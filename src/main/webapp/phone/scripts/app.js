@@ -488,14 +488,17 @@ async function initPhone() {
 
                 } else if (s.service) {
                     connectSOS('GetAllActiveCalls').then(response => {
-                        if (response.CallStateID == 4 && !AnsweredDate) {
-                            ctxSip.callIncomingID = sessionid;
-                            connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                                if (response.UserID == loginAccount.ID) {
-                                    ctxSip.Sessions[sessionid].owner = true;
-                                }
-                            });
-                        }
+                        for (const r of response)
+                            if (r.EquipmentID === s.EquipmentID && response.CallStateID === 4 && !AnsweredDate) {
+                                ctxSip.callIncomingID = sessionid;
+                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                                    if (response.UserID == loginAccount.ID) {
+                                        ctxSip.Sessions[sessionid].owner = true;
+                                    }
+                                });
+
+                                break
+                            }
                     })
                 } else if (s.accept && !s.startTime) {
 
