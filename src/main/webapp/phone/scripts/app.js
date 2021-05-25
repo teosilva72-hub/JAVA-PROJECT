@@ -311,7 +311,7 @@ async function initPhone() {
             }
 
 
-            i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'" title="Double Click to Call">';
+            i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'">';
             i += '<div class="clearfix"><div class="float-left">';
             i += '<i class="fa fa-fw '+callIcon+' fa-fw"></i> <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
             i += '</div>';
@@ -539,7 +539,7 @@ async function initPhone() {
 
                 connectSOS(`GetAllActiveCalls`).then(response => {
                     for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == id) {
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
                             connectSOS(`HoldCall;${loginAccount.ID};${s.EquipmentID};${paused}`)
                             break;
                         }
