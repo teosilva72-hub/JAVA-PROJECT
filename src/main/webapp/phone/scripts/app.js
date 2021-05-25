@@ -491,12 +491,8 @@ async function initPhone() {
                         for (const r of response)
                             if (r.EquipmentID === s.EquipmentID && r.CallStateID === 4 && !r.AnsweredDate) {
                                 ctxSip.callIncomingID = sessionid;
-                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                                    if (response.UserID == loginAccount.ID) {
-                                        ctxSip.Sessions[sessionid].owner = true;
-                                    }
-                                });
-
+                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`)
+                                
                                 break
                             }
                     })
@@ -673,9 +669,7 @@ async function initPhone() {
         if (ctxSip.callIncomingID) {
             ctxSip.callActiveID = ctxSip.callIncomingID;
             ctxSip.callIncomingID = null;
-        } else {
-            return
-        }
+        } else return;
 
         var s = incomingSession;
 
@@ -687,6 +681,7 @@ async function initPhone() {
         // ctxSip.newSession(s);
 
         let session = ctxSip.Sessions[ctxSip.callActiveID]
+        session.owner = true;
 
         window.onbeforeunload = closeEditorWarning;
 
