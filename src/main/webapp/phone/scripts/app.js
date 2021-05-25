@@ -22,7 +22,7 @@ async function initPhone() {
             registerExpires : 30,
             traceSip        : true,
             log             : {
-                level : 1,
+                level : 0,
             }
         },
         ringtone     : document.getElementById('ringtone'),
@@ -802,7 +802,7 @@ async function initPhone() {
 
         // Set the object and media stream volumes
         if (ctxSip.Sessions[active]) {
-            ctxSip.Sessions[active].call.player.volume = v;
+            // ctxSip.Sessions[active].call.player.volume = v;
             ctxSip.callVolume                     = v;
         }
 
