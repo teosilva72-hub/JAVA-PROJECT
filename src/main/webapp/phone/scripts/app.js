@@ -489,7 +489,7 @@ async function initPhone() {
                 } else if (s.service) {
                     connectSOS('GetAllActiveCalls').then(response => {
                         for (const r of response)
-                            if (r.EquipmentID === s.EquipmentID && response.CallStateID === 4 && !AnsweredDate) {
+                            if (r.EquipmentID === s.EquipmentID && r.CallStateID === 4 && !r.AnsweredDate) {
                                 ctxSip.callIncomingID = sessionid;
                                 connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                                     if (response.UserID == loginAccount.ID) {
