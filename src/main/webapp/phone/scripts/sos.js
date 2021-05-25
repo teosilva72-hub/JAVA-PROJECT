@@ -92,39 +92,7 @@ const getStomp = () => {
 	return Stomp.over(ws);
 }
 
-const consumeStates = (callback, exchange) => {
-	var client = getStomp();
-	var count = 0
-	
-	var on_connect = function() {
-		count = 0
-		client.subscribe(`/exchange/sos_${exchange}/sos_${exchange}`, callback)
-	};
-	
-	var on_error =  function() {
-	    console.log('error');
-		count++
-
-		if (count > 3)
-			setTimeout(() => {
-				consumeStates((message) => {
-					response = JSON.parse(message.body)
-					changeStates(response)
-				}, "states")
-			}, 500)
-		else
-			consumeStates((message) => {
-				response = JSON.parse(message.body)
-				changeStates(response)
-			}, "states")
-	};
-		
-	client.heartbeat.outgoing = PING
-
-	client.connect(USER, PASS, on_connect, on_error, '/');
-}
-
-const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default } = {}) => {
+const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = getStomp();
 	var count = 0
 
@@ -161,10 +129,12 @@ const consume = ({ callback_calls = callback_calls_default, callback_alarms = ca
 
 	client.heartbeat.outgoing = PING
 
+	if (!debug)
+		client.debug = null
 	client.connect(USER, PASS, on_connect, on_error, '/');
 }
 
-const connectSOS = async function(request) {	
+const connectSOS = async function(request, debug) {	
 	let client = getStomp();
 	let response = null;
 	
@@ -177,6 +147,8 @@ const connectSOS = async function(request) {
 		client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest", durable: false}, `"${request}"`)
 	};
 
+	if (!debug)
+		client.debug = null
 	client.connect(USER, PASS, on_connect, on_error, '/');
 
 	while (true) {	

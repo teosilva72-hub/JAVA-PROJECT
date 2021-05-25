@@ -14,26 +14,27 @@ async function initPhone() {
 
     ctxSip = {
 
-        config : {
+        config  : {
             password        : user.Pass,
             displayName     : user.Display,
             uri             : 'sip:'+user.User+'@'+user.Realm,
             wsServers       : user.WSServer,
             registerExpires : 30,
             traceSip        : true,
-            log             : {
-                level : 0,
+            log : {
+                level       : 0,
             }
         },
-        ringtone     : document.getElementById('ringtone'),
-        ringbacktone : document.getElementById('ringbacktone'),
-        dtmfTone     : document.getElementById('dtmfTone'),
+        ringtone            : document.getElementById('ringtone'),
+        ringbacktone        : document.getElementById('ringbacktone'),
+        dtmfTone            : document.getElementById('dtmfTone'),
 
-        Sessions     : [],
-        callTimers   : {},
-        callActiveID : null,
-        callVolume   : 1,
-        Stream       : null,
+        Sessions            : [],
+        callTimers          : {},
+        callActiveID        : null,
+        callIncomingID      : null,
+        callVolume          : 1,
+        Stream              : null,
 
         /**
          * Parses a SIP uri and returns a formatted US phone number.
@@ -486,14 +487,16 @@ async function initPhone() {
                     // ctxSip.sipCall(target);
 
                 } else if (s.service) {
-                    ctxSip.callActiveID = sessionid;
-                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                        if (response.UserID == loginAccount.ID) {
-                            ctxSip.Sessions[sessionid].owner = true;
-
-                            ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
+                    connectSOS('GetAllActiveCalls').then(response => {
+                        if (response.CallStateID == 4 && !AnsweredDate) {
+                            ctxSip.callIncomingID = sessionid;
+                            connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                                if (response.UserID == loginAccount.ID) {
+                                    ctxSip.Sessions[sessionid].owner = true;
+                                }
+                            });
                         }
-                    });
+                    })
                 } else if (s.accept && !s.startTime) {
 
                     // s.accept({
@@ -664,6 +667,12 @@ async function initPhone() {
     });
 
     ctxSip.phone.on('invite', function (incomingSession) {
+        if (ctxSip.callIncomingID) {
+            ctxSip.callActiveID = ctxSip.callIncomingID;
+            ctxSip.callIncomingID = null;
+        } else {
+            return
+        }
 
         var s = incomingSession;
 
@@ -713,6 +722,7 @@ async function initPhone() {
             ctxSip.callActiveID = session.ctxid;
         });
 
+        ctxSip.logCall(session, "answered")
         ctxSip.Sessions[ctxSip.callActiveID].call = s
     });
 
