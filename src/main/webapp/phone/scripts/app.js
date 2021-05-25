@@ -92,7 +92,7 @@ async function initPhone() {
 
             var status;
 
-            if (!ctxSip.callActiveID)
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
                 if (newSess.direction === 'incoming') {
                     status = "Incoming: "+ newSess.displayName;
                     ctxSip.startRingTone();
@@ -401,7 +401,7 @@ async function initPhone() {
          * removes log items from localstorage and updates the UI
          */
         logClear : function() {
-            if (!ctxSip.callActiveID) {
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID) {
                 localStorage.removeItem('sipCalls');
                 ctxSip.logShow();
             }
@@ -480,21 +480,26 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid];
                 // target = $("#numDisplay").val();
 
-            if (!ctxSip.callActiveID)
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
                 if (!s) {
 
                     // $("#numDisplay").val("");
                     // ctxSip.sipCall(target);
 
                 } else if (s.service) {
+                    ctxSip.callIncomingID = sessionid;
                     connectSOS('GetAllActiveCalls').then(response => {
                         for (const r of response)
                             if (r.EquipmentID === s.EquipmentID && r.CallStateID === 4 && !r.AnsweredDate) {
-                                ctxSip.callIncomingID = sessionid;
-                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`)
+                                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                                    if (response.UserID != loginAccount.ID)
+                                        ctxSip.callIncomingID = null;
+                                })
                                 
-                                break
+                                return
                             }
+
+                        ctxSip.callIncomingID = null;
                     })
                 } else if (s.accept && !s.startTime) {
 
