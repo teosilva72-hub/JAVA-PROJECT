@@ -265,7 +265,7 @@ async function initPhone() {
             if (status === 'ended' && calllog[log.id].status === 'ringing') {
                 calllog[log.id].status = 'missed';
             } else {
-                calllog[log.id].status = status;
+                calllog[log.id].status = status ? status : calllog[log.id].status;
             }
 
             localStorage.setItem('sipCalls', JSON.stringify(calllog));
