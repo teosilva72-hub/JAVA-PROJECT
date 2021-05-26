@@ -674,7 +674,7 @@ async function initPhone() {
         } else return;
 
         let s   = incomingSession,
-            r   = $('rmtVol') 
+            r   = $('#rmtVol') 
 
         let closeEditorWarning = function() {
             return 'If you close this window, you will not be able to make or receive calls from your browser.';
