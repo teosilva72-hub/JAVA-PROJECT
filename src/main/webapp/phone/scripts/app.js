@@ -607,7 +607,7 @@ async function initPhone() {
             else if (vol < 80)
                 svg.hide().eq(1).show()
             else
-                svg.hide().first().show().css('opacity', (100 - vol) / 20).next().show()
+                svg.hide().first().show().css('opacity', (vol - 80) / 20).next().show()
         },
 
         setMicroFrame : vol => {
