@@ -890,12 +890,16 @@ async function initPhone() {
         let vol = $(this).val();
 
         ctxSip.setVolumeFrame(vol)
+
+        connectSOS(`SetSpeakerVolume;${ctxSip.sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
     })
 
     $('#sldMicrophoneRemote').change(function () {
         let vol = $(this).val();
 
         ctxSip.setMicroFrame(vol)
+        
+        connectSOS(`SetMicroVolume;${ctxSip.sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
     })
 
     // Hide the spalsh after 3 secs.
