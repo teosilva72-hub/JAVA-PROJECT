@@ -887,15 +887,14 @@ async function initPhone() {
     });
 
     $('#sldVolumeRemote').change(function () {
-        let vol = this.target.value;
+        let vol = $(this).val();
 
         ctxSip.setVolumeFrame(vol)
     })
 
     $('#sldMicrophoneRemote').change(function () {
-        let vol = this.target.value;
+        let vol = $(this).val();
 
-        console.log(vol) // ! Remover
         ctxSip.setMicroFrame(vol)
     })
 
