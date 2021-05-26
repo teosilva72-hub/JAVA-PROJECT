@@ -600,7 +600,7 @@ async function initPhone() {
         setVolumeFrame : vol => {
             let svg = $("#btnVolRemote").children();
 
-            if (vol === 0)
+            if (vol == 0)
                 svg.hide().eq(3).show()
             else if (vol < 20)
                 svg.hide().eq(2).show()
@@ -613,7 +613,7 @@ async function initPhone() {
         setMicroFrame : vol => {
             let svg = $("#btnMicRemote").children();
 
-            if (vol === 0)
+            if (vol == 0)
                 svg.hide().eq(2).show()
             else
                 svg.hide().filter(':not(:last)').show().eq(0).css('opacity', vol / 100)
