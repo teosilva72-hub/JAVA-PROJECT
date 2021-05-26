@@ -33,6 +33,7 @@ async function initPhone() {
         callTimers          : {},
         callActiveID        : null,
         callIncomingID      : null,
+        process             : 0,
         callVolume          : 1,
         Stream              : null,
 
@@ -491,6 +492,10 @@ async function initPhone() {
                     connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
                         if (response.UserID != loginAccount.ID && response.UserID)
                             ctxSip.callIncomingID = null;
+                        else
+                            ctxSip.proccess = setTimeout(() => {
+                                ctxSip.callIncomingID = null;
+                            }, 1000)
                     })
                 } else if (s.accept && !s.startTime) {
 
@@ -665,11 +670,13 @@ async function initPhone() {
         if (ctxSip.callIncomingID) {
             ctxSip.callActiveID = ctxSip.callIncomingID;
             ctxSip.callIncomingID = null;
+            clearTimeout(ctxSip.proccess);
         } else return;
 
-        var s = incomingSession;
+        let s   = incomingSession,
+            r   = $('rmtVol') 
 
-        var closeEditorWarning = function() {
+        let closeEditorWarning = function() {
             return 'If you close this window, you will not be able to make or receive calls from your browser.';
         };
 
@@ -678,6 +685,20 @@ async function initPhone() {
 
         let session = ctxSip.Sessions[ctxSip.callActiveID]
         session.owner = true;
+
+        r.showVol = async () => {
+            let mic = await connectSOS(`GetMicroVolume;${session.EquipmentID}`),
+                vol = await connectSOS(`GetSpeakerVolume;${session.EquipmentID}`),
+                svr = $('#sldVolumeRemote'),
+                smr = $('#sldMicrophoneRemote')
+
+            console.log(mic, vol)
+            svr.val()
+            smr.val()
+            r.show();
+        }
+
+        r.showVol();
 
         window.onbeforeunload = closeEditorWarning;
 
@@ -703,17 +724,22 @@ async function initPhone() {
                     }
             });
 
+            r.hide();
             window.onbeforeunload = null;
         });
 
         s.on('hold', function(e) {
             ctxSip.callActiveID = null;
             ctxSip.logCall(session, 'holding');
+
+            r.hide();
         });
 
         s.on('unhold', function(e) {
             ctxSip.logCall(session, 'resumed');
             ctxSip.callActiveID = session.ctxid;
+
+            r.showVol();
         });
 
         ctxSip.logCall(session, "answered")
@@ -842,9 +868,9 @@ async function initPhone() {
 
     // receiver rabbitmq
     consume({
-        callback_states: null,
-        callback_alarms: null,
-        callback_calls: message => {
+        callback_states : null,
+        callback_alarms : null,
+        callback_calls  : message => {
             let response = JSON.parse(message.body);
 
             getEquipFromID(response.EquipmentID).then(equip => {
