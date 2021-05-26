@@ -602,10 +602,8 @@ async function initPhone() {
 
             if (vol == 0)
                 svg.hide().eq(3).show()
-            else if (vol < 20)
+            else if (vol < 60)
                 svg.hide().eq(2).show()
-            else if (vol < 80)
-                svg.hide().eq(1).show()
             else
                 svg.hide().first().show().css('opacity', (vol - 80) / 20).next().show()
         },
@@ -720,7 +718,9 @@ async function initPhone() {
             smr.val(v2)
             ctxSip.setVolumeFrame(v1)
             ctxSip.setMicroFrame(v2)
-            r.show();
+
+            if (ctxSip.CallStateID)
+                r.show();
         }
 
         r.showVol();
