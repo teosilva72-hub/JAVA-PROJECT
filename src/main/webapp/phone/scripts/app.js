@@ -595,6 +595,28 @@ async function initPhone() {
                 window.console.error("WebRTC support not found");
                 return false;
             }
+        },
+
+        setVolumeFrame : vol => {
+            let svg = $("#btnVolRemote").children();
+
+            if (vol === 0)
+                svg.hide().eq(3).show()
+            else if (vol < 20)
+                svg.hide().eq(2).show()
+            else if (vol < 80)
+                svg.hide().eq(1).show()
+            else
+                svg.hide().first().show().css('opacity', (100 - vol) / 20).next().show()
+        },
+
+        setMicroFrame : vol => {
+            let svg = $("#btnMicRemote").children();
+
+            if (vol === 0)
+                svg.hide().eq(2).show()
+            else
+                svg.hide().filter(':not(:last)').show().eq(0).css('opacity', vol / 100)
         }
     };
 
@@ -690,11 +712,14 @@ async function initPhone() {
             let mic = await connectSOS(`GetMicroVolume;${session.EquipmentID}`),
                 vol = await connectSOS(`GetSpeakerVolume;${session.EquipmentID}`),
                 svr = $('#sldVolumeRemote'),
-                smr = $('#sldMicrophoneRemote')
+                smr = $('#sldMicrophoneRemote'),
+                v1  = Number(vol.split(';')[1]),
+                v2  = Number(mic.split(';')[1])
 
-            console.log(mic, vol)
-            svr.val()
-            smr.val()
+            svr.val(v1)
+            smr.val(v2)
+            ctxSip.setVolumeFrame(v1)
+            ctxSip.setMicroFrame(v2)
             r.show();
         }
 
@@ -860,6 +885,19 @@ async function initPhone() {
         }
         return false;
     });
+
+    $('#sldVolumeRemote').change(function () {
+        let vol = this.current.value;
+
+        ctxSip.setVolumeFrame(vol)
+    })
+
+    $('#sldMicrophoneRemote').change(function () {
+        let vol = this.current.value;
+
+        console.log(vol) // ! Remover
+        ctxSip.setMicroFrame(vol)
+    })
 
     // Hide the spalsh after 3 secs.
     setTimeout(function() {
