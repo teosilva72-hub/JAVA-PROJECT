@@ -719,7 +719,7 @@ async function initPhone() {
             ctxSip.setVolumeFrame(v1)
             ctxSip.setMicroFrame(v2)
 
-            if (ctxSip.CallStateID)
+            if (ctxSip.callActiveID)
                 r.show();
         }
 
