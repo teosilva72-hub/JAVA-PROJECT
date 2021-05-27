@@ -173,7 +173,7 @@ span {
 }
 
 .jumbotron {
-	margin-top: -20px;
+	margin-top: -50px;
 	height: 100vh;
 	background-color: white;
 }
@@ -278,4 +278,7 @@ span {
 
 .titleColumn2-2.active{
 	color: black;
+}
+.dropdown{
+	z-index: 999;
 }

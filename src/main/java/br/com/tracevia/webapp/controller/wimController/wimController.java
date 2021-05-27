@@ -247,7 +247,7 @@ public class wimController {
 	}
 	WimData data = new WimData();
 	private String silueta;
-		
+
 	public String getSilueta() {
 		return silueta;
 	}
@@ -255,12 +255,26 @@ public class wimController {
 		this.silueta = silueta;
 	}
 	private String[] pathImg;
-	
+
 	public String[] getPathImg() {
 		return pathImg;
 	}
 	public void setPathImg(String[] pathImg) {
 		this.pathImg = pathImg;
+	}
+	private String img1, img2;
+	
+	public String getImg1() {
+		return img1;
+	}
+	public void setImg1(String img1) {
+		this.img1 = img1;
+	}
+	public String getImg2() {
+		return img2;
+	}
+	public void setImg2(String img2) {
+		this.img2 = img2;
 	}
 	@PostConstruct
 	public void initalize(){
@@ -277,7 +291,176 @@ public class wimController {
 			e1.printStackTrace();
 		}
 	}
-	
+	public void onibus() {
+		try {
+			String data = "2021-01-15 15:01:51", classe = "2A";
+			int axlNumber = 2, axl1W = 250, axl2W = 300, axl3W= 0,
+					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 220, axl3D= 0, axl4D= 0, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7900, speed= 30;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/onibus1.jpg";
+			img2 = "/teste/onibus2.jpeg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void onibusE3() {
+		try {
+			String data = "2021-05-05 11:25:01", classe = "4A";
+			int axlNumber = 3, axl1W = 300, axl2W = 325, axl3W= 360,
+					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 310, axl3D= 0, axl4D= 0, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 330, axl9D= 0, gross= 3500, speed= 30;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/onibus1-2.jpg";
+			img2 = "/teste/onibus2-1.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void car() {
+		try {
+			String data = "2021-05-05 11:25:01", classe = "1";
+			int axlNumber = 2, axl1W = 180, axl2W = 200, axl3W= 0,
+					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 180, axl3D= 0, axl4D= 0, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 3500, speed= 30;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/carro1.jpeg";
+			img2 = "/teste/carro2.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e2() {
+		try {
+			String data = "2011-05-15 01:58:44", classe = "2";
+			int axlNumber = 2, axl1W = 280, axl2W = 300, axl3W= 0,
+					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 298, axl3D= 0, axl4D= 0, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7350, speed= 45;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/e2-1.jpg";
+			img2 = "/teste/e2-2.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e3() {
+		try {
+			String data = "2021-06-25 16:26:16", classe = "4";
+			int axlNumber = 3, axl1W = 210, axl2W = 225, axl3W= 245,
+					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 214, axl3D= 228, axl4D= 0, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 16000, speed= 47;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/eixo3-1.jpg";
+			img2 = "/teste/eixo3-1.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e4() {
+		try {
+			String data = "2021-05-25 15:20:01", classe = "6";
+			int axlNumber = 4, axl1W = 211, axl2W = 215, axl3W= 222,
+					axl4W= 228, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 202, axl3D= 205, axl4D= 218, axl5D= 0,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 21000, speed= 28;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/caminhao4-1.jpg";
+			img2 = "/teste/caminhao4-2.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e5() {
+		try {
+			String data = "2021-07-28 15:20:01", classe = "7";
+			int axlNumber = 5, axl1W = 180, axl2W = 200, axl3W= 205,
+					axl4W= 218, axl5W= 238, axl6W= 0, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 202, axl3D= 208, axl4D= 220, axl5D= 243,
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 31500, speed= 31;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/caminhao5-1.jpg";
+			img2 = "/teste/caminhao5-2.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e6() {
+		try {
+			String data = "2021-03-23 18:10:21", classe = "8";
+			int axlNumber = 6, axl1W = 180, axl2W = 200, axl3W= 214,
+					axl4W= 228, axl5W= 241, axl6W= 271, axl7W= 0, axl8W= 0,
+					axl9W= 0, axl2D= 168, axl3D= 197, axl4D= 219, axl5D= 236,
+					axl6D= 266, axl7D= 0, axl8D= 0, axl9D= 0, gross= 38900, speed= 20;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/caminhao6-1.jpg";
+			img2 = "/teste/caminhao6-1.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e7() {
+		try {
+			String data = "2021-02-15 18:22:01", classe = "11";
+			int axlNumber = 9, axl1W = 174, axl2W = 220, axl3W= 250,
+					axl4W= 278, axl5W= 280, axl6W= 291, axl7W= 300, axl8W= 311,
+					axl9W= 0, axl2D= 200, axl3D= 240, axl4D= 262, axl5D= 271,
+					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 0, gross= 51200, speed= 35;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/caminhao7-1.jpg";
+			img2 = "/teste/caminhao7-2.jpg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
+	public void e9() {
+		try {
+			String data = "2021-12-15 13:30:00", classe = "E9";
+			int axlNumber = 9, axl1W = 174, axl2W = 220, axl3W= 250,
+					axl4W= 278, axl5W= 280, axl6W= 291, axl7W= 300, axl8W= 311,
+					axl9W= 345, axl2D= 200, axl3D= 240, axl4D= 262, axl5D= 271,
+					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 338, gross= 74400, speed= 20;
+			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
+					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
+			img1 = "/teste/caminhao9-1.jpg";
+			img2 = "/teste/caminhao9-2.jpeg";
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initalize();
+	}
 	public String[] listFiles() throws Exception{
 		int content = 0;
 		File arquivos[];
@@ -292,7 +475,7 @@ public class wimController {
 			listarFile[content] = arquivos[content].getName();
 			content++;
 		} 
-		String imagePath = "http://localhost:8081/teste/cars/";
+		String imagePath = "/teste/cars/";
 		pathImg = new String [2];
 		pathImg[0] = imagePath+listarFile[0];
 		pathImg[1] = imagePath+listarFile[1];
@@ -302,30 +485,48 @@ public class wimController {
 	public String siluetaRealtime() throws Exception{
 		String classe = dao.classe();
 		if(classe != "") {
-			if(classe.equals("2")) {
+			if(classe.equals("1")) {
 				String img = "10.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E5")) {
-				String img = "1.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E2")) {
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("2")) {
 				String img = "2.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E3")) {
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("4")) {
 				String img = "3.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E4")) {
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("6")) {
 				String img = "4.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E5")) {
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("7")) {
 				String img = "5.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
-			}else if(classe.equals("E6")) {
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("8")) {
 				String img = "6.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("11")) {
+				String img = "8.png";
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("E9")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("10N")) {
+				String img = "9.png";
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("2A")) {
+				String img = "onibusE2.jpg";
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("4A")) {
+				String img = "onibusE3.jpg";
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("9")) {
+				String img = "9.png";
+				silueta = "/teste/sil/" + img;
+			}else if(classe.equals("3")) {
+				String img = "9.png";
+				silueta = "/sil/" + img;
+			}else if(classe.equals("5")) {
+				String img = "9.png";
+				silueta = "/teste/sil/" + img;
 			}
 		}
 		return silueta;
@@ -333,16 +534,15 @@ public class wimController {
 	//update View wim_Realtime
 	public void updateView() {
 		try {
-			
-			TimeUnit.SECONDS.sleep(1);
-			
+
+			TimeUnit.SECONDS.sleep(3);
+
 		}catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		try {
-			serialNumber = dao.serialNumber();
 			dados();
 			rate();
 			listFiles();
@@ -391,19 +591,131 @@ public class wimController {
 	//rate view wim.xhtml
 	public void rate() {
 		try {
+			String classe = dao.classe();
 			pbtTotal = Integer.parseInt(dao.pbtTotal());
 			RequestContext request = RequestContext.getCurrentInstance();
-			rate = pbtTotal; /**/
-			if(rate <= 1500) {
-				request.execute("sizeNormal();");
-				rateTxt = "Normal weight " + rate;
-			}else if(rate > 1500 && rate <= 2500) {
-				request.execute("sizeAtenttion();");
-				rateTxt = "In tolerance " + rate;
-			}else {
-				request.execute("sizeAcima();");
-				rateTxt = "overweight " + rate;
+			rate = pbtTotal;
+			//classe onibus E2
+			if(classe.equals("2A")) {
+				if(rate <= 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 10000 && rate <= 10500) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+				//classe onibus E3
+			}else if(classe.equals("4A")){
+				if(rate <= 13500) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 13500 && rate <= 14175) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+				
+				//classe moto
+			}else if(classe.equals("9")) {
+				if(rate <= 6000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 6000 && rate <= 6450) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+				
+				//classe carro
+			}else if(classe.equals("1")){
+				if(rate <= 6000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 6000 && rate <= 6450) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+			//classe E2
+			}else if(classe.equals("2")) {
+				if(rate <= 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 10000 && rate <= 10500) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+			//classe E3
+			}else if(classe.equals("4")) {
+				if(rate <= 17000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 17000 && rate <= 17850) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+			//classe E4 E5 E6
+			}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")) {
+				if(rate <= 25500) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 25500 && rate <= 26775) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+				//classe E7
+			}else if(classe.equals("10")) {
+				if(rate <= 51000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 51000 && rate <= 53500) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
+				//classe E8 E9
+			}else if(classe.equals("11")||classe.equals("E9")) {
+				if(rate <= 68000) {
+					request.execute("sizeNormal();");
+					rateTxt = "Normal weight " + rate;
+				}else if(rate > 68000 && rate <= 71400) {
+					request.execute("sizeAtenttion();");
+					rateTxt = "In tolerance " + rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = "overweight " + rate;
+				}
 			}
+			/*if(rate <= 1500) {
+				//request.execute("sizeNormal();");
+				//rateTxt = "Normal weight " + rate;
+			}else if(rate > 1500 && rate <= 2500) {
+				//request.execute("sizeAtenttion();");
+				//rateTxt = "In tolerance " + rate;
+			}else {
+				//request.execute("sizeAcima();");
+				//rateTxt = "overweight " + rate;
+			}*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -19,6 +19,56 @@ public class WIMDAO {
 	
 	/////////////////INICIO/////////////////////////////////////////////
 	/////////WIM REALTIME//////////////////////////////////////////////
+	public boolean updateFilePath(String data, String classe, int axlNumber, int axl1w, int axl2w, int axl3w, int axl4w,
+			int axl5w, int axl6w, int axl7w, int axl8w, int axl9w, int axl2d, int axl3d, int axl4d, int axl5d,
+			int axl6d, int axl7d, int axl8d, int axl9d, int gross, int speed) throws Exception {
+
+		boolean status = false;
+
+		String query = "UPDATE wim_vbv SET data = ?, classe = ?, axlNumber = ?, axl1W = ?,  axl2W = ?,"
+				+ " axl3W = ?, axl4W = ?, axl5W = ?, axl6W = ?, axl7W = ?, axl8W = ?, axl9W = ?,"
+				+ "axl2D = ?, axl3D = ?, axl4D = ?, axl5D = ?, axl6D = ?, axl7D = ?, axl8D = ?, axl9D = ?,"
+				+ "gross = ?, speed = ? WHERE vbv_id = 1491931";	
+
+		try {
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(query);
+			ps.setString(1, data);
+			ps.setString(2, classe);
+			ps.setInt(3, axlNumber);
+			ps.setInt(4, axl1w);
+			ps.setInt(5, axl2w);
+			ps.setInt(6, axl3w);
+			ps.setInt(7, axl4w);
+			ps.setInt(8, axl5w);
+			ps.setInt(9, axl6w);
+			ps.setInt(10, axl7w);
+			ps.setInt(11, axl8w);
+			ps.setInt(12, axl9w);
+			ps.setInt(13, axl2d);
+			ps.setInt(14, axl3d);
+			ps.setInt(15, axl4d);
+			ps.setInt(16, axl5d);
+			ps.setInt(17, axl6d);
+			ps.setInt(18, axl7d);
+			ps.setInt(19, axl8d);
+			ps.setInt(20, axl9d);
+			ps.setInt(21, gross);
+			ps.setInt(22, speed);
+			
+			int res = ps.executeUpdate();
+
+			if(res > 0)
+				status = true;
+
+		}catch (SQLException alterarPath){
+			throw new Exception("Erro ao alterar path: " + alterarPath);
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}	
+
+		return status;
+	}
 	public int serialNumber() throws Exception{
 		String sql = "SELECT seqN from wim_vbv ORDER BY vbv_id desc limit 1;";
 		int value = 0; 
