@@ -898,18 +898,22 @@ async function initPhone() {
 
     $('#sldVolumeRemote').change(function () {
         let vol = $(this).val();
+        
+        connectSOS(`SetSpeakerVolume;${ctxSip.Sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
+    }).on('input', function() {
+        let vol = $(this).val();
 
         ctxSip.setVolumeFrame(vol)
-
-        connectSOS(`SetSpeakerVolume;${ctxSip.Sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
     })
 
     $('#sldMicrophoneRemote').change(function () {
         let vol = $(this).val();
-
-        ctxSip.setMicroFrame(vol)
         
         connectSOS(`SetMicroVolume;${ctxSip.Sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
+    }).on('input', function() {
+        let vol = $(this).val();
+
+        ctxSip.setMicroFrame(vol)
     })
 
     // Hide the spalsh after 3 secs.
