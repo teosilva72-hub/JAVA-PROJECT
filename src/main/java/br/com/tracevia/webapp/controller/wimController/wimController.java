@@ -300,8 +300,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7900, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/onibus1.jpg";
-			img2 = "http://localhost:8081/teste/onibus2.jpeg";
+			img1 = "/teste/onibus1.jpg";
+			img2 = "/teste/onibus2.jpeg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -317,8 +317,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 330, axl9D= 0, gross= 3500, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/onibus1-2.jpg";
-			img2 = "http://localhost:8081/teste/onibus2-1.jpg";
+			img1 = "/teste/onibus1-2.jpg";
+			img2 = "/teste/onibus2-1.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -334,8 +334,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 3500, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/carro1.jpeg";
-			img2 = "http://localhost:8081/teste/carro2.jpg";
+			img1 = "/teste/carro1.jpeg";
+			img2 = "/teste/carro2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -351,8 +351,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7350, speed= 45;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/e2-1.jpg";
-			img2 = "http://localhost:8081/teste/e2-2.jpg";
+			img1 = "/teste/e2-1.jpg";
+			img2 = "/teste/e2-2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -368,8 +368,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 16000, speed= 47;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/eixo3-1.jpg";
-			img2 = "http://localhost:8081/teste/eixo3-1.jpg";
+			img1 = "/teste/eixo3-1.jpg";
+			img2 = "/teste/eixo3-1.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -385,8 +385,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 21000, speed= 28;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/caminhao4-1.jpg";
-			img2 = "http://localhost:8081/teste/caminhao4-2.jpg";
+			img1 = "/teste/caminhao4-1.jpg";
+			img2 = "/teste/caminhao4-2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -402,8 +402,8 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 31500, speed= 31;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/caminhao5-1.jpg";
-			img2 = "http://localhost:8081/teste/caminhao5-2.jpg";
+			img1 = "/teste/caminhao5-1.jpg";
+			img2 = "/teste/caminhao5-2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -419,8 +419,8 @@ public class wimController {
 					axl6D= 266, axl7D= 0, axl8D= 0, axl9D= 0, gross= 38900, speed= 20;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/caminhao6-1.jpg";
-			img2 = "http://localhost:8081/teste/caminhao6-1.jpg";
+			img1 = "/teste/caminhao6-1.jpg";
+			img2 = "/teste/caminhao6-1.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -436,8 +436,8 @@ public class wimController {
 					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 0, gross= 51200, speed= 35;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/caminhao7-1.jpg";
-			img2 = "http://localhost:8081/teste/caminhao7-2.jpg";
+			img1 = "/teste/caminhao7-1.jpg";
+			img2 = "/teste/caminhao7-2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -453,8 +453,8 @@ public class wimController {
 					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 338, gross= 74400, speed= 20;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "http://localhost:8081/teste/caminhao9-1.jpg";
-			img2 = "http://localhost:8081/teste/caminhao9-2.jpeg";
+			img1 = "/teste/caminhao9-1.jpg";
+			img2 = "/teste/caminhao9-2.jpeg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -475,7 +475,7 @@ public class wimController {
 			listarFile[content] = arquivos[content].getName();
 			content++;
 		} 
-		String imagePath = "http://localhost:8081/teste/cars/";
+		String imagePath = "/teste/cars/";
 		pathImg = new String [2];
 		pathImg[0] = imagePath+listarFile[0];
 		pathImg[1] = imagePath+listarFile[1];
@@ -487,46 +487,46 @@ public class wimController {
 		if(classe != "") {
 			if(classe.equals("1")) {
 				String img = "10.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("2")) {
 				String img = "2.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("4")) {
 				String img = "3.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("6")) {
 				String img = "4.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("7")) {
 				String img = "5.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("8")) {
 				String img = "6.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("11")) {
 				String img = "8.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("E9")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("10N")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("2A")) {
 				String img = "onibusE2.jpg";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("4A")) {
 				String img = "onibusE3.jpg";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("9")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}else if(classe.equals("3")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/sil/" + img;
 			}else if(classe.equals("5")) {
 				String img = "9.png";
-				silueta = "http://localhost:8081/teste/sil/" + img;
+				silueta = "/teste/sil/" + img;
 			}
 		}
 		return silueta;
