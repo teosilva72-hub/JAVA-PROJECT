@@ -76,4 +76,38 @@ public class ModulesDAO {
 		  return modules;
 	}
 
+	// Pull Credentials
+	public String[] getCred(String name) throws Exception {
+		String[] credentials = new String[5];
+		String query;
+
+		try {			
+					
+			query = "SELECT name, user, pass, address, port FROM credentials WHERE name = ?";		
+			
+			ps = conn.prepareStatement(query);
+			ps.setString(1, name);
+
+			rs = ps.executeQuery();
+			
+			//System.out.println(query);
+
+			if (rs.isBeforeFirst()) {
+				rs.next();
+
+				credentials[0] = rs.getString("name");
+				credentials[1] = rs.getString("user");
+				credentials[2] = rs.getString("pass");
+				credentials[3] = rs.getString("address");
+				credentials[4] = rs.getString("port");
+			}
+
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+			
+		return credentials;
+	}
 }

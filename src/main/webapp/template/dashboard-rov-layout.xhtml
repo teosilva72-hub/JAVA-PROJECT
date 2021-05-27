@@ -838,6 +838,15 @@
 
     </footer>
 
+    <h:form name="getCred" id="getCred" prependId="false">
+      <h:inputHidden name="serviceName" id="serviceName"/>
+      <h:inputHidden name="credentials" id="credentials" value="#{loginAccount.credentials}"/>
+
+      <h:commandButton id="start" name="start" style="display: none;">
+        <f:ajax execute="@this" render=":credentials" listener="#{loginAccount.getCred}" onevent="credEvent" />
+      </h:commandButton>
+    </h:form>
+
     <h:outputScript name="bootstrap.bundle.min.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
     <h:outputScript name="bootstrap-input-spinner.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
     <h:outputScript name="all.min.js?version=#{notificationsView.timestamp}" library="font-awesome/js" />
