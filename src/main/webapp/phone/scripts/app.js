@@ -14,26 +14,28 @@ async function initPhone() {
 
     ctxSip = {
 
-        config : {
+        config  : {
             password        : user.Pass,
             displayName     : user.Display,
             uri             : 'sip:'+user.User+'@'+user.Realm,
             wsServers       : user.WSServer,
             registerExpires : 30,
             traceSip        : true,
-            log             : {
-                level : 1,
+            log : {
+                level       : 0,
             }
         },
-        ringtone     : document.getElementById('ringtone'),
-        ringbacktone : document.getElementById('ringbacktone'),
-        dtmfTone     : document.getElementById('dtmfTone'),
+        ringtone            : document.getElementById('ringtone'),
+        ringbacktone        : document.getElementById('ringbacktone'),
+        dtmfTone            : document.getElementById('dtmfTone'),
 
-        Sessions     : [],
-        callTimers   : {},
-        callActiveID : null,
-        callVolume   : 1,
-        Stream       : null,
+        Sessions            : [],
+        callTimers          : {},
+        callActiveID        : null,
+        callIncomingID      : null,
+        process             : 0,
+        callVolume          : 1,
+        Stream              : null,
 
         /**
          * Parses a SIP uri and returns a formatted US phone number.
@@ -91,13 +93,14 @@ async function initPhone() {
 
             var status;
 
-            if (newSess.direction === 'incoming') {
-                status = "Incoming: "+ newSess.displayName;
-                ctxSip.startRingTone();
-            } else {
-                status = "Trying: "+ newSess.displayName;
-                ctxSip.startRingbackTone();
-            }
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
+                if (newSess.direction === 'incoming') {
+                    status = "Incoming: "+ newSess.displayName;
+                    ctxSip.startRingTone();
+                } else {
+                    status = "Trying: "+ newSess.displayName;
+                    ctxSip.startRingbackTone();
+                }
 
             ctxSip.logCall(newSess, 'ringing');
 
@@ -252,6 +255,9 @@ async function initPhone() {
 
             calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
 
+            if (session.isMuted !== undefined)
+                calllog[log.id].isMuted = session.isMuted
+
             if (status === 'ended') {
                 calllog[log.id].stop = log.time;
             }
@@ -259,7 +265,7 @@ async function initPhone() {
             if (status === 'ended' && calllog[log.id].status === 'ringing') {
                 calllog[log.id].status = 'missed';
             } else {
-                calllog[log.id].status = status;
+                calllog[log.id].status = status ? status : calllog[log.id].status;
             }
 
             localStorage.setItem('sipCalls', JSON.stringify(calllog));
@@ -309,7 +315,7 @@ async function initPhone() {
             }
 
 
-            i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'" title="Double Click to Call">';
+            i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'">';
             i += '<div class="clearfix"><div class="float-left">';
             i += '<i class="fa fa-fw '+callIcon+' fa-fw"></i> <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
             i += '</div>';
@@ -322,7 +328,12 @@ async function initPhone() {
                 } else if (item.owner) {
                     i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><i class="fa fa-pause"></i></button>';
                     // i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
-                    i += '<button class="btn btn-xs btn-warning btnMute" title="Mute"><i class="fa fa-fw fa-microphone"></i></button>';
+                    i += '<button class="btn btn-xs btn-warning btnMute" title="Mute">';
+                    if (!item.isMuted)
+                        i += '<svg class="svg-inline--fa fa-microphone fa-w-11 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="microphone" role="img" viewBox="0 0 352 512" data-fa-i2svg=""><path fill="currentColor" d="M176 352c53.02 0 96-42.98 96-96V96c0-53.02-42.98-96-96-96S80 42.98 80 96v160c0 53.02 42.98 96 96 96zm160-160h-16c-8.84 0-16 7.16-16 16v48c0 74.8-64.49 134.82-140.79 127.38C96.71 376.89 48 317.11 48 250.3V208c0-8.84-7.16-16-16-16H16c-8.84 0-16 7.16-16 16v40.16c0 89.64 63.97 169.55 152 181.69V464H96c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16h-56v-33.77C285.71 418.47 352 344.9 352 256v-48c0-8.84-7.16-16-16-16z"></path></svg>';
+                    else
+                        i += '<svg width="16" height="16" fill="currentColor" class="bi bi-mic-mute-fill" viewBox="0 0 16 16"><path d="M13 8c0 .564-.094 1.107-.266 1.613l-.814-.814A4.02 4.02 0 0 0 12 8V7a.5.5 0 0 1 1 0v1zm-5 4c.818 0 1.578-.245 2.212-.667l.718.719a4.973 4.973 0 0 1-2.43.923V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 1 0v1a4 4 0 0 0 4 4zm3-9v4.879L5.158 2.037A3.001 3.001 0 0 1 11 3z"/><path d="M9.486 10.607 5 6.12V8a3 3 0 0 0 4.486 2.607zm-7.84-9.253 12 12 .708-.708-12-12-.708.708z"/></svg>';
+                    i += '</button>';
                     i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
                 }
                 i += '</div>';
@@ -399,8 +410,10 @@ async function initPhone() {
          * removes log items from localstorage and updates the UI
          */
         logClear : function() {
-            localStorage.removeItem('sipCalls');
-            ctxSip.logShow();
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID) {
+                localStorage.removeItem('sipCalls');
+                ctxSip.logShow();
+            }
         },
 
         sipCall : function(target) {
@@ -476,33 +489,35 @@ async function initPhone() {
             var s      = ctxSip.Sessions[sessionid];
                 // target = $("#numDisplay").val();
 
-            if (!s) {
+            if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
+                if (!s) {
 
-                // $("#numDisplay").val("");
-                // ctxSip.sipCall(target);
+                    // $("#numDisplay").val("");
+                    // ctxSip.sipCall(target);
 
-            } else if (s.service) {
-                ctxSip.callActiveID = sessionid;
-                connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
-                    if (response.UserID == loginAccount.ID) {
-                        ctxSip.Sessions[sessionid].owner = true;
+                } else if (s.service) {
+                    ctxSip.callIncomingID = sessionid;
+                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                        if (response.UserID != loginAccount.ID && response.UserID)
+                            ctxSip.callIncomingID = null;
+                        else
+                            ctxSip.proccess = setTimeout(() => {
+                                ctxSip.callIncomingID = null;
+                            }, 1000)
+                    })
+                } else if (s.accept && !s.startTime) {
 
-                        ctxSip.logCall(ctxSip.Sessions[sessionid], "answered")
-                    }
-                });
-            } else if (s.accept && !s.startTime) {
-
-                // s.accept({
-                //     media : {
-                //         stream      : ctxSip.Stream,
-                //         constraints : { audio : true, video : false },
-                //         render      : {
-                //             remote : $('#audioRemote').get()[0]
-                //         },
-                //         RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
-                //     }
-                // });
-            }
+                    // s.accept({
+                    //     media : {
+                    //         stream      : ctxSip.Stream,
+                    //         constraints : { audio : true, video : false },
+                    //         render      : {
+                    //             remote : $('#audioRemote').get()[0]
+                    //         },
+                    //         RTCConstraints : { "optional": [{ 'DtlsSrtpKeyAgreement': 'true'} ]}
+                    //     }
+                    // });
+                }
         },
 
         phoneMuteButtonPressed : function (sessionid) {
@@ -514,10 +529,12 @@ async function initPhone() {
                     s.call.mute();
                     s.isMuted = true
                     ctxSip.setCallSessionStatus("Muted");
+                    ctxSip.logCall(s)
                 } else {
                     s.call.unmute();
                     s.isMuted = false
                     ctxSip.setCallSessionStatus("Answered");
+                    ctxSip.logCall(s)
                 }
         },
 
@@ -527,7 +544,7 @@ async function initPhone() {
             let paused;
 
             if (s.service) {
-                if (s.call.isOnHold().local === true) {
+                if (s.call.isOnHold().local === true && !ctxSip.callActiveID) {
                     s.call.unhold();
                     paused = false;
                 } else {
@@ -537,7 +554,7 @@ async function initPhone() {
 
                 connectSOS(`GetAllActiveCalls`).then(response => {
                     for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == id) {
+                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
                             connectSOS(`HoldCall;${loginAccount.ID};${s.EquipmentID};${paused}`)
                             break;
                         }
@@ -588,6 +605,26 @@ async function initPhone() {
                 window.console.error("WebRTC support not found");
                 return false;
             }
+        },
+
+        setVolumeFrame : vol => {
+            let svg = $("#btnVolRemote").children();
+
+            if (vol == 0)
+                svg.hide().eq(3).show()
+            else if (vol < 60)
+                svg.hide().eq(2).show()
+            else
+                svg.hide().first().show().css('opacity', (vol - 80) / 20).next().show()
+        },
+
+        setMicroFrame : vol => {
+            let svg = $("#btnMicRemote").children();
+
+            if (vol == 0)
+                svg.hide().eq(2).show()
+            else
+                svg.hide().filter(':not(:last)').show().eq(0).css('opacity', vol / 100)
         }
     };
 
@@ -660,10 +697,16 @@ async function initPhone() {
     });
 
     ctxSip.phone.on('invite', function (incomingSession) {
+        if (ctxSip.callIncomingID) {
+            ctxSip.callActiveID = ctxSip.callIncomingID;
+            ctxSip.callIncomingID = null;
+            clearTimeout(ctxSip.proccess);
+        } else return;
 
-        var s = incomingSession;
+        let s   = incomingSession,
+            r   = $('#rmtVol') 
 
-        var closeEditorWarning = function() {
+        let closeEditorWarning = function() {
             return 'If you close this window, you will not be able to make or receive calls from your browser.';
         };
 
@@ -671,6 +714,26 @@ async function initPhone() {
         // ctxSip.newSession(s);
 
         let session = ctxSip.Sessions[ctxSip.callActiveID]
+        session.owner = true;
+
+        r.showVol = async () => {
+            let mic = await connectSOS(`GetMicroVolume;${session.EquipmentID}`),
+                vol = await connectSOS(`GetSpeakerVolume;${session.EquipmentID}`),
+                svr = $('#sldVolumeRemote'),
+                smr = $('#sldMicrophoneRemote'),
+                v1  = Number(vol.split(';')[1]),
+                v2  = Number(mic.split(';')[1])
+
+            svr.val(v1)
+            smr.val(v2)
+            ctxSip.setVolumeFrame(v1)
+            ctxSip.setMicroFrame(v2)
+
+            if (ctxSip.callActiveID)
+                r.show();
+        }
+
+        r.showVol();
 
         window.onbeforeunload = closeEditorWarning;
 
@@ -696,19 +759,25 @@ async function initPhone() {
                     }
             });
 
+            r.hide();
             window.onbeforeunload = null;
         });
 
         s.on('hold', function(e) {
             ctxSip.callActiveID = null;
             ctxSip.logCall(session, 'holding');
+
+            r.hide();
         });
 
         s.on('unhold', function(e) {
             ctxSip.logCall(session, 'resumed');
             ctxSip.callActiveID = session.ctxid;
+
+            r.showVol();
         });
 
+        ctxSip.logCall(session, "answered")
         ctxSip.Sessions[ctxSip.callActiveID].call = s
     });
 
@@ -737,14 +806,10 @@ async function initPhone() {
     //     return false;
     // });
 
-    $('#phoneUI .dropdown-menu').click(function(e) {
-        e.preventDefault();
-    });
-
     $('#phoneUI').delegate('.btnCall', 'click', function(event) {
-        ctxSip.phoneCallButtonPressed();
-        // to close the dropdown
-        return true;
+        // ctxSip.phoneCallButtonPressed();
+        // // to close the dropdown
+        // return true;
     });
 
     $('.sipLogClear').click(function(event) {
@@ -791,18 +856,18 @@ async function initPhone() {
     //     $('#numDisplay').val(uri);
     //     ctxSip.phoneCallButtonPressed();
     // });
-
-    $('#sldVolume').on('change', function() {
+    
+    $('#sldVolume').on('input', function() {
 
         var v      = $(this).val() / 100,
             // player = $('audio').get()[0],
             btn    = $('#btnVol'),
-            icon   = $('#btnVol').find('i'),
+            icon   = btn.find('svg'),
             active = ctxSip.callActiveID;
 
         // Set the object and media stream volumes
         if (ctxSip.Sessions[active]) {
-            ctxSip.Sessions[active].player.volume = v;
+            // ctxSip.Sessions[active].call.player.volume = v;
             ctxSip.callVolume                     = v;
         }
 
@@ -813,23 +878,43 @@ async function initPhone() {
 
         if (v < 0.1) {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                 })
                 .addClass('btn btn-sm btn-danger');
-            icon.removeClass().addClass('fa fa-fw fa-volume-off');
+            icon.hide().eq(2).show()
         } else if (v < 0.8) {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                }).addClass('btn btn-sm btn-info');
-            icon.removeClass().addClass('fa fa-fw fa-volume-down');
+            icon.hide().eq(1).show()
         } else {
             btn.removeClass(function (index, css) {
-                   return (css.match (/(^|\s)btn\S+/g) || []).join(' ');
+                   return (css.match(/(^|\s)btn\S+/g) || []).join(' ');
                }).addClass('btn btn-sm btn-primary');
-            icon.removeClass().addClass('fa fa-fw fa-volume-up');
+            icon.hide().eq(0).show()
         }
         return false;
     });
+
+    $('#sldVolumeRemote').change(function () {
+        let vol = $(this).val();
+        
+        connectSOS(`SetSpeakerVolume;${ctxSip.Sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
+    }).on('input', function() {
+        let vol = $(this).val();
+
+        ctxSip.setVolumeFrame(vol)
+    })
+
+    $('#sldMicrophoneRemote').change(function () {
+        let vol = $(this).val();
+        
+        connectSOS(`SetMicroVolume;${ctxSip.Sessions[ctxSip.callActiveID].EquipmentID};${vol}`)
+    }).on('input', function() {
+        let vol = $(this).val();
+
+        ctxSip.setMicroFrame(vol)
+    })
 
     // Hide the spalsh after 3 secs.
     setTimeout(function() {
@@ -838,9 +923,9 @@ async function initPhone() {
 
     // receiver rabbitmq
     consume({
-        callback_states: null,
-        callback_alarms: null,
-        callback_calls: message => {
+        callback_states : null,
+        callback_alarms : null,
+        callback_calls  : message => {
             let response = JSON.parse(message.body);
 
             getEquipFromID(response.EquipmentID).then(equip => {

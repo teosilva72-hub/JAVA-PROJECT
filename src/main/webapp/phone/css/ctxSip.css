@@ -96,7 +96,7 @@
 }
 
 .calls-client .sipStatus.closed {
-  width: fit-content !important;
+  width: min-content !important;
 }
 
 .calls-client .sipStatus.open {

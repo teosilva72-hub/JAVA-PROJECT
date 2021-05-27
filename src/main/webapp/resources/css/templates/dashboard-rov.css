@@ -855,6 +855,10 @@ input.apple-switch:checked:before {
 	animation: showCallbox 2s 1;
 }
 
+#rmtVol {
+  height: 31px;
+}
+
 @keyframes showCallbox {
 	from {
 		bottom: -335px;
