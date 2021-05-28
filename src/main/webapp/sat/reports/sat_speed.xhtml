@@ -8,6 +8,7 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
 	<f:metadata>
@@ -99,7 +100,7 @@
 					
 				<div id="btn-excel"> <!-- BUTTON EXCEL DIV -->	
 				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
+					disabled="false"
 					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
 					action="#{satReportsBean.download}" widgetVar="excelWgt">
@@ -107,12 +108,29 @@
 					<f:passThroughAttribute name="data-target" value="#modalDownload" />
 					<f:ajax execute="@form" render="@none" />
 				</h:commandButton>
+			</div><!---->	
+							
+				<div id="btn-chart"> <!-- BUTTON EXCEL DIV -->	
+				<h:commandButton id="chart-act" value=""
+					disabled="false"									
+					class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalChart" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
 			</div><!---->			
+					
 		   </div> <!---->
 		 </h:form> <!---->
 		</div> <!---->
 
          <!---->
+         
+         <div class="card">
+                              
+											  <pf:chart type="line" model="#{teste.lineModel}" style="height:400px;width:600px"/>
+                             </div>		
 			  
 		   <!-- ********************************************************************************************************************* -->
 			  
@@ -270,7 +288,7 @@
 						</div>
 						<div class="modal-body">
 							<p class="modal-alert-msg">
-								#{satLabels.sat_reports_modal_alert_download_file_excel} <span
+								#{satLabels.sat_reports_modal_alert_download_file} <span
 									class="extension">#{satLabels.sat_reports_modal_alert_extension_xlsx}</span> ?
 							</p>
 						</div>
@@ -294,6 +312,40 @@
 			   <!---->
 
          <!-- ********************************************************************************************************************* -->
+                  			
+			<div class="modal fade" id="modalChart" tabindex="-1"
+				aria-labelledby="chartModalLabel" aria-hidden="true"> <!-- MODAL DOWNLOAD -->	
+				<div class="modal-dialog confirmation-modal">
+					<h:form class="modal-content" name="form-chart" id="form-chart">
+						<div class="modal-header">
+							<h5 class="modal-title modal-alert-title" id="chartModalLabel">#{satLabels.sat_reports_modal_alert_chart_title}</h5>
+								<button type="button" class="close" data-dismiss="modal"
+							         aria-label="Close">
+							         <span aria-hidden="true">&times;</span>
+						        </button>
+						   </div>
+						<div class="modal-body">											
+				    		
+				    																
+						
+						</div>
+						<div class="modal-footer">
+							<h:commandButton p:onclose="chart"
+								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+								p:data-toggle="modal" p:data-target="#modalChart"							
+								class="btn btn-dark form-draw-button" />
+							<h:commandButton id="cancelChart"
+								value="#{satLabels.sat_reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+						</div>
+					</h:form>
+				</div>
+			</div><!---->
+         
+          <!-- ********************************************************************************************************************* -->
 						
 		<div id="loading"> <!-- LOADING MESSAGE -->
 			<span>#{satLabels.sat_reports_loading_message}...</span>

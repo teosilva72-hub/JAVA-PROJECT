@@ -14,7 +14,8 @@ setTimeout(() => {
 		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
 			if (n < 4)
 
-	location.href = location.protocol + '//' + location.host + location.pathname
+	//location.href = location.protocol + '//' + location.host + location.pathname
+	  window.location.reload();
 }
 			     
 	}, 3000)

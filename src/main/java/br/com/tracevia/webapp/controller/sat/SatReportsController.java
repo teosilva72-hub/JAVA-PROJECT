@@ -17,6 +17,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.chartistjsf.model.chart.AspectRatio;
+import org.chartistjsf.model.chart.Axis;
+import org.chartistjsf.model.chart.AxisType;
+import org.chartistjsf.model.chart.LineChartModel;
+import org.chartistjsf.model.chart.LineChartSeries;
 import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -32,6 +37,7 @@ import br.com.tracevia.webapp.model.global.VBV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.SatReports;
 import br.com.tracevia.webapp.model.sat.SatReports.Builder;
+import br.com.tracevia.webapp.util.ChartsModel;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.MessagesUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
@@ -49,6 +55,7 @@ public class SatReportsController {
 	private List<SelectItem> years;	
 	private List<SelectItem> classes;  
 	private List<SelectItem> axles;  
+	private LineChartModel lineModel;	
 
 	private List<Builder> resultList;	
 	private List<VBV> resultVBV;
@@ -84,6 +91,8 @@ public class SatReportsController {
 
 	EquipmentsDAO equipDAO;
 	ExcelModels model;
+	
+	ChartsModel chartModel;
 	
 	String displayEquipInfo, displayDirection1, displayDirection2;
 
@@ -246,9 +255,17 @@ public class SatReportsController {
 		this.displayDirection2 = displayDirection2;
 	}
 	
-	///////////////////////////////////
-	//CONSTRUCTOR
-	///////////////////////////////// 
+	public LineChartModel getLineModel() {
+		return lineModel;
+	}
+
+	public void setLineModel(LineChartModel lineModel) {
+		this.lineModel = lineModel;
+	}
+	
+    ///////////////////////////////////
+     //CONSTRUCTOR
+    ///////////////////////////////// 
 
 	@PostConstruct
 	public void initialize() {
@@ -380,6 +397,49 @@ public class SatReportsController {
 		displayDirection1 = localeLabel.getStringKey("sat_reports_count_flow_sat_dir1");
 		displayDirection2 = localeLabel.getStringKey("sat_reports_count_flow_sat_dir2");
 		displayEquipInfo = localeLabel.getStringKey("sat_reports_count_flow_sat_desc");
+		
+		  
+		        lineModel = new LineChartModel();
+		        lineModel.setAspectRatio(AspectRatio.GOLDEN_SECTION);
+
+		        lineModel.addLabel("1");
+		        lineModel.addLabel("2");
+		        lineModel.addLabel("3");
+		        lineModel.addLabel("4");
+		        lineModel.addLabel("5");
+		        lineModel.addLabel("6");
+		        lineModel.addLabel("7");
+		        lineModel.addLabel("8");
+
+		        LineChartSeries lineChartSeries1 = new LineChartSeries();
+		        lineChartSeries1.setName("Series 1");
+
+		        lineChartSeries1.set(12);
+		        lineChartSeries1.set(21);
+		        lineChartSeries1.set(7);
+		        lineChartSeries1.set(15);
+		        lineChartSeries1.set(12);
+		        lineChartSeries1.set(21);
+		        lineChartSeries1.set(7);
+		        lineChartSeries1.set(15);
+
+		        LineChartSeries lineChartSeries2 = new LineChartSeries();
+		        lineChartSeries2.setName("Series 2");
+
+		        lineChartSeries2.set(14);
+		        lineChartSeries2.set(2);
+		        lineChartSeries2.set(8);
+		        lineChartSeries2.set(9);
+		        lineChartSeries2.set(14);
+		        lineChartSeries2.set(2);
+		        lineChartSeries2.set(8);
+		        lineChartSeries2.set(9);
+		        Axis xAxis = lineModel.getAxis(AxisType.X);
+		        lineModel.addSeries(lineChartSeries1);
+		        lineModel.addSeries(lineChartSeries2);
+		        lineModel.setAnimateAdvanced(true);
+		        lineModel.setShowTooltip(true);
+		    
 		
 	}
 
