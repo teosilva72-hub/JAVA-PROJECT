@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	<ui:define name="head">
+		<title>DAI</title>
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/dai" name="style.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/dai" name="controller_dai.js" />
+	</ui:define>
+	<ui:define name="main-content">
+		<div class="row">
+			<div class="container">
+				<div class="col-md">
+					<!-- início dos inputs -->
+					<p>
+						<button class="btn btn-warning fourth" type="button"
+							data-toggle="collapse" data-target="#collapseExample"
+							aria-expanded="false" aria-controls="collapseExample">Painel
+							Pesquisa</button>
+					</p>
+					<form id="form">
+						<div class="card card-body card-inputs collapse"
+							id="collapseExample">
+							<div class="row">
+								<div class="col-sm-12"></div>
+								<div class="col-sm-4">
+									<p class="textP">Data Inicial</p>
+									<h:inputText
+										class="form-control input-field inputDesign datepicker"
+										pt:placeholder="--/--/----" />
+									<span class="span"><i class="fas fa-calendar-alt"></i></span>
+								</div>
+								<div class="col-sm-4">
+									<p class="textP">Data Final</p>
+									<h:inputText
+										class="form-control input-field inputDesign datepicker"
+										pt:placeholder="--/--/----" />
+									<span class="span"><i class="fas fa-calendar-alt"></i></span>
+								</div>
+								<div class="col-sm-4">
+									<p class="textP">Incidente</p>
+									<h:selectOneMenu class="form-control inputDesign"
+										value="#{occurrencesBean.data.start_hour}" id="camera"
+										name="horaInicial">
+										<f:selectItem itemLabel="select" itemValue="" />
+										<f:selectItems value="#{occurrencesBean.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-sm-4">
+									<p class="textP">Câmera</p>
+									<h:selectOneMenu class="form-control inputDesign"
+										value="#{occurrencesBean.data.start_hour}" id="type"
+										name="horaInicial">
+										<f:selectItem itemLabel="select" itemValue="" />
+										<f:selectItems value="#{occurrencesBean.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-sm-4">
+									<p class="textP">Faixa</p>
+									<h:selectOneMenu class="form-control inputDesign"
+										value="#{occurrencesBean.data.start_hour}" name="horaInicial">
+										<f:selectItem itemLabel="select" itemValue="" />
+										<f:selectItems value="#{occurrencesBean.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-sm-4">
+									<p class="textP">Direção</p>
+									<h:selectOneMenu class="form-control inputDesign"
+										value="#{occurrencesBean.data.start_hour}" name="horaInicial">
+										<f:selectItem itemLabel="select" itemValue="" />
+										<f:selectItems value="#{occurrencesBean.horas}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+							<hr></hr>
+							<button id="search" type="button" class="btn btn-warning inputBtn search"
+								onclick="msgSuccess()">
+								Search <i class="fas fa-search"></i>
+							</button>
+						</div>
+					</form>
+					<!-- ALERTS -->
+					<div class="alert alert-success" role="alert" id="success"
+						style="display: none;">Success!</div>
+					<div class="alert alert-danger" role="alert" id="error"
+						style="display: none;">Error!</div>
+					<div class="alert alert-warning" role="alert" id="attention"
+						style="display: none;">attention</div>
+					<!-- FINAL ALERTS -->
+					<div class="table ">
+						<!-- TABELA -->
+						<h:dataTable id="occurrence-table" var="data" disabled="true"
+							value="#{occurrencesBean.occurrences}"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover"
+							cellspacing="0" width="100%" headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							<h:column>
+								<f:facet name="header">Details</f:facet>
+								<div class="btn-group">
+									<button type="button" class=" dropdown-toggle"
+										data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false">
+										<i class="fas fa-cog"></i>
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#"><i
+											class="fas fa-file-pdf"></i> Download in PDF</a> <a
+											class="dropdown-item" href="#" data-toggle="modal"
+											data-target="#modalMoreInformation"><i
+											class="far fa-image"></i> More information</a>
+									</div>
+								</div>
+							</h:column>
+							<h:column>
+								<f:facet name="header">Number</f:facet>
+								<h:outputText value="1" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Direction</f:facet>
+								<h:outputText value="Norte" style="font-size: 12px;" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Lane</f:facet>
+								<h:outputText value="1A" style="font-size: 12px;" />
+							</h:column>
+							<h:column>
+								<f:facet class="barraTable" name="header">Channel</f:facet>
+								<h:outputText value="10" style="font-size: 12px;" />
+							</h:column>
+							<h:column>
+								<f:facet class="barraTable" name="header">Date</f:facet>
+								<h:outputText value="07/05/2021" style="font-size: 12px;" />
+							</h:column>
+							<h:column>
+								<f:facet class="barraTable" name="header">Time</f:facet>
+								<h:outputText value="10:25:35" style="font-size: 12px;" />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Incident</f:facet>
+								<h:outputText value="driving in the opposite direction"
+									style="font-size: 12px;" />
+							</h:column>
+						</h:dataTable>
+					</div>
+					<!-- Final da tabela -->
+				</div>
+			</div>
+		</div>
+		<!-- FINAL DOS FORMULÁRIOS -->
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title text-center" id="exampleModalLabel">
+							<i class="fas fa-exclamation-triangle"></i> ALERT
+						</h3>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true" class="A"><i class="fas fa-times"></i></span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col">
+								<img class="img"
+									src="http://4.bp.blogspot.com/-SrFSw-OjnTM/VlR8IBA8u3I/AAAAAAAAws8/SaNhkreInVA/s1600/38bbf63e95aa88a4e59a31cb0ba05ebf.jpg" />
+							</div>
+							<div class="col col-details">
+								<h4>
+									<b>Details:</b>
+								</h4>
+								<hr></hr>
+								<div class="row">
+									<div class="col-12">
+										<b>Equipament:</b> Dai 1
+									</div>
+									<div class="col-12">
+										<b>Incident:</b> driving in the opposite direction
+									</div>
+									<div class="col-12">
+										<b>Date:</b> 15/05/2021
+									</div>
+									<div class="col-12">
+										<b>Hour:</b> 10:25:36
+									</div>
+									<div class="col-12">
+										<b>Channel:</b> 15
+									</div>
+									<div class="col-12">
+										<b>Track:</b> Autopista Tuxpan - Tampico
+									</div>
+									<div class="col-12">
+										<b>Lane:</b> 1A
+									</div>
+									<div class="col-12">
+										<b>Local:</b> 055+200
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- final do modal alert -->
+		<!-- Modal -->
+		<div class="modal fade" id="modalMoreInformation" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title text-center" id="exampleModalLabel">
+							<i class="fas fa-info-circle"></i> More Information
+						</h3>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true" class="A"><i class="fas fa-times"></i></span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col">
+								<img class="img"
+									src="http://4.bp.blogspot.com/-SrFSw-OjnTM/VlR8IBA8u3I/AAAAAAAAws8/SaNhkreInVA/s1600/38bbf63e95aa88a4e59a31cb0ba05ebf.jpg" />
+							</div>
+							<div class="col col-details">
+								<h4>
+									<b>Details:</b>
+								</h4>
+								<hr></hr>
+								<div class="row">
+									<div class="col-12">
+										<b>Equipament:</b> Dai 1
+									</div>
+									<div class="col-12">
+										<b>Incident:</b> driving in the opposite direction
+									</div>
+									<div class="col-12">
+										<b>Date:</b> 15/05/2021
+									</div>
+									<div class="col-12">
+										<b>Hour:</b> 10:25:36
+									</div>
+									<div class="col-12">
+										<b>Channel:</b> 15
+									</div>
+									<div class="col-12">
+										<b>Track:</b> Autopista Tuxpan - Tampico
+									</div>
+									<div class="col-12">
+										<b>Lane:</b> 1A
+									</div>
+									<div class="col-12">
+										<b>Local:</b> 055+200
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+		<script>
+			btnPopUp();
+		</script>
+	</ui:define>
+</ui:composition>

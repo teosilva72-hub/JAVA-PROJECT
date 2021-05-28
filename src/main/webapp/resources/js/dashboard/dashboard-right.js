@@ -1,4 +1,3 @@
-
 $(function () {
   $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
@@ -25,6 +24,8 @@ $(function () {
   });
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
+
+  $("#sipClient.calls-client .sipStatus").click(showCallbox)
   
 });
 
@@ -67,14 +68,80 @@ function notificationBadge(){
   
 }
 
+var callBoxStatus = false;
 
-const showCallbox = action => {
-	$("#sipClient > .calls-client").addClass(action).css('bottom', action == 'showing' ? 40 : '')
+const showCallbox = () => {
+  let client = $("#sipClient.calls-client")
+  let callStatus = $('#txtCallStatus').html()
+  let action;
+
+  if(client.hasClass('showing') || client.hasClass('show')) {
+    action = 'hiding'
+    callBoxStatus = false
+    if (!callStatus)
+      showStatesCallbox('close')
+    else if (callStatus === 'Rejected')
+      ctxSip.setCallSessionStatus('');
+  } else {
+    action = 'showing'
+    callBoxStatus = true
+    showStatesCallbox('open')
+  }
+
+	client.addClass(action).css('bottom', action == 'showing' ? 40 : '').removeClass('hide').removeClass('show')
 	setTimeout(() => {
-	    $("#sipClient > .calls-client").removeClass(action)
+	    client.removeClass(action).addClass(action == 'showing' ? "show" : 'hide')
 	}, 2000)
 }
 
+const showStatesCallbox = action => {
+  let client = $("#sipClient .sipStatus")
+  let action2;
+
+  if(action == 'open') {
+    action2 = 'opening'
+    client.removeClass('closed')
+  } else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
+    return
+  else {
+    action2 = 'closing'
+    action = "closed"
+    client.removeClass('open')
+  }
+
+	client.addClass(action2)
+	setTimeout(() => {
+	    client.removeClass(action2).addClass(action)
+	}, 2000)
+}
+
+const getCred = serviceName => {
+  let credForm = document.forms.getCred;
+
+  credForm.serviceName.value = serviceName;
+  credForm.start.click();
+}
+
+const credEvent = data => {
+  let status = data.status;
+
+	switch (status) {
+		case "begin":
+		case "complete":
+			break;
+
+		case "success":
+      let form = document.forms.getCred;
+			let cred = JSON.parse(form.credentials.value);
+      window[cred.name] = cred
+      form.credentials.value = '';
+      form.serviceName.value = '';
+
+			break;
+	}
+}
+
+getCred('rabbitmq');
 
 //NOTIFICATIONS  BADGE
 

@@ -95,11 +95,6 @@ body {
   margin-left: -15px;
 }
 
-.card {
-  z-index: 9999;
-}
-
-
 .ui-graphic-image {
   width: 52px;
   height: 52px;

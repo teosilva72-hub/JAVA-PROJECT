@@ -838,13 +838,13 @@ input.apple-switch:checked:before {
 
 .calls-client {
 	position: fixed;
-    height: 400px;
-    width: 280px;
-    right: 25px;
-    bottom: -335px;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 1%;
+  height: 400px;
+  width: 280px;
+  right: 25px;
+  bottom: -362px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 0 0 1% 1%;
 }
 
 .calls-client.hiding {
@@ -853,6 +853,10 @@ input.apple-switch:checked:before {
 
 .calls-client.showing {
 	animation: showCallbox 2s 1;
+}
+
+#rmtVol {
+  height: 31px;
 }
 
 @keyframes showCallbox {

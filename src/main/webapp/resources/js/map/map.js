@@ -14,8 +14,9 @@ setTimeout(() => {
 
 		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
 			if (n < 4)
+				init();
 
-	location.href = location.protocol + '//' + location.host + location.pathname
+	// location.href = location.protocol + '//' + location.host + location.pathname
 }
 			     
 	}, 3000)
@@ -56,6 +57,7 @@ const init = () => {
 		setEquipToolTip();
 		showGenericName();
 		initPMV();
+		initSOS()
 		statusColors();	
 	})
 }
@@ -324,8 +326,6 @@ $(function () {
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
-
-	initSOS()
 })
 
 function posReset() {

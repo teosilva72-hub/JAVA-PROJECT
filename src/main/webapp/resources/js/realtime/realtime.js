@@ -13,9 +13,11 @@ setTimeout(() => {
 
 		if (minute == 1 || minute == 16 || minute == 31 || minute == 46) {
 			if (n < 4)
+				init();
 
 	//location.href = location.protocol + '//' + location.host + location.pathname
-	  window.location.reload();
+	//  window.location.reload();
+
 }
 			     
 	}, 3000)
@@ -57,6 +59,7 @@ const init = () => {
 		setEquipToolTip();
 		showGenericName();
 		initPMV();
+		initSOS()
 		statusColors();
 	})
 }
@@ -235,8 +238,6 @@ $(function () {
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
-
-	initPMV();
 })
 
 function posReset() {
@@ -929,16 +930,6 @@ $('#kmEdit').mask('000+000'); 	// KM MASK
 });
 
 function statusColors() {
-	$('#sos2').find('.equip-status').css('background-color', 'orange');
-	$('#sos7').find('.equip-status').css('background-color', 'red');
-	$('#sos14').find('.equip-status').css('background-color', 'orange');
-	$('#sos16').find('.equip-status').css('background-color', 'red');
-	$('#sos22').find('.equip-status').css('background-color', 'orange');
-	$('#sos25').find('.equip-status').css('background-color', 'orange');
-	$('#sos33').find('.equip-status').css('background-color', 'red');
-	$('#sos37').find('.equip-status').css('background-color', 'orange');
-	$('#sos40').find('.equip-status').css('background-color', 'red');
-
 	$('#colas2').find('.equip-status').css('background-color', 'red');
 	$('#colas3').find('.equip-status').css('background-color', 'orange');
 	$('#colas5').find('.equip-status').css('background-color', 'orange');

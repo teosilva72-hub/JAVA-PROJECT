@@ -1,8 +1,4 @@
 const PING = 10000
-const ADDRESS = "192.168.0.51"
-const USER = "tracevia"
-const PASS = "trcv1234"
-const PORT = 15674
 
 let on_error =  function() {
     console.log('error');
@@ -87,45 +83,17 @@ function sleep(time) {
     return new Promise(r => setTimeout(r, time))
 }
 
-const getStomp = () => {
-	var ws = new WebSocket(`ws://${ADDRESS}:${PORT}/ws`);
+const getStomp = async () => {
+	while (!window.rabbitmq) {	
+		await sleep(100);
+	}
+
+	var ws = new WebSocket(`ws://${rabbitmq.address}:${rabbitmq.port}/ws`);
 	return Stomp.over(ws);
 }
 
-const consumeStates = (callback, exchange) => {
-	var client = getStomp();
-	var count = 0
-	
-	var on_connect = function() {
-		count = 0
-		client.subscribe(`/exchange/sos_${exchange}/sos_${exchange}`, callback)
-	};
-	
-	var on_error =  function() {
-	    console.log('error');
-		count++
-
-		if (count > 3)
-			setTimeout(() => {
-				consumeStates((message) => {
-					response = JSON.parse(message.body)
-					changeStates(response)
-				}, "states")
-			}, 500)
-		else
-			consumeStates((message) => {
-				response = JSON.parse(message.body)
-				changeStates(response)
-			}, "states")
-	};
-		
-	client.heartbeat.outgoing = PING
-
-	client.connect(USER, PASS, on_connect, on_error, '/');
-}
-
-const consume = ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default } = {}) => {
-	var client = getStomp();
+const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
+	var client = await getStomp();
 	var count = 0
 
 	var on_connect = function() {
@@ -145,19 +113,29 @@ const consume = ({ callback_calls = callback_calls_default, callback_alarms = ca
 
 		if (count > 3)
 			setTimeout(() => {
-				consume()
+				consume({
+					callback_states: callback_states,
+					callback_alarms: callback_alarms,
+					callback_calls: callback_calls,
+				})
 			}, 1000)
 		else
-			consume()
+		consume({
+			callback_states: callback_states,
+			callback_alarms: callback_alarms,
+			callback_calls: callback_calls,
+		})
 	};
 
 	client.heartbeat.outgoing = PING
 
-	client.connect(USER, PASS, on_connect, on_error, '/');
+	if (!debug)
+		client.debug = null
+	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const connectSOS = async function(request) {	
-	let client = getStomp();
+const connectSOS = async function(request, debug) {	
+	let client = await getStomp();
 	let response = null;
 	
 	client.onreceive = function(m) {
@@ -169,7 +147,9 @@ const connectSOS = async function(request) {
 		client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest", durable: false}, `"${request}"`)
 	};
 
-	client.connect(USER, PASS, on_connect, on_error, '/');
+	if (!debug)
+		client.debug = null
+	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 
 	while (true) {	
 		if (response != null && response != undefined)	
