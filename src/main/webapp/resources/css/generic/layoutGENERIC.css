@@ -72,6 +72,10 @@
   background-color: orange;
 }
 
+.equip-status.alarm {
+  background-color: orange;
+}
+
 .equip-image {
   margin-top: -17%;
   width: 100%;
