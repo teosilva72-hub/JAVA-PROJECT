@@ -7,6 +7,7 @@ let on_error =  function() {
 const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
+	let equip = $(`#${name.toLowerCase()}`)
 	
 	switch (status) {
 		case 1:
@@ -30,7 +31,12 @@ const changeStates = response => {
 			break
 	}
 
-	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
+	if (status == 'alarm')
+		equip.addClass('call-box-alarm')
+	else
+		equip.removeClass('call-box-alarm')
+
+	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
 const getEquipFromID = async id => {
@@ -66,6 +72,9 @@ const callsIncoming = async response => {
 }
 
 const signaling = response => {
+	if (response.AlarmTypeID > 3)
+		return
+
 	let equip = sosEquip[response.EquipmentID];
 	let active = true;
 	let alarm = $(`#${equip.toLowerCase()} #Alarm${equip}`)
@@ -195,7 +204,7 @@ const initSOS = async () => {
 	for (const a of alarms)
 		signaling(a)
 
-	consume({debug: true})
+	consume()
 }
 
 // GetAllEquipmentStates
