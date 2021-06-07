@@ -111,19 +111,6 @@ const callback_calls_default = message => {
 	callsIncoming(response)
 }
 
-function sleep(time) {
-    return new Promise(r => setTimeout(r, time))
-}
-
-const getStomp = async () => {
-	while (!window.rabbitmq) {	
-		await sleep(100);
-	}
-
-	var ws = new WebSocket(`wss://${rabbitmq.address}:${rabbitmq.port}/ws`);
-	return Stomp.over(ws);
-}
-
 const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
 	var count = 0
@@ -167,27 +154,7 @@ const consume = async ({ callback_calls = callback_calls_default, callback_alarm
 }
 
 const connectSOS = async function(request, debug) {	
-	let client = await getStomp();
-	let response = null;
-	
-	client.onreceive = function(m) {
-		response = JSON.parse(m.body);
-		client.disconnect()
-	}
-	
-	var on_connect = function() {
-		client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest", durable: false}, `"${request}"`)
-	};
-
-	if (!debug)
-		client.debug = null
-	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
-
-	while (true) {	
-		if (response != null && response != undefined)	
-			return response
-		await sleep(800);
-	}
+	return await sendMsgStomp(request, 'ClientRequest', debug)
 	
 }
 

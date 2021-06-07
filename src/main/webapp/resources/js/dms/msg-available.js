@@ -1,6 +1,6 @@
 import init, { PMV, PaginaType } from "/resources/pkg/project.js";
 
-let msg, toast, pmvActive, pageActive;
+let msg, pmvActive, pageActive;
 let listPMV = [];
 
 async function main() {

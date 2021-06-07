@@ -4,6 +4,59 @@ let listPMV;
 
 window.reloadPMV = 0;
 
+const connectDMS = async (request, debug) => {
+	return await sendMsgStomp(request, 'DMS_Request', debug)
+}
+
+const changeStatus = response => {
+	let tableStyle = $(`#dms${response.id} .tableStyle`)
+	
+	switch (response.statusId) {
+		case 0:
+			tableStyle.removeClass('on')
+			break;
+
+		case 1:
+			tableStyle.addClass('on')
+			break;
+	
+		default:
+			break;
+	}
+}
+
+const callback = response => {
+	let r = JSON.parse(response);
+	changeStatus(r);
+}
+
+const consumeDMS = async debug => {
+	var client = await getStomp();
+	var count = 0;
+
+	var on_connect = function() {
+		count = 0;
+
+		client.subscribe(`/exchange/dms_states/dms_states`, callback)
+	};
+
+	var on_error =  function() {
+	    console.log('error');
+		count++
+
+		if (count > 3)
+			setTimeout(() => {
+				consumeDMS(debug)
+			}, 1000)
+		else
+			consumeDMS(debug)
+	};
+
+	if (!debug)
+		client.debug = null
+	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
+}
+
 async function initPMV() {
 	await init();
 	const animationPMV = (img1, img2, message, pmv) => {
@@ -122,6 +175,12 @@ async function initPMV() {
 	$(function () {
 		window.reloadPMV++;
 
+		connectDMS('GetAllEquipmentStatus').then(response => {
+			for (const r of response)
+				changeStatus(r);
+		})
+
+		consumeDMS();
 		collectPMV();
 		initAnimation();
 	})
