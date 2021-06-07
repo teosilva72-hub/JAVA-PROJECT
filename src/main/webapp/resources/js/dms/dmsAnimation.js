@@ -26,7 +26,7 @@ const changeStatus = response => {
 }
 
 const callback = response => {
-	let r = JSON.parse(response);
+	let r = JSON.parse(response.body);
 	changeStatus(r);
 }
 
