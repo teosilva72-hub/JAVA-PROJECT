@@ -7,6 +7,7 @@ let on_error =  function() {
 const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
+	let equip = $(`#${name.toLowerCase()}`)
 	
 	switch (status) {
 		case 1:
@@ -18,7 +19,7 @@ const changeStates = response => {
 			break
 		
 		case 4:
-			status = 'alert'
+			status = 'alarm'
 			break
 			
 		case 5:
@@ -30,7 +31,12 @@ const changeStates = response => {
 			break
 	}
 
-	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
+	if (status == 'alarm')
+		equip.addClass('call-box-alarm')
+	else
+		equip.removeClass('call-box-alarm')
+
+	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
 const getEquipFromID = async id => {
@@ -42,11 +48,11 @@ const getEquipFromID = async id => {
 }
 
 const callsIncoming = async response => {
-	let equip = await getEquipFromID(response.EquipmentID)
+	let equip = sosEquip[response.EquipmentID]
 	let status = response.CallStateID
 
 
-	let elmt = $(`#${equip.MasterName.toLowerCase()}`)
+	let elmt = $(`#${equip.toLowerCase()}`)
 	
 	switch (status) {
 		case 1: // Atendido
@@ -65,6 +71,31 @@ const callsIncoming = async response => {
 	}
 }
 
+const signaling = response => {
+	if (response.AlarmTypeID > 3)
+		return
+
+	let equip = sosEquip[response.EquipmentID];
+	let active = true;
+	let alarm = $(`#${equip.toLowerCase()} #Alarm${equip}`)
+	let html = alarm.find(`div`)
+	let alarms = html.children()
+	let door = alarms.filter(`span[door=${response.Value}]`)
+
+	if (response.EndDate)
+		active = false;
+	
+	if (door.length == 0 && active)
+		html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+	else if (door.length == 1 && !active)
+		door.remove();
+
+	if (html.children().length > 0)
+		alarm.addClass('d-flex').removeClass('d-none')
+	else
+		alarm.addClass('d-none').removeClass('d-flex')
+}
+
 const callback_states_default = message => {
 	let response = JSON.parse(message.body)
 	changeStates(response)
@@ -72,6 +103,7 @@ const callback_states_default = message => {
 
 const callback_alarms_default = message => {
 	let response = JSON.parse(message.body)
+	signaling(response)
 }
 
 const callback_calls_default = message => {
@@ -128,14 +160,16 @@ const connectSOS = async function(request, debug) {
 
 const initSOS = async () => {
 	let response = await connectSOS('GetAllEquipmentStates')
+	let alarms = await connectSOS('GetAllActiveAlarms')
+	window.sosEquip = {};
 
-	if (Array.isArray(response)) {
-		for (const r of response) {
-			changeStates(r)
-		}
-	} else {
-		changeStates(response)
+	for (const r of response) {
+		changeStates(r)
+		sosEquip[r.EquipmentID] = r.EquipmentName
 	}
+
+	for (const a of alarms)
+		signaling(a)
 
 	consume()
 }
