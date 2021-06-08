@@ -32,28 +32,18 @@ const callback = response => {
 
 const consumeDMS = async debug => {
 	var client = await getStomp();
-	var count = 0;
 
 	var on_connect = function() {
-		count = 0;
-
 		client.subscribe(`/exchange/dms_states/dms_states`, callback)
 	};
 
 	var on_error =  function() {
 	    console.log('error');
-		count++
-
-		if (count > 3)
-			setTimeout(() => {
-				consumeDMS(debug)
-			}, 1000)
-		else
-			consumeDMS(debug)
 	};
 
 	if (!debug)
 		client.debug = null
+	client.reconnect_delay = 1000;
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 

@@ -113,11 +113,8 @@ const callback_calls_default = message => {
 
 const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
-	var count = 0
 
 	var on_connect = function() {
-		count = 0
-
 		if (typeof callback_states == "function")
 			client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
 		if (typeof callback_alarms == "function")
@@ -128,28 +125,13 @@ const consume = async ({ callback_calls = callback_calls_default, callback_alarm
 
 	var on_error =  function() {
 	    console.log('error');
-		count++
-
-		if (count > 3)
-			setTimeout(() => {
-				consume({
-					callback_states: callback_states,
-					callback_alarms: callback_alarms,
-					callback_calls: callback_calls,
-				})
-			}, 1000)
-		else
-		consume({
-			callback_states: callback_states,
-			callback_alarms: callback_alarms,
-			callback_calls: callback_calls,
-		})
 	};
 
 	client.heartbeat.outgoing = PING
 
 	if (!debug)
 		client.debug = null
+	client.reconnect_delay = 1000;
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
