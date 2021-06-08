@@ -23,6 +23,64 @@
 
 	<ui:define name="main-content">
 	
+	<!-- ALERTS POSITION -->
+		
+		<div class="messages">
+
+		<div class="alert alert-success" role="alert" style="display: none;" id="realsave">
+			<p class="textAlert">#{mapLabels.map_alert_success}.</p>
+		</div>
+
+		<div class="alert alert-danger" role="alert" style="display: none;" id="realcancel">
+			<p class="textAlert">#{mapLabels.map_alert_cancel}</p>
+		</div>
+		
+		<!--  ******************************************************************************************************* -->
+		
+		<!-- SAVE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equip-save">
+			<p class="textAlert">#{mapLabels.map_alert_save_equipment}</p>
+		</div>
+		
+		<!-- SAVE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equip-save-error">
+			<p class="textAlert">#{mapLabels.map_alert_save_error_equipment} : #{mapLabels.map_alert_save_error_already}</p>
+		</div>
+		
+		<!--  ******************************************************************************************************* -->
+		
+		<!-- UPDATE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equip-update">
+			<p class="textAlert">#{mapLabels.map_alert_update_equipment}</p>
+		</div>
+		
+		<!-- UPDATE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equip-update-error">
+			<p class="textAlert">#{mapLabels.map_alert_update_error_equipment}</p>
+		</div>
+		
+	    <!--  ******************************************************************************************************* -->
+		
+		<!-- DELETE EQUIP -->
+		<div class="alert alert-success" role="alert" style="display: none;"
+			id="equip-delete">
+			<p class="textAlert">#{mapLabels.map_alert_delete_equipment}</p>
+		</div>
+		
+		<!-- DELETE EQUIP ERROR -->
+		<div class="alert alert-danger" role="alert" style="display: none;" 
+			id="equip-delete-error">
+			<p class="textAlert">#{mapLabels.map_alert_delete_error_equipment}</p>
+		</div>
+
+       <!--  ******************************************************************************************************* -->
+       
+       </div>  
+       
 		<!-- WEB ZOOM -->
 		<div class="map-options">
 			<div id="topButtons">
