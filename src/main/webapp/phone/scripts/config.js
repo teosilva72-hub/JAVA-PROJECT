@@ -10,11 +10,11 @@ connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(response => {
         //  Password
         "Pass" : response.SIPPassword,
         //  Auth Realm
-        "Realm"   : "192.168.1.85",
+        "Realm"   : "177.149.87.17",
         // Display Name
         "Display" : loginAccount.user,
         // WebSocket URL
-        "WSServer"  : "wss://192.168.1.85:8089/ws"
+        "WSServer"  : "wss://177.149.87.17:8089/ws"
     };
 
     return connectSOS("GetAllUsers")
