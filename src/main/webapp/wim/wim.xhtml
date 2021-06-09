@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	<ui:define name="head">
+		<title>WIM</title>
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/wim" name="style.css" />
+		<h:outputStylesheet library="css/wim" name="styleWim.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/wim" name="wim_controller.js" />
+	</ui:define>
+	<ui:define name="main-content">
+
+		<div id="preloader">
+			<!-- inicio da animação -->
+			<div class="inner">
+				<div class="bolas">
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+		<div class="row" onselectstart="return false">
+			<!-- row -->
+			<div class="col-md-3 column1">
+				<div class="contendo">
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-warning fourth btn1"
+								data-toggle="modal" data-target="#modalForm">Search</button>
+						</div>
+					</div>
+					<hr></hr>
+					<h:form id="form-table" prependId="false">
+						<div class="table">
+							<!-- TABELA -->
+							<h:dataTable id="wim-table" var="data" disabled="true"
+								value="#{wimReport.list}"
+								styleClass="table table-sm custom-table table-striped table-dark table-hover"
+								cellspacing="0" width="100" headerClass="custom-table-header"
+								columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+								<h:column>
+									<f:facet name="header">Nº Evento</f:facet>
+									<h:outputText value="#{data.serialNumber}"
+										style="font-size: 12px; " />
+								</h:column>
+								<h:column>
+									<f:facet name="header">Date</f:facet>
+									<h:outputText value="#{data.data}" style="font-size: 12px; " />
+								</h:column>
+							</h:dataTable>
+						</div>
+					</h:form>
+					<h:form id="idTable" prependId="false">
+						<h:inputHidden id="event" value="#{wimReport.rowkey}" />
+						<h:inputHidden id="checked" value="#{wimReport.selectedRow}" />
+						<h:commandButton type="button" class="btn btn-primary"
+							style="display: none" value="search" id="btnTable">
+							<f:ajax execute="@form" render=":idTable :dados1 :dados2 :dados3"
+								listener="#{wimReport.getInfo}"></f:ajax>
+						</h:commandButton>
+					</h:form>
+				</div>
+			</div>
+			<!-- column 1-->
+
+			<div class="col-md-6 ">
+				<div class="jumbotron">
+					<h4 class="titleColumn2 text-center">Viewing vehicle
+						information</h4>
+					<hr></hr>
+					<h:form id="dados1" prependId="false">
+						<div class="row">
+							<div class="col-3">
+								<span class="p1 text-center">Serial Nº</span>
+								<div class="card cardS alert-dark">#{wimReport.date.seqN}</div>
+							</div>
+							<div class="col-6">
+								<span class="p1">Date|Hour</span>
+								<div class="card cardS alert-dark">#{wimReport.date.data}</div>
+							</div>
+							<div class="col-3">
+								<span class="p1">Class</span>
+								<div class="card cardS alert-dark">#{wimReport.date.classe}</div>
+							</div>
+							<div class="col-3">
+								<span class="p1">Nº of axes</span>
+								<div class="card cardS alert-dark">#{wimReport.date.numberAxes}</div>
+							</div>
+
+							<div class="col-3">
+								<span class="p1">Speed</span>
+								<div class="card cardS alert-dark">#{wimReport.date.speed}</div>
+							</div>
+							<div class="col-3">
+								<span class="p1">PBT Total:</span>
+								<div class="card cardS alert-dark">#{wimReport.date.pbtTotal}</div>
+							</div>
+							<div class="col-3">
+								<span class="p1">Size</span>
+								<div class="card cardS alert-dark">-</div>
+							</div>
+						</div>
+					</h:form>
+					<hr></hr>
+					<h:form id="dados2" prependId="false">
+						<div class="row" onselectstart="return false" ondragstart="return false;">
+							<div class="col-lg-6">
+								<img class="img" id="img" src="#{wimReport.image1}" alt="" />
+							</div>
+							<div class="col-lg-6">
+								<img class="img" id="img" src="#{wimReport.image2}" alt="" />
+							</div>
+							<div class="col-md-12">
+								<img class="img3" src="#{wimReport.silueta}" alt="" />
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+			<!-- column 2 -->
+			<div class="col-md-3">
+				<h:form id="dados3" prependId="false">
+					<div class="row">
+						<div class="col column3">
+							<h5 class="titleColumn2-1 text-center">Weight and Distance</h5>
+							<hr></hr>
+							<div class="row">
+								<div class="col-md-2 tt">Axes</div>
+								<div class="col-md-3 tt">Type</div>
+								<div class="col-md-3 tt">Weight</div>
+								<div class="col-md-3 tt">Dst Axes</div>
+							</div>
+							<div class="row">
+								<c:forEach var="value" begin="1" end="9" id="dados3">
+									<div class="col-md-2">
+										<div class="card alert-dark eixos">#{value}</div>
+									</div>
+									<div class="col-md-3">
+										<div class="card alert-dark eixos"></div>
+									</div>
+									<div class="col-md-3">
+										<div class="card alert-dark eixos">#{wimReport.weight[value]}</div>
+									</div>
+									<div class="col-md-3">
+										<div class="card alert-dark eixos">#{wimReport.dstAxes[value]}</div>
+									</div>
+								</c:forEach>
+							</div>
+							<hr></hr>
+							<div class="card cardWeight">
+								<h5 class="text-center titleColumn2-2">Weight indicator</h5>
+								<div class="col-md-12">
+									<div class="progress">
+										<div class="progress-bar size" role="progressbar"
+											aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">#{wimReport.rateTxt}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</div>
+		<h:form id="formId" prependId="false">
+			<!-- Modal -->
+			<div class="modal fade" id="modalForm" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="titleModal">Modal title</h5>
+							<h6 class="modal-title" id="cheked" style="display: none;">*Check
+								that all fields are filled in correctly!</h6>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true" onclick="resetForm()">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-4">
+									<span class="textT">Date Initial</span>
+									<h:inputText class="form-control inputDesign ll"
+										id="dateInitial" value="#{wimReport.dateInitial}"
+										pt:placeholder="yyyy-dd-mm" />
+								</div>
+								<div class="col-md-4">
+									<span class="textT">Hour Initial</span>
+									<h:selectOneMenu value="#{wimReport.hourInitial}"
+										class="form-control inputDesign ll" id="hourInitial">
+										<f:selectItem itemLabel="Hour" itemValue="" />
+										<f:selectItems value="#{wimReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<span class="textT">Minute Initial</span>
+									<h:selectOneMenu value="#{wimReport.minuteInitial}"
+										class="form-control inputDesign ll" id="minuteInitial">
+										<f:selectItem itemLabel="Minute" itemValue="" />
+										<f:selectItems value="#{wimReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+
+								<div class="col-md-4">
+									<hr></hr>
+									<span class="textT">Date Final</span>
+									<h:inputText class="form-control inputDesign ll"
+										id="dateFinal" value="#{wimReport.dateFinal}"
+										pt:placeholder="yyyy-dd-mm" />
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span class="textT">Hour Final</span>
+									<h:selectOneMenu value="#{wimReport.hourFinal}" id="hourFinal"
+										class="form-control inputDesign ll">
+										<f:selectItem itemLabel="Hour" itemValue="" />
+										<f:selectItems value="#{wimReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span class="textT">Minute Final</span>
+									<h:selectOneMenu value="#{wimReport.minuteFinal}"
+										id="minuteFinal" class="form-control inputDesign ll">
+										<f:selectItem itemLabel="Minute" itemValue="" />
+										<f:selectItems value="#{wimReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span class="textT">Classes</span>
+									<h:selectOneMenu value="#{wimReport.classs}" id="classe"
+										class="form-control inputDesign">
+										<f:selectItem itemLabel="Classe" itemValue="" />
+										<f:selectItems value="#{wimReport.classes}" />
+									</h:selectOneMenu>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal" onclick="resetForm()">Close</button>
+							<button type="button" class="btn btn-secondary"
+								onclick="verif('#btnSubmit')">Search</button>
+							<h:commandButton type="button" class="btn btn-primary"
+								style="display: none" value="search" id="btnSubmit">
+								<f:ajax execute="@form" render=":formId :form-table"
+									listener="#{wimReport.search}"></f:ajax>
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+		<!-- scripts -->
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+		<script>
+			
+		</script>
+	</ui:define>
+</ui:composition>

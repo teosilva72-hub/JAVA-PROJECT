@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.faces.model.SelectItem;
+
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.wim.WimData;
@@ -13,12 +15,95 @@ import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class WIMDAO {
 	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	private PreparedStatement ps, ps1;
+	private ResultSet rs, rs1;
 	WimData data = new WimData();
 	
-	/////////////////INICIO/////////////////////////////////////////////
-	/////////WIM REALTIME//////////////////////////////////////////////
+	//////////////////////WIM RELATORIO//////////////////////////////////////////////
+	public ArrayList<WimData>search(String start, String end, String classe) throws Exception {
+		String search = "SELECT data, seqN FROM wim_vbv WHERE data BETWEEN'"+ start +"'AND'"+ end +"'AND classe ='"+ classe+"'";
+		String search1 = "SELECT data, seqN FROM wim_vbv WHERE data BETWEEN'"+ start +"'AND'"+ end+"'";
+		ArrayList<WimData> list = new ArrayList<WimData>();
+		try {
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(search);
+			ps1 = conn.prepareStatement(search1);
+			rs = ps.executeQuery();
+			rs1 = ps1.executeQuery();
+			if (rs.isBeforeFirst() && classe != null) {
+				while (rs.next()) {
+					WimData data = new WimData();			
+						data.setData(rs.getString(1));
+						data.setSerialNumber(rs.getString(2));
+						list.add(data);
+				}				
+			 }else {
+				 while (rs1.next()) {
+						WimData data = new WimData();			
+							data.setData(rs1.getString(1));
+							data.setSerialNumber(rs1.getString(2));
+							list.add(data);
+					}				
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public WimData searchId(int id) throws Exception {
+
+		WimData search = new WimData();
+		
+		//Script dos atributos que as infor��es ser�o requisitadas
+		String query = "SELECT seqN, data, classe, axlNumber, speed, gross, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W," + 
+				"axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D FROM wim_vbv WHERE seqN ='"+id+"'";
+		DateTimeApplication dtm = new DateTimeApplication();
+
+		try {
+
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			if(rs != null) {
+				while(rs.next()) {
+					search.setSeqN(rs.getString(1));
+					search.setData(rs.getString(2));
+					search.setClasse(rs.getString(3));
+					search.setNumberAxes(rs.getString(4));
+					search.setSpeed(rs.getString(5));
+					search.setPbtTotal(rs.getString(6));
+					search.setAxl1W(rs.getString(7));
+					search.setAxl2W(rs.getString(8));
+					search.setAxl3W(rs.getString(9));
+					search.setAxl4W(rs.getString(10));
+					search.setAxl5W(rs.getString(11));
+					search.setAxl6W(rs.getString(12));
+					search.setAxl7W(rs.getString(13));
+					search.setAxl8W(rs.getString(14));
+					search.setAxl9W(rs.getString(15));
+					search.setAxl2D(rs.getString(16));
+					search.setAxl3D(rs.getString(17));
+					search.setAxl4D(rs.getString(18));
+					search.setAxl5D(rs.getString(19));
+					search.setAxl6D(rs.getString(20));
+					search.setAxl7D(rs.getString(21));
+					search.setAxl8D(rs.getString(22));
+					search.setAxl9D(rs.getString(23));
+				}
+
+			}
+		}catch(SQLException sqlbuscar) {
+			sqlbuscar.printStackTrace();
+
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+		//passando os valores dos atributos para a vari�vel occ
+		return search;
+
+	}
+	/////////WIM REALTIME////////////////////////////////////////////////////////////
 	public boolean updateFilePath(String data, String classe, int axlNumber, int axl1w, int axl2w, int axl3w, int axl4w,
 			int axl5w, int axl6w, int axl7w, int axl8w, int axl9w, int axl2d, int axl3d, int axl4d, int axl5d,
 			int axl6d, int axl7d, int axl8d, int axl9d, int gross, int speed) throws Exception {

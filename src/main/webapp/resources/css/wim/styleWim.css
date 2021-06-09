@@ -1,0 +1,65 @@
+.jumbotron {
+	margin-right: 44px;
+	margin-top: -10px;
+	height: 100vh;
+	background-color: transparent;
+	margin-left: -12px;
+}
+
+.contendo {
+	margin-left: 1%;
+}
+
+.textT {
+	font-weight: 999;
+	color: #343a40;
+	margin-top: 5px;
+	font-size: smaller;
+}
+.inputDesign{
+	margin-top: 5px;
+}
+.column3 {
+	margin-top: 13px;
+	background: transparent;
+	margin-left: -40px;
+}
+
+.eixos {
+	margin-top: 13px;
+}
+.input-field, .inputDesign {
+	color: #343a40;
+	font-weight: 999;
+	text-align: center;
+}
+.ll.error {
+	border: solid 2px red;
+}
+
+.ll.ok {
+	border: solid 2px green;
+}
+
+.btn1 {
+	margin-top: -1px;
+}
+.msgErro{
+	display: none;
+}
+.msgErro.active{
+	display: block;
+	color: red;
+	font-family: 'arial black';
+	font-weight: 999;
+	text-align: center;
+}
+.modal-color {
+    background-color: #343a40;
+}
+.img{
+	height: 190px;
+}
+.img3{
+	height: 150px;
+}
