@@ -1,4 +1,3 @@
-
 $(function () {
   $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
@@ -116,6 +115,33 @@ const showStatesCallbox = action => {
 	}, 2000)
 }
 
+const getCred = serviceName => {
+  let credForm = document.forms.getCred;
+
+  credForm.serviceName.value = serviceName;
+  credForm.start.click();
+}
+
+const credEvent = data => {
+  let status = data.status;
+
+	switch (status) {
+		case "begin":
+		case "complete":
+			break;
+
+		case "success":
+      let form = document.forms.getCred;
+			let cred = JSON.parse(form.credentials.value);
+      window[cred.name] = cred
+      form.credentials.value = '';
+      form.serviceName.value = '';
+
+			break;
+	}
+}
+
+getCred('rabbitmq');
 
 //NOTIFICATIONS  BADGE
 
