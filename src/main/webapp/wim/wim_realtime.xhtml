@@ -26,14 +26,11 @@
 		<h:outputScript library="js/wim" name="wim_realtime_controller.js" />
 	</ui:define>
 	<ui:define name="main-content">
-
 		<h:form id="update">
 			<div class="dropdown">
-
 				<button class="btn btn-secondary dropdown-toggle" type="button"
 					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false">Dropdown button</button>
-				
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 				<h:commandButton class="dropdown-item" value="Onibus e2">
 					<f:ajax execute="@form" listener="#{wimController.onibus}"
@@ -75,7 +72,6 @@
 						<f:ajax execute="@form" listener="#{wimController.e9}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-
 				</div>
 			</div>
 			<div class="row" ondragstart="return false;"
@@ -86,7 +82,6 @@
 					<div class="jumbotron">
 						<h4 class="titleColumn2 text-center">Viewing vehicle
 							information</h4>
-
 						<hr></hr>
 						<div class="row rowViewing">
 							<div class="col-2">
