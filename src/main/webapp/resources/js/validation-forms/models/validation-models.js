@@ -172,6 +172,7 @@ let verif = (form, success) => {
  * @copyright Tracevia S/A 2021 
  * @param {string} id  element id to check changes
  * @returns {void}
+ * 
 **/
 
 function validateOnChange(id) {
@@ -253,6 +254,7 @@ function removeValidationMultiselectIcon(btn, elem, defaultMessage, array) {
  * @param {string} formId form id to reset validation
  * @param {string} modalId modal id to hide 
  * @returns {void}
+ * 
 **/
 
 function cleanValidationOnModalClose(formId, modalId) {

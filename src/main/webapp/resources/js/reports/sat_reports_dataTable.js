@@ -155,7 +155,8 @@ $(table).DataTable({
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo": false,
-"deferRender": true
+"deferRender": true,
+"ordering": false
  });
   $('.dataTables_length').removeClass('bs-select');
  }

@@ -141,8 +141,6 @@ const credEvent = data => {
 	}
 }
 
-getCred('rabbitmq');
-
 //NOTIFICATIONS  BADGE
 
 //Accept a Call Button

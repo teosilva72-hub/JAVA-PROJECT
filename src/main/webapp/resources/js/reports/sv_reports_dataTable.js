@@ -1,6 +1,6 @@
 //Call Datatables jQuery plugin
 $(document).ready(function () {
-$('#sv-years-table').DataTable({			  	   	
+$('#sv-year-table').DataTable({			  	   	
 "scrollY": "50.3vh",
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
@@ -53,7 +53,8 @@ $(table).DataTable({
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo" : false,
-"deferRender": true
+"deferRender": true,
+"ordering": false
 });
 $('.dataTables_length').removeClass('bs-select');
 }

@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.charts.AxisCrosses;
 import org.apache.poi.ss.usermodel.charts.AxisPosition;
@@ -518,7 +517,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		if(period.equals("24 hours")) {
 
@@ -796,7 +795,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 
 		if(period.equals("24 hours") || period.equals("month") || period.equals("year")) {
@@ -1066,7 +1065,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 
 		if(period.equals("24 hours") || period.equals("month") || period.equals("year")) {
@@ -1347,7 +1346,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		if(period.equals("24 hours")) {
 
@@ -1468,14 +1467,14 @@ public class ExcelModels {
 			/* FIRST GROUP DATA */
 
 			spreadSheet.createRows(sheet, row, ini, total); // Criar o n�mero de linhas	
-
+				
 			spreadSheet.fillDataSingleDirections(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, 1); // Preencher a colunas
 
 			spreadSheet.createCells(sheet, row, 0, length, rowMax, rowMax);			 
 			spreadSheet.getCell(sheet, row, rowMax, 0, localeExcel.getStringKey("excel_report_excel_total"));
 
-			spreadSheet.totalExcel(sheet, row, period, startColumn, length, ini, rowMax);	   
-
+		    spreadSheet.totalExcel(sheet, row, period, startColumn, length, ini, rowMax);	
+						
 			spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 0);	
 			spreadSheet.setStyle(sheet, row, rowMax, rowMax, tableHeaderStyle, 0, 0);
 			spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol);
@@ -1493,19 +1492,19 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir1, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o n�mero de linhas	
-
+			spreadSheet.createRows(sheet, row,  rowDataDir1, totalDir1); // Criar o n�mero de linhas
+						
 			spreadSheet.fillDataSingleDirectionsDir1(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir1, registerLength, iniDir1); // Preencher a colunas
 
 			spreadSheet.createCells(sheet, row, 0, length, rowMaxDir1, rowMaxDir1);			 
 			spreadSheet.getCell(sheet, row, rowMaxDir1, 0, localeExcel.getStringKey("excel_report_excel_total"));
 
-			spreadSheet.totalExcel(sheet, row, period, startColumn, length, rowDataDir1, rowMaxDir1);	   
-
+			spreadSheet.totalExcel(sheet, row, period, startColumn, length, rowDataDir1, rowMaxDir1);	 
+						
 			spreadSheet.setStyle(sheet, row, rowDataDir1, rowMaxDir1, dateHourStyle, 0, 0);	
-			spreadSheet.setStyle(sheet, row, rowMaxDir1, rowMaxDir1, tableHeaderStyle, 0, 0);
-			spreadSheet.setStyle(sheet, row, rowDataDir1, rowMaxDir1, standardStyle, cellMinCol, cellMaxCol);
-
+			spreadSheet.setStyle(sheet, row, rowMaxDir1, rowMaxDir1, tableHeaderStyle, 0, 0);		
+			spreadSheet.setStyle(sheet, row, rowDataDir1, rowMaxDir1, standardStyle, cellMinCol, cellMaxCol);			
+			
 			/* THIRD GROUP DATA */
 
 			spreadSheet.createRow(sheet, row, dir2Pos);	
@@ -1519,7 +1518,7 @@ public class ExcelModels {
 			spreadSheet.createHeaderCells(sheet, row, rowHeaderDir2, headerCells, columnsHeader);
 			spreadSheet.setStyleHeaderBody(sheet, row, rowHeaderDir2, headerCells, length, tableHeaderStyle);
 
-			spreadSheet.createRows(sheet, row,  rowDataDir2, totalDir2); // Criar o n�mero de linhas	
+			spreadSheet.createRows(sheet, row, rowDataDir2, totalDir2); // Criar o n�mero de linhas	
 
 			spreadSheet.fillDataSingleDirectionsDir2(sheet, row, cellData, resultQuery, period, startColumn, length, rowDataDir2, registerLength, iniDir2); // Preencher a colunas
 
@@ -1764,7 +1763,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		if(period.equals("24 hours")) {
 
@@ -2302,7 +2301,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		//Mesclar C�lulas		
 		for(int i = 0; i < mergeCells.length; i++)
@@ -2369,7 +2368,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		String sheetName = "Teste";
 		sheet = workbook.createSheet(sheetName);	
@@ -2724,7 +2723,7 @@ public class ExcelModels {
 
 		//Excel Cells - header 
 		headerCells = new Cell[length];
-		cellData = new Cell[length][registers];
+		cellData = new Cell[registers][length];
 
 		String sheetName =  localeExcel.getStringKey("excel_single_sat_sheet_base_name");
 		sheet = workbook.createSheet(sheetName);
@@ -2749,9 +2748,9 @@ public class ExcelModels {
 
 		//ROW DATA CREATION
 		spreadSheet.createRows(sheet, row, ini, rowMax);		
-		spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 0, 1 , 9, ini, registerLength);
+		//spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 0, 1 , 9, ini, registerLength);
 
-		spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 8, 10 , 12, ini, registerLength);
+		//spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 8, 10 , 12, ini, registerLength);
 
 		//TOTAL
 		spreadSheet.createCells(sheet, row, 2, 2, rowMax, rowMax);			 

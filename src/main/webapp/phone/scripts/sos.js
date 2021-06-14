@@ -1,5 +1,7 @@
 const PING = 10000
 
+getCred('rabbitmq'); // Rabbit init
+
 let on_error =  function() {
     console.log('error');
 };

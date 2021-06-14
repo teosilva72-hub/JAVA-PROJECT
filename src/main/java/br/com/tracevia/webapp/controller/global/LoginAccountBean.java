@@ -36,7 +36,8 @@ public class LoginAccountBean {
 
 	private UserAccount user;
 	private UserAccount login;
-	private String credentials;
+	private String credentials;    
+
 	private static final String EMAIL_PATTERN = "[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
 
 	private static final String LOGS_ERROR_PATH = "C:/Tracevia/software/logs/error";
@@ -45,7 +46,8 @@ public class LoginAccountBean {
 
 	LoadStartupModules load;
 	String mapUI, linearMapUI;
-	String plaque;
+	String plaque;	
+	boolean mapEnabled, reportsLLEnabled;
 
 	InetAddress addr;
 
@@ -112,6 +114,22 @@ public class LoginAccountBean {
 
 	public void setLinearMapUI(String linearMapUI) {
 		this.linearMapUI = linearMapUI;
+	}
+
+	public boolean getMapEnabled() {
+		return mapEnabled;
+	}
+
+	public void setMapEnabled(boolean mapEnabled) {
+		this.mapEnabled = mapEnabled;
+	}
+
+	public boolean getReportsLLEnabled() {
+		return reportsLLEnabled;
+	}
+
+	public void setReportsLLEnabled(boolean reportsLLEnabled) {
+		this.reportsLLEnabled = reportsLLEnabled;
 	}
 
 	@PostConstruct
@@ -190,6 +208,8 @@ public class LoginAccountBean {
 					// NOT IN USE
 					mapUI = RoadConcessionaire.mapUI; // Load Map
 					linearMapUI = RoadConcessionaire.linearMapUI;
+					mapEnabled = RoadConcessionaire.mapEnabled;
+					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 					plaque = RoadConcessionaire.plaque;
 
@@ -221,7 +241,11 @@ public class LoginAccountBean {
 							load.startupComponents(); // Inicializar Componentes
 							mapUI = RoadConcessionaire.mapUI; // Load Map
 							linearMapUI = RoadConcessionaire.linearMapUI;
+							mapEnabled = RoadConcessionaire.mapEnabled;
+							reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
+							plaque = RoadConcessionaire.plaque;
+					
 							return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
 						} else {

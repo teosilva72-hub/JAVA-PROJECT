@@ -15,12 +15,12 @@ import org.primefaces.model.chart.LineChartSeries;
 public class LineChartBean {
 	
 
-    private String[] countries = { "'Day'", "'Germany'", "'USA'", "'Brazil'", "'Canada'", "'France'", "'Russia'" };
+    private String[] countries = { "\"Day\"", "\"Germany\"", "\"USA\"", "\"Brazil\"", "\"Canada\"", "\"France\"", "\"Russia\"" };
     private String[][] numbers = new String[3][7];
     
     @PostConstruct
     public void init() {
-        System.out.println("ChartBeean init..");
+     System.out.println("ChartBeean init..");
         
         for(int i = 0; i < 3; i++) {
         	for(int j = 0; j < 7; j++) {  
