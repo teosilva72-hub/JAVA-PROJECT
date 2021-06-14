@@ -1,88 +1,10 @@
-var data = [
-    [
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-[
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-[
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-[
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-[
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-[
-        "409429",
-        "15/05/2021 15:02:59"
-    ],
-    [
-        "409441",
-        "15/05/2021 18:30:30"
-    ],
-	[
-        "409440",
-        "15/05/2021 18:58:10"
-    ],
-
-
-]
-
-$(document).ready(function() {
+function getTr(){
 	var table = $('#wim-table').DataTable({
 		language: {
 			"search": "",
 			searchPlaceholder: "Buscar"
 		},		
 		"select": true,
-		data: data,
 		"autoWidth": true,			  	   	
 		"scrollY": "60vh",
 		"paging": false,
@@ -91,7 +13,20 @@ $(document).ready(function() {
 	$('.dataTables_length').removeClass('bs-select');
 	$('.dataTables_filter').css('margin-left', '-100px')
 	$('.dataTables_wrapper ').css('margin-left', '30px')
-});
+ 
+$('#wim-table tbody').on( 'click', 'tr', function () {
+   var event = $(table.row( this ).data()[0]).text();
+	document.getElementById("event").value = event
+	if(event != ""){
+		document.getElementById("checked").value = "true"
+		btnTable();
+	}else{
+		document.getElementById("checked").value = "false"
+	}
+	
+} );
+}
+
 
 function msgSuccess(){
 	var d = new Date();
@@ -123,9 +58,10 @@ $(window).on('load', function () {
     $('#preloader').delay(100).fadeOut('slow'); 
     $('body').delay(100).css({'overflow': 'visible'});
 })
+//medidor de peso
 function sizeAcima(){
 	$('.size').addClass('acima');
-	('.size').removeClass('normal');
+	$('.size').removeClass('normal');
 	$('.size').removeClass('attention');
 }
 function sizeAtenttion(){
@@ -138,3 +74,74 @@ function sizeNormal(){
 	$('.size').removeClass('attention');
 	$('.size').removeClass('acima');
 }
+
+function dataPicker(){
+	var  dtInitial = $('[id$=dateInitial]')
+	var dtFinal = $('[id$=dateFinal]')
+    dtInitial.on('click', function() {
+      $('[id$=dateInitial]').mask('9999-99-99')
+    });
+	dtFinal.on('click', function() {
+	$('[id$=dateFinal]').mask('9999-99-99')
+    });
+	$('[id$=dateInitial]').datepicker({ 
+		dateFormat: "yy-mm-dd",  
+		changeYear: true,
+		changeMonth: true,
+	})
+    $('[id$=dateFinal]').datepicker({
+	dateFormat: "yy-mm-dd",
+	changeYear: true,
+	changeMonth: true
+	})
+}
+
+$(document).ready(function () {
+dataPicker()
+	resetForm()
+});
+
+function validador(){
+	var dtInitial = document.getElementById("dateInitial")
+	var hourInitial = document.getElementById("hourInitial")
+	var minuteInitial = document.getElementById("minuteInitial")
+	var dateFinal = document.getElementById("dateFinal")
+	var hourFinal = document.getElementById("hourFinal")
+	var minuteFinal = document.getElementById("minuteFinal")
+	var ckecked = document.getElementById("cheked")
+	var title = document.getElementById("titleModal")
+	if(dtInitial.value == "" || hourInitial.value==""||
+	minuteInitial.value == ""|| dateFinal.value == ""||
+	hourFinal.value == ""|| minuteFinal.value == ""){
+		$('.ll').addClass('error')
+		$('.ll').removeClass('ok')
+		ckecked.style.display = "block"
+		ckecked.style.color = "red"
+		title.style.display = "none"
+		return false
+	}else{
+		$('#dateInitial').removeClass('error')
+		$('#dateInitial').addClass('ok')
+		$('#modalForm').modal('hide')
+		ckecked.style.display = "none"
+		title.style.display = "block"
+		return true
+	}
+}
+let verif = (success) => {
+	if (validador())
+		$(success).click()
+}
+function resetForm(){
+	var ckecked = document.getElementById("cheked")
+	var title = document.getElementById("titleModal")
+	$('[id$=formId]').trigger("reset");
+	$('.ll').removeClass('error')
+	ckecked.style.display = "none"
+	title.style.display = "block"
+}
+function btnTable(){
+	$('[id$=btnTable]').click();
+	preventDefault();
+}
+//$('#modalForm').modal('hide')

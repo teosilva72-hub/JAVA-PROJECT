@@ -4,6 +4,7 @@
 .generic-info-bagde {
   position: absolute;
   top: 0;
+  z-index: 10045;
   background-color: #1e90ff;
   color: #ffffff !important;
   text-align: center;
@@ -72,6 +73,10 @@
   background-color: orange;
 }
 
+.equip-status.alarm {
+  animation: alarm .2s infinite;
+}
+
 .equip-image {
   margin-top: -17%;
   width: 100%;
@@ -122,6 +127,10 @@
 
 .call-box-action{
   animation: shake 0.82s infinite cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.call-box-alarm{
+  animation: shake 0.82s infinite cubic-bezier(.36,.07,.19,.97) both;
 
 }
 
@@ -148,4 +157,13 @@
   transform-origin: 50% 50%;
 } 
 
+}
+
+@keyframes alarm {
+  from {
+    background-color: red;
+  }
+  to {
+    background-color: orange;
+  }
 }

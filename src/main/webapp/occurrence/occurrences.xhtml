@@ -14,7 +14,7 @@
 	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
-
+		<title>OCC</title>
 		<!-- Style -->
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
@@ -463,45 +463,49 @@
 					<!-- final da tabela oculta -->
 				</div>
 				<!-- Final da lista -->
-				
-				
-				
-					<!-- FILE FORM -->
-		<h:form id="form-file">
-			
-			<!-- MODAL DOWNLOAD -->			
-			<div class="modal fade" id="modalDownload" tabindex="-1"
-				aria-labelledby="downloadModalLabel" aria-hidden="true">
-				<div class="modal-dialog confirmation-modal">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{occLabels.occ_reports_modal_alert_download_title}</h5>
-						</div>
-						<div class="modal-body">
-							<p class="modal-alert-msg">
-								#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
-									class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span> ?
-							</p>
-						</div>
-						<div class="modal-footer">
-							<h:commandButton pt:data-toggle="modal" pt:data-target="#modalDownload"
-								value="#{occLabels.occ_reports_modal_alert_btn_yes}"								
-								class="btn btn-dark form-draw-button" action="#{occurrencesBean.downloadPdf}" />
-							<h:commandButton
-								value="#{occLabels.occ_reports_modal_alert_btn_no}"
-								class="btn btn-dark form-draw-button">
-								<f:passThroughAttribute name="data-dismiss" value="modal" />
-								<f:ajax execute="@form" render="@none" />
-							</h:commandButton>
+
+
+
+				<!-- FILE FORM -->
+				<h:form id="form-file">
+
+					<!-- MODAL DOWNLOAD -->
+					<div class="modal fade" id="modalDownload" tabindex="-1"
+						aria-labelledby="downloadModalLabel" aria-hidden="true">
+						<div class="modal-dialog confirmation-modal">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title modal-alert-title"
+										id="donwloadModalLabel">#{occLabels.occ_reports_modal_alert_download_title}</h5>
+								</div>
+								<div class="modal-body">
+									<p class="modal-alert-msg">
+										#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
+											class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
+										?
+									</p>
+								</div>
+								<div class="modal-footer">
+									<h:commandButton pt:data-toggle="modal"
+										pt:data-target="#modalDownload"
+										value="#{occLabels.occ_reports_modal_alert_btn_yes}"
+										class="btn btn-dark form-draw-button"
+										action="#{occurrencesBean.downloadPdf}" />
+									<h:commandButton
+										value="#{occLabels.occ_reports_modal_alert_btn_no}"
+										class="btn btn-dark form-draw-button">
+										<f:passThroughAttribute name="data-dismiss" value="modal" />
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<!-- MODAL DOWNLOAD END -->
+					<!-- MODAL DOWNLOAD END -->
 
-		</h:form>
-		<!-- FILE FORM -->
-				
+				</h:form>
+				<!-- FILE FORM -->
+
 			</div>
 			<!-- Final do lado direito -->
 			<!-- Inicio do lado esquerdo -->
@@ -724,16 +728,16 @@
 								<!-- col para separar btn e pdf -->
 								<div class="col-md-1"></div>
 								<!-- col para separar btn e pdf -->
-								<div class="col-md-1 btnPdf" id="iconPdf"
-									style="display: none;">
+								<div class="col-md-1 btnPdf" id="iconPdf" style="display: none;">
 									<!-- Icon PDF -->
 									<h:commandLink class="btnPdf" id="pdfId"
 										disabled="#{occurrencesBean.pdf}" data-toggle="tooltip"
 										data-bs-placement="top" title="#{occLabels.occ_download_file}">
 										<i class="fas fa-file-pdf pdf-shadow"></i>
 										<f:passThroughAttribute name="data-toggle" value="modal" />
-			                            <f:passThroughAttribute name="data-target" value="#modalDownload" />
-			                            <f:ajax execute="@form" render="@none" />
+										<f:passThroughAttribute name="data-target"
+											value="#modalDownload" />
+										<f:ajax execute="@form" render="@none" />
 									</h:commandLink>
 								</div>
 								<!-- final do pdf -->
@@ -1247,7 +1251,8 @@
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
-									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p><br></br>
+									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
+									<br></br>
 									<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
 								</div>
 								<!-- BTN UPLOAD FILE -->
@@ -1266,9 +1271,10 @@
 								<div class="form-group col-md-9 field" align="left">
 									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2"
 										a:multiple="true" disabled="#{occurrencesBean.fields}" />
-									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p><br></br>
+									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
+									<br></br>
 									<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
-									
+
 								</div>
 								<!-- BTN UPDATE FILE -->
 								<div class="col-md-3">

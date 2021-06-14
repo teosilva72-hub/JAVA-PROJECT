@@ -957,11 +957,11 @@ function statusColors() {
 	$('#speed5').find('.equip-status').css('background-color', 'orange');
 	$('#speed6').find('.equip-status').css('background-color', 'orange');
 
-	$('#dms1 .tableStyle').addClass('on');
-	$('#dms3 .tableStyle').addClass('on');
-	$('#dms4 .tableStyle').addClass('on');
-	$('#dms5 .tableStyle').addClass('on');
-	$('#dms6 .tableStyle').addClass('on');
+	// $('#dms1 .tableStyle').addClass('on');
+	// $('#dms3 .tableStyle').addClass('on');
+	// $('#dms4 .tableStyle').addClass('on');
+	// $('#dms5 .tableStyle').addClass('on');
+	// $('#dms6 .tableStyle').addClass('on');
 
 }
 

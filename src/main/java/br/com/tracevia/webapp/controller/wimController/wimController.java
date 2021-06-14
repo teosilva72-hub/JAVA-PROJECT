@@ -1,10 +1,13 @@
 package br.com.tracevia.webapp.controller.wimController;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
+
 import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.controller.occ.OccurrencesBean;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
@@ -276,8 +279,31 @@ public class wimController {
 	public void setImg2(String img2) {
 		this.img2 = img2;
 	}
+	private List<SelectItem> minutos, horas, classes;
+	
+	public List<SelectItem> getMinutos() {
+		return minutos;
+	}
+	public List<SelectItem> getHoras() {
+		return horas;
+	}
+	public void setHoras(List<SelectItem> horas) {
+		this.horas = horas;
+	}
+	public void setMinutos(List<SelectItem> minutos) {
+		this.minutos = minutos;
+	}
+	
+	public List<SelectItem> getClasses() {
+		return classes;
+	}
+	public void setClasses(List<SelectItem> classes) {
+		this.classes = classes;
+	}
 	@PostConstruct
 	public void initalize(){
+		
+		// initalize wim realtime
 		colorInitial();
 		updateView();
 		rate();
@@ -314,7 +340,7 @@ public class wimController {
 			int axlNumber = 3, axl1W = 300, axl2W = 325, axl3W= 360,
 					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 310, axl3D= 0, axl4D= 0, axl5D= 0,
-					axl6D= 0, axl7D= 0, axl8D= 330, axl9D= 0, gross= 3500, speed= 30;
+					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 3500, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/onibus1-2.jpg";
@@ -553,7 +579,6 @@ public class wimController {
 		}
 		RequestContext request = RequestContext.getCurrentInstance();
 		request.execute("btnUpdateView();");
-		System.out.println("atualizando");
 	}
 	//mudar cor dos inputs
 	public void colorInitial() {

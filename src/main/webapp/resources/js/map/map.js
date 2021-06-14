@@ -16,9 +16,9 @@ setTimeout(() => {
 			if (n < 4)
 				init();
 
-	// location.href = location.protocol + '//' + location.host + location.pathname
-}
-			     
+			// location.href = location.protocol + '//' + location.host + location.pathname
+		}
+
 	}, 3000)
 }, 4000)
 
@@ -58,7 +58,7 @@ const init = () => {
 		showGenericName();
 		initPMV();
 		initSOS()
-		statusColors();	
+		statusColors();
 	})
 }
 
@@ -91,7 +91,7 @@ const setInfoEquip = () => {
 			var title = $(this).attr("data-popover-content");
 			return $(title).children(".popover-header").html();
 		}
-	});	
+	});
 }
 
 const setEquipToolTip = () => {
@@ -102,22 +102,22 @@ const setEquipToolTip = () => {
 $(function () {
 	var area = window.innerHeight - $('footer.page-footer').outerHeight(true) - $('#content').offset().top - 25
 
-	$('.plaque').each(function() {
+	$('.plaque').each(function () {
 		let plaque = $(this)
 
 		plaque.attr('posX', plaque.css('left').replace("px", ""))
 		plaque.attr('posY', plaque.css('top').replace("px", ""))
 	})
 
-	$('#fulldiv1').on('click', function() {
+	$('#fulldiv1').on('click', function () {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
 	})
 
-	$('#fulldiv2').on('click', function() {
+	$('#fulldiv2').on('click', function () {
 		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
 	})
 
-	$('#fulldiv3').on('click', function() {
+	$('#fulldiv3').on('click', function () {
 		$('#frame3')[0].contentWindow.setPosition(1, 0.12)
 	})
 
@@ -126,7 +126,7 @@ $(function () {
 		.find('.grid-img').css('height', area / 3)
 
 	init();
-			
+
 	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
 		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
@@ -202,13 +202,13 @@ $(function () {
 			} else if (selectVAL == 8) {
 
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
-				$('.mtoHidden-edit').hide();	
+				$('.mtoHidden-edit').hide();
 				$('.satInputs-edit').hide();
 
 			} else if (selectVAL == 6) {
 
-				$('.mtoHidden-edit').show();	
-				$('.dmsHidden-edit').hide();	
+				$('.mtoHidden-edit').show();
+				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 
 			} else {
@@ -439,7 +439,6 @@ function barResize() {
 
 	input.change(function () {
 		resizeEquipScale($(`${input.attr("from")}`).parent())
-		console.log($(`${input.attr("from")}`).parent())
 	})
 }
 
@@ -452,20 +451,26 @@ function resizeEquipScale(container) {
 	let max = 0;
 	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
 	let plaque = $('.plaque');
-	let scale;
+	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
+	let barSize = Number($('#bar-size').val()) || 1
+	let scaleA;
 
 	equips.each(function () {
 		let equip = $(this)
 		let width = Number(equip.attr('item-width'))
-		scale = (width / equip.width()) * (Number($('#bar-size').val()) || 1);
+		scaleA = (width / equip.width()) * (barSize);
 
-		max += width;
-
-		equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
+		equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale})`).attr('scale', scaleA).attr('barSize', barSize)
 	})
 
-	scale = ((max / equips.length) / plaque.width()) * (Number($('#bar-size').val()) || 1);
-	plaque.css('transform', `translateX(-50%) scale(${scale})`).attr('scale', scale)
+	allEquip.each(function () {
+		let equip = $(this)
+
+		max += Number(equip.attr('item-width')) * Number(equip.attr('barSize')) || 1;
+	})
+
+	scaleA = ((max / allEquip.length) / plaque.width());
+	plaque.css('transform', `translateX(-50%) scale(${scaleA * scale})`).attr('scale', scaleA)
 }
 
 //RESIZE EQUIPMENT
@@ -519,7 +524,7 @@ function posEquip(equip) {
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({"color": '#00FF0D'});	
+			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
@@ -529,7 +534,7 @@ function posEquip(equip) {
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({"color": '#00FF0D'});	
+			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
 		else if (sat_status > 0 && interval == 8) {
@@ -538,7 +543,7 @@ function posEquip(equip) {
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({"color": '#00FF0D'});	
+			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 		}
 		//Red Color > indica que o equipamento está sem comunicação
 		else {
@@ -547,7 +552,7 @@ function posEquip(equip) {
 				color: 'white'
 			});
 
-			$(`#status${sat_name}`).css({"color": '#FF0000'});	
+			$(`#status${sat_name}`).css({ "color": '#FF0000' });
 		}
 	}
 
@@ -736,352 +741,361 @@ function showGenericName() {
 
 }
 
-	function borderEquip(id) {
-				var equipBorder = document.getElementById(id);
-				if (equipBorder != null) {
-					equipBorder.style.border = "2px solid black"
-					equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
-					setTimeout(function () {
-						equipBorder.style.border = ""
-						equipBorder.style.borderImage = ""
-					}, 2500);
-				}
-			}
+function borderEquip(id) {
+	var equipBorder = document.getElementById(id);
+	if (equipBorder != null) {
+		equipBorder.style.border = "2px solid black"
+		equipBorder.style.borderImage = "url(\"data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3Cstyle%3Epath%7Banimation:stroke 5s infinite linear%3B%7D%40keyframes stroke%7Bto%7Bstroke-dashoffset:776%3B%7D%7D%3C/style%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232d3561' /%3E%3Cstop offset='25%25' stop-color='%23c05c7e' /%3E%3Cstop offset='50%25' stop-color='%23f3826f' /%3E%3Cstop offset='100%25' stop-color='%23ffb961' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3' stroke-dasharray='388'/%3E %3C/svg%3E\") 1"
+		setTimeout(function () {
+			equipBorder.style.border = ""
+			equipBorder.style.borderImage = ""
+		}, 2500);
+	}
+}
 
-			// *********************************************************** //
+// *********************************************************** //
 
 
-			function hiddenBtns() {
-				document.getElementById("topButtons").style.display = "none";
-			}
+function hiddenBtns() {
+	document.getElementById("topButtons").style.display = "none";
+}
 
-			function showBtns() {
-				document.getElementById("topButtons").style.display = "block";
-			}
+function showBtns() {
+	document.getElementById("topButtons").style.display = "block";
+}
 
-			function alert(a) {
-				$(a).css("display", "block");
-				setTimeout(function () {
-					$(a).fadeOut('fast');
-				}, 2000);
-				hiddenPosition();
-			}
+function alert(a) {
+	$(a).css("display", "block");
+	setTimeout(function () {
+		$(a).fadeOut('fast');
+	}, 2000);
+	hiddenPosition();
+}
 
-			function hiddenPosition() {
-				document.getElementById("real:savePos").style.display = "none";
-				document.getElementById("real:cancelPos").style.display = "none";
-				posReset();
-				showBtns();
-			}
+function hiddenPosition() {
+	document.getElementById("real:savePos").style.display = "none";
+	document.getElementById("real:cancelPos").style.display = "none";
+	posReset();
+	showBtns();
+}
 
-			//VARS
-			var id, type, toDrag;
+//VARS
+var id, type, toDrag;
 
-			function sendToBean() {
+function sendToBean() {
 
-				document.getElementById('form-modal-submit:equipCod').value = id;
-				document.getElementById('form-modal-submit:equipTable').value = type;
+	document.getElementById('form-modal-submit:equipCod').value = id;
+	document.getElementById('form-modal-submit:equipTable').value = type;
 
-			}
+}
 
-			function sendToBeanDel() {
+function sendToBeanDel() {
 
-				document.getElementById('delete-equip-form:del-equip-name').innerText = type + id;
+	document.getElementById('delete-equip-form:del-equip-name').innerText = type + id;
 
-			}
+}
 
-			function sendType() {
-				document.getElementById('edit-equip-form:equipId1').value = id;
-				document.getElementById('edit-equip-form:equipTable1').value = type;
-			}
+function sendType() {
+	document.getElementById('edit-equip-form:equipId1').value = id;
+	document.getElementById('edit-equip-form:equipTable1').value = type;
+}
 
-			function deleteParameters() {
-				document.getElementById('delete-equip-form:equipDel').value = id;
-				document.getElementById('delete-equip-form:tableDel').value = type;
-			}
+function deleteParameters() {
+	document.getElementById('delete-equip-form:equipDel').value = id;
+	document.getElementById('delete-equip-form:tableDel').value = type;
+}
 
-			function deleteInfo() {
-				document.getElementById('delete-equip-form:equipIdDel').value = id;
-				document.getElementById('delete-equip-form:equipTableDel').value = type;
-			}
+function deleteInfo() {
+	document.getElementById('delete-equip-form:equipIdDel').value = id;
+	document.getElementById('delete-equip-form:equipTableDel').value = type;
+}
 
-			function hideEditDirections() {
-				$('#direction3-edit').hide();
-				$('#direction4-edit').hide();
-				$('#direction5-edit').hide();
-				$('#direction6-edit').hide();
-				$('#direction7-edit').hide();
-				$('#direction8-edit').hide();
-			}
+function hideEditDirections() {
+	$('#direction3-edit').hide();
+	$('#direction4-edit').hide();
+	$('#direction5-edit').hide();
+	$('#direction6-edit').hide();
+	$('#direction7-edit').hide();
+	$('#direction8-edit').hide();
+}
 
-			///MAP/GRID HIDE AND SHOW
+///MAP/GRID HIDE AND SHOW
 
-			$(function () {
+$(function () {
 
-			$('[id$=divide]').click(function () {
-				$(".overflow").hide();
-				$(".map-options").hide();
-				$("#dropdwnsizebtn").hide();
-				$(".map-full-option").show();
-				$("#mapDivide").show();
+	$('[id$=divide]').click(function () {
+		$(".overflow").hide();
+		$(".map-options").hide();
+		$("#dropdwnsizebtn").hide();
+		$(".map-full-option").show();
+		$("#mapDivide").show();
 
-			});
+	});
 
-			$('[id$=cancelPos]').click(function () {
-				$('[id$=savePos]').hide();
-				$('[id$=cancelPos]').hide();
-			});
+	$('[id$=cancelPos]').click(function () {
+		$('[id$=savePos]').hide();
+		$('[id$=cancelPos]').hide();
+	});
 
-			$('[id$=full]').click(function () {
-				$(".map-full-option").hide();
-				$("#mapDivide").hide();
-				$(".overflow").show();
-				$(".map-options").show();
-				$("#dropdwnsizebtn").show();
-			});
+	$('[id$=full]').click(function () {
+		$(".map-full-option").hide();
+		$("#mapDivide").hide();
+		$(".overflow").show();
+		$(".map-options").show();
+		$("#dropdwnsizebtn").show();
+	});
 
-			$('[id$=position]').click(function () {
-				$('[id$=savePos]').show();
-				$('[id$=cancelPos]').show();
-			});
+	$('[id$=position]').click(function () {
+		$('[id$=savePos]').show();
+		$('[id$=cancelPos]').show();
+	});
 
-			$('[id$=addequip]').click(function () {
-				$('[id$=savePos]').hide();
-				$('[id$=cancelPos]').hide();
-			});
+	$('[id$=addequip]').click(function () {
+		$('[id$=savePos]').hide();
+		$('[id$=cancelPos]').hide();
+	});
+});
+
+///MAP/GRID HIDE AND SHOW END	
+
+$(function () {
+
+	//ZOOM EVENT
+	$('[id$="zoomIn"]').click(function () {
+		zoomIn($('section.overflow'))
+	});
+	$('[id$="zoomOut"]').click(
+		function () {
+			zoomOut($('section.overflow'))
 		});
+	$('[id$="zoomIn1"]').click(
+		function () {
+			$('#frame1')[0].contentWindow.zoomIn("section.overflow")
+		});
+	$('[id$="zoomOut1"]').click(
+		function () {
+			$('#frame1')[0].contentWindow.zoomOut("section.overflow")
+		});
+	$('[id$="zoomIn2"]').click(
+		function () {
+			$('#frame2')[0].contentWindow.zoomIn("section.overflow")
+		});
+	$('[id$="zoomOut2"]').click(
+		function () {
+			$('#frame2')[0].contentWindow.zoomOut("section.overflow")
+		});
+	$('[id$="zoomIn3"]').click(
+		function () {
+			$('#frame3')[0].contentWindow.zoomIn("section.overflow")
+		});
+	$('[id$="zoomOut3"]').click(
+		function () {
+			$('#frame3')[0].contentWindow.zoomOut("section.overflow")
+		});
+});
 
-		///MAP/GRID HIDE AND SHOW END	
-		
-		$(function () {
+//Coefficient Script
+$(document).on(
+	'click',
+	'.box-right-delivery button',
+	function () {
+		var btn = $(this), oldValue = btn.closest(
+			'.box-right-delivery').find('input').val()
+			.trim(), newVal = 0;
+		if (btn.attr('data-dir') == 'up') {
+			newVal = parseInt(oldValue) + 1;
+		} else {
+			if (oldValue > 1) {
+				newVal = parseInt(oldValue) - 1;
+			} else {
+				newVal = 0;
+			}
+		}
+		btn.closest('.box-right-delivery').find('input').val(
+			newVal);
+	});
+//ZOOM EVENT
 
-			//ZOOM EVENT
-			$('[id$="zoomIn"]').click(function () {
-					zoomIn($('section.overflow'))
-				});
-			$('[id$="zoomOut"]').click(
-				function () {
-					zoomOut($('section.overflow'))
-				});
-			$('[id$="zoomIn1"]').click(
-				function () {
-					$('#frame1')[0].contentWindow.zoomIn("section.overflow")
-				});
-			$('[id$="zoomOut1"]').click(
-				function () {
-					$('#frame1')[0].contentWindow.zoomOut("section.overflow")
-				});
-			$('[id$="zoomIn2"]').click(
-				function () {
-					$('#frame2')[0].contentWindow.zoomIn("section.overflow")
-				});
-			$('[id$="zoomOut2"]').click(
-				function () {
-					$('#frame2')[0].contentWindow.zoomOut("section.overflow")
-				});
-			$('[id$="zoomIn3"]').click(
-				function () {
-					$('#frame3')[0].contentWindow.zoomIn("section.overflow")
-				});
-			$('[id$="zoomOut3"]').click(
-				function () {
-					$('#frame3')[0].contentWindow.zoomOut("section.overflow")
-				});
-			});
+//SAT LANES INPUTS
 
-			//Coefficient Script
-			$(document).on(
-				'click',
-				'.box-right-delivery button',
-				function () {
-					var btn = $(this), oldValue = btn.closest(
-						'.box-right-delivery').find('input').val()
-						.trim(), newVal = 0;
-					if (btn.attr('data-dir') == 'up') {
-						newVal = parseInt(oldValue) + 1;
-					} else {
-						if (oldValue > 1) {
-							newVal = parseInt(oldValue) - 1;
-						} else {
-							newVal = 0;
+
+$(function () {
+	$('[id$="equips"]').click(function btnSave() {
+		setTimeout(() => {
+			var equipsSEL = document.getElementById("equips");
+			var selectVAL = equipsSEL.options[equips.selectedIndex].value;
+			if (selectVAL == 9) {
+				$('.satInputs').show(); // DIV FAIXAS 1	
+				$('.dmsHidden').hide();
+				$('.mtoHidden').hide();
+				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+				$("#lanes").change(
+					function () {
+						var satLanes = document.getElementById("lanes");
+						var selectSAT = satLanes.value;
+						if (selectSAT == 2) {
+							$('#direction3').hide();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 3) {
+							$('#direction3').show();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 4) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 5) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 6) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 7) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').hide();
+						} else if (selectSAT == 8) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').show();
 						}
-					}
-					btn.closest('.box-right-delivery').find('input').val(
-						newVal);
-				});
-			//ZOOM EVENT
+					});
+			} else if (selectVAL == 8) {
+				$('.dmsHidden').show(); // DIV DMS TYPE	
+				$('.mtoHidden').hide();
+				$('.satInputs').hide();
 
-			//SAT LANES INPUTS
+			} else if (selectVAL == 6) {
+				$('.mtoHidden').show();
+				$('.dmsHidden').hide();
+				$('.satInputs').hide();
+			} else {
+				$('.dmsHidden').hide();
+				$('.mtoHidden').hide();
+				$('.satInputs').hide();
+			}
+		}, 100)
+	});
+});
 
-		
-			$(function () {
-				$('[id$="equips"]').click(function btnSave() {
-					setTimeout(() => {
-					var equipsSEL = document.getElementById("equips");
-					var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-					if (selectVAL == 9) {
-						$('.satInputs').show(); // DIV FAIXAS 1	
-						$('.dmsHidden').hide();
-						$('.mtoHidden').hide();
-						$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
-						$("#lanes").change(
-							function () {
-								var satLanes = document.getElementById("lanes");
-								var selectSAT = satLanes.value;
-								if (selectSAT == 2) {
-									$('#direction3').hide();
-									$('#direction4').hide();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 3) {
-									$('#direction3').show();
-									$('#direction4').hide();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 4) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').hide();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 5) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').hide();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 6) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').hide();
-									$('#direction8').hide();
-								} else if (selectSAT == 7) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').show();
-									$('#direction8').hide();
-								} else if (selectSAT == 8) {
-									$('#direction3').show();
-									$('#direction4').show();
-									$('#direction5').show();
-									$('#direction6').show();
-									$('#direction7').show();
-									$('#direction8').show();
-								}
-							});
-					} else if (selectVAL == 8) {					
-						$('.dmsHidden').show(); // DIV DMS TYPE	
-						$('.mtoHidden').hide();
-						$('.satInputs').hide();
+//SAT LANES INPUTS END
 
-					} else if (selectVAL == 6) {						
-						$('.mtoHidden').show();
-						$('.dmsHidden').hide();
-						$('.satInputs').hide();
-					} else {						
-						$('.dmsHidden').hide();
-						$('.mtoHidden').hide();
-						$('.satInputs').hide();
-					}
-				}, 100)
-			});
+// MODAL EQUIPMENT SIZE
+
+$(function () {
+	$('[class$="dprbtn"]').click(
+		function () {
+			let barSize = $('#bar-size')
+			let min = barSize.attr('min')
+			let max = barSize.attr('max')
+			let value = $(`.${$(this).attr('from')}`).attr('barSize') || 1
+
+			barSize.attr('value', value).parent().css('left', `${(value - min) / (max - min) * 100}%`)
+
+			var url = $('.draggable').find(
+				"[id^=" + $(this).attr('from')
+				+ "] img").attr("src")
+				|| "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+			let modal = $("#sizeeqps")
+			modal.find("img").attr("src", url);
+			modal.find("#bar-size").attr("from",
+				"." + $(this).attr('from'))
+
+
 		});
-				
-			//SAT LANES INPUTS END
+});
 
-			// MODAL EQUIPMENT SIZE
+// MODAL EQUIPMENT SIZE END
 
-			$(function (){ 				
-			   $('[class$="dprbtn"]').click(
-				  function () {
-					 var url = $('.draggable').find(
-						"[id^=" + $(this).attr('from')
-						+ "] img").attr("src")
-						|| "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-					let modal = $("#sizeeqps")
-					modal.find("img").attr("src", url);
-					modal.find("#bar-size").attr("from",
-						"." + $(this).attr('from'))
-				  });
-			  });
-			  
-			// MODAL EQUIPMENT SIZE END
-			
-			$(function (){ 
-			
-			  $('[id$="km"]').mask('000+000'); 	// KM MASK	
-			  $('[id$="kmEdit"]').mask('000+000'); 	// KM MASK
-			  
-			  });
-			  
-			  function statusColors(){
-			    //   $('#sos2').find('.equip-status').css('background-color', 'orange');
-			    //   $('#sos7').find('.equip-status').css('background-color', 'red');
-			    //   $('#sos14').find('.equip-status').css('background-color', 'orange');
-			    //   $('#sos16').find('.equip-status').css('background-color', 'red');
-			    //   $('#sos22').find('.equip-status').css('background-color', 'orange');
-			    //   $('#sos25').find('.equip-status').css('background-color', 'orange');
-			    //   $('#sos33').find('.equip-status').css('background-color', 'red');
-			    //   $('#sos37').find('.equip-status').css('background-color', 'orange');
-			    //   $('#sos40').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#colas2').find('.equip-status').css('background-color', 'red');
-			      $('#colas3').find('.equip-status').css('background-color', 'orange');
-			      $('#colas5').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
-			      
-			      $('#dai1').find('.equip-status').css('background-color', 'red');
-			      $('#dai5').find('.equip-status').css('background-color', 'orange');
-			      $('#dai6').find('.equip-status').css('background-color', 'orange');
-			      $('#dai9').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#lpr4').find('.equip-status').css('background-color', 'red');
-			      $('#lpr7').find('.equip-status').css('background-color', 'red');
-			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#wim4').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#speed5').find('.equip-status').css('background-color', 'orange');
-			      $('#speed6').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#dms1 .tableStyle').addClass('on');
-			      $('#dms3 .tableStyle').addClass('on');
-			      $('#dms4 .tableStyle').addClass('on');
-			      $('#dms5 .tableStyle').addClass('on');
-			      $('#dms6 .tableStyle').addClass('on');	
-			      
-    }
+$(function () {
 
-		function animation() {
-			$('#sos17').addClass('call-box-action').find('.equip-status').css('background-color', 'blue');
+	$('[id$="km"]').mask('000+000'); 	// KM MASK	
+	$('[id$="kmEdit"]').mask('000+000'); 	// KM MASK
 
-				setTimeout(() => {
-					$('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
-				},
-			 5000
-		    )
+});
 
-	   }
-	   
- /* show hidden buttons */
+function statusColors() {
+	//   $('#sos2').find('.equip-status').css('background-color', 'orange');
+	//   $('#sos7').find('.equip-status').css('background-color', 'red');
+	//   $('#sos14').find('.equip-status').css('background-color', 'orange');
+	//   $('#sos16').find('.equip-status').css('background-color', 'red');
+	//   $('#sos22').find('.equip-status').css('background-color', 'orange');
+	//   $('#sos25').find('.equip-status').css('background-color', 'orange');
+	//   $('#sos33').find('.equip-status').css('background-color', 'red');
+	//   $('#sos37').find('.equip-status').css('background-color', 'orange');
+	//   $('#sos40').find('.equip-status').css('background-color', 'red');
 
-  $(function () {
-    $('#btnLayers').removeClass('hidden').addClass('show');  
-      $('#btnEquips').removeClass('hidden').addClass('show');      
-     });
-    
+	$('#colas2').find('.equip-status').css('background-color', 'red');
+	$('#colas3').find('.equip-status').css('background-color', 'orange');
+	$('#colas5').find('.equip-status').css('background-color', 'orange');
+
+	$('#cftv3').find('.equip-status').css('background-color', 'orange');
+	$('#cftv6').find('.equip-status').css('background-color', 'orange');
+	$('#cftv10').find('.equip-status').css('background-color', 'red');
+
+	$('#dai1').find('.equip-status').css('background-color', 'red');
+	$('#dai5').find('.equip-status').css('background-color', 'orange');
+	$('#dai6').find('.equip-status').css('background-color', 'orange');
+	$('#dai9').find('.equip-status').css('background-color', 'red');
+
+	$('#lpr4').find('.equip-status').css('background-color', 'red');
+	$('#lpr7').find('.equip-status').css('background-color', 'red');
+	$('#lpr10').find('.equip-status').css('background-color', 'orange');
+
+	$('#wim4').find('.equip-status').css('background-color', 'orange');
+
+	$('#speed5').find('.equip-status').css('background-color', 'orange');
+	$('#speed6').find('.equip-status').css('background-color', 'orange');
+
+	// $('#dms1 .tableStyle').addClass('on');
+	// $('#dms3 .tableStyle').addClass('on');
+	// $('#dms4 .tableStyle').addClass('on');
+	// $('#dms5 .tableStyle').addClass('on');
+	// $('#dms6 .tableStyle').addClass('on');
+
+}
+
+function animation() {
+	$('#sos17').addClass('call-box-action').find('.equip-status').css('background-color', 'blue');
+
+	setTimeout(() => {
+		$('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
+	},
+		5000
+	)
+
+}
+
+/* show hidden buttons */
+
+$(function () {
+	$('#btnLayers').removeClass('hidden').addClass('show');
+	$('#btnEquips').removeClass('hidden').addClass('show');
+});
+
 /* show hidden buttons */
 

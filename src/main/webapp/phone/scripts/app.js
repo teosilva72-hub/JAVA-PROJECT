@@ -497,7 +497,7 @@ async function initPhone() {
 
                 } else if (s.service) {
                     ctxSip.callIncomingID = sessionid;
-                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID}`).then(response => {
+                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID};${user.User}`).then(response => {
                         if (response.UserID != loginAccount.ID && response.UserID)
                             ctxSip.callIncomingID = null;
                         else

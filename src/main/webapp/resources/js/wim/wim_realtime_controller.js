@@ -21,7 +21,6 @@ function sizeNormal(){
 function btnUpdateView(){
 	$('[id$=updateView]').click();
 	preventDefault();
-	
 }
 function reloadPage(){
         location.reload(true);

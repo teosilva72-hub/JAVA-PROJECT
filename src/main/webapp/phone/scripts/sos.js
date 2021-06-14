@@ -9,6 +9,7 @@ let on_error =  function() {
 const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
+	let equip = $(`#${name.toLowerCase()}`)
 	
 	switch (status) {
 		case 1:
@@ -20,7 +21,7 @@ const changeStates = response => {
 			break
 		
 		case 4:
-			status = 'alert'
+			status = 'alarm'
 			break
 			
 		case 5:
@@ -32,7 +33,12 @@ const changeStates = response => {
 			break
 	}
 
-	$(`#${name.toLowerCase()} span.equip-status`).attr("class", `equip-status ${status}`.trim())
+	if (status == 'alarm')
+		equip.addClass('call-box-alarm')
+	else
+		equip.removeClass('call-box-alarm')
+
+	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
 
 const getEquipFromID = async id => {
@@ -44,11 +50,11 @@ const getEquipFromID = async id => {
 }
 
 const callsIncoming = async response => {
-	let equip = await getEquipFromID(response.EquipmentID)
+	let equip = sosEquip[response.EquipmentID]
 	let status = response.CallStateID
 
 
-	let elmt = $(`#${equip.MasterName.toLowerCase()}`)
+	let elmt = $(`#${equip.toLowerCase()}`)
 	
 	switch (status) {
 		case 1: // Atendido
@@ -67,6 +73,31 @@ const callsIncoming = async response => {
 	}
 }
 
+const signaling = response => {
+	if (response.AlarmTypeID > 3)
+		return
+
+	let equip = sosEquip[response.EquipmentID];
+	let active = true;
+	let alarm = $(`#${equip.toLowerCase()} #Alarm${equip}`)
+	let html = alarm.find(`div`)
+	let alarms = html.children()
+	let door = alarms.filter(`span[door=${response.Value}]`)
+
+	if (response.EndDate)
+		active = false;
+	
+	if (door.length == 0 && active)
+		html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+	else if (door.length == 1 && !active)
+		door.remove();
+
+	if (html.children().length > 0)
+		alarm.addClass('d-flex').removeClass('d-none')
+	else
+		alarm.addClass('d-none').removeClass('d-flex')
+}
+
 const callback_states_default = message => {
 	let response = JSON.parse(message.body)
 	changeStates(response)
@@ -74,6 +105,7 @@ const callback_states_default = message => {
 
 const callback_alarms_default = message => {
 	let response = JSON.parse(message.body)
+	signaling(response)
 }
 
 const callback_calls_default = message => {
@@ -81,26 +113,10 @@ const callback_calls_default = message => {
 	callsIncoming(response)
 }
 
-function sleep(time) {
-    return new Promise(r => setTimeout(r, time))
-}
-
-const getStomp = async () => {
-	while (!window.rabbitmq) {	
-		await sleep(100);
-	}
-
-	var ws = new WebSocket(`ws://${rabbitmq.address}:${rabbitmq.port}/ws`);
-	return Stomp.over(ws);
-}
-
 const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
-	var count = 0
 
 	var on_connect = function() {
-		count = 0
-
 		if (typeof callback_states == "function")
 			client.subscribe(`/exchange/sos_states/sos_states`, callback_states)
 		if (typeof callback_alarms == "function")
@@ -111,66 +127,33 @@ const consume = async ({ callback_calls = callback_calls_default, callback_alarm
 
 	var on_error =  function() {
 	    console.log('error');
-		count++
-
-		if (count > 3)
-			setTimeout(() => {
-				consume({
-					callback_states: callback_states,
-					callback_alarms: callback_alarms,
-					callback_calls: callback_calls,
-				})
-			}, 1000)
-		else
-		consume({
-			callback_states: callback_states,
-			callback_alarms: callback_alarms,
-			callback_calls: callback_calls,
-		})
 	};
 
 	client.heartbeat.outgoing = PING
 
 	if (!debug)
 		client.debug = null
+	client.reconnect_delay = 1000;
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
 const connectSOS = async function(request, debug) {	
-	let client = await getStomp();
-	let response = null;
-	
-	client.onreceive = function(m) {
-		response = JSON.parse(m.body);
-		client.disconnect()
-	}
-	
-	var on_connect = function() {
-		client.send("/amq/queue/ClientRequest", {"reply-to": "/temp-queue/ClientRequest", durable: false}, `"${request}"`)
-	};
-
-	if (!debug)
-		client.debug = null
-	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
-
-	while (true) {	
-		if (response != null && response != undefined)	
-			return response
-		await sleep(800);
-	}
+	return await sendMsgStomp(request, 'ClientRequest', debug)
 	
 }
 
 const initSOS = async () => {
 	let response = await connectSOS('GetAllEquipmentStates')
+	let alarms = await connectSOS('GetAllActiveAlarms')
+	window.sosEquip = {};
 
-	if (Array.isArray(response)) {
-		for (const r of response) {
-			changeStates(r)
-		}
-	} else {
-		changeStates(response)
+	for (const r of response) {
+		changeStates(r)
+		sosEquip[r.EquipmentID] = r.EquipmentName
 	}
+
+	for (const a of alarms)
+		signaling(a)
 
 	consume()
 }
