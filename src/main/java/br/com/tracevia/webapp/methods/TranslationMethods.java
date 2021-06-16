@@ -5,10 +5,10 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
 	
-	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail;
+	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail, localeWim;
 	
 	public TranslationMethods() {
-		
+				
 		locale = new LocaleUtil();		
 		locale.getResourceBundle(LocaleUtil.LABELS_USERS);
 		
@@ -27,9 +27,10 @@ public class TranslationMethods {
 		localeOcc = new LocaleUtil();
 		localeOcc.getResourceBundle(LocaleUtil.LABELS_OCC);
 		
+		localeWim = new LocaleUtil();
+		localeWim.getResourceBundle(LocaleUtil.LABELS_WIM);
+		
      }
-	
-	
 	public String occLabels(String occ) {
 		//var
 		String converteOcc = "";

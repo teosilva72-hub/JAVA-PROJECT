@@ -63,3 +63,32 @@
 .img3{
 	height: 150px;
 }
+.pdf{
+	font-size: 12pt;
+	color: white;
+	margin-top: -5px;
+}
+.btnPdf{
+	position: relative;
+	border: solid 1px black;
+	top: -17px;
+}
+.linkPdf{
+	text-decoration: none;
+}
+.alerta{
+	font-size: 15pt;
+    text-align: center;
+    margin-left: 31px;
+    margin-right: -8px;
+}
+.alertPdf{
+	height: 20px;
+	font-weight: 999;
+}
+.alertPdf > p{
+	margin-top: -10px;
+}
+.textPdf1{
+	font-weight: 999;
+}

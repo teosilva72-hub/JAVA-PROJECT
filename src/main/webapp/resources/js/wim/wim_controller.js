@@ -19,6 +19,7 @@ $('#wim-table tbody').on( 'click', 'tr', function () {
 	document.getElementById("event").value = event
 	if(event != ""){
 		document.getElementById("checked").value = "true"
+		$('[id$=statusPdf]').prop('disabled', false);
 		btnTable();
 	}else{
 		document.getElementById("checked").value = "false"
@@ -26,8 +27,6 @@ $('#wim-table tbody').on( 'click', 'tr', function () {
 	
 } );
 }
-
-
 function msgSuccess(){
 	var d = new Date();
 	var second = d.getSeconds()
@@ -96,10 +95,6 @@ function dataPicker(){
 	})
 }
 
-$(document).ready(function () {
-dataPicker()
-	resetForm()
-});
 
 function validador(){
 	var dtInitial = document.getElementById("dateInitial")
@@ -120,6 +115,7 @@ function validador(){
 		title.style.display = "none"
 		return false
 	}else{
+		dataPicker()
 		$('#dateInitial').removeClass('error')
 		$('#dateInitial').addClass('ok')
 		$('#modalForm').modal('hide')
@@ -132,10 +128,15 @@ let verif = (success) => {
 	if (validador())
 		$(success).click()
 }
+
 function resetForm(){
 	var ckecked = document.getElementById("cheked")
 	var title = document.getElementById("titleModal")
 	$('[id$=formId]').trigger("reset");
+	$('[id$=form-table]').trigger("reset");
+	$('[id$=dados1]').trigger("reset");
+	$('[id$=dados2]').trigger("reset");
+	$('[id$=dados3]').trigger("reset");
 	$('.ll').removeClass('error')
 	ckecked.style.display = "none"
 	title.style.display = "block"
@@ -144,4 +145,23 @@ function btnTable(){
 	$('[id$=btnTable]').click();
 	preventDefault();
 }
+function btnPdf(){
+	dataPicker()
+	$("[id$=PdfYes]").click(function() {
+  		$( "[id$=idBtn]" ).click();
+	$('[id$=modalPdf]').modal('hide')
+	});
+}
+function disabledPdf(){
+	$('[id$=statusPdf]').prop('disabled', true);
+	$("[id$=procurar]").click(function() {
+  		$('[id$=statusPdf]').prop('disabled', true);
+	});
+}
+$(document).ready(function () {
+	disabledPdf()
+	dataPicker()
+	btnPdf()
+});
+
 //$('#modalForm').modal('hide')

@@ -302,7 +302,6 @@ public class wimController {
 	}
 	@PostConstruct
 	public void initalize(){
-		
 		// initalize wim realtime
 		colorInitial();
 		updateView();
@@ -328,6 +327,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/onibus1.jpg";
 			img2 = "/teste/onibus2.jpeg";
+			silueta = "/teste/sil/onibusE2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -345,6 +345,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/onibus1-2.jpg";
 			img2 = "/teste/onibus2-1.jpg";
+			silueta = "/teste/sil/onibusE3.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,6 +363,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/carro1.jpeg";
 			img2 = "/teste/carro2.jpg";
+			silueta = "/teste/sil/10.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -379,6 +381,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/e2-1.jpg";
 			img2 = "/teste/e2-2.jpg";
+			silueta = "/teste/sil/2.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -396,6 +399,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/eixo3-1.jpg";
 			img2 = "/teste/eixo3-1.jpg";
+			silueta = "/teste/sil/3.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -413,6 +417,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao4-1.jpg";
 			img2 = "/teste/caminhao4-2.jpg";
+			silueta = "/teste/sil/4.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,6 +435,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao5-1.jpg";
 			img2 = "/teste/caminhao5-2.jpg";
+			silueta = "/teste/sil/5.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -447,6 +453,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao6-1.jpg";
 			img2 = "/teste/caminhao6-1.jpg";
+			silueta = "/teste/sil/e6.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -464,6 +471,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao7-1.jpg";
 			img2 = "/teste/caminhao7-2.jpg";
+			silueta = "/teste/sil/e7.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -481,6 +489,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao9-1.jpg";
 			img2 = "/teste/caminhao9-2.jpeg";
+			silueta = "/teste/sil/9.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -557,11 +566,12 @@ public class wimController {
 		}
 		return silueta;
 	}
+	
 	//update View wim_Realtime
 	public void updateView() {
 		try {
 
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(2);
 
 		}catch (InterruptedException e) {
 			// TODO Auto-generated catch block
