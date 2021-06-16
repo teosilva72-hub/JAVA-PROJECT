@@ -37,18 +37,18 @@ public class GlobalReportsDAO {
 	 * @throws Exception
 	 */
 	
-	public String[][] ExecuteQuery(String query, int fieldsNumber, int registers) throws Exception {		
-			
+	public String[][] ExecuteQuery(String query,  int registers, int fieldsNumber) throws Exception {		
+						
 	    // NECESSITA DA CONSTRU��O DE UMA MATRIZ PARA RECEBER OS DADOS DE SA�DA DA QUERY
 		// FIELDSNUMBER S�O O NUMERO DE CAMPOS DE ACORDO COM A QUERY A SER EXECUTADA -> RECEBE ESSE PAR�METRO DO BEAN
 		/* REGISTERS S�O O N�MERO DE REGISTROS QUE A MATRIZ DEVER� POSSUIR. SUA CONSTRU��O SE DEVE NA ESCOLHA DE DATA DE �NICIO, DATA DE FIM, 
 		M�S, ANOS E ETC. */
-		result = new String[fieldsNumber][registers];
+		result = new String[registers][fieldsNumber];
 							
 		try {
 			   //GET CONNECTION			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-																						
+																												
 				//EXECUTE QUERY				
 				ps = conn.prepareStatement(query);
 				rs = ps.executeQuery();
@@ -56,19 +56,20 @@ public class GlobalReportsDAO {
 				int lin = 0;
 						
 				//RESULT IN RESULTSET	
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) { //Linhas
+				  if (rs.isBeforeFirst()) {
+					  while (rs.next()) { //Linhas
 						
-				     for(int col = 0; col < fieldsNumber; col++ ) { //Colunas
+				       for(int col = 0; col < fieldsNumber; col++ ) { // Colunas
 				    					    	 
-				    	    result[col][lin] = rs.getString((col+1));
+				    	    result[lin][col] = rs.getString((col+1));
 				    	    				    	    
-				    	    //System.out.println("COL["+col+"]LIN["+lin+"] = "+result[col][lin] );  	  //DEBBUGER  				    	 				      
+				    	   // System.out.println("LIN["+lin+"]COL["+col+"] = "+result[lin][col] );  	  // DEBBUGER  				    	 				      
 				        }
 				    				     
 				     lin++;
 				     
 				    } 
+					
 				 } else result = new String[0][0]; //CASO N�O EXISTA REGISTROS REDEFINE TAMANHO DO ARRAY
 				
 		}finally 

@@ -15,7 +15,9 @@ setTimeout(() => {
 			if (n < 4)
 				init();
 
-	// location.href = location.protocol + '//' + location.host + location.pathname
+	//location.href = location.protocol + '//' + location.host + location.pathname
+	//  window.location.reload();
+
 }
 			     
 	}, 3000)
@@ -56,8 +58,13 @@ const init = () => {
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
-		initPMV();
-		initSOS()
+
+		if(window.initPMV)
+		  initPMV();
+
+		if(window.initSOS)
+		  initSOS();
+
 		statusColors();
 	})
 }

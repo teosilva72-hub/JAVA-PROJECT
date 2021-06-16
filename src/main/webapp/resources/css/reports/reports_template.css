@@ -61,7 +61,7 @@ body {
 }
 
 /* divs inside buttons div */
-#btn-reset, #btn-search, #btn-excel {
+#btn-reset, #btn-search, #btn-excel, #btn-chart {
 	border: 1px solid transparent;
 	height: 40px;
 	width: auto;
@@ -71,6 +71,12 @@ body {
 #btn-excel{
 	width: 50px;
 	margin-left: 40%;	
+}
+
+#btn-chart{
+	width: 50px;
+	margin-top: 0.25%;	
+	margin-left: 0%;
 }
 
 /* div for reset button config */
@@ -134,7 +140,11 @@ body {
 .fa-file-excel.disabled,
 .fa-file-excel[disabled],
 .disabled > .fa-file-excel,
-[disabled] > .fa-file-excel
+[disabled] > .fa-file-excel,
+.fa-chart-pie.disabled,
+.fa-chart-pie[disabled],
+.disabled > .fa-chart-pie,
+[disabled] > .fa-chart-pie
  {
   opacity: 0.5;
   /*optional*/ cursor: not-allowed;
@@ -149,7 +159,7 @@ body {
 }
 
 /* Excel image icon enabled */
-.fa-file-excel:not([disabled]){
+.fa-file-excel:not([disabled]), .fa-chart-pie:not([disabled]){
 	color: #343a40;	
 	display: block;
 }
@@ -165,6 +175,16 @@ body {
 	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
 	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
 	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+}
+
+/* Line Chart image icon hover enabled config */
+.fa-chart-pie:not([disabled]):hover {
+	cursor: pointer;
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);		
 }
 
 /*****************************************************/
@@ -203,9 +223,8 @@ body {
 	border-radius: 5px;
 	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	
-}
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);	
+} 
 
 /* form modal title settings */
 .modal-title {
@@ -300,5 +319,60 @@ hr{
 
 .equip-label{
 	color: black;
+}
+
+/* CHARTS */
+
+#chart-div {
+    margin-left: 15%;
+    margin-top: 0%;
+    cursor: pointer;
+}
+
+.chart-wrapper{
+	border: 1px solid transparent;
+	height: 100%;
+	width: 100%;	
+}
+
+#btn-chart-close{
+	color: black;
+    font-size: 25px;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+
+#btn-chart-download{
+	color: black;
+    font-size: 25px;
+    position: absolute;
+    margin-left: 2%;
+    margin-top: 2%;
+	
+}
+
+#btn-chart-close:hover, #btn-chart-download:hover{
+ transform: scale(1.2);
+ cursor: pointer;
+	
+}
+
+.table-hidden{
+	display: none;
+}
+
+.table-show{
+	display: block;
+}
+
+.chart {
+  align-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+.modal {
+  text-align: center;
 }
 

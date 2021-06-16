@@ -82,7 +82,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
+	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC ";
 					
@@ -183,7 +183,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 " +
+	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC";
 					
@@ -286,7 +286,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
 	    "ORDER BY d.DATA_HORA ASC " +
 	    "LIMIT "+ limit +" ";
@@ -388,7 +388,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
+	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 ";
 	  					
 	  try {
 			
@@ -485,7 +485,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 		"GROUP BY d.DATA_HORA " +
         "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
 	  					

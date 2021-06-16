@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.meteo.vs;
+package br.com.tracevia.webapp.controller.meteo.sv;
 
 import java.util.ArrayList;
 import java.util.List;

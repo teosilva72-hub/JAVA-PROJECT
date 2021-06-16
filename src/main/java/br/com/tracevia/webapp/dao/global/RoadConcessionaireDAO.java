@@ -23,12 +23,13 @@ public class RoadConcessionaireDAO {
 		String concessionarieName = "";
 		
 		  if(serverAddress.equals(Servers.ServerViaSul.getServer()))
+		    //if(serverAddress.equals("192.168.3.195"))
 		       conn = ConnectionFactory.connectToCCR();
-		 
-		  if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
+		
+		    else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
 		       conn = ConnectionFactory.connectToViaPaulista();
 				
-		  else conn = ConnectionFactory.connectToTraceviaApp();
+	        else conn = ConnectionFactory.connectToTraceviaApp();
 
 		try {
 

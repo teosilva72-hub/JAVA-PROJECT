@@ -2333,7 +2333,7 @@ if(table.equals("sos")) { // SOS Definitions
   ps.setInt(1,  id);
   int rs =  ps.executeUpdate();
   
-  System.out.println(queryNotification);
+  //System.out.println(queryNotification);
   
  if(rs > 0) {
 	  

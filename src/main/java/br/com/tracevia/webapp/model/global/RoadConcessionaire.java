@@ -11,7 +11,6 @@ import br.com.tracevia.webapp.classes.Tuxpan;
 import br.com.tracevia.webapp.classes.ViaPaulista;
 import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
-import br.com.tracevia.webapp.controller.global.EstradaObjectController;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 
 public class RoadConcessionaire {
@@ -73,17 +72,16 @@ public class RoadConcessionaire {
 	public static String tableCCR;
 	public static String tableDados15;
 	public static String tableStatus;
-	public static String plaque;
-	
-	EstradaObjectController estrada;
-	
+	public static String plaque;    
+	public static boolean mapEnabled;
+	public static boolean reportsLLEnabled;		
+		
 	public RoadConcessionaire() {
 		
 		externalImagePath = "C:\\Tracevia\\Software\\External\\Logo\\";
 		externalDefaultLogo = "C:\\Tracevia\\Software\\External\\Logo\\tracevia.jpg";
 		
-		//System.getenv("APPDATA")+
-			
+		//System.getenv("APPDATA")+			
 		
 	}
 	
@@ -94,6 +92,8 @@ public class RoadConcessionaire {
 		boolean checkRoadConcessionaire = false;
 		
 		 roadConcessionaire = dao.IdentifyRoadConcessionarie(serverAddress);	
+
+		 
 		 
 		//Caso contrario n�o acontece nada
 		 if(!roadConcessionaire.equals("")) 
@@ -132,6 +132,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
 		}	
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire())) {
@@ -169,6 +171,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
 		}
 		
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -204,6 +208,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
 						
 		}
 		
@@ -242,6 +248,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "tuxpan";
+			mapEnabled = true;
+			reportsLLEnabled = false;
 							
 		}
 		
@@ -278,6 +286,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
 			
 		}
 
@@ -315,6 +325,8 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
         }
         
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire())) {
@@ -340,8 +352,8 @@ public class RoadConcessionaire {
 			classCCRMotorcycle = ViaSul.CCR_MOTORCYCLES.getClasse();		
 			classCCRTrailer = ViaSul.CCR_TRAILER.getClasse();	
 			classCCRSemiTrailer = ViaSul.CCR_SEMI_TRAILER.getClasse();
-			classCCRTruckSimple2Axles1 = ViaSul.CCR_TRUCK_2AXLES.getClasse();	
-			classCCRTruck2Axles = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_1.getClasse();	
+			classCCRTruck2Axles = ViaSul.CCR_TRUCK_2AXLES.getClasse();	
+			classCCRTruckSimple2Axles1 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_1.getClasse();				
 			classCCRTruckSimple2Axles2 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_2.getClasse();	
 			classCCRTruck3Axles = ViaSul.CCR_TRUCK_3AXLES.getClasse();		
 			classCCRTruck4Axles = ViaSul.CCR_TRUCK_4AXLES.getClasse();	
@@ -374,6 +386,8 @@ public class RoadConcessionaire {
 			tableLL = ViaSulTables.ViaSulLL.getTable();
 			tableCCR = ViaSulTables.ViaSulCCR.getTable();
 			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = true;
 						
 		}
 
@@ -411,6 +425,8 @@ public class RoadConcessionaire {
 		  tableLL = TraceviaTables.TraceviaLL.getTable();
 	      tableCCR = TraceviaTables.TraceviaCCR.getTable();
 	      plaque = "";
+		  mapEnabled = false;
+		  reportsLLEnabled = false;
 				  
          }	
               		 

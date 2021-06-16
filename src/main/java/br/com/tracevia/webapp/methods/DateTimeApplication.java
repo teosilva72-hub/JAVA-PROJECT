@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.sat.SAT;
 
 public class DateTimeApplication {
 	
@@ -115,8 +114,7 @@ public class DateTimeApplication {
 		}
 			
 		//FORMATTER FOR DATETIME - DATABASE TO VIEW
-		
-		
+				
 		
 		//FORMATTER FOR DATETIME - DATABASE TO VIEW
 				public String currentDateTime() {
@@ -627,7 +625,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				else
 					mth = "";
 
-				matriz[col][i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
+				matriz[i][col] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
 								
 				if(i == (day * (range - 1) + inc)) {					
 			         dia++;	
@@ -646,6 +644,8 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			//dia++; // Incrementar o dia at� limite do intervalo entre dias	
 		 
 	}
+		
+
 		
 		/////////////////////////////////
 		///// PREENCHER DATA POR DIA
@@ -692,7 +692,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				else
 					mth = "";
 
-				matriz[col][i] = da + dia; // Preenche os dados
+				matriz[i][col] = da + dia; // Preenche os dados
 				 dia++;	
 									
 					
@@ -715,7 +715,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			    int monthsLength = (endMonth - startMonth) + 1;
 													
 				for (int i = 0; i < monthsLength; i++) {
-          			matriz[col][i] = translate.monthComparison(i+startMonth);
+          			matriz[i][col] = translate.monthComparison(i+startMonth);
 							
 				}
 	}
@@ -729,7 +729,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		public void intervalo24Horas(String[][] matriz, int col, int lin) { 
 			
 			for (int i = 0; i < lin; i++) 						
-				matriz[col][i] = " ----- ";			
+				matriz[i][col] = " ----- ";			
 		}	
 		
 		//Criar o intervalo de 5 minutos
@@ -756,22 +756,22 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					 hora = 0;
 							
 				if ((ini == 0) && (fim == 5) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
 				
 				else if ((ini == 0) && (fim == 5) && (hora > 9))
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
 				
 				else if ((ini == 5) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
 				
 				else if ((ini == 5) && (hora > 9))
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
 										
 				else if ((ini != 0 && ini !=5) && (hora > 9))
-					matriz[col][i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
+					matriz[i][col] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
 				
 				else if((ini != 0 && ini !=5) && (hora < 10))
-					matriz[col][i]= "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
+					matriz[i][col]= "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
 				
 				ini += 5;
 				fim += 5;
@@ -805,22 +805,22 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					 hora = 0;
 							
 				if ((ini == 0) && (fim == 6) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
 				
 				else if ((ini == 0) && (fim == 6) && (hora > 9))
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
 				
 				else if ((ini == 6) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
 				
 				else if ((ini == 6) && (hora > 9))
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
 										
 				else if ((ini != 0 && ini !=6) && (hora > 9))
-					matriz[col][i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
+					matriz[i][col] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
 				
 				else if((ini != 0 && ini !=6) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
+					matriz[i][col] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
 				
 				ini += 6;
 				fim += 6;
@@ -853,16 +853,16 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					hora = 0;
 
 				if ((ini == 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
 
 				else if ((ini != 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
 
 				else if (ini == 0)
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
 
 				else
-					matriz[col][i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
 
 				ini += 10;
 				fim += 10;
@@ -895,16 +895,16 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					hora = 0;
 
 				if ((ini == 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
 
 				else if ((ini != 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
 
 				else if (ini == 0)
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
 
 				else
-					matriz[col][i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
 
 				ini += 15;
 				fim += 15;
@@ -912,6 +912,8 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			}
 		
 		}	
+		
+		
 		
 		//30 MINUTOS
 		public void intervalo30Min(String[][] matriz, int col, int lin) {
@@ -937,16 +939,16 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					hora = 0;
 
 				if ((ini == 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
 
 				else if ((ini != 0) && (hora < 10))
-					matriz[col][i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
+					matriz[i][col] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
 
 				else if (ini == 0)
-					matriz[col][i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
 
 				else
-					matriz[col][i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
+					matriz[i][col] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
 
 				ini += 30;
 				fim += 30;
@@ -979,7 +981,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 						horaFim = String.valueOf(k);
 					horaFim += ":59";
 
-			     	matriz[col][i] = horaInicio + " - " + horaFim;
+			     	matriz[i][col] = horaInicio + " - " + horaFim;
 				    k++;	   
 				   
 				}				
@@ -1009,7 +1011,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 					horaFim = String.valueOf(j);
 				horaFim += ":59";
 
-		     	matriz[col][i] = horaInicio + " - " + horaFim;
+		     	matriz[i][col] = horaInicio + " - " + horaFim;
 			    k+=6;
 			    j+=6;
 			   
@@ -1485,5 +1487,368 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 	}
 		
 		///////////////////////////////////////////////////
+		
+		/* ********************************************* JSON ******************************************************* */
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public void preencherJSONDataMes(String matriz[][], int col, String mesInicio, String mesFim, String ano) {
+			
+			    int startMonth = Integer.parseInt(mesInicio);
+			    int endMonth = Integer.parseInt(mesFim);
+			    
+			    int monthsLength = (endMonth - startMonth) + 1;
+													
+				for (int i = 0; i < monthsLength; i++) {
+          			matriz[i][col] = "new Date("+ano+"," + i + ", 1)";
+							
+				}
+	
+		}
+		
+		/* ********************************************* DIAS ******************************************************* */
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public void preencherJSONDias(String matriz[][], int col, String dtInicio, int daysInMonth) {
+
+			String da, mth; // Formatar apresenta��o
+									
+			// dia, m�s e ano da dataInicial
+
+			String anoIni = dtInicio.substring(0, 4);
+			String mesIni = dtInicio.substring(5, 7);
+			String diaIni = dtInicio.substring(8, 10);
+			
+			// dia inicial - convers�o para inteiro
+			int dayIni = Integer.parseInt(diaIni);
+
+			// mes inicial - convers�o para inteiro
+			int mthIni = Integer.parseInt(mesIni);
+			
+			// ano inicial - convers�o para inteiro
+			int yearIni = Integer.parseInt(anoIni);
+
+			int dia = dayIni; // inicializar vari�vel do dia
+			int mes = mthIni; // inicializar vari�vel do m�s
+			int ano = yearIni; // inicializar vari�vel do ano
+			
+			// Novo Objeto - auxiliar
+			//YearMonth yearMonthNew;
+
+			// Preencher o n�mero de posi��es proporcional ao intervalo de 15 minutos (4
+			// intervalos por hora x 24 horas)
+										
+				for (int i = 0; i < daysInMonth; i++) {
+
+				// Caso o dia seja maior que total de dias no m�s
+				if (dia > daysInMonth)
+					dia = 1; 
+			
+				// Formata apresenta��o da String
+				if (dia <= 9)
+					da = "0";
+				else
+					da = "";
+				if (mes < 10)
+					mth = "0";
+				else
+					mth = "";
+
+				 matriz[i][col] = "new Date("+ ano + "," + (mes-1) + "," + dia+")"; // Preenche os dados
+				 dia++;	
+									
+					
+			     }			
+					 
+	}
+		
+		/* ********************************************* PERIODOS ******************************************************* */
+				
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public void preencherJSONDataPorPeriodo(String matriz[][], int col, int lin,  int range, String dtInicio) {
+
+			String da, mth; // Formatar apresenta��o
+			
+			int inc = 0;
+			int day = 1;
+								
+			// dia, m�s e ano da dataInicial
+
+			String anoIni = dtInicio.substring(0, 4);
+			String mesIni = dtInicio.substring(5, 7);
+			String diaIni = dtInicio.substring(8, 10);
+
+			// dia inicial - convers�o para inteiro
+			int dayIni = Integer.parseInt(diaIni);
+
+			// mes inicial - convers�o para inteiro
+			int mthIni = Integer.parseInt(mesIni);
+
+			// ano inicial - convers�o para inteiro
+			int yearIni = Integer.parseInt(anoIni);
+
+			int dia = dayIni; // inicializar vari�vel do dia
+			int mes = mthIni; // inicializar vari�vel do m�s
+			int ano = yearIni; // inicializar vari�vel do ano
+
+			// Quantos dias possui o respectivo m�s
+			YearMonth yearMonthObject = YearMonth.of(ano, mes);
+			int daysInMonth = yearMonthObject.lengthOfMonth();
+		
+			// Novo Objeto - auxiliar
+			//YearMonth yearMonthNew;
+
+			// Preencher o n�mero de posi��es proporcional ao intervalo de 15 minutos (4
+			// intervalos por hora x 24 horas)
+										
+				for (int i = 0; i < lin; i++) {
+
+				// Caso o dia seja maior que total de dias no m�s
+				if (dia > daysInMonth)
+					dia = 1; 
+			
+				// Formata apresenta��o da String
+				if (dia <= 9)
+					da = "0";
+				else
+					da = "";
+				if (mes < 10)
+					mth = "0";
+				else
+					mth = "";		
+								
+			    if(range == 1)
+				   matriz[i][col] = "new Date("+ ano + "," + (mes-1) + "," + dia+")"; // Preenche os dados
+				
+				else matriz[i][col] = "new Date("+ ano + "," + (mes-1) + "," + dia+""; // Preenche os dados
+							
+																					
+				if(i == (day * (range - 1) + inc)) {					
+			         dia++;	
+			         day++;		
+			         inc++;
+				}
+						
+				//else if (day > 1 && i == (day * range - inc) + inc) {
+				//	      dia++;
+				//	      day++;
+				//	      inc++;					 
+				//   
+				  // }	//System.out.println("P: "+p);				
+			     }
+			
+			//dia++; // Incrementar o dia at� limite do intervalo entre dias	
+		 
+	}
+				  
+	/* ********************************************* 05 MIN ******************************************************* */
+				
+				//Criar o intervalo de 5 minutos
+				public void intervaloJSON05Minutos(String[][] matriz, int col, int lin) {
+
+					int i, ini, fim, hora;
+											
+					ini = 0;
+					fim = 5;
+					hora = 0;
+
+					for (i = 0; i < lin; i++) {
+
+						if (fim == 60)
+							fim = 59;
+
+						if (ini > 55 && fim > 60) {
+							ini = 0;
+							fim = 5;
+							hora++;
+						}
+
+						if (hora == 24)
+							 hora = 0;
+									
+						matriz[i][col] += "," + hora + "," + ini + ")";
+						
+						ini += 5;
+						fim += 5;
+
+					}
+					
+				}
+				
+		/* ********************************************* 06 MIN ******************************************************* */
+				
+				//Criar o intervalo de 6 minutos
+				public void intervaloJSON06Minutos(String[][] matriz, int col, int lin) {
+
+					int i, ini, fim, hora;
+						
+					ini = 0;
+					fim = 6;
+					hora = 0;
+
+					for (i = 0; i < lin; i++) {
+
+						if (fim == 60)
+							fim = 59;
+
+						if (ini > 54 && fim > 60) {
+							ini = 0;
+							fim = 6;
+							hora++;
+						}
+
+						if (hora == 24)
+							 hora = 0;
+						
+						matriz[i][col] += "," + hora + "," + ini + ")";
+						
+						ini += 6;
+						fim += 6;
+
+					}
+					
+				}
+				
+		/* ********************************************* 10 MIN ******************************************************* */
+				
+				//Criar o intervalo de 10 minutos
+				public void intervaloJSON10Minutos(String[][] matriz, int col, int lin) {
+
+					int i, ini, fim, hora;
+				
+					ini = 0;
+					fim = 10;
+					hora = 0;
+
+					for (i = 0; i < lin; i++) {
+
+						if (fim == 60)
+							fim = 59;
+
+						if (ini > 50 && fim > 60) {
+							ini = 0;
+							fim = 10;
+							hora++;
+						}
+
+						if (hora == 24)
+							hora = 0;
+
+						matriz[i][col] += "," + hora + "," + ini + ")";
+
+						ini += 10;
+						fim += 10;
+
+					}
+				
+				}	
+				
+			    /* ********************************************* 15 MIN ******************************************************* */
+				
+		        //JSON 15 MINUTOS
+				public void intervaloJSON15Minutos(String[][] matriz, int col, int lin) {
+
+					int i, ini, fim, hora;
+				
+					ini = 0;
+					fim = 15;
+					hora = 0;
+
+					for (i = 0; i < lin; i++) {
+
+						if (fim == 60)
+							fim = 59;
+
+						if (ini > 45 && fim > 60) {
+							ini = 0;
+							fim = 15;
+							hora++;
+						}
+
+						if (hora == 24)
+							hora = 0;
+
+					
+							matriz[i][col] += "," + hora + "," + ini + ")";
+					
+						ini += 15;
+						fim += 15;
+
+					}
+				
+				}	
+				
+			    /* ********************************************* 30 MIN ******************************************************* */
+				
+				//30 MINUTOS
+				public void intervaloJSON30Minutos(String[][] matriz, int col, int lin) {
+
+					int i, ini, fim, hora;
+					
+					ini = 0;
+					fim = 30;
+					hora = 0;
+
+					for (i = 0; i < lin; i++) {
+
+						if (fim == 60)
+							fim = 59;
+
+						if (ini > 30 && fim > 60) {
+							ini = 0;
+							fim = 30;
+							hora++;
+						}
+
+						if (hora == 24)
+							hora = 0;
+
+						matriz[i][col] += "," + hora + "," + ini + ")";
+
+						ini += 30;
+						fim += 30;
+
+					}
+					
+				}			
+				
+				/* ********************************************* 01 HORA ******************************************************* */
+				
+				// HORA
+				public void intervaloJSON01Hora(String[][] matriz, int col, int lin) {		
+
+						int k = 0;
+											
+						for (int i = 0; i < lin; i++) {		
+							
+							if (k == 24) k = 0;
+													
+							matriz[i][col] += "," + k + ", 0)";
+					     
+						    k++;	   
+						   
+						}				
+					}
+				
+	  /* ********************************************* 06 HORAS ******************************************************* */
+				
+				//06 HORAS
+				public void intervaloJSON06Horas(String[][] matriz, int col, int lin) {
+
+					int k = 0;
+									
+					for (int i = 0; i < lin; i++) {		
+						
+						if (k == 24) k = 0;					
+				
+						matriz[i][col] += "," + k + ", 0)";
+						
+					    k+=6;
+					  					   
+					}
+				
+				}
+				
+				
+   /* ************************************************************************************************************* */
 									
    }
