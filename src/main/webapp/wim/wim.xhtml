@@ -184,7 +184,7 @@
 								<div class="col-md-12">
 									<div class="progress">
 										<div class="progress-bar size" role="progressbar"
-											aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">#{wimLabels.weight} #{wimReport.rateTxt}</div>
+											aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">#{wimReport.rateTxt}</div>
 									</div>
 								</div>
 							</div>
@@ -309,7 +309,7 @@
 							<h:commandButton class="btn btn-dark" value="Yes"
 								style="display: none" id="idBtn">
 								<f:ajax execute="@form" listener="#{wimReport.downloadPdf}"
-									render=":formId" />
+									render=":formId :dados3 :dados2" />
 							</h:commandButton>
 						</div>
 					</div>

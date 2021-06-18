@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.controller.occ.OccurrencesBean;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.wim.WimData;
 
@@ -302,6 +303,8 @@ public class wimController {
 	}
 	@PostConstruct
 	public void initalize(){
+		setImg1("/teste/tracevia.jpg");
+		setImg2("/teste/tracevia.jpg");
 		// initalize wim realtime
 		colorInitial();
 		updateView();
@@ -631,126 +634,126 @@ public class wimController {
 			RequestContext request = RequestContext.getCurrentInstance();
 			rate = pbtTotal;
 			//classe onibus E2
-			if(classe.equals("2A")) {
-				if(rate <= 10000) {
+			TranslationMethods trad = new TranslationMethods();
+			if(classe.equals("1")) {
+				if(rate < 6000) {
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 10000 && rate <= 10500) {
+				}else if( rate > 6000 && rate < 6450){
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else {
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("2")){
+				if(rate < 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}
+			}else if(classe.equals("4")){
+				if(rate < 17000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 17000 && rate <= 17850){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("5")) {
+				//essa classe falta definir o peso
+				if(rate < 17000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 17000 && rate <= 17850){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")){
+				if(rate < 25500) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 25500 && rate <= 26775){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("9")){
+				if(rate < 6000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 6000 && rate <= 6450){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
 				}else {
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+				//classe carro
+			}else if(classe.equals("10")){
+				if(rate < 51000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 51000 && rate <= 53500){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("11")||classe.equals("E9")){
+				if(rate < 68000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 68000 && rate <= 71400){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("2A")){
+				if(rate < 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 10000 && rate <= 10500) {
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
 				//classe onibus E3
 			}else if(classe.equals("4A")){
-				if(rate <= 13500) {
+				if(rate < 13500) {
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
 				}else if(rate > 13500 && rate <= 14175) {
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
 				}else {
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
-				
-				//classe moto
-			}else if(classe.equals("9")) {
-				if(rate <= 6000) {
+			}else if(classe.equals("10N")){
+				if(rate < 70001) {
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 6000 && rate <= 6450) {
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 70001 && rate <= 73500){
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				
-				//classe carro
-			}else if(classe.equals("1")){
-				if(rate <= 6000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 6000 && rate <= 6450) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E2
-			}else if(classe.equals("2")) {
-				if(rate <= 10000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 10000 && rate <= 10500) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E3
-			}else if(classe.equals("4")) {
-				if(rate <= 17000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 17000 && rate <= 17850) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E4 E5 E6
-			}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")) {
-				if(rate <= 25500) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 25500 && rate <= 26775) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				//classe E7
-			}else if(classe.equals("10")) {
-				if(rate <= 51000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 51000 && rate <= 53500) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				//classe E8 E9
-			}else if(classe.equals("11")||classe.equals("E9")) {
-				if(rate <= 68000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 68000 && rate <= 71400) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
 			}
-			/*if(rate <= 1500) {
-				//request.execute("sizeNormal();");
-				//rateTxt = "Normal weight " + rate;
-			}else if(rate > 1500 && rate <= 2500) {
-				//request.execute("sizeAtenttion();");
-				//rateTxt = "In tolerance " + rate;
-			}else {
-				//request.execute("sizeAcima();");
-				//rateTxt = "overweight " + rate;
-			}*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

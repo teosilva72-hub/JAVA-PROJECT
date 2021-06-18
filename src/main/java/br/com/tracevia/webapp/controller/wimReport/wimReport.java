@@ -21,6 +21,7 @@ import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -29,7 +30,9 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.meteo.mto.MtoReports.Builder;
 import br.com.tracevia.webapp.model.wim.WimData;
 
@@ -387,123 +390,124 @@ public class wimReport {
 		RequestContext request = RequestContext.getCurrentInstance();
 		String classe = date.getClasse();
 		gross = Integer.parseInt(date.getPbtTotal());
+		TranslationMethods trad = new TranslationMethods();
 		if(classe.equals("1")) {
 			if(gross < 6000) {
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 				request.execute("sizeNormal();");
 			}else if( gross > 6000 && gross < 6450){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else {
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("2")){
 			if(gross < 10000) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ + gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}
 		}else if(classe.equals("4")){
 			if(gross < 17000) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 17000 && gross <= 17850){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("5")) {
 			//essa classe falta definir o peso
 			if(gross < 17000) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 17000 && gross <= 17850){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")){
 			if(gross < 25500) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 25500 && gross <= 26775){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("9")){
 			if(gross < 6000) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 6000 && gross <= 6450){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else {
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 			//classe carro
 		}else if(classe.equals("10")){
 			if(gross < 51000) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 51000 && gross <= 53500){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("11")||classe.equals("E9")){
 			if(gross < 68000) {
 				request.execute("sizeNormal();");
-				rateTxt = "" + gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 68000 && gross <= 71400){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("2A")){
 			if(gross < 10000) {
 				request.execute("sizeNormal();");
-				rateTxt = "" + gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 10000 && gross <= 10500) {
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else {
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 			//classe onibus E3
 		}else if(classe.equals("4A")){
 			if(gross < 13500) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 13500 && gross <= 14175) {
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else {
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}else if(classe.equals("10N")){
 			if(gross < 70001) {
 				request.execute("sizeNormal();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}else if(gross > 70001 && gross <= 73500){
 				request.execute("sizeAtenttion();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
 			}else{
 				request.execute("sizeAcima();");
-				rateTxt = ""+ gross;
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
 			}
 		}
 	}
@@ -545,8 +549,8 @@ public class wimReport {
 				image2 = "/teste/caminhao5-2.jpg";
 			}else if(classe.equals("8")) {
 				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao5-1.jpg";
-				image2 = "/teste/caminhao5-2.jpg";
+				image1 = "/teste/tracevia.jpg";
+				image2 = "/teste/tracevia.jpg";
 			}else if(classe.equals("9")) {
 				silueta = image+"moto.png";
 				image1 = "/teste/hornet1.jpg";
@@ -639,9 +643,10 @@ public class wimReport {
 		request.execute("btnTable();");
 	}
 	public static String RESULT = "/teste/";
-	public void downloadPdf() throws DocumentException, IOException {
+	public void downloadPdf() throws Exception {
 		System.out.println("chegamos");
-
+		indicator();
+		silueta();
 		// criação do documento
 		try {
 			date = dao.searchId(rowkey);
@@ -649,7 +654,7 @@ public class wimReport {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		TranslationMethods trad = new TranslationMethods();
 		RESULT = "/teste/"+date.getSeqN()+".pdf";
 		Document document = new Document();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -658,7 +663,7 @@ public class wimReport {
 		PdfWriter writer = PdfWriter.getInstance(document, baos);
 		document.open();
 		document.setPageSize(PageSize.A4);
-		Paragraph pTitulo = new Paragraph(new Phrase(20F,"WIM REPORT", FontFactory.getFont(FontFactory.HELVETICA, 17F)));
+		Paragraph pTitulo = new Paragraph(new Phrase(20F,trad.wimLabels("WIM REPORT"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
 		ColumnText tl = new ColumnText(writer.getDirectContent());
 		Paragraph tx = new Paragraph();
 		tl.setSimpleColumn(400,820,200,50);
@@ -666,6 +671,39 @@ public class wimReport {
 		tl.addElement(tx);
 		tl.go();
 		document.add(new Paragraph("\n"));
+		document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
+		document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+date.getSeqN()
+				+"              "+trad.wimLabels("DATEHOUR")+ date.getData()+"               "
+				+trad.wimLabels("CLASSE")+": "+date.getClasse()));
+		document.add(new Paragraph(trad.wimLabels("AXES")+": "+date.getNumberAxes()
+				+"               "+trad.wimLabels("SPEED")+": "+ date.getSpeed()
+				+"               "+trad.wimLabels("PBT")+": "+date.getPbtTotal()));
+		document.add(new Paragraph("_____________________________________________________________________________\n\n"));
+		document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
+		document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
+		document.add(new Paragraph(trad.wimLabels("AXES")+"     "+trad.wimLabels("TYPE")+"       "
+								  +trad.wimLabels("WEIGHT")+"       "+trad.wimLabels("DSTAXES")+"            "));
+		document.add(new Paragraph("1          "+trad.wimLabels("TYPE")+"       "+date.getAxl1W()+"               0"));
+		document.add(new Paragraph("2          "+trad.wimLabels("TYPE")+"       "+date.getAxl2W()+"                "+date.getAxl2D()));
+		document.add(new Paragraph("3          "+trad.wimLabels("TYPE")+"       "+date.getAxl3W()+"                "+date.getAxl3D()));
+		document.add(new Paragraph("4          "+trad.wimLabels("TYPE")+"       "+date.getAxl4W()+"                "+date.getAxl4D()));
+		document.add(new Paragraph("5          "+trad.wimLabels("TYPE")+"       "+date.getAxl5W()+"                "+date.getAxl5D()));
+		document.add(new Paragraph("6          "+trad.wimLabels("TYPE")+"       "+date.getAxl6W()+"                "+date.getAxl6D()));
+		document.add(new Paragraph("7          "+trad.wimLabels("TYPE")+"       "+date.getAxl7W()+"                "+date.getAxl7D()));
+		document.add(new Paragraph("8          "+trad.wimLabels("TYPE")+"       "+date.getAxl8W()+"                "+date.getAxl8D()));
+		document.add(new Paragraph("9          "+trad.wimLabels("TYPE")+"       "+date.getAxl9W()+"                "+date.getAxl9D()));
+		
+		Image imgX = Image.getInstance(getImage1());
+		imgX.setAbsolutePosition(60, 250);
+		imgX.scaleAbsolute (200, 150);
+		
+		Image imgY = Image.getInstance(getImage2());
+		imgY.setAbsolutePosition(300, 250);
+		imgY.scaleAbsolute (200, 150);
+		//passando a imagem
+		document.add(imgX);
+		document.add(imgY);
+		document.add(new Paragraph());
 		Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
 		rowPage.setBorderColor(BaseColor.BLACK);
