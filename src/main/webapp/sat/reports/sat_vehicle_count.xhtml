@@ -120,7 +120,7 @@
 				   
 				    <div id="btn-chart"> <!-- BUTTON CHART DIV -->	
 				    <h:commandButton id="chart-act" value="" 
-					  onclick="toggleChart();" disabled="false"							
+					  onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
 					  class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
 					  data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">	
 					<f:ajax execute="@form" render="@none" />		
