@@ -1437,145 +1437,127 @@ public class SatQueriesModels {
 	                	  	                	  
 	                	  if(lanes == 2) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    			           		    		
+		           		    	           		    			           		    	
+                                "IFNULL(ROUND(COUNT(IF(((st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
-		           		    	
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 2) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	  	           	
-		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
-		           		    	
+		           		      		           		    	
+                                "IFNULL(ROUND(AVG(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
+                                "IFNULL(ROUND(AVG(IF((st.lane = 2) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
+                                
+                                "IFNULL(ROUND(COUNT(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 2) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
 		           		    	
 		           		      }	  
 	                	  
 	                	  if(lanes == 3) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+				           		"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    			           		    		
+		           		              		    	
+                                "IFNULL(ROUND(COUNT(IF(((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +		           		    	
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +		           		    	
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	  	           		  
-		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
 		           		    	
+   	                            "IFNULL(ROUND(AVG(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
+		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +  
+		           		 		           		    	
+                                "IFNULL(ROUND(COUNT(IF((st.lane = 1) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
                                 "IFNULL(ROUND(COUNT(IF((st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
 		           		    			           		    	
 		           		      }	  
 	                	  
 	                	  if(lanes == 4) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    			           		    		
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
+		         		    			         		    		           		    	
+		           		        "IFNULL(ROUND(COUNT(IF(((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
+				           		"IFNULL(ROUND(COUNT(IF(((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
-		           		
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	  	    
-    	                        "IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2', " +
-    	                        
-                                "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1' " ;
-		           		      
+		           		    			           		    	  	    
+                               "IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
+                               "IFNULL(ROUND(AVG(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
+		           		    	
+		           		 	   "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
+		           		 	   "IFNULL(ROUND(COUNT(IF((st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' ";
+    	                                                      		           		      
 	                	    }	  
 	                	  
 	                	  if(lanes == 5) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    	
-		           		    		
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
+		           		    		           		    	
+                                "IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
+   		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
+		           		     			           		    	
+                                "IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
+		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +	 
 		           		    	
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	
-		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
-		           		    	
-                                "IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
-
+	                            "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
+			           		    "IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
 		           		    	  	           		    	  
 		           		      }	  
 	                	  
 	                   	  if(lanes == 6) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    		
+		           		    			           		 	  		           		    	
+                                "IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
-		           		    	
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	  	   
-		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
-		           		    	
+		           		                   
+                                "IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
+		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +		
+                                
+                                "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
                                 "IFNULL(ROUND(COUNT(IF((st.lane = 4 OR st.lane = 5 OR st.lane = 6) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
-
 
 		           		      }	    
 	                	  
 	                	  if(lanes == 7) {
 	           		    	  
-		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+		           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-		           		    		
+		           		    			           		    			           		    	
+                                "IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"' AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-		           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"' AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 		           		    	
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
-		           		    	"IFNULL(ROUND(AVG(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-		           		    	  	  
-		           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +
-		           		    	
-                                "IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
+                               "IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS1', " +		           		  	 		           		    	
+                               "IFNULL(ROUND(AVG(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"', st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
+                               
+                               "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS1', " +		           		    	
+		           		        "IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7) AND eq.equip_id = '"+station_id+"', 1, NULL)),0),0) 'TOTALS2' " ;
 
 		           		      }	    
 	           		   
 	           		      if(lanes == 8) {
 	           		    	  
-	           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
+	           		    	query = "IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
+	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS1', " +
 	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS1', " +
-	           		    		
+	           		 	  	           		       	           		    	   
+	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8)  AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8)  AND (st.classe = '"+RoadConcessionaire.classLight+"' OR (st.lane=2 AND st.classe='"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10) OR st.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"')), 1, NULL )),0),0) 'AUTOS2', " +
 	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8)  AND (st.classe <> '"+RoadConcessionaire.classLight+"' AND st.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND st.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND (st.classe <> '"+RoadConcessionaire.classUnknown+"' AND st.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-	           		    	"IFNULL(ROUND(COUNT(IF(((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8)  AND (st.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) 'MOTOS2', " +
 	           		    	
-	           		    	"IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
-
+                            "IFNULL(ROUND(AVG(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , st.speed, NULL)),0),0) 'AVG SPEEDS1', " +
 	           		    	"IFNULL(ROUND(AVG(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) , st.speed, NULL)),0),0) 'AVG SPEEDS2', " +
-	           		    	
-	           		    	"IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , 1, NULL)),0),0) 'TOTALS1', " +
-	           		    	
-                            "IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) , 1, NULL)),0),0) 'TOTALS2' " ;
-
+	           		           		    	           		    	
+	           		        "IFNULL(ROUND(COUNT(IF((st.lane = 1 OR st.lane = 2 OR st.lane = 3 OR st.lane = 4) , 1, NULL)),0),0) 'TOTALS1', " +
+	           		        "IFNULL(ROUND(COUNT(IF((st.lane = 5 OR st.lane = 6 OR st.lane = 7 OR st.lane = 8) , 1, NULL)),0),0) 'TOTALS2' " ;
 	           		    	
 	           		      }	    
 	           		      

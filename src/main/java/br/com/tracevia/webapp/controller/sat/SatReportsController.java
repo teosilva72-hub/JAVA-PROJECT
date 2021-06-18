@@ -37,7 +37,6 @@ import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.SatReports;
 import br.com.tracevia.webapp.model.sat.SatReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
 @ManagedBean(name="satReportsBean")
@@ -833,9 +832,7 @@ public class SatReportsController {
 		DateTimeApplication dta = new DateTimeApplication(); //DateTimeApsplication class
 
 		GlobalReportsDAO dao = new GlobalReportsDAO();	//GlobalReportsDAO
-		
-		MessagesUtil message = new MessagesUtil(); //Display messages
-		
+				
 		String startDate = null, endDate = null, data_anterior = null;
 					
 		/*** Obter parmetros que vem no submit de cada pesquisa ***/
@@ -974,8 +971,6 @@ public class SatReportsController {
 			jsonArray = new String[getNumRegisters()][getFieldsNumber()-1];	
 		
 		else jsonArray = new String[getNumRegisters()][jsonFields.length];	
-		
-		
 		
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
@@ -1270,7 +1265,6 @@ public class SatReportsController {
 		ExternalContext externalContext = facesContext.getExternalContext();
 
 		SatQueriesModels satModels = new SatQueriesModels();	    
-		DateTimeApplication dta = new DateTimeApplication();
 
 		GlobalReportsDAO dao = new GlobalReportsDAO();	
 

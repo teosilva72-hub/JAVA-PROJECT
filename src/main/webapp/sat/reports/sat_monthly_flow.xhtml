@@ -13,7 +13,7 @@
 	<f:metadata>
 	
 	<!-- Create Table Header -->
-	<f:viewAction action="#{satReportsBean.CreateFields(3)}" />  
+	<f:viewAction action="#{fluxoMensalBean.CreateField}" />  
 		          
     </f:metadata>
     	
@@ -26,9 +26,7 @@
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
 		<h:outputScript library="js/validation-forms/reports/sat" name="sat-monthly-flow-validation.js" />
 		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
-	
+		
 	</ui:define>
 	
 	 <ui:define name="main-content" > <!-- MAIN CONTENT TEMPLATE --> 
@@ -50,35 +48,35 @@
 	 </div>
 	 
 	 <!-- TABLE -->
-	 <h:dataTable id="vehicle-monthly-flow-table" value="#{satReportsBean.resultList}" var="countFlow" autocomplete="off"				               
+	 <h:dataTable id="vehicle-monthly-flow-table" value="#{fluxoMensalBean.resultList}" var="monthlyFlow" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
      headerClass="custom-table-header">	
                
      <f:facet name="header">          
       <tr>
-        <th rowspan="2" class="custom-table-header" >#{satReportsBean.columns.get(0).field}</th>
-        <th rowspan="2" class="custom-table-header" >#{satReportsBean.columns.get(1).field}</th>
+        <th rowspan="2" class="custom-table-header" >#{fluxoMensalBean.columns.get(0).field}</th>
+        <th rowspan="2" class="custom-table-header" >#{fluxoMensalBean.columns.get(1).field}</th>
         <th colspan="3" class="custom-table-header" >#{satLabels.sat_reports_general_direction01}</th> <!-- SUB HEADER -->
         <th colspan="3" class="custom-table-header" >#{satLabels.sat_reports_general_direction02}</th> <!-- SUB HEADER -->
         <th colspan="2" class="custom-table-header" >#{satLabels.sat_reports_monthly_flow_speed_operations}</th>
       </tr>
       
       <tr>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(2).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(3).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(4).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(5).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(6).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(7).field}</th>
-        <th class="custom-table-header" >#{satReportsBean.columns.get(8).field}</th>   
-        <th class="custom-table-header" >#{satReportsBean.columns.get(9).field}</th>              
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(2).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(3).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(4).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(5).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(6).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(7).field}</th>
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(8).field}</th>   
+        <th class="custom-table-header" >#{fluxoMensalBean.columns.get(9).field}</th>              
       </tr>
       
     </f:facet>
     
-     <c:forEach items="#{satReportsBean.columns}" var="header" varStatus="loop">
+     <c:forEach items="#{fluxoMensalBean.columns}" var="header" varStatus="loop">
             <h:column>              
-              <h:outputText value="#{countFlow[header.value]}" />
+              <h:outputText value="#{monthlyFlow[header.value]}" />
             </h:column> 
      </c:forEach>   
   	 	
@@ -110,7 +108,7 @@
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
-							disabled="#{satReportsBean.clearBool}"
+							disabled="#{fluxoMensalBean.clearBool}"
 							title="#{satLabels.sat_reports_btn_clean}">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
@@ -120,25 +118,16 @@
 					
 					<div id="btn-excel"> <!-- BUTTON RESET DIV -->
 				       <h:commandButton id="excel-act" value=""
-					 disabled="#{satReportsBean.excelBool}"
-					 class="fas fa-file-excel fa-3x" data-toggle="tooltip"
+					 disabled="#{fluxoMensalBean.excelBool}"
+					 class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 					 data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					 action="#{satReportsBean.download}" widgetVar="excelWgt">
+					 action="#{fluxoMensalBean.download}" widgetVar="excelWgt">
 					 <f:passThroughAttribute name="data-toggle" value="modal" />
 					 <f:passThroughAttribute name="data-target" value="#modalDownload" />
 					 <f:ajax execute="@form" render="@none" />
 				</h:commandButton>
 			</div> <!---->
-			
-			  <div id="btn-chart"> <!-- BUTTON CHART DIV -->	
-				    <h:commandButton id="chart-act" value=""
-					  onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
-					  class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
-					  data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">	
-					<f:ajax execute="@form" render="@none" />	
-				   </h:commandButton>
-			      </div><!---->					
-				
+							
 			</div> <!---->			
 			</h:form> <!---->
 		</div> <!---->
@@ -192,7 +181,7 @@
 								<span><i class="fas fa-hdd"></i></span> <span for="equip"
 										class="valid-icon-hidden"></span> <select name="equip"	id="equip">
 									<option value="">#{satLabels.sat_reports_select_equipments}</option>
-										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
+										<ui:repeat var="eqp" value="#{fluxoMensalBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
@@ -211,7 +200,7 @@
 										class="valid-icon-hidden"></span> <select name="month"
 										id="month" size="1">
 										<option value="">#{satLabels.sat_reports_select_month}</option>
-										<ui:repeat var="mth" value="#{satReportsBean.months}"
+										<ui:repeat var="mth" value="#{fluxoMensalBean.months}"
 											varStatus="mthStatus">
 											<option value="#{mth.value}">#{mth.label}</option>
 										</ui:repeat>
@@ -230,7 +219,7 @@
 										class="valid-icon-hidden"></span> <select name="year"
 										id="year" size="1">
 										<option value="">#{satLabels.sat_reports_select_year}</option>
-										<ui:repeat var="yr" value="#{satReportsBean.years}"
+										<ui:repeat var="yr" value="#{fluxoMensalBean.years}"
 											varStatus="yrStatus">
 											<option value="#{yr.value}">#{yr.label}</option>
 										</ui:repeat>
@@ -243,7 +232,7 @@
 																			
 							<!-- definited 15 min -->
 							 <input type="hidden" value="15 minutes" id="periods" name="periods" />
-							 <input type="hidden" name="jsTable" value="vehicle-monthly-flow-table" />	
+							 <input type="hidden" name="jsTable" value="vehicle-monthly-flow-table" />
 							 <input type="hidden" name="jsTableScrollHeight" value="35.3vh" />	
 							 
 						</div><!---->				
@@ -255,7 +244,7 @@
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
 							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-							<f:ajax execute="@form" render="form-table form-btns" listener="#{satReportsBean.GetReports(3)}" onevent="onEventFunction" />
+							<f:ajax execute="@form" render="form-table form-btns" listener="#{fluxoMensalBean.GetReport}" onevent="onEventFunction" />
 						</h:commandButton>
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
@@ -264,10 +253,11 @@
 							<f:ajax execute="@form"
 								render=":equips :dateStart :dateEnd" />
 						</h:commandButton>
+				     </div> <!---->
 				  </h:form> <!---->
 				</div> <!----> 
 			</div> <!---->	
-			
+				
 			<!-- ********************************************************************************************************************* -->	
 								
 				<div class="modal fade" id="modalClear" tabindex="-1"
@@ -283,7 +273,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(3)}"
+									action="#{fluxoMensalBean.resetFormValues(3)}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -316,7 +306,7 @@
 							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								p:data-toggle="modal" p:data-target="#modalDownload"
-								action="#{satReportsBean.download}"
+								action="#{fluxoMensalBean.download}"
 								class="btn btn-dark form-draw-button" />
 							<h:commandButton id="cancelDownload"
 								value="#{satLabels.sat_reports_modal_alert_btn_no}"
