@@ -310,7 +310,7 @@ public class wimController {
 		updateView();
 		try {
 			dados();
-			siluetaRealtime();
+			
 			listFiles();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -814,6 +814,12 @@ public class wimController {
 		/*type = new int[8];
 		type [1] = "";
 		type [2] = "";*/
+		try {
+			siluetaRealtime();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
