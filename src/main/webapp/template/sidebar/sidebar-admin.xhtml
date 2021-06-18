@@ -155,7 +155,7 @@
 								</ul></li>
 						</ui:fragment>
 
-						<ui:fragment rendered="#{loginAccount.load.en_sat}">
+						<ui:fragment rendered="#{loginAccount.load.en_sat}"> <!-- SAT MODULE -->
 							<li class="nav-item ml-2"><a class="nav-link"
 								href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-hdd icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
@@ -194,7 +194,33 @@
 											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
 										</h:commandLink></li>
 								</ul></li>
-						</ui:fragment>
+					
+						<ui:fragment rendered="#{loginAccount.reportsLLEnabled}"> <!-- REPORTS LL FRAGMENT -->
+							<li class="nav-item ml-2"><a class="nav-link"
+								href="#satLLSubmenu" data-toggle="collapse"
+								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
+									class="text">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
+								<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToCCRClasses}"
+											value="">
+											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
+										</h:commandLink></li>
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToCCRTipo}" value="">
+											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
+										</h:commandLink></li>
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToCCRVelocidade}"
+											value="">
+											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
+										</h:commandLink></li>
+								</ul></li>
+						</ui:fragment> <!---->								
+				</ui:fragment> <!---->
 
 						<ui:fragment rendered="#{loginAccount.load.en_sos}">
 							<li class="nav-item ml-2"><a class="nav-link"
@@ -230,50 +256,23 @@
 								</h:commandLink></li>
 						</ui:fragment>
 					</ul></li>
-
-				<li class="nav-item"><a href="#LLmenu" data-toggle="collapse"
-					aria-expanded="false" class="nav-link"> <i
-						class="fas fa-file-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports_ll}</span></a>
-
-					<ul class="collapse list-unstyled" id="LLmenu">
-
-						<ui:fragment rendered="#{loginAccount.load.en_sat}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#satLLSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRClasses}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRTipo}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRVelocidade}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-										</h:commandLink></li>
-								</ul></li>
-						</ui:fragment>
-					</ul></li>
-
+				
 				<li class="nav-item"><a href="#realTimeSubmenu"
 					data-toggle="collapse" aria-expanded="false" class="nav-link">
 						<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
 				</a>
 					<ul class="collapse list-unstyled" id="realTimeSubmenu">
+						
+						
+						<ui:fragment rendered="#{loginAccount.mapEnabled}" >
 						<li class="nav-item ml-2"><h:commandLink class="nav-link"
 								action="#{navigationController.redirectToMap}" value="">
 								<i class="fas fa-map-marker icon icon"></i>
 								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
 							</h:commandLink></li>
+						</ui:fragment>
+						
+						
 						<li class="nav-item ml-2"><h:commandLink class="nav-link"
 								action="#{navigationController.redirectToRealTime}" value="">
 								<i class="fas fa-stopwatch icon icon"></i>

@@ -700,7 +700,7 @@ public class SatReportsController {
 			
 			//JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sat_reports_chart_title_ccr_classes");	 
-			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_ccr_classe");	
+			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_ccr_classes");	
 		}
 
 		/**** CCR AXLE TYPE  ****/
