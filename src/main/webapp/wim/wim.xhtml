@@ -26,7 +26,6 @@
 		<h:outputScript library="js/wim" name="wim_controller.js" />
 	</ui:define>
 	<ui:define name="main-content">
-
 		<div id="preloader">
 			<!-- inicio da animação -->
 			<div class="inner">
@@ -42,12 +41,26 @@
 			<div class="col-md-3 column1">
 				<div class="contendo">
 					<div class="row">
-						<div class="col-md-12">
+						<div class="col-md-9">
 							<button type="button" class="btn btn-warning fourth btn1"
-								data-toggle="modal" data-target="#modalForm">Search</button>
+								id="procurar" data-toggle="modal" data-target="#modalForm"
+								onclick="dataPicker()">#{wimLabels.search}</button>
+						</div>
+						<div class="col-md-3">
+							<h:form prependId="false" id="idPdf">
+								<button type="button" class="btn btn-danger btnPdf fourth"
+									id="statusPdf" data-toggle="modal" data-target="#modalPdf"
+									onclick="btnPdf()">
+									<i class="fas fa-file-pdf pdf"></i>
+								</button>
+							</h:form>
 						</div>
 					</div>
-					<hr></hr>
+					<!--  
+					<div class="alert alert-success alerta" role="alert" id="pdfOk"
+						style="display: none">Download successful</div>
+					<div class="alert alert-danger alerta" role="alert" id="pdfErro"
+						style="display: none">Cannot download this file.</div>-->
 					<h:form id="form-table" prependId="false">
 						<div class="table">
 							<!-- TABELA -->
@@ -57,12 +70,12 @@
 								cellspacing="0" width="100" headerClass="custom-table-header"
 								columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 								<h:column>
-									<f:facet name="header">Nº Evento</f:facet>
+									<f:facet name="header">#{wimLabels.n_event}</f:facet>
 									<h:outputText value="#{data.serialNumber}"
 										style="font-size: 12px; " />
 								</h:column>
 								<h:column>
-									<f:facet name="header">Date</f:facet>
+									<f:facet name="header">#{wimLabels.date_hour}</f:facet>
 									<h:outputText value="#{data.data}" style="font-size: 12px; " />
 								</h:column>
 							</h:dataTable>
@@ -73,7 +86,8 @@
 						<h:inputHidden id="checked" value="#{wimReport.selectedRow}" />
 						<h:commandButton type="button" class="btn btn-primary"
 							style="display: none" value="search" id="btnTable">
-							<f:ajax execute="@form" render=":idTable :dados1 :dados2 :dados3"
+							<f:ajax execute="@form"
+								render=":idTable :dados1 :dados2 :dados3 :formId"
 								listener="#{wimReport.getInfo}"></f:ajax>
 						</h:commandButton>
 					</h:form>
@@ -83,45 +97,45 @@
 
 			<div class="col-md-6 ">
 				<div class="jumbotron">
-					<h4 class="titleColumn2 text-center">Viewing vehicle
-						information</h4>
+					<h4 class="titleColumn2 text-center">#{wimLabels.titleReport}</h4>
 					<hr></hr>
 					<h:form id="dados1" prependId="false">
 						<div class="row">
 							<div class="col-3">
-								<span class="p1 text-center">Serial Nº</span>
+								<span class="p1 text-center">#{wimLabels.serial_number}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.seqN}</div>
 							</div>
 							<div class="col-6">
-								<span class="p1">Date|Hour</span>
+								<span class="p1">#{wimLabels.date_hour}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.data}</div>
 							</div>
 							<div class="col-3">
-								<span class="p1">Class</span>
+								<span class="p1">#{wimLabels.classe}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.classe}</div>
 							</div>
 							<div class="col-3">
-								<span class="p1">Nº of axes</span>
+								<span class="p1">#{wimLabels.axes}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.numberAxes}</div>
 							</div>
 
 							<div class="col-3">
-								<span class="p1">Speed</span>
+								<span class="p1">#{wimLabels.speed}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.speed}</div>
 							</div>
 							<div class="col-3">
-								<span class="p1">PBT Total:</span>
+								<span class="p1">#{wimLabels.pbtTotal}</span>
 								<div class="card cardS alert-dark">#{wimReport.date.pbtTotal}</div>
 							</div>
 							<div class="col-3">
-								<span class="p1">Size</span>
+								<span class="p1">#{wimLabels.size}</span>
 								<div class="card cardS alert-dark">-</div>
 							</div>
 						</div>
 					</h:form>
 					<hr></hr>
 					<h:form id="dados2" prependId="false">
-						<div class="row" onselectstart="return false" ondragstart="return false;">
+						<div class="row" onselectstart="return false"
+							ondragstart="return false;">
 							<div class="col-lg-6">
 								<img class="img" id="img" src="#{wimReport.image1}" alt="" />
 							</div>
@@ -140,13 +154,13 @@
 				<h:form id="dados3" prependId="false">
 					<div class="row">
 						<div class="col column3">
-							<h5 class="titleColumn2-1 text-center">Weight and Distance</h5>
+							<h5 class="titleColumn2-1 text-center">#{wimLabels.weight_distance}</h5>
 							<hr></hr>
 							<div class="row">
-								<div class="col-md-2 tt">Axes</div>
-								<div class="col-md-3 tt">Type</div>
-								<div class="col-md-3 tt">Weight</div>
-								<div class="col-md-3 tt">Dst Axes</div>
+								<div class="col-md-2 tt">#{wimLabels.axes}</div>
+								<div class="col-md-3 tt">#{wimLabels.type}</div>
+								<div class="col-md-3 tt">#{wimLabels.weight}</div>
+								<div class="col-md-3 tt">#{wimLabels.dstAxes}</div>
 							</div>
 							<div class="row">
 								<c:forEach var="value" begin="1" end="9" id="dados3">
@@ -166,7 +180,7 @@
 							</div>
 							<hr></hr>
 							<div class="card cardWeight">
-								<h5 class="text-center titleColumn2-2">Weight indicator</h5>
+								<h5 class="text-center titleColumn2-2">#{wimLabels.weight_indicator}</h5>
 								<div class="col-md-12">
 									<div class="progress">
 										<div class="progress-bar size" role="progressbar"
@@ -186,9 +200,8 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="titleModal">Modal title</h5>
-							<h6 class="modal-title" id="cheked" style="display: none;">*Check
-								that all fields are filled in correctly!</h6>
+							<h5 class="modal-title" id="titleModal">#{wimLabels.searchModal}</h5>
+							<h6 class="modal-title" id="cheked" style="display: none;">#{wimLabels.errorModal}</h6>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true" onclick="resetForm()">&times;</span>
@@ -197,13 +210,13 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-4">
-									<span class="textT">Date Initial</span>
+									<span class="textT">#{wimLabels.dateInitial}</span>
 									<h:inputText class="form-control inputDesign ll"
 										id="dateInitial" value="#{wimReport.dateInitial}"
 										pt:placeholder="yyyy-dd-mm" />
 								</div>
 								<div class="col-md-4">
-									<span class="textT">Hour Initial</span>
+									<span class="textT">#{wimLabels.hourInitial}</span>
 									<h:selectOneMenu value="#{wimReport.hourInitial}"
 										class="form-control inputDesign ll" id="hourInitial">
 										<f:selectItem itemLabel="Hour" itemValue="" />
@@ -211,7 +224,7 @@
 									</h:selectOneMenu>
 								</div>
 								<div class="col-md-4">
-									<span class="textT">Minute Initial</span>
+									<span class="textT">#{wimLabels.minuteInitial}</span>
 									<h:selectOneMenu value="#{wimReport.minuteInitial}"
 										class="form-control inputDesign ll" id="minuteInitial">
 										<f:selectItem itemLabel="Minute" itemValue="" />
@@ -221,14 +234,13 @@
 
 								<div class="col-md-4">
 									<hr></hr>
-									<span class="textT">Date Final</span>
-									<h:inputText class="form-control inputDesign ll"
-										id="dateFinal" value="#{wimReport.dateFinal}"
-										pt:placeholder="yyyy-dd-mm" />
+									<span class="textT">#{wimLabels.dateFinal}</span>
+									<h:inputText class="form-control inputDesign ll" id="dateFinal"
+										value="#{wimReport.dateFinal}" pt:placeholder="yyyy-dd-mm" />
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
-									<span class="textT">Hour Final</span>
+									<span class="textT">#{wimLabels.hourFinal}</span>
 									<h:selectOneMenu value="#{wimReport.hourFinal}" id="hourFinal"
 										class="form-control inputDesign ll">
 										<f:selectItem itemLabel="Hour" itemValue="" />
@@ -237,7 +249,7 @@
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
-									<span class="textT">Minute Final</span>
+									<span class="textT">#{wimLabels.minuteFinal}</span>
 									<h:selectOneMenu value="#{wimReport.minuteFinal}"
 										id="minuteFinal" class="form-control inputDesign ll">
 										<f:selectItem itemLabel="Minute" itemValue="" />
@@ -246,24 +258,58 @@
 								</div>
 								<div class="col-md-12">
 									<hr></hr>
-									<span class="textT">Classes</span>
+									<span class="textT">#{wimLabels.classe}</span>
 									<h:selectOneMenu value="#{wimReport.classs}" id="classe"
 										class="form-control inputDesign">
-										<f:selectItem itemLabel="Classe" itemValue="" />
+										<f:selectItem itemLabel="#{wimLabels.classe}" itemValue="" />
 										<f:selectItems value="#{wimReport.classes}" />
 									</h:selectOneMenu>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
+
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal" onclick="resetForm()">Close</button>
+								data-dismiss="modal" onclick="resetForm()">#{wimLabels.close}</button>
 							<button type="button" class="btn btn-secondary"
-								onclick="verif('#btnSubmit')">Search</button>
+								onclick="verif('#btnSubmit')">#{wimLabels.search}</button>
 							<h:commandButton type="button" class="btn btn-primary"
 								style="display: none" value="search" id="btnSubmit">
 								<f:ajax execute="@form" render=":formId :form-table"
 									listener="#{wimReport.search}"></f:ajax>
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Modal -->
+			<div class="modal fade" id="modalPdf" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">PDF <i class="fas fa-cloud-download-alt"></i></h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-12">
+									<p class="textPdf1">#{wimLabels.downloadPdf}</p>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-dark" id="pdfCancel"
+								data-dismiss="modal">#{wimLabels.close}</button>
+							<button type="button" class="btn btn-dark" id="PdfYes"
+								onclick="disabledPdf()">#{wimLabels.download}</button>
+							<h:commandButton class="btn btn-dark" value="Yes"
+								style="display: none" id="idBtn">
+								<f:ajax execute="@form" listener="#{wimReport.downloadPdf}"
+									render=":formId :dados3 :dados2" />
 							</h:commandButton>
 						</div>
 					</div>

@@ -22,6 +22,8 @@ public class LocaleUtil {
 	public static final String LABELS_EMAIL = "bundle.labels.email.labels_email_"; //notification send e-mail
 	public static final String LABELS_MAPS = "bundle.labels.system.maps.labels_maps_";
 	public static final String LABELS_REALTIME = "bundle.labels.system.realtime.labels_realtime_";	
+	public static final String LABELS_WIM = "bundle.labels.wim.labels_wim_";	
+
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";
 	public static final String MESSAGES_EMAIL = "bundle.messages.system.email.messages_email_";

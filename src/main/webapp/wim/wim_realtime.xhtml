@@ -44,31 +44,31 @@
 						<f:ajax execute="@form" listener="#{wimController.car}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E2">
+					<h:commandButton class="dropdown-item" value="2">
 						<f:ajax execute="@form" listener="#{wimController.e2}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E3">
+					<h:commandButton class="dropdown-item" value="3">
 						<f:ajax execute="@form" listener="#{wimController.e3}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E4">
+					<h:commandButton class="dropdown-item" value="4">
 						<f:ajax execute="@form" listener="#{wimController.e4}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E5">
+					<h:commandButton class="dropdown-item" value="5">
 						<f:ajax execute="@form" listener="#{wimController.e5}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E6">
+					<h:commandButton class="dropdown-item" value="6">
 						<f:ajax execute="@form" listener="#{wimController.e6}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E7">
+					<h:commandButton class="dropdown-item" value="7">
 						<f:ajax execute="@form" listener="#{wimController.e7}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="E9">
+					<h:commandButton class="dropdown-item" value="9">
 						<f:ajax execute="@form" listener="#{wimController.e9}"
 							render=":update"></f:ajax>
 					</h:commandButton>
@@ -80,36 +80,35 @@
 				<!-- column 1-->
 				<div class="col-md-9">
 					<div class="jumbotron">
-						<h4 class="titleColumn2 text-center">Viewing vehicle
-							information</h4>
+						<h4 class="titleColumn2 text-center">#{wimLabels.titleReport}</h4>
 						<hr></hr>
 						<div class="row rowViewing">
 							<div class="col-2">
-								<span class="p1 text-center">Nº Serial</span>
+								<span class="p1 text-center">#{wimLabels.serial_number}</span>
 								<div class="card cardS troca" id="serialNumber">#{wimController.serialNumber}</div>
 							</div>
 							<div class="col-3">
-								<span class="p1">Date|Hour</span>
+								<span class="p1">#{wimLabels.date_hour}</span>
 								<div class="card cardS troca" id="dataHour">#{wimController.dataHour}</div>
 							</div>
 							<div class="col-1">
-								<span class="p1">Class</span>
+								<span class="p1">#{wimLabels.classe}</span>
 								<div class="card cardS troca" id="classe">#{wimController.classe}</div>
 							</div>
 							<div class="col-1">
-								<span class="p1">axes</span>
+								<span class="p1">#{wimLabels.axes}</span>
 								<div class="card cardS troca" id="eixo">#{wimController.eixo}</div>
 							</div>
 							<div class="col-1">
-								<span class="p1">Speed</span>
+								<span class="p1">#{wimLabels.speed}</span>
 								<div class="card cardS troca" id="speed">#{wimController.speed}</div>
 							</div>
 							<div class="col-2">
-								<span class="p1">PBT Total:</span>
+								<span class="p1">#{wimLabels.pbtTotal}</span>
 								<div class="card cardS troca" id="pbtTotal">#{wimController.pbtTotal}</div>
 							</div>
 							<div class="col-2">
-								<span class="p1">Size</span>
+								<span class="p1">#{wimLabels.size}</span>
 								<div class="card cardS troca" id="size">-</div>
 							</div>
 						</div>
@@ -139,13 +138,13 @@
 				<div class="col-md-3">
 					<div class="row">
 						<div class="col column3">
-							<h5 class="titleColumn2-1 text-center">Weight and Distance</h5>
+							<h5 class="titleColumn2-1 text-center">#{wimLabels.weight_distance}</h5>
 							<hr></hr>
 							<div class="row">
-								<div class="col-md-2 tt">Axes</div>
-								<div class="col-md-3 tt">Type</div>
-								<div class="col-md-3 tt">Weight</div>
-								<div class="col-md-3 tt">Dst Axes</div>
+								<div class="col-md-2 tt">#{wimLabels.axes}</div>
+								<div class="col-md-3 tt">#{wimLabels.type}</div>
+								<div class="col-md-3 tt">#{wimLabels.weight}</div>
+								<div class="col-md-3 tt">#{wimLabels.dstAxes}</div>
 							</div>
 							<div class="row">
 								<c:forEach var="value" begin="1" end="9">
@@ -165,7 +164,7 @@
 							</div>
 							<hr></hr>
 							<div class="card cardWeight troca">
-								<h5 class="text-center titleColumn2-2">Weight indicator</h5>
+								<h5 class="text-center titleColumn2-2">wim</h5>
 								<div class="col-md-12">
 									<div class="progress">
 										<div class="progress-bar size" role="progressbar" id="rate"

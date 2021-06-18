@@ -11,6 +11,7 @@ import javax.faces.model.SelectItem;
 import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.controller.occ.OccurrencesBean;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.wim.WimData;
 
@@ -302,7 +303,6 @@ public class wimController {
 	}
 	@PostConstruct
 	public void initalize(){
-		
 		// initalize wim realtime
 		colorInitial();
 		updateView();
@@ -310,7 +310,7 @@ public class wimController {
 		updateView();
 		try {
 			dados();
-			siluetaRealtime();
+			
 			listFiles();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
@@ -328,6 +328,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/onibus1.jpg";
 			img2 = "/teste/onibus2.jpeg";
+			silueta = "/teste/sil/onibusE2.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -345,6 +346,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/onibus1-2.jpg";
 			img2 = "/teste/onibus2-1.jpg";
+			silueta = "/teste/sil/onibusE3.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -362,6 +364,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/carro1.jpeg";
 			img2 = "/teste/carro2.jpg";
+			silueta = "/teste/sil/10.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -379,6 +382,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/e2-1.jpg";
 			img2 = "/teste/e2-2.jpg";
+			silueta = "/teste/sil/2.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -396,6 +400,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/eixo3-1.jpg";
 			img2 = "/teste/eixo3-1.jpg";
+			silueta = "/teste/sil/3.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -413,6 +418,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao4-1.jpg";
 			img2 = "/teste/caminhao4-2.jpg";
+			silueta = "/teste/sil/4.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,6 +436,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao5-1.jpg";
 			img2 = "/teste/caminhao5-2.jpg";
+			silueta = "/teste/sil/5.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -447,6 +454,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao6-1.jpg";
 			img2 = "/teste/caminhao6-1.jpg";
+			silueta = "/teste/sil/e6.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -464,6 +472,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao7-1.jpg";
 			img2 = "/teste/caminhao7-2.jpg";
+			silueta = "/teste/sil/e7.jpg";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -481,6 +490,7 @@ public class wimController {
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			img1 = "/teste/caminhao9-1.jpg";
 			img2 = "/teste/caminhao9-2.jpeg";
+			silueta = "/teste/sil/9.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -557,11 +567,12 @@ public class wimController {
 		}
 		return silueta;
 	}
+	
 	//update View wim_Realtime
 	public void updateView() {
 		try {
 
-			TimeUnit.SECONDS.sleep(3);
+			TimeUnit.SECONDS.sleep(2);
 
 		}catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -621,126 +632,126 @@ public class wimController {
 			RequestContext request = RequestContext.getCurrentInstance();
 			rate = pbtTotal;
 			//classe onibus E2
-			if(classe.equals("2A")) {
-				if(rate <= 10000) {
+			TranslationMethods trad = new TranslationMethods();
+			if(classe.equals("1")) {
+				if(rate < 6000) {
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 10000 && rate <= 10500) {
+				}else if( rate > 6000 && rate < 6450){
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else {
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("2")){
+				if(rate < 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}
+			}else if(classe.equals("4")){
+				if(rate < 17000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 17000 && rate <= 17850){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("5")) {
+				//essa classe falta definir o peso
+				if(rate < 17000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 17000 && rate <= 17850){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")){
+				if(rate < 25500) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 25500 && rate <= 26775){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("9")){
+				if(rate < 6000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 6000 && rate <= 6450){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
 				}else {
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+				//classe carro
+			}else if(classe.equals("10")){
+				if(rate < 51000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 51000 && rate <= 53500){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("11")||classe.equals("E9")){
+				if(rate < 68000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 68000 && rate <= 71400){
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
+				}
+			}else if(classe.equals("2A")){
+				if(rate < 10000) {
+					request.execute("sizeNormal();");
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 10000 && rate <= 10500) {
+					request.execute("sizeAtenttion();");
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else {
+					request.execute("sizeAcima();");
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
 				//classe onibus E3
 			}else if(classe.equals("4A")){
-				if(rate <= 13500) {
+				if(rate < 13500) {
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
 				}else if(rate > 13500 && rate <= 14175) {
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
 				}else {
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
-				
-				//classe moto
-			}else if(classe.equals("9")) {
-				if(rate <= 6000) {
+			}else if(classe.equals("10N")){
+				if(rate < 70001) {
 					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 6000 && rate <= 6450) {
+					rateTxt = trad.wimLabels("indicator3")+" "+ rate;
+				}else if(rate > 70001 && rate <= 73500){
 					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
+					rateTxt = trad.wimLabels("indicator2")+" "+ rate;
+				}else{
 					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				
-				//classe carro
-			}else if(classe.equals("1")){
-				if(rate <= 6000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 6000 && rate <= 6450) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E2
-			}else if(classe.equals("2")) {
-				if(rate <= 10000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 10000 && rate <= 10500) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E3
-			}else if(classe.equals("4")) {
-				if(rate <= 17000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 17000 && rate <= 17850) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-			//classe E4 E5 E6
-			}else if(classe.equals("6")||classe.equals("7")||classe.equals("8")) {
-				if(rate <= 25500) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 25500 && rate <= 26775) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				//classe E7
-			}else if(classe.equals("10")) {
-				if(rate <= 51000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 51000 && rate <= 53500) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
-				}
-				//classe E8 E9
-			}else if(classe.equals("11")||classe.equals("E9")) {
-				if(rate <= 68000) {
-					request.execute("sizeNormal();");
-					rateTxt = "Normal weight " + rate;
-				}else if(rate > 68000 && rate <= 71400) {
-					request.execute("sizeAtenttion();");
-					rateTxt = "In tolerance " + rate;
-				}else {
-					request.execute("sizeAcima();");
-					rateTxt = "overweight " + rate;
+					rateTxt = trad.wimLabels("indicator1")+" "+ rate;
 				}
 			}
-			/*if(rate <= 1500) {
-				//request.execute("sizeNormal();");
-				//rateTxt = "Normal weight " + rate;
-			}else if(rate > 1500 && rate <= 2500) {
-				//request.execute("sizeAtenttion();");
-				//rateTxt = "In tolerance " + rate;
-			}else {
-				//request.execute("sizeAcima();");
-				//rateTxt = "overweight " + rate;
-			}*/
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -803,6 +814,12 @@ public class wimController {
 		/*type = new int[8];
 		type [1] = "";
 		type [2] = "";*/
+		try {
+			siluetaRealtime();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

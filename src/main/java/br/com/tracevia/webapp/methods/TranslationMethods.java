@@ -5,10 +5,10 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
 	
-	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail;
+	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail, localeWim;
 	
 	public TranslationMethods() {
-		
+				
 		locale = new LocaleUtil();		
 		locale.getResourceBundle(LocaleUtil.LABELS_USERS);
 		
@@ -27,9 +27,34 @@ public class TranslationMethods {
 		localeOcc = new LocaleUtil();
 		localeOcc.getResourceBundle(LocaleUtil.LABELS_OCC);
 		
+		localeWim = new LocaleUtil();
+		localeWim.getResourceBundle(LocaleUtil.LABELS_WIM);
+		
      }
-	
-	
+	public String wimLabels(String wim) {
+		String converteWim = "";
+		switch(wim){
+		case "WIM REPORT": converteWim = localeWim.getStringKey("wimReport");break;
+		case "N SERIAL": converteWim = localeWim.getStringKey("serial_number");break;
+		case "CLASSE": converteWim = localeWim.getStringKey("classe");break;
+		case "DATAHOUR": converteWim = localeWim.getStringKey("date_hour");break;
+		case "INFORMATION1": converteWim = localeWim.getStringKey("titleReport");break;
+		case "INFORMATION2": converteWim = localeWim.getStringKey("weight_distance");break;
+		case "AXES": converteWim = localeWim.getStringKey("axes"); break;
+		case "SPEED" : converteWim = localeWim.getStringKey("speed");break;
+		case "PBT" : converteWim = localeWim.getStringKey("pbtTotal");break;
+		case "TYPE" : converteWim = localeWim.getStringKey("type");break;
+		case "WEIGHT" : converteWim = localeWim.getStringKey("weight");break;
+		case "DSTAXES" : converteWim = localeWim.getStringKey("dstAxes");break;
+		case "indicator1" : converteWim = localeWim.getStringKey("indicator01");break;
+		case "indicator2" : converteWim = localeWim.getStringKey("indicator02");break;
+		case "indicator3" : converteWim = localeWim.getStringKey("indicator03");break;
+		case "indicator" : converteWim = localeWim.getStringKey("weight_indicator");break;
+
+		}
+		
+		return converteWim;
+	}
 	public String occLabels(String occ) {
 		//var
 		String converteOcc = "";

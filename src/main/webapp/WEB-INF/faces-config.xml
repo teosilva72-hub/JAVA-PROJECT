@@ -104,6 +104,10 @@
           <var>occLabels</var>        
         </resource-bundle>
         
+        <resource-bundle>
+          <base-name>bundle.labels.wim.labels_wim</base-name>           
+          <var>wimLabels</var>        
+        </resource-bundle>
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -206,6 +210,7 @@
 		<message-bundle>bundle.labels.system.informations.labels_info</message-bundle>				
         <message-bundle>bundle.labels.users.labels_users</message-bundle>
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
+        <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
         
      
         <!-- CONFIG MESSAGES -->
