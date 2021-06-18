@@ -303,8 +303,6 @@ public class wimController {
 	}
 	@PostConstruct
 	public void initalize(){
-		setImg1("/teste/tracevia.jpg");
-		setImg2("/teste/tracevia.jpg");
 		// initalize wim realtime
 		colorInitial();
 		updateView();
