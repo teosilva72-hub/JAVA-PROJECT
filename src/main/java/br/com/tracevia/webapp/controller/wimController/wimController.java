@@ -305,7 +305,6 @@ public class wimController {
 	public void initalize(){
 		// initalize wim realtime
 		colorInitial();
-		updateView();
 		rate();
 		updateView();
 		try {
