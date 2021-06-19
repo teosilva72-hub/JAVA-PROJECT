@@ -2748,7 +2748,7 @@ public class ExcelModels {
 
 		//ROW DATA CREATION
 		spreadSheet.createRows(sheet, row, ini, rowMax);		
-		//spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 0, 1 , 9, ini, registerLength);
+		spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 0, 1 , 9, ini, registerLength);
 
 		//spreadSheet.fillDataSingle(sheet, row, cellData, resultQuery, 8, 10 , 12, ini, registerLength);
 
