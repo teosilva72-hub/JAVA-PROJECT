@@ -1,7 +1,5 @@
 const PING = 10000
 
-getCred('rabbitmq'); // Rabbit init
-
 let on_error =  function() {
     console.log('error');
 };
@@ -33,10 +31,10 @@ const changeStates = response => {
 			break
 	}
 
-	if (status == 'alarm')
-		equip.addClass('call-box-alarm')
-	else
-		equip.removeClass('call-box-alarm')
+	// if (status == 'alarm')
+	//   equip.addClass('call-box-alarm')
+	// else
+	//	 equip.removeClass('call-box-alarm')
 
 	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
 }
@@ -143,7 +141,7 @@ const connectSOS = async function(request, debug) {
 }
 
 const initSOS = async () => {
-	let response = await connectSOS('GetAllEquipmentStates')
+	let response = await connectSOS('GetAllEquipmentStates', true)
 	let alarms = await connectSOS('GetAllActiveAlarms')
 	window.sosEquip = {};
 
@@ -155,8 +153,10 @@ const initSOS = async () => {
 	for (const a of alarms)
 		signaling(a)
 
-	consume()
+	consume({debug: true})
 }
+
+window.initSOS = initSOS;
 
 // GetAllEquipmentStates
 // GetAllAlarmTypes
