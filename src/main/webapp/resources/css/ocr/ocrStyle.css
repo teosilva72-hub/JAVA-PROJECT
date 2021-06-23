@@ -1,19 +1,32 @@
-html, body{
+html, body {
 	width: 100%;
 	height: 100%;
 	margin: 0;
 }
 
-.img1{
+.img1 {
+	border: solid 2px black;
 	width: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 }
-.img2{
-	width: 200px;
+
+.img2 {
+	border: solid 2px black; margin-top : 20px;
+	width: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	margin-top: 20px;
 }
-#detalhes, #search, #btnPdf{
+
+#detalhes, #search, #btnPdf {
 	font-size: 20pt;
 	width: 3%;
+	width: 100%;
 }
-.btns{
+
+.btns {
 	margin-top: 50px;
 }
