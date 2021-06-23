@@ -22,26 +22,33 @@ import br.com.tracevia.webapp.model.global.Equipments;
 public class daiBean {
 	
 	@PostConstruct
-	public void initalize() throws Exception {	
+	public void initalize(){
+		x();
 		try {
 			popUp();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	public void x() {
+		System.out.println("estou aqui tbm");
+		RequestContext request = RequestContext.getCurrentInstance();
+		request.execute("disabledBtn();");
+
 	}
 	public void popUp(){
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
-
+		RequestContext request = RequestContext.getCurrentInstance();
 		try {
-			TimeUnit.MINUTES.sleep(1);
-			RequestContext request = RequestContext.getCurrentInstance();
-			request.execute("btnPopUp();");
-			System.out.println("pop-up alerta");
+			TimeUnit.SECONDS.sleep(20);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		request.execute("btnPopUp();");
+		System.out.println("pop-up alerta");
 		
 	}
 }

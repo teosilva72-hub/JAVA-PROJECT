@@ -11,31 +11,31 @@
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	<ui:define name="head">
-		<title>DAI</title>
+		<title>OCR</title>
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
 		<h:outputStylesheet library="css/forms" name="form-style.css" />
-		<h:outputStylesheet library="css/dai" name="style.css" />
+		<h:outputStylesheet library="css/ocr" name="ocrStyle.css" />
 		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
 		<h:outputStylesheet library="bootstrap/css"
 			name="bootstrap-multiselect.css" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet library="css/occ" name="occurrences.css" />
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
-		<h:outputScript library="js/dai" name="controller_dai.js" />
+		<h:outputScript library="js/ocr" name="controller_ocr.js" />
 	</ui:define>
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="text-center">DAI RELATÓRIO</h1>
+				<h1 class="text-center">OCR RELATÓRIO</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-1"></div>
-			<div class="col-md-8">
+			<div class="col-md-4">
 				<div class="table">
 					<!-- TABELA -->
-					<h:dataTable id="dai-table" var="data" disabled="true"
+					<h:dataTable id="ocr-table" var="data" disabled="true"
 						value="#{wimReport.list}"
 						styleClass="table table-sm custom-table table-striped table-dark table-hover"
 						cellspacing="0" width="100" headerClass="custom-table-header"
@@ -46,50 +46,53 @@
 								style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Direção</f:facet>
+							<f:facet name="header">Data|Hora</f:facet>
 							<h:outputText value="#{data.data}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Faixa</f:facet>
+							<f:facet name="header">Câmera</f:facet>
 							<h:outputText value="#{data.data}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Canal</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Data</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Hora</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Incidente</f:facet>
+							<f:facet name="header">Placa</f:facet>
 							<h:outputText value="#{data.data}" style="font-size: 12px; " />
 						</h:column>
 					</h:dataTable>
 				</div>
 			</div>
-			<div class="col-md-2">
+			<div class="col-md-1">
 				<div class="btns">
-					<button type="button" class="btn btn-warning btn1"
+				<div class="row"></div>
+					<button type="button" class="btn btn-dark btn1" id="btnPdf">
+						<i class="fas fa-file-pdf icone"></i>
+					</button>
+					<button type="button" class="btn btn-warning btn1" id="search"
 						data-toggle="modal" data-target="#modalPesquisa"
-						onclick="dataPicker()">Pesquisar</button>
-					<button type="button" class="btn btn-primary btn1" id="btnDetalhes">Detalhes</button>
-					<button type="button" class="btn btn-dark btn1" id="btnPdf">PDF</button>
-					<h:commandButton type="button" id="popUp" class="btn btn-dark btn1"
-						data-toggle="modal" data-target="#popup">
-						<f:passThroughAttribute name="data-toggle" value="modal" />
-						<f:passThroughAttribute name="data-target" value="#popup" />
-						<f:ajax listener="#{daiBean.popUp}" execute="@form"
-							render=":modalPopUp" />
-					</h:commandButton>
+						onclick="dataPicker()">
+						<i class="fas fa-search"></i>
+					</button>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<h3 class="text-center">IMAGEM</h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-6">
+								<img class="img1"
+									src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+							</div>
+							<div class="col-md-6">
+								<img class="img2"
+									src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
-		<!-- Modal pesquisa -->
+		<!-- Modal -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -159,62 +162,6 @@
 				</div>
 			</div>
 		</div>
-		<!-- Modal -->
-		<h:form prependId="false" id="modalPopUp">
-			<div class="modal fade" id="popup" data-backdrop="static"
-				data-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> Último Incidente
-							</h5>
-							<button type="button" class="close" data-dismiss="modal" onclick="modalHide()"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<img src="/teste/dai1.jpg" class="daiImg"></img>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-6">
-									<p>Equipamento:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Local:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Incidente:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Data:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Hora:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Câmera:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Rodovia</p>
-								</div>
-								<div class="col-md-6">
-									<p>Faixa:</p>
-								</div>
-								<div class="col-md-6">
-									<p>Equipamento:</p>
-								</div>
-								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal" onclick="modalHide()">Voltar</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</h:form>
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"

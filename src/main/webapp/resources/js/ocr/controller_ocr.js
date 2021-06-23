@@ -1,5 +1,5 @@
 function getTr(){
-	var table = $('#dai-table').DataTable({
+	var table = $('#ocr-table').DataTable({
 		language: {
 			"search": "",
 			searchPlaceholder: "Buscar"
