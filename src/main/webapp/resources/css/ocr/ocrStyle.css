@@ -1,33 +1,32 @@
-.btns{
-	margin-top: 40px;
-}
-.btn1{
-	margin-top: 10px;
+html, body {
 	width: 100%;
+	height: 100%;
+	margin: 0;
 }
-.daiImg{
-	width: 80%;
-	height: 200px;
-}
-.modal-backdrop.hide{
-	display: none;
-}
-#popUp{
-	display: none;
-}
-.img1{
+
+.img1 {
+	border: solid 2px black;
 	width: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	border: solid 2px black;
 }
-.img2{
-	border: solid 2px black;
-	width: 50%;
+
+.img2 {
+	border: solid 2px black; margin-top : 20px;
+	width: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	margin-left: 25%;
-	margin-top: 10px;
+	margin-top: 20px;
+}
+
+#detalhes, #search, #btnPdf {
+	font-size: 20pt;
+	width: 3%;
+	width: 100%;
+}
+
+.btns {
+	margin-top: 50px;
 }
