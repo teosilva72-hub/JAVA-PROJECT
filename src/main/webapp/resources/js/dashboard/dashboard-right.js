@@ -141,6 +141,8 @@ const credEvent = data => {
 	}
 }
 
+getCred('rabbitmq'); // Rabbit init
+
 //NOTIFICATIONS  BADGE
 
 //Accept a Call Button
