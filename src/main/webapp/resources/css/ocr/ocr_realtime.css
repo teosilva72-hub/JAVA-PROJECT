@@ -1,10 +1,10 @@
-html, body {
+html, body{
+	margin: 0;
 	width: 100%;
 	height: 100%;
-	margin: 0;
 }
-
 .img1 {
+	margin-left: 15px;
 	margin-top: 50px;
 	border: solid 2px black;
 	width: 100%;
@@ -14,20 +14,18 @@ html, body {
 }
 
 .img2 {
-	border: solid 2px black; margin-top : 20px;
+	border: solid 2px black;
 	width: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	margin-top: 180px;
+	margin-top: 120px;
 }
-
-#search, #btnPdf {
-	font-size: 20pt;
-	width: 100%;
-	margin-top: 20px;
+.dado{
+	margin-top: 15px;
+	background: #343a40;
+	color: white;
 }
-
-.btns {
-	margin-top: 80px;
+.estrutura{
+	margin-top: 130px;
 }

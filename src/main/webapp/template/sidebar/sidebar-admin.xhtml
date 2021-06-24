@@ -139,23 +139,10 @@
 						</ui:fragment>
 						<!---->
 
-						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="far fa-file-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="occSubmenu">
-								</ul></li>
-						</ui:fragment>
+						
 
-						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#pmvSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-tv icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="pmvSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_sat}"> <!-- SAT MODULE -->
+						<ui:fragment rendered="#{loginAccount.load.en_sat}">
+							<!-- SAT MODULE -->
 							<li class="nav-item ml-2"><a class="nav-link"
 								href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-hdd icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
@@ -194,58 +181,37 @@
 											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
 										</h:commandLink></li>
 								</ul></li>
-					
-						<ui:fragment rendered="#{loginAccount.reportsLLEnabled}"> <!-- REPORTS LL FRAGMENT -->
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#satLLSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRClasses}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRTipo}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRVelocidade}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-										</h:commandLink></li>
-								</ul></li>
-						</ui:fragment> <!---->								
-				</ui:fragment> <!---->
 
-						<ui:fragment rendered="#{loginAccount.load.en_sos}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#sosSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-phone-square-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sos}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="sosSubmenu">
-								</ul></li>
+							<ui:fragment rendered="#{loginAccount.reportsLLEnabled}">
+								<!-- REPORTS LL FRAGMENT -->
+								<li class="nav-item ml-2"><a class="nav-link"
+									href="#satLLSubmenu" data-toggle="collapse"
+									aria-expanded="false"><i class="fas fa-hdd icon"></i><span
+										class="text">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
+									<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRClasses}"
+												value="">
+												<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+												<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
+											</h:commandLink></li>
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRTipo}" value="">
+												<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+												<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
+											</h:commandLink></li>
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRVelocidade}"
+												value="">
+												<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+												<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
+											</h:commandLink></li>
+									</ul></li>
+							</ui:fragment>
+							<!---->
 						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_speed}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#speedSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-tachometer-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="speedSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_videowall}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#videowallSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-play-circle icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="videowallSubmenu">
-								</ul></li>
+						<!---->
+>
 						</ui:fragment>
 
 						<ui:fragment rendered="#{loginAccount.load.en_wim}">
@@ -256,30 +222,30 @@
 								</h:commandLink></li>
 						</ui:fragment>
 					</ul></li>
-				
+
 				<li class="nav-item"><a href="#realTimeSubmenu"
 					data-toggle="collapse" aria-expanded="false" class="nav-link">
 						<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
 				</a>
 					<ul class="collapse list-unstyled" id="realTimeSubmenu">
-						
-						
-						<ui:fragment rendered="#{loginAccount.mapEnabled}" >
-						<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToMap}" value="">
-								<i class="fas fa-map-marker icon icon"></i>
-								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
-							</h:commandLink></li>
+
+
+						<ui:fragment rendered="#{loginAccount.mapEnabled}">
+							<li class="nav-item ml-2"><h:commandLink class="nav-link"
+									action="#{navigationController.redirectToMap}" value="">
+									<i class="fas fa-map-marker icon icon"></i>
+									<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
+								</h:commandLink></li>
 						</ui:fragment>
-						
-						
+
+
 						<li class="nav-item ml-2"><h:commandLink class="nav-link"
 								action="#{navigationController.redirectToRealTime}" value="">
 								<i class="fas fa-stopwatch icon icon"></i>
 								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
 							</h:commandLink></li>
-							
-							<ui:fragment rendered="#{loginAccount.load.en_wim}">
+
+						<ui:fragment rendered="#{loginAccount.load.en_wim}">
 							<li class="nav-item ml-2"><h:commandLink class="nav-link"
 									action="#{navigationController.wimRealtime}" value="">
 									<i class="fas fa-truck-moving icon"></i>
@@ -295,14 +261,7 @@
 
 					<ul class="collapse list-unstyled" id="userInterfaceSubmenu">
 
-						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#cftvUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-video icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_cftv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="cftvUiSubmenu">
-								</ul></li>
-						</ui:fragment>
+
 
 						<ui:fragment rendered="#{loginAccount.load.en_comms}">
 							<li class="nav-item ml-2"><a class="nav-link"
@@ -386,14 +345,11 @@
 								href="#occUiSubmenu" data-toggle="collapse"
 								aria-expanded="false"><i class="far fa-file-alt icon"></i><span
 									class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="occUiSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToOccurrences}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
-										</h:commandLink></li>
-								</ul></li>
+								<h:commandLink class="nav-link"
+									action="#{navigationController.redirectToOccurrences}" value="">
+									<i class="fas fa-chevron-circle-right icon icon-sub"></i>
+									<span class="text">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
+								</h:commandLink></li>
 						</ui:fragment>
 
 						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
@@ -416,16 +372,6 @@
 										</h:commandLink></li>
 								</ul></li>
 						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_sat}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#satUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="satUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
 						<ui:fragment rendered="#{loginAccount.load.en_sos}">
 							<li class="nav-item ml-2"><a class="nav-link"
 								href="#sosUiSubmenu" data-toggle="collapse"
@@ -434,49 +380,18 @@
 								<ul class="collapse list-unstyled ml-3" id="sosUiSubmenu">
 								</ul></li>
 						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_speed}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#speedUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-tachometer-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="speedUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_videowall}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#videowallUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-play-circle icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="videowallUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#wimUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-truck-moving icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="wimUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
 					</ul></li>
-
 				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToPanelUsers}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-users-cog icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_users_register}</span>
 					</h:commandLink></li>
-
 				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToChangePassword}" value="">
 						<i class="fas fa-unlock-alt icon icon-sub"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_change_password}</span>
 					</h:commandLink></li>
-
 			</ul>
 		</h:form>
 

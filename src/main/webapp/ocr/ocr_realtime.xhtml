@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+	<ui:define name="head">
+		<title>OCR</title>
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/reports" name="reports_template.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+		<h:outputStylesheet library="css/ocr" name="ocr_realtime.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/ocr" name="controller_ocr.js" />
+	</ui:define>
+	<ui:define name="main-content">
+		<h:form prependId="false" id="dados"></h:form>
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="text-center">OCR REALTIME</h1>
+				<hr></hr>
+			</div>
+			<div class="col-md-8">
+				<h3 class="text-center"></h3>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="row">
+							<div class="col-md-8">
+								<img class="img1"
+									src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+							</div>
+							<div class="col-md-4">
+								<h4 class="text-center"></h4>
+								<img class="img2"
+									src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="estrutura">
+					<div class="row">
+						<div class="col-md-5">
+							<hr></hr>
+							<div class="info1">
+								<div class="col-md-12">
+									<div class="card alert-dark dado">
+										<span class="text-center">Número:</span>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="card alert-dark dado">
+										<span class="text-center">Data|Hora</span>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="card alert-dark dado">
+										<span class="text-center">Câmera:</span>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="card alert-dark dado">
+										<span class="text-center">Placa:</span>
+									</div>
+								</div>
+								<hr></hr>
+							</div>
+						</div>
+						<div class="col-md-7">
+							<hr></hr>
+							<div class="col-md-11">
+								<div class="card alert-dark dado">
+									<span class="text-center">15055</span>
+								</div>
+							</div>
+							<div class="col-md-11">
+								<div class="card alert-dark dado">
+									<span class="text-center">15/10/2021 15:00:00</span>
+								</div>
+							</div>
+							<div class="col-md-11">
+								<div class="card alert-dark dado">
+									<span class="text-center">CAM 1</span>
+								</div>
+							</div>
+							<div class="col-md-11">
+								<div class="card alert-dark dado">
+									<span class="text-center">MTA-1510</span>
+								</div>
+							</div>
+							<hr></hr>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<h:outputScript name="datepicker.js" library="js/datepicker" />
+		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
+		<h:outputScript name="jquery.validate.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="additional-methods.min.js"
+			library="js/jquery-validation" />
+		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
+	</ui:define>
+</ui:composition>
