@@ -343,14 +343,11 @@
 						<!---->
 
 						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#occUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="far fa-file-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
+							<li class="nav-item ml-2">
 								<h:commandLink class="nav-link"
 									action="#{navigationController.redirectToOccurrences}" value="">
-									<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-									<span class="text">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
+									<i class="far fa-file-alt icon"></i>
+									<span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span>
 								</h:commandLink></li>
 						</ui:fragment>
 
