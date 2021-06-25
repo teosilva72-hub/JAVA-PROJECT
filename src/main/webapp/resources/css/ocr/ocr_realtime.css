@@ -5,7 +5,7 @@ html, body {
 }
 
 .img1 {
-	margin-left: 15px;
+	margin-left: 30px;
 	border: solid 2px black;
 	width: 90%;
 	-webkit-box-shadow: 12px 10px 8px rgba(50, 50, 50, 0.77);
@@ -16,7 +16,7 @@ html, body {
 .img2 {
 	border: solid 2px black;
 	width: 100%;
-	margin-left: -40px;
+	margin-left: -20px;
 	margin-top: 150px;
 	-webkit-box-shadow: 12px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 12px 7px 5px rgba(50, 50, 50, 0.77);
@@ -45,7 +45,7 @@ html, body {
 .filter {
 	color: black;
 	font-weight: 999;
-	margin-left: 20px;
+	font-size: 10pt;
 }
 
 .ll {
