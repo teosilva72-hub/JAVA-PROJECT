@@ -26,10 +26,9 @@
 		<h:outputScript library="js/ocr" name="controller_ocr.js" />
 	</ui:define>
 	<ui:define name="main-content">
-		<h:form prependId="false" id="dados"></h:form>
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="text-center">OCR REALTIME</h1>
+				<h1 class="text-center ocrText">OCR REALTIME</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-8">
@@ -39,12 +38,12 @@
 						<div class="row">
 							<div class="col-md-8">
 								<img class="img1"
-									src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+									src="/teste/ocr1.jpg"></img>
 							</div>
 							<div class="col-md-4">
 								<h4 class="text-center"></h4>
 								<img class="img2"
-									src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
+									src="/teste/ocr2.jpg"></img>
 							</div>
 						</div>
 					</div>
@@ -82,26 +81,15 @@
 						</div>
 						<div class="col-md-7">
 							<hr></hr>
-							<div class="col-md-11">
-								<div class="card alert-dark dado">
-									<span class="text-center">15055</span>
-								</div>
-							</div>
-							<div class="col-md-11">
-								<div class="card alert-dark dado">
-									<span class="text-center">15/10/2021 15:00:00</span>
-								</div>
-							</div>
-							<div class="col-md-11">
-								<div class="card alert-dark dado">
-									<span class="text-center">CAM 1</span>
-								</div>
-							</div>
-							<div class="col-md-11">
-								<div class="card alert-dark dado">
-									<span class="text-center">MTA-1510</span>
-								</div>
-							</div>
+							<h:form prependId="false" id="dados">
+								<c:forEach var="value" begin="0" end="3">
+									<div class="col-md-11">
+										<div class="card alert-dark dado">
+											<span class="text-center">#{ocrBean.dados[value]}</span>
+										</div>
+									</div>
+								</c:forEach>
+							</h:form>
 							<hr></hr>
 						</div>
 					</div>

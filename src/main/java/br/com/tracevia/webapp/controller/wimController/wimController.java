@@ -581,7 +581,6 @@ public class wimController {
 		try {
 			dados();
 			rate();
-			listFiles();
 			siluetaRealtime();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
