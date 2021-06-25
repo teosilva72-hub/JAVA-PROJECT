@@ -5,7 +5,7 @@ html, body {
 }
 
 .img1 {
-	margin-left: 10px;
+	margin-left: 15px;
 	border: solid 2px black;
 	width: 90%;
 	-webkit-box-shadow: 12px 10px 8px rgba(50, 50, 50, 0.77);
