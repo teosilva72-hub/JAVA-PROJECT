@@ -7,9 +7,22 @@ function getTr(){
 		"select": true,
 		"autoWidth": true,			  	   	
 		"scrollY": "60vh",
+		"scrollCollapse": true,
+		"order": [[ 4, 'desc' ], [ 5, 'desc' ]],
 		"paging": false,
 		"bInfo" : false
 	});
+	 
+	table
+		.on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
+			if ( type === 'row' ) {
+				$(originalEvent.target).closest("tr").find("[setParameter=setParameter]").click()
+			}
+		} );
+
+	$("[setParameter=setParameter]").click(function(e) {
+		e.stopPropagation()
+	})
 }
 function dataPicker(){
 	var  dtInitial = $('[id$=dateInitial]')
@@ -31,22 +44,14 @@ function dataPicker(){
 	changeMonth: true
 	})
 }
-function btnPopUp(){
-	$( "[id$=popUp]" ).click();
-	preventDefault();
-}
+
 function modalHide(){
 	$('[id$=popup]').modal('hide')
 	$('.modal-backdrop').addClass('hide')
 }
-function disabledBtn(){
-	var x = document.getElementById('btnPdf')
-	var f = document.getElementById('btnDetalhes')
-	x.disabled = true
-	f.disabled = true
-	preventDefault();
-}
+
 $(document).ready(function () {
-	btnPopUp()
-	disabledBtn()
+	$("#btnDetalhes").click(function() {
+		$("#popup").modal("show")
+	})
 });

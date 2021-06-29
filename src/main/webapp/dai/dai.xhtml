@@ -36,38 +36,41 @@
 				<div class="table">
 					<!-- TABELA -->
 					<h:dataTable id="dai-table" var="data" disabled="true"
-						value="#{wimReport.list}"
+						value="#{daiBean.traffics}"
 						styleClass="table table-sm custom-table table-striped table-dark table-hover"
 						cellspacing="0" width="100" headerClass="custom-table-header"
 						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 						<h:column>
 							<f:facet name="header">Número</f:facet>
-							<h:outputText value="#{data.serialNumber}"
+							<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 								style="font-size: 12px; " />
+							<h:commandButton style="display: none" pt:setParameter="setParameter">
+								<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.setTraffic(data.id)}" />
+							</h:commandButton>
 						</h:column>
 						<h:column>
 							<f:facet name="header">Direção</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.direction}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Faixa</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.lane}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Canal</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.channel}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Data</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.date}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Hora</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.hour}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
 							<f:facet name="header">Incidente</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
+							<h:outputText value="#{data.incident}" style="font-size: 12px; " />
 						</h:column>
 					</h:dataTable>
 				</div>
@@ -77,15 +80,8 @@
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
 						onclick="dataPicker()">Pesquisar</button>
-					<button type="button" class="btn btn-primary btn1" id="btnDetalhes">Detalhes</button>
+					<button id="btnDetalhes" class="btn btn-primary btn1">Detalhes</button>
 					<button type="button" class="btn btn-dark btn1" id="btnPdf">PDF</button>
-					<h:commandButton type="button" id="popUp" class="btn btn-dark btn1"
-						data-toggle="modal" data-target="#popup">
-						<f:passThroughAttribute name="data-toggle" value="modal" />
-						<f:passThroughAttribute name="data-target" value="#popup" />
-						<f:ajax listener="#{daiBean.popUp}" execute="@form"
-							render=":modalPopUp" />
-					</h:commandButton>
 				</div>
 			</div>
 		</div>
@@ -170,45 +166,45 @@
 							<h5 class="modal-title" id="staticBackdropLabel">
 								<i class="fas fa-exclamation-triangle"></i> Último Incidente
 							</h5>
-							<button type="button" class="close" data-dismiss="modal" onclick="modalHide()"
+							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<img src="/teste/dai1.jpg" class="daiImg"></img>
+							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
 						</div>
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-6">
-									<p>Equipamento:</p>
+									<p>Equipamento: <h:outputText  /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Local:</p>
+									<p>Local: <h:outputText value="#{daiBean.traffic.direction}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Incidente:</p>
+									<p>Incidente: <h:outputText value="#{daiBean.traffic.incident}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Data:</p>
+									<p>Data: <h:outputText value="#{daiBean.traffic.date}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Hora:</p>
+									<p>Hora: <h:outputText value="#{daiBean.traffic.hour}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Câmera:</p>
+									<p>Câmera: <h:outputText value="#{daiBean.traffic.channel}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Rodovia</p>
+									<p>Rodovia <h:outputText  /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Faixa:</p>
+									<p>Faixa: <h:outputText value="#{daiBean.traffic.lane}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Equipamento:</p>
+									<p>Equipamento: <h:outputText  /></p>
 								</div>
 								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal" onclick="modalHide()">Voltar</button>
+									data-dismiss="modal">Voltar</button>
 							</div>
 						</div>
 					</div>
