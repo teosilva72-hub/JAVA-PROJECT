@@ -20,7 +20,6 @@
 		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
 		<h:outputStylesheet library="bootstrap/css"
 			name="bootstrap-multiselect.css" />
-		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet library="css/occ" name="occurrences.css" />
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 		<h:outputScript library="js/ocr" name="controller_ocr.js" />
@@ -31,32 +30,34 @@
 				<h1 class="text-center">OCR RELATÓRIO</h1>
 				<hr></hr>
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-5">
 				<div class="table">
 					<!-- TABELA -->
-					<h:dataTable id="ocr-table" var="data" disabled="true"
-						value="#{wimReport.list}"
-						styleClass="table table-sm custom-table table-striped table-dark table-hover"
-						cellspacing="0" width="100" headerClass="custom-table-header"
-						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
-						<h:column>
-							<f:facet name="header">Número</f:facet>
-							<h:outputText value="#{data.serialNumber}"
-								style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Data|Hora</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Câmera</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">Placa</f:facet>
-							<h:outputText value="#{data.data}" style="font-size: 12px; " />
-						</h:column>
-					</h:dataTable>
+					<h:form prependId="false" id="tabela">
+						<h:dataTable id="ocr-table" var="data" disabled="true"
+							value="#{OcrReport.list}"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover"
+							cellspacing="0" width="100" headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							<h:column>
+								<f:facet name="header">Número</f:facet>
+								<h:outputText value="#{data.id}"
+									style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Data|Hora</f:facet>
+								<h:outputText value="#{data.dataHour}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Câmera</f:facet>
+								<h:outputText value="#{data.cam}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">Placa</f:facet>
+								<h:outputText value="#{data.placa}" style="font-size: 12px; " />
+							</h:column>
+						</h:dataTable>
+					</h:form>
 				</div>
 			</div>
 			<div class="col-md-1">
@@ -79,95 +80,112 @@
 			</div>
 			<div class="col-md-6">
 				<h3 class="text-center"></h3>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="row">
-							<div class="col-md-8">
-								<img class="img1"
-									src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+				<h:form prependId="false" id="imagem">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-8">
+									<img class="img1"
+										src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+								</div>
+								<div class="col-md-3">
+									<h4 class="text-center"></h4>
+									<img class="img2"
+										src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
+								</div>
 							</div>
-							<div class="col-md-3">
-							<h4 class="text-center"></h4>
-							<img class="img2"
-								src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
-						</div>
-
 						</div>
 					</div>
-
-				</div>
+				</h:form>
 			</div>
 		</div>
 		<!-- Modal -->
-		<div class="modal fade" id="modalPesquisa" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Filtro de
-							Pesquisa</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-md-4">
-								<span>Data Inicial</span>
-								<h:inputText class="form-control inputDesign" id="dateInitial"
-									pt:placeholder="yyyy-mm-dd"></h:inputText>
-							</div>
-							<div class="col-md-4">
-								<span>Data Final</span>
-								<h:inputText class="form-control inputDesign" id="dateFinal"
-									pt:placeholder="yyyy-mm-dd"></h:inputText>
-							</div>
-							<div class="col-md-4">
-								<span>Incidente</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>Câmera</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>Faixa</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>Direção</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
+		<h:form prependId="false" id="pesquisar">
+			<div class="modal fade" id="modalPesquisa" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Filtro de
+								Pesquisa</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-4">
+									<span>#{wimLabels.dateInitial}</span>
+									<h:inputText class="form-control inputDesign ll"
+										id="dateInitial" pt:placeholder="yyyy-mm-dd"
+										value="#{OcrReport.dtStart}"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<span>#{wimLabels.hourInitial}</span>
+									<h:selectOneMenu value="#{OcrReport.hrStart}"
+										class="form-control inputDesign ll" id="hourInitial">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<span>Minuto Inicial</span>
+									<h:selectOneMenu value="#{OcrReport.minStart}"
+										class="form-control inputDesign ll" id="minuteInitial">
+										<f:selectItem itemLabel="Minutos" itemValue="" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{wimLabels.dateFinal}</span>
+									<h:inputText class="form-control inputDesign ll" id="dateFinal"
+										pt:placeholder="yyyy-mm-dd" value="#{OcrReport.dtFinal}"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{wimLabels.hourFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.hrFinal}"
+										class="form-control inputDesign ll" id="hourFinal">
+										<f:selectItem itemLabel="Horas" itemValue="" />
+										<f:selectItems value="#{OcrReport.horas}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-4">
+									<hr></hr>
+									<span>#{wimLabels.minuteFinal}</span>
+									<h:selectOneMenu value="#{OcrReport.minFinal}"
+										class="form-control inputDesign ll" id="minuteFinal">
+										<f:selectItem itemLabel="Minutos" itemValue="minuteFinal" />
+										<f:selectItems value="#{OcrReport.minutos}" />
+									</h:selectOneMenu>
+								</div>
+								<div class="col-md-12">
+									<hr></hr>
+									<span>#{wimLabels.camera}</span>
+									<h:selectOneMenu value="#{OcrReport.camera}"
+										class="form-control inputDesign" id="camera">
+										<f:selectItem itemLabel="#{wimLabels.all}" itemValue="" />
+										<f:selectItems value="#{OcrReport.classes}" />
+									</h:selectOneMenu>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Voltar</button>
-						<button type="button" class="btn btn-primary">Pesquisar</button>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">#{wimLabels.close}</button>
+							<button type="button" class="btn btn-primary" id="enviar"
+								onclick="validador()">#{wimLabels.search}</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+			<h:commandButton style="display:none;" id="setForm">
+				<f:ajax execute="@form" listener="#{OcrReport.search}"
+				render=":pesquisar :tabela :imagem" />
+			</h:commandButton>
+		</h:form>
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"

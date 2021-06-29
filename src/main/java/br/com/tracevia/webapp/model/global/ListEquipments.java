@@ -12,7 +12,7 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
-import br.com.tracevia.webapp.model.lpr.LPR;
+import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -115,7 +115,7 @@ public class ListEquipments {
 				COMMS comms = new COMMS();
 				DAI dai = new DAI();
 				DMS dms = new DMS();
-				LPR lpr =  new LPR();
+				OCR ocr =  new OCR();
 				MTO mto =  new MTO();
 				SV sv = new SV();
 				SAT sat = new SAT();
@@ -138,8 +138,8 @@ public class ListEquipments {
 					if(load.isEn_pmv())
 					equips.add(new listEquips(load.isEn_pmv(), dms.listDMSEquipments(), load.getVoltage_pmv()));
 					
-					if(load.isEn_lpr())
-					equips.add(new listEquips(load.isEn_lpr(), lpr.listEquipments("lpr"), load.getVoltage_lpr()));
+					if(load.isEn_ocr())
+					equips.add(new listEquips(load.isEn_ocr(), ocr.listEquipments("ocr"), load.getVoltage_ocr()));
 					
 					if(load.isEn_mto())
 					equips.add(new listEquips(load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));

@@ -10,9 +10,9 @@ import br.com.tracevia.webapp.dao.global.ModulesDAO;
 public class LoadStartupModules {  
 	
 	private List<Modules> modules;
-	private List<Equipments> cftv, colas, comms, dai, lpr, mto, pmv, sv, sat, sos, speed, videowall, wim;
-	private boolean en_cftv, en_colas, en_comms, en_dai, en_lpr, en_meteo, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_sv, en_wim;
-	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_lpr, voltage_mto, voltage_pmv, voltage_sat, voltage_sos, voltage_speed, voltage_videowall, 
+	private List<Equipments> cftv, colas, comms, dai, ocr, mto, pmv, sv, sat, sos, speed, videowall, wim;
+	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_sv, en_wim;
+	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_ocr, voltage_mto, voltage_pmv, voltage_sat, voltage_sos, voltage_speed, voltage_videowall, 
 	voltage_sv, voltage_wim;
 
 	public List<Modules> getModules() {
@@ -55,12 +55,12 @@ public class LoadStartupModules {
 		this.dai = dai;
 	}
 
-	public List<Equipments> getLpr() {
-		return lpr;
+	public List<Equipments> getOcr() {
+		return ocr;
 	}
 
-	public void setLpr(List<Equipments> lpr) {
-		this.lpr = lpr;
+	public void setLpr(List<Equipments> ocr) {
+		this.ocr = ocr;
 	}
 
 	public List<Equipments> getMto() {
@@ -159,12 +159,12 @@ public class LoadStartupModules {
 		this.en_dai = en_dai;
 	}
 
-	public boolean isEn_lpr() {
-		return en_lpr;
+	public boolean isEn_ocr() {
+		return en_ocr;
 	}
 
-	public void setEn_lpr(boolean en_lpr) {
-		this.en_lpr = en_lpr;
+	public void setEn_ocr(boolean en_lpr) {
+		this.en_ocr = en_lpr;
 	}
 
 	public boolean isEn_meteo() {
@@ -279,12 +279,12 @@ public class LoadStartupModules {
 		this.voltage_dai = voltage_dai;
 	}
 
-	public double getVoltage_lpr() {
-		return voltage_lpr;
+	public double getVoltage_ocr() {
+		return voltage_ocr;
 	}
 
-	public void setVoltage_lpr(double voltage_lpr) {
-		this.voltage_lpr = voltage_lpr;
+	public void setVoltage_ocr1(double voltage_ocr) {
+		this.voltage_ocr = voltage_ocr;
 	}
 
 	public double getVoltage_mto() {
@@ -366,7 +366,7 @@ public class LoadStartupModules {
 			en_colas = false;
 			en_comms = false;
 			en_dai = false;
-			en_lpr = false;
+			en_ocr = false;
 			en_mto = false;
 			en_occ = false;
 			en_pmv = false;
@@ -413,7 +413,7 @@ public class LoadStartupModules {
 		colas = new ArrayList<Equipments>();
 		comms = new ArrayList<Equipments>();
 		dai = new ArrayList<Equipments>();
-		lpr = new ArrayList<Equipments>();
+		ocr = new ArrayList<Equipments>();
 		mto = new ArrayList<Equipments>();			
 		pmv = new ArrayList<Equipments>();
 		sv = new ArrayList<Equipments>();
@@ -441,9 +441,9 @@ public class LoadStartupModules {
 				en_dai = mod.isEnabled();
 				voltage_dai = mod.getBattery_voltage();
 						
-		    }else if(mod.getModule().equals(ModulesEnum.LPR.getModule()) && mod.isEnabled()) {				
-				en_lpr = mod.isEnabled();
-			    voltage_lpr = mod.getBattery_voltage();
+		    }else if(mod.getModule().equals(ModulesEnum.OCR.getModule()) && mod.isEnabled()) {				
+				en_ocr = mod.isEnabled();
+			    voltage_ocr = mod.getBattery_voltage();
 			
 			}else if(mod.getModule().equals(ModulesEnum.MTO.getModule()) && mod.isEnabled())	{			
 				en_mto = mod.isEnabled();

@@ -822,7 +822,7 @@ public class EquipmentsBean implements Serializable {
 		case 2: table="colas"  ; break;
 		case 3: table="comms"  ; break;
 		case 4: table="dai"    ; break;
-		case 5: table="lpr"    ; break;
+		case 5: table="ocr"    ; break;
 		case 6: table="mto"    ; break;
 		case 8: table="pmv"    ; break;	
 		case 9: table="sat"    ; break;
@@ -845,7 +845,7 @@ public class EquipmentsBean implements Serializable {
 		case "colas": table="colas"  ; break;
 		case"comms": table="comms"   ; break;
 		case "dai": table="dai"      ; break;
-		case "lpr": table="lpr"      ; break;
+		case "ocr": table="ocr"      ; break;
 		case "mto": table="mto"      ; break;
 		case "dms": table="pmv"      ; break;	
 		case "sat": table="sat"      ; break;
@@ -868,7 +868,7 @@ public class EquipmentsBean implements Serializable {
   		case "colas": moduleId = 2 ; break;
   		case "comms": moduleId = 3 ; break;
   		case "dai": moduleId = 4 ; break;
-  		case "lpr": moduleId = 5 ; break;
+  		case "ocr": moduleId = 5 ; break;
   		case "mto": moduleId = 6 ; break;
   		case "dms": moduleId = 8 ; break;  	
   		case "sat": moduleId = 9 ; break;
@@ -994,7 +994,7 @@ public class EquipmentsBean implements Serializable {
     	case "colas": type = ModulesEnum.COLAS.getModule(); ; break;
     	case"comms": type = ModulesEnum.COMMS.getModule(); ; break;
     	case "dai": type = ModulesEnum.DAI.getModule(); ; break;
-    	case "lpr": type = ModulesEnum.LPR.getModule(); ; break;
+    	case "ocr": type = ModulesEnum.OCR.getModule(); ; break;
     	case "sos": type = ModulesEnum.SOS.getModule(); ; break;
     	case "speed": type = ModulesEnum.SPEED.getModule(); ; break;
     	case "sv": type = ModulesEnum.SV.getModule(); ; break;

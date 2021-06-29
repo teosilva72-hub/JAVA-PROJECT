@@ -10,6 +10,9 @@ function getTr(){
 		"paging": false,
 		"bInfo" : false
 	});
+	$('.dataTables_length').removeClass('bs-select');
+	$('.dataTables_filter').css('margin-left', '-100px')
+	$('.dataTables_wrapper ').css('margin-left', '20px')
 }
 function dataPicker(){
 	var  dtInitial = $('[id$=dateInitial]')
@@ -31,8 +34,8 @@ function dataPicker(){
 	changeMonth: true
 	})
 }
-function btnPopUp(){
-	$( "[id$=popUp]" ).click();
+function updateView(){
+	$( "[id$=updateView]" ).click();
 	preventDefault();
 }
 function modalHide(){
@@ -46,7 +49,42 @@ function disabledBtn(){
 	f.disabled = true
 	preventDefault();
 }
+
+function filtro(){
+	var filtro1 = document.getElementById("filtro1")
+	var filtro2 = document.getElementById("filtro2")
+	filtro1.addEventListener("change", function(e){
+		e.preventDefault()
+		filtro2.value = filtro1.value
+		console.log(filtro2.value)
+		$('[id$=setFilter]').click();
+	})
+}
+function validador(){
+	var dtInitial = document.getElementById("dateInitial")
+	var hourInitial = document.getElementById("hourInitial")
+	var minuteInitial = document.getElementById("minuteInitial")
+	var dateFinal = document.getElementById("dateFinal")
+	var hourFinal = document.getElementById("hourFinal")
+	var minuteFinal = document.getElementById("minuteFinal")
+
+	if(dtInitial.value == "" || hourInitial.value==""||
+	minuteInitial.value == ""|| dateFinal.value == ""||
+	hourFinal.value == ""|| minuteFinal.value == ""){
+		$('.ll').addClass('error')
+		$('.ll').removeClass('ok')
+		return false
+	}else{
+		dataPicker()
+		$('.ll').removeClass('error')
+		$('.ll').addClass('ok')
+		$('#modalPesquisa').modal('hide')
+		$('[id$=setForm]').click();
+		return true
+	}
+}
 $(document).ready(function () {
 	btnPopUp()
 	disabledBtn()
+	filtro()
 });

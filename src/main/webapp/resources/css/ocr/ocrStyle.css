@@ -23,11 +23,18 @@ html, body {
 }
 
 #search, #btnPdf {
-	font-size: 20pt;
-	width: 100%;
+	font-size: 15pt;
+	width: 90%;
 	margin-top: 20px;
+	margin-left: 10px;
 }
 
 .btns {
 	margin-top: 80px;
+}
+.ll.ok{
+	border: solid green 2px;
+}
+.ll.error{
+	border: solid red 1px;
 }
