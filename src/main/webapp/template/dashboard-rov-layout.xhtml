@@ -379,7 +379,7 @@
                   </div>
                 </c:if>
 
-                <c:if test="${item.module == 'LPR'}">
+                <c:if test="${item.module == 'OCR'}">
                   <div class="module" id="#{item.module}">
                     <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
                     <div class="toggle-mod-btn">
@@ -547,8 +547,8 @@
                     </c:forEach>
                   </c:if>
 
-                  <c:if test="${item.module == 'LPR'}">
-                    <c:forEach items="#{lprMapsView.lprList}" var="item" varStatus="lprLoop">
+                  <c:if test="${item.module == 'OCR'}">
+                    <c:forEach items="#{ocrMapsView.ocrList}" var="item" varStatus="ocrLoop">
                       <div class="equip-info-display">
                         <div class="info">
                           <div id="status#{item.nome}" class="fas fa-circle"></div>

@@ -4,14 +4,14 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.ocr.OcrData;
+import br.com.tracevia.webapp.model.ocr.OCR;
 
 @ManagedBean(name="ocrBean")
 @ViewScoped
 public class Ocr_bean {
 	private String[] dados;
 	private String path;
-	private OcrData data;
+	private OCR data;
 	
 	public String getPath() {
 		return path;
@@ -19,10 +19,10 @@ public class Ocr_bean {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	public OcrData getData() {
+	public OCR getData() {
 		return data;
 	}
-	public void setData(OcrData data) {
+	public void setData(OCR data) {
 		this.data = data;
 	}
 	public String[] getDados() {

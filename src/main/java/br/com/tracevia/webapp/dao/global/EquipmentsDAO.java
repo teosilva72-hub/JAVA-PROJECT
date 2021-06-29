@@ -18,7 +18,7 @@ import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.Modules;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.lpr.LPR;
+import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -60,8 +60,8 @@ public class EquipmentsDAO {
 		else if(mod.getModule().equals(ModulesEnum.DAI.getModule()))
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM dai_equipment WHERE visible = 1";	
 		
-		else if(mod.getModule().equals(ModulesEnum.LPR.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM lpr_equipment WHERE visible = 1";	
+		else if(mod.getModule().equals(ModulesEnum.OCR.getModule()))
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM ocr_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.MTO.getModule()))
 			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM mto_equipment WHERE visible = 1";	
@@ -1335,11 +1335,11 @@ public class EquipmentsDAO {
 
               }  // DAI Definitions END    
               
-              if(table.equals("lpr")) { // LPR Definitions
+              if(table.equals("ocr")) { // LPR Definitions
 
-            	  String queryLPRLinear = "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+            	  String queryLPRLinear = "UPDATE ocr_equipment SET name = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
             	  
-            	  String queryLPRMap = "UPDATE lpr_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
+            	  String queryLPRMap = "UPDATE ocr_equipment SET name = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
             	 
             	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
             	  
@@ -1773,13 +1773,13 @@ public Equipments EquipSearchMap(int id, String table, String interfacesView) th
 
     }  // DAI Definitions END    
     
-    if(table.equals("lpr")) { // LPR Definitions
+    if(table.equals("ocr")) { // LPR Definitions
 
-  	  LPR lpr = new LPR();
+  	  OCR ocr = new OCR();
 
-  	  String queryLPRLinear = "SELECT equip_id, name, city, road, km, linear_width FROM lpr_equipment WHERE equip_id = ? ";
+  	  String queryLPRLinear = "SELECT equip_id, name, city, road, km, linear_width FROM ocr_equipment WHERE equip_id = ? ";
   	  
-  	  String queryLPRMap = "SELECT equip_id, name, city, road, km, map_width FROM lpr_equipment WHERE equip_id = ? ";
+  	  String queryLPRMap = "SELECT equip_id, name, city, road, km, map_width FROM ocr_equipment WHERE equip_id = ? ";
 
   	  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
   	  
@@ -1795,17 +1795,17 @@ public Equipments EquipSearchMap(int id, String table, String interfacesView) th
   	  if(rs != null) {
   		  while(rs.next()){
 
-  			  lpr.setEquip_id(rs.getInt(1));
-  			  lpr.setNome(rs.getString(2));
-  			  lpr.setCidade(rs.getString(3));
-  			  lpr.setEstrada(rs.getString(4));
-  			  lpr.setKm(rs.getString(5));
-  			  lpr.setMapWidth(rs.getInt(6)); 			        			            			  
+  			  ocr.setEquip_id(rs.getInt(1));
+  			  ocr.setNome(rs.getString(2));
+  			  ocr.setCidade(rs.getString(3));
+  			  ocr.setEstrada(rs.getString(4));
+  			  ocr.setKm(rs.getString(5));
+  			  ocr.setMapWidth(rs.getInt(6)); 			        			            			  
 
   		  }
   	  }
 
-  	  return lpr;            	  
+  	  return ocr;            	  
 
     }  // LPR Definitions END    
     
@@ -2208,9 +2208,9 @@ if(table.equals("dai")) { // DAI Definitions
 
 } // DAI Definitions END    
 
-if(table.equals("lpr")) { // LPR Definitions
+if(table.equals("ocr")) { // LPR Definitions
 
-  String queryLPR= "DELETE FROM lpr_equipment WHERE equip_id = ?";
+  String queryLPR= "DELETE FROM ocr_equipment WHERE equip_id = ?";
   
   String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
   
@@ -2223,7 +2223,7 @@ if(table.equals("lpr")) { // LPR Definitions
 	  
 	  ps = conn.prepareStatement(queryNotification);
 	  ps.setInt(1,  id);
-	  ps.setString(2, ModulesEnum.LPR.getModule());
+	  ps.setString(2, ModulesEnum.OCR.getModule());
 	  
 	  int rs2 =  ps.executeUpdate();
 	  
@@ -2550,11 +2550,11 @@ if(rs > 0)
 
 } // DAI Definitions END    
 
-if(table.equals("lpr")) { // LPR Definitions
+if(table.equals("ocr")) { // LPR Definitions
 
-String queryLPRLinear = "UPDATE lpr_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+String queryLPRLinear = "UPDATE ocr_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
-String queryLPRMap = "UPDATE lpr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+String queryLPRMap = "UPDATE ocr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
 
 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -2929,7 +2929,7 @@ public String getModule(String type) {
 	case "colas": module = ModulesEnum.COLAS.getModule(); ; break;
 	case"comms": module = ModulesEnum.COMMS.getModule(); ; break;
 	case "dai": module = ModulesEnum.DAI.getModule(); ; break;
-	case "lpr": module = ModulesEnum.LPR.getModule(); ; break;
+	case "ocr": module = ModulesEnum.OCR.getModule(); ; break;
 	case "mto": module = ModulesEnum.MTO.getModule(); ; break;
 	case "dms": module = ModulesEnum.PMV.getModule(); ; break;
 	case "sat": module = ModulesEnum.SAT.getModule(); ; break;

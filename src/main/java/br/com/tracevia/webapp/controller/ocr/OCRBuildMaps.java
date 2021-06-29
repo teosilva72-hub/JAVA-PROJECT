@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.lpr;
+package br.com.tracevia.webapp.controller.ocr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,21 +7,21 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.lpr.LPR;
+import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.global.Equipments;
 
-@ManagedBean(name="lprMapsView")
+@ManagedBean(name="ocrMapsView")
 @ViewScoped
-public class LPRBuildMaps {
+public class OCRBuildMaps {
 	
-	List<? extends Equipments> lprList;
+	List<? extends Equipments> ocrList;
 
-	public List<? extends Equipments> getLprList() {
-		return lprList;
+	public List<? extends Equipments> getOcrList() {
+		return ocrList;
 	}
 
-	public void setLprList(List<? extends Equipments> lprList) {
-		this.lprList = lprList;
+	public void setOCRList(List<? extends Equipments> ocrList) {
+		this.ocrList = ocrList;
 	} 
 	
 	@PostConstruct
@@ -37,10 +37,10 @@ public class LPRBuildMaps {
 		
 		try {
 			
-			lprList = new ArrayList<LPR>();
+			ocrList = new ArrayList<OCR>();
 			
-			LPR lpr =  new LPR();						
-			lprList = lpr.listEquipments("lpr");			
+			OCR ocr =  new OCR();						
+			ocrList = ocr.listEquipments("ocr");			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

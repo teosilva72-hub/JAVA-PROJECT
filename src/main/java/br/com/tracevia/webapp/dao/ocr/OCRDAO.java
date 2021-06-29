@@ -7,19 +7,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.ocr.OcrData;
+import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
-public class OcrDao{
+public class OCRDAO{
 	private Connection conn;
 	private PreparedStatement ps, ps1;
 	private ResultSet rs, rs1;
-	OcrData data = new OcrData();
+	OCR data = new OCR();
 
-	public ArrayList<OcrData> searchTable(String start, String end, String classe) throws Exception {
+	public ArrayList<OCR> searchTable(String start, String end, String classe) throws Exception {
 		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"'";
 		String search1 = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end+"'";
-		ArrayList<OcrData> list = new ArrayList<OcrData>();
+		ArrayList<OCR> list = new ArrayList<OCR>();
 		try {
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(search);
@@ -27,7 +27,7 @@ public class OcrDao{
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 					System.out.println("tem classe");
-					OcrData data = new OcrData();			
+					OCR data = new OCR();			
 					data.setId(rs.getString(1));
 					data.setDataHour(rs.getString(2));
 					data.setCam(rs.getString(3));
@@ -43,8 +43,8 @@ public class OcrDao{
 		return list;
 
 	}
-	public OcrData searchCam(String cam) throws Exception {
-		OcrData search = new OcrData();
+	public OCR searchCam(String cam) throws Exception {
+		OCR search = new OCR();
 		//Script dos atributos que as infor��es ser�o requisitadas
 		String query = "SELECT * FROM ocr_data WHERE site_name ='"+cam+"'ORDER BY id_ocr_data desc limit 1";
 		DateTimeApplication dtm = new DateTimeApplication();
@@ -58,6 +58,8 @@ public class OcrDao{
 					search.setCam(rs.getString(2));
 					search.setDataHour(rs.getString(3));
 					search.setPlaca(rs.getString(4));
+					
+					
 				}
 			}
 		}catch(SQLException sqlbuscar) {
@@ -70,8 +72,8 @@ public class OcrDao{
 		return search;
 
 	}
-	public OcrData lastRegister() throws Exception {
-		OcrData search = new OcrData();
+	public OCR lastRegister() throws Exception {
+		OCR search = new OCR();
 		//Script dos atributos que as infor��es ser�o requisitadas
 		String query = "SELECT * FROM ocr_data ORDER BY id_ocr_data desc limit 1";
 		DateTimeApplication dtm = new DateTimeApplication();
@@ -81,10 +83,14 @@ public class OcrDao{
 			rs = ps.executeQuery();
 			if(rs != null) {
 				while(rs.next()) {
+					
 					search.setId(rs.getString(1));
 					search.setCam(rs.getString(2));
 					search.setDataHour(rs.getString(3));
 					search.setPlaca(rs.getString(4));
+					search.setVehicleImage(findVehicleImage(search));
+					search.setPlateImage(findPlateImage(search));
+										
 				}
 			}
 		}catch(SQLException sqlbuscar) {
@@ -97,4 +103,42 @@ public class OcrDao{
 		return search;
 
 	}
+	
+	public String findVehicleImage(OCR data) {
+		
+		String path = "/Desktop/OCR_03";
+		
+		String dateVeh = formataDados(data.getDataHour());
+		String folder = dateVeh.substring(0, 8);
+		
+		
+		return path+"/"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		
+	}
+	
+	public String findPlateImage(OCR data) {
+		
+		String path = "/Desktop/OCR_03";
+		
+		String dateVeh = formataDados(data.getDataHour());
+		String folder = dateVeh.substring(0, 8);
+		
+		
+		return path+"/"+"Plate"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		
+	}
+	
+	public static String formataDados(String dado){
+		
+		   dado = dado.replaceAll("\\.","");
+		   dado = dado.replaceAll("-", "");
+		   dado = dado.replaceAll(":", "");
+		   dado = dado.replaceAll(" ", "");
+		   
+		   return dado;
+		}
+	
+	
+	
+	
 }

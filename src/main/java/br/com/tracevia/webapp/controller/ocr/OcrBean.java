@@ -11,18 +11,18 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.tracevia.webapp.dao.ocr.OcrDao;
-import br.com.tracevia.webapp.model.ocr.OcrData;
+import br.com.tracevia.webapp.dao.ocr.OCRDAO;
+import br.com.tracevia.webapp.model.ocr.OCR;
 
 @ManagedBean(name="OcrRealtime")
 @ViewScoped
 public class OcrBean{
-	private String[] dado;
-	private String filterCam;
+	
 	private List<SelectItem> cam;
-	private OcrData data;
-	private OcrData date = new OcrData();
-	private OcrDao dao = new OcrDao();
+	private String filterCam;
+	private OCR data;
+	private OCRDAO dao;	
+	
 	public List<SelectItem> getCam() {
 		return cam;
 	}
@@ -35,26 +35,33 @@ public class OcrBean{
 	public void setFilterCam(String filterCam) {
 		this.filterCam = filterCam;
 	}
-	public String[] getDado() {
-		return dado;
-	}
-	public void setDado(String[] dado) {
-		this.dado = dado;
-	}
-	public List<OcrData> list;
+	
+	public List<OCR> list;
 
-	public List<OcrData> getList() {
+	public List<OCR> getList() {
 		return list;
 	}
-	public void setList(List<OcrData> list) {
+	public void setList(List<OCR> list) {
 		this.list = list;
 	}
+		
+	public OCR getData() {
+		return data;
+	}
+		
+	public void setData(OCR data) {
+		this.data = data;
+	}
+	
 	@PostConstruct
 	public void initialize() {
+		
 		RequestContext.getCurrentInstance().execute("filtro()");
 
 		System.out.println("Inicialização");
 		updateView();
+			
+		dao = new OCRDAO();
 
 		//filtro câmera
 		cam = new ArrayList<SelectItem>();
@@ -65,14 +72,17 @@ public class OcrBean{
 		cam.add(new SelectItem("ocr_4"));
 		cam.add(new SelectItem("ocr_5"));
 		cam.add(new SelectItem("ocr_6"));
+		
 		//final filtro câmera
 		try {
-			data = dao.lastRegister();
-			dado = new String [4];
-			dado[0] = data.getId();
-			dado[1] = data.getDataHour();
-			dado[2] = data.getCam();
-			dado[3] = data.getPlaca();
+			data = dao.lastRegister();			
+			data.getId();
+			data.getDataHour();
+			data.getCam();
+			data.getPlaca();
+			data.getPlateImage();
+			data.getVehicleImage();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,23 +100,36 @@ public class OcrBean{
 		RequestContext.getCurrentInstance().execute("updateView()");
 		System.out.println("atualizando");
 		System.out.println(getFilterCam());
+		
 		try {
 
 			String cam = getFilterCam();
+			
 			if(cam == null || cam.equals("Todos")) {
+				
 				data = dao.lastRegister();
-				dado = new String [4];
-				dado[0] = data.getId();
-				dado[1] = data.getDataHour();
-				dado[2] = data.getCam();
-				dado[3] = data.getPlaca();
+							
+				data.getId();
+				data.getDataHour();
+				data.getCam();
+				data.getPlaca();
+				data.getPlateImage();
+				data.getVehicleImage();
+				
+				System.out.println(data.getPlateImage());
+				
+				
 			}else {
-				data = dao.searchCam(cam);
-				dado = new String [4];
-				dado[0] = data.getId();
-				dado[1] = data.getDataHour();
-				dado[2] = data.getCam();
-				dado[3] = data.getPlaca();
+				
+				data = dao.searchCam(cam);	
+				
+				data.getId();
+				data.getDataHour();
+				data.getCam();
+				data.getPlaca();
+				data.getPlateImage();
+				data.getVehicleImage();
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -115,15 +138,18 @@ public class OcrBean{
 
 	}
 	public void setFilter() {
+		
 		String x = getFilterCam();
 		System.out.println("aquie");
+		
 		try {
-			dao.searchCam(x);
-			dado = new String [4];
-			dado[0] = data.getId();
-			dado[1] = data.getDataHour();
-			dado[2] = data.getCam();
-			dado[3] = data.getPlaca();
+			
+			dao.searchCam(x);		
+			data.getId();
+			data.getDataHour();
+			data.getCam();
+			data.getPlaca();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

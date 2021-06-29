@@ -10,22 +10,22 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 
-import br.com.tracevia.webapp.dao.ocr.OcrDao;
-import br.com.tracevia.webapp.model.ocr.OcrData;
+import br.com.tracevia.webapp.dao.ocr.OCRDAO;
+import br.com.tracevia.webapp.model.ocr.OCR;
 
 @ViewScoped
 @ManagedBean(name="OcrReport")
 public class OcrReport{
-	private OcrData data = new OcrData();
-	private OcrData date;
+	private OCR data = new OCR();
+	private OCR date;
 	private String dtStart, hrStart, minStart, dtFinal, hrFinal, minFinal, camera; 
 	private List<SelectItem> minutos, horas, classes;
-	private List<OcrData> list;
+	private List<OCR> list;
 	private int rowkey;
 	private boolean selectedRow;
-	private OcrDao dao = new OcrDao();
+	private OCRDAO dao = new OCRDAO();
 	
-	public OcrData getData() {
+	public OCR getData() {
 		return data;
 	}
 
@@ -100,17 +100,17 @@ public class OcrReport{
 	}
 
 
-	public void setData(OcrData data) {
+	public void setData(OCR data) {
 		this.data = data;
 	}
 
 
-	public OcrData getDate() {
+	public OCR getDate() {
 		return date;
 	}
 
 
-	public void setDate(OcrData date) {
+	public void setDate(OCR date) {
 		this.date = date;
 	}
 
@@ -145,12 +145,12 @@ public class OcrReport{
 	}
 
 
-	public List<OcrData> getList() {
+	public List<OCR> getList() {
 		return list;
 	}
 
 
-	public void setList(List<OcrData> list) {
+	public void setList(List<OCR> list) {
 		this.list = list;
 	}
 

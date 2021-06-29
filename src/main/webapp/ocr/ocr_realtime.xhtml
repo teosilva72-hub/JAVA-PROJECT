@@ -10,8 +10,11 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
+	
 	<ui:define name="head">
+		
 		<title>OCR</title>
+		
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
@@ -24,7 +27,9 @@
 		<h:outputStylesheet library="css/occ" name="occurrences.css" />
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 		<h:outputScript library="js/ocr" name="controller_ocr.js" />
+	
 	</ui:define>
+	
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="col-md-12">
@@ -46,13 +51,13 @@
 							<div class="row">
 
 								<div class="col-md-12">
-									<img class="img1" src="/teste/ocr1.jpg"></img>
+									<img class="img1" src="#{OcrRealtime.data.vehicleImage}"></img>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<h4 class="text-center"></h4>
-							<img class="img2" src="/teste/ocr2.jpg"></img>
+							<img class="img2" src="#{OcrRealtime.data.plateImage}"></img>
 						</div>
 					</div>
 				</h:form>
@@ -109,13 +114,31 @@
 						</div>
 						<div class="col-md-7">
 							<h:form prependId="false" id="dados">
-								<c:forEach var="value" begin="0" end="3">
+								
 									<div class="col-md-11">
 										<div class="card alert-dark dado ll">
-											<span class="text-center">#{OcrRealtime.dado[value]}</span>
+											<span class="text-center">#{OcrRealtime.data.id}</span>
 										</div>
 									</div>
-								</c:forEach>
+									
+									<div class="col-md-11">
+										<div class="card alert-dark dado ll">
+											<span class="text-center">#{OcrRealtime.data.dataHour}</span>
+										</div>
+									</div>
+									
+									<div class="col-md-11">
+										<div class="card alert-dark dado ll">
+											<span class="text-center">#{OcrRealtime.data.cam}</span>
+										</div>
+									</div>
+									
+									<div class="col-md-11">
+										<div class="card alert-dark dado ll">
+											<span class="text-center">#{OcrRealtime.data.placa}</span>
+										</div>
+									</div>
+								
 								<h:commandButton value="updateView" id="updateView"
 									style="display: none;" onclick="filtro()">
 									<f:ajax execute="@form" render=":imagem :dados :filtro"
