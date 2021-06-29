@@ -12,7 +12,9 @@ public class OcrData{
 		this.cam = cam;
 		this.placa = placa;
 	}
-	public OcrData() {}
+	public OcrData() {
+		
+	}
 	public String getId() {
 		return id;
 	}
