@@ -214,12 +214,14 @@ public class DaiBean {
 
 	}
 
-	public List<Path> getAllFolders(String date) throws IOException {
+	public List<Path> getAllFolders(String date) {
 		String folder = "C:\\Camaras DAI\\";
 		List<Path> allPath = new ArrayList<>();
 		String[] allEquip = listFolder(folder);
 		for (final String path : allEquip) {			
-			allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+			try {
+				allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+			} catch (IOException e) {}
 		}
 		
 		return allPath;
