@@ -33,47 +33,49 @@
 			</div>
 			<div class="col-md-1"></div>
 			<div class="col-md-8">
-				<div class="table">
-					<!-- TABELA -->
-					<h:dataTable id="dai-table" var="data" disabled="true"
-						value="#{daiBean.traffics}"
-						styleClass="table table-sm custom-table table-striped table-dark table-hover"
-						cellspacing="0" width="100" headerClass="custom-table-header"
-						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
-						<h:column>
-							<f:facet name="header">#{daiLabels.number}</f:facet>
-							<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
-								style="font-size: 12px; " />
-							<h:commandButton style="display: none" pt:setParameter="setParameter">
-								<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.setTraffic(data.id)}" />
-							</h:commandButton>
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.way}</f:facet>
-							<h:outputText value="#{data.direction}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.track}</f:facet>
-							<h:outputText value="#{data.lane}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.channel}</f:facet>
-							<h:outputText value="#{data.channel}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.date}</f:facet>
-							<h:outputText value="#{data.date}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.time}</f:facet>
-							<h:outputText value="#{data.hour}" style="font-size: 12px; " />
-						</h:column>
-						<h:column>
-							<f:facet name="header">#{daiLabels.incident}</f:facet>
-							<h:outputText value="#{data.incident}" style="font-size: 12px; " />
-						</h:column>
-					</h:dataTable>
-				</div>
+				<h:form prependId="false" id="mainTable">
+					<div class="table">
+						<!-- TABELA -->
+						<h:dataTable id="dai-table" var="data" disabled="true"
+							value="#{daiBean.traffics}"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover"
+							cellspacing="0" width="100" headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							<h:column>
+								<f:facet name="header">#{daiLabels.number}</f:facet>
+								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
+									style="font-size: 12px; " />
+								<h:commandButton style="display: none" pt:setParameter="setParameter">
+									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.setTraffic(data.id)}" />
+								</h:commandButton>
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.way}</f:facet>
+								<h:outputText value="#{data.direction}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.track}</f:facet>
+								<h:outputText value="#{data.lane}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.channel}</f:facet>
+								<h:outputText value="#{data.channel}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.date}</f:facet>
+								<h:outputText value="#{data.date}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.time}</f:facet>
+								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{daiLabels.incident}</f:facet>
+								<h:outputText value="#{data.incident}" style="font-size: 12px; " />
+							</h:column>
+						</h:dataTable>
+					</div>
+				</h:form>
 			</div>
 			<div class="col-md-2">
 				<div class="btns">
@@ -87,78 +89,66 @@
 		</div>
 		<!-- Modal pesquisa -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">#{daiLabels.search_filter}</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="row">
-							<div class="col-md-4">
-								<span>#{daiLabels.inicial_date}</span>
-								<h:inputText class="form-control inputDesign" id="dateInitial"
-									pt:placeholder="yyyy-mm-dd"></h:inputText>
-							</div>
-							<div class="col-md-4">
-								<span>#{daiLabels.final_date}</span>
-								<h:inputText class="form-control inputDesign" id="dateFinal"
-									pt:placeholder="yyyy-mm-dd"></h:inputText>
-							</div>
-							<div class="col-md-4">
-								<span>#{daiLabels.incident_mod}</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>#{daiLabels.camera}</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>#{daiLabels.track_mod}</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
-							</div>
-							<div class="col-md-4">
-								<hr></hr>
-								<span>#{daiLabels.way_mod}</span>
-								<h:selectOneMenu value="#{wimReport.classs}"
-									class="form-control inputDesign">
-									<f:selectItem itemLabel="Selecionar" itemValue="" />
-									<f:selectItems value="#{wimReport.classes}" />
-								</h:selectOneMenu>
+			aria-labelledby="modalPesquisa" aria-hidden="true">
+			<h:form prependId="false" id="modalSearch">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modal-title">#{daiLabels.search_filter}</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-4">
+									<span>#{daiLabels.date}</span>
+									<h:inputText class="form-control inputDesign" id="dateSearch" name="dateSearch"
+										pt:placeholder="yyyy-mm-dd"></h:inputText>
+								</div>
+								<div class="col-md-4">
+									<span>#{daiLabels.camera}</span>
+									<select class="form-control inputDesign" id="channelSearch" name="channelSearch">
+										<option value="">Selecionar</option>
+										<option value="1">Canal 1</option>
+										<option value="2">Canal 2</option>
+										<option value="3">Canal 3</option>
+										<option value="4">Canal 4</option>
+									</select>
+								</div>
+								<div class="col-md-4">
+									<span>#{daiLabels.track}</span>
+									<select class="form-control inputDesign" id="laneSearch" name="laneSearch">
+										<option value="">Selecionar</option>
+										<option value="01">Faixa 01</option>
+										<option value="02">Faixa 02</option>
+										<option value="03">Faixa 03</option>
+										<option value="04">Faixa 04</option>
+										<option value="05">Faixa 05</option>
+										<option value="06">Faixa 06</option>
+										<option value="07">Faixa 07</option>
+										<option value="08">Faixa 08</option>
+									</select>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">#{daiLabels.back}</button>
-						<button type="button" class="btn btn-primary">#{daiLabels.search}</button>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary"
+								data-dismiss="modal">#{daiLabels.back}</button>
+							<h:commandButton value="Pesquisar" styleClass="btn btn-primary" pt:data-dismiss="modal">
+								<f:ajax execute="@form" render=":mainTable" listener="#{daiBean.getFilesFiltered()}" onevent="onFilterFunction" />
+							</h:commandButton>
+						</div>
 					</div>
 				</div>
-			</div>
+			</h:form>
 		</div>
 		<!-- Modal -->
-		<h:form prependId="false" id="modalPopUp">
-			<div class="modal fade" id="popup" data-backdrop="static"
-				data-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal fade" id="popup"
+			data-keyboard="false" tabindex="-1"
+			aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<h:form prependId="false" id="modalPopUp">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -208,8 +198,8 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</h:form>
+			</h:form>
+		</div>
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
 		<h:outputScript name="jquery.validate.min.js"
