@@ -23,7 +23,7 @@
           <base-name>bundle.labels.dashboard.labels_dashboard</base-name>           
           <var>dashboardLabels</var>        
         </resource-bundle>
-        
+    
          <resource-bundle>
           <base-name>bundle.labels.login.labels_login</base-name>           
           <var>loginLabels</var>        
@@ -108,6 +108,12 @@
           <base-name>bundle.labels.wim.labels_wim</base-name>           
           <var>wimLabels</var>        
         </resource-bundle>
+        
+        <resource-bundle>
+        	<base-name>bundle.labels.dai.labels_dai</base-name>
+        	<var>daiLabels</var>
+        </resource-bundle>
+        
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -211,6 +217,7 @@
         <message-bundle>bundle.labels.users.labels_users</message-bundle>
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
         <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
+        <message-bundle>bundle.labels.dai.labels_dai</message-bundle>
         
      
         <!-- CONFIG MESSAGES -->

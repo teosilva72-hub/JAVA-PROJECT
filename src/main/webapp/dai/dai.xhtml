@@ -11,7 +11,7 @@
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	<ui:define name="head">
-		<title>DAI</title>
+		<title>#{daiLabels.dai}</title>
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
@@ -28,7 +28,7 @@
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="text-center">DAI RELATÓRIO</h1>
+				<h1 class="text-center">#{daiLabels.dai_report}</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-1"></div>
@@ -41,7 +41,7 @@
 						cellspacing="0" width="100" headerClass="custom-table-header"
 						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 						<h:column>
-							<f:facet name="header">Número</f:facet>
+							<f:facet name="header">#{daiLabels.number}</f:facet>
 							<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 								style="font-size: 12px; " />
 							<h:commandButton style="display: none" pt:setParameter="setParameter">
@@ -49,27 +49,27 @@
 							</h:commandButton>
 						</h:column>
 						<h:column>
-							<f:facet name="header">Direção</f:facet>
+							<f:facet name="header">#{daiLabels.way}</f:facet>
 							<h:outputText value="#{data.direction}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Faixa</f:facet>
+							<f:facet name="header">#{daiLabels.track}</f:facet>
 							<h:outputText value="#{data.lane}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Canal</f:facet>
+							<f:facet name="header">#{daiLabels.channel}</f:facet>
 							<h:outputText value="#{data.channel}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Data</f:facet>
+							<f:facet name="header">#{daiLabels.date}</f:facet>
 							<h:outputText value="#{data.date}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Hora</f:facet>
+							<f:facet name="header">#{daiLabels.time}</f:facet>
 							<h:outputText value="#{data.hour}" style="font-size: 12px; " />
 						</h:column>
 						<h:column>
-							<f:facet name="header">Incidente</f:facet>
+							<f:facet name="header">#{daiLabels.incident}</f:facet>
 							<h:outputText value="#{data.incident}" style="font-size: 12px; " />
 						</h:column>
 					</h:dataTable>
@@ -79,9 +79,9 @@
 				<div class="btns">
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
-						onclick="dataPicker()">Pesquisar</button>
-					<button id="btnDetalhes" class="btn btn-primary btn1">Detalhes</button>
-					<button type="button" class="btn btn-dark btn1" id="btnPdf">PDF</button>
+						onclick="dataPicker()">#{daiLabels.search}</button>
+					<button id="btnDetalhes" class="btn btn-primary btn1">#{daiLabels.details}</button>
+					<button type="button" class="btn btn-dark btn1" id="btnPdf">#{daiLabels.pdf}</button>
 				</div>
 			</div>
 		</div>
@@ -91,8 +91,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Filtro de
-							Pesquisa</h5>
+						<h5 class="modal-title" id="exampleModalLabel">#{daiLabels.search_filter}</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -101,17 +100,17 @@
 					<div class="modal-body">
 						<div class="row">
 							<div class="col-md-4">
-								<span>Data Inicial</span>
+								<span>#{daiLabels.inicial_date}</span>
 								<h:inputText class="form-control inputDesign" id="dateInitial"
 									pt:placeholder="yyyy-mm-dd"></h:inputText>
 							</div>
 							<div class="col-md-4">
-								<span>Data Final</span>
+								<span>#{daiLabels.final_date}</span>
 								<h:inputText class="form-control inputDesign" id="dateFinal"
 									pt:placeholder="yyyy-mm-dd"></h:inputText>
 							</div>
 							<div class="col-md-4">
-								<span>Incidente</span>
+								<span>#{daiLabels.incident_mod}</span>
 								<h:selectOneMenu value="#{wimReport.classs}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
@@ -120,7 +119,7 @@
 							</div>
 							<div class="col-md-4">
 								<hr></hr>
-								<span>Câmera</span>
+								<span>#{daiLabels.camera}</span>
 								<h:selectOneMenu value="#{wimReport.classs}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
@@ -129,7 +128,7 @@
 							</div>
 							<div class="col-md-4">
 								<hr></hr>
-								<span>Faixa</span>
+								<span>#{daiLabels.track_mod}</span>
 								<h:selectOneMenu value="#{wimReport.classs}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
@@ -138,7 +137,7 @@
 							</div>
 							<div class="col-md-4">
 								<hr></hr>
-								<span>Direção</span>
+								<span>#{daiLabels.way_mod}</span>
 								<h:selectOneMenu value="#{wimReport.classs}"
 									class="form-control inputDesign">
 									<f:selectItem itemLabel="Selecionar" itemValue="" />
@@ -149,8 +148,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Voltar</button>
-						<button type="button" class="btn btn-primary">Pesquisar</button>
+							data-dismiss="modal">#{daiLabels.back}</button>
+						<button type="button" class="btn btn-primary">#{daiLabels.search}</button>
 					</div>
 				</div>
 			</div>
@@ -164,7 +163,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> Último Incidente
+								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.last_incident}
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -177,34 +176,34 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-6">
-									<p>Equipamento: <h:outputText  /></p>
+									<p>#{daiLabels.equipment} <h:outputText  /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Local: <h:outputText value="#{daiBean.traffic.direction}" /></p>
+									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Incidente: <h:outputText value="#{daiBean.traffic.incident}" /></p>
+									<p>#{daiLabels.incident_mod1} <h:outputText value="#{daiBean.traffic.incident}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Data: <h:outputText value="#{daiBean.traffic.date}" /></p>
+									<p>#{daiLabels.date_mod} <h:outputText value="#{daiBean.traffic.date}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Hora: <h:outputText value="#{daiBean.traffic.hour}" /></p>
+									<p>#{daiLabels.time_mod}<h:outputText value="#{daiBean.traffic.hour}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Câmera: <h:outputText value="#{daiBean.traffic.channel}" /></p>
+									<p>#{daiLabels.camera_mod} <h:outputText value="#{daiBean.traffic.channel}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Rodovia <h:outputText  /></p>
+									<p>#{daiLabels.highway} <h:outputText  /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Faixa: <h:outputText value="#{daiBean.traffic.lane}" /></p>
+									<p>#{daiLabels.track_mod1}<h:outputText value="#{daiBean.traffic.lane}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>Equipamento: <h:outputText  /></p>
+									<p>#{daiLabels.equipment} <h:outputText  /></p>
 								</div>
 								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal">Voltar</button>
+									data-dismiss="modal">#{daiLabels.back}</button>
 							</div>
 						</div>
 					</div>
