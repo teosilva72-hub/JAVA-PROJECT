@@ -110,25 +110,25 @@
 								<div class="col-md-4">
 									<span>#{daiLabels.camera}</span>
 									<select class="form-control inputDesign" id="channelSearch" name="channelSearch">
-										<option value="">Selecionar</option>
-										<option value="1">Canal 1</option>
-										<option value="2">Canal 2</option>
-										<option value="3">Canal 3</option>
-										<option value="4">Canal 4</option>
+										<option value="">#{daiLabels.select}</option>
+										<option value="1">#{daiLabels.channel} 1</option>
+										<option value="2">#{daiLabels.channel} 2</option>
+										<option value="3">#{daiLabels.channel} 3</option>
+										<option value="4">#{daiLabels.channel} 4</option>
 									</select>
 								</div>
 								<div class="col-md-4">
 									<span>#{daiLabels.track}</span>
 									<select class="form-control inputDesign" id="laneSearch" name="laneSearch">
-										<option value="">Selecionar</option>
-										<option value="01">Faixa 01</option>
-										<option value="02">Faixa 02</option>
-										<option value="03">Faixa 03</option>
-										<option value="04">Faixa 04</option>
-										<option value="05">Faixa 05</option>
-										<option value="06">Faixa 06</option>
-										<option value="07">Faixa 07</option>
-										<option value="08">Faixa 08</option>
+										<option value="">#{daiLabels.select}</option>
+										<option value="01">#{daiLabels.track} 01</option>
+										<option value="02">#{daiLabels.track} 02</option>
+										<option value="03">#{daiLabels.track} 03</option>
+										<option value="04">#{daiLabels.track} 04</option>
+										<option value="05">#{daiLabels.track} 05</option>
+										<option value="06">#{daiLabels.track} 06</option>
+										<option value="07">#{daiLabels.track} 07</option>
+										<option value="08">#{daiLabels.track} 08</option>
 									</select>
 								</div>
 							</div>
@@ -136,7 +136,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">#{daiLabels.back}</button>
-							<h:commandButton value="Pesquisar" styleClass="btn btn-primary" pt:data-dismiss="modal">
+							<h:commandButton value="#{daiLabels.search}" styleClass="btn btn-primary" pt:data-dismiss="modal">
 								<f:ajax execute="@form" render=":mainTable" listener="#{daiBean.getFilesFiltered()}" onevent="onFilterFunction" />
 							</h:commandButton>
 						</div>
@@ -153,7 +153,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.last_incident}
+								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -165,9 +165,6 @@
 						</div>
 						<div class="modal-body">
 							<div class="row">
-								<div class="col-md-6">
-									<p>#{daiLabels.equipment} <h:outputText  /></p>
-								</div>
 								<div class="col-md-6">
 									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
 								</div>
@@ -184,13 +181,7 @@
 									<p>#{daiLabels.camera_mod} <h:outputText value="#{daiBean.traffic.channel}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.highway} <h:outputText  /></p>
-								</div>
-								<div class="col-md-6">
 									<p>#{daiLabels.track_mod1}<h:outputText value="#{daiBean.traffic.lane}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.equipment} <h:outputText  /></p>
 								</div>
 								<button type="button" class="btn btn-dark btn1"
 									data-dismiss="modal">#{daiLabels.back}</button>
