@@ -1,8 +1,12 @@
 package br.com.tracevia.webapp.controller.dai;
 
 import java.time.LocalDateTime;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,6 +28,17 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
+
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.model.dai.DAI;
@@ -136,30 +152,93 @@ public class DaiBean {
 			
 			return new_list;
 		}
+
+		static List<Traffic> all_traffic(List<Path> list, int idx, String filter_channel, String filter_lane) throws IOException, ParseException {
+			List<Traffic> new_list = new ArrayList<>();
+			for (final Path path : list) {
+				Traffic traffic = new Traffic(path, idx);
+				if (
+					(traffic.channel.contains(filter_channel) ||
+					traffic.channel.isEmpty()) && 
+					(traffic.lane.contains(filter_lane) ||
+					traffic.lane.isEmpty()))
+					new_list.add(traffic);
+				else
+					continue;
+				idx++;
+			}
+			
+			return new_list;
+		}
 	}
 	
 	public void getAllFile(String date) throws IOException, ParseException {
 		List<Path> list = getAllFolders(date);
 		List<Traffic> new_list = new ArrayList<>();
 		for (final Path path : list) {
-			List<Path> files = listFiles(path.toString());
+			List<Path> files = listAllFiles(path.toString());
 			new_list.addAll(Traffic.all_traffic(files, new_list.size()));
 		}
 		
 		traffics = new_list;
 	}
 
+	public void getFilesFiltered() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
+
+		String date = params.get("dateSearch");
+		String lane = params.get("laneSearch");
+		String channel = params.get("channelSearch");
+
+		try {
+			List<Path> list = getAllFolders((date.isEmpty() ? date_formatter.format(new Date()) : date.replaceAll("-", "")));
+			List<Traffic> new_list = new ArrayList<>();
+			for (final Path path : list) {
+				List<Path> files = listAllFiles(path.toString());
+				new_list.addAll(Traffic.all_traffic(files, new_list.size(), channel, lane));
+			}
+			
+			traffics = new_list;
+		} catch (IOException e) {
+			traffics = new ArrayList<>();
+			
+			e.printStackTrace();
+		} catch (ParseException e) {
+			traffics = new ArrayList<>();
+			
+			e.printStackTrace();
+		}
+
+	}
+
 	public List<Path> getAllFolders(String date) throws IOException {
-		String folder = "E:\\Camaras DAI\\";
-		String path = folder + "10.14.120.186\\Traffic Incident\\" + date;
-		List<Path> allPath = listFiles(path);
-		allPath.addAll(listFiles(folder + "10.14.120.187\\Traffic Incident\\" + date));
-		allPath.addAll(listFiles(folder + "10.14.120.188\\Traffic Incident\\" + date));
+		String folder = "C:\\Camaras DAI\\";
+		List<Path> allPath = new ArrayList<>();
+		String[] allEquip = listFolder(folder);
+		for (final String path : allEquip) {			
+			allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+		}
 		
 		return allPath;
 	}
 
-	public static List<Path> listFiles(String pathS) throws IOException {
+	public static String[] listFolder(String folder) {
+
+        File file = new File(folder);
+		String[] directories = file.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File current, String name) {
+				return new File(current, name).isDirectory();
+			}
+		});
+        return directories;
+
+    }
+
+	public static List<Path> listAllFiles(String pathS) throws IOException {
 
         List<Path> result;
         Path path = Paths.get(pathS); 
@@ -170,4 +249,67 @@ public class DaiBean {
         return result;
 
     }
+
+	public void pdf() {
+		
+		try {
+			String RESULT = "/teste/teste.pdf";
+			Document document = new Document();
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext externalContext = facesContext.getExternalContext();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PdfWriter writer = PdfWriter.getInstance(document, baos);
+			document.open();
+			document.setPageSize(PageSize.A4);
+			Paragraph pTitulo = new Paragraph(new Phrase(20F,"DAI REPORT"));
+			ColumnText tl = new ColumnText(writer.getDirectContent());
+			Paragraph tx = new Paragraph();
+			tl.setSimpleColumn(400,820,200,50);
+			tx.add(pTitulo);
+			tl.addElement(tx);
+			tl.go();
+			
+			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
+
+			rowPage.setBorderColor(BaseColor.BLACK);
+			rowPage.setBorderWidth(2);
+			rowPage.setBorder(Rectangle.BOX);
+			document.add(rowPage);
+			//final da linda da pagina
+			ColumnText ct = new ColumnText(writer.getDirectContent());
+			ct.setSimpleColumn(700,0,200,30);
+			Paragraph p = new Paragraph();
+			p.add("                              Pag 1");//paragrafo Evento
+			ct.addElement(p);
+			ct.go();
+
+			document.add(new Paragraph(""));
+
+
+			document.close();
+			FileOutputStream fos = new FileOutputStream(RESULT);
+			fos.write(baos.toByteArray());
+			fos.close();  
+			// DOWNLOAD
+
+			externalContext.setResponseContentType("application/pdf");
+			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"DAI.pdf\"");
+
+			externalContext.setResponseContentLength(baos.size());
+
+			OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+			baos.writeTo(responseOutputStream);
+			responseOutputStream.flush();
+			responseOutputStream.close();
+
+
+			facesContext.responseComplete();  
+
+			// DOWNLOAD
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

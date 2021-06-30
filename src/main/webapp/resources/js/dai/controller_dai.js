@@ -25,23 +25,14 @@ function getTr(){
 	})
 }
 function dataPicker(){
-	var  dtInitial = $('[id$=dateInitial]')
-	var dtFinal = $('[id$=dateFinal]')
-    dtInitial.on('click', function() {
-      $('[id$=dateInitial]').mask('9999-99-99')
+	var  date = $('#dateSearch')
+    date.on('click', function() {
+		date.mask('9999-99-99')
     });
-	dtFinal.on('click', function() {
-	$('[id$=dateFinal]').mask('9999-99-99')
-    });
-	$('[id$=dateInitial]').datepicker({ 
+	date.datepicker({ 
 		dateFormat: "yy-mm-dd",  
 		changeYear: true,
 		changeMonth: true,
-	})
-    $('[id$=dateFinal]').datepicker({
-	dateFormat: "yy-mm-dd",
-	changeYear: true,
-	changeMonth: true
 	})
 }
 
@@ -50,7 +41,27 @@ function modalHide(){
 	$('.modal-backdrop').addClass('hide')
 }
 
+const onFilterFunction = data => {
+	var status = data.status;
+
+	switch (status) {
+		case "begin":
+			break;
+
+		case "complete":
+			break;
+
+		case "success":
+			getTr();
+
+			break;
+	}
+}
+
 $(document).ready(function () {
+	getTr()
+	dataPicker()
+
 	$("#btnDetalhes").click(function() {
 		$("#popup").modal("show")
 	})
