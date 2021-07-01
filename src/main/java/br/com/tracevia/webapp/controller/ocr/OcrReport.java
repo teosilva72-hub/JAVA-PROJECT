@@ -42,7 +42,7 @@ public class OcrReport{
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
 	minFinal, camera, img1 = "", img2 = "",
-	pasta = "C:\\teste\\" ;
+	pasta = "/Desktop/OCR_03" ;
 
 	private List<SelectItem> minutos, horas, classes;
 	private List<OCR> list;

@@ -11,27 +11,38 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.ocr.OCRDAO;
+import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="OcrRealtime")
 @ViewScoped
 public class OcrBean{
 	
-	private List<SelectItem> cam;
+	private List<SelectItem> cams;
 	private String filterCam;
 	private OCR data;
 	private OCRDAO dao;	
+	private EquipmentsDAO equipDAO;
+	List<? extends Equipments> listOcr; 
+	LocaleUtil localeOCR;
 	
-	public List<SelectItem> getCam() {
-		return cam;
+	String cam;
+		
+	public List<SelectItem> getCams() {
+		return cams;
 	}
-	public void setCam(List<SelectItem> cam) {
-		this.cam = cam;
+	
+	public void setCams(List<SelectItem> cams) {
+		this.cams = cams;
 	}
+	
 	public String getFilterCam() {
 		return filterCam;
 	}
+	
 	public void setFilterCam(String filterCam) {
 		this.filterCam = filterCam;
 	}
@@ -41,6 +52,7 @@ public class OcrBean{
 	public List<OCR> getList() {
 		return list;
 	}
+	
 	public void setList(List<OCR> list) {
 		this.list = list;
 	}
@@ -53,29 +65,50 @@ public class OcrBean{
 		this.data = data;
 	}
 	
+	public List<? extends Equipments> getListOcr() {
+		return listOcr;
+	}
+	
 	@PostConstruct
 	public void initialize() {
 		
+		localeOCR = new LocaleUtil();	
+		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
+		
 		RequestContext.getCurrentInstance().execute("filtro()");
 
-		System.out.println("Inicialização");
 		updateView();
 			
 		dao = new OCRDAO();
-
-		//filtro câmera
-		cam = new ArrayList<SelectItem>();
-		cam.add(new SelectItem("Todos"));
-		cam.add(new SelectItem("ocr_1"));
-		cam.add(new SelectItem("ocr_2"));
-		cam.add(new SelectItem("ocr_3"));
-		cam.add(new SelectItem("ocr_4"));
-		cam.add(new SelectItem("ocr_5"));
-		cam.add(new SelectItem("ocr_6"));
 		
-		//final filtro câmera
+		equipDAO = new EquipmentsDAO();		
+		cams = new ArrayList<SelectItem>();
+		
 		try {
-			data = dao.lastRegister();			
+			
+			listOcr = equipDAO.EquipmentSelectOptions("ocr");
+			
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+		}
+		
+		//filtro câmera
+		
+		for (Equipments e : listOcr) {
+			SelectItem s = new SelectItem();
+
+			s.setValue(e.getNome());
+			s.setLabel(e.getNome());
+			
+			cams.add(s);				
+		}
+
+		//Inicializar buscas por registros
+		
+		try {
+			
+			data = dao.lastRegister();	
+			
 			data.getId();
 			data.getDataHour();
 			data.getCam();
@@ -87,28 +120,65 @@ public class OcrBean{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
+	  }
+	
 	public void updateView() {
 
 		try {
+			
 			TimeUnit.SECONDS.sleep(3);
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		RequestContext.getCurrentInstance().execute("updateView()");
-		System.out.println("atualizando");
-		System.out.println(getFilterCam());
+
 		
 		try {
 
 			String cam = getFilterCam();
 			
-			if(cam == null || cam.equals("Todos")) {
+			if(cam.equals("Todos")) {
 				
 				data = dao.lastRegister();
-							
+				
+				if(data.getCam() == null) {
+					
+					data.setId(localeOCR.getStringKey("ocr_no_id_label"));
+					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
+					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
+					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
+					data.setPlateImage("/resources/images/unknown/no-image.png");
+					data.setVehicleImage("/resources/images/unknown/no-image.png");								
+					
+				}else { 
+												
+				data.getId();
+				data.getDataHour();
+				data.getCam();
+				data.getPlaca();
+				data.getPlateImage();
+				data.getVehicleImage();
+										
+				}				
+				
+			} else {
+				
+				data = dao.searchCam(cam);
+										
+				if(data.getCam() == null) {
+					
+					data.setId(localeOCR.getStringKey("ocr_no_id_label"));
+					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
+					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
+					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
+					data.setPlateImage("/resources/images/unknown/no-image.png");
+					data.setVehicleImage("/resources/images/unknown/no-image.png");
+															
+				}else { 
+														
 				data.getId();
 				data.getDataHour();
 				data.getCam();
@@ -116,44 +186,21 @@ public class OcrBean{
 				data.getPlateImage();
 				data.getVehicleImage();
 				
-				System.out.println(data.getPlateImage());
-				
-				
-			}else {
-				
-				data = dao.searchCam(cam);	
-				
-				data.getId();
-				data.getDataHour();
-				data.getCam();
-				data.getPlaca();
-				data.getPlateImage();
-				data.getVehicleImage();
-				
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-	public void setFilter() {
-		
-		String x = getFilterCam();
-		System.out.println("aquie");
-		
-		try {
-			
-			dao.searchCam(x);		
-			data.getId();
-			data.getDataHour();
-			data.getCam();
-			data.getPlaca();
+				}			
+			  }
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
+	
+	public void filtro() {
+		
+		setFilterCam(filterCam);
+		
+	}
+	
+
+
 }
