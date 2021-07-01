@@ -113,6 +113,10 @@
         	<base-name>bundle.labels.dai.labels_dai</base-name>
         	<var>daiLabels</var>
         </resource-bundle>
+        <resource-bundle>
+        	<base-name>bundle.labels.ocr.labels_ocr</base-name>
+        	<var>ocrLabels</var>
+        </resource-bundle>
         
      <!-- ********************************** -->
         
@@ -218,7 +222,7 @@
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
         <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
         <message-bundle>bundle.labels.dai.labels_dai</message-bundle>
-        
+        <message-bundle>bundle.labels.ocr.labels_ocr</message-bundle>
      
         <!-- CONFIG MESSAGES -->
         <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>
