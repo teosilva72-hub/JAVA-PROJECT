@@ -23,8 +23,7 @@ import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -32,42 +31,50 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.ocr.reportDAO;
+import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.ocr.OCR;
 
 @ViewScoped
 @ManagedBean(name="OcrReport")
 public class OcrReport{
-	private OCR data = new OCR();
-	private OCR date;
+	
+	private OCR data;
+	private reportDAO dao;
+	private EquipmentsDAO equipDAO;
+	List<? extends Equipments> listOcr; 
+		
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
 	minFinal, camera, img1 = "", img2 = "",
-	pasta = "/Desktop/OCR_03" ;
+	pasta = "C:\\Users\\Wellington\\Desktop\\", 
+	noImagePath;
+	
 
-	private List<SelectItem> minutos, horas, classes;
+	private List<SelectItem> minutos, horas, cams;
 	private List<OCR> list;
 	private int rowkey;
 	private boolean selectedRow;
-	private reportDAO dao = new reportDAO();
-
+	
 	public String getImg1() {
 		try {
 
-			Path path = Paths.get(img1);
+			Path path = Paths.get(img1);								
 			byte[] file = Files.readAllBytes(path);
 			return Base64.getEncoder().encodeToString(file);
 		} catch (IOException e) {
+			e.printStackTrace();
+										
 			return "";
 		}
 
 	}
 
-
 	public void setImg1(String img1) {
 		this.img1 = img1;
 	}
-
 
 	public String getImg2() {
 		try {
@@ -165,17 +172,6 @@ public class OcrReport{
 		this.data = data;
 	}
 
-
-	public OCR getDate() {
-		return date;
-	}
-
-
-	public void setDate(OCR date) {
-		this.date = date;
-	}
-
-
 	public List<SelectItem> getMinutos() {
 		return minutos;
 	}
@@ -194,17 +190,6 @@ public class OcrReport{
 	public void setHoras(List<SelectItem> horas) {
 		this.horas = horas;
 	}
-
-
-	public List<SelectItem> getClasses() {
-		return classes;
-	}
-
-
-	public void setClasses(List<SelectItem> classes) {
-		this.classes = classes;
-	}
-
 
 	public List<OCR> getList() {
 		return list;
@@ -234,22 +219,48 @@ public class OcrReport{
 	public void setSelectedRow(boolean selectedRow) {
 		this.selectedRow = selectedRow;
 	}
+	
+	public List<SelectItem> getCams() {
+		return cams;
+	}
 
 
 	@PostConstruct
 	public void initialize() {
+		
 		RequestContext.getCurrentInstance().execute("getTr()");
-		img1 = pasta+"no-image.png";
-		img2 = pasta+"no-image.png";
+		
+		noImagePath = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		
+		img1 = noImagePath + "no-image.png";
+		img2 = noImagePath + "no-image.png";
+		
 		horas = new ArrayList<SelectItem>();
 		minutos = new ArrayList<SelectItem>();
-		classes = new ArrayList<SelectItem>();
-		classes.add(new SelectItem("ocr_1"));
-		classes.add(new SelectItem("ocr_2"));
-		classes.add(new SelectItem("ocr_3"));
-		classes.add(new SelectItem("ocr_4"));
-		classes.add(new SelectItem("ocr_5"));
-		classes.add(new SelectItem("ocr_6"));
+		
+		equipDAO = new EquipmentsDAO();		
+		cams = new ArrayList<SelectItem>();
+					
+		
+		try {
+			
+			listOcr = equipDAO.EquipmentSelectOptions("ocr");
+			
+		} catch (Exception e1) {			
+			e1.printStackTrace();
+		}
+		
+		//filtro câmera
+		
+		for (Equipments e : listOcr) {
+			SelectItem s = new SelectItem();
+
+			s.setValue(e.getNome());
+			s.setLabel(e.getNome());
+			
+			cams.add(s);				
+		}
+		
 		for(int x = 0; x < 24; x++) {
 			if (x < 10)
 				horas.add(new SelectItem("0"+String.valueOf(x), "0"+String.valueOf(x)));
@@ -267,31 +278,44 @@ public class OcrReport{
 	}
 
 	public void search() throws IOException {
-		img1 = pasta+"no-image.png";
-		img2 = pasta+"no-image.png";
+		
+		dao = new reportDAO();
+		data = new OCR();
+							
+		img1 = noImagePath + "no-image.png";
+		img2 = noImagePath + "no-image.png";
+				
 		String start = dtStart+" "+ hrStart+":"+minStart;
 		String end = dtFinal+" "+ hrFinal+":"+minFinal;
+		
 		if(camera == "Todos") camera ="";
+		
 		String cam = camera;
 
 		if(cam != "") {
 
 			try {
+				
 				System.out.println("com classe");
 				list = dao.searchTable(start, end, cam);
+				
 				RequestContext.getCurrentInstance().execute("getTr()");
 				RequestContext.getCurrentInstance().execute("dataPicker()");
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}else {
+			
 			System.out.println("sem classe");
 			String start2 = dtStart+" "+ hrStart+":"+minStart;
 			String end2 = dtFinal+" "+ hrFinal+":"+minFinal;
+			
 			RequestContext.getCurrentInstance().execute("getTr()");
 			RequestContext.getCurrentInstance().execute("dataPicker()");
+			
 			try {
 				list = dao.searchTable2(start2, end2);
 			} catch (Exception e) {
@@ -300,54 +324,83 @@ public class OcrReport{
 			}
 		}
 	}
+	
 	public void idGet() {
+		
 		System.out.println(rowkey);
+		
 		try {
+			
+			dao = new reportDAO();
+			data = new OCR();
+			
 			data = dao.searchId(rowkey);
+			
 			String dt = data.getDataHour();
+			
+			dt = dt.replaceAll("\\.","");
 			dt = dt.replaceAll("-", "");
-			dt = dt.replaceAll(":", "");
+			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
-			String pl = data.getPlaca();
-			pl = pl.replaceAll("-", "");
-			pl = pl.replaceAll(" ", "");
-			File f = new File(pasta+data.getCam()+"_"+dt+"_"+pl+".jpg");
-			File g = new File(pasta+"Plate"+data.getCam()+"_"+dt+"_"+pl+".jpg");
-			if(f.exists() && g.exists()) { 
-				img1 = pasta+data.getCam()+"_"+dt+"_"+pl+".jpg";
-				img2 = pasta+"Plate"+data.getCam()+"_"+dt+"_"+pl+".jpg";
-			}else {
-				img1 = pasta+"no-image.png";
-				img2 = pasta+"no-image.png";
-			}
+					
+			File f = new File(pasta+data.getCam()+"\\"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File g = new File(pasta+data.getCam()+"\\Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+							 				
+				if(f.exists()) 						
+				   img1 = f.getPath();
+				
+				else img1 = noImagePath + "no-image.png";
+			
+				if(g.exists())	
+					img2 = g.getPath();
+				
+				else img2 = noImagePath + "no-image.png";							
+				
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	public void pdf() {
+	
+	public void pdf() throws Exception {
+		
+		// criação do  documento
+		Document document = new Document();
+		TranslationMethods trad = new TranslationMethods();
+		
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();	
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
+		
 		try {
-			date = dao.searchId(getRowkey());
-			String RESULT = "/teste/"+date.getId()+".pdf";
-			Document document = new Document();
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ExternalContext externalContext = facesContext.getExternalContext();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			
+			dao = new reportDAO();
+			data = new OCR();
+			
+			data = dao.searchId(getRowkey());
+					
+			//caminho onde � gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
+								
 			document.open();
+			
 			document.setPageSize(PageSize.A4);
 			Paragraph pTitulo = new Paragraph(new Phrase(20F,"OCR REPORT"));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
+			
 			tl.setSimpleColumn(400,820,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
+			
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph("ID: "+ date.getId()
-			+"\nData/Hour: " + date.getDataHour()
-			+"\nCâmera: "+ date.getCam()
-			+"\nPlaca: "+ date.getPlaca()));
+			document.add(new Paragraph("ID: "+ data.getId()			
+			+"\nData/Hour: " + data.getDataHour()
+			+"\nCâmera: "+ data.getCam()
+			+"\nPlaca: "+ data.getPlaca()));
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
 			rowPage.setBorderColor(BaseColor.BLACK);
@@ -363,32 +416,27 @@ public class OcrReport{
 			ct.go();
 
 			document.add(new Paragraph(""));
-
+			
+		    }catch(DocumentException de) {
+				System.err.println(de.getMessage());
+			}
+			catch(IOException ioe) {
+				System.err.println(ioe.getMessage());
+			}
 
 			document.close();
-			FileOutputStream fos = new FileOutputStream(RESULT);
-			fos.write(baos.toByteArray());
-			fos.close();  
-			// DOWNLOAD
+									
+		externalContext.setResponseContentType("application/pdf");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getCam()+"_"+data.getId()+".pdf\"");
+		
+		externalContext.setResponseContentLength(baos.size());
+	      
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+	     baos.writeTo(responseOutputStream);
+	     responseOutputStream.flush();
+	     responseOutputStream.close();
 
-			externalContext.setResponseContentType("application/pdf");
-			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC.pdf\"");
-
-			externalContext.setResponseContentLength(baos.size());
-
-			OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-			baos.writeTo(responseOutputStream);
-			responseOutputStream.flush();
-			responseOutputStream.close();
-
-
-			facesContext.responseComplete();  
-
-			// DOWNLOAD
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+	     facesContext.responseComplete();  
 	}
 }

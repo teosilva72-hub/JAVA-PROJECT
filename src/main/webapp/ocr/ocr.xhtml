@@ -175,7 +175,7 @@
 									<h:selectOneMenu value="#{OcrReport.camera}"
 										class="form-control inputDesign" id="camera">
 										<f:selectItem itemLabel="#{wimLabels.all}" itemValue="" />
-										<f:selectItems value="#{OcrReport.classes}" />
+										<f:selectItems value="#{OcrReport.cams}" />
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -216,14 +216,20 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">#{wimLabels.close}</button>
-							<button type="button" class="btn btn-primary" id="enviar"
-								onclick="setPdf()">#{wimLabels.download}</button>
-							<h:commandButton style="display:none;" id="gerarPdf">
-								<f:ajax listener="#{OcrReport.pdf}" execute="@form"
-									render=":pdfModal" />
+															
+							<h:commandButton
+								value="#{wimLabels.close}" 
+								class="btn btn-dark form-draw-button" id="limpar" >
+							   <f:passThroughAttribute name="data-dismiss" value="modal" />
+							   <f:ajax execute="@form" render="@none" />
 							</h:commandButton>
+								
+							<h:commandButton pt:data-toggle="modal"
+								pt:data-target="#modalDownload" id="gerarPdf"
+							    value="#{occLabels.occ_reports_modal_alert_btn_yes}"
+								class="btn btn-dark form-draw-button"
+								action="#{OcrReport.pdf}" />
+															
 						</div>
 					</div>
 				</div>

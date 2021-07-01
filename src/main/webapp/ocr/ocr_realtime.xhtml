@@ -71,7 +71,7 @@
 								<span>#{ocrLabels.ocr_filter_label}:</span>
 								<h:selectOneMenu id="filtro1" value="#{OcrRealtime.filterCam}"
 									class="form-control inputDesign input">
-									<f:selectItem itemLabel="Todas OCRs" itemValue="#{ocrLabels.ocr_all_cam_label}" />
+									<f:selectItem itemLabel="#{ocrLabels.ocr_all_cam_label}" itemValue="Todos" />
 									<f:selectItems value="#{OcrRealtime.cams}" />  
 									<f:ajax listener="#{OcrRealtime.filtro}" />
 								</h:selectOneMenu>													
