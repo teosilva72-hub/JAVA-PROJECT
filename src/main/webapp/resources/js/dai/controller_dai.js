@@ -6,7 +6,7 @@ function getTr(){
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": "60vh",
+		"scrollY": `${screen.availHeight / 2}px`,
 		"scrollCollapse": true,
 		"order": [[ 4, 'desc' ], [ 5, 'desc' ]],
 		"paging": false,

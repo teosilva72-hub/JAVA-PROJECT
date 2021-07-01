@@ -247,7 +247,7 @@ async function main() {
 	}
 
 	const load = () => {
-		allPMV.load('/dms/messages/equipment-list.xhtml', () => {
+		allPMV.load('/dms/messages/equipment-list.xhtml', { "Sec-Fetch-User": "?1" }, () => {
 			collectPMV();
 			initAnimation();
 
