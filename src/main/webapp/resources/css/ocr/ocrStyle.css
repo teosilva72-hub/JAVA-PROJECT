@@ -7,7 +7,7 @@ html, body {
 .img1 {
 	margin-top: 50px;
 	border: solid 2px black;
-	width: 100%;
+	width: 450px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -15,11 +15,12 @@ html, body {
 
 .img2 {
 	border: solid 2px black; margin-top : 20px;
-	width: 100%;
+	width: 150px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	margin-top: 180px;
+	margin-left: 20px;
 }
 
 #search, #btnPdf {

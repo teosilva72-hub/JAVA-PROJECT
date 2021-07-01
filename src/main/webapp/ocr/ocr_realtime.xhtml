@@ -36,7 +36,7 @@
 
 				<div class="row">
 					<div class="col-md-12">
-						<h4 class="text-center ocrText">OCR REALTIME</h4>
+						<h4 class="text-center ocrText">#{ocrLabels.ocr_realtime_title}</h4>
 					</div>
 
 				</div>
@@ -68,53 +68,47 @@
 					<div class="row">
 						<div class="col-md-10">
 							<h:form prependId="false" id="filtro">
-								<span>FILTRO CÂMERA:</span>
-								<h:selectOneMenu id="filtro1"
+								<span>#{ocrLabels.ocr_filter_label}:</span>
+								<h:selectOneMenu id="filtro1" value="#{OcrRealtime.filterCam}"
 									class="form-control inputDesign input">
-									<f:selectItem itemLabel="Filtro Câmera" itemValue="" />
-									<f:selectItems value="#{OcrRealtime.cam}" />
-								</h:selectOneMenu>
-								<h:inputText value="#{OcrRealtime.filterCam}" id="filtro2"
-									style="display: none;"></h:inputText>
-								<h:commandButton style="display:none;" id="setFilter">
-									<f:ajax listener="#{OcrRealtime.filtro}" execute="@form"
-										render=":filtro" />
-								</h:commandButton>
+									<f:selectItem itemLabel="#{ocrLabels.ocr_all_cam_label}" itemValue="Todos" />
+									<f:selectItems value="#{OcrRealtime.cams}" />  
+									<f:ajax listener="#{OcrRealtime.filtro}" />
+								</h:selectOneMenu>													
 							</h:form>
 						</div>
 						<div class="col-md-1"></div>
 						<div class="col-md-11">
 							<hr></hr>
-							<h5 class="text-center info2">Dados</h5>
+							<h5 class="text-center info2">#{ocrLabels.ocr_dados_label}</h5>
 						</div>
 						<div class="col-md-5 info1">
 
 							<div class="info1">
 								<div class="col-md-12">
 									<div class="card alert-dark dado l">
-										<span class="text-center">Número:</span>
+										<span class="text-center">#{ocrLabels.ocr_number_label}:</span>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="card alert-dark dado l">
-										<span class="text-center">Data|Hora</span>
+										<span class="text-center">#{ocrLabels.ocr_dataHour_label}:</span>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="card alert-dark dado l">
-										<span class="text-center">Câmera:</span>
+										<span class="text-center">#{ocrLabels.ocr_cam_label}:</span>
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="card alert-dark dado l">
-										<span class="text-center">Placa:</span>
+										<span class="text-center">#{ocrLabels.ocr_placa_label}:</span>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-7">
-							<h:form prependId="false" id="dados">
-								
+							<h:form prependId="false" id="dados">								
 									<div class="col-md-11">
 										<div class="card alert-dark dado ll">
 											<span class="text-center">#{OcrRealtime.data.id}</span>
@@ -141,7 +135,7 @@
 								
 								<h:commandButton value="updateView" id="updateView"
 									style="display: none;" onclick="filtro()">
-									<f:ajax execute="@form" render=":imagem :dados :filtro"
+									<f:ajax execute="@form" render=":imagem :dados"
 										listener="#{OcrRealtime.updateView}" />
 								</h:commandButton>
 							</h:form>

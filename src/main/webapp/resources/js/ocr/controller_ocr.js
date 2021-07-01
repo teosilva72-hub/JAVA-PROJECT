@@ -6,17 +6,36 @@ function getTr(){
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": "60vh",
+		"scrollY": "45vh",
 		"paging": false,
 		"bInfo" : false
 	});
 	$('.dataTables_length').removeClass('bs-select');
 	$('.dataTables_filter').css('margin-left', '-100px')
 	$('.dataTables_wrapper ').css('margin-left', '20px')
+	
+	$('#ocr-table tbody').on( 'click', 'tr', function () {
+   var event = $(table.row( this ).data()[0]).text();
+	document.getElementById("event").value = event
+	
+	if(event > 0){
+		$('[id$=btnPdf]').prop('disabled', false);
+		btnTable()
+	}else{
+		dataPicker()
+		disabledBtn()
+	}
+	
+} );
+}
+function btnTable(){
+	$('[id$=btnTable]').click();
+	preventDefault();
 }
 function dataPicker(){
 	var  dtInitial = $('[id$=dateInitial]')
 	var dtFinal = $('[id$=dateFinal]')
+	$('[id$=btnPdf]').prop('disabled', true);
     dtInitial.on('click', function() {
       $('[id$=dateInitial]').mask('9999-99-99')
     });
@@ -43,11 +62,7 @@ function modalHide(){
 	$('.modal-backdrop').addClass('hide')
 }
 function disabledBtn(){
-	var x = document.getElementById('btnPdf')
-	var f = document.getElementById('btnDetalhes')
-	x.disabled = true
-	f.disabled = true
-	preventDefault();
+	$('[id$=btnPdf]').prop('disabled', true);
 }
 
 function filtro(){
@@ -83,8 +98,13 @@ function validador(){
 		return true
 	}
 }
+function setPdf(){
+	$('[id$=gerarPdf]').click();
+	$('#modalPdf').modal('hide')
+	disabledBtn()
+}
 $(document).ready(function () {
-	btnPopUp()
 	disabledBtn()
 	filtro()
+	
 });

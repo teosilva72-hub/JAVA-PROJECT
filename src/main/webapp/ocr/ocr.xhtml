@@ -27,7 +27,8 @@
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="col-md-12">
-				<h1 class="text-center">OCR RELATÓRIO</h1>
+
+				<h1 class="text-center">#{ocrLabels.ocr_report}</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-5">
@@ -40,20 +41,19 @@
 							cellspacing="0" width="100" headerClass="custom-table-header"
 							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 							<h:column>
-								<f:facet name="header">Número</f:facet>
-								<h:outputText value="#{data.id}"
-									style="font-size: 12px; " />
+								<f:facet name="header">#{ocrLabels.number}</f:facet>
+								<h:outputText value="#{data.id}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Data|Hora</f:facet>
+								<f:facet name="header">#{ocrLabels.dataHour}</f:facet>
 								<h:outputText value="#{data.dataHour}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Câmera</f:facet>
+								<f:facet name="header">#{ocrLabels.cam}</f:facet>
 								<h:outputText value="#{data.cam}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">Placa</f:facet>
+								<f:facet name="header">#{ocrLabels.placa}</f:facet>
 								<h:outputText value="#{data.placa}" style="font-size: 12px; " />
 							</h:column>
 						</h:dataTable>
@@ -64,7 +64,8 @@
 				<div class="btns">
 					<div class="row">
 						<div class="col-md-12">
-							<button type="button" class="btn btn-dark btn1" id="btnPdf">
+							<button type="button" class="btn btn-dark btn1" id="btnPdf"
+								data-toggle="modal" data-target="#modalPdf">
 								<i class="fas fa-file-pdf icone"></i>
 							</button>
 						</div>
@@ -86,12 +87,12 @@
 							<div class="row">
 								<div class="col-md-8">
 									<img class="img1"
-										src="https://media.discordapp.net/attachments/818905424027189248/857004301082558534/OCR_03_20210622132544430_YKY367A.jpg"></img>
+										src="data:image/jpg;base64, #{OcrReport.img1}"></img>
 								</div>
 								<div class="col-md-3">
 									<h4 class="text-center"></h4>
 									<img class="img2"
-										src="https://media.discordapp.net/attachments/818905424027189248/857004303943598080/PlateOCR_03_20210622132544430_YKY367A.jpg"></img>
+										src="data:image/jpg;base64, #{OcrReport.img2}"></img>
 								</div>
 							</div>
 						</div>
@@ -99,15 +100,22 @@
 				</h:form>
 			</div>
 		</div>
+		<h:form prependId="false" id="ID">
+			<h:inputText value="#{OcrReport.rowkey}" id="event"
+				style="display:none;" />
+			<h:commandButton id="btnTable" style="display:none;">
+				<f:ajax listener="#{OcrReport.idGet}" execute="@form"
+					render=":ID :pdfModal :imagem" />
+			</h:commandButton>
+		</h:form>
 		<!-- Modal -->
-		<h:form prependId="false" id="pesquisar">
+		<h:form prependId="false"	 id="pesquisar">
 			<div class="modal fade" id="modalPesquisa" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Filtro de
-								Pesquisa</h5>
+							<h5 class="modal-title" id="exampleModalLabel">#{ocrLabels.searchFilter}</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -130,7 +138,7 @@
 									</h:selectOneMenu>
 								</div>
 								<div class="col-md-4">
-									<span>Minuto Inicial</span>
+									<span>#{wimLabels.minuteInitial}</span>
 									<h:selectOneMenu value="#{OcrReport.minStart}"
 										class="form-control inputDesign ll" id="minuteInitial">
 										<f:selectItem itemLabel="Minutos" itemValue="" />
@@ -167,7 +175,7 @@
 									<h:selectOneMenu value="#{OcrReport.camera}"
 										class="form-control inputDesign" id="camera">
 										<f:selectItem itemLabel="#{wimLabels.all}" itemValue="" />
-										<f:selectItems value="#{OcrReport.classes}" />
+										<f:selectItems value="#{OcrReport.cams}" />
 									</h:selectOneMenu>
 								</div>
 							</div>
@@ -183,8 +191,49 @@
 			</div>
 			<h:commandButton style="display:none;" id="setForm">
 				<f:ajax execute="@form" listener="#{OcrReport.search}"
-				render=":pesquisar :tabela :imagem" />
+					render=":pesquisar :tabela :imagem" />
 			</h:commandButton>
+		</h:form>
+		<!-- modal pdf -->
+		<h:form prependId="false" id="pdfModal">
+			<div class="modal fade" id="modalPdf" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">
+								PDF <i class="fas fa-cloud-download-alt"></i>
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-3">ID: #{OcrReport.rowkey}</div>
+								<div class="col-md-9">#{wimLabels.downloadPdf}</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+															
+							<h:commandButton
+								value="#{wimLabels.close}" 
+								class="btn btn-dark form-draw-button" id="limpar" >
+							   <f:passThroughAttribute name="data-dismiss" value="modal" />
+							   <f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+								
+							<h:commandButton pt:data-toggle="modal"
+								pt:data-target="#modalDownload" id="gerarPdf"
+							    value="#{occLabels.occ_reports_modal_alert_btn_yes}"
+								class="btn btn-dark form-draw-button"
+								action="#{OcrReport.pdf}" />
+															
+						</div>
+					</div>
+				</div>
+			</div>
 		</h:form>
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
