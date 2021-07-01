@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.ocr;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -310,11 +311,15 @@ public class OcrReport{
 			String pl = data.getPlaca();
 			pl = pl.replaceAll("-", "");
 			pl = pl.replaceAll(" ", "");
-			img1 = pasta+data.getCam()+"_"+data.getDataHour()+"_"+pl+".jpg";
-			img2 = pasta+"Plate"+data.getCam()+"_"+data.getDataHour()+"_"+pl+".jpg";
-			System.out.println(img1);
-			System.out.println(img2);
-			
+			File f = new File(pasta+data.getCam()+"_"+dt+"_"+pl+".jpg");
+			File g = new File(pasta+"Plate"+data.getCam()+"_"+dt+"_"+pl+".jpg");
+			if(f.exists() && g.exists()) { 
+				img1 = pasta+data.getCam()+"_"+dt+"_"+pl+".jpg";
+				img2 = pasta+"Plate"+data.getCam()+"_"+dt+"_"+pl+".jpg";
+			}else {
+				img1 = pasta+"no-image.png";
+				img2 = pasta+"no-image.png";
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
