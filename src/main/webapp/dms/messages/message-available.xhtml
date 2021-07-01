@@ -239,9 +239,9 @@
 										<div class="col-12 confInput">
 											<div id="id-div">
 												<div class="input-group">
-													<span class="input-group-text" id="type-group">Type</span>
+													<span class="input-group-text" id="type-group">#{dmsLabels.dms_modal_tab_type}</span>
 													<select name="tipo" id="type-input" class="form-control selectType">
-														<option value="" disabled="disabled" selected="selected">Type
+														<option value="" disabled="disabled" selected="selected">#{dmsLabels.dms_modal_tab_type}
 														</option>
 														<c:forEach items="#{pmvMessage.type}" var="opt">
 															<option value="#{opt.value}">#{opt.label}</option>
@@ -378,9 +378,9 @@
 							<h:form id="btn-form">
 								<select id="selectDriver" class="form-select float-start w-25 ms-2"
 									aria-label="Select Driver">
-									<option value="1">Driver 1</option>
-									<option value="2">Driver 2</option>
-									<option value="3">Driver 3</option>
+									<option value="1">#{dmsLabels.dms_modal_tab_type} 1</option>
+									<option value="2">#{dmsLabels.dms_modal_tab_type} 2</option>
+									<option value="3">#{dmsLabels.dms_modal_tab_type} 3</option>
 								</select>
 							</h:form>
 						</div>
@@ -389,7 +389,7 @@
 
 						</div>
 						<div id="disableTable">
-							<span>Blocked</span>
+							<span>#{dmsLabels.dms_active_messages_btn_blocked}</span>
 						</div>
 					</div>
 				</div>

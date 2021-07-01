@@ -31,12 +31,12 @@
 					<div class="row float-start">
 						<!-- GRID OPCOES INICIO -->
 						<div class="col-auto" id="toogleMenu">
-							<button type="button" class="btn btn-light" toggle="show">Mostrar</button>
+							<button type="button" class="btn btn-light" toggle="show">#{dmsLabels.dms_available_messages_btn_show}</button>
 						</div>
 						<div class="col-auto">
 							<h:form>
 								<input type="hidden" name="dmsChanges" id="dmsChanges" />
-								<h:commandButton value="Salvar" type="button" class="btn btn-light" id="btn-save">
+								<h:commandButton value="#{dmsLabels.dms_available_messages_btn_save}" type="button" class="btn btn-light" id="btn-save">
 									<f:ajax execute="@form" listener="#{interfaces.activateMessage}" />
 								</h:commandButton>
 							</h:form>
@@ -82,7 +82,7 @@
 								<div id="selection-div">
 									<div id="mt-2">
 										<select id="selectionType" class="form-select" aria-label="select type">
-											<option value="All" selected="selected">All</option>
+											<option value="All" selected="selected">#{dmsLabels.dms_active_messages_all}</option>
 											<c:forEach items="#{pmvMessage.type}" var="opt">
 												<option value="#{opt.value}">#{opt.label}</option>
 											</c:forEach>
@@ -239,7 +239,7 @@
 								<div id="messages-list">
 									<select id="availableMessage" class="form-select" size="7"
 										aria-label="select message">
-										<option value="0" selected="selected" style="display: none;">Default</option>
+										<option value="0" selected="selected" style="display: none;">#{dmsLabels.dms_active_dafault}</option>
 									</select>
 									<c:forEach items="#{pmvMessage.messages}" var="opt" varStatus="status">
 										<div id="listSelectPMV#{opt.id_message}" idMessage="#{opt.id_message}"
@@ -300,6 +300,10 @@
 			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
 		</div>
 		<!-- FINAL DO FORMULARIO EQUIP -->
+		<form name="variable">
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_show}" name="showButton" />
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_hide}" name="hiddenButton" />
+		</form>
 	</ui:define>
 
 	<ui:define name="modal-content"></ui:define>
@@ -307,7 +311,7 @@
 	<ui:define name="default-plugins">
 		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
 	</ui:define>
-
+	
 	<ui:define name="jscript">
 		<h:outputScript name="msgAtv.js" pt:type="module" library="js/dms" />
 	</ui:define>
