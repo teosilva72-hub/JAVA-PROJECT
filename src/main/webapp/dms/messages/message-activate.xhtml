@@ -36,7 +36,7 @@
 						<div class="col-auto">
 							<h:form>
 								<input type="hidden" name="dmsChanges" id="dmsChanges" />
-								<h:commandButton value="Salvar" type="button" class="btn btn-light" id="btn-save">
+								<h:commandButton value="#{dmsLabels.dms_available_messages_btn_save}" type="button" class="btn btn-light" id="btn-save">
 									<f:ajax execute="@form" listener="#{interfaces.activateMessage}" />
 								</h:commandButton>
 							</h:form>
@@ -300,6 +300,10 @@
 			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
 		</div>
 		<!-- FINAL DO FORMULARIO EQUIP -->
+		<form name="variable">
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_show}" name="showButton" />
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_hide}" name="hiddenButton" />
+		</form>
 	</ui:define>
 
 	<ui:define name="modal-content"></ui:define>
@@ -307,7 +311,7 @@
 	<ui:define name="default-plugins">
 		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
 	</ui:define>
-
+	
 	<ui:define name="jscript">
 		<h:outputScript name="msgAtv.js" pt:type="module" library="js/dms" />
 	</ui:define>
