@@ -298,14 +298,15 @@ async function main() {
 
 	$(function () {
 		load();
+		let variable = document.forms.variable
 
 		$('#toogleMenu button[toggle]').click(function () {
 			if ($(this).attr('toggle') === 'show') {
-				$(this).text('Ocultar').attr('toggle', "hide")
+				$(this).text(variable.hiddenButton.value).attr('toggle', "hide")
 				$('#showOption').css("display", "block")
 				pmvResize();
 			} else {
-				$(this).text('Mostrar').attr('toggle', "show")
+				$(this).text(variable.showButton.value).attr('toggle', "show")
 				$('#showOption').css("display", "none")
 			}
 		})
