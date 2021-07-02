@@ -427,7 +427,7 @@ public class OcrReport{
 			document.close();
 									
 		externalContext.setResponseContentType("application/pdf");
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getCam()+"_"+data.getId()+".pdf\"");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+data.getCam()+"_"+data.getPlaca()+".pdf\"");
 		
 		externalContext.setResponseContentLength(baos.size());
 	      

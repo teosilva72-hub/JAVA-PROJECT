@@ -28,7 +28,7 @@
 		<div class="row">
 			<div class="col-md-12">
 
-				<h1 class="text-center">#{ocrLabels.ocr_report}</h1>
+				<h1 class="text-center">#{ocrLabels.ocr_report_title}</h1>
 				<hr></hr>
 			</div>
 			<div class="col-md-5">
@@ -37,23 +37,23 @@
 					<h:form prependId="false" id="tabela">
 						<h:dataTable id="ocr-table" var="data" disabled="true"
 							value="#{OcrReport.list}"
-							styleClass="table table-sm custom-table table-striped table-dark table-hover"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
 							cellspacing="0" width="100" headerClass="custom-table-header"
 							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 							<h:column>
-								<f:facet name="header">#{ocrLabels.number}</f:facet>
+								<f:facet name="header">#{ocrLabels.ocr_report_number_label}</f:facet>
 								<h:outputText value="#{data.id}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{ocrLabels.dataHour}</f:facet>
+								<f:facet name="header">#{ocrLabels.ocr_report_dataHour_label}</f:facet>
 								<h:outputText value="#{data.dataHour}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{ocrLabels.cam}</f:facet>
+								<f:facet name="header">#{ocrLabels.ocr_report_cam_label}</f:facet>
 								<h:outputText value="#{data.cam}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{ocrLabels.placa}</f:facet>
+								<f:facet name="header">#{ocrLabels.ocr_report_plate_label}</f:facet>
 								<h:outputText value="#{data.placa}" style="font-size: 12px; " />
 							</h:column>
 						</h:dataTable>
@@ -115,7 +115,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">#{ocrLabels.searchFilter}</h5>
+							<h5 class="modal-title" id="exampleModalLabel">#{ocrLabels.ocr_report_modal_search_title}</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -124,13 +124,13 @@
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-4">
-									<span>#{wimLabels.dateInitial}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_dateInitial}</span>
 									<h:inputText class="form-control inputDesign ll"
 										id="dateInitial" pt:placeholder="yyyy-mm-dd"
 										value="#{OcrReport.dtStart}"></h:inputText>
 								</div>
 								<div class="col-md-4">
-									<span>#{wimLabels.hourInitial}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_hourInitial}</span>
 									<h:selectOneMenu value="#{OcrReport.hrStart}"
 										class="form-control inputDesign ll" id="hourInitial">
 										<f:selectItem itemLabel="Horas" itemValue="" />
@@ -138,7 +138,7 @@
 									</h:selectOneMenu>
 								</div>
 								<div class="col-md-4">
-									<span>#{wimLabels.minuteInitial}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_minuteInitial}</span>
 									<h:selectOneMenu value="#{OcrReport.minStart}"
 										class="form-control inputDesign ll" id="minuteInitial">
 										<f:selectItem itemLabel="Minutos" itemValue="" />
@@ -147,13 +147,13 @@
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
-									<span>#{wimLabels.dateFinal}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_dateFinal}</span>
 									<h:inputText class="form-control inputDesign ll" id="dateFinal"
 										pt:placeholder="yyyy-mm-dd" value="#{OcrReport.dtFinal}"></h:inputText>
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
-									<span>#{wimLabels.hourFinal}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_hourFinal}</span>
 									<h:selectOneMenu value="#{OcrReport.hrFinal}"
 										class="form-control inputDesign ll" id="hourFinal">
 										<f:selectItem itemLabel="Horas" itemValue="" />
@@ -162,7 +162,7 @@
 								</div>
 								<div class="col-md-4">
 									<hr></hr>
-									<span>#{wimLabels.minuteFinal}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_minuteFinal}</span>
 									<h:selectOneMenu value="#{OcrReport.minFinal}"
 										class="form-control inputDesign ll" id="minuteFinal">
 										<f:selectItem itemLabel="Minutos" itemValue="minuteFinal" />
@@ -171,28 +171,32 @@
 								</div>
 								<div class="col-md-12">
 									<hr></hr>
-									<span>#{wimLabels.camera}</span>
+									<span>#{ocrLabels.ocr_report_modal_search_camera}</span>
 									<h:selectOneMenu value="#{OcrReport.camera}"
 										class="form-control inputDesign" id="camera">
-										<f:selectItem itemLabel="#{wimLabels.all}" itemValue="" />
+										<f:selectItem itemLabel="#{ocrLabels.ocr_report_modal_search_all_cam}" itemValue="" />
 										<f:selectItems value="#{OcrReport.cams}" />
 									</h:selectOneMenu>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
+						
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">#{wimLabels.close}</button>
-							<button type="button" class="btn btn-primary" id="enviar"
-								onclick="validador()">#{wimLabels.search}</button>
+								data-dismiss="modal">#{ocrLabels.ocr_report_modal_search_close_button}</button>
+								
+							<button type="button" class="btn btn-dark" id="enviar"
+								onclick="validador()">#{ocrLabels.ocr_report_modal_search_search_button}</button>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 			<h:commandButton style="display:none;" id="setForm">
 				<f:ajax execute="@form" listener="#{OcrReport.search}"
 					render=":pesquisar :tabela :imagem" />
 			</h:commandButton>
+			
 		</h:form>
 		<!-- modal pdf -->
 		<h:form prependId="false" id="pdfModal">
@@ -202,7 +206,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="exampleModalLabel">
-								PDF <i class="fas fa-cloud-download-alt"></i>
+								#{ocrLabels.ocr_report_modal_download_title} <i class="fas fa-cloud-download-alt"></i>
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -210,15 +214,20 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-3">ID: #{OcrReport.rowkey}</div>
-								<div class="col-md-9">#{wimLabels.downloadPdf}</div>
+						<div class="row">
+						<div class="font-weight-bold ml-5">ID: #{OcrReport.rowkey}</div>						
+						</div>
+							<div class="row">															
+								<p class="text-dark ml-5">
+								    #{ocrLabels.ocr_reports_modal_download_file} <span
+									class="text-danger">#{ocrLabels.ocr_reports_modal_download_extension_pdf}</span> ?
+							   </p>							
 							</div>
 						</div>
 						<div class="modal-footer">
 															
 							<h:commandButton
-								value="#{wimLabels.close}" 
+								value="#{ocrLabels.ocr_reports_modal_download_btn_no}" 
 								class="btn btn-dark form-draw-button" id="limpar" >
 							   <f:passThroughAttribute name="data-dismiss" value="modal" />
 							   <f:ajax execute="@form" render="@none" />
@@ -226,7 +235,7 @@
 								
 							<h:commandButton pt:data-toggle="modal"
 								pt:data-target="#modalDownload" id="gerarPdf"
-							    value="#{occLabels.occ_reports_modal_alert_btn_yes}"
+							    value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
 								class="btn btn-dark form-draw-button"
 								action="#{OcrReport.pdf}" />
 															
