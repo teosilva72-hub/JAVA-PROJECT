@@ -45,7 +45,14 @@
 				     <ui:fragment rendered="#{loginAccount.load.en_dai}" >
 				     <li class="nav-item ml-2">
                         <a class="nav-link" href="#daiSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-video icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
-					       <ul class="collapse list-unstyled ml-3" id="daiSubmenu">						    
+					       <ul class="collapse list-unstyled ml-3" id="daiSubmenu">	
+					       
+					       <li class="nav-item ml-2"><h:commandLink class="nav-link"
+								action="#{navigationController.redirectToReportDAI}" value="">
+								<i class="fas fa-camera-retro icon icon"></i>
+								<span class="text">#{dashboardLabels.dashboard_sidebar_dai_sub_menu_report}</span>
+							</h:commandLink></li>
+					       					    
 					    </ul>
 				     </li>
 				     </ui:fragment>
