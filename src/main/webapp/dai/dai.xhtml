@@ -195,7 +195,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
+								PDF  <i class="fas fa-cloud-download-alt"></i><hr></hr>
 							</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
@@ -203,19 +203,13 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
-						</div>
-						<div class="modal-body">
 							<div class="row">
-								<div class="col-md-6">
-									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
-								</div>
-								
-								<button type="button" class="btn btn-dark btn1"
+								<div class="col-md-12">#{daiLabels.download}</div>
+								<button type="button" class="btn btn-dark "
 									data-dismiss="modal">#{daiLabels.back}</button>
 									<h:commandButton pt:onclose="download" pt:data-toggle="modal"
 								pt:data-target="#modalPdf" id="gerarPdf"
-							    value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
+							    value="#{daiLabels.btnDownload}"
 								class="btn btn-dark form-draw-button"
 								action="#{daiBean.pdf}" />
 							</div>
