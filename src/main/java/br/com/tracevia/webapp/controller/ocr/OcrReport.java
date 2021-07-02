@@ -346,10 +346,7 @@ public class OcrReport{
 
 			File f = new File(ftpFolder+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
 			File g = new File(ftpFolder+data.getCam()+"\\"+subFolder+"\\Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-			
-			System.out.println(f.getPath());
-			System.out.println(g.getPath());
-			
+					
 			if(f.exists()) 						
 				imageVeh = f.getPath();
 			
