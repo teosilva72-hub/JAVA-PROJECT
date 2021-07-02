@@ -1,6 +1,11 @@
 package br.com.tracevia.webapp.controller.ocr;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -29,8 +34,9 @@ public class OcrBean{
 	List<? extends Equipments> listOcr; 
 	LocaleUtil localeOCR;
 	
-	String cam;
-		
+	String cam, imageVeh, imagePlt, noImageFolder;
+	String ftpFolders;
+				
 	public List<SelectItem> getCams() {
 		return cams;
 	}
@@ -75,14 +81,22 @@ public class OcrBean{
 		localeOCR = new LocaleUtil();	
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		
+		ftpFolders = "C:\\Cameras\\OCR\\NormalType\\"; 
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		
+		imageVeh = noImageFolder + "no-image.png";
+		imagePlt = noImageFolder + "no-image.png";
+		
 		RequestContext.getCurrentInstance().execute("filtro()");
+		
+		setFilterCam("Todos");
 
 		updateView();
 			
 		dao = new OCRDAO();
 		
 		equipDAO = new EquipmentsDAO();		
-		cams = new ArrayList<SelectItem>();
+		cams = new ArrayList<SelectItem>();			
 		
 		try {
 			
@@ -113,13 +127,14 @@ public class OcrBean{
 			data.getDataHour();
 			data.getCam();
 			data.getPlaca();
-			data.getPlateImage();
-			data.getVehicleImage();
+			data.setPlateImage(getImagePath(data.getPlateImage()));
+			data.setVehicleImage(getImagePath(data.getVehicleImage()));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}			
+			
 	  }
 	
 	public void updateView() {
@@ -150,8 +165,8 @@ public class OcrBean{
 					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
 					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
 					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
-					data.setPlateImage("/resources/images/unknown/no-image.png");
-					data.setVehicleImage("/resources/images/unknown/no-image.png");								
+					data.setPlateImage(getImagePath(imagePlt));
+					data.setVehicleImage(getImagePath(imageVeh));								
 					
 				}else { 
 												
@@ -159,8 +174,10 @@ public class OcrBean{
 				data.getDataHour();
 				data.getCam();
 				data.getPlaca();
-				data.getPlateImage();
-				data.getVehicleImage();
+				data.setPlateImage(getImagePath(data.getPlateImage()));
+				data.setVehicleImage(getImagePath(data.getVehicleImage()));
+				
+				System.out.println(data.getVehicleImage());
 										
 				}				
 				
@@ -174,8 +191,8 @@ public class OcrBean{
 					data.setDataHour(localeOCR.getStringKey("ocr_no_date_label"));
 					data.setCam(localeOCR.getStringKey("ocr_no_cam_label"));
 					data.setPlaca(localeOCR.getStringKey("ocr_no_plate_label"));
-					data.setPlateImage("/resources/images/unknown/no-image.png");
-					data.setVehicleImage("/resources/images/unknown/no-image.png");
+					data.setPlateImage(getImagePath(imagePlt));
+					data.setVehicleImage(getImagePath(imageVeh));
 															
 				}else { 
 														
@@ -183,8 +200,10 @@ public class OcrBean{
 				data.getDataHour();
 				data.getCam();
 				data.getPlaca();
-				data.getPlateImage();
-				data.getVehicleImage();
+				data.setPlateImage(getImagePath(data.getPlateImage()));
+				data.setVehicleImage(getImagePath(data.getVehicleImage()));
+				
+				System.out.println(data.getVehicleImage());
 				
 				}			
 			  }
@@ -201,6 +220,18 @@ public class OcrBean{
 		
 	}
 	
+	public String getImagePath(String image) {
+		
+		try {
 
+			Path path = Paths.get(image);								
+			  byte[] file = Files.readAllBytes(path);
+			  return Base64.getEncoder().encodeToString(file);
+			  
+		} catch (IOException e) {											
+			return "";
+		}
 
+	}
+	
 }

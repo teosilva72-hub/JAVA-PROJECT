@@ -53,9 +53,16 @@
 
 						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
 							<li class="nav-item ml-2"><a class="nav-link"
-								href="#lprSubmenu" data-toggle="collapse" aria-expanded="false"><i
+								href="#ocrSubmenu" data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-video icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="lprSubmenu">
+								<ul class="collapse list-unstyled ml-3" id="ocrSubmenu">
+								
+							<li class="nav-item ml-2"><h:commandLink class="nav-link"
+								action="#{navigationController.redirectToReportOCR}" value="">
+								<i class="fas fa-camera-retro icon icon"></i>
+								<span class="text">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
+							</h:commandLink></li>
+								
 								</ul></li>
 						</ui:fragment>
 
@@ -269,6 +276,15 @@
 								action="#{navigationController.redirectToMap}" value="">
 								<i class="fas fa-map-marker icon icon"></i>
 								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
+							</h:commandLink></li>
+						</ui:fragment>
+						
+						
+					   <ui:fragment rendered="#{loginAccount.load.en_ocr}" >
+						<li class="nav-item ml-2"><h:commandLink class="nav-link"
+								action="#{navigationController.redirectToRealtimeOCR}" value="">
+								<i class="fas fa-camera-retro icon icon"></i>
+								<span class="text">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime}</span>
 							</h:commandLink></li>
 						</ui:fragment>
 						
