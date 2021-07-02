@@ -310,6 +310,28 @@ public class NavigationBean {
 
 		return navigation_page;
 	}
+	
+	public String redirectToReportDAI() {
+
+		navigation_page = "/dai/dai.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	public String redirectToReportOCR() {
+
+		navigation_page = "/ocr/ocr.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	public String redirectToRealtimeOCR() {
+
+		navigation_page = "/ocr/ocr_realtime.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+
 
 
 	//******************* CCR REPORTS **************************** //

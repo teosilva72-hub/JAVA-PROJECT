@@ -213,7 +213,7 @@ public class LoginAccountBean {
 
 					plaque = RoadConcessionaire.plaque;
 
-					return "/dashboard/dashboard.xhtml?faces-redirect=true";
+					return "/map/map.xhtml?faces-redirect=true";
 
 				}
 

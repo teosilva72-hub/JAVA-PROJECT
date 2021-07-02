@@ -1,10 +1,15 @@
 package br.com.tracevia.webapp.dao.ocr;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.util.ConnectionFactory;
@@ -15,7 +20,11 @@ public class OCRDAO{
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
-	public OCRDAO() {	
+	private String ftpFolder;
+	
+	public OCRDAO() {
+		
+		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\"; ;
 		
 	}
 
@@ -34,9 +43,9 @@ public class OCRDAO{
 			ps = conn.prepareStatement(search);
 			
 			rs = ps.executeQuery();
+			
 			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
-					
+				while (rs.next()) {									
 				
 					OCR data = new OCR();
 					
@@ -133,26 +142,20 @@ public class OCRDAO{
 	}
 	
 	public String findVehicleImage(OCR data) {
-		
-		String path = "/Desktop/OCR_03";
-		
+						
 		String dateVeh = formataDados(data.getDataHour());
-		String folder = dateVeh.substring(0, 8);
-		
-		
-		return path+"/"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		String subFolder = dateVeh.substring(0, 8);
+				
+		return ftpFolder+""+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
 		
 	}
 	
 	public String findPlateImage(OCR data) {
-		
-		String path = "/Desktop/OCR_03";
-		
+						
 		String dateVeh = formataDados(data.getDataHour());
-		String folder = dateVeh.substring(0, 8);
-		
-		
-		return path+"/"+"Plate"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		String subFolder = dateVeh.substring(0, 8);
+				
+		return ftpFolder+""+data.getCam()+"\\"+subFolder+"\\Plate"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
 		
 	}
 	
@@ -165,8 +168,6 @@ public class OCRDAO{
 		   
 		   return dado;
 		}
-	
-	
 	
 	
 }

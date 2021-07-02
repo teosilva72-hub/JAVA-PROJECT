@@ -87,12 +87,12 @@
 							<div class="row">
 								<div class="col-md-8">
 									<img class="img1"
-										src="data:image/jpg;base64, #{OcrReport.img1}"></img>
+										src="data:image/jpg;base64, #{OcrReport.imageVeh}"></img>
 								</div>
 								<div class="col-md-3">
 									<h4 class="text-center"></h4>
 									<img class="img2"
-										src="data:image/jpg;base64, #{OcrReport.img2}"></img>
+										src="data:image/jpg;base64, #{OcrReport.imagePlt}"></img>
 								</div>
 							</div>
 						</div>
@@ -233,8 +233,8 @@
 							   <f:ajax execute="@form" render="@none" />
 							</h:commandButton>
 								
-							<h:commandButton pt:data-toggle="modal"
-								pt:data-target="#modalDownload" id="gerarPdf"
+							<h:commandButton pt:onclose="download" pt:data-toggle="modal"
+								pt:data-target="#modalPdf" id="gerarPdf"
 							    value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
 								class="btn btn-dark form-draw-button"
 								action="#{OcrReport.pdf}" />
