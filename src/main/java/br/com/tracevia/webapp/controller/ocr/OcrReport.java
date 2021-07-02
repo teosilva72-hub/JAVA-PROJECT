@@ -341,11 +341,15 @@ public class OcrReport{
 			dt = dt.replaceAll("-", "");
 			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
+			
+			String subFolder = dt.substring(0, 8);
 
-			File f = new File(ftpFolder+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-			File g = new File(ftpFolder+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-			System.out.println(f);
-			System.out.println(g);
+			File f = new File(ftpFolder+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File g = new File(ftpFolder+data.getCam()+"\\"+subFolder+"\\Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			
+			System.out.println(f.getPath());
+			System.out.println(g.getPath());
+			
 			if(f.exists()) 						
 				imageVeh = f.getPath();
 			
@@ -387,9 +391,11 @@ public class OcrReport{
 			dt = dt.replaceAll("-", "");
 			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
+			
+			String subFolder = dt.substring(0, 8);
 
-			imageVeh = ftpFolder+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
-			imagePlt = ftpFolder+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
+			imageVeh = ftpFolder+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
+			imagePlt = ftpFolder+data.getCam()+"\\"+subFolder+"\\"+"\\Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
 			
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
