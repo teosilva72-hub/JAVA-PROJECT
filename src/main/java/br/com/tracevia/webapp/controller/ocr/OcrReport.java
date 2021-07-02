@@ -24,6 +24,7 @@ import org.primefaces.context.RequestContext;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -36,28 +37,29 @@ import br.com.tracevia.webapp.dao.ocr.reportDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ViewScoped
 @ManagedBean(name="OcrReport")
 public class OcrReport{
-	
+	LocaleUtil localeOCR;
 	private OCR data;
 	private reportDAO dao;
 	private EquipmentsDAO equipDAO;
 	List<? extends Equipments> listOcr; 
-		
+
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
 	minFinal, camera, img1 = "", img2 = "",
-	pasta = "C:\\Users\\Wellington\\Desktop\\", 
+	pasta = "C:\\teste\\", 
 	noImagePath;
-	
+
 
 	private List<SelectItem> minutos, horas, cams;
 	private List<OCR> list;
 	private int rowkey;
 	private boolean selectedRow;
-	
+
 	public String getImg1() {
 		try {
 
@@ -66,7 +68,7 @@ public class OcrReport{
 			return Base64.getEncoder().encodeToString(file);
 		} catch (IOException e) {
 			e.printStackTrace();
-										
+
 			return "";
 		}
 
@@ -219,7 +221,7 @@ public class OcrReport{
 	public void setSelectedRow(boolean selectedRow) {
 		this.selectedRow = selectedRow;
 	}
-	
+
 	public List<SelectItem> getCams() {
 		return cams;
 	}
@@ -227,40 +229,41 @@ public class OcrReport{
 
 	@PostConstruct
 	public void initialize() {
-		
+		localeOCR = new LocaleUtil();	
+		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		RequestContext.getCurrentInstance().execute("getTr()");
-		
-		noImagePath = "C:\\Tracevia\\Software\\External\\Unknown\\";
-		
+
+		noImagePath = "C:\\teste\\";
+
 		img1 = noImagePath + "no-image.png";
 		img2 = noImagePath + "no-image.png";
-		
+
 		horas = new ArrayList<SelectItem>();
 		minutos = new ArrayList<SelectItem>();
-		
+
 		equipDAO = new EquipmentsDAO();		
 		cams = new ArrayList<SelectItem>();
-					
-		
+
+
 		try {
-			
+
 			listOcr = equipDAO.EquipmentSelectOptions("ocr");
-			
+
 		} catch (Exception e1) {			
 			e1.printStackTrace();
 		}
-		
+
 		//filtro câmera
-		
+
 		for (Equipments e : listOcr) {
 			SelectItem s = new SelectItem();
 
 			s.setValue(e.getNome());
 			s.setLabel(e.getNome());
-			
+
 			cams.add(s);				
 		}
-		
+
 		for(int x = 0; x < 24; x++) {
 			if (x < 10)
 				horas.add(new SelectItem("0"+String.valueOf(x), "0"+String.valueOf(x)));
@@ -278,44 +281,44 @@ public class OcrReport{
 	}
 
 	public void search() throws IOException {
-		
+
 		dao = new reportDAO();
 		data = new OCR();
-							
+
 		img1 = noImagePath + "no-image.png";
 		img2 = noImagePath + "no-image.png";
-				
+
 		String start = dtStart+" "+ hrStart+":"+minStart;
 		String end = dtFinal+" "+ hrFinal+":"+minFinal;
-		
+
 		if(camera == "Todos") camera ="";
-		
+
 		String cam = camera;
 
 		if(cam != "") {
 
 			try {
-				
+
 				System.out.println("com classe");
 				list = dao.searchTable(start, end, cam);
-				
+
 				RequestContext.getCurrentInstance().execute("getTr()");
 				RequestContext.getCurrentInstance().execute("dataPicker()");
-				
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}else {
-			
+
 			System.out.println("sem classe");
 			String start2 = dtStart+" "+ hrStart+":"+minStart;
 			String end2 = dtFinal+" "+ hrFinal+":"+minFinal;
-			
+
 			RequestContext.getCurrentInstance().execute("getTr()");
 			RequestContext.getCurrentInstance().execute("dataPicker()");
-			
+
 			try {
 				list = dao.searchTable2(start2, end2);
 			} catch (Exception e) {
@@ -324,83 +327,103 @@ public class OcrReport{
 			}
 		}
 	}
-	
+
 	public void idGet() {
-		
+
 		System.out.println(rowkey);
-		
+
 		try {
-			
+
 			dao = new reportDAO();
 			data = new OCR();
-			
+
 			data = dao.searchId(rowkey);
-			
+
 			String dt = data.getDataHour();
-			
+
 			dt = dt.replaceAll("\\.","");
 			dt = dt.replaceAll("-", "");
 			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
-					
-			File f = new File(pasta+data.getCam()+"\\"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-			File g = new File(pasta+data.getCam()+"\\Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-							 				
-				if(f.exists()) 						
-				   img1 = f.getPath();
-				
-				else img1 = noImagePath + "no-image.png";
+
+			File f = new File(pasta+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File g = new File(pasta+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			System.out.println(f);
+			System.out.println(g);
+			if(f.exists()) 						
+				img1 = f.getPath();
 			
-				if(g.exists())	
-					img2 = g.getPath();
-				
-				else img2 = noImagePath + "no-image.png";							
-				
-			
+			else img1 = noImagePath + "no-image.png";
+
+			if(g.exists())	
+				img2 = g.getPath();
+
+			else img2 = noImagePath + "no-image.png";							
+
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void pdf() throws Exception {
-		
+
 		// criação do  documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
-		
+
 		try {
-			
+			localeOCR = new LocaleUtil();	
+			localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 			dao = new reportDAO();
 			data = new OCR();
-			
+
 			data = dao.searchId(getRowkey());
-					
-			//caminho onde � gerado o pdf
-			PdfWriter writer = PdfWriter.getInstance(document, baos);
-								
-			document.open();
+			String dt = data.getDataHour();
+
+			dt = dt.replaceAll("\\.","");
+			dt = dt.replaceAll("-", "");
+			dt = dt.replaceAll(":", "");			
+			dt = dt.replaceAll(" ", "");
+
+			img1 = pasta+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
+			img2 = pasta+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
 			
+			PdfWriter writer = PdfWriter.getInstance(document, baos);
+
+			document.open();
+
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(20F,"OCR REPORT"));
+			Paragraph pTitulo = new Paragraph(new Phrase(20F,localeOCR.getStringKey("ocr_report_title")));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
-			
+
 			tl.setSimpleColumn(400,820,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
-			
+
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph("ID: "+ data.getId()			
-			+"\nData/Hour: " + data.getDataHour()
-			+"\nCâmera: "+ data.getCam()
-			+"\nPlaca: "+ data.getPlaca()));
+			document.add(new Paragraph(localeOCR.getStringKey("ocr_number_label")+": "+ data.getId()			
+			+"\n"+localeOCR.getStringKey("ocr_dataHour_label")+": " + data.getDataHour()
+			+"\n"+localeOCR.getStringKey("ocr_cam_label")+": "+ data.getCam()
+			+"\n"+localeOCR.getStringKey("ocr_placa_label")+": "+ data.getPlaca()));
+			Image imgX = Image.getInstance(img1);
+			imgX.setAbsolutePosition(60, 500);
+			imgX.scaleAbsolute (200, 150);
+			
+			Image imgY = Image.getInstance(img2);
+			imgY.setAbsolutePosition(300, 500);
+			imgY.scaleAbsolute (200, 150);
+			//passando a imagem
+			document.add(imgX);
+			document.add(imgY);
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
 			rowPage.setBorderColor(BaseColor.BLACK);
@@ -416,27 +439,27 @@ public class OcrReport{
 			ct.go();
 
 			document.add(new Paragraph(""));
-			
-		    }catch(DocumentException de) {
-				System.err.println(de.getMessage());
-			}
-			catch(IOException ioe) {
-				System.err.println(ioe.getMessage());
-			}
 
-			document.close();
-									
+		}catch(DocumentException de) {
+			System.err.println(de.getMessage());
+		}
+		catch(IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
+
+		document.close();
+
 		externalContext.setResponseContentType("application/pdf");
 		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+data.getCam()+"_"+data.getPlaca()+".pdf\"");
-		
-		externalContext.setResponseContentLength(baos.size());
-	      
-		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-	     baos.writeTo(responseOutputStream);
-	     responseOutputStream.flush();
-	     responseOutputStream.close();
 
-	
-	     facesContext.responseComplete();  
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
+
+
+		facesContext.responseComplete();  
 	}
 }
