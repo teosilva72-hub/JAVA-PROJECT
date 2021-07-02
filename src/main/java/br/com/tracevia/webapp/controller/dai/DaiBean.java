@@ -43,10 +43,12 @@ import com.itextpdf.text.pdf.PdfWriter;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="daiBean")
 @ViewScoped
 public class DaiBean {
+	LocaleUtil localeDai;
 	public List<Traffic> traffics;
 	public Traffic traffic;
 	
@@ -255,6 +257,9 @@ public class DaiBean {
 	public void pdf() {
 		
 		try {
+			localeDai = new LocaleUtil();	
+			localeDai.getResourceBundle(LocaleUtil.LABELS_DAI);
+			RequestContext.getCurrentInstance().execute("getTr()");
 			String RESULT = "/teste/teste.pdf";
 			Document document = new Document();
 			FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -263,7 +268,7 @@ public class DaiBean {
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 			document.open();
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(20F,"DAI REPORT"));
+			Paragraph pTitulo = new Paragraph(new Phrase(20F,localeDai.getStringKey("dai_report")));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
 			tl.setSimpleColumn(400,820,200,50);
@@ -284,9 +289,19 @@ public class DaiBean {
 			p.add("                              Pag 1");//paragrafo Evento
 			ct.addElement(p);
 			ct.go();
+			document.add(new Paragraph("\n\n"));
+			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.id));
+			document.add(new Paragraph(localeDai.getStringKey("way")+": "+traffic.direction));
+			document.add(new Paragraph(localeDai.getStringKey("track")+": "+traffic.lane));
+			document.add(new Paragraph(localeDai.getStringKey("channel")+": "+traffic.channel));
+			document.add(new Paragraph(localeDai.getStringKey("date")+": "+traffic.date));
+			document.add(new Paragraph(localeDai.getStringKey("time")+": "+traffic.hour));
+			document.add(new Paragraph(localeDai.getStringKey("incident")+": "+traffic.incident));
 
-			document.add(new Paragraph(""));
-
+			Image imgX = Image.getInstance(traffic.file.toString());
+			imgX.setAbsolutePosition(50, 200);
+			imgX.scaleAbsolute (500, 400);
+			document.add(imgX);
 
 			document.close();
 			FileOutputStream fos = new FileOutputStream(RESULT);
@@ -295,7 +310,7 @@ public class DaiBean {
 			// DOWNLOAD
 
 			externalContext.setResponseContentType("application/pdf");
-			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"DAI.pdf\"");
+			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"dai_"+traffic.date+".pdf\"");
 
 			externalContext.setResponseContentLength(baos.size());
 

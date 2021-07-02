@@ -81,7 +81,7 @@
 						data-toggle="modal" data-target="#modalPesquisa"
 						onclick="dataPicker()">#{daiLabels.search}</button>
 					<button id="btnDetalhes" class="btn btn-primary btn1">#{daiLabels.details}</button>
-					<button type="button" class="btn btn-dark btn1" id="btnPdf">#{daiLabels.pdf}</button>
+					<button type="button" class="btn btn-dark btn1" id="btnPdf" data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
 				</div>
 			</div>
 		</div>
@@ -182,6 +182,42 @@
 								</div>
 								<button type="button" class="btn btn-dark btn1"
 									data-dismiss="modal">#{daiLabels.back}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<div class="modal fade" id="modalPdf"
+			data-keyboard="false" tabindex="-1" aria-hidden="true">
+			<h:form prependId="false" id="pdfModal">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel">
+								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
+							</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
+								</div>
+								
+								<button type="button" class="btn btn-dark btn1"
+									data-dismiss="modal">#{daiLabels.back}</button>
+									<h:commandButton pt:onclose="download" pt:data-toggle="modal"
+								pt:data-target="#modalPdf" id="gerarPdf"
+							    value="#{ocrLabels.ocr_reports_modal_download_btn_yes}"
+								class="btn btn-dark form-draw-button"
+								action="#{daiBean.pdf}" />
 							</div>
 						</div>
 					</div>
