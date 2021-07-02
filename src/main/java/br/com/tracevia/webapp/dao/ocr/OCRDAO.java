@@ -20,11 +20,11 @@ public class OCRDAO{
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
-	private String path;
+	private String ftpFolder;
 	
 	public OCRDAO() {
 		
-		path = "C:\\Cameras\\OCR\\NormalType\\"; ;
+		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\"; ;
 		
 	}
 
@@ -146,7 +146,7 @@ public class OCRDAO{
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);
 				
-		return path+""+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		return ftpFolder+""+data.getCam()+"\\"+subFolder+"\\"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
 		
 	}
 	
@@ -155,7 +155,7 @@ public class OCRDAO{
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);
 				
-		return path+""+data.getCam()+"\\"+subFolder+"\\Plate"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		return ftpFolder+""+data.getCam()+"\\"+subFolder+"\\Plate"+data.getCam()+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
 		
 	}
 	

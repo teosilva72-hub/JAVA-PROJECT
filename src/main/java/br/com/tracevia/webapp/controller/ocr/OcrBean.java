@@ -35,7 +35,6 @@ public class OcrBean{
 	LocaleUtil localeOCR;
 	
 	String cam, imageVeh, imagePlt, noImageFolder;
-	String ftpFolders;
 				
 	public List<SelectItem> getCams() {
 		return cams;
@@ -80,8 +79,7 @@ public class OcrBean{
 		
 		localeOCR = new LocaleUtil();	
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
-		
-		ftpFolders = "C:\\Cameras\\OCR\\NormalType\\"; 
+			
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
 		imageVeh = noImageFolder + "no-image.png";

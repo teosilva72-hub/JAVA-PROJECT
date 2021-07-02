@@ -49,20 +49,18 @@ public class OcrReport{
 
 	private String dtStart, hrStart,
 	minStart, dtFinal, hrFinal,
-	minFinal, camera, img1 = "", img2 = "",
-	pasta = "C:\\teste\\", 
-	noImagePath;
-
+	minFinal, camera, imageVeh, imagePlt, ftpFolder, noImageFolder;
 
 	private List<SelectItem> minutos, horas, cams;
 	private List<OCR> list;
 	private int rowkey;
 	private boolean selectedRow;
 
-	public String getImg1() {
+	
+	public String getImageVeh() {
 		try {
 
-			Path path = Paths.get(img1);								
+			Path path = Paths.get(imageVeh);								
 			byte[] file = Files.readAllBytes(path);
 			return Base64.getEncoder().encodeToString(file);
 		} catch (IOException e) {
@@ -70,29 +68,26 @@ public class OcrReport{
 
 			return "";
 		}
-
+	}
+	
+	public void setImageVeh(String imageVeh) {
+		this.imageVeh = imageVeh;
 	}
 
-	public void setImg1(String img1) {
-		this.img1 = img1;
-	}
-
-	public String getImg2() {
+	public String getImagePlt() {
 		try {
 
-			Path path = Paths.get(img2);
+			Path path = Paths.get(imagePlt);
 			byte[] file = Files.readAllBytes(path);
 			return Base64.getEncoder().encodeToString(file);
 		} catch (IOException e) {
 			return "";
 		}
 	}
-
-
-	public void setImg2(String img2) {
-		this.img2 = img2;
+	
+	public void setImagePlt(String imagePlt) {
+		this.imagePlt = imagePlt;
 	}
-
 
 	public OCR getData() {
 		return data;
@@ -232,11 +227,12 @@ public class OcrReport{
 		localeOCR.getResourceBundle(LocaleUtil.LABELS_OCR);
 		RequestContext.getCurrentInstance().execute("getTr()");
 
-		noImagePath = "C:\\teste\\";
-
-		img1 = noImagePath + "no-image.png";
-		img2 = noImagePath + "no-image.png";
-
+		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\"; 
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		
+		imageVeh = noImageFolder + "no-image.png";
+		imagePlt = noImageFolder + "no-image.png";
+		
 		horas = new ArrayList<SelectItem>();
 		minutos = new ArrayList<SelectItem>();
 
@@ -283,9 +279,10 @@ public class OcrReport{
 
 		dao = new reportDAO();
 		data = new OCR();
-
-		img1 = noImagePath + "no-image.png";
-		img2 = noImagePath + "no-image.png";
+				
+		imageVeh = noImageFolder + "no-image.png";
+		imagePlt = noImageFolder + "no-image.png";
+		
 
 		String start = dtStart+" "+ hrStart+":"+minStart;
 		String end = dtFinal+" "+ hrFinal+":"+minFinal;
@@ -345,19 +342,19 @@ public class OcrReport{
 			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
 
-			File f = new File(pasta+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
-			File g = new File(pasta+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File f = new File(ftpFolder+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File g = new File(ftpFolder+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg");
 			System.out.println(f);
 			System.out.println(g);
 			if(f.exists()) 						
-				img1 = f.getPath();
+				imageVeh = f.getPath();
 			
-			else img1 = noImagePath + "no-image.png";
+			else imageVeh= noImageFolder + "no-image.png";
 
 			if(g.exists())	
-				img2 = g.getPath();
+				imagePlt = g.getPath();
 
-			else img2 = noImagePath + "no-image.png";							
+			else imagePlt = noImageFolder + "no-image.png";							
 
 
 		} catch (Exception e) {
@@ -391,8 +388,8 @@ public class OcrReport{
 			dt = dt.replaceAll(":", "");			
 			dt = dt.replaceAll(" ", "");
 
-			img1 = pasta+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
-			img2 = pasta+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
+			imageVeh = ftpFolder+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
+			imagePlt = ftpFolder+"Plate"+data.getCam()+"_"+dt+"_"+data.getPlaca()+".jpg";
 			
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
@@ -413,11 +410,11 @@ public class OcrReport{
 			+"\n"+localeOCR.getStringKey("ocr_dataHour_label")+": " + data.getDataHour()
 			+"\n"+localeOCR.getStringKey("ocr_cam_label")+": "+ data.getCam()
 			+"\n"+localeOCR.getStringKey("ocr_placa_label")+": "+ data.getPlaca()));
-			Image imgX = Image.getInstance(img1);
+			Image imgX = Image.getInstance(imageVeh);
 			imgX.setAbsolutePosition(60, 500);
 			imgX.scaleAbsolute (200, 150);
 			
-			Image imgY = Image.getInstance(img2);
+			Image imgY = Image.getInstance(imagePlt);
 			imgY.setAbsolutePosition(300, 500);
 			imgY.scaleAbsolute (200, 150);
 			//passando a imagem
