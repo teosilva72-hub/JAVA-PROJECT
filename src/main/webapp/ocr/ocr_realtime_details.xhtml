@@ -27,70 +27,76 @@
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="container">
-				<div class="row position">
-					<c:forEach begin="1" end="10" var="value">
-						<div class="col-md-6 card y" id="ocr#{value}">
-							<div class="row yy">
-								<div class="col-md-1 ">
-									<div class="ocr">OCR#{value}</div>
-								</div>
-								<div class="col-md-3">
-									<img class="imgVei"
-										src="/teste/ocr_1_20210101155247_YKY367A.jpg"></img>
-								</div>
-								<!-- OCR MODEL -->
-								<div class="col-md-6">
-									<div class="row linha">
-										<div class="col-md-4">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">NÚMERO</span>
+				<h:form prependId="false" id="ocrs">
+					<div class="row position">
+						<c:forEach begin="1" end="10" var="value">
+							<div class="col-md-6 card y" id="ocr#{value}" onselectstart="return false">
+								<div class="row yy">
+									<div class="col-md-1 ">
+										<div class="ocr">#{OcrDetails.cam[value]}</div>
+									</div>
+									<div class="col-md-3">
+										<img class="imgVei" draggable="false"
+											src="/teste/ocr_1_20210101155247_YKY367A.jpg"></img>
+									</div>
+									<!-- OCR MODEL -->
+									<div class="col-md-6">
+										<div class="row linha">
+											<div class="col-md-4">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">NÚMERO</span>
+														</div>
 													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">Data|Hora:</span>
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">Data|Hora:</span>
+														</div>
 													</div>
-												</div>
 
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">PLACA</span>
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">PLACA</span>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="row">
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">0255</span>
+											<div class="col-md-6">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">#{OcrDetails.id[value]}</span>
+														</div>
 													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">2021-05-05 15:34</span>
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">#{OcrDetails.dateHour[value]}</span>
+														</div>
 													</div>
-												</div>
-												<div class="col-md-12">
-													<div class="card alert-dark dado l">
-														<span class="text-center">F98-BHD</span>
+													<div class="col-md-12">
+														<div class="card alert-dark dado l">
+															<span class="text-center">#{OcrDetails.plate[value]}</span>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-md-2">
-											<img class="imgPlaca"
-												src="/teste/Plateocr_1_20210101155247_YKY367A.jpg"></img>
+											<div class="col-md-2">
+												<img class="imgPlaca" draggable="false"
+													src="/teste/Plateocr_1_20210101155247_YKY367A.jpg"></img>
+											</div>
 										</div>
 									</div>
+									<!-- OCR MODEL -->
 								</div>
-								<!-- OCR MODEL -->
 							</div>
-						</div>
-					</c:forEach>
-				</div>
+						</c:forEach>
+					</div>
+					<h:commandButton id="updateDetails" style="display: none">
+						<f:ajax listener="#{OcrDetails.updateView}"
+						execute="@form" render=":ocrs"></f:ajax>
+					</h:commandButton>
+				</h:form>
 			</div>
 		</div>
 		<h:outputScript name="datepicker.js" library="js/datepicker" />

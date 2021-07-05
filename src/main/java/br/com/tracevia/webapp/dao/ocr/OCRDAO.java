@@ -168,6 +168,326 @@ public class OCRDAO{
 		   
 		   return dado;
 		}
-	
-	
+	//////////////////////////////////////////////////
+	//////////OCR DETAILS////////////////////////////
+public OCR OCR1() throws Exception {
+		OCR search = new OCR();
+		//Script dos atributos que as infor��es ser�o requisitadas
+		String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_1' ORDER BY id_ocr_data desc limit 1";
+		try {
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			if(rs != null) {
+				while(rs.next()) {
+					
+					search.setId(rs.getString(1));
+					search.setCam(rs.getString(2));
+					search.setDataHour(rs.getString(3));
+					search.setPlaca(rs.getString(4));
+					search.setVehicleImage(findVehicleImage(search));
+					search.setPlateImage(findPlateImage(search));
+										
+				}
+			}
+			
+		}catch(SQLException sqlbuscar) {
+			sqlbuscar.printStackTrace();
+
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+		//passando os valores dos atributos para a vari�vel occ
+		return search;
+
+	}
+public OCR OCR2() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_2' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR3() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_3' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR4() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_4' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR5() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_5' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR6() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_6' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR7() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_7' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR8() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_8' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR9() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_9' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
+public OCR OCR10() throws Exception {
+	OCR search = new OCR();
+	//Script dos atributos que as infor��es ser�o requisitadas
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_10' ORDER BY id_ocr_data desc limit 1";
+	try {
+		conn = ConnectionFactory.connectToTraceviaApp();
+		ps = conn.prepareStatement(query);
+		rs = ps.executeQuery();
+		
+		if(rs != null) {
+			while(rs.next()) {
+				
+				search.setId(rs.getString(1));
+				search.setCam(rs.getString(2));
+				search.setDataHour(rs.getString(3));
+				search.setPlaca(rs.getString(4));
+				search.setVehicleImage(findVehicleImage(search));
+				search.setPlateImage(findPlateImage(search));
+									
+			}
+		}
+		
+	}catch(SQLException sqlbuscar) {
+		sqlbuscar.printStackTrace();
+
+	}finally {
+		ConnectionFactory.closeConnection(conn, ps, rs);
+	}
+	//passando os valores dos atributos para a vari�vel occ
+	return search;
+
+}
 }
