@@ -8,14 +8,17 @@ const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
+	let sidebar = $(`#status${name.toLowerCase()}`)
 	
 	switch (status) {
 		case 1:
 			status = 'active'
+			sidebar.css("color", "#00FF00")
 			break
 
 		case 3:
 			status = 'using'
+			sidebar.css("color", "blue")
 			break
 		
 		case 4:
@@ -24,10 +27,12 @@ const changeStates = response => {
 			
 		case 5:
 			status = 'warning'
+			sidebar.css("color", "orange")
 			break
 			
 		default:
 			status = ''
+			sidebar.css("color", "#FF0000")
 			break
 	}
 

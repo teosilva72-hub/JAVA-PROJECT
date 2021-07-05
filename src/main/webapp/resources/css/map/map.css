@@ -182,7 +182,7 @@ table {
   text-decoration: none;
 }
 
-.fa-circle {
+.fa-circle:not( [id^=statussos], [id^=statuspmv]) {
   color: #00ff0d;
 }
 
