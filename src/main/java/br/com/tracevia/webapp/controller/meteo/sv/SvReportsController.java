@@ -318,16 +318,15 @@ public void CreateFields(String type) {
 		   
 		    // Table fields
 			field = new String[] {localeLabel.getStringKey("sv_reports_year_month"),
-					    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-						localeLabel.getStringKey("sv_reports_general_visibility")};
+					    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
 								 
 			// Table Objects
-			fieldObjectValues = new String[] { "month", "ambient_temperature", "visibility"};
+			fieldObjectValues = new String[] { "month", "ambient_temperature"};
 			
 			//JSON chart fields
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-						localeLabel.getStringKey("sv_reports_general_visibility")};
+					    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+					
 			
 			 //JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sv_reports_chart_title_year");	
@@ -339,16 +338,15 @@ public void CreateFields(String type) {
 		   
 		      // Table fields
 		      field = new String[] {localeLabel.getStringKey("sv_reports_general_day_month"),
-				    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-					localeLabel.getStringKey("sv_reports_general_visibility")};
+				    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
 					
 		     // Table Objects
-		     fieldObjectValues = new String[] { "dayOfTheMonth", "ambient_temperature", "visibility"};
+		     fieldObjectValues = new String[] { "dayOfTheMonth", "ambient_temperature"};
 		     
 		     //JSON chart fields
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-					localeLabel.getStringKey("sv_reports_general_visibility")};
+					localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+					
 			 
 		     //JSON chart title and subtitle
 			 chartTitle = localeLabel.getStringKey("sv_reports_chart_title_month");			
@@ -360,17 +358,15 @@ public void CreateFields(String type) {
 			   
 		   // Table fields
 		   field = new String[] {localeLabel.getStringKey("sv_reports_general_date"), localeLabel.getStringKey("sv_reports_general_interval"), 
-				    localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-					localeLabel.getStringKey("sv_reports_general_visibility")};
-			
+				    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+								
 		    // Table Objects
-			fieldObjectValues = new String[] { "date", "dateTime", "ambient_temperature", "visibility"}; 
+			fieldObjectValues = new String[] { "date", "dateTime", "ambient_temperature"}; 
 			
 			 //JSON chart fields
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					   localeLabel.getStringKey("sv_reports_general_ambient_temperature"),
-					   localeLabel.getStringKey("sv_reports_general_visibility")};
-			 			
+					   localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+							 			
 			 //JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sv_reports_chart_title_period");	
 			imageName = localeLabel.getStringKey("sv_reports_chart_file_name_period");
@@ -1127,8 +1123,7 @@ if(type.equals("3")) {
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
  		      resultList.add(new SvReports.Builder().month(resultQuery[k][0]) 
- 		    		   .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1]))             
- 		               .visibility(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2])));
+ 		    		   .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1])));
  		       		       		    	    			    				 
  		 }  		   		 
   		}
@@ -1138,9 +1133,8 @@ if(type.equals("3")) {
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
   	 		      resultList.add(new SvReports.Builder().dayOfMonth(resultQuery[k][0] == null? 0 : Integer.parseInt(resultQuery[k][0])) 
-  	 		    	 .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1]))             
-  	                 .visibility(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2])));
-  	 		    		    			    				 
+  	 		    	 .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1])));             
+  	               
   	 		 }
   			
   		}
@@ -1151,8 +1145,8 @@ if(type.equals("3")) {
 				 
  		      resultList.add(new SvReports.Builder().date(resultQuery[k][0]) 
                 .dateTime(resultQuery[k][1])               
-                .EnvTemperature(resultQuery[k][2] == null? 0.0 : Double.parseDouble(resultQuery[k][2]))            
-                .visibility(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3])));
+                .EnvTemperature(resultQuery[k][2] == null? 0.0 : Double.parseDouble(resultQuery[k][2])));            
+              
  		    		    			    				 
  		 }
 		    	
