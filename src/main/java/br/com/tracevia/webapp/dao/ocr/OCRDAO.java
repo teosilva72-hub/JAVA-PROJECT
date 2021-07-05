@@ -173,7 +173,7 @@ public class OCRDAO{
 public OCR OCR1() throws Exception {
 		OCR search = new OCR();
 		//Script dos atributos que as infor��es ser�o requisitadas
-		String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_1' ORDER BY id_ocr_data desc limit 1";
+		String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_01' ORDER BY id_ocr_data desc limit 1";
 		try {
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
@@ -205,7 +205,7 @@ public OCR OCR1() throws Exception {
 public OCR OCR2() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_2' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_02' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -237,7 +237,7 @@ public OCR OCR2() throws Exception {
 public OCR OCR3() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_3' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_03' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -269,7 +269,7 @@ public OCR OCR3() throws Exception {
 public OCR OCR4() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_4' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_04' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -301,7 +301,7 @@ public OCR OCR4() throws Exception {
 public OCR OCR5() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_5' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_05' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -333,7 +333,7 @@ public OCR OCR5() throws Exception {
 public OCR OCR6() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_6' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_06' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -365,7 +365,7 @@ public OCR OCR6() throws Exception {
 public OCR OCR7() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_7' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_07' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -397,7 +397,7 @@ public OCR OCR7() throws Exception {
 public OCR OCR8() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_8' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_08' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
@@ -429,7 +429,7 @@ public OCR OCR8() throws Exception {
 public OCR OCR9() throws Exception {
 	OCR search = new OCR();
 	//Script dos atributos que as infor��es ser�o requisitadas
-	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_9' ORDER BY id_ocr_data desc limit 1";
+	String query = "SELECT * FROM ocr_data WHERE site_name= 'ocr_09' ORDER BY id_ocr_data desc limit 1";
 	try {
 		conn = ConnectionFactory.connectToTraceviaApp();
 		ps = conn.prepareStatement(query);
