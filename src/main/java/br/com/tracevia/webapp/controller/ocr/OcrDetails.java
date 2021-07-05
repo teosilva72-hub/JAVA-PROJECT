@@ -1,5 +1,13 @@
 package br.com.tracevia.webapp.controller.ocr;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -15,8 +23,24 @@ import br.com.tracevia.webapp.model.ocr.OCR;
 @ManagedBean(name="OcrDetails")
 public class OcrDetails{
 	private String[] id, dateHour, cam, plate, imageVei, imagePlate;
+	private String imagePath = "";
 	private OCR data = new OCR();
 	private OCRDAO dao = new OCRDAO();
+
+	public String getImagePath() {
+		try {
+
+			Path path = Paths.get(imagePath);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 
 	public String[] getId() {
 		return id;
@@ -42,14 +66,42 @@ public class OcrDetails{
 	public void setPlate(String[] plate) {
 		this.plate = plate;
 	}
-	public String[] getImageVei() {
-		return imageVei;
+	public List<String> getImageVei() {
+		List<String> list = new ArrayList<>();
+		for(String image : imageVei) {
+			try {
+				if(image == null) {
+					image = "";
+				}
+				Path path = Paths.get(image);
+				byte[] file = Files.readAllBytes(path);
+				list.add(Base64.getEncoder().encodeToString(file));
+
+			} catch (IOException e) {
+				list.add("");
+			}
+		}
+		return list;
 	}
 	public void setImageVei(String[] imageVei) {
 		this.imageVei = imageVei;
 	}
-	public String[] getImagePlate() {
-		return imagePlate;
+	public List<String> getImagePlate() {
+		List<String> list = new ArrayList<>();
+		for(String image : imagePlate) {
+			try {
+				if(image == null) {
+					image = "";
+				}
+				Path path = Paths.get(image);
+				byte[] file = Files.readAllBytes(path);
+				list.add(Base64.getEncoder().encodeToString(file));
+
+			} catch (IOException e) {
+				list.add("");
+			}
+		}
+		return list;
 	}
 	public void setImagePlate(String[] imagePlate) {
 		this.imagePlate = imagePlate;
@@ -203,26 +255,185 @@ public class OcrDetails{
 			else plate[9] = "Vazio";
 			if(ocr10.getPlaca() != null)plate[10] = ocr10.getPlaca();
 			else plate[10] = "Vazio";
-			imageVei[1] = "";
-			imageVei[2] = "";
-			imageVei[3] = "";
-			imageVei[4] = "";
-			imageVei[5] = "";
-			imageVei[6] = "";
-			imageVei[7] = "";
-			imageVei[8] = "";
-			imageVei[9] = "";
-			imageVei[10] = "";
-			imagePlate[1] = "";
-			imagePlate[2] = "";
-			imagePlate[3] = "";
-			imagePlate[4] = "";
-			imagePlate[5] = "";
-			imagePlate[6] = "";
-			imagePlate[7] = "";
-			imagePlate[8] = "";
-			imagePlate[9] = "";
-			imagePlate[10] = "";
+			//////////////////////////////////////////////////////////
+			////PLATE////////////////////////////////////////////////
+			String path = "C:\\teste\\";
+			imageVei[0] = "";
+			///////////////////////////////
+			String dt1 = ocr1.getDataHour();
+			dt1 = dt1.replaceAll("\\.","");
+			dt1 = dt1.replaceAll("-", "");
+			dt1 = dt1.replaceAll(":", "");			
+			dt1 = dt1.replaceAll(" ", "");
+			File Ocr1Vei = new File(path+ocr1.getCam()+"\\"+ocr1.getCam()+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
+			File ocr1Plate = new File(path+ocr1.getCam()+"\\Plate"+ocr1.getCam()+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt2 = ocr2.getDataHour();
+			dt2 = dt2.replaceAll("\\.","");
+			dt2 = dt2.replaceAll("-", "");
+			dt2 = dt2.replaceAll(":", "");			
+			dt2 = dt2.replaceAll(" ", "");
+			File Ocr2Vei = new File(path+ocr2.getCam()+"\\"+ocr2.getCam()+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
+			File ocr2Plate = new File(path+ocr2.getCam()+"\\Plate"+ocr2.getCam()+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt3 = ocr3.getDataHour();
+			dt3 = dt3.replaceAll("\\.","");
+			dt3 = dt3.replaceAll("-", "");
+			dt3 = dt3.replaceAll(":", "");			
+			dt3 = dt3.replaceAll(" ", "");
+			File Ocr3Vei = new File(path+ocr3.getCam()+"\\"+ocr3.getCam()+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
+			File ocr3Plate = new File(path+ocr3.getCam()+"\\Plate"+ocr3.getCam()+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt4 = ocr4.getDataHour();
+			dt4 = dt4.replaceAll("\\.","");
+			dt4 = dt4.replaceAll("-", "");
+			dt4 = dt4.replaceAll(":", "");			
+			dt4 = dt4.replaceAll(" ", "");
+			File Ocr4Vei = new File(path+ocr4.getCam()+"\\"+ocr4.getCam()+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
+			File ocr4Plate = new File(path+ocr4.getCam()+"\\Plate"+ocr4.getCam()+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt5 = ocr5.getDataHour();
+			dt5 = dt5.replaceAll("\\.","");
+			dt5 = dt5.replaceAll("-", "");
+			dt5 = dt5.replaceAll(":", "");			
+			dt5 = dt5.replaceAll(" ", "");
+			File Ocr5Vei = new File(path+ocr4.getCam()+"\\"+ocr5.getCam()+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
+			File ocr5Plate = new File(path+ocr4.getCam()+"\\Plate"+ocr5.getCam()+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt6 = ocr6.getDataHour();
+			dt6 = dt6.replaceAll("\\.","");
+			dt6 = dt6.replaceAll("-", "");
+			dt6 = dt6.replaceAll(":", "");			
+			dt6 = dt6.replaceAll(" ", "");
+			File Ocr6Vei = new File(path+ocr6.getCam()+"\\"+ocr6.getCam()+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
+			File ocr6Plate = new File(path+ocr6.getCam()+"\\Plate"+ocr1.getCam()+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt7 = ocr7.getDataHour();
+			dt7 = dt7.replaceAll("\\.","");
+			dt7 = dt7.replaceAll("-", "");
+			dt7 = dt7.replaceAll(":", "");			
+			dt7 = dt7.replaceAll(" ", "");
+			File Ocr7Vei = new File(path+ocr7.getCam()+"\\"+ocr7.getCam()+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
+			File ocr7Plate = new File(path+ocr7.getCam()+"\\Plate"+ocr7.getCam()+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt8 = ocr8.getDataHour();
+			dt8 = dt8.replaceAll("\\.","");
+			dt8 = dt8.replaceAll("-", "");
+			dt6 = dt6.replaceAll(":", "");			
+			dt6 = dt6.replaceAll(" ", "");
+			File Ocr8Vei = new File(path+ocr6.getCam()+"\\"+ocr8.getCam()+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
+			File ocr8Plate = new File(path+ocr6.getCam()+"\\Plate"+ocr8.getCam()+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
+			///////////////////////////////
+			String dt9 = ocr9.getDataHour();
+			dt8 = dt8.replaceAll("\\.","");
+			dt8 = dt8.replaceAll("-", "");
+			dt6 = dt6.replaceAll(":", "");			
+			dt6 = dt6.replaceAll(" ", "");
+			File Ocr9Vei = new File(path+ocr9.getCam()+"\\"+ocr9.getCam()+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
+			File ocr9Plate = new File(path+ocr9.getCam()+"\\Plate"+ocr9.getCam()+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
+			///////////////////////////////
+			///////////////////////////////
+			String dt10 = ocr10.getDataHour();
+			dt10 = dt10.replaceAll("\\.","");
+			dt10 = dt10.replaceAll("-", "");
+			dt10 = dt10.replaceAll(":", "");			
+			dt10 = dt10.replaceAll(" ", "");
+			File Ocr10Vei = new File(path+ocr10.getCam()+"\\"+ocr10.getCam()+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
+			File ocr10Plate = new File(path+ocr10.getCam()+"\\Plate"+ocr10.getCam()+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
+			///////////////////////////////
+			///////////////////////////////
+			if(Ocr1Vei.exists() && ocr1Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[1] = Ocr1Vei.getPath();
+				imagePlate[1] = Ocr1Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[1] = path+"no-image.png";
+				imagePlate[1] = path+"no-image.png";
+			}
+			if(Ocr2Vei.exists() && ocr2Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[2] = Ocr2Vei.getPath();
+				imagePlate[2] = Ocr2Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[2] = path+"no-image.png";
+				imagePlate[2] = path+"no-image.png";
+			}
+			if(Ocr3Vei.exists() && ocr3Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[3] = Ocr3Vei.getPath();
+				imagePlate[3] = Ocr3Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[3] = path+"no-image.png";
+				imagePlate[3] = path+"no-image.png";
+			}
+			if(Ocr4Vei.exists() && ocr4Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[4] = Ocr4Vei.getPath();
+				imagePlate[4] = Ocr4Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[4] = path+"no-image.png";
+				imagePlate[4] = path+"no-image.png";
+			}
+			if(Ocr5Vei.exists() && ocr5Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[5] = Ocr5Vei.getPath();
+				imagePlate[5] = Ocr5Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[5] = path+"no-image.png";
+				imagePlate[5] = path+"no-image.png";
+			}
+			if(Ocr6Vei.exists() && ocr6Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[6] = Ocr6Vei.getPath();
+				imagePlate[6] = Ocr6Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[6] = path+"no-image.png";
+				imagePlate[6] = path+"no-image.png";
+			}
+			if(Ocr7Vei.exists() && ocr7Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[7] = Ocr7Vei.getPath();
+				imagePlate[7] = Ocr7Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[7] = path+"no-image.png";
+				imagePlate[7] = path+"no-image.png";
+			}
+			if(Ocr8Vei.exists() && ocr8Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[8] = Ocr8Vei.getPath();
+				imagePlate[8] = Ocr8Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[8] = path+"no-image.png";
+				imagePlate[8] = path+"no-image.png";
+			}
+			if(Ocr9Vei.exists() && ocr9Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[9] = Ocr8Vei.getPath();
+				imagePlate[9] = Ocr8Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[9] = path+"no-image.png";
+				imagePlate[9] = path+"no-image.png";
+			}
+			if(Ocr10Vei.exists() && ocr10Plate.exists()) {
+				System.out.println("Entramos");
+				imageVei[10] = Ocr8Vei.getPath();
+				imagePlate[10] = Ocr8Vei.getPath();;
+			}else {
+				System.out.println("não existe");
+				imageVei[10] = path+"no-image.png";
+				imagePlate[10] = path+"no-image.png";
+			}
+
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
