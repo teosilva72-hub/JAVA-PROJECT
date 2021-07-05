@@ -153,6 +153,12 @@ public class LoginAccountBean {
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println(addr.getHostAddress());
+		System.out.println(addr.getHostName());
+
+		//ip = addr.getHostAddress();
+
 
 	}
 

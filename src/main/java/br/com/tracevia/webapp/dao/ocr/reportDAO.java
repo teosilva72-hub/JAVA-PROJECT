@@ -102,6 +102,7 @@ public class reportDAO {
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(search);
 			rs = ps.executeQuery();
+			
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 					data.setId(rs.getString(1));

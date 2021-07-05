@@ -534,6 +534,25 @@ function posEquip(equip) {
 			})
 		}
 	}
+	
+	
+	if (!equip.attr("class").includes('sat') && !equip.attr("class").includes('dms') && !equip.attr("class").includes('sos')) {
+	
+		//let statusValue = equip.find('input').attr("status");
+		let equipStatus = equip.find("span").attr("id");
+		let equipName = $('#'+equip.find("p").attr("id")).html();	
+		
+		console.log(equipName);
+		
+		 $('#'+equipStatus).css({
+				"background-color": '#00FF0D',
+				color: 'white'
+			});			
+			// status equip color
+			
+	    $(`#status${equipName}`).css({ "color": '#00FF0D' }); // status side menu			
+
+	}			
 }
 
 // EQUIPMENT POSITION END

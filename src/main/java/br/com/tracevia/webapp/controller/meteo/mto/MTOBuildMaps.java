@@ -40,8 +40,8 @@ List<? extends Equipments> mtoList;
 			mtoList = new ArrayList<MTO>();
 			
 			MTO mto =  new MTO();						
-			mtoList = mto.listEquipments("mto");			
-				
+			mtoList = mto.listEquipments("mto");	
+								
             }catch(IndexOutOfBoundsException ex) {}
 		
 		}catch(Exception ex) {}		

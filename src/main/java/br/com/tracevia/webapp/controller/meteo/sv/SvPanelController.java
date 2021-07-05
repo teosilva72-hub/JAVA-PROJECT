@@ -171,7 +171,6 @@ public class SvPanelController {
 	public void initPanelZero(SvPanel panel) {
 					
 		panel.setAmbient_temperature(0);
-		panel.setVisibility(0);
 		panel.setStatus(0);
 		panel.setBattery(0);
 		panel.setLine_volts(0);	

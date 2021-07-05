@@ -174,9 +174,7 @@ public class OcrBean{
 				data.getPlaca();
 				data.setPlateImage(getImagePath(data.getPlateImage()));
 				data.setVehicleImage(getImagePath(data.getVehicleImage()));
-				
-				System.out.println(data.getVehicleImage());
-										
+													
 				}				
 				
 			} else {
@@ -200,9 +198,7 @@ public class OcrBean{
 				data.getPlaca();
 				data.setPlateImage(getImagePath(data.getPlateImage()));
 				data.setVehicleImage(getImagePath(data.getVehicleImage()));
-				
-				System.out.println(data.getVehicleImage());
-				
+											
 				}			
 			  }
 			

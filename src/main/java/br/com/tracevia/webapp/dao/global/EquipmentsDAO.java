@@ -49,43 +49,43 @@ public class EquipmentsDAO {
 		String query = null;
 		
 		if(mod.getModule().equals(ModulesEnum.CFTV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM cftv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM cftv_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COLAS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM colas_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM colas_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.COMMS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM comms_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM comms_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.DAI.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM dai_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM dai_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.OCR.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM ocr_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM ocr_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.MTO.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM mto_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM mto_equipment WHERE visible = 1";	
 			
 		else if(mod.getModule().equals(ModulesEnum.PMV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM pmv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM pmv_equipment WHERE visible = 1";	
 					
 		else if(mod.getModule().equals(ModulesEnum.SAT.getModule()))
-			query = "SELECT equip_id, number_lanes, name, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sat_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, number_lanes, name, km, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, service_level FROM sat_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SOS.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sos_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM sos_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SPEED.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM speed_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM speed_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.SV.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM sv_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM sv_equipment WHERE visible = 1";	
 				
 		else if(mod.getModule().equals(ModulesEnum.VIDEOWALL.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM videowall_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM videowall_equipment WHERE visible = 1";	
 		
 		else if(mod.getModule().equals(ModulesEnum.WIM.getModule()))
-			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY, position FROM wim_equipment WHERE visible = 1";	
+			query = "SELECT equip_id, name, km, map_width, map_posX, map_posY, linear_width, linear_posX, linear_posY FROM wim_equipment WHERE visible = 1";	
 		
 		
 		try {			
@@ -127,7 +127,7 @@ public class EquipmentsDAO {
 				  sat.setLinearWidth(rs.getInt("linear_width"));
 				  sat.setLinearPosX(rs.getInt("linear_posX"));
 				  sat.setLinearPosY(rs.getInt("linear_posY"));		
-				  sat.setPosicao(rs.getString("position"));	
+				  sat.setPosicao_nivel_servico(rs.getString("service_level"));	
 				  
 				  equips.add(sat);
   
@@ -142,8 +142,7 @@ public class EquipmentsDAO {
 				  eq.setMapPosY(rs.getInt("map_posY"));
 				  eq.setLinearWidth(rs.getInt("linear_width"));
 				  eq.setLinearPosX(rs.getInt("linear_posX"));
-				  eq.setLinearPosY(rs.getInt("linear_posY"));		
-				  eq.setPosicao(rs.getString("position"));					
+				  eq.setLinearPosY(rs.getInt("linear_posY"));							
 				  				  
 				  equips.add(eq);
 				    
@@ -170,7 +169,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -197,9 +196,8 @@ public class EquipmentsDAO {
 					equip.setKm(rs.getString(5));
 					equip.setLinearWidth(rs.getInt(6));															
 					equip.setLinearPosX(rs.getInt(7));
-					equip.setLinearPosY(rs.getInt(8));		
-					equip.setPosicao(rs.getString(9));
-					
+					equip.setLinearPosY(rs.getInt(8));	
+										
 					/*if(dms.getPosicao().equals("horizontal")) {
 						dms.setHorizontal(true);
 					}else {
@@ -251,7 +249,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, map_width, " +
-		   "map_posX, map_posY, linear_posX, linear_posY, position FROM "+modulo+"_equipment eq " +
+		   "map_posX, map_posY, linear_posX, linear_posY FROM "+modulo+"_equipment eq " +
 		   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 		   "INNER JOIN concessionaire_roads r ON r.road_id = eq.city " +
 		   "WHERE visible = 1 ";
@@ -280,10 +278,8 @@ public class EquipmentsDAO {
 					equip.setMapWidth(rs.getInt(6));		
 					equip.setMapPosX(rs.getInt(7));
 					equip.setMapPosY(rs.getInt(8));
-					equip.setLinearPosX(rs.getInt(9));
-				//	System.out.println(rs.getInt(9));
-					equip.setLinearPosY(rs.getInt(10));
-					equip.setPosicao(rs.getString(11));
+					equip.setLinearPosX(rs.getInt(9));				
+					equip.setLinearPosY(rs.getInt(10));					
 					
 					/*if(dms.getPosicao().equals("horizontal")) {
 						dms.setHorizontal(true);
@@ -312,7 +308,7 @@ public class EquipmentsDAO {
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				   "linear_posX, linear_posY, map_width, map_posX, map_posY, position FROM "+modulo+"_equipment eq " +
+				   "linear_posX, linear_posY, map_width, map_posX, map_posY FROM "+modulo+"_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -342,8 +338,7 @@ public class EquipmentsDAO {
 					equip.setLinearPosY(rs.getInt(8));
 					equip.setMapWidth(rs.getInt(9));						
 					equip.setMapPosX(rs.getInt(10));					
-					equip.setMapPosY(rs.getInt(11));	
-					equip.setPosicao(rs.getString(12));
+					equip.setMapPosY(rs.getInt(11));						
 					
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 					
@@ -379,7 +374,7 @@ public class EquipmentsDAO {
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				   "dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
-				   "position FROM sat_equipment eq " +
+				   "service_position FROM sat_equipment eq " +
 				   "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				   "INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				   "WHERE visible = 1 ";
@@ -433,7 +428,7 @@ public class EquipmentsDAO {
 					sat.setMapWidth(rs.getInt(18));						
 					sat.setMapPosX(rs.getInt(19));					
 					sat.setMapPosY(rs.getInt(20));	
-					sat.setPosicao(rs.getString(21));
+					sat.setPosicao_nivel_servico(rs.getString(21));
 					
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 					

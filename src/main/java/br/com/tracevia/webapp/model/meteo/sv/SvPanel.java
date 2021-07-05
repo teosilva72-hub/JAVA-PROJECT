@@ -5,18 +5,16 @@ public class SvPanel {
 	private String equip;
 	private String equipName;
 	private double ambient_temperature;
-	private int visibility;
 	private int line_volts;
 	private int battery;
 	private int status;
 	
-	public SvPanel(String equip, String equipName, double ambient_temperature, int visibility, int line_volts, int battery,
+	public SvPanel(String equip, String equipName, double ambient_temperature, int line_volts, int battery,
 			int status) {
 		
 		this.equip = equip;
 		this.equipName = equipName;
-		this.ambient_temperature = ambient_temperature;
-		this.visibility = visibility;
+		this.ambient_temperature = ambient_temperature;	
 		this.line_volts = line_volts;
 		this.battery = battery;
 		this.status = status;
@@ -51,15 +49,6 @@ public class SvPanel {
 	public void setAmbient_temperature(double ambient_temperature) {
 		this.ambient_temperature = ambient_temperature;
 	}
-
-	public int getVisibility() {
-		return visibility;
-	}
-
-	public void setVisibility(int visibility) {
-		this.visibility = visibility;
-	}
-
 
 	public int getLine_volts() {
 		return line_volts;

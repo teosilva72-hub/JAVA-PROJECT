@@ -19,8 +19,7 @@ public class MeteoQueriesModels {
 			+ "ORDER BY DATE(datetime_) DESC LIMIT 1";
 			
 	public static String VS_PANEL_QUERY = "SELECT "			
-			+ "ambient_temperature, "
-			+ "visibility, "
+			+ "ambient_temperature, "		
 			+ "status, "
 			+ "battery_status, "
 			+ "line_volts "
@@ -45,9 +44,8 @@ public class MeteoQueriesModels {
 	         
      public String SvMainQuery(String station_id) {
  		
- 		String query = "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', st.ambient_temperature, NULL)) AS DECIMAL(3,1)),0) AS ambient_temperature, "
- 				     + "IFNULL(ROUND(AVG(IF(eq.equip_id = '"+station_id+"', st.visibility, NULL)),0),0) AS visibility ";
- 			 		
+ 		String query = "IFNULL(CAST(AVG(IF(eq.equip_id = '"+station_id+"', st.ambient_temperature, NULL)) AS DECIMAL(3,1)),0) AS ambient_temperature ";
+ 				 			 		
  		return query;
  	
  	}
