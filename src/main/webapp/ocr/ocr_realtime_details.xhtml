@@ -24,20 +24,22 @@
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 		<h:outputScript library="js/ocr" name="controller_ocr.js" />
 	</ui:define>
+	
 	<ui:define name="main-content">
 		<div class="row">
 			<div class="container">
 				<h:form prependId="false" id="ocrs">
 					<div class="row position">
-						<c:forEach begin="1" end="10" var="value">
+					
+						<c:forEach begin="0" end="9" var="value">
 							<div class="col-md-6 card y" id="ocr#{value}" onselectstart="return false">
 								<div class="row yy">
 									<div class="col-md-1 ">
-										<div class="ocr">#{OcrDetails.cam[value]}</div>
+										<div class="ocr">#{OcrDetails.cam[value]}</div> 
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-3">								
 										<img class="imgVei" draggable="false"
-											src="data:image/jpg;base64, #{OcrDetails.imageVei.get(value)}"></img>
+											src="data:image/jpg;base64, #{OcrDetails.imageVei[value]}"></img>
 									</div>
 									<!-- OCR MODEL -->
 									<div class="col-md-6">
@@ -83,7 +85,7 @@
 											</div>
 											<div class="col-md-2">
 												<img class="imgPlaca" draggable="false"
-													src="data:image/jpg;base64, #{OcrDetails.imagePlate.get(value)}"></img>
+													src="data:image/jpg;base64, #{OcrDetails.imagePlate[value]}"></img>
 											</div>
 										</div>
 									</div>
