@@ -154,11 +154,7 @@ public class LoginAccountBean {
 			e.printStackTrace();
 		}
 		
-		System.out.println(addr.getHostAddress());
-		System.out.println(addr.getHostName());
-
 		//ip = addr.getHostAddress();
-
 
 	}
 
@@ -175,11 +171,9 @@ public class LoginAccountBean {
 		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();
 		FacesContext context = FacesContext.getCurrentInstance();
 
-		// IF SUCCESS ON AUTH GET SERVER INFORMATION
-
-		// System.out.println(addr.getHostAddress());
-		isName = roadConcessionaire.defineConcessionarieValues(addr.getHostAddress());
-
+		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
+		isName = roadConcessionaire.defineConcessionarieValues(language.concessionaire);
+		
 		// CHANGES
 		LoginAccountDAO dao = new LoginAccountDAO();
 

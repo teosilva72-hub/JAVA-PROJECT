@@ -11,7 +11,6 @@ import br.com.tracevia.webapp.classes.Tuxpan;
 import br.com.tracevia.webapp.classes.ViaPaulista;
 import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
-import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 
 public class RoadConcessionaire {
 	
@@ -85,16 +84,12 @@ public class RoadConcessionaire {
 		
 	}
 	
-	public boolean defineConcessionarieValues(String serverAddress) throws Exception {
-		
-		RoadConcessionaireDAO dao = new RoadConcessionaireDAO();
-		
+	public boolean defineConcessionarieValues(String concessionaire) throws Exception {
+						
 		boolean checkRoadConcessionaire = false;
-		
-		 roadConcessionaire = dao.IdentifyRoadConcessionarie(serverAddress);	
-
-		 
-		 
+					
+		roadConcessionaire = concessionaire;
+				
 		//Caso contrario n�o acontece nada
 		 if(!roadConcessionaire.equals("")) 
 			 checkRoadConcessionaire = true;	 
@@ -250,7 +245,7 @@ public class RoadConcessionaire {
 			plaque = "tuxpan";
 			mapEnabled = true;
 			reportsLLEnabled = false;
-							
+													
 		}
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {

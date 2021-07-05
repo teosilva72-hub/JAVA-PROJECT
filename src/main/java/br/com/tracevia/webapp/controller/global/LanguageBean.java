@@ -37,13 +37,10 @@ public class LanguageBean implements Serializable {
 	
 	 RoadConcessionaire roadConcessionaire;
 	 RoadConcessionaireDAO dao;
-		
-		
-		
-			
-
-	 
+			 
 	 InetAddress addr;
+	 
+	 String concessionaire;	
 		 
 	 public Locale getLocale() {
 		return  (locale);
@@ -52,11 +49,20 @@ public class LanguageBean implements Serializable {
 	 public void setLocale(Locale locale) {
 		this.locale = locale;
 	 }
-	 	 
-	 @PostConstruct
+	 	 	 
+	 public String getConcessionaire() {
+		return concessionaire;
+	}
+
+	public void setConcessionaire(String concessionaire) {
+		this.concessionaire = concessionaire;
+	}
+
+	@PostConstruct
 	 public void defaultLanguage() {
 		 
 		 roadConcessionaire = new RoadConcessionaire();
+		 dao = new RoadConcessionaireDAO();
 		 
 			// GET LOCAL HOST ADDRESS
 			try {
@@ -69,23 +75,25 @@ public class LanguageBean implements Serializable {
 			
 			try {
 				
-			//	String roadConcessionaire = dao.IdentifyRoadConcessionarie(addr.getHostAddress());
+				 concessionaire = dao.IdentifyRoadConcessionarie(addr.getHostAddress());
 								
-				//if(roadConcessionaire.equals())
+				if(concessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()) ||
+						concessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
+					
+					  Locale.setDefault(SPANISH);
+					  locale = Locale.getDefault(); 					
+				}
+				
+				else {
+					
+					 Locale.setDefault(PORTUGUESE_BRAZILIAN);
+					 locale = Locale.getDefault(); 
+				}
 			
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-			//System.out.println(addr.getHostAddress());
-			//System.out.println(addr.getHostName());
-		 
-	   Locale.setDefault(PORTUGUESE_BRAZILIAN);
-	   locale = Locale.getDefault(); 
-						 	 
-	   
-	   System.out.println(locale.getCountry());
+			}				 		
 	 }
 			 
 	 public void English(ActionEvent event) {
