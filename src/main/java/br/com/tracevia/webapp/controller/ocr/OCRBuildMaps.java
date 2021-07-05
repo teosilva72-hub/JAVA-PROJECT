@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.ocr.OCR;
+import br.com.tracevia.webapp.controller.global.NotificationsBean;
+import br.com.tracevia.webapp.dao.ocr.OCRStatusDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 
 @ManagedBean(name="ocrMapsView")
@@ -15,15 +17,17 @@ import br.com.tracevia.webapp.model.global.Equipments;
 public class OCRBuildMaps {
 	
 	List<? extends Equipments> ocrList;
+	
+	List<OCR> ocrStatus;
 
 	public List<? extends Equipments> getOcrList() {
 		return ocrList;
 	}
-
-	public void setOCRList(List<? extends Equipments> ocrList) {
-		this.ocrList = ocrList;
-	} 
 	
+	public List<OCR> getOcrStatus() {
+		return ocrStatus;
+	}
+
 	@PostConstruct
 	public void initalize() {
 		
@@ -35,17 +39,29 @@ public class OCRBuildMaps {
 						
 		try {	
 		
-		try {
+			try {
 			
+			OCRStatusDAO ocrDAO = new OCRStatusDAO();  
+			NotificationsBean notif = new NotificationsBean();
+				
 			ocrList = new ArrayList<OCR>();
 			
 			OCR ocr =  new OCR();						
 			ocrList = ocr.listEquipments("ocr");			
 				
-            }catch(IndexOutOfBoundsException ex) {}
-		
-		}catch(Exception ex) {}		
+			
+			//ocrStatus = new ArrayList<OCR>();
+			
+			//ocrStatus = ocrDAO.ocrStatus();
 						
+			
+			}catch (IndexOutOfBoundsException ex) {			
+				ex.printStackTrace();
+			}
+		
+		}catch(Exception ex) {	
+		   ex.printStackTrace();
+		}
 	}
 
 }

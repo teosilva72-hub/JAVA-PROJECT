@@ -22,7 +22,7 @@ public class SV extends Equipments {
 			int status2, int bateria_sts, int volts_line) {
 		
 		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
-				estrada, cidade, km, posicao, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
 				dlgPosX, dlgPosY, status, notificacao, visible);
 		
 		this.data_hora = data_hora;

@@ -21,7 +21,7 @@ public class DMS extends Equipments {
 			boolean msg_status) {
 		
 		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
-				estrada, cidade, km, posicao, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
 				dlgPosX, dlgPosY, status, notificacao, visible);
 		
 		this.leds = leds;

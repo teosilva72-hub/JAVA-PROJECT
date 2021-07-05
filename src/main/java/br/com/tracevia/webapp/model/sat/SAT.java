@@ -4,7 +4,6 @@ import br.com.tracevia.webapp.model.global.Equipments;
 
 public class SAT extends Equipments {
 		
-
 	private int numFaixas;		
 	private int quantidadeS1;
 	private int velocidadeS1;
@@ -21,17 +20,18 @@ public class SAT extends Equipments {
 	private String faixa8;
 	private String sentido1;
 	private String sentido2;
+	private String posicao_nivel_servico;
 		
 	public SAT(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
 			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
+			String posicao_nivel_servico, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
 			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible, int numFaixas,
 			int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2, int statusInterval, String faixa1,
 			String faixa2, String faixa3, String faixa4, String faixa5, String faixa6, String faixa7, String faixa8,
-			String sentido1, String sentido2) {
+			String sentido1, String sentido2, String nivel_servico) {
 		
 		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
-				estrada, cidade, km, posicao, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
 				dlgPosX, dlgPosY, status, notificacao, visible);
 		
 		this.numFaixas = numFaixas;
@@ -50,6 +50,7 @@ public class SAT extends Equipments {
 		this.faixa8 = faixa8;
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
+		this.posicao_nivel_servico = posicao_nivel_servico;
 	}
 
 	public SAT() {
@@ -167,7 +168,14 @@ public class SAT extends Equipments {
 	public void setSentido2(String sentido2) {
 		this.sentido2 = sentido2;
 	}
-	
-	
-		
+
+	public String getPosicao_nivel_servico() {
+		return posicao_nivel_servico;
+	}
+
+	public void setPosicao_nivel_servico(String posicao_nivel_servico) {
+		this.posicao_nivel_servico = posicao_nivel_servico;
+	}
+
+			
 }

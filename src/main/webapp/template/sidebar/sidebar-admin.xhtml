@@ -10,298 +10,526 @@
 
 	<ui:composition>
 		<h:form>
+			<!-- FORM -->
+
 			<ul class="list-unstyled components">
+				<!-- MENU LIST COMPONENTS -->
+
+				<!-- DASHBOARD APPLICATION -->
+
 				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToDashboard}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-laptop-code icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_dashboard}</span>
 					</h:commandLink></li>
+				<!---->
 
-				<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
-					aria-expanded="false" class="nav-link"> <i
-						class="fas fa-file-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-					<ul class="collapse list-unstyled" id="modMenu">
+				<!-- REAL TIME  -->
 
+				<li class="nav-item"><a href="#realTimeSubmenu"
+					data-toggle="collapse" aria-expanded="false" class="nav-link">
+						<!-- REALTIME MENU --> <i class="fas fa-road icon"></i><span
+						class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
+				</a>
 
+					<ul class="collapse list-unstyled" id="realTimeSubmenu">
+						<!-- REALTIME SUBMENU -->
 
-						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#cftvSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-video icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_cftv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="cftvSubmenu">
-								</ul></li>
-						</ui:fragment>
+						<!-- MAP ITEM -->
 
-						<ui:fragment rendered="#{loginAccount.load.en_comms}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#commsSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-ethernet icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_comms}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="commsSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_dai}">
+						<ui:fragment rendered="#{loginAccount.mapEnabled}">
 							<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToReportDAI}" value="">
-								<i class="fas fa-video icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_dai}</span>
+									action="#{navigationController.redirectToMap}" value="">
+									<i class="fas fa-map-marker icon-sub"></i>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
 								</h:commandLink></li>
 						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- OCR REALTIME MENU -->
 
 						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
 							<li class="nav-item ml-2"><a class="nav-link"
-								href="#ocrSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-video icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="ocrSubmenu">
-								
-							<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToReportOCR}" value="">
-								<i class="fas fa-camera-retro icon icon"></i>
-								<span class="text">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
+								href="#ocrUiSubmenu" data-toggle="collapse"
+								aria-expanded="false"><i class="fas fa-camera-retro icon-sub"></i>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+
+								<ul class="collapse list-unstyled ml-3" id="ocrUiSubmenu">
+									<!-- OCR SUBMENU -->
+
+									<!-- OCR REALTIME -->
+
+									<li class="nav-item">
+									<h:commandLink class="nav-link"
+											action="#{navigationController.redirectToRealtimeOCR}"
+											value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime}</span>
+										</h:commandLink></li>
+									<!---->
+
+									<!-- OCR REALTIME OVERVIEW -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToRealtimeDetailsOCR}"
+											value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime_details}</span>
+										</h:commandLink></li>
+									<!---->
+
+								</ul> <!----></li>
+							<!---->
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- REALTIME ITEM -->
+
+						<li class="nav-item ml-2"><h:commandLink class="nav-link"
+								action="#{navigationController.redirectToRealTime}" value="">
+								<i class="fas fa-stopwatch icon-sub"></i>
+								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
 							</h:commandLink></li>
-								
+						<!---->
+
+						<!---->
+
+						<!-- WIM ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_wim}">
+							<li class="nav-item ml-2"><h:commandLink class="nav-link"
+									action="#{navigationController.wimRealtime}" value="">
+									<i class="fas fa-truck-moving icon-sub"></i>
+									<span class="text-sub">#{wimLabels.wimReal}</span>
+								</h:commandLink></li>
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+					</ul></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				<!-- PMV MENU -->
+
+				<ui:fragment rendered="#{loginAccount.load.en_pmv}">
+					<li class="nav-item"><a class="nav-link" href="#pmvUiSubmenu"
+						data-toggle="collapse" aria-expanded="false"><i
+							class="fas fa-tv icon"></i>
+							<span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
+
+						<ul class="collapse list-unstyled ml-3" id="pmvUiSubmenu">
+							<!-- PMV SUBMENU -->
+
+							<!-- ACTIVE MESSAGES -->
+
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.redirectToActiveMessages}"
+									value="">
+									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+									<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_active_messages}</span>
+								</h:commandLink></li>
+							<!---->
+
+							<!-- AVAILABLE MESSAGES -->
+
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.redirectToAvailableMessages}"
+									value="">
+									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+									<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_available_messages}</span>
+								</h:commandLink></li>
+							<!---->
+
+						</ul>
+						<!----></li>
+					<!---->
+				</ui:fragment>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				<!-- REPORTS MENU -->
+
+				<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
+					aria-expanded="false" class="nav-link"> <i
+						class="fas fa-file-signature icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
+
+					<ul class="collapse list-unstyled" id="modMenu">
+						<!--  REPORTS SUBMENU -->
+
+						<!-- CFTV -->
+						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- COMMS -->
+						<ui:fragment rendered="#{loginAccount.load.en_comms}">
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- DAI  -->
+						<ui:fragment rendered="#{loginAccount.load.en_dai}">
+
+							<li class="nav-item"><a class="nav-link"
+								href="#daiSubmenu" data-toggle="collapse" aria-expanded="false"><i
+									class="fas fa-video icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
+								<ul class="collapse list-unstyled ml-3" id="daiSubmenu">
+
+									<li class="nav-item ml-2"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToReportDAI}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_sub_menu_report}</span>
+										</h:commandLink></li>
+
+								</ul></li>
+							<!---->
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
+							<li class="nav-item"><a class="nav-link"
+								href="#ocrSubmenu" data-toggle="collapse" aria-expanded="false"><i
+									class="fas fa-camera-retro icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
+								<ul class="collapse list-unstyled ml-3" id="ocrSubmenu">
+
+									<!-- OCR REPORT -->
+
+									<li class="nav-item ml-2"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToReportOCR}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
+										</h:commandLink></li>
+									<!---->
+
 								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!---->
+
+						<!-- METEO MENU -->
 						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
-							<!-- METEO -->
-
-							<li class="nav-item ml-2">
+							<li class="nav-item">
 								<!-- LIST --> <a class="nav-link" href="#meteoSubmenu"
 								data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="meteoSubmenu">
-									<!-- UL LIST -->
+									class="fas fa-wind icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
 
-									<!--  MTO  -->
+								<ul class="collapse list-unstyled ml-3" id="meteoSubmenu">
+									<!--  METEO REPORT SUBMENU ITEM  -->
+
+									<!--  MTO REPORT SUBMENU  -->
 
 									<ui:fragment rendered="#{loginAccount.load.en_mto}">
 
-										<li class="nav-item ml-2"><a class="nav-link"
+										<li class="nav-item"><a class="nav-link"
 											href="#mtoSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-cloud icon"></i><span
-												class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+											aria-expanded="false"><i class="fas fa-cloud icon-sub-2"></i> <span
+												class="text-sub-2">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+
 											<ul class="collapse list-unstyled ml-3" id="mtoSubmenu">
+												<!--  MTO REPORT SUBMENU ITEM -->
+
+												<!-- MTO YEAR -->
+
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToMTOYear}"
 														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_year}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_year}</span>
 													</h:commandLink></li>
+												<!---->
+
+												<!---->
+
+												<!-- MTO MONTH -->
+
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToMTOMonth}"
 														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_month}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_month}</span>
 													</h:commandLink></li>
+												<!---->
+
+												<!---->
+
+												<!-- MTO PERIOD -->
+
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToMTOPeriod}"
 														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_period}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_period}</span>
 													</h:commandLink></li>
+												<!---->
+
 											</ul></li>
+										<!---->
 
 									</ui:fragment>
 
-									<!--  MTO  -->
+									<!--  MTO REPORT SUBMENU  -->
 
-									<!--  SV  -->
+									<!---->
+
+									<!--  SV REPORT SUBMENU  -->
+
 									<ui:fragment rendered="#{loginAccount.load.en_sv}">
-										<li class="nav-item ml-2"><a class="nav-link"
+										<li class="nav-item"><a class="nav-link"
 											href="#vsSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-sun icon"></i><span
-												class="text">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+											aria-expanded="false"><i class="fas fa-sun icon-sub-2"></i>
+											<span class="text-sub-2">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+
 											<ul class="collapse list-unstyled ml-3" id="vsSubmenu">
+												<!--  SV REPORT SUBMENU ITEM  -->
+
+												<!-- SV YEAR -->
 
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToSVYear}" value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_year}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_year}</span>
 													</h:commandLink></li>
+
+												<!---->
+
+												<!-- SV MONTH -->
+
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToSVMonth}"
 														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_month}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_month}</span>
 													</h:commandLink></li>
+
+												<!---->
+
+												<!-- SV PERIOD -->
+
 												<li class="nav-item"><h:commandLink class="nav-link"
 														action="#{navigationController.redirectToSVPeriod}"
 														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_period}</span>
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_period}</span>
 													</h:commandLink></li>
+												<!---->
 											</ul></li>
+										<!---->
 
 									</ui:fragment>
-									<!--  SV  -->
+									<!--  SV REPORT SUBMENU  -->
 
 								</ul> <!---->
 							</li>
 							<!---->
-
 						</ui:fragment>
 						<!---->
 
+
+						<!-- OCC REPORT MENU -->
 						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item ml-2"><a class="nav-link"
+							<li class="nav-item"><a class="nav-link"
 								href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="far fa-file-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
+									class="far fa-file-alt icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
+
 								<ul class="collapse list-unstyled ml-3" id="occSubmenu">
-								</ul></li>
-						</ui:fragment>
+									<!-- OCC SUBMENU  -->
 
+									<!-- OCC SUBMENU ITEM  -->
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToOccurrences}"
+											value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
+										</h:commandLink></li>
+									<!---->
+								</ul></li>
+							<!---->
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- PMV REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#pmvSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-tv icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="pmvSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
-						<ui:fragment rendered="#{loginAccount.load.en_sat}"> <!-- SAT MODULE -->
-							<li class="nav-item ml-2"><a class="nav-link"
+						<!-- SAT REPORT ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_sat}">
+							<li class="nav-item"><a class="nav-link"
 								href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-hdd icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
+									class="fas fa-hdd icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
+
 								<ul class="collapse list-unstyled ml-3" id="satSubmenu">
+									<!-- SAT SUBMENU ITEM -->
+
+									<!-- CONTAGEM VEICULAR REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToCountVehicles}"
 											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count}</span>
 										</h:commandLink></li>
+									<!---->
+
+									<!---->
+
+									<!-- CONTAGEM POR FLUXO REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToCountVehiclesFlow}"
 											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count_flow}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count_flow}</span>
 										</h:commandLink></li>
+									<!---->
+
+									<!---->
+
+									<!-- TIPO POR EIXOS REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToTypeAxle}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_axles}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_axles}</span>
 										</h:commandLink></li>
+									<!---->
+
+									<!---->
+
+									<!-- TODAS CLASSES REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToCCRAllClasses}"
 											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_all_classes}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_all_classes}</span>
 										</h:commandLink></li>
+									<!---->
+									<!---->
+
+									<!-- TIPO POR CLASSES REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToTypeClass}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
 										</h:commandLink></li>
+									<!---->
+
+									<!---->
+
+									<!-- VELOCIDADE REPORT -->
+
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToSpeed}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
 										</h:commandLink></li>
+									<!---->
 								</ul></li>
-					
-						<ui:fragment rendered="#{loginAccount.reportsLLEnabled}"> <!-- REPORTS LL FRAGMENT -->
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#satLLSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRClasses}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRTipo}" value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToCCRVelocidade}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-										</h:commandLink></li>
-								</ul></li>
-						</ui:fragment> <!---->								
-				</ui:fragment> <!---->
+							<!---->
 
+							<!---->
+
+							<!-- REPORTS LL -->
+
+							<ui:fragment rendered="#{loginAccount.reportsLLEnabled}">
+								<!-- REPORTS LL FRAGMENT -->
+								<li class="nav-item"><a class="nav-link"
+									href="#satLLSubmenu" data-toggle="collapse"
+									aria-expanded="false"><i class="fas fa-hdd icon-sub"></i><span
+										class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
+
+									<ul class="collapse list-unstyled ml-3" id="satLLSubmenu">
+										<!-- REPORTS LL SUBMENU -->
+
+										<!-- CLASSES LL -->
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRClasses}"
+												value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
+											</h:commandLink></li>
+										<!---->
+
+										<!---->
+
+										<!--TIPO LL -->
+
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRTipo}" value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
+											</h:commandLink></li>
+										<!---->
+
+										<!---->
+
+										<!-- VELOCIDADE LL -->
+
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToCCRVelocidade}"
+												value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
+											</h:commandLink></li>
+										<!---->
+
+									</ul></li>
+								<!---->
+							</ui:fragment>
+							<!---->
+						</ui:fragment>
+						<!---->
+
+						<!-- SAT REPORT ITEM -->
+
+						<!-- SOS REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_sos}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#sosSubmenu" data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-phone-square-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sos}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="sosSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- SPEED REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_speed}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#speedSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-tachometer-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="speedSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- VIDEOWALL REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_videowall}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#videowallSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-play-circle icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="videowallSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- WIM REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item ml-2"><h:commandLink class="nav-link"
-									action="#{navigationController.wimReport}" value="">
-									<i class="fas fa-truck-moving icon"></i>
-									<span class="text">#{wimLabels.wim}</span>
-								</h:commandLink></li>
 						</ui:fragment>
-					</ul></li>
-				
-				<li class="nav-item"><a href="#realTimeSubmenu"
-					data-toggle="collapse" aria-expanded="false" class="nav-link">
-						<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
-				</a>
-					<ul class="collapse list-unstyled" id="realTimeSubmenu">
-						
-						
-						<ui:fragment rendered="#{loginAccount.mapEnabled}" >
-						<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToMap}" value="">
-								<i class="fas fa-map-marker icon icon"></i>
-								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_map_interface}</span>
-							</h:commandLink></li>
-						</ui:fragment>
-						
-						
-					   <ui:fragment rendered="#{loginAccount.load.en_ocr}" >
-						<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToRealtimeOCR}" value="">
-								<i class="fas fa-camera-retro icon icon"></i>
-								<span class="text">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime}</span>
-							</h:commandLink></li>
-						</ui:fragment>
-						
-						
-						<li class="nav-item ml-2"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToRealTime}" value="">
-								<i class="fas fa-stopwatch icon icon"></i>
-								<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
-							</h:commandLink></li>
-							
-							<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item ml-2"><h:commandLink class="nav-link"
-									action="#{navigationController.wimRealtime}" value="">
-									<i class="fas fa-truck-moving icon"></i>
-									<span class="text">#{wimLabels.wimReal}</span>
-								</h:commandLink></li>
-						</ui:fragment>
-					</ul></li>
+						<!---->
+
+					</ul> <!----></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				<!-- USER INTERFACE -->
 
 				<li class="nav-item"><a href="#userInterfaceSubmenu"
 					data-toggle="collapse" aria-expanded="false" class="nav-link">
@@ -310,174 +538,145 @@
 
 					<ul class="collapse list-unstyled" id="userInterfaceSubmenu">
 
+						<!-- CFTV ITEM -->
+
 						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#cftvUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-video icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_cftv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="cftvUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_comms}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#commsUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-ethernet icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_comms}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="commsUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_dai}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#daiUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-video icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="daiUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#lprUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-video icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="lprUiSubmenu">
-								</ul></li>
-						</ui:fragment>
-
-
-						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
-							<!-- METEOROLOGICOS -->
-
-							<li class="nav-item ml-2">
-								<!-- LIST --> <a class="nav-link" href="#meteoUiSubmenu"
-								data-toggle="collapse" aria-expanded="false"><i
-									class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="meteoUiSubmenu">
-									<!-- UL LIST -->
-
-									<ui:fragment rendered="#{loginAccount.load.en_mto}">
-										<li class="nav-item ml-2"><a class="nav-link"
-											href="#mtoUiSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-cloud icon"></i><span
-												class="text">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
-											<ul class="collapse list-unstyled ml-3" id="mtoUiSubmenu">
-												<li class="nav-item"><h:commandLink class="nav-link"
-														action="#{navigationController.redirectToMTOPanel}"
-														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>
-													</h:commandLink></li>
-											</ul></li>
-									</ui:fragment>
-
-									<ui:fragment rendered="#{loginAccount.load.en_sv}">
-										<li class="nav-item ml-2"><a class="nav-link"
-											href="#vsUiSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-sun icon"></i><span
-												class="text">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
-											<ul class="collapse list-unstyled ml-3" id="vsUiSubmenu">
-
-												<li class="nav-item"><h:commandLink class="nav-link"
-														action="#{navigationController.redirectToVSPanel}"
-														value="">
-														<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-														<span class="text">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>
-													</h:commandLink></li>
-
-											</ul></li>
-									</ui:fragment>
-
-								</ul> <!---->
-							</li>
-							<!---->
-
 						</ui:fragment>
 						<!---->
 
+						<!-- COMMS ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_comms}">
+						</ui:fragment>
+						<!---->
+
+						<!-- DAI ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_dai}">
+						</ui:fragment>
+						<!---->
+
+						<!-- OCC ITEM -->
+
 						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#occUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="far fa-file-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="occUiSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToOccurrences}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
-										</h:commandLink></li>
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
-						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#pmvUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-tv icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="pmvUiSubmenu">
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToActiveMessages}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_active_messages}</span>
-										</h:commandLink></li>
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToAvailableMessages}"
-											value="">
-											<i class="fas fa-chevron-circle-right icon icon-sub"></i>
-											<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_available_messages}</span>
-										</h:commandLink></li>
-								</ul></li>
+						<!-- OCR ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
 						</ui:fragment>
+						<!---->
 
+						<!-- METEOROLOGICOS -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+
+							<li class="nav-item">
+								<!-- METEO SUBMENU --> <a class="nav-link"
+								href="#meteoUiSubmenu" data-toggle="collapse"
+								aria-expanded="false"><i class="fas fa-wind icon-sub"></i><span
+									class="text-sub">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
+
+								<ul class="collapse list-unstyled ml-3" id="meteoUiSubmenu">
+									<!-- METEO SUBMENU ITEM -->
+
+									<!-- MTO ITEM -->
+
+									<ui:fragment rendered="#{loginAccount.load.en_mto}">
+
+										<!-- MTO SUBMENU ITEM  -->
+
+										<li class="nav-item ml-2"><a class="nav-link"
+											href="#mtoUiSubmenu" data-toggle="collapse"
+											aria-expanded="false"><i class="fas fa-cloud icon-sub-2"></i><span
+												class="text-sub-2">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+
+											<ul class="collapse list-unstyled ml-3" id="mtoUiSubmenu">
+												<!-- MTO SUBMENU ITEM -->
+
+												<!-- MTO PANEL -->
+												<li class="nav-item"><h:commandLink class="nav-link"
+														action="#{navigationController.redirectToMTOPanel}"
+														value="">
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>
+													</h:commandLink></li>
+												<!---->
+
+											</ul></li>
+										<!---->
+									</ui:fragment>
+									<!---->
+
+									<!---->
+
+									<!-- SV ITEM -->
+
+									<ui:fragment rendered="#{loginAccount.load.en_sv}">
+
+										<!-- SV SUBMENU -->
+
+										<li class="nav-item ml-2"><a class="nav-link"
+											href="#vsUiSubmenu" data-toggle="collapse"
+											aria-expanded="false"><i class="fas fa-sun icon-sub-2"></i><span
+												class="text-sub-2">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+
+											<ul class="collapse list-unstyled ml-3" id="vsUiSubmenu">
+												<!-- SV ITEM -->
+
+												<!-- SV PANEL -->
+												<li class="nav-item"><h:commandLink class="nav-link"
+														action="#{navigationController.redirectToVSPanel}"
+														value="">
+														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>
+													</h:commandLink></li>
+												<!---->
+
+											</ul></li>
+										<!---->
+									</ui:fragment>
+									<!---->
+
+								</ul> <!---->
+							</li> <!---->
+						</ui:fragment>
+						<!---->
+
+						<!---->
+
+						<!-- SAT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_sat}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#satUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-hdd icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="satUiSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- SOS ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_sos}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#sosUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i
-									class="fas fa-phone-square-alt icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_sos}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="sosUiSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- SPEED ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_speed}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#speedUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-tachometer-alt icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="speedUiSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- VIDEOWALL ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_videowall}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#videowallUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-play-circle icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_videowall}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="videowallUiSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
+						<!-- WIM ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item ml-2"><a class="nav-link"
-								href="#wimUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-truck-moving icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
-								<ul class="collapse list-unstyled ml-3" id="wimUiSubmenu">
-								</ul></li>
 						</ui:fragment>
+						<!---->
 
 					</ul></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				<!-- USERS REGISTER INTERFACE -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToPanelUsers}" value=""
@@ -485,15 +684,26 @@
 						<i class="fas fa-users-cog icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_users_register}</span>
 					</h:commandLink></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+				<!-- USER CHANGE PASSWORD -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
 						action="#{navigationController.redirectToChangePassword}" value="">
-						<i class="fas fa-unlock-alt icon icon-sub"></i>
+						<i class="fas fa-unlock-alt icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_change_password}</span>
 					</h:commandLink></li>
+				<!---->
+
+				<!---->
 
 			</ul>
+			<!-- MENU LIST END -->
+
 		</h:form>
+		<!-- FORM END -->
 
 		<h:outputScript name="dashboard-submenus.js" library="js/dashboard" />
 

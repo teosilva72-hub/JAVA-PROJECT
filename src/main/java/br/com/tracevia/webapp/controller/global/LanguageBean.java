@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
 @ManagedBean(name = "language")
@@ -33,6 +34,14 @@ public class LanguageBean implements Serializable {
 	 private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");	
 	 
 	 private Locale locale = Locale.getDefault();
+	
+	 RoadConcessionaire roadConcessionaire;
+	 RoadConcessionaireDAO dao;
+		
+		
+		
+			
+
 	 
 	 InetAddress addr;
 		 
@@ -47,9 +56,36 @@ public class LanguageBean implements Serializable {
 	 @PostConstruct
 	 public void defaultLanguage() {
 		 
+		 roadConcessionaire = new RoadConcessionaire();
+		 
+			// GET LOCAL HOST ADDRESS
+			try {
+
+				addr = InetAddress.getLocalHost();
+
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				
+			//	String roadConcessionaire = dao.IdentifyRoadConcessionarie(addr.getHostAddress());
+								
+				//if(roadConcessionaire.equals())
+			
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			//System.out.println(addr.getHostAddress());
+			//System.out.println(addr.getHostName());
+		 
 	   Locale.setDefault(PORTUGUESE_BRAZILIAN);
 	   locale = Locale.getDefault(); 
 						 	 
+	   
+	   System.out.println(locale.getCountry());
 	 }
 			 
 	 public void English(ActionEvent event) {

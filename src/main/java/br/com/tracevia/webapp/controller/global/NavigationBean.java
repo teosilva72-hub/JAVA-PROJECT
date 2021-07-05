@@ -57,8 +57,6 @@ public class NavigationBean {
 		return navigation_page;
 	}
 
-
-
 	/* USER INTERFACE */
 
 	//DMS
@@ -309,14 +307,9 @@ public class NavigationBean {
 		navigation_page = "/sat/ccr_reports/ccr_all_classes.xhtml?faces-redirect=true";		
 
 		return navigation_page;
-	}
+	}	
 	
-	public String redirectToReportDAI() {
-
-		navigation_page = "/dai/dai.xhtml?faces-redirect=true";		
-
-		return navigation_page;
-	}
+	// ------------------------- OCR ----------------------------------
 	
 	public String redirectToReportOCR() {
 
@@ -331,9 +324,24 @@ public class NavigationBean {
 
 		return navigation_page;
 	}
+	
+	public String redirectToRealtimeDetailsOCR() {
+
+		navigation_page = "/ocr/ocr_realtime_details.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
 
 
+	// ------------------------- DAI ----------------------------------
+	
+	public String redirectToReportDAI() {
 
+		navigation_page = "/dai/dai.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
 	//******************* CCR REPORTS **************************** //
 
 	/* SAT REPORTS */

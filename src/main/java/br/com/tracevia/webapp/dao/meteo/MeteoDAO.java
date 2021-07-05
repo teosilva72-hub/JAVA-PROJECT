@@ -112,11 +112,10 @@ public class MeteoDAO {
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {						
 			
-					panel.setAmbient_temperature(rs.getDouble(1));	
-					panel.setVisibility(rs.getInt(2));
-					panel.setStatus(rs.getInt(3));
-					panel.setBattery(rs.getInt(4));
-					panel.setLine_volts(rs.getInt(5));
+					panel.setAmbient_temperature(rs.getDouble(1));					
+					panel.setStatus(rs.getInt(2));
+					panel.setBattery(rs.getInt(3));
+					panel.setLine_volts(rs.getInt(4));
 				
 				}
 				

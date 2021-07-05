@@ -20,7 +20,6 @@ public class Equipments {
 	private String estrada;	
 	private String cidade;	
 	private String km;
-	private String posicao;
 	private int linearPosX;
 	private int linearPosY;
 	private int mapPosX;
@@ -36,7 +35,7 @@ public class Equipments {
 
 	public Equipments(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
 			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
+			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
 			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
 		
 		this.equip_id = equip_id;
@@ -49,8 +48,7 @@ public class Equipments {
 		this.nome = nome;
 		this.estrada = estrada;
 		this.cidade = cidade;
-		this.km = km;
-		this.posicao = posicao;
+		this.km = km;	
 		this.linearPosX = linearPosX;
 		this.linearPosY = linearPosY;
 		this.mapPosX = mapPosX;
@@ -173,17 +171,6 @@ public class Equipments {
 	public void setKm(String km) {
 		this.km = km;
 	}
-
-
-	public String getPosicao() {
-		return posicao;
-	}
-
-
-	public void setPosicao(String posicao) {
-		this.posicao = posicao;
-	}
-
 
 	public int getLinearPosX() {
 		return linearPosX;
