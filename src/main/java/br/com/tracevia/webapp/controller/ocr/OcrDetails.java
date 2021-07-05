@@ -119,10 +119,12 @@ public class OcrDetails{
 
 		//method dao
 		try {
+			
 			OCR ocr1 = new OCR(); OCR ocr5 = new OCR(); OCR ocr9 = new OCR();
 			OCR ocr2 = new OCR(); OCR ocr6 = new OCR(); OCR ocr10 = new OCR();
 			OCR ocr3 = new OCR(); OCR ocr7 = new OCR(); 
 			OCR ocr4 = new OCR(); OCR ocr8 = new OCR();
+			
 			//var array
 			id = new String [20];
 			dateHour = new String[20];
@@ -130,6 +132,7 @@ public class OcrDetails{
 			plate = new String[20];
 			imageVei = new String[20];
 			imagePlate = new String[20];
+			
 			/////////////////////////////////////////////
 			ocr1 = dao.OCR1(); ocr2 = dao.OCR2();
 			ocr3 = dao.OCR3(); ocr4 = dao.OCR4();
@@ -260,86 +263,76 @@ public class OcrDetails{
 			String path = "C:\\teste\\";
 			imageVei[0] = "";
 			///////////////////////////////
-			String dt1 = ocr1.getDataHour();
-			dt1 = dt1.replaceAll("\\.","");
-			dt1 = dt1.replaceAll("-", "");
-			dt1 = dt1.replaceAll(":", "");			
-			dt1 = dt1.replaceAll(" ", "");
-			File Ocr1Vei = new File(path+ocr1.getCam()+"\\"+ocr1.getCam()+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
-			File ocr1Plate = new File(path+ocr1.getCam()+"\\Plate"+ocr1.getCam()+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
+			String dt1 = formatImageDate(ocr1.getDataHour());						
+			String subFolder1 = dt1.substring(0, 8);
+			String nameVeh1 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr1Vei = new File(path+nameVeh1+"\\"+subFolder1+"\\"+nameVeh1+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
+			File ocr1Plate = new File(path+nameVeh1+"\\"+subFolder1+"\\Plate"+nameVeh1+"_"+dt1+"_"+ocr1.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt2 = ocr2.getDataHour();
-			dt2 = dt2.replaceAll("\\.","");
-			dt2 = dt2.replaceAll("-", "");
-			dt2 = dt2.replaceAll(":", "");			
-			dt2 = dt2.replaceAll(" ", "");
-			File Ocr2Vei = new File(path+ocr2.getCam()+"\\"+ocr2.getCam()+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
-			File ocr2Plate = new File(path+ocr2.getCam()+"\\Plate"+ocr2.getCam()+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
+			String dt2 = formatImageDate(ocr2.getDataHour());						
+			String subFolder2 = dt2.substring(0, 8);
+			String nameVeh2 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr2Vei = new File(path+nameVeh2+"\\"+subFolder2+"\\"+nameVeh2+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
+			File ocr2Plate = new File(path+nameVeh2+"\\"+subFolder2+"\\Plate"+nameVeh2+"_"+dt2+"_"+ocr2.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt3 = ocr3.getDataHour();
-			dt3 = dt3.replaceAll("\\.","");
-			dt3 = dt3.replaceAll("-", "");
-			dt3 = dt3.replaceAll(":", "");			
-			dt3 = dt3.replaceAll(" ", "");
-			File Ocr3Vei = new File(path+ocr3.getCam()+"\\"+ocr3.getCam()+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
-			File ocr3Plate = new File(path+ocr3.getCam()+"\\Plate"+ocr3.getCam()+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
+			String dt3 = formatImageDate(ocr3.getDataHour());						
+			String subFolder3 = dt3.substring(0, 8);
+			String nameVeh3 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr3Vei = new File(path+nameVeh3+"\\"+subFolder3+"\\"+nameVeh3+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
+			File ocr3Plate = new File(path+nameVeh3+"\\"+subFolder3+"\\Plate"+nameVeh3+"_"+dt3+"_"+ocr3.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt4 = ocr4.getDataHour();
-			dt4 = dt4.replaceAll("\\.","");
-			dt4 = dt4.replaceAll("-", "");
-			dt4 = dt4.replaceAll(":", "");			
-			dt4 = dt4.replaceAll(" ", "");
-			File Ocr4Vei = new File(path+ocr4.getCam()+"\\"+ocr4.getCam()+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
-			File ocr4Plate = new File(path+ocr4.getCam()+"\\Plate"+ocr4.getCam()+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
+			String dt4 = formatImageDate(ocr4.getDataHour());						
+			String subFolder4 = dt4.substring(0, 8);
+			String nameVeh4 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr4Vei = new File(path+nameVeh4+"\\"+subFolder4+"\\"+nameVeh4+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
+			File ocr4Plate = new File(path+nameVeh4+"\\"+subFolder4+"\\Plate"+nameVeh4+"_"+dt4+"_"+ocr4.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt5 = ocr5.getDataHour();
-			dt5 = dt5.replaceAll("\\.","");
-			dt5 = dt5.replaceAll("-", "");
-			dt5 = dt5.replaceAll(":", "");			
-			dt5 = dt5.replaceAll(" ", "");
-			File Ocr5Vei = new File(path+ocr4.getCam()+"\\"+ocr5.getCam()+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
-			File ocr5Plate = new File(path+ocr4.getCam()+"\\Plate"+ocr5.getCam()+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
+			String dt5 = formatImageDate(ocr5.getDataHour());						
+			String subFolder5 = dt5.substring(0, 8);
+			String nameVeh5 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr5Vei = new File(path+nameVeh5+"\\"+subFolder5+"\\"+nameVeh5+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
+			File ocr5Plate = new File(path+nameVeh5+"\\"+subFolder5+"\\Plate"+nameVeh5+"_"+dt5+"_"+ocr5.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt6 = ocr6.getDataHour();
-			dt6 = dt6.replaceAll("\\.","");
-			dt6 = dt6.replaceAll("-", "");
-			dt6 = dt6.replaceAll(":", "");			
-			dt6 = dt6.replaceAll(" ", "");
-			File Ocr6Vei = new File(path+ocr6.getCam()+"\\"+ocr6.getCam()+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
-			File ocr6Plate = new File(path+ocr6.getCam()+"\\Plate"+ocr1.getCam()+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
+			String dt6 = formatImageDate(ocr6.getDataHour());						
+			String subFolder6 = dt6.substring(0, 8);
+			String nameVeh6 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr6Vei = new File(path+nameVeh6+"\\"+subFolder6+"\\"+nameVeh6+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
+			File ocr6Plate = new File(path+nameVeh6+"\\"+subFolder6+"\\Plate"+nameVeh6+"_"+dt6+"_"+ocr6.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt7 = ocr7.getDataHour();
-			dt7 = dt7.replaceAll("\\.","");
-			dt7 = dt7.replaceAll("-", "");
-			dt7 = dt7.replaceAll(":", "");			
-			dt7 = dt7.replaceAll(" ", "");
-			File Ocr7Vei = new File(path+ocr7.getCam()+"\\"+ocr7.getCam()+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
-			File ocr7Plate = new File(path+ocr7.getCam()+"\\Plate"+ocr7.getCam()+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
+			String dt7 = formatImageDate(ocr7.getDataHour());						
+			String subFolder7 = dt7.substring(0, 8);
+			String nameVeh7 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr7Vei = new File(path+nameVeh7+"\\"+subFolder7+"\\"+nameVeh7+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
+			File ocr7Plate = new File(path+nameVeh7+"\\"+subFolder7+"\\Plate"+nameVeh7+"_"+dt7+"_"+ocr7.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt8 = ocr8.getDataHour();
-			dt8 = dt8.replaceAll("\\.","");
-			dt8 = dt8.replaceAll("-", "");
-			dt6 = dt6.replaceAll(":", "");			
-			dt6 = dt6.replaceAll(" ", "");
-			File Ocr8Vei = new File(path+ocr6.getCam()+"\\"+ocr8.getCam()+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
-			File ocr8Plate = new File(path+ocr6.getCam()+"\\Plate"+ocr8.getCam()+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
+			String dt8 = formatImageDate(ocr8.getDataHour());						
+			String subFolder8 = dt4.substring(0, 8);
+			String nameVeh8 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr8Vei = new File(path+nameVeh8+"\\"+subFolder8+"\\"+nameVeh8+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
+			File ocr8Plate = new File(path+nameVeh8+"\\"+subFolder8+"\\Plate"+nameVeh8+"_"+dt8+"_"+ocr8.getPlaca()+".jpg");
 			///////////////////////////////
-			String dt9 = ocr9.getDataHour();
-			dt8 = dt8.replaceAll("\\.","");
-			dt8 = dt8.replaceAll("-", "");
-			dt6 = dt6.replaceAll(":", "");			
-			dt6 = dt6.replaceAll(" ", "");
-			File Ocr9Vei = new File(path+ocr9.getCam()+"\\"+ocr9.getCam()+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
-			File ocr9Plate = new File(path+ocr9.getCam()+"\\Plate"+ocr9.getCam()+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
+			String dt9 = formatImageDate(ocr9.getDataHour());						
+			String subFolder9 = dt9.substring(0, 8);
+			String nameVeh9 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr9Vei = new File(path+nameVeh9+"\\"+subFolder9+"\\"+nameVeh9+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
+			File ocr9Plate = new File(path+nameVeh9+"\\"+subFolder9+"\\Plate"+nameVeh9+"_"+dt9+"_"+ocr9.getPlaca()+".jpg");
 			///////////////////////////////
 			///////////////////////////////
-			String dt10 = ocr10.getDataHour();
-			dt10 = dt10.replaceAll("\\.","");
-			dt10 = dt10.replaceAll("-", "");
-			dt10 = dt10.replaceAll(":", "");			
-			dt10 = dt10.replaceAll(" ", "");
-			File Ocr10Vei = new File(path+ocr10.getCam()+"\\"+ocr10.getCam()+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
-			File ocr10Plate = new File(path+ocr10.getCam()+"\\Plate"+ocr10.getCam()+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
+			String dt10 = formatImageDate(ocr10.getDataHour());						
+			String subFolder10 = dt10.substring(0, 8);
+			String nameVeh10 = data.getCam().replaceAll(" ", "_");	
+			
+			File Ocr10Vei = new File(path+nameVeh10+"\\"+subFolder10+"\\"+nameVeh10+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
+			File ocr10Plate = new File(path+nameVeh10+"\\"+subFolder10+"\\Plate"+nameVeh10+"_"+dt10+"_"+ocr10.getPlaca()+".jpg");
 			///////////////////////////////
 			///////////////////////////////
 			if(Ocr1Vei.exists() && ocr1Plate.exists()) {
@@ -453,4 +446,15 @@ public class OcrDetails{
 		System.out.println("atualizando");
 		RequestContext.getCurrentInstance().execute("updateDetails()");
 	}
+	
+	public String formatImageDate(String dt){
+		
+		dt = dt.replaceAll("\\.","");
+		dt = dt.replaceAll("-", "");
+		dt = dt.replaceAll(":", "");			
+		dt = dt.replaceAll(" ", "");
+		
+		return dt;
+		
+		}
 }
