@@ -90,7 +90,7 @@ public class OcrDetails{
 			else id[1] = "Vazio";	
 			if(ocr2.getId() != null)id[2] = ocr2.getId();
 			else id[2] = "Vazio";
-			if(ocr3.getId() != null)id[3] = ocr4.getId();
+			if(ocr3.getId() != null)id[3] = ocr3.getId();
 			else id[3] = "Vazio";
 			if(ocr4.getId() != null)id[4] = ocr4.getId();
 			else id[4] = "Vazio";
