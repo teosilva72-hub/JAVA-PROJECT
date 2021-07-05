@@ -573,7 +573,7 @@
                     <c:forEach items="#{dmsMapsView.dmsList}" var="item" varStatus="pmvLoop">
                       <div class="equip-info-display">
                         <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
+                          <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
                           <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
                             &nbsp;&nbsp;#{item.km}</label>
                         </div>
@@ -597,7 +597,7 @@
                     <c:forEach items="#{sosMapsView.sosList}" var="item" varStatus="sosLoop">
                       <div class="equip-info-display">
                         <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
+                          <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
                           <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
                             &nbsp;&nbsp;#{item.km}</label>
                         </div>

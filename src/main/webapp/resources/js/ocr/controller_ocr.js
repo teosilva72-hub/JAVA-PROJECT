@@ -103,8 +103,12 @@ function setPdf(){
 	$('#modalPdf').modal('hide')
 	disabledBtn()
 }
+function updateDetails(){
+	$('[id$=updateDetails]').click();
+	preventDefault();
+}
 $(document).ready(function () {
 	disabledBtn()
 	filtro()
-	
+	updateDetails()
 });

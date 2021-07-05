@@ -7,7 +7,68 @@ body {
 	width: 100%;
 	height: 100%;
 }
-.imgVei{
-	width: 160px;
-	height: 100px;
+
+.imgVei {
+	width: 115px;
+	height: 69px;
+	margin-top: 6px;
+	margin-left: -15px;
+	-webkit-box-shadow: 12px 10px 8px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 12px 10px 8px rgba(50, 50, 50, 0.77);
+	box-shadow: 12px 10px 8px rgba(50, 50, 50, 0.77);
+}
+
+.imgPlaca {
+	width: 100px;
+	height: 69px;
+	margin-top: 6px;
+	-webkit-box-shadow: 12px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 12px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 12px -7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.linha {
+	margin-left: -21px;
+	margin-right: -27px;
+}
+
+.l {
+	margin-top: 7px;
+	background: #343a40;
+	font-size: 8pt;
+	color: white;
+	font-weight: 999;
+	background: #343a40;
+	margin-left: -7px;
+	margin-right: -15px;
+}
+
+.ocr {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	background: #6c757d;
+	color: white;
+	font-weight: 999;
+	font-size: 9pt;
+	height: 85px;
+	width: 18px;
+}
+
+.y {
+	height: 95px;
+	margin-top: 10px;
+	
+}
+
+.yy {
+	margin-top: 5px;
+}
+#ocr1, #ocr3, #ocr5, #ocr7, #ocr9{
+	margin-left: -50px;
+}
+#ocr2, #ocr4, #ocr6, #ocr8, #ocr10{
+	margin-left: 50px;
+}
+.teste{
+	color: red;
 }

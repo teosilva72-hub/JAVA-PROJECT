@@ -10,14 +10,17 @@ const connectDMS = async (request, debug) => {
 
 const changeStatus = response => {
 	let tableStyle = $(`#dms${response.id} .tableStyle`)
+	let sidebar = $(`#statuspmv${response.id}`)
 	
 	switch (response.statusId) {
 		case 0:
 			tableStyle.removeClass('on')
+			sidebar.css("color", "#FF0000")
 			break;
 
 		case 1:
 			tableStyle.addClass('on')
+			sidebar.css("color", "#00FF00")
 			break;
 	
 		default:
