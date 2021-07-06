@@ -521,26 +521,22 @@
 
 						<!-- WIM REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-						   <li class="nav-item"><a class="nav-link" href="#wimUiSubmenu"
-						     data-toggle="collapse" aria-expanded="false"><i class="fas fa-weight icon-sub"></i>
-							   <span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
+							<li class="nav-item"><a class="nav-link"
+								href="#wimUiSubmenu" data-toggle="collapse"
+								aria-expanded="false"><i class="fas fa-weight icon-sub"></i>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
 
-						        <ul class="collapse list-unstyled ml-3" id="wimUiSubmenu">
-							
-							   <li class="nav-item"><h:commandLink class="nav-link"
-								action="#{navigationController.wimReport}" value="">
-										<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-									<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_wim_sub_menu_report}</span>
-								</h:commandLink></li>
-								
-								</ul> <!---->
-								</li> <!---->
-								
-							<!---->
-						</ui:fragment>
-						<!---->
+								<ul class="collapse list-unstyled ml-3" id="wimUiSubmenu"> <!-- WIM REPORT SUBMENU ITEM -->
 
-					</ul> <!----></li>
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.wimReport}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_wim_sub_menu_report}</span>
+										</h:commandLink></li>
+								</ul></li> <!---->
+							    <!---->							
+						</ui:fragment><!---->
+					</ul></li> <!---->
 				<!---->
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
