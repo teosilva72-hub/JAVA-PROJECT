@@ -145,9 +145,9 @@ const connectSOS = async function(request, debug) {
 	
 }
 
-const initSOS = async () => {
-	let response = await connectSOS('GetAllEquipmentStates', true)
-	let alarms = await connectSOS('GetAllActiveAlarms')
+const initSOS = async debug => {
+	let response = await connectSOS('GetAllEquipmentStates', debug)
+	let alarms = await connectSOS('GetAllActiveAlarms', debug)
 	window.sosEquip = {};
 
 	for (const r of response) {
@@ -158,7 +158,7 @@ const initSOS = async () => {
 	for (const a of alarms)
 		signaling(a)
 
-	consume({debug: true})
+	consume({debug: debug})
 }
 
 window.initSOS = initSOS;

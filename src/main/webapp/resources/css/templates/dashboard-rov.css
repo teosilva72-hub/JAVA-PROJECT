@@ -569,6 +569,16 @@ footer {
   bottom: 0;
 }
 
+.toast-start-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.left-0 {
+	left: 0;
+}
+
 /* display .overlay when it has the .active class */
 .overlay.active {
   display: block;
