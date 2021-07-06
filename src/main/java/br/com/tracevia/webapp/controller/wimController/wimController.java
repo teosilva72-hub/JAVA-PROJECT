@@ -1,6 +1,10 @@
 package br.com.tracevia.webapp.controller.wimController;
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
@@ -9,17 +13,37 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
-import br.com.tracevia.webapp.controller.occ.OccurrencesBean;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.wim.WimData;
 
 @ManagedBean(name="wimController")
 @ViewScoped
 public class wimController {
+	
+	private int axl1W, axl2W, axl3W, axl4W, axl5W,
+	axl6W, axl7W, axl8W, axl9W, axl1D, axl2D, axl3D,
+	axl4D, axl5D,
+	axl6D, axl7D, axl8D, axl9D;
+	
+	String noImage, noImageFolder, silFolder, vehiclesFolder;	
+	
+	private String rateTxt;
+				
+	private int serialNumber;
+	
+	int pbtTotal;
+	
+	private int rate;
+	
 	private int[] axes;
+	
+	private String[] listarFile;
+	
+	private WIMDAO dao = new WIMDAO();
+	private boolean color;
 
+	
 	public int[] getAxes() {
 		return axes;
 	}
@@ -55,7 +79,6 @@ public class wimController {
 	public void setDstAxes(int[] dstAxes) {
 		this.dstAxes = dstAxes;
 	}
-	private int rate;
 
 	public int getRate() {
 		return rate;
@@ -63,7 +86,6 @@ public class wimController {
 	public void setRate(int rate) {
 		this.rate = rate;
 	}
-	private String rateTxt;
 
 	public String getRateTxt() {
 		return rateTxt;
@@ -71,17 +93,14 @@ public class wimController {
 	public void setRateTxt(String rateTxt) {
 		this.rateTxt = rateTxt;
 	}
-	private String[] listarFile;
-
+	
 	public String[] getListarFile() {
 		return listarFile;
 	}
 	public void setListarFile(String[] listarFile) {
 		this.listarFile = listarFile;
 	}
-	private int serialNumber;
-
-
+	
 	public int getSerialNumber() {
 		return serialNumber;
 	}
@@ -114,7 +133,7 @@ public class wimController {
 	public void setSpeed(String speed) {
 		this.speed = speed;
 	}
-	int pbtTotal;
+	
 	public int getPbtTotal() {
 		return pbtTotal;
 	}
@@ -127,10 +146,6 @@ public class wimController {
 	public void setSize(String size) {
 		this.size = size;
 	}
-	private int axl1W, axl2W, axl3W, axl4W, axl5W,
-	axl6W, axl7W, axl8W, axl9W, axl1D, axl2D, axl3D,
-	axl4D, axl5D,
-	axl6D, axl7D, axl8D, axl9D;
 
 	public int getAxl1W() {
 		return axl1W;
@@ -239,9 +254,7 @@ public class wimController {
 	}
 	public void setAxl9D(int axl9d) {
 		axl9D = axl9d;
-	}
-	private WIMDAO dao = new WIMDAO();
-	private boolean color;
+	}	
 
 	public boolean isColor() {
 		return color;
@@ -266,7 +279,7 @@ public class wimController {
 	public void setPathImg(String[] pathImg) {
 		this.pathImg = pathImg;
 	}
-	private String img1, img2;
+	private String img1 = "", img2 = "";
 	
 	public String getImg1() {
 		return img1;
@@ -301,21 +314,38 @@ public class wimController {
 	public void setClasses(List<SelectItem> classes) {
 		this.classes = classes;
 	}
+	
 	@PostConstruct
 	public void initalize(){
+		
 		// initalize wim realtime
 		colorInitial();
 		rate();
 		updateView();
+		
 		try {
-			dados();
 			
-			listFiles();
+			dados();
+							
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
+		
+		vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
+		
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+			
+	    noImage = noImageFolder + "no-image.jpg";
+		
+		img1 = getImagePath(noImage);
+		img2 = getImagePath(noImage);
+		silueta = getImagePath(noImage);
+				
 	}
+	
 	public void onibus() {
 		try {
 			String data = "2021-01-15 15:01:51", classe = "2A";
@@ -325,9 +355,11 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7900, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/onibus1.jpg";
-			img2 = "/teste/onibus2.jpeg";
-			silueta = "/teste/sil/onibusE2.jpg";
+			
+			img1 = getImagePath(vehiclesFolder+"onibus1.jpg");
+			img2 = getImagePath(vehiclesFolder+"onibus2.jpg");
+			silueta = getImagePath(silFolder+"onibusE2.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -343,9 +375,11 @@ public class wimController {
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 3500, speed= 30;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/onibus1-2.jpg";
-			img2 = "/teste/onibus2-1.jpg";
-			silueta = "/teste/sil/onibusE3.jpg";
+			
+			img1 = getImagePath(vehiclesFolder+"onibus1-2.jpg");
+			img2 = getImagePath(vehiclesFolder+"onibus2-1.jpg");
+			silueta = getImagePath(silFolder+"onibusE3.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -359,11 +393,14 @@ public class wimController {
 					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 180, axl3D= 0, axl4D= 0, axl5D= 0,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 3500, speed= 30;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/carro1.jpeg";
-			img2 = "/teste/carro2.jpg";
-			silueta = "/teste/sil/10.png";
+			
+			img1 = getImagePath(vehiclesFolder+"carro1.jpg");
+			img2 = getImagePath(vehiclesFolder+"carro2.jpg");
+			silueta = getImagePath(silFolder+"10.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -377,11 +414,14 @@ public class wimController {
 					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 298, axl3D= 0, axl4D= 0, axl5D= 0,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7350, speed= 45;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/e2-1.jpg";
-			img2 = "/teste/e2-2.jpg";
-			silueta = "/teste/sil/2.png";
+			
+			img1 = getImagePath(vehiclesFolder+"e2-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"e2-2.jpg");
+			silueta = getImagePath(silFolder+"2.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -395,11 +435,14 @@ public class wimController {
 					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 214, axl3D= 228, axl4D= 0, axl5D= 0,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 16000, speed= 47;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/eixo3-1.jpg";
-			img2 = "/teste/eixo3-1.jpg";
-			silueta = "/teste/sil/3.png";
+			
+			img1 = getImagePath(vehiclesFolder+"eixo3-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"eixo3-2.jpg");
+			silueta = getImagePath(silFolder+"3.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -413,11 +456,14 @@ public class wimController {
 					axl4W= 228, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 202, axl3D= 205, axl4D= 218, axl5D= 0,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 21000, speed= 28;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/caminhao4-1.jpg";
-			img2 = "/teste/caminhao4-2.jpg";
-			silueta = "/teste/sil/4.png";
+			
+			img1 = getImagePath(vehiclesFolder+"caminhao4-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"caminhao4-2.jpg");
+			silueta = getImagePath(silFolder+"4.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -431,11 +477,13 @@ public class wimController {
 					axl4W= 218, axl5W= 238, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 202, axl3D= 208, axl4D= 220, axl5D= 243,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 31500, speed= 31;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/caminhao5-1.jpg";
-			img2 = "/teste/caminhao5-2.jpg";
-			silueta = "/teste/sil/5.png";
+			
+			img1 = getImagePath(vehiclesFolder+"caminhao5-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"caminhao5-1.jpg");
+			silueta = getImagePath(silFolder+"5.jpg");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -449,11 +497,14 @@ public class wimController {
 					axl4W= 228, axl5W= 241, axl6W= 271, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 168, axl3D= 197, axl4D= 219, axl5D= 236,
 					axl6D= 266, axl7D= 0, axl8D= 0, axl9D= 0, gross= 38900, speed= 20;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/caminhao6-1.jpg";
-			img2 = "/teste/caminhao6-1.jpg";
-			silueta = "/teste/sil/e6.jpg";
+			
+			img1 = getImagePath(vehiclesFolder+"caminhao5-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"caminhao5-2.jpg");
+			silueta = getImagePath(silFolder+"e6.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -467,11 +518,14 @@ public class wimController {
 					axl4W= 278, axl5W= 280, axl6W= 291, axl7W= 300, axl8W= 311,
 					axl9W= 0, axl2D= 200, axl3D= 240, axl4D= 262, axl5D= 271,
 					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 0, gross= 51200, speed= 35;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/caminhao7-1.jpg";
-			img2 = "/teste/caminhao7-2.jpg";
-			silueta = "/teste/sil/e7.jpg";
+			
+			img1 = getImagePath(vehiclesFolder+"caminhao7-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"caminhao7-1.jpg");
+			silueta = getImagePath(silFolder+"e7.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -487,83 +541,66 @@ public class wimController {
 					axl6D= 282, axl7D= 290, axl8D= 301, axl9D= 338, gross= 74400, speed= 20;
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
-			img1 = "/teste/caminhao9-1.jpg";
-			img2 = "/teste/caminhao9-2.jpeg";
-			silueta = "/teste/sil/9.png";
+			
+			img1 = getImagePath(vehiclesFolder+"caminhao9-1.jpg");
+			img2 = getImagePath(vehiclesFolder+"caminhao9-2.jpg");
+			silueta = getImagePath(vehiclesFolder+"9.jpg");
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		initalize();
 	}
-	public String[] listFiles() throws Exception{
-		int content = 0;
-		File arquivos[];
-		//local do armazenamento do arquivo
-		File directory = new File("C:\\teste\\cars\\");
-		//listar arquivos
-		arquivos = directory.listFiles();
-		listarFile = new String[arquivos.length];
-		//lopping para pegar arquivos dentro do diretorio
-		while (content != arquivos.length){
-			//pega arquivo pelo nome
-			listarFile[content] = arquivos[content].getName();
-			content++;
-		} 
-		String imagePath = "/teste/cars/";
-		pathImg = new String [2];
-		pathImg[0] = imagePath+listarFile[0];
-		pathImg[1] = imagePath+listarFile[1];
-		//passando valor do método para a variável
-		return listarFile;
-	}
+
 	public String siluetaRealtime() throws Exception{
 		String classe = dao.classe();
 		if(classe != "") {
 			if(classe.equals("1")) {
-				String img = "10.png";
-				silueta = "/teste/sil/" + img;
+				String img = "car.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("2")) {
-				String img = "2.png";
-				silueta = "/teste/sil/" + img;
+				String img = "2.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("4")) {
-				String img = "3.png";
-				silueta = "/teste/sil/" + img;
+				String img = "3.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("6")) {
-				String img = "4.png";
-				silueta = "/teste/sil/" + img;
+				String img = "4.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("7")) {
-				String img = "5.png";
-				silueta = "/teste/sil/" + img;
+				String img = "5.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("8")) {
 				String img = "6.png";
-				silueta = "/teste/sil/" + img;
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("11")) {
-				String img = "8.png";
-				silueta = "/teste/sil/" + img;
+				String img = "8.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("E9")) {
-				String img = "9.png";
-				silueta = "/teste/sil/" + img;
+				String img = "9.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("10N")) {
-				String img = "9.png";
-				silueta = "/teste/sil/" + img;
+				String img = "9.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("2A")) {
 				String img = "onibusE2.jpg";
-				silueta = "/teste/sil/" + img;
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("4A")) {
 				String img = "onibusE3.jpg";
-				silueta = "/teste/sil/" + img;
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("9")) {
-				String img = "9.png";
-				silueta = "/teste/sil/" + img;
+				String img = "9.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("3")) {
-				String img = "9.png";
-				silueta = "/sil/" + img;
+				String img = "9.jpg";
+				silueta = getImagePath(silFolder + img);
 			}else if(classe.equals("5")) {
-				String img = "9.png";
-				silueta = "/teste/sil/" + img;
+				String img = "9.jpg";
+				silueta = getImagePath(silueta = silFolder + img);
 			}
 		}
+		
 		return silueta;
 	}
 	
@@ -571,7 +608,7 @@ public class wimController {
 	public void updateView() {
 		try {
 
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(4);
 
 		}catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -579,9 +616,11 @@ public class wimController {
 		}
 
 		try {
+			
 			dados();
 			rate();
 			siluetaRealtime();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -783,6 +822,7 @@ public class wimController {
 			axl7D = dao.axl7D();
 			axl8D = dao.axl8D();
 			axl9D = dao.axl9D();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -819,5 +859,54 @@ public class wimController {
 			e.printStackTrace();
 		}
 	}
+	
+	  public String getImagePath(String image) {
+			
+			try {
+
+				Path path = Paths.get(image);								
+				  byte[] file = Files.readAllBytes(path);
+				  return Base64.getEncoder().encodeToString(file);
+				  
+			} catch (IOException e) {											
+				return "";
+			}
+
+		}
+	  
+	  public void initializeVeh() {
+		  
+		  setSerialNumber(1);
+		  setDataHour("2021-01-01 00:00:00");
+		  setClasse("1");
+		  setEixo("2");
+		  setSpeed("60");
+		  setPbtTotal(1000);
+		  setSize("500");
+		  
+		  weight = new int[10];
+		  weight [1] = 0;
+		  weight [2] = 0;
+		  weight [3] = 0;
+		  weight [4] = 0;
+		  weight [5] = 0;
+		  weight [6] = 0;
+		  weight [7] = 0;
+		  weight [8] = 0;
+		  weight [9] = 0;
+		  
+		 //distancia entre os eixos
+		  dstAxes = new int[10];
+		  dstAxes [2] = 0;
+		  dstAxes [3] = 0;
+		  dstAxes [4] = 0;
+		  dstAxes [5] = 0;
+		  dstAxes [6] = 0;
+		  dstAxes [7] = 0;
+		  dstAxes [8] = 0;
+	      dstAxes [9] = 0;
+		  
+		  
+	  }
 
 }

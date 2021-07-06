@@ -230,8 +230,8 @@ public class OcrReport{
 		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\"; 
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
-		imageVeh = noImageFolder + "no-image.png";
-		imagePlt = noImageFolder + "no-image.png";
+		imageVeh = noImageFolder + "no-image.jpg";
+		imagePlt = noImageFolder + "no-image.jpg";
 		
 		horas = new ArrayList<SelectItem>();
 		minutos = new ArrayList<SelectItem>();
@@ -351,12 +351,12 @@ public class OcrReport{
 			if(f.exists()) 						
 				imageVeh = f.getPath();
 			
-			else imageVeh= noImageFolder + "no-image.png";
+			else imageVeh= noImageFolder + "no-image.jpg";
 
 			if(g.exists())	
 				imagePlt = g.getPath();
 
-			else imagePlt = noImageFolder + "no-image.png";							
+			else imagePlt = noImageFolder + "no-image.jpg";							
 
 
 		} catch (Exception e) {

@@ -82,8 +82,8 @@ public class OcrBean{
 			
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
-		imageVeh = noImageFolder + "no-image.png";
-		imagePlt = noImageFolder + "no-image.png";
+		imageVeh = noImageFolder + "no-image.jpg";
+		imagePlt = noImageFolder + "no-image.jpg";
 		
 		RequestContext.getCurrentInstance().execute("filtro()");
 		
