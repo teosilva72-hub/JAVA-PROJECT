@@ -14,6 +14,7 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.wim.WimData;
 
 @ManagedBean(name="wimController")
@@ -30,6 +31,8 @@ public class wimController {
 
 	private List<SelectItem> minutos, horas, classes;
 	
+	DateTimeApplication dta;
+	
 	String noImage;	
 	
 	String silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
@@ -37,6 +40,8 @@ public class wimController {
 	String vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
 	
 	String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+	
+	String[] axlesView;
 		
 	public WimData getData() {
 		return data;
@@ -89,6 +94,14 @@ public class wimController {
 	public List<SelectItem> getClasses() {
 		return classes;
 	}
+	
+	public String[] getAxlesView() {
+		return axlesView;
+	}
+
+	public void setAxlesView(String[] axlesView) {
+		this.axlesView = axlesView;
+	}
 
 	@PostConstruct
 	public void initalize(){
@@ -100,6 +113,11 @@ public class wimController {
 		//colorInitial();
 		//rate();
 		updateView();
+		
+		axlesView = new String[9];
+		
+		for(int x = 0; x < 9; x++)
+			axlesView[x] = String.valueOf(x + 1);
 		
 		try {
 			
@@ -281,7 +299,9 @@ public class wimController {
 		initalize();
 	}
 	public void e7() {
+		
 		try {
+			
 			String data = "2021-02-15 18:22:01", classe = "11";
 			int axlNumber = 9, axl1W = 174, axl2W = 220, axl3W= 250,
 					axl4W= 278, axl5W= 280, axl6W= 291, axl7W= 300, axl8W= 311,
@@ -563,78 +583,8 @@ public class wimController {
 			e.printStackTrace();
 		}
 	}*/
-	//dados
-	/*public void dados() {
-		try {
-			
-			
-			img1 = getImagePath(noImage);
-			img2 = getImagePath(noImage);
-		    silueta = getImagePath(noImage);
-			
-			//Viewing vehicle information
-			/*serialNumber = dao.serialNumber();
-			dataHour = dao.dateHour();
-			classe = dao.classe();
-			eixo = dao.eixo();
-			speed = dao.speed();
-			pbtTotal = Integer.parseInt(dao.pbtTotal());
-			//passando valor para Weight and Distance
-			axl1W = dao.axl1W();
-			axl2W = dao.axl2W();
-			axl3W = dao.axl3W();
-			axl4W = dao.axl4W();
-			axl5W = dao.axl5W();
-			axl6W = dao.axl6W();
-			axl7W = dao.axl7W();
-			axl8W = dao.axl8W();
-			axl9W = dao.axl9W();
-			axl2D = dao.axl2D();
-			axl3D = dao.axl3D();
-			axl4D = dao.axl4D();
-			axl5D = dao.axl5D();
-			axl6D = dao.axl6D();
-			axl7D = dao.axl7D();
-			axl8D = dao.axl8D();
-			axl9D = dao.axl9D();
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//array table  Weight and Distance
-		//peso
-		weight = new int[10];
-		weight [1] = axl1W;
-		weight [2] = axl2W;
-		weight [3] = axl3W;
-		weight [4] = axl4W;
-		weight [5] = axl5W;
-		weight [6] = axl6W;
-		weight [7] = axl7W;
-		weight [8] = axl8W;
-		weight [9] = axl9W;
-		//distancia entre os eixos
-		dstAxes = new int[10];
-		dstAxes [2] = axl2D;
-		dstAxes [3] = axl3D;
-		dstAxes [4] = axl4D;
-		dstAxes [5] = axl5D;
-		dstAxes [6] = axl6D;
-		dstAxes [7] = axl7D;
-		dstAxes [8] = axl8D;
-		dstAxes [9] = axl9D;
-		/*type = new int[8];
-		type [1] = "";
-		type [2] = "";
-		try {
-			siluetaRealtime();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
 	
+	  // DADOS	
 	  public String getImagePath(String image) {
 			
 			try {
@@ -655,8 +605,8 @@ public class wimController {
 			
 		  img1 = getImagePath(noImage);
 		  img2 = getImagePath(noImage);
-		  silueta = getImagePath(noImage);	      
-					  
+		  silueta = getImagePath(noImage);	     
+				  		  
 		  data.setSerialNumber(" - ");
 		  data.setDatetime(" - ");
 		  data.setClasse(" - ");
@@ -665,7 +615,7 @@ public class wimController {
 		  data.setPbtTotal(" - ");
 		  data.setSize(" - ");
 		  		  
-		  String[] weight = new String[10];
+		  String[] weight = new String[9];
 			weight [0] = "0";
 			weight [1] = "0";
 			weight [2] = "0";
@@ -679,7 +629,7 @@ public class wimController {
 			data.setAxlWeight(weight);
 			
 			//distancia entre os eixos
-			String[] dstAxes = new String[10];
+			String[] dstAxes = new String[9];
 			dstAxes [0] = "0";
 			dstAxes [1] = "0";
 			dstAxes [2] = "0";
@@ -693,7 +643,7 @@ public class wimController {
 			data.setAxlDist(dstAxes);
 			
 			//distancia entre os eixos
-			String[] typeAxes = new String[10];
+			String[] typeAxes = new String[9];
 			typeAxes [0] = " - ";
 			typeAxes [1] = " - ";
 			typeAxes [2] = " - ";
@@ -704,15 +654,618 @@ public class wimController {
 			typeAxes [7] = " - ";
 			typeAxes [8] = " - ";
 
-			data.setAxlType(dstAxes);
+			data.setAxlType(typeAxes);
 		  
 	  }
 	  
-	  
-	  public void randVehicle() {
+	  //------------------------------------------------------------------------
+	
+	  public void generateCar() {
 		  
-		  int classe = (int)(Math.random() * 9) + 1;
+	   DateTimeApplication dta = new DateTimeApplication();
+	   
+	      boolean saved = false;
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_car.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_car.jpg");
+		  silueta = getImagePath(silFolder+"car.jpg");
+					      			
+		  data.setImage("WIM_car.jpg");
+		  data.setImagePlate("Plate_WIM_car.jpg");
+		  data.setImageSil("car.jpg");
+		  data.setId(1000);		
+		  data.setSerialNumber("1000");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("1");
+		  data.setAxlNumber("2");
+		  data.setSpeed("60");
+		  data.setPbtTotal("1000");
+		  data.setSize("700");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "400";
+			weight [1] = "600";
+			weight [2] = "0";
+			weight [3] = "0";
+			weight [4] = "0";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "330";
+			dstAxes [1] = "0";
+			dstAxes [2] = "0";
+			dstAxes [3] = "0";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " S ";
+			typeAxes [2] = " - ";
+			typeAxes [3] = " - ";
+			typeAxes [4] = " - ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			dao = new WIMDAO();			
+					
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}		  
+	  }
+	  	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateBus2() {
+		  
+		    boolean saved = false;
+		  
+	      DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_bus2.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_bus2.jpg");
+		  silueta = getImagePath(silFolder+"bus2.jpg");
+					      		
+		  data.setImage("WIM_bus2.jpg");
+		  data.setImagePlate("Plate_WIM_bus2.jpg");
+		  data.setImageSil("bus2.jpg");
+		  data.setId(1000);	
+		  data.setSerialNumber("1001");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("2A");
+		  data.setAxlNumber("2");
+		  data.setSpeed("75");
+		  data.setPbtTotal("7000");
+		  data.setSize("1000");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "2500";
+			weight [1] = "4500";
+			weight [2] = "0";
+			weight [3] = "0";
+			weight [4] = "0";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "600";
+			dstAxes [1] = "0";
+			dstAxes [2] = "0";
+			dstAxes [3] = "0";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " S ";
+			typeAxes [2] = " - ";
+			typeAxes [3] = " - ";
+			typeAxes [4] = " - ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}		  
 		  
 	  }
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck2() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck2.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck2.jpg");
+		  silueta = getImagePath(silFolder+"2.jpg");
+					   
+		  data.setImage("WIM_trck2.jpg");
+		  data.setImagePlate("Plate_WIM_trck2.jpg");
+		  data.setImageSil("2.jpg");
+		  data.setId(1000);	
+		  data.setSerialNumber("1002");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("2");
+		  data.setAxlNumber("2");
+		  data.setSpeed("90");
+		  data.setPbtTotal("4000");
+		  data.setSize("1200");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "1500";
+			weight [1] = "2500";
+			weight [2] = "0";
+			weight [3] = "0";
+			weight [4] = "0";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "500";
+			dstAxes [1] = "0";
+			dstAxes [2] = "0";
+			dstAxes [3] = "0";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " S ";
+			typeAxes [2] = " - ";
+			typeAxes [3] = " - ";
+			typeAxes [4] = " - ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}		  
+		  
+	  }
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck3() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck3.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck3.jpg");
+		  silueta = getImagePath(silFolder+"3.jpg");					      				
+		   
+	      data.setImage("WIM_trck3.jpg");
+	      data.setImagePlate("Plate_WIM_trck3.jpg");
+	      data.setImageSil("3.jpg");
+	      data.setId(1000);	
+		  data.setSerialNumber("1003");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("3");
+		  data.setAxlNumber("3");
+		  data.setSpeed("75");
+		  data.setPbtTotal("7000");
+		  data.setSize("1500");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "1500";
+			weight [1] = "2500";
+			weight [2] = "2500";
+			weight [3] = "0";
+			weight [4] = "0";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "500";
+			dstAxes [1] = "150";
+			dstAxes [2] = "0";
+			dstAxes [3] = "0";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " D ";
+			typeAxes [2] = " D ";
+			typeAxes [3] = " - ";
+			typeAxes [4] = " - ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}			  
+	     }
+	  
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck5() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck5.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck5.jpg");
+		  silueta = getImagePath(silFolder+"5.jpg");
+					     
+		  data.setImage("WIM_trck5.jpg");
+	      data.setImagePlate("Plate_WIM_trck5.jpg");
+	      data.setImageSil("5.jpg");
+		  data.setSerialNumber("1004");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("3");
+		  data.setAxlNumber("3");
+		  data.setSpeed("75");
+		  data.setPbtTotal("37000");
+		  data.setSize("7000");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "6000";
+			weight [1] = "8000";
+			weight [2] = "7000";
+			weight [3] = "6000";
+			weight [4] = "10000";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "240";
+			dstAxes [1] = "150";
+			dstAxes [2] = "240";
+			dstAxes [3] = "150";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " D ";
+			typeAxes [2] = " D ";
+			typeAxes [3] = " D ";
+			typeAxes [4] = " D ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}	  
+	     }
+	  
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck6() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck6.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck6.jpg");
+		  silueta = getImagePath(silFolder+"6.jpg");
+					      	
+		  data.setImage("WIM_trck6.jpg");
+	      data.setImagePlate("Plate_WIM_trck6.jpg");
+	      data.setImageSil("6.jpg");
+		  data.setSerialNumber("1005");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("8");
+		  data.setAxlNumber("6");
+		  data.setSpeed("75");
+		  data.setPbtTotal("48000");
+		  data.setSize("8000");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "6000";
+			weight [1] = "8000";
+			weight [2] = "8000";
+			weight [3] = "6000";
+			weight [4] = "10000";
+			weight [5] = "10000";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "240";
+			dstAxes [1] = "150";
+			dstAxes [2] = "240";
+			dstAxes [3] = "100";
+			dstAxes [4] = "100";
+			dstAxes [5] = "100";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " D ";
+			typeAxes [2] = " D ";
+			typeAxes [3] = " D ";
+			typeAxes [4] = " D ";
+			typeAxes [5] = " D ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}	  
+	     }
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck7() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck7.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck7.jpg");
+		  silueta = getImagePath(silFolder+"7.jpg");
+					      		
+		  data.setImage("WIM_trck7.jpg");
+	      data.setImagePlate("Plate_WIM_trck7.jpg");
+	      data.setImageSil("7.jpg");
+		  data.setSerialNumber("1006");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("10");
+		  data.setAxlNumber("7");
+		  data.setSpeed("75");
+		  data.setPbtTotal("56000");
+		  data.setSize("10000");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "6000";
+			weight [1] = "8000";
+			weight [2] = "7000";
+			weight [3] = "9000";
+			weight [4] = "10000";
+			weight [5] = "10000";
+			weight [6] = "6000";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "240";
+			dstAxes [1] = "100";
+			dstAxes [2] = "240";
+			dstAxes [3] = "100";
+			dstAxes [4] = "240";
+			dstAxes [5] = "100";
+			dstAxes [6] = "240";
+			dstAxes [7] = "100";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " D ";
+			typeAxes [2] = " D ";
+			typeAxes [3] = " D ";
+			typeAxes [4] = " D ";
+			typeAxes [5] = " D ";
+			typeAxes [6] = " D ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}		  		  
+	    }
+	  
+	  //------------------------------------------------------------------------
+		
+	  public void generateTruck9() {
+		  
+		  boolean saved = false;
+		  
+	   DateTimeApplication dta = new DateTimeApplication();
+  		  
+		  img1 = getImagePath(vehiclesFolder+"WIM_trck9.jpg");
+		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck9.jpg");
+		  silueta = getImagePath(silFolder+"E9.jpg");
+					      	
+		  data.setImage("WIM_trck9.jpg");
+	      data.setImagePlate("Plate_WIM_trck9.jpg");
+	      data.setImageSil("E9.jpg");
+		  data.setSerialNumber("1007");
+		  data.setDatetime(dta.currentDateTime());
+		  data.setClasse("E9");
+		  data.setAxlNumber("7");
+		  data.setSpeed("80");
+		  data.setPbtTotal("73000");
+		  data.setSize("9000");
+		  		  
+		  String[] weight = new String[9];
+			weight [0] = "6000";
+			weight [1] = "8000";
+			weight [2] = "7000";
+			weight [3] = "9000";
+			weight [4] = "10000";
+			weight [5] = "10000";
+			weight [6] = "8000";
+			weight [7] = "7000";
+			weight [8] = "8000";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[9];
+			dstAxes [0] = "240";
+			dstAxes [1] = "100";
+			dstAxes [2] = "240";
+			dstAxes [3] = "100";
+			dstAxes [4] = "100";
+			dstAxes [5] = "200";
+			dstAxes [6] = "100";
+			dstAxes [7] = "100";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[9];
+			typeAxes [0] = " S ";
+			typeAxes [1] = " D ";
+			typeAxes [2] = " D ";
+			typeAxes [3] = " D ";
+			typeAxes [4] = " D ";
+			typeAxes [5] = " D ";
+			typeAxes [6] = " D ";
+			typeAxes [7] = " D ";
+			typeAxes [8] = " D ";
+
+			data.setAxlType(typeAxes);
+			
+			try {
+
+				if(!saved)
+				   dao.saveVehicle(data);
+				
+			} catch (Exception e) {			
+							
+				e.printStackTrace();
+			}		  		  
+	    }	  
 
 }

@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.faces.model.SelectItem;
-
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -33,14 +30,14 @@ public class WIMDAO {
 			if (rs.isBeforeFirst() && classe != null) {
 				while (rs.next()) {
 					WimData data = new WimData();			
-						data.setData(rs.getString(1));
+						data.setDatetime(rs.getString(1));
 						data.setSerialNumber(rs.getString(2));
 						list.add(data);
 				}				
 			 }else {
 				 while (rs1.next()) {
 						WimData data = new WimData();			
-							data.setData(rs1.getString(1));
+							data.setDatetime(rs1.getString(1));
 							data.setSerialNumber(rs1.getString(2));
 							list.add(data);
 					}				
@@ -68,30 +65,12 @@ public class WIMDAO {
 			if(rs != null) {
 				while(rs.next()) {
 					search.setSeqN(rs.getString(1));
-					search.setData(rs.getString(2));
+					search.setDatetime(rs.getString(2));
 					search.setClasse(rs.getString(3));
 					search.setNumberAxes(rs.getString(4));
 					search.setSpeed(rs.getString(5));
 					search.setPbtTotal(rs.getString(6));
-					search.setAxl1W(rs.getString(7));
-					search.setAxl2W(rs.getString(8));
-					search.setAxl3W(rs.getString(9));
-					search.setAxl4W(rs.getString(10));
-					search.setAxl5W(rs.getString(11));
-					search.setAxl6W(rs.getString(12));
-					search.setAxl7W(rs.getString(13));
-					search.setAxl8W(rs.getString(14));
-					search.setAxl9W(rs.getString(15));
-					search.setAxl2D(rs.getString(16));
-					search.setAxl3D(rs.getString(17));
-					search.setAxl4D(rs.getString(18));
-					search.setAxl5D(rs.getString(19));
-					search.setAxl6D(rs.getString(20));
-					search.setAxl7D(rs.getString(21));
-					search.setAxl8D(rs.getString(22));
-					search.setAxl9D(rs.getString(23));
-				}
-
+				}	
 			}
 		}catch(SQLException sqlbuscar) {
 			sqlbuscar.printStackTrace();
@@ -607,6 +586,7 @@ public class WIMDAO {
 		}		
 		return x;
 	}
+	
 	private boolean q;
 	public boolean searchColor() throws Exception{
 		String sql = "SELECT status FROM wim_color where id= 1";		
@@ -624,4 +604,69 @@ public class WIMDAO {
 	}
 	 ///FINAL/////////////////////////////////////////////////////////////
 	//WIM REALTIME//////////////////////////////////////////////////////
+	
+	//WIM SAVE
+	
+	public void saveVehicle(WimData data) throws Exception {
+						
+		String query = "INSERT INTO wim_vbv (vbv_id, siteID, seqG, seqN, data, image, image_plate, image_sil, classe, axlNumber, " +
+		"axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W, "+
+		"axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, "+
+		"axl1T, axl2T, axl3T, axl4T, axl5T, axl6T, axl7T, axl8T, axl9T, gross, speed, size ) " +
+		"VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+				
+		try {
+		
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, data.getId());
+			ps.setInt(2, Integer.parseInt(data.getSerialNumber()));
+			ps.setInt(3, Integer.parseInt(data.getSerialNumber()));
+			ps.setString(4, data.getDatetime());
+			ps.setString(5, data.getImage());
+			ps.setString(6, data.getImagePlate());
+			ps.setString(7, data.getImageSil());
+			ps.setString(8, data.getClasse());
+			ps.setString(9, data.getAxlNumber());			
+			ps.setString(10, data.getAxlWeight()[0]);
+			ps.setString(11, data.getAxlWeight()[1]);
+			ps.setString(12, data.getAxlWeight()[2]);
+			ps.setString(13, data.getAxlWeight()[3]);
+			ps.setString(14, data.getAxlWeight()[4]);
+			ps.setString(15, data.getAxlWeight()[5]);
+			ps.setString(16, data.getAxlWeight()[6]);
+			ps.setString(17, data.getAxlWeight()[7]);
+			ps.setString(18, data.getAxlWeight()[8]);
+			ps.setString(19, data.getAxlDist()[0]);
+			ps.setString(20, data.getAxlDist()[1]);
+			ps.setString(21, data.getAxlDist()[2]);
+			ps.setString(22, data.getAxlDist()[3]);
+			ps.setString(23, data.getAxlDist()[4]);
+			ps.setString(24, data.getAxlDist()[5]);
+			ps.setString(25, data.getAxlDist()[6]);
+			ps.setString(26, data.getAxlDist()[7]);		
+			ps.setString(27, data.getAxlType()[0]);
+			ps.setString(28, data.getAxlType()[1]);
+			ps.setString(29, data.getAxlType()[2]);
+			ps.setString(30, data.getAxlType()[3]);
+			ps.setString(31, data.getAxlType()[4]);
+			ps.setString(32, data.getAxlType()[5]);
+			ps.setString(33, data.getAxlType()[6]);
+			ps.setString(34, data.getAxlType()[7]);
+			ps.setString(35, data.getAxlType()[8]);		
+			ps.setString(36, data.getPbtTotal());
+			ps.setString(37, data.getSpeed());
+			ps.setString(38, data.getSize());
+									
+			ps.executeUpdate();
+		
+		}catch (SQLException i){
+			throw new Exception("Erro ao inserir dados: " + i);
+		}finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}		
+						
+	}
+		
 }

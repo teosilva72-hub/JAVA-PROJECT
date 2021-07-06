@@ -16,12 +16,14 @@ public class WimData{
 	private String dstAxes;
 	private String axlNumber;
 	private String seqN;	
-	private String[] axlWeight, axlDist, axlType;	
-			
+	private String image;
+	private String imagePlate;
+	private String imageSil;
+	private String[] axlWeight, axlDist, axlType;				
 
 	public WimData(int id, boolean status, String serialNumber, String datetime, String classe, String numberAxes,
 			String tableAxes, String speed, String pbtTotal, String size, String weight, String dstAxes,
-			String axlNumber, String seqN, String[] axlWeight, String[] axlDist, String[] axlType) {
+			String axlNumber, String seqN, String[] axlWeight, String[] axlDist, String[] axlType, String image, String imagePlate, String imageSil) {
 		
 		this.id = id;
 		this.status = status;
@@ -40,6 +42,10 @@ public class WimData{
 		this.axlWeight = axlWeight;
 		this.axlDist = axlDist;
 		this.axlType = axlType;
+		this.image = image;
+		this.imagePlate = imagePlate;
+		this.imageSil = imageSil;
+		
 	}
 
 	public WimData() {}
@@ -154,6 +160,30 @@ public class WimData{
 
 	public void setStatus(boolean status) {
 		this.status = status;
+	}
+	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getImagePlate() {
+		return imagePlate;
+	}
+
+	public void setImagePlate(String imagePlate) {
+		this.imagePlate = imagePlate;
+	}
+	
+	public String getImageSil() {
+		return imageSil;
+	}
+
+	public void setImageSil(String imageSil) {
+		this.imageSil = imageSil;
 	}
 
 	public String[] getAxlWeight() {

@@ -30,48 +30,40 @@
 			<div class="dropdown">
 				<button class="btn btn-secondary dropdown-toggle" type="button"
 					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false">Dropdown button</button>
+					aria-expanded="false">#{wimLabels.option_button_name}</button>
 				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				<h:commandButton class="dropdown-item" value="Onibus e2">
-					<f:ajax execute="@form" listener="#{wimController.onibus}"
+				<h:commandButton class="dropdown-item" value="#{wimLabels.option_bus}">
+					<f:ajax execute="@form" listener="#{wimController.generateBus2}"
 						render=":update"></f:ajax>
-				</h:commandButton>
-				<h:commandButton class="dropdown-item" value="Onibus e3">
-					<f:ajax execute="@form" listener="#{wimController.onibusE3}"
-						render=":update"></f:ajax>
-				</h:commandButton>
-					<h:commandButton class="dropdown-item" value="Car">
-						<f:ajax execute="@form" listener="#{wimController.car}"
+				</h:commandButton>			
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_car}">
+						<f:ajax execute="@form" listener="#{wimController.generateCar}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="2">
-						<f:ajax execute="@form" listener="#{wimController.e2}"
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck2AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck2}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="3">
-						<f:ajax execute="@form" listener="#{wimController.e3}"
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck3AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck3}"
+							render=":update"></f:ajax>
+					</h:commandButton>				
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck5AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck5}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="4">
-						<f:ajax execute="@form" listener="#{wimController.e4}"
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck6AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck6}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="5">
-						<f:ajax execute="@form" listener="#{wimController.e5}"
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck7AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck7}"
 							render=":update"></f:ajax>
 					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="6">
-						<f:ajax execute="@form" listener="#{wimController.e6}"
+					<h:commandButton class="dropdown-item" value="#{wimLabels.option_truck9AX}">
+						<f:ajax execute="@form" listener="#{wimController.generateTruck9}"
 							render=":update"></f:ajax>
-					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="7">
-						<f:ajax execute="@form" listener="#{wimController.e7}"
-							render=":update"></f:ajax>
-					</h:commandButton>
-					<h:commandButton class="dropdown-item" value="9">
-						<f:ajax execute="@form" listener="#{wimController.e9}"
-							render=":update"></f:ajax>
-					</h:commandButton>
+					</h:commandButton>				
 				</div>
 			</div>
 			<div class="row" ondragstart="return false;"
@@ -144,10 +136,10 @@
 							<div class="row">
 								<c:forEach var="value" begin="0" end="8">
 									<div class="col-md-2">
-										<div class="card eixos troca" id="">#{wimController.data.axlType[value]}</div>
+										<div class="card eixos troca" id="">#{wimController.axlesView[value]}</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card eixos troca"></div>
+										<div class="card eixos troca">#{wimController.data.axlType[value]}</div>
 									</div>
 									<div class="col-md-3">
 										<div class="card eixos troca">#{wimController.data.axlWeight[value]}</div>
