@@ -142,6 +142,7 @@ const credEvent = data => {
 }
 
 getCred('rabbitmq'); // Rabbit init
+getCred('asterisk'); // Rabbit init
 
 //NOTIFICATIONS  BADGE
 

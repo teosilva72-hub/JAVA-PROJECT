@@ -3,18 +3,20 @@ var loginAccount = {
     user: 'a',
     pass: 'a'
 }
-connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(response => {
+connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(async response => {
+    while (!window.asterisk)
+        await new Promise(r => setTimeout(r, 500))
     user = {
         //  User Name
         "User" : response.SIPAccount1,
         //  Password
         "Pass" : response.SIPPassword,
         //  Auth Realm
-        "Realm"   : "177.149.87.17",
+        "Realm"   : window.asterisk.address,
         // Display Name
         "Display" : loginAccount.user,
         // WebSocket URL
-        "WSServer"  : "wss://177.149.87.17:8089/ws"
+        "WSServer"  : `wss://${window.asterisk.address}:${window.asterisk.port}/ws`
     };
 
     return connectSOS("GetAllUsers")
