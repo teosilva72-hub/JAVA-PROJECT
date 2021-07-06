@@ -575,6 +575,10 @@ footer {
   bottom: 0;
 }
 
+.left-0 {
+	left: 0;
+}
+
 /* display .overlay when it has the .active class */
 .overlay.active {
   display: block;
