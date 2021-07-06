@@ -304,13 +304,12 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-dark" id="pdfCancel"
 								data-dismiss="modal">#{wimLabels.close}</button>
-							<button type="button" class="btn btn-dark" id="PdfYes"
-								onclick="disabledPdf()">#{wimLabels.download}</button>
-							<h:commandButton class="btn btn-dark" value="Yes"
-								style="display: none" id="idBtn">
-								<f:ajax execute="@form" listener="#{wimReport.downloadPdf}"
-									render=":formId :dados3 :dados2" />
-							</h:commandButton>
+							
+								<h:commandButton pt:onclose="download" pt:data-toggle="modal"
+								pt:data-target="#modalPdf" id="PdfYes" onclick="disabledPdf()"
+							    value="#{wimLabels.download}"
+								class="btn btn-dark form-draw-button"
+								action="#{wimReport.downloadPdf}" />
 						</div>
 					</div>
 				</div>
