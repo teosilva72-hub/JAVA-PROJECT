@@ -1,5 +1,5 @@
 package br.com.tracevia.webapp.controller.wimController;
-import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,345 +14,114 @@ import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
-import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.wim.WimData;
 
 @ManagedBean(name="wimController")
 @ViewScoped
 public class wimController {
-	
-	private int axl1W, axl2W, axl3W, axl4W, axl5W,
-	axl6W, axl7W, axl8W, axl9W, axl1D, axl2D, axl3D,
-	axl4D, axl5D,
-	axl6D, axl7D, axl8D, axl9D;
-	
-	String noImage, noImageFolder, silFolder, vehiclesFolder;	
-	
-	private String rateTxt;
-				
-	private int serialNumber;
-	
-	int pbtTotal;
-	
+		
 	private int rate;
-	
-	private int[] axes;
-	
-	private String[] listarFile;
-	
-	private WIMDAO dao = new WIMDAO();
+			
+	private WIMDAO dao;
+	private WimData data;
 	private boolean color;
+			
+	private String silueta, img1, img2;	
 
+	private List<SelectItem> minutos, horas, classes;
 	
-	public int[] getAxes() {
-		return axes;
-	}
-	public void setAxes(int[] axes) {
-		this.axes = axes;
-	}
-	private int[] weight, details, type;
-
-	public int[] getType() {
-		return type;
-	}
-	public void setType(int[] type) {
-		this.type = type;
-	}
-
-	public int[] getDetails() {
-		return details;
-	}
-	public void setDetails(int[] details) {
-		this.details = details;
-	}
-	public int[] getWeight() {
-		return weight;
-	}
-	public void setWeight(int[] weight) {
-		this.weight = weight;
-	}
-	private int[] dstAxes;
-
-	public int[] getDstAxes() {
-		return dstAxes;
-	}
-	public void setDstAxes(int[] dstAxes) {
-		this.dstAxes = dstAxes;
-	}
-
-	public int getRate() {
-		return rate;
-	}
-	public void setRate(int rate) {
-		this.rate = rate;
-	}
-
-	public String getRateTxt() {
-		return rateTxt;
-	}
-	public void setRateTxt(String rateTxt) {
-		this.rateTxt = rateTxt;
-	}
+	String noImage;	
 	
-	public String[] getListarFile() {
-		return listarFile;
-	}
-	public void setListarFile(String[] listarFile) {
-		this.listarFile = listarFile;
-	}
+	String silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
 	
-	public int getSerialNumber() {
-		return serialNumber;
-	}
-	public void setSerialNumber(int serialNumber) {
-		this.serialNumber = serialNumber;
-	}
-	private String dataHour, classe, eixo, speed, size;
-
-	public String getDataHour() {
-		return dataHour;
-	}
-	public void setDataHour(String dataHour) {
-		this.dataHour = dataHour;
-	}
-	public String getClasse() {
-		return classe;
-	}
-	public void setClasse(String classe) {
-		this.classe = classe;
-	}
-	public String getEixo() {
-		return eixo;
-	}
-	public void setEixo(String eixo) {
-		this.eixo = eixo;
-	}
-	public String getSpeed() {
-		return speed;
-	}
-	public void setSpeed(String speed) {
-		this.speed = speed;
-	}
+	String vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
 	
-	public int getPbtTotal() {
-		return pbtTotal;
-	}
-	public void setPbtTotal(int pbtTotal) {
-		this.pbtTotal = pbtTotal;
-	}
-	public String getSize() {
-		return size;
-	}
-	public void setSize(String size) {
-		this.size = size;
+	String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		
+	public WimData getData() {
+		return data;
 	}
 
-	public int getAxl1W() {
-		return axl1W;
+	public void setData(WimData data) {
+		this.data = data;
 	}
-	public void setAxl1W(int axl1w) {
-		axl1W = axl1w;
-	}
-	public int getAxl2W() {
-		return axl2W;
-	}
-	public void setAxl2W(int axl2w) {
-		axl2W = axl2w;
-	}
-	public int getAxl3W() {
-		return axl3W;
-	}
-	public void setAxl3W(int axl3w) {
-		axl3W = axl3w;
-	}
-	public int getAxl4W() {
-		return axl4W;
-	}
-	public void setAxl4W(int axl4w) {
-		axl4W = axl4w;
-	}
-	public int getAxl5W() {
-		return axl5W;
-	}
-	public void setAxl5W(int axl5w) {
-		axl5W = axl5w;
-	}
-	public int getAxl6W() {
-		return axl6W;
-	}
-	public void setAxl6W(int axl6w) {
-		axl6W = axl6w;
-	}
-	public int getAxl7W() {
-		return axl7W;
-	}
-	public void setAxl7W(int axl7w) {
-		axl7W = axl7w;
-	}
-	public int getAxl8W() {
-		return axl8W;
-	}
-	public void setAxl8W(int axl8w) {
-		axl8W = axl8w;
-	}
-	public int getAxl9W() {
-		return axl9W;
-	}
-	public void setAxl9W(int axl9w) {
-		axl9W = axl9w;
-	}
-	public int getAxl1D() {
-		return axl1D;
-	}
-	public void setAxl1D(int axl1d) {
-		axl1D = axl1d;
-	}
-	public int getAxl2D() {
-		return axl2D;
-	}
-	public void setAxl2D(int axl2d) {
-		axl2D = axl2d;
-	}
-	public int getAxl3D() {
-		return axl3D;
-	}
-	public void setAxl3D(int axl3d) {
-		axl3D = axl3d;
-	}
-	public int getAxl4D() {
-		return axl4D;
-	}
-	public void setAxl4D(int axl4d) {
-		axl4D = axl4d;
-	}
-	public int getAxl5D() {
-		return axl5D;
-	}
-	public void setAxl5D(int axl5d) {
-		axl5D = axl5d;
-	}
-	public int getAxl6D() {
-		return axl6D;
-	}
-	public void setAxl6D(int axl6d) {
-		axl6D = axl6d;
-	}
-	public int getAxl7D() {
-		return axl7D;
-	}
-	public void setAxl7D(int axl7d) {
-		axl7D = axl7d;
-	}
-	public int getAxl8D() {
-		return axl8D;
-	}
-	public void setAxl8D(int axl8d) {
-		axl8D = axl8d;
-	}
-	public int getAxl9D() {
-		return axl9D;
-	}
-	public void setAxl9D(int axl9d) {
-		axl9D = axl9d;
-	}	
 
 	public boolean isColor() {
 		return color;
 	}
+
 	public void setColor(boolean color) {
 		this.color = color;
 	}
-	WimData data = new WimData();
-	private String silueta;
 
 	public String getSilueta() {
 		return silueta;
 	}
+
 	public void setSilueta(String silueta) {
 		this.silueta = silueta;
 	}
-	private String[] pathImg;
 
-	public String[] getPathImg() {
-		return pathImg;
-	}
-	public void setPathImg(String[] pathImg) {
-		this.pathImg = pathImg;
-	}
-	private String img1 = "", img2 = "";
-	
 	public String getImg1() {
 		return img1;
 	}
+
 	public void setImg1(String img1) {
 		this.img1 = img1;
 	}
+
 	public String getImg2() {
 		return img2;
 	}
+
 	public void setImg2(String img2) {
 		this.img2 = img2;
 	}
-	private List<SelectItem> minutos, horas, classes;
-	
+
 	public List<SelectItem> getMinutos() {
 		return minutos;
 	}
+
 	public List<SelectItem> getHoras() {
 		return horas;
 	}
-	public void setHoras(List<SelectItem> horas) {
-		this.horas = horas;
-	}
-	public void setMinutos(List<SelectItem> minutos) {
-		this.minutos = minutos;
-	}
-	
+
 	public List<SelectItem> getClasses() {
 		return classes;
 	}
-	public void setClasses(List<SelectItem> classes) {
-		this.classes = classes;
-	}
-	
+
 	@PostConstruct
 	public void initalize(){
+				
+		data = new WimData();
+		dao = new WIMDAO();
 		
 		// initalize wim realtime
-		colorInitial();
-		rate();
+		//colorInitial();
+		//rate();
 		updateView();
 		
 		try {
 			
-			dados();
+			//dados();
+			initializeVeh();
 							
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		
-		silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
-		
-		vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
-		
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-			
-	    noImage = noImageFolder + "no-image.jpg";
-		
-		//img1 = getImagePath(noImage);
-		//img2 = getImagePath(noImage);
-		//silueta = getImagePath(noImage);
-				
+		}						
 	}
 	
 	public void onibus() {
+		
 		try {
+			
 			String data = "2021-01-15 15:01:51", classe = "2A";
 			int axlNumber = 2, axl1W = 250, axl2W = 300, axl3W= 0,
 					axl4W= 0, axl5W= 0, axl6W= 0, axl7W= 0, axl8W= 0,
 					axl9W= 0, axl2D= 220, axl3D= 0, axl4D= 0, axl5D= 0,
 					axl6D= 0, axl7D= 0, axl8D= 0, axl9D= 0, gross= 7900, speed= 30;
+			
 			dao.updateFilePath(data, classe, axlNumber, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W,
 					axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, gross, speed);
 			
@@ -617,9 +386,9 @@ public class wimController {
 
 		try {
 			
-			dados();
-			rate();
-			siluetaRealtime();
+			//initializeVeh();
+			//rate();
+			//siluetaRealtime();
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -629,7 +398,7 @@ public class wimController {
 		request.execute("btnUpdateView();");
 	}
 	//mudar cor dos inputs
-	public void colorInitial() {
+	/*public void colorInitial() {
 		try {
 			color = dao.searchColor();
 			RequestContext request = RequestContext.getCurrentInstance();
@@ -644,8 +413,8 @@ public class wimController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	public boolean colorInput() throws Exception {
+	}*/
+/*	public boolean colorInput() throws Exception {
 		boolean x = false;
 		color = dao.searchColor();
 		RequestContext request = RequestContext.getCurrentInstance();
@@ -660,9 +429,9 @@ public class wimController {
 		}
 		initalize();
 		return x;
-	}
+	}*/
 	//rate view wim.xhtml
-	public void rate() {
+	/*public void rate() {
 		try {
 			String classe = dao.classe();
 			pbtTotal = Integer.parseInt(dao.pbtTotal());
@@ -793,12 +562,18 @@ public class wimController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	//dados
-	public void dados() {
+	/*public void dados() {
 		try {
+			
+			
+			img1 = getImagePath(noImage);
+			img2 = getImagePath(noImage);
+		    silueta = getImagePath(noImage);
+			
 			//Viewing vehicle information
-			serialNumber = dao.serialNumber();
+			/*serialNumber = dao.serialNumber();
 			dataHour = dao.dateHour();
 			classe = dao.classe();
 			eixo = dao.eixo();
@@ -851,14 +626,14 @@ public class wimController {
 		dstAxes [9] = axl9D;
 		/*type = new int[8];
 		type [1] = "";
-		type [2] = "";*/
+		type [2] = "";
 		try {
 			siluetaRealtime();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	  public String getImagePath(String image) {
 			
@@ -875,37 +650,68 @@ public class wimController {
 		}
 	  
 	  public void initializeVeh() {
+		  		  
+		  noImage = noImageFolder + "no-image.jpg";
+			
+		  img1 = getImagePath(noImage);
+		  img2 = getImagePath(noImage);
+		  silueta = getImagePath(noImage);	      
+					  
+		  data.setSerialNumber(" - ");
+		  data.setDatetime(" - ");
+		  data.setClasse(" - ");
+		  data.setAxlNumber(" - ");
+		  data.setSpeed(" - ");
+		  data.setPbtTotal(" - ");
+		  data.setSize(" - ");
+		  		  
+		  String[] weight = new String[10];
+			weight [0] = "0";
+			weight [1] = "0";
+			weight [2] = "0";
+			weight [3] = "0";
+			weight [4] = "0";
+			weight [5] = "0";
+			weight [6] = "0";
+			weight [7] = "0";
+			weight [8] = "0";
+			
+			data.setAxlWeight(weight);
+			
+			//distancia entre os eixos
+			String[] dstAxes = new String[10];
+			dstAxes [0] = "0";
+			dstAxes [1] = "0";
+			dstAxes [2] = "0";
+			dstAxes [3] = "0";
+			dstAxes [4] = "0";
+			dstAxes [5] = "0";
+			dstAxes [6] = "0";
+			dstAxes [7] = "0";
+			dstAxes [8] = "0";
+
+			data.setAxlDist(dstAxes);
+			
+			//distancia entre os eixos
+			String[] typeAxes = new String[10];
+			typeAxes [0] = " - ";
+			typeAxes [1] = " - ";
+			typeAxes [2] = " - ";
+			typeAxes [3] = " - ";
+			typeAxes [4] = " - ";
+			typeAxes [5] = " - ";
+			typeAxes [6] = " - ";
+			typeAxes [7] = " - ";
+			typeAxes [8] = " - ";
+
+			data.setAxlType(dstAxes);
 		  
-		  setSerialNumber(1);
-		  setDataHour("2021-01-01 00:00:00");
-		  setClasse("1");
-		  setEixo("2");
-		  setSpeed("60");
-		  setPbtTotal(1000);
-		  setSize("500");
+	  }
+	  
+	  
+	  public void randVehicle() {
 		  
-		  weight = new int[10];
-		  weight [1] = 0;
-		  weight [2] = 0;
-		  weight [3] = 0;
-		  weight [4] = 0;
-		  weight [5] = 0;
-		  weight [6] = 0;
-		  weight [7] = 0;
-		  weight [8] = 0;
-		  weight [9] = 0;
-		  
-		 //distancia entre os eixos
-		  dstAxes = new int[10];
-		  dstAxes [2] = 0;
-		  dstAxes [3] = 0;
-		  dstAxes [4] = 0;
-		  dstAxes [5] = 0;
-		  dstAxes [6] = 0;
-		  dstAxes [7] = 0;
-		  dstAxes [8] = 0;
-	      dstAxes [9] = 0;
-		  
+		  int classe = (int)(Math.random() * 9) + 1;
 		  
 	  }
 
