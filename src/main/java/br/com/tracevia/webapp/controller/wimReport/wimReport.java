@@ -4,8 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
@@ -248,21 +252,42 @@ public class wimReport {
 	public void setGross(int gross) {
 		this.gross = gross;
 	}
-	private String silueta, image1, image2;
+	private String silueta ="", image1="", image2="";
 	public String getImage1() {
-		return image1;
+		try {
+
+			Path path = Paths.get(image1);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
 	}
 	public void setImage1(String image1) {
 		this.image1 = image1;
 	}
 	public String getImage2() {
-		return image2;
+		try {
+
+			Path path = Paths.get(image2);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
 	}
 	public void setImage2(String image2) {
 		this.image2 = image2;
 	}
 	public String getSilueta() {
-		return silueta;
+		try {
+
+			Path path = Paths.get(silueta);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
 	}
 	public void setSilueta(String silueta) {
 		this.silueta = silueta;
@@ -281,9 +306,13 @@ public class wimReport {
 	public void setSearch(boolean search) {
 		this.search = search;
 	}
+	private String noImageFolder;
 	@PostConstruct
 	public void initalize(){
-		
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		image1 = noImageFolder + "no-image.png";
+		image2 = noImageFolder + "no-image.png";
+		silueta = noImageFolder + "no-image.png";
 		reset = true;
 		date = data;
 		date.setSeqN("-");
