@@ -538,7 +538,8 @@ public class wimReport {
 		}
 	}
 	public void silueta() {
-		String imageSil = noImageFolder;
+		String imageSil = "C:\\teste\\sil\\";;
+		System.out.println(imageSil);
 		String img = "C:\\teste\\";
 		try {
 			date = dao.searchId(rowkey);
@@ -548,7 +549,7 @@ public class wimReport {
 			if(classe.equals("1")) {
 				silueta = imageSil+"10.png";
 				image1 = img+"carro1.jpeg";
-				image2 = img+"teste/carro2.jpg";
+				image2 = img+"carro2.jpg";
 			}else if(classe.equals("2")){
 				silueta = imageSil+"2.png";
 				image1 = img+"e2-2.jpg";
@@ -564,7 +565,7 @@ public class wimReport {
 			}else if(classe.equals("5")){
 				silueta = imageSil+"";
 				image1 = img+"caminhao1.jpg";
-				image2 = img+"/aminhao2.jpg";
+				image2 = img+"caminhao2.jpg";
 				//falta definir imagem
 			}else if(classe.equals("6")){
 				silueta = imageSil+"4.png";
@@ -575,9 +576,9 @@ public class wimReport {
 				image1 = img+"caminhao5-1.jpg";
 				image2 = img+"caminhao5-2.jpg";
 			}else if(classe.equals("8")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"tracevia.jpg";
-				image2 = img+"tracevia.jpg";
+				silueta = noImageFolder+"no-image.png";
+				image1 = noImageFolder+"no-image.png";
+				image2 = noImageFolder+"no-image.png";
 			}else if(classe.equals("9")) {
 				silueta = imageSil+"moto.png";
 				image1 = img+"hornet1.jpg";
