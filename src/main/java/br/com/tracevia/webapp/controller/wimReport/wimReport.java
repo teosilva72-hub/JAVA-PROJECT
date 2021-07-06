@@ -306,10 +306,10 @@ public class wimReport {
 	public void setSearch(boolean search) {
 		this.search = search;
 	}
-	private String noImageFolder;
+	private String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 	@PostConstruct
 	public void initalize(){
-		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		
 		image1 = noImageFolder + "no-image.png";
 		image2 = noImageFolder + "no-image.png";
 		silueta = noImageFolder + "no-image.png";
@@ -321,9 +321,6 @@ public class wimReport {
 		date.setNumberAxes("-");
 		date.setSpeed("-");
 		date.setPbtTotal("-");
-		image1 = "/teste/tracevia.jpg";
-		image2 = "/teste/tracevia.jpg";
-		silueta = "/teste/tracevia.jpg";
 		minutos = new  ArrayList<SelectItem>();
 		for(int m = 0; m < 60; m++){				
 			if (m < 10)
@@ -541,93 +538,94 @@ public class wimReport {
 		}
 	}
 	public void silueta() {
-		String image = "/teste/sil/";
+		String imageSil = noImageFolder;
+		String img = "C:\\teste\\";
 		try {
 			date = dao.searchId(rowkey);
 
 			RequestContext request = RequestContext.getCurrentInstance();
 			String classe = date.getClasse();
 			if(classe.equals("1")) {
-				silueta = image+"10.png";
-				image1 = "/teste/carro1.jpeg";
-				image2 = "/teste/carro2.jpg";
+				silueta = imageSil+"10.png";
+				image1 = img+"carro1.jpeg";
+				image2 = img+"teste/carro2.jpg";
 			}else if(classe.equals("2")){
-				silueta = image+"2.png";
-				image1 = "/teste/e2-2.jpg";
-				image2 = "/teste/e2-1.jpg";
+				silueta = imageSil+"2.png";
+				image1 = img+"e2-2.jpg";
+				image2 = img+"teste/e2-1.jpg";
 			}else if(classe.equals("3")){
-				silueta = image+"onibusE2.jpg";
+				silueta = imageSil+"onibusE2.jpg";
 				image1 = "";
 				image2 = "";
 			}else if(classe.equals("4")){
-				silueta = image+"3.png";
-				image1 = "/teste/caminhao1.jpg";
-				image2 = "/teste/aminhao2.jpg";
+				silueta = imageSil+"3.png";
+				image1 = img+"caminhao1.jpg";
+				image2 = img+"aminhao2.jpg";
 			}else if(classe.equals("5")){
-				silueta = image+"";
-				image1 = "/teste/caminhao1.jpg";
-				image2 = "/teste/aminhao2.jpg";
+				silueta = imageSil+"";
+				image1 = img+"caminhao1.jpg";
+				image2 = img+"/aminhao2.jpg";
 				//falta definir imagem
 			}else if(classe.equals("6")){
-				silueta = image+"4.png";
-				image1 = "/teste/caminhao4-1.jpg";
-				image2 = "/teste/caminhao4-2.jpg";
+				silueta = imageSil+"4.png";
+				image1 = img+"caminhao4-1.jpg";
+				image2 = img+"caminhao4-2.jpg";
 			}else if(classe.equals("7")) {
-				silueta = image+"E5.jpg";
-				image1 = "/teste/caminhao5-1.jpg";
-				image2 = "/teste/caminhao5-2.jpg";
+				silueta = imageSil+"E5.jpg";
+				image1 = img+"caminhao5-1.jpg";
+				image2 = img+"caminhao5-2.jpg";
 			}else if(classe.equals("8")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/tracevia.jpg";
-				image2 = "/teste/tracevia.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"tracevia.jpg";
+				image2 = img+"tracevia.jpg";
 			}else if(classe.equals("9")) {
-				silueta = image+"moto.png";
-				image1 = "/teste/hornet1.jpg";
-				image2 = "/teste/hornet2.jpg";
+				silueta = imageSil+"moto.png";
+				image1 = img+"hornet1.jpg";
+				image2 = img+"hornet2.jpg";
 			}else if(classe.equals("2A")) {
-				silueta = image+"onibusE2.jpg";
-				image1 = "/teste/onibus1.jpg";
-				image2 = "/teste/onibus2.jpeg";
+				silueta = imageSil+"onibusE2.jpg";
+				image1 = img+"onibus1.jpg";
+				image2 = img+"onibus2.jpeg";
 			}else if(classe.equals("4A")) {
-				silueta = image+"onibusE3.jpg";
-				image1 = "/teste/onibus1-2.jpg";
-				image2 = "/teste/onibus2-1.jpg";
+				silueta = imageSil+"onibusE3.jpg";
+				image1 = img+"onibus1-2.jpg";
+				image2 = img+"onibus2-1.jpg";
 			}else if(classe.equals("2N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/e2-1.jpg";
-				image2 = "/teste/e2-2.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"e2-1.jpg";
+				image2 = img+"e2-2.jpg";
 			}else if(classe.equals("3N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/eixo3-1.jpg";
-				image2 = "/teste/eixo3-2.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"eixo3-1.jpg";
+				image2 = img+"eixo3-2.jpg";
 			}else if(classe.equals("4N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao4-1.jpg";
-				image2 = "/teste/caminhao4-1.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"caminhao4-1.jpg";
+				image2 = img+"caminhao4-1.jpg";
 			}else if(classe.equals("5N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao5-1.jpg";
-				image2 = "/teste/caminhao5-2.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"caminhao5-1.jpg";
+				image2 = img+"caminhao5-2.jpg";
 			}else if(classe.equals("6N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao6-1.jpg";
-				image2 = "/teste/caminhao6-1.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"caminhao6-1.jpg";
+				image2 = img+"caminhao6-1.jpg";
 			}else if(classe.equals("7N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao7-1.jpg";
-				image2 = "/teste/caminhao7-2.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"caminhao7-1.jpg";
+				image2 = img+"caminhao7-2.jpg";
 			}else if(classe.equals("8N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/tracevia.jpg";
-				image2 = "/teste/tracevia.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"tracevia.jpg";
+				image2 = img+"tracevia.jpg";
 			}else if(classe.equals("E9")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/caminhao9-1.jpg";
-				image2 = "/teste/caminhao9-1.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"caminhao9-1.jpg";
+				image2 = img+"caminhao9-1.jpg";
 			}else if(classe.equals("10N")) {
-				silueta = image+"tracevia.jpg";
-				image1 = "/teste/tracevia.jpg";
-				image2 = "/teste/tracevia.jpg";
+				silueta = imageSil+"tracevia.jpg";
+				image1 = img+"tracevia.jpg";
+				image2 = img+"tracevia.jpg";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
