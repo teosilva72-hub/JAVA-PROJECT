@@ -108,8 +108,8 @@ public class OcrDetails{
 		
         noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 		
-		imageVeh = noImageFolder + "no-image.png";
-		imagePlt = noImageFolder + "no-image.png";
+		imageVeh = noImageFolder + "no-image.jpg";
+		imagePlt = noImageFolder + "no-image.jpg";
 		
 		System.out.println("Inicializou");
 		updateView();
@@ -205,7 +205,7 @@ public class OcrDetails{
 									
 		id[index] = localeOCR.getStringKey("ocr_no_id_label");
 		dateHour[index] = localeOCR.getStringKey("ocr_no_date_label");
-		cam[index] = camName;
+		cam[index] = camName.replaceAll(" ", "");
 		plate[index] = localeOCR.getStringKey("ocr_no_plate_label");
 		imageVei[index] = getImagePath(imageVeh);
 		imagePlate[index] = getImagePath(imagePlt);
@@ -215,9 +215,9 @@ public class OcrDetails{
 		
      public void fillData(OCR data, int index) {			
 				
-		id[index] = data.getId();
+		id[index] = data.getId().replaceAll(" ", "");;
 		dateHour[index] = data.getDataHour();
-		cam[index] = data.getCam();
+		cam[index] = data.getCam().replaceAll(" ", "");
 		plate[index] = data.getPlaca();
 		imageVei[index] = getImagePath(data.getVehicleImage());
 		imagePlate[index] = getImagePath(data.getPlateImage());
