@@ -553,26 +553,26 @@ public class wimReport {
 			}else if(classe.equals("2")){
 				silueta = imageSil+"2.png";
 				image1 = img+"e2-2.jpg";
-				image2 = img+"teste/e2-1.jpg";
+				image2 = img+"e2-1.jpg";
 			}else if(classe.equals("3")){
 				silueta = imageSil+"onibusE2.jpg";
-				image1 = "";
-				image2 = "";
+				image1 = noImageFolder+"no-image.png";;
+				image2 = noImageFolder+"no-image.png";;
 			}else if(classe.equals("4")){
 				silueta = imageSil+"3.png";
 				image1 = img+"caminhao1.jpg";
 				image2 = img+"aminhao2.jpg";
 			}else if(classe.equals("5")){
-				silueta = imageSil+"";
-				image1 = img+"caminhao1.jpg";
-				image2 = img+"caminhao2.jpg";
+				silueta = imageSil+"5.png";
+				image1 = noImageFolder+"no-image.png";
+				image2 = noImageFolder+"no-image.png";
 				//falta definir imagem
 			}else if(classe.equals("6")){
-				silueta = imageSil+"4.png";
+				silueta = imageSil+"6.png";
 				image1 = img+"caminhao4-1.jpg";
 				image2 = img+"caminhao4-2.jpg";
 			}else if(classe.equals("7")) {
-				silueta = imageSil+"E5.jpg";
+				silueta = imageSil+"7.png";
 				image1 = img+"caminhao5-1.jpg";
 				image2 = img+"caminhao5-2.jpg";
 			}else if(classe.equals("8")) {
@@ -600,33 +600,33 @@ public class wimReport {
 				image1 = img+"eixo3-1.jpg";
 				image2 = img+"eixo3-2.jpg";
 			}else if(classe.equals("4N")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"caminhao4-1.jpg";
-				image2 = img+"caminhao4-1.jpg";
+				silueta =  noImageFolder+"no-image.png";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("5N")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"caminhao5-1.jpg";
-				image2 = img+"caminhao5-2.jpg";
+				silueta =  noImageFolder+"no-image.png";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("6N")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"caminhao6-1.jpg";
-				image2 = img+"caminhao6-1.jpg";
+				silueta =  noImageFolder+"no-image.png";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("7N")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"caminhao7-1.jpg";
-				image2 = img+"caminhao7-2.jpg";
+				silueta =  noImageFolder+"no-image.png";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("8N")) {
 				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"tracevia.jpg";
-				image2 = img+"tracevia.jpg";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("E9")) {
-				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"caminhao9-1.jpg";
-				image2 = img+"caminhao9-1.jpg";
+				silueta =  noImageFolder+"no-image.png";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}else if(classe.equals("10N")) {
 				silueta = imageSil+"tracevia.jpg";
-				image1 = img+"tracevia.jpg";
-				image2 = img+"tracevia.jpg";
+				image1 =  noImageFolder+"no-image.png";
+				image2 =  noImageFolder+"no-image.png";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -672,102 +672,102 @@ public class wimReport {
 	}
 	public static String RESULT = "/teste/";
 	public void downloadPdf() throws Exception {
-		System.out.println("chegamos");
-		indicator();
-		silueta();
 		// criação do documento
-		try {
-			date = dao.searchId(rowkey);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		TranslationMethods trad = new TranslationMethods();
-		RESULT = "/teste/"+date.getSeqN()+".pdf";
 		Document document = new Document();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
+		TranslationMethods trad = new TranslationMethods();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PdfWriter writer = PdfWriter.getInstance(document, baos);
-		document.open();
-		document.setPageSize(PageSize.A4);
-		Paragraph pTitulo = new Paragraph(new Phrase(20F,trad.wimLabels("WIM REPORT"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
-		ColumnText tl = new ColumnText(writer.getDirectContent());
-		Paragraph tx = new Paragraph();
-		tl.setSimpleColumn(400,820,200,50);
-		tx.add(pTitulo);
-		tl.addElement(tx);
-		tl.go();
-		document.add(new Paragraph("\n"));
-		document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
-		document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+date.getSeqN()
-				+"              "+trad.wimLabels("DATEHOUR")+ date.getData()+"               "
-				+trad.wimLabels("CLASSE")+": "+date.getClasse()));
-		document.add(new Paragraph(trad.wimLabels("AXES")+": "+date.getNumberAxes()
-				+"               "+trad.wimLabels("SPEED")+": "+ date.getSpeed()
-				+"               "+trad.wimLabels("PBT")+": "+date.getPbtTotal()));
-		document.add(new Paragraph("_____________________________________________________________________________\n\n"));
-		document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
-		document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
-		document.add(new Paragraph(trad.wimLabels("AXES")+"     "+trad.wimLabels("TYPE")+"       "
-								  +trad.wimLabels("WEIGHT")+"       "+trad.wimLabels("DSTAXES")+"            "));
-		document.add(new Paragraph("1          "+trad.wimLabels("TYPE")+"       "+date.getAxl1W()+"               0"));
-		document.add(new Paragraph("2          "+trad.wimLabels("TYPE")+"       "+date.getAxl2W()+"                "+date.getAxl2D()));
-		document.add(new Paragraph("3          "+trad.wimLabels("TYPE")+"       "+date.getAxl3W()+"                "+date.getAxl3D()));
-		document.add(new Paragraph("4          "+trad.wimLabels("TYPE")+"       "+date.getAxl4W()+"                "+date.getAxl4D()));
-		document.add(new Paragraph("5          "+trad.wimLabels("TYPE")+"       "+date.getAxl5W()+"                "+date.getAxl5D()));
-		document.add(new Paragraph("6          "+trad.wimLabels("TYPE")+"       "+date.getAxl6W()+"                "+date.getAxl6D()));
-		document.add(new Paragraph("7          "+trad.wimLabels("TYPE")+"       "+date.getAxl7W()+"                "+date.getAxl7D()));
-		document.add(new Paragraph("8          "+trad.wimLabels("TYPE")+"       "+date.getAxl8W()+"                "+date.getAxl8D()));
-		document.add(new Paragraph("9          "+trad.wimLabels("TYPE")+"       "+date.getAxl9W()+"                "+date.getAxl9D()));
+		try {
+			date = dao.searchId(rowkey);
+			
+			//RESULT = "/teste/"+date.getSeqN()+".pdf";
+			
+			PdfWriter writer = PdfWriter.getInstance(document, baos);
+			document.open();
+			document.setPageSize(PageSize.A4);
+			Paragraph pTitulo = new Paragraph(new Phrase(20F,trad.wimLabels("WIM REPORT"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
+			ColumnText tl = new ColumnText(writer.getDirectContent());
+			Paragraph tx = new Paragraph();
+			tl.setSimpleColumn(400,820,200,50);
+			tx.add(pTitulo);
+			tl.addElement(tx);
+			tl.go();
+			document.add(new Paragraph("\n"));
+			document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
+			document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+date.getSeqN()
+					+"              "+trad.wimLabels("DATEHOUR")+ date.getData()+"               "
+					+trad.wimLabels("CLASSE")+": "+date.getClasse()));
+			document.add(new Paragraph(trad.wimLabels("AXES")+": "+date.getNumberAxes()
+					+"               "+trad.wimLabels("SPEED")+": "+ date.getSpeed()
+					+"               "+trad.wimLabels("PBT")+": "+date.getPbtTotal()));
+			document.add(new Paragraph("_____________________________________________________________________________\n\n"));
+			document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
+			document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
+			document.add(new Paragraph(trad.wimLabels("AXES")+"     "+trad.wimLabels("TYPE")+"       "
+									  +trad.wimLabels("WEIGHT")+"       "+trad.wimLabels("DSTAXES")+"            "));
+			document.add(new Paragraph("1          "+trad.wimLabels("TYPE")+"       "+date.getAxl1W()+"               0"));
+			document.add(new Paragraph("2          "+trad.wimLabels("TYPE")+"       "+date.getAxl2W()+"                "+date.getAxl2D()));
+			document.add(new Paragraph("3          "+trad.wimLabels("TYPE")+"       "+date.getAxl3W()+"                "+date.getAxl3D()));
+			document.add(new Paragraph("4          "+trad.wimLabels("TYPE")+"       "+date.getAxl4W()+"                "+date.getAxl4D()));
+			document.add(new Paragraph("5          "+trad.wimLabels("TYPE")+"       "+date.getAxl5W()+"                "+date.getAxl5D()));
+			document.add(new Paragraph("6          "+trad.wimLabels("TYPE")+"       "+date.getAxl6W()+"                "+date.getAxl6D()));
+			document.add(new Paragraph("7          "+trad.wimLabels("TYPE")+"       "+date.getAxl7W()+"                "+date.getAxl7D()));
+			document.add(new Paragraph("8          "+trad.wimLabels("TYPE")+"       "+date.getAxl8W()+"                "+date.getAxl8D()));
+			document.add(new Paragraph("9          "+trad.wimLabels("TYPE")+"       "+date.getAxl9W()+"                "+date.getAxl9D()));
+			
+			Image imgX = Image.getInstance(getImage1());
+			imgX.setAbsolutePosition(60, 250);
+			imgX.scaleAbsolute (200, 150);
+			
+			Image imgY = Image.getInstance(getImage2());
+			imgY.setAbsolutePosition(300, 250);
+			imgY.scaleAbsolute (200, 150);
+			//passando a imagem
+			document.add(imgX);
+			document.add(imgY);
+			document.add(new Paragraph());
+			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
+
+			rowPage.setBorderColor(BaseColor.BLACK);
+			rowPage.setBorderWidth(2);
+			rowPage.setBorder(Rectangle.BOX);
+			document.add(rowPage);
+			//final da linda da pagina
+			ColumnText ct = new ColumnText(writer.getDirectContent());
+			ct.setSimpleColumn(700,0,200,30);
+			Paragraph p = new Paragraph();
+			p.add("                              "+"Pag 1");//paragrafo Evento
+			ct.addElement(p);
+			ct.go();
+
+			document.add(new Paragraph(""));
+
+		}catch(DocumentException de) {
+			System.err.println(de.getMessage());
+		}
+		catch(IOException ioe) {
+			System.err.println(ioe.getMessage());
+		}
+			document.close();
+			//FileOutputStream fos = new FileOutputStream(RESULT);
+			//fos.write(baos.toByteArray());
+			//fos.close();  
+			// DOWNLOAD
+			date = dao.searchId(rowkey);
+			externalContext.setResponseContentType("application/pdf");
+			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+date.getSeqN()+".pdf\"");
+
+			externalContext.setResponseContentLength(baos.size());
+
+			OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+			baos.writeTo(responseOutputStream);
+			responseOutputStream.flush();
+			responseOutputStream.close();
+
+
+			facesContext.responseComplete();  
+
 		
-		Image imgX = Image.getInstance(getImage1());
-		imgX.setAbsolutePosition(60, 250);
-		imgX.scaleAbsolute (200, 150);
-		
-		Image imgY = Image.getInstance(getImage2());
-		imgY.setAbsolutePosition(300, 250);
-		imgY.scaleAbsolute (200, 150);
-		//passando a imagem
-		document.add(imgX);
-		document.add(imgY);
-		document.add(new Paragraph());
-		Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
-
-		rowPage.setBorderColor(BaseColor.BLACK);
-		rowPage.setBorderWidth(2);
-		rowPage.setBorder(Rectangle.BOX);
-		document.add(rowPage);
-		//final da linda da pagina
-		ColumnText ct = new ColumnText(writer.getDirectContent());
-		ct.setSimpleColumn(700,0,200,30);
-		Paragraph p = new Paragraph();
-		p.add("                              "+"Pag 1");//paragrafo Evento
-		ct.addElement(p);
-		ct.go();
-
-		document.add(new Paragraph(""));
-
-
-		document.close();
-		FileOutputStream fos = new FileOutputStream(RESULT);
-		fos.write(baos.toByteArray());
-		fos.close();  
-		// DOWNLOAD
-
-		externalContext.setResponseContentType("application/pdf");
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC.pdf\"");
-
-		externalContext.setResponseContentLength(baos.size());
-
-		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-		baos.writeTo(responseOutputStream);
-		responseOutputStream.flush();
-		responseOutputStream.close();
-
-
-		facesContext.responseComplete();  
-
-		// DOWNLOAD
 	}
 }
