@@ -85,31 +85,31 @@
 						<div class="row rowViewing">
 							<div class="col-2">
 								<span class="p1 text-center">#{wimLabels.serial_number}</span>
-								<div class="card cardS troca" id="serialNumber">#{wimController.serialNumber}</div>
+								<div class="card cardS troca" id="serialNumber">#{wimController.data.serialNumber}</div>
 							</div>
 							<div class="col-3">
 								<span class="p1">#{wimLabels.date_hour}</span>
-								<div class="card cardS troca" id="dataHour">#{wimController.dataHour}</div>
+								<div class="card cardS troca" id="dataHour">#{wimController.data.datetime}</div>
 							</div>
 							<div class="col-1">
 								<span class="p1">#{wimLabels.classe}</span>
-								<div class="card cardS troca" id="classe">#{wimController.classe}</div>
+								<div class="card cardS troca" id="classe">#{wimController.data.classe}</div>
 							</div>
 							<div class="col-1">
 								<span class="p1">#{wimLabels.axes}</span>
-								<div class="card cardS troca" id="eixo">#{wimController.eixo}</div>
+								<div class="card cardS troca" id="eixo">#{wimController.data.axlNumber}</div>
 							</div>
 							<div class="col-1">
 								<span class="p1">#{wimLabels.speed}</span>
-								<div class="card cardS troca" id="speed">#{wimController.speed}</div>
+								<div class="card cardS troca" id="speed">#{wimController.data.speed}</div>
 							</div>
 							<div class="col-2">
 								<span class="p1">#{wimLabels.pbtTotal}</span>
-								<div class="card cardS troca" id="pbtTotal">#{wimController.pbtTotal}</div>
+								<div class="card cardS troca" id="pbtTotal">#{wimController.data.pbtTotal}</div>
 							</div>
 							<div class="col-2">
 								<span class="p1">#{wimLabels.size}</span>
-								<div class="card cardS troca" id="size">-</div>
+								<div class="card cardS troca" id="size">#{wimController.data.size}</div>
 							</div>
 						</div>
 						<hr></hr>
@@ -142,18 +142,18 @@
 								<div class="col-md-3 tt">#{wimLabels.dstAxes}</div>
 							</div>
 							<div class="row">
-								<c:forEach var="value" begin="1" end="9">
+								<c:forEach var="value" begin="0" end="8">
 									<div class="col-md-2">
-										<div class="card eixos troca" id="">#{value}</div>
+										<div class="card eixos troca" id="">#{wimController.data.axlType[value]}</div>
 									</div>
 									<div class="col-md-3">
 										<div class="card eixos troca"></div>
 									</div>
 									<div class="col-md-3">
-										<div class="card eixos troca">#{wimController.weight[value]}</div>
+										<div class="card eixos troca">#{wimController.data.axlWeight[value]}</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card eixos troca">#{wimController.dstAxes[value]}</div>
+										<div class="card eixos troca">#{wimController.data.axlDist[value]}</div>
 									</div>
 								</c:forEach>
 							</div>
@@ -163,7 +163,7 @@
 								<div class="col-md-12">
 									<div class="progress">
 										<div class="progress-bar size" role="progressbar" id="rate"
-											aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">#{wimController.rateTxt}</div>
+											aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">#</div>
 									</div>
 								</div>
 							</div>
