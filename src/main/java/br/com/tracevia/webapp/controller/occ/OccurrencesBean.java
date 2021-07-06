@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -453,6 +457,7 @@ public class OccurrencesBean {
 
 	@PostConstruct
 	public void initialize() {	
+		
 		//input select options
 		occurrences = new ArrayList<OccurrencesData>();
 		rodovias = new ArrayList<SelectItem>();
@@ -512,7 +517,7 @@ public class OccurrencesBean {
 
 			for(int h = 1; h < 13; h++) {				
 
-					horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
+				horas.add(new SelectItem(String.valueOf(h), String.valueOf(h)));
 
 			}
 			//minutes
@@ -548,9 +553,8 @@ public class OccurrencesBean {
 			pdf = true;
 
 			//paths
-			mainPath = "C:\\Tracevia\\";
-			pathImage = "http://localhost:8081/occ/";
-			downloadPath = "file:///C:/Tracevia/";
+			mainPath = "C:\\Occurrences\\";			
+			downloadPath = "file:///C:/Occurrences/";
 			pathDownload = System.getenv("USERPROFILE") + "\\Downloads\\";
 
 		}catch(Exception ex){
@@ -1670,7 +1674,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 								
 			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
 			Image image2 = Image.getInstance(RoadConcessionaire.externalImagePath);
-											
+																							
 			//edi��o das imagens
 			image1.setAbsolutePosition(50, 790);
 			image1.scaleAbsolute (100, 50);
@@ -2116,4 +2120,19 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		System.out.println("pronto");
 		
 	}
+	
+	 public String getImagePath(String image) {
+			
+			try {
+
+				Path path = Paths.get(image);								
+				  byte[] file = Files.readAllBytes(path);
+				  return Base64.getEncoder().encodeToString(file);
+				  
+			} catch (IOException e) {											
+				return "";
+			}
+
+		}	
+	
 }

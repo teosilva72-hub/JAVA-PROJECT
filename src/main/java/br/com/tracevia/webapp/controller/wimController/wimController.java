@@ -340,9 +340,9 @@ public class wimController {
 			
 	    noImage = noImageFolder + "no-image.jpg";
 		
-		img1 = getImagePath(noImage);
-		img2 = getImagePath(noImage);
-		silueta = getImagePath(noImage);
+		//img1 = getImagePath(noImage);
+		//img2 = getImagePath(noImage);
+		//silueta = getImagePath(noImage);
 				
 	}
 	
