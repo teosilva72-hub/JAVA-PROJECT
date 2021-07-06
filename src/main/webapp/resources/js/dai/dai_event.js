@@ -8,7 +8,7 @@ const callback_alert = response => {
     response = JSON.parse(response.body);
 
     notify.find("strong").text(response.channelName)
-    notify.find("smal").text(response.dateTime)
+    notify.find("small").text(response.dateTime)
 }
 
 const callback_image = response => {
