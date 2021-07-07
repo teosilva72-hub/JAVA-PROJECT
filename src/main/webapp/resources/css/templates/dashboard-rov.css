@@ -858,6 +858,12 @@ input.apple-switch:checked:before {
   cursor: pointer;
 }
 
+.input-style-none {
+  text-align-last: end;
+  border: 0px;
+  background-color: white;
+}
+
 .holdcallstop {
   display: block;
   height: 30px;
