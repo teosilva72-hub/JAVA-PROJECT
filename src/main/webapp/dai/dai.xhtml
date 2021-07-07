@@ -43,15 +43,8 @@
 								<f:facet name="header">#{daiLabels.number}</f:facet>
 								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
-<<<<<<< HEAD
-								<h:commandButton style="display: none"
-									pt:setParameter="setParameter">
-									<f:ajax execute="@this" render=":modalPopUp"
-										listener="#{daiBean.setTraffic(data.id)}" />
-=======
 								<h:commandButton style="display: none" pt:setParameter="setParameter">
 									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getTrafficById(data.id)}" />
->>>>>>> ed83485343cb7d3cb8befcd485082028e7223961
 								</h:commandButton>
 							</h:column>
 							<h:column>
@@ -157,77 +150,8 @@
 			</h:form>
 		</div>
 		<!-- Modal -->
-<<<<<<< HEAD
-		<div class="modal fade" id="popup" data-keyboard="false" tabindex="-1"
-			aria-hidden="true">
-			<h:form prependId="false" id="modalPopUp">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
-							</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<h:graphicImage style="width: 100%;"
-								value="data:image/jpg;base64, #{daiBean.traffic.path}" />
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.local}
-										<h:outputText value="#{daiBean.traffic.direction}" />
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.incident_mod1}
-										<h:outputText value="#{daiBean.traffic.incident}" />
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.date_mod}
-										<h:outputText value="#{daiBean.traffic.date}" />
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.time_mod}
-										<h:outputText value="#{daiBean.traffic.hour}" />
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.camera_mod}
-										<h:outputText value="#{daiBean.traffic.channel}" />
-									</p>
-								</div>
-								<div class="col-md-6">
-									<p>
-										#{daiLabels.track_mod1}
-										<h:outputText value="#{daiBean.traffic.lane}" />
-									</p>
-								</div>
-								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal">#{daiLabels.back}</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</h:form>
-		</div>
-		<div class="modal fade" id="modalPdf" data-keyboard="false"
-			tabindex="-1" aria-hidden="true">
-=======
 		<div class="modal fade" id="modalPdf"
 			data-keyboard="false" tabindex="-1" aria-hidden="true">
->>>>>>> ed83485343cb7d3cb8befcd485082028e7223961
 			<h:form prependId="false" id="pdfModal">
 				<div class="modal-dialog">
 					<div class="modal-content">
