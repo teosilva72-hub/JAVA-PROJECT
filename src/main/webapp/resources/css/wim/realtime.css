@@ -2,11 +2,15 @@
 	margin-top: 5%;
 }
 
-.img {
-	width: 85%;
+.img1, .img2 {
+	border: solid 2px black;
+	width: 400px;
 	height: 200px;
 	margin-left: 7.5%;
 	margin-top: -8px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 }
 
 .img3 {
