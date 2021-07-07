@@ -577,6 +577,7 @@ footer {
 
 .left-0 {
 	left: 0;
+  right: unset !important;
 }
 
 /* display .overlay when it has the .active class */
