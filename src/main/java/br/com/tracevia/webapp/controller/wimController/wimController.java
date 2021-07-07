@@ -39,9 +39,7 @@ public class wimController {
 	String vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
 	
 	String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-	
-	String[] axlesView;
-		
+			
 	public WimData getData() {
 		return data;
 	}
@@ -93,15 +91,7 @@ public class wimController {
 	public List<SelectItem> getClasses() {
 		return classes;
 	}
-	
-	public String[] getAxlesView() {
-		return axlesView;
-	}
-
-	public void setAxlesView(String[] axlesView) {
-		this.axlesView = axlesView;
-	}
-	
+		
 	public String getRateValue() {
 		return rateValue;
 	}
@@ -120,12 +110,7 @@ public class wimController {
 		//colorInitial();
 		//rate();
 		//updateView();
-		
-		axlesView = new String[9];
-		
-		for(int x = 0; x < 9; x++)
-			axlesView[x] = String.valueOf(x + 1);
-		
+			
 		try {
 			
 			//dados();
@@ -420,12 +405,12 @@ public class wimController {
 		  img1 = getImagePath(vehiclesFolder+"WIM_car.jpg");
 		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_car.jpg");
 		  silueta = getImagePath(silFolder+"car.jpg");
-					      			
+		  					      			
 		  data.setImage("WIM_car.jpg");
 		  data.setImagePlate("Plate_WIM_car.jpg");
 		  data.setImageSil("car.jpg");
 		  data.setId(1000);		
-		  data.setSerialNumber("1000");
+		  data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("1");
 		  data.setAxlNumber("2");
@@ -486,12 +471,7 @@ public class wimController {
 			} catch (Exception e) {			
 							
 				e.printStackTrace();
-			}
-			
-                        
-					
-				
-					
+			}						
 	  }
 	  	  
 	  //------------------------------------------------------------------------
@@ -510,7 +490,7 @@ public class wimController {
 		  data.setImagePlate("Plate_WIM_bus2.jpg");
 		  data.setImageSil("bus2.jpg");
 		  data.setId(1000);	
-		  data.setSerialNumber("1001");
+		  data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("2A");
 		  data.setAxlNumber("2");
@@ -589,7 +569,7 @@ public class wimController {
 		  data.setImagePlate("Plate_WIM_trck2.jpg");
 		  data.setImageSil("2.jpg");
 		  data.setId(1000);	
-		  data.setSerialNumber("1002");
+		  data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("2");
 		  data.setAxlNumber("2");
@@ -668,7 +648,7 @@ public class wimController {
 	      data.setImagePlate("Plate_WIM_trck3.jpg");
 	      data.setImageSil("3.jpg");
 	      data.setId(1000);	
-		  data.setSerialNumber("1003");
+	      data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("4");
 		  data.setAxlNumber("3");
@@ -746,7 +726,7 @@ public class wimController {
 		  data.setImage("WIM_trck5.jpg");
 	      data.setImagePlate("Plate_WIM_trck5.jpg");
 	      data.setImageSil("5.jpg");
-		  data.setSerialNumber("1004");
+	      data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("5");
 		  data.setAxlNumber("3");
@@ -824,7 +804,7 @@ public class wimController {
 		  data.setImage("WIM_trck6.jpg");
 	      data.setImagePlate("Plate_WIM_trck6.jpg");
 	      data.setImageSil("6.jpg");
-		  data.setSerialNumber("1005");
+	      data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("8");
 		  data.setAxlNumber("6");
@@ -901,7 +881,7 @@ public class wimController {
 		  data.setImage("WIM_trck7.jpg");
 	      data.setImagePlate("Plate_WIM_trck7.jpg");
 	      data.setImageSil("7.jpg");
-		  data.setSerialNumber("1006");
+	      data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("10");
 		  data.setAxlNumber("7");
@@ -974,11 +954,11 @@ public class wimController {
 		  img1 = getImagePath(vehiclesFolder+"WIM_trck9.jpg");
 		  img2 = getImagePath(vehiclesFolder+"Plate_WIM_trck9.jpg");
 		  silueta = getImagePath(silFolder+"E9.jpg");
-					      	
+		    	
 		  data.setImage("WIM_trck9.jpg");
 	      data.setImagePlate("Plate_WIM_trck9.jpg");
 	      data.setImageSil("E9.jpg");
-		  data.setSerialNumber("1007");
+	      data.setSerialNumber(String.valueOf((int)(Math.random() * 1000 ) + 1));
 		  data.setDatetime(dta.currentDateTime());
 		  data.setClasse("E9");
 		  data.setAxlNumber("7");
