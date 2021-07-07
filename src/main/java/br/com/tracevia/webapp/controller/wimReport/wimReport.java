@@ -537,24 +537,26 @@ public class wimReport {
 				data = dao.searchId(rowkey);	
 				
 				indicator(data);
-				
+				File img1 = new File(vehiclesFolder+data.getImage());
+				File img2 = new File(vehiclesFolder+data.getImagePlate());
+				File sil = new File(vehiclesFolder+data.getImageSil());
 				//VEHICLE IMAGE
-				if(data.getImage() != null)				
+				if(img1.exists())				
 				image = getImagePath(vehiclesFolder+data.getImage());
 				
-				else image = getImagePath(noImage);
+				else image = getImagePath(noImageFolder+"no-image.jpg");
 				
 				//PLATE IMAGE
-				if(data.getImagePlate() != null)				
+				if(img2.exists())				
 					imagePlate = getImagePath(vehiclesFolder+data.getImagePlate());
 				
-				else imagePlate = getImagePath(noImage);
+				else imagePlate = getImagePath(noImageFolder+"no-image.jpg");
 				
 				//SIL IMAGE
-				if(data.getImageSil() != null)				
+				if(sil.exists())				
 					imageSil = getImagePath(silFolder+data.getImageSil());
 				
-				else imageSil = getImagePath(noImage);				
+				else imageSil = getImagePath(noImageFolder+"no-image.jpg");				
 											
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
