@@ -539,7 +539,7 @@ public class wimReport {
 				indicator(data);
 				File img1 = new File(vehiclesFolder+data.getImage());
 				File img2 = new File(vehiclesFolder+data.getImagePlate());
-				File sil = new File(vehiclesFolder+data.getImageSil());
+				File sil = new File(silFolder+data.getImageSil());
 				//VEHICLE IMAGE
 				if(img1.exists())				
 				image = getImagePath(vehiclesFolder+data.getImage());
