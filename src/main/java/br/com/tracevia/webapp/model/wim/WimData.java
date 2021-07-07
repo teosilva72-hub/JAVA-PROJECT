@@ -7,7 +7,6 @@ public class WimData{
 	private String serialNumber;
 	private String datetime;
 	private String classe;
-	private String numberAxes;
 	private String tableAxes;
 	private String speed;
 	private String pbtTotal;
@@ -21,7 +20,7 @@ public class WimData{
 	private String imageSil;
 	private String[] axlWeight, axlDist, axlType;				
 
-	public WimData(int id, boolean status, String serialNumber, String datetime, String classe, String numberAxes,
+	public WimData(int id, boolean status, String serialNumber, String datetime, String classe,
 			String tableAxes, String speed, String pbtTotal, String size, String weight, String dstAxes,
 			String axlNumber, String seqN, String[] axlWeight, String[] axlDist, String[] axlType, String image, String imagePlate, String imageSil) {
 		
@@ -29,8 +28,7 @@ public class WimData{
 		this.status = status;
 		this.serialNumber = serialNumber;
 		this.datetime = datetime;
-		this.classe = classe;
-		this.numberAxes = numberAxes;
+		this.classe = classe;	
 		this.tableAxes = tableAxes;
 		this.speed = speed;
 		this.pbtTotal = pbtTotal;
@@ -80,14 +78,6 @@ public class WimData{
 
 	public void setClasse(String classe) {
 		this.classe = classe;
-	}
-
-	public String getNumberAxes() {
-		return numberAxes;
-	}
-
-	public void setNumberAxes(String numberAxes) {
-		this.numberAxes = numberAxes;
 	}
 
 	public String getTableAxes() {

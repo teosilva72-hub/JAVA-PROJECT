@@ -1,32 +1,43 @@
 package br.com.tracevia.webapp.dao.wim;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class WIMDAO {
+	
 	private Connection conn;
 	private PreparedStatement ps, ps1;
 	private ResultSet rs, rs1;
-	WimData data = new WimData();
 	
+	WimData data = new WimData();
+		
 	//////////////////////WIM RELATORIO//////////////////////////////////////////////
 	public ArrayList<WimData>search(String start, String end, String classe) throws Exception {
+		
 		String search = "SELECT data, seqN FROM wim_vbv WHERE data BETWEEN'"+ start +"'AND'"+ end +"'AND classe ='"+ classe+"'";
 		String search1 = "SELECT data, seqN FROM wim_vbv WHERE data BETWEEN'"+ start +"'AND'"+ end+"'";
 		ArrayList<WimData> list = new ArrayList<WimData>();
+		
 		try {
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(search);
 			ps1 = conn.prepareStatement(search1);
 			rs = ps.executeQuery();
 			rs1 = ps1.executeQuery();
+			
 			if (rs.isBeforeFirst() && classe != null) {
 				while (rs.next()) {
 					WimData data = new WimData();			
@@ -35,6 +46,7 @@ public class WIMDAO {
 						list.add(data);
 				}				
 			 }else {
+				 
 				 while (rs1.next()) {
 						WimData data = new WimData();			
 							data.setDatetime(rs1.getString(1));
@@ -53,25 +65,74 @@ public class WIMDAO {
 		WimData search = new WimData();
 		
 		//Script dos atributos que as infor��es ser�o requisitadas
-		String query = "SELECT seqN, data, classe, axlNumber, speed, gross, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W," + 
-				"axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D FROM wim_vbv WHERE seqN ='"+id+"'";
-		DateTimeApplication dtm = new DateTimeApplication();
-
+		String query = "SELECT seqN, data, classe, axlNumber, speed, gross, size, image, image_plate, image_sil, axl1W, axl2W, axl3W, axl4W, axl5W, axl6W, axl7W, axl8W, axl9W, " + 
+				"axl2D, axl3D, axl4D, axl5D, axl6D, axl7D, axl8D, axl9D, axl1T, axl2T, axl3T, axl4T, axl5T, axl6T, axl7T, axl8T, axl9T " +
+				"FROM wim_vbv WHERE seqN ='"+id+"' ORDER BY vbv_id DESC LIMIT 1";
+			
 		try {
 
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
+					
 					search.setSeqN(rs.getString(1));
 					search.setDatetime(rs.getString(2));
 					search.setClasse(rs.getString(3));
-					search.setNumberAxes(rs.getString(4));
+					search.setAxlNumber(rs.getString(4));
 					search.setSpeed(rs.getString(5));
 					search.setPbtTotal(rs.getString(6));
-				}	
-			}
+					search.setSize(rs.getString(7));
+					search.setImage(rs.getString(8));
+					search.setImagePlate(rs.getString(9));
+					search.setImageSil(rs.getString(10));
+																			
+					  String[] weight = new String[9];
+						weight [0] = rs.getString(11);
+						weight [1] = rs.getString(12);
+						weight [2] = rs.getString(13);
+						weight [3] = rs.getString(14);
+						weight [4] = rs.getString(15);
+						weight [5] = rs.getString(16);
+						weight [6] = rs.getString(17);
+						weight [7] = rs.getString(18);
+						weight [8] = rs.getString(19);
+						
+						search.setAxlWeight(weight);
+						
+						//distancia entre os eixos
+						String[] dstAxes = new String[9];
+						dstAxes [0] = rs.getString(20);
+						dstAxes [1] = rs.getString(21);
+						dstAxes [2] = rs.getString(22);
+						dstAxes [3] = rs.getString(23);
+						dstAxes [4] = rs.getString(24);
+						dstAxes [5] = rs.getString(25);
+						dstAxes [6] = rs.getString(26);
+						dstAxes [7] = rs.getString(27);	
+						dstAxes [8] = " - ";
+
+						search.setAxlDist(dstAxes);
+						
+						//distancia entre os eixos
+						String[] typeAxes = new String[9];
+						typeAxes [0] = rs.getString(28);
+						typeAxes [1] = rs.getString(29);
+						typeAxes [2] = rs.getString(30);
+						typeAxes [3] = rs.getString(31);
+						typeAxes [4] = rs.getString(32);
+						typeAxes [5] = rs.getString(33);
+						typeAxes [6] = rs.getString(34);
+						typeAxes [7] = rs.getString(35);
+						typeAxes [8] = rs.getString(36);
+						
+						search.setAxlType(typeAxes);
+												
+				 }	
+			 }
+			
 		}catch(SQLException sqlbuscar) {
 			sqlbuscar.printStackTrace();
 
@@ -158,11 +219,13 @@ public class WIMDAO {
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
 					value = rs.getString(1);
 				}
 			}
+			
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
@@ -172,33 +235,42 @@ public class WIMDAO {
 	public String classe() throws Exception{
 		String sql = "SELECT classe from wim_vbv ORDER BY vbv_id desc limit 1";
 		String value = ""; 
+		
 		try {
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
 					value = rs.getString(1);
 				}
 			}
+			
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
+		
 		//retornando o valor do �ltimo a id para a variavel (value)
 		return value;
 	}
 	public String Classe() throws Exception{
 		String sql = "SELECT data from wim_vbv ORDER BY vbv_id desc limit 1";
 		String value = ""; 
+		
 		try {
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
 					value = rs.getString(1);
 				}
 			}
+			
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
@@ -206,17 +278,22 @@ public class WIMDAO {
 		return value;
 	}
 	public String eixo() throws Exception{
+		
 		String sql = "SELECT axlNumber from wim_vbv ORDER BY vbv_id desc limit 1";
 		String value = ""; 
+		
 		try {
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
 					value = rs.getString(1);
 				}
 			}
+			
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
@@ -224,12 +301,16 @@ public class WIMDAO {
 		return value;
 	}
 	public String speed() throws Exception{
+		
 		String sql = "SELECT speed from wim_vbv ORDER BY vbv_id desc limit 1";
 		String value = ""; 
+		
 		try {
+			
 			conn = ConnectionFactory.connectToTraceviaApp();
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
 			if(rs != null) {
 				while(rs.next()) {
 					value = rs.getString(1);
@@ -238,9 +319,11 @@ public class WIMDAO {
 		}finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
+		
 		//retornando o valor do �ltimo a id para a variavel (value)
 		return value;
 	}
+	
 	public String pbtTotal() throws Exception{
 		String sql = "SELECT gross from wim_vbv ORDER BY vbv_id desc limit 1";
 		String value = ""; 
@@ -668,5 +751,19 @@ public class WIMDAO {
 		}		
 						
 	}
+	
+	   public String getImagePath(String image) {
+			
+			try {
+
+				Path path = Paths.get(image);								
+				  byte[] file = Files.readAllBytes(path);
+				  return Base64.getEncoder().encodeToString(file);
+				  
+			} catch (IOException e) {											
+				return "";
+			}
+
+		}
 		
 }

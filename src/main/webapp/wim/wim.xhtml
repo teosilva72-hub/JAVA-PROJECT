@@ -76,7 +76,7 @@
 								</h:column>
 								<h:column>
 									<f:facet name="header">#{wimLabels.date_hour}</f:facet>
-									<h:outputText value="#{data.data}" style="font-size: 12px; " />
+									<h:outputText value="#{data.datetime}" style="font-size: 12px; " />
 								</h:column>
 							</h:dataTable>
 						</div>
@@ -103,32 +103,32 @@
 						<div class="row">
 							<div class="col-3">
 								<span class="p1 text-center">#{wimLabels.serial_number}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.seqN}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.seqN}</div>
 							</div>
 							<div class="col-6">
 								<span class="p1">#{wimLabels.date_hour}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.data}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.datetime}</div>
 							</div>
 							<div class="col-3">
 								<span class="p1">#{wimLabels.classe}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.classe}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.classe}</div>
 							</div>
 							<div class="col-3">
 								<span class="p1">#{wimLabels.axes}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.numberAxes}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.axlNumber}</div>
 							</div>
 
 							<div class="col-3">
 								<span class="p1">#{wimLabels.speed}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.speed}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.speed}</div>
 							</div>
 							<div class="col-3">
 								<span class="p1">#{wimLabels.pbtTotal}</span>
-								<div class="card cardS alert-dark">#{wimReport.date.pbtTotal}</div>
+								<div class="card cardS alert-dark">#{wimReport.data.pbtTotal}</div>
 							</div>
 							<div class="col-3">
 								<span class="p1">#{wimLabels.size}</span>
-								<div class="card cardS alert-dark">-</div>
+								<div class="card cardS alert-dark">#{wimReport.data.size}</div>
 							</div>
 						</div>
 					</h:form>
@@ -137,13 +137,13 @@
 						<div class="row" onselectstart="return false"
 							ondragstart="return false;">
 							<div class="col-lg-6">
-								<img class="img" id="img" src="data:image/jpg;base64, #{wimReport.image1}" alt="" />
+								<img class="img" id="img1" src="data:image/jpg;base64, #{wimReport.image}" alt="" />
 							</div>
 							<div class="col-lg-6">
-								<img class="img" id="img" src="data:image/jpg;base64, #{wimReport.image2}" alt="" />
+								<img class="img" id="img2" src="data:image/jpg;base64, #{wimReport.imagePlate}" alt="" />
 							</div>
 							<div class="col-md-12">
-								<img class="img3" src="data:image/jpg;base64, #{wimReport.silueta}" alt="" />
+								<img class="img3" src="data:image/jpg;base64, #{wimReport.imageSil}" alt="" />
 							</div>
 						</div>
 					</h:form>
@@ -163,18 +163,18 @@
 								<div class="col-md-3 tt">#{wimLabels.dstAxes}</div>
 							</div>
 							<div class="row">
-								<c:forEach var="value" begin="1" end="9" id="dados3">
+								<c:forEach var="value" begin="0" end="8" id="dados3">
 									<div class="col-md-2">
-										<div class="card alert-dark eixos">#{value}</div>
+										<div class="card alert-dark eixos">#{value+1}</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card alert-dark eixos"></div>
+										<div class="card alert-dark eixos">#{wimReport.data.axlType[value]}</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card alert-dark eixos">#{wimReport.weight[value]}</div>
+										<div class="card alert-dark eixos">#{wimReport.data.axlWeight[value]}</div>
 									</div>
 									<div class="col-md-3">
-										<div class="card alert-dark eixos">#{wimReport.dstAxes[value]}</div>
+										<div class="card alert-dark eixos">#{wimReport.data.axlDist[value]}</div>
 									</div>
 								</c:forEach>
 							</div>
