@@ -68,6 +68,6 @@ $(document).ready(function () {
 	dataPicker()
 disabledBtn()
 	$("#btnDetalhes").click(function() {
-		$("#popup").modal("show")
+		$("#DAIpopup").modal("show")
 	})
 });

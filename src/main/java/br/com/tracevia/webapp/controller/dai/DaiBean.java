@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.dai;
 
-import java.time.LocalDateTime;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,8 +55,8 @@ public class DaiBean {
 		return traffic;
 	}
 
-	public void setTraffic(int idx) {
-		this.traffic = traffics.get(idx);
+	public void setTraffic(Traffic traffic) {
+		this.traffic = traffic;
 	}
 
 	public List<Traffic> getTraffics() {
@@ -71,7 +70,7 @@ public class DaiBean {
 
 		try {
 			getAllFile(formattter.format(date));
-			setTraffic(0);
+			getTrafficById(0);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -95,9 +94,9 @@ public class DaiBean {
 			String[] pathS = path.toString().split("\\\\");
 			String[] info = pathS[pathS.length-1].split("\\.")[0].split("_");
 			Date date_new = new SimpleDateFormat("yyyyMMdd").parse(info[4]);
-			Date hour_new = new SimpleDateFormat("hhmmssSSS").parse(info[5]);
+			Date hour_new = new SimpleDateFormat("HHmmssSSS").parse(info[5]);
 			SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy/MM/dd");
-			SimpleDateFormat hour_formatter = new SimpleDateFormat("hh:mm:ss");
+			SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss");
 			
 			id = idx;
 			incident = info[0];
@@ -172,6 +171,36 @@ public class DaiBean {
 			
 			return new_list;
 		}
+	}
+	
+	public void getTrafficById(int id) {
+		traffic = traffics.get(id);
+	}
+
+	public void getSpecificFile() throws IOException, ParseException {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		SimpleDateFormat date_parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss");
+
+		Date date = date_parse.parse(params.get("filterDate"));
+
+		String hour = hour_formatter.format(date);
+		List<Path> list = getAllFolders(date_formatter.format(date));
+
+		for (final Path path : list) {
+			List<Path> files = listAllFiles(path.toString());
+			for (final Path file : files) {
+				Traffic verify_traffic = new Traffic(file, 0);
+				
+				if (verify_traffic.hour.equals(hour)) {
+					traffic = verify_traffic;
+				}
+			}
+		}
+
 	}
 	
 	public void getAllFile(String date) throws IOException, ParseException {

@@ -577,6 +577,7 @@ footer {
 
 .left-0 {
 	left: 0;
+  right: unset !important;
 }
 
 /* display .overlay when it has the .active class */
@@ -856,6 +857,12 @@ input.apple-switch:checked:before {
 
 .holdcall:pointer {
   cursor: pointer;
+}
+
+.input-style-none {
+  text-align-last: end;
+  border: 0px;
+  background-color: white;
 }
 
 .holdcallstop {

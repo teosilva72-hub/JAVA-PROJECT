@@ -43,10 +43,15 @@
 								<f:facet name="header">#{daiLabels.number}</f:facet>
 								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
+<<<<<<< HEAD
 								<h:commandButton style="display: none"
 									pt:setParameter="setParameter">
 									<f:ajax execute="@this" render=":modalPopUp"
 										listener="#{daiBean.setTraffic(data.id)}" />
+=======
+								<h:commandButton style="display: none" pt:setParameter="setParameter">
+									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getTrafficById(data.id)}" />
+>>>>>>> ed83485343cb7d3cb8befcd485082028e7223961
 								</h:commandButton>
 							</h:column>
 							<h:column>
@@ -152,6 +157,7 @@
 			</h:form>
 		</div>
 		<!-- Modal -->
+<<<<<<< HEAD
 		<div class="modal fade" id="popup" data-keyboard="false" tabindex="-1"
 			aria-hidden="true">
 			<h:form prependId="false" id="modalPopUp">
@@ -218,6 +224,10 @@
 		</div>
 		<div class="modal fade" id="modalPdf" data-keyboard="false"
 			tabindex="-1" aria-hidden="true">
+=======
+		<div class="modal fade" id="modalPdf"
+			data-keyboard="false" tabindex="-1" aria-hidden="true">
+>>>>>>> ed83485343cb7d3cb8befcd485082028e7223961
 			<h:form prependId="false" id="pdfModal">
 				<div class="modal-dialog">
 					<div class="modal-content">

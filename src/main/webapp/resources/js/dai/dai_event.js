@@ -1,4 +1,5 @@
 let notify = $("#notifyDAI")
+let DAIpopup = $("#DAIpopup")
 
 const connectDAI = async (request, debug) => {
 	return await sendMsgStomp(request, 'DAI_Request', debug)
@@ -6,9 +7,10 @@ const connectDAI = async (request, debug) => {
 
 const callback_alert = response => {
     response = JSON.parse(response.body);
+	let date = response.dateTime.slice(0, 19)
 
-    notify.find("strong").text(response.channelName)
-    notify.find("small").text(response.dateTime)
+    notify.find("strong").text(response.channelName);
+    notify.find("#filterDate").val(date);
 }
 
 const callback_image = response => {
@@ -35,9 +37,16 @@ const consumeDAI = async debug => {
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
+const alert_click = () => {
+	notify.find("#filterDateButton").click();
+	DAIpopup.modal("show")
+}
+
 const initDAI = async debug => {
     $(function () {
 		consumeDAI(debug);
+
+		notify.find("img").click(alert_click)
 	});
 }
 
