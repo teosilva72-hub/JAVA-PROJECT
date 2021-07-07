@@ -319,7 +319,7 @@ public class DaiBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.id));
+			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.plate));
 			document.add(new Paragraph(localeDai.getStringKey("way")+": "+traffic.direction));
 			document.add(new Paragraph(localeDai.getStringKey("track")+": "+traffic.lane));
 			document.add(new Paragraph(localeDai.getStringKey("channel")+": "+traffic.channel));

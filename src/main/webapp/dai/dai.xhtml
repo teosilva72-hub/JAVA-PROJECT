@@ -138,8 +138,8 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">#{daiLabels.back}</button>
-							<h:commandButton value="#{daiLabels.search}"
-								styleClass="btn btn-dark" pt:data-dismiss="modal">
+							<h:commandButton value="#{daiLabels.search}" id="btnSearch" onclick="disPdfDetail()"
+								styleClass="btn btn-danger" pt:data-dismiss="modal">
 								<f:ajax execute="@form" render=":mainTable"
 									listener="#{daiBean.getFilesFiltered()}"
 									onevent="onFilterFunction" />
@@ -181,7 +181,7 @@
 									<h:commandButton pt:onclose="download" pt:data-toggle="modal"
 										pt:data-target="#modalPdf" id="gerarPdf"
 										value="#{daiLabels.btnDownload}"
-										class="btn btn-dark form-draw-button" action="#{daiBean.pdf}" />
+										class="btn btn-danger form-draw-button" action="#{daiBean.pdf}" />
 								</div>
 							</div>
 						</div>

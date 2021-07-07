@@ -17,8 +17,8 @@ function getTr(){
 		.on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
 			if ( type === 'row' ) {
 				$(originalEvent.target).closest("tr").find("[setParameter=setParameter]").click()
-				$('[id$=btnPdf]').prop('disabled', true);
-				$('[id$=btnDetalhes]').prop('disabled', true);
+				$('[id$=btnPdf]').prop('disabled', false);
+				$('[id$=btnDetalhes]').prop('disabled', false);
 			}
 		} );
 
@@ -58,6 +58,10 @@ const onFilterFunction = data => {
 
 			break;
 	}
+}
+function disPdfDetail(){
+	$('[id$=btnPdf]').prop('disabled', true);
+	$('[id$=btnDetalhes]').prop('disabled', true);
 }
 function disabledBtn(){
 	$('[id$=btnPdf]').prop('disabled', true);
