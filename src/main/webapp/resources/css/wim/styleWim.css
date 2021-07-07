@@ -92,3 +92,13 @@
 .textPdf1{
 	font-weight: 999;
 }
+#img1, #img2{
+	width: 150px;
+	width: 100%;
+	margin-top: 2%;
+	border: solid 2px black;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+}
