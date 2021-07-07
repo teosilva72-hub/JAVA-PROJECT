@@ -43,13 +43,16 @@
 								<f:facet name="header">#{daiLabels.number}</f:facet>
 								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
-								<h:commandButton style="display: none" pt:setParameter="setParameter">
-									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.setTraffic(data.id)}" />
+								<h:commandButton style="display: none"
+									pt:setParameter="setParameter">
+									<f:ajax execute="@this" render=":modalPopUp"
+										listener="#{daiBean.setTraffic(data.id)}" />
 								</h:commandButton>
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{daiLabels.way}</f:facet>
-								<h:outputText value="#{data.direction}" style="font-size: 12px; " />
+								<h:outputText value="#{data.direction}"
+									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{daiLabels.track}</f:facet>
@@ -80,8 +83,9 @@
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
 						onclick="dataPicker()">#{daiLabels.search}</button>
-					<button id="btnDetalhes" class="btn btn-primary btn1">#{daiLabels.details}</button>
-					<button type="button" class="btn btn-dark btn1" id="btnPdf" data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
+					<button id="btnDetalhes" class="btn btn-dark btn1">#{daiLabels.details}</button>
+					<button type="button" class="btn btn-danger btn1" id="btnPdf"
+						data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
 				</div>
 			</div>
 		</div>
@@ -102,12 +106,13 @@
 							<div class="row">
 								<div class="col-md-4">
 									<span>#{daiLabels.date}</span>
-									<h:inputText class="form-control inputDesign" id="dateSearch" name="dateSearch"
-										pt:placeholder="yyyy-mm-dd"></h:inputText>
+									<h:inputText class="form-control inputDesign" id="dateSearch"
+										name="dateSearch" pt:placeholder="yyyy-mm-dd"></h:inputText>
 								</div>
 								<div class="col-md-4">
-									<span>#{daiLabels.camera}</span>
-									<select class="form-control inputDesign" id="channelSearch" name="channelSearch">
+									<span>#{daiLabels.camera}</span> <select
+										class="form-control inputDesign" id="channelSearch"
+										name="channelSearch">
 										<option value="">#{daiLabels.select}</option>
 										<option value="1">#{daiLabels.channel} 1</option>
 										<option value="2">#{daiLabels.channel} 2</option>
@@ -116,8 +121,9 @@
 									</select>
 								</div>
 								<div class="col-md-4">
-									<span>#{daiLabels.track}</span>
-									<select class="form-control inputDesign" id="laneSearch" name="laneSearch">
+									<span>#{daiLabels.track}</span> <select
+										class="form-control inputDesign" id="laneSearch"
+										name="laneSearch">
 										<option value="">#{daiLabels.select}</option>
 										<option value="01">#{daiLabels.track} 01</option>
 										<option value="02">#{daiLabels.track} 02</option>
@@ -134,8 +140,11 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">#{daiLabels.back}</button>
-							<h:commandButton value="#{daiLabels.search}" styleClass="btn btn-primary" pt:data-dismiss="modal">
-								<f:ajax execute="@form" render=":mainTable" listener="#{daiBean.getFilesFiltered()}" onevent="onFilterFunction" />
+							<h:commandButton value="#{daiLabels.search}"
+								styleClass="btn btn-dark" pt:data-dismiss="modal">
+								<f:ajax execute="@form" render=":mainTable"
+									listener="#{daiBean.getFilesFiltered()}"
+									onevent="onFilterFunction" />
 							</h:commandButton>
 						</div>
 					</div>
@@ -143,8 +152,8 @@
 			</h:form>
 		</div>
 		<!-- Modal -->
-		<div class="modal fade" id="popup"
-			data-keyboard="false" tabindex="-1" aria-hidden="true">
+		<div class="modal fade" id="popup" data-keyboard="false" tabindex="-1"
+			aria-hidden="true">
 			<h:form prependId="false" id="modalPopUp">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -158,27 +167,46 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
+							<h:graphicImage style="width: 100%;"
+								value="data:image/jpg;base64, #{daiBean.traffic.path}" />
 						</div>
 						<div class="modal-body">
 							<div class="row">
 								<div class="col-md-6">
-									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
+									<p>
+										#{daiLabels.local}
+										<h:outputText value="#{daiBean.traffic.direction}" />
+									</p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.incident_mod1} <h:outputText value="#{daiBean.traffic.incident}" /></p>
+									<p>
+										#{daiLabels.incident_mod1}
+										<h:outputText value="#{daiBean.traffic.incident}" />
+									</p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.date_mod} <h:outputText value="#{daiBean.traffic.date}" /></p>
+									<p>
+										#{daiLabels.date_mod}
+										<h:outputText value="#{daiBean.traffic.date}" />
+									</p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.time_mod}<h:outputText value="#{daiBean.traffic.hour}" /></p>
+									<p>
+										#{daiLabels.time_mod}
+										<h:outputText value="#{daiBean.traffic.hour}" />
+									</p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.camera_mod} <h:outputText value="#{daiBean.traffic.channel}" /></p>
+									<p>
+										#{daiLabels.camera_mod}
+										<h:outputText value="#{daiBean.traffic.channel}" />
+									</p>
 								</div>
 								<div class="col-md-6">
-									<p>#{daiLabels.track_mod1}<h:outputText value="#{daiBean.traffic.lane}" /></p>
+									<p>
+										#{daiLabels.track_mod1}
+										<h:outputText value="#{daiBean.traffic.lane}" />
+									</p>
 								</div>
 								<button type="button" class="btn btn-dark btn1"
 									data-dismiss="modal">#{daiLabels.back}</button>
@@ -188,30 +216,39 @@
 				</div>
 			</h:form>
 		</div>
-		<div class="modal fade" id="modalPdf"
-			data-keyboard="false" tabindex="-1" aria-hidden="true">
+		<div class="modal fade" id="modalPdf" data-keyboard="false"
+			tabindex="-1" aria-hidden="true">
 			<h:form prependId="false" id="pdfModal">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">
-								PDF  <i class="fas fa-cloud-download-alt"></i><hr></hr>
+								PDF <i class="fas fa-cloud-download-alt"></i>
 							</h5>
+							<hr></hr>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
+
 							<div class="row">
 								<div class="col-md-12">#{daiLabels.download}</div>
-								<button type="button" class="btn btn-dark "
-									data-dismiss="modal">#{daiLabels.back}</button>
+							</div>
+							<hr></hr>
+							<div class="row">
+								<div class="col-md-6"></div>
+								<div class="col-md-2">
+									<button type="button" class="btn btn-dark "
+										data-dismiss="modal">#{daiLabels.back}</button>
+								</div>
+								<div class="col-md-4">
 									<h:commandButton pt:onclose="download" pt:data-toggle="modal"
-								pt:data-target="#modalPdf" id="gerarPdf"
-							    value="#{daiLabels.btnDownload}"
-								class="btn btn-dark form-draw-button"
-								action="#{daiBean.pdf}" />
+										pt:data-target="#modalPdf" id="gerarPdf"
+										value="#{daiLabels.btnDownload}"
+										class="btn btn-dark form-draw-button" action="#{daiBean.pdf}" />
+								</div>
 							</div>
 						</div>
 					</div>
