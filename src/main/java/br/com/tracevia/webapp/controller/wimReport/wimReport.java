@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.wimReport;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -27,6 +28,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
@@ -408,6 +410,17 @@ public class wimReport {
 				request.execute("sizeNormal();");
 				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
 			}
+		}else if(classe.equals("3")){
+			if(gross < 17000) {
+				request.execute("sizeNormal();");
+				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
+			}else if(gross > 17000 && gross <= 17850){
+				request.execute("sizeAtenttion();");
+				rateTxt = trad.wimLabels("indicator2")+" "+ gross;
+			}else{
+				request.execute("sizeAcima();");
+				rateTxt = trad.wimLabels("indicator1")+" "+ gross;
+			}
 		}else if(classe.equals("4")){
 			if(gross < 17000) {
 				request.execute("sizeNormal();");
@@ -577,7 +590,7 @@ public class wimReport {
 			document.add(new Paragraph("\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+data.getSeqN()
-					+"              "+trad.wimLabels("DATEHOUR")+ data.getDatetime()+"               "
+					+"              "+trad.wimLabels("DATAHOUR")+": "+ data.getDatetime()+"               "
 					+trad.wimLabels("CLASSE")+": "+data.getClasse()));
 			document.add(new Paragraph(trad.wimLabels("AXES")+": "+data.getAxlNumber()
 					+"               "+trad.wimLabels("SPEED")+": "+ data.getSpeed()
@@ -585,30 +598,37 @@ public class wimReport {
 			document.add(new Paragraph("_____________________________________________________________________________\n\n"));
 			document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
-			document.add(new Paragraph(trad.wimLabels("AXES")+"     "+trad.wimLabels("TYPE")+"       "
-									  +trad.wimLabels("WEIGHT")+"       "+trad.wimLabels("DSTAXES")+"            "));
-			document.add(new Paragraph("1          "+data.getAxlType()[0]+"       "+data.getAxlWeight()[0]+"               "+data.getAxlDist()[0]));
-			document.add(new Paragraph("2          "+data.getAxlType()[1]+"       "+data.getAxlWeight()[1]+"               "+data.getAxlDist()[1]));
-			document.add(new Paragraph("3          "+data.getAxlType()[2]+"       "+data.getAxlWeight()[2]+"               "+data.getAxlDist()[2]));
-			document.add(new Paragraph("4          "+data.getAxlType()[3]+"       "+data.getAxlWeight()[3]+"               "+data.getAxlDist()[3]));
-			document.add(new Paragraph("5          "+data.getAxlType()[4]+"       "+data.getAxlWeight()[4]+"               "+data.getAxlDist()[4]));
-			document.add(new Paragraph("6          "+data.getAxlType()[5]+"       "+data.getAxlWeight()[5]+"               "+data.getAxlDist()[5]));
-			document.add(new Paragraph("7          "+data.getAxlType()[6]+"       "+data.getAxlWeight()[6]+"               "+data.getAxlDist()[6]));
-			document.add(new Paragraph("8          "+data.getAxlType()[7]+"       "+data.getAxlWeight()[7]+"               "+data.getAxlDist()[7]));
-			document.add(new Paragraph("9          "+data.getAxlType()[8]+"       "+data.getAxlWeight()[8]+"               "+data.getAxlDist()[8]));
 			
-			System.out.println(vehiclesFolder+data.getImage());
-			
-			Image imgX = Image.getInstance(vehiclesFolder+data.getImage());
-			imgX.setAbsolutePosition(60, 250);
-			imgX.scaleAbsolute (200, 150);
-			
-			Image imgY = Image.getInstance(vehiclesFolder+data.getImagePlate());
-			imgY.setAbsolutePosition(300, 250);
-			imgY.scaleAbsolute (200, 150);
+			File img1 = new File(vehiclesFolder+data.getImage());
+			File img2 = new File(vehiclesFolder+data.getImagePlate());
+			if(img1.exists()) {
+				Image imgX = Image.getInstance(vehiclesFolder+data.getImage());
+				imgX.setAbsolutePosition(100, 280);
+				imgX.scaleAbsolute (200, 150);
+				document.add(imgX);
+				System.out.println("existe");
+			}else {
+				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
+				imgX.setAbsolutePosition(100, 280);
+				imgX.scaleAbsolute (200, 150);
+				document.add(imgX);
+				System.out.println("Não existe");
+			}
+			if(img2.exists()) {
+				Image imgY = Image.getInstance(vehiclesFolder+data.getImagePlate());
+				imgY.setAbsolutePosition(300, 280);
+				imgY.scaleAbsolute (200, 150);
+				document.add(imgY);
+			}else {
+				Image imgY = Image.getInstance(noImageFolder+"no-image.jpg");
+				imgY.setAbsolutePosition(300, 280);
+				imgY.scaleAbsolute (200, 150);
+				document.add(imgY);
+				System.out.println("Não existe");
+			}
 			//passando a imagem
-			document.add(imgX);
-			document.add(imgY);
+			
+			
 			document.add(new Paragraph());
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
@@ -623,7 +643,46 @@ public class wimReport {
 			p.add("                              "+"Pag 1");//paragrafo Evento
 			ct.addElement(p);
 			ct.go();
-
+			 PdfPTable table1 = new PdfPTable(3);
+			 PdfPTable table2 = new PdfPTable(3);
+			 PdfPTable table3 = new PdfPTable(3);
+			 PdfPTable table4 = new PdfPTable(3);
+			 PdfPTable table5 = new PdfPTable(3);
+			 PdfPTable table6 = new PdfPTable(3);
+			 PdfPTable table7 = new PdfPTable(3);
+			 PdfPTable table8 = new PdfPTable(3);
+			 PdfPTable table9 = new PdfPTable(3);
+			 PdfPTable table10 = new PdfPTable(3);
+			 table1.addCell(trad.wimLabels("AXES"));table1.addCell(trad.wimLabels("TYPE"));
+			 table1.addCell(trad.wimLabels("WEIGHT"));table1.addCell(trad.wimLabels("DSTAXES"));
+		     document.add(table1);
+		     table2.addCell("1");table2.addCell(data.getAxlType()[0]);
+			 table2.addCell(data.getAxlWeight()[0]);table2.addCell(data.getAxlDist()[1]);
+		     document.add(table2);
+		     table3.addCell("2");table3.addCell(data.getAxlType()[1]);
+			 table3.addCell(data.getAxlWeight()[1]);table3.addCell(data.getAxlDist()[1]);
+		     document.add(table3);
+		     table4.addCell("3");table4.addCell(data.getAxlType()[2]);
+			 table4.addCell(data.getAxlWeight()[2]);table4.addCell(data.getAxlDist()[2]);
+		     document.add(table4);
+		     table5.addCell("4");table5.addCell(data.getAxlType()[3]);
+			 table5.addCell(data.getAxlWeight()[3]);table5.addCell(data.getAxlDist()[3]);
+		     document.add(table5);
+		     table6.addCell("5");table6.addCell(data.getAxlType()[4]);
+			 table6.addCell(data.getAxlWeight()[4]);table6.addCell(data.getAxlDist()[4]);
+		     document.add(table6);
+		     table7.addCell("6");table7.addCell(data.getAxlType()[5]);
+			 table7.addCell(data.getAxlWeight()[5]);table7.addCell(data.getAxlDist()[5]);
+		     document.add(table7);
+		     table8.addCell("7");table8.addCell(data.getAxlType()[6]);
+			 table8.addCell(data.getAxlWeight()[6]);table2.addCell(data.getAxlDist()[6]);
+		     document.add(table8);
+		     table9.addCell("8");table9.addCell(data.getAxlType()[7]);
+			 table9.addCell(data.getAxlWeight()[7]);table9.addCell(data.getAxlDist()[7]);
+		     document.add(table9);
+		     table10.addCell("9");table10.addCell(data.getAxlType()[8]);
+			 table10.addCell(data.getAxlWeight()[8]);table10.addCell(data.getAxlDist()[8]);
+		     document.add(table10);
 			document.add(new Paragraph(""));
 
 		}catch(DocumentException de) {
