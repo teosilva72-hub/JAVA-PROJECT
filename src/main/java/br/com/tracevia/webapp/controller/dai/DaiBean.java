@@ -26,6 +26,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
+import org.apache.tools.ant.taskdefs.optional.i18n.Translate;
 import org.primefaces.context.RequestContext;
 
 import com.itextpdf.text.BaseColor;
@@ -40,6 +41,7 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.util.LocaleUtil;
@@ -70,7 +72,6 @@ public class DaiBean {
 
 		try {
 			getAllFile(formattter.format(date));
-			getTrafficById(0);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,15 +118,17 @@ public class DaiBean {
 		}
 
 		public String getDirection() {
-			return direction;
+			TranslationMethods trad = new TranslationMethods();
+			return trad.daiLabels(direction);
 		}
 		
 		public String getChannel() {
 			return channel;
 		}
-		
+		 
 		public String getIncident() {
-			return incident;
+			TranslationMethods trad = new TranslationMethods();
+			return trad.daiLabels(incident);
 		}
 
 		public String getDate() {
@@ -286,6 +289,7 @@ public class DaiBean {
 	public void pdf() {
 		
 		try {
+			TranslationMethods trad = new TranslationMethods();
 			localeDai = new LocaleUtil();	
 			localeDai.getResourceBundle(LocaleUtil.LABELS_DAI);
 			RequestContext.getCurrentInstance().execute("getTr()");
@@ -319,13 +323,13 @@ public class DaiBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.id));
-			document.add(new Paragraph(localeDai.getStringKey("way")+": "+traffic.direction));
+			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.plate));
+			document.add(new Paragraph(localeDai.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
 			document.add(new Paragraph(localeDai.getStringKey("track")+": "+traffic.lane));
 			document.add(new Paragraph(localeDai.getStringKey("channel")+": "+traffic.channel));
 			document.add(new Paragraph(localeDai.getStringKey("date")+": "+traffic.date));
 			document.add(new Paragraph(localeDai.getStringKey("time")+": "+traffic.hour));
-			document.add(new Paragraph(localeDai.getStringKey("incident")+": "+traffic.incident));
+			document.add(new Paragraph(localeDai.getStringKey("incident")+": "+trad.daiLabels(traffic.incident)));
 
 			Image imgX = Image.getInstance(traffic.file.toString());
 			imgX.setAbsolutePosition(50, 200);
