@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -210,6 +212,43 @@ public class OCRDAO{
 		//passando os valores dos atributos para a vari�vel occ
 		return ocr;
 
+	}
+   
+   
+   public List<OCR> Status() throws Exception {
+		
+		
+		List<OCR> list = new ArrayList<OCR>();		
+						
+		String select = "SELECT equip_id, equip_name, equip_status FROM connect_monitor WHERE equip_type = 'OCR' ";
+									
+	  try {
+			
+		   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);			
+									
+			rs = ps.executeQuery();
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					OCR ocr = new OCR();
+
+			         ocr.setEquip_id(rs.getInt("equip_id"));
+			         ocr.setNome(rs.getString("equip_name"));
+			         ocr.setStatus(rs.getInt("equip_status"));
+			        															
+					list.add(ocr);
+				}				
+			 }			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+ 				
+		return list;
+		
 	}
 
 }

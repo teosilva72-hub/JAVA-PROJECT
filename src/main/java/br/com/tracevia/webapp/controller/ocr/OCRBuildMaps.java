@@ -9,7 +9,7 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
-import br.com.tracevia.webapp.dao.ocr.OCRStatusDAO;
+import br.com.tracevia.webapp.dao.ocr.OCRDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 
 @ManagedBean(name="ocrMapsView")
@@ -41,18 +41,17 @@ public class OCRBuildMaps {
 		
 			try {
 			
-			OCRStatusDAO ocrDAO = new OCRStatusDAO();  
+			OCRDAO ocrDAO = new OCRDAO();  
 			NotificationsBean notif = new NotificationsBean();
 				
 			ocrList = new ArrayList<OCR>();
 			
 			OCR ocr =  new OCR();						
 			ocrList = ocr.listEquipments("ocr");			
-				
+							
+			ocrStatus = new ArrayList<OCR>();
 			
-			//ocrStatus = new ArrayList<OCR>();
-			
-			//ocrStatus = ocrDAO.ocrStatus();
+			ocrStatus = ocrDAO.Status();
 						
 			
 			}catch (IndexOutOfBoundsException ex) {			
