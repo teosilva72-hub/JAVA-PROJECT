@@ -46,7 +46,7 @@ const initDAI = async debug => {
     $(function () {
 		consumeDAI(debug);
 
-		notify.find("img").click(alert_click)
+		// notify.find("img").click(alert_click)
 	});
 }
 
