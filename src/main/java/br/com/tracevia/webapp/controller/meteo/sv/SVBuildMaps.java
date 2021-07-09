@@ -1,49 +1,42 @@
 package br.com.tracevia.webapp.controller.meteo.sv;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ListEquipments;
-import br.com.tracevia.webapp.model.meteo.sv.SV;
 
 
 @ManagedBean(name="svMapsView")
 @ViewScoped
 public class SVBuildMaps {
 	
-	List<? extends Equipments> svList;
-			
-	public List<? extends Equipments> getSvList() {
-		return svList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setSvList(List<? extends Equipments> svList) {
-		this.svList = svList;
-	}
-	
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}			
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateEquipment();
+		//BuildSV();
 		
 	}
 	
-	public void CreateEquipment() {
+	public void BuildSV() {
 						
 		try {	
 			
 			try {
 				
-				svList = new ArrayList<SV>();
-				
-				SV sv =  new SV();						
-				svList = sv.listEquipments("sv");
+			
 								
 	            }catch(IndexOutOfBoundsException ex) {}
 			

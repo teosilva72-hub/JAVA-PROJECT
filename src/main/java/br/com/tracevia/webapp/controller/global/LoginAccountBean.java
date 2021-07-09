@@ -159,9 +159,9 @@ public class LoginAccountBean {
 	}
 
 	public String loginValidation() throws Exception {
-
+		
 		load = new LoadStartupModules(); // Carregar os m�dulos
-
+	
 		boolean status = false, inMemory = false, isName = false;
 		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();
 		InMemoryAuthenticationUtil memoryUtil = new InMemoryAuthenticationUtil();
@@ -202,9 +202,9 @@ public class LoginAccountBean {
 																												// User
 					context.getExternalContext().getSessionMap().put("concessionaria",
 							RoadConcessionaire.roadConcessionaire);
-
+				
 					load.startupComponents(); // Inicializar Componentes
-
+								
 					// NOT IN USE
 					mapUI = RoadConcessionaire.mapUI; // Load Map
 					linearMapUI = RoadConcessionaire.linearMapUI;
@@ -237,8 +237,9 @@ public class LoginAccountBean {
 							context.getExternalContext().getSessionMap().put("nivel", login.getPermission_id());
 							context.getExternalContext().getSessionMap().put("concessionaria",
 									RoadConcessionaire.roadConcessionaire);
-
+													
 							load.startupComponents(); // Inicializar Componentes
+						
 							mapUI = RoadConcessionaire.mapUI; // Load Map
 							linearMapUI = RoadConcessionaire.linearMapUI;
 							mapEnabled = RoadConcessionaire.mapEnabled;

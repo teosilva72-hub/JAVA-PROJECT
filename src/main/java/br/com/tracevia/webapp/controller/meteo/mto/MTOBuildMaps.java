@@ -1,33 +1,32 @@
 package br.com.tracevia.webapp.controller.meteo.mto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.mto.MTO;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="mtoMapsView")
 @ViewScoped
 public class MTOBuildMaps {
-
-List<? extends Equipments> mtoList; 
 	
-	public List<? extends Equipments> getMtoList() {
-		return mtoList;
-	}
+	  @ManagedProperty("#{listEquips}")
+		private ListEquipments equips;
+			
+		public ListEquipments getEquips() {
+			return equips;
+		}
 
-	public void setMtoList(List<? extends Equipments> mtoList) {
-		this.mtoList = mtoList;
-	}
+		public void setEquips(ListEquipments equips) {
+			this.equips = equips;
+		}
+
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//CreateLinearEquipment();
 		
 	}
 	
@@ -37,10 +36,7 @@ List<? extends Equipments> mtoList;
 		
 		try {
 			
-			mtoList = new ArrayList<MTO>();
-			
-			MTO mto =  new MTO();						
-			mtoList = mto.listEquipments("mto");	
+	
 								
             }catch(IndexOutOfBoundsException ex) {}
 		

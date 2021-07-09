@@ -366,7 +366,7 @@
                   onclick="clicked('div#{loadItem.module}'); toggleBtnEquips.call(this);"><span><i
                       class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
-                <label class="label-module">#{loadItem.module}</label>
+                <label class="label-module">#{loadItem.module.toUpperCase()}</label>
                 <div id="div#{loadItem.module}" style="display:none;">
 
                   <c:forEach items="#{loadItem.list}" var="item" varStatus="loop3">

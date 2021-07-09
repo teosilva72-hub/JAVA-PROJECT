@@ -22,7 +22,7 @@ public class DAIDAO {
 			
 			List<DAI> list = new ArrayList<DAI>();		
 							
-			String select = "SELECT equip_id, equip_name, equip_status FROM cctv_monitor WHERE equip_type = 'DAI' ";
+			String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'DAI' ";
 										
 		  try {
 				

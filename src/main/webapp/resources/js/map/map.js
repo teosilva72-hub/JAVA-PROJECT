@@ -560,34 +560,22 @@ function posEquip(equip) {
 		}
 	}
 
-	if (!equip.attr("class").includes('sat') && !equip.attr("class").includes('dms') && !equip.attr("class").includes('sos')) {
+	if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
 	
-		
-		let equipStatus = equip.find("span").attr("id");
-		let equipName = $('#'+equip.find("p").attr("id")).html();	
-					
-		 $('#'+equipStatus).css({
-				"background-color": '#00FF0D',
-				color: 'white'
-			});			
-			// status equip color
-			
-				console.log(equipName);
-				//console.log(statusValue);
-			
-			$(`#status${equipName}`).css({ "color": '#00FF0D' }); // status side menu					
+	    let tableId = equip.attr('id');
+		let statusValue = equip.find('input').attr("status");
+		let equipStatus = equip.find("span").attr("id");						
 										
-		/*if(statusValue == 1){
+		if(statusValue == 1){
 		  $('#'+equipStatus).css({
 				"background-color": '#00FF0D',
 				color: 'white'
 			});			
+
 			// status equip color
 			
-			$(`#status${equipName}`).css({ "color": '#00FF0D' }); // status side menu
-			
-				console.log("Teste0: "+equipStatus);		
-			
+			$(`#status${tableId}`).css({ "color": '#00FF0D !important' }); // status side menu
+						
 	   } else if(statusValue == 0){ 
 	            $('#'+equipStatus).css({
 				"background-color": '#FF0000',
@@ -596,10 +584,9 @@ function posEquip(equip) {
 			
 			// status equip color
 			
-			$(`#status${equipName}`).css({ "color": '#FF0000' }); // status side menu
-			
-				console.log("Teste: "+equipStatus);		
-		}*/				
+			$(`#status${tableId}`).css({ "color": '#FF0000 !important' }); // status side menu
+						
+		}			
 	
 	}
 }

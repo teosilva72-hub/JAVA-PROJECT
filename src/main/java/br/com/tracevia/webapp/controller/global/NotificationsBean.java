@@ -1,14 +1,8 @@
 package br.com.tracevia.webapp.controller.global;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -18,9 +12,7 @@ import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Notifications;
-import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
-
 
 @ManagedBean(name="notificationsView")
 @RequestScoped

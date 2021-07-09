@@ -5,42 +5,53 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.NotificationsBean;
+import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.model.cftv.CFTV;
-import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="cftvMapsView")
 @ViewScoped
 public class CFTVBuildMaps {
 	
-	List<? extends Equipments> cftvList; 
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
 	
-	public List<? extends Equipments> getCftvList() {
-		return cftvList;
+	List<CFTV> cftvStatus;
+			
+	public List<CFTV> getCftvStatus() {
+		return cftvStatus;
+	}
+	
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setCftvList(List<? extends Equipments> cftvList) {
-		this.cftvList = cftvList;
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateMapEquipment();
-		
+		BuildCFTV();
+				
 	}
 	
-	public void CreateMapEquipment() {
+	public void BuildCFTV() {
 			
 		try {	
 		
 		try {
 			
-			cftvList = new ArrayList<CFTV>();
-			
-			CFTV cftv =  new CFTV();						
-			cftvList = cftv.listEquipments("cftv");			
+			CFTVDAO cftvDAO = new CFTVDAO();  
+			NotificationsBean notif = new NotificationsBean();			
+																			
+			cftvStatus = new ArrayList<CFTV>();			
+			cftvStatus = cftvDAO.Status();				
 				
             }catch(IndexOutOfBoundsException ex) {}
 		
