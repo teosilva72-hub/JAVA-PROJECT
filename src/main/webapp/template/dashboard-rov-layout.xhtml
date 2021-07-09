@@ -330,7 +330,7 @@
               <c:forEach items="#{listEquips.equips}" var="item">
 
                   <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
+                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module.toUpperCase()}</label></div>
                     <div class="toggle-mod-btn">
                       <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
                         p:checked="checked">
