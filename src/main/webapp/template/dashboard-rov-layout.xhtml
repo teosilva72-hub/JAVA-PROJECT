@@ -328,9 +328,19 @@
               <!-- <h:messages globalOnly="true" styleClass="feedback" /> -->
 
               <c:forEach items="#{listEquips.equips}" var="item">
+              
+              
 
                   <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module.toUpperCase()}</label></div>
+                    <c:choose>
+                      <c:when test="#{loadItem.module == 'dms'}">
+                    <div class="toggle-mod-label"><label class="font-weight-bold">PMV</label></div>
+                    </c:when>
+                    <c:otherwise>
+                     <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module.toUpperCase()}</label></div>
+                    </c:otherwise>
+                   </c:choose>                    
+                    
                     <div class="toggle-mod-btn">
                       <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
                         p:checked="checked">
@@ -366,7 +376,16 @@
                   onclick="clicked('div#{loadItem.module}'); toggleBtnEquips.call(this);"><span><i
                       class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
-                <label class="label-module">#{loadItem.module.toUpperCase()}</label>
+                
+                 <c:choose>
+                      <c:when test="#{loadItem.module == 'dms'}">
+                     <label class="label-module">PMV</label>
+                    </c:when>
+                    <c:otherwise>
+                      <label class="label-module">#{loadItem.module.toUpperCase()}</label>
+                    </c:otherwise>
+                   </c:choose>                     
+                               
                 <div id="div#{loadItem.module}" style="display:none;">
 
                   <c:forEach items="#{loadItem.list}" var="item" varStatus="loop3">
