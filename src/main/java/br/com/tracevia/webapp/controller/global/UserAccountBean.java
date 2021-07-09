@@ -43,7 +43,7 @@ public class UserAccountBean implements Serializable {
 		private String job_position;
 		private String email;
 		private String username;
-		private String role_permission;
+		private int role_permission;
 		private boolean status;
 		private HtmlDataTable dataTable;
 		private String rowkey;
@@ -106,7 +106,8 @@ public class UserAccountBean implements Serializable {
 			localeUsers = new LocaleUtil();
 			localeUsers.getResourceBundle(LocaleUtil.MESSAGES_USERS);
 			
-			listarUsuarios(); // listar usuários ao inicializar						
+			listarUsuarios(); // listar usuários ao inicializar	
+			userPermision();
 									
 		}
 		
@@ -504,11 +505,11 @@ public class UserAccountBean implements Serializable {
 			this.status = b;
 		}
 
-		public String getRole_permission() {
+		public int getRole_permission() {
 			return role_permission;
 		}
 
-		public void setRole_permission(String role_permission) {
+		public void setRole_permission(int role_permission) {
 			this.role_permission = role_permission;
 		}
 
@@ -566,5 +567,12 @@ public class UserAccountBean implements Serializable {
 		  user = new UserAccount();
 			
 		}
+        
+        public void userPermision() {
+        	FacesContext context = FacesContext.getCurrentInstance();
+        	int role = (int) context.getExternalContext().getSessionMap().get("nivel");
+        	
+        	role_permission = role;
+        }
 
 }
