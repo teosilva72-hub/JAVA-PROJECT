@@ -121,6 +121,11 @@
 								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_super_user}"
 									itemValue="6" />
 								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_user}" itemValue="7" />
+								
+								<ui:fragment rendered="#{loginAccount.load.en_sos}">
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />	
+								</ui:fragment>							
+																
 							</h:selectOneMenu>
 						</div> <!---->
 						<div class="error-label">					

@@ -509,8 +509,12 @@ footer {
   right: -5px;
 }
 
+#dismiss{
+ color: #ffffff;
+}
+
 #dismiss:hover {
-  color: #ffffff;
+  transform: scale(1.2);
   overflow: hidden;
 }
 

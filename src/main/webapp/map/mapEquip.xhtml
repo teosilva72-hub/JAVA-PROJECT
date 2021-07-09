@@ -375,12 +375,7 @@
                         
                         <c:otherwise>
                             <div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" class="equip-box #{item.table_id}">	
-                                                                     
-                                <div id="#{item.table_id}Tab#{item.equip_id}" class="row mb-3 ml-1 equip-header">		<!-- HEADER -->									
-                                    <p id="#{item.table_id}#{item.equip_id}name" class="col-auto mb-0 pr-1 equip-label">#{item.nome}</p>
-                                    <p class="col-12 mb-0 equip-label">#{item.km}</p>
-                                </div> <!---->
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" class="equip-box #{item.table_id}">                                       
                                 
                                 <c:if test="#{item.table_id eq 'cftv'}">
                                 

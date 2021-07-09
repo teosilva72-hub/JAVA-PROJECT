@@ -112,11 +112,12 @@ public class ListEquipments {
 	@PostConstruct
 	public void initalize() {
 		
-		CreateMapEquipment();
+		BuildEquipments();
 		
 	}
 	
 	public class listEquips {
+				
 		private boolean value;
 		private boolean mainMenu;
 		private String module;
@@ -176,7 +177,7 @@ public class ListEquipments {
 	   }
 	}
 	
-	public void CreateMapEquipment() {
+	public void BuildEquipments() {
 		
 		equips = new ArrayList<listEquips>();			
 						
