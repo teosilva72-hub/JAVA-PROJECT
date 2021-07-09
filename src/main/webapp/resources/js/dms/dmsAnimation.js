@@ -10,7 +10,7 @@ const connectDMS = async (request, debug) => {
 
 const changeStatus = response => {
 	let tableStyle = $(`#dms${response.id} .tableStyle`)
-	let sidebar = $(`#statuspmv${response.id}`)
+	let sidebar = $(`#statusdms${response.id}`)
 	
 	switch (response.statusId) {
 		case 0:

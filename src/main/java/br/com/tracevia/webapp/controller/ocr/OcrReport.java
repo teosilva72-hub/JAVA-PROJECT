@@ -23,18 +23,21 @@ import org.primefaces.context.RequestContext;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.ocr.reportDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -84,7 +87,19 @@ public class OcrReport{
 			return "";
 		}
 	}
+	private String logo;
 	
+	public String getLogo() {
+		try {
+
+			Path path = Paths.get(logo);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
+
 	public void setImagePlt(String imagePlt) {
 		this.imagePlt = imagePlt;
 	}
@@ -279,9 +294,9 @@ public class OcrReport{
 
 		dao = new reportDAO();
 		data = new OCR();
-				
-		imageVeh = noImageFolder + "no-image.png";
-		imagePlt = noImageFolder + "no-image.png";
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		imageVeh = noImageFolder + "no-image.jpg";
+		imagePlt = noImageFolder + "no-image.jpg";
 		
 
 		String start = dtStart+" "+ hrStart+":"+minStart;
@@ -393,29 +408,59 @@ public class OcrReport{
 			
 			String subFolder = dt.substring(0, 8);
 			String nameVeh = data.getCam().replaceAll(" ", "_");
-
-			imageVeh = ftpFolder+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg";
-			imagePlt = ftpFolder+nameVeh+"\\"+subFolder+"\\"+"\\Plate"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg";
+			File img1 = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
+			File img2 = new File(ftpFolder+nameVeh+"\\"+subFolder+"\\"+"\\Plate"+nameVeh+"_"+dt+"_"+data.getPlaca()+".jpg");
+			noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+			if(img1.exists())imageVeh = img1.getPath();
+			else imageVeh = noImageFolder+"no-image.jpg";
+			if(img2.exists())imagePlt = img2.getPath();
+			else imagePlt = noImageFolder+"no-image.jpg";
+			
 			
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 
 			document.open();
 
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(20F,localeOCR.getStringKey("ocr_report_title")));
+			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_title"), FontFactory.getFont(FontFactory.HELVETICA, 20F)));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
-
-			tl.setSimpleColumn(400,820,200,50);
+			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
+			File  tuxpan = new File(logo);
+			if(tuxpan.exists()) {
+				Image image2 = Image.getInstance(logo);
+				image2.setAbsolutePosition(420, 800);
+				image2.scaleAbsolute (100, 30);
+				document.add(image2);
+			}
+			tl.setSimpleColumn(400,830,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
+			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
+			rowPage.setBorderColor(BaseColor.BLACK);
+			rowPage.setBorderWidth(2);
+			rowPage.setBorder(Rectangle.BOX);
+			document.add(rowPage);
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeOCR.getStringKey("ocr_number_label")+": "+ data.getId()			
-			+"\n"+localeOCR.getStringKey("ocr_dataHour_label")+": " + data.getDataHour()
-			+"\n"+localeOCR.getStringKey("ocr_cam_label")+": "+ data.getCam()
-			+"\n"+localeOCR.getStringKey("ocr_placa_label")+": "+ data.getPlaca()));
+			PdfPTable table1 = new PdfPTable(2);
+			PdfPTable table2 = new PdfPTable(2);
+			PdfPTable table3 = new PdfPTable(2);
+			PdfPTable table4 = new PdfPTable(2);
+			
+			table1.addCell(localeOCR.getStringKey("ocr_number_label"));
+			table1.addCell(data.getId());
+			table2.addCell(localeOCR.getStringKey("ocr_dataHour_label"));
+			table2.addCell(data.getDataHour());
+			table3.addCell(localeOCR.getStringKey("ocr_cam_label"));
+			table3.addCell(data.getCam());
+			table4.addCell(localeOCR.getStringKey("ocr_placa_label"));
+			table4.addCell(data.getPlaca());
+			document.add(table1);
+			document.add(table2);
+			document.add(table3);
+			document.add(table4);
 			Image imgX = Image.getInstance(imageVeh);
 			imgX.setAbsolutePosition(60, 500);
 			imgX.scaleAbsolute (200, 150);
@@ -426,12 +471,7 @@ public class OcrReport{
 			//passando a imagem
 			document.add(imgX);
 			document.add(imgY);
-			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
-
-			rowPage.setBorderColor(BaseColor.BLACK);
-			rowPage.setBorderWidth(2);
-			rowPage.setBorder(Rectangle.BOX);
-			document.add(rowPage);
+			
 			//final da linda da pagina
 			ColumnText ct = new ColumnText(writer.getDirectContent());
 			ct.setSimpleColumn(700,0,200,30);

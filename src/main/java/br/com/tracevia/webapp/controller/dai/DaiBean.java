@@ -46,7 +46,18 @@ public class DaiBean {
 	LocaleUtil localeDai;
 	public List<Traffic> traffics;
 	public Traffic traffic;
-	
+	private String logo;
+
+	public String getLogo() {
+		try {
+
+			Path path = Paths.get(logo);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
 	public Traffic getTraffic() {
 		return traffic;
 	}
@@ -246,11 +257,12 @@ public class DaiBean {
 		String folder = "C:\\Camaras DAI\\";
 		List<Path> allPath = new ArrayList<>();
 		String[] allEquip = listFolder(folder);
-		for (final String path : allEquip) {			
-			try {
-				allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
-			} catch (IOException e) {}
-		}
+		if (allEquip != null)
+			for (final String path : allEquip) {			
+				try {
+					allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+				} catch (IOException e) {}
+			}
 		
 		return allPath;
 	}
@@ -316,6 +328,14 @@ public class DaiBean {
 			p.add("                              Pag 1");//paragrafo Evento
 			ct.addElement(p);
 			ct.go();
+			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
+			File  tuxpan = new File(logo);
+			if(tuxpan.exists()) {
+				Image tuxpanL = Image.getInstance(logo);
+				tuxpanL.setAbsolutePosition(420, 800);
+				tuxpanL.scaleAbsolute (100, 30);
+				document.add(tuxpanL);
+			}
 			document.add(new Paragraph("\n\n"));
 			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.plate));
 			document.add(new Paragraph(localeDai.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
@@ -324,11 +344,20 @@ public class DaiBean {
 			document.add(new Paragraph(localeDai.getStringKey("date")+": "+traffic.date));
 			document.add(new Paragraph(localeDai.getStringKey("time")+": "+traffic.hour));
 			document.add(new Paragraph(localeDai.getStringKey("incident")+": "+trad.daiLabels(traffic.incident)));
-
-			Image imgX = Image.getInstance(traffic.file.toString());
-			imgX.setAbsolutePosition(50, 200);
-			imgX.scaleAbsolute (500, 400);
-			document.add(imgX);
+			String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+			File img1 = new File(traffic.file.toString());
+			if(img1.exists()) {
+				Image imgX = Image.getInstance(img1.getPath());
+				imgX.setAbsolutePosition(50, 200);
+				imgX.scaleAbsolute (500, 400);
+				document.add(imgX);
+			}else {
+				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
+				imgX.setAbsolutePosition(100, 280);
+				imgX.scaleAbsolute (200, 150);
+				document.add(imgX);
+			}
+			
 
 			document.close();
 			FileOutputStream fos = new FileOutputStream(RESULT);

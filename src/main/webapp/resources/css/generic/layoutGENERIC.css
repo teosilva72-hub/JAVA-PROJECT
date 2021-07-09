@@ -35,7 +35,6 @@
 /* GENERIC EQUIPMENTS  */
 
 .equip-header {
-  margin-top: -55%;
   text-align: center;
   display: block;
   opacity: 0;
@@ -58,7 +57,7 @@
   padding: 6px;
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 60px;
 }
 
 .equip-status.active {
