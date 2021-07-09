@@ -53,23 +53,34 @@ public class ListEquipments {
 	public class listEquips {
 		private boolean value;
 		private boolean mainMenu;
+		private String module;
 		private List<? extends Equipments> list;
 		private double voltage;
 		
-		listEquips(boolean value, List<? extends Equipments> list, double voltage) {
-			this.value = value;			
+		listEquips(String module, boolean value, List<? extends Equipments> list, double voltage) {
+			this.value = value;	
+			this.module = module;		
 			this.list = list;
 			this.voltage = voltage;
 		}
 		
 		
-		listEquips(boolean value, boolean mainMenu, List<? extends Equipments> list, double voltage) {
+		listEquips(String module, boolean value, boolean mainMenu, List<? extends Equipments> list, double voltage) {
 			this.value = value;	
+			this.module = module;
 			this.mainMenu = mainMenu;
 			this.list = list;
 			this.voltage = voltage;
 		}
+
+		public String getModule() {
+			return module;
+		}
 		
+		public void setModule(String module) {
+			this.module = module;
+		}
+
 		public boolean getValue() {
 			return value;
 		}
@@ -124,40 +135,40 @@ public class ListEquipments {
 				WIM wim =  new WIM();
 				
 				if(load.isEn_cftv())			
-					equips.add(new listEquips(load.isEn_cftv(), cftv.listEquipments("cftv"), load.getVoltage_cftv()));
+					equips.add(new listEquips("cftv", load.isEn_cftv(), cftv.listEquipments("cftv"), load.getVoltage_cftv()));
 					
 					if(load.isEn_colas())
-					equips.add(new listEquips(load.isEn_colas(), colas.listEquipments("colas"), load.getVoltage_colas()));
+					equips.add(new listEquips("colas", load.isEn_colas(), colas.listEquipments("colas"), load.getVoltage_colas()));
 					
 					if(load.isEn_comms())
-					equips.add(new listEquips(load.isEn_comms(), comms.listEquipments("comms"), load.getVoltage_comms()));
+					equips.add(new listEquips("comms", load.isEn_comms(), comms.listEquipments("comms"), load.getVoltage_comms()));
 					
 					if(load.isEn_dai())
-					equips.add(new listEquips(load.isEn_dai(), dai.listEquipments("dai"), load.getVoltage_dai()));
+					equips.add(new listEquips("dai", load.isEn_dai(), dai.listEquipments("dai"), load.getVoltage_dai()));
 					
 					if(load.isEn_pmv())
-					equips.add(new listEquips(load.isEn_pmv(), dms.listDMSEquipments(), load.getVoltage_pmv()));
+					equips.add(new listEquips("dms", load.isEn_pmv(), dms.listDMSEquipments(), load.getVoltage_pmv()));
 					
 					if(load.isEn_ocr())
-					equips.add(new listEquips(load.isEn_ocr(), ocr.listEquipments("ocr"), load.getVoltage_ocr()));
+					equips.add(new listEquips("ocr", load.isEn_ocr(), ocr.listEquipments("ocr"), load.getVoltage_ocr()));
 					
 					if(load.isEn_mto())
-					equips.add(new listEquips(load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));
+					equips.add(new listEquips("mto", load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));
 											
 					if(load.isEn_sv())
-					equips.add(new listEquips(load.isEn_sv(), load.isEn_meteo(), sv.listEquipments("sv"), load.getVoltage_sv()));
+					equips.add(new listEquips("sv", load.isEn_sv(), load.isEn_meteo(), sv.listEquipments("sv"), load.getVoltage_sv()));
 											
 					if(load.isEn_sat())
-					equips.add(new listEquips(load.isEn_sat(), sat.listSatEquipments(), load.getVoltage_sat()));
+					equips.add(new listEquips("sat", load.isEn_sat(), sat.listSatEquipments(), load.getVoltage_sat()));
 					
 					if(load.isEn_sos())
-					equips.add(new listEquips(load.isEn_sos(), sos.listEquipments("sos"), load.getVoltage_sos()));
+					equips.add(new listEquips("sos", load.isEn_sos(), sos.listEquipments("sos"), load.getVoltage_sos()));
 					
 					if(load.isEn_speed())
-					equips.add(new listEquips(load.isEn_speed(), speed.listEquipments("speed"), load.getVoltage_speed()));
+					equips.add(new listEquips("speed", load.isEn_speed(), speed.listEquipments("speed"), load.getVoltage_speed()));
 									
 					if(load.isEn_wim())
-					equips.add(new listEquips(load.isEn_wim(), wim.listEquipments("wim"), load.getVoltage_wim()));
+					equips.add(new listEquips("wim", load.isEn_wim(), wim.listEquipments("wim"), load.getVoltage_wim()));
 				
 					
             }catch(IndexOutOfBoundsException ex) {}

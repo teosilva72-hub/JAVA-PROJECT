@@ -252,11 +252,12 @@ public class DaiBean {
 		String folder = "C:\\Camaras DAI\\";
 		List<Path> allPath = new ArrayList<>();
 		String[] allEquip = listFolder(folder);
-		for (final String path : allEquip) {			
-			try {
-				allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
-			} catch (IOException e) {}
-		}
+		if (allEquip != null)
+			for (final String path : allEquip) {			
+				try {
+					allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
+				} catch (IOException e) {}
+			}
 		
 		return allPath;
 	}

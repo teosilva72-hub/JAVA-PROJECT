@@ -8,11 +8,16 @@ const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
+	let alarm = equip.find(`#Alarm${equip}`);
+	let alarms = alarm.children();
 	let sidebar = $(`#status${name.toLowerCase()}`)
 	
 	switch (status) {
 		case 1:
-			status = 'active'
+			if (alarms.length > 0)
+				status = "alarm"
+			else
+				status = 'active'
 			sidebar.css("color", "#00FF00")
 			break
 
@@ -31,7 +36,10 @@ const changeStates = response => {
 			break
 			
 		default:
-			status = ''
+			if (alarms.length > 0)
+				status = "alarm"
+			else
+				status = ''
 			sidebar.css("color", "#FF0000")
 			break
 	}
@@ -95,7 +103,7 @@ const signaling = response => {
 	else if (door.length == 1 && !active)
 		door.remove();
 
-	if (html.children().length > 0)
+	if (alarms.length > 0)
 		alarm.addClass('d-flex').removeClass('d-none')
 	else
 		alarm.addClass('d-none').removeClass('d-flex')
