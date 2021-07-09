@@ -360,9 +360,7 @@ public class DaiBean {
 			
 
 			document.close();
-			FileOutputStream fos = new FileOutputStream(RESULT);
-			fos.write(baos.toByteArray());
-			fos.close();  
+			
 			// DOWNLOAD
 
 			externalContext.setResponseContentType("application/pdf");
