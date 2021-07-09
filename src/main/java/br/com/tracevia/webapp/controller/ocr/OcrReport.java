@@ -279,9 +279,9 @@ public class OcrReport{
 
 		dao = new reportDAO();
 		data = new OCR();
-				
-		imageVeh = noImageFolder + "no-image.png";
-		imagePlt = noImageFolder + "no-image.png";
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+		imageVeh = noImageFolder + "no-image.jng";
+		imagePlt = noImageFolder + "no-image.jng";
 		
 
 		String start = dtStart+" "+ hrStart+":"+minStart;
@@ -402,7 +402,7 @@ public class OcrReport{
 			document.open();
 
 			document.setPageSize(PageSize.A4);
-			Paragraph pTitulo = new Paragraph(new Phrase(20F,localeOCR.getStringKey("ocr_report_title")));
+			Paragraph pTitulo = new Paragraph(new Phrase(27F,localeOCR.getStringKey("ocr_report_title")));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
 
