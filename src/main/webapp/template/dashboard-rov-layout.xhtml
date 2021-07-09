@@ -327,9 +327,8 @@
 
               <!-- <h:messages globalOnly="true" styleClass="feedback" /> -->
 
-              <c:forEach items="#{listEquips.load.modules}" var="item" varStatus="loop">
+              <c:forEach items="#{listEquips.equips}" var="item">
 
-                <c:if test="${item.module == 'CFTV'}">
                   <div class="module" id="#{item.module}">
                     <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
                     <div class="toggle-mod-btn">
@@ -338,130 +337,6 @@
                       </h:selectBooleanCheckbox>
                     </div>
                   </div>
-                </c:if>
-
-                <c:if test="${item.module == 'COLAS'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'COMMS'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'DAI'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'OCR'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'MTO'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'PMV'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'SAT'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'SOS'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'SPEED'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'VIDEOWALL'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
-
-                <c:if test="${item.module == 'WIM'}">
-                  <div class="module" id="#{item.module}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module}</label></div>
-                    <div class="toggle-mod-btn">
-                      <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
-                        p:checked="checked">
-                      </h:selectBooleanCheckbox>
-                    </div>
-                  </div>
-                </c:if>
 
               </c:forEach>
 
@@ -485,179 +360,31 @@
 
           <div class="equips-div">
 
-            <c:forEach items="#{listEquips.load.modules}" var="item" varStatus="modLoop">
-
-             <c:if test="${item.module != 'OCC'}">
-             
+            <c:forEach items="#{listEquips.equips}" var="loadItem" varStatus="loop2">
               <div class="content-module">
                 <a class="link-show-hide text-decoration-none"
-                  onclick="clicked('div#{item.module}'); toggleBtnEquips.call(this);"><span><i
+                  onclick="clicked('div#{loadItem.module}'); toggleBtnEquips.call(this);"><span><i
                       class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
-                <label class="label-module">#{item.module}</label>
-                  <div id="div#{item.module}" style="display:none;">
+                <label class="label-module">#{loadItem.module}</label>
+                <div id="div#{loadItem.module}" style="display:none;">
 
-                  <c:if test="${item.module == 'CFTV'}">
-                    <c:forEach items="#{cftvMapsView.cftvList}" var="item" varStatus="cftvLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
+                  <c:forEach items="#{loadItem.list}" var="item" varStatus="loop3">
 
-                  <c:if test="${item.module == 'COLAS'}">
-                    <c:forEach items="#{colasMapsView.colasList}" var="item" varStatus="colasLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
+                    <div class="equip-info-display">
+                      <div class="info">
+                        <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
+                        <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
+                          &nbsp;&nbsp;#{item.km}</label>
                       </div>
-                    </c:forEach>
-                  </c:if>
+                    </div>
 
-                  <c:if test="${item.module == 'COMMS'}">
-                    <c:forEach items="#{commsMapsView.commsList}" var="item" varStatus="commsLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
+                  </c:forEach>
 
-                  <c:if test="${item.module == 'DAI'}">
-                    <c:forEach items="#{daiMapsView.daiList}" var="item" varStatus="daiLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-                                   
-                  <c:if test="${item.module == 'OCR'}">
-                    <c:forEach items="#{ocrMapsView.ocrList}" var="item" varStatus="ocrLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
+                </div>
+              </div>
 
-                  <c:if test="${item.module == 'MTO'}">
-                    <c:forEach items="#{mtoMapsView.mtoList}" var="item" varStatus="mtoLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'PMV'}">
-                    <c:forEach items="#{dmsMapsView.dmsList}" var="item" varStatus="pmvLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'SAT'}">
-                    <c:forEach items="#{satMapsView.satList}" var="item" varStatus="satLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'SOS'}">
-                    <c:forEach items="#{sosMapsView.sosList}" var="item" varStatus="sosLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'SPEED'}">
-                    <c:forEach items="#{speedMapsView.speedList}" var="item" varStatus="speedLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-                  
-                    <c:if test="${item.module == 'SV'}">
-                    <c:forEach items="#{svMapsView.svList}" var="item" varStatus="svLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'VIDEOWALL'}">
-                    <c:forEach items="#{videoWallMapsView.videowallList}" var="item" varStatus="videowallLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                  <c:if test="${item.module == 'WIM'}">
-                    <c:forEach items="#{wimMapsView.wimList}" var="item" varStatus="wimLoop">
-                      <div class="equip-info-display">
-                        <div class="info">
-                          <div id="status#{item.nome}" class="fas fa-circle"></div>
-                          <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
-                            &nbsp;&nbsp;#{item.km}</label>
-                        </div>
-                      </div>
-                    </c:forEach>
-                  </c:if>
-
-                </div> <!---->
-              </div> <!---->
-              
-              </c:if> <!---->
-            </c:forEach> <!---->
+            </c:forEach>
                       
           </div>
         </div>
