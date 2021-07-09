@@ -362,6 +362,7 @@ public class NavigationBean {
 		case 5: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	
 		case 6: sidebar_page = "/template/sidebar/sidebar-admin.xhtml" ; break;
 		case 7: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
+		case 8: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
 
 		}
 
