@@ -64,12 +64,24 @@ public class OccurrencesBean {
 
 	OccurrencesDAO dao;
 	LocaleUtil occLabel, occMessages;
-		
+
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
+	private String logo;
+
+	public String getLogo() {
+		try {
+
+			Path path = Paths.get(logo);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
 
 	private String action, title_modal, message_modal, idUpdate;
-	
+
 	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	minutePdf, secondPdf, dayPdf, hourPdf, nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
@@ -87,7 +99,7 @@ public class OccurrencesBean {
 	private List<SelectItem> rodovias, estado_locais, sentidos, faixas, tipos, origens, estados, causa_provaveis, condicao_locais, 
 	condicao_de_trafegos, caracteristica_da_secoes, interferencia_da_faixas, sinalizacoes, estado_condutores, horas, minutos, actions,
 	actionState, trackInterrupted, damageType, damageUnity, involvedType, damage_gravity, typeHour1;
-	
+
 	public List<SelectItem> getTypeHour1() {
 		return typeHour1;
 	}
@@ -152,7 +164,7 @@ public class OccurrencesBean {
 	public List<SelectItem> getDamageUnity() {
 		return damageUnity;
 	}
-	
+
 	public boolean isEnableBtn() {
 		return enableBtn;
 	}
@@ -457,7 +469,7 @@ public class OccurrencesBean {
 
 	@PostConstruct
 	public void initialize() {	
-		
+
 		//input select options
 		occurrences = new ArrayList<OccurrencesData>();
 		rodovias = new ArrayList<SelectItem>();
@@ -598,7 +610,7 @@ public class OccurrencesBean {
 			pdf = true;
 			listarFile = null;
 			total = 0;
-			
+
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
 			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
@@ -643,7 +655,7 @@ public class OccurrencesBean {
 			RequestContext.getCurrentInstance().execute("resetForm()");
 			RequestContext.getCurrentInstance().execute("fileTotalHidden()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
-			
+
 
 			//listar ocorrencia
 			occurrences = dao.listarOcorrencias();
@@ -715,19 +727,19 @@ public class OccurrencesBean {
 		total = 0;
 
 	}
-	
+
 	Timestamp timestamp = null;
 	Timestamp timestamp2 = null;
-	
+
 	public void getRowValue() throws Exception {
 
-		 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-		 Date date = new Date();
-		 Calendar calendar = Calendar.getInstance();
-		 calendar.setTime(date);
-		 calendar.add(calendar.MINUTE, -5);
-		 Date b = calendar.getTime();
-		 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(calendar.MINUTE, -5);
+		Date b = calendar.getTime();
+
 		try {
 
 			//chamando valores do usuário de outro controller
@@ -759,15 +771,15 @@ public class OccurrencesBean {
 			//transformando em int
 			situation = Integer.parseInt(x);
 			System.out.println(data.getLastDateHour());
-			
-			 Date parsedDate = dateFormat.parse(data.getLastDateHour());
-			 timestamp = new java.sql.Timestamp(parsedDate.getTime());
-			 timestamp2 = new java.sql.Timestamp(b.getTime());
-			 System.out.println(timestamp +" <");
-			 System.out.println(timestamp2 + "<<");
-			 System.out.println((timestamp.after(timestamp2)+" antes"));
-			 System.out.println((timestamp.before(timestamp2)+" depois"));
-			 System.out.println(data.getEditTable()+" editTable");
+
+			Date parsedDate = dateFormat.parse(data.getLastDateHour());
+			timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			timestamp2 = new java.sql.Timestamp(b.getTime());
+			System.out.println(timestamp +" <");
+			System.out.println(timestamp2 + "<<");
+			System.out.println((timestamp.after(timestamp2)+" antes"));
+			System.out.println((timestamp.before(timestamp2)+" depois"));
+			System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
 
 			ex.printStackTrace();
@@ -829,7 +841,7 @@ public class OccurrencesBean {
 
 				//senão se for igual a true acesso bloqueado para realizar edição
 			}else if((data.getEditTable() == true && timestamp.after(timestamp2))) {
-				
+
 				//executando função javascript
 				RequestContext.getCurrentInstance().execute("msgUser()");
 
@@ -946,7 +958,7 @@ public class OccurrencesBean {
 	public void btnEdit() throws Exception {
 
 		OccurrencesDAO dao = new OccurrencesDAO();
-		
+
 		//pegando valores dos usuários de outro controller
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
@@ -1435,10 +1447,10 @@ public class OccurrencesBean {
 	}
 	//método baixar arquivos
 	public void download(String fileName) throws Exception {
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		OccurrencesDAO dao = new OccurrencesDAO();
@@ -1478,20 +1490,20 @@ public class OccurrencesBean {
 		//fechando o comando downlod
 		is.close();
 		//fos.close();
-		
-externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
-		
-		externalContext.setResponseContentLength(baos.size());
-	      
-		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-	     baos.writeTo(responseOutputStream);
-	     responseOutputStream.flush();
-	     responseOutputStream.close();
 
-	
-	     facesContext.responseComplete();  
-	     
-	    // DOWNLOAD
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
+
+
+		facesContext.responseComplete();  
+
+		// DOWNLOAD
 
 
 		//executando funções js
@@ -1507,12 +1519,12 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		RequestContext.getCurrentInstance().execute("mostrarTab2()");
 		RequestContext.getCurrentInstance().execute("msgDownload()");
 		RequestContext.getCurrentInstance().execute("alterarBtn()");
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
-		
+
 		//pegando o id
 		int id = getValue();
 
@@ -1537,28 +1549,28 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		//parando o download
 		is.close();
 		// DOWNLOAD
-		
-		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
-		
-		externalContext.setResponseContentLength(baos.size());
-	      
-		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-	     baos.writeTo(responseOutputStream);
-	     responseOutputStream.flush();
-	     responseOutputStream.close();
 
-	
-	     facesContext.responseComplete();  
-	     
-	    // DOWNLOAD
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
+
+
+		facesContext.responseComplete();  
+
+		// DOWNLOAD
 
 	}
 	//download quando fizer o clique em alguma linha da tabela
 	public void downloadUpdateTable(String fileName) throws Exception {
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
 
 		//pegando o id
@@ -1586,20 +1598,20 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		is.close();
 		//fos.close();
 		// DOWNLOAD
-		
-				externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
-				
-				externalContext.setResponseContentLength(baos.size());
-			      
-				OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-			     baos.writeTo(responseOutputStream);
-			     responseOutputStream.flush();
-			     responseOutputStream.close();
 
-			
-			     facesContext.responseComplete();  
-			     
-			    // DOWNLOAD
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName);
+
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
+
+
+		facesContext.responseComplete();  
+
+		// DOWNLOAD
 
 		//se a variavel situação for igual a 30 ou 31 acessamos a condição
 		if(situation == 31 || situation == 30) {
@@ -1631,21 +1643,21 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 	}
 	//método download PDF
 	public String[] downloadPdf() throws Exception {
-		
+
 		// cria��o do documento
 		Document document = new Document();
 		TranslationMethods trad = new TranslationMethods();
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();	
-		
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(); //SOLUTION
-				
+
 		try {			 	  
-	        
+
 			//caminho onde � gerado o pdf
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
-											
+
 			//gera o arquivo		
 			document.open();			
 
@@ -1671,17 +1683,17 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			Paragraph action = new Paragraph(new Phrase(20F , trad.occLabels("Ação"), FontFactory.getFont(FontFactory.HELVETICA, 15F)));
 
 			//chamando a imagem
-								
-			Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
-			Image image2 = Image.getInstance(RoadConcessionaire.externalImagePath);
-																							
+			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
+			//Image image1 = Image.getInstance(RoadConcessionaire.externalDefaultLogo);
+			Image image2 = Image.getInstance(logo);
+
 			//edi��o das imagens
-			image1.setAbsolutePosition(50, 790);
-			image1.scaleAbsolute (100, 50);
+			//image1.setAbsolutePosition(50, 790);
+			//image1.scaleAbsolute (100, 50);
 			image2.setAbsolutePosition(420, 800);
 			image2.scaleAbsolute (120, 30);
 			//passando a imagem
-			document.add(image1);
+			//document.add(image1);
 			document.add(image2);
 
 			//add titulo
@@ -1828,7 +1840,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+ data.getInvolved_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-			
+
 			//Tr�nsito
 			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
 			track1.enableBorderSide(1);
@@ -1840,25 +1852,25 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(track1);*/
 			document.add(new Paragraph(track+"\n"+"\n"));
 			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
-			+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
+					+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
 			document.add(new Paragraph());
 			document.add(new Paragraph(trad.occLabels("Extensão(KM)")+": "+data.getTraffic_extension()+"            "
 					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
 			document.newPage();//inicio da terceira p�gina
-			
+
 			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
 			rowPage2.setBorderColor(BaseColor.BLACK);
 			rowPage2.setBorderWidth(2);
 			rowPage2.setBorder(Rectangle.BOX);
 			document.add(rowPage2);
-			
+
 			ColumnText ct2 = new ColumnText(writer.getDirectContent());
 			ct2.setSimpleColumn(700,0,200,30);
 			Paragraph p2 = new Paragraph();
 			p2.add("                              "+"Pag 3");//paragrafo Evento
 			ct2.addElement(p2);
 			ct2.go();
-			
+
 			//Danos
 			/*Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
 			damage1.enableBorderSide(1);
@@ -1871,9 +1883,9 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(new Paragraph(danos+"\n"+"\n"));
 			document.add(new Paragraph(""));
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "
-			+trad.occLabels("Gravidade")+": "+ getPdf.getDamage_gravity()+"     "
-			+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
-			+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
+					+trad.occLabels("Gravidade")+": "+ getPdf.getDamage_gravity()+"     "
+					+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
+					+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
 			document.add(new Paragraph(trad.occLabels("Descrição")+": "+data.getDemage_description()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
@@ -1889,7 +1901,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			document.add(new Paragraph(action+"\n"+"\n"));
 
 			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "
-			+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
+					+trad.occLabels("Situação")+": "+getPdf.getStatusAction()+"\n\n"));
 			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()
 			+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()
 			+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
@@ -1918,8 +1930,8 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 			//assinatura
 			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
 					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
-			
-			
+
+
 		}
 		catch(DocumentException de) {
 			System.err.println(de.getMessage());
@@ -1927,34 +1939,34 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		catch(IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
-		
+
 		document.close();
-		
-		
+
+
 		// DOWNLOAD
-		
+
 		externalContext.setResponseContentType("application/pdf");
 		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+"OCC_"+data.getData_number()+".pdf\"");
-		
-		externalContext.setResponseContentLength(baos.size());
-	      
-		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-	     baos.writeTo(responseOutputStream);
-	     responseOutputStream.flush();
-	     responseOutputStream.close();
 
-	
-	     facesContext.responseComplete();  
-	     
-	    // DOWNLOAD
-	
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
+
+
+		facesContext.responseComplete();  
+
+		// DOWNLOAD
+
 
 		//getRowValue();
 		System.out.println(timestamp+" <a");
 		System.out.println(timestamp2+" <b");
 		String x = data.getState_occurrences();
 		situation = Integer.parseInt(x);
-	
+
 		//pegando os valores de outro controller e armazenado dentro das variaveis: (userName e nivelUser)
 		userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
 		nivelUser = (int) facesContext.getExternalContext().getSessionMap().get("nivel");
@@ -2053,7 +2065,7 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 				RequestContext.getCurrentInstance().execute("msgDownload()");
 				RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 			}
-			
+
 			int id = getValue();
 
 			//criando caminho da sele��o da pasta.
@@ -2079,15 +2091,15 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 
 			}
 		}
-		
-		
-		
+
+
+
 		//passando valor final do m�todo para a variavel tableFile
 		return tableFile;
 
 	}
 	public void enableUser() throws Exception {
-		
+
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 
@@ -2106,33 +2118,33 @@ externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"
 		int sec = LocalDateTime.now().getSecond();
 		String second = String.valueOf(sec);
 		String date = dia+"/"+mes+"/"+ano+" "+hora+":"+minute+":"+second;
-		
+
 		OccurrencesDAO occ = new OccurrencesDAO();
 		String id = data.getData_number();
 		String lastData = date;
 		String user = nameUser;
 		occ.lastUser(id, lastData, user);
-		
+
 		TimeUnit.MINUTES.sleep(1);
 		RequestContext request = RequestContext.getCurrentInstance();
 		request.execute("btnEnable();");
 		request.execute("inputs()");
 		System.out.println("pronto");
-		
+
 	}
-	
-	 public String getImagePath(String image) {
-			
-			try {
 
-				Path path = Paths.get(image);								
-				  byte[] file = Files.readAllBytes(path);
-				  return Base64.getEncoder().encodeToString(file);
-				  
-			} catch (IOException e) {											
-				return "";
-			}
+	public String getImagePath(String image) {
 
-		}	
-	
+		try {
+
+			Path path = Paths.get(image);								
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+
+		} catch (IOException e) {											
+			return "";
+		}
+
+	}	
+
 }
