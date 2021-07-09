@@ -43,39 +43,50 @@ public class wimReport {
 
 	private WIMDAO dao = new WIMDAO();
 	private WimData data = new WimData();
-	
+	private String logo;
+
+	public String getLogo() {
+		try {
+
+			Path path = Paths.get(logo);
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+		} catch (IOException e) {
+			return "";
+		}
+	}
 	private String noImage;
-	
+
 	private String dateInitial, dateFinal, minuteInitial,
 	minuteFinal, classs, hourInitial, hourFinal;
-	
+
 	String silFolder = "C:\\Tracevia\\Software\\External\\Wim\\Silhuetas\\";
-	
+
 	String vehiclesFolder = "C:\\Tracevia\\Software\\External\\Wim\\Veiculos\\";
-	
+
 	String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-	
+
 	private int rowkey;
 	private boolean selectedRow;
-	
+
 	private List<WimData> list;
 
 	private RequestContext request = RequestContext.getCurrentInstance();
 	private String[] dstAxes, weight;
-	
+
 	public int gross;
 	private String nEvent, dateHour, category, nAxes, speed, pbtTotal, size;
 	private String rateTxt, image, imagePlate, imageSil;
-	
+
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
-	
+
 	private boolean reset, search;
-	
+
 	public WimData getData() {
 		return data;
 	}
-	
+
 	public void setData(WimData data) {
 		this.data = data;
 	}
@@ -87,11 +98,11 @@ public class wimReport {
 	public List<SelectItem> getHoras() {
 		return horas;
 	}
-	
+
 	public void setHoras(List<SelectItem> horas) {
 		this.horas = horas;
 	}
-	
+
 	public void setMinutos(List<SelectItem> minutos) {
 		this.minutos = minutos;
 	}
@@ -102,7 +113,7 @@ public class wimReport {
 	public void setClasses(List<SelectItem> classes) {
 		this.classes = classes;
 	}
-	
+
 	public String getHourInitial() {
 		return hourInitial;
 	}
@@ -164,7 +175,7 @@ public class wimReport {
 	public void setResultList(List<Builder> resultList) {
 		this.resultList = resultList;
 	}
-	
+
 	public boolean isSelectedRow() {
 		return selectedRow;
 	}
@@ -253,7 +264,7 @@ public class wimReport {
 	public void setGross(int gross) {
 		this.gross = gross;
 	}
-	
+
 	public boolean isReset() {
 		return reset;
 	}
@@ -266,7 +277,7 @@ public class wimReport {
 	public void setSearch(boolean search) {
 		this.search = search;
 	}
-	
+
 	public String getImage() {
 		return image;
 	}
@@ -293,11 +304,11 @@ public class wimReport {
 
 	@PostConstruct
 	public void initalize(){
-		
+
 		noImage = noImageFolder + "no-image.jpg";
-					
+
 		reset = true;
-	
+
 		data.setSeqN("-");
 		data.setDatetime("-");
 		data.setClasse("-");
@@ -305,13 +316,13 @@ public class wimReport {
 		data.setSpeed("-");
 		data.setPbtTotal("-");
 		data.setSize("-");
-		
+
 		setImage(getImagePath(noImage));
 		setImagePlate(getImagePath(noImage));
 		setImageSil(getImagePath(noImage));
-		
+
 		minutos = new  ArrayList<SelectItem>();
-		
+
 		for(int m = 0; m < 60; m++){				
 			if (m < 10)
 				minutos.add(new SelectItem("0"+String.valueOf(m), "0"+String.valueOf(m)));
@@ -325,7 +336,7 @@ public class wimReport {
 			else 
 				horas.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
 		}
-		
+
 		classes = new ArrayList<SelectItem>();
 		classes.add(new SelectItem("1", "1"));
 		classes.add(new SelectItem("2", "2"));
@@ -342,17 +353,17 @@ public class wimReport {
 		classes.add(new SelectItem("4A", "4A"));
 		classes.add(new SelectItem("E9", "E9"));
 		classes.add(new SelectItem("10N", "10N"));
-		
+
 		RequestContext.getCurrentInstance().execute("getTr()");
 
 	}
-	
+
 	public void search() {
-		
+
 		boolean checked = true;
-		
+
 		String dtInitial, dtFinal, hInitial, hFinal,
-		
+
 		mInitial, mFinal, classe, second;
 		dtInitial = getDateInitial();
 		dtFinal = getDateFinal();
@@ -362,22 +373,22 @@ public class wimReport {
 		mFinal = getMinuteFinal();
 		second = "00";
 		classe = getClasss();
-		
+
 		if(checked == true) {
-			
+
 			//formatting date and time
 			String start = dtInitial+" "+hInitial+":"+mInitial+":"+second;
 			String end = dtFinal+" "+hFinal+":"+mFinal+":"+second;
-			
+
 			if(start != null && end != null) {
-				
+
 				//pass dice for wim dao
 				try {
-					
+
 					list = dao.search(start, end, classe);
 					RequestContext.getCurrentInstance().execute("getTr()");
 					RequestContext.getCurrentInstance().execute("dataPicker()");
-					
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -385,15 +396,15 @@ public class wimReport {
 			}
 		}
 	}
-	
+
 	public void indicator(WimData data) {
-					
+
 		RequestContext request = RequestContext.getCurrentInstance();
 		String classe = data.getClasse();
-		
+
 		gross = Integer.parseInt(data.getPbtTotal());
 		TranslationMethods trad = new TranslationMethods();
-		
+
 		if(classe.equals("1")) {
 			if(gross < 6000) {
 				rateTxt = trad.wimLabels("indicator3")+" "+ gross;
@@ -525,60 +536,60 @@ public class wimReport {
 			}
 		}
 	}
-	
-	
+
+
 	public void getInfo() {
 		//chamadas de métodos
 		//indicator();
 		//silueta();
 		if(isSelectedRow() == true) {
 			try {
-				
+
 				data = dao.searchId(rowkey);	
-				
+
 				indicator(data);
 				File img1 = new File(vehiclesFolder+data.getImage());
 				File img2 = new File(vehiclesFolder+data.getImagePlate());
 				File sil = new File(silFolder+data.getImageSil());
 				//VEHICLE IMAGE
 				if(img1.exists())				
-				image = getImagePath(vehiclesFolder+data.getImage());
-				
+					image = getImagePath(vehiclesFolder+data.getImage());
+
 				else image = getImagePath(noImageFolder+"no-image.jpg");
-				
+
 				//PLATE IMAGE
 				if(img2.exists())				
 					imagePlate = getImagePath(vehiclesFolder+data.getImagePlate());
-				
+
 				else imagePlate = getImagePath(noImageFolder+"no-image.jpg");
-				
+
 				//SIL IMAGE
 				if(sil.exists())				
 					imageSil = getImagePath(silFolder+data.getImageSil());
-				
+
 				else imageSil = getImagePath(noImageFolder+"no-image.jpg");				
-											
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-					
+
 		}
-			
+
 		request.execute("btnTable();");
 	}
-		
+
 	public void downloadPdf() throws Exception {
-		
+
 		// criação do documento
 		Document document = new Document();
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 		TranslationMethods trad = new TranslationMethods();
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		
+
 		try {
-					
+
 			PdfWriter writer = PdfWriter.getInstance(document, baos);
 			document.open();
 			document.setPageSize(PageSize.A4);
@@ -592,15 +603,22 @@ public class wimReport {
 			document.add(new Paragraph("\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+data.getSeqN()
-					+"              "+trad.wimLabels("DATAHOUR")+": "+ data.getDatetime()+"               "
-					+trad.wimLabels("CLASSE")+": "+data.getClasse()));
+			+"              "+trad.wimLabels("DATAHOUR")+": "+ data.getDatetime()+"               "
+			+trad.wimLabels("CLASSE")+": "+data.getClasse()));
 			document.add(new Paragraph(trad.wimLabels("AXES")+": "+data.getAxlNumber()
-					+"               "+trad.wimLabels("SPEED")+": "+ data.getSpeed()
-					+"               "+trad.wimLabels("PBT")+": "+data.getPbtTotal()));
+			+"               "+trad.wimLabels("SPEED")+": "+ data.getSpeed()
+			+"               "+trad.wimLabels("PBT")+": "+data.getPbtTotal()));
 			document.add(new Paragraph("_____________________________________________________________________________\n\n"));
 			document.add(new Paragraph(trad.wimLabels("indicator")+": "+getRateTxt()+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION2")+"\n\n"));
-			
+			logo = "C:\\Tracevia\\Software\\External\\Logo\\tuxpan.png";
+			File  tuxpan = new File(logo);
+			if(tuxpan.exists()) {
+				Image tuxpanL = Image.getInstance(logo);
+				tuxpanL.setAbsolutePosition(420, 800);
+				tuxpanL.scaleAbsolute (100, 30);
+				document.add(tuxpanL);
+			}
 			File img1 = new File(vehiclesFolder+data.getImage());
 			File img2 = new File(vehiclesFolder+data.getImagePlate());
 			if(img1.exists()) {
@@ -629,8 +647,8 @@ public class wimReport {
 				System.out.println("Não existe");
 			}
 			//passando a imagem
-			
-			
+
+
 			document.add(new Paragraph());
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
 
@@ -645,46 +663,46 @@ public class wimReport {
 			p.add("                              "+"Pag 1");//paragrafo Evento
 			ct.addElement(p);
 			ct.go();
-			 PdfPTable table1 = new PdfPTable(3);
-			 PdfPTable table2 = new PdfPTable(3);
-			 PdfPTable table3 = new PdfPTable(3);
-			 PdfPTable table4 = new PdfPTable(3);
-			 PdfPTable table5 = new PdfPTable(3);
-			 PdfPTable table6 = new PdfPTable(3);
-			 PdfPTable table7 = new PdfPTable(3);
-			 PdfPTable table8 = new PdfPTable(3);
-			 PdfPTable table9 = new PdfPTable(3);
-			 PdfPTable table10 = new PdfPTable(3);
-			 table1.addCell(trad.wimLabels("AXES"));table1.addCell(trad.wimLabels("TYPE"));
-			 table1.addCell(trad.wimLabels("WEIGHT"));table1.addCell(trad.wimLabels("DSTAXES"));
-		     document.add(table1);
-		     table2.addCell("1");table2.addCell(data.getAxlType()[0]);
-			 table2.addCell(data.getAxlWeight()[0]);table2.addCell(data.getAxlDist()[1]);
-		     document.add(table2);
-		     table3.addCell("2");table3.addCell(data.getAxlType()[1]);
-			 table3.addCell(data.getAxlWeight()[1]);table3.addCell(data.getAxlDist()[1]);
-		     document.add(table3);
-		     table4.addCell("3");table4.addCell(data.getAxlType()[2]);
-			 table4.addCell(data.getAxlWeight()[2]);table4.addCell(data.getAxlDist()[2]);
-		     document.add(table4);
-		     table5.addCell("4");table5.addCell(data.getAxlType()[3]);
-			 table5.addCell(data.getAxlWeight()[3]);table5.addCell(data.getAxlDist()[3]);
-		     document.add(table5);
-		     table6.addCell("5");table6.addCell(data.getAxlType()[4]);
-			 table6.addCell(data.getAxlWeight()[4]);table6.addCell(data.getAxlDist()[4]);
-		     document.add(table6);
-		     table7.addCell("6");table7.addCell(data.getAxlType()[5]);
-			 table7.addCell(data.getAxlWeight()[5]);table7.addCell(data.getAxlDist()[5]);
-		     document.add(table7);
-		     table8.addCell("7");table8.addCell(data.getAxlType()[6]);
-			 table8.addCell(data.getAxlWeight()[6]);table2.addCell(data.getAxlDist()[6]);
-		     document.add(table8);
-		     table9.addCell("8");table9.addCell(data.getAxlType()[7]);
-			 table9.addCell(data.getAxlWeight()[7]);table9.addCell(data.getAxlDist()[7]);
-		     document.add(table9);
-		     table10.addCell("9");table10.addCell(data.getAxlType()[8]);
-			 table10.addCell(data.getAxlWeight()[8]);table10.addCell(data.getAxlDist()[8]);
-		     document.add(table10);
+			PdfPTable table1 = new PdfPTable(3);
+			PdfPTable table2 = new PdfPTable(3);
+			PdfPTable table3 = new PdfPTable(3);
+			PdfPTable table4 = new PdfPTable(3);
+			PdfPTable table5 = new PdfPTable(3);
+			PdfPTable table6 = new PdfPTable(3);
+			PdfPTable table7 = new PdfPTable(3);
+			PdfPTable table8 = new PdfPTable(3);
+			PdfPTable table9 = new PdfPTable(3);
+			PdfPTable table10 = new PdfPTable(3);
+			table1.addCell(trad.wimLabels("AXES"));table1.addCell(trad.wimLabels("TYPE"));
+			table1.addCell(trad.wimLabels("WEIGHT"));table1.addCell(trad.wimLabels("DSTAXES"));
+			document.add(table1);
+			table2.addCell("1");table2.addCell(data.getAxlType()[0]);
+			table2.addCell(data.getAxlWeight()[0]);table2.addCell(data.getAxlDist()[1]);
+			document.add(table2);
+			table3.addCell("2");table3.addCell(data.getAxlType()[1]);
+			table3.addCell(data.getAxlWeight()[1]);table3.addCell(data.getAxlDist()[1]);
+			document.add(table3);
+			table4.addCell("3");table4.addCell(data.getAxlType()[2]);
+			table4.addCell(data.getAxlWeight()[2]);table4.addCell(data.getAxlDist()[2]);
+			document.add(table4);
+			table5.addCell("4");table5.addCell(data.getAxlType()[3]);
+			table5.addCell(data.getAxlWeight()[3]);table5.addCell(data.getAxlDist()[3]);
+			document.add(table5);
+			table6.addCell("5");table6.addCell(data.getAxlType()[4]);
+			table6.addCell(data.getAxlWeight()[4]);table6.addCell(data.getAxlDist()[4]);
+			document.add(table6);
+			table7.addCell("6");table7.addCell(data.getAxlType()[5]);
+			table7.addCell(data.getAxlWeight()[5]);table7.addCell(data.getAxlDist()[5]);
+			document.add(table7);
+			table8.addCell("7");table8.addCell(data.getAxlType()[6]);
+			table8.addCell(data.getAxlWeight()[6]);table2.addCell(data.getAxlDist()[6]);
+			document.add(table8);
+			table9.addCell("8");table9.addCell(data.getAxlType()[7]);
+			table9.addCell(data.getAxlWeight()[7]);table9.addCell(data.getAxlDist()[7]);
+			document.add(table9);
+			table10.addCell("9");table10.addCell(data.getAxlType()[8]);
+			table10.addCell(data.getAxlWeight()[8]);table10.addCell(data.getAxlDist()[8]);
+			document.add(table10);
 			document.add(new Paragraph(""));
 
 		}catch(DocumentException de) {
@@ -693,36 +711,36 @@ public class wimReport {
 		catch(IOException ioe) {
 			System.err.println(ioe.getMessage());
 		}
-			document.close();
-			
-			// DOWNLOAD
-			data = dao.searchId(rowkey);
-			externalContext.setResponseContentType("application/pdf");
-			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+data.getSeqN()+".pdf\"");
+		document.close();
 
-			externalContext.setResponseContentLength(baos.size());
+		// DOWNLOAD
+		data = dao.searchId(rowkey);
+		externalContext.setResponseContentType("application/pdf");
+		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"wim_"+data.getSeqN()+".pdf\"");
 
-			OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
-			baos.writeTo(responseOutputStream);
-			responseOutputStream.flush();
-			responseOutputStream.close();
+		externalContext.setResponseContentLength(baos.size());
+
+		OutputStream responseOutputStream = externalContext.getResponseOutputStream();  
+		baos.writeTo(responseOutputStream);
+		responseOutputStream.flush();
+		responseOutputStream.close();
 
 
-			facesContext.responseComplete();  
-		
+		facesContext.responseComplete();  
+
 	}
-	
-	 public String getImagePath(String image) {
-			
-			try {
 
-				Path path = Paths.get(image);								
-				  byte[] file = Files.readAllBytes(path);
-				  return Base64.getEncoder().encodeToString(file);
-				  
-			} catch (IOException e) {											
-				return "";
-			}
+	public String getImagePath(String image) {
 
+		try {
+
+			Path path = Paths.get(image);								
+			byte[] file = Files.readAllBytes(path);
+			return Base64.getEncoder().encodeToString(file);
+
+		} catch (IOException e) {											
+			return "";
 		}
+
+	}
 }
