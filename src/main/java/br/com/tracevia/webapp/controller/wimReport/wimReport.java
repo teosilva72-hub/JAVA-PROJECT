@@ -626,13 +626,11 @@ public class wimReport {
 				imgX.setAbsolutePosition(100, 280);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
-				System.out.println("existe");
 			}else {
 				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
 				imgX.setAbsolutePosition(100, 280);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
-				System.out.println("Não existe");
 			}
 			if(img2.exists()) {
 				Image imgY = Image.getInstance(vehiclesFolder+data.getImagePlate());
@@ -644,7 +642,6 @@ public class wimReport {
 				imgY.setAbsolutePosition(300, 280);
 				imgY.scaleAbsolute (200, 150);
 				document.add(imgY);
-				System.out.println("Não existe");
 			}
 			//passando a imagem
 
