@@ -220,7 +220,7 @@ public class OCRDAO{
 		
 		List<OCR> list = new ArrayList<OCR>();		
 						
-		String select = "SELECT equip_id, equip_name, equip_status FROM connect_monitor WHERE equip_type = 'OCR' ";
+		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'OCR' ";
 									
 	  try {
 			

@@ -1,46 +1,41 @@
 package br.com.tracevia.webapp.controller.speed;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.speed.Speed;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="speedMapsView")
 @ViewScoped
 public class SpeedBuildSpeed {
 	
-	List<? extends Equipments> speedList;
-
-	public List<? extends Equipments> getSpeedList() {
-		return speedList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+		
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setSpeedList(List<? extends Equipments> speedList) {
-		this.speedList = speedList;
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 	
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//BuildSpeed();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildSpeed() {
 						
 		try {	
 		
 		try {
 			
-			speedList = new ArrayList<Speed>();
-			
-			Speed speed =  new Speed();						
-			speedList = speed.listEquipments("speed");			
+						
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

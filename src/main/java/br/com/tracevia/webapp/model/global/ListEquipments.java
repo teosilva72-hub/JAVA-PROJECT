@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
@@ -24,8 +26,23 @@ import br.com.tracevia.webapp.model.wim.WIM;
 @ViewScoped
 public class ListEquipments {
 	
-	List<listEquips> equips;		
-	LoadStartupModules load;
+	List<listEquips> equips;
+	
+	List<? extends Equipments> cftvList; 
+	List<? extends Equipments> colasList; 
+	List<? extends Equipments> commsList; 
+	List<? extends Equipments> dmsList; 
+	List<? extends Equipments> daiList; 
+	List<? extends Equipments> mtoList; 
+	List<? extends Equipments> ocrList; 
+	List<? extends Equipments> satList; 
+	List<? extends Equipments> speedList; 
+	List<? extends Equipments> sosList; 
+	List<? extends Equipments> svList; 
+	List<? extends Equipments> wimList; 
+	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
 	
 	public List<listEquips> getEquips() {
 		return equips;
@@ -34,13 +51,62 @@ public class ListEquipments {
 	public void setEquips(List<listEquips> equips) {
 		this.equips = equips;
 	}
-	
-	public LoadStartupModules getLoad() {
-		return load;
+				
+	public LoginAccountBean getLogin() {
+		return login;
 	}
 
-	public void setLoad(LoadStartupModules load) {
-		this.load = load;
+	public void setLogin(LoginAccountBean login) {
+		this.login = login;
+	}
+	
+
+	public List<? extends Equipments> getCftvList() {
+		return cftvList;
+	}
+
+	public List<? extends Equipments> getColasList() {
+		return colasList;
+	}
+
+	public List<? extends Equipments> getCommsList() {
+		return commsList;
+	}
+
+	public List<? extends Equipments> getDmsList() {
+		return dmsList;
+	}
+
+	public List<? extends Equipments> getDaiList() {
+		return daiList;
+	}
+
+	public List<? extends Equipments> getMtoList() {
+		return mtoList;
+	}
+
+	public List<? extends Equipments> getOcrList() {
+		return ocrList;
+	}
+
+	public List<? extends Equipments> getSatList() {
+		return satList;
+	}
+
+	public List<? extends Equipments> getSpeedList() {
+		return speedList;
+	}
+
+	public List<? extends Equipments> getSosList() {
+		return sosList;
+	}
+
+	public List<? extends Equipments> getSvList() {
+		return svList;
+	}
+
+	public List<? extends Equipments> getWimList() {
+		return wimList;
 	}
 	
 	@PostConstruct
@@ -112,10 +178,7 @@ public class ListEquipments {
 	
 	public void CreateMapEquipment() {
 		
-		equips = new ArrayList<listEquips>();
-		
-		load = new LoadStartupModules();
-		load.startupComponents();
+		equips = new ArrayList<listEquips>();			
 						
 		try {	
 			
@@ -134,42 +197,89 @@ public class ListEquipments {
 				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
 				
-				if(load.isEn_cftv())			
-					equips.add(new listEquips("cftv", load.isEn_cftv(), cftv.listEquipments("cftv"), load.getVoltage_cftv()));
+				    if(login.getLoad().isEn_cftv())	{	
 					
-					if(load.isEn_colas())
-					equips.add(new listEquips("colas", load.isEn_colas(), colas.listEquipments("colas"), load.getVoltage_colas()));
+					cftvList = cftv.listEquipments("cftv"); 
+					equips.add(new listEquips("cftv", login.getLoad().isEn_cftv(), cftvList, login.getLoad().getVoltage_cftv()));
 					
-					if(load.isEn_comms())
-					equips.add(new listEquips("comms", load.isEn_comms(), comms.listEquipments("comms"), load.getVoltage_comms()));
+				    }
 					
-					if(load.isEn_dai())
-					equips.add(new listEquips("dai", load.isEn_dai(), dai.listEquipments("dai"), load.getVoltage_dai()));
+					if(login.getLoad().isEn_colas()) {
+						
+					colasList = colas.listEquipments("colas"); 
+					equips.add(new listEquips("colas", login.getLoad().isEn_colas(), colasList, login.getLoad().getVoltage_colas()));
 					
-					if(load.isEn_pmv())
-					equips.add(new listEquips("dms", load.isEn_pmv(), dms.listDMSEquipments(), load.getVoltage_pmv()));
+					}
 					
-					if(load.isEn_ocr())
-					equips.add(new listEquips("ocr", load.isEn_ocr(), ocr.listEquipments("ocr"), load.getVoltage_ocr()));
+					if(login.getLoad().isEn_comms()) {
+						
+					commsList = comms.listEquipments("comms");	
+					equips.add(new listEquips("comms", login.getLoad().isEn_comms(), commsList, login.getLoad().getVoltage_comms()));
 					
-					if(load.isEn_mto())
-					equips.add(new listEquips("mto", load.isEn_mto(), load.isEn_meteo(), mto.listEquipments("mto"), load.getVoltage_mto()));
+					}
+					
+					if(login.getLoad().isEn_dai()) {
+						
+					daiList = dai.listEquipments("dai");	
+					equips.add(new listEquips("dai", login.getLoad().isEn_dai(), daiList, login.getLoad().getVoltage_dai()));
+					
+					}
+					
+					if(login.getLoad().isEn_pmv()) {
+						
+					dmsList = dms.listDMSEquipments();	
+					equips.add(new listEquips("dms", login.getLoad().isEn_pmv(), dmsList, login.getLoad().getVoltage_pmv()));
+					
+					}
+					
+					if(login.getLoad().isEn_ocr()) {
+						
+					ocrList = ocr.listEquipments("ocr");	
+					equips.add(new listEquips("ocr", login.getLoad().isEn_ocr(), ocrList, login.getLoad().getVoltage_ocr()));
+					
+					}
+					
+					if(login.getLoad().isEn_mto()) {
+						
+					mtoList = mto.listEquipments("mto");	
+					equips.add(new listEquips("mto", login.getLoad().isEn_mto(), login.getLoad().isEn_meteo(), mtoList, login.getLoad().getVoltage_mto()));
+								
+					}
+					
+					if(login.getLoad().isEn_sv()) {
+						
+					svList = sv.listEquipments("sv");	
+					equips.add(new listEquips("sv", login.getLoad().isEn_sv(), login.getLoad().isEn_meteo(), svList, login.getLoad().getVoltage_sv()));
 											
-					if(load.isEn_sv())
-					equips.add(new listEquips("sv", load.isEn_sv(), load.isEn_meteo(), sv.listEquipments("sv"), load.getVoltage_sv()));
-											
-					if(load.isEn_sat())
-					equips.add(new listEquips("sat", load.isEn_sat(), sat.listSatEquipments(), load.getVoltage_sat()));
+					}
 					
-					if(load.isEn_sos())
-					equips.add(new listEquips("sos", load.isEn_sos(), sos.listEquipments("sos"), load.getVoltage_sos()));
+					if(login.getLoad().isEn_sat()) {
+						
+					satList = sat.listSatEquipments();	
+					equips.add(new listEquips("sat", login.getLoad().isEn_sat(), satList, login.getLoad().getVoltage_sat()));
 					
-					if(load.isEn_speed())
-					equips.add(new listEquips("speed", load.isEn_speed(), speed.listEquipments("speed"), load.getVoltage_speed()));
+					}
+					
+					if(login.getLoad().isEn_sos()) {
+						
+					sosList = sos.listEquipments("sos");
+					equips.add(new listEquips("sos", login.getLoad().isEn_sos(), sosList, login.getLoad().getVoltage_sos()));
+					
+					}
+					
+					if(login.getLoad().isEn_speed()) {
+						
+					speedList = speed.listEquipments("speed");	
+					equips.add(new listEquips("speed", login.getLoad().isEn_speed(), speedList, login.getLoad().getVoltage_speed()));
 									
-					if(load.isEn_wim())
-					equips.add(new listEquips("wim", load.isEn_wim(), wim.listEquipments("wim"), load.getVoltage_wim()));
+					}
+					
+					if(login.getLoad().isEn_wim()) {
+						
+					wimList = wim.listEquipments("wim")	;
+					equips.add(new listEquips("wim", login.getLoad().isEn_wim(), wimList, login.getLoad().getVoltage_wim()));
 				
+					}
 					
             }catch(IndexOutOfBoundsException ex) {}
 		

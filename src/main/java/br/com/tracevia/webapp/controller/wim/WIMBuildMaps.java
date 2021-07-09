@@ -5,42 +5,41 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.wim.WIM;
 
 @ManagedBean(name="wimMapsView")
 @ViewScoped
 public class WIMBuildMaps {
 	
-	List<? extends Equipments> wimList;
-	
-	public List<? extends Equipments> getWimList() {
-		return wimList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+			
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setWimList(List<? extends Equipments> wimList) {
-		this.wimList = wimList;
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//BuildWIM();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildWIM() {
 						
 		try {	
 		
 		try {
-			
-			wimList = new ArrayList<WIM>();
-			
-			WIM wim =  new WIM();						
-			wimList = wim.listEquipments("wim");			
+								
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

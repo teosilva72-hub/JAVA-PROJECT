@@ -5,43 +5,42 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.sos.SOS;
 
 @ManagedBean(name="sosMapsView")
 @ViewScoped
 public class SOSBuildMaps {
 	
-	List<? extends Equipments> sosList; 
-		
-	public List<? extends Equipments> getSosList() {
-		return sosList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+			
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setSosList(List<? extends Equipments> sosList) {
-		this.sosList = sosList;
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//BuildSOS();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildSOS() {
 						
 		try {	
 		
 		try {
 			
-			sosList = new ArrayList<SOS>();
-			
-			SOS sos = new SOS();					
-			sosList = sos.listEquipments("sos");		
-				
+		
             }catch(IndexOutOfBoundsException ex) {}
 		
 		}catch(Exception ex) {}		

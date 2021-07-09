@@ -5,44 +5,43 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.wim.WIM;
-
 
 @ManagedBean(name="commsMapsView")
 @ViewScoped
 public class COMMSBuildMaps {
 	
-	List<? extends Equipments> commsList;
+	 @ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+			
+	public ListEquipments getEquips() {
+		return equips;
+	}
+
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}
 		
-	public List<? extends Equipments> getCommsList() {
-		return commsList;
-	}
-
-	public void setCommsList(List<? extends Equipments> commsList) {
-		this.commsList = commsList;
-	}
-
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//BuildComms();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildComms() {
 						
 		try {	
 		
 		try {
 			
-			commsList = new ArrayList<WIM>();
-			
-			COMMS comms = new COMMS();						
-			commsList = comms.listEquipments("comms");			
+	
 				
             }catch(IndexOutOfBoundsException ex) {}
 		
