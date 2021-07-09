@@ -6,7 +6,7 @@ public enum NotificationsTypeEnum {
 	COLAS("COLAS"),
 	COMMS("COMMS"),
 	DAI("DAI"),
-	LPR("LPR"),
+	OCR("OCR"),
 	MTO("MTO"),
 	OCC("OCC"),
 	PMV("PMV"),

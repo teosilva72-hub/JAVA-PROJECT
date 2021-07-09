@@ -5,42 +5,52 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.model.colas.Colas;
-import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="colasMapsView")
 @ViewScoped
 public class ColasBuildMaps {
 	
-	List<? extends Equipments> colasList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+	
+	List<Colas> colasStatus;
 
-	public List<? extends Equipments> getColasList() {
-		return colasList;
+	
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setColasList(List<? extends Equipments> colasList) {
-		this.colasList = colasList;
-	} 
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}
+	
+	public List<Colas> getColasStatus() {
+		return colasStatus;
+	}
 	
 	@PostConstruct
 	public void initalize() {
 		
-		CreateMapEquipment();
+		BuildCOLAS();
 		
 	}
 	
-	public void CreateMapEquipment() {
+	public void BuildCOLAS() {
 						
 		try {	
 		
 		try {
 			
-			colasList = new ArrayList<Colas>();
-			
-			Colas colas = new Colas();						
-			colasList = colas.listEquipments("colas");			
+			ColasDAO colasDAO = new ColasDAO();
+						
+			colasStatus = new ArrayList<Colas>();			
+			colasStatus = colasDAO.Status();	
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

@@ -5,42 +5,53 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.dao.dai.DAIDAO;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="daiMapsView")
 @ViewScoped
 public class DAIBuildMaps {
 	
-	List<? extends Equipments> daiList;
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+			
+	List<DAI> daiStatus;
 	
-	public List<? extends Equipments> getDaiList() {
-		return daiList;
+	public ListEquipments getEquips() {
+		return equips;
 	}
 
-	public void setDaiList(List<? extends Equipments> daiList) {
-		this.daiList = daiList;
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}
+	
+	public List<DAI> getDaiStatus() {
+		return daiStatus;
 	}
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		BuildDAI();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildDAI() {
 						
 		try {	
 		
 		try {
 			
-			daiList = new ArrayList<DAI>();
-			
-			DAI dai = new DAI();						
-			daiList = dai.listEquipments("dai");			
+			DAIDAO daiDAO = new DAIDAO();					
+						
+	        daiStatus = new ArrayList<DAI>();
+	
+	        daiStatus = daiDAO.Status();				
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

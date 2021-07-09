@@ -1,46 +1,28 @@
 package br.com.tracevia.webapp.controller.videowall;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.videowall.VIDEOWALL;
 
 @ManagedBean(name="videoWallMapsView")
 @ViewScoped
 public class VIDEOWALLBuildMaps {
 	
-	List<? extends Equipments> videoWallList;
-
-	public List<? extends Equipments> getVideoWallList() {
-		return videoWallList;
-	}
-
-	public void setVideoWallList(List<? extends Equipments> videoWallList) {
-		this.videoWallList = videoWallList;
-	}
+	
 	
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		//BuildVIDEOWALL();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildVIDEOWALL() {
 						
 		try {	
 		
 		try {
-			
-			videoWallList = new ArrayList<VIDEOWALL>();
-			
-			VIDEOWALL video = new VIDEOWALL();						
-			videoWallList = video.listEquipments("videowall");			
+							
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

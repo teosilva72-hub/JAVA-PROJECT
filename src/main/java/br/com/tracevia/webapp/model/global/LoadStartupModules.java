@@ -10,7 +10,6 @@ import br.com.tracevia.webapp.dao.global.ModulesDAO;
 public class LoadStartupModules {  
 	
 	private List<Modules> modules;
-	private List<Equipments> cftv, colas, comms, dai, ocr, mto, pmv, sv, sat, sos, speed, videowall, wim;
 	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_mto, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_sv, en_wim;
 	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_ocr, voltage_mto, voltage_pmv, voltage_sat, voltage_sos, voltage_speed, voltage_videowall, 
 	voltage_sv, voltage_wim;
@@ -21,110 +20,6 @@ public class LoadStartupModules {
 
 	public void setModules(List<Modules> modules) {
 		this.modules = modules;
-	}
-
-	public List<Equipments> getCftv() {
-		return cftv;
-	}
-
-	public void setCftv(List<Equipments> cftv) {
-		this.cftv = cftv;
-	}
-
-	public List<Equipments> getColas() {
-		return colas;
-	}
-
-	public void setColas(List<Equipments> colas) {
-		this.colas = colas;
-	}
-
-	public List<Equipments> getComms() {
-		return comms;
-	}
-
-	public void setComms(List<Equipments> comms) {
-		this.comms = comms;
-	}
-
-	public List<Equipments> getDai() {
-		return dai;
-	}
-
-	public void setDai(List<Equipments> dai) {
-		this.dai = dai;
-	}
-
-	public List<Equipments> getOcr() {
-		return ocr;
-	}
-
-	public void setLpr(List<Equipments> ocr) {
-		this.ocr = ocr;
-	}
-
-	public List<Equipments> getMto() {
-		return mto;
-	}
-
-	public void setMto(List<Equipments> mto) {
-		this.mto = mto;
-	}
-
-	public List<Equipments> getPmv() {
-		return pmv;
-	}
-
-	public void setPmv(List<Equipments> pmv) {
-		this.pmv = pmv;
-	}
-	
-	public List<Equipments> getSv() {
-		return sv;
-	}
-
-	public void setSv(List<Equipments> sv) {
-		this.sv = sv;
-	}
-
-	public List<Equipments> getSat() {
-		return sat;
-	}
-
-	public void setSat(List<Equipments> sat) {
-		this.sat = sat;
-	}
-
-	public List<Equipments> getSos() {
-		return sos;
-	}
-
-	public void setSos(List<Equipments> sos) {
-		this.sos = sos;
-	}
-
-	public List<Equipments> getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(List<Equipments> speed) {
-		this.speed = speed;
-	}
-	
-	public List<Equipments> getVideowall() {
-		return videowall;
-	}
-
-	public void setVideowall(List<Equipments> videowall) {
-		this.videowall = videowall;
-	}
-
-	public List<Equipments> getWim() {
-		return wim;
-	}
-
-	public void setWim(List<Equipments> wim) {
-		this.wim = wim;
 	}
 
 	public boolean isEn_cftv() {
@@ -399,7 +294,8 @@ public class LoadStartupModules {
 		modules = new ArrayList<Modules>();				
 		ModulesDAO modDAO = new ModulesDAO();
 		
-		modules = modDAO.listModules();				
+		modules = modDAO.listModules();	
+			
 	}
 	
 	/**
@@ -408,23 +304,9 @@ public class LoadStartupModules {
 	 */		
 
 	public void listViewEquipments() throws Exception  {
-		
-		cftv = new ArrayList<Equipments>();
-		colas = new ArrayList<Equipments>();
-		comms = new ArrayList<Equipments>();
-		dai = new ArrayList<Equipments>();
-		ocr = new ArrayList<Equipments>();
-		mto = new ArrayList<Equipments>();			
-		pmv = new ArrayList<Equipments>();
-		sv = new ArrayList<Equipments>();
-		sat = new ArrayList<Equipments>();
-		sos = new ArrayList<Equipments>();
-		speed = new ArrayList<Equipments>();	
-		videowall = new ArrayList<Equipments>();
-		wim = new ArrayList<Equipments>();
-									
+											
 		for(Modules mod: modules) {
-			
+							
 			if(mod.getModule().equals(ModulesEnum.CFTV.getModule()) && mod.isEnabled()) {			
 				en_cftv = mod.isEnabled();	
 				voltage_cftv = mod.getBattery_voltage();

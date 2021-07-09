@@ -94,9 +94,7 @@ public class EquipmentsDAO {
 			
 			ps = conn.prepareStatement(query);
 			rs = ps.executeQuery();
-			
-			//System.out.println("TESTE "+query);
-
+	
 			if (rs != null) {
 				while (rs.next()) {			
 					

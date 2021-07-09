@@ -22,7 +22,7 @@ public class CFTVDAO {
 						
 			List<CFTV> list = new ArrayList<CFTV>();		
 							
-			String select = "SELECT equip_id, equip_name, equip_status FROM cctv_monitor WHERE equip_type = 'CFTV' ";
+			String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'CFTV' ";
 										
 		  try {
 				

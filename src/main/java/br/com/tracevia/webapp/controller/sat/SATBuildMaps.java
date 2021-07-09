@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -13,6 +14,7 @@ import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.SATinformationsDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.sat.SAT;
 
@@ -20,13 +22,11 @@ import br.com.tracevia.webapp.model.sat.SAT;
 @ViewScoped
 public class SATBuildMaps {
 	
-	static List<? extends Equipments> satList;
 	List<SAT> satListValues, satStatus;
-
-	public List<? extends Equipments> getSatList() {
-		return satList;
-	}
-
+	
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;
+	
 	public List<SAT> getSatListValues() {
 		return satListValues;
 	}
@@ -34,15 +34,23 @@ public class SATBuildMaps {
 	public List<SAT> getSatStatus() {
 		return satStatus;
 	}
+	
+	public ListEquipments getEquips() {
+		return equips;
+	}
+	
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}
 
 	@PostConstruct
 	public void initalize() {
 
-		CreateLinearEquipment();
-
+		BuildSAT();
+		
 	}
 
-	public void CreateLinearEquipment() {
+	public void BuildSAT() {
 				
 		try {
 
@@ -51,12 +59,11 @@ public class SATBuildMaps {
 				SATinformationsDAO satDAO = new SATinformationsDAO();  
 				NotificationsBean notif = new NotificationsBean();
  
-				boolean status30 = true, values30 = true, status45 = false, values45 = false, status08 = false,
-						values08 = false;
+				boolean status30 = true, values30 = true, status45 = false, values45 = false, status08 = false, values08 = false;
 				boolean pass = true; 
 
-				// LISTAS
-				satList = new ArrayList<SAT>();
+				// LISTAS										
+											
 				satListValues = new ArrayList<SAT>();
 				satStatus = new ArrayList<SAT>();
 
@@ -64,14 +71,11 @@ public class SATBuildMaps {
 				List<SAT> satListValuesAux = new ArrayList<SAT>();
 				List<SAT> satListStatusAux = new ArrayList<SAT>();
 				List<Notifications> listStatus = new ArrayList<Notifications>();
-
-				// SAT OBJECT
-				SAT sat = new SAT();
-
+				
 				///////////////////////////////
 				// SAT EQUIPMENTS
 				//////////////////////////////
-				satList = sat.listSatEquipments();
+				
 				listStatus = notif.getNotificationStatus(NotificationsTypeEnum.SAT.getType());							
 				
 				////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,7 +121,7 @@ public class SATBuildMaps {
 				if (status45) {
 
 					// LISTA COM TODOS SATS 
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
@@ -125,7 +129,7 @@ public class SATBuildMaps {
                         //LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListStatusAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListStatusAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setStatus(satListStatusAux.get(r).getStatus());
 
@@ -137,7 +141,7 @@ public class SATBuildMaps {
 								//TECNICAMENTE NAO PRECISA COMPARAR IDs PORQUE AO CRIAR EQUIPAMENTO
 								//CRIA - SE UMA INSTÂNCIA NA TABELA DE NOTIFICAÇÕES
 								if(listStatus.get(s).getStatus() == 1)
-								     notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								     notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								break;
 
@@ -148,7 +152,7 @@ public class SATBuildMaps {
 						if (pass) {
 
 							//BUSCA DADOS DAS ULTIMAS 08 HORAS
-							satListObj = satDAO.statusByData08(satList.get(s).getEquip_id());
+							satListObj = satDAO.statusByData08(equips.getSatList().get(s).getEquip_id());
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
 							if (satListObj.getEquip_id() != 0) {
@@ -157,7 +161,7 @@ public class SATBuildMaps {
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
-								    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 								
 							}
 							
@@ -166,14 +170,14 @@ public class SATBuildMaps {
 
 								SAT satListObj1 = new SAT();
 
-								satListObj1.setEquip_id(satList.get(s).getEquip_id());
+								satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
 								satListObj1.setStatus(0);
 
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
 								if(listStatus.get(s).getStatus() == 0)
-								notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
 							}
@@ -184,7 +188,7 @@ public class SATBuildMaps {
 				} else if (status30) {
 
 					// LISTA COM TODOS SATS 
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
@@ -192,7 +196,7 @@ public class SATBuildMaps {
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListStatusAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListStatusAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setStatus(satListStatusAux.get(r).getStatus());
 
@@ -202,7 +206,7 @@ public class SATBuildMaps {
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
-								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
 								break;
@@ -214,7 +218,7 @@ public class SATBuildMaps {
 						if (pass) {
 
 							//BUSCA DADOS DOS ULTIMAS 45 MINUTOS
-							satListObj = satDAO.statusByData45(satList.get(s).getEquip_id());
+							satListObj = satDAO.statusByData45(equips.getSatList().get(s).getEquip_id());
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
 							if (satListObj.getEquip_id() != 0) {
@@ -223,7 +227,7 @@ public class SATBuildMaps {
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
-								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								
 							}
@@ -232,7 +236,7 @@ public class SATBuildMaps {
 							else {
 								
 								//BUSCA DADOS DAS ULTIMAS 08 HORAS
-								satListObj = satDAO.statusByData08(satList.get(s).getEquip_id());
+								satListObj = satDAO.statusByData08(equips.getSatList().get(s).getEquip_id());
 
 								//SE HOUVER DADOS PREENCHE NA LISTA
 								if (satListObj.getEquip_id() != 0) {
@@ -241,7 +245,7 @@ public class SATBuildMaps {
 									
 									//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 									if(listStatus.get(s).getStatus() == 1)
-									   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+									   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 									
 								}
@@ -251,14 +255,14 @@ public class SATBuildMaps {
 							
 								  SAT satListObj1 = new SAT();
 
-								  satListObj1.setEquip_id(satList.get(s).getEquip_id());
+								  satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
 								  satListObj1.setStatus(0);
 
 								  satStatus.add(satListObj1);
 								  
 								//NESSE CASO ATUALIZA PARA OFFLINE
 								  if(listStatus.get(s).getStatus() == 0)
-								      notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								      notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 								  
 						         }
@@ -270,7 +274,7 @@ public class SATBuildMaps {
 				} else if(status08) {
 					
 					//LISTA COM SATS
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
@@ -278,7 +282,7 @@ public class SATBuildMaps {
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListStatusAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListStatusAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setStatus(satListStatusAux.get(r).getStatus());
 
@@ -288,7 +292,7 @@ public class SATBuildMaps {
 								
 								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
-								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 
 								break;
@@ -303,14 +307,14 @@ public class SATBuildMaps {
 							
 								SAT satListObj1 = new SAT();
 
-								satListObj1.setEquip_id(satList.get(s).getEquip_id());
+								satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
 								satListObj1.setStatus(0);
 
 								satStatus.add(satListObj1);
 								
 								//NESSE CASO ATUALIZA PARA OFFLINE
 								if(listStatus.get(s).getStatus() == 0)
-								   notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								   notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 							
 						}
@@ -320,12 +324,12 @@ public class SATBuildMaps {
 				
 			    // CASO N�O ENCONTROU NADA 
 			    // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
-				}else { intializeNullStatus(satList); 
+				}else { intializeNullStatus(equips.getSatList()); 
 				
-				for (int s = 0; s < satList.size(); s++) {
+				for (int s = 0; s < equips.getSatList().size(); s++) {
 					
 					if(listStatus.get(s).getStatus() == 0)
-					    notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+					    notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
 				}	
 				
@@ -379,7 +383,7 @@ public class SATBuildMaps {
 				if (values45) {
 
 					// LISTA COM TODOS SATS
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
@@ -388,7 +392,7 @@ public class SATBuildMaps {
 						for (int r = 0; r < satListValuesAux.size(); r++) {
 							
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListValuesAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -409,7 +413,7 @@ public class SATBuildMaps {
 						if (pass) {
 							
 							//BUSCA DADOS DAS ULTIMAS 08 HORAS
-							satListObj = satDAO.dataInfoByData08(satList.get(s).getEquip_id());
+							satListObj = satDAO.dataInfoByData08(equips.getSatList().get(s).getEquip_id());
 							satListObj.setStatusInterval(8);
 							
 							//SE HOUVER DADOS PREENCHE NA LISTA
@@ -419,7 +423,7 @@ public class SATBuildMaps {
 							//CASO CONTRARIO PREENCHE COM 0
 							else {
 
-							satListObj.setEquip_id(satList.get(s).getEquip_id());
+							satListObj.setEquip_id(equips.getSatList().get(s).getEquip_id());
 							satListObj.setQuantidadeS1(0);
 							satListObj.setQuantidadeS2(0);
 							satListObj.setVelocidadeS1(0);
@@ -435,7 +439,7 @@ public class SATBuildMaps {
 				} else if (values30) {
 
 					// LISTA COM TODOS SATS
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE HÁ DADOS NA COMPARAÇÃO ENTRE LISTAS
@@ -444,7 +448,7 @@ public class SATBuildMaps {
 						for (int r = 0; r < satListValuesAux.size(); r++) {
 														
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListValuesAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -464,7 +468,7 @@ public class SATBuildMaps {
 						if (pass) {
 							
 							//BUSCA DADOS DOS ULTIMAS 45 MINUTOS
-							satListObj = satDAO.dataInfoByData45(satList.get(s).getEquip_id());
+							satListObj = satDAO.dataInfoByData45(equips.getSatList().get(s).getEquip_id());
 							satListObj.setStatusInterval(45);
 							
 							//SE HOUVER DADOS PREENCHE NA LISTA
@@ -474,7 +478,7 @@ public class SATBuildMaps {
 							else {
 								
 								//BUSCA DADOS DAS ULTIMAS 08 HORAS
-								satListObj = satDAO.dataInfoByData08(satList.get(s).getEquip_id());
+								satListObj = satDAO.dataInfoByData08(equips.getSatList().get(s).getEquip_id());
 								satListObj.setStatusInterval(8);
 								
 								//SE HOUVER DADOS PREENCHE NA LISTA
@@ -486,7 +490,7 @@ public class SATBuildMaps {
 								
 								SAT satListObj1 = new SAT();
 
-								satListObj1.setEquip_id(satList.get(s).getEquip_id());
+								satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
 								satListObj1.setQuantidadeS1(0);
 								satListObj1.setQuantidadeS2(0);
 								satListObj1.setVelocidadeS1(0);
@@ -503,7 +507,7 @@ public class SATBuildMaps {
 				}else if(values08) {
 					
 					// LISTA COM TODOS SATS
-					for (int s = 0; s < satList.size(); s++) { // FOR START
+					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
 						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
@@ -512,7 +516,7 @@ public class SATBuildMaps {
 						for (int r = 0; r < satListValuesAux.size(); r++) {
 							
 							//COMPARA IDS ENTRE AS LISTAS
-							if (satListValuesAux.get(r).getEquip_id() == satList.get(s).getEquip_id()) {
+							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -534,7 +538,7 @@ public class SATBuildMaps {
 							
 							//CASO CONTRARIO PREENCHE COM 0
 						
-							satListObj.setEquip_id(satList.get(s).getEquip_id());
+							satListObj.setEquip_id(equips.getSatList().get(s).getEquip_id());
 							satListObj.setQuantidadeS1(0);
 							satListObj.setQuantidadeS2(0);
 							satListObj.setVelocidadeS1(0);
@@ -549,12 +553,12 @@ public class SATBuildMaps {
 				   // CASO N�O ENCONTROU NADA 
 				  // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
 				}else
-					intializeNullList(satList); // CASO N�O EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS
+					
+					intializeNullList(equips.getSatList()); // CASO N�O EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS
 
 				 ////////////////////////////////////////////////////////////////////////////////////////////
 			     ///// SAT VALUES
 			    ///////////////////////////////////////////////////////////////////////////////////////////
-
 
 				// Caso n�o tenha equipamentos faz nada
 
@@ -567,8 +571,7 @@ public class SATBuildMaps {
 			ex.printStackTrace();
 		}
 		
-		FacesContext.getCurrentInstance().getPartialViewContext()
-        .getRenderIds().add(":navbarDropdown2");
+		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
 
 	}
 

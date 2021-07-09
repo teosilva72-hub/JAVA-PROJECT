@@ -5,18 +5,19 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.dao.dms.MessagesDAO;
-import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
-import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="dmsMapsView")
 @ViewScoped
-public class DMSBuildLinear {
+public class DMSBuildMaps {
 	
-	List<? extends Equipments> dmsList; 
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments equips;			
+	
 	List<Messages> messagesDisplay;
 			
 	private String[] image;
@@ -36,37 +37,30 @@ public class DMSBuildLinear {
 		this.letter = letter;
 	}
 		
-	public List<? extends Equipments> getDmsList() {
-		return dmsList;
+	public ListEquipments getEquips() {
+		return equips;
 	}
-	
-	public void setDmsList(List<? extends Equipments> dmsList) {
-		this.dmsList = dmsList;
+
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
 	}
 
 	@PostConstruct
 	public void initalize() {
 		
-		CreateLinearEquipment();
+		BuildDMS();
 		
 	}
 	
-	public void CreateLinearEquipment() {
+	public void BuildDMS() {
 				
-		dmsList = new ArrayList<DMS>();
 		messagesDisplay = new ArrayList<Messages>();
 		
 		try {
-			
-			MessagesDAO messageDao = new MessagesDAO();
-			
-			DMS dms = new DMS();
-			dmsList = dms.listEquipments("pmv");			
-			
-			//messagesDisplay = messageDao.selectActivesMessages();
+								
 						
-			letter = new char[dmsList.size()][3][12];
-			image = new String[dmsList.size()];
+			letter = new char[equips.getDmsList().size()][3][12];
+			image = new String[equips.getDmsList().size()];
 			
 			try {
 			
