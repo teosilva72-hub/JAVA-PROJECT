@@ -122,9 +122,9 @@
 									itemValue="6" />
 								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_user}" itemValue="7" />
 								
-								<ui:fragment rendered="#{loginAccount.load.en_sos}">
-								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />	
-								</ui:fragment>							
+								<c:if test="#{loginAccount.load.en_sos}">
+									<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />	
+						</c:if>
 																
 							</h:selectOneMenu>
 						</div> <!---->

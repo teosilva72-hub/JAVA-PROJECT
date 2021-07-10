@@ -77,6 +77,7 @@ public class DaiBean {
 
 		try {
 			getAllFile(formattter.format(date));
+			traffic = new Traffic();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,6 +115,16 @@ public class DaiBean {
 			plate = info[6];
 		}
 		
+		Traffic() {
+			incident = "";
+			date = "";
+			channel = "";
+			lane = "";
+			direction = "";
+			hour = "";
+			plate = "";
+		}
+		
 		public int getId() {
 			return id;
 		}
@@ -149,7 +160,11 @@ public class DaiBean {
 		}
 
 		public String getPath() throws IOException {
-			return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+			if (file != null) {				
+				return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+			} else {
+				return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
+			}
 		}
 
 		static List<Traffic> all_traffic(List<Path> list, int idx) throws IOException, ParseException {
