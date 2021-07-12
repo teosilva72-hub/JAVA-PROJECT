@@ -46,7 +46,8 @@ public class LoginAccountBean {
 
 	LoadStartupModules load;
 	String mapUI, linearMapUI;
-	String plaque;	
+	String plaque;
+	String logo;
 	boolean mapEnabled, reportsLLEnabled;
 
 	InetAddress addr;
@@ -106,6 +107,14 @@ public class LoginAccountBean {
 
 	public void setPlaque(String plaque) {
 		this.plaque = plaque;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
 	public String getLinearMapUI() {
@@ -212,6 +221,7 @@ public class LoginAccountBean {
 					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 					plaque = RoadConcessionaire.plaque;
+					logo = RoadConcessionaire.logo;
 
 					return "/map/map.xhtml?faces-redirect=true";
 

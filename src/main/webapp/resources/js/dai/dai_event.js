@@ -82,6 +82,7 @@ const callback_image = response => {
     img.attr("src", `data:image/jpg;base64, ${response.body}`).click(alert_click)
 
 	toast.find(".toast-header").on("mousedown", move_dai)
+	toast.find(".close").click(() => { toast.remove() })
     toast.toast('show')
 }
 
