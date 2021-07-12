@@ -3,14 +3,12 @@ let send_date = $("#sendDate")
 let DAIpopup = $("#DAIpopup")
 
 const bodyDai = " \
-	<div class=\"position-fixed bottom-0 left-0 p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
-		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-autohide=\"false\"> \
+	<div class=\"position-fixed p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
+		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-bs-autohide=\"false\" data-autohide=\"false\"> \
 			<div class=\"bg-warning text-dark toast-header\"> \
-				<strong class=\"mr-auto\"></strong> \
+				<strong class=\"mr-auto me-auto\"></strong> \
 				<small></small> \
-				<button type=\"button\" class=\"ml-2 mb-1 close\" data-dismiss=\"toast\" aria-label=\"Close\"> \
-				<span aria-hidden=\"true\">&times;</span> \
-				</button> \
+				<button type=\"button\" class=\"ml-2 mb-1 close btn-close\" data-dismiss=\"toast\" aria-label=\"Close\"></button> \
 			</div> \
 			<div class=\"toast-body\"> \
 				<img style=\"cursor: pointer;\" src=\"data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" class=\"rounded mr-2 w-100\" alt=\"\" /> \
