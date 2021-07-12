@@ -432,10 +432,9 @@
       </div>
     </ui:insert>
 
-    <ui:fragment rendered="#{loginAccount.load.en_sos}">
+    <ui:fragment rendered="#{loginAccount.load.en_sos && userAccount.userPermision() == 8}">
 
       <ui:insert name="callbox">
-        <ui:fragment rendered="#{userAccount.userPermision() == 8}">
 
         <section>
           <div id="sipClient" class="calls-client">
@@ -548,7 +547,6 @@
           <audio id="audioRemote"></audio>
         </section>
         
-      </ui:fragment>
     </ui:insert>
 
   </ui:fragment>
@@ -570,10 +568,17 @@
     </div>
     <!-- TOAST END -->
 
+    <ui:fragment rendered="#{loginAccount.load.en_dai}">
     <!-- Notification DAI -->
     <div class="p-3 toast-start-bottom" id="notifyDAI" style="z-index: 1100">
       
     </div>
+    <h:form prependId="false" id="sendDate">
+      <h:inputHidden name="filterDate" id="filterDate" />
+      <h:commandButton style="display: none;" id="filterDateButton">
+        <f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getSpecificFile()}" />
+      </h:commandButton>
+    </h:form>
     <div class="modal fade" id="DAIpopup"
 			data-keyboard="false" tabindex="-1" aria-hidden="true">
 			<h:form prependId="false" id="modalPopUp">
@@ -620,6 +625,7 @@
 			</h:form>
 		</div>
     <!-- Notification DAI END -->
+  </ui:fragment>
 
     <!-- Footer -->
     <footer class=" page-footer font-small indigo">
@@ -675,7 +681,9 @@
     <h:outputScript name="stomp.min.js?version=#{notificationsView.timestamp}" library="js/stomp" />
     <h:outputScript name="controllerStomp.js?version=#{notificationsView.timestamp}" library="js/stomp" />
     
-    <h:outputScript name="dai_event.js?version=#{notificationsView.timestamp}" library="js/dai" />
+    <ui:fragment rendered="#{loginAccount.load.en_dai}">
+      <h:outputScript name="dai_event.js?version=#{notificationsView.timestamp}" library="js/dai" />
+    </ui:fragment>
    
     <ui:fragment rendered="#{loginAccount.load.en_sos}">
  

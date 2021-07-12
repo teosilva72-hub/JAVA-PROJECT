@@ -1,4 +1,5 @@
 let notify = $("#notifyDAI")
+let send_date = $("#sendDate")
 let DAIpopup = $("#DAIpopup")
 
 const bodyDai = " \
@@ -6,14 +7,7 @@ const bodyDai = " \
 		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-autohide=\"false\"> \
 			<div class=\"toast-header\"> \
 				<strong class=\"mr-auto\"></strong> \
-				<small> \
-				<h:form prependId=\"false\" id=\"sendDate\"> \
-					<h:inputText styleClass=\"input-style-none\" name=\"filterDate\" id=\"filterDate\" p:disabled=\"disabled\" /> \
-					<h:commandButton style=\"display: none;\" id=\"filterDateButton\"> \
-					<f:ajax execute=\"@this\" render=\":modalPopUp\" listener=\"#{daiBean.getSpecificFile()}\" /> \
-					</h:commandButton> \
-				</h:form> \
-				</small> \
+				<small class=\"input-style-none\"></small> \
 				<button type=\"button\" class=\"ml-2 mb-1 close\" data-dismiss=\"toast\" aria-label=\"Close\"> \
 				<span aria-hidden=\"true\">&times;</span> \
 				</button> \
@@ -50,14 +44,14 @@ const move_dai = function(e) {
 			pos4 = e.clientY;
 
 			let pos = {
-				left: Math.round(elmnt.css("left").replace("px", "") - pos1),
-				top: Math.round(elmnt.css("top").replace("px", "") - pos2)
+				left: Math.round(Number(elmnt.css("left").replace("px", "")) - pos1),
+				bottom: Math.round(Number(elmnt.css("bottom").replace("px", "")) + pos2)
 			}
 
 			// Set the element's new position:
 			elmnt.css({
-				top: pos.top,
-				left: pos.left
+				left: pos.left,
+				bottom: pos.bottom
 			})
 		})
 	
@@ -76,15 +70,16 @@ const callback_alert = response => {
 	let elmt = $(bodyDai)
 	
     elmt.find("strong").text(response.channelName);
-    elmt.find("#filterDate").val(date);
+    elmt.find("small").text(date);
 	
 	notify.append(elmt)
 }
 
 const callback_image = response => {
 	let toast = notify.find(".toast:last")
+	let img = toast.find("img")
 
-    toast.find("img").attr("src", `data:image/jpg;base64, ${response.body}`)
+    img.attr("src", `data:image/jpg;base64, ${response.body}`).click(alert_click)
 
 	toast.find(".toast-header").on("mousedown", move_dai)
     toast.toast('show')
@@ -108,16 +103,16 @@ const consumeDAI = async debug => {
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const alert_click = () => {
-	notify.find("#filterDateButton").click();
+const alert_click = function() {
+	let date = $(this).closest(".toast").find("small").text()
+
+	send_date.find("#filterDate").val(date).next().click();
 	DAIpopup.modal("show")
 }
 
 const initDAI = async debug => {
     $(function () {
 		consumeDAI(debug);
-
-		notify.find("img").click(alert_click)
 	});
 }
 
