@@ -167,7 +167,7 @@ public class DaiBean {
 					return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
 				}
 			} catch (IOException e) {}
-			return "";
+			return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 		}
 
 		static List<Traffic> all_traffic(List<Path> list, int idx) throws IOException, ParseException {
