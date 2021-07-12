@@ -5,9 +5,9 @@ let DAIpopup = $("#DAIpopup")
 const bodyDai = " \
 	<div class=\"position-fixed bottom-0 left-0 p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
 		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-autohide=\"false\"> \
-			<div class=\"toast-header\"> \
+			<div class=\"bg-warning text-dark toast-header\"> \
 				<strong class=\"mr-auto\"></strong> \
-				<small class=\"input-style-none\"></small> \
+				<small></small> \
 				<button type=\"button\" class=\"ml-2 mb-1 close\" data-dismiss=\"toast\" aria-label=\"Close\"> \
 				<span aria-hidden=\"true\">&times;</span> \
 				</button> \
