@@ -978,3 +978,9 @@ input.apple-switch:checked:before {
 
 /* CUSTOM SCROLL */
 
+.logo-concessionaire {
+  left: 25px;
+  bottom: 50px;
+  opacity: .8;
+  z-index: 1;
+}
