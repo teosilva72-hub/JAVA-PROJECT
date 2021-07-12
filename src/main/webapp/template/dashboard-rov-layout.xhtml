@@ -432,7 +432,7 @@
       </div>
     </ui:insert>
 
-    <ui:fragment rendered="#{loginAccount.load.en_sos && userAccount.userPermision() == 8}">
+    <ui:fragment rendered="#{loginAccount.load.en_sos == (userAccount.userPermision() == 8)}">
 
       <ui:insert name="callbox">
 

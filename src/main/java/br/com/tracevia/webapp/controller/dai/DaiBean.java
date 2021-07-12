@@ -159,12 +159,15 @@ public class DaiBean {
 			return plate;
 		}
 
-		public String getPath() throws IOException {
-			if (file != null) {				
-				return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
-			} else {
-				return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
-			}
+		public String getPath() {
+			try {
+				if (file != null) {				
+						return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+				} else {
+					return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
+				}
+			} catch (IOException e) {}
+			return "";
 		}
 
 		static List<Traffic> all_traffic(List<Path> list, int idx) throws IOException, ParseException {
