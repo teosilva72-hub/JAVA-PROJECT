@@ -86,7 +86,7 @@ const callback_image = response => {
 
     toast.find("img").attr("src", `data:image/jpg;base64, ${response.body}`)
 
-	toast.find(".toast-header").on("mousedown", mouse_dai)
+	toast.find(".toast-header").on("mousedown", move_dai)
     toast.toast('show')
 }
 
