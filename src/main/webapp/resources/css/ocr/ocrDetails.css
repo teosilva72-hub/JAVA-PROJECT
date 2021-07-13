@@ -73,3 +73,11 @@ body {
 .teste{
 	color: red;
 }
+.logo-concessionaire {
+    left: 92%!important;
+    bottom: 50px !important;
+    opacity: 1.8;
+    z-index: 1;
+    width: 93px !important;
+    height: 38px !important;
+}

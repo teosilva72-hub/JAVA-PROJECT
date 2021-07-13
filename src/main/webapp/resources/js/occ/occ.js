@@ -147,7 +147,7 @@ function bloquerTable(){
 				    },
 					"select": false,
 				    "Width": true,			  	   	
-				    "scrollY": "68vh",
+				    "scrollY": "50vh",
 					"scrollCollapse": false,
 					"paging": false,
 					"bInfo" : false,
