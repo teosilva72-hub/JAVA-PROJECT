@@ -466,3 +466,10 @@ cursor: pointer;
     -moz-box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
     box-shadow: 0px 9px 10px 2px rgba(0,0,0,0.55);
 }
+.lll.error{
+	border: solid red 2px;
+	
+}
+.lll.ok{
+	border: solid 2px green;
+}
