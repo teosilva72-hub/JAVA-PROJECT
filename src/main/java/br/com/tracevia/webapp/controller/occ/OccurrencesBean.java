@@ -67,8 +67,15 @@ public class OccurrencesBean {
 
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
-	private String logo;
+	private String logo, userPdf;
 
+	
+	public String getUserPdf() {
+		return userPdf;
+	}
+	public void setUserPdf(String userPdf) {
+		this.userPdf = userPdf;
+	}
 	public String getLogo() {
 		try {
 
@@ -1927,9 +1934,9 @@ public class OccurrencesBean {
 
 			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
 			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
-			document.add(new Paragraph("\n\n                "+trad.occLabels("operador")+" "+userName));
+			document.add(new Paragraph("\n\n                "+trad.occLabels("operador")+": "+userPdf));
 			//assinatura
-			document.add(new Paragraph("                \n"+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
+			document.add(new Paragraph("\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
 					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
 
 

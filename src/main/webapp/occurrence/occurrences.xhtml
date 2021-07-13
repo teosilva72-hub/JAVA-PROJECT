@@ -479,11 +479,20 @@
 										id="donwloadModalLabel">#{occLabels.occ_reports_modal_alert_download_title}</h5>
 								</div>
 								<div class="modal-body">
-									<p class="modal-alert-msg">
-										#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
-											class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
-										?
-									</p>
+									<div class="row">
+										<div class="col-md-12">
+											<p class="modal-alert-msg">
+												#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
+													class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
+												?
+											</p>
+										</div>
+										<div class="col-md-12">
+											<h:inputText value="#{occurrencesBean.userPdf}" id="userPdf"
+											class="form-control inputDesign"></h:inputText>
+										</div>
+									</div>
+
 								</div>
 								<div class="modal-footer">
 									<h:commandButton pt:data-toggle="modal"
