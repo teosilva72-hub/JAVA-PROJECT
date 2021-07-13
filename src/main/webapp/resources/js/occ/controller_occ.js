@@ -117,3 +117,17 @@ function downloadPdf(){
 	if(id.value == "") return false;
 }
 //////////////////////////////////////////////////////////
+function pdfValidator(){
+	var user = document.getElementById("userPdf")
+	if(user.value == ""){
+			$('.lll').addClass('error')
+		$('.lll').removeClass('ok')
+		return false
+	}else{
+		$('.lll').removeClass('error')
+		$('.lll').addClass('ok')
+		$('#modalDownload').modal('hide')
+		$('[id$=pdfpdf]').click();
+		return true
+	}
+}
