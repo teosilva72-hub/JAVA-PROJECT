@@ -487,11 +487,12 @@
 												?
 											</p>
 										</div>
-										<div class="col-md-7">
+										<div class="col-md-12">
+										<span class="msfPdf">#{occLabels.msgPdf}</span>
 											<h:inputText value="#{occurrencesBean.userPdf}" id="userPdf"
 												class="form-control inputDesign lll"
 												pt:placeholder="#{occLabels.nome_operador}"></h:inputText><br></br>
-												<span style="color:red;">#{occLabels.campo_obrigatorio}</span>
+												<span id="msgErrorPdf" style="color:red;">#{occLabels.campo_obrigatorio}</span>
 										</div>
 									</div>
 

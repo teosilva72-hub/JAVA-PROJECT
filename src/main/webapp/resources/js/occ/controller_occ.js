@@ -122,12 +122,14 @@ function pdfValidator(){
 	if(user.value == ""){
 			$('.lll').addClass('error')
 		$('.lll').removeClass('ok')
+		document.getElementById("msgErrorPdf").style.display = "block"
 		return false
 	}else{
 		$('.lll').removeClass('error')
 		$('.lll').addClass('ok')
 		$('#modalDownload').modal('hide')
 		$('[id$=pdfpdf]').click();
+		document.getElementById("msgErrorPdf").style.display = "none"
 		return true
 	}
 }
