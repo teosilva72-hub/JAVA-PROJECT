@@ -1926,9 +1926,10 @@ public class OccurrencesBean {
 			if(second1 < 10) {secondPdf = "0"+String.valueOf(second1);}else {secondPdf = String.valueOf(second1);}	
 
 			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
-
+			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
+			document.add(new Paragraph("\n\n                "+trad.occLabels("operador")+" "+userName));
 			//assinatura
-			document.add(new Paragraph("\n\n                "+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
+			document.add(new Paragraph("                \n"+trad.occLabels("Assinatura")+":"+ "______________________________________________."+"\n\n"
 					+ "                                    "+trad.occLabels("Data do relatório")+":  "+dayPdf+"/"+monthPdf+"/"+year1));
 
 
