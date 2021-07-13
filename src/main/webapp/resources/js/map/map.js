@@ -104,9 +104,9 @@ $(function () {
 
 	let url = `${location.protocol}//${location.host}/map/mapView.xhtml`
 
-	$("frame1").attr("src", url)
-	$("frame2").attr("src", url)
-	$("frame3").attr("src", url)
+	$("#frame1").attr("src", url)
+	$("#frame2").attr("src", url)
+	$("#frame3").attr("src", url)
 
 	$('.plaque').each(function () {
 		let plaque = $(this)
