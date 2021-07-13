@@ -6,7 +6,7 @@ function getTr(){
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": "45vh",
+		"scrollY": "38vh",
 		"paging": false,
 		"bInfo" : false
 	});
