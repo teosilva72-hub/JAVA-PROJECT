@@ -147,7 +147,7 @@ function bloquerTable(){
 				    },
 					"select": false,
 				    "Width": true,			  	   	
-				    "scrollY": "50vh",
+				    "scrollY": "55vh",
 					"scrollCollapse": false,
 					"paging": false,
 					"bInfo" : false,
@@ -166,7 +166,7 @@ function bloquerTable(){
 				    },		
 		    		"select": true,
 				    "autoWidth": true,			  	   	
-				    "scrollY": "68vh",
+				    "scrollY": "55vh",
 					"scrollCollapse": true,
 					"paging": false,
 					"bInfo" : false
@@ -1096,9 +1096,9 @@ function msgUploads(){
 	document.getElementById("msgUploads").style.display = "block";
 }
 //DELAY MSG
-setTimeout(function() {
-   $('#updateOcc').fadeOut('fast');
-}, 5000);
+		setTimeout(function() {
+		   $('#updateOcc').fadeOut('fast');
+		}, 5000);
 setTimeout(function() {
    $('#cancelOcc').fadeOut('fast');
 }, 5000);

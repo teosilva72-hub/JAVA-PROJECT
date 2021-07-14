@@ -95,7 +95,13 @@ function dataPicker(){
 	})
 }
 
-
+function loading(){
+	var x = document.querySelector(".c-loader")
+	x.style.display = "block"
+	setTimeout(function() {
+   $('.c-loader').fadeOut('fast');
+}, 5000);
+}
 function validador(){
 	var dtInitial = document.getElementById("dateInitial")
 	var hourInitial = document.getElementById("hourInitial")
@@ -116,6 +122,7 @@ function validador(){
 		return false
 	}else{
 		dataPicker()
+		 loading()
 		$('#dateInitial').removeClass('error')
 		$('#dateInitial').addClass('ok')
 		$('#modalForm').modal('hide')

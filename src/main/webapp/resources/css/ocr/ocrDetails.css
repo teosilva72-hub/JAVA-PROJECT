@@ -74,7 +74,8 @@ body {
 	color: red;
 }
 .logo-concessionaire {
-    left: 92%!important;
+    right: 0;
+    left: unset;
     bottom: 50px !important;
     opacity: 1.8;
     z-index: 1;
