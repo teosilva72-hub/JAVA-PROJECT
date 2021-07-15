@@ -22,6 +22,22 @@ body,
   background-color: #ffffff;
 }
 
+#realTimeSubmenu, #pmvUiSubmenu, #modMenu, #meteoUiSubmenu{
+	 background-color: #000 !important;
+}
+
+#ocrUiSubmenu, #daiSubmenu, #ocrSubmenu, #meteoSubmenu, 
+#occSubmenu, #satSubmenu, #satLLSubmenu, #wimUiSubmenu, 
+#mtoUiSubmenu, #svUiSubmenu{
+	
+	 background-color: #111 !important;
+}
+
+#mtoSubmenu, #vsSubmenu{	
+	 background-color: #313238 !important;
+}
+
+
 .bg-mattGray {
   background-color: #878d8d;
 }
@@ -40,29 +56,29 @@ body
 /* SUB MENU */
 
 .icon-sub{
-	color: #FFA500 !important; /* ORANGE */
+	color: #FFF !important; /* ORANGE */
 	margin-left: 5%;
 }
 
 .text-sub{
   color: #FFF;	
   font-size: 14px;
-  margin-left: 6%;
+  margin-left: 2%;
 }
 
 /* SUB MENU */
 
 /* SUB MENU - 2 */
 
-.icon-sub-2{
-	color: #FF7F50 !important; /* CORAL */
-	margin-left: 5%;
+.icon-sub-item-2{
+	color: #FFFFFF !important; /* CORAL */
+	margin-left: 35px;
 }
 
-.text-sub-2{
-  color: #FFF;	
+.text-sub-item-2{
+  color: #FFFFFF;	
   font-size: 14px;
-  margin-left: 6%;
+  margin-left: 4%;
 }
 
 /* SUB MENU - 2 */
@@ -70,16 +86,17 @@ body
 /* SUB ITEMS */
 
 .icon-sub-item {
-    color: #FFFF00 !important;    
+    color: #FFF !important; 
+    margin-left: 25px;   
 }
 
 .text-sub-item{
-	color: #FFFFFF;	
+	color: #FFFFFF;		
 }
 
 .text-sub-item{
 	font-size: 14px;
-	margin-left: 6%;
+	margin-left: 4%;
 }
 
 /* SUB ITEMS */
@@ -92,6 +109,8 @@ body
 .nav-link.active .icon-sub-2,
 .nav-link:hover .icon-sub-item,
 .nav-link.active .icon-sub-item,
+.nav-link:hover .icon-sub-item-2,
+.nav-link.active .icon-sub-item-2,
 .nav-link:hover .text-sub,
 .nav-link.active .text-sub,
 .nav-link:hover .text-sub-2,
