@@ -10,13 +10,15 @@ public class Speed extends Equipments {
 
 	public Speed(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
 			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			String posicao, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
-			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
+			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height, int linearWidth,
+			int dlgPosX, int dlgPosY, int status, int last_status, boolean notificacao, boolean visible) {
+		
 		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome, estrada,
-				cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY,
-				status, notificacao, visible);
+				cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY, status,
+				last_status, notificacao, visible);
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	
 }
