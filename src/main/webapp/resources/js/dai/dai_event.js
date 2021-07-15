@@ -4,7 +4,7 @@ let DAIpopup = $("#DAIpopup")
 
 const bodyDai = " \
 	<div class=\"position-fixed p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
-		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-bs-autohide=\"false\" data-autohide=\"false\"> \
+		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-bs-delay=\"15000\" data-delay=\"15000\"> \
 			<div class=\"bg-warning text-dark toast-header\"> \
 				<strong class=\"mr-auto me-auto\"></strong> \
 				<small></small> \
