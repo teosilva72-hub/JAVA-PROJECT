@@ -49,8 +49,7 @@ public class DAIBuildMaps {
 			
 			DAIDAO daiDAO = new DAIDAO();					
 						
-	        daiStatus = new ArrayList<DAI>();
-	
+	        daiStatus = new ArrayList<DAI>();	
 	        daiStatus = daiDAO.Status();				
 				
             }catch(IndexOutOfBoundsException ex) {}

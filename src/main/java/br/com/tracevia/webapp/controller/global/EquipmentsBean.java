@@ -720,7 +720,7 @@ public class EquipmentsBean implements Serializable {
 			    equip.setEstrada(parameterMap.get("roadsEdit"));
 			    
 			    //For Equipment KM
-			    equip.setKm(parameterMap.get("km-edit"));	
+			    equip.setKm(parameterMap.get("kmEdit"));	
 			    
 			    //For Equipment Map Width / Linear Width			    			    
 			    if(parameterMap.get("width-edit") == "0")

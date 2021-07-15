@@ -1,11 +1,16 @@
 package br.com.tracevia.webapp.controller.speed;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
+import br.com.tracevia.webapp.dao.speed.SpeedDAO;
 import br.com.tracevia.webapp.model.global.ListEquipments;
+import br.com.tracevia.webapp.model.speed.Speed;
 
 @ManagedBean(name="speedMapsView")
 @ViewScoped
@@ -13,6 +18,8 @@ public class SpeedBuildSpeed {
 	
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
+	
+	List<Speed> speedStatus;
 		
 	public ListEquipments getEquips() {
 		return equips;
@@ -25,7 +32,7 @@ public class SpeedBuildSpeed {
 	@PostConstruct
 	public void initalize() {
 		
-		//BuildSpeed();
+		BuildSpeed();
 		
 	}
 	
@@ -35,7 +42,11 @@ public class SpeedBuildSpeed {
 		
 		try {
 			
-						
+				SpeedDAO dao = new SpeedDAO();
+				
+				speedStatus = new ArrayList<Speed>();				
+				speedStatus = dao.Status();
+				
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

@@ -30,14 +30,13 @@ public class Equipments {
 	private int dlgPosX;
 	private int dlgPosY;
 	private int status;
-	private int last_status;
 	private boolean notificacao;
 	private boolean visible;
 
 	public Equipments(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
 			String update_date, String update_username, String nome, String estrada, String cidade, String km,
 			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
-			int linearWidth, int dlgPosX, int dlgPosY, int status, int last_status, boolean notificacao, boolean visible) {
+			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
 		
 		this.equip_id = equip_id;
 		this.table_id = table_id;
@@ -59,8 +58,7 @@ public class Equipments {
 		this.linearWidth = linearWidth;
 		this.dlgPosX = dlgPosX;
 		this.dlgPosY = dlgPosY;
-		this.status = status;
-		this.last_status = last_status;
+		this.status = status;		
 		this.notificacao = notificacao;
 		this.visible = visible;
 	}
@@ -271,34 +269,22 @@ public class Equipments {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
-	public int getLast_status() {
-		return last_status;
-	}
-
-	public void setLast_status(int last_status) {
-		this.last_status = last_status;
-	}
 
 	public boolean isNotificacao() {
 		return notificacao;
 	}
 
-
 	public void setNotificacao(boolean notificacao) {
 		this.notificacao = notificacao;
 	}
-
 
 	public boolean isVisible() {
 		return visible;
 	}
 
-
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
-
 
 	//BUILD GENERIC EQUIPMENTS
 	public List<Equipments> listEquipments(String modulo) throws Exception {
