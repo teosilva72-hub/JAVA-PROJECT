@@ -7,15 +7,29 @@
 	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
-	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	template="/template/dashboard-rov-layout.xhtml">
-	
-	<ui:define name="main-content" >	
-	
-	<h5 style="margin-left: 2.5%; margin-top: 2.5%;"> #{dashboardLabels.dashboard_page_welcome_user} <b style="color: black">#{user}</b></h5>       	      
-									
-			
-            
- </ui:define>
+	<ui:define name="head">
+		<title>Dashbord</title>
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+		<h:outputStylesheet library="css/dashbord" name="dashbord.css" />
+		<h:outputStylesheet name="datepicker.css" library="css/datepicker" />
+		<h:outputStylesheet library="bootstrap/css"
+			name="bootstrap-multiselect.css" />
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputScript library="js/dai" name="controller_dai.js" />
+	</ui:define>
+	<ui:define name="main-content">
+		<div class="contendo">
+			<div class="row">
+			<div class=""></div>
+				<c:forEach begin="0" end="6">
+					
+				</c:forEach>
+			</div>
+		</div>
+	</ui:define>
 
-</ui:composition>	
+</ui:composition>

@@ -1,0 +1,37 @@
+.btns{
+	margin-top: 40px;
+}
+.btn1{
+	margin-top: 10px;
+	width: 100%;
+}
+.daiImg{
+	width: 80%;
+	height: 200px;
+}
+.modal-backdrop.hide{
+	display: none;
+}
+#popUp{
+	display: none;
+}
+.img1{
+	width: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	border: solid 2px black;
+}
+.img2{
+	border: solid 2px black;
+	width: 50%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	margin-left: 25%;
+	margin-top: 10px;
+}
+#gerarPdf{
+	margin-left: 15px;
+	
+}
