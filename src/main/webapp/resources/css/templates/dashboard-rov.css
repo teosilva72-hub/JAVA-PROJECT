@@ -882,12 +882,6 @@ input.apple-switch:checked:before {
   cursor: pointer;
 }
 
-.input-style-none {
-  text-align-last: end;
-  border: 0px;
-  background-color: white;
-}
-
 .holdcallstop {
   display: block;
   height: 30px;
@@ -1003,3 +997,9 @@ input.apple-switch:checked:before {
 
 /* CUSTOM SCROLL */
 
+.logo-concessionaire {
+  left: 25px;
+  bottom: 50px;
+  opacity: .8;
+  z-index: 1;
+}

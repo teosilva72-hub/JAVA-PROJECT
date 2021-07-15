@@ -355,13 +355,14 @@ public class NavigationBean {
 
 		switch(role) {
 
-		case 1: sidebar_page = "/template/sidebar/sidebar-admin.xhtml" ; break;
-		case 2: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	
-		case 3: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	
-		case 4: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	
-		case 5: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	
+		case 1:
 		case 6: sidebar_page = "/template/sidebar/sidebar-admin.xhtml" ; break;
-		case 7: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
+		
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 7:   
 		case 8: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
 
 		}

@@ -8,15 +8,15 @@
   background-color: #1e90ff;
   color: #ffffff !important;
   text-align: center;
-  line-height: 11px;
-  min-width: 11px;
+  line-height: 0.6875rem;
+  min-width: 0.6875rem;
   display: block;
   border-radius: 50%;
   cursor: pointer;
   text-indent: 0px;
   text-decoration: none;
-  font-size: 9px;
-  border: 1px solid black;
+  font-size: 0.5625rem;
+  border: 0.0625rem solid black;
 }
 
 /* sat info icon hover */
@@ -42,22 +42,22 @@
 
 .equip-box {
   position: absolute;
-  font-size: 14px;
+  font-size: 0.875rem;
   background: transparent;
   border-right: none;  
   border: none;
-  width: 75px !important;
+  width: 4.6875rem !important;
   transform-origin: 50% 90%;
 }
 
 /*INTERNAL CONTENT OF EQUIPMENT*/
 .equip-status {
-  background-color: #00FF0D;
+  background-color: #FF0000;
   border-radius: 100%;
-  padding: 6px;
+  padding: 0.375rem;
   position: absolute;
   right: 0;
-  bottom: 60px;
+  bottom: 2.8125rem;
 }
 
 .equip-status.active {
@@ -76,8 +76,13 @@
   animation: alarm .2s infinite;
 }
 
+
+.equip-label{
+	color: black;
+  white-space: nowrap;
+}
+
 .equip-image {
-  margin-top: -17%;
   width: 100%;
   border: none;
 }

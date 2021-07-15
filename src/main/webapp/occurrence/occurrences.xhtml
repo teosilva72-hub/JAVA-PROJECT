@@ -467,7 +467,7 @@
 
 
 				<!-- FILE FORM -->
-				<h:form id="form-file">
+				<h:form id="form-file" prependId="false">
 
 					<!-- MODAL DOWNLOAD -->
 					<div class="modal fade" id="modalDownload" tabindex="-1"
@@ -479,16 +479,29 @@
 										id="donwloadModalLabel">#{occLabels.occ_reports_modal_alert_download_title}</h5>
 								</div>
 								<div class="modal-body">
-									<p class="modal-alert-msg">
-										#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
-											class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
-										?
-									</p>
+									<div class="row">
+										<div class="col-md-12">
+											<p class="modal-alert-msg">
+												#{occLabels.occ_reports_modal_alert_download_file_pdf} <span
+													class="extension">#{occLabels.occ_reports_modal_alert_extension_pdf}</span>
+												?
+											</p>
+										</div>
+										<div class="col-md-12">
+										<span class="msfPdf">#{occLabels.msgPdf}</span>
+											<h:inputText value="#{occurrencesBean.userPdf}" id="userPdf"
+												class="form-control inputDesign lll"
+												pt:placeholder="#{occLabels.nome_operador}"></h:inputText><br></br>
+												<span id="msgErrorPdf" style="color:red;">#{occLabels.campo_obrigatorio}</span>
+										</div>
+									</div>
+
 								</div>
 								<div class="modal-footer">
-									<h:commandButton pt:data-toggle="modal"
-										pt:data-target="#modalDownload"
-										value="#{occLabels.occ_reports_modal_alert_btn_yes}"
+									<button type="button" id="clickPdf"
+										class="btn btn-dark form-draw-button" onclick="pdfValidator()">#{occLabels.occ_reports_modal_alert_btn_yes}</button>
+									<h:commandButton pt:data-toggle="modal" style="display:none;"
+										pt:data-target="#modalDownload" id="pdfpdf"
 										class="btn btn-dark form-draw-button"
 										action="#{occurrencesBean.downloadPdf}" />
 									<h:commandButton

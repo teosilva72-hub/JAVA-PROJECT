@@ -77,6 +77,7 @@ public class DaiBean {
 
 		try {
 			getAllFile(formattter.format(date));
+			traffic = new Traffic();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,6 +115,16 @@ public class DaiBean {
 			plate = info[6];
 		}
 		
+		Traffic() {
+			incident = "";
+			date = "";
+			channel = "";
+			lane = "";
+			direction = "";
+			hour = "";
+			plate = "";
+		}
+		
 		public int getId() {
 			return id;
 		}
@@ -148,8 +159,15 @@ public class DaiBean {
 			return plate;
 		}
 
-		public String getPath() throws IOException {
-			return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+		public String getPath() {
+			try {
+				if (file != null) {				
+						return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
+				} else {
+					return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
+				}
+			} catch (IOException e) {}
+			return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
 		}
 
 		static List<Traffic> all_traffic(List<Path> list, int idx) throws IOException, ParseException {
@@ -360,9 +378,7 @@ public class DaiBean {
 			
 
 			document.close();
-			FileOutputStream fos = new FileOutputStream(RESULT);
-			fos.write(baos.toByteArray());
-			fos.close();  
+			
 			// DOWNLOAD
 
 			externalContext.setResponseContentType("application/pdf");

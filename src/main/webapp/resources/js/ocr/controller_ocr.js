@@ -6,7 +6,7 @@ function getTr(){
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": "45vh",
+		"scrollY": "38vh",
 		"paging": false,
 		"bInfo" : false
 	});
@@ -27,6 +27,13 @@ function getTr(){
 	}
 	
 } );
+}
+function loading(){
+	var x = document.querySelector(".c-loader")
+	x.style.display = "block"
+	setTimeout(function() {
+   $('.c-loader').fadeOut('fast');
+}, 5000);
 }
 function btnTable(){
 	$('[id$=btnTable]').click();
@@ -91,6 +98,7 @@ function validador(){
 		return false
 	}else{
 		dataPicker()
+		loading()
 		$('.ll').removeClass('error')
 		$('.ll').addClass('ok')
 		$('#modalPesquisa').modal('hide')

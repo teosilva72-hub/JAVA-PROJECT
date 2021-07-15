@@ -76,3 +76,10 @@ body {
 .temporaryboot {
   left: -130px;
 }
+
+.logo-concessionaire {
+  left: 25px;
+  bottom: 70px;
+  opacity: 1;
+  z-index: 1;
+}

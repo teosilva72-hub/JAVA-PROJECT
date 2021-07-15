@@ -8,7 +8,7 @@ const changeStates = response => {
 	let name = response.EquipmentName
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
-	let alarm = equip.find(`#Alarm${equip}`);
+	let alarm = equip.find(`#Alarm${name}`);
 	let alarms = alarm.children();
 	let sidebar = $(`#status${name.toLowerCase()}`)
 	

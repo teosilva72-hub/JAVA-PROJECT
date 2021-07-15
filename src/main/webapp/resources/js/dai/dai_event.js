@@ -1,22 +1,87 @@
 let notify = $("#notifyDAI")
+let send_date = $("#sendDate")
 let DAIpopup = $("#DAIpopup")
+
+const bodyDai = " \
+	<div class=\"position-fixed p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
+		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-bs-autohide=\"false\" data-autohide=\"false\"> \
+			<div class=\"bg-warning text-dark toast-header\"> \
+				<strong class=\"mr-auto me-auto\"></strong> \
+				<small></small> \
+				<button type=\"button\" class=\"ml-2 mb-1 close btn-close\" data-dismiss=\"toast\" aria-label=\"Close\"></button> \
+			</div> \
+			<div class=\"toast-body\"> \
+				<img style=\"cursor: pointer;\" src=\"data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" class=\"rounded mr-2 w-100\" alt=\"\" /> \
+			</div> \
+		</div> \
+	</div> \
+"
 
 const connectDAI = async (request, debug) => {
 	return await sendMsgStomp(request, 'DAI_Request', debug)
+}
+
+const move_dai = function(e) {
+	let elmnt = $(this).closest(".position-fixed")
+	e.preventDefault();
+	e.stopPropagation()
+	// Get the mouse cursor position at startup:
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+
+	$(document)
+		.on("mouseup", closeDragElement)
+
+		.on("mousemove", function (e) {
+			e.preventDefault();
+
+			// Calculate the new cursor position:
+			pos1 = pos3 - e.clientX;
+			pos2 = pos4 - e.clientY;
+			pos3 = e.clientX;
+			pos4 = e.clientY;
+
+			let pos = {
+				left: Math.round(Number(elmnt.css("left").replace("px", "")) - pos1),
+				bottom: Math.round(Number(elmnt.css("bottom").replace("px", "")) + pos2)
+			}
+
+			// Set the element's new position:
+			elmnt.css({
+				left: pos.left,
+				bottom: pos.bottom
+			})
+		})
+	
+	function closeDragElement() {
+		// Stop moving when mouse button is released:
+		$(document)
+			.off("mouseup")
+			.off("mousemove")
+	}
 }
 
 const callback_alert = response => {
     response = JSON.parse(response.body);
 	let date = response.dateTime.slice(0, 19)
 
-    notify.find("strong").text(response.channelName);
-    notify.find("#filterDate").val(date);
+	let elmt = $(bodyDai)
+	
+    elmt.find("strong").text(response.channelName);
+    elmt.find("small").text(date);
+	
+	notify.append(elmt)
 }
 
 const callback_image = response => {
-    notify.find("img").attr("src", `data:image/jpg;base64, ${response.body}`)
+	let toast = notify.find(".toast:last")
+	let img = toast.find("img")
 
-    notify.toast('show')
+    img.attr("src", `data:image/jpg;base64, ${response.body}`).click(alert_click)
+
+	toast.find(".toast-header").on("mousedown", move_dai)
+	toast.find(".close").click(() => { toast.remove() })
+    toast.toast('show')
 }
 
 const consumeDAI = async debug => {
@@ -37,16 +102,16 @@ const consumeDAI = async debug => {
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const alert_click = () => {
-	notify.find("#filterDateButton").click();
+const alert_click = function() {
+	let date = $(this).closest(".toast").find("small").text()
+
+	send_date.find("#filterDate").val(date).next().click();
 	DAIpopup.modal("show")
 }
 
 const initDAI = async debug => {
     $(function () {
 		consumeDAI(debug);
-
-		notify.find("img").click(alert_click)
 	});
 }
 

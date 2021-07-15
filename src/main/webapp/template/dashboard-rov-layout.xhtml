@@ -15,6 +15,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <ui:insert name="default-stylesheet">
+    		<link rel="icon" href="/resources/images/home/64360.png"></link>
+    
       <h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />
       <h:outputStylesheet name="dataTables.bootstrap4.css" library="bootstrap/datatables" />
       <h:outputStylesheet name="jquery-ui-1.12.1.css" library="css/jquery-ui" />
@@ -106,7 +108,7 @@
             </svg>
           </button>
 
-          <a class="brand-text navbar-brand col-auto text-white" href="#">Tracevia</a>
+          <a style="width: auto;" href="#"><img src="/resources/images/home/tracevia-logo.webp" href="#" height="55" class="ml-4 rounded" /></a>
 
         </div>
 
@@ -438,6 +440,8 @@
 
     </div> <!-- End Wrapper -->
 
+    <img src="#{loginAccount.logo}" href="#" height="55" class="position-absolute rounded logo-concessionaire" />
+
     <ui:insert name="default-content">
 
       <div class="content" id="content">
@@ -456,10 +460,9 @@
       </div>
     </ui:insert>
 
-    <ui:fragment rendered="#{loginAccount.load.en_sos}">
+    <ui:fragment rendered="#{loginAccount.load.en_sos == (userAccount.userPermision() == 8)}">
 
       <ui:insert name="callbox">
-        <ui:fragment rendered="#{userAccount.role_permission == 8}">
 
         <section>
           <div id="sipClient" class="calls-client">
@@ -572,7 +575,6 @@
           <audio id="audioRemote"></audio>
         </section>
         
-      </ui:fragment>
     </ui:insert>
 
   </ui:fragment>
@@ -594,30 +596,17 @@
     </div>
     <!-- TOAST END -->
 
+    <ui:fragment rendered="#{loginAccount.load.en_dai}">
     <!-- Notification DAI -->
-    <div class="p-3 toast-start-bottom" style="z-index: 1100">
-      <div class="position-fixed bottom-0 left-0 p-3" style="z-index: 5; right: 0; bottom: 0;">
-        <div id="notifyDAI" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" data-delay="20000">
-          <div class="toast-header">
-            <strong class="mr-auto"></strong>
-            <small>
-              <h:form prependId="false" id="sendDate">
-                <h:inputText styleClass="input-style-none" name="filterDate" id="filterDate" />
-                <h:commandButton style="display: none;" id="filterDateButton">
-                  <f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getSpecificFile()}" />
-                </h:commandButton>
-              </h:form>
-            </small>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="toast-body">
-            <img style="cursor: pointer;" src="data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" class="rounded mr-2 w-100" alt="" />
-          </div>
-        </div>
-      </div>
+    <div class="p-3 toast-start-bottom" id="notifyDAI" style="z-index: 1100">
+      
     </div>
+    <h:form prependId="false" id="sendDate">
+      <h:inputHidden name="filterDate" id="filterDate" />
+      <h:commandButton style="display: none;" id="filterDateButton">
+        <f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getSpecificFile()}" />
+      </h:commandButton>
+    </h:form>
     <div class="modal fade" id="DAIpopup"
 			data-keyboard="false" tabindex="-1" aria-hidden="true">
 			<h:form prependId="false" id="modalPopUp">
@@ -664,6 +653,7 @@
 			</h:form>
 		</div>
     <!-- Notification DAI END -->
+  </ui:fragment>
 
     <!-- Footer -->
     <footer class=" page-footer font-small indigo">
@@ -719,15 +709,20 @@
     <h:outputScript name="stomp.min.js?version=#{notificationsView.timestamp}" library="js/stomp" />
     <h:outputScript name="controllerStomp.js?version=#{notificationsView.timestamp}" library="js/stomp" />
     
-    <h:outputScript name="dai_event.js?version=#{notificationsView.timestamp}" library="js/dai" />
+    <ui:fragment rendered="#{loginAccount.load.en_dai}">
+      <h:outputScript name="dai_event.js?version=#{notificationsView.timestamp}" library="js/dai" />
+    </ui:fragment>
    
     <ui:fragment rendered="#{loginAccount.load.en_sos}">
  
     <script type="text/javascript" src="/phone/scripts/moment.js/moment.min.js"></script>    
     <script type="text/javascript" src="/phone/scripts/SIP.js/sip.min.js"></script>
     <script type="text/javascript" src="/phone/scripts/sos.js"></script>
-    <script type="text/javascript" src="/phone/scripts/config.js"></script>
-    <script type="text/javascript" src="/phone/scripts/app.js"></script>
+
+    <c:if test="#{userAccount.userPermision() == 8}">
+      <script type="text/javascript" src="/phone/scripts/config.js"></script>
+      <script type="text/javascript" src="/phone/scripts/app.js"></script>
+    </c:if>
 
     </ui:fragment>
 

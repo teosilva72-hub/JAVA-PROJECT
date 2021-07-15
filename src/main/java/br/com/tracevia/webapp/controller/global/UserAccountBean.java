@@ -568,11 +568,11 @@ public class UserAccountBean implements Serializable {
 			
 		}
         
-        public void userPermision() {
+        public int userPermision() {
         	FacesContext context = FacesContext.getCurrentInstance();
         	int role = (int) context.getExternalContext().getSessionMap().get("nivel");
         	
-        	role_permission = role;
+        	return role;
         }
 
 }

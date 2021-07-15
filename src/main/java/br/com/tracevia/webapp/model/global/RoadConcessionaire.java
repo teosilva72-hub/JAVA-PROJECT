@@ -64,6 +64,7 @@ public class RoadConcessionaire {
 	public static String classNotIdentifiedAxl9;
 	public static String externalImagePath;	
 	public static String externalDefaultLogo;
+	public static String logo;
 	public static String mapUI;
 	public static String linearMapUI;
 	public static String tableVBV;
@@ -121,6 +122,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = BahiaNorte.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = BahiaNorte.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "bahianorte.jpg";
+			logo = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -158,6 +160,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = CardelPozaRica.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = CardelPozaRica.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "cardel_poza_rica.png";
+			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/cardel_poza_rica.png";
 			mapUI = "/resources/images/map/cardel/cardel_poza_rica_light.jpg";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
@@ -197,6 +200,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = LitoralSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = LitoralSul.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "litoralsul.png";		
+			logo = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -235,6 +239,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = Tuxpan.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = Tuxpan.NOT_ID_CLASS_9AXLES.getClasse();	
 			externalImagePath += "tuxpan.png";
+			logo = "/resources/images/home/tuxpan.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.webp";
 			mapUI = "/resources/images/map/tuxpan/tuxpan.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
@@ -275,6 +280,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaPaulista.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaPaulista.NOT_ID_CLASS_9AXLES.getClasse();			
 			externalImagePath += "viapaulista.png";
+			logo = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -313,6 +319,7 @@ public class RoadConcessionaire {
 		    classNotIdentifiedAxl8 = ViaRondon.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaRondon.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaRondon.jpg";
+			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_rondon.png";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
@@ -373,6 +380,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaSul.jpg";
+			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.png";
 			mapUI = "";
 			tableVBV = ViaSulTables.ViaSulVBV.getTable();
@@ -413,6 +421,7 @@ public class RoadConcessionaire {
 		  classNotIdentifiedAxl8 = Tracevia.NOT_ID_CLASS_8AXLES.getClasse();
 		  classNotIdentifiedAxl9 = Tracevia.NOT_ID_CLASS_9AXLES.getClasse();
 		  externalImagePath += "tracevia.jpg";		
+		  logo = "";
 		  linearMapUI = "/resources/images/realTimeInterface/linear/tracevia.png";
 		  tableVBV = TraceviaTables.TraceviaVBV.getTable();
 		  tableDados15 = TraceviaTables.TraceviaDados15.getTable();
