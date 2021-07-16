@@ -34,7 +34,7 @@
 				<h:form prependId="false" id="mainTable">
 					<div class="table">
 						<!-- TABELA -->
-						<h:dataTable id="dai-table" var="data" disabled="true"
+						<h:dataTable id="colas-table" var="data" disabled="true"
 							value="#{ColasBean.listData}"
 							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
 							cellspacing="0" width="100" headerClass="custom-table-header"
@@ -66,8 +66,17 @@
 							</h:column>
 						</h:dataTable>
 					</div>
+
 				</h:form>
 			</div>
+			<!--  -->
+			<h:form prependId="false" id="setId">
+				<h:inputText value="#{ColasBean.eventNumber}" id="event" style="display:none;"></h:inputText>
+				<h:commandButton style="display: none;" id="getId">
+					<f:ajax listener="#{ColasBean.idGet}" execute="@form" render=":setId" />
+				</h:commandButton>
+			</h:form>
+			<!--  -->
 			<div class="col-md-2">
 				<div class="btns">
 					<button type="button" class="btn btn-warning btn1"

@@ -18,8 +18,16 @@ import br.com.tracevia.webapp.model.colas.ColasData;
 public class ColasBean{
 	private List<SelectItem> minute, hour;
 	private String dateInitial, dateFinal, hourInitial,
-			hourFinal, minuteInitial, minuteFinal, camera;
+			hourFinal, minuteInitial, minuteFinal, camera, eventNumber;
 	
+	public String getEventNumber() {
+		return eventNumber;
+	}
+
+	public void setEventNumber(String eventNumber) {
+		this.eventNumber = eventNumber;
+	}
+
 	public String getCamera() {
 		return camera;
 	}
@@ -126,8 +134,10 @@ public class ColasBean{
 			//senão acesso essa condição aqui
 		}
 	}
-	public void idGet(String id) {
+	public String idGet(String id) {
 		//metodo para pegar id da tabela
+		id = eventNumber;
+		return id;
 	}
 	public void pdf() {
 		//método pdf
