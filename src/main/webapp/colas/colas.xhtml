@@ -71,9 +71,11 @@
 			</div>
 			<!--  -->
 			<h:form prependId="false" id="setId">
-				<h:inputText value="#{ColasBean.eventNumber}" id="event" style="display:none;"></h:inputText>
+				<h:inputText value="#{ColasBean.eventNumber}" id="event"
+					style="display:none;"></h:inputText>
 				<h:commandButton style="display: none;" id="getId">
-					<f:ajax listener="#{ColasBean.idGet}" execute="@form" render=":setId" />
+					<f:ajax listener="#{ColasBean.idGet}" execute="@form"
+						render=":setId" />
 				</h:commandButton>
 			</h:form>
 			<!--  -->
@@ -82,12 +84,54 @@
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
 						onclick="dataPicker()">#{daiLabels.search}</button>
-					<button id="btnDetalhes" class="btn btn-dark btn1">#{daiLabels.details}</button>
+					<button id="btnDetalhes" data-toggle="modal"
+						data-target="#modalDetails" class="btn btn-dark btn1">#{daiLabels.details}</button>
 					<button type="button" class="btn btn-danger btn1" id="btnPdf"
 						data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
 				</div>
 			</div>
 		</div>
+		<!-- Modal detalhes-->
+		<div class="modal fade" id="modalDetails" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modalTitle" id="exampleModalLabel">#{colasLabels.details}</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-12">#{colasLabels.number}: <span class="dados">1525</span><hr></hr></div>
+									<div class="col-md-12">#{colasLabels.lane}: <span class="dados">2</span><hr></hr></div>
+									<div class="col-md-12">#{colasLabels.cam}: <span class="dados">COLAS 03</span><hr></hr></div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-12">#{colasLabels.date}: <span class="dados">2021-07-16</span><hr></hr></div>
+									<div class="col-md-12">#{colasLabels.hour}: <span class="dados">15:25</span><hr></hr></div>
+									<div class="col-md-12">#{colasLabels.waiting_time}: <span class="dados">00.01.05</span><hr></hr></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-warning return"
+								data-dismiss="modal">#{colasLabels.back}</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- final modal detalhes -->
 		<!-- Modal pesquisa -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
 			aria-labelledby="modalPesquisa" aria-hidden="true">
