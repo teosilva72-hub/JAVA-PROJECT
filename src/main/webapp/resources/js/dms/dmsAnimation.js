@@ -28,12 +28,12 @@ const changeStatus = response => {
 	}
 }
 
-const callback = response => {
+const callback_dms = response => {
 	let r = JSON.parse(response.body);
 	changeStatus(r);
 }
 
-const consumeDMS = async debug => {
+const consumeDMS = async ({ callback = callback_dms, debug } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
