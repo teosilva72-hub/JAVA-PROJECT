@@ -112,14 +112,7 @@
 									<span class="text-sub">#{wimLabels.wimReal}</span>
 								</h:commandLink></li>
 						</ui:fragment>
-						<!--COLAS-->
-						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.wimRealtime}" value="">
-									<i class="fas fa-video"></i>
-									<span class="text-sub">#{colasLabels.title_page}</span>
-								</h:commandLink></li>
-						</ui:fragment>
+
 						<!---->
 
 					</ul></li>
@@ -255,7 +248,14 @@
 						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
 						</ui:fragment>
 						<!---->
-
+						<!--COLAS-->
+						<ui:fragment rendered="#{loginAccount.load.en_wim}">
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.colasReport}" value="">
+									<i class="fas fa-hourglass-half icon-sub"></i>
+									<span class="text-sub">#{colasLabels.title_page1}</span>
+								</h:commandLink></li>
+						</ui:fragment>
 						<!---->
 
 						<!-- COMMS -->
