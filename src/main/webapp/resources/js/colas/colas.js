@@ -12,17 +12,45 @@ function getTr(){
 	});
 }
 function dataPicker(){
-	var  date = $('#dateSearch')
-    date.on('click', function() {
+	var  dateY = $('#dateInitial')
+	var  dateX = $('#dateFinal')
+    dateY.on('click', function() {
 		date.mask('9999-99-99')
     });
-	date.datepicker({ 
+	dateX.on('click', function() {
+		date.mask('9999-99-99')
+    });
+	dateY.datepicker({ 
+		dateFormat: "yy-mm-dd",  
+		changeYear: true,
+		changeMonth: true,
+	});
+	dateX.datepicker({ 
 		dateFormat: "yy-mm-dd",  
 		changeYear: true,
 		changeMonth: true,
 	})
 }
-
+function validador(){
+	var dateI = document.getElementById("dateInitial").value
+	var hourI = document.getElementById("hourInitial").value
+	var minuteI = document.getElementById("minuteInitial").value
+	var dateF = document.getElementById("dateFinal").value
+	var hourF = document.getElementById("hourFinal").value
+	var minuteF = document.getElementById("minuteFinal").value
+	dataPicker()
+	disabledBtn()
+	if(dateI == "" || hourI =="" || minuteI ==""
+	   ||dateF=="" || hourF =="" || minuteF ==""){
+		$(".ll").addClass("error")
+		
+	}else{
+		$(".ll").addClass("ok")
+		
+  			$("#btnSearch").click();
+		$('#modalPesquisa').modal('hide')
+	}
+}
 function modalHide(){
 	$('[id$=popup]').modal('hide')
 	$('.modal-backdrop').addClass('hide')

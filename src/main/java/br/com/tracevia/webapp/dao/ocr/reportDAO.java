@@ -37,9 +37,7 @@ public class reportDAO {
 			
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
-					
-					System.out.println("tem classe");
-					
+										
 					OCR data = new OCR();	
 					
 					data.setId(rs.getString(1));
