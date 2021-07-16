@@ -78,7 +78,6 @@ function filtro(){
 	filtro1.addEventListener("change", function(e){
 		e.preventDefault()
 		filtro2.value = filtro1.value
-		console.log(filtro2.value)
 		$('[id$=setFilter]').click();
 	})
 }
