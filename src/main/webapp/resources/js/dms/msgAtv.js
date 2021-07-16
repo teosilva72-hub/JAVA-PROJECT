@@ -247,9 +247,13 @@ async function main() {
 	}
 
 	const load = () => {
-		allPMV.load('/dms/messages/equipment-list.xhtml', { "Sec-Fetch-User": "?1" }, () => {
+		allPMV.load('/dms/messages/equipment-list.xhtml', () => {
 			collectPMV();
 			initAnimation();
+			connectDMS('GetAllEquipmentStatus').then(response => {
+				for (const r of response)
+					changeStatus(r);
+			})
 
 			$('#messages-list > option').appendTo($(`#availableMessage`));
 
@@ -296,6 +300,15 @@ async function main() {
 		})
 	}
 
+	const callback_dms = response => {
+		let r = JSON.parse(response.body);
+
+		if (r == "CHANGED")
+			load();
+		else
+			changeStatus(r);
+	}
+
 	$(function () {
 		load();
 		let variable = document.forms.variable
@@ -339,6 +352,8 @@ async function main() {
 		apply.click(() => { applyPMV(1) });
 		clear.click(() => { applyPMV(2) });
 		reset.click(() => { applyPMV(3) });
+
+		consumeDMS({callback: callback_dms});
 	})
 }
 

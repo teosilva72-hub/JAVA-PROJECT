@@ -103,7 +103,7 @@ public class DaiBean {
 			Date date_new = new SimpleDateFormat("yyyyMMdd").parse(info[4]);
 			Date hour_new = new SimpleDateFormat("HHmmssSSS").parse(info[5]);
 			SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy/MM/dd");
-			SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss");
+			SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
 			
 			id = idx;
 			incident = info[0];
@@ -207,9 +207,9 @@ public class DaiBean {
 		FacesContext context = FacesContext.getCurrentInstance();
 		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-		SimpleDateFormat date_parse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat date_parse = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
 
 		Date date = date_parse.parse(params.get("filterDate"));
 

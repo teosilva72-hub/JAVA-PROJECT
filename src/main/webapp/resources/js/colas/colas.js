@@ -1,15 +1,23 @@
 function getTr(){
-	var table = $('#dai-table').DataTable({
+	var table = $('#colas-table').DataTable({
 		language: {
 			"search": "",
 			searchPlaceholder: "Buscar"
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": `${screen.availHeight / 2}px`,
+		"scrollY": "40vh",
 		"paging": false,
 		"bInfo" : false
 	});
+	$('#colas-table tbody').on( 'click', 'tr', function () {
+   var event = $(table.row( this ).data()[0]).text();
+	document.getElementById("event").value = event
+	
+	$( "[id$=getId]" ).click();
+	disPdfDetail()
+	
+} );
 }
 function dataPicker(){
 	var  dateY = $('#dateInitial')
@@ -58,8 +66,8 @@ function modalHide(){
 
 
 function disPdfDetail(){
-	$('[id$=btnPdf]').prop('disabled', true);
-	$('[id$=btnDetalhes]').prop('disabled', true);
+	$('[id$=btnPdf]').prop('disabled', false);
+	$('[id$=btnDetalhes]').prop('disabled', false);
 }
 function disabledBtn(){
 	$('[id$=btnPdf]').prop('disabled', true);
