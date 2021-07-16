@@ -77,15 +77,24 @@ public class NavigationBean {
 	}
 	//wim report
 	public String wimRealtime() {
-		
+
 		navigation_page = "/wim/wim_realtime.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 
 	}
+	
 	public String wimReport() {
-		
+
 		navigation_page = "/wim/wim.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+
+	}
+	//colas report
+	public String colasReport() {
+
+		navigation_page = "/colas/colas.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 
@@ -308,23 +317,23 @@ public class NavigationBean {
 
 		return navigation_page;
 	}	
-	
+
 	// ------------------------- OCR ----------------------------------
-	
+
 	public String redirectToReportOCR() {
 
 		navigation_page = "/ocr/ocr.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 	}
-	
+
 	public String redirectToRealtimeOCR() {
 
 		navigation_page = "/ocr/ocr_realtime.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 	}
-	
+
 	public String redirectToRealtimeDetailsOCR() {
 
 		navigation_page = "/ocr/ocr_realtime_details.xhtml?faces-redirect=true";		
@@ -334,14 +343,14 @@ public class NavigationBean {
 
 
 	// ------------------------- DAI ----------------------------------
-	
+
 	public String redirectToReportDAI() {
 
 		navigation_page = "/dai/dai.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 	}
-	
+
 	//******************* CCR REPORTS **************************** //
 
 	/* SAT REPORTS */
@@ -357,7 +366,7 @@ public class NavigationBean {
 
 		case 1:
 		case 6: sidebar_page = "/template/sidebar/sidebar-admin.xhtml" ; break;
-		
+
 		case 2:
 		case 3:
 		case 4:

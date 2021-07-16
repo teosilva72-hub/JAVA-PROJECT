@@ -64,11 +64,13 @@ const move_dai = function(e) {
 const callback_alert = response => {
     response = JSON.parse(response.body);
 	let date = response.dateTime.slice(0, 19)
+	let date_abs = response.absTime
 
 	let elmt = $(bodyDai)
 	
     elmt.find("strong").text(response.channelName);
     elmt.find("small").text(date);
+	send_date.find("#filterDate").val(date_abs)
 	
 	notify.append(elmt)
 }
@@ -103,9 +105,8 @@ const consumeDAI = async debug => {
 }
 
 const alert_click = function() {
-	let date = $(this).closest(".toast").find("small").text()
 
-	send_date.find("#filterDate").val(date).next().click();
+	send_date.find("#filterDateButton").click();
 	DAIpopup.modal("show")
 }
 
