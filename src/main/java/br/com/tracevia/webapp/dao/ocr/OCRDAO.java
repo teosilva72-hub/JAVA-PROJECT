@@ -237,8 +237,7 @@ public class OCRDAO{
 
 			         ocr.setEquip_id(rs.getInt("equip_id"));
 			         ocr.setNome(rs.getString("equip_name"));
-			         ocr.setStatus(rs.getInt("equip_status"));
-			         ocr.setLast_status(rs.getInt("equip_last_status"));
+			         ocr.setStatus(rs.getInt("equip_status"));			      
 			        															
 					list.add(ocr);
 				}				
