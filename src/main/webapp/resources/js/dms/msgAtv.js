@@ -353,7 +353,7 @@ async function main() {
 		clear.click(() => { applyPMV(2) });
 		reset.click(() => { applyPMV(3) });
 
-		consumeDMS({callback: callback_dms});
+		consumeDMS({ callback: callback_dms });
 	})
 }
 
