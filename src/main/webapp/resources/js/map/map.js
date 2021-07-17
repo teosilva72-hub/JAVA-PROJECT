@@ -58,7 +58,6 @@ const init = () => {
 		showGenericName();
 		initPMV();
 		initSOS()
-		//statusColors();
 	})
 }
 

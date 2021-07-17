@@ -2,13 +2,74 @@ var widthMax = 1000
 var heightMax = 1000
 var scale = 1
 
+const init = () => {
+	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		resizeEquipScale($('[scroll-zoom]'))
+		resizeEquip($('[scroll-zoom]'))
+
+		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+			let equip = $(this)
+
+			posEquip(equip)
+
+			if (!equip.attr('class').includes('plaque'))
+				equip.dblclick(function () {
+					posReset();
+
+					id = equip.attr('id').match(/\d+/g)[0];
+					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+					toDrag = `#${equip.attr('id')}`
+
+					$('#OPmodal').modal('toggle');
+				});
+
+			$(window).resize(function () {
+				posEquip(equip)
+			})
+		})
+
+		setInfoEquip();
+		setEquipToolTip();
+		showGenericName();
+		initPMV();
+		initSOS()
+	})
+}
+
+const setInfoEquip = () => {
+	$('[data-toggle="popover"]').popover({
+		html: true,
+		trigger: 'hover',
+		content: function () {
+			var content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},
+		title: function () {
+			var title = $(this).attr("data-popover-content");
+			return $(title).children(".popover-header").html();
+		}
+	});
+}
+
+const setEquipToolTip = () => {
+	$('[data-toggle="tooltip"]').tooltip();
+
+}
+
 $(function() {
+
+	$('.plaque').each(function () {
+		let plaque = $(this)
+
+		plaque.attr('posX', plaque.css('left').replace("px", ""))
+		plaque.attr('posY', plaque.css('top').replace("px", ""))
+	})
+	init();
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
 		let map = $(this)
 		ScrollZoom(map)
 		mapMove(map)
-		
 	})
 
 	$(".overflow").css("height", $(this).height())
@@ -30,7 +91,6 @@ $(function() {
 	})
 
 	initPMV();
-	statusColors();
 })
 
 function ScrollZoom(container) {
