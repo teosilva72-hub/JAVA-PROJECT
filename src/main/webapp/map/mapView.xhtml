@@ -14,18 +14,14 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-		<h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />
-
-		<!-- USE JQUERY RESOURCES AND VALIDATION -->
-		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
-
-
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />
 
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="mapView.css" library="css/map" />
+		<h:outputStylesheet name="map.css" library="css/map" />
 
 		<!-- Script -->
 
@@ -79,7 +75,8 @@
 
 
 		</div>
-		
+		<!-- USE JQUERY RESOURCES AND VALIDATION -->
+		<h:outputScript name="jquery-3.5.1.min.js" library="js/jquery" />
 		<h:outputScript name="bootstrap.bundle.min.js?version=#{notificationsView.timestamp}" library="bootstrap/js" />
 		<h:outputScript name="stomp.min.js?version=#{notificationsView.timestamp}" library="js/stomp" />
 		<h:outputScript name="controllerStomp.js?version=#{notificationsView.timestamp}" library="js/stomp" />
