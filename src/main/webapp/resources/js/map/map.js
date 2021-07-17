@@ -560,8 +560,7 @@ function posEquip(equip) {
 		}
 	}
 
-	if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai')
-	 || equip.attr("class").includes('ocr') || equip.attr("class").includes('speed')) {
+	if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
 	
 	    let tableId = equip.attr('id');
 		let statusValue = equip.find('input').attr("status");

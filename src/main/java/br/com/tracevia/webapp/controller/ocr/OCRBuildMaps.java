@@ -50,11 +50,22 @@ public class OCRBuildMaps {
 		
 			try {
 			
-			OCRDAO ocrDAO = new OCRDAO();  							
+			OCRDAO ocrDAO = new OCRDAO();  
+			NotificationsBean notif = new NotificationsBean();									
 		    
 			ocrStatus = new ArrayList<OCR>();			
 			ocrStatus = ocrDAO.Status();	
-				
+			
+		/*	for (OCR ocr : ocrStatus) { //LOOP 
+			
+			//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+			if(ocr.getStatus() == 1 && ocr.getLast_status() == 0)				
+			    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), ocr.getEquip_id(), NotificationsTypeEnum.OCR.getType());
+			
+			else if(ocr.getStatus() == 0 && ocr.getLast_status() == 1) notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), ocr.getEquip_id(), NotificationsTypeEnum.OCR.getType());
+			
+			} // LOOP END*/
+			
 			}catch (IndexOutOfBoundsException ex) {			
 				ex.printStackTrace();
 			}

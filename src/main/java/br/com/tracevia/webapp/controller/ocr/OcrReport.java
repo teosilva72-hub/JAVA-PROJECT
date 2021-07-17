@@ -310,7 +310,6 @@ public class OcrReport{
 
 			try {
 
-				System.out.println("com classe");
 				list = dao.searchTable(start, end, cam);
 
 				RequestContext.getCurrentInstance().execute("getTr()");
@@ -323,7 +322,6 @@ public class OcrReport{
 
 		}else {
 
-			System.out.println("sem classe");
 			String start2 = dtStart+" "+ hrStart+":"+minStart;
 			String end2 = dtFinal+" "+ hrFinal+":"+minFinal;
 
@@ -340,8 +338,6 @@ public class OcrReport{
 	}
 
 	public void idGet() {
-
-		System.out.println(rowkey);
 
 		try {
 

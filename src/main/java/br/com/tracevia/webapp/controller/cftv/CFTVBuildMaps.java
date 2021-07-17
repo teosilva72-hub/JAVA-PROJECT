@@ -8,12 +8,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.ListEquipments;
-import br.com.tracevia.webapp.model.global.Notifications;
 
 @ManagedBean(name="cftvMapsView")
 @ViewScoped
@@ -50,10 +48,11 @@ public class CFTVBuildMaps {
 		try {
 			
 			CFTVDAO cftvDAO = new CFTVDAO();  
-																							
+			NotificationsBean notif = new NotificationsBean();			
+																			
 			cftvStatus = new ArrayList<CFTV>();			
-			cftvStatus = cftvDAO.Status();	
-										
+			cftvStatus = cftvDAO.Status();				
+				
             }catch(IndexOutOfBoundsException ex) {}
 		
 		}catch(Exception ex) {}		

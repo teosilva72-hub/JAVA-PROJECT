@@ -406,99 +406,42 @@
 															<p class="col-12 mb-0">#{item.km}</p>
 														</div>
 
-											            <!---->
-											
-											            <!-- CFTV -->		
 														<c:if test="#{item.table_id eq 'cftv'}">
-														
-														  <!-- STATUS -->
-                                                           <input type="hidden" id="st#{item.table_id}#{item.equip_id}" status="#{cftvMapsView.cftvStatus.get(loop.index).status}" />
-                                 
 															<h:graphicImage class="equip-image"
 																value="/resources/images/equips/camera.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- COLAS -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'colas'}">
-														
-														 <!-- STATUS -->
-                                                            <input type="hidden" id="st#{item.table_id}#{item.equip_id}" status="#{colasMapsView.colasStatus.get(loop.index).status}" />
-                                 
 															<h:graphicImage class="equip-imageCOLAS"
 																value="/resources/images/equips/colas.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- COMMS -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'comms'}">
 															<h:graphicImage class="equip-imageCOMMS"
 																value="/resources/images/equips/comms.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- DAI -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'dai'}">
-														
-														   <!-- STATUS -->                           
-                                                             <input type="hidden" id="st#{item.table_id}#{item.equip_id}" status="#{daiMapsView.daiStatus.get(loop.index).status}" />
-                                 																								
 															<h:graphicImage class="equip-imageDAI"
 																value="/resources/images/equips/dai.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- OCR -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'ocr'}">
-														
-														  <!-- STATUS -->                           
-                                                          <input type="hidden" id="st#{item.table_id}#{item.equip_id}" status="#{ocrMapsView.ocrStatus.get(loop.index).status}" />
-														
 															<h:graphicImage class="equip-imageOCR"
 																value="/resources/images/equips/ocr.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- MTO -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'mto'}">
 															<h:graphicImage class="equip-imagePOST"
 																value="/resources/images/equips/metereologico.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- SOS -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'sos'}">
 															<h:graphicImage class="equip-image"
 																value="/resources/images/equips/sos.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- SPEED -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'speed'}">
-														   
-														   <!-- STATUS -->                           
-                                                           <input type="hidden" id="st#{item.table_id}#{item.equip_id}" status="#{speedMapsView.speedStatus.get(loop.index).status}" />
-                                														
 															<h:graphicImage class="equip-imageSPD"
 																value="/resources/images/equips/speed.png" />
-														</c:if><!---->
-														
-														<!---->
-														
-														<!-- WIM -->
+														</c:if>
 														<c:if test="#{item.table_id eq 'wim'}">
 															<h:graphicImage class="equip-image"
 																value="/resources/images/equips/wim.png" />
-														</c:if><!---->
-														
-														<!---->
+														</c:if>
 													</div>
 												</c:otherwise>
 											</c:choose>

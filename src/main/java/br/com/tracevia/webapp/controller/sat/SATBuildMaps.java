@@ -55,7 +55,7 @@ public class SATBuildMaps {
 		try {
 
 			try {
-								
+
 				SATinformationsDAO satDAO = new SATinformationsDAO();  
 				NotificationsBean notif = new NotificationsBean();
  

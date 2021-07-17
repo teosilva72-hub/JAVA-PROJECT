@@ -36,30 +36,29 @@
 				</a>
 
 					<ul class="collapse list-unstyled" id="realTimeSubmenu">
-						
+
 						<!-- REALTIME SUBMENU -->
 
 						<!-- MAP ITEM -->
 
 						<ui:fragment rendered="#{loginAccount.mapEnabled}">
 							<li class="nav-item"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToMap}" value="">
-								<i class="fas fa-map-marked-alt icon-sub"></i>									
-								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_gis_map}</span>
-							</h:commandLink></li>
+									action="#{navigationController.redirectToMap}" value="">
+									<i class="fas fa-map-marker icon-sub"></i>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_gis_map}</span>
+								</h:commandLink></li>
 						</ui:fragment>
 						<!---->
 
 						<!---->
-						
+
 						<!-- REALTIME ITEM -->
 
 						<li class="nav-item"><h:commandLink class="nav-link"
-							action="#{navigationController.redirectToRealTime}" value="">
-							<i class="fas fa-map-signs icon-sub"></i>													
-							<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
-						</h:commandLink></li>
-						
+								action="#{navigationController.redirectToRealTime}" value="">
+								<i class="fas fa-stopwatch icon-sub"></i>
+								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
+							</h:commandLink></li>
 						<!---->
 
 						<!---->
@@ -69,16 +68,16 @@
 						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
 							<li class="nav-item"><a class="nav-link"
 								href="#ocrUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-camera-retro icon-sub"></i>
-									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+								aria-expanded="false"><i
+									class="fas fa-camera-retro icon-sub"></i> <span
+									class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
 
 								<ul class="collapse list-unstyled" id="ocrUiSubmenu">
 									<!-- OCR SUBMENU -->
 
 									<!-- OCR REALTIME -->
 
-									<li class="nav-item">
-									<h:commandLink class="nav-link"
+									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.redirectToRealtimeOCR}"
 											value="">
 											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -88,7 +87,8 @@
 
 									<!-- OCR REALTIME OVERVIEW -->
 
-									<li class="nav-item"><h:commandLink class=" sub-link nav-link"
+									<li class="nav-item"><h:commandLink
+											class=" sub-link nav-link"
 											action="#{navigationController.redirectToRealtimeDetailsOCR}"
 											value="">
 											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -112,7 +112,6 @@
 									<span class="text-sub">#{wimLabels.wimReal}</span>
 								</h:commandLink></li>
 						</ui:fragment>
-						<!---->
 
 						<!---->
 
@@ -126,8 +125,7 @@
 				<ui:fragment rendered="#{loginAccount.load.en_pmv}">
 					<li class="nav-item"><a class="nav-link" href="#pmvUiSubmenu"
 						data-toggle="collapse" aria-expanded="false"><i
-							class="fas fa-tv icon"></i>
-							<span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
+							class="fas fa-tv icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
 
 						<ul class="collapse list-unstyled" id="pmvUiSubmenu">
 							<!-- PMV SUBMENU -->
@@ -152,94 +150,91 @@
 								</h:commandLink></li>
 							<!---->
 
-						</ul>
-						<!----></li>
+						</ul> <!----></li>
 					<!---->
 				</ui:fragment>
 				<!---->
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-					
-						<!-- METEREOLOGICOS -->
 
-						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
+				<!-- METEREOLOGICOS -->
 
-							<li class="nav-item">
-								<!-- METEO SUBMENU --> <a class="nav-link"
-								href="#meteoUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i class="fas fa-wind icon"></i><span
-									class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
+				<ui:fragment rendered="#{loginAccount.load.en_meteo}">
 
-								<ul class="collapse list-unstyled" id="meteoUiSubmenu">
-									<!-- METEO SUBMENU ITEM -->
+					<li class="nav-item">
+						<!-- METEO SUBMENU --> <a class="nav-link" href="#meteoUiSubmenu"
+						data-toggle="collapse" aria-expanded="false"><i
+							class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
 
-									<!-- MTO ITEM -->
+						<ul class="collapse list-unstyled" id="meteoUiSubmenu">
+							<!-- METEO SUBMENU ITEM -->
 
-									<ui:fragment rendered="#{loginAccount.load.en_mto}">
+							<!-- MTO ITEM -->
 
-										<!-- MTO SUBMENU ITEM  -->
+							<ui:fragment rendered="#{loginAccount.load.en_mto}">
 
-										<li class="nav-item"><a class="nav-link"
-											href="#mtoUiSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-cloud icon-sub"></i><span
-												class="text-sub">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
+								<!-- MTO SUBMENU ITEM  -->
 
-											<ul class="collapse list-unstyled" id="mtoUiSubmenu">
-												<!-- MTO SUBMENU ITEM -->
+								<li class="nav-item"><a class="nav-link"
+									href="#mtoUiSubmenu" data-toggle="collapse"
+									aria-expanded="false"><i class="fas fa-cloud icon-sub"></i><span
+										class="text-sub">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
 
-												<!-- MTO PANEL -->
-												<li class="nav-item"><h:commandLink class="nav-link"
-														action="#{navigationController.redirectToMTOPanel}"
-														value="">
-														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>
-													</h:commandLink></li>
-												<!---->
+									<ul class="collapse list-unstyled" id="mtoUiSubmenu">
+										<!-- MTO SUBMENU ITEM -->
 
-											</ul></li>
+										<!-- MTO PANEL -->
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToMTOPanel}" value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>
+											</h:commandLink></li>
 										<!---->
-									</ui:fragment>
-									<!---->
 
-									<!---->
+									</ul></li>
+								<!---->
+							</ui:fragment>
+							<!---->
 
-									<!-- SV ITEM -->
+							<!---->
 
-									<ui:fragment rendered="#{loginAccount.load.en_sv}">
+							<!-- SV ITEM -->
 
-										<!-- SV SUBMENU -->
+							<ui:fragment rendered="#{loginAccount.load.en_sv}">
 
-										<li class="nav-item"><a class="nav-link"
-											href="#svUiSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-sun icon-sub"></i><span
-												class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+								<!-- SV SUBMENU -->
 
-											<ul class="collapse list-unstyled" id="svUiSubmenu">
-												<!-- SV ITEM -->
+								<li class="nav-item"><a class="nav-link"
+									href="#svUiSubmenu" data-toggle="collapse"
+									aria-expanded="false"><i class="fas fa-sun icon-sub"></i><span
+										class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
 
-												<!-- SV PANEL -->
-												<li class="nav-item"><h:commandLink class="nav-link"
-														action="#{navigationController.redirectToVSPanel}"
-														value="">
-														<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-														<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>
-													</h:commandLink></li>
-												<!---->
+									<ul class="collapse list-unstyled" id="svUiSubmenu">
+										<!-- SV ITEM -->
 
-											</ul></li>
+										<!-- SV PANEL -->
+										<li class="nav-item"><h:commandLink class="nav-link"
+												action="#{navigationController.redirectToVSPanel}" value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>
+											</h:commandLink></li>
 										<!---->
-									</ui:fragment>
-									<!---->
 
-								</ul> <!---->
-							</li> <!---->
-						</ui:fragment>
-						<!---->
+									</ul></li>
+								<!---->
+							</ui:fragment>
+							<!---->
 
-						<!---->				
-				
-					<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-								
+						</ul> <!---->
+					</li>
+					<!---->
+				</ui:fragment>
+				<!---->
+
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
 				<!-- REPORTS MENU -->
 
 				<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
@@ -253,7 +248,14 @@
 						<ui:fragment rendered="#{loginAccount.load.en_cftv}">
 						</ui:fragment>
 						<!---->
-
+						<!--COLAS-->
+						<ui:fragment rendered="#{loginAccount.load.en_wim}">
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.colasReport}" value="">
+									<i class="fas fa-hourglass-half icon-sub"></i>
+									<span class="text-sub">#{colasLabels.title_page1}</span>
+								</h:commandLink></li>
+						</ui:fragment>
 						<!---->
 
 						<!-- COMMS -->
@@ -266,8 +268,8 @@
 						<!-- DAI  -->
 						<ui:fragment rendered="#{loginAccount.load.en_dai}">
 
-							<li class="nav-item"><a class="nav-link"
-								href="#daiSubmenu" data-toggle="collapse" aria-expanded="false"><i
+							<li class="nav-item"><a class="nav-link" href="#daiSubmenu"
+								data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-video icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
 								<ul class="collapse list-unstyled" id="daiSubmenu">
 
@@ -285,8 +287,8 @@
 						<!---->
 
 						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
-							<li class="nav-item"><a class="nav-link"
-								href="#ocrSubmenu" data-toggle="collapse" aria-expanded="false"><i
+							<li class="nav-item"><a class="nav-link" href="#ocrSubmenu"
+								data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-camera-retro icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
 								<ul class="collapse list-unstyled" id="ocrSubmenu">
 
@@ -321,7 +323,8 @@
 
 										<li class="nav-item"><a class="nav-link"
 											href="#mtoSubmenu" data-toggle="collapse"
-											aria-expanded="false"><i class="fas fa-cloud icon-sub-item"></i> <span
+											aria-expanded="false"><i
+												class="fas fa-cloud icon-sub-item"></i> <span
 												class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
 
 											<ul class="collapse list-unstyled" id="mtoSubmenu">
@@ -376,7 +379,7 @@
 										<li class="nav-item"><a class="nav-link"
 											href="#vsSubmenu" data-toggle="collapse"
 											aria-expanded="false"><i class="fas fa-sun icon-sub-item"></i>
-											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
 
 											<ul class="collapse list-unstyled" id="vsSubmenu">
 												<!--  SV REPORT SUBMENU ITEM  -->
@@ -426,8 +429,8 @@
 
 						<!-- OCC REPORT MENU -->
 						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item"><a class="nav-link"
-								href="#occSubmenu" data-toggle="collapse" aria-expanded="false"><i
+							<li class="nav-item"><a class="nav-link" href="#occSubmenu"
+								data-toggle="collapse" aria-expanded="false"><i
 									class="far fa-file-alt icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
 
 								<ul class="collapse list-unstyled" id="occSubmenu">
@@ -456,8 +459,8 @@
 						<!-- SAT REPORT ITEM -->
 
 						<ui:fragment rendered="#{loginAccount.load.en_sat}">
-							<li class="nav-item"><a class="nav-link"
-								href="#satSubmenu" data-toggle="collapse" aria-expanded="false"><i
+							<li class="nav-item"><a class="nav-link" href="#satSubmenu"
+								data-toggle="collapse" aria-expanded="false"><i
 									class="fas fa-hdd icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
 
 								<ul class="collapse list-unstyled" id="satSubmenu">
@@ -608,17 +611,21 @@
 								aria-expanded="false"><i class="fas fa-weight icon-sub"></i>
 									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
 
-								<ul class="collapse list-unstyled" id="wimUiSubmenu"> <!-- WIM REPORT SUBMENU ITEM -->
+								<ul class="collapse list-unstyled" id="wimUiSubmenu">
+									<!-- WIM REPORT SUBMENU ITEM -->
 
 									<li class="nav-item"><h:commandLink class="nav-link"
 											action="#{navigationController.wimReport}" value="">
 											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_wim_sub_menu_report}</span>
 										</h:commandLink></li>
-								</ul></li> <!---->
-							    <!---->							
-						</ui:fragment><!---->
-					</ul></li> <!---->
+								</ul></li>
+							<!---->
+							<!---->
+						</ui:fragment>
+						<!---->
+					</ul></li>
+				<!---->
 				<!---->
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -629,7 +636,7 @@
 						action="#{navigationController.redirectToPanelUsers}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-users-cog icon"></i>
-						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_users}</span>
+						<span class="text">#{dashboardLabels.dashboard_sidebar_sub_menu_users_register}</span>
 					</h:commandLink></li>
 				<!---->
 

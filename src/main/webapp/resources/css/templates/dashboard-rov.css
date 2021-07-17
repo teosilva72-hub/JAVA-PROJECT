@@ -22,8 +22,6 @@ body,
   background-color: #ffffff;
 }
 
-/* MENU UPDATE */
-
 #realTimeSubmenu, #pmvUiSubmenu, #modMenu, #meteoUiSubmenu{
 	 background-color: #000 !important;
 }
@@ -39,7 +37,6 @@ body,
 	 background-color: #313238 !important;
 }
 
-/* MENU UPDATE */
 
 .bg-mattGray {
   background-color: #878d8d;
@@ -71,7 +68,7 @@ body
 
 /* SUB MENU */
 
-/* SUB MENU - 2 */over
+/* SUB MENU - 2 */
 
 .icon-sub-item-2{
 	color: #FFFFFF !important; /* CORAL */
@@ -431,8 +428,8 @@ footer {
   font-size: 14px;
 }
 
-.wrapper{
-	margin-top: 76px;
+.wrapper {
+  margin-top: 65px;
 }
 
 .wrapper .sideMenu {

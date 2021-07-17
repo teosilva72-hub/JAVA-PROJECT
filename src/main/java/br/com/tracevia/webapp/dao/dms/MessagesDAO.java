@@ -244,7 +244,9 @@ public class MessagesDAO {
 	public boolean editMessage(Map<String, String> msg, String user, List<Map<String, String>> ListaPages)
 			throws Exception {
 		boolean success;
+		int id = Integer.parseInt(msg.get("id"));
 
+		DMSDAO dms_dao = new DMSDAO();
 		DateTimeApplication dt = new DateTimeApplication();
 		String dt_creation = dt.currentStringDate(DateTimeApplication.DATE_TIME_FORMAT_STANDARD_DATABASE);
 
@@ -281,10 +283,12 @@ public class MessagesDAO {
 					ps.setInt(10 + i * 6, 0);
 				}
 			}
-			ps.setInt(35, Integer.parseInt(msg.get("id")));
+			ps.setInt(35, id);
 			ps.setInt(36, Integer.parseInt(msg.get("type_page")));
 
 			ps.executeUpdate();
+			
+			dms_dao.reloadActivateMessageWith(id);
 
 			success = true;
 		} catch (SQLException e) {

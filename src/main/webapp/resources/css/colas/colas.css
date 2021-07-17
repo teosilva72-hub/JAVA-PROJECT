@@ -35,3 +35,46 @@
 	margin-left: 15px;
 	
 }
+.ll.error{
+	border: solid red 2px;
+	color: red;
+}
+.ll.ok{
+	border: solid green 2px;
+	color: black;
+}
+.titleSearch{
+	text-align: center;
+	font-weight: 999;
+	color: black;
+}
+.inputDesign{
+	font-weight: 999;
+	color: black;
+}
+.spanSearch{
+	font-weight: 999;
+	color: black;
+	font-size: 12px;
+	text-align: center;
+}
+.logo-concessionaire {
+    left: 80%;
+}
+.titlePage{
+	color: black;
+	font-weight: 999;
+}
+.return{
+	width: 100%;
+	font-weight: 999;
+}
+.dados{
+	font-weight: 999;
+	font-size: 10pt;
+}
+.modalTitle{
+	font-size: 15pt;
+	color: black;
+	font-weight: 999;
+}

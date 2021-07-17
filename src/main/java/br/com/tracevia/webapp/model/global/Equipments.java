@@ -288,6 +288,14 @@ public class Equipments {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	
+	public int getLast_status() {
+		return last_status;
+	}
+
+	public void setLast_status(int last_status) {
+		this.last_status = last_status;
+	}
 
 
 	public int getLastStatus() {
