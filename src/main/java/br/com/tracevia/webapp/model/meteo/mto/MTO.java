@@ -16,22 +16,20 @@ public class MTO extends Equipments{
 	private double temp_ar;
 	private double temp_estrada;	
 	private int visibilidade;
-	private int status;
 	private int bateria_sts;
 	private int volts_line;
-	
-
-		public MTO(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
-			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height, int linearWidth,
-			int dlgPosX, int dlgPosY, int status, int last_status, boolean notificacao, boolean visible,
-			String data_hora, String data, String intervalos, int monthOrDay, int press_atmosferica, int umi_relativa,
-			int absol_precipitacao, int velocidadeMed_vento, int direcao_vento, double temp_ar, double temp_estrada,
-			int visibilidade, int status2, int bateria_sts, int volts_line) {
 		
-			super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome,
-				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX,
-				dlgPosY, status, notificacao, visible);
+		public MTO(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+			String creation_username, String update_date, String update_username, String nome, String estrada,
+			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
+			boolean visible, String data_hora, String data, String intervalos, int monthOrDay, int press_atmosferica,
+			int umi_relativa, int absol_precipitacao, int velocidadeMed_vento, int direcao_vento, double temp_ar,
+			double temp_estrada, int visibilidade, int bateria_sts, int volts_line) {
+		
+			super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
+				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				dlgPosX, dlgPosY, status, lastStatus, notificacao, visible);
 			
 		this.data_hora = data_hora;
 		this.data = data;
@@ -45,9 +43,9 @@ public class MTO extends Equipments{
 		this.temp_ar = temp_ar;
 		this.temp_estrada = temp_estrada;
 		this.visibilidade = visibilidade;
-		status = status2;
 		this.bateria_sts = bateria_sts;
 		this.volts_line = volts_line;
+		
 	}
 
 
@@ -172,17 +170,6 @@ public class MTO extends Equipments{
 		public void setVisibilidade(int visibilidade) {
 			this.visibilidade = visibilidade;
 		}
-
-
-		public int getStatus() {
-			return status;
-		}
-
-
-		public void setStatus(int status) {
-			this.status = status;
-		}
-
 
 		public int getBateria_sts() {
 			return bateria_sts;

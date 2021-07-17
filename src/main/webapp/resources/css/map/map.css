@@ -631,7 +631,7 @@ img.box-img[zoom] {
 [id$="dmsType"] {
   width: 100%;
 }
-[id$="dmsIp"] {
+[id$="equipIp"] {
   width: 100%;
 }
 [id$="equipName"] {
@@ -663,7 +663,7 @@ img.box-img[zoom] {
 [id$="dmsType-edit"] {
   width: 100%;
 }
-[id$="dmsIp-edit"] {
+[id$="equipIp-edit"] {
   width: 100%;
 }
 [id$="equipNameEdit"] {

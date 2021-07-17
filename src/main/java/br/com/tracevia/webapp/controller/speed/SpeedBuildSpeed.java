@@ -29,6 +29,14 @@ public class SpeedBuildSpeed {
 		this.equips = equips;
 	}
 	
+	public List<Speed> getSpeedStatus() {
+		return speedStatus;
+	}
+
+	public void setSpeedStatus(List<Speed> speedStatus) {
+		this.speedStatus = speedStatus;
+	}
+	
 	@PostConstruct
 	public void initalize() {
 		

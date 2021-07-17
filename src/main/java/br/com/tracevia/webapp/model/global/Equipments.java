@@ -12,6 +12,7 @@ public class Equipments {
 	private int equip_id;
 	private String table_id;
 	private String equip_type;
+	private String equip_ip;
 	private String creation_date;
 	private String creation_username;
 	private String update_date;
@@ -30,17 +31,20 @@ public class Equipments {
 	private int dlgPosX;
 	private int dlgPosY;
 	private int status;
+	private int lastStatus;
 	private boolean notificacao;
 	private boolean visible;
 
-	public Equipments(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
-			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height,
-			int linearWidth, int dlgPosX, int dlgPosY, int status, boolean notificacao, boolean visible) {
+	public Equipments(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+			String creation_username, String update_date, String update_username, String nome, String estrada,
+			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
+			boolean visible) {
 		
 		this.equip_id = equip_id;
 		this.table_id = table_id;
 		this.equip_type = equip_type;
+		this.equip_ip = equip_ip;
 		this.creation_date = creation_date;
 		this.creation_username = creation_username;
 		this.update_date = update_date;
@@ -48,7 +52,7 @@ public class Equipments {
 		this.nome = nome;
 		this.estrada = estrada;
 		this.cidade = cidade;
-		this.km = km;	
+		this.km = km;
 		this.linearPosX = linearPosX;
 		this.linearPosY = linearPosY;
 		this.mapPosX = mapPosX;
@@ -58,13 +62,13 @@ public class Equipments {
 		this.linearWidth = linearWidth;
 		this.dlgPosX = dlgPosX;
 		this.dlgPosY = dlgPosY;
-		this.status = status;		
+		this.status = status;
+		this.lastStatus = lastStatus;
 		this.notificacao = notificacao;
 		this.visible = visible;
 	}
 
 	public Equipments() {}
-
 
 	public int getEquip_id() {
 		return equip_id;
@@ -84,14 +88,27 @@ public class Equipments {
 	public void setTable_id(String table_id) {
 		this.table_id = table_id;
 	}
-	
+
+
 	public String getEquip_type() {
 		return equip_type;
 	}
 
+
 	public void setEquip_type(String equip_type) {
 		this.equip_type = equip_type;
 	}
+
+
+	public String getEquip_ip() {
+		return equip_ip;
+	}
+
+
+	public void setEquip_ip(String equip_ip) {
+		this.equip_ip = equip_ip;
+	}
+
 
 	public String getCreation_date() {
 		return creation_date;
@@ -171,6 +188,7 @@ public class Equipments {
 	public void setKm(String km) {
 		this.km = km;
 	}
+
 
 	public int getLinearPosX() {
 		return linearPosX;
@@ -266,25 +284,41 @@ public class Equipments {
 		return status;
 	}
 
+
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+
+	public int getLastStatus() {
+		return lastStatus;
+	}
+
+
+	public void setLastStatus(int lastStatus) {
+		this.lastStatus = lastStatus;
+	}
+
 
 	public boolean isNotificacao() {
 		return notificacao;
 	}
 
+
 	public void setNotificacao(boolean notificacao) {
 		this.notificacao = notificacao;
 	}
+
 
 	public boolean isVisible() {
 		return visible;
 	}
 
+
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
+
 
 	//BUILD GENERIC EQUIPMENTS
 	public List<Equipments> listEquipments(String modulo) throws Exception {

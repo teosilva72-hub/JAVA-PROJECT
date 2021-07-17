@@ -10,19 +10,28 @@ public class SV extends Equipments {
 	private int monthOrDay;	
 	private double temp_ambiente;
 	private int visibilidade;
-	private int status;
 	private int bateria_sts;
 	private int volts_line;
-	
-	public SV(int equip_id, String table_id, String equip_type, String creation_date, String creation_username,
-			String update_date, String update_username, String nome, String estrada, String cidade, String km,
-			int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth, int height, int linearWidth,
-			int dlgPosX, int dlgPosY, int status, int last_status, boolean notificacao, boolean visible) {
 		
-		super(equip_id, table_id, equip_type, creation_date, creation_username, update_date, update_username, nome, estrada,
-				cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY, status,
-				notificacao, visible);
-		// TODO Auto-generated constructor stub
+	public SV(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+			String creation_username, String update_date, String update_username, String nome, String estrada,
+			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
+			boolean visible, String data_hora, String data, String intervalos, int monthOrDay, double temp_ambiente,
+			int visibilidade, int bateria_sts, int volts_line) {
+		
+		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
+				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				dlgPosX, dlgPosY, status, lastStatus, notificacao, visible);
+		
+		this.data_hora = data_hora;
+		this.data = data;
+		this.intervalos = intervalos;
+		this.monthOrDay = monthOrDay;
+		this.temp_ambiente = temp_ambiente;
+		this.visibilidade = visibilidade;
+		this.bateria_sts = bateria_sts;
+		this.volts_line = volts_line;
 	}
 
 
@@ -87,17 +96,6 @@ public class SV extends Equipments {
 	public void setVisibilidade(int visibilidade) {
 		this.visibilidade = visibilidade;
 	}
-
-
-	public int getStatus() {
-		return status;
-	}
-
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 
 	public int getBateria_sts() {
 		return bateria_sts;

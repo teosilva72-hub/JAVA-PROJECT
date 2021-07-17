@@ -27,10 +27,7 @@ import org.primefaces.context.RequestContext;
 @ManagedBean(name="equipsBean")
 @RequestScoped
 public class EquipmentsBean implements Serializable {
-
-	/**
-	 * 
-	 **/
+	
 	private static final long serialVersionUID = 1L;
 	
 	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, mtoType;
@@ -213,6 +210,17 @@ public class EquipmentsBean implements Serializable {
 		}
 		
 	}
+		
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para criar equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */
 	
 	public void createEquipment() throws Exception {
 						
@@ -265,7 +273,7 @@ public class EquipmentsBean implements Serializable {
 		    dms.setNome(parameterMap.get("equipName"));
 		    
 		     //For Equipment IP
-		    dms.setDms_ip(parameterMap.get("dmsIp"));
+		    dms.setDms_ip(parameterMap.get("equipIp"));
 		    
 		    //For Equipment Type
 			dms.setDms_type(parameterMap.get("dmsType") == "" ? 1 :Integer.parseInt(parameterMap.get("dmsType")));
@@ -328,6 +336,9 @@ public class EquipmentsBean implements Serializable {
 		
 		//For Equipment Name
 	    sat.setNome(parameterMap.get("equipName"));
+	    
+	    //EQUIP IP
+	    sat.setEquip_ip(parameterMap.get("equipIp"));
 	    	    
 	    //For Equipment City
 	    sat.setCidade(parameterMap.get("cities"));
@@ -408,6 +419,10 @@ public class EquipmentsBean implements Serializable {
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
+		    
+		    //EQUIP IP
+		    equip.setEquip_ip(parameterMap.get("equipIp"));
+		    	    
 				    
 		    //For Equipment City
 		    equip.setCidade(parameterMap.get("cities"));
@@ -442,6 +457,17 @@ public class EquipmentsBean implements Serializable {
 	            	  
 	}
 	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para pesquisar equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */
+	
 	public void SearchEquipment() throws Exception {
 		
 		 FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -469,7 +495,7 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+dms.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#dmsType-edit').val('"+dms.getDms_type()+"');");
-		 RequestContext.getCurrentInstance().execute("$('#dmsIp-edit').val('"+dms.getDms_ip()+"');");
+		 RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+dms.getDms_ip()+"');");
 		 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+dms.getCidade()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+dms.getKm()+"');");	
@@ -482,7 +508,8 @@ public class EquipmentsBean implements Serializable {
 			 
 			 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 			 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
-			 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sat.getNome()+"');");			
+			 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sat.getNome()+"');");		
+			 RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+sat.getEquip_ip()+"');");
 			 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+sat.getCidade()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+sat.getEstrada()+"');");	
 			 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sat.getKm()+"');");	
@@ -526,17 +553,25 @@ public class EquipmentsBean implements Serializable {
 			 
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
+		 RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
 		 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
 				 		
-		 }
-				 
-         //RequestContext.getCurrentInstance().update("delete-equip-form:delete-equipName");
-	    // For Equipment ID
-			    
-	}
+		 }				   
+	 }
+	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para executar deleção de equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */
 	
 	public void runDel() throws Exception {
 				        
@@ -557,6 +592,17 @@ public class EquipmentsBean implements Serializable {
 		 RequestContext.getCurrentInstance().execute("$('#del-equip-name').html('"+equipName+"');");				 	 
       	   	    
 	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para atualizar equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */
 	
 	public void UpdateEquipment() throws Exception {
 				
@@ -584,7 +630,7 @@ public class EquipmentsBean implements Serializable {
 				 
 		//CHECK MODULES	
 		int moduleId = getModuleByName(equipTable);
-											 		  		 
+											 		
 		 if(moduleId != 0 && moduleId == 8) {		
 			 
 			    //Table definition
@@ -603,7 +649,7 @@ public class EquipmentsBean implements Serializable {
 			    dms.setNome(parameterMap.get("equipNameEdit"));
 			    
 			     //For Equipment IP
-			    dms.setDms_ip(parameterMap.get("dmsIp-edit"));
+			    dms.setDms_ip(parameterMap.get("equipIp-edit"));
 			    
 			   	//For Equipment City
 			    dms.setCidade(parameterMap.get("citiesEdit"));
@@ -642,16 +688,19 @@ public class EquipmentsBean implements Serializable {
 	    	String table = defineTableById(moduleId);
 			 
 	    	//For Equipment Update Date
-		    dms.setUpdate_date(dta.currentTimeDBformat());
+		    sat.setUpdate_date(dta.currentTimeDBformat());
 					    
 		    //For Equipment Update Username		
-			dms.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			sat.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
 			
 	  		//SAT ID
 	  		sat.setEquip_id(equipId);
 	  		
 	  		//For Equipment Name
 	  	    sat.setNome(parameterMap.get("equipNameEdit"));
+	  	    
+	  	    //For Equipment IP
+		    sat.setEquip_ip(parameterMap.get("equipIp-edit"));
 	  	    
 	  	    //For Equipment City
 	  	    sat.setCidade(parameterMap.get("citiesEdit"));
@@ -712,6 +761,9 @@ public class EquipmentsBean implements Serializable {
 				 
 				//For Equipment Name
 			    equip.setNome(parameterMap.get("equipNameEdit"));
+			    
+			    //For Equipment IP
+			    equip.setEquip_ip(parameterMap.get("equipIp-edit"));
 					    
 			    //For Equipment City
 			    equip.setCidade(parameterMap.get("citiesEdit"));
@@ -738,14 +790,22 @@ public class EquipmentsBean implements Serializable {
 					request.execute("alert('#equip-update-error');");
 				}
 		    	 		
-		 }
-		 
-				
+		 }				
 	}
 	
-	public void DeleteEquipment() throws Exception {
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para deleção de equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */
 		
-				
+	public void DeleteEquipment() throws Exception {
+						
 		boolean delete = false;
 		
 		 int equipId = getEquipId();		 
@@ -766,6 +826,17 @@ public class EquipmentsBean implements Serializable {
 		 }
    	 	
 	    }
+	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para definir posição de equipamentos
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @return void
+	 * @throws Exception
+	 */	
 	
 	public void definePosition() throws Exception {
 		
@@ -794,8 +865,21 @@ public class EquipmentsBean implements Serializable {
 		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView);
 		 		
 	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+		
+	/**
+	 * Método para definir tamanho de um grupo de equipamentos
+	 * @author Guilherme
+	 * @version 1.0
+	 * @since Release 1.0	
+	 * @param map - Interface a ser atualizada
+	 * @return void
+	 * @throws Exception
+	 */	
 
 	public void setAll(String map) throws Exception {
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		RequestContext request = RequestContext.getCurrentInstance();
 
@@ -811,6 +895,18 @@ public class EquipmentsBean implements Serializable {
 
 		request.execute("alertToast('all equipment updated!');");
 	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter o tipo da tabela pelo id
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param id - ID da tabela	
+	 * @return String - Tabela de acordo com id
+	 * @throws Exception
+	 */
 	
 	public String defineTableById(int id) { 
 		
@@ -835,6 +931,18 @@ public class EquipmentsBean implements Serializable {
 		return table;
 	}
 	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter a tabela pelo tipo do módulo
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param type- Tipo da tabela	
+	 * @return String - Tabela definida
+	 * @throws Exception
+	 */
+	
     public String defineTableByName(String type) { 
 		
 		String table = null;
@@ -858,6 +966,18 @@ public class EquipmentsBean implements Serializable {
 		return table;
 	}
     
+  //--------------------------------------------------------------------------------------------------------------
+    
+    /**
+	 * Método para obter o ID do módulo pelo tipo
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param type - Tipo do módulo
+	 * @return int - Módulo ID
+	 * @throws Exception
+	 */
+    
     public int getModuleByName(String type) { 
 		
   		int moduleId = 0;
@@ -880,13 +1000,22 @@ public class EquipmentsBean implements Serializable {
   		
   		return moduleId;
   	}
-	
     
-    //DEFINE DIRECTIONS VALUES
+  //--------------------------------------------------------------------------------------------------------------
+	        
+    /**
+   	 * Método para definir direções
+   	 * @author Wellington
+   	 * @version 1.0
+   	 * @since Release 1.0
+   	 * @param sat - Objeto do tipo SAT
+   	 * @param numberLane - Número de linhas
+   	 * @param dir - Direção
+   	 * @return void   	
+   	 */
+    
     public void defineDirection(SAT sat, int numberLane, int dir){
-    	
-    	//System.out.println("DIR: "+dir);
-    	  
+        	  
         switch(dir) {
         
         case 0: 
@@ -963,15 +1092,22 @@ public class EquipmentsBean implements Serializable {
 			case 7: sat.setFaixa7("O"); break;
 			case 8: sat.setFaixa8("O"); break;
 			
-			}; break;
-			
-		//default: sat.setNumFaixas(2); sat.setFaixa1("N"); sat.setFaixa2("S"); break; //SALVA COMO PADRÃO, CASO TAIS VALORES ESTEJAM EM BRANCO
-    	
+			}; break;				 	
     	}
-      }  // DEFINE DIRECTIONS VALUES 
+      }
     
+  //--------------------------------------------------------------------------------------------------------------
+     
+    /**
+   	 * Método para obter o tipo do PMV
+   	 * @author Wellington
+   	 * @version 1.0
+   	 * @since Release 1.0
+   	 * @param dms - Objeto do tipo DMS
+   	 * @param type - Tipo do PMV
+   	 * @return void   
+   	 */
     
-    //DEFINE DIRECTIONS VALUES
     public void defineDMStype(DMS dms, int type){
     	    		
     		switch (type) {     		
@@ -983,7 +1119,17 @@ public class EquipmentsBean implements Serializable {
         }
     }
     
-    //EQUIP TYPE DEFINITIONS
+  //--------------------------------------------------------------------------------------------------------------
+    
+    /**
+   	 * Método para obter tipo do equipamento
+   	 * @author Wellington
+   	 * @version 1.0
+   	 * @since Release 1.0   	
+   	 * @param table - Tabela   	
+   	 * @return String - Retorna o tipo de equipamento 	
+   	 */
+    
     public String defineEquipType(String table) { 
     	
     	String type = null;
@@ -1004,5 +1150,7 @@ public class EquipmentsBean implements Serializable {
     	
     	return type;
     }
+    
+  //--------------------------------------------------------------------------------------------------------------
     
 }

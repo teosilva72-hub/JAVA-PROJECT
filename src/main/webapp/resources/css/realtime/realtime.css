@@ -288,7 +288,7 @@ body {
 [id$="dmsType"] {
   width: 100%;
 }
-[id$="dmsIp"] {
+[id$="equipIp"] {
   width: 100%;
 }
 [id$="equipName"] {
@@ -318,7 +318,7 @@ body {
 [id$="dmsType-edit"] {
   width: 100%;
 }
-[id$="dmsIp-edit"] {
+[id$="equipIp-edit"] {
   width: 100%;
 }
 [id$="equipNameEdit"] {

@@ -199,6 +199,8 @@ public class ListEquipments {
 				WIM wim =  new WIM();
 				
 				    if(login.getLoad().isEn_cftv())	{	
+				    	
+				    	System.out.println("CFTV");
 					
 					cftvList = cftv.listEquipments("cftv"); 
 					equips.add(new listEquips("cftv", login.getLoad().isEn_cftv(), cftvList, login.getLoad().getVoltage_cftv()));
