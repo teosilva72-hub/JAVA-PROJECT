@@ -485,23 +485,23 @@ opacity: 0.7;
 
 /* .equip-box, */
 .equip-info {
-  transform-origin: 50% 100%;
+  transform-origin: 50% 80%;
 }
 
 .equip-box.speed {
-  transform-origin: 50% 55%;
+  transform-origin: 50% 80%;
 }
 
 .equip-box.dai {
-  transform-origin: 50% 109%;
+  transform-origin: 50% 70%;
 }
 
 .equip-box.colas {
-  transform-origin: 50% 135%;
+  transform-origin: 50% 80%;
 }
 
 .equip-box.wim {
-  transform-origin: 50% 129%;
+  transform-origin: 50% 80%;
 }
 
 .equip-box.lpr {
