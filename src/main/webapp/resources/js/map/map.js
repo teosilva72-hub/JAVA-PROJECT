@@ -58,7 +58,6 @@ const init = () => {
 		showGenericName();
 		initPMV();
 		initSOS()
-		//statusColors();
 	})
 }
 
@@ -375,8 +374,6 @@ function ScrollZoom(container) {
 			scale = Math.max(1, Math.min(max_scale, scale))
 			scale_diff = scale / scale_diff
 			target.attr('scale', scale)
-
-			console.log(scale);
 
 			update()
 			resizeEquip(container)
@@ -1067,57 +1064,6 @@ $(function () {
 	$('[id$="kmEdit"]').mask('000+000'); 	// KM MASK
 
 });
-
-function statusColors() {
-	//   $('#sos2').find('.equip-status').css('background-color', 'orange');
-	//   $('#sos7').find('.equip-status').css('background-color', 'red');
-	//   $('#sos14').find('.equip-status').css('background-color', 'orange');
-	//   $('#sos16').find('.equip-status').css('background-color', 'red');
-	//   $('#sos22').find('.equip-status').css('background-color', 'orange');
-	//   $('#sos25').find('.equip-status').css('background-color', 'orange');
-	//   $('#sos33').find('.equip-status').css('background-color', 'red');
-	//   $('#sos37').find('.equip-status').css('background-color', 'orange');
-	//   $('#sos40').find('.equip-status').css('background-color', 'red');
-
-	$('#colas2').find('.equip-status').css('background-color', 'red');
-	$('#colas3').find('.equip-status').css('background-color', 'orange');
-	$('#colas5').find('.equip-status').css('background-color', 'orange');
-
-	$('#cftv3').find('.equip-status').css('background-color', 'orange');
-	$('#cftv6').find('.equip-status').css('background-color', 'orange');
-	$('#cftv10').find('.equip-status').css('background-color', 'red');
-
-	$('#dai1').find('.equip-status').css('background-color', 'red');
-	$('#dai5').find('.equip-status').css('background-color', 'orange');
-	$('#dai6').find('.equip-status').css('background-color', 'orange');
-	$('#dai9').find('.equip-status').css('background-color', 'red');
-
-	$('#lpr4').find('.equip-status').css('background-color', 'red');
-	$('#lpr7').find('.equip-status').css('background-color', 'red');
-	$('#lpr10').find('.equip-status').css('background-color', 'orange');
-
-	$('#wim4').find('.equip-status').css('background-color', 'orange');
-
-	$('#speed5').find('.equip-status').css('background-color', 'orange');
-	$('#speed6').find('.equip-status').css('background-color', 'orange');
-
-	// $('#dms1 .tableStyle').addClass('on');
-	// $('#dms3 .tableStyle').addClass('on');
-	// $('#dms4 .tableStyle').addClass('on');
-	// $('#dms5 .tableStyle').addClass('on');
-	// $('#dms6 .tableStyle').addClass('on');
-
-}
-
-function animation() {
-	$('#sos17').addClass('call-box-action').find('.equip-status').css('background-color', 'blue');
-
-	setTimeout(() => {
-		$('#sos17').removeClass('call-box-action').find('.equip-status').css('background-color', 'red');
-	},
-		5000
-	)
-}
 
 /* show hidden buttons */
 

@@ -20,11 +20,7 @@
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="map.css" library="css/map" />	
-
-		<!-- Script -->
-		<h:outputScript name="map.js" library="js/map" />
-		<h:outputScript name="bootstrap-input-spinner.js" library="bootstrap/js" />						
+		<h:outputStylesheet name="map.css" library="css/map" />						
 				
 	</ui:define>
 
@@ -627,110 +623,10 @@
 	</ui:define>
 	
 	<ui:define name="jscript">
-	
-	<h:outputScript name="map.js" library="js/map" />
-	<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
-		
-		<!-- Mudança -->
-
-		<script>				
-						
-			/////////////MAP/GRID HIDE AND SHOW
-
-			$("#divide").click(function () {
-				$(".overflow").hide();
-				$(".map-options").hide();
-				$(".map-full-option").show();
-				$("#mapDivide").show();
-
-			});
-		
-			$("#full").click(function () {
-				$(".map-full-option").hide();
-				$("#mapDivide").hide();
-				$(".overflow").show();
-				$(".map-options").show();
-			});
-		
-			///MAP/GRID HIDE AND SHOW END						
-					
-			//ZOOM EVENT
-			document.getElementById("zoomIn").addEventListener("click",
-				function () {
-					zoomIn($('section.overflow'))
-				}, false);
-			document.getElementById("zoomOut").addEventListener("click",
-				function () {
-					zoomOut($('section.overflow'))
-				}, false);
-			document.getElementById("zoomIn1").addEventListener("click",
-				function () {
-					$('#frame1')[0].contentWindow.zoomIn("section.overflow")
-				}, false);
-			document.getElementById("zoomOut1").addEventListener("click",
-				function () {
-					$('#frame1')[0].contentWindow.zoomOut("section.overflow")
-				}, false);
-			document.getElementById("zoomIn2").addEventListener("click",
-				function () {
-					$('#frame2')[0].contentWindow.zoomIn("section.overflow")
-				}, false);
-			document.getElementById("zoomOut2").addEventListener("click",
-				function () {
-					$('#frame2')[0].contentWindow.zoomOut("section.overflow")
-				}, false);
-			document.getElementById("zoomIn3").addEventListener("click",
-				function () {
-					$('#frame3')[0].contentWindow.zoomIn("section.overflow")
-				}, false);
-			document.getElementById("zoomOut3").addEventListener("click",
-				function () {
-					$('#frame3')[0].contentWindow.zoomOut("section.overflow")
-				}, false);
-		
-			  function statusColors(){
-			      $('#sos2').find('.equip-status').css('background-color', 'orange');
-			      $('#sos7').find('.equip-status').css('background-color', 'red');
-			      $('#sos14').find('.equip-status').css('background-color', 'orange');
-			      $('#sos16').find('.equip-status').css('background-color', 'red');
-			      $('#sos22').find('.equip-status').css('background-color', 'orange');
-			      $('#sos25').find('.equip-status').css('background-color', 'orange');
-			      $('#sos33').find('.equip-status').css('background-color', 'red');
-			      $('#sos37').find('.equip-status').css('background-color', 'orange');
-			      $('#sos40').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#colas2').find('.equip-status').css('background-color', 'red');
-			      $('#colas3').find('.equip-status').css('background-color', 'orange');
-			      $('#colas5').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#cftv3').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv6').find('.equip-status').css('background-color', 'orange'); 
-			      $('#cftv10').find('.equip-status').css('background-color', 'red'); 
-			      
-			      $('#dai1').find('.equip-status').css('background-color', 'red');
-			      $('#dai5').find('.equip-status').css('background-color', 'orange');
-			      $('#dai6').find('.equip-status').css('background-color', 'orange');
-			      $('#dai9').find('.equip-status').css('background-color', 'red');
-			      
-			      $('#lpr4').find('.equip-status').css('background-color', 'red');
-			      $('#lpr7').find('.equip-status').css('background-color', 'red');
-			      $('#lpr10').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#wim4').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#speed5').find('.equip-status').css('background-color', 'orange');
-			      $('#speed6').find('.equip-status').css('background-color', 'orange');
-			      
-			      $('#dms1 .tableStyle').addClass('on')
-			      $('#dms3 .tableStyle').addClass('on')
-			      $('#dms4 .tableStyle').addClass('on')
-			      $('#dms5 .tableStyle').addClass('on')
-			      $('#dms6 .tableStyle').addClass('on')	
-			  }
-			 	 
 			
-
-		</script>
-	</ui:define>
+		<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
+		<h:outputScript name="mapView.js" library="js/map" />
+		
+	<ui:define name="jscript">
 
 </ui:composition>

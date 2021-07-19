@@ -2,35 +2,80 @@ var widthMax = 1000
 var heightMax = 1000
 var scale = 1
 
+const init = () => {
+	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		resizeEquipScale($('[scroll-zoom]'))
+		resizeEquip($('[scroll-zoom]'))
+
+		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+			let equip = $(this)
+
+			posEquip(equip)
+
+			if (!equip.attr('class').includes('plaque'))
+				equip.dblclick(function () {
+					posReset();
+
+					id = equip.attr('id').match(/\d+/g)[0];
+					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+					toDrag = `#${equip.attr('id')}`
+
+					$('#OPmodal').modal('toggle');
+				});
+
+			$(window).resize(function () {
+				posEquip(equip)
+			})
+		})
+
+		setInfoEquip();
+		setEquipToolTip();
+		showGenericName();
+		initPMV();
+		initSOS()
+	})
+}
+
+const setInfoEquip = () => {
+	$('[data-toggle="popover"]').popover({
+		html: true,
+		trigger: 'hover',
+		content: function () {
+			var content = $(this).attr("data-popover-content");
+			return $(content).children(".popover-body").html();
+		},
+		title: function () {
+			var title = $(this).attr("data-popover-content");
+			return $(title).children(".popover-header").html();
+		}
+	});
+}
+
+const setEquipToolTip = () => {
+	$('[data-toggle="tooltip"]').tooltip();
+
+}
+
 $(function() {
+
+	$('.plaque').each(function () {
+		let plaque = $(this)
+
+		plaque.attr('posX', plaque.css('left').replace("px", ""))
+		plaque.attr('posY', plaque.css('top').replace("px", ""))
+	})
+	init();
 	//Scroll Zoom Map Full
 	$('[scroll-zoom]').each(function () {
 		let map = $(this)
 		ScrollZoom(map)
 		mapMove(map)
-		
 	})
 
 	$(".overflow").css("height", $(this).height())
 	$(window).resize(function () {
 		$(".overflow").css("height", $(this).height())
 	})
-
-	resizeEquipScale($('[scroll-zoom]'))
-
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-
-		posEquip(equip)
-
-		$(window).resize(function () {
-			posEquip(equip)
-		})
-
-	})
-
-	initPMV();
-	statusColors();
 })
 
 function ScrollZoom(container) {
@@ -47,9 +92,7 @@ function ScrollZoom(container) {
 		let offset = target.offset()
 
 		zoom_point.x = e.pageX - offset.left
-		zoom_point.y = e.pageY / (scale * 1.6) - offset.top
-
-		console.log("isso " + scale)
+		zoom_point.y = e.pageY - offset.top
 
 		pos = {
 			x: zoom_point.x / (target.width() * scale),
@@ -73,12 +116,11 @@ function ScrollZoom(container) {
 			scale_diff = scale / scale_diff
 			target.attr('scale', scale)
 
+			console.log(scale);
 
 			update()
 			resizeEquip(container)
 		}
-
-
 	}
 
 	function update() {
@@ -110,22 +152,46 @@ function ScrollZoom(container) {
 
 	//RESIZE EQUIPMENT
 	function resizeEquipScale(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let max = 0;
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+		let plaque = $('.plaque');
+		let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
+		let barSize = Number($('#bar-size').val()) || 1
+		let scaleA;
+
+		equips.each(function () {
 			let equip = $(this)
-			let scale = (Number(equip.attr('item-width')) / equip.width()) * (Number($('#bar-size').val()) || 1);
-			
-			equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
+			let width = Number(equip.attr('item-width'))
+			scaleA = (width / equip.width()) * (barSize);
+
+			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale})`).attr('scale', scaleA).attr('barSize', barSize)
 		})
+
+		allEquip.each(function () {
+			let equip = $(this)
+
+			max += Number(equip.attr('item-width')) * Number(equip.attr('barSize')) || 1;
+		})
+
+		scaleA = ((max / allEquip.length) / (plaque.width() || 75));
+		plaque.css('transform', `translateX(-50%) scale(${scaleA * scale})`).attr('scale', scaleA)
 	}
-	
+
 	//RESIZE EQUIPMENT
 	function resizeEquip(container) {
-		container.find('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+		let plaque = $('.plaque');
+		let scaleA;
+
+		equips.each(function () {
 			let equip = $(this)
-			let scaleA = equip.attr('scale')
-			
+			scaleA = equip.attr('scale')
+
 			equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
 		})
+
+		scaleA = plaque.attr('scale');
+		plaque.css('transform', `translateX(-50%) scale(${scaleA * scale})`)
 	}
 	
 	//RESIZE EQUIPMENT END
@@ -139,10 +205,10 @@ function ScrollZoom(container) {
 			x: Number(equip.attr('posX')),
 			y: Number(equip.attr('posY'))
 		}
-	
+
 		pos.centX = pos.x / widthMax * scale
 		pos.centY = pos.y / heightMax * scale
-	
+
 		//Pos X and Pos Y
 		equip.css({
 			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
@@ -151,9 +217,10 @@ function ScrollZoom(container) {
 
 		if (equip.attr("class").includes('equip-box-sat')) {
 			let sat_status = equip.attr('status')
-			let interval =  Number(equip.attr('status-period'))
-					//TESTE		
-																
+			let sat_name = equip.attr('id')
+			let interval = Number(equip.attr('status-period'))
+			//TESTE		
+
 			//Green Color > indica que o equipamento está conectado
 			if (sat_status > 0 && interval == 30) {
 				equip.find("[id^=satName]").css({
@@ -161,7 +228,8 @@ function ScrollZoom(container) {
 					color: 'black'
 				});
 
-	
+				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
+
 			}
 			//SeaGreen Color > indica que o equipamento está com perca de pacotes
 			else if (sat_status > 0 && interval == 45) {
@@ -170,6 +238,7 @@ function ScrollZoom(container) {
 					color: 'black'
 				});
 
+				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 			}
 			//SeaGreen Color > indica que o equipamento está com perca de pacotes
 			else if (sat_status > 0 && interval == 8) {
@@ -178,6 +247,7 @@ function ScrollZoom(container) {
 					color: 'black'
 				});
 
+				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 			}
 			//Red Color > indica que o equipamento está sem comunicação
 			else {
@@ -186,11 +256,38 @@ function ScrollZoom(container) {
 					color: 'white'
 				});
 
+				$(`#status${sat_name}`).css({ "color": '#FF0000' });
 			}
 		}
 
-		if (equip.attr("class").includes('equip-box')) {
+		if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
+		
+			let tableId = equip.attr('id');
+			let statusValue = equip.find('input').attr("status");
+			let equipStatus = equip.find("span").attr("id");						
+											
+			if(statusValue == 1){
+			$('#'+equipStatus).css({
+					"background-color": '#00FF0D',
+					color: 'white'
+				});			
 
+				// status equip color
+				
+				$(`#status${tableId}`).css({ "color": '#00FF0D !important' }); // status side menu
+							
+		} else if(statusValue == 0){ 
+					$('#'+equipStatus).css({
+					"background-color": '#FF0000',
+					color: 'white'
+				}); 
+				
+				// status equip color
+				
+				$(`#status${tableId}`).css({ "color": '#FF0000 !important' }); // status side menu
+							
+			}			
+		
 		}
 	}
 	// EQUIPMENT POSITION END
