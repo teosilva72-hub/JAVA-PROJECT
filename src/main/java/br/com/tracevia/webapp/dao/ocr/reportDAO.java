@@ -59,7 +59,11 @@ public class reportDAO {
 	}
 	public ArrayList<OCR> searchTable2(String start, String end) throws Exception {
 		
-		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'";
+		String search = "SELECT ocr_data.id_ocr_data, ocr_data.site_name, "
+				+ "ocr_data.datetime, ocr_data.plate, ocr_equipment.km, "
+				+ "ocr_equipment.direction FROM ocr_data INNER JOIN ocr_equipment "
+				+ "ON ocr_data.site_name = ocr_equipment.name AND ocr_data.datetime "
+				+ "BETWEEN '"+start+"' AND '" +end+"'";
 		ArrayList<OCR> list = new ArrayList<OCR>();
 		
 		try {
@@ -77,6 +81,8 @@ public class reportDAO {
 					data.setCam(rs.getString(2));
 					data.setDataHour(rs.getString(3));
 					data.setPlaca(rs.getString(4));
+					data.setKm(rs.getString(5));
+					data.setDirection(rs.getString(6));
 					
 					list.add(data);
 				}				
@@ -89,11 +95,15 @@ public class reportDAO {
 		return list;
 
 	}
-	public OCR searchId(int id) throws Exception {
+	public OCR searchId(int id, String cam) throws Exception {
 		
 		OCR data = new OCR();
 		
-		String search = "SELECT * FROM ocr_data WHERE id_ocr_data ='"+ id +"'";
+		String search = "SELECT ocr_data.id_ocr_data, ocr_data.site_name, "
+				+ "ocr_data.datetime, ocr_data.plate, "
+				+"ocr_equipment.km, ocr_equipment.direction "
+				+"FROM ocr_data INNER JOIN ocr_equipment ON "
+				+ "ocr_data.site_name = ocr_equipment.name WHERE ocr_data.id_ocr_data ='"+id+"'";
 		DateTimeApplication dtm = new DateTimeApplication();
 		
 		try {
@@ -107,6 +117,8 @@ public class reportDAO {
 					data.setCam(rs.getString(2));
 					data.setDataHour(rs.getString(3));
 					data.setPlaca(rs.getString(4));
+					data.setKm(rs.getString(5));
+					data.setDirection(rs.getString(6));
 				}				
 			}
 		} catch (SQLException e) {

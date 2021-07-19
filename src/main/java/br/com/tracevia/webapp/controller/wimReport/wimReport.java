@@ -596,11 +596,11 @@ public class wimReport {
 			Paragraph pTitulo = new Paragraph(new Phrase(20F,trad.wimLabels("WIM REPORT"), FontFactory.getFont(FontFactory.HELVETICA, 17F)));
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
-			tl.setSimpleColumn(400,820,200,50);
+			tl.setSimpleColumn(400,780,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
-			document.add(new Paragraph("\n"));
+			document.add(new Paragraph("\n\n\n\n"));
 			document.add(new Paragraph(trad.wimLabels("INFORMATION1")+"\n\n"));
 			document.add(new Paragraph(trad.wimLabels("N SERIAL")+": "+data.getSeqN()
 			+"              "+trad.wimLabels("DATAHOUR")+": "+ data.getDatetime()+"               "
@@ -623,23 +623,23 @@ public class wimReport {
 			File img2 = new File(vehiclesFolder+data.getImagePlate());
 			if(img1.exists()) {
 				Image imgX = Image.getInstance(vehiclesFolder+data.getImage());
-				imgX.setAbsolutePosition(100, 280);
+				imgX.setAbsolutePosition(100, 230);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
 			}else {
 				Image imgX = Image.getInstance(noImageFolder+"no-image.jpg");
-				imgX.setAbsolutePosition(100, 280);
+				imgX.setAbsolutePosition(100, 230);
 				imgX.scaleAbsolute (200, 150);
 				document.add(imgX);
 			}
 			if(img2.exists()) {
 				Image imgY = Image.getInstance(vehiclesFolder+data.getImagePlate());
-				imgY.setAbsolutePosition(300, 280);
+				imgY.setAbsolutePosition(300, 230);
 				imgY.scaleAbsolute (200, 150);
 				document.add(imgY);
 			}else {
 				Image imgY = Image.getInstance(noImageFolder+"no-image.jpg");
-				imgY.setAbsolutePosition(300, 280);
+				imgY.setAbsolutePosition(300, 230);
 				imgY.scaleAbsolute (200, 150);
 				document.add(imgY);
 			}
