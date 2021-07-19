@@ -342,3 +342,111 @@ main > div:first-child {
 }
 
 /* PMV END */
+
+/* PLAQUES */
+
+.plaque {
+  position: absolute;
+  transform: translateX(-50%) scale(0.2);
+  transform-origin: 50% 0%;
+}
+
+.km5 {
+  left: 50px;
+  top: 630px;
+}
+
+.km10 {
+  left: 100px;
+  top: 660px;
+}
+
+.km15 {
+  left: 147px;
+  top: 670px;
+}
+
+.km20 {
+  left: 183px;
+  top: 670px;
+}
+
+.km25 {
+  left: 206px;
+  top: 670px;
+}
+
+.km30 {
+  left: 257px;
+  top: 615px;
+}
+
+.km35 {
+  left: 338px;
+  top: 610px;
+}
+
+.km40 {
+  left: 400px;
+  top: 585px;
+}
+
+.km45 {
+  left: 430px;
+  top: 610px;
+}
+
+.km50 {
+  left: 460px;
+  top: 630px;
+}
+
+.km55 {
+  left: 578px;
+  top: 627px;
+}
+
+.km60 {
+  left: 641px;
+  top: 570px;
+}
+
+.km65 {
+  left: 685px;
+  top: 560px;
+}
+
+.km70 {
+  left: 720px;
+  top: 542px;
+}
+
+.km75 {
+  left: 770px;
+  top: 520px;
+}
+
+.km80 {
+  left: 805px;
+  top: 500px;
+}
+
+.km85 {
+  left: 838px;
+  top: 465px;
+}
+
+.km90 {
+  left: 892px;
+  top: 460px;
+}
+
+.km95 {
+  left: 937px;
+  top: 410px;
+}
+
+.km100 {
+  left: 973px;
+  top: 412px;
+}
