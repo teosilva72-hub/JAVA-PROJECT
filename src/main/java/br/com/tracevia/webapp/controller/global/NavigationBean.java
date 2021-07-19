@@ -50,13 +50,6 @@ public class NavigationBean {
 		return navigation_page;
 	}
 
-	public String redirectToUserRealTime() {
-
-		navigation_page = "/realtime/user_realtime.xhtml?faces-redirect=true";		
-
-		return navigation_page;
-	}
-
 	/* USER INTERFACE */
 
 	//DMS
@@ -274,13 +267,6 @@ public class NavigationBean {
 	public String redirectToMap() {
 
 		navigation_page = "/map/map.xhtml?faces-redirect=true";		
-
-		return navigation_page;
-	}
-
-	public String redirectToUserMap() {
-
-		navigation_page = "/map/user_map.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 	}

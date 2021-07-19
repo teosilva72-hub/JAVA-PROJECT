@@ -31,8 +31,12 @@ const init = () => {
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
-		initPMV();
-		initSOS()
+		
+		if(window.initPMV)
+		  initPMV();
+
+		if(window.initSOS)
+		  initSOS();
 	})
 }
 
