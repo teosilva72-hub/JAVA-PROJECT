@@ -326,7 +326,7 @@
 			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
 				<div>
 					<c:forEach items="#{roadView.plaque}" var="plaque">
-						<div class="plaque km#{plaque.km}">
+						<div class="plaque" posX="#{plaque.map_posX}" posY="#{plaque.map_posY}">
 							<img width="75" src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 						</div>
 					</c:forEach>

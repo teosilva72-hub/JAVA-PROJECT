@@ -111,13 +111,6 @@ $(function () {
 	$("#frame2").attr("src", url)
 	$("#frame3").attr("src", url)
 
-	$('.plaque').each(function () {
-		let plaque = $(this)
-
-		plaque.attr('posX', plaque.css('left').replace("px", ""))
-		plaque.attr('posY', plaque.css('top').replace("px", ""))
-	})
-
 	$('#fulldiv1').on('click', function () {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
 	})
