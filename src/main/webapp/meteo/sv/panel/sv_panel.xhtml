@@ -74,6 +74,83 @@
 						
 				<div class="cardContainer">	
 		  			<!-- Inicio da primeira grid-->
+		  			
+		  				<div class="row line">
+				    	<div class="col-sm col-lg col-xl">
+				    		<!-- Inicio do card 1 -->
+				     		<div class="card presAtm">
+								<div class="card-body">
+									<h:outputLabel value="#{svLabels.sv_panel_station_atmPressure}" />
+									<h1 id="pressure">#{svPanelBean.panel.atmPressure} hPa</h1>
+								</div>
+							</div>
+							<!-- Final do card 1 -->
+				    	</div>
+				    	<div class="col-sm col-lg col-xl">
+				     		 <!-- Inicio do card 2-->
+				     		<div class="card">
+								<div class="card-body temperatura">
+									<div>
+										<h:outputLabel value="#{svLabels.sv_panel_station_temperature}" />
+										<h1>#{svPanelBean.panel.temperature}°C</h1>
+									
+									</div>
+								</div>
+							</div>
+							<!-- Final do card 2-->
+				    	</div>
+				    	<div class="col-sm col-lg col-xl">
+				      		<!-- Inicio do card 3 -->
+				     		<div class="card">
+								<div class="card-body taxaPrecip">
+									<h:outputLabel value="#{svLabels.sv_panel_station_absolute_preciptation}" />
+									<h1>#{svPanelBean.panel.absolute_preciptation} L/m2</h1>
+								</div>
+							</div>
+							<!-- Final do card 3 -->
+				    	</div>
+				  	</div>
+				  	<!-- Final da primeira grid -->
+				  	<!-- Inicio da segunda grid-->
+					<div class="row line">
+				    	<div class="col-sm col-lg col-xl">
+				     		 <!-- Inicio do card 4 -->
+				     		<div class="card">
+								<div class="card-body umidade">
+									<h:outputLabel value="#{svLabels.sv_panel_station_relative_humidity}" />
+									<h1>#{svPanelBean.panel.relative_humidity}%</h1>
+								</div>
+							</div>
+							<!-- Final do card 4 -->
+				    	</div>
+				    	<div class="col-sm col-lg col-xl">
+				     		 <!-- Inicio do card 5 -->
+				     		<div class="card bussolaMaxHei py-1">
+								<div class="card-body textBuss bussola">
+									<h:outputLabel value="#{svLabels.sv_panel_station_wind_direction}" />								
+										<div class="direction-wind">
+											<h:graphicImage class="ponteiro" url="/resources/images/estacao/setaBussola.png" 
+											 style="transform: rotate(#{svPanelBean.panel.wind_speed}deg);"/>
+										</div>
+									
+								</div>
+							</div>
+							<!-- Final do card 5 -->
+				    	</div>
+				    	<div class="col-sm col-lg col-xl">
+				      		<!-- Inicio do card 6 -->
+				     		<div class="card">
+								<div class="card-body velocVento">
+									<div class="">
+										<h:outputLabel value="#{svLabels.sv_panel_station_wind_speed}" />
+										<h1>#{svPanelBean.panel.wind_speed} km/h</h1>
+									</div>									
+								</div>
+							</div>
+							<!-- Final do card 6 -->
+				    	</div>
+				  	</div>
+		  			
 					<div class="row line">
 				      		 <!-- Inicio do card 2-->
 				     		<div class="card card-temp">
@@ -109,25 +186,17 @@
 			</div>
 			<!-- Final da estrutura do conteudo --> 
 
-				 <!-- ********************************************************************************************************************* -->
+		 <!-- ********************************************************************************************************************* -->
 								 	 
 		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		 	
 			<input type="hidden" name="requiredEquipmentMsg" value="#{requiredMessages.required_sv_reports_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
-		
+		    <input type="hidden" name="panelStatus" value="#{svPanelBean.panel.status}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
+		    
 		</form> <!----> 	 	
-							
-	 <!-- CHANGE STATUSSS -->
-		
-	<script type='text/javascript'>
-			
-		checkMtoStatus();	
-						
-   </script>
 				
-	 <!-- CHANGE STATUSSS -->
 	 
 	 </ui:define>	
 </ui:composition>	

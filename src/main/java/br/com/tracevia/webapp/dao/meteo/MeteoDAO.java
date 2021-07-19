@@ -112,10 +112,16 @@ public class MeteoDAO {
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {						
 			
-					panel.setAmbient_temperature(rs.getDouble(1));					
-					panel.setStatus(rs.getInt(2));
-					panel.setBattery(rs.getInt(3));
-					panel.setLine_volts(rs.getInt(4));
+					panel.setAtmPressure(rs.getDouble(1));
+					panel.setRelative_humidity(rs.getInt(2));
+					panel.setAbsolute_preciptation(rs.getDouble(3));				
+					panel.setWind_speed(rs.getDouble(4));
+					panel.setWind_direction(rs.getDouble(5));  
+					panel.setTemperature(rs.getDouble(6));
+					panel.setAmbient_temperature(rs.getDouble(7));					
+					panel.setStatus(rs.getInt(8));
+					panel.setBattery(rs.getInt(9));
+					panel.setLine_volts(rs.getInt(10));
 				
 				}
 				
@@ -129,8 +135,5 @@ public class MeteoDAO {
 		return panel;
 		
 	}
-	
-	
-	
-	
+		
 }

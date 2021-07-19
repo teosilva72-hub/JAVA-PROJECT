@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.model.meteo.sv;
 
+import br.com.tracevia.webapp.model.meteo.mto.MtoReports.Builder;
+
 public class SvReports {
 	
 	 //Builder Pattern
@@ -10,8 +12,14 @@ public class SvReports {
 		private String dateTime;
 		private String status;
 		private int dayOfTheMonth;
-     	private double ambient_temperature;			
-		private int visibility;
+	    private double atmPressure;
+		private int relative_humidity;
+		private double temperature;
+		private double road_temperature;
+		private double wind_direction;
+		private double wind_speed;
+		private double absolute_precipitation;	
+     	private double ambient_temperature;		
 		private int line_volts;
 		private int battery;
 		
@@ -39,18 +47,48 @@ public class SvReports {
 		public Builder dayOfMonth(int day) {
 			this.dayOfTheMonth = day;			
 			return this;			
-		}									
-						
+		}	
+		
+		public Builder atmPressure(double atmPressure) {
+			this.atmPressure = atmPressure;			
+			return this;			
+		}
+		
+		public Builder relative_humidity(int relative_humidity) {
+			this.relative_humidity = relative_humidity;			
+			return this;			
+		}
+		
+		public Builder temperature(double temperature) {
+			this.temperature = temperature;			
+			return this;			
+		}
+		
+		public Builder roadTemperature(double road_temperature) {
+			this.road_temperature = road_temperature;			
+			return this;			
+		}
+		
+		public Builder windDir(double wind_direction) {
+			this.wind_direction = wind_direction;			
+			return this;			
+		}
+		
+		public Builder windSpeed(double wind_speed) {
+			this.wind_speed = wind_speed;			
+			return this;			
+		}
+		
+		public Builder absolutePreciptation(double absolute_precipitation) {
+			this.absolute_precipitation = absolute_precipitation;			
+			return this;			
+		}							
+								
 		public Builder EnvTemperature(double temperature) {
 			this.ambient_temperature = temperature;			
 			return this;			
 		}
 								
-		public Builder visibility(int visibility) {
-			this.visibility = visibility;			
-			return this;			
-		}
-		
 		public Builder lineVolts(int line_volts) {
 			this.line_volts = line_volts;			
 			return this;			
@@ -60,8 +98,7 @@ public class SvReports {
 			this.battery = battery;			
 			return this;			
 		}
-		
-		
+				
 		//GETTERS
 
 		public String getMonth() {
@@ -83,13 +120,37 @@ public class SvReports {
 		public int getDayOfTheMonth() {
 			return dayOfTheMonth;
 		}
-	
-		public double getAmbient_temperature() {
-			return ambient_temperature;
+		
+		public double getAtmPressure() {
+			return atmPressure;
 		}
 
-		public int getVisibility() {
-			return visibility;
+		public int getRelative_humidity() {
+			return relative_humidity;
+		}
+
+		public double getTemperature() {
+			return temperature;
+		}
+					
+		public double getRoad_temperature() {
+			return road_temperature;
+		}
+
+		public double getWind_direction() {
+			return wind_direction;
+		}
+
+		public double getWind_speed() {
+			return wind_speed;
+		}
+
+		public double getAbsolute_precipitation() {
+			return absolute_precipitation;
+		}		
+			
+		public double getAmbient_temperature() {
+			return ambient_temperature;
 		}
 
 		public int getLine_volts() {

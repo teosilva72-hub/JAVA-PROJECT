@@ -105,18 +105,16 @@ body
 
 .nav-link:hover .icon-sub,
 .nav-link.active .icon-sub,
-.nav-link:hover .icon-sub-2,
-.nav-link.active .icon-sub-2,
 .nav-link:hover .icon-sub-item,
 .nav-link.active .icon-sub-item,
 .nav-link:hover .icon-sub-item-2,
 .nav-link.active .icon-sub-item-2,
 .nav-link:hover .text-sub,
 .nav-link.active .text-sub,
-.nav-link:hover .text-sub-2,
-.nav-link.active .text-sub-2,
 .nav-link:hover .text-sub-item,
-.nav-link.active .text-sub-item
+.nav-link.active .text-sub-item,
+.nav-link:hover .text-sub-item-2,
+.nav-link.active .text-sub-item-2
 {
 	 color: #ec6271 !important;
 }

@@ -317,16 +317,20 @@ public void CreateFields(String type) {
 	   if(type.equals("1")) {
 		   
 		    // Table fields
-			field = new String[] {localeLabel.getStringKey("sv_reports_year_month"),
-					    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+			field = new String[] {localeLabel.getStringKey("sv_reports_year_month"), localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
+					localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
+				    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
+					localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
 								 
 			// Table Objects
-			fieldObjectValues = new String[] { "month", "ambient_temperature"};
+			fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+					"absolute_precipitation", "ambient_temperature"};
 			
 			//JSON chart fields
-			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
-					
+			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"), localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
+						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
+					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
 			
 			 //JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sv_reports_chart_title_year");	
@@ -337,17 +341,24 @@ public void CreateFields(String type) {
 	   if(type.equals("2")) {
 		   
 		      // Table fields
-		      field = new String[] {localeLabel.getStringKey("sv_reports_general_day_month"),
-				    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+		      field = new String[] {localeLabel.getStringKey("sv_reports_general_day_month"),localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
+						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
+					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+									 
 					
 		     // Table Objects
-		     fieldObjectValues = new String[] { "dayOfTheMonth", "ambient_temperature"};
+		     fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+						"absolute_precipitation", "ambient_temperature"};
 		     
 		     //JSON chart fields
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
-					
-			 
+					    localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
+						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
+					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+									 
+								 
 		     //JSON chart title and subtitle
 			 chartTitle = localeLabel.getStringKey("sv_reports_chart_title_month");			
 			 imageName = localeLabel.getStringKey("sv_reports_chart_file_name_month");
@@ -358,14 +369,22 @@ public void CreateFields(String type) {
 			   
 		   // Table fields
 		   field = new String[] {localeLabel.getStringKey("sv_reports_general_date"), localeLabel.getStringKey("sv_reports_general_interval"), 
-				    localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
-								
+				   localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)", localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", 
+				   localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)", localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", 
+				   localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)", localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", 
+				   localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+								 								
 		    // Table Objects
-			fieldObjectValues = new String[] { "date", "dateTime", "ambient_temperature"}; 
+			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
+					"absolute_precipitation", "ambient_temperature"};
 			
 			 //JSON chart fields
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"),
-					   localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+					    localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
+						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
+					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+									 
 							 			
 			 //JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sv_reports_chart_title_period");	
@@ -392,7 +411,7 @@ public void CreateFields(String type) {
 	        ExternalContext externalContext = facesContext.getExternalContext();
 	    
 		    QueriesReportsModels models = new QueriesReportsModels();
-		    MeteoQueriesModels mtoModels = new MeteoQueriesModels();	    
+		    MeteoQueriesModels svModels = new MeteoQueriesModels();	    
 		    DateTimeApplication dta = new DateTimeApplication();
 		    
 			GlobalReportsDAO dao = new GlobalReportsDAO();	
@@ -493,7 +512,7 @@ public void CreateFields(String type) {
 			jsonArray = new String[getNumRegisters()][jsonFields.length];	
 			
 			//Select specific query by type
-			query = SelectQueryType(type, models, mtoModels); 
+			query = SelectQueryType(type, models, svModels); 
 																			
 			//System.out.println(query); //debug
 
@@ -894,15 +913,15 @@ if(type.equals("3")) {
     * @return
    * @throws Exception 
     */
-   public String SelectQueryType(String type, QueriesReportsModels models, MeteoQueriesModels mtoModels) throws Exception {   
+   public String SelectQueryType(String type, QueriesReportsModels models, MeteoQueriesModels svModels) throws Exception {   
   	
 	    String query = null;
 		
 	     switch(type) {
 	     
-	     case "1": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "2": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
-	     case "3": query = BuildMainQuery(models, mtoModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "1": query = BuildMainQuery(models, svModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "2": query = BuildMainQuery(models, svModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
+	     case "3": query = BuildMainQuery(models, svModels.SvMainQuery(svReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_DATETIME_STATION); break;
 	     case "4": ; break;	   
 	     default: query = null; break;
 	       	    	     
@@ -968,7 +987,7 @@ if(type.equals("3")) {
  	     	     	  
  	  int[] col;
  	 
- 	  String equip = "", road = "", km = "", lanes = "", city = "", mtoType = "SV";
+ 	  String equip = "", road = "", km = "", lanes = "", city = "", svType = "SV";
  	  
  	  
  	 if(type.equals("1")) {
@@ -995,7 +1014,7 @@ if(type.equals("3")) {
 		  model.StandardBorders();
 		      		      		    		    		    		  
 		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, svType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
@@ -1025,7 +1044,7 @@ if(type.equals("3")) {
  		  model.StandardBorders();
  		      		      		    		    		    		  
  		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
- 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
+ 				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, svType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
  				  col, colStartDate, colEndDate, resultQuery);
  		  
  	    }
@@ -1052,7 +1071,7 @@ if(type.equals("3")) {
 		  model.StandardBorders();
 		      		      		    		    		    		  
 		  model.StandardExcelModelWithoutTotalMTO(field, numRegisters, periodRange, daysCount, svReport.getPeriod(), dta.currentTime(), type, module,  				  
-				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, mtoType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
+				  RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, svType, svReport.getStartDate(), svReport.getEndDate(), countMergeHeader, 
 				  col, colStartDate, colEndDate, resultQuery);
 		  
 	    }
