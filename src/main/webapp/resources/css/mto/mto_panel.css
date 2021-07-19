@@ -240,7 +240,8 @@ body{
 }
 
 .card-temp, .car-vis .card-ene{
-   width: 46%;	
+   width: 46%;
+   margin-left: 1%;	
 }
 
 .card-vis{
