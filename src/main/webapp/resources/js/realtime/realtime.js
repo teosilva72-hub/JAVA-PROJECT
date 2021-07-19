@@ -64,8 +64,6 @@ const init = () => {
 
 		if(window.initSOS)
 		  initSOS();
-
-		statusColors();
 	})
 }
 
@@ -376,7 +374,7 @@ function resizeEquipScale(container) {
 
 		max += width;
 
-		equip.css('transform', `translate(-50%, -60px) scale(${scale})`).attr('scale', scale)
+		equip.css('transform', `translate(-50%, -70%) scale(${scale})`).attr('scale', scale)
 	})
 
 	scale = ((max / equips.length) / plaque.width()) * (Number($('#bar-size').val()) || 1);
@@ -393,7 +391,7 @@ function resizeEquip(container) {
 		let equip = $(this)
 		scaleA = equip.attr('scale')
 
-		equip.css('transform', `translate(-50%, -60px) scale(${scaleA * scale}`)
+		equip.css('transform', `translate(-50%, -70%) scale(${scaleA * scale}`)
 	})
 
 	scaleA = plaque.attr('scale');
@@ -952,37 +950,6 @@ $(function () {
 $('#km').mask('000+000'); 	// KM MASK	
 $('#kmEdit').mask('000+000'); 	// KM MASK				
 });
-
-function statusColors() {
-	$('#colas2').find('.equip-status').css('background-color', 'red');
-	$('#colas3').find('.equip-status').css('background-color', 'orange');
-	$('#colas5').find('.equip-status').css('background-color', 'orange');
-
-	$('#cftv3').find('.equip-status').css('background-color', 'orange');
-	$('#cftv6').find('.equip-status').css('background-color', 'orange');
-	$('#cftv10').find('.equip-status').css('background-color', 'red');
-
-	$('#dai1').find('.equip-status').css('background-color', 'red');
-	$('#dai5').find('.equip-status').css('background-color', 'orange');
-	$('#dai6').find('.equip-status').css('background-color', 'orange');
-	$('#dai9').find('.equip-status').css('background-color', 'red');
-
-	$('#lpr4').find('.equip-status').css('background-color', 'red');
-	$('#lpr7').find('.equip-status').css('background-color', 'red');
-	$('#lpr10').find('.equip-status').css('background-color', 'orange');
-
-	$('#wim4').find('.equip-status').css('background-color', 'orange');
-
-	$('#speed5').find('.equip-status').css('background-color', 'orange');
-	$('#speed6').find('.equip-status').css('background-color', 'orange');
-
-	// $('#dms1 .tableStyle').addClass('on');
-	// $('#dms3 .tableStyle').addClass('on');
-	// $('#dms4 .tableStyle').addClass('on');
-	// $('#dms5 .tableStyle').addClass('on');
-	// $('#dms6 .tableStyle').addClass('on');
-
-}
 
 /* show hidden buttons */
 

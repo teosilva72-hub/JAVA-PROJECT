@@ -28,10 +28,8 @@ public class ControleDeAcesso implements Filter {
 		HttpSession session = request.getSession();
 		boolean master = false;
 		int userRole = 0; 
-		String restrictedPath = "/users/"; //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
-		String restrictedMap = "/map/map.xhtml"; //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
-		String restrictedRealtime = "/realtime/realtime.xhtml";  //Não Restrito a ROLE_SUPER_USER and ROLE_ADMIN
-				
+		String restrictedPath = "/users/"; //Nï¿½o Restrito a ROLE_SUPER_USER and ROLE_ADMIN
+	
 		loginAccount = new LoginAccountBean();
 				
 		String loginURI = request.getContextPath() + "/login.xhtml";
@@ -66,18 +64,18 @@ public class ControleDeAcesso implements Filter {
 	  if(loggedIn || loginRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
 				|| resourceRequestImages || resourceRequestJs) {	
 			
-				if((path.contains(restrictedPath) || path.contains(restrictedMap) || path.contains(restrictedRealtime)) && !master)
+				if(path.contains(restrictedPath) && !master)
 				response.sendRedirect(restrictedURI);
 					
 			else chain.doFilter(request, response);	
 				
-	   //Acesso a página de  redefinição de senha
+	   //Acesso a pï¿½gina de  redefiniï¿½ï¿½o de senha
 	 } else if(resetRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
 				|| resourceRequestImages || resourceRequestJs) 
 		 
 			chain.doFilter(request, response);	
 	  
-	  //Acesso a página de confirmação do envio para redefinição de senha
+	  //Acesso a pï¿½gina de confirmaï¿½ï¿½o do envio para redefiniï¿½ï¿½o de senha
 	 else if(resetConfirmationRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
 				|| resourceRequestImages || resourceRequestJs) 
 		 

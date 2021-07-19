@@ -181,5 +181,4 @@ async function initPMV() {
 
 window.changeStatus = changeStatus;
 window.consumeDMS = consumeDMS;
-window.collectPMV = collectPMV;
 window.initPMV = initPMV;

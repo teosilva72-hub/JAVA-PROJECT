@@ -1706,11 +1706,11 @@ public class OccurrencesBean {
 			//add titulo
 			ColumnText tl = new ColumnText(writer.getDirectContent());
 			Paragraph tx = new Paragraph();
-			tl.setSimpleColumn(400,820,200,50);
+			tl.setSimpleColumn(400,780,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
-			document.add(new Paragraph("\n"));
+			document.add(new Paragraph("\n\n\n\n"));
 
 
 			Rectangle rowPage = new Rectangle(577, 40, 10, 790); //linha da pagina 
@@ -1787,7 +1787,6 @@ public class OccurrencesBean {
 					+ trad.occLabels("Observação")+": "+data.getOthers()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
-			System.out.println("TESTANDO");
 			//Detalhes
 			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
 			details.enableBorderSide(1);

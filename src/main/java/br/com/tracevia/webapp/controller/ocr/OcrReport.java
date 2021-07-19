@@ -46,6 +46,7 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 public class OcrReport{
 	LocaleUtil localeOCR;
 	private OCR data;
+	private OCR others;
 	private reportDAO dao;
 	private EquipmentsDAO equipDAO;
 	List<? extends Equipments> listOcr; 
@@ -60,6 +61,14 @@ public class OcrReport{
 	private boolean selectedRow;
 
 	
+	public OCR getOthers() {
+		return others;
+	}
+
+	public void setOthers(OCR others) {
+		this.others = others;
+	}
+
 	public String getImageVeh() {
 		try {
 
@@ -343,11 +352,9 @@ public class OcrReport{
 
 			dao = new reportDAO();
 			data = new OCR();
-
-			data = dao.searchId(rowkey);
-
+			System.out.println(camera);
+			data = dao.searchId(rowkey, camera);
 			String dt = data.getDataHour();
-
 			dt = dt.replaceAll("\\.","");
 			dt = dt.replaceAll("-", "");
 			dt = dt.replaceAll(":", "");			
@@ -394,7 +401,7 @@ public class OcrReport{
 			dao = new reportDAO();
 			data = new OCR();
 
-			data = dao.searchId(getRowkey());
+			data = dao.searchId(getRowkey(), camera);
 			String dt = data.getDataHour();
 
 			dt = dt.replaceAll("\\.","");
@@ -429,7 +436,7 @@ public class OcrReport{
 				image2.scaleAbsolute (100, 30);
 				document.add(image2);
 			}
-			tl.setSimpleColumn(400,830,200,50);
+			tl.setSimpleColumn(400,780,200,50);
 			tx.add(pTitulo);
 			tl.addElement(tx);
 			tl.go();
@@ -439,11 +446,13 @@ public class OcrReport{
 			rowPage.setBorderWidth(2);
 			rowPage.setBorder(Rectangle.BOX);
 			document.add(rowPage);
-			document.add(new Paragraph("\n\n"));
+			document.add(new Paragraph("\n\n\n\n"));
 			PdfPTable table1 = new PdfPTable(2);
 			PdfPTable table2 = new PdfPTable(2);
 			PdfPTable table3 = new PdfPTable(2);
 			PdfPTable table4 = new PdfPTable(2);
+			PdfPTable table5 = new PdfPTable(2);
+			PdfPTable table6 = new PdfPTable(2);
 			
 			table1.addCell(localeOCR.getStringKey("ocr_number_label"));
 			table1.addCell(data.getId());
@@ -453,17 +462,23 @@ public class OcrReport{
 			table3.addCell(data.getCam());
 			table4.addCell(localeOCR.getStringKey("ocr_placa_label"));
 			table4.addCell(data.getPlaca());
+			table5.addCell(localeOCR.getStringKey("km"));
+			table5.addCell(data.getKm());
+			table6.addCell(localeOCR.getStringKey("direction"));
+			table6.addCell(data.getDirection());
 			document.add(table1);
+			document.add(table4);
 			document.add(table2);
 			document.add(table3);
-			document.add(table4);
+			document.add(table6);
+			document.add(table5);
 			Image imgX = Image.getInstance(imageVeh);
-			imgX.setAbsolutePosition(60, 500);
-			imgX.scaleAbsolute (200, 150);
+			imgX.setAbsolutePosition(60, 480);
+			imgX.scaleAbsolute (220, 150);
 			
 			Image imgY = Image.getInstance(imagePlt);
-			imgY.setAbsolutePosition(300, 500);
-			imgY.scaleAbsolute (200, 150);
+			imgY.setAbsolutePosition(300, 480);
+			imgY.scaleAbsolute (220, 150);
 			//passando a imagem
 			document.add(imgX);
 			document.add(imgY);

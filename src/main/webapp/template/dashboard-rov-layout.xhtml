@@ -715,14 +715,14 @@
    
     <ui:fragment rendered="#{loginAccount.load.en_sos}">
  
-    <script type="text/javascript" src="/phone/scripts/moment.js/moment.min.js"></script>    
-    <script type="text/javascript" src="/phone/scripts/SIP.js/sip.min.js"></script>
-    <script type="text/javascript" src="/phone/scripts/sos.js"></script>
-
-    <c:if test="#{userAccount.userPermision() == 8}">
-      <script type="text/javascript" src="/phone/scripts/config.js"></script>
-      <script type="text/javascript" src="/phone/scripts/app.js"></script>
-    </c:if>
+      <script type="text/javascript" src="/phone/scripts/sos.js"></script>
+      
+      <c:if test="#{userAccount.userPermision() == 8}">
+        <script type="text/javascript" src="/phone/scripts/moment.js/moment.min.js"></script>    
+        <script type="text/javascript" src="/phone/scripts/SIP.js/sip.min.js"></script>
+        <script type="text/javascript" src="/phone/scripts/config.js"></script>
+        <script type="text/javascript" src="/phone/scripts/app.js"></script>
+      </c:if>
 
     </ui:fragment>
 

@@ -10,12 +10,14 @@ public class OCR extends Equipments {
 	private String placa;
 	private String plateImage;
 	private String vehicleImage;
+	private String km;
+	private String direction;
 			
 	public OCR(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
 			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
-			boolean visible, String id, String dataHour, String cam, String placa, String plateImage,
+			boolean visible, String id, String dataHour, String cam, String placa, String plateImage, String direction,
 			String vehicleImage) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
@@ -28,6 +30,8 @@ public class OCR extends Equipments {
 		this.placa = placa;
 		this.plateImage = plateImage;
 		this.vehicleImage = vehicleImage;
+		this.km = km;
+		this.direction = direction;
 	}
 
 	public OCR() {
@@ -75,6 +79,22 @@ public class OCR extends Equipments {
 
 	public void setVehicleImage(String vehicleImage) {
 		this.vehicleImage = vehicleImage;
+	}
+
+	public String getKm() {
+		return km;
+	}
+
+	public void setKm(String km) {
+		this.km = km;
+	}
+
+	public String getDirection() {
+		return direction;
+	}
+
+	public void setDirection(String direction) {
+		this.direction = direction;
 	}
 		
 }

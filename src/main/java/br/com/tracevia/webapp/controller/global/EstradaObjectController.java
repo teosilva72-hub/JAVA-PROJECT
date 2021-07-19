@@ -1,16 +1,21 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
+import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.Estrada;
 
 @ManagedBean(name="roadView")
 @ViewScoped
 public class EstradaObjectController {
+	
+	public List<Plaque> plaque;
 	
 	private Estrada road_01;
 	private Estrada road_02;
@@ -98,8 +103,15 @@ public class EstradaObjectController {
 	@PostConstruct
 	public void initialize() {
 		
-		/* Instância de Estradas sem valores aparentes.
-		Dependendo da concessão o número de objetos Estradas pode variar.
+		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
+		try {
+			plaque = roadDAO.getPlaque();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		/* Instï¿½ncia de Estradas sem valores aparentes.
+		Dependendo da concessï¿½o o nï¿½mero de objetos Estradas pode variar.
 		Valores podem ser atribuidos posteriormente */
 		
 		road_01 = new Estrada();
@@ -113,7 +125,7 @@ public class EstradaObjectController {
 		road_09 = new Estrada();
 		road_10 = new Estrada();
 		
-		//Habilitar visualização no Real Time
+		//Habilitar visualizaï¿½ï¿½o no Real Time
 		
 		en_road01 = false;
 		en_road02 = false;
@@ -129,6 +141,11 @@ public class EstradaObjectController {
 		buildHighwaySystem(RoadConcessionaire.roadConcessionaire);
 		
 	}
+	
+	public List<Plaque> getPlaque() {
+		return plaque;
+	}
+	public EstradaObjectController() {}
 	
 	
 	public void buildCardelPozaRica() {
@@ -172,5 +189,55 @@ public class EstradaObjectController {
 		// road_05 = new Estrada("Cardel05", 0, 50, 750, 70, "CPR005", "vertical", concessionaire);				
 		// road_06 = new Estrada("Cardel06", 0, 50, 750, 70, "CPR006", "vertical", concessionaire);				
 				
+	}
+
+	public class Plaque {
+		int km;
+		int map_posX;
+		int map_posY;
+		int linear_posX;
+		int linear_posY;
+
+		public Plaque() {}
+
+		public int getKm() {
+			return this.km;
+		}
+
+		public void setKm(int km) {
+			this.km = km;
+		}
+
+		public int getMap_posX() {
+			return this.map_posX;
+		}
+
+		public void setMap_posX(int map_posX) {
+			this.map_posX = map_posX;
+		}
+
+		public int getMap_posY() {
+			return this.map_posY;
+		}
+
+		public void setMap_posY(int map_posY) {
+			this.map_posY = map_posY;
+		}
+
+		public int getLinear_posX() {
+			return this.linear_posX;
+		}
+
+		public void setLinear_posX(int linear_posX) {
+			this.linear_posX = linear_posX;
+		}
+
+		public int getLinear_posY() {
+			return this.linear_posY;
+		}
+
+		public void setLinear_posY(int linear_posY) {
+			this.linear_posY = linear_posY;
+		}
 	}
 }
