@@ -23,7 +23,9 @@
 
 	</ui:define>
 
-	<ui:param name="permission" value="#{userAccount.userPermision() == 1 || userAccount.userPermision() == 6 }" />
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
 	<ui:define name="main-content">
 		
@@ -33,7 +35,7 @@
 		
 		<div class="messages">
 
-			<c:if test="#{permission}">
+			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				<div class="alert alert-success" role="alert" style="display: none;" id="realsave">
 					<p class="textAlert">#{mapLabels.map_alert_success}.</p>
@@ -105,7 +107,7 @@
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
-				<c:if test="#{permission}">
+				<c:if test="#{ SuperAdmin }">
 
 					<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
 						onclick="defaultAdd()"
@@ -116,7 +118,7 @@
 
 			</div>
 
-			<c:if test="#{permission}">
+			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				 <!--  ******************************************************************************************************* -->
 				
@@ -186,7 +188,7 @@
 	
 	<ui:define name="modal-content"> <!-- MODAL CONTENT UI -->
 		
-		<c:if test="#{permission}">
+		<c:if test="#{ SuperAdmin }">
 
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* CREATE **************************************** -->
@@ -581,6 +583,9 @@
 			<!-- ************************************* CREATE **************************************** -->
 			<!-- ************************************************************************************* -->
 			
+		</c:if>
+		
+		<c:if test="#{ SuperAdmin || VideoWall }">
 			
 			<!-- ************************************************************************************* -->
 			<!-- ************************************ OPTIONS **************************************** -->
@@ -637,17 +642,22 @@
 										</h:commandButton> <!---->
 									</div> <!---->
 
-									<div class="form-group col-md-4 text-center"> <!-- FORM GROUP DELETE BUTTON -->
-																									
-										<!-- DELETE BUTTON -->								
-										<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}" 
-											action="#{equipsBean.runDel}" onclick="sendToBean(); $('#OPmodal').modal('hide');"
-											class="btn btn-dark form-modal-draw-button">
-											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target" value="#deletemodal" />
-											<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
-										</h:commandButton> <!---->
-									</div> <!---->
+									<c:if test="#{ SuperAdmin }">
+
+										<div class="form-group col-md-4 text-center"> <!-- FORM GROUP DELETE BUTTON -->
+																										
+											<!-- DELETE BUTTON -->								
+											<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}" 
+												action="#{equipsBean.runDel}" onclick="sendToBean(); $('#OPmodal').modal('hide');"
+												class="btn btn-dark form-modal-draw-button">
+												<f:passThroughAttribute name="data-toggle" value="modal" />
+												<f:passThroughAttribute name="data-target" value="#deletemodal" />
+												<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
+											</h:commandButton> <!---->
+										</div> <!---->
+
+									</c:if>
+
 								</div> <!---->
 							</h:form> <!---->						
 						</div> <!---->
@@ -1063,6 +1073,10 @@
 			<!-- ************************************* EDITION *************************************** -->
 			<!-- ************************************************************************************* -->
 			
+		</c:if>
+		
+		<c:if test="#{ SuperAdmin }">
+
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* DELETE **************************************** -->
 			<!-- ************************************************************************************* -->
@@ -1131,7 +1145,7 @@
 		<h:outputScript name="dmsAnimation.js?version=#{notificationsView.timestamp}" p:type="module" library="js/dms" />
 		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
 			
-		<c:if test="#{permission}">
+		<c:if test="#{ SuperAdmin }">
 
 			<!-- Mudança -->
 
