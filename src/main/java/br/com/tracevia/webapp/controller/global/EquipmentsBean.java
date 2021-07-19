@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -44,6 +44,17 @@ public class EquipmentsBean implements Serializable {
 	private String equipTable, equipDel;
 	private int positionX, positionY;
 	private boolean checked;	
+	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
+	
+	public LoginAccountBean getLogin() {
+		return login;
+	}
+
+	public void setLogin(LoginAccountBean login) {
+		this.login = login;
+	}
 					
 	public List<SelectItem> getCities() {
 		return cities;
@@ -489,7 +500,7 @@ public class EquipmentsBean implements Serializable {
 		  
 		 if(moduleId == 8) {
 		 
-		 dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView);
+		 dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
@@ -504,7 +515,7 @@ public class EquipmentsBean implements Serializable {
 		 
 	     } else if(moduleId == 9) {
 			 
-			 sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView);
+			 sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 			 
 			 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 			 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
@@ -544,7 +555,7 @@ public class EquipmentsBean implements Serializable {
 		 
 	     else {		
 			 		 
-		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView); 
+		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 		 		 
 		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
 		 
@@ -672,7 +683,7 @@ public class EquipmentsBean implements Serializable {
 			    //DMS TYPE
 			    defineDMStype(dms, type);
 		 						   			 
-			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView);
+			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView, login.getLogin().getPermission_id());
 				
 			    if(update) {
 					request.execute("alert('#equip-update');");
@@ -735,7 +746,7 @@ public class EquipmentsBean implements Serializable {
 	  	    defineDirection(sat, 7, parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")));
 	  	    defineDirection(sat, 8, parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
 	  	    
-	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView);
+	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView, login.getLogin().getPermission_id());
 			
 			if(update) {
 				request.execute("alert('#equip-update');");
@@ -781,7 +792,7 @@ public class EquipmentsBean implements Serializable {
 			    else equip.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 			    
 			    //MENSAGEM UPDATED
-			    update = dao.EquipUpdateMap(equip, table, interfaceView);
+			    update = dao.EquipUpdateMap(equip, table, interfaceView, login.getLogin().getPermission_id());
 
 			    if(update) {
 					request.execute("alert('#equip-update');");
@@ -862,7 +873,7 @@ public class EquipmentsBean implements Serializable {
 			 
 		 EquipmentsDAO dao = new EquipmentsDAO();		
 		 		
-		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView);
+		 position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView, login.getLogin().getPermission_id());
 		 		
 	}
 	

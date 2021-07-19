@@ -3,10 +3,8 @@ package br.com.tracevia.webapp.controller.global;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Locale;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -19,16 +17,15 @@ import br.com.tracevia.webapp.dao.global.LoginAccountDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.EmailModels;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.InMemoryAuthentication;
 import br.com.tracevia.webapp.model.global.LoadStartupModules;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.EncryptPasswordUtil;
 import br.com.tracevia.webapp.util.GeneratePasswordUtil;
 import br.com.tracevia.webapp.util.InMemoryAuthenticationUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
 
 @ManagedBean(name = "loginAccount")
 @SessionScoped
@@ -175,8 +172,7 @@ public class LoginAccountBean {
 		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();
 		InMemoryAuthenticationUtil memoryUtil = new InMemoryAuthenticationUtil();
 		EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
-		MessagesUtil message = new MessagesUtil();
-
+			
 		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();
 		FacesContext context = FacesContext.getCurrentInstance();
 
@@ -247,6 +243,8 @@ public class LoginAccountBean {
 							context.getExternalContext().getSessionMap().put("nivel", login.getPermission_id());
 							context.getExternalContext().getSessionMap().put("concessionaria",
 									RoadConcessionaire.roadConcessionaire);
+							
+							System.out.println(login.getPermission_id());
 													
 							load.startupComponents(); // Inicializar Componentes
 						
@@ -357,8 +355,7 @@ public class LoginAccountBean {
 		boolean response = false;
 
 		GeneratePasswordUtil generate = new GeneratePasswordUtil();
-		EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
-		MessagesUtil message = new MessagesUtil();
+		EncryptPasswordUtil encrypt = new EncryptPasswordUtil();	
 		EmailUtil mail = new EmailUtil();
 		EmailModels changeMail = new EmailModels();
 
