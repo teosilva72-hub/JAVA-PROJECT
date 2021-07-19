@@ -59,12 +59,12 @@ var url      = '/phone/phone.html',
 //NOTIFICATIONS BADGE
 function notificationBadge(){
 
-  /*var badge = Number( document.getElementById('badge-notif').innerHTML);
+  var badge = Number( document.getElementById('badge-notif').innerHTML);
     
   if(badge > 0)
   document.getElementById('badge-notif').style.display = 'block';
 
-  else document.getElementById('badge-notif').style.display = 'none';*/
+  else document.getElementById('badge-notif').style.display = 'none';
   
 }
 
