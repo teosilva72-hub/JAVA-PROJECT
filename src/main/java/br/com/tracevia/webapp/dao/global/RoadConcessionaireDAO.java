@@ -10,6 +10,8 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.cfg.servers.Servers;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.controller.global.EstradaObjectController;
+import br.com.tracevia.webapp.controller.global.EstradaObjectController.Plaque;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class RoadConcessionaireDAO {
@@ -168,6 +170,49 @@ public class RoadConcessionaireDAO {
 		}
 
 		return modules;
+
+	}
+
+	public List<Plaque> getPlaque() throws Exception {
+
+		ArrayList<Plaque> all_plaque = new ArrayList<>();
+
+		String query = null;
+
+		try {
+
+			query = "SELECT km, map_pos_x, map_pos_y, linear_pos_x, linear_pos_y FROM plaque_km";
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+
+					Plaque plaque = new EstradaObjectController().new Plaque();
+					plaque.setKm(rs.getInt(1));
+					plaque.setMap_posX(rs.getInt(2));
+					plaque.setMap_posY(rs.getInt(3));
+					plaque.setLinear_posX(rs.getInt(4));
+					plaque.setLinear_posY(rs.getInt(5));
+
+					all_plaque.add(plaque);
+				}
+			}
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
+		}
+
+		return all_plaque;
 
 	}
 
