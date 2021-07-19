@@ -1,4 +1,4 @@
-$(function () {
+$(async function () {
   $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
     $('.overlay').addClass('active');
@@ -26,7 +26,16 @@ $(function () {
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
 
   $("#sipClient.calls-client .sipStatus").click(showCallbox)
+
+  while (rabbitmq == undefined || asterisk == undefined) {
+    await new Promise(r => setTimeout(r, 100))
+  }
   
+  let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
+  let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
+
+  TestCert(url_rabbitmq);
+  TestCert(url_asterisk);
 });
 
 var alertToast = msg => {
@@ -143,6 +152,16 @@ const credEvent = data => {
 
 getCred('rabbitmq'); // Rabbit init
 getCred('asterisk'); // Rabbit init
+
+const TestCert = async uri => {
+  let request = new WebSocket(`wss://${uri}`);
+  while (request.readyState == 0) {
+    await new Promise(r => setTimeout(r, 100))
+  }
+  if ( request.readyState > 1 ) {
+    window.open(`https://${uri}`);
+  }
+}
 
 //NOTIFICATIONS  BADGE
 
