@@ -1,20 +1,26 @@
 package br.com.tracevia.webapp.controller.sat;
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
 
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.LocaleUtil;
+
 @ManagedBean(name="maintenanceSatView")
 @ViewScoped
+
 public class SatMaintenanceController{
+	
 private int hora, idEquip;
 private String[] hours;
 private String name, city, road, km, totalLane,
@@ -23,6 +29,18 @@ sense7, sense8;
 EquipmentsDAO dao = new EquipmentsDAO();
 private List<SAT> sat;
 LocaleUtil locale;	
+
+@ManagedProperty("#{loginAccount}")
+private LoginAccountBean login;
+
+public LoginAccountBean getLogin() {
+	return login;
+}
+
+public void setLogin(LoginAccountBean login) {
+	this.login = login;
+}
+
 public EquipmentsDAO getDao() {
 	return dao;
 }
@@ -145,7 +163,7 @@ public void setHours(String[] hours) {
 
 	public void infoEquip() throws Exception{
 		sat = new ArrayList<SAT>();
-		sat =  dao.buildSatEquipmentsInterface();
+		sat =  dao.buildSatEquipmentsInterface(login.getLogin().getPermission_id());
 			   SAT not = new SAT();
 			   sat.add(not);
 			   System.out.println(not.getNome()+" < aqui");		   				 

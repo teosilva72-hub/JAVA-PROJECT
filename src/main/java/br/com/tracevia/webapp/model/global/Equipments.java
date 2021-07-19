@@ -320,31 +320,31 @@ public class Equipments {
 
 
 	//BUILD GENERIC EQUIPMENTS
-	public List<Equipments> listEquipments(String modulo) throws Exception {
+	public List<Equipments> listEquipments(String modulo, int permission) throws Exception {
 
 		List<Equipments> lista = new ArrayList<Equipments>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			
-		lista.addAll(dao.buildEquipmentsInterface(modulo));	
+		lista.addAll(dao.buildEquipmentsInterface(modulo, permission));	
 
 		return lista;
 	}
 
 	//BUILD SAT EQUIPMENTS
-	public List<? extends Equipments> listSatEquipments() throws Exception {
+	public List<? extends Equipments> listSatEquipments(int permission) throws Exception {
 
 		List<SAT> lista = new ArrayList<SAT>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			
-		lista.addAll(dao.buildSatEquipmentsInterface());						
+		lista.addAll(dao.buildSatEquipmentsInterface(permission));						
 
 		return lista;
 	}
 		
 	//BUILD DMS EQUIPMENTS
-    public List<? extends Equipments> listDMSEquipments() throws Exception {
+    public List<? extends Equipments> listDMSEquipments(int permission) throws Exception {
 
 		List<DMS> lista = new ArrayList<DMS>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			
-		lista.addAll(dao.buildDMSEquipmentsInterface());						
+		lista.addAll(dao.buildDMSEquipmentsInterface(permission));						
 
 		return lista;
 	}

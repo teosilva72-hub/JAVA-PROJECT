@@ -81,23 +81,38 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public ArrayList<Equipments> buildEquipmentsInterface(String modulo) throws Exception {
+	public ArrayList<Equipments> buildEquipmentsInterface(String modulo, int permission) throws Exception {
 
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();
+		
+		String query = "";
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
 				"linear_posX, linear_posY, map_width, map_posX, map_posY FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
-
+		
+		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY FROM "+modulo+"_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+				
 		try {
+			
+			if(permission != 9)
+				query = sql;
+				
+				else query = sqlVW;
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
+			
+			System.out.println(query);
+			
+			ps = conn.prepareStatement(query);					
 			rs = ps.executeQuery();
-
+									
 			if (rs != null) {
 
 				while (rs.next()) {
@@ -143,13 +158,15 @@ public class EquipmentsDAO {
 	 * 
 	 */
 
-	public ArrayList<SAT> buildSatEquipmentsInterface() throws Exception {
+	public ArrayList<SAT> buildSatEquipmentsInterface(int permission) throws Exception {
 
 		ArrayList<SAT> lista = new ArrayList<SAT>();
 		TranslationMethods translator = new TranslationMethods();
 
 		String dir1 = " ", dir2 = " ", dir3 = " ", dir4 = " ", dir5 = " ", dir6 = " ", dir7= " ", dir8 = " ";
 		String sentido1 = "", sentido2 = "";
+		
+		String query = "";
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
@@ -157,12 +174,26 @@ public class EquipmentsDAO {
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
+		
+		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
+				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, " +
+				"service_position FROM sat_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+		
+		
 
 		try {
+			
+			if(permission != 9)
+				query = sql;
+				
+				else query = sqlVW;
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			ps = conn.prepareStatement(sql);
+			ps = conn.prepareStatement(query);									
 			rs = ps.executeQuery();
 
 			if (rs != null) {
@@ -243,9 +274,11 @@ public class EquipmentsDAO {
 	 * 
 	 */
 
-	public ArrayList<DMS> buildDMSEquipmentsInterface() throws Exception {
+	public ArrayList<DMS> buildDMSEquipmentsInterface(int permission) throws Exception {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
+		
+		String query = "";
 
 		String sql = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
 				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active "
@@ -255,12 +288,26 @@ public class EquipmentsDAO {
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
 				+ "ORDER BY eq.equip_id ASC"; 
+		
+		String sqlVW = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active "
+				+ "FROM pmv_equipment eq " 
+				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
+				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
+				+ "WHERE visible = 1 "
+				+ "ORDER BY eq.equip_id ASC"; 
 
 		try {
+			
+			if(permission != 9)
+				query = sql;
+				
+				else query = sqlVW;
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
+		
+			ps = conn.prepareStatement(query);				
 			rs = ps.executeQuery();
 
 			if (rs != null) {
@@ -682,7 +729,6 @@ public class EquipmentsDAO {
 
 					lista.add(eq);
 				}
-
 			}
 
 		} catch (SQLException e) {
@@ -1199,24 +1245,45 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public boolean EquipUpdateMap(Equipments equip, String table, String updateView) throws Exception {    
+	public boolean EquipUpdateMap(Equipments equip, String table, String updateView, int permission) throws Exception {    
 
 		boolean updated = false;
 
-		try { //GET SLQException           
-
-			if(table.equals("cftv")) {  //CFTV      	  
+		try { //GET SLQException     
+			
+			if(table.equals("cftv")) {  //CFTV 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String queryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWqueryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+
+				String VWqueryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				if(permission != 9) {
+					
+					queryLinear = queryCftvLinear;
+					queryMap = queryCftvMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCftvLinear;
+					queryMap = VWqueryCftvMap;		
+					
+				}				
 
 				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryCftvLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryCftvMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1236,17 +1303,39 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("colas")) { // COLAS 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String queryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+
+				String VWqueryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+                if(permission != 9) {
+					
+					queryLinear = queryColasLinear;
+					queryMap = queryColasMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryColasLinear;
+					queryMap = VWqueryColasMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryColasLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryColasMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1266,17 +1355,39 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("comms")) { // COMMS 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String queryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWqueryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+
+				String VWqueryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = queryCOMMSLinear;
+					queryMap = queryCOMMSMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCOMMSLinear;
+					queryMap = VWqueryCOMMSMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryCOMMSLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryCOMMSMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1296,17 +1407,39 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("dai")) { // DAI
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
 
 				String queryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWqueryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ?";
+
+				String VWqueryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ?";
+								
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = queryDAILinear;
+					queryMap = queryDAIMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryDAILinear;
+					queryMap = VWqueryDAIMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryDAILinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryDAIMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1327,17 +1460,40 @@ public class EquipmentsDAO {
 
 
 			if(table.equals("ocr")) { // OCR
+				
+				String queryLinear = "";
+				String queryMap = "";
 
-				String queryLPRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+				String queryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
 
-				String queryLPRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
+				String queryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWqueryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ?";
+
+				String VWqueryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ?";
+
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = queryOCRLinear;
+					queryMap = queryOCRMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryOCRLinear;
+					queryMap = VWqueryOCRMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryLPRLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryLPRMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1357,19 +1513,40 @@ public class EquipmentsDAO {
 
 			// --------------------------------------------------------------------------------------------------------------
 
-
 			if(table.equals("mto")) { // MTO 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryMTOLinear = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String queryMTOMap = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWqueryMTOLinear = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
 
+				String VWqueryMTOMap = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+								
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = queryMTOLinear;
+					queryMap = queryMTOMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryMTOLinear;
+					queryMap = VWqueryMTOMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryMTOLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryMTOMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1389,17 +1566,40 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sos")) { // SOS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySOSLinear = "UPDATE sos_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String querySOSMap = "UPDATE sos_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+								
+				String VWquerySOSLinear = "UPDATE sos_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+
+				String VWquerySOSMap = "UPDATE sos_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = querySOSLinear;
+					queryMap = querySOSMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySOSLinear;
+					queryMap = VWquerySOSMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(querySOSLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(querySOSMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1418,18 +1618,40 @@ public class EquipmentsDAO {
 
 			// --------------------------------------------------------------------------------------------------------------
 
+			//VIDEO WALL SWITCH
 			if(table.equals("speed")) { // SPEED
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
 
+				String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+                if(permission != 9) {
+					
+					queryLinear = querySpeedLinear;
+					queryMap = querySpeedMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySpeedLinear;
+					queryMap = VWquerySpeedMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(querySpeedLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(querySpeedMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1449,17 +1671,39 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sv")) { // SV 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySVLinear = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String querySVMap = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWquerySVLinear = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
 
+				String VWquerySVMap = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = querySVLinear;
+					queryMap = querySVMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySVLinear;
+					queryMap = VWquerySVMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(querySVLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(querySVMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1479,17 +1723,39 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("wim")) { // WIM
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
 
 				String queryWIMMap= "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+							
+				String VWqueryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
 
+				String VWqueryWIMMap = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+                if(permission != 9) {
+					
+					queryLinear = queryWIMLinear;
+					queryMap = queryWIMMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryWIMLinear;
+					queryMap = VWqueryWIMMap;		
+					
+				}				
 
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryWIMLinear);
+            	if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryWIMMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setString(1,  equip.getNome());
 				ps.setString(2,  equip.getEquip_ip());
@@ -1532,9 +1798,12 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public boolean EquipSATUpdateMap(SAT sat, String table, String updateView) throws Exception {    
+	public boolean EquipSATUpdateMap(SAT sat, String table, String updateView, int permission) throws Exception {    
 
 		boolean updated = false;
+		
+		String queryLinear = "";
+		String queryMap = "";
 
 		String querySATLinear = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, number_lanes = ?, " 
 				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
@@ -1543,15 +1812,38 @@ public class EquipmentsDAO {
 		String querySATMap = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
 				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
 				+ " WHERE equip_id = ? ";
+		
+		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String VWquerySATLinear = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, number_lanes = ?, " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ " WHERE equip_id = ? ";
+
+		String VWquerySATMap = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, number_lanes = ?, " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ " WHERE equip_id = ? ";
 
 		try {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			//VIDEO WALL SWITCH
+            if(permission != 9) {
+				
+				queryLinear = querySATLinear;
+				queryMap = querySATMap;			
+				
+			}else { 
+				
+				queryLinear = VWquerySATLinear;
+				queryMap = VWquerySATMap;		
+				
+			}				
 
 			if(updateView.equals("linear"))
-				ps = conn.prepareStatement(querySATLinear);
+				ps = conn.prepareStatement(queryLinear);
 
-			else ps = conn.prepareStatement(querySATMap);
+			else ps = conn.prepareStatement(queryMap);
 
 			ps.setString(1, sat.getNome()); 
 			ps.setString(2, sat.getEquip_ip());
@@ -1605,9 +1897,12 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public boolean EquipDMSUpdateMap(DMS dms, String table, String updateView) throws Exception {    
+	public boolean EquipDMSUpdateMap(DMS dms, String table, String updateView, int permission) throws Exception {    
 
 		boolean updated = false;
+		
+		String queryLinear = "";
+		String queryMap = "";
 
 		String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ? " 
 				+ " WHERE equip_id = ? ";
@@ -1615,14 +1910,35 @@ public class EquipmentsDAO {
 		String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
 				+ " WHERE equip_id = ? ";
 
+		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String VWqueryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_linear_width = ? " 
+				+ " WHERE equip_id = ? ";
+
+		String VWqueryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_map_width = ? " 
+				+ " WHERE equip_id = ? ";
+				
 		try {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			//VIDEO WALL SWITCH
+            if(permission != 9) {
+				
+				queryLinear = queryDMSLinear;
+				queryMap = queryDMSMap;			
+				
+			}else { 
+				
+				queryLinear = VWqueryDMSLinear;
+				queryMap = VWqueryDMSMap;		
+				
+			}			
 
 			if(updateView.equals("linear"))
-				ps = conn.prepareStatement(queryDMSLinear);
+				ps = conn.prepareStatement(queryLinear);
 
-			else ps = conn.prepareStatement(queryDMSMap);
+			else ps = conn.prepareStatement(queryMap);
 
 			ps.setString(1, dms.getDms_ip());
 			ps.setInt(2, dms.getDms_type());
@@ -1666,11 +1982,14 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public Equipments EquipSearchMap(int id, String table, String interfacesView) throws Exception {    
+	public Equipments EquipSearchMap(int id, String table, String interfacesView, int permission) throws Exception {    
 
 		try {
 
 			if(table.equals("cftv")) { // CFTV 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				CFTV cftv = new CFTV();
 
@@ -1678,12 +1997,31 @@ public class EquipmentsDAO {
 
 				String queryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM cftv_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM cftv_equipment WHERE equip_id = ? ";
+
+				String VWqueryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM cftv_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+								
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryCftvLinear;
+					queryMap = queryCftvMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCftvLinear;
+					queryMap = VWqueryCftvMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryCftvLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryCftvMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1709,19 +2047,41 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("colas")) { // COLAS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				Colas colas = new Colas();
 
 				String queryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM colas_equipment WHERE equip_id = ? ";
 
 				String queryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM colas_equipment WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM colas_equipment WHERE equip_id = ? ";
 
+				String VWqueryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM colas_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryColasLinear;
+					queryMap = queryColasMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryColasLinear;
+					queryMap = VWqueryColasMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryColasLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else   ps = conn.prepareStatement(queryColasMap);
+				else   ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1747,6 +2107,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("comms")) { // COMMS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				COMMS comms = new COMMS();
 
@@ -1754,12 +2117,31 @@ public class EquipmentsDAO {
 
 				String queryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM comms_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM comms_equipment WHERE equip_id = ? ";
+
+				String VWqueryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM comms_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryCOMMSLinear;
+					queryMap = queryCOMMSMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCOMMSLinear;
+					queryMap = VWqueryCOMMSMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryCOMMSLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else  ps = conn.prepareStatement(queryCOMMSMap);
+				else  ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1785,6 +2167,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("dai")) { // DAI
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				DAI dai = new DAI();
 
@@ -1792,12 +2177,31 @@ public class EquipmentsDAO {
 
 				String queryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM dai_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM dai_equipment WHERE equip_id = ? ";
+
+				String VWqueryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM dai_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryDAILinear;
+					queryMap = queryDAIMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryDAILinear;
+					queryMap = VWqueryDAIMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryDAILinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryDAIMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1823,19 +2227,41 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("ocr")) { // OCR
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				OCR ocr = new OCR();
 
-				String queryLPRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM ocr_equipment WHERE equip_id = ? ";
+				String queryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM ocr_equipment WHERE equip_id = ? ";
 
-				String queryLPRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM ocr_equipment WHERE equip_id = ? ";
+				String queryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM ocr_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM ocr_equipment WHERE equip_id = ? ";
+
+				String VWqueryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM ocr_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryOCRLinear;
+					queryMap = queryOCRMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryOCRLinear;
+					queryMap = VWqueryOCRMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLPRLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryLPRMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1861,6 +2287,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("mto")) { // MTO
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				MTO mto = new MTO();
 
@@ -1868,12 +2297,31 @@ public class EquipmentsDAO {
 
 				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, vw_linear_width FROM mto_equipment WHERE equip_id = ? ";
+
+				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, vw_map_width FROM mto_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryMTOLinear;
+					queryMap = queryMTOMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryMTOLinear;
+					queryMap = VWqueryMTOMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryMTOLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryMTOMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1900,6 +2348,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sos")) { // SOS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				SOS sos = new SOS();
 
@@ -1907,12 +2358,32 @@ public class EquipmentsDAO {
 
 				String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM sos_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWquerySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM sos_equipment WHERE equip_id = ? ";
+
+				String VWquerySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM sos_equipment WHERE equip_id = ? ";
+
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = querySOSLinear;
+					queryMap = querySOSMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySOSLinear;
+					queryMap = VWquerySOSMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(querySOSLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySOSMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1938,6 +2409,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("speed")) { // SPEED
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				Speed speed = new Speed();
 
@@ -1945,12 +2419,32 @@ public class EquipmentsDAO {
 
 				String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM speed_equipment WHERE equip_id = ? ";
+
+				String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM speed_equipment WHERE equip_id = ? ";
+
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = querySpeedLinear;
+					queryMap = querySpeedMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySpeedLinear;
+					queryMap = VWquerySpeedMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(querySpeedLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySpeedMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -1976,6 +2470,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sv")) { // SV
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				SV sv = new SV();
 
@@ -1983,12 +2480,31 @@ public class EquipmentsDAO {
 
 				String querySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM sv_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWquerySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM sv_equipment WHERE equip_id = ? ";
+
+				String VWquerySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM sv_equipment WHERE equip_id = ? ";
+
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = querySVLinear;
+					queryMap = querySVMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySVLinear;
+					queryMap = VWquerySVMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(querySVLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySVMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -2013,6 +2529,9 @@ public class EquipmentsDAO {
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("wim")) { // WIM
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				WIM wim = new WIM();
 
@@ -2020,12 +2539,31 @@ public class EquipmentsDAO {
 
 				String queryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM wim_equipment WHERE equip_id = ? ";
 
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+				
+				String VWqueryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM wim_equipment WHERE equip_id = ? ";
+
+				String VWqueryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM wim_equipment WHERE equip_id = ? ";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = queryWIMLinear;
+					queryMap = queryWIMMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryWIMLinear;
+					queryMap = VWqueryWIMMap;		
+					
+				}			
 
 				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryWIMLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryWIMMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  id);
 				rs = ps.executeQuery();
@@ -2076,7 +2614,11 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public SAT EquipSatSearchMap(int id, String table, String interfaceView) throws Exception { 
+	public SAT EquipSatSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
+		
+		String queryLinear = "";
+		String queryMap = "";
+
 
 		SAT sat = new SAT();
 
@@ -2087,14 +2629,36 @@ public class EquipmentsDAO {
 		String querySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, map_width, number_lanes, " 
 				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
 				+ " FROM sat_equipment WHERE equip_id = ? ";
+		
+		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String VWquerySATLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, number_lanes, " 
+				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
+				+ " FROM sat_equipment WHERE equip_id = ? ";
 
-
+		String VWquerySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, vw_map_width, number_lanes, " 
+				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
+				+ " FROM sat_equipment WHERE equip_id = ? ";
+		
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		
+		//VIDEO WALL SWITCH
+        if(permission != 9) {
+			
+			queryLinear = querySATLinear;
+			queryMap = querySATMap;			
+			
+		}else { 
+			
+			queryLinear = VWquerySATLinear;
+			queryMap = VWquerySATMap;		
+			
+		}			
 
 		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(querySATLinear);
+			ps = conn.prepareStatement(queryLinear);
 
-		else  ps = conn.prepareStatement(querySATMap);
+		else  ps = conn.prepareStatement(queryMap);
 
 		ps.setInt(1,  id);
 		rs = ps.executeQuery();
@@ -2141,20 +2705,42 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public DMS EquipDMSSearchMap(int id, String table, String interfaceView) throws Exception { 
+	public DMS EquipDMSSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
+		
+		String queryLinear = "";
+		String queryMap = "";
 
 		DMS dms = new DMS();
 
 		String queryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, linear_width, driver FROM pmv_equipment WHERE equip_id = ? ";
 
-		String queryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	  	
+		String queryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	
+		
+		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String VWqueryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_linear_width, driver FROM pmv_equipment WHERE equip_id = ? ";
 
+		String VWqueryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	
+				
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		
+		//VIDEO WALL SWITCH
+        if(permission != 9) {
+			
+			queryLinear = queryDMSLinear;
+			queryMap = queryDMSMap;			
+			
+		}else { 
+			
+			queryLinear = VWqueryDMSLinear;
+			queryMap = VWqueryDMSMap;		
+			
+		}			
 
 		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(queryDMSLinear);
+			ps = conn.prepareStatement(queryLinear);
 
-		else  ps = conn.prepareStatement(queryDMSMap);
+		else  ps = conn.prepareStatement(queryMap);
 
 		ps.setInt(1,  id);
 		rs = ps.executeQuery();
@@ -2737,24 +3323,47 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public boolean EquipPositionMap(int id, String table, int posX, int posY, String positionView) throws Exception {    
+	public boolean EquipPositionMap(int id, String table, int posX, int posY, String positionView, int permission) throws Exception {    
 
 		boolean positioned = false;
 
 		try {
 
 			if(table.equals("cftv")) { // CFTV
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryCftvLinear = "UPDATE cftv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ? ";
 
 				String queryCftvMap = "UPDATE cftv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ? ";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryCftvLinear = "UPDATE cftv_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ? ";
+
+				String VWqueryCftvMap = "UPDATE cftv_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ? ";
+				
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryCftvLinear;
+					queryMap = queryCftvMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCftvLinear;
+					queryMap = VWqueryCftvMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryCftvLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryCftvMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2769,17 +3378,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("colas")) { // COLAS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryColasLinear = "UPDATE colas_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryColasMap = "UPDATE colas_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryColasLinear = "UPDATE colas_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryColasMap = "UPDATE colas_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+							
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryColasLinear;
+					queryMap = queryColasMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryColasLinear;
+					queryMap = VWqueryColasMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryColasLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryColasMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2794,17 +3425,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("comms")) { // COMMS 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryCOMMSLinear = "UPDATE comms_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryCOMMSMap = "UPDATE comms_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryCOMMSLinear = "UPDATE comms_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryCOMMSMap = "UPDATE comms_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+								
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryCOMMSLinear;
+					queryMap = queryCOMMSMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryCOMMSLinear;
+					queryMap = VWqueryCOMMSMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryCOMMSLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryCOMMSMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2819,17 +3472,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("dai")) { // DAI
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryDAILinear = "UPDATE dai_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryDAIMap = "UPDATE dai_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryDAILinear = "UPDATE dai_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryDAIMap = "UPDATE dai_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+								
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryDAILinear;
+					queryMap = queryDAIMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryDAILinear;
+					queryMap = VWqueryDAIMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryDAILinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryDAIMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2844,17 +3519,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("ocr")) { // OCR
+				
+				String queryLinear = "";
+				String queryMap = "";
 
-				String queryLPRLinear = "UPDATE ocr_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
+				String queryOCRLinear = "UPDATE ocr_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
-				String queryLPRMap = "UPDATE ocr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				String queryOCRMap = "UPDATE ocr_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+
+				String VWqueryOCRLinear = "UPDATE ocr_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryOCRMap = "UPDATE ocr_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryOCRLinear;
+					queryMap = queryOCRMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryOCRLinear;
+					queryMap = VWqueryOCRMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryLPRLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryLPRMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2869,17 +3566,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("mto")) { // MTO 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryMTOLinear = "UPDATE mto_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryMTOMap = "UPDATE mto_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryMTOLinear = "UPDATE mto_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryMTOMap = "UPDATE mto_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryMTOLinear;
+					queryMap = queryMTOMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryMTOLinear;
+					queryMap = VWqueryMTOMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryMTOLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryMTOMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2895,17 +3614,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("dms")) { // PMV
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryDMSLinear = "UPDATE pmv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryDMSMap = "UPDATE pmv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryDMSLinear = "UPDATE pmv_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryDMSMap = "UPDATE pmv_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryDMSLinear;
+					queryMap = queryDMSMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryDMSLinear;
+					queryMap = VWqueryDMSMap;		
+					
+				}	
 
 				if(positionView.equals("linear")) 
-					ps = conn.prepareStatement(queryDMSLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryDMSMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2920,18 +3661,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sat")) { // SAT
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySATLinear = "UPDATE sat_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String querySATMap = "UPDATE sat_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWquerySATLinear = "UPDATE sat_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWquerySATMap = "UPDATE sat_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = querySATLinear;
+					queryMap = querySATMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySATLinear;
+					queryMap = VWquerySATMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(querySATLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySATMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2946,17 +3708,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sos")) { // SOS
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySOSLinear = "UPDATE sos_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String querySOSMap = "UPDATE sos_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWquerySOSLinear = "UPDATE sos_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWquerySOSMap = "UPDATE sos_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+								
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = querySOSLinear;
+					queryMap = querySOSMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySOSLinear;
+					queryMap = VWquerySOSMap;		
+					
+				}	
 
 				if(positionView.equals("linear")) 
-					ps = conn.prepareStatement(querySOSLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySOSMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2971,17 +3755,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("speed")) { // SPEED Definitions
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySpeedLinear = "UPDATE speed_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String querySpeedMap = "UPDATE speed_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWquerySpeedLinear = "UPDATE speed_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWquerySpeedMap = "UPDATE speed_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = querySpeedLinear;
+					queryMap = querySpeedMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySpeedLinear;
+					queryMap = VWquerySpeedMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(querySpeedLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySpeedMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -2996,17 +3802,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sv")) { // SV Definitions
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String querySVLinear = "UPDATE sv_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String querySVMap = "UPDATE sv_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWquerySVLinear = "UPDATE sv_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWquerySVMap = "UPDATE sv_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = querySVLinear;
+					queryMap = querySVMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySVLinear;
+					queryMap = VWquerySVMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(querySVLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(querySVMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
@@ -3022,17 +3850,39 @@ public class EquipmentsDAO {
 			//--------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("wim")) { // WIM 
+				
+				String queryLinear = "";
+				String queryMap = "";
 
 				String queryWIMLinear = "UPDATE wim_equipment SET linear_posX = ?, linear_posY = ? WHERE equip_id = ?";
 
 				String queryWIMMap = "UPDATE wim_equipment SET map_posX = ?, map_posY = ? WHERE equip_id = ?";
+				
+				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
+				String VWqueryWIMLinear = "UPDATE wim_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
+
+				String VWqueryWIMMap = "UPDATE wim_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+		        if(permission != 9) {
+					
+					queryLinear = queryWIMLinear;
+					queryMap = queryWIMMap;			
+					
+				}else { 
+					
+					queryLinear = VWqueryWIMLinear;
+					queryMap = VWqueryWIMMap;		
+					
+				}	
 
 				if(positionView.equals("linear"))
-					ps = conn.prepareStatement(queryWIMLinear);
+					ps = conn.prepareStatement(queryLinear);
 
-				else ps = conn.prepareStatement(queryWIMMap);
+				else ps = conn.prepareStatement(queryMap);
 
 				ps.setInt(1,  posX);
 				ps.setInt(2,  posY);
