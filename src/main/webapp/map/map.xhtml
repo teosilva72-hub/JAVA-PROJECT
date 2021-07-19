@@ -950,46 +950,33 @@
 						</div>
 						<!---->
 
-						<!-- ***** IP ADDRESS ***** -->
-
-						<!--  ******************************************************************************************************* -->
-					
-						<!-- ***** EQUIPMENT NAME ***** -->
-							                            							  
-							  <div class="form-row"> <!-- ROW --> 
-								<div class="form-group col-md-12 input-field">	 <!-- SELECT --> 								
-										<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->	
-										<span for="equipNameEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->									
-											<input type="text" autocomplete="off" name="equipNameEdit" id="equipNameEdit" 	
-											placeholder="#{mapLabels.map_creation_input_name}" /> <!-- INPUT -->																				
-								   </div>  <!----> 								
-										<div class="error-label"> 
-											<label for="equipNameEdit" class="error" id="equipNameEdit-error"></label>
-									   </div>  <!----> 								
-							      </div>  <!----> 
-							  
-							<!-- ***** EQUIPMENT NAME ***** -->
-							
-							 <!--  ******************************************************************************************************* -->
-
-							<!-- ***** CITY ***** -->
-							<div class="form-row"> <!-- ROW --> 
-								<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
-										<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->	
-										<span for="citiesEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->										
-											<select name="citiesEdit" id="citiesEdit" size="1">
-											<option value="">#{mapLabels.map_creation_select_city}</option>
-											<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
-												<option value="#{city.value}">#{city.label}</option>
-											</ui:repeat>
-										</select> <!-- SELECT --> 									
-								   </div>  <!----> 								
-										<div class="error-label"> 
-											<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
-									   </div>  <!----> 								
-							      </div>  <!----> 
-							
-								<!-- ***** CITY ***** -->
+					<div class="modal-body" id="bodyeqp">
+							<!-- MODAL BODY -->
+												  
+							<!--  ******************************************************************************************************* -->
+	
+							<!-- ***** EQUIPMENTS OPTIONS ***** -->
+	
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-6 select-field">
+									<!-- SELECT DIV -->
+									<span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON --> <span for="equips-edit"
+										class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
+	
+									<input type="hidden" value="map" id="interface" name="interface" />
+	
+									<select name="equips-edit" id="equips-edit" size="1" disabled="true">
+										<option value="">#{mapLabels.map_creation_select_mto_type}</option>
+										<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select> <!-- SELECT -->
+								</div>
+								<!---->
+	
+								<!-- EQUIPMENTS OPTIONS -->
+				
 								
 							   <!--  ******************************************************************************************************* -->
 							
