@@ -25,6 +25,7 @@ public class LocaleUtil {
 	public static final String LABELS_WIM = "bundle.labels.wim.labels_wim_";	
 	public static final String LABELS_OCR = "bundle.labels.ocr.labels_ocr_";
 	public static final String LABELS_DAI = "bundle.labels.dai.labels_dai_";
+	public static final String LABELS_ABA = "bundle.labels.aba.labels_dai_";
 
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";

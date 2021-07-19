@@ -11,7 +11,7 @@
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	<ui:define name="head">
-		<title>#{ocrLabels.ocr_report_title}</title>
+		<title>#{abaLabels.ocr_report}</title>
 		<h:outputStylesheet library="css/datatables/custom"
 			name="table-style.css" />
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
@@ -55,6 +55,14 @@
 							<h:column>
 								<f:facet name="header">#{ocrLabels.ocr_report_plate_label}</f:facet>
 								<h:outputText value="#{data.placa}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.km}</f:facet>
+								<h:outputText value="#{data.km}" style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{ocrLabels.direction}</f:facet>
+								<h:outputText value="#{data.direction}" style="font-size: 12px; " />
 							</h:column>
 						</h:dataTable>
 						<div class="c-loader"></div>
@@ -103,6 +111,8 @@
 		</div>
 		<h:form prependId="false" id="ID">
 			<h:inputText value="#{OcrReport.rowkey}" id="event"
+				style="display:none;" />
+				<h:inputText value="#{OcrReport.camera}" id="camSet"
 				style="display:none;" />
 			<h:commandButton id="btnTable" style="display:none;">
 				<f:ajax listener="#{OcrReport.idGet}" execute="@form"

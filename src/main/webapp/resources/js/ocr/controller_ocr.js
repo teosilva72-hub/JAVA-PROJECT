@@ -17,7 +17,8 @@ function getTr(){
 	$('#ocr-table tbody').on( 'click', 'tr', function () {
    var event = $(table.row( this ).data()[0]).text();
 	document.getElementById("event").value = event
-	
+	var cam = $(table.row( this ).data()[2]).text();
+	document.getElementById("camSet").value = cam
 	if(event > 0){
 		$('[id$=btnPdf]').prop('disabled', false);
 		btnTable()
