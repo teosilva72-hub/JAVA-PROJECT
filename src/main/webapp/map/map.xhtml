@@ -25,11 +25,13 @@
 									
 	</ui:define>
 
-	<ui:param name="permission" value="#{userAccount.userPermision() == 1 || userAccount.userPermision() == 6 }" />
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
 	<ui:define name="main-content">
 
-		<c:if test="#{permission}">
+		<c:if test="#{ SuperAdmin || VideoWall }">
 
 			<!--  ******************************************************************************************************* -->
 
@@ -103,7 +105,7 @@
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 
-				<c:if test="#{permission}">
+				<c:if test="#{ SuperAdmin }">
 
 					<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
@@ -114,7 +116,7 @@
 
 			</div>
 
-			<c:if test="#{permission}">
+			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				<!--  ******************************************************************************************************* -->
 	
@@ -152,8 +154,6 @@
 			</c:if>
 	
 		</div>
-	
-		<c:if test="#{permission}">
 
 			<!-- WEB ZOOM END -->
 
@@ -229,8 +229,6 @@
 			<!--  ******************************************************************************************************* -->
 
 			<!-- DropDown Equip Size Menu END -->
-			
-		</c:if>
 
 		<!-- WEB ZOOM DIVIDE -->
 		<div class="map-full-option" style="display: none;">
@@ -328,7 +326,7 @@
 			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
 				<div>
 					<c:forEach items="#{roadView.plaque}" var="plaque">
-						<div class="plaque km#{plaque.km}">
+						<div class="plaque" posX="#{plaque.map_posX}" posY="#{plaque.map_posY}">
 							<img width="75" src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 						</div>
 					</c:forEach>
@@ -344,7 +342,7 @@
 	<!-- ************************************************************************************* -->
 
 	<ui:define name="modal-content">
-		<c:if test="#{permission}">
+		<c:if test="#{ SuperAdmin }">
 
 			<!-- MODAL CONTENT UI -->
 	
@@ -830,6 +828,10 @@
 			<!-- ************************************* CREATE **************************************** -->
 			<!-- ************************************************************************************* -->
 	
+		</c:if>
+		
+		<c:if test="#{ SuperAdmin || VideoWall }">
+
 			<!-- ************************************************************************************* -->
 			<!-- ************************************ OPTIONS **************************************** -->
 			<!-- ************************************************************************************* -->
@@ -897,21 +899,26 @@
 									</div>
 									<!---->
 	
-									<div class="form-group col-md-4 text-center">
-										<!-- FORM GROUP DELETE BUTTON -->
-	
-										<!-- DELETE BUTTON -->
-										<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}"
-											action="#{equipsBean.runDel}"
-											onclick="sendToBean(); $('#OPmodal').modal('hide');"
-											class="btn btn-dark form-modal-draw-button">
-											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target" value="#deletemodal" />
-											<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
-										</h:commandButton>
+									<c:if test="#{ SuperAdmin }">
+
+										<div class="form-group col-md-4 text-center">
+											<!-- FORM GROUP DELETE BUTTON -->
+		
+											<!-- DELETE BUTTON -->
+											<h:commandButton value="#{mapLabels.map_creation_btn_delete_equipment}"
+												action="#{equipsBean.runDel}"
+												onclick="sendToBean(); $('#OPmodal').modal('hide');"
+												class="btn btn-dark form-modal-draw-button">
+												<f:passThroughAttribute name="data-toggle" value="modal" />
+												<f:passThroughAttribute name="data-target" value="#deletemodal" />
+												<f:ajax execute="@form" render="delete-equip-form:del-equip-name" />
+											</h:commandButton>
+											<!---->
+										</div>
 										<!---->
-									</div>
-									<!---->
+
+									</c:if>
+
 								</div>
 								<!---->
 							</h:form>
@@ -928,7 +935,7 @@
 			<!-- ************************************************************************************* -->
 			<!-- ************************************ OPTIONS **************************************** -->
 			<!-- ************************************************************************************* -->
-	
+
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* EDITION *************************************** -->
 			<!-- ************************************************************************************* -->
@@ -1430,6 +1437,10 @@
 			<!-- ************************************* EDITION *************************************** -->
 			<!-- ************************************************************************************* -->
 	
+		</c:if>
+		
+		<c:if test="#{ SuperAdmin }">
+
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* DELETE **************************************** -->
 			<!-- ************************************************************************************* -->
@@ -1509,58 +1520,58 @@
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* DELETE **************************************** -->
 			<!-- ************************************************************************************* -->
-	
-			<!-- ************************************************************************************* -->
-			<!-- ************************************* SIZE ****************************************** -->
-			<!-- ************************************************************************************* -->
-	
-			<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
-				<!-- FORM GROUP EDIT BUTTON -->
-				<div id="moddialog">
-					<!-- MODAL -->
-					<div class="modal-content modal-sm">
-						<!-- MODAL CONTENT -->
-						<div class="modal-header" id="modheaderpad">
-							<!-- MODAL HEADER -->
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<!-- BUTTON DISMISS -->
-								<span aria-hidden="true">&times;</span>
-							</button>
+			
+		</c:if>
+
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* SIZE ****************************************** -->
+		<!-- ************************************************************************************* -->
+
+		<div class="modal" id="sizeeqps" tabindex="-1" aria-hidden="true">
+			<!-- FORM GROUP EDIT BUTTON -->
+			<div id="moddialog">
+				<!-- MODAL -->
+				<div class="modal-content modal-sm">
+					<!-- MODAL CONTENT -->
+					<div class="modal-header" id="modheaderpad">
+						<!-- MODAL HEADER -->
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<!-- BUTTON DISMISS -->
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<!---->
+
+					</div>
+					<!---->
+					<div class="modal-body">
+						<!-- MODAL BODY -->
+						<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+							class="imgSize" />
+					</div>
+					<!---->
+
+					<div class="modal-footer" id="modborderpad">
+						<!-- MODAL FOOTER -->
+						<form class="bar">
+							<div class="bar-ball">
+								<label for="bar-size" style="display: none;">#{mapLabels.map_size_equip_modal}</label>
+								<input type="number" id="bar-size" value="1" min="1" max="20" hidden="" />
+								<!-- INPUT MODBORDERPAD -->
+							</div>
 							<!---->
-	
-						</div>
-						<!---->
-						<div class="modal-body">
-							<!-- MODAL BODY -->
-							<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-								class="imgSize" />
-						</div>
-						<!---->
-	
-						<div class="modal-footer" id="modborderpad">
-							<!-- MODAL FOOTER -->
-							<form class="bar">
-								<div class="bar-ball">
-									<label for="bar-size" style="display: none;">#{mapLabels.map_size_equip_modal}</label>
-									<input type="number" id="bar-size" value="1" min="1" max="20" hidden="" />
-									<!-- INPUT MODBORDERPAD -->
-								</div>
-								<!---->
-							</form>
-						</div>
-						<!---->
+						</form>
 					</div>
 					<!---->
 				</div>
 				<!---->
 			</div>
 			<!---->
-	
-			<!-- ************************************************************************************* -->
-			<!-- ************************************* SIZE ****************************************** -->
-			<!-- ************************************************************************************* -->
+		</div>
+		<!---->
 
-		</c:if>
+		<!-- ************************************************************************************* -->
+		<!-- ************************************* SIZE ****************************************** -->
+		<!-- ************************************************************************************* -->
 
 	</ui:define>
 
@@ -1569,7 +1580,7 @@
 		<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
 		<h:outputScript name="map.js" library="js/map" />
 
-		<c:if test="#{permission}">
+		<c:if test="#{SuperAdmin}">
 
 			<!-- Mudança -->
 	
