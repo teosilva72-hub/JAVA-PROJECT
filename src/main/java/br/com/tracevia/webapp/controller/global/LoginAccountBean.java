@@ -201,13 +201,17 @@ public class LoginAccountBean {
 				}
 
 				else {
+					
+					//FIX					
+					login = new UserAccount();
+					login.setPermission_id(memoryAuth.getPermission_id());
 
 					context.getExternalContext().getSessionMap().put("user", memoryAuth.getUsername());
 					context.getExternalContext().getSessionMap().put("nivel", memoryAuth.getPermission_id()); // Super
 																												// User
 					context.getExternalContext().getSessionMap().put("concessionaria",
 							RoadConcessionaire.roadConcessionaire);
-				
+									
 					load.startupComponents(); // Inicializar Componentes
 								
 					// NOT IN USE
@@ -243,9 +247,7 @@ public class LoginAccountBean {
 							context.getExternalContext().getSessionMap().put("nivel", login.getPermission_id());
 							context.getExternalContext().getSessionMap().put("concessionaria",
 									RoadConcessionaire.roadConcessionaire);
-							
-							System.out.println(login.getPermission_id());
-													
+																			
 							load.startupComponents(); // Inicializar Componentes
 						
 							mapUI = RoadConcessionaire.mapUI; // Load Map

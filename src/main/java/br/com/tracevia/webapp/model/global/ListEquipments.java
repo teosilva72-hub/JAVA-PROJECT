@@ -202,10 +202,8 @@ public class ListEquipments {
 				LoadStartupModules load = login.getLoad();
 				int permission_id = actual_login.getPermission_id();
 											
-				System.out.println(permission_id);
 				    if(load.isEn_cftv())	{	
-				    	
-				    					  					
+		
 					cftvList = cftv.listEquipments("cftv", permission_id); 
 					equips.add(new listEquips("cftv", load.isEn_cftv(), cftvList, load.getVoltage_cftv()));
 					
@@ -288,9 +286,15 @@ public class ListEquipments {
 				
 					}
 					
-            }catch(IndexOutOfBoundsException ex) {}
+            }catch(IndexOutOfBoundsException ex) {
+            	
+            	ex.printStackTrace();
+            }
 		
-		}catch(Exception ex) {}	
+		}catch(Exception ex) {
+			
+			ex.printStackTrace();			
+		}	
 		
 	}
 	  
