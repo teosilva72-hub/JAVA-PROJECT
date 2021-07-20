@@ -56,3 +56,13 @@ html, body {
     transform: rotate(1turn);
   }
 }
+
+.logo-concessionaire {
+    left: 25px;
+    bottom: 50px;
+	top: unset;
+	height: 55px;
+	transform: unset;
+    opacity: .8;
+    z-index: 1;
+}

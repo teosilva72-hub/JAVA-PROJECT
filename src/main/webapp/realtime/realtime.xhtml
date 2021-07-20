@@ -826,7 +826,14 @@
 													value="Todos"
 													id="btn-form-all-equip"
 													class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
-													<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventRealtimeFunction"></f:ajax>
+													<c:choose>
+														<c:when test="#{ VideoWall }">
+															<f:ajax execute="@all" listener='#{equipsBean.setAll("vw_linear")}' onevent="onEventMapFunction"></f:ajax>
+														</c:when>
+														<c:otherwise>
+															<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventMapFunction"></f:ajax>
+														</c:otherwise>
+													</c:choose>
 												</h:commandButton>
 											</div>
 										</div>
@@ -1010,7 +1017,7 @@
 								
 								<h:commandButton
 									value="#{mapLabels.map_creation_btn_cancel_equipment}"
-									id="btn-form-reset" immediate="true" type="reset"
+									id="btn-form-reset" immediate="true" type="reset" onclick="$('#editmodal').modal('hide')"
 									class="btn btn-dark form-modal-draw-button reset-btn-edit" data-dismiss="modal">								
 								</h:commandButton>
 

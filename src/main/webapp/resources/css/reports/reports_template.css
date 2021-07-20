@@ -376,3 +376,12 @@ hr{
   text-align: center;
 }
 
+.logo-concessionaire {
+    left: 50%;
+    top: 80px;
+    bottom: unset;
+    height: 45px;
+    transform: translateX(-50%);
+    opacity: .8;
+    z-index: 1;
+}

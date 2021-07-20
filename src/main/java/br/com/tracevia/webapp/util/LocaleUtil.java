@@ -43,11 +43,12 @@ public class LocaleUtil {
 	public static final String MESSAGES_SV = "bundle.messages.meteo.sv.messages_sv_";	
 	public static final String MESSAGES_SAT = "bundle.messages.sat.messages_sat_";	
 
-			
+	
+	
 	 LanguageBean language;
 	 Locale locale;
 	 ResourceBundle resourceBundle;	 
-	 	 			 
+	 
 	 public Locale currentLocale(){
 		 
 	       language = new LanguageBean();
