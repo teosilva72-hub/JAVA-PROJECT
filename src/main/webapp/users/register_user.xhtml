@@ -123,9 +123,11 @@
 								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_user}" itemValue="7" />
 								
 								<c:if test="#{loginAccount.load.en_sos}">
-									<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />	
-						</c:if>
-																
+									<f:selectItem itemLabel="#{usersLabels.users_access_level_label_workstation}" itemValue="8" />										
+								</c:if>
+								
+								<f:selectItem itemLabel="#{usersLabels.users_access_level_label_videowall}" itemValue="9" />								
+																						
 							</h:selectOneMenu>
 						</div> <!---->
 						<div class="error-label">					

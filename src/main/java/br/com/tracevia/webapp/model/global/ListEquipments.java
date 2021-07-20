@@ -294,5 +294,9 @@ public class ListEquipments {
 		}	
 		
 	}
+	
+	
+	//Translator
+	
 	  
 }

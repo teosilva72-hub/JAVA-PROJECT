@@ -231,33 +231,8 @@
 									
 								<!-- EQUIPMENTS OPTIONS -->
 								
-								<!--  ******************************************************************************************************* -->
-								
-							<!-- ***** MTO TYPE ***** -->
-
-							<div class="form-row mtoHidden">                          
-								<div class="form-group col-md-12 select-field">
-									<!-- SELECT DIV -->
-									<span><i class="fas fa-hdd"></i></span><select name="mtoType"
-										id="mtoType" size="1">
-										<option value="">#{mapLabels.map_creation_select_mto_type}</option>
-										<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
-											<option value="#{eqp.value}">#{eqp.label}</option>
-										</ui:repeat>
-									</select> <!-- SELECT -->
-								</div><!---->
-								<div class="error-label">
-									<!-- ERROR DIV -->
-									<label for="mtoType" class="error" id="mtoType-error"></label>
-								</div>
-								<!---->
-							</div>
-							<!---->
-
-							<!-- MTO TYPE -->
-
-							<!--  ******************************************************************************************************* -->
-								
+								<!--  ******************************************************************************************************* -->								
+										
 								<!-- EQUIPMENT ID -->
 								
 								<div class="form-row"> <!-- ROW -->	
@@ -725,33 +700,8 @@
 								
 									<!-- EQUIPMENT ID -->
 									
-							<!--  ******************************************************************************************************* -->
-							
-							<!-- ***** MTO TYPE ***** -->
-
-							<div class="form-row mtoHidden-edit">                          
-								<div class="form-group col-md-12 select-field ">
-									<!-- SELECT DIV -->
-									<span><i class="fas fa-hdd"></i></span><select name="mtoType-edit"
-										id="mtoType-edit" size="1" disabled="true" >
-										<option value="">#{mapLabels.map_creation_select_type_equipments}</option>
-										<ui:repeat var="eqp" value="#{equipsBean.mtoType}" varStatus="eqpStatus">
-											<option value="#{eqp.value}">#{eqp.label}</option>
-										</ui:repeat>
-									</select> <!-- SELECT -->
-								</div><!---->
-								<div class="error-label">
-									<!-- ERROR DIV -->
-									<label for="mtoType-edit" class="error" id="mtoType-edit-error"></label>
-								</div>
-								<!---->
-							</div>
-							<!---->
-
-							<!-- MTO TYPE -->
-							
-							<!--  ******************************************************************************************************* -->
-							
+							<!--  ******************************************************************************************************* -->																
+														
 								<!-- DMS TYPE -->
 								
 								<div class="form-row dmsHidden-edit"> <!-- ROW -->	   

@@ -358,10 +358,10 @@ public class NavigationBean {
 		case 4:
 		case 5:
 		case 7:   
-		case 8: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
+		case 8:  
+		case 9: sidebar_page = "/template/sidebar/sidebar-user.xhtml" ; break;	   
 
 		}
-
 
 		return sidebar_page;
 

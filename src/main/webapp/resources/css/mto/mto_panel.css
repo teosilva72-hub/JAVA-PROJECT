@@ -237,11 +237,12 @@ body{
 	background: url('/resources/images/estacao/road_temperature.gif') 0 0 no-repeat;
 	color: white;
     background-size: cover;
+    z-index: 5;
 }
 
 .card-temp, .car-vis .card-ene{
    width: 46%;
-   margin-left: 1%;	
+   margin-left: 1%;
 }
 
 .card-vis{

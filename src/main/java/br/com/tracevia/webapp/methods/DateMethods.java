@@ -1559,14 +1559,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 						return intervaloFim;
 					}
 					
-					
-					
-					
-					
-					
-					
-					
-					
+									
 					
 					// Criar o intervalo em minutos entre as horas
 					public String[] intervaloSeparador(int tamanho) {

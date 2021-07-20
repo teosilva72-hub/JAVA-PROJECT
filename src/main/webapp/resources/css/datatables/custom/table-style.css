@@ -17,7 +17,7 @@
 }
 
 .custom-table-odd-row, .custom-table-even-row {
-	text-align:center;		
+	text-align:center;	
 }
 
 /* BootStrap Table Hover - HOVER ROW */
@@ -67,3 +67,4 @@ table.dataTable thead .sorting_desc {
 }
 	
 /*TABLE SORTING*/
+

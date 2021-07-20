@@ -125,11 +125,6 @@ public class MtoPanelController {
 			
 			type = mtoDao.MtoPanelType(station);
 					
-			if(!type.equals("RS"))
-			  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'none')");
-			
-			else  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'block')");
-					
 			panel = mtoDao.MtoPanelInformation(station);
 														
 			if(panel == null) {

@@ -93,7 +93,7 @@ public class EquipmentsDAO {
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 		
-		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
+		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
 				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
@@ -183,7 +183,6 @@ public class EquipmentsDAO {
 				"WHERE visible = 1 ";
 		
 		
-
 		try {
 			
 			if(permission != 9)
@@ -1080,12 +1079,7 @@ public class EquipmentsDAO {
 				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
 				+ "vw_map_width, vw_map_posX, vw_map_posY, visible)"
 				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-		// MTO TABLE INSERT QUERY
-		String queryMTO = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, type, name, city, road, km, "
-				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
+	
 		// NOTIFICATION TABLE INSERT QUERY
 		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, equip_km) "        							
 				+ "VALUES (null, ?, ?, ?, ?)"; 
@@ -1098,9 +1092,7 @@ public class EquipmentsDAO {
 		try {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			if(!table.equals("mto")) {
-
+			
 				// GENERIC ADD			
 				ps = conn.prepareStatement(query);
 
@@ -1157,69 +1149,7 @@ public class EquipmentsDAO {
 						if(successConn > 0)            			
 							status = true;	                				         
 					}         				  
-				}     				 		
-
-			} else {
-
-				//MTO ADD		
-				ps = conn.prepareStatement(queryMTO);
-
-				ps.setInt(1, equip.getEquip_id());
-				ps.setString(2, equip.getCreation_date());
-				ps.setString(3, equip.getCreation_username());
-				ps.setString(4, equip.getEquip_type());
-				ps.setString(5, equip.getEquip_ip());
-				ps.setString(6, equip.getNome());
-				ps.setString(7, equip.getCidade());
-				ps.setString(8, equip.getEstrada());
-				ps.setString(9, equip.getKm());	                		
-				ps.setInt(10, 30); // Linear Width
-				ps.setInt(11, 30); // Linear posX
-				ps.setInt(12, 500); // Linear posY
-				ps.setInt(13, 30); // VIDEO WALL Linear Width
-				ps.setInt(14, 30); // VIDEO WALL Linear posX
-				ps.setInt(15, 500); // VIDEO WALL Linear posY
-				ps.setInt(16, 20); // Map Width
-				ps.setInt(17, 50); // Map posX
-				ps.setInt(18, 50); // Map posY
-				ps.setInt(19, 20); // VIDEO WALL Map Width
-				ps.setInt(20, 50); // VIDEO WALL Map posX
-				ps.setInt(21, 50); // VIDEO WALL Map posY
-				ps.setBoolean(22, true);
-
-				int success = ps.executeUpdate();
-
-				if(success > 0) {    
-
-					//NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
-
-					ps.setInt(1, equip.getEquip_id());             		
-					ps.setString(2, equip.getNome());
-					ps.setString(3, ModulesEnum.MTO.getModule());
-					ps.setString(4, equip.getKm());
-
-					int successNotif = ps.executeUpdate();
-
-					if(successNotif > 0) { 
-
-						//CONNECTION MONITOR ADD		
-						ps = conn.prepareStatement(queryConnection);
-
-						ps.setString(1, equip.getEquip_type());
-						ps.setInt(2, equip.getEquip_id()); 
-						ps.setString(3, equip.getEquip_ip());
-						ps.setString(4, equip.getNome());
-						ps.setInt(5, equip.getLastStatus()); 
-						ps.setInt(6, equip.getStatus()); 
-
-						int successConn = ps.executeUpdate();
-
-						if(successConn > 0)            			
-							status = true;	                				         
-					}
-				}     				 	            			 				
-			}
+				}  	
 
 		} catch (SQLException sqle) {
 			throw new Exception("Erro ao inserir dados " + sqle);
@@ -2293,15 +2223,15 @@ public class EquipmentsDAO {
 
 				MTO mto = new MTO();
 
-				String queryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, linear_width FROM mto_equipment WHERE equip_id = ? ";
+				String queryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM mto_equipment WHERE equip_id = ? ";
 
-				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
+				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 				
-				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, vw_linear_width FROM mto_equipment WHERE equip_id = ? ";
+				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM mto_equipment WHERE equip_id = ? ";
 
-				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), type, name, city, road, km, vw_map_width FROM mto_equipment WHERE equip_id = ? ";
+				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM mto_equipment WHERE equip_id = ? ";
 				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				
@@ -2330,13 +2260,12 @@ public class EquipmentsDAO {
 					while(rs.next()){
 
 						mto.setEquip_id(rs.getInt(1));
-						mto.setEquip_ip(rs.getString(2));  	
-						mto.setEquip_type(rs.getString(3));
-						mto.setNome(rs.getString(4));
-						mto.setCidade(rs.getString(5));
-						mto.setEstrada(rs.getString(6));
-						mto.setKm(rs.getString(7));
-						mto.setMapWidth(rs.getInt(8));  		      			            			  
+						mto.setEquip_ip(rs.getString(2));  					
+						mto.setNome(rs.getString(3));
+						mto.setCidade(rs.getString(4));
+						mto.setEstrada(rs.getString(5));
+						mto.setKm(rs.getString(6));
+						mto.setMapWidth(rs.getInt(7));  		      			            			  
 
 					}
 				}

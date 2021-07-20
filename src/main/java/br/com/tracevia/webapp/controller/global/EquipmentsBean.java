@@ -421,12 +421,9 @@ public class EquipmentsBean implements Serializable {
 					    
 		    //For Equipment CreationUsername		
 			 equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
-			 
-			//For Equipment Type
-			 if(moduleID == 6)			
-				equip.setEquip_type(parameterMap.get("mtoType") == "" ? "WS" : parameterMap.get("mtoType"));			 
-			
-			 else equip.setEquip_type(defineEquipType(table)); // Other types
+			 						
+			//Equip Type
+			equip.setEquip_type(defineEquipType(table));
 			
 			//For Equipment Name
 		    equip.setNome(parameterMap.get("equipName"));
@@ -557,11 +554,7 @@ public class EquipmentsBean implements Serializable {
 			 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 		 		 
-		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");
-		 
-		 if(moduleId == 6)
-			 RequestContext.getCurrentInstance().execute("$('#mtoType-edit').val('"+equip.getEquip_type()+"');");
-			 
+		 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
 		 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
 		 RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
@@ -1151,6 +1144,7 @@ public class EquipmentsBean implements Serializable {
     	case "colas": type = ModulesEnum.COLAS.getModule(); ; break;
     	case"comms": type = ModulesEnum.COMMS.getModule(); ; break;
     	case "dai": type = ModulesEnum.DAI.getModule(); ; break;
+    	case "mto": type = ModulesEnum.MTO.getModule(); ; break;
     	case "ocr": type = ModulesEnum.OCR.getModule(); ; break;
     	case "sos": type = ModulesEnum.SOS.getModule(); ; break;
     	case "speed": type = ModulesEnum.SPEED.getModule(); ; break;
