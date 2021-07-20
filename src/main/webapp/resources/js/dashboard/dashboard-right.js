@@ -36,7 +36,7 @@ $(async function () {
 
   try {
     TestCert(url_rabbitmq);
-    TestCert(url_asterisk);
+    // TestCert(url_asterisk);
   } catch (error) {
     console.log(error)
   }
