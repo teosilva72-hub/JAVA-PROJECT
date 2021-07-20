@@ -197,90 +197,94 @@ public class ListEquipments {
 				SOS sos = new SOS();
 				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
+
+				UserAccount actual_login = login.getLogin();
+				LoadStartupModules load = login.getLoad();
+				int permission_id = actual_login.getPermission_id();
 											
-				    if(login.getLoad().isEn_cftv())	{	
+				System.out.println(permission_id);
+				    if(load.isEn_cftv())	{	
 				    	
-				    	System.out.println(login.getLogin().getPermission_id());
 				    					  					
-					cftvList = cftv.listEquipments("cftv", login.getLogin().getPermission_id()); 
-					equips.add(new listEquips("cftv", login.getLoad().isEn_cftv(), cftvList, login.getLoad().getVoltage_cftv()));
+					cftvList = cftv.listEquipments("cftv", permission_id); 
+					equips.add(new listEquips("cftv", load.isEn_cftv(), cftvList, load.getVoltage_cftv()));
 					
 				    }
 					
-					if(login.getLoad().isEn_colas()) {
+					if(load.isEn_colas()) {
 						
-					colasList = colas.listEquipments("colas", login.getLogin().getPermission_id()); 
-					equips.add(new listEquips("colas", login.getLoad().isEn_colas(), colasList, login.getLoad().getVoltage_colas()));
+					colasList = colas.listEquipments("colas", permission_id); 
+					equips.add(new listEquips("colas", load.isEn_colas(), colasList, load.getVoltage_colas()));
 					
 					}
 					
-					if(login.getLoad().isEn_comms()) {
+					if(load.isEn_comms()) {
 						
-					commsList = comms.listEquipments("comms", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("comms", login.getLoad().isEn_comms(), commsList, login.getLoad().getVoltage_comms()));
+					commsList = comms.listEquipments("comms", permission_id);	
+					equips.add(new listEquips("comms", load.isEn_comms(), commsList, load.getVoltage_comms()));
 					
 					}
 					
-					if(login.getLoad().isEn_dai()) {
+					if(load.isEn_dai()) {
 						
-					daiList = dai.listEquipments("dai", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("dai", login.getLoad().isEn_dai(), daiList, login.getLoad().getVoltage_dai()));
+					daiList = dai.listEquipments("dai", permission_id);	
+					equips.add(new listEquips("dai", load.isEn_dai(), daiList, load.getVoltage_dai()));
 					
 					}
 					
-					if(login.getLoad().isEn_pmv()) {
+					if(load.isEn_pmv()) {
 						
-					dmsList = dms.listDMSEquipments(login.getLogin().getPermission_id());	
-					equips.add(new listEquips("dms", login.getLoad().isEn_pmv(), dmsList, login.getLoad().getVoltage_pmv()));
+					dmsList = dms.listDMSEquipments(permission_id);	
+					equips.add(new listEquips("dms", load.isEn_pmv(), dmsList, load.getVoltage_pmv()));
 					
 					}
 					
-					if(login.getLoad().isEn_ocr()) {
+					if(load.isEn_ocr()) {
 						
-					ocrList = ocr.listEquipments("ocr", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("ocr", login.getLoad().isEn_ocr(), ocrList, login.getLoad().getVoltage_ocr()));
+					ocrList = ocr.listEquipments("ocr", permission_id);	
+					equips.add(new listEquips("ocr", load.isEn_ocr(), ocrList, load.getVoltage_ocr()));
 					
 					}
 					
-					if(login.getLoad().isEn_mto()) {
+					if(load.isEn_mto()) {
 						
-					mtoList = mto.listEquipments("mto", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("mto", login.getLoad().isEn_mto(), login.getLoad().isEn_meteo(), mtoList, login.getLoad().getVoltage_mto()));
+					mtoList = mto.listEquipments("mto", permission_id);	
+					equips.add(new listEquips("mto", load.isEn_mto(), load.isEn_meteo(), mtoList, load.getVoltage_mto()));
 								
 					}
 					
-					if(login.getLoad().isEn_sv()) {
+					if(load.isEn_sv()) {
 						
-					svList = sv.listEquipments("sv", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("sv", login.getLoad().isEn_sv(), login.getLoad().isEn_meteo(), svList, login.getLoad().getVoltage_sv()));
+					svList = sv.listEquipments("sv", permission_id);	
+					equips.add(new listEquips("sv", load.isEn_sv(), load.isEn_meteo(), svList, load.getVoltage_sv()));
 											
 					}
 					
-					if(login.getLoad().isEn_sat()) {
+					if(load.isEn_sat()) {
 						
-					satList = sat.listSatEquipments(login.getLogin().getPermission_id());	
-					equips.add(new listEquips("sat", login.getLoad().isEn_sat(), satList, login.getLoad().getVoltage_sat()));
+					satList = sat.listSatEquipments(permission_id);	
+					equips.add(new listEquips("sat", load.isEn_sat(), satList, load.getVoltage_sat()));
 					
 					}
 					
-					if(login.getLoad().isEn_sos()) {
+					if(load.isEn_sos()) {
 						
-					sosList = sos.listEquipments("sos", login.getLogin().getPermission_id());
-					equips.add(new listEquips("sos", login.getLoad().isEn_sos(), sosList, login.getLoad().getVoltage_sos()));
+					sosList = sos.listEquipments("sos", permission_id);
+					equips.add(new listEquips("sos", load.isEn_sos(), sosList, load.getVoltage_sos()));
 					
 					}
 					
-					if(login.getLoad().isEn_speed()) {
+					if(load.isEn_speed()) {
 						
-					speedList = speed.listEquipments("speed", login.getLogin().getPermission_id());	
-					equips.add(new listEquips("speed", login.getLoad().isEn_speed(), speedList, login.getLoad().getVoltage_speed()));
+					speedList = speed.listEquipments("speed", permission_id);	
+					equips.add(new listEquips("speed", load.isEn_speed(), speedList, load.getVoltage_speed()));
 									
 					}
 					
-					if(login.getLoad().isEn_wim()) {
+					if(load.isEn_wim()) {
 						
-					wimList = wim.listEquipments("wim", login.getLogin().getPermission_id())	;
-					equips.add(new listEquips("wim", login.getLoad().isEn_wim(), wimList, login.getLoad().getVoltage_wim()));
+					wimList = wim.listEquipments("wim", permission_id)	;
+					equips.add(new listEquips("wim", load.isEn_wim(), wimList, load.getVoltage_wim()));
 				
 					}
 					

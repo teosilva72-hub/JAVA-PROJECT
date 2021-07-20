@@ -27,15 +27,19 @@ $(async function () {
 
   $("#sipClient.calls-client .sipStatus").click(showCallbox)
 
-  while (rabbitmq == undefined || asterisk == undefined) {
+  while ( typeof rabbitmq == "undefined" || typeof asterisk == "undefined" ) {
     await new Promise(r => setTimeout(r, 100))
   }
   
   let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
   let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
 
-  TestCert(url_rabbitmq);
-  TestCert(url_asterisk);
+  try {
+    TestCert(url_rabbitmq);
+    TestCert(url_asterisk);
+  } catch (error) {
+    console.log(error)
+  }
 });
 
 var alertToast = msg => {

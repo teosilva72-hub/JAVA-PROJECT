@@ -254,8 +254,9 @@ public class LoginAccountBean {
 							reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 							plaque = RoadConcessionaire.plaque;
+							logo = RoadConcessionaire.logo;
 					
-							return "/dashboard/dashboard.xhtml?faces-redirect=true";
+							return "/map/map.xhtml?faces-redirect=true";
 
 						} else {
 
