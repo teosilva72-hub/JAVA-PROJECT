@@ -21,6 +21,7 @@ import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.model.wim.WIM;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="listEquips")
 @ViewScoped
@@ -40,6 +41,8 @@ public class ListEquipments {
 	List<? extends Equipments> sosList; 
 	List<? extends Equipments> svList; 
 	List<? extends Equipments> wimList; 
+	
+	LocaleUtil localeMessage, localeLabel;
 	
 	@ManagedProperty("#{loginAccount}")
 	private LoginAccountBean login;
@@ -111,6 +114,10 @@ public class ListEquipments {
 	
 	@PostConstruct
 	public void initalize() {
+		
+		localeLabel = new LocaleUtil();
+
+		localeLabel.getResourceBundle(LocaleUtil.LABELS_DASHBOARD);
 		
 		BuildEquipments();
 		
@@ -297,5 +304,50 @@ public class ListEquipments {
 		}	
 		
 	}
-	  
+	 
+	// Translate from DB
+	public String translateModule(String inputType) {
+
+		String type = "";
+
+		if (inputType.equals("cftv"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_cftv");
+
+		if (inputType.equals("colas"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_colas");
+
+		if (inputType.equals("comms"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_comms");
+		
+		if (inputType.equals("dai"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_dai");
+		
+		if (inputType.equals("dms"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_dms");
+		
+		if (inputType.equals("ocr"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_ocr");
+		
+		if (inputType.equals("mto"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_mto");
+		
+		if (inputType.equals("sat"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_sat");
+		
+		if (inputType.equals("sos"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_sos");
+		
+		if (inputType.equals("speed"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_speed");
+		
+		if (inputType.equals("sv"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_sv");
+		
+		if (inputType.equals("wim"))
+			type = localeLabel.getStringKey("dashboard_sidebar_layers_wim");
+
+		return type;
+
+	}
+	
 }

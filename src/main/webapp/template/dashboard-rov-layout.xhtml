@@ -358,14 +358,7 @@
               
 
                   <div class="module" id="#{item.module}">
-                    <c:choose>
-                      <c:when test="#{loadItem.module == 'dms'}">
-                    <div class="toggle-mod-label"><label class="font-weight-bold">PMV</label></div>
-                    </c:when>
-                    <c:otherwise>
-                     <div class="toggle-mod-label"><label class="font-weight-bold">#{item.module.toUpperCase()}</label></div>
-                    </c:otherwise>
-                   </c:choose>                    
+                   	 <label class="label-module">#{listEquips.translateModule(item.module)}</label>                
                     
                     <div class="toggle-mod-btn">
                       <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
@@ -403,14 +396,8 @@
                       class="text-black bg-warning fa fa-plus plusMinus"></i></span></a>
                 <!-- <button class="btn btn-warning btn-sm btn-show-hide" onclick="clicked('mtoDIV'); toggleBtnEquips.call(this);" ><i class="fa fa-plus plusMinus" ></i></button> -->
                 
-                 <c:choose>
-                      <c:when test="#{loadItem.module == 'dms'}">
-                     <label class="label-module">PMV</label>
-                    </c:when>
-                    <c:otherwise>
-                      <label class="label-module">#{loadItem.module.toUpperCase()}</label>
-                    </c:otherwise>
-                   </c:choose>                     
+               
+                    <label class="label-module">#{listEquips.translateModule(loadItem.module)}</label>                    
                                
                 <div id="div#{loadItem.module}" style="display:none;">
 
