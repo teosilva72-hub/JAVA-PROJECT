@@ -828,10 +828,10 @@
 													class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
 													<c:choose>
 														<c:when test="#{ VideoWall }">
-															<f:ajax execute="@all" listener='#{equipsBean.setAll("vw_linear")}' onevent="onEventMapFunction"></f:ajax>
+															<f:ajax execute="@all" listener='#{equipsBean.setAll("vw_linear")}' onevent="onEventRealtimeFunction"></f:ajax>
 														</c:when>
 														<c:otherwise>
-															<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventMapFunction"></f:ajax>
+															<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventRealtimeFunction"></f:ajax>
 														</c:otherwise>
 													</c:choose>
 												</h:commandButton>

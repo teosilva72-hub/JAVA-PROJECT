@@ -182,6 +182,10 @@ table {
   text-decoration: none;
 }
 
+.fa-circle {
+  color: #ff000d;
+}
+
 .fa-circle:not( [id^=statussos], [id^=statusdms]) {
   color: #00ff0d;
 }
