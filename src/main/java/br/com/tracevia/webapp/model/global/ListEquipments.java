@@ -197,11 +197,10 @@ public class ListEquipments {
 				SOS sos = new SOS();
 				Speed speed =  new Speed();			
 				WIM wim =  new WIM();
-											
+				
+													
 				    if(login.getLoad().isEn_cftv())	{	
-				    	
-				    	System.out.println(login.getLogin().getPermission_id());
-				    					  					
+				    					    					    					  					
 					cftvList = cftv.listEquipments("cftv", login.getLogin().getPermission_id()); 
 					equips.add(new listEquips("cftv", login.getLoad().isEn_cftv(), cftvList, login.getLoad().getVoltage_cftv()));
 					
@@ -284,9 +283,15 @@ public class ListEquipments {
 				
 					}
 					
-            }catch(IndexOutOfBoundsException ex) {}
+            }catch(IndexOutOfBoundsException ex) {
+            	
+            	ex.printStackTrace();
+            }
 		
-		}catch(Exception ex) {}	
+		}catch(Exception ex) {
+			
+			ex.printStackTrace();			
+		}	
 		
 	}
 	  
