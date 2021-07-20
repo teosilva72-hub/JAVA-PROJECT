@@ -355,18 +355,14 @@
 
               <c:forEach items="#{listEquips.equips}" var="item">
               
-              
-
                   <div class="module" id="#{item.module}">
-                   	 <label class="label-module">#{listEquips.translateModule(item.module)}</label>                
-                    
-                    <div class="toggle-mod-btn">
+                   <div class="toggle-mod-btn">
                       <h:selectBooleanCheckbox class="apple-switch" id="btn#{item.module}" p:toggle="#{item.module}"
                         p:checked="checked">
                       </h:selectBooleanCheckbox>
                     </div>
+                   	 <label class="label-module">#{listEquips.translateModule(item.module)}</label>                                        
                   </div>
-
               </c:forEach>
 
             </h:form>
@@ -384,7 +380,7 @@
           </div>
 
           <div class="sidebar-header">
-            <h5>#{dashboardLabels.dashboard_sidebar_equipments}</h5>
+            <h5>#{dashboardLabels.dashboard_sidebar_status_equipments}</h5>
           </div>
 
           <div class="equips-div">

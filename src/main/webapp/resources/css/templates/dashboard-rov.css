@@ -436,7 +436,7 @@ footer {
   bottom: 0;
   margin: 0;
   left: 0;
-  width: 25rem;
+  width: 22rem;
   transition: all ease 0.25s;
   transform: translateX(-100%);
   z-index: 99999;
@@ -648,7 +648,7 @@ footer {
 
 .module {
   margin-top: 0%;
-  text-align: center;
+  text-align: left;
   border: none;
   background: #1c1c1c;
   height: 45px;
@@ -669,9 +669,9 @@ footer {
 }
 
 .toggle-mod-btn {
-  float: right;
+  float: left;
   border: none;
-  margin-right: 5%;
+  margin-left: 5%;
   margin-top: 4px;
 }
 
@@ -713,11 +713,11 @@ footer {
 }
 /*Label apos bot�o*/
 .label-module {
-  font-size: 18px;
-  margin-left: 2.5%;
+  font-size: 16px;
+  margin-left: 4.5%;
   font-weight: bold;
   font-style: italic;
-  margin-top: 0%;
+  margin-top: 3%;
   border: none;
   color: white;
 }
