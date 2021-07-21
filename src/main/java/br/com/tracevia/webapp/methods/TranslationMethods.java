@@ -41,7 +41,7 @@ public class TranslationMethods {
 		case "Congestion(Event)": converteDai = localeDai.getStringKey("congestion"); break;
 		case "Illegal Parking(Event)": converteDai = localeDai.getStringKey("parking"); break;
 		case "Wrong-Way Driving(Event)": converteDai = localeDai.getStringKey("driver_opposite"); break;
-		case "Pedestrian(Event)": converteDai = localeDai.getStringKey("pedestrian"); break;
+		case "Pedestrain(Event)": converteDai = localeDai.getStringKey("pedestrian"); break;
 		case "Thrown Object(Event)": converteDai = localeDai.getStringKey("thrown_object"); break;
 		case "Smoke object(Event)": converteDai = localeDai.getStringKey("Smoke"); break;
 		case "Driving on the Lane Line(Event)": converteDai = localeDai.getStringKey("driver_lane_yellow"); break;
@@ -63,6 +63,7 @@ public class TranslationMethods {
 		case "Moving slowly(Event)": converteDai = localeDai.getStringKey("moving_slowly"); break;
 		case "Up": converteDai = localeDai.getStringKey("up"); break;
 		case "Two-way": converteDai = localeDai.getStringKey("two_way"); break;
+		case "Down": converteDai = localeDai.getStringKey("down"); break;
 		default: converteDai = ""; break;
 		
 		}
