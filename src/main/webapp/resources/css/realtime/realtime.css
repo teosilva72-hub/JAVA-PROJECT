@@ -549,3 +549,7 @@ opacity: 0.7;
 .fa-circle:not( [id^=statussos], [id^=statusdms]) {
   color: #00ff0d;
 }
+.logo-concessionaire {
+    left: 84%;
+    top: 77px;
+}

@@ -94,12 +94,21 @@ const signaling = response => {
 	let html = alarm.find(`div`)
 	let alarms = html.children()
 	let door = alarms.filter(`span[door=${response.Value}]`)
-
+	var doors = document.getElementById("addequip")
+	
 	if (response.EndDate)
 		active = false;
 	
-	if (door.length == 0 && active)
-		html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+	if (door.length == 0 && active){
+			if(doors.value == "AÑADIR"){
+				html.append(`<span class="col-12" door="${response.Value}">Puerta ${response.Value}</span>`)
+			}else if(doors.value == "ADICIONAR"){
+				html.append(`<span class="col-12" door="${response.Value}">Porta ${response.Value}</span>`)
+			}else{
+				html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+			}
+	}
+		
 	else if (door.length == 1 && !active)
 		door.remove();
 

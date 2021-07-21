@@ -292,11 +292,11 @@ tbody tr {
 }
 
 .logo-concessionaire {
-  right: 35px;
-  top: 102px;
-  bottom: unset;
-  height: 40px;
-  left: unset;
-  opacity: 1;
-  z-index: 1;
+	left: unset;
+    right: 40%;
+    top: 10px;
+	height: 55px;
+	transform: unset;
+    opacity: .8;
+    z-index: 1100;
 }

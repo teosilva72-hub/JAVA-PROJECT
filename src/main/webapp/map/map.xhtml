@@ -107,10 +107,10 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<button type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
+					<h:commandButton type="button" id="addequip" class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal"
-						data-target="#modaladd">#{mapLabels.map_creation_btn_add_equipment}</button>
+						data-target="#modaladd" value="#{mapLabels.map_creation_btn_add_equipment}"></h:commandButton>
 
 				</c:if>
 

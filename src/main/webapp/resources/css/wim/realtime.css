@@ -84,3 +84,11 @@
 	background-color: #343a40 !important;
 	margin-left: 2%;
 }
+.logo-concessionaire {
+    right: 70%;
+    top: 10px;
+	height: 55px;
+	transform: unset;
+    opacity: .8;
+    z-index: 1100;
+}
