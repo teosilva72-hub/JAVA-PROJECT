@@ -100,12 +100,22 @@ const signaling = response => {
 		active = false;
 	
 	if (door.length == 0 && active){
+		
 			if(doors.value == "AÑADIR"){
-				html.append(`<span class="col-12" door="${response.Value}">Puerta ${response.Value}</span>`)
+				if(response.Value == 3)
+					response.Value = "superior"
+				else response.Value = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Puerta ${response.Value}</span>`)
 			}else if(doors.value == "ADICIONAR"){
-				html.append(`<span class="col-12" door="${response.Value}">Porta ${response.Value}</span>`)
+				if(response.Value == 3)
+					response.Value = "superior"
+				else response.Value = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Porta ${response.Value}</span>`)
 			}else{
-				html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+				if(response.Value == 3)
+					response.Value = "top"
+				else response.Value = "bottom"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Door ${response.Value}</span>`)
 			}
 	}
 		
