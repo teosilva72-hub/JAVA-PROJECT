@@ -35,13 +35,9 @@
 	margin-left: 15px;
 	
 }
+
 .logo-concessionaire {
-        right: 40%;
-    /* bottom: 50px; */
-    left: unset;
-    top: 10px;
-    height: 55px;
-    transform: unset;
+    bottom: unset;
+    top: 85px;
     opacity: .8;
-    z-index: 1100;
 }

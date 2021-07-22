@@ -9,7 +9,7 @@ const changeStates = response => {
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
 	let alarm = equip.find(`#Alarm${name}`);
-	let alarms = alarm.children();
+	let alarms = alarm.children().find("div");
 	let sidebar = $(`#status${name.toLowerCase()}`)
 	
 	switch (status) {
