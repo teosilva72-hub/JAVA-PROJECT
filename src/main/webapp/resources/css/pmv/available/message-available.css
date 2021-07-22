@@ -285,18 +285,17 @@ tbody tr {
   }
 }
 
+.logo-concessionaire {
+  left: 50%;
+  bottom: unset;
+  transform: translateX(-50%);
+  top: 10px;
+  opacity: 1;
+  z-index: 1030;
+}
+
 /* TEMPORARY CSS */
 
 .temporaryboot {
   left: -130px;
-}
-
-.logo-concessionaire {
-	left: unset;
-    right: 40%;
-    top: 10px;
-	height: 55px;
-	transform: unset;
-    opacity: .8;
-    z-index: 1100;
 }
