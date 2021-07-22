@@ -6,75 +6,72 @@ function getTr(){
 		},		
 		"select": true,
 		"autoWidth": true,			  	   	
-		"scrollY": "40vh",
+		"scrollY": `${screen.availHeight / 2}px`,
+		"scrollCollapse": true,
+		"order": [[ 4, 'desc' ], [ 5, 'desc' ]],
 		"paging": false,
 		"bInfo" : false
 	});
-	$('#colas-table tbody').on( 'click', 'tr', function () {
-   var event = $(table.row( this ).data()[0]).text();
-	document.getElementById("event").value = event
-	
-	$( "[id$=getId]" ).click();
-	disPdfDetail()
-	
-} );
+	 
+	table
+		.on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
+			if ( type === 'row' ) {
+				$(originalEvent.target).closest("tr").find("[setParameter=setParameter]").click()
+				$('[id$=btnPdf]').prop('disabled', false);
+				$('[id$=btnDetalhes]').prop('disabled', false);
+			}
+		} );
+
+	$("[setParameter=setParameter]").click(function(e) {
+		e.stopPropagation()
+	})
 }
 function dataPicker(){
-	var  dateY = $('#dateInitial')
-	var  dateX = $('#dateFinal')
-    dateY.on('click', function() {
+	var  date = $('#dateSearch')
+    date.on('click', function() {
 		date.mask('9999-99-99')
     });
-	dateX.on('click', function() {
-		date.mask('9999-99-99')
-    });
-	dateY.datepicker({ 
-		dateFormat: "yy-mm-dd",  
-		changeYear: true,
-		changeMonth: true,
-	});
-	dateX.datepicker({ 
+	date.datepicker({ 
 		dateFormat: "yy-mm-dd",  
 		changeYear: true,
 		changeMonth: true,
 	})
 }
-function validador(){
-	var dateI = document.getElementById("dateInitial").value
-	var hourI = document.getElementById("hourInitial").value
-	var minuteI = document.getElementById("minuteInitial").value
-	var dateF = document.getElementById("dateFinal").value
-	var hourF = document.getElementById("hourFinal").value
-	var minuteF = document.getElementById("minuteFinal").value
-	dataPicker()
-	disabledBtn()
-	if(dateI == "" || hourI =="" || minuteI ==""
-	   ||dateF=="" || hourF =="" || minuteF ==""){
-		$(".ll").addClass("error")
-		
-	}else{
-		$(".ll").addClass("ok")
-		
-  			$("#btnSearch").click();
-		$('#modalPesquisa').modal('hide')
-	}
-}
+
 function modalHide(){
 	$('[id$=popup]').modal('hide')
 	$('.modal-backdrop').addClass('hide')
 }
 
+const onFilterFunction = data => {
+	var status = data.status;
 
+	switch (status) {
+		case "begin":
+			break;
+
+		case "complete":
+			break;
+
+		case "success":
+			getTr();
+
+			break;
+	}
+}
 function disPdfDetail(){
-	$('[id$=btnPdf]').prop('disabled', false);
-	$('[id$=btnDetalhes]').prop('disabled', false);
+	$('[id$=btnPdf]').prop('disabled', true);
+	$('[id$=btnDetalhes]').prop('disabled', true);
 }
 function disabledBtn(){
 	$('[id$=btnPdf]').prop('disabled', true);
 	$('[id$=btnDetalhes]').prop('disabled', true);
 }
 $(document).ready(function () {
+	getTr()
 	dataPicker()
 	disabledBtn()
-	
+	$("#btnDetalhes").click(function() {
+		$("#COLASpopup").modal("show")
+	})
 });
