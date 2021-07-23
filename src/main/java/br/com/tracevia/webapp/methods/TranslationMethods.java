@@ -159,7 +159,7 @@ public class TranslationMethods {
 
 		//causa provavel
 		case "Desgaste natural" : converteOcc = localeOcc.getStringKey("probable_cause1"); break;
-		case "Colisión" : converteOcc = localeOcc.getStringKey("probable_cause2"); break;
+		case "Collision" : converteOcc = localeOcc.getStringKey("probable_cause2"); break;
 		case "Vandalismo" : converteOcc = localeOcc.getStringKey("probable_cause3"); break;
 		case "Lluvia" : converteOcc = localeOcc.getStringKey("probable_cause4"); break;
 		case "Temperatura" : converteOcc = localeOcc.getStringKey("probable_cause5"); break;
@@ -243,7 +243,7 @@ public class TranslationMethods {
 
 		//CONDITION
 		case "day" : converteOcc = localeOcc.getStringKey("condition1"); break;
-		case "Rainy day": converteOcc = localeOcc.getStringKey("condition2");
+		case "Rainy day": converteOcc = localeOcc.getStringKey("condition2"); break;
 		case "Cloudy day" : converteOcc = localeOcc.getStringKey("condition3"); break;
 		case "Noche" : converteOcc = localeOcc.getStringKey("condition4"); break;
 		case "Noche con lluvia" : converteOcc = localeOcc.getStringKey("condition5"); break;
