@@ -120,7 +120,7 @@ $(function () {
 	})
 
 	$('#fulldiv3').on('click', function () {
-		$('#frame3')[0].contentWindow.setPosition(1, 0.12)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.18)
 	})
 
 
@@ -130,9 +130,9 @@ $(function () {
 	init();
 
 	$('#divide').on('click', () => {
-		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
-		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.12)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.43)
+		$('#frame2')[0].contentWindow.setPosition(0.41, 0.44)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.19)
 
 	})
 
