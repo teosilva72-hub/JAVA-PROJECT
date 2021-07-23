@@ -112,15 +112,15 @@ $(function () {
 	$("#frame3").attr("src", url)
 
 	$('#fulldiv1').on('click', function () {
-		$('#frame1')[0].contentWindow.setPosition(0, 0.4)
+		$('#frame1')[0].contentWindow.setPosition(0, 0.43)
 	})
 
 	$('#fulldiv2').on('click', function () {
-		$('#frame2')[0].contentWindow.setPosition(0.4, 0.43)
+		$('#frame2')[0].contentWindow.setPosition(0.41, 0.40)
 	})
 
 	$('#fulldiv3').on('click', function () {
-		$('#frame3')[0].contentWindow.setPosition(1, 0.18)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.19)
 	})
 
 
@@ -131,7 +131,7 @@ $(function () {
 
 	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.43)
-		$('#frame2')[0].contentWindow.setPosition(0.41, 0.44)
+		$('#frame2')[0].contentWindow.setPosition(0.41, 0.40)
 		$('#frame3')[0].contentWindow.setPosition(1, 0.19)
 
 	})
