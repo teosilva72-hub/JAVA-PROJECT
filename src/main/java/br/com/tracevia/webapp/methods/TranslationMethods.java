@@ -188,7 +188,7 @@ public class TranslationMethods {
 		//Rodovia
 		case "Autopista Tuxpam - Tampico" : converteOcc = localeOcc.getStringKey("highway1"); break;
 		case "Autopista Cardel - Poza Rica" : converteOcc = localeOcc.getStringKey("highway2"); break;
-		case "Autopista Siervo de la Nación" : converteOcc = localeOcc.getStringKey("highway3"); break;
+		case "Autopista Siervo de la Nacion" : converteOcc = localeOcc.getStringKey("highway3"); break;
 
 		//STATE
 		case "Veracruz" : converteOcc = localeOcc.getStringKey("estado_local1"); break;
