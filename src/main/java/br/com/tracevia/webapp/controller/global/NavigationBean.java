@@ -327,7 +327,14 @@ public class NavigationBean {
 		return navigation_page;
 	}
 
+	// ------------------------- DAI ----------------------------------
 
+		public String redirectToReportCOLAS() {
+
+			navigation_page = "/colas/colas.xhtml?faces-redirect=true";		
+
+			return navigation_page;
+		}
 	// ------------------------- DAI ----------------------------------
 
 	public String redirectToReportDAI() {
