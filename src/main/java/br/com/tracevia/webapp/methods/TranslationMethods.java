@@ -136,6 +136,7 @@ public class TranslationMethods {
 		case "Unidade" : converteOcc = localeOcc.getStringKey("occ_damage_unity"); break;
 		case "Condition track" : converteOcc = localeOcc.getStringKey("occ_register_cond_trafego"); break;
 		case "operador" : converteOcc = localeOcc.getStringKey("nome_operador"); break;
+		case "occ" : converteOcc = localeOcc.getStringKey("occ_list_table_id"); break;
 		}
 
 		return converteOcc;
@@ -182,7 +183,6 @@ public class TranslationMethods {
 
 		//var
 		String converteOcc = "";
-		System.out.println(occ);
 		switch(occ){
 
 		//Rodovia
