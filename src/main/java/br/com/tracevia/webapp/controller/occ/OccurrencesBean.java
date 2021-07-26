@@ -1727,7 +1727,7 @@ public class OccurrencesBean {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("occ")+data.getData_number()+"        "
+			document.add(new Paragraph(trad.occLabels("occ")+": "+data.getData_number()+"        "
 					+ trad.occLabels("Tipo")+(": ")+ trad.occurrencesTranslator(getPdf.getType())+"         "
 					+ trad.occLabels("Origem")+(": ")+ trad.occurrencesTranslator(getPdf.getOrigin())+"          "
 					+ trad.occLabels("Situacao")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
