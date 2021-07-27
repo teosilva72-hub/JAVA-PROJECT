@@ -1732,7 +1732,7 @@ public class OccurrencesBean {
 					+ trad.occLabels("Origem")+(": ")+ trad.occurrencesTranslator(getPdf.getOrigin())+"          "
 					+ trad.occLabels("Situacao")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
 					+"_____________________________________________________________________________"
-					+"\n\n"
+					+"\n\n "
 					));
 
 			//data e hora inicial
