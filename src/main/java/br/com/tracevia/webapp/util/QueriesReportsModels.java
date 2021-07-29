@@ -272,9 +272,6 @@ public class QueriesReportsModels {
 		private static final String GROUP_AND_ORDER_TABLE_06_HOURS = "GROUP BY tmp.datetime_six_hours, sec_to_time(time_to_sec(tmp.datetime_six_hours)- time_to_sec(tmp.datetime_six_hours)%(360*60)) " +
 				"ORDER BY tmp.datetime_six_hours ASC "; 
 
-		private static final String GROUP_AND_ORDER_TABLE_DAYS = "GROUP BY tmp.date_ " +
-				"ORDER BY DAY(tmp.date_) ASC";
-
 		private static final String GROUP_AND_ORDER_TABLE_DATE = "GROUP BY tmp.date_ " +
 				"ORDER BY DATE(tmp.date_) ASC";
 
@@ -307,17 +304,42 @@ public class QueriesReportsModels {
 		private static final String GROUP_AND_ORDER_TABLE_06_HOURS_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
 				"ORDER BY DATE(data) ASC "; 
 
-		private static final String GROUP_AND_ORDER_TABLE_DAYS_SAT = "GROUP BY DAY(data) " +
-				"ORDER BY DAY(data) ASC";
-
 		private static final String GROUP_AND_ORDER_TABLE_DATE_SAT = "GROUP BY DATE(data) " +
 				"ORDER BY DATE(data) ASC";
-
+		
 		private static final String GROUP_AND_ORDER_TABLE_MONTHS_SAT = "GROUP BY DAY(data) " +
 				"ORDER BY DAY(data) ASC";
 
 		private static final String GROUP_AND_ORDER_TABLE_MONTH_YEAR_SAT = "GROUP BY MONTH(data) " +
 		       "ORDER BY MONTH(data) ASC";
+		
+		// ----------------------------------------------------------------------------------------------------------------------------------------------
+		
+		//QUERIES GROUP AND ORDER BY PERIODSNEW SATS		
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_05_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_10_MIN_SAT= "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_15_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_30_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
+				"ORDER BY DATE(data) ASC ";
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_01_HOUR_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
+				"ORDER BY DATE(data) ASC "; 
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_HOURS_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
+				"ORDER BY DATE(data) ASC "; 
+
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_DATE_SAT = "GROUP BY DATE(data), siteID ORDER BY DATE(data) ASC";
+		
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
 		//QUERIES GROUP AND ORDER BY PERIODSNEW MTO		
 				private static final String GROUP_AND_ORDER_TABLE_05_MIN_METEO = "GROUP BY DATE(datetime_), intervals " +
@@ -340,10 +362,7 @@ public class QueriesReportsModels {
 
 				private static final String GROUP_AND_ORDER_TABLE_06_HOURS_METEO = "GROUP BY DATE(datetime_), intervals " +
 						"ORDER BY DATE(datetime_) ASC "; 
-
-				private static final String GROUP_AND_ORDER_TABLE_DAYS_MTO = "GROUP BY DAY(datetime_) " +
-						"ORDER BY DAY(datetime_) ASC";
-
+			
 				private static final String GROUP_AND_ORDER_TABLE_DATE_METEO = "GROUP BY DATE(datetime_) " +
 						"ORDER BY DATE(datetime_) ASC";
 
@@ -752,6 +771,39 @@ public class QueriesReportsModels {
 	/**********************************************************************************************************/
 	
 	//METHOD GROUP BY  AND ORDER BY
+		public String QuerySatGroupAndOrderMultiple(String period) {
+
+			if(period.equals("05 minutes"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_05_MIN_SAT;
+
+			if(period.equals("06 minutes"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_06_MIN_SAT;
+
+			if(period.equals("10 minutes"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_10_MIN_SAT;
+
+			if(period.equals("15 minutes"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_15_MIN_SAT;
+
+			if(period.equals("30 minutes"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_30_MIN_SAT;
+
+			if(period.equals("01 hour"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_01_HOUR_SAT;
+
+			if(period.equals("06 hours"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_06_HOURS_SAT;
+
+			if(period.equals("24 hours"))
+				return GROUP_BY_EQUIP_AND_ORDER_TABLE_DATE_SAT;
+			
+
+			return null;
+		}
+		
+	/**********************************************************************************************************/
+	
+	//METHOD GROUP BY  AND ORDER BY
 	public String QuerySatGroupAndOrder(String period) {
 
 		if(period.equals("05 minutes"))
@@ -978,6 +1030,11 @@ public class QueriesReportsModels {
 		return queryHeader.concat(queryMain).concat(queryFromTable).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
 	} 
 	
+  ///////// WHERE CLAUSE WITH TWO PARAMETERS	
+  public String BuildQueryLL(String queryHeader, String queryMain, String queryFromTable, String innerJoin, String whereClause, String whereVechiles, String queryGroupOrder) { 	   
+	return queryHeader.concat(queryMain).concat(queryFromTable).concat(innerJoin).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
+  } 
+	
   ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
    public String BuildQueryType2(String queryHeader, String queryMain, String queryFromTable, String innerJoin, String whereClause, String queryGroupOrder) { 	   
 	return queryHeader.concat(queryMain).concat(queryFromTable).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
@@ -1028,8 +1085,28 @@ public class QueriesReportsModels {
   	   
      }
      
+       
+   // ---------------------------------------------------------------------------------------------------       
+       
+       public String whereClauseForSpeed(String[] station_id, String startDate, String endDate) {
+      	   
+      	   String query =" WHERE data between '"+startDate+"' AND '"+endDate+"' AND siteID IN(";
+      	   
+      	 for(int i = 0; i < station_id.length; i++) {	
+      	   
+      	   query +="'"+station_id[i]+"'";
+      	   
+      	 if(station_id[i] != station_id[station_id.length-1])                    				
+			    query += ", ";
+      	   
+      	 }
+      	 
+      	 query += ") "; // CLOSE
+      	 
+      	 return query;
+       }
      
-     
+   // ---------------------------------------------------------------------------------------------------       
      
      public String vehicleSelectionWhereClause(String[] vehicles) {
   	   

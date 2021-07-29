@@ -20,11 +20,12 @@ public class SatQueriesModels {
 	    * @param vehicles
 	    * @return
 	    */
-	   public String SpeedMainQuery(String station_id) { 
+	   public String SpeedMainQuery() { 
 		   
 		   String query = null;
 		   		  			   
-		       query = "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , 1, NULL)),0),0) '50km', " + 
+		       query = "SiteID 'equip', "
+		       		+ "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , 1, NULL)),0),0) '50km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed > 50 AND st.speed <= 70 , 1, NULL)),0),0)  '50km/70km',  " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed > 70 AND st.speed <= 90 , 1, NULL)),0),0)  '70km/90km', " + 
 		       		"IFNULL(ROUND(COUNT(IF(st.speed > 90 AND st.speed <=120 , 1, NULL)),0),0)  '90km/120km', " + 
@@ -1640,9 +1641,11 @@ public class SatQueriesModels {
                     	   return query;
                     	   
                        }
-                           /////////////////////////////////         
+                       
+                          /////////////////////////////////         
                           ///COUNT VEHICLES QUERY
                           /////////////////////////////////
+                       
                           public String CountVehiclesMainQuery(String[] station_id) {
                     	   
                     	   String query = "";
@@ -1971,11 +1974,12 @@ public class SatQueriesModels {
                    }
                    
                    
-                   public String  CCRVelocidade(String station_id) {
+                   public String  CCRVelocidade() {
                 	   
                 	   String query = "";
                 	   
-                	   query += "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , st.speed, NULL)), 0), 0) 'KM50',  " +
+                	   query += "SiteID 'equip', "
+                	   		+ "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , st.speed, NULL)), 0), 0) 'KM50',  " +
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 50 and st.speed <= 70 , st.speed, NULL)), 0), 0) 'KM50_70', " +
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 70 and st.speed <= 90 , st.speed, NULL)), 0), 0) 'KM70_90', " + 
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 90 and st.speed <= 120 , st.speed, NULL)), 0), 0) 'KM90_120', " + 

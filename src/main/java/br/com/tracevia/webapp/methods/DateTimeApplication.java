@@ -502,8 +502,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		
 		
 		//DAYS DIFF ///////////////
-		
-		
+				
 		public int daysDifference(String startDate, String endDate, int index) throws ParseException {
 
 			String startDt= "";
@@ -732,6 +731,50 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				matriz[i][col] = " ----- ";			
 		}	
 		
+		// -------------------------------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para preencher nome dos equipamentos na apresentação do relatório
+		 * @param equip - Lista de equipamentos
+		 * @param matriz - Matriz com dados a serem preenchidos
+		 * @param eqp - Array com equipamentos selecionados
+		 * @param col - Coluna a ser aplicada
+		 * @param lin - Número de registros 
+		 * @param range - Intervalo por período
+		 * @param days - Número de dias
+		 */
+		public void fillEquipName(List<? extends Equipments> equip, String[][] matriz, String[] eqp, int col, int lin, int range, int days) { 
+							
+		int idx = 0; // INDEX
+		int inc = range; // INCRENENTO
+			
+		for (int d = 0; d < days; d++) { // NUMEROS DE DIAS
+			
+			for (int j = 0; j < equip.size(); j++) { // LISTA DE EQUIPAMENTOS
+				
+			   for (int i = 0; i < eqp.length; i++) { // EQUIPAMENTOS DA CAIXA DE SELECAO
+				   
+				  if (equip.get(j).getEquip_id() == Integer.parseInt(eqp[i])) { // COMPARAR EQUIPAMENTOS PARA OBTER O NOME
+					  								   
+				       for (int k = idx; k < inc; k++) { // PERCORRER AS LINHAS DA TABELA
+				   					  		   					         						   
+						   matriz[idx][col] = equip.get(j).getNome();		
+						   idx++;
+				  
+					   }
+				   
+				       if(inc < lin) // COMPARAR INCREMENTO COM NUMERO DE LINHAS -> CASO SEJA MENOR
+				           inc+= range;
+				   
+					 }	
+				  }
+			    }
+			} 
+		}	// END
+		
+		
+		// -------------------------------------------------------------------------------------------------------------------------------------
+		
 		//Criar o intervalo de 5 minutos
 		public void intervalo05Minutos(String[][] matriz, int col, int lin) {
 
@@ -779,8 +822,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			}
 			
 		}
-		
-		
+				
 		//Criar o intervalo de 6 minutos
 		public void intervalo06Minutos(String[][] matriz, int col, int lin) {
 

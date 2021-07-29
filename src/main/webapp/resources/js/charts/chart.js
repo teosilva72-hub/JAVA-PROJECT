@@ -16,7 +16,7 @@
         data.addColumn('number', 'Motos');
         data.addColumn('number', 'Autos');
         data.addColumn('number', 'Pesados');
-         
+            
           //Add columns
                 
          //Add rows
@@ -35,8 +35,9 @@
           [12, 6, 80, 20],
           [13, 2, 45, 25],
           [14, 3, 70, 35]
-        ]); 
-         
+        ]);
+        
+              
       //  data.addRows([[new Date('06/02/2021'),5,15,11,4,0,0,35]]);
 
        var options = {
@@ -57,6 +58,7 @@
         chart.draw(data, options);                                               
                   
 }  
+
 
  function reDrawChart(chartColumns, chartRows, title, vAxisTitle, dateFormat, imageName) {
   
@@ -170,8 +172,6 @@
         download.href = canvas.toDataURL('image/png');
         download.download = imageName+'.png';
         
-     
-        
       }
       
       image.src = imageURI;              
@@ -179,7 +179,7 @@
   });              
 
  } 
-       
+        
 function toggleChart(){			 
  $('.chart-wrapper').removeClass('invisible');	
  $('.table-container').addClass('d-none');
@@ -199,9 +199,3 @@ $(function () {
 })		
 }); 
 
-
-
- 
- 
-
- 

@@ -12,7 +12,7 @@ $(function () {
     for (messages of validation)
         if (messages.name == "")
             equipsArray.push(messages.value);
-        else window[messages.name] = messages.value
+       else window[messages.name] = messages.value
 
     //Call method to set checkbox all checked
     checkedByDefault('#equips', equipsArray);
@@ -41,16 +41,16 @@ $(function () {
     validateOnChange('#dateEnd');
 
     //Reset Fields on close modal	   
-    resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
-    resetFieldMultiselectOnModalClose('#modalReportOptions', 'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh);
+    resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', equipmentSelectMsg, equipsArray);
+    resetFieldMultiselectOnModalClose('#modalReportOptions', 'vehicles', vehicleSelectMsg, veh);
     resetFieldOnModalClose('#modalReportOptions', 'periods');
     resetFieldOnModalClose('#modalReportOptions', 'dateStart');
     resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
 
     //Remove validation icons
     //click reset button action	
-    removeValidationMultiselectIcon("reset-btn", 'equips', '#{satLabels.sat_reports_select_equipments}', equipsArray);
-    removeValidationMultiselectIcon("reset-btn", 'vehicles', '#{satLabels.sat_reports_select_vehicles}', veh);
+    removeValidationMultiselectIcon("reset-btn", 'equips', equipmentSelectMsg, equipsArray);
+    removeValidationMultiselectIcon("reset-btn", 'vehicles', vehicleSelectMsg, veh);
     removeValidationIcon("reset-btn", 'periods');
     removeValidationIcon("reset-btn", 'dateStart');
     removeValidationIcon("reset-btn", 'dateEnd');

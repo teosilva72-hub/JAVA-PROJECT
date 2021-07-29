@@ -385,7 +385,113 @@ public class ExcelSpreadSheet {
 				       }
 				
 	/* *********************************************************************************************************************************************************************************** */
+			
 				
+				/* *********************************************************************************************************************************************************************************** */				
+				
+				//SINGLE FOR DIRECTIONS REPORTS 
+				
+				 //Convert Fiels to Integer
+				public void fillDataEquipSingleDirections(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int inc) {
+					 
+					int rowLenght = startRow + endRow ;
+																			
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   for(int col = colStart; col < maxCol; col++) {
+							   
+					            row = sheet.getRow((short) rowIndex);
+					            cells[lin][col] = row.createCell((short) col);	
+					            
+					            try {
+					            				            	
+					            	if(col == 0 || col == 1 || col == 2)
+					            	cells[lin][col].setCellValue(values[lin][col]); 
+					            	
+					            	else cells[lin][col].setCellValue(values[lin][col] == null? 0 : Integer.parseInt(values[lin][col]));
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }					            
+					         }						     
+					       }     	   
+				        }
+				
+	/* *********************************************************************************************************************************************************************************** */
+				
+				//SINGLE FOR DIRECTIONS REPORTS DIR 1
+				public void fillDataEquipSingleDirectionsDir1(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int iniCol1) {
+					 
+					int rowLenght = startRow + endRow ;
+					int auxCol;
+									
+					  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						  
+						  auxCol = iniCol1;
+						  
+						  for(int col = colStart; col < maxCol; col++) {
+						   				 					   
+					            row = sheet.getRow((short) rowIndex);
+					            cells[lin][col] = row.createCell((short) col);	
+					            
+					            try {
+					            				            	
+					            	if(col == 0 || col == 1 || col == 2)
+					            	cells[lin][col].setCellValue(values[lin][col]); 
+					            						            					            	
+					            	else {
+					            		
+					            		cells[lin][col].setCellValue(values[lin][auxCol] == null? 0 : Integer.parseInt(values[lin][auxCol]));
+					            		
+					            		auxCol++;
+					            	}
+					            						            	
+					            	
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }					            				           						     
+					        }				    
+					     }     	   
+				       }
+				
+  /* *********************************************************************************************************************************************************************************** */
+				
+				//SINGLE FOR DIRECTIONS REPORTS DIR 1
+				public void fillDataEquipSingleDirectionsDir2(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int iniCol2) {
+					 
+					int rowLenght = startRow + endRow ;
+					int auxCol;
+																							
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   
+						   auxCol = iniCol2;
+							  
+							  for(int col = colStart; col < maxCol; col++) {
+							   				 					   
+						            row = sheet.getRow((short) rowIndex);
+						            cells[lin][col] = row.createCell((short) col);	
+						            
+						            try {
+						            				            	
+						            	if(col == 0 || col == 1 || col == 2)
+						            	cells[lin][col].setCellValue(values[lin][col]); 
+						            						            					            	
+						            	else {
+						            		
+						            		cells[lin][col].setCellValue(values[lin][auxCol] == null? 0 : Integer.parseInt(values[lin][auxCol]));
+						            		
+						            		auxCol++;
+						            	}
+					            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }					            						     
+							 }					    						   					     
+					      }     	   
+				       }
+				
+	/* *********************************************************************************************************************************************************************************** */
+			
 				/////////////////////////////////////////
 				/// PERIODs
 				////////////////////////////////////////
@@ -499,9 +605,187 @@ public class ExcelSpreadSheet {
 				                 }	
 				
  /* *********************************************************************************************************************************************************************************** */
+	
+				/////////////////////////////////////////
+				/// PERIODs
+				////////////////////////////////////////
+				
+				 //Convert Fiels to Integer
+				public void fillDataEquipRangeDirections(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int inc) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0;					    	  
+				    	  
+							 for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   for(int col = colStart; col < maxCol; col++) {
+								   
+								   index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[index][col] = row.createCell((short) col);	
+							            
+							            try {
+							            				            	
+							            	if(col == 0 || col == 1 || col == 2)
+							            		 cells[index][col].setCellValue(values[index][col]);			          			            
+							            	
+							            	else cells[index][col].setCellValue(values[index][col] == null? 0 : Integer.parseInt(values[index][col]));
+							            	
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }	     
+							        }										     
+							     }		    	  
+				              }	
+				
+				/* *********************************************************************************************************************************************************************************** */
+				
+				 //Convert Fiels to Integer
+				public void fillDataEquipRangeDirectionsDir1(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int iniDir1) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0;
+					int auxCol;
+						    	  				    	
+							   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   
+								   auxCol = iniDir1;
+								   
+								   for(int col = colStart; col < maxCol; col++) {
+								   
+								       index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[index][col] = row.createCell((short) col);	
+							            
+							            try {
+		    				            	
+							            	if(col == 0 || col == 1 || col == 2)
+							            	cells[lin][col].setCellValue(values[index][col]); 
+							            								            	
+							            							            	
+							            	else {
+							            		
+							            		cells[lin][col].setCellValue(values[lin][auxCol] == null? 0 : Integer.parseInt(values[lin][auxCol]));							            		
+							            	 	auxCol++;
+							            	}
+							            						            	
+							           
+							            			          			            
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }					  				        						   
+					                 }														     
+							       }		    	  
+				                }		
+				
+				/* *********************************************************************************************************************************************************************************** */
+				
+				 //Convert Fiels to Integer
+				public void fillDataEquipRangeDirectionsDir2(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange, int iniDir2) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0;
+					int auxCol;
+						    	  				    
+							   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   
+								   auxCol = iniDir2;
+								   
+									  for(int col = colStart; col < maxCol; col++) {
+								   
+								       index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[index][col] = row.createCell((short) col);	
+							            
+                                            try {
+		    				            	
+							            	if(col == 0 || col == 1 || col == 2)
+							            	   cells[lin][col].setCellValue(values[index][col]); 
+							            							            	
+							            	else {
+							            		
+							            		cells[lin][col].setCellValue(values[lin][auxCol] == null? 0 : Integer.parseInt(values[lin][auxCol]));							            						            	
+							            	    auxCol++;
+							            	
+                                            }
+							            			          			            
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }				            		
+									 }
+							       }
+				                 }	
+				
+				/* *********************************************************************************************************************************************************************************** */
 								
-	
-	
+				   //Convert Fiels to Integer
+			    //STANDARD EXCEL MODEL DATA BY RANGE
+				public void fillDataEquipRange(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange) {
+					 
+					int rowLenght = startRow + endRow ;
+					int index = 0;
+						    	  		    	  
+							   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+								   for(int col = colStart; col < maxCol; col++) {
+								   
+								   index = lin + (day * periodRange);
+									
+							            row = sheet.getRow((short) rowIndex);
+							            cells[index][col] = row.createCell((short) col);	
+							            
+							            try {
+							            				            	
+							            	if(col == 0 || col == 1 || col == 2)
+							            	cells[index][col].setCellValue(values[index][col]); 
+							            	
+							            	else if(values[index][col] != null && values[index][col].contains("."))
+							            		cells[index][col].setCellValue(values[index][col] == null ? 0 : Double.parseDouble(values[index][col]));
+							            	
+							            	else cells[index][col].setCellValue(values[index][col] == null? 0 : Integer.parseInt(values[index][col]));
+							            						           					            			          			            
+							            }catch(NullPointerException ex) {
+							            	ex.printStackTrace();
+							           }				         
+							        }				        
+							     }		    	  
+				              }	
+				
+				/* *********************************************************************************************************************************************************************************** */
+												
+				//OK -> 03/06/2021
+				//STANDARD EXCEL MODEL USED
+				//DAYS / MONTH / YEAR
+				public void fillDataEquipSingle(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
+					 
+					int rowLenght = startRow + endRow ;
+											
+					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+						   for(int col = colStart; col < maxCol; col++) {
+						   				 					   
+					            row = sheet.getRow((short) rowIndex);
+					          
+					            cells[lin][col] = row.createCell((short) col);	
+					            
+					            try {
+					            				            	
+					            	if(col == 0 || col == 1 || col == 2)
+					            	cells[lin][col].setCellValue(values[lin][col]);			            			            
+					            						            	
+					            	else cells[lin][col].setCellValue(values[lin][col] == null ? 0 : Integer.parseInt(values[lin][col]));
+					            				            				            			            			          			            
+					            }catch(NullPointerException ex) {
+					            	ex.printStackTrace();
+					           }		
+					            
+					          }		       
+					      }     	   
+				       }
+				
+			/* *********************************************************************************************************************************************************************************** */
+								
+				
    public void createRows(XSSFSheet sheet, XSSFRow row, int initialValue, int endValue) {
 			
 		   for (int rowIndex = initialValue; rowIndex <= endValue;  rowIndex++) { 				
@@ -875,9 +1159,43 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     	int rowTotal = rowMax + 1;
 		int totalStartRow = rowIni + 1;	
 		length -= 1;
-    	
-    	    	    	    	    	
+    	    	    	    	    	    	
     	startColumn = 2; mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); 
+    	
+    	//System.out.println("COL: "+startColumn);
+    	//System.out.println("LEH: "+length);
+				
+		//System.out.println("ST: "+totalStartRow);
+		//System.out.println("MX: "+rowMax);
+		
+		for(int col = startColumn; col <= length; col++) {
+			
+			String columnLetter = CellReference.convertNumToColString(col);
+			
+			//System.out.println(columnLetter);
+			
+			 // for(int r = totalStartRow; r <= rowMax; r++) { 
+				
+				
+				
+				//createCellWithFormula(sheet, row, r, totalCol, "SUM("+initialColumnLetter+""+ (r) + ":"+maxColumnLetter+"" + (r) + ")");
+				
+				createCellWithFormula(sheet, row, rowMax, col, "SUM("+columnLetter+""+ (totalStartRow) + ":"+columnLetter+"" + (rowMax) + ")");	
+									
+			   // createCellWithFormula(sheet, row, rowMax, totalCol, "SUM("+totalColumnLetter+""+ (totalStartRow) + ":"+totalColumnLetter+"" + (rowMax) + ")");
+			
+							
+		}
+    	
+    }
+    
+   public void totalExcelEquip(Sheet sheet, Row row, String period, int startColumn, int length, int rowIni, int rowMax) {
+    	
+    	int rowTotal = rowMax + 1;
+		int totalStartRow = rowIni + 1;	
+		length -= 1;
+    	    	    	    	    	    	
+    	startColumn = 2; mergeCells(sheet, "A"+(rowTotal)+":C"+(rowTotal)); 
     	
     	//System.out.println("COL: "+startColumn);
     	//System.out.println("LEH: "+length);

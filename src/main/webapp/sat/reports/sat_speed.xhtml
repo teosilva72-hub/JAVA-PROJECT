@@ -23,9 +23,12 @@
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
 		<h:outputStylesheet library="css/forms" name="form-style.css" />		
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
 
 		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
 		<h:outputScript library="js/datepicker" name="datepicker.js" />		
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	
 		<h:outputScript library="js/validation-forms/reports/sat" name="sat-speed-validation.js" />
 		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />
@@ -111,14 +114,14 @@
 				</h:commandButton>
 			</div><!---->	
 							
-				<div id="btn-chart"> <!-- BUTTON CHART DIV -->	
+			<!-- <div id="btn-chart"> 
 				<h:commandButton id="chart-act" value="" 
 					onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
 					class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
 					data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">	
 					<f:ajax execute="@form" render="@none" />			
 				</h:commandButton>
-			</div><!---->			
+			</div>-->			
 					
 		   </div> <!---->
 		 </h:form> <!---->
@@ -169,21 +172,38 @@
 						<!-- EQUIPMENTS OPTIONS -->
 
 						<div class="form-row">
-							<div class="form-group col-sm-12 select-field">
-								<span><i class="fas fa-hdd"></i></span> <span for="equip"
-										class="valid-icon-hidden"></span> <select name="equip"
-										id="equip">
-										<option value="">#{satLabels.sat_reports_select_equipments}</option>
+							<div class="form-group col-sm-12 checkbox-field">
+								<span><i class="fas fa-hdd"></i></span> <span for="equips"
+										class="valid-icon-hidden"></span> <select name="equips"
+										id="equips" multiple="multiple">
 										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
 									</select>
-							  </div>
+							    </div>
 							  <div class="error-label">
-									<label for="equip" class="error" id="equip-error"></label>
+									<label for="equips" class="error" id="equips-error"></label>
 								</div>
 						  </div>
+						  						  
+						  	<!-- VEHICLES OPTIONS -->
+
+							<div class="form-row">
+							<div class="form-group col-sm-12 checkbox-field">
+									<span><i class="fas fa-car"></i></span> <span for="vehicles"
+										class="valid-icon-hidden"></span> <select name="vehicles"
+										id="vehicles" multiple="multiple">
+										<ui:repeat var="veh" value="#{satReportsBean.vehicles}"
+											varStatus="vehStatus">
+											<option value="#{veh.value}">#{veh.label}</option>
+										</ui:repeat>
+									</select>
+								</div>
+								<div class="error-label">
+									<label for="vehicles" class="error" id="vehicles-error"></label>
+								</div>
+							</div>
 														
 							<!-- PERIODS OPTIONS -->
 
@@ -335,11 +355,19 @@
 		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 
+		  <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
+		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
+		  </ui:repeat> <!---->
 		 	
+		 <input type="hidden" name="equipmentSelectMsg" value="#{satLabels.sat_reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
+		 <input type="hidden" name="vehicleSelectMsg" value="#{satLabels.sat_reports_select_vehicles}" />	<!-- SELECT VEHICLE LABEL MESSAGE -->
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
 		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
 		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_sat_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+		 <input type="hidden" name="requiredVehiclesMsg" value="#{requiredMessages.required_sat_reports_select_vehicles}" />
 		 <input type="hidden" name="requiredPeriodsMsg" value="#{requiredMessages.required_sat_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->
 		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_sat_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
 		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_sat_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
