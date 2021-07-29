@@ -135,7 +135,7 @@ public class ColasBean {
 
 		public String getDirection() {
 			TranslationMethods trad = new TranslationMethods();
-			return trad.daiLabels(direction);
+			return trad.colasLabels(direction);
 		}
 		
 		public String getChannel() {
@@ -144,7 +144,7 @@ public class ColasBean {
 		 
 		public String getIncident() {
 			TranslationMethods trad = new TranslationMethods();
-			return trad.daiLabels(incident);
+			return trad.colasLabels(incident);
 		}
 
 		public String getDate() {
@@ -356,7 +356,7 @@ public class ColasBean {
 			}
 			document.add(new Paragraph("\n\n"));
 			document.add(new Paragraph(localeColas.getStringKey("number")+": "+traffic.plate));
-			document.add(new Paragraph(localeColas.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
+			document.add(new Paragraph(localeColas.getStringKey("way")+": "+trad.colasLabels(traffic.direction)));
 			document.add(new Paragraph(localeColas.getStringKey("lane")+": "+traffic.lane));
 			document.add(new Paragraph(localeColas.getStringKey("date")+": "+traffic.date));
 			document.add(new Paragraph(localeColas.getStringKey("hour")+": "+traffic.hour));

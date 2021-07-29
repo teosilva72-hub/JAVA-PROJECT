@@ -69,6 +69,43 @@ public class TranslationMethods {
 		}
 		return converteDai;
 	}
+	
+	public String colasLabels(String colas) {
+		String converteColas= "";
+		switch (colas) {
+		case "Unknown(Event)": converteColas = localeDai.getStringKey("unknown"); break;
+		case "Congestion(Event)": converteColas = localeDai.getStringKey("congestion"); break;
+		case "Illegal Parking(Event)": converteColas = localeDai.getStringKey("parking"); break;
+		case "Wrong-Way Driving(Event)": converteColas = localeDai.getStringKey("driver_opposite"); break;
+		case "Pedestrain(Event)": converteColas = localeDai.getStringKey("pedestrian"); break;
+		case "Thrown Object(Event)": converteColas = localeDai.getStringKey("thrown_object"); break;
+		case "Smoke object(Event)": converteColas = localeDai.getStringKey("Smoke"); break;
+		case "Driving on the Lane Line(Event)": converteColas = localeDai.getStringKey("driver_lane_yellow"); break;
+		case "Blacklist data(Event)": converteColas = localeDai.getStringKey("blacklist"); break;
+		case "Over speed(Event)": converteColas = localeDai.getStringKey("over_speed"); break;
+		case "Illegal Lane Change(Event)": converteColas = localeDai.getStringKey("lane_change"); break;
+		case "Jumping in line(Event)": converteColas = localeDai.getStringKey("jumping"); break;
+		case "Braking the road(Event)": converteColas = localeDai.getStringKey("braking"); break;
+		case "Construction(Event)": converteColas = localeDai.getStringKey("construction"); break;
+		case "Road accident(Event)": converteColas = localeDai.getStringKey("road_accident"); break;
+		case "Illegal parking in parallel(Event)": converteColas = localeDai.getStringKey("parking_parallel"); break;
+		case "Mist(Event)": converteColas = localeDai.getStringKey("mist"); break;
+		case "Occupying the emergency rail(Event)": converteColas = localeDai.getStringKey("emergency_rail"); break;
+		case "Fire": converteColas = localeDai.getStringKey("fire"); break;
+		case "Manual fortification Barrage(Event)": converteColas = localeDai.getStringKey("fortification_dam"); break;
+		case "Occupying the passing lane(Event)": converteColas = localeDai.getStringKey("passing_lane"); break;
+		case "Violating the prohibition sign(Event)": converteColas = localeDai.getStringKey("violating_prohibition"); break;
+		case "Sudden stop of speed(Event)": converteColas = localeDai.getStringKey("sudden_stop"); break;
+		case "Moving slowly(Event)": converteColas = localeDai.getStringKey("moving_slowly"); break;
+		case "Up": converteColas = localeDai.getStringKey("up"); break;
+		case "Two-way": converteColas = localeDai.getStringKey("two_way"); break;
+		case "Down": converteColas = localeDai.getStringKey("down"); break;
+		default: converteColas = ""; break;
+		
+		}
+		return converteColas;
+	}
+	
 	public String wimLabels(String wim) {
 		String converteWim = "";
 		switch(wim){
