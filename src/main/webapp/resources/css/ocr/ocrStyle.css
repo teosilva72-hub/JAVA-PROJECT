@@ -58,11 +58,13 @@ html, body {
 }
 
 .logo-concessionaire {
-    left: 25px;
-    bottom: 50px;
-	top: unset;
-	height: 55px;
-	transform: unset;
+    bottom: unset;
+    top: 85px;
     opacity: .8;
-    z-index: 1;
+    transform: unset;
+    left: 25px;
+}
+.detailsModal{
+	color: black;
+	font-weight: 20;
 }

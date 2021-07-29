@@ -120,11 +120,11 @@
 }
 
 .logo-concessionaire {
-    left: 25px;
-    bottom: 50px;
-	top: unset;
-	height: 55px;
-	transform: unset;
-    opacity: .8;
-    z-index: 1;
+       right: 40%;
+    left: unset;
+    top: 10px;
+    height: 55px;
+    transform: unset;
+    opacity: 1;
+    z-index: 1100;
 }

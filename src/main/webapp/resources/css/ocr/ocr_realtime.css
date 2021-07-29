@@ -54,3 +54,12 @@ html, body {
 .l{
 	margin-left: -25px;
 }
+.logo-concessionaire {
+        right: 70%;
+    /* bottom: 50px; */
+    top: 10px;
+    height: 55px;
+    transform: unset;
+    opacity: .8;
+    z-index: 1100;
+}

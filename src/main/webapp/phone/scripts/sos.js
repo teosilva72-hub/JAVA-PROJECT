@@ -9,7 +9,7 @@ const changeStates = response => {
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
 	let alarm = equip.find(`#Alarm${name}`);
-	let alarms = alarm.children();
+	let alarms = alarm.children().find("div");
 	let sidebar = $(`#status${name.toLowerCase()}`)
 	
 	switch (status) {
@@ -94,12 +94,31 @@ const signaling = response => {
 	let html = alarm.find(`div`)
 	let alarms = html.children()
 	let door = alarms.filter(`span[door=${response.Value}]`)
-
+	var doors = document.getElementById("addequip")
+	
 	if (response.EndDate)
 		active = false;
 	
-	if (door.length == 0 && active)
-		html.append(`<span class="col-12" door="${response.Value}">Door ${response.Value}</span>`)
+	if (door.length == 0 && active){
+		
+			if(doors.value == "AÑADIR"){
+				if(response.Value == 3)
+					response.Value = "superior"
+				else response.Value = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Puerta ${response.Value}</span>`)
+			}else if(doors.value == "ADICIONAR"){
+				if(response.Value == 3)
+					response.Value = "superior"
+				else response.Value = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Porta ${response.Value}</span>`)
+			}else{
+				if(response.Value == 3)
+					response.Value = "top"
+				else response.Value = "bottom"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Door ${response.Value}</span>`)
+			}
+	}
+		
 	else if (door.length == 1 && !active)
 		door.remove();
 

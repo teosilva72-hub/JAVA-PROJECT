@@ -59,7 +59,9 @@
 	text-align: center;
 }
 .logo-concessionaire {
-    left: 80%;
+    bottom: unset;
+    top: 85px;
+    opacity: .8;
 }
 .titlePage{
 	color: black;
