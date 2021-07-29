@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.cfg.servers.Servers;
 import br.com.tracevia.webapp.controller.global.EstradaObjectController;
 import br.com.tracevia.webapp.controller.global.EstradaObjectController.Plaque;
 import br.com.tracevia.webapp.util.ConnectionFactory;
@@ -23,14 +24,14 @@ public class RoadConcessionaireDAO {
 
 		String concessionarieName = "";
 		
-		  //if(serverAddress.equals(Servers.ServerViaSul.getServer()))
-		    if(serverAddress.equals("192.168.3.195"))
-		       conn = ConnectionFactory.connectToCCR();
+		if(serverAddress.equals(Servers.ServerViaSul.getServer()))
+		    // if(serverAddress.equals("192.168.3.195"))
+		    conn = ConnectionFactory.connectToCCR();
 		
-		 //   else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
-		  //     conn = ConnectionFactory.connectToViaPaulista();
-				
-	      //  else conn = ConnectionFactory.connectToTraceviaApp();
+		else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
+			conn = ConnectionFactory.connectToViaPaulista();
+			
+		else conn = ConnectionFactory.connectToTraceviaApp();
 		    
 		try {
 
