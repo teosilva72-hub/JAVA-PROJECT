@@ -86,7 +86,7 @@ public class ColasBean {
 	
 	public static class Traffic {
 		int id;
-		String incident;
+		String waiting_time;
 		String date;
 		String channel;
 		String lane;
@@ -106,7 +106,7 @@ public class ColasBean {
 			SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
 			
 			id = idx;
-			incident = info[0];
+			waiting_time = info[0];
 			channel = info[1];
 			lane = info[2];
 			direction = info[3];
@@ -116,7 +116,7 @@ public class ColasBean {
 		}
 		
 		Traffic() {
-			incident = "";
+			waiting_time = "";
 			date = "";
 			channel = "";
 			lane = "";
@@ -142,9 +142,9 @@ public class ColasBean {
 			return channel;
 		}
 		 
-		public String getIncident() {
+		public String getWaiting() {
 			TranslationMethods trad = new TranslationMethods();
-			return trad.colasLabels(incident);
+			return trad.colasLabels(waiting_time);
 		}
 
 		public String getDate() {
@@ -355,11 +355,12 @@ public class ColasBean {
 				document.add(tuxpanL);
 			}
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeColas.getStringKey("number")+": "+traffic.plate));
+			document.add(new Paragraph(localeColas.getStringKey("camera")+": "+traffic.plate));
 			document.add(new Paragraph(localeColas.getStringKey("way")+": "+trad.colasLabels(traffic.direction)));
 			document.add(new Paragraph(localeColas.getStringKey("lane")+": "+traffic.lane));
 			document.add(new Paragraph(localeColas.getStringKey("date")+": "+traffic.date));
 			document.add(new Paragraph(localeColas.getStringKey("hour")+": "+traffic.hour));
+			document.add(new Paragraph(localeColas.getStringKey("waiting_time")+": "+traffic.waiting_time));
 			String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 			File img1 = new File(traffic.file.toString());
 			if(img1.exists()) {

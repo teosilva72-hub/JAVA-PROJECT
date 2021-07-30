@@ -355,7 +355,7 @@ public class DaiBean {
 				document.add(tuxpanL);
 			}
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeDai.getStringKey("number")+": "+traffic.plate));
+			document.add(new Paragraph(localeDai.getStringKey("camera")+": "+traffic.plate));
 			document.add(new Paragraph(localeDai.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
 			document.add(new Paragraph(localeDai.getStringKey("track")+": "+traffic.lane));
 			document.add(new Paragraph(localeDai.getStringKey("channel")+": "+traffic.channel));
