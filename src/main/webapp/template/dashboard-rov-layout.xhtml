@@ -448,7 +448,9 @@
       </div>
     </ui:insert>
 
-    <ui:fragment rendered="#{loginAccount.load.en_sos == Phone}">
+    <ui:fragment rendered="#{loginAccount.load.en_sos}">
+    
+     <c:if test="#{Phone}">
 
       <ui:insert name="callbox">
 
@@ -564,7 +566,8 @@
         </section>
         
     </ui:insert>
-
+    
+    </c:if>
   </ui:fragment>
 
     <ui:insert name="modal-content"></ui:insert>

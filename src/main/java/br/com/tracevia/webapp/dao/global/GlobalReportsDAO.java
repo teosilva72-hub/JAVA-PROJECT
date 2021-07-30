@@ -63,7 +63,7 @@ public class GlobalReportsDAO {
 				    					    	 
 				    	    result[lin][col] = rs.getString((col+1));
 				    	    				    	    
-				    	   // System.out.println("LIN["+lin+"]COL["+col+"] = "+result[lin][col] );  	  // DEBBUGER  				    	 				      
+				    	  // System.out.println("LIN["+lin+"]COL["+col+"] = "+result[lin][col] );  	  // DEBBUGER  				    	 				      
 				        }
 				    				     
 				     lin++;

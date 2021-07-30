@@ -28,6 +28,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.meteo.mto.MtoReports;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.meteo.sv.SvReports;
 import br.com.tracevia.webapp.model.meteo.sv.SvReports.Builder;
@@ -414,9 +415,7 @@ public void CreateFields(String type) {
 		    MeteoQueriesModels svModels = new MeteoQueriesModels();	    
 		    DateTimeApplication dta = new DateTimeApplication();
 		    
-			GlobalReportsDAO dao = new GlobalReportsDAO();	
-			
-			MessagesUtil message = new MessagesUtil(); //Display messages
+			GlobalReportsDAO dao = new GlobalReportsDAO();		
 			
 			String startDate = null, endDate = null, data_anterior = null, mes_anterior = null, mes_inicial = null, month_start_date = null;
 			
@@ -514,7 +513,7 @@ public void CreateFields(String type) {
 			//Select specific query by type
 			query = SelectQueryType(type, models, svModels); 
 																			
-			//System.out.println(query); //debug
+			System.out.println(query); //debug
 
 			//EXECU��O DA QUERY
 			String[][] auxResult = dao.ExecuteQuery(query, getNumRegisters(), getFieldsNumber());
@@ -997,7 +996,7 @@ if(type.equals("3")) {
 		  
 		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_year"); 
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -1027,7 +1026,7 @@ if(type.equals("3")) {
 		  
 		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
  		   		 
- 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
+ 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
  		  excel_title = localeLabel.getStringKey("excel_report_weather_title_month");
  		  
  		  countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"};
@@ -1056,7 +1055,7 @@ if(type.equals("3")) {
 		  
 		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
 		   		 
-		  fileName = localeLabel.getStringKey("excel_report_weather_file")+tm.periodName(svReport.getPeriod());
+		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_periods");
 		  
 		  countMergeHeader = new String[] {"A1:B4", "C1:I4", "J1:L4"};
@@ -1106,9 +1105,10 @@ if(type.equals("3")) {
 			e.printStackTrace();
 		}
 		finally {
-			//externalContext.getSessionMap().remove("xlsModel");
-			//externalContext.getSessionMap().remove("current");
-			//externalContext.getSessionMap().remove("fileName");			
+			
+			externalContext.getSessionMap().remove("xlsModel");
+			externalContext.getSessionMap().remove("current");
+			externalContext.getSessionMap().remove("fileName");			
 			
 		}
 
@@ -1142,7 +1142,14 @@ if(type.equals("3")) {
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
  		      resultList.add(new SvReports.Builder().month(resultQuery[k][0]) 
- 		    		   .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1])));
+ 		    	   .atmPressure(resultQuery[k][1] == null? 0 : Double.parseDouble(resultQuery[k][1]))  
+	 		 	   .relative_humidity(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))
+	 		 	   .temperature(resultQuery[k][3] == null? 0.0 : Double.parseDouble(resultQuery[k][3]))
+	 		 	   .windDir(resultQuery[k][4] == null? 0 : Double.parseDouble(resultQuery[k][4]))
+	 		 	   .windSpeed(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
+	 		 	   .absolutePreciptation(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6])) 	               
+	 		 	   .EnvTemperature(resultQuery[k][7] == null? 0 : Double.parseDouble(resultQuery[k][7])));  
+ 		    		 
  		       		       		    	    			    				 
  		 }  		   		 
   		}
@@ -1151,8 +1158,14 @@ if(type.equals("3")) {
   			
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
-  	 		      resultList.add(new SvReports.Builder().dayOfMonth(resultQuery[k][0] == null? 0 : Integer.parseInt(resultQuery[k][0])) 
-  	 		    	 .EnvTemperature(resultQuery[k][1] == null? 0.0 : Double.parseDouble(resultQuery[k][1])));             
+  	 		      resultList.add(new SvReports.Builder().dayOfMonth(resultQuery[k][0] == null? 0 : Integer.parseInt(resultQuery[k][0])) 		 	 		 
+  	 		    	   .atmPressure(resultQuery[k][1] == null? 0 : Double.parseDouble(resultQuery[k][1]))  
+  	 	 		 	   .relative_humidity(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))
+  	 	 		 	   .temperature(resultQuery[k][3] == null? 0.0 : Double.parseDouble(resultQuery[k][3]))
+  	 	 		 	   .windDir(resultQuery[k][4] == null? 0 : Double.parseDouble(resultQuery[k][4]))
+  	 	 		 	   .windSpeed(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
+  	 	 		 	   .absolutePreciptation(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6])) 	               
+  	 	 		 	   .EnvTemperature(resultQuery[k][7] == null? 0 : Double.parseDouble(resultQuery[k][7])));          
   	               
   	 		 }
   			
@@ -1162,11 +1175,16 @@ if(type.equals("3")) {
   			
   		  for(int k = 0; k < getNumRegisters(); k++) {      
 				 
- 		      resultList.add(new SvReports.Builder().date(resultQuery[k][0]) 
-                .dateTime(resultQuery[k][1])               
-                .EnvTemperature(resultQuery[k][2] == null? 0.0 : Double.parseDouble(resultQuery[k][2])));            
-              
- 		    		    			    				 
+ 		    		resultList.add(new SvReports.Builder().date(resultQuery[k][0]) 
+ 	 		    	.dateTime(resultQuery[k][1]) 
+ 	                .atmPressure(resultQuery[k][2] == null? 0 : Double.parseDouble(resultQuery[k][2]))  
+ 	                .relative_humidity(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3]))
+ 	                .temperature(resultQuery[k][4] == null? 0.0 : Double.parseDouble(resultQuery[k][4]))
+ 	                .windDir(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
+ 	                .windSpeed(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6]))
+ 	                .absolutePreciptation(resultQuery[k][7] == null? 0 : Double.parseDouble(resultQuery[k][7])) 	               
+ 	                .EnvTemperature(resultQuery[k][8] == null? 0 : Double.parseDouble(resultQuery[k][8])));   
+               		    		    			    				 
  		 }
 		    	
    }		   

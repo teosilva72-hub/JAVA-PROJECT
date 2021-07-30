@@ -76,7 +76,11 @@ body{
 	height: 40px;
 }
 .cardContainer{
-	margin-top: -5%;
+	margin-top: 2%;
+}
+
+.cardContainer-sv{
+	margin-top: -1%;
 }
 
 .card:hover{

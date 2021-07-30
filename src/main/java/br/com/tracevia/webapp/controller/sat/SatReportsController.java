@@ -956,7 +956,7 @@ public class SatReportsController {
 			
 			// NÚMERO DE REGISTROS
 									
-			if(type.equals("8") || !type.equals("11")) {
+			if(type.equals("8") || type.equals("11")) {
 				
 				setNumRegisters(numRegisters * satReport.getEquipments().length);
 			    setFieldsIndex(satReport.getEquipments().length / numRegisters);

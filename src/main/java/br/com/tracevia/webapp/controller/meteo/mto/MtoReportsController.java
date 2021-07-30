@@ -43,7 +43,6 @@ public class MtoReportsController {
 	private List<SelectItem> months;
 	private List<SelectItem> years;
 	private List<SelectItem> periods;
-	private List<SelectItem> types;
 		
 	private List<Builder> resultList;	
 	private List<ColumnModel> columns;
@@ -118,11 +117,7 @@ public class MtoReportsController {
 		
 	public List<SelectItem> getPeriodsFlow() {
 		return periods;
-	}	
-		
-	public List<SelectItem> getTypes() {
-		return types;
-	}
+	}		
 
 	public static int getNumRegisters() {
 		return numRegisters;
@@ -266,11 +261,7 @@ public class MtoReportsController {
 		periods.add(new SelectItem("01 hour", localeLabel.getStringKey("mto_reports_select_periods_one_hour")));
 		periods.add(new SelectItem("06 hours", localeLabel.getStringKey("mto_reports_select_periods_six_hours")));
 		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("mto_reports_select_periods_twenty_four_hours")));
-				
-		types = new ArrayList<SelectItem>();
-		types.add(new SelectItem("WS", "WS"));
-		types.add(new SelectItem("RS", "RS"));
-		
+
 		module = "mto";
 		
 		table = "mto_data";
@@ -334,6 +325,18 @@ public void CreateFields(String type) {
 			// Table Objects
 			fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
 					"absolute_precipitation", "visibility", "road_temperature"};
+			
+			 //JSON FIELDS
+			  jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
+	   					localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
+	   				    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
+	   					localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
+	   					localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
+			
+			
+			//JSON chart title and subtitle
+ 			chartTitle = localeLabel.getStringKey("mto_reports_chart_title_year");
+ 			imageName = localeLabel.getStringKey("mto_reports_chart_file_name_year");	
 								
 		  }
 		  
@@ -349,7 +352,18 @@ public void CreateFields(String type) {
 			   // Table Objects
 			  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
 					  "absolute_precipitation", "visibility", "road_temperature" };
-			  		
+			  
+ 			  //JSON chart fields
+ 			 jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
+						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
+					    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
+						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
+						localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
+			  			 							  
+ 			    //JSON chart title and subtitle
+ 				chartTitle = localeLabel.getStringKey("mto_reports_chart_title_month");
+ 				imageName = localeLabel.getStringKey("mto_reports_chart_file_name_month"); 				
+ 							  					  		
 			   }
 		   
 		   if(type.equals("3")) {
@@ -364,7 +378,18 @@ public void CreateFields(String type) {
 			   // Table Objects				
 				fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
 						"absolute_precipitation", "visibility", "road_temperature" }; 
-											
+				
+				//JSON chart fields
+				   jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
+							localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
+							localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", 	localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
+							localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
+							localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
+				
+				 //JSON chart title and subtitle
+				chartTitle = localeLabel.getStringKey("mto_reports_chart_title_period"); 				
+				imageName = localeLabel.getStringKey("mto_reports_chart_file_name_period");
+															
 		      }			 
 	       
 	        //Finally Draw Table
@@ -465,19 +490,11 @@ public void CreateFields(String type) {
 		 			periodRange = dta.periodsRange(mtoReport.getPeriod());
 		 		    	    	    	   
 		    	   }
-		    	 
-		    	
-		     // CHECK MTO TYPE	 
-		      mtoType = equipDao.EquipmentSelectMTOType(mtoReport.getEquipment());
-		     
-		      //System.out.println(mtoType);
-		      
+		    	 				      
 		  	   //N�MERO DE CAMPOS PARA A SA�DA DE DADOS
 			   //LEVA EM CONSIDERA��O N�MERO DE CAMPOS DA QUERY					    	 
-		      if(!mtoType.equals("RS"))
-		    		setFieldsNumber(fieldsNumberWS(type));	
-		      
-		      else setFieldsNumber(fieldsNumber(type));
+		    		      
+		     setFieldsNumber(fieldsNumber(type));
 		    		   				    
 			//Chamar Procedure de acordo com per�odo selecionado
 			//procedure = models.SelectProcedureByPeriod(mtoReport.getPeriod());	
@@ -489,9 +506,7 @@ public void CreateFields(String type) {
 			month_start_date = "01";
 			
 			start = dta.DateTimeToStringIni(startDate); 
-			end = dta.DateTimeToStringFim(endDate); 
-			
-			jsonFields(type, mtoType);			
+			end = dta.DateTimeToStringFim(endDate); 			
 														
 			resultQuery = new String[getNumRegisters()][getFieldsNumber()];
 			jsonArray = new String[getNumRegisters()][jsonFields.length];	
@@ -873,35 +888,6 @@ if(type.equals("3")) {
  /////// FIELDS NUMBER - SA�DA DE DADO 
 
 /**********************************************************************************************************/
-
-/////// FIELDS NUMBER RS - SA�DA DE DADO
-
-public Integer fieldsNumberWS(String type) {
-	
-	FacesContext facesContext = FacesContext.getCurrentInstance();
-	ExternalContext externalContext = facesContext.getExternalContext();
-
-	int length = (int) externalContext.getSessionMap().get("fieldsLength");
-
-    int fields = 0;
-
-    /**** CONTAGEM VE�CULOS ****/		
-    if(type.equals("1"))    		
-	fields = (length - 1);   
-
-    if(type.equals("2"))    		
-	 fields = (length - 1);  
-
-    /**** FLUXO MENSAL  ****/
-    if(type.equals("3"))   		
-	fields = (length - 1);  
-
-
-return fields;   
-
-}
-
-/////// FIELDS NUMBER - SA�DA DE DADO 
    
    /* *********** */
    /* *** AUX *** */
@@ -963,10 +949,7 @@ return fields;
 	   if(type.equals("1")) { 
   		   		       			 
   		   yearBuilder();
-  		   
-  		  if(!mtoType.equals("RS")) 
-  		     field = ReorderTableDependMtoType(type);
-  		  		   
+  		     		  		  		   
   		// DRAW TABLE -- BUILD HEADER
   		drawTable(field, fieldObjectValues);
   		  		
@@ -975,10 +958,7 @@ return fields;
 	   if(type.equals("2")) { 
       			
 		   monthBuilder();
-		   
-		   if(!mtoType.equals("RS")) 
-			   field = ReorderTableDependMtoType(type);
-		   
+		   		  		   
 		// DRAW TABLE -- BUILD HEADER
 	  	 drawTable(field, fieldObjectValues);
  		   
@@ -986,10 +966,7 @@ return fields;
 	   if(type.equals("3")) {
 		   			
 		 periodBuilder();
-		 
-		 if(!mtoType.equals("RS")) 
-			 field = ReorderTableDependMtoType(type);
-		   
+		 				   
 		// DRAW TABLE -- BUILD HEADER
 	  	 drawTable(field, fieldObjectValues);
 	   
@@ -1158,55 +1135,11 @@ return fields;
   		// Fields again
   		CreateFields(type);
 
-  	}
-  	
-	//REORDENAR TABLE FRONT END - CONTAGEM VECULOS
-	public String[] ReorderTableDependMtoType(String type) {
-				
-		  if(type.equals("1")) {
-			   
-				field = new String[] {localeLabel.getStringKey("mto_reports_year_month"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-					    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", 	localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)"};
-						
-							
-				fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-						"absolute_precipitation", "visibility"};
-		   }
-		   
-		   if(type.equals("2")) {
-			   
-			   field = new String[] {localeLabel.getStringKey("mto_reports_general_day_month"),  localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-						localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)"};
-								   
-			  fieldObjectValues = new String[] { "dayOfTheMonth", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-					  "absolute_precipitation", "visibility"};
-				
-			   }
-		   
-		   if(type.equals("3")) {
-				   
-			   field = new String[] {localeLabel.getStringKey("mto_reports_general_date"), localeLabel.getStringKey("mto_reports_general_interval"),  localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-						localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", 	localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)"};
-													
-				fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
-						 "absolute_precipitation", "visibility"};
-				
-		      }	
-		   				
-		   return field;		 
-	    }	  	
+  	}  	
   	   
   		 //CONSTRUCTORS
   		public void yearBuilder() {
-  			
-  		if(mtoType.equals("RS")) {
-  		
+  			  	  		
   		 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
  		      resultList.add(new MtoReports.Builder().month(resultQuery[k][0]) 
@@ -1219,30 +1152,12 @@ return fields;
                 .visibility(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7]))
                 .roadTemperature(resultQuery[k][8] == null? 0.0 : Double.parseDouble(resultQuery[k][8])));
  		       		       		    	    			    				 
- 		 } 
-  		  		 
-  			} else {
-  				
-  				 for(int k = 0; k < getNumRegisters(); k++) {      
-					 
-  		 		      resultList.add(new MtoReports.Builder().month(resultQuery[k][0]) 
-  		                .atmPressure(resultQuery[k][1] == null? 0 : Double.parseDouble(resultQuery[k][1]))  
-  		                .relative_humidity(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))
-  		                .temperature(resultQuery[k][3] == null? 0.0 : Double.parseDouble(resultQuery[k][3]))
-  		                .windDir(resultQuery[k][4] == null? 0 : Double.parseDouble(resultQuery[k][4]))
-  		                .windSpeed(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
-  		                .absolutePreciptation(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6]))    		              
-  		                .visibility(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7])));
-  		 		       		       		    	    			    				 
-  		 		 }  
-  				 
-  			  }
-  		}
+ 		 }   		  		 
+  		
+  	}
   		
   		public void monthBuilder() {
-  			
-  			if(mtoType.equals("RS")) {
-  			
+  			  		  			
   			 for(int k = 0; k < getNumRegisters(); k++) {      
 					 
   	 		      resultList.add(new MtoReports.Builder().dayOfMonth(resultQuery[k][0] == null? 0 : Integer.parseInt(resultQuery[k][0])) 
@@ -1255,31 +1170,11 @@ return fields;
                     .visibility(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7]))
                     .roadTemperature(resultQuery[k][8] == null? 0.0 : Double.parseDouble(resultQuery[k][8])));
   	 		    		    			    				 
-  	 		 }
-  			 
-  			} else {
-  				
-  				 for(int k = 0; k < getNumRegisters(); k++) {      
-					 
-  					resultList.add(new MtoReports.Builder().dayOfMonth(resultQuery[k][0] == null? 0 : Integer.parseInt(resultQuery[k][0])) 
- 		                .atmPressure(resultQuery[k][1] == null? 0 : Double.parseDouble(resultQuery[k][1]))  
- 		                .relative_humidity(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))
- 		                .temperature(resultQuery[k][3] == null? 0.0 : Double.parseDouble(resultQuery[k][3]))
- 		                .windDir(resultQuery[k][4] == null? 0 : Double.parseDouble(resultQuery[k][4]))
- 		                .windSpeed(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
- 		                .absolutePreciptation(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6]))    		               
- 		                .visibility(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7])));
- 		 		       		       		    	    			    				 
- 		 		 }   		
-  				
-  			}
-  			
+  	 		 }  			  			
   		}
   		
-  		public void periodBuilder() {
-  			
-  	      if(mtoType.equals("RS")) {
-  				  	    			
+  	public void periodBuilder() {
+  			  	       				  	    			
   		  for(int k = 0; k < getNumRegisters(); k++) { 
   							 
  		      resultList.add(new MtoReports.Builder().date(resultQuery[k][0]) 
@@ -1293,103 +1188,7 @@ return fields;
                 .visibility(resultQuery[k][8] == null? 0 : Integer.parseInt(resultQuery[k][8]))
                 .roadTemperature(resultQuery[k][9] == null? 0.0 : Double.parseDouble(resultQuery[k][9])));
  		    		    			    				 
- 		   }  	                
-  		  
-  		} else {  			  			
-  		  				
-  			 for(int k = 0; k < getNumRegisters(); k++) {   
-  				 
-  			     resultList.add(new MtoReports.Builder().date(resultQuery[k][0]) 
-  		                .dateTime(resultQuery[k][1]) 
-  		                .atmPressure(resultQuery[k][2] == null? 0 : Double.parseDouble(resultQuery[k][2]))  
-  		                .relative_humidity(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3]))
-  		                .temperature(resultQuery[k][4] == null? 0.0 : Double.parseDouble(resultQuery[k][4]))
-  		                .windDir(resultQuery[k][5] == null? 0 : Double.parseDouble(resultQuery[k][5]))
-  		                .windSpeed(resultQuery[k][6] == null? 0 : Double.parseDouble(resultQuery[k][6]))
-  		                .absolutePreciptation(resultQuery[k][7] == null? 0 : Double.parseDouble(resultQuery[k][7]))     		              
-  		                .visibility(resultQuery[k][8] == null? 0 : Integer.parseInt(resultQuery[k][8])));
-	 		       		       		    	    			    				 
-	 		 }   			 
-  	
-  		  }  				
-  	 		    	
-     }	
-  				  		
-  		public void jsonFields(String reportType, String mtoType) {
-  			
-  		  if(reportType.equals("1")) {
-		
-  			
-  			if(mtoType.equals("WS"))
-  			  
- 			//JSON chart fields
- 			jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
- 					localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
- 				    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
- 					localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)"};
- 			  			  
-  			//JSON chart fields
-  			  else jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-   					localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-   				    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-   					localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
-   					localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
- 			
-
- 			//JSON chart title and subtitle
- 			chartTitle = localeLabel.getStringKey("mto_reports_chart_title_year");
- 			imageName = localeLabel.getStringKey("mto_reports_chart_file_name_year");	
- 			
- 		  }
- 		  
- 		  if(reportType.equals("2")) {
- 			   
- 			 if(mtoType.equals("WS"))
- 			  
- 			  //JSON chart fields
- 			  jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
- 						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
- 					    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
- 						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)"};
-
- 			  //JSON chart fields
- 			 else jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-						localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-					    localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
-						localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
-			  			 							  
- 			    //JSON chart title and subtitle
- 				chartTitle = localeLabel.getStringKey("mto_reports_chart_title_month");
- 				imageName = localeLabel.getStringKey("mto_reports_chart_file_name_month"); 				
- 				
- 			   }
- 		   
- 		   if(reportType.equals("3")) {
- 				   
- 				 if(mtoType.equals("WS"))
- 				
- 				//JSON chart fields
- 				jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
- 							localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
- 							localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", 	localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
- 							localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)" };
- 						 				 
- 				//JSON chart fields
- 				 else jsonFields = new String[] {localeLabel.getStringKey("mto_reports_chart_haxis"), localeLabel.getStringKey("mto_reports_general_atmPressure")+" (hPa)",
-  							localeLabel.getStringKey("mto_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("mto_reports_general_temperature")+" (°C)",
-  							localeLabel.getStringKey("mto_reports_general_wind_speed")+" (km/h)", 	localeLabel.getStringKey("mto_reports_general_wind_direction")+" (°)",
-  							localeLabel.getStringKey("mto_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("mto_reports_general_visibility")+" (m)",
-  							localeLabel.getStringKey("mto_reports_general_road_temperature")+" (°C)"};
- 				
- 				 //JSON chart title and subtitle
- 				chartTitle = localeLabel.getStringKey("mto_reports_chart_title_period"); 				
- 				imageName = localeLabel.getStringKey("mto_reports_chart_file_name_period");
- 				
- 		      }			 
-  			
-  			
-  			
-  		}
-   
+ 		   } 	 		    	
+       }	  				  		
+  	   
   }

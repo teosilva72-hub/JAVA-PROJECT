@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.context.RequestContext;
 
+import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.dao.global.LoginAccountDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
@@ -222,8 +223,13 @@ public class LoginAccountBean {
 
 					plaque = RoadConcessionaire.plaque;
 					logo = RoadConcessionaire.logo;
-
-					return "/map/map.xhtml?faces-redirect=true";
+					
+					// NEW CHANGES
+														
+					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
+					    return "/map/map.xhtml?faces-redirect=true";
+					
+					else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
 				}
 
@@ -258,7 +264,12 @@ public class LoginAccountBean {
 							plaque = RoadConcessionaire.plaque;
 							logo = RoadConcessionaire.logo;
 					
-							return "/map/map.xhtml?faces-redirect=true";
+							// NEW CHANGES
+							
+							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
+							    return "/map/map.xhtml?faces-redirect=true";
+							
+							else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
 						} else {
 
