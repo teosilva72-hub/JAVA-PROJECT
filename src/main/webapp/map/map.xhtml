@@ -106,6 +106,7 @@
 
 		<!-- WEB ZOOM -->
 		<div class="map-options">
+			<div id="topButtons">
 
 				<button type="button" id="divide" class="zoomButton"
 					data-toggle="tooltip" data-placement="bottom" title="Divide Screen">
@@ -126,7 +127,7 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<input type="button" id="addequip"
+					<h:commandButton type="button" id="addequip"
 						class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
@@ -401,8 +402,7 @@
 
 			<!-- MODAL CONTENT UI -->
 
-			<div class="modal fade" id="modaladd" role="dialog"  tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="modaladd" role="dialog" >
 				<!-- MODAL ADD -->
 				<div class="modal-dialog" role="document">
 					<!-- MODAL DIALOG -->
@@ -414,7 +414,7 @@
 						<div class="modal-header text-center">
 							<!-- MODAL HEADER -->
 							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_creation_modal_title}</h4>
-							<button type="button" id="close-btns" class="close"
+							<button type="button" id="close-btn" class="close"
 								data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
