@@ -611,8 +611,10 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				for (int i = 0; i < lin; i++) {
 
 				// Caso o dia seja maior que total de dias no m�s
-				if (dia > daysInMonth)
+				if (dia > daysInMonth) {
 					dia = 1; 
+					mes++;
+				}
 			
 				// Formata apresenta��o da String
 				if (dia <= 9)
@@ -1645,8 +1647,10 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				for (int i = 0; i < lin; i++) {
 
 				// Caso o dia seja maior que total de dias no m�s
-				if (dia > daysInMonth)
+				if (dia > daysInMonth) {
 					dia = 1; 
+				    mes++;
+				}
 			
 				// Formata apresenta��o da String
 				if (dia <= 9)

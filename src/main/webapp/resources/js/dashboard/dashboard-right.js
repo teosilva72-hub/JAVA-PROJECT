@@ -34,12 +34,8 @@ $(async function () {
   let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
   let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
 
-  try {
-    TestCert(url_rabbitmq);
-    // TestCert(url_asterisk);
-  } catch (error) {
-    console.log(error)
-  }
+  TestCert(url_rabbitmq);
+  TestCert(url_asterisk, "sip");
 });
 
 var alertToast = msg => {
@@ -157,12 +153,17 @@ const credEvent = data => {
 getCred('rabbitmq'); // Rabbit init
 getCred('asterisk'); // Rabbit init
 
-const TestCert = async uri => {
-  let request = new WebSocket(`wss://${uri}`);
-  while (request.readyState == 0) {
-    await new Promise(r => setTimeout(r, 100))
+const TestCert = async (uri, init) => {
+  try {
+    let request = new WebSocket(`wss://${uri}`, init);
+    while (request.readyState == 0) {
+      await new Promise(r => setTimeout(r, 100))
+    }
+    if ( request.readyState > 1 ) {
+      window.open(`https://${uri}`);
+    }
   }
-  if ( request.readyState > 1 ) {
+  catch {
     window.open(`https://${uri}`);
   }
 }
