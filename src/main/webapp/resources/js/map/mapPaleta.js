@@ -1,33 +1,47 @@
 function color(){
-	var body = document.querySelector("body");
-	while(true){
-		$( "#color-1" ).click(function() {
-		$('body').addClass('color-1')
+	$( "#color" ).click(function() {
+		$('body').addClass('color')
+		$('body').removeClass('color-1')
+		$('body').removeClass('color-2')
+		$('body').removeClass('color-3')
+		$('body').removeClass('color-4')
 	});
+}
+function color1(){
+	$( "#color-1" ).click(function() {
+		$('body').addClass('color-1')
+		$('body').removeClass('color-2')
+		$('body').removeClass('color-3')
+		$('body').removeClass('color-4')
+	});
+}
+function color2(){
 	$( "#color-2" ).click(function() {
 		$('body').addClass('color-2')
+		$('body').removeClass('color-1')
+		$('body').removeClass('color-3')
+		$('body').removeClass('color-4')
 	});
+}
+function color3(){
 	$( "#color-3" ).click(function() {
 		$('body').addClass('color-3')
+		$('body').removeClass('color-4')
+		$('body').removeClass('color-2')
+		$('body').removeClass('color-1')
 	});
+}
+function color4(){
 	$( "#color-4" ).click(function() {
 		$('body').addClass('color-4')
+		$('body').removeClass('color-3')
+		$('body').removeClass('color-2')
+		$('body').removeClass('color-1')
 	});
-	$( "#color-5" ).click(function() {
-		$('body').addClass('color-5')
-	});
-	$( "#color-6" ).click(function() {
-		$('body').addClass('color-6')
-	});
-	$( "#color-7" ).click(function() {
-		$('body').addClass('color-7')
-	});
-	$( "#color-8" ).click(function() {
-		$('body').addClass('color-8')
-	});
-	}
-	
 }
+$(document).ready(function () {
+
+});
 //methos type ccolor esta desativado
 /*var colorWell;
 	var defaultColor = "#ffffff";
