@@ -127,20 +127,31 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<h:commandButton type="button" id="addequip"
+					<input type="button" id="addequip"
 						class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
-						value="#{mapLabels.map_creation_btn_add_equipment}"></h:commandButton>
+						value="#{mapLabels.map_creation_btn_add_equipment}"/>
 
 				</c:if>
-				<div class="paleta">
-					<label for="favcolor" class="text-paleta">#{mapLabels.text_paleta}</label> <input
-						type="color" id="favcolor" name="favcolor" value="#ffffff"
-						 />
+				<a class="btn btn-primary" data-toggle="collapse"
+					href="#collapseExample" role="button" aria-expanded="false"
+					aria-controls="collapseExample">#{mapLabels.text_paleta}</a>
+			</div>
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body conf-card">
+					<div class="row">
+						<div class="col-md-3 color-1" id="color-1"></div>
+						<div class="col-md-3 color-2" id="color-2"></div>
+						<div class="col-md-3 color-3" id="color-3"></div>
+						<div class="col-md-3 color-4" id="color-4"></div>
+						<div class="col-md-3 color-5" id="color-5"></div>
+						<div class="col-md-3 color-6" id="color-6"></div>
+						<div class="col-md-3 color-7" id="color-7"></div>
+						<div class="col-md-3 color-8" id="color-8"></div>
+					</div>
 				</div>
 			</div>
-
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				<!--  ******************************************************************************************************* -->
@@ -391,7 +402,8 @@
 
 			<!-- MODAL CONTENT UI -->
 
-			<div class="modal fade" id="modaladd" role="dialog">
+			<div class="modal fade" id="modaladd" role="dialog"  tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<!-- MODAL ADD -->
 				<div class="modal-dialog" role="document">
 					<!-- MODAL DIALOG -->
