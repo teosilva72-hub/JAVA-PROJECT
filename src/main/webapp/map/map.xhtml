@@ -127,11 +127,11 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<h:commandButton type="button" id="addequip"
+					<input type="button" id="addequip"
 						class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
-						value="#{mapLabels.map_creation_btn_add_equipment}"/>
+						value="#{mapLabels.map_creation_btn_add_equipment}"></input>
 
 				</c:if>
 				<a class="btn btn-primary" data-toggle="collapse"
@@ -402,7 +402,7 @@
 
 			<!-- MODAL CONTENT UI -->
 
-			<div class="modal fade" id="modaladd" role="dialog" >
+			<div class="modal fade" id="modaladd" role="dialog">
 				<!-- MODAL ADD -->
 				<div class="modal-dialog" role="document">
 					<!-- MODAL DIALOG -->
