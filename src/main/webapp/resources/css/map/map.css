@@ -1042,13 +1042,14 @@ opacity: 0.7;
 .teste{
 	font-size: 15px;
 }
+
 /*PALETA*/
 .paleta {
-    margin-left: 50%;
-    position: relative;
-    bottom: 30px;
+  position: relative;
+  float: right;
 }
-.text-paleta{
+
+.text-paleta {
 	color: black;
 	font-weight: 900;
 }
