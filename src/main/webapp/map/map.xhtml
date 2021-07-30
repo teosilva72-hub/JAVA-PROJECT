@@ -127,11 +127,12 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<input type="button" id="addequip"
+					<input id="addequip" type="button"
 						class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
-						value="#{mapLabels.map_creation_btn_add_equipment}"></input>
+						value="#{mapLabels.map_creation_btn_add_equipment}">
+					</input>
 
 				</c:if>
 				<a class="btn btn-primary" data-toggle="collapse" onclick="color()"
