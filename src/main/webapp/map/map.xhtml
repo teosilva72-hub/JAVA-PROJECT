@@ -127,20 +127,39 @@
 
 				<c:if test="#{ SuperAdmin }">
 
-					<h:commandButton type="button" id="addequip"
+					<input id="addequip" type="button"
 						class="btn btn-dark form-modal-draw-button"
 						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
-						value="#{mapLabels.map_creation_btn_add_equipment}"></h:commandButton>
+						value="#{mapLabels.map_creation_btn_add_equipment}"> </input>
 
 				</c:if>
-				<div class="paleta">
-					<label for="favcolor" class="text-paleta">#{mapLabels.text_paleta}</label> <input
-						type="color" id="favcolor" name="favcolor" value="#ffffff"
-						 />
+				<a class="btn btn-dark" data-toggle="collapse" onclick="color()"
+					href="#collapseExample" role="button" aria-expanded="false"
+					aria-controls="collapseExample">#{mapLabels.text_paleta}</a>
+			</div>
+			<div class="collapse" id="collapseExample">
+				<div class="card card-body conf-card">
+					<div class="row top">
+					<div class="col-md-2 " id="color">
+							<input type="button" class="color"  onclick="color()"/>
+						</div>
+						<div class="col-md-2 " id="color-1">
+							<input type="button" class="color-1" onclick="color1()"/>
+						</div>
+						<div class="col-md-2 " id="color-2">
+							<input type="button" class="color-2" onclick="color2()"/>
+						</div>
+						<div class="col-md-2 " id="color-3">
+							<input type="button" class="color-3" onclick="color3()"/>
+						</div>
+						<div class="col-md-2 " id="color-4">
+							<input type="button" class="color-4"  onclick="color4()"/>
+						</div>
+						
+					</div>
 				</div>
 			</div>
-
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				<!--  ******************************************************************************************************* -->

@@ -40,7 +40,7 @@
 							cellspacing="0" width="100" headerClass="custom-table-header"
 							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 							<h:column>
-								<f:facet name="header">#{colasLabels.number}</f:facet>
+								<f:facet name="header">#{colasLabels.toll}</f:facet>
 								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
 								<h:commandButton style="display: none" pt:setParameter="setParameter">
@@ -61,7 +61,7 @@
 								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{colasLabels.cam}</f:facet>
+								<f:facet name="header">#{colasLabels.way}</f:facet>
 								<h:outputText value="#{data.channel}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
@@ -114,7 +114,7 @@
 									<p>#{colasLabels.lane}: <h:outputText value="#{colasBean.traffic.lane}" /></p>
 								</div>
 								<div class="col-md-6">
-									<p>#{colasLabels.cam}: <h:outputText value="#{colasBean.traffic.direction}" /></p>
+									<p>#{colasLabels.way}: <h:outputText value="#{colasBean.traffic.direction}" /></p>
 								</div>
 								<div class="col-md-6">
 									<p>#{colasLabels.date}: <h:outputText value="#{colasBean.traffic.date}" /></p>

@@ -33,7 +33,7 @@ body {
   width: 700px;
   height: 50px;
   z-index: 9999;
-  margin-top: -10px;
+  margin-top: 5px;
   margin-left: 5px;
 }
 /*Divisão das estradas*/
@@ -66,9 +66,6 @@ body {
 	display: none;
 } /*segunda div*/
 
-#content {
-  margin-top: 40px;
-}
 
 /* ZOOM BUTTONS */
 .zoomButton {
