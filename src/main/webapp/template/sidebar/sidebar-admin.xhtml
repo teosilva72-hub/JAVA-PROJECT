@@ -429,24 +429,16 @@
 						<!---->
 
 
-						<!-- OCC REPORT MENU -->
+					  <!-- OCC REPORT MENU -->
 						<ui:fragment rendered="#{loginAccount.load.en_occ}">
-							<li class="nav-item"><a class="nav-link" href="#occSubmenu"
-								data-toggle="collapse" aria-expanded="false"><i
-									class="far fa-file-alt icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span></a>
-
-								<ul class="collapse list-unstyled" id="occSubmenu">
-									<!-- OCC SUBMENU  -->
-
-									<!-- OCC SUBMENU ITEM  -->
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToOccurrences}"
-											value="">
-											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_occ_sub_menu_occurences}</span>
-										</h:commandLink></li>
-									<!---->
-								</ul></li>
+						 <li class="nav-item">
+						   <h:commandLink class="nav-link"
+						   action="#{navigationController.redirectToOccurrences}" value=""
+						   data-toggle="collapse" aria-expanded="false">						
+							<i class="far fa-file-alt icon-sub"></i>
+                          <span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_occ}</span>
+                          </h:commandLink>      
+								</li>								
 							<!---->
 						</ui:fragment>
 						<!---->
