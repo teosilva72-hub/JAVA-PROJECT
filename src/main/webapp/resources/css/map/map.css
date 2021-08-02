@@ -1052,13 +1052,26 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	font-size: 15px;
 }
 
-/*PALETA*/
 .conf-card {
-    width: 200px;
-    position: fixed;
-    left: 25%;
-    top: 19%;
-    height: 20px;
+	height: 20px;
+}
+/*PALETA*/
+.paleta-cores {
+	position: fixed;
+	left: 46%;
+	bottom: 40px;
+}
+
+.paletaBtn {
+	height: 30px;
+	position: relative;
+	bottom: 0;
+	opacity: 100;
+}
+
+.fa-palette {
+	position: relative;
+	bottom: 5px;
 }
 
 .color {
@@ -1091,8 +1104,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	bottom: 10px;
 }
 
-.paletaBtn {
-	position: fixed;
-	left: 25%;
-	top: 90px;
+#addequip {
+	color: white;
+	font-weight: 900;
 }
