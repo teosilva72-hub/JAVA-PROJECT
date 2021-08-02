@@ -1074,3 +1074,8 @@ opacity: 0.7;
     position: relative;
     bottom: 10px;
 }
+.paletaBtn {
+    position: fixed;
+    left: 25%;
+    top: 90px;
+}
