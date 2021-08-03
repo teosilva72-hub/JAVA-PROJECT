@@ -171,7 +171,6 @@ const TestCert = async (uri, init) => {
 }
 
 const btnMakeCall = function (e) {
-  console.log(e);
   let sip = e.target.value;
 
   connectSOS(`MakeCall;${sip}`);

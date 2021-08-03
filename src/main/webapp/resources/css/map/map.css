@@ -778,6 +778,7 @@ input[type="number"] {
 	position: absolute;
 	transform: translateX(-50%) scale(0.2);
 	transform-origin: 50% 0%;
+	z-index: -1;
 }
 
 .km5 {
