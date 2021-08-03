@@ -149,6 +149,82 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
+	 * Método para listar equipamentos por módulo
+	 * @author Guilherme
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param mod - Módulo
+	 * @return ArrayList - Lista de equipamentos
+	 * @throws Exception
+	 */
+
+	public ArrayList<SOS> buildSosEquipmentsInterface(int permission) throws Exception {
+
+		ArrayList<SOS> lista = new ArrayList<>();
+		
+		String query = "";
+
+		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, master_sip FROM sos_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+		
+		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, master_sip FROM sos_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+				
+		try {
+			
+			if(permission != 9)
+				query = sql;
+				
+				else query = sqlVW;
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(query);					
+			rs = ps.executeQuery();
+									
+			if (rs != null) {
+
+				while (rs.next()) {
+
+					SOS equip = new SOS();
+
+					equip.setEquip_id(rs.getInt(1));
+					equip.setTable_id("sos");
+					equip.setNome(rs.getString(2));
+					equip.setEquip_type(getModule("sos"));
+					equip.setCidade(rs.getString(3));
+					equip.setEstrada(rs.getString(4));
+					equip.setKm(rs.getString(5));
+					equip.setLinearWidth(rs.getInt(6));						
+					equip.setLinearPosX(rs.getInt(7));
+					equip.setLinearPosY(rs.getInt(8));
+					equip.setMapWidth(rs.getInt(9));						
+					equip.setMapPosX(rs.getInt(10));					
+					equip.setMapPosY(rs.getInt(11));						
+					equip.setSip(rs.getString(12));						
+
+					lista.add(equip);
+				}				
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+
+		return lista;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------
+
+	/**
 	 * Método para listar equipamentos do tipo SAT
 	 * @author Wellington
 	 * @version 1.0

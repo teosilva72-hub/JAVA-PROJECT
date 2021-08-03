@@ -274,7 +274,7 @@ public class ListEquipments {
 					
 					if(load.isEn_sos()) {
 						
-					sosList = sos.listEquipments("sos", permission_id);
+					sosList = sos.listSosEquipments(permission_id);
 					equips.add(new listEquips("sos", load.isEn_sos(), sosList, load.getVoltage_sos()));
 					
 					}

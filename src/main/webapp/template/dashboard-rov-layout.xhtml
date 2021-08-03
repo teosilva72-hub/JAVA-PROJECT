@@ -211,7 +211,7 @@
                   <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_profile}</span></a>
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-fw fa-cog"></i>
-                  <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_settings}</span></a>
+                  <span id="setting_user">#{dashboardLabels.dashboard_navbar_icon_user_settings_settings}</span></a>
                   
                   <h:form>
                   
@@ -409,6 +409,10 @@
                         <div id="status#{item.table_id}#{item.equip_id}" class="fas fa-circle"></div>
                         <label class="label-info font-status">#{item.nome}&nbsp;&nbsp; -
                           &nbsp;&nbsp;#{item.km}</label>
+                        
+                        <c:if test="#{ ( SuperAdmin || Phone ) &#38;&#38; item.table_id == 'sos' }">
+                          <button class="btn btn-sm btn-outline-secondary ml-3 btnMakeCall" value="#{item.sip}">call</button>
+                        </c:if>
                       </div>
                     </div>
 
