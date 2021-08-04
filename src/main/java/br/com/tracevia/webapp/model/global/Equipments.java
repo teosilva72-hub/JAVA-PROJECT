@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sos.SOS;
 
 public class Equipments {
 
@@ -325,6 +326,16 @@ public class Equipments {
 		List<Equipments> lista = new ArrayList<Equipments>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			
 		lista.addAll(dao.buildEquipmentsInterface(modulo, permission));	
+
+		return lista;
+	}
+
+	//BUILD GENERIC EQUIPMENTS
+	public List<SOS> listSosEquipments(int permission) throws Exception {
+
+		List<SOS> lista = new ArrayList<>();	
+		EquipmentsDAO dao = new EquipmentsDAO();			
+		lista.addAll(dao.buildSosEquipmentsInterface(permission));	
 
 		return lista;
 	}

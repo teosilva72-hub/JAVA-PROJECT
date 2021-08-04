@@ -5,6 +5,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 public class SOS extends Equipments {
 	
 	private int sos_comms;
+	private String sip;
 
 	public SOS(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
@@ -27,6 +28,14 @@ public class SOS extends Equipments {
 
 	public void setSos_comms(int sos_comms) {
 		this.sos_comms = sos_comms;
+	}
+
+	public String getSip() {
+		return sip;
+	}
+
+	public void setSip(String sip) {
+		this.sip = sip;
 	}
 	
 	

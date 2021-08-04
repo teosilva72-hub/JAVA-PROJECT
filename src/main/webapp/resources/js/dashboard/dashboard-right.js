@@ -36,6 +36,8 @@ $(async function () {
 
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
+
+  $(".btnMakeCall").click(btnMakeCall);
 });
 
 var alertToast = msg => {
@@ -166,6 +168,12 @@ const TestCert = async (uri, init) => {
   catch {
     window.open(`https://${uri}`);
   }
+}
+
+const btnMakeCall = function (e) {
+  let sip = e.target.value;
+
+  connectSOS(`MakeCall;${sip}`);
 }
 
 //NOTIFICATIONS  BADGE
