@@ -760,7 +760,7 @@ function hideEditDirections() {
 	$('#direction8-edit').hide();
 }
 
-function alert(a) {
+function alertOptions(a) {
 	$('.map-options').css('display', 'none');
 	$(a).css("display", "block");
 	setTimeout(function () {

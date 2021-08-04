@@ -309,19 +309,19 @@ public class EquipmentsBean implements Serializable {
 	   	    checked =  equipDAO.checkExists(dms.getEquip_id(), table);
 	   	 
 	   	    if(checked)
-			   request.execute("alert('#equip-save-error');");
+			   request.execute("alertOptions('#equip-save-error');");
 	   	    	 
 	   	      else {
 	   		 
 	   		   checked = equipDAO.EquipDMSRegisterMap(dms, table);
 	   		   
 	   		   if(checked) {
-					request.execute("alert('#equip-save');");
+					request.execute("alertOptions('#equip-save');");
 			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	   	 	   
 	   		  else 
-				request.execute("alert('#equip-save-error');");
+				request.execute("alertOptions('#equip-save-error');");
 	  	 	    		    			    		 
 	   	      }
 	   	    
@@ -385,19 +385,19 @@ public class EquipmentsBean implements Serializable {
    	    checked =  equipDAO.checkExists(sat.getEquip_id(), table);
    	 
    	    if(checked)
-   		   request.execute("alert('#equip-save-error');");
+   		   request.execute("alertOptions('#equip-save-error');");
    	    	 
    	      else {
    		 
    		   checked = equipDAO.EquipSATRegisterMap(sat, table);
    		   
    		   if(checked) {
-			request.execute("alert('#equip-save');");
+			request.execute("alertOptions('#equip-save');");
 			   request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 			   
 		  }
    	 	   
-   		  else  request.execute("alert('#equip-save-error');");
+   		  else  request.execute("alertOptions('#equip-save-error');");
   	 	    		    			    		 
    	      }
    	    
@@ -444,18 +444,18 @@ public class EquipmentsBean implements Serializable {
 	    	checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
 	    	if(checked)
-			request.execute("alert('#equip-save-error');");
+			request.execute("alertOptions('#equip-save-error');");
 	    	 
 	    	else {
 	    	
 	    		  checked = equipDAO.EquipRegisterMap(equip, table);
 	    		   
 	    		  if(checked) {
-					request.execute("alert('#equip-save');");
+					request.execute("alertOptions('#equip-save');");
 			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
 				  }
 	    	 	   
-	    		   else  request.execute("alert('#equip-save-error');");
+	    		   else  request.execute("alertOptions('#equip-save-error');");
 	   	 	    		    			    		 
 	    	      }  //VALIDATION
 	           
@@ -679,10 +679,10 @@ public class EquipmentsBean implements Serializable {
 			    update = dao.EquipDMSUpdateMap(dms, table, interfaceView, login.getLogin().getPermission_id());
 				
 			    if(update) {
-					request.execute("alert('#equip-update');");
+					request.execute("alertOptions('#equip-update');");
 					request.execute("updated = '" + equipTable + equipId + "';");
 				} else {
-					request.execute("alert('#equip-update-error');");
+					request.execute("alertOptions('#equip-update-error');");
 				}
 	    	 		
 			
@@ -742,10 +742,10 @@ public class EquipmentsBean implements Serializable {
 	  	    update = dao.EquipSATUpdateMap(sat, table, interfaceView, login.getLogin().getPermission_id());
 			
 			if(update) {
-				request.execute("alert('#equip-update');");
+				request.execute("alertOptions('#equip-update');");
 				request.execute("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alert('#equip-update-error');");
+				request.execute("alertOptions('#equip-update-error');");
 			}
 		
 	  	  
@@ -788,10 +788,10 @@ public class EquipmentsBean implements Serializable {
 			    update = dao.EquipUpdateMap(equip, table, interfaceView, login.getLogin().getPermission_id());
 
 			    if(update) {
-					request.execute("alert('#equip-update');");
+					request.execute("alertOptions('#equip-update');");
 					request.execute("updated = '" + equipTable + equipId + "';");
 				} else {
-					request.execute("alert('#equip-update-error');");
+					request.execute("alertOptions('#equip-update-error');");
 				}
 		    	 		
 		 }				
@@ -823,10 +823,10 @@ public class EquipmentsBean implements Serializable {
 		 request.execute("init();");
 
 		 if(delete) {
-			 request.execute("alert('#equip-delete');");
+			 request.execute("alertOptions('#equip-delete');");
 			 request.execute("updated = '" + equipTable + equipId + "';");
 		 } else {
-			 request.execute("alert('#equip-delete-error');");
+			 request.execute("alertOptions('#equip-delete-error');");
 		 }
    	 	
 	    }

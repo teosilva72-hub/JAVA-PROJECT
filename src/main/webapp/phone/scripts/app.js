@@ -208,10 +208,7 @@ async function initPhone() {
          * @param {string} status
          */
         setCallSessionStatus : function(status) {
-            if (status)
-                showStatesCallbox('open')
-            else
-                showStatesCallbox('close')
+            localStorage.setItem("CallBoxReaction", status)
             $('#txtCallStatus').html(status);
         },
 
@@ -221,7 +218,9 @@ async function initPhone() {
          * @param {string} status
          */
         setStatus : function(status) {
-            $("#txtRegStatus").html('<i class="fa fa-signal"></i> '+status);
+            let status_icon = '<svg width="15" class="svg-inline--fa fa-signal fa-w-20" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="signal" role="img" viewBox="0 0 640 512" data-fa-i2svg=""><path fill="currentColor" d="M216 288h-48c-8.84 0-16 7.16-16 16v192c0 8.84 7.16 16 16 16h48c8.84 0 16-7.16 16-16V304c0-8.84-7.16-16-16-16zM88 384H40c-8.84 0-16 7.16-16 16v96c0 8.84 7.16 16 16 16h48c8.84 0 16-7.16 16-16v-96c0-8.84-7.16-16-16-16zm256-192h-48c-8.84 0-16 7.16-16 16v288c0 8.84 7.16 16 16 16h48c8.84 0 16-7.16 16-16V208c0-8.84-7.16-16-16-16zm128-96h-48c-8.84 0-16 7.16-16 16v384c0 8.84 7.16 16 16 16h48c8.84 0 16-7.16 16-16V112c0-8.84-7.16-16-16-16zM600 0h-48c-8.84 0-16 7.16-16 16v480c0 8.84 7.16 16 16 16h48c8.84 0 16-7.16 16-16V16c0-8.84-7.16-16-16-16z"></path></svg> '+status
+            localStorage.setItem("CallBoxStatus", status_icon)
+            $("#txtRegStatus").html(status_icon);
         },
 
         /**
@@ -242,7 +241,7 @@ async function initPhone() {
 
             if (!calllog) { calllog = {}; }
 
-            if (!calllog.hasOwnProperty(session.ctxid)) {
+            if (!calllog.hasOwnProperty(session.ctxid) || status == "ringing") {
                 calllog[log.id] = {
                     id    : log.id,
                     clid  : log.clid,
@@ -252,7 +251,7 @@ async function initPhone() {
                     bdid  : session.EquipmentID
                 };
             }
-
+            
             calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
 
             if (session.isMuted !== undefined)
@@ -288,28 +287,28 @@ async function initPhone() {
             switch (item.status) {
                 case 'ringing'  :
                     callClass = 'list-group-item-success';
-                    callIcon  = 'fa-bell';
+                    callIcon  = '<svg class="svg-inline--fa fa-bell fa-w-14 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="bell" role="img" width="12" height="12" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>';
                     break;
 
                 case 'missed'   :
                     callClass = 'list-group-item-danger';
-                    if (item.flow === "incoming") { callIcon = 'fa-chevron-left'; }
+                    if (item.flow === "incoming") { callIcon = '<svg class="svg-inline--fa fa-chevron-left fa-w-10 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="chevron-left" role="img" width="12" height="12" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>'; }
                     if (item.flow === "outgoing") { callIcon = 'fa-chevron-right'; }
                     break;
 
                 case 'holding'  :
                     callClass = 'list-group-item-warning';
-                    callIcon  = 'fa-pause';
+                    callIcon  = '<svg class="svg-inline--fa fa-pause fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="pause" role="img" width="12" height="12" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"></path></svg>';
                     break;
 
                 case 'answered' :
                 case 'resumed'  :
                     callClass = 'list-group-item-info';
-                    callIcon  = 'fa-phone-square';
+                    callIcon  = '<svg class="svg-inline--fa fa-bell fa-w-14 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="bell" role="img" width="12" height="12" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M224 512c35.32 0 63.97-28.65 63.97-64H160.03c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84C118.56 68.1 64.08 130.3 64.08 208c0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 .05-7.55-2.61-15.27-8.61-21.71z"></path></svg>';
                     break;
 
                 case 'ended'  :
-                    if (item.flow === "incoming") { callIcon = 'fa-chevron-left'; }
+                    if (item.flow === "incoming") { callIcon = '<svg class="svg-inline--fa fa-chevron-left fa-w-10 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="chevron-left" role="img" width="12" height="12" viewBox="0 0 320 512" data-fa-i2svg=""><path fill="currentColor" d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"></path></svg>'; }
                     if (item.flow === "outgoing") { callIcon = 'fa-chevron-right'; }
                     break;
             }
@@ -317,24 +316,24 @@ async function initPhone() {
 
             i  = '<div class="list-group-item sip-logitem clearfix '+callClass+'" data-uri="'+item.uri+'" data-sessionid="'+item.id+'">';
             i += '<div class="clearfix"><div class="float-left">';
-            i += '<i class="fa fa-fw '+callIcon+' fa-fw"></i> <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
+            i += callIcon+' <strong>'+ctxSip.formatPhone(item.uri)+'</strong><br><small>'+moment(item.start).format('MM/DD hh:mm:ss a')+'</small>';
             i += '</div>';
             i += '<div class="float-right text-right"><em>'+item.clid+'</em><br>' + callLength+'</div></div>';
 
             if (callActive) {
                 i += '<div class="btn-group btn-group-xs float-right">';
                 if (item.status === 'ringing' && item.flow === 'incoming') {
-                    i += '<button class="btn btn-xs btn-success btnCall" title="Call"><i class="fa fa-phone"></i></button>';
+                    i += '<button class="btn btn-xs btn-success btnCall" title="Call"><svg class="svg-inline--fa fa-phone fa-w-16" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="phone" role="img" width="16" height="16" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path></svg></button>';
                 } else if (item.owner) {
-                    i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><i class="fa fa-pause"></i></button>';
+                    i += '<button class="btn btn-xs btn-primary btnHoldResume" title="Hold"><svg class="svg-inline--fa fa-pause fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="pause" role="img" width="16" height="16" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"></path></svg></i></button>';
                     // i += '<button class="btn btn-xs btn-info btnTransfer" title="Transfer"><i class="fa fa-random"></i></button>';
                     i += '<button class="btn btn-xs btn-warning btnMute" title="Mute">';
                     if (!item.isMuted)
-                        i += '<svg class="svg-inline--fa fa-microphone fa-w-11 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="microphone" role="img" viewBox="0 0 352 512" data-fa-i2svg=""><path fill="currentColor" d="M176 352c53.02 0 96-42.98 96-96V96c0-53.02-42.98-96-96-96S80 42.98 80 96v160c0 53.02 42.98 96 96 96zm160-160h-16c-8.84 0-16 7.16-16 16v48c0 74.8-64.49 134.82-140.79 127.38C96.71 376.89 48 317.11 48 250.3V208c0-8.84-7.16-16-16-16H16c-8.84 0-16 7.16-16 16v40.16c0 89.64 63.97 169.55 152 181.69V464H96c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16h-56v-33.77C285.71 418.47 352 344.9 352 256v-48c0-8.84-7.16-16-16-16z"></path></svg>';
+                        i += '<svg width="16" height="16" class="svg-inline--fa fa-microphone fa-w-11 fa-fw" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="microphone" role="img" viewBox="0 0 352 512" data-fa-i2svg=""><path fill="currentColor" d="M176 352c53.02 0 96-42.98 96-96V96c0-53.02-42.98-96-96-96S80 42.98 80 96v160c0 53.02 42.98 96 96 96zm160-160h-16c-8.84 0-16 7.16-16 16v48c0 74.8-64.49 134.82-140.79 127.38C96.71 376.89 48 317.11 48 250.3V208c0-8.84-7.16-16-16-16H16c-8.84 0-16 7.16-16 16v40.16c0 89.64 63.97 169.55 152 181.69V464H96c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16h-56v-33.77C285.71 418.47 352 344.9 352 256v-48c0-8.84-7.16-16-16-16z"></path></svg>';
                     else
                         i += '<svg width="16" height="16" fill="currentColor" class="bi bi-mic-mute-fill" viewBox="0 0 16 16"><path d="M13 8c0 .564-.094 1.107-.266 1.613l-.814-.814A4.02 4.02 0 0 0 12 8V7a.5.5 0 0 1 1 0v1zm-5 4c.818 0 1.578-.245 2.212-.667l.718.719a4.973 4.973 0 0 1-2.43.923V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 1 0v1a4 4 0 0 0 4 4zm3-9v4.879L5.158 2.037A3.001 3.001 0 0 1 11 3z"/><path d="M9.486 10.607 5 6.12V8a3 3 0 0 0 4.486 2.607zm-7.84-9.253 12 12 .708-.708-12-12-.708.708z"/></svg>';
                     i += '</button>';
-                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><i class="fa fa-stop"></i></button>';
+                    i += '<button class="btn btn-xs btn-danger btnHangUp" title="Hangup"><svg class="svg-inline--fa fa-stop fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="stop" role="img" width="16" height="16" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z"></path></svg></button>';
                 }
                 i += '</div>';
             }
@@ -343,18 +342,84 @@ async function initPhone() {
             $('#sip-logitems').append(i);
 
 
-            // Start call timer on answer
-            if (item.status === 'answered') {
-                var tEle = document.getElementById(item.id);
-                ctxSip.callTimers[item.id] = new Stopwatch(tEle);
-                ctxSip.callTimers[item.id].start();
-            }
-
-            if (callActive && item.status !== 'ringing') {
-                ctxSip.callTimers[item.id].start({startTime : item.start});
-            }
+            try {
+                // Start call timer on answer
+                if (item.status === 'answered') {
+                    var tEle = document.getElementById(item.id);
+                    ctxSip.callTimers[item.id] = new Stopwatch(tEle);
+                    ctxSip.callTimers[item.id].start();
+                }
+    
+                if (callActive && item.status !== 'ringing') {
+                    ctxSip.callTimers[item.id].start({startTime : item.start});
+                }
+            } catch {}
 
             $('#sip-logitems').scrollTop(0);
+        },
+
+        /**
+         * generate the call log ui
+         */
+        logGen : async function() {
+            ctxSip.logClear();
+            let calls = await connectSOS("GetAllActiveCalls");
+            let ringtone = false;
+            let gen = {}
+            
+            for (const call of calls) {
+                let id = `${call.Sip}id${call.equip.EquipmentID}`;
+                let uri = `${call.Sip}@${call.equip.EquipmentIP}`;
+                let status;
+
+                call.displayName    = call.equip.EquipmentName
+                call.direction      = 'incoming'
+                call.service        = true
+                call.ctxid          = id
+                call.remoteIdentity = {
+                    uri         : uri,
+                    displayName : call.equip.EquipmentName
+                }
+
+                ctxSip.Sessions[id] = call;
+
+                switch (call.CallStateID) {
+                    case 1:
+                        status = "answered";
+                        break
+
+                    case 2:
+                        status = "holding";
+                        break
+                        
+                    case 4:
+                        status = "ringing";
+                        ringtone = true;
+                        break
+
+                    default:
+                        status = "missed";
+                        break
+                }
+
+                gen[id] = {
+                    id      : id,
+                    clid    : call.equip.EquipmentName,
+                    uri     : uri,
+                    start   : undefined,
+                    stop    : undefined,
+                    flow    : "incoming",
+                    bdid    : call.equip.EquipmentID,
+                    status  : status
+                }
+            }
+
+            if (ringtone) {
+                ctxSip.startRingTone();
+            }
+            
+            let json = JSON.stringify(gen);
+            localStorage.setItem("sipCalls", json);
         },
 
         /**
@@ -452,13 +517,7 @@ async function initPhone() {
             // s.terminate();
             if (!s && id) {
                 ctxSip.logCall({ctxid: sessionid, remoteIdentity: {}}, 'ended')
-                connectSOS(`GetAllActiveCalls`).then(response => {
-                    for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == id) {
-                            connectSOS(`TerminateCall;${loginAccount.ID};${id}`)
-                            break;
-                        }
-                });
+                connectSOS(`TerminateCall;${s.Sip}`)
 
                 return;
             } else if (s.service) {
@@ -497,7 +556,7 @@ async function initPhone() {
 
                 } else if (s.service) {
                     ctxSip.callIncomingID = sessionid;
-                    connectSOS(`AnswerCall;${loginAccount.ID};${s.EquipmentID};${user.User}`).then(response => {
+                    connectSOS(`AnswerCall;${user.User};${s.Sip}`).then(response => {
                         if (response.UserID != loginAccount.ID && response.UserID)
                             ctxSip.callIncomingID = null;
                         else
@@ -552,13 +611,7 @@ async function initPhone() {
                     paused = true;
                 }
 
-                connectSOS(`GetAllActiveCalls`).then(response => {
-                    for (const r of response)
-                        if(r.UserID == loginAccount.ID && r.EquipmentID == s.EquipmentID) {
-                            connectSOS(`HoldCall;${loginAccount.ID};${s.EquipmentID};${paused}`)
-                            break;
-                        }
-                });
+                connectSOS(`HoldCall;${s.Sip};${paused}`)
             }
         },
 
@@ -663,11 +716,11 @@ async function initPhone() {
         var closePhone = function() {
             // stop the phone on unload
             localStorage.removeItem('ctxPhone');
-            let log = JSON.parse(localStorage.getItem('sipCalls'))
-            for (const l of Object.entries(log)) {
-                log[l[0]].session = "finish"
-            }
-            localStorage.setItem('sipCalls', JSON.stringify(log))
+            localStorage.removeItem('CallBoxStatus');
+            localStorage.removeItem('CallBoxReaction');
+            for ( s of Object.entries(ctxSip.Sessions) )
+                if (s[1].CallStateID == 4)
+                    s[1].call.bye();
             ctxSip.phone.stop();
         };
 
@@ -707,6 +760,10 @@ async function initPhone() {
             r   = $('#rmtVol') 
 
         let closeEditorWarning = function() {
+            // for ( s of Object.entries(ctxSip.Sessions) )
+            //     if (s[1].CallStateID == 4)
+            //         s[1].call.bye();
+
             return 'If you close this window, you will not be able to make or receive calls from your browser.';
         };
 
@@ -733,7 +790,7 @@ async function initPhone() {
                 r.show();
         }
 
-        r.showVol();
+        // r.showVol();
 
         window.onbeforeunload = closeEditorWarning;
 
@@ -751,30 +808,25 @@ async function initPhone() {
         s.on('bye', function() {
             ctxSip.logCall(session, 'ended')
             ctxSip.callActiveID = null;
-            connectSOS(`GetAllActiveCalls`).then(response => {
-                for (const r of response)
-                    if(r.UserID == loginAccount.ID && r.EquipmentID == session.EquipmentID) {
-                        connectSOS(`TerminateCall;${loginAccount.ID};${session.EquipmentID}`)
-                        break;
-                    }
-            });
-
+            connectSOS(`TerminateCall;${session.Sip}`)
+            
             r.hide();
             window.onbeforeunload = null;
+            return;
         });
 
         s.on('hold', function(e) {
             ctxSip.callActiveID = null;
             ctxSip.logCall(session, 'holding');
 
-            r.hide();
+            // r.hide();
         });
 
         s.on('unhold', function(e) {
             ctxSip.logCall(session, 'resumed');
             ctxSip.callActiveID = session.ctxid;
 
-            r.showVol();
+            // r.showVol();
         });
 
         ctxSip.logCall(session, "answered")
@@ -917,6 +969,7 @@ async function initPhone() {
     })
 
     // Hide the spalsh after 3 secs.
+    ctxSip.logGen();
     setTimeout(function() {
         ctxSip.logShow();
     }, 3000);
@@ -963,13 +1016,13 @@ async function initPhone() {
                         break
                 }
 
-                response.displayName = equip.MasterName;
+                response.displayName = equip.EquipmentName;
                 response.direction = direction;
                 response.service = true;
-                response.ctxid = `${Date.parse(response.StartDate).toString().substr(0, 10)}id${equip.ID}`;
+                response.ctxid = `${equip.MasterSip}id${equip.EquipmentID}`;
                 response.remoteIdentity = {
-                    uri: `${equip.MasterSIP}@${equip.IP}`,
-                    displayName: equip.MasterName
+                    uri: `${equip.MasterSip}@${equip.EquipmentIP}`,
+                    displayName: equip.EquipmentName
                 }
 
                 response.on = () => {}
@@ -1056,3 +1109,4 @@ async function initPhone() {
 };
 
 initPhone()
+initSOS()

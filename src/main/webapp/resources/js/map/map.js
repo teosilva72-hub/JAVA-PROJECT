@@ -788,7 +788,7 @@ function showBtns() {
 	document.getElementById("topButtons").style.display = "block";
 }
 
-function alert(a) {
+function alertOptions(a) {
 	$(a).css("display", "block");
 	setTimeout(function () {
 		$(a).fadeOut('fast');
