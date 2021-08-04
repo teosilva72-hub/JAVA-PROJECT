@@ -6,6 +6,7 @@ public enum RoadConcessionairesEnum {
 	CardelPozaRica("Cardel Poza Rica"),
 	LitoralSul("Litoral Sul"),
 	Tuxpan("Tuxpan Tampico"),
+	ViaAmericas("Via Americas"),
 	ViaPaulista("Via Paulista"),
 	ViaRondon("Via Rondon"),
 	ViaSul("Via Sul"),
