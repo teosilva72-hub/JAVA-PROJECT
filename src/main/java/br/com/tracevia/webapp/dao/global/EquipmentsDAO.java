@@ -164,14 +164,14 @@ public class EquipmentsDAO {
 		
 		String query = "";
 
-		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, master_sip FROM sos_equipment eq " +
+		String sql = "SELECT equip_id, name, port, c.city_name, r.road_name, km, linear_width, " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, model, master_sip FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 		
-		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, master_sip FROM sos_equipment eq " +
+		String sqlVW = "SELECT equip_id, name, port, c.city_name, r.road_name, km, vw_linear_width, " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, model, master_sip FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -198,16 +198,18 @@ public class EquipmentsDAO {
 					equip.setTable_id("sos");
 					equip.setNome(rs.getString(2));
 					equip.setEquip_type(getModule("sos"));
-					equip.setCidade(rs.getString(3));
-					equip.setEstrada(rs.getString(4));
-					equip.setKm(rs.getString(5));
-					equip.setLinearWidth(rs.getInt(6));						
-					equip.setLinearPosX(rs.getInt(7));
-					equip.setLinearPosY(rs.getInt(8));
-					equip.setMapWidth(rs.getInt(9));						
-					equip.setMapPosX(rs.getInt(10));					
-					equip.setMapPosY(rs.getInt(11));						
-					equip.setSip(rs.getString(12));						
+					equip.setPort(rs.getInt(3));
+					equip.setCidade(rs.getString(4));
+					equip.setEstrada(rs.getString(5));
+					equip.setKm(rs.getString(6));
+					equip.setLinearWidth(rs.getInt(7));						
+					equip.setLinearPosX(rs.getInt(8));
+					equip.setLinearPosY(rs.getInt(9));
+					equip.setMapWidth(rs.getInt(10));						
+					equip.setMapPosX(rs.getInt(11));					
+					equip.setMapPosY(rs.getInt(12));
+					equip.setModel(rs.getInt(13));
+					equip.setSip(rs.getString(14));						
 
 					lista.add(equip);
 				}				

@@ -29,15 +29,15 @@ public class SOS extends Equipments {
 	public void setSos_comms(int sos_comms) {
 		this.sos_comms = sos_comms;
 	}
-
+	
 	public String getSip() {
 		return sip;
 	}
 
+	
 	public void setSip(String sip) {
 		this.sip = sip;
+		
 	}
-	
-	
-
+		
 }
