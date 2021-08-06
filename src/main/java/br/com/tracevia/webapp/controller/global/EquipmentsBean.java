@@ -20,6 +20,7 @@ import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 import org.primefaces.context.RequestContext;
@@ -47,6 +48,8 @@ public class EquipmentsBean implements Serializable {
 	
 	@ManagedProperty("#{loginAccount}")
 	private LoginAccountBean login;
+
+	private SOS sos;
 	
 	public LoginAccountBean getLogin() {
 		return login;
@@ -251,6 +254,9 @@ public class EquipmentsBean implements Serializable {
 	   //EQUIPDAO
 	   EquipmentsDAO equipDAO = new EquipmentsDAO();
 	   
+	   //FOR SOS
+	   SOS sos = new SOS();	
+	   
 	   //FOR SAT
 	   SAT sat = new SAT();
 	   
@@ -328,6 +334,69 @@ public class EquipmentsBean implements Serializable {
 	   	    dms = new DMS(); // RESET
 		   }
 	 	   
+	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
+	   //SOS CHECKING
+	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
+	   
+	   if((moduleID != 0 && moduleID == 10) && (equipId != 0)) {
+	   		   
+			String table = defineTableById(moduleID);
+		   		 
+			//For Equipment CreationDate
+		    sos.setCreation_date(dta.currentTimeDBformat());
+					    
+		    //For Equipment CreationUsername		
+			sos.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			
+			//SOS ID
+			sos.setEquip_id(equipId);
+			
+			//For Equipment Name
+		    sos.setNome(parameterMap.get("equipName"));
+		    
+		     //For Equipment IP
+		    sos.setEquip_ip(parameterMap.get("equipIp"));
+		    
+		    //For Equipment Port
+		    sos.setPort(Integer.parseInt(parameterMap.get("equipPort")));
+		    	    
+		    //For Equipment City
+		    sos.setCidade(parameterMap.get("cities"));
+		    
+		    //For Equipment Road
+		    sos.setEstrada(parameterMap.get("roads"));
+		    
+		    //For Equipment KM
+		    sos.setKm(parameterMap.get("km"));
+		    
+		    //For Equipment Model
+		    sos.setModel(Integer.parseInt(parameterMap.get("model")));
+		    
+		    //For Equipment SIP
+		    sos.setSip(parameterMap.get("sip"));
+		    
+	   	    checked =  equipDAO.checkExists(sos.getEquip_id(), table);
+	   	 
+	   	    if(checked)
+			   request.execute("alertOptions('#equip-save-error');");
+	   	    	 
+	   	      else {
+	   		 
+	   		   checked = equipDAO.EquipSOSMap(sos, table);
+	   		   
+	   		   if(checked) {
+					request.execute("alertOptions('#equip-save');");
+			   		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+				  }
+	   	 	   
+	   		  else 
+				request.execute("alertOptions('#equip-save-error');");
+	  	 	    		    			    		 
+	   	      }
+	   	    
+	   	    dms = new DMS(); // RESET
+		   }
+	   
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 	   //SAT CHECKING
 	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -408,7 +477,7 @@ public class EquipmentsBean implements Serializable {
 	   //GENERIC CHECKING
 	   //////////////////////////////////////////////////////////////////////////////////////////////////////////
    		    
-	   else if((moduleID != 0 && (moduleID != 9 && moduleID != 8)) && (equipId != 0)) {
+	   else if((moduleID != 0 && (moduleID != 9 && moduleID != 8 && moduleID != 10)) && (equipId != 0)) {
 		   		  		   
 		    //EQUIP TABLE BY MODULE
 		    String table = defineTableById(moduleID);
@@ -430,8 +499,7 @@ public class EquipmentsBean implements Serializable {
 		    
 		    //EQUIP IP
 		    equip.setEquip_ip(parameterMap.get("equipIp"));
-		    	    
-				    
+    
 		    //For Equipment City
 		    equip.setCidade(parameterMap.get("cities"));
 		    
@@ -492,6 +560,7 @@ public class EquipmentsBean implements Serializable {
 		 equip = new Equipments();
 		 sat = new SAT();
 		 dms = new DMS();
+		 sos = new SOS();
 		 
 		 int moduleId = getModuleByName(equipTable);
 		  
@@ -548,9 +617,24 @@ public class EquipmentsBean implements Serializable {
 			 if(sat.getFaixa8() != null)			 
 			 RequestContext.getCurrentInstance().execute("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
 						 		 
-		 }
-		 
-	     else {		
+		 } else if (moduleId == 10) {
+				 
+				 sos = dao.EquipSOSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
+				 
+				 RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
+				 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sos.getNome()+"');");	
+				 RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+sos.getEquip_ip()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#equipPort-edit').val('"+sos.getPort()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+sos.getCidade()+"');");	
+				 RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+sos.getEstrada()+"');");	
+				 RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sos.getKm()+"');");	
+				 RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
+				 RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
+				 
+		 } else {		
 			 		 
 		 equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 		 		 
@@ -624,6 +708,7 @@ public class EquipmentsBean implements Serializable {
 		 
 		 DMS dms = new DMS();
 		 SAT sat = new SAT();
+		 SOS sos = new SOS();
 		 Equipments equip = new Equipments();
 		
 		 int equipId = getEquipId();		 
@@ -685,7 +770,60 @@ public class EquipmentsBean implements Serializable {
 					request.execute("alertOptions('#equip-update-error');");
 				}
 	    	 		
-			
+		 } else if(moduleId != 0 && moduleId == 10) {		
+					 
+				    //Table definition
+				     String table = defineTableById(moduleId);
+		 		 
+		    		//For Equipment Update Date
+				    sos.setUpdate_date(dta.currentTimeDBformat());
+							    
+				    //For Equipment Update Username		
+					sos.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));			
+											
+					//SOS ID
+					sos.setEquip_id(equipId);
+					
+					//For Equipment Name
+				    sos.setNome(parameterMap.get("equipNameEdit"));
+				    
+				     //For Equipment IP
+				    sos.setEquip_ip(parameterMap.get("equipIp-edit"));
+				    
+				    //For Equipment Port
+				    sos.setPort(Integer.parseInt(parameterMap.get("equipPort-edit")));
+				    
+				   	//For Equipment City
+				    sos.setCidade(parameterMap.get("citiesEdit"));
+				    
+				    //For Equipment Road
+				    sos.setEstrada(parameterMap.get("roadsEdit"));
+				    
+				    //For Equipment KM
+				    sos.setKm(parameterMap.get("kmEdit"));
+				    
+				    //For Equipment Model
+				    sos.setModel(Integer.parseInt(parameterMap.get("modelEdit")));
+				    
+				    //For Equipment SIP
+				    sos.setSip(parameterMap.get("sipEdit"));
+
+				    //For Equipment Map Width / Linear Width			    			    
+				    if(parameterMap.get("width-edit") == "0")
+				    	 sos.setMapWidth(1);			    
+				    			
+				    else sos.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
+				   			 
+				    update = dao.EquipSOSUpdateMap(sos, table, interfaceView, login.getLogin().getPermission_id());
+					
+				    if(update) {
+						request.execute("alertOptions('#equip-update');");
+						request.execute("updated = '" + equipTable + equipId + "';");
+					} else {
+						request.execute("alertOptions('#equip-update-error');");
+					}    
+			    
+			    
 	     } else if(moduleId != 0 && moduleId == 9) {
 	    	 
 	    	// Table definition

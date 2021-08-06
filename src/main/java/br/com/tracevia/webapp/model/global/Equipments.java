@@ -14,7 +14,6 @@ public class Equipments {
 	private String table_id;
 	private String equip_type;
 	private String equip_ip;
-	private int port;
 	private String creation_date;
 	private String creation_username;
 	private String update_date;
@@ -32,24 +31,21 @@ public class Equipments {
 	private int linearWidth;
 	private int dlgPosX;
 	private int dlgPosY;
-	private int  model;
-	private String master_sip;
 	private int status;
 	private int lastStatus;
 	private boolean notificacao;
 	private boolean visible;
 
-	public Equipments(int equip_id, String table_id, String equip_type, String equip_ip, int port, String creation_date,
+	public Equipments(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, int model, String master_sip, int status, int lastStatus, boolean notificacao,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
 			boolean visible) {
 		
 		this.equip_id = equip_id;
 		this.table_id = table_id;
 		this.equip_type = equip_type;
 		this.equip_ip = equip_ip;
-		this.port = port;
 		this.creation_date = creation_date;
 		this.creation_username = creation_username;
 		this.update_date = update_date;
@@ -67,8 +63,6 @@ public class Equipments {
 		this.linearWidth = linearWidth;
 		this.dlgPosX = dlgPosX;
 		this.dlgPosY = dlgPosY;
-		this.model = model;
-		this.master_sip = master_sip;
 		this.status = status;
 		this.lastStatus = lastStatus;
 		this.notificacao = notificacao;
@@ -116,15 +110,6 @@ public class Equipments {
 		this.equip_ip = equip_ip;
 	}
 	
-	public int getPort() {
-		return port;
-	}
-
-	public void setPort(int port) {
-		this.port = port;
-	}
-
-
 	public String getCreation_date() {
 		return creation_date;
 	}
@@ -293,23 +278,6 @@ public class Equipments {
 	public void setDlgPosY(int dlgPosY) {
 		this.dlgPosY = dlgPosY;
 	}
-	
-	public int getModel() {
-		return model;
-	}
-
-	public void setModel(int model) {
-		this.model = model;
-	}
-	
-	public String getMaster_sip() {
-		return master_sip;
-	}
-
-	public void setMaster_sip(String master_sip) {
-		this.master_sip = master_sip;
-	}
-
 
 	public int getStatus() {
 		return status;
