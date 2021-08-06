@@ -279,7 +279,9 @@ async function initPhone() {
         logItem : function(item) {
 
             var callActive = (item.status !== 'ended' && item.status !== 'missed'),
-                callLength = (item.status !== 'ended')? '<span id="'+item.id+'"></span>': moment.duration(item.stop - item.start).humanize(),
+                timeStart  = typeof item.start == "string" ? new Date(item.start).getTime() : item.start,
+                timeStop    = typeof item.stop == "string" ? new Date(item.stop).getTime() : item.stop,
+                callLength = (item.status !== 'ended')? '<span id="'+item.id+'"></span>': moment.duration(timeStop - timeStart).humanize(),
                 callClass  = '',
                 callIcon,
                 i;
