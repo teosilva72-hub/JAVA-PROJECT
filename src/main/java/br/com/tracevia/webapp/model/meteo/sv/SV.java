@@ -18,17 +18,17 @@ public class SV extends Equipments {
 	private int bateria_sts;
 	private int volts_line;
 				
-	public SV(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+	public SV(int equip_id, String table_id, String equip_type, String equip_ip, int port, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, int model, String master_sip, int status, int lastStatus, boolean notificacao,
 			boolean visible, String data_hora, String data, String intervalos, int monthOrDay, int press_atmosferica,
 			int umi_relativa, int absol_precipitacao, int velocidadeMed_vento, int direcao_vento, double temp_ar,
 			double temp_ambiente, int bateria_sts, int volts_line) {
 		
-		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
+		super(equip_id, table_id, equip_type, equip_ip, port, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, status, lastStatus, notificacao, visible);
+				dlgPosX, dlgPosY, model, master_sip, status, lastStatus, notificacao, visible);
 		
 		this.data_hora = data_hora;
 		this.data = data;
