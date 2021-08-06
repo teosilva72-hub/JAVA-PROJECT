@@ -251,7 +251,7 @@ async function initPhone() {
                     bdid  : session.EquipmentID
                 };
             }
-            
+
             calllog[log.id].owner = session.owner ? session.owner : calllog[log.id].owner
 
             if (session.isMuted !== undefined)
@@ -355,7 +355,7 @@ async function initPhone() {
                 }
             } catch {}
 
-            $('#sip-logitems').scrollTop(0);
+            // $('#sip-logitems').scrollTop(0);
         },
 
         /**
@@ -364,21 +364,24 @@ async function initPhone() {
         logGen : async function() {
             ctxSip.logClear();
             let calls = await connectSOS("GetAllActiveCalls");
+            let equips = await connectSOS("GetAllEquipments");
+            let history = await connectSOS("GetHistoryCalls;0");
             let ringtone = false;
             let gen = {}
             
-            for (const call of calls) {
-                let id = `${call.Sip}id${call.equip.EquipmentID}`;
-                let uri = `${call.Sip}@${call.equip.EquipmentIP}`;
+            for (const call of history.concat(calls)) {
+                const equip = equips.find(e => e.EquipmentID == call.EquipmentID);
+                let id = `${ call.SessionID }id${ call.equip ? call.equip.EquipmentID : equip.EquipmentID }`;
+                let uri = `${ call.Sip ? call.Sip : equip.Sip }@${ call.equip ? call.equip.EquipmentIP : equip.EquipmentIP }`;
                 let status;
 
-                call.displayName    = call.equip.EquipmentName
+                call.displayName    = call.equip ? call.equip.EquipmentName : equip.EquipmentName
                 call.direction      = 'incoming'
                 call.service        = true
                 call.ctxid          = id
                 call.remoteIdentity = {
                     uri         : uri,
-                    displayName : call.equip.EquipmentName
+                    displayName : call.equip ? call.equip.EquipmentName : equip.EquipmentName
                 }
 
                 ctxSip.Sessions[id] = call;
@@ -390,6 +393,10 @@ async function initPhone() {
 
                     case 2:
                         status = "holding";
+                        break
+
+                    case 3:
+                        status = "ended";
                         break
                         
                     case 4:
@@ -404,12 +411,12 @@ async function initPhone() {
 
                 gen[id] = {
                     id      : id,
-                    clid    : call.equip.EquipmentName,
+                    clid    : call.equip ? call.equip.EquipmentName : equip.EquipmentName,
                     uri     : uri,
-                    start   : undefined,
-                    stop    : undefined,
+                    start   : call.StartDate,
+                    stop    : call.EndDate,
                     flow    : "incoming",
-                    bdid    : call.equip.EquipmentID,
+                    bdid    : call.equip ? call.equip.EquipmentID : equip.EquipmentID,
                     status  : status
                 }
             }
@@ -456,7 +463,9 @@ async function initPhone() {
 
                 // sort descending
                 x.sort(function(a, b) {
-                    return b.start - a.start;
+                    let aId = Number(a.id.split("id")[0])
+                    let bId = Number(b.id.split("id")[0])
+                    return bId - aId;
                 });
 
                 $.each(x, function(k, v) {
@@ -1019,7 +1028,7 @@ async function initPhone() {
                 response.displayName = equip.EquipmentName;
                 response.direction = direction;
                 response.service = true;
-                response.ctxid = `${equip.MasterSip}id${equip.EquipmentID}`;
+                response.ctxid = `${response.SessionID}id${equip.EquipmentID}`;
                 response.remoteIdentity = {
                     uri: `${equip.MasterSip}@${equip.EquipmentIP}`,
                     displayName: equip.EquipmentName

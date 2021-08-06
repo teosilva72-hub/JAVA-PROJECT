@@ -35,6 +35,8 @@ $(async function () {
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
 
+  developerMode();
+
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });
 
@@ -164,6 +166,24 @@ const btnSOSCommand = function (e) {
   let command = target.getAttribute("command");
   
   connectSOS(`${command};${sip}`);
+}
+
+const developerMode = () => {
+  const modeOn = () => {
+    $("[mode=developer_mode]").show();
+  }
+  const modeOff = () => {
+    $("[mode=developer_mode]").hide();
+  }
+
+  try {
+    if (JSON.parse(localStorage.getItem("developer_mode")))
+      modeOn()
+    else
+      modeOff()
+  } catch {}
+
+  window.onstorage = developerMode
 }
 
 //NOTIFICATIONS  BADGE
