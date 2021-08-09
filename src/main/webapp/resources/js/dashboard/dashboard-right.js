@@ -35,8 +35,6 @@ $(async function () {
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
 
-  developerMode();
-
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });
 
@@ -182,8 +180,6 @@ const developerMode = () => {
     else
       modeOff()
   } catch {}
-
-  $(window).on("storage", developerMode);
 }
 
 //NOTIFICATIONS  BADGE

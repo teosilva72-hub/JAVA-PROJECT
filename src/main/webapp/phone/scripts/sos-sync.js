@@ -1,5 +1,6 @@
 $(() => {
-    $(window).on("storage", eventGetReaction);
+    window.onstorage = eventGetReaction;
+	localStorage.setItem("user", $("body").attr("user"))
     
     $(window).trigger("storage")
 })
