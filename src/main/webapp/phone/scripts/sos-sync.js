@@ -1,5 +1,5 @@
 $(() => {
-    window.onstorage = eventGetReaction;
+    $(window).on("storage", eventGetReaction);
     
     $(window).trigger("storage")
 })
@@ -9,6 +9,8 @@ const eventGetReaction = () => {
     let last_reaction = $('#txtCallStatus').html()
     let status = localStorage.getItem("CallBoxStatus");
     let reaction = localStorage.getItem("CallBoxReaction");
+    let ringtone = localStorage.getItem("RingTone");
+    let ringbacktone = localStorage.getItem("RingBackTone");
 
     $("#txtRegStatus").html(status || ".");
     $('#txtCallStatus').html(reaction);
@@ -17,4 +19,14 @@ const eventGetReaction = () => {
         showStatesCallbox('open')
     else if (!reaction && last_reaction)
         showStatesCallbox('close')
+
+    if (ringtone)
+        try { RingTone.play() } catch (e) {}
+    else
+        try { RingTone.pause() } catch (e) {}
+        
+    if (ringbacktone)
+        try { RingBackTone.play() } catch (e) {}
+    else
+        try { RingBackTone.pause() } catch (e) {}
 }

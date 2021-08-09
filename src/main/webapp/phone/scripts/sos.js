@@ -1,4 +1,7 @@
-const PING = 10000
+const PING 			= 10000
+const RingTone      = document.getElementById('ringtone');
+const RingBackTone  = document.getElementById('ringbacktone');
+const DtmfTone      = document.getElementById('dtmfTone');
 
 let on_error =  function() {
     console.log('error');
@@ -63,7 +66,7 @@ const getEquipFromID = async id => {
 const callsIncoming = async response => {
 	let equip = `sos${response.EquipmentID}`
 	let status = response.CallStateID
-
+	let phone = localStorage.getItem("ctxPhone");
 
 	let elmt = $(`#${equip.toLowerCase()}`)
 	
@@ -82,6 +85,12 @@ const callsIncoming = async response => {
 			status = ''
 			break
 	}
+	
+	if (!phone)
+		if (!$(".call-box-action").length)
+			try { RingTone.pause() } catch (e) {}
+		else
+			try { RingTone.play() } catch (e) {}
 }
 
 const telemtry = response => {

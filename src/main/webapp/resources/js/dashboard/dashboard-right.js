@@ -183,7 +183,7 @@ const developerMode = () => {
       modeOff()
   } catch {}
 
-  window.onstorage = developerMode
+  $(window).on("storage", developerMode);
 }
 
 //NOTIFICATIONS  BADGE

@@ -66,19 +66,19 @@ async function initPhone() {
 
         // Sound methods
         startRingTone : function() {
-            try { ctxSip.ringtone.play(); } catch (e) { }
+            localStorage.setItem("RingTone", "true")
         },
-
+        
         stopRingTone : function() {
-            try { ctxSip.ringtone.pause(); } catch (e) { }
+            localStorage.removeItem("RingTone")
         },
-
+        
         startRingbackTone : function() {
-            try { ctxSip.ringbacktone.play(); } catch (e) { }
+            localStorage.setItem("RingBackTone", "true")
         },
-
+        
         stopRingbackTone : function() {
-            try { ctxSip.ringbacktone.pause(); } catch (e) { }
+            localStorage.removeItem("RingBackTone")
         },
 
         // Genereates a rendom string to ID a call
