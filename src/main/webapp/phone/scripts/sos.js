@@ -31,6 +31,7 @@ const changeStates = response => {
 		
 		case 4:
 			status = 'alarm'
+			sidebar.css("color", "yellow")
 			break
 			
 		case 5:
