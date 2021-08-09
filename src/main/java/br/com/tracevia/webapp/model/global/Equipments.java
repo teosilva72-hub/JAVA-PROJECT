@@ -109,8 +109,7 @@ public class Equipments {
 	public void setEquip_ip(String equip_ip) {
 		this.equip_ip = equip_ip;
 	}
-
-
+	
 	public String getCreation_date() {
 		return creation_date;
 	}
@@ -280,7 +279,6 @@ public class Equipments {
 		this.dlgPosY = dlgPosY;
 	}
 
-
 	public int getStatus() {
 		return status;
 	}
@@ -362,3 +360,4 @@ public class Equipments {
 
 
 }
+	

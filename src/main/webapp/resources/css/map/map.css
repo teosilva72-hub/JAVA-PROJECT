@@ -649,7 +649,19 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="equipPort"] {
+	width: 100%;
+}
+
 [id$="equipName"] {
+	width: 100%;
+}
+
+[id$="sip"] {
+	width: 100%;
+}
+
+[id$="model"] {
 	width: 100%;
 }
 
@@ -697,6 +709,19 @@ img.box-img[zoom] {
 [id$="roadsEdit"] {
 	width: 100%;
 }
+
+[id$="equipPort-edit"] {
+	width: 100%;
+}
+
+[id$="sipEdit"] {
+	width: 100%;
+}
+
+[id$="modelEdit"] {
+	width: 100%;
+}
+
 
 [id$="kmEdit"] {
 	width: 100%;
