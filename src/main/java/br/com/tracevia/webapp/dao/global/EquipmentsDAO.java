@@ -2895,15 +2895,15 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 		SOS sos = new SOS();
 
-		String querySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, linear_width, model, master_sip  FROM pmv_equipment WHERE equip_id = ? ";
+		String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip  FROM sos_equipment WHERE equip_id = ? ";
 
-		String querySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, map_width, model, master_sip  FROM pmv_equipment WHERE equip_id = ? ";	
+		String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip  FROM sos_equipment WHERE equip_id = ? ";	
 		
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 		
-		String VWquerySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_linear_width, model, master_sip FROM pmv_equipment WHERE equip_id = ? ";
+		String VWquerySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_linear_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
 
-		String VWquerySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_map_width, model, master_sip FROM pmv_equipment WHERE equip_id = ? ";	
+		String VWquerySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_map_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";	
 				
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		
