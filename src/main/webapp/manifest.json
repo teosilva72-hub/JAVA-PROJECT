@@ -1,0 +1,27 @@
+{
+    "short_name": "Tracevia",
+    "name": "Tracevia",
+    "icons": [
+      {
+        "src": "/resources/images/home/64360.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "/",
+    "background_color": "#333333",
+    "display": "fullscreen",
+    "scope": "/",
+    "theme_color": "#000000",
+    "shortcuts": [
+      {
+        "name": "Map View",
+        "short_name": "Map",
+        "description": "View all equipments in map",
+        "url": "/map/map.xhtml",
+        "icons": [{ "src": "/resources/images/home/64360.png", "sizes": "512x512" }]
+      }
+    ],
+    "description": "Tracevia",
+    "screenshots": []
+  }

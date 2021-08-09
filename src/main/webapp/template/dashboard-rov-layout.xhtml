@@ -23,6 +23,7 @@
       <h:outputStylesheet name="fontawesome.min.css" library="font-awesome/css" />
     </ui:insert>
     <h:outputStylesheet name="dashboard-rov.css" library="css/templates" />
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- USE JQUERY RESOURCES AND VALIDATION -->
     <h:outputScript name="jquery-3.5.1.min.js?version=#{notificationsView.timestamp}" library="js/jquery" />
@@ -45,7 +46,7 @@
 	<ui:param name="Phone" value="#{ permission == 8 || permission == 2 }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
-  <h:body>
+  <h:body p:user="#{ loginAccount.user.username }">
     <div class="navbar navbar-expand-lg navbar-dark bg-mattBlackDark fixed-right" style="display:none;">
       <nav class="w-100 row">
         <div class="wrapper d-flex">
@@ -603,13 +604,11 @@
 
     <ui:insert name="default-plugins">
       <h:outputScript name="jquery.dataTables.min.js?version=#{notificationsView.timestamp}" library="js/datatables" />
-      <h:outputScript name="dataTables.bootstrap4.min.js?version=#{notificationsView.timestamp}"
-        library="js/datatables" />
+      <h:outputScript name="dataTables.bootstrap4.min.js?version=#{notificationsView.timestamp}" library="js/datatables" />
       <h:outputScript name="dataTables.select.min.js?version=#{notificationsView.timestamp}" library="js/datatables" />
     </ui:insert>
 
-    <h:outputScript name="jquery.slimscroll.min.js?version=#{notificationsView.timestamp}"
-      library="js/jquery-slim-scroll" />
+    <h:outputScript name="jquery.slimscroll.min.js?version=#{notificationsView.timestamp}" library="js/jquery-slim-scroll" />
     <h:outputScript name="dashboard-right.js?version=#{notificationsView.timestamp}" library="js/dashboard" />
     <h:outputScript name="stomp.min.js?version=#{notificationsView.timestamp}" library="js/stomp" />
     <h:outputScript name="controllerStomp.js?version=#{notificationsView.timestamp}" library="js/stomp" />
@@ -626,6 +625,8 @@
         <script type="text/javascript" src="/phone/scripts/sos-sync.js"></script>
       </c:if>
 
+      <!-- <script type="text/javascript" src="/resources/pwa/main.js" defer="defer"></script> -->
+      
     </ui:fragment>
 
     <!-- Import JavaScript from another pages -->

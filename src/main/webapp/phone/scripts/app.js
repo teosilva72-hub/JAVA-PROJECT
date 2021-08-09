@@ -556,7 +556,8 @@ async function initPhone() {
 
         phoneCallButtonPressed : function(sessionid) {
 
-            var s      = ctxSip.Sessions[sessionid];
+            var s      = ctxSip.Sessions[sessionid],
+                user   = document.querySelector("body").attributes("user");
                 // target = $("#numDisplay").val();
 
             if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
@@ -567,7 +568,7 @@ async function initPhone() {
 
                 } else if (s.service) {
                     ctxSip.callIncomingID = sessionid;
-                    connectSOS(`AnswerCall;${user.User};${s.Sip}`).then(response => {
+                    connectSOS(`AnswerCall;${user.User};${s.Sip};${user}`).then(response => {
                         if (response.UserID != loginAccount.ID && response.UserID)
                             ctxSip.callIncomingID = null;
                         else
@@ -670,6 +671,14 @@ async function initPhone() {
                 return false;
             }
         },
+
+        ping	: async (sip, secs) => {
+			await sleep(secs * 1000);
+			let pong = await connectSOS(`Ping;${sip}`);
+			
+			if (pong == "Pong")
+				ctxSip.ping(sip, secs)
+		},
 
         setVolumeFrame : vol => {
             let svg = $("#btnVolRemote").children();
@@ -840,6 +849,7 @@ async function initPhone() {
             // r.showVol();
         });
 
+        ctxSip.ping(session.Sip, 3);
         ctxSip.logCall(session, "answered")
         ctxSip.Sessions[ctxSip.callActiveID].call = s
     });

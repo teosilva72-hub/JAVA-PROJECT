@@ -57,12 +57,13 @@ public class ControleDeAcesso implements Filter {
 		boolean resourceRequestIcons = request.getRequestURI().contains("/resources/icons");
 		boolean resourceRequestImages = request.getRequestURI().contains("/resources/images");	
 		boolean resourceRequestJs = request.getRequestURI().contains("/resources/js");	
+		boolean resourceRequestManifest = request.getRequestURI().contains("/manifest.json");	
 					
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 						
 		//Acessar conteudo com login	
 	  if(loggedIn || loginRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
-				|| resourceRequestImages || resourceRequestJs) {	
+				|| resourceRequestImages || resourceRequestJs || resourceRequestManifest) {	
 			
 				if(path.contains(restrictedPath) && !master)
 				response.sendRedirect(restrictedURI);
@@ -71,13 +72,13 @@ public class ControleDeAcesso implements Filter {
 				
 	   //Acesso a p�gina de  redefini��o de senha
 	 } else if(resetRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
-				|| resourceRequestImages || resourceRequestJs) 
+				|| resourceRequestImages || resourceRequestJs || resourceRequestManifest) 
 		 
 			chain.doFilter(request, response);	
 	  
 	  //Acesso a p�gina de confirma��o do envio para redefini��o de senha
 	 else if(resetConfirmationRequest || resourceRequest || resourceRequestCSS || resourceRequestIcons
-				|| resourceRequestImages || resourceRequestJs) 
+				|| resourceRequestImages || resourceRequestJs || resourceRequestManifest) 
 		 
 			chain.doFilter(request, response);
 		 	 
