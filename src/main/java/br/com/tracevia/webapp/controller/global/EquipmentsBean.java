@@ -394,7 +394,7 @@ public class EquipmentsBean implements Serializable {
 	  	 	    		    			    		 
 	   	      }
 	   	    
-	   	    dms = new DMS(); // RESET
+	   	    sos = new SOS(); // RESET
 		   }
 	   
 	   ///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
