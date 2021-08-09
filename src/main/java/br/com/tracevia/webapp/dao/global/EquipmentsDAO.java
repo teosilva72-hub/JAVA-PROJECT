@@ -192,26 +192,26 @@ public class EquipmentsDAO {
 
 				while (rs.next()) {
 
-					SOS equip = new SOS();
+					SOS sos = new SOS();
 
-					equip.setEquip_id(rs.getInt(1));
-					equip.setTable_id("sos");
-					equip.setNome(rs.getString(2));
-					equip.setEquip_type(getModule("sos"));
-					equip.setPort(rs.getInt(3));
-					equip.setCidade(rs.getString(4));
-					equip.setEstrada(rs.getString(5));
-					equip.setKm(rs.getString(6));
-					equip.setLinearWidth(rs.getInt(7));						
-					equip.setLinearPosX(rs.getInt(8));
-					equip.setLinearPosY(rs.getInt(9));
-					equip.setMapWidth(rs.getInt(10));						
-					equip.setMapPosX(rs.getInt(11));					
-					equip.setMapPosY(rs.getInt(12));
-					equip.setModel(rs.getInt(13));
-					equip.setSip(rs.getString(14));						
+					sos.setEquip_id(rs.getInt(1));
+					sos.setTable_id("sos");
+					sos.setNome(rs.getString(2));
+					sos.setEquip_type(getModule("sos"));
+					sos.setPort(rs.getInt(3));
+					sos.setCidade(rs.getString(4));
+					sos.setEstrada(rs.getString(5));
+					sos.setKm(rs.getString(6));
+					sos.setLinearWidth(rs.getInt(7));						
+					sos.setLinearPosX(rs.getInt(8));
+					sos.setLinearPosY(rs.getInt(9));
+					sos.setMapWidth(rs.getInt(10));						
+					sos.setMapPosX(rs.getInt(11));					
+					sos.setMapPosY(rs.getInt(12));
+					sos.setModel(rs.getInt(13));
+					sos.setSip(rs.getString(14));						
 
-					lista.add(equip);
+					lista.add(sos);
 				}				
 			}
 
