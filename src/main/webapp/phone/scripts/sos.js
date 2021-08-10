@@ -67,7 +67,6 @@ const getEquipFromID = async id => {
 const callsIncoming = async response => {
 	let equip = `sos${response.EquipmentID}`
 	let status = response.CallStateID
-	let phone = localStorage.getItem("ctxPhone");
 
 	let elmt = $(`#${equip.toLowerCase()}`)
 	
@@ -86,12 +85,6 @@ const callsIncoming = async response => {
 			status = ''
 			break
 	}
-	
-	if (!phone)
-		if (!$(".call-box-action").length)
-			try { RingTone.pause() } catch (e) {}
-		else
-			try { RingTone.play() } catch (e) {}
 }
 
 const telemtry = response => {
@@ -163,7 +156,7 @@ const callback_calls_default = message => {
 	callsIncoming(response)
 }
 
-const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
+const consumeSOS = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
@@ -206,7 +199,7 @@ const initSOS = async debug => {
 	for (const c of calls)
 		callsIncoming(c)
 
-	consume({debug: debug})
+	consumeSOS({debug: debug})
 }
 
 window.initSOS = initSOS;

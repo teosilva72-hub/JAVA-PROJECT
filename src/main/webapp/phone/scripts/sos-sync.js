@@ -1,9 +1,45 @@
+localStorage.removeItem("RingTone");
+localStorage.removeItem("RingBackTone");
+let count = 0
+
 $(() => {
-    window.onstorage = eventGetReaction;
 	localStorage.setItem("user", $("body").attr("user"))
     
-    $(window).trigger("storage")
+	let calls = await connectSOS("GetAllActiveCalls", debug);
+
+	for (const c of calls)
+        ringCall(c)
+
+    consumeSOS({ callback_calls = ringCall })
+    
+    eventGetReaction()
+    
+    window.onstorage = eventGetReaction;
 })
+
+const ringCall = async response => {
+    let phone = localStorage.getItem("ctxPhone");
+
+    switch (response.CallStateID) {
+        case 1: // Atendido
+		case 3: // Finalizado
+		case 5: // Deligado
+            count--
+			break
+		
+		case 4: // Chamando
+            count++
+			break
+			
+		default:
+			break
+    }
+    if (!phone)
+		if (!count)
+			try { localStorage.removeItem("RingTone") } catch (e) {}
+		else
+			try { localStorage.setItem("RingTone", "true") } catch (e) {}
+}
 
 const eventGetReaction = () => {
     let last_status = $('#txtRegStatus').html()

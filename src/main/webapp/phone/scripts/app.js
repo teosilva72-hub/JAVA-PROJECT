@@ -996,7 +996,7 @@ async function initPhone() {
     }, 3000);
 
     // receiver rabbitmq
-    consume({
+    consumeSOS({
         callback_states : null,
         callback_alarms : null,
         callback_calls  : message => {
