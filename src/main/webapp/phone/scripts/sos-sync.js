@@ -1,8 +1,9 @@
 localStorage.removeItem("RingTone");
 localStorage.removeItem("RingBackTone");
 let count = 0
+let debug = false;
 
-$(() => {
+$(async () => {
 	localStorage.setItem("user", $("body").attr("user"))
     
 	let calls = await connectSOS("GetAllActiveCalls", debug);
@@ -10,7 +11,7 @@ $(() => {
 	for (const c of calls)
         ringCall(c)
 
-    consumeSOS({ callback_calls = ringCall })
+    consumeSOS({ callback_calls: ringCall })
     
     eventGetReaction()
     
