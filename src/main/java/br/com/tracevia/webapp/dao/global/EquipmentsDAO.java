@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.dms.MessagesDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
@@ -2103,7 +2104,31 @@ public class EquipmentsDAO {
 
 		return updated;
 	}
+	public Equipments cftvCam(int id) throws Exception {
+		String script = "SELECT name, equip_ip, km FROM cftv_equipment WHERE equip_id= "+id+"";
+		Equipments data = new Equipments();
+		System.out.println(script);
+		DateTimeApplication dtm = new DateTimeApplication();
+		
+		try {
+			conn = ConnectionFactory.connectToTraceviaApp();
+			ps = conn.prepareStatement(script);
+			rs = ps.executeQuery();
+			
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+					data.setNome(rs.getString(1));
+					data.setEquip_ip(rs.getString(2));
+					data.setKm(rs.getString(3));
+				}				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		return data;
+	}
 	public Equipments EquipSearchMap(int id, String table, String interfacesView, int permission) throws Exception {    
 
 		try {

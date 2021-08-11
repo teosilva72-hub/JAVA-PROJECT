@@ -722,7 +722,6 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
-
 [id$="kmEdit"] {
 	width: 100%;
 }
@@ -1130,7 +1129,92 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	bottom: 10px;
 }
 
+#modal-setting-cftv {
+	z-index: 10040;
+}
+
 #addequip {
 	color: white;
 	font-weight: 900;
+}
+
+.none {
+	display: none;
+}
+
+.setting-cftv.show {
+	display: block !important;
+}
+
+.setting-icone.show {
+	display: block !important;
+}
+
+.modal-dbl-click {
+	display: unset;
+}
+
+.setting-icone {
+	position: relative;
+	bottom: 28px;
+	left: 5px;
+	color: white;
+}
+
+.space-cam {
+	width: 270px;
+	height: 200px;
+	background: black;
+}
+
+.controller-cftv {
+	width: 109px;
+    position: fixed;
+    top: 245px;
+}
+
+.fa-plus, .fa-minus, .fa-play {
+	border: none;
+    color: black;
+    position: relative;
+    top: 152px;
+    left: 10px;
+    font-size: 23px;
+    cursor: pointer;
+}
+.top {
+    height: 34px;
+    width: 33px;
+    position: relative;
+    top: 15px;
+    left: 39px;
+    z-index: 1;
+}
+.left {
+    height: 33px;
+    width: 41px;
+    position: relative;
+    top: 21px;
+    left: 71px;
+    z-index: 1;
+}
+.right{
+    height: 32px;
+    width: 37px;
+    position: relative;
+    bottom: 11px;
+    left: 0px;
+    z-index: 1;
+}
+.bottom{
+    height: 32px;
+    width: 34px;
+    position: relative;
+    bottom: 4px;
+    left: 38px;
+    z-index: 1;	
+}
+.content-controller {
+    position: fixed;
+    left: 55%;
 }

@@ -545,9 +545,9 @@
 							<!---->
 
 							<!-- ***** IP ADDRESS ***** -->
-							
+
 							<!--  ******************************************************************************************************* -->
-							
+
 							<!-- PORT -->
 
 							<div class="form-row sosInputs" style="display: none;">
@@ -692,9 +692,9 @@
 							<!-- ***** KM ***** -->
 
 							<!--  ******************************************************************************************************* -->
-							
-						    <!-- ***** MODEL ***** -->
-							<div class="form-row sosInputs" style="display:none;">
+
+							<!-- ***** MODEL ***** -->
+							<div class="form-row sosInputs" style="display: none;">
 								<div class="col-md-6">
 									<!-- ROW -->
 									<div class="form-group input-field-half">
@@ -715,13 +715,13 @@
 									<!---->
 								</div>
 								<!---->
-							
-							<!---->
-							<!-- ***** MODEL ***** -->
 
-							<!--  ******************************************************************************************************* -->
-							
-							<!-- ***** SIP ***** -->
+								<!---->
+								<!-- ***** MODEL ***** -->
+
+								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
 
 								<div class="col-md-6">
 									<!-- ROW -->
@@ -732,8 +732,7 @@
 										<span for="sip" class="valid-icon-hidden"></span>
 										<!-- SPAN VALIDATION -->
 										<input type="text" autocomplete="off" name="sip" id="sip"
-											class="sip"
-											placeholder="#{mapLabels.map_creation_input_sip}" />
+											class="sip" placeholder="#{mapLabels.map_creation_input_sip}" />
 										<!-- INPUT -->
 									</div>
 									<!---->
@@ -748,7 +747,7 @@
 							<!-- ***** SIP ***** -->
 
 							<!--  ******************************************************************************************************* -->
-							
+
 							<!-- ***** TRACKS ***** -->
 
 							<div class="form-row satInputs" style="display: none;">
@@ -1039,13 +1038,36 @@
 					<!-- Modal Label-->
 					<div class="modal-content">
 						<!-- MODAL CONTENT -->
-						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-
+						<div class="modal-header modal-dbl-click text-center">
+							<div class="row">
+								<div class="col-md-2">
+									<!-- BTN SETTING CFTV -->
+									<h:form prependId="false" id="btn-setting">
+										<h:commandButton id="Setting-cftv" style="display: none;"
+											class="btn btn-dark setting-cftv">
+											<!--  <i class="fas fa-cog"></i>-->
+											<i class="fas fa-cog setting-icone" style="display: none;"></i>
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target"
+												value="#modal-setting-cftv" />
+											<f:ajax execute="@form" render=":btn-setting :form-setting "
+												listener="#{equipsBean.searchCftv}" />
+										</h:commandButton>
+										<h:inputHidden value="#{equipsBean.id}" id="search-name-equip"></h:inputHidden>
+									</h:form>
+									<!--  -->
+								</div>
+								<div class="col-md-8">
+									<!-- TITLE MODAL DBL CLICK -->
+									<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</div>
 						</div>
 
 						<div class="modal-body">
@@ -1054,9 +1076,9 @@
 							<h:form id="form-modal-submit">
 								<!-- FORM OPTIONS -->
 
-								<div class="form-row">
+								<div class="row">
 									<!-- ROW -->
-									<div class="form-group col-md-4 text-center">
+									<div class="form-group col-md-4">
 										<!-- FORM GROUP EDIT BUTTON -->
 
 										<!-- INPUT HIDDEN VALUES -->
@@ -1079,11 +1101,12 @@
 												render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
 											 edit-equip-form:roads edit-equip-form:km edit-equip-form:width" />
 										</h:commandButton>
+
 										<!---->
 									</div>
 									<!---->
 
-									<div class="form-group col-md-4 text-center">
+									<div class="form-group col-md-4">
 										<!-- FORM GROUP POSITION BUTTON -->
 
 										<!-- INPUT HIDDEN VALUES -->
@@ -1104,7 +1127,7 @@
 
 
 
-									<div class="form-group col-md-4 text-center">
+									<div class="form-group col-md-4">
 										<!-- FORM GROUP DELETE BUTTON -->
 
 										<!-- DELETE BUTTON -->
@@ -1120,10 +1143,9 @@
 												render="delete-equip-form:del-equip-name" />
 										</h:commandButton>
 										<!---->
+
 									</div>
 									<!---->
-
-
 
 								</div>
 								<!---->
@@ -1136,12 +1158,83 @@
 				</div>
 				<!---->
 			</div>
-			<!---->
+			<!-- -->
 
 			<!-- ************************************************************************************* -->
-			<!-- ************************************ OPTIONS **************************************** -->
+			<!-- ************************************ SETTING CFTV **************************************** -->
 			<!-- ************************************************************************************* -->
 
+			<div class="modal fade" id="modal-setting-cftv"
+				data-backdrop="static" data-keyboard="false" tabindex="-1"
+				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+						<!-- titulo cftv modal -->
+							<h5 class="modal-title text-center" id="staticBackdropLabel">#{mapLabels.title_moda_cftv}</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!-- modal teste -->
+						<h:form prependId="false" id="form-setting">
+							<div class="modal-body">
+								<!-- dados do cftv -->
+								<div class="row" style="color: black;">
+									<div class="col-md-4">
+										<b>#{mapLabels.name}:</b> #{equipsBean.equip.nome}
+									</div>
+									<div class="col-md-4">
+										<b>#{mapLabels.ip}:</b> #{equipsBean.equip.equip_ip}
+									</div>
+									<div class="col-md-4">
+										<b>#{mapLabels.map_creation_input_km}:</b> #{equipsBean.equip.km}
+									</div>
+								</div>
+							</div>
+							<div class="modal-header">
+								<div class="row">
+									<div class="col-md-8">
+										<div class="jumbotron space-cam"></div>
+									</div>
+									<div class="col-md-4">
+										<div class="row">
+											<div class="content-controller">
+												<div class="col-md-12">
+													<div class="top" id="top" onclick="cftvTop()"></div>
+													<div class="left" id="left" onclick="cftvLeft()"></div>
+													<div class="right" id="right" onclick="cftvRight()"></div>
+													<div class="bottom" id="bottom" onclick="cftvBottom()"></div>
+													<img class="controller-cftv"
+														src="data:image/png;base64, #{equipsBean.imgControle}"></img>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<i class="fas fa-plus"></i>
+											</div>
+											<div class="col-md-4">
+												<i class="fas fa-minus"></i>
+											</div>
+											<div class="col-md-4">
+												<i class="fas fa-play"></i>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger"
+								data-dismiss="modal">#{mapLabels.map_creation_btn_cancel_equipment}</button>
+							<button type="button" class="btn btn-warning">#{mapLabels.map_creation_btn_save_equipment}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--  -->
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* EDITION *************************************** -->
 			<!-- ************************************************************************************* -->
@@ -1272,7 +1365,7 @@
 							<!---->
 
 							<!-- ***** IP ADDRESS ***** -->
-							
+
 							<!-- PORT -->
 
 							<div class="form-row sosInputs-edit" style="display: none;">
@@ -1453,9 +1546,9 @@
 							<!-- ***** KM ***** -->
 
 							<!--  ******************************************************************************************************* -->
-							
+
 							<!-- ***** MODEL ***** -->
-							<div class="form-row sosInputs-edit" style="display:none;">
+							<div class="form-row sosInputs-edit" style="display: none;">
 								<!-- ROW -->
 								<div class="col-md-6">
 									<!-- COL -->
@@ -1477,12 +1570,12 @@
 									<!---->
 								</div>
 								<!---->
-							
-							<!-- ***** MODEL ***** -->
-							
-							<!--  ******************************************************************************************************* -->
-							
-							<!-- ***** SIP ***** -->
+
+								<!-- ***** MODEL ***** -->
+
+								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
 								<!-- ROW -->
 								<div class="col-md-6">
 									<!-- COL -->
@@ -1493,7 +1586,7 @@
 										<span for="sipEdit" class="valid-icon-hidden"></span>
 										<!-- SPAN VALIDATION -->
 										<input type="text" autocomplete="off" name="sipEdit"
-											id="sipEdit"  class="sip"
+											id="sipEdit" class="sip"
 											placeholder="#{mapLabels.map_creation_input_sip}" />
 										<!-- INPUT -->
 									</div>
@@ -1505,9 +1598,9 @@
 								</div>
 							</div>
 							<!-- ***** SIP ***** -->
-							
+
 							<!--  ******************************************************************************************************* -->
-							
+
 							<!-- ***** TRACKS ***** -->
 
 							<div class="form-row satInputs-edit" style="display: none;">

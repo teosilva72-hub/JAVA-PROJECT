@@ -24,7 +24,9 @@ setTimeout(() => {
 
 
 // *********************************************************** //
-
+function dblModalHidden(){
+	$('#OPmodal').modal('toggle');
+}
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
@@ -44,6 +46,21 @@ const init = () => {
 					toDrag = `#${equip.attr('id')}`
 
 					$('#OPmodal').modal('toggle');
+					//add btn setting cftv and icon
+					if(type == "cftv"){
+						var name = document.getElementById("search-name-equip")
+						name.value = id
+						$('.setting-cftv').addClass('show')
+						$('.setting-icone').addClass('show')
+							
+					}else{
+						$('.setting-cftv').removeClass('show')
+						$('.setting-icone').removeClass('show')
+					}
+						
+					////////////////////////////////////////
+					
+					
 				});
 
 			$(window).resize(function () {
@@ -1090,3 +1107,15 @@ $(function () {
 
 /* show hidden buttons */
 
+function cftvTop(){
+	alert("Subir")
+}
+function cftvLeft(){
+	alert("Esquerda")
+}
+function cftvRight(){
+	alert("Direita")
+}
+function cftvBottom(){
+	alert("Baixo")
+}
