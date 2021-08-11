@@ -1,4 +1,7 @@
-const PING = 10000
+const PING 			= 10000
+const RingTone      = document.getElementById('ringtone');
+const RingBackTone  = document.getElementById('ringbacktone');
+const DtmfTone      = document.getElementById('dtmfTone');
 
 let on_error =  function() {
     console.log('error');
@@ -28,6 +31,7 @@ const changeStates = response => {
 		
 		case 4:
 			status = 'alarm'
+			sidebar.css("color", "yellow")
 			break
 			
 		case 5:
@@ -63,7 +67,6 @@ const getEquipFromID = async id => {
 const callsIncoming = async response => {
 	let equip = `sos${response.EquipmentID}`
 	let status = response.CallStateID
-
 
 	let elmt = $(`#${equip.toLowerCase()}`)
 	
@@ -153,7 +156,7 @@ const callback_calls_default = message => {
 	callsIncoming(response)
 }
 
-const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
+const consumeSOS = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
@@ -196,7 +199,7 @@ const initSOS = async debug => {
 	for (const c of calls)
 		callsIncoming(c)
 
-	consume({debug: debug})
+	consumeSOS({debug: debug})
 }
 
 window.initSOS = initSOS;

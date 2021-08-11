@@ -66,19 +66,19 @@ async function initPhone() {
 
         // Sound methods
         startRingTone : function() {
-            try { ctxSip.ringtone.play(); } catch (e) { }
+            localStorage.setItem("RingTone", "true")
         },
-
+        
         stopRingTone : function() {
-            try { ctxSip.ringtone.pause(); } catch (e) { }
+            localStorage.removeItem("RingTone")
         },
-
+        
         startRingbackTone : function() {
-            try { ctxSip.ringbacktone.play(); } catch (e) { }
+            localStorage.setItem("RingBackTone", "true")
         },
-
+        
         stopRingbackTone : function() {
-            try { ctxSip.ringbacktone.pause(); } catch (e) { }
+            localStorage.removeItem("RingBackTone")
         },
 
         // Genereates a rendom string to ID a call
@@ -557,7 +557,7 @@ async function initPhone() {
         phoneCallButtonPressed : function(sessionid) {
 
             var s      = ctxSip.Sessions[sessionid],
-                user   = document.querySelector("body").attributes("user");
+                logged   = localStorage.getItem("user") || "Unknown";
                 // target = $("#numDisplay").val();
 
             if (!ctxSip.callActiveID && !ctxSip.callIncomingID)
@@ -568,7 +568,7 @@ async function initPhone() {
 
                 } else if (s.service) {
                     ctxSip.callIncomingID = sessionid;
-                    connectSOS(`AnswerCall;${user.User};${s.Sip};${user}`).then(response => {
+                    connectSOS(`AnswerCall;${user.User};${s.Sip};${logged}`).then(response => {
                         if (response.UserID != loginAccount.ID && response.UserID)
                             ctxSip.callIncomingID = null;
                         else
@@ -990,13 +990,13 @@ async function initPhone() {
     })
 
     // Hide the spalsh after 3 secs.
-    ctxSip.logGen();
+    await ctxSip.logGen();
     setTimeout(function() {
         ctxSip.logShow();
     }, 3000);
 
     // receiver rabbitmq
-    consume({
+    consumeSOS({
         callback_states : null,
         callback_alarms : null,
         callback_calls  : message => {

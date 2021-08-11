@@ -35,8 +35,6 @@ $(async function () {
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
 
-  developerMode();
-
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });
 
@@ -129,7 +127,7 @@ const credEvent = data => {
 }
 
 getCred('rabbitmq'); // Rabbit init
-getCred('asterisk'); // Rabbit init
+getCred('asterisk');
 
 const TestCert = async (uri, init) => {
   try {
@@ -146,8 +144,8 @@ const TestCert = async (uri, init) => {
   }
 }
 
-var url = '/phone/phone.html',
-  features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
+var url      = '/phone/phone.html',
+    features = 'menubar=off,resizable=off,location=off,resizable=off,scrollbars=off,status=off,addressbar=off,width=320,height=480';
 
 $('.sipStatus').on('click', function (event) {
   event.preventDefault();
@@ -182,8 +180,6 @@ const developerMode = () => {
     else
       modeOff()
   } catch {}
-
-  window.onstorage = developerMode
 }
 
 //NOTIFICATIONS  BADGE
