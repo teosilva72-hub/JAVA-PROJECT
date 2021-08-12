@@ -1108,14 +1108,14 @@ $(function () {
 /* show hidden buttons */
 
 function cftvTop(){
-	alert("Subir")
+	alert("^")
 }
 function cftvLeft(){
-	alert("Esquerda")
+	alert("<")
 }
 function cftvRight(){
-	alert("Direita")
+	alert(">")
 }
 function cftvBottom(){
-	alert("Baixo")
+	alert("v")
 }
