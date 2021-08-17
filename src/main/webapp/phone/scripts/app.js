@@ -36,6 +36,8 @@ async function initPhone() {
         process             : 0,
         callVolume          : 1,
         Stream              : null,
+        hasSecondaryAudio   : null,
+        secondaryAudio      : null,
 
         /**
          * Parses a SIP uri and returns a formatted US phone number.
@@ -198,8 +200,23 @@ async function initPhone() {
             // ctxSip.setError(true, 'Media Error.', 'You must allow access to your microphone.  Check the address bar.', true);
         },
 
-        getUserMediaSuccess : function(stream) {
-             ctxSip.Stream = stream;
+        getUserMediaSuccess : async function(stream) {
+            const audio = new Audio();
+
+            ctxSip.Stream = stream;
+
+            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected") {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const audioDevices = devices.filter(device => device.kind === 'audiooutput');
+
+                for (media of audioDevices)
+                    if (media.label === ctxSip.hasSecondaryAudio) {
+                        audio.srcObject = ctxSip.stream;
+                        audio.setSinkId(media.deviceId)
+                        ctxSip.secondaryAudio = audio; 
+                    }
+            }
+
         },
 
         /**
@@ -672,7 +689,26 @@ async function initPhone() {
             }
         },
 
-        ping	: async (sip, secs) => {
+        requestSecondaryAudio : async () => {
+            const devices = await navigator.mediaDevices.enumerateDevices();
+            const audioDevices = devices.filter(device => device.kind === 'audiooutput');
+
+            let msg = "Selecione um dispositivo como um segundo audio\n\n0: Nenhum\n";
+
+            for (device in audioDevices)
+                msg += `${Number(device) + 1}: ${audioDevices[device].label}\n`
+
+                
+            try {
+                let response = Number(prompt(msg))
+                if (response)
+                    localStorage.setItem('deviceOutput', audioDevices[response - 1].label)
+                else
+                    localStorage.setItem('deviceOutput', "unselected")
+            } catch {}
+        },
+
+        ping : async (sip, secs) => {
 			await sleep(secs * 1000);
 			let pong = await connectSOS(`Ping;${sip}`);
 			
@@ -753,6 +789,11 @@ async function initPhone() {
         $("#mldError").modal('hide');
         ctxSip.setStatus("Ready");
 
+        ctxSip.hasSecondaryAudio = localStorage.getItem("deviceOutput");
+
+        if (!ctxSip.hasSecondaryAudio)
+            ctxSip.requestSecondaryAudio()
+
         // Get the userMedia and cache the stream
         if (SIP.WebRTC.isSupported()) {
             SIP.WebRTC.getUserMedia({ audio : true, video : false }, ctxSip.getUserMediaSuccess, ctxSip.getUserMediaFailure);
@@ -825,10 +866,18 @@ async function initPhone() {
             }
         });
 
+        if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
+            ctxSip.secondaryAudio.play();
+
         s.on('bye', function() {
             ctxSip.logCall(session, 'ended')
-            ctxSip.callActiveID = null;
             connectSOS(`TerminateCall;${session.Sip}`)
+            
+            if (session.CallStateID != 2) {
+                ctxSip.callActiveID = null;
+                if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
+                    ctxSip.secondaryAudio.pause();
+            }
             
             r.hide();
             window.onbeforeunload = null;
@@ -839,6 +888,8 @@ async function initPhone() {
             ctxSip.callActiveID = null;
             ctxSip.logCall(session, 'holding');
 
+            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
+                ctxSip.secondaryAudio.pause();
             // r.hide();
         });
 
@@ -846,6 +897,8 @@ async function initPhone() {
             ctxSip.logCall(session, 'resumed');
             ctxSip.callActiveID = session.ctxid;
 
+            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
+                ctxSip.secondaryAudio.play();
             // r.showVol();
         });
 
@@ -1051,6 +1104,12 @@ async function initPhone() {
                 if (status == "ringing") {
                     ctxSip.newSession(response)
                 } else {
+                    let sess = ctxSip.Sessions[response.ctxid]
+                    if (sess) {
+                        sess.AnsweredBY = response.AnsweredBY
+                        sess.CallState = response.CallState
+                        sess.CallStateID = response.CallStateID
+                    }
                     ctxSip.logCall(response, status)
                 }
             });
