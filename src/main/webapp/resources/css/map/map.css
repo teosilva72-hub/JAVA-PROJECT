@@ -1173,7 +1173,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
     top: 245px;
 }
 
-.fa-plus, .fa-minus, .fa-play {
+/* .fa-plus, .fa-minus, .fa-play { //! Alterar os nomes das classes para nao ter conflito com outras partes da pagina
 	border: none;
     color: black;
     position: relative;
@@ -1181,7 +1181,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
     left: 10px;
     font-size: 23px;
     cursor: pointer;
-}
+} */
 .top {
     height: 34px;
     width: 33px;
