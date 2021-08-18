@@ -1079,6 +1079,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 
 .conf-card {
 	height: 20px;
+	width: 100%;
 }
 /*PALETA*/
 .paleta-cores {
@@ -1124,9 +1125,9 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	height: 20px;
 }
 
-.row.top {
+.row-position {
 	position: relative;
-	bottom: 10px;
+	bottom: 5px;
 }
 
 #modal-setting-cftv {
@@ -1142,12 +1143,12 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	display: none;
 }
 
-.setting-cftv.show {
+.setting-cftv.show, .setting-icone.show {
 	display: block !important;
 }
 
-.setting-icone.show {
-	display: block !important;
+.setting-cftv.none, .setting-icone.none {
+	display: none !important;
 }
 
 .modal-dbl-click {
@@ -1156,65 +1157,142 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 
 .setting-icone {
 	position: relative;
-	bottom: 28px;
-	left: 5px;
+	right: 25px;
 	color: white;
 }
 
 .space-cam {
-	width: 270px;
-	height: 200px;
+	width: 285px;
+	height: 160px;
+	position: relative;
 	background: black;
+	bottom: 15px;
 }
 
 .controller-cftv {
-	width: 109px;
-    position: fixed;
-    top: 245px;
+	width: 80px;
+	position: relative;
+	left: 15px;
+	bottom: 15px;
+	cursor: pointer;
+}
+
+.modal-title.t {
+	color: white;
+	margin-left: 19%;
+	margin-top: -10px;
+	font-size: 10pt;
+	font-weight: 900;
+}
+
+.modal-header.t {
+	height: 5px;
+	background: black;
+}
+
+span.close-x {
+	position: relative;
+	bottom: 10px;
+	color: white;
+}
+
+.btn-group.t {
+	position: relative;
+	right: 10px;
+	bottom: 115px;
 }
 
 .fa-plus, .fa-minus, .fa-play {
-	border: none;
-    color: black;
-    position: relative;
-    top: 152px;
-    left: 10px;
-    font-size: 23px;
-    cursor: pointer;
+	border: unset;
+	color: black;
+	font-size: 20px;
+	cursor: pointer;
+	position: relative;
+	left: 19px;
+	bottom: 120px;
 }
+
+.modal-content.x {
+	height: 265px;
+}
+
+.modal-header.content-two {
+	border: unset;
+}
+
 .top {
-    height: 34px;
-    width: 33px;
-    position: relative;
-    top: 15px;
-    left: 39px;
-    z-index: 1;
+	height: 30px;
+	width: 37%;
+	position: relative;
+	bottom: 95px;
+	left: 40px;
+	z-index: 1;
+	transition: all 0.5s;
 }
+
+.top:hover {
+	box-shadow: inset 0 0 0 5px black;
+}
+
 .left {
-    height: 33px;
-    width: 41px;
-    position: relative;
-    top: 21px;
-    left: 71px;
-    z-index: 1;
+	height: 28px;
+	width: 40%;
+	position: relative;
+	bottom: 99px;
+	left: 65px;
+	z-index: 1;
+	transition: all 0.5s;
 }
-.right{
-    height: 32px;
-    width: 37px;
-    position: relative;
-    bottom: 11px;
-    left: 0px;
-    z-index: 1;
+
+.left:hover {
+	box-shadow: inset 0 0 0 5px black;
 }
-.bottom{
-    height: 32px;
-    width: 34px;
-    position: relative;
-    bottom: 4px;
-    left: 38px;
-    z-index: 1;	
+
+.right {
+	height: 28px;
+	width: 40%;
+	position: relative;
+	bottom: 127px;
+	left: 13px;
+	z-index: 1;
+	transition: all 0.5s;
 }
-.content-controller {
-    position: fixed;
-    left: 55%;
+
+.right:hover {
+	box-shadow: inset 0 0 0 5px black;
+}
+
+.bottom {
+	height: 30px;
+	width: 37%;
+	position: relative;
+	bottom: 130px;
+	left: 40px;
+	z-index: 1;
+	transition: all 0.5s;
+}
+
+.bottom:hover {
+	box-shadow: inset 0 0 0 5px black;
+}
+
+.modal-op.none {
+	display: none !important;
+}
+
+.modal-op.block {
+	display: block !important;
+}
+
+.content-one.show, .content-two.show, .content-three.show {
+	display: block;
+}
+
+.content-one.none, .content-two.none, .content-three.none {
+	display: none;
+}
+.cogsIcon{
+	position: relative;
+    bottom: 112px;
+    right: 10px;
 }

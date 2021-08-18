@@ -976,7 +976,7 @@ public class EquipmentsBean implements Serializable {
 
 		try {
 			equip = search.cftvCam(id);
-			RequestContext.getCurrentInstance().execute("dblModalHidden()");
+			//RequestContext.getCurrentInstance().execute("dblModalHidden()");
 			imgControle = "C:\\Tracevia\\Software\\External\\Cftv\\controller\\controller.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

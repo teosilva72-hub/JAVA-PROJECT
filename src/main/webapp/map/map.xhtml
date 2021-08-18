@@ -136,13 +136,13 @@
 				</c:if>
 				<div class="paleta-cores">
 					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
-						onclick="color()" href="#collapseExample" role="button"
+						onclick="color()" href="#paleta" role="button"
 						aria-expanded="false" aria-controls="collapseExample"><i
 						class="fas fa-palette"></i></a>
 
-					<div class="collapse" id="collapseExample">
+					<div class="collapse" id="paleta">
 						<div class="card card-body conf-card">
-							<div class="row top">
+							<div class="row row-position">
 								<div class="col-md-2 " id="color">
 									<input type="button" class="color" onclick="color()" />
 								</div>
@@ -1046,7 +1046,7 @@
 										<h:commandButton id="Setting-cftv" style="display: none;"
 											class="btn btn-dark setting-cftv">
 											<!--  <i class="fas fa-cog"></i>-->
-											<i class="fas fa-cog setting-icone" style="display: none;"></i>
+											<i class="fas fa-cog setting-icone"></i>
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
 												value="#modal-setting-cftv" />
@@ -1131,7 +1131,7 @@
 										<!-- FORM GROUP DELETE BUTTON -->
 
 										<!-- DELETE BUTTON -->
-										<h:commandButton
+										<h:commandButton id="deleteEquip"
 											value="#{mapLabels.map_creation_btn_delete_equipment}"
 											action="#{equipsBean.runDel}"
 											onclick="sendToBean(); $('#OPmodal').modal('hide');"
@@ -1164,24 +1164,22 @@
 			<!-- ************************************ SETTING CFTV **************************************** -->
 			<!-- ************************************************************************************* -->
 
-			<div class="modal fade" id="modal-setting-cftv"
-				data-backdrop="static" data-keyboard="false" tabindex="-1"
-				aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal fade" id="modal-setting-cftv">
 				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-						<!-- titulo cftv modal -->
-							<h5 class="modal-title text-center" id="staticBackdropLabel">#{mapLabels.title_moda_cftv}</h5>
+					<div class="modal-content x">
+						<div class="modal-header t">
+							<!-- titulo cftv modal -->
+							<h5 class="modal-title t text-center" id="staticBackdropLabel">#{mapLabels.title_moda_cftv}</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
+								<span class="close-x" aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<!-- modal teste -->
 						<h:form prependId="false" id="form-setting">
 							<div class="modal-body">
 								<!-- dados do cftv -->
-								<div class="row" style="color: black;">
+								<div class="row content-one" style="color: black;">
 									<div class="col-md-4">
 										<b>#{mapLabels.name}:</b> #{equipsBean.equip.nome}
 									</div>
@@ -1189,47 +1187,61 @@
 										<b>#{mapLabels.ip}:</b> #{equipsBean.equip.equip_ip}
 									</div>
 									<div class="col-md-4">
-										<b>#{mapLabels.map_creation_input_km}:</b> #{equipsBean.equip.km}
+										<b>#{mapLabels.map_creation_input_km}:</b>
+										#{equipsBean.equip.km}
 									</div>
 								</div>
 							</div>
-							<div class="modal-header">
+							<!-- btn option cftv -->
+							<div class="modal-header content-two">
 								<div class="row">
 									<div class="col-md-8">
-										<div class="jumbotron space-cam"></div>
+										<div class="row">
+											<div class="col-md-12">
+												<!-- video cftv -->
+												<div class="jumbotron space-cam">
+													<!-- tag video aqui -->
+												</div>
+											</div>
+										</div>
 									</div>
+
 									<div class="col-md-4">
 										<div class="row">
 											<div class="content-controller">
 												<div class="col-md-12">
-													<div class="top" id="top" onclick="cftvTop()"></div>
-													<div class="left" id="right" onclick="cftvRight()"></div>
-													<div class="right" id="left" onclick="cftvLeft()"></div>
-													<div class="bottom" id="bottom" onclick="cftvBottom()"></div>
-													<img class="controller-cftv"
+													<!-- controller cftv -->
+													<img class="controller-cftv" ondragstart="return false;"
 														src="data:image/png;base64, #{equipsBean.imgControle}"></img>
+													<div class="top" id="top" onclick="cftvTop()"></div>
+													<div class="left" id="left" onclick="cftvRight()"></div>
+													<div class="right" id="right" onclick="cftvLeft()"></div>
+													<div class="bottom" id="bottom" onclick="cftvBottom()"></div>
 												</div>
 											</div>
-											<div class="col-md-4">
-												<i class="fas fa-plus"></i>
-											</div>
-											<div class="col-md-4">
-												<i class="fas fa-minus"></i>
-											</div>
-											<div class="col-md-4">
+											<!-- BTNS  (PLAY, + E -) -->
+											<div class="col-md-3"></div>
+											<div class="col-md-2">
 												<i class="fas fa-play"></i>
 											</div>
-
+											<div class="col-md-2">
+												<i class="fas fa-plus"></i>
+											</div>
+											<div class="col-md-2">
+												<i class="fas fa-minus"></i>
+											</div>
+											<div class="col-md-3"></div>
+											<div class="col-md-12">
+												<button type="button" class="btn btn-warning cogsIcon"
+													id="edit-equips" onclick="cftvEditEquip()">
+													<i class="fas fa-cogs"></i>
+												</button>
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</h:form>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-danger"
-								data-dismiss="modal">#{mapLabels.map_creation_btn_cancel_equipment}</button>
-							<button type="button" class="btn btn-dark">#{mapLabels.map_creation_btn_save_equipment}</button>
-						</div>
 					</div>
 				</div>
 			</div>

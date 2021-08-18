@@ -24,9 +24,33 @@ setTimeout(() => {
 
 
 // *********************************************************** //
-function dblModalHidden(){
-	$('#OPmodal').modal('toggle');
+///////////////functions cftv/////////////////////////
+function  cftvModal(type){
+	// se for diferente de cftv aplica
+	//display no btn cftv modal
+	if(type != "cftv"){
+		$('.setting-cftv').addClass('none')
+		$('.setting-icone').addClass('none')
+		$('.setting-cftv').removeClass('show')
+		$('.setting-icone').removeClass('show')
+		
+	//senão se for igual
+	//aplica block ao btn cftv modal	
+	}else if(type == "cftv"){
+		var name = document.getElementById("search-name-equip")
+		name.value = id //get id
+		$( ".setting-cftv" ).click()
+		$('.setting-cftv').removeClass('none')
+		$('.setting-icone').removeClass('none')
+		$('.setting-cftv').addClass('show')
+		$('.setting-icone').addClass('show')
+	}
 }
+function cftvEditEquip(){
+	$('#OPmodal').modal('toggle');
+	$('#modal-setting-cftv').modal('hide');
+}
+////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
@@ -45,22 +69,13 @@ const init = () => {
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
 
-					$('#OPmodal').modal('toggle');
 					//add btn setting cftv and icon
-					if(type == "cftv"){
-						var name = document.getElementById("search-name-equip")
-						name.value = id
-						$('.setting-cftv').addClass('show')
-						$('.setting-icone').addClass('show')
-							
-					}else{
-						$('.setting-cftv').removeClass('show')
-						$('.setting-icone').removeClass('show')
-					}
-						
+					if(type !="cftv"){
+						cftvModal(type)
+						$('#OPmodal').modal('toggle');
+					}								
+					else if(type == "cftv") cftvModal(type)
 					////////////////////////////////////////
-					
-					
 				});
 
 			$(window).resize(function () {
