@@ -1202,6 +1202,7 @@ span.close-x {
 	bottom: 115px;
 }
 
+<<<<<<< HEAD
 .fa-plus, .fa-minus, .fa-play {
 	border: unset;
 	color: black;
@@ -1220,6 +1221,17 @@ span.close-x {
 	border: unset;
 }
 
+=======
+/* .fa-plus, .fa-minus, .fa-play { //! Alterar os nomes das classes para nao ter conflito com outras partes da pagina
+	border: none;
+    color: black;
+    position: relative;
+    top: 152px;
+    left: 10px;
+    font-size: 23px;
+    cursor: pointer;
+} */
+>>>>>>> 3442d6ef8f2837241e4d5b1e46b618bd3f16faeb
 .top {
 	height: 30px;
 	width: 37%;

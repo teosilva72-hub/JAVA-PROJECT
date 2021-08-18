@@ -183,7 +183,7 @@
 					<h:commandButton id="savePos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.map_position_btn_save_equipment}"
-						onclick="alert('#realsave');">
+						onclick="alertOptions('#realsave');">
 						<f:ajax execute="@form" render="@none"
 							listener="#{equipsBean.definePosition}" />
 					</h:commandButton>
@@ -193,7 +193,7 @@
 					<h:commandButton id="cancelPos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.map_position_btn_cancel_equipment}"
-						onclick="alert('#realcancel');" title="Cancel Change Position">
+						onclick="alertOptions('#realcancel');" title="Cancel Change Position">
 						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
 					</h:commandButton>
 				</h:form>

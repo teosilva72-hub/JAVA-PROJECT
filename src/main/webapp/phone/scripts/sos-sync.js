@@ -13,9 +13,9 @@ $(async () => {
 
     consumeSOS({ callback_calls: ringCall })
     
-    eventGetReaction()
-    
     window.onstorage = eventGetReaction;
+
+    eventGetReaction()
 })
 
 const ringCall = async response => {

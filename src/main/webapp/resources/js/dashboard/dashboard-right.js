@@ -150,12 +150,12 @@ var url      = '/phone/phone.html',
 $('.sipStatus').on('click', function (event) {
   event.preventDefault();
   // This is set when the phone is open and removed on close
-  if (!localStorage.getItem('ctxPhone')) {
+  // if (!localStorage.getItem('ctxPhone')) {
     window.open(url, 'ctxPhone', features);
     return false;
-  } else {
-    window.alert('Phone already open.');
-  }
+  // } else {
+  //   window.alert('Phone already open.');
+  // }
 })
 
 const btnSOSCommand = function (e) {
