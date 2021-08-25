@@ -6,9 +6,9 @@ $(async function () {
 
   var adjustSidebar = function () {
     $(".menu-mode > form").slimScroll({ height: window.innerHeight - 20 })
-    $(".equips-div").slimScroll({ height: window.innerHeight - 20 })   
-      .css('height' , window.innerHeight - 200)
-       
+    $(".equips-div").slimScroll({ height: window.innerHeight - 20 })
+      .css('height', window.innerHeight - 200)
+
   };
 
   adjustSidebar();
@@ -16,26 +16,26 @@ $(async function () {
     adjustSidebar();
   });
 
-  
+
   //UPDATE NOTIFICATIONS NUMBER ON LOAD
-  $("#notification").load('/template/dashboard-rov-notifications.xhtml' , () => {
-  
-          notificationBadge();
+  $("#notification").load('/template/dashboard-rov-notifications.xhtml', () => {
+
+    notificationBadge();
   });
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
 
-  $("#sipClient.calls-client .sipStatus").click(showCallbox)
-
-  while ( typeof rabbitmq == "undefined" || typeof asterisk == "undefined" ) {
+  while (typeof rabbitmq == "undefined" || typeof asterisk == "undefined") {
     await new Promise(r => setTimeout(r, 100))
   }
-  
+
   let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
   let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
 
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
+
+  $(".btnRunCommandSOS").click(btnSOSCommand);
 });
 
 var alertToast = msg => {
@@ -51,66 +51,40 @@ $('#dismiss, .overlay').on('click', function () {
 });
 // OVERLAY SIDE BAR END
 
-var url      = '/phone/phone.html',
-    features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
+var url = '/phone/phone.html',
+  features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
 
-    $('#navCall').on('click', function(event) {
-        event.preventDefault();
-        // This is set when the phone is open and removed on close
-        if (!localStorage.getItem('ctxPhone')) {
-            window.open(url, 'ctxPhone', features);
-            return false;
-        } else {
-            window.alert('Telefone já esta aberto.');
-        }
-    });
+$('#navCall').on('click', function (event) {
+  event.preventDefault();
+  // This is set when the phone is open and removed on close
+  if (!localStorage.getItem('ctxPhone')) {
+    window.open(url, 'ctxPhone', features);
+    return false;
+  } else {
+    window.alert('Telefone já esta aberto.');
+  }
+});
 
 //NOTIFICATIONS BADGE
-function notificationBadge(){
+function notificationBadge() {
 
-  var badge = Number( document.getElementById('badge-notif').innerHTML);
-    
-  if(badge > 0)
-  document.getElementById('badge-notif').style.display = 'block';
+  var badge = Number(document.getElementById('badge-notif').innerHTML);
+
+  if (badge > 0)
+    document.getElementById('badge-notif').style.display = 'block';
 
   else document.getElementById('badge-notif').style.display = 'none';
-  
-}
 
-var callBoxStatus = false;
-
-const showCallbox = () => {
-  let client = $("#sipClient.calls-client")
-  let callStatus = $('#txtCallStatus').html()
-  let action;
-
-  if(client.hasClass('showing') || client.hasClass('show')) {
-    action = 'hiding'
-    callBoxStatus = false
-    if (!callStatus)
-      showStatesCallbox('close')
-    else if (callStatus === 'Rejected')
-      ctxSip.setCallSessionStatus('');
-  } else {
-    action = 'showing'
-    callBoxStatus = true
-    showStatesCallbox('open')
-  }
-
-	client.addClass(action).css('bottom', action == 'showing' ? 40 : '').removeClass('hide').removeClass('show')
-	setTimeout(() => {
-	    client.removeClass(action).addClass(action == 'showing' ? "show" : 'hide')
-	}, 2000)
 }
 
 const showStatesCallbox = action => {
   let client = $("#sipClient .sipStatus")
   let action2;
 
-  if(action == 'open') {
+  if (action == 'open') {
     action2 = 'opening'
     client.removeClass('closed')
-  } else if ((client.hasClass('opening') && action == 'close') || callBoxStatus)
+  } else if (client.hasClass('opening') && action == 'close')
     return
   else {
     action2 = 'closing'
@@ -118,10 +92,10 @@ const showStatesCallbox = action => {
     client.removeClass('open')
   }
 
-	client.addClass(action2)
-	setTimeout(() => {
-	    client.removeClass(action2).addClass(action)
-	}, 2000)
+  client.addClass(action2)
+  setTimeout(() => {
+    client.removeClass(action2).addClass(action)
+  }, 2000)
 }
 
 const getCred = serviceName => {
@@ -134,24 +108,26 @@ const getCred = serviceName => {
 const credEvent = data => {
   let status = data.status;
 
-	switch (status) {
-		case "begin":
-		case "complete":
-			break;
+  switch (status) {
+    case "begin":
+    case "complete":
+      break;
 
-		case "success":
+    case "success":
       let form = document.forms.getCred;
-			let cred = JSON.parse(form.credentials.value);
+      let cred = JSON.parse(form.credentials.value);
       window[cred.name] = cred
       form.credentials.value = '';
       form.serviceName.value = '';
 
-			break;
-	}
+      localStorage.setItem(cred.name, JSON.stringify(cred))
+
+      break;
+  }
 }
 
 getCred('rabbitmq'); // Rabbit init
-getCred('asterisk'); // Rabbit init
+getCred('asterisk');
 
 const TestCert = async (uri, init) => {
   try {
@@ -159,13 +135,51 @@ const TestCert = async (uri, init) => {
     while (request.readyState == 0) {
       await new Promise(r => setTimeout(r, 100))
     }
-    if ( request.readyState > 1 ) {
+    if (request.readyState > 1) {
       window.open(`https://${uri}`);
     }
   }
   catch {
     window.open(`https://${uri}`);
   }
+}
+
+var url      = '/phone/phone.html',
+    features = 'menubar=off,resizable=off,location=off,resizable=off,scrollbars=off,status=off,addressbar=off,width=320,height=480';
+
+$('.sipStatus').on('click', function (event) {
+  event.preventDefault();
+  // This is set when the phone is open and removed on close
+  // if (!localStorage.getItem('ctxPhone')) {
+    window.open(url, 'ctxPhone', features);
+    return false;
+  // } else {
+  //   window.alert('Phone already open.');
+  // }
+})
+
+const btnSOSCommand = function (e) {
+  let target = e.currentTarget;
+  let sip = target.value;
+  let command = target.getAttribute("command");
+  
+  connectSOS(`${command};${sip}`);
+}
+
+const developerMode = () => {
+  const modeOn = () => {
+    $("[mode=developer_mode]").show();
+  }
+  const modeOff = () => {
+    $("[mode=developer_mode]").hide();
+  }
+
+  try {
+    if (JSON.parse(localStorage.getItem("developer_mode")))
+      modeOn()
+    else
+      modeOff()
+  } catch {}
 }
 
 //NOTIFICATIONS  BADGE
@@ -246,98 +260,96 @@ const TestCert = async (uri, init) => {
 
 
 //SIP BOOK-LIST
-	//function color() {
-		//var color1 = parseInt(document.form.cor1.value) || 0;
-		//var color2 = parseInt(document.form.cor2.value) || 0;
-		//var comp = parseInt(document.form.comparar.value) || 0;
-		//var cor3 = cor1 + cor2;
-		//document.form.cor3.value = cor3;
-		//document.form.cor3.className = cor3 < comp ? 'red' : 'green';
-	//}
+//function color() {
+//var color1 = parseInt(document.form.cor1.value) || 0;
+//var color2 = parseInt(document.form.cor2.value) || 0;
+//var comp = parseInt(document.form.comparar.value) || 0;
+//var cor3 = cor1 + cor2;
+//document.form.cor3.value = cor3;
+//document.form.cor3.className = cor3 < comp ? 'red' : 'green';
+//}
 //SIP BOOK-LIST END
 
 /*******************************************************************************/
 
-   function sidenavAction() {
-        document.getElementById("sidenav2").style.display = "none";
-        document.getElementById("sidenav3").style.display = "none";
-        document.getElementById("sidenav").style.display = "block";
-      }
+function sidenavAction() {
+  document.getElementById("sidenav2").style.display = "none";
+  document.getElementById("sidenav3").style.display = "none";
+  document.getElementById("sidenav").style.display = "block";
+}
 
-      function sidenavAction2() {
-        document.getElementById("sidenav3").style.display = "none";
-        document.getElementById("sidenav").style.display = "none";
-        document.getElementById("sidenav2").style.display = "block";
-      }
+function sidenavAction2() {
+  document.getElementById("sidenav3").style.display = "none";
+  document.getElementById("sidenav").style.display = "none";
+  document.getElementById("sidenav2").style.display = "block";
+}
 
-      function sidenavAction3() {
-        document.getElementById("sidenav").style.display = "none";
-        document.getElementById("sidenav2").style.display = "none";
-        document.getElementById("sidenav3").style.display = "block";
-      }
+function sidenavAction3() {
+  document.getElementById("sidenav").style.display = "none";
+  document.getElementById("sidenav2").style.display = "none";
+  document.getElementById("sidenav3").style.display = "block";
+}
 
-      function clicked(id) {
-        var element = document.getElementById(id);
-        if (element.style.display === "none") {
-          element.style.display = "block";
-        } else {
-          element.style.display = "none";
-        }
-      }
+function clicked(id) {
+  var element = document.getElementById(id);
+  if (element.style.display === "none") {
+    element.style.display = "block";
+  } else {
+    element.style.display = "none";
+  }
+}
 
-      function toggleBtnEquips() {
-        $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
-      };
+function toggleBtnEquips() {
+  $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
+};
 
 
-      /*  function reloadNotifications(){
-            var container = document.getElementById("testess");
-             container.innerHTML = " ";
-                        
-           //this line is to watch the result in console , you can remove it later	
-           alert("Refreshed"); 
-        }*/
+/*  function reloadNotifications(){
+      var container = document.getElementById("testess");
+       container.innerHTML = " ";
+                  
+     //this line is to watch the result in console , you can remove it later	
+     alert("Refreshed"); 
+  }*/
 
-      //Scroll stucked on Top  ==> FOR SCROLL
-      /* function setTopo(){
-          $(window).scrollTop(0);
-      }
-       //Call setTopo()
-      $(window).bind('scroll', setTopo);*/
-      // Voice Menu Open
-      $(function () {
+//Scroll stucked on Top  ==> FOR SCROLL
+/* function setTopo(){
+    $(window).scrollTop(0);
+}
+ //Call setTopo()
+$(window).bind('scroll', setTopo);*/
+// Voice Menu Open
+$(function () {
 
-        $("[id$=holdingcall]").click(function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          $("[id$=callback]").show();
-          $("[id$=holdingcall]").hide();
-        });
+  $("[id$=holdingcall]").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $("[id$=callback]").show();
+    $("[id$=holdingcall]").hide();
+  });
 
-        $("[id$=callback]").click(function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          $("[id$=holdingcall]").show();
-          $("[id$=callback]").hide();
-        });
+  $("[id$=callback]").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    $("[id$=holdingcall]").show();
+    $("[id$=callback]").hide();
+  });
 
-        $("#navCall").on('click', function (e) {
-          e.preventDefault()
-          $('#toastvoice').toast('show');
-        });
+  $("#navCall").on('click', function (e) {
+    e.preventDefault()
+    $('#toastvoice').toast('show');
+  });
 
-        $("#navListCall").click(function (e) {
-          e.preventDefault()
-          $('#list-toast').toast('show');
-        });
-      })
-      // Voice Menu Open End
+  $("#navListCall").click(function (e) {
+    e.preventDefault()
+    $('#list-toast').toast('show');
+  });
+})
+// Voice Menu Open End
 
-      // Visibility Equipments
-      $('[toggle]').click(function () {
-        $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
-      })
+// Visibility Equipments
+$('[toggle]').click(function () {
+  $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
+})
       // Visibility Equipments End
-      
 
-   

@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sos.SOS;
 
 public class Equipments {
 
@@ -108,8 +109,7 @@ public class Equipments {
 	public void setEquip_ip(String equip_ip) {
 		this.equip_ip = equip_ip;
 	}
-
-
+	
 	public String getCreation_date() {
 		return creation_date;
 	}
@@ -279,7 +279,6 @@ public class Equipments {
 		this.dlgPosY = dlgPosY;
 	}
 
-
 	public int getStatus() {
 		return status;
 	}
@@ -329,6 +328,16 @@ public class Equipments {
 		return lista;
 	}
 
+	//BUILD GENERIC EQUIPMENTS
+	public List<SOS> listSosEquipments(int permission) throws Exception {
+
+		List<SOS> lista = new ArrayList<>();	
+		EquipmentsDAO dao = new EquipmentsDAO();			
+		lista.addAll(dao.buildSosEquipmentsInterface(permission));	
+
+		return lista;
+	}
+
 	//BUILD SAT EQUIPMENTS
 	public List<? extends Equipments> listSatEquipments(int permission) throws Exception {
 
@@ -351,3 +360,4 @@ public class Equipments {
 
 
 }
+	

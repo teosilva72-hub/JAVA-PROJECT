@@ -24,7 +24,33 @@ setTimeout(() => {
 
 
 // *********************************************************** //
-
+///////////////functions cftv/////////////////////////
+function  cftvModal(type){
+	// se for diferente de cftv aplica
+	//display no btn cftv modal
+	if(type != "cftv"){
+		$('.setting-cftv').addClass('none')
+		$('.setting-icone').addClass('none')
+		$('.setting-cftv').removeClass('show')
+		$('.setting-icone').removeClass('show')
+		
+	//senão se for igual
+	//aplica block ao btn cftv modal	
+	}else if(type == "cftv"){
+		var name = document.getElementById("search-name-equip")
+		name.value = id //get id
+		$( ".setting-cftv" ).click()
+		$('.setting-cftv').removeClass('none')
+		$('.setting-icone').removeClass('none')
+		$('.setting-cftv').addClass('show')
+		$('.setting-icone').addClass('show')
+	}
+}
+function cftvEditEquip(){
+	$('#OPmodal').modal('toggle');
+	$('#modal-setting-cftv').modal('hide');
+}
+////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
@@ -43,7 +69,13 @@ const init = () => {
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
 
-					$('#OPmodal').modal('toggle');
+					//add btn setting cftv and icon
+					if(type !="cftv"){
+						cftvModal(type)
+						$('#OPmodal').modal('toggle');
+					}								
+					else if(type == "cftv") cftvModal(type)
+					////////////////////////////////////////
 				});
 
 			$(window).resize(function () {
@@ -145,6 +177,7 @@ $(function () {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
 				$('.dmsHidden-edit').hide();
 				$('.mtoHidden-edit').hide();
+				$('.sosInputs-edit').hide();
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -206,10 +239,19 @@ $(function () {
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
 				$('.mtoHidden-edit').hide();
 				$('.satInputs-edit').hide();
+				$('.sosInputs-edit').hide();
 
 			} else if (selectVAL == 6) {
 
 				$('.mtoHidden-edit').show();
+				$('.dmsHidden-edit').hide();
+				$('.satInputs-edit').hide();
+				$('.sosInputs-edit').hide();
+			
+			} else if (selectVAL == 10) {
+				
+				$('.sosInputs-edit').show();
+				$('.mtoHidden-edit').hide();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 
@@ -218,6 +260,7 @@ $(function () {
 				$('.dmsHidden-edit').hide();
 				$('.mtoHidden-edit').hide();
 				$('.satInputs-edit').hide();
+				$('.sosInputs-edit').hide();
 			}
 
 		}, 100)
@@ -788,7 +831,7 @@ function showBtns() {
 	document.getElementById("topButtons").style.display = "block";
 }
 
-function alert(a) {
+function alertOptions(a) {
 	$(a).css("display", "block");
 	setTimeout(function () {
 		$(a).fadeOut('fast');
@@ -952,6 +995,7 @@ $(function () {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
 				$('.mtoHidden').hide();
+				$('.sosInputs').hide();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 				$("#lanes").change(
 					function () {
@@ -1012,15 +1056,22 @@ $(function () {
 				$('.dmsHidden').show(); // DIV DMS TYPE	
 				$('.mtoHidden').hide();
 				$('.satInputs').hide();
-
+				$('.sosInputs').hide();
 			} else if (selectVAL == 6) {
 				$('.mtoHidden').show();
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();
+				$('.sosInputs').hide();
+			} else if (selectVAL == 10) {
+				$('.sosInputs').show();
+				$('.dmsHidden').hide();
+				$('.satInputs').hide();
+				$('.mtoHidden').hide();
 			} else {
 				$('.dmsHidden').hide();
 				$('.mtoHidden').hide();
 				$('.satInputs').hide();
+				$('.sosInputs').hide();
 			}
 		}, 100)
 	});
@@ -1071,3 +1122,15 @@ $(function () {
 
 /* show hidden buttons */
 
+function cftvTop(){
+	alert("^")
+}
+function cftvLeft(){
+	alert("<")
+}
+function cftvRight(){
+	alert(">")
+}
+function cftvBottom(){
+	alert("v")
+}

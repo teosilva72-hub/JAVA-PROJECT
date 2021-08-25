@@ -13,7 +13,7 @@ public class OCR extends Equipments {
 	private String km;
 	private String direction;
 			
-	public OCR(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+	public OCR(int equip_id, String table_id, String equip_type, String equip_ip, int port, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
 			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,

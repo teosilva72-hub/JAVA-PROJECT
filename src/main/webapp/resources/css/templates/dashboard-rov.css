@@ -737,7 +737,7 @@ footer {
   height: 10px;
   float: left;
   margin-top: 3.5%;
-  margin-left: 15%;
+  margin-left: 5%;
 }
 
 .font-status {
@@ -952,46 +952,84 @@ input.apple-switch:checked:before {
 	animation-iteration-count: infinite;
 	transform: rotateX(358deg);
 }
+
+.calls-client .sipStatus.open {
+  width: 280px !important;
+  margin-left: -16px !important;
+  border-radius: 2px 2px 0 0 !important;
+}
+
+.calls-client .sipStatus.opening {
+	animation: CallboxStates 2s 1;
+}
+
+.calls-client .sipStatus.closing {
+	animation: CallboxStates 2s 1 reverse;
+}
+
+@keyframes CallboxStates {
+  83% {
+    width: 263px;
+    margin-left: auto;
+  }
+	84% {
+		width: 264px;
+    margin-left: 0px;
+	}
+  100% {
+    width: 280px;
+    margin-left: -16px;
+    border-radius: 2px 2px 0 0;
+  }
+}
  
 @keyframes callalert {
 	 from {background-color: red;}
   to {background-color: blue;}
 }
 
+#sipClient .sipStatus {
+  margin: -28px -16px 0 -15px;
+  padding: 5px 15px;
+  background-color: #111;
+  color: #999;
+  cursor: pointer;
+  width: 100px;
+  margin-left: auto;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .calls-client {
+  background-color: #333;
+  font-size: 13px;
+  line-height: 1.42857143;
 	position: fixed;
-  height: 400px;
   width: 280px;
   right: 25px;
-  bottom: -362px;
+  bottom: 35px;
   background-color: white;
   border: 1px solid black;
   border-radius: 0 0 1% 1%;
   z-index: 1020;
 }
 
-.calls-client.hiding {
-	animation: showCallbox 2s 1 reverse;
-}
-
-.calls-client.showing {
-	animation: showCallbox 2s 1;
-}
-
 #rmtVol {
   height: 31px;
 }
 
-@keyframes showCallbox {
-	from {
-		bottom: -335px;
-	}
-	to {
-		bottom: 40px;
-	}
-}
-
 /* Call Box Alert END */ 
+
+.btnRunCommandSOS {
+     width: 42px;
+    /* text-overflow: ellipsis; */
+    flex-wrap: nowrap;
+    overflow: hidden;
+    font-size: 15px;
+}
 
 /* CUSTOM SCROLL */
 

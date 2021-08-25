@@ -134,32 +134,37 @@
 						value="#{mapLabels.map_creation_btn_add_equipment}"> </input>
 
 				</c:if>
-				<a class="btn btn-dark" data-toggle="collapse" onclick="color()"
-					href="#collapseExample" role="button" aria-expanded="false"
-					aria-controls="collapseExample">#{mapLabels.text_paleta}</a>
-			</div>
-			<div class="collapse" id="collapseExample">
-				<div class="card card-body conf-card">
-					<div class="row top">
-					<div class="col-md-2 " id="color">
-							<input type="button" class="color"  onclick="color()"/>
+				<div class="paleta-cores">
+					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
+						onclick="color()" href="#paleta" role="button"
+						aria-expanded="false" aria-controls="collapseExample"><i
+						class="fas fa-palette"></i></a>
+
+					<div class="collapse" id="paleta">
+						<div class="card card-body conf-card">
+							<div class="row row-position">
+								<div class="col-md-2 " id="color">
+									<input type="button" class="color" onclick="color()" />
+								</div>
+								<div class="col-md-2 " id="color-1">
+									<input type="button" class="color-1" onclick="color1()" />
+								</div>
+								<div class="col-md-2 " id="color-2">
+									<input type="button" class="color-2" onclick="color2()" />
+								</div>
+								<div class="col-md-2 " id="color-3">
+									<input type="button" class="color-3" onclick="color3()" />
+								</div>
+								<div class="col-md-2 " id="color-4">
+									<input type="button" class="color-4" onclick="color4()" />
+								</div>
+
+							</div>
 						</div>
-						<div class="col-md-2 " id="color-1">
-							<input type="button" class="color-1" onclick="color1()"/>
-						</div>
-						<div class="col-md-2 " id="color-2">
-							<input type="button" class="color-2" onclick="color2()"/>
-						</div>
-						<div class="col-md-2 " id="color-3">
-							<input type="button" class="color-3" onclick="color3()"/>
-						</div>
-						<div class="col-md-2 " id="color-4">
-							<input type="button" class="color-4"  onclick="color4()"/>
-						</div>
-						
 					</div>
 				</div>
 			</div>
+
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
 				<!--  ******************************************************************************************************* -->
@@ -178,7 +183,7 @@
 					<h:commandButton id="savePos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.map_position_btn_save_equipment}"
-						onclick="alert('#realsave');">
+						onclick="alertOptions('#realsave');">
 						<f:ajax execute="@form" render="@none"
 							listener="#{equipsBean.definePosition}" />
 					</h:commandButton>
@@ -188,7 +193,7 @@
 					<h:commandButton id="cancelPos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.map_position_btn_cancel_equipment}"
-						onclick="alert('#realcancel');" title="Cancel Change Position">
+						onclick="alertOptions('#realcancel');" title="Cancel Change Position">
 						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
 					</h:commandButton>
 				</h:form>
@@ -543,6 +548,31 @@
 
 							<!--  ******************************************************************************************************* -->
 
+							<!-- PORT -->
+
+							<div class="form-row sosInputs" style="display: none;">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-door-open"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="equipPort"
+										id="equipPort"
+										placeholder="#{mapLabels.map_creation_input_port}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERRO DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** PORT ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
 							<!-- ***** EQUIPMENT NAME ***** -->
 
 							<div class="form-row">
@@ -660,6 +690,61 @@
 							</div>
 							<!---->
 							<!-- ***** KM ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- ***** MODEL ***** -->
+							<div class="form-row sosInputs" style="display: none;">
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-phone-alt"></i></span>
+										<!-- SPAN ICON -->
+										<span for="model" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="model" id="model"
+											maxlength="1" class="model"
+											placeholder="#{mapLabels.map_creation_input_model}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="model" class="error" id="model-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+
+								<!---->
+								<!-- ***** MODEL ***** -->
+
+								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
+
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-sitemap"></i></span>
+										<!-- SPAN ICON -->
+										<span for="sip" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="sip" id="sip"
+											class="sip" placeholder="#{mapLabels.map_creation_input_sip}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="sip" class="error" id="sip-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+							</div>
+							<!---->
+							<!-- ***** SIP ***** -->
 
 							<!--  ******************************************************************************************************* -->
 
@@ -953,13 +1038,36 @@
 					<!-- Modal Label-->
 					<div class="modal-content">
 						<!-- MODAL CONTENT -->
-						<div class="modal-header text-center">
-							<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-
+						<div class="modal-header modal-dbl-click text-center">
+							<div class="row">
+								<div class="col-md-2">
+									<!-- BTN SETTING CFTV -->
+									<h:form prependId="false" id="btn-setting">
+										<h:commandButton id="Setting-cftv" style="display: none;"
+											class="btn btn-dark setting-cftv">
+											<!--  <i class="fas fa-cog"></i>-->
+											<i class="fas fa-cog setting-icone"></i>
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target"
+												value="#modal-setting-cftv" />
+											<f:ajax execute="@form" render=":btn-setting :form-setting "
+												listener="#{equipsBean.searchCftv}" />
+										</h:commandButton>
+										<h:inputHidden value="#{equipsBean.id}" id="search-name-equip"></h:inputHidden>
+									</h:form>
+									<!--  -->
+								</div>
+								<div class="col-md-8">
+									<!-- TITLE MODAL DBL CLICK -->
+									<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.map_option_modal_title}</h4>
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+							</div>
 						</div>
 
 						<div class="modal-body">
@@ -968,9 +1076,9 @@
 							<h:form id="form-modal-submit">
 								<!-- FORM OPTIONS -->
 
-								<div class="form-row">
+								<div class="row">
 									<!-- ROW -->
-									<div class="form-group col-md-4 text-center">
+									<div class="form-group col-md-4">
 										<!-- FORM GROUP EDIT BUTTON -->
 
 										<!-- INPUT HIDDEN VALUES -->
@@ -993,11 +1101,12 @@
 												render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
 											 edit-equip-form:roads edit-equip-form:km edit-equip-form:width" />
 										</h:commandButton>
+
 										<!---->
 									</div>
 									<!---->
 
-									<div class="form-group col-md-4 text-center">
+									<div class="form-group col-md-4">
 										<!-- FORM GROUP POSITION BUTTON -->
 
 										<!-- INPUT HIDDEN VALUES -->
@@ -1016,28 +1125,27 @@
 									</div>
 									<!---->
 
-									
 
-										<div class="form-group col-md-4 text-center">
-											<!-- FORM GROUP DELETE BUTTON -->
 
-											<!-- DELETE BUTTON -->
-											<h:commandButton
-												value="#{mapLabels.map_creation_btn_delete_equipment}"
-												action="#{equipsBean.runDel}"
-												onclick="sendToBean(); $('#OPmodal').modal('hide');"
-												class="btn btn-dark form-modal-draw-button">
-												<f:passThroughAttribute name="data-toggle" value="modal" />
-												<f:passThroughAttribute name="data-target"
-													value="#deletemodal" />
-												<f:ajax execute="@form"
-													render="delete-equip-form:del-equip-name" />
-											</h:commandButton>
-											<!---->
-										</div>
+									<div class="form-group col-md-4">
+										<!-- FORM GROUP DELETE BUTTON -->
+
+										<!-- DELETE BUTTON -->
+										<h:commandButton id="deleteEquip"
+											value="#{mapLabels.map_creation_btn_delete_equipment}"
+											action="#{equipsBean.runDel}"
+											onclick="sendToBean(); $('#OPmodal').modal('hide');"
+											class="btn btn-dark form-modal-draw-button">
+											<f:passThroughAttribute name="data-toggle" value="modal" />
+											<f:passThroughAttribute name="data-target"
+												value="#deletemodal" />
+											<f:ajax execute="@form"
+												render="delete-equip-form:del-equip-name" />
+										</h:commandButton>
 										<!---->
 
-									
+									</div>
+									<!---->
 
 								</div>
 								<!---->
@@ -1050,12 +1158,95 @@
 				</div>
 				<!---->
 			</div>
-			<!---->
+			<!-- -->
 
 			<!-- ************************************************************************************* -->
-			<!-- ************************************ OPTIONS **************************************** -->
+			<!-- ************************************ SETTING CFTV **************************************** -->
 			<!-- ************************************************************************************* -->
 
+			<div class="modal fade" id="modal-setting-cftv">
+				<div class="modal-dialog">
+					<div class="modal-content x">
+						<div class="modal-header t">
+							<!-- titulo cftv modal -->
+							<h5 class="modal-title t text-center" id="staticBackdropLabel">#{mapLabels.title_moda_cftv}</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span class="close-x" aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<!-- modal teste -->
+						<h:form prependId="false" id="form-setting">
+							<div class="modal-body">
+								<!-- dados do cftv -->
+								<div class="row content-one" style="color: black;">
+									<div class="col-md-4">
+										<b>#{mapLabels.name}:</b> #{equipsBean.equip.nome}
+									</div>
+									<div class="col-md-4">
+										<b>#{mapLabels.ip}:</b> #{equipsBean.equip.equip_ip}
+									</div>
+									<div class="col-md-4">
+										<b>#{mapLabels.map_creation_input_km}:</b>
+										#{equipsBean.equip.km}
+									</div>
+								</div>
+							</div>
+							<!-- btn option cftv -->
+							<div class="modal-header content-two">
+								<div class="row">
+									<div class="col-md-8">
+										<div class="row">
+											<div class="col-md-12">
+												<!-- video cftv -->
+												<div class="jumbotron space-cam">
+													<!-- tag video aqui -->
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-4">
+										<div class="row">
+											<div class="content-controller">
+												<div class="col-md-12">
+													<!-- controller cftv -->
+													<img class="controller-cftv" ondragstart="return false;"
+														src="data:image/png;base64, #{equipsBean.imgControle}"></img>
+													<div class="top" id="top" onclick="cftvTop()"></div>
+													<div class="left" id="left" onclick="cftvRight()"></div>
+													<div class="right" id="right" onclick="cftvLeft()"></div>
+													<div class="bottom" id="bottom" onclick="cftvBottom()"></div>
+												</div>
+											</div>
+											<!-- BTNS  (PLAY, + E -) -->
+											<div class="col-md-3"></div>
+											<div class="col-md-2">
+												<i class="fas fa-play"></i>
+											</div>
+											<div class="col-md-2">
+												<i class="fas fa-plus"></i>
+											</div>
+											<div class="col-md-2">
+												<i class="fas fa-minus"></i>
+											</div>
+											<div class="col-md-3"></div>
+											<div class="col-md-12">
+												<button type="button" class="btn btn-warning cogsIcon"
+													id="edit-equips" onclick="cftvEditEquip()">
+													<i class="fas fa-cogs"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</h:form>
+					</div>
+				</div>
+			</div>
+
+			<!--  -->
 			<!-- ************************************************************************************* -->
 			<!-- ************************************* EDITION *************************************** -->
 			<!-- ************************************************************************************* -->
@@ -1186,6 +1377,29 @@
 							<!---->
 
 							<!-- ***** IP ADDRESS ***** -->
+
+							<!-- PORT -->
+
+							<div class="form-row sosInputs-edit" style="display: none;">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-door-open"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="equipPort-edit"
+										id="equipPort-edit"
+										placeholder="#{mapLabels.map_creation_input_port}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERRO DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** PORT ***** -->
 
 							<!--  ******************************************************************************************************* -->
 
@@ -1342,6 +1556,60 @@
 							<!---->
 
 							<!-- ***** KM ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- ***** MODEL ***** -->
+							<div class="form-row sosInputs-edit" style="display: none;">
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-phone-alt"></i></span>
+										<!-- SPAN ICON -->
+										<span for="modelEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="modelEdit"
+											id="modelEdit" maxlength="1" class="model"
+											placeholder="#{mapLabels.map_creation_input_model}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="modelEdit" class="error" id="modelEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+
+								<!-- ***** MODEL ***** -->
+
+								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-sitemap"></i></span>
+										<!-- SPAN ICON -->
+										<span for="sipEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="sipEdit"
+											id="sipEdit" class="sip"
+											placeholder="#{mapLabels.map_creation_input_sip}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="sipEdit" class="error" id="sipEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+							</div>
+							<!-- ***** SIP ***** -->
 
 							<!--  ******************************************************************************************************* -->
 

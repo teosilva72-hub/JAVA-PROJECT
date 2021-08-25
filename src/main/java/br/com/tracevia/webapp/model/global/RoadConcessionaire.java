@@ -8,6 +8,7 @@ import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.LitoralSul;
 import br.com.tracevia.webapp.classes.Tracevia;
 import br.com.tracevia.webapp.classes.Tuxpan;
+import br.com.tracevia.webapp.classes.ViaAmericas;
 import br.com.tracevia.webapp.classes.ViaPaulista;
 import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
@@ -252,6 +253,49 @@ public class RoadConcessionaire {
 			reportsLLEnabled = false;
 													
 		}
+       
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaAmericas.getConcessionaire())) {
+			
+			classLight = ViaAmericas.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = ViaAmericas.MOTORCYCLES.getClasse();
+			classUnknown = ViaAmericas.UNKNOWN_CLASS.getClasse();	
+			classTrailer = ViaAmericas.TRAILER.getClasse();	
+			classSemiTrailer = ViaAmericas.SEMI_TRAILER.getClasse();
+			classBus2Axles = ViaAmericas.BUS_2AXLES.getClasse();	
+			classBus3Axles = ViaAmericas.BUS_3AXLES.getClasse();
+			classTruck2Axles = ViaAmericas.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = ViaAmericas.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = ViaAmericas.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = ViaAmericas.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = ViaAmericas.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = ViaAmericas.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = ViaAmericas.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = ViaAmericas.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = ViaAmericas.TRUCK_10AXLES.getClasse();	
+			classNotIdentifiedAxl2 = ViaAmericas.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = ViaAmericas.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = ViaAmericas.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = ViaAmericas.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = ViaAmericas.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = ViaAmericas.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = ViaAmericas.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = ViaAmericas.NOT_ID_CLASS_9AXLES.getClasse();	
+			externalImagePath += "";
+			logo = "";
+			linearMapUI = "";
+			mapUI = "/resources/images/map/americas/americas.webp";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
+			mapEnabled = true;
+			reportsLLEnabled = false;
+													
+		}
+		
+       
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
 			

@@ -3,6 +3,9 @@ var loginAccount = {
     user: 'a',
     pass: 'a'
 }
+
+window.asterisk = JSON.parse(localStorage.getItem("asterisk"))
+window.rabbitmq = JSON.parse(localStorage.getItem("rabbitmq"))
 connectSOS(`LogIn;${loginAccount.user};${loginAccount.pass}`).then(async response => {
     while (!window.asterisk)
         await new Promise(r => setTimeout(r, 500))

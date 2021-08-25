@@ -1,11 +1,14 @@
-const PING = 10000
+const PING 			= 10000
+const RingTone      = document.getElementById('ringtone');
+const RingBackTone  = document.getElementById('ringbacktone');
+const DtmfTone      = document.getElementById('dtmfTone');
 
 let on_error =  function() {
     console.log('error');
 };
 
 const changeStates = response => {
-	let name = response.EquipmentName
+	let name = `sos${response.EquipmentID}`
 	let status = response.EquipmentStateID
 	let equip = $(`#${name.toLowerCase()}`)
 	let alarm = equip.find(`#Alarm${name}`);
@@ -28,6 +31,7 @@ const changeStates = response => {
 		
 		case 4:
 			status = 'alarm'
+			sidebar.css("color", "yellow")
 			break
 			
 		case 5:
@@ -61,9 +65,8 @@ const getEquipFromID = async id => {
 }
 
 const callsIncoming = async response => {
-	let equip = sosEquip[response.EquipmentID]
+	let equip = `sos${response.EquipmentID}`
 	let status = response.CallStateID
-
 
 	let elmt = $(`#${equip.toLowerCase()}`)
 	
@@ -84,45 +87,55 @@ const callsIncoming = async response => {
 	}
 }
 
-const signaling = response => {
-	if (response.AlarmTypeID > 3)
-		return
+const telemtry = response => {
+	let info = $(`#popsos${response.EquipmentID}`);
 
-	let equip = sosEquip[response.EquipmentID];
-	let active = true;
+	info.find("#Volt").text(response.Volt || 0.00);
+	info.find("#Amp").text(response.Ampere || 0.00);
+	info.find("#VoltPanel").text(response.VoltPanel || 0.00);
+	info.find("#AmpPanel").text(response.AmpPanel || 0.00);
+}
+
+const signaling = response => {
+	if (response.name == "TELEMETRY")
+		telemtry(response)
+	else if (response.AlarmTypeID <= 3 && response.name == "DOOR")
+		door(response)
+}
+
+const door = response => {
+	let equip = `SOS${response.EquipmentID}`;
+	let active = response.Value;
 	let alarm = $(`#${equip.toLowerCase()} #Alarm${equip}`)
 	let html = alarm.find(`div`)
 	let alarms = html.children()
-	let door = alarms.filter(`span[door=${response.Value}]`)
-	var doors = document.getElementById("addequip")
-	
-	if (response.EndDate)
-		active = false;
+	let door = alarms.filter(`span[door="${response.AlarmTypeID}"]`)
+	var doors = document.getElementById("setting_user")
 	
 	if (door.length == 0 && active){
 		
-			if(doors.value == "AÑADIR"){
-				if(response.Value == 3)
-					response.Value = "superior"
-				else response.Value = "inferior"
-				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Puerta ${response.Value}</span>`)
-			}else if(doors.value == "ADICIONAR"){
-				if(response.Value == 3)
-					response.Value = "superior"
-				else response.Value = "inferior"
-				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Porta ${response.Value}</span>`)
+			if(doors.innerText == "Configuraciones"){
+				if(response.AlarmTypeID == 3)
+					response.port = "superior"
+				else response.port = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.AlarmTypeID}">Puerta ${response.port}</span>`)
+			}else if(doors.innerText == "Configuração"){
+				if(response.AlarmTypeID == 3)
+					response.port = "superior"
+				else response.port = "inferior"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.AlarmTypeID}">Porta ${response.port}</span>`)
 			}else{
-				if(response.Value == 3)
-					response.Value = "top"
-				else response.Value = "bottom"
-				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.Value}">Door ${response.Value}</span>`)
+				if(response.AlarmTypeID == 3)
+					response.port = "top"
+				else response.port = "bottom"
+				html.append(`<span class="col-12" style="white-space: nowrap;" door="${response.AlarmTypeID}">Door ${response.port}</span>`)
 			}
 	}
 		
 	else if (door.length == 1 && !active)
 		door.remove();
 
-	if (alarms.length > 0)
+	if (html.children().length > 0)
 		alarm.addClass('d-flex').removeClass('d-none')
 	else
 		alarm.addClass('d-none').removeClass('d-flex')
@@ -143,7 +156,7 @@ const callback_calls_default = message => {
 	callsIncoming(response)
 }
 
-const consume = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
+const consumeSOS = async ({ callback_calls = callback_calls_default, callback_alarms = callback_alarms_default, callback_states = callback_states_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
@@ -175,17 +188,18 @@ const connectSOS = async function(request, debug) {
 const initSOS = async debug => {
 	let response = await connectSOS('GetAllEquipmentStates', debug)
 	let alarms = await connectSOS('GetAllActiveAlarms', debug)
-	window.sosEquip = {};
+	let calls = await connectSOS("GetAllActiveCalls", debug);
 
-	for (const r of response) {
+	for (const r of response)
 		changeStates(r)
-		sosEquip[r.EquipmentID] = r.EquipmentName
-	}
 
 	for (const a of alarms)
 		signaling(a)
 
-	consume({debug: debug})
+	for (const c of calls)
+		callsIncoming(c)
+
+	consumeSOS({debug: debug})
 }
 
 window.initSOS = initSOS;

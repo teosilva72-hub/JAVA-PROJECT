@@ -2,6 +2,7 @@
   background-color: #333;
   font-size: 13px;
   line-height: 1.42857143;
+  height: 479px;
   /* firefox 19+ */
   /* ie */
 }
@@ -11,15 +12,10 @@
   line-height: 18px;
 }
 #sipClient .sipStatus {
-  margin: -28px -16px 0 -15px;
+  margin: 0 -15px;
   padding: 5px 15px;
   background-color: #111;
   color: #999;
-  cursor: pointer;
-  width: 100px;
-  margin-left: auto;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 5px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -71,7 +67,7 @@
   padding: 10px 8px;
 }
 #sipClient #sip-logitems {
-  height: 270px;
+  height: 320px;
   overflow: auto;
 }
 #sipClient #sldVolume {
@@ -95,36 +91,6 @@
   color: #bbb;
 }
 
-.calls-client .sipStatus.closed {
-  width: min-content !important;
-}
-
-.calls-client .sipStatus.open {
-  width: 280px !important;
-  margin-left: -16px !important;
-  border-radius: 2px 2px 0 0 !important;
-}
-
-.calls-client .sipStatus.opening {
-	animation: CallboxStates 2s 1;
-}
-
-.calls-client .sipStatus.closing {
-	animation: CallboxStates 2s 1 reverse;
-}
-
-@keyframes CallboxStates {
-  83% {
-    width: 263px;
-    margin-left: auto;
-  }
-	84% {
-		width: 264px;
-    margin-left: 0px;
-	}
-  100% {
-    width: 280px;
-    margin-left: -16px;
-    border-radius: 2px 2px 0 0;
-  }
+.hidden {
+  display: none;
 }

@@ -154,6 +154,10 @@
         	<var>sosLabels</var>
         </resource-bundle>
         
+        <resource-bundle>
+        	<base-name>bundle.labels.phone.labels_phone</base-name>
+        	<var>phoneLabels</var>
+        </resource-bundle>
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -271,7 +275,9 @@
         <message-bundle>bundle.labels.system.excel-sheet.labels_excel_sheet</message-bundle>
         <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
         <message-bundle>bundle.labels.system.charts.labels_charts</message-bundle>
-             
+       <message-bundle>bundle.labels.aba.labels_aba</message-bundle>
+        <message-bundle>bundle.labels.phone.labels_phone</message-bundle>
+     
         <!-- CONFIG MESSAGES -->
         <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>
         <message-bundle>bundle.messages.login.messages_login</message-bundle>
