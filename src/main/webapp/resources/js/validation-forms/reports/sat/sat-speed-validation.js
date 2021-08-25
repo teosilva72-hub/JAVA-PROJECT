@@ -2,55 +2,38 @@
 
 $(function () {
 
-//Get equipments from backing bean
-//Create array
-var equipsArray = new Array();
-var veh = [1, 2, 3, 4, 5];
-
 var validation = document.forms.validation;
 
 for (messages of validation)
-   if (messages.name == "")
-    equipsArray.push(messages.value);
-     else window[messages.name] = messages.value
-
-  //Call method to set checkbox all checked
-  checkedByDefault('#equips', equipsArray);
-  checkedByDefault('#vehicles', veh);
- 
-  //Create / Define multiselect
-  defineMultiselect('#equips', equipmentSelectMsg);
-  defineMultiselect('#vehicles', vehicleSelectMsg);
+	window[messages.name] = messages.value
 
     //Language
-    $('.datepicker').datepickerLocale(language);
+   $('.datepicker').datepickerLocale(language);
 
    //Validation Methods - needs to use
    //Date Validation
    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', maxDateMsg);
    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', greatherThanMsg);
 
-     validationTemplate2('#report-form', '#dateStart', requiredEquipmentsMsg, requiredVehiclesMsg,
-       requiredPeriodsMsg, requiredDateStartMsg, requiredDateEndMsg, requiredValidDateMsg);
+   validationTemplate1("#report-form", '#dateStart', requiredEquipmentsMsg,
+	requiredPeriodsMsg, requiredDateStartMsg, requiredDateEndMsg, requiredValidDateMsg);
 
-    //Validate elements on change value 
-    validateOnChange('#equips');
-    validateOnChange('#vehicles');
+    //Validate elements on change value
+    //In this case check if the element is valid
+    validateOnChange('#equip');
     validateOnChange('#periods');
     validateOnChange('#dateStart');
     validateOnChange('#dateEnd');
     
 	//Reset Fields on close modal
-    resetFieldMultiselectOnModalClose('#modalReportOptions', 'equips', equipmentSelectMsg, equipsArray);
-    resetFieldMultiselectOnModalClose('#modalReportOptions', 'vehicles', vehicleSelectMsg, veh);
-    resetFieldOnModalClose('#modalReportOptions', 'periods');
+	resetFieldOnModalClose('#modalReportOptions', 'equip');
+	resetFieldOnModalClose('#modalReportOptions', 'periods');
     resetFieldOnModalClose('#modalReportOptions', 'dateStart');
 	resetFieldOnModalClose('#modalReportOptions', 'dateEnd');
     
     //Remove validation icons
     //click reset button action		 
-    removeValidationMultiselectIcon("reset-btn", 'equips', equipmentSelectMsg, equipsArray);
-    removeValidationMultiselectIcon("reset-btn", 'vehicles', vehicleSelectMsg, veh);
+    removeValidationIcon("reset-btn", 'equip');
     removeValidationIcon("reset-btn", 'periods');
     removeValidationIcon("reset-btn", 'dateStart');
     removeValidationIcon("reset-btn", 'dateEnd');

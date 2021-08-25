@@ -249,6 +249,17 @@ public class NavigationBean {
 
 		return navigation_page;
 	}
+	
+	// ---------------------------------------------------------------------------------------------
+	
+	public String redirectToSpeedMultiSelection() {
+
+		navigation_page = "/sat/reports/sat_speed_multi.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ---------------------------------------------------------------------------------------------
 
 	public String redirectToVBVs() {
 
@@ -344,9 +355,45 @@ public class NavigationBean {
 		return navigation_page;
 	}
 
-	//******************* CCR REPORTS **************************** //
+   // -------------------------- SOS ----------------------------------
+		
+	public String redirectToBatterySOS() {
 
-	/* SAT REPORTS */
+		navigation_page = "/sos/sos_battery.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+	public String redirectToCallSOS() {
+
+		navigation_page = "/sos/sos_call.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+			
+	// ----------------------------------------------------------------
+	
+	public String redirectToStatusSOS() {
+
+		navigation_page = "/sos/sos_status.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+	public String redirectToStatisticSOS() {
+
+		navigation_page = "/sos/sos_statistic.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+    /* SAT REPORTS */
 
 	public String sidebarSource() {
 

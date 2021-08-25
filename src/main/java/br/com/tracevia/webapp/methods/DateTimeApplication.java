@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.methods;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -646,7 +647,6 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		 
 	}
 		
-
 		
 		/////////////////////////////////
 		///// PREENCHER DATA POR DIA
@@ -745,33 +745,87 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 		 * @param range - Intervalo por período
 		 * @param days - Número de dias
 		 */
-		public void fillEquipName(List<? extends Equipments> equip, String[][] matriz, String[] eqp, int col, int lin, int range, int days) { 
+		public void fillEquipName(List<? extends Equipments> equip, String[][] matriz, String[] eqp, String[] siteName, int colDate, int colEquip, int lin, int range, int days, String dtInicio) { 
+			
+			String da, mth; // Formatar apresenta��o
+			
+			// dia, m�s e ano da dataInicial
+
+			String anoIni = dtInicio.substring(0, 4);
+			String mesIni = dtInicio.substring(5, 7);
+			String diaIni = dtInicio.substring(8, 10);
+
+			// dia inicial - convers�o para inteiro
+			int dayIni = Integer.parseInt(diaIni);
+
+			// mes inicial - convers�o para inteiro
+			int mthIni = Integer.parseInt(mesIni);
+
+			// ano inicial - convers�o para inteiro
+			int yearIni = Integer.parseInt(anoIni);
+
+			int dia = dayIni; // inicializar vari�vel do dia
+			int mes = mthIni; // inicializar vari�vel do m�s
+			int ano = yearIni; // inicializar vari�vel do ano
+
+			// Quantos dias possui o respectivo m�s
+			YearMonth yearMonthObject = YearMonth.of(ano, mes);
+			int daysInMonth = yearMonthObject.lengthOfMonth();		
 							
-		int idx = 0; // INDEX
-		int inc = range; // INCRENENTO
-			
-		for (int d = 0; d < days; d++) { // NUMEROS DE DIAS
-			
-			for (int j = 0; j < equip.size(); j++) { // LISTA DE EQUIPAMENTOS
+		    int idx = 0; // INDEX
+		    int inc = range; // INCRENENTO
+					 						
+			  for (int j = 0; j < equip.size(); j++) { // LISTA DE EQUIPAMENTOS
+				  
+				  dia = dayIni; // EVER INITIZILE THE DAY, AFTER PASS BY ONE EQUIP
+				  mes = mthIni;  // EVER INITIZILE THE MONTH, AFTER PASS BY ONE EQUIP
+				  ano = yearIni; // EVER INITIZILE THE YEAR, AFTER PASS BY ONE EQUIP
 				
 			   for (int i = 0; i < eqp.length; i++) { // EQUIPAMENTOS DA CAIXA DE SELECAO
 				   
 				  if (equip.get(j).getEquip_id() == Integer.parseInt(eqp[i])) { // COMPARAR EQUIPAMENTOS PARA OBTER O NOME
+					  
+					   siteName[i] = equip.get(j).getNome(); // FILL EQUIP NAME
+					  
+					   for (int d = 0; d < days; d++) { // NUMEROS DE DIAS
 					  								   
 				       for (int k = idx; k < inc; k++) { // PERCORRER AS LINHAS DA TABELA
-				   					  		   					         						   
-						   matriz[idx][col] = equip.get(j).getNome();		
+				    	   
+				    	// Caso o dia seja maior que total de dias no m�s
+							if (dia > daysInMonth) {
+								dia = 1; 
+								mes++;
+							}
+						
+							// Formata apresenta��o da String
+							if (dia <= 9)
+								da = "0";
+							else
+								da = "";
+							if (mes < 10)
+								mth = "0";
+							else
+								mth = "";
+		  						   
+						   matriz[idx][colDate] = da + dia + "/" + mth + mes + "/" + ano; 		
+										   					  		   					         						   
+						   matriz[idx][colEquip] = equip.get(j).getNome();		
 						   idx++;
-				  
+						   			  
 					   }
 				   
-				       if(inc < lin) // COMPARAR INCREMENTO COM NUMERO DE LINHAS -> CASO SEJA MENOR
-				           inc+= range;
-				   
+				       if(inc < lin) { // COMPARAR INCREMENTO COM NUMERO DE LINHAS -> CASO SEJA MENOR
+				           inc+= range;				           
+				       }
+				       
+					   dia++;
+					   
 					 }	
 				  }
-			    }
-			} 
+			    }			
+		
+			} 		
+	
 		}	// END
 		
 		
@@ -1000,8 +1054,7 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 			}
 			
 		}			
-		
-		
+				
 		// HORA
 		public void preencherHora(String[][] matriz, int col, int lin) {		
 
@@ -1896,5 +1949,52 @@ public String getCurrentDateSubDados45(Calendar calendar, int minute) {
 				
 				
    /* ************************************************************************************************************* */
+				
+    // ---------------------------------------------------------------------------------------------------------------
+				
+				
+	  // NUEVO	
+				
+	 
+	 public boolean isDateAfter(String startDate, String endDate) throws ParseException {
+		 
+		 boolean isAfter = false;
+		
+		 SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
+	           
+		        Date date1 = sdformat.parse(startDate);
+	            Date date2 = sdformat.parse(endDate);
+	          
+	            if (date1.after(date2)) {
+	                   isAfter = true;
+	            System.out.println("DATE  1 is AFTER DATE 2");
+	            
+	            }
+	            
+	            System.out.println(isAfter);
+	            		 
+		 return isAfter;
+		 
+	 }
+	 
+	 // ------------------------------------------------------------------------------------------------------
+	 
+	 public String getCallTime(String time) {
+		 
+	 DecimalFormat df = new DecimalFormat("####.##");
+	 df.format(1234.36); 
+	 	
+	 String[] timeDivided = time.split(":");
+	  
+	 int hour = Integer.parseInt(timeDivided[0]);
+	 int minute = Integer.parseInt(timeDivided[1]);
+	 int second = Integer.parseInt(timeDivided[2]);
+	 	  
+     String seconds = df.format(Double.parseDouble(String.valueOf(((second + (60 * minute) + (3600 * hour) % 3600) / 60))));
+	      
+        return seconds;
+	 }
+		
+	// ------------------------------------------------------------------------------------------------------
 									
    }

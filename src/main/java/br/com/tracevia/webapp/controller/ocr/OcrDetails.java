@@ -1,13 +1,10 @@
 package br.com.tracevia.webapp.controller.ocr;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
@@ -111,7 +108,7 @@ public class OcrDetails{
 		imageVeh = noImageFolder + "no-image.jpg";
 		imagePlt = noImageFolder + "no-image.jpg";
 		
-		System.out.println("Inicializou");
+		// System.out.println("Inicializou");
 		updateView();
 		RequestContext.getCurrentInstance().execute("updateDetails()");
 
@@ -186,7 +183,7 @@ public class OcrDetails{
 		
 		infoGet();
 		
-		System.out.println("atualizando");
+		//System.out.println("atualizando");
 		RequestContext.getCurrentInstance().execute("updateDetails()");
 	}
 	
@@ -221,9 +218,7 @@ public class OcrDetails{
 		plate[index] = data.getPlaca();
 		imageVei[index] = getImagePath(data.getVehicleImage());
 		imagePlate[index] = getImagePath(data.getPlateImage());
-		
-		
-				
+						
 	}
 	
     public String getImagePath(String image) {

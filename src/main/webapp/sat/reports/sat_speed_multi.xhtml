@@ -13,27 +13,25 @@
 	<f:metadata>
 	
 	<!-- Create Table Header -->
-	<f:viewAction action="#{satReportsBean.CreateFields(8)}" />  
+	<f:viewAction action="#{satSpeedMultiBean.CreateFields}" />  
           
     </f:metadata>
 	
 	<ui:define name="head" >
-	
-        <h:outputStylesheet library="css/datatables/custom" name="table-style.css" />		
+	        
+		<h:outputStylesheet library="css/datatables/custom" name="table-style.css" />		
 		<h:outputStylesheet library="css/reports" name="reports_template.css" />
-		<h:outputStylesheet library="css/forms" name="form-style.css" />		
-		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
 		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
 
 		<h:outputScript library="js/datepicker" name="locales-datepicker.js" />
-		<h:outputScript library="js/datepicker" name="datepicker.js" />		
+		<h:outputScript library="js/datepicker" name="datepicker.js" />
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	
-		<h:outputScript library="js/validation-forms/reports/sat" name="sat-speed-validation.js" />
-		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/reports/sat" name="sat-count-validation.js" />
+		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  />	
 	
 	</ui:define>
 	
@@ -51,15 +49,15 @@
               		
 		<!-- REPORTS LABEL INFORMATION --> 
 	 <div class="text-dark text-center font-weight-bold report-title" >
-	 <h:outputText value="#{satLabels.sat_reports_name_speed}" />
+	 <h:outputText value="#{satLabels.sat_reports_name_speed_multi_selection}" />
 	 <hr></hr>
 	 </div>
 	 
-    <h:dataTable id="vehicle-speed-table" value="#{satReportsBean.resultList}" var="speed" autocomplete="off"				               
+    <h:dataTable id="vehicle-speed-table" value="#{satSpeedMultiBean.resultList}" var="speed" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%"	
      headerClass="custom-table-header" >
      
-         <c:forEach items="#{satReportsBean.columns}" var="header" varStatus="loop">
+         <c:forEach items="#{satSpeedMultiBean.columns}" var="header" varStatus="loop">
             <h:column>
               <f:facet name ="header">#{header.field}</f:facet>
               <h:outputText value="#{speed[header.value]}" />
@@ -94,7 +92,7 @@
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
-							disabled="#{satReportsBean.clearBool}"
+							disabled="#{satSpeedMultiBean.clearBool}"
 							title="#{satLabels.sat_reports_btn_clean}">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
@@ -104,53 +102,23 @@
 					
 				<div id="btn-excel"> <!-- BUTTON EXCEL DIV -->	
 				<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
+					disabled="#{satSpeedMultiBean.excelBool}"
 					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					action="#{satSpeedMultiBean.download}" widgetVar="excelWgt">
 					<f:passThroughAttribute name="data-toggle" value="modal" />
 					<f:passThroughAttribute name="data-target" value="#modalDownload" />
 					<f:ajax execute="@form" render="@none" />
 				</h:commandButton>
 			</div><!---->	
-							
-			<!-- <div id="btn-chart"> 
-				<h:commandButton id="chart-act" value="" 
-					onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
-					class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
-					data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">	
-					<f:ajax execute="@form" render="@none" />			
-				</h:commandButton>
-			</div>-->			
-					
+														
 		   </div> <!---->
 		 </h:form> <!---->
 		</div> <!---->
 			               
             <!-- ********************************************************************************************************************* --> 	
-		    
-		    <!-- CHART COMPONENT -->
-                  		    		
-		    <div class="chart-wrapper invisible" > <!-- CHART DIV -->
-		    
-		     <a class="text-decoration-none" id="close-link">
-            <span id="btn-chart-close"><i class="fas fa-times"></i></span>
-            </a>
-          
-             <!--Div that will hold the pie chart-->
-             <div id="chart-div"></div>     
-                                         
-             <a class="text-decoration-none" id="download-link">             
-             <span id="btn-chart-download"> 
-             <i class="fas fa-download chart-icon"></i>  
-             </span>              
-            </a>  
-          
-           </div>  <!---->   												
-         
-        <!-- ********************************************************************************************************************* -->
-			  
-	      <!--  MODALS -->			
+		    				  
+	     <!--  MODALS -->			
 	
 		<!-- MODAL SUBMIT -->
 
@@ -169,32 +137,32 @@
 					<div class="modal-body">
 						<br />
 
-						<!-- EQUIPMENTS OPTIONS -->
+					<!-- EQUIPMENTS OPTIONS -->
 
 						<div class="form-row">
 							<div class="form-group col-sm-12 checkbox-field">
 								<span><i class="fas fa-hdd"></i></span> <span for="equips"
 										class="valid-icon-hidden"></span> <select name="equips"
 										id="equips" multiple="multiple">
-										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
+										<ui:repeat var="eqp" value="#{satSpeedMultiBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
 									</select>
-							    </div>
+							  </div>
 							  <div class="error-label">
 									<label for="equips" class="error" id="equips-error"></label>
 								</div>
 						  </div>
-						  						  
-						  	<!-- VEHICLES OPTIONS -->
+							
+							<!-- VEHICLES OPTIONS -->
 
 							<div class="form-row">
 							<div class="form-group col-sm-12 checkbox-field">
 									<span><i class="fas fa-car"></i></span> <span for="vehicles"
 										class="valid-icon-hidden"></span> <select name="vehicles"
 										id="vehicles" multiple="multiple">
-										<ui:repeat var="veh" value="#{satReportsBean.vehicles}"
+										<ui:repeat var="veh" value="#{satSpeedMultiBean.vehicles}"
 											varStatus="vehStatus">
 											<option value="#{veh.value}">#{veh.label}</option>
 										</ui:repeat>
@@ -204,7 +172,8 @@
 									<label for="vehicles" class="error" id="vehicles-error"></label>
 								</div>
 							</div>
-														
+				  					  
+						 	
 							<!-- PERIODS OPTIONS -->
 
 							<div class="form-row">
@@ -213,7 +182,7 @@
 										class="valid-icon-hidden"></span> <select name="periods"
 										id="periods" size="1">
 										<option value="">#{satLabels.sat_reports_select_periods}</option>
-										<ui:repeat var="per" value="#{satReportsBean.periods}"
+										<ui:repeat var="per" value="#{satSpeedMultiBean.periods}"
 											varStatus="perStatus">
 											<option value="#{per.value}">#{per.label}</option>
 										</ui:repeat>
@@ -267,7 +236,7 @@
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
 							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-							<f:ajax execute="@form" render="form-table form-btns" listener="#{satReportsBean.GetReports(8)}" onevent="onEventFunction" />
+							<f:ajax execute="@form" render="form-table form-btns" listener="#{satSpeedMultiBean.GetReport}" onevent="onEventFunction" />
 						</h:commandButton>
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
@@ -296,7 +265,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(8)}"
+									action="#{satSpeedMultiBean.resetFormValues}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -329,7 +298,7 @@
 							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								p:data-toggle="modal" p:data-target="#modalDownload"
-								action="#{satReportsBean.download}"
+								action="#{satSpeedMultiBean.download}"
 								class="btn btn-dark form-draw-button" />
 							<h:commandButton id="cancelDownload"
 								value="#{satLabels.sat_reports_modal_alert_btn_no}"
@@ -356,13 +325,13 @@
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		 
-		  <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
-		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		   <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
+		  <ui:repeat value="#{satSpeedMultiBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
 		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
 		  </ui:repeat> <!---->
-		 	
+		  
 		 <input type="hidden" name="equipmentSelectMsg" value="#{satLabels.sat_reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
-		 <input type="hidden" name="vehicleSelectMsg" value="#{satLabels.sat_reports_select_vehicles}" />	<!-- SELECT VEHICLE LABEL MESSAGE -->
+		 <input type="hidden" name="vehicleSelectMsg" value="#{satLabels.sat_reports_select_vehicles}" />	<!-- SELECT VEHICLE LABEL MESSAGE -->		 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
 		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->

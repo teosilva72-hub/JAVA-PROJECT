@@ -316,28 +316,28 @@ public class QueriesReportsModels {
 		// ----------------------------------------------------------------------------------------------------------------------------------------------
 		
 		//QUERIES GROUP AND ORDER BY PERIODSNEW SATS		
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_05_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_05_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(05*60)) " +
 				"ORDER BY DATE(data) ASC ";
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(06*60)) " +
 				"ORDER BY DATE(data) ASC ";
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_10_MIN_SAT= "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_10_MIN_SAT= "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(10*60)) " +
 				"ORDER BY DATE(data) ASC ";
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_15_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_15_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60)) " +
 				"ORDER BY DATE(data) ASC ";
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_30_MIN_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_30_MIN_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(30*60)) " +
 				"ORDER BY DATE(data) ASC ";
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_01_HOUR_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_01_HOUR_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(60*60)) " +
 				"ORDER BY DATE(data) ASC "; 
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_HOURS_SAT = "GROUP BY DATE(data), siteID, sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_06_HOURS_SAT = "GROUP BY DATE(data), sec_to_time(time_to_sec(data)- time_to_sec(data)%(360*60)) " +
 				"ORDER BY DATE(data) ASC "; 
 
-		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_DATE_SAT = "GROUP BY DATE(data), siteID ORDER BY DATE(data) ASC";
+		private static final String GROUP_BY_EQUIP_AND_ORDER_TABLE_DATE_SAT = "GROUP BY DATE(data) ORDER BY DATE(data) ASC";
 		
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
@@ -380,6 +380,10 @@ public class QueriesReportsModels {
 		public static final String USE_INDEX_IDX_SITEID_DATA = "USE INDEX(idx_siteID_data) ";
 		
 		public static final String USE_INDEX_IDX_DATETIME_STATION = "USE INDEX(idx_datetime_station) ";
+		
+		public static final String USE_INDEX_IDX_SOS = "USE INDEX(idx_equip_start_end_date) ";
+		
+		public static final String USE_INDEX_IDX_BATTERY = "USE INDEX(idx_battery) ";
 				
 		
 	///////////////////
@@ -1010,10 +1014,15 @@ public class QueriesReportsModels {
 		return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(whereClause).concat(whereVechiles).concat(queryGroupOrder); 	       
 	} 
 	
-  ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
+     ///////// MAIN QUERY STRUCTURE
+    public String BuildQueryBase(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String whereClause, String queryGroupOrder) { 	   
+	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(whereClause).concat(queryGroupOrder); 	       
+    } 
+      			
+    ///////// INNER JOIN AND WHERE CLAUSE WITH ONE PARAMETER
    public String BuildQueryIndexType2(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String innerJoin, String whereClause, String queryGroupOrder) { 	
 	   	return queryHeader.concat(queryMain).concat(queryFromTable).concat(queryIndex).concat(innerJoin).concat(whereClause).concat(queryGroupOrder); 	       
-  } 
+   } 
    	
    ///////// WHERE CLAUSE WITH ONE PARAMETER
     public String BuildQueryIndexType3(String queryHeader, String queryMain, String queryFromTable, String queryIndex, String whereClause, String queryGroupOrder) { 	   
@@ -1088,25 +1097,45 @@ public class QueriesReportsModels {
        
    // ---------------------------------------------------------------------------------------------------       
        
-       public String whereClauseForSpeed(String[] station_id, String startDate, String endDate) {
+       public String whereClauseForSpeed(String station_id, String startDate, String endDate) {
       	   
-      	   String query =" WHERE data between '"+startDate+"' AND '"+endDate+"' AND siteID IN(";
-      	   
-      	 for(int i = 0; i < station_id.length; i++) {	
-      	   
-      	   query +="'"+station_id[i]+"'";
-      	   
-      	 if(station_id[i] != station_id[station_id.length-1])                    				
-			    query += ", ";
-      	   
-      	 }
-      	 
-      	 query += ") "; // CLOSE
-      	 
+      	   String query =" WHERE data between '"+startDate+"' AND '"+endDate+"' AND siteID = "+station_id+" ";
+      	              	 
       	 return query;
        }
      
+   // ---------------------------------------------------------------------------------------------------    
+                
+       public String WhereClauseSOSCalls(String startDate, String endDate, String equip_id) {
+      	   
+      	   String query =" WHERE start_date >= '"+startDate+"' AND  end_date <= '"+endDate+"' AND equip_id = "+equip_id+" ";
+      	              	 
+      	 return query;
+      	 
+       }
+     
+   // ---------------------------------------------------------------------------------------------------      
+              
+       public String WhereClauseSOSAlarms(String equip_id, String startDate, String endDate) {
+      	   
+      	   String query =" WHERE start >= '"+startDate+"' AND  end <= '"+endDate+"' AND equip_id = "+equip_id+" ";
+      	              	 
+      	 return query;
+      	 
+       }
+     
+   // ---------------------------------------------------------------------------------------------------   
+       
+       public String WhereClauseSOSBattery(String equip_id, String startDate, String endDate, String type) {
+      	   
+      	 String query =" WHERE save_date between '"+startDate+"' AND  "+endDate+"' AND equip_id = "+equip_id+" AND equip_type = "+type+" ";
+      	              	 
+      	 return query;
+      	 
+       }
+     
    // ---------------------------------------------------------------------------------------------------       
+     
      
      public String vehicleSelectionWhereClause(String[] vehicles) {
   	   
@@ -1120,19 +1149,19 @@ public class QueriesReportsModels {
  				query += " AND classe = '"+RoadConcessionaire.classMotorcycle+"' ";
   		   
   		   if(vehicles[0].equals("3"))
- 				query += " AND classe <> '"+RoadConcessionaire.classLight+"' AND classe <> '"+RoadConcessionaire.classMotorcycle+"' ";
-  		         		   
-  		   
+  			    query += " AND classe NOT IN ('"+RoadConcessionaire.classLight+"' , '"+RoadConcessionaire.classMotorcycle+"') ";
+		        
+  		         		    		   
   	   }
   		   
   	  if(vehicles.length == 2) {
-  		  if(vehicles[0].equals("1") && vehicles[0].equals("2"))
-				   query += " AND classe = '"+RoadConcessionaire.classLight+"' AND classe = '"+RoadConcessionaire.classMotorcycle+"' ";
-		   
-  		  if(vehicles[0].equals("1") && vehicles[0].equals("3"))
+  		  if(vehicles[0].equals("1") && vehicles[1].equals("2"))
+  			   query += " AND classe IN ('"+RoadConcessionaire.classLight+"' , '"+RoadConcessionaire.classMotorcycle+"') ";
+		   		   
+  		  if(vehicles[0].equals("1") && vehicles[1].equals("3"))
   			  query += " AND classe <> '"+RoadConcessionaire.classMotorcycle+"' ";
   		  
-  		  if(vehicles[0].equals("2") && vehicles[0].equals("3"))
+  		  if(vehicles[0].equals("2") && vehicles[1].equals("3"))
   			  query += " AND classe <> '"+RoadConcessionaire.classLight+"' ";
   	  }                			   
   			   
@@ -1140,5 +1169,39 @@ public class QueriesReportsModels {
   	   return query;
      }
      
+     
+ // ---------------------------------------------------------------------------------------------------       
+     
+     public String vehicleCCRSelectionWhereClause(String[] vehicles) {
+  	   
+  	   String query ="";
+  	             	   
+  	   if(vehicles.length == 1) {
+  		   if(vehicles[0].equals("1"))
+  				query += " AND classe = '"+RoadConcessionaire.classCCRLight+"' ";
+  		   
+  		   if(vehicles[0].equals("2"))
+ 				query += " AND classe = '"+RoadConcessionaire.classCCRMotorcycle+"' ";
+  		   
+  		   if(vehicles[0].equals("3"))
+  			    query += " AND classe NOT IN ('"+RoadConcessionaire.classCCRLight+"' , '"+RoadConcessionaire.classCCRMotorcycle+"') ";		        
+  		         		   
+  		   
+  	   }
+  		   
+  	  if(vehicles.length == 2) {
+  		  if(vehicles[0].equals("1") && vehicles[1].equals("2"))
+  			   query += " AND classe IN ('"+RoadConcessionaire.classCCRLight+"' , '"+RoadConcessionaire.classCCRMotorcycle+"') ";
+		   		   
+  		  if(vehicles[0].equals("1") && vehicles[1].equals("3"))
+  			  query += " AND classe <> '"+RoadConcessionaire.classCCRMotorcycle+"' ";
+  		  
+  		  if(vehicles[0].equals("2") && vehicles[1].equals("3"))
+  			  query += " AND classe <> '"+RoadConcessionaire.classCCRLight+"' ";
+  	  }                			   
+  			   
+  	   
+  	   return query;
+     }
 
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.dms.MessagesDAO;
@@ -108,7 +109,7 @@ public class EquipmentsDAO {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
-			System.out.println(query);
+		//	System.out.println(query);
 			
 			ps = conn.prepareStatement(query);					
 			rs = ps.executeQuery();
@@ -375,11 +376,13 @@ public class EquipmentsDAO {
 
 		try {
 
-			//GET CONNECTION			
+			// GET CONNECTION			
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
+			//System.out.println(sql);
 
 			if (rs != null) {
 
@@ -3929,6 +3932,76 @@ public class EquipmentsDAO {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para obter o nome de um equipamento
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0	
+		 * @param id - Equipamento ID
+		 * @param table - Table id	
+		 * @return String - Retorna o nome do equipamento
+		 */
+
+		public List<SAT> listSATtoXLS(String[] equips) throws Exception {
+
+			List<SAT> lista = new ArrayList<SAT>();
+						
+			try {
+
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+				//CHECK
+				String select = "SELECT s.name, c.city_name, r.road_name, s.km, s.number_lanes FROM sat_equipment s " +
+					"INNER JOIN concessionaire_cities c ON c.city_id = s.city " +
+					"INNER JOIN concessionaire_roads r ON r.road_id = s.road " +
+					" WHERE equip_id IN(";
+				
+				String aux = "";
+				
+				for(int i = 0; i < equips.length; i++) {
+					aux += equips[i];
+								
+				if(equips[i] != equips[equips.length - 1])
+					aux +=", ";
+					
+				}
+				
+				aux += ")"; // CLOSE STATEMENT
+				
+				select += aux; // JOIN AUX VAR
+								 
+				ps = conn.prepareStatement(select);
+				
+				rs = ps.executeQuery();
+
+				if(rs.isBeforeFirst())
+					while(rs.next()) {
+						
+					SAT sat = new SAT();
+
+					 sat.setNome(rs.getString(1));
+					 sat.setCidade(rs.getString(2)); 
+					 sat.setEstrada(rs.getString(3)); 
+					 sat.setKm(rs.getString(4)); 
+					 sat.setNumFaixas(rs.getInt(5)); 
+					 
+					 lista.add(sat);
+										
+					} 
+			}
+
+			catch (SQLException sqle) {
+				throw new Exception("Erro ao inserir dados " + sqle);        		    
+
+			} finally {
+				ConnectionFactory.closeConnection(conn, ps);
+			}
+
+			return lista;	
+		}
+
+		//--------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Método para definir tipo de faixas em um determinado equipamento SAT
@@ -4067,5 +4140,57 @@ public class EquipmentsDAO {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
+	
+	
+
+	// --------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para obter informações para relatórios do tipo SAT
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id - Equipamento ID	
+	 * @return SAT - Informações da classe SAT
+	 * @throws Exception
+	 */
+
+	public Equipments GenericInfo(String type, String equip_id) throws Exception {
+
+		Equipments eq = new Equipments();
+
+		try {
+
+			//GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			String sql = "SELECT st.name, c.city_name, r.road_name, st.km FROM "+type+"_equipment st "
+					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
+					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+					+ "WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+
+					eq.setNome(rs.getString(1));
+					eq.setCidade(rs.getString(2));
+					eq.setEstrada(rs.getString(3));
+					eq.setKm(rs.getString(4));
+				
+				}
+			}
+
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps);}
+
+		return eq;
+	}	
+
+	// --------------------------------------------------------------------------------------------------------------
+
 
 }

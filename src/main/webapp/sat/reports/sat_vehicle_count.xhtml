@@ -14,7 +14,7 @@
 	<f:metadata>
 
         <!-- Create Table Header -->
-		<f:viewAction action="#{satReportsBean.CreateFields(1)}" />
+		<f:viewAction action="#{satMultiEquipBean.CreateFields(1)}" />
 	
 	</f:metadata>
 
@@ -58,11 +58,11 @@
 
            <!-- TABLE -->
 			<h:dataTable id="vehicle-count-table"
-				value="#{satReportsBean.resultList}" var="count" autocomplete="off"
+				value="#{satMultiEquipBean.resultList}" var="count" autocomplete="off"
 				styleClass="table table-striped table-bordered table-dark custom-table text-center"
 				cellspacing="0" width="100%" headerClass="custom-table-header">
 
-				<c:forEach items="#{satReportsBean.columns}" var="header"
+				<c:forEach items="#{satMultiEquipBean.columns}" var="header"
 					varStatus="loop">
 					<h:column>
 						<f:facet name="header">#{header.field}</f:facet>
@@ -98,7 +98,7 @@
 						<h:commandButton id="btn-tab-reset"
 							class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 							value="" data-toggle="tooltip" data-placement="bottom"
-							disabled="#{satReportsBean.clearBool}"
+							disabled="#{satMultiEquipBean.clearBool}"
 							title="#{satLabels.sat_reports_btn_clean}">
 							<f:passThroughAttribute name="data-toggle" value="modal" />
 							<f:passThroughAttribute name="data-target" value="#modalClear" />
@@ -108,10 +108,10 @@
 														
 				   <div id="btn-excel" > <!-- BUTTON EXCEL DIV -->	
 					<h:commandButton id="excel-act" value=""
-					disabled="#{satReportsBean.excelBool}"
+					disabled="#{satMultiEquipBean.excelBool}"
 					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
-					action="#{satReportsBean.download}" widgetVar="excelWgt">
+					action="#{satMultiEquipBean.download}" widgetVar="excelWgt">
 					<f:passThroughAttribute name="data-toggle" value="modal" />
 					<f:passThroughAttribute name="data-target" value="#modalDownload" />
 					<f:ajax execute="@form" render="@none" />
@@ -120,7 +120,7 @@
 				   
 				    <div id="btn-chart"> <!-- BUTTON CHART DIV -->	
 				    <h:commandButton id="chart-act" value="" 
-					  onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
+					  onclick="toggleChart();" disabled="#{satMultiEquipBean.chartBool}"							
 					  class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
 					  data-placement="bottom" title="#{satLabels.sat_reports_btn_chart}" widgetVar="chartWgt">	
 					<f:ajax execute="@form" render="@none" />		
@@ -179,7 +179,7 @@
 								<span><i class="fas fa-hdd"></i></span> <span for="equips"
 										class="valid-icon-hidden"></span> <select name="equips"
 										id="equips" multiple="multiple">
-										<ui:repeat var="eqp" value="#{satReportsBean.equipments}"
+										<ui:repeat var="eqp" value="#{satMultiEquipBean.equipments}"
 											varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 										</ui:repeat>
@@ -197,7 +197,7 @@
 									<span><i class="fas fa-car"></i></span> <span for="vehicles"
 										class="valid-icon-hidden"></span> <select name="vehicles"
 										id="vehicles" multiple="multiple">
-										<ui:repeat var="veh" value="#{satReportsBean.vehicles}"
+										<ui:repeat var="veh" value="#{satMultiEquipBean.vehicles}"
 											varStatus="vehStatus">
 											<option value="#{veh.value}">#{veh.label}</option>
 										</ui:repeat>
@@ -216,7 +216,7 @@
 										class="valid-icon-hidden"></span> <select name="periods"
 										id="periods" size="1">
 										<option value="">#{satLabels.sat_reports_select_periods}</option>
-										<ui:repeat var="per" value="#{satReportsBean.periods}"
+										<ui:repeat var="per" value="#{satMultiEquipBean.periods}"
 											varStatus="perStatus">
 											<option value="#{per.value}">#{per.label}</option>
 										</ui:repeat>
@@ -270,7 +270,7 @@
 
 						<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
 							id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-							<f:ajax execute="@form" render="form-table form-btns" listener="#{satReportsBean.GetReports(1)}" onevent="onEventFunction" />
+							<f:ajax execute="@form" render="form-table form-btns" listener="#{satMultiEquipBean.GetReports(1)}" onevent="onEventFunction" />
 						</h:commandButton>
 												
 							<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
@@ -299,7 +299,7 @@
 							<div class="modal-footer">
 								<h:commandButton
 									value="#{satLabels.sat_reports_modal_alert_btn_yes}"
-									action="#{satReportsBean.resetFormValues(1)}"
+									action="#{satMultiEquipBean.resetFormValues(1)}"
 									class="btn btn-dark form-draw-button" />
 									
 								<h:commandButton
@@ -332,7 +332,7 @@
 							<h:commandButton p:onclose="download"
 								value="#{satLabels.sat_reports_modal_alert_btn_yes}"
 								p:data-toggle="modal" p:data-target="#modalDownload"
-								action="#{satReportsBean.download}"
+								action="#{satMultiEquipBean.download}"
 								class="btn btn-dark form-draw-button" />
 							<h:commandButton id="cancelDownload"
 								value="#{satLabels.sat_reports_modal_alert_btn_no}"
@@ -360,7 +360,7 @@
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		 		
 		  <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
-		  <ui:repeat value="#{satReportsBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		  <ui:repeat value="#{satMultiEquipBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
 		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
 		  </ui:repeat> <!---->
 		  

@@ -33,7 +33,7 @@ body {
   width: 700px;
   height: 50px;
   z-index: 9999;
-  margin-top: 5px;
+  margin-top: 1%;
   margin-left: 5px;
 }
 /*Divisão das estradas*/
@@ -119,6 +119,8 @@ body {
 #real\:savePos {
   margin-left: 10%;
 }
+
+
 
 /* **********************  MAP CONTENT ***********************************/
 

@@ -8,9 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.dao.speed.SpeedDAO;
-import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.speed.Speed;
 

@@ -113,17 +113,45 @@
         	<base-name>bundle.labels.dai.labels_dai</base-name>
         	<var>daiLabels</var>
         </resource-bundle>
+        
         <resource-bundle>
         	<base-name>bundle.labels.ocr.labels_ocr</base-name>
         	<var>ocrLabels</var>
         </resource-bundle>
+        
         <resource-bundle>
         	<base-name>bundle.labels.colas.labels_colas</base-name>
         	<var>colasLabels</var>
         </resource-bundle>
+        
          <resource-bundle>
         	<base-name>bundle.labels.aba.labels_aba</base-name>
         	<var>abaLabels</var>
+        </resource-bundle>
+        
+          <resource-bundle>
+        	<base-name>bundle.labels.system.reports.labels_reports</base-name>
+        	<var>reportsLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.pdf.labels_pdf</base-name>
+        	<var>pdfLabels</var>
+        </resource-bundle>
+        
+          <resource-bundle>
+        	<base-name>bundle.labels.system.excel-sheet.labels_excel_sheet</base-name>
+        	<var>excelSheetLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.charts.labels_charts</base-name>
+        	<var>chartsLabels</var>
+        </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.sos.labels_sos</base-name>
+        	<var>sosLabels</var>
         </resource-bundle>
         
      <!-- ********************************** -->
@@ -204,7 +232,12 @@
           <base-name>bundle.messages.sat.messages_sat</base-name>           
           <var>satMessages</var>        
         </resource-bundle>
-				                     
+        
+         <resource-bundle>
+          <base-name>bundle.messages.system.reports.messages_reports</base-name>           
+          <var>reportsMessages</var>        
+        </resource-bundle>
+                      				                     
         <!-- ********************************** -->
            
         <!-- BUNDLE CONFIGURATION  -->
@@ -233,7 +266,12 @@
         <message-bundle>bundle.labels.ocr.labels_ocr</message-bundle>
         <message-bundle>bundle.labels.colas.labels_colas</message-bundle>
         <message-bundle>bundle.labels.aba.labels_colas</message-bundle>
-     
+        <message-bundle>bundle.labels.system.reports.labels_reports</message-bundle>
+        <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
+        <message-bundle>bundle.labels.system.excel-sheet.labels_excel_sheet</message-bundle>
+        <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
+        <message-bundle>bundle.labels.system.charts.labels_charts</message-bundle>
+             
         <!-- CONFIG MESSAGES -->
         <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>
         <message-bundle>bundle.messages.login.messages_login</message-bundle>
@@ -248,7 +286,8 @@
 		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>		
 		<message-bundle>bundle.messages.meteo.mto.messages_mto</message-bundle>	
 		<message-bundle>bundle.messages.meteo.sv.messages_sv</message-bundle>			
-               
+        <message-bundle>bundle.labels.system.reports.messages_reports</message-bundle>
+                 
  </application> 
 
 </faces-config>
