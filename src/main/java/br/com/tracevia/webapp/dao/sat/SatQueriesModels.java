@@ -13,6 +13,9 @@ public class SatQueriesModels {
 	public static void setStation_id(int station_id) {
 		SatQueriesModels.station_id = station_id;
 	}
+	
+	
+	// ------------------------------------------------------------------------------------------------------------------------------
 		   
 	   /**
 	    * Método que retorna query de velocidade de acordo com parametros selecionados
@@ -20,23 +23,51 @@ public class SatQueriesModels {
 	    * @param vehicles
 	    * @return
 	    */
-	   public String SpeedMainQuery() { 
+	   public String SpeedMainQuery(String station_id) { 
 		   
 		   String query = null;
 		   		  			   
-		       query = "SiteID 'equip', "
-		       		+ "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , 1, NULL)),0),0) '50km', " + 
-		       		"IFNULL(ROUND(COUNT(IF(st.speed > 50 AND st.speed <= 70 , 1, NULL)),0),0)  '50km/70km',  " + 
-		       		"IFNULL(ROUND(COUNT(IF(st.speed > 70 AND st.speed <= 90 , 1, NULL)),0),0)  '70km/90km', " + 
-		       		"IFNULL(ROUND(COUNT(IF(st.speed > 90 AND st.speed <=120 , 1, NULL)),0),0)  '90km/120km', " + 
-		       		"IFNULL(ROUND(COUNT(IF(st.speed > 120 AND st.speed <= 150 , 1, NULL)),0),0)  '120km/150km', " + 
-		       		"IFNULL(ROUND(COUNT(IF(st.speed > 150 ,1, NULL)),0),0) 'above 150km', " + 
-		       		"IFNULL(ROUND(COUNT(st.speed), 0),0) 'Total'";
+		       query = "IFNULL(ROUND(SUM(IF(st.speed <= 50 , 1, NULL)),0),0) '50km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 50 AND st.speed <= 70 , 1, NULL)),0),0) '50km/70km',  " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 70 AND st.speed <= 90 , 1, NULL)),0),0) '70km/90km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 90 AND st.speed <=120 , 1, NULL)),0),0) '90km/120km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 120 AND st.speed <= 150 , 1, NULL)),0),0) '120km/150km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 150 ,1, NULL)),0),0) 'above 150km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.siteID = "+station_id+", st.speed , 0)), 0),0) 'Total'";
 		   		  		   
 		   return query;
-		   
+		   		   		   
 	   }
 	   
+	   
+	// ------------------------------------------------------------------------------------------------------------------------------
+	   
+	   /**
+	    * Método que retorna query de velocidade de acordo com parametros selecionados
+	    * @param station_id
+	    * @param vehicles
+	    * @return
+	    */
+	   public String SpeedMultiMainQuery(String station_id) { 
+		   
+		   String query = null;
+		   		   		   		  			   
+		       query = " st.siteID 'equip', " +
+		       		"IFNULL(ROUND(SUM(IF(st.speed <= 50 , 1, NULL)),0),0) '50km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 50 AND st.speed <= 70 , 1, NULL)),0),0) '50km/70km',  " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 70 AND st.speed <= 90 , 1, NULL)),0),0) '70km/90km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 90 AND st.speed <=120 , 1, NULL)),0),0) '90km/120km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 120 AND st.speed <= 150 , 1, NULL)),0),0) '120km/150km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.speed > 150 ,1, NULL)),0),0) 'above 150km', " + 
+		       		"IFNULL(ROUND(SUM(IF(st.siteID = "+station_id+", 1 , 0)), 0),0) 'Total'";
+		   		  		   
+		   return query;
+		   		   		   
+	   }
+	   
+	   
+	// ------------------------------------------------------------------------------------------------------------------------------
+	   	   
 	   /**
 	    * Método para criação da mainQuery tipo por eixos
 	    * @param station_id - Id do equipamento
@@ -1641,11 +1672,9 @@ public class SatQueriesModels {
                     	   return query;
                     	   
                        }
-                       
-                          /////////////////////////////////         
+                           /////////////////////////////////         
                           ///COUNT VEHICLES QUERY
                           /////////////////////////////////
-                       
                           public String CountVehiclesMainQuery(String[] station_id) {
                     	   
                     	   String query = "";
@@ -1974,12 +2003,11 @@ public class SatQueriesModels {
                    }
                    
                    
-                   public String  CCRVelocidade() {
+                   public String  CCRVelocidade(String station_id) {
                 	   
                 	   String query = "";
                 	   
-                	   query += "SiteID 'equip', "
-                	   		+ "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , st.speed, NULL)), 0), 0) 'KM50',  " +
+                	   query += "IFNULL(ROUND(COUNT(IF(st.speed <= 50 , st.speed, NULL)), 0), 0) 'KM50',  " +
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 50 and st.speed <= 70 , st.speed, NULL)), 0), 0) 'KM50_70', " +
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 70 and st.speed <= 90 , st.speed, NULL)), 0), 0) 'KM70_90', " + 
                 			   "IFNULL(ROUND(COUNT(IF(st.speed > 90 and st.speed <= 120 , st.speed, NULL)), 0), 0) 'KM90_120', " + 

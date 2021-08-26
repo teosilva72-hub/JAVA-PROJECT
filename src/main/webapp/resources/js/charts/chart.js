@@ -178,7 +178,7 @@
                 
   });              
 
- } 
+ }  
         
 function toggleChart(){			 
  $('.chart-wrapper').removeClass('invisible');	

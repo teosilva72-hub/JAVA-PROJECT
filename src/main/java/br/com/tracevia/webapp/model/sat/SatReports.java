@@ -1008,9 +1008,7 @@ public class SatReports {
 		}
 
 		//Getters
-		
-		
-					
+							
 	}
 		
 	private String month; 

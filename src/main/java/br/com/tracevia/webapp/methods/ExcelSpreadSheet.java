@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.BorderExtent;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -104,8 +105,8 @@ public class ExcelSpreadSheet {
 			            try {
 			            				            	
 			            	if(col == 0 || col == 1)
-			            	cells[lin][col].setCellValue(values[lin][col]);			            			            
-			            	
+			            	cells[lin][col].setCellValue(values[lin][col]);	
+			            				           
 			            	else if(values[lin][col] != null && values[lin][col].contains("."))
 			            		cells[lin][col].setCellValue(values[lin][col] == null ? 0 : Double.parseDouble(values[lin][col]));
 			            	
@@ -790,7 +791,7 @@ public class ExcelSpreadSheet {
 			
 		   for (int rowIndex = initialValue; rowIndex <= endValue;  rowIndex++) { 				
 		            row = sheet.createRow((short) rowIndex);
-		            
+		           		            
 		   }
 	 }
 		
@@ -873,6 +874,15 @@ public void createCellWithFormula(Sheet sheet, Row row, int rowNumber, int cellN
 	row = sheet.getRow(rowNumber);		
 	row.createCell(cellNumber);
 	row.getCell(cellNumber).setCellFormula(formula);	
+}
+
+public void createCellWithFormulaSpecial(Sheet sheet, Row row, CellStyle style, int rowNumber, int cellNumber, String formula) {		
+	
+	row = sheet.getRow(rowNumber);		
+	row.createCell(cellNumber);
+	row.getCell(cellNumber).setCellStyle(style);
+	row.getCell(cellNumber).setCellFormula(formula);
+
 }
 
 public void getCell(Sheet sheet, Row row, Cell cellName, int rowNumber, int cellNumber, String value) {		
@@ -1189,6 +1199,43 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     	
     }
     
+    
+  public void totalAverageExcel(Sheet sheet, Row row, String period, int startColumn, int length, int rowIni, int rowMax) {
+    	
+    	int rowTotal = rowMax + 1;
+		int totalStartRow = rowIni + 1;	
+		length -= 1;
+    	    	    	    	    	    	
+    	startColumn = 2;     	
+    	mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); 
+    	
+    	//System.out.println("COL: "+startColumn);
+    	//System.out.println("LEH: "+length);
+				
+		//System.out.println("ST: "+totalStartRow);
+		//System.out.println("MX: "+rowMax);
+		
+		for(int col = startColumn; col <= length; col++) {
+			
+			String columnLetter = CellReference.convertNumToColString(col);
+			
+			//System.out.println(columnLetter);
+			
+			 // for(int r = totalStartRow; r <= rowMax; r++) { 
+				
+				
+				
+				//createCellWithFormula(sheet, row, r, totalCol, "SUM("+initialColumnLetter+""+ (r) + ":"+maxColumnLetter+"" + (r) + ")");
+				
+				createCellWithFormula(sheet, row, rowMax, col, "ROUND(AVERAGE("+columnLetter+""+ (totalStartRow) + ":"+columnLetter+"" + (rowMax) + "), 2)");	
+									
+			   // createCellWithFormula(sheet, row, rowMax, totalCol, "SUM("+totalColumnLetter+""+ (totalStartRow) + ":"+totalColumnLetter+"" + (rowMax) + ")");
+			
+							
+		}
+    	
+    }
+    
    public void totalExcelEquip(Sheet sheet, Row row, String period, int startColumn, int length, int rowIni, int rowMax) {
     	
     	int rowTotal = rowMax + 1;
@@ -1239,6 +1286,47 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     	
     }
     
+    // -----------------------------------------------------------------------------------------------------------------------------------------
+    
+    //SOBRECARGA DE M�TODO
+    public void totalExcelDateFormat(XSSFWorkbook wb, Sheet sheet, Row row, int col, int rowIni, int rowMax) {
+    	   
+		//CREATE	
+		Font font = createFont(wb, 10, false, false);		
+		CellStyle cellStyle = createStyle(wb, font, IndexedColors.WHITE);
+		
+		//APPLY SETTINGS
+		addStyleHorizontalAlignment(wb, cellStyle, HorizontalAlignment.CENTER);
+		applyBorderAllStyle(cellStyle, BorderStyle.THIN); 
+							
+		// Helper							
+		CreationHelper createHelper = wb.getCreationHelper();
+		
+		int startRow = rowIni + 1;
+		
+		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("hh:mm:ss"));
+					
+		String columnLetter = CellReference.convertNumToColString(col);		
+		
+		String sum = "(";
+		String aux= "";
+		
+		for(int i = startRow; i <= rowMax; i++) {
+			  aux += ""+columnLetter+""+i+"";
+			  
+			  if(i < rowMax)
+				  aux += "+";
+			  
+		}
+		
+		sum += aux + ")";
+						
+		createCellWithFormulaSpecial(sheet, row,  cellStyle, rowMax, col, sum);	
+				    	
+    }
+    
+   // -----------------------------------------------------------------------------------------------------------------------------------------
+    
   public void totalExcelIntervals(Sheet sheet, Row row, int[] selectedEquipamento, int startColumn, int length, int ini, int rowIni, int rowMax, int dia) {
     	
     	int col = selectedEquipamento.length;
@@ -1268,4 +1356,104 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 	  sheet.getRow(row).setHeight((short) height); 	  	  
   }
   
+  
+  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  
+   // USE FOR SOS
+     
+   // CALL COUNT
+  
+    		public void fillDataSingleSOSAmount(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
+			 
+			int rowLenght = startRow + endRow ;
+									
+			   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+				   for(int col = colStart; col < maxCol; col++) {
+				   				 					   
+			            row = sheet.getRow((short) rowIndex);
+			          
+			            cells[lin][col] = row.createCell((short) col);	
+			            
+			            try {
+			            				            	
+			            	if(values[lin][col] != null && (values[lin][col].contains("/") || values[lin][col].contains(":") || values[lin][col].contains("-")))			            		
+			               	     cells[lin][col].setCellValue(values[lin][col] == null ? "00:00:00" : values[lin][col]);	
+			            	
+			            	else if(values[lin][col] == null && col == (maxCol - 1))			            		
+			            		 cells[lin][col].setCellValue("00:00:00");
+			            			      			            	
+			            	else cells[lin][col].setCellValue(values[lin][col] == null ? 0 : Integer.parseInt(values[lin][col]));
+			            				            				            			            			          			            
+			            }catch(NullPointerException ex) {
+			            	ex.printStackTrace();
+			           }		
+			            
+			          }		       
+			      }     	   
+		       }
+		
+		/* *********************************************************************************************************************************************************************************** */
+		
+    		 //SOS AMOUNT USE
+    		 
+    		public void fillDataRangeSOSAmount(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange) {
+    			 
+    			int rowLenght = startRow + endRow ;
+    			int index = 0;
+    				    	  		    	  
+    					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+    						   for(int col = colStart; col < maxCol; col++) {
+    						   
+    						   index = lin + (day * periodRange);
+    							
+    					            row = sheet.getRow((short) rowIndex);
+    					            cells[index][col] = row.createCell((short) col);	
+    					            
+    					            try {
+    					            				            	
+    					            	if(values[index][col] != null && (values[index][col].contains("/") || values[index][col].contains(":") || values[index][col].contains("-")))			            		
+    							              cells[index][col].setCellValue(values[index][col]);	
+    					            	
+    					            	else if(values[index][col] == null && col == (maxCol - 1))			            		
+  							              cells[index][col].setCellValue("00:00:00");	
+    						            	
+    					            	    					            	    					            	
+    					            	else cells[index][col].setCellValue(values[index][col] == null? 0 : Integer.parseInt(values[index][col]));
+    					            						           					            			          			            
+    					            }catch(NullPointerException ex) {
+    					            	ex.printStackTrace();
+    					           }				         
+    					        }				        
+    					     }		    	  
+    		              }	
+    		
+    		/* *********************************************************************************************************************************************************************************** */
+    		
+    		public void excelStringBasic(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, int startRow) {
+    			
+    			int rowLenght = startRow + values.length;
+   			     		    	
+    			  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.length; rowIndex++, lin++) {    			
+    				     for(int col = 0; col < values[0].length; col++) {
+    				    	     				      				   				 					   
+    			            row = sheet.getRow((short) rowIndex);
+    			            
+    			            System.out.println(rowIndex);
+    			          
+    			            cells[lin][col] = row.createCell((short) col);	
+    			            
+    			            try {    			            				            	
+    			            
+    			            	 cells[lin][col].setCellValue(values[lin][col]);	
+    			            
+    			            				            				            			            			          			            
+    			            }catch(NullPointerException ex) {
+    			            	ex.printStackTrace();
+    			           }		
+    			            
+    			          }		       
+    			      }     	   
+    		       }
+    		
+    		
 }

@@ -27,7 +27,11 @@ public class LocaleUtil {
 	public static final String LABELS_DAI = "bundle.labels.dai.labels_dai_";
 	public static final String LABELS_COLAS = "bundle.labels.colas.labels_colas_";
 	public static final String LABELS_ABA = "bundle.labels.aba.labels_aba_";
-
+	public static final String LABELS_SOS = "bundle.labels.sos.labels_sos_";
+	public static final String LABELS_EXCELSHEET = "bundle.labels.system.excel-sheet.labels_excel_sheet_";
+	public static final String LABELS_PDF = "bundle.labels.system.pdf.labels_pdf_";
+	public static final String LABELS_CHARTS = "bundle.labels.system;.charts.labels_charts_";
+	public static final String LABELS_REPORTS = "bundle.labels.system.reports.labels_reports_";
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";
 	public static final String MESSAGES_EMAIL = "bundle.messages.system.email.messages_email_";
@@ -43,9 +47,8 @@ public class LocaleUtil {
 	public static final String MESSAGES_MTO = "bundle.messages.meteo.mto.messages_mto_";	
 	public static final String MESSAGES_SV = "bundle.messages.meteo.sv.messages_sv_";	
 	public static final String MESSAGES_SAT = "bundle.messages.sat.messages_sat_";	
-
-	
-	
+	public static final String MESSAGES_REPORTS = "bundle.messages.system.reports.messages_reports_";	
+		
 	 LanguageBean language;
 	 Locale locale;
 	 ResourceBundle resourceBundle;	 

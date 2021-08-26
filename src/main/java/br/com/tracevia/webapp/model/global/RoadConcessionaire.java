@@ -425,7 +425,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "viaSul.jpg";
 			logo = "";
-			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.png";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.webp";
 			mapUI = "";
 			tableVBV = ViaSulTables.ViaSulVBV.getTable();
 			tableDados15 = ViaSulTables.ViaSulDados15.getTable();

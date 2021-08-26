@@ -26,11 +26,11 @@ public class OCRDAO{
 		
 	}
 
-	public ArrayList<OCR> searchTable(String start, String end, String classe) throws Exception {
+	public ArrayList<OCR> searchTable(String start, String end, String ocr_site_name) throws Exception {
 		
-		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"'";
+		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ ocr_site_name+"'";
 		
-		String search1 = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end+"'";
+		//String search1 = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end+"'";
 		
 		ArrayList<OCR> list = new ArrayList<OCR>();
 		
@@ -125,7 +125,7 @@ public class OCRDAO{
 					search.setVehicleImage(findVehicleImage(search));
 					search.setPlateImage(findPlateImage(search));
 					
-					System.out.println(search.getVehicleImage());
+					//System.out.println(search.getVehicleImage());
 										
 				}
 			}
@@ -146,18 +146,28 @@ public class OCRDAO{
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
+		
+		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+			ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+		
+		else ftpFolder += nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
 				
-		return ftpFolder+""+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		return ftpFolder;	 					
 		
 	}
 	
-	public String findPlateImage(OCR data) {
-						
+	public String findPlateImage(OCR data) {			
+	
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
-		String nameVeh = data.getCam().replaceAll(" ", "_");		
+		String nameVeh = data.getCam().replaceAll(" ", "_");
 				
-		return ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";					
+		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+			ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+		
+		else ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
+				
+		return ftpFolder;				
 		
 	}
 	

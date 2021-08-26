@@ -1,0 +1,419 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	        
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/sat" name="sat-speed-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="js/reports" name="sat_reports_dataTable.js"  /> <!-- REPORT DATATABLE BUILD JS --> 
+		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> <!-- CHART API JS -->      
+	 	<h:outputScript library="js/charts" name="chart.js" /> <!-- CHART JS -->    
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	 <!-- ============================================================================================================================= -->
+	
+	<div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	  <!----> 		
+	 <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	   <!----> 	    
+	   <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
+           <b> MESSAGE 1 </b> : MESSAGE 2 <!-- MESSAGE -->
+       </div> <!-- ALERT MESSAGE END DIV -->	
+       
+       <!----> 
+           
+	 <div class="text-dark text-center font-weight-bold report-title" >   <!-- REPORT NAME DIV --> 
+	    <h:outputText value="#{satLabels.sat_reports_name_speed_multi_selection}" /> <!-- NAME LABEL -->
+	    <hr></hr> <!-- HORIZONTAL LINE -->
+	 </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	 <h:dataTable id="vehicle-speed-table" value="#{satSpeedMultiBean.resultList}" var="speed" autocomplete="off"				               
+     styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%"	
+     headerClass="custom-table-header" > <!-- DATATABALE JSF -->
+     
+         <c:forEach items="#{satSpeedMultiBean.columns}" var="header" varStatus="loop"> <!-- LOOP TAG -->
+            <h:column> <!-- COLUMN -->
+              <f:facet name ="header">#{header.field}</f:facet> <!-- HEADER -->
+              <h:outputText value="#{speed[header.value]}" /> <!-- VALUE -->
+            </h:column> <!-- COLUMN END -->
+         </c:forEach>  <!-- LOOP TAG END -->      	 	 
+
+	  </h:dataTable> <!-- DATATABALE JSF END -->	
+	  <!----> 	 
+	 </h:form><!-- FORM TABLE END-->
+	 
+	 <!---->
+	 	 
+	 <h:form id="form-btns"> <!-- BUTTONS FORM -->				
+		<!---->
+		<div id="buttons"> <!-- BUTTONS CONTENT DIV -->
+					
+			<div id="btn-search" class="text-center"> <!-- BUTTON SEARCH DIV -->
+			   <!---->
+				<h:commandButton id="btn-tab-search"
+					class="btn btn-dark draw-button fas fa-search fa-3x" value=""
+					data-toggle="tooltip" data-placement="bottom"
+					title="#{satLabels.sat_reports_btn_search}"> <!-- SEARCH BUTTON -->
+					<f:passThroughAttribute name="data-toggle" value="modal" /> <!-- DATA TOGGLE -->
+					<f:passThroughAttribute name="data-target" value="#modalReportOptions" /> <!-- DATA TARGET -->
+					<f:ajax execute="@form" render="@none" /> <!-- F:AJAX -->
+				</h:commandButton> <!-- BUTTON SEARCH END -->
+				 <!---->
+			</div> <!-- BUTTON SEARCH DIV END -->
+			
+			<!---->
+					
+			<div id="btn-reset"> <!-- BUTTON RESET DIV -->
+			  <!---->
+				<h:commandButton id="btn-tab-reset"
+				   class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
+				   value="" data-toggle="tooltip" data-placement="bottom"
+				   disabled="#{satSpeedMultiBean.clearBool}" 
+				   title="#{satLabels.sat_reports_btn_clean}"> <!-- RESET BUTTON -->
+				   <f:passThroughAttribute name="data-toggle" value="modal" /> <!-- DATA TOGGLE -->
+				   <f:passThroughAttribute name="data-target" value="#modalClear" /> <!-- DATA TARGET -->
+				   <f:ajax execute="@form" render="@none" /> <!-- F:AJAX -->
+				</h:commandButton> <!-- BUTTON RESET END -->
+			  <!---->
+		   </div> <!-- BUTTON RESET DIV END -->
+		  
+		   <!---->
+				
+		   <div id="btn-excel"> <!-- BUTTON EXCEL DIV -->	
+		      <!---->
+				<h:commandButton id="excel-act" value=""
+					disabled="#{satSpeedMultiBean.excelBool}"
+					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+					data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}"
+					action="#{satSpeedMultiBean.download}" widgetVar="excelWgt"> <!-- EXCEL BUTTON -->
+					<f:passThroughAttribute name="data-toggle" value="modal" /> <!-- DATA TOGGLE -->
+					<f:passThroughAttribute name="data-target" value="#modalDownload" /> <!-- DATA TARGET -->
+					<f:ajax execute="@form" render="@none" /> <!-- F:AJAX -->
+				</h:commandButton> <!-- BUTTON EXCEL END -->
+			  <!---->
+		  </div><!-- BUTTON EXCEL DIV END -->	
+			
+		 <!---->	
+																	
+		</div> <!-- BUTTONS CONTENT DIV END -->
+		<!---->
+		</h:form> <!-- BUTTONS FORM END -->
+		
+	</div><!-- TABLE CONTAINER DIV CONTENT END --> 
+	
+	  <!-- ============================================================================================================================= -->
+	  
+	  <!-- SUBMIT MODAL -->
+	  	  
+	  <div class="modal fade" id="modalReportOptions" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel"> <!-- MODAL COMPONENT DIV -->
+			<!---->
+			<div class="modal-dialog" role="document"> <!-- MODAL DIALOG DIV -->
+			<!---->
+				<h:form class="modal-content" name="report-form" id="report-form"> <!-- MODAL FORM -->
+				<!---->
+					<div class="modal-header text-center"> <!-- MODAL HEADER DIV -->
+					 <!---->
+						<h4 class="modal-title w-100 font-weight-bold">#{satLabels.sat_reports_modal_title}</h4> <!-- MODAL TITLE -->
+						<!---->
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <!-- MODAL CLOSE BUTTON -->
+							<span aria-hidden="true">&times;</span> <!-- SPAN ICON -->
+						</button> <!-- MODAL CLOSE BUTTON END  -->
+						<!---->
+					</div> <!-- MODAL HEADER DIV END -->
+				 <!---->
+				<div class="modal-body"> <!-- MODAL BODY DIV -->
+				
+					<br /> <!-- LINE BREAK -->
+
+					<!-- EQUIPMENTS OPTIONS -->
+
+					<div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 checkbox-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON -->
+							<span for="equips" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->							
+							  <select name="equips" id="equips"> <!-- SELECT OPTIONS -->
+							   <!---->
+							     <option value="">#{satLabels.sat_reports_select_equipments}</option> <!-- DEFAULT OPTION -->
+							     <!---->
+									<ui:repeat var="eqp" value="#{satReportsBean.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
+									<!---->
+									  <option value="#{eqp.value}">#{eqp.label}</option> <!-- OPTIONS -->
+									<!---->
+								    </ui:repeat> <!-- LOOP END -->
+								 <!---->								 								
+							   </select><!-- SELECT OPTIONS END -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				      <label for="equips" class="error" id="equips-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+						  
+				 <!---->
+																	 	
+				  <!-- PERIODS OPTIONS -->
+				  
+                 <div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 select-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="fas fa-clock"></i></span> <!-- SPAN ICON -->
+							<span for="periods" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->
+							  <select name="periods" id="periods" multiple="multiple"> <!-- SELECT OPTION -->
+								 <!---->
+								 <option value="">#{satLabels.sat_reports_select_periods}</option> <!-- DEFAULT OPTION -->
+								  <!---->
+								  <ui:repeat var="per" value="#{satSpeedMultiBean.periods}" varStatus="perStatus"> <!-- LOOP -->
+									<!---->
+									 <option value="#{per.value}">#{per.label}</option> <!-- OPTIONS -->
+									<!---->
+								  </ui:repeat><!-- LOOP END -->
+								<!---->
+							  </select><!-- SELECT OPTION END -->
+							<!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				      <label for="periods" class="periods" id="periods-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+			    
+			    <!---->
+
+				<!-- START DATE -->
+				
+                 <div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="far fa-calendar-alt"></i></span> <!-- SPAN ICON -->
+							<span for="dateStart" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->
+							 <!---->
+							  <input type="text" class="datepicker" autocomplete="off" name="dateStart" id="dateStart"
+							   placeholder="#{satLabels.sat_reports_input_date_start_placeholder}" /> <!-- INPUT -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				       <label for="dateStart" class="error" id="dateStart-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+			    
+			    <!---->
+
+				<!-- END DATE -->
+				
+				   <div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="far fa-calendar-alt"></i></span> <!-- SPAN ICON -->
+							<span for="dateEnd" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->
+							 <!---->
+							  <input type="text" class="datepicker" autocomplete="off" name="dateEnd" id="dateEnd"
+							   placeholder="#{satLabels.sat_reports_input_date_start_placeholder}" /> <!-- INPUT -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				       <label for="dateEnd" class="error" id="dateEnd-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+
+                <!---->
+                							
+				<input type="hidden" name="jsTable" value="vehicle-speed-table" />	<!-- TABLE NAME -->
+				<input type="hidden" name="jsTableScrollHeight" value="50.3vh" />	<!-- TABLE VIEW HEIGHT -->
+				
+				<!---->
+							
+		     </div> <!-- MODAL BODY DIV END -->				
+                  <!---->
+			   <div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+				    <!---->
+				   <button type="button" id="btn-form-confirm"	class="btn btn-dark form-modal-draw-button" 
+					   onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+				   </button> <!-- SUBMIT BUTTON -->
+				   
+                <!---->
+                
+				<h:commandButton value="#{satLabels.sat_reports_form_btn_send}" style="display: none;"
+					id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+					 <f:ajax execute="@form" render="form-table form-btns" listener="#{satSpeedMultiBean.GetReport}" onevent="onEventFunction" />
+				</h:commandButton> <!-- SUBMIT HIDDEN BUTTON -->
+				
+                <!---->
+                
+				<h:commandButton value="#{satLabels.sat_reports_form_btn_reset}"
+					id="btn-form-reset" immediate="true" type="reset"							
+				    class="btn btn-dark form-modal-draw-button  reset-btn">
+				     <f:ajax execute="@form"	render=":equip :periods :dateStart :dateEnd" /> 
+				</h:commandButton><!-- BUTTON RESET -->
+				
+			    <!---->
+			    
+			    </div> <!-- MODAL FOOTER DIV END -->
+			  </h:form> <!-- MODAL FORM END -->
+			</div> <!-- MODAL DIALOG DIV END --> 
+		</div> <!-- MODAL COMPONENT DIV END -->
+			
+        <!-- ============================================================================================================================= -->
+        
+        <!-- MODAL CLEAR -->
+        
+        <div class="modal fade" id="modalClear" tabindex="-1"
+			aria-labelledby="clearModalLabel" aria-hidden="true"> <!-- MODAL COMPONENT DIV -->
+			<!---->	
+			  <div class="modal-dialog confirmation-modal"> <!-- MODAL DIALOG DIV -->
+			  <!---->
+				<h:form class="modal-content" name="form-clear" id="form-clear" > <!-- MODAL FORM -->
+				<!---->
+					<div class="modal-header"> <!-- MODAL HEADER DIV -->
+					 <!---->
+						<h5 class="modal-title modal-alert-title" id="clearModalLabel">#{satLabels.sat_reports_modal_alert_clear_title}</h5> <!-- MODAL TITLE -->
+					 <!---->
+					</div> <!-- MODAL HEADER DIV END -->
+					<!---->
+					<div class="modal-body"> <!-- MODAL BODY DIV -->
+					<!---->
+					  <p class="modal-alert-msg">#{satLabels.sat_reports_modal_alert_clear_table}</p>
+					<!---->
+					</div> <!-- MODAL BODY DIV END -->
+					
+					<!---->
+							
+					<div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+						<h:commandButton
+							value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+							action="#{satSpeedMultiBean.resetFormValues}"
+							class="btn btn-dark form-draw-button" />
+							
+					<!---->
+									
+						<h:commandButton
+							value="#{satLabels.sat_reports_modal_alert_btn_no}"
+							class="btn btn-dark form-draw-button">
+							<f:passThroughAttribute name="data-dismiss" value="modal" />
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton>
+						
+					<!---->					
+					
+				 </div> <!-- MODAL FOOTER DIV END -->
+			   </h:form> <!-- MODAL FORM END --> 
+		     </div> <!-- MODAL DIALOG DIV END -->
+	     </div> <!-- MODAL COMPONENT DIV -->
+	     
+	     <!---->
+	     
+	   <!-- ============================================================================================================================= -->
+	   
+	   <!-- MODAL DOWNLOAD  -->
+	   
+	   	<div class="modal fade" id="modalDownload" tabindex="-1"
+			aria-labelledby="downloadModalLabel" aria-hidden="true"> <!-- MODAL COMPONENT DIV -->  	
+			 <!---->
+				<div class="modal-dialog confirmation-modal" > <!-- MODAL DIALOG DIV -->
+				<!---->
+					<h:form class="modal-content" name="form-download" id="form-download"> <!-- MODAL FORM -->
+					  <!---->
+						<div class="modal-header"> <!-- MODAL HEADER DIV --> 
+						  <!---->
+							  <h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{satLabels.sat_reports_modal_alert_download_title}</h5>
+						   <!---->
+						   </div> <!-- MODAL HEADER DIV END -->
+						    <!---->
+						    <div class="modal-body"> <!-- MODAL BODY DIV -->
+							  <p class="modal-alert-msg"> <!-- MESSAGE PARAGRAPH -->
+							    #{satLabels.sat_reports_modal_alert_download_file_excel} <!-- MESSAGE 1 -->
+							  <span class="extension">#{satLabels.sat_reports_modal_alert_extension_xlsx}</span> ? <!-- MESSAGE 2 -->
+						      </p> <!-- MESSAGE PARAGRAPH END -->
+						    <!---->
+						    </div> <!-- MODAL BODY DIV END -->						
+						   <!---->						
+						  <div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+
+						   <!---->
+						    
+						   <h:commandButton p:onclose="download"
+						     value="#{satLabels.sat_reports_modal_alert_btn_yes}"
+						     p:data-toggle="modal" p:data-target="#modalDownload"
+						     action="#{satSpeedMultiBean.download}"
+						     class="btn btn-dark form-draw-button" /> <!-- DOWNLOAD BUTTON -->
+								
+						  <!---->
+								
+						   <h:commandButton id="cancelDownload"
+							 value="#{satLabels.sat_reports_modal_alert_btn_no}"
+							 class="btn btn-dark form-draw-button">
+						     <f:passThroughAttribute name="data-dismiss" value="modal" />
+							 <f:ajax execute="@form" render="@none" />
+						  </h:commandButton> <!-- CANCEL DOWNLOAD BUTTON -->
+							
+							  <!---->
+							
+					  </div> <!-- MODAL FOOTER DIV END --> 
+						
+				  <!---->
+						
+			  </h:form> <!-- MODAL FORM END -->
+		   </div> <!-- MODAL DIALOG DIV END -->
+	    </div> <!-- MODAL COMPONENT DIV END --> 
+			  	
+	   <!---->
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE -->
+					
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		  	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
+		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
+		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+		 <input type="hidden" name="requiredPeriodsMsg" value="#{requiredMessages.required_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->
+		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
+		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
+		 <input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
+		 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->
+	
+	 <!----> 
+			 
+	</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

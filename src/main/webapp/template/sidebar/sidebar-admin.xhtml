@@ -525,6 +525,16 @@
 											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
 										</h:commandLink></li>
 									<!---->
+									
+									<!-- VELOCIDADE MULTI SELECT REPORT -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToSpeedMultiSelection}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed_multi_selection}</span>
+									</h:commandLink></li>
+									<!---->
+									
 								</ul></li>
 							<!---->
 
@@ -585,6 +595,52 @@
 
 						<!-- SOS REPORT ITEM -->
 						<ui:fragment rendered="#{loginAccount.load.en_sos}">
+						
+							<li class="nav-item"><a class="nav-link" href="#sosSubmenu"
+								data-toggle="collapse" aria-expanded="false"><i
+									class="fas fa-hdd icon-sub"></i><span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sos}</span></a>
+
+								<ul class="collapse list-unstyled" id="sosSubmenu">
+								
+									<!-- SOS BATTERY REPORT -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToBatterySOS}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_battery}</span>
+									</h:commandLink></li>
+									<!---->
+									
+									<!-- SOS CALL REPORT -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToCallSOS}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_call}</span>
+									</h:commandLink></li>
+									<!---->
+									
+									<!-- SOS STATISTIC REPORT -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToStatisticSOS}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_statistic}</span>
+									</h:commandLink></li>
+									<!---->
+									
+									<!-- SOS STATUS REPORT -->
+
+									<li class="nav-item"><h:commandLink class="nav-link"
+											action="#{navigationController.redirectToStatusSOS}" value="">
+											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_status}</span>
+									</h:commandLink></li>
+									<!---->	
+																				 
+						       </ul>
+						     </li>
+						
 						</ui:fragment>
 						<!---->
 

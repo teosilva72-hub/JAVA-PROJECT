@@ -65,7 +65,7 @@ public class SatReportsController {
 	//Locale Docs
 	LocaleUtil localeLabel, localeCalendar, localeDir, localeSat;  
 
-	int periodRange, range, daysInMonth, daysCount; 
+	int periodRange, daysInMonth, daysCount; 
 	
 	String jsTableId, jsTableScrollHeight;
  
@@ -74,9 +74,6 @@ public class SatReportsController {
 
 	// Varivel que recebe o nmero de campos de uma consulta SQL
 	private static int fieldsNumber;	
-	
-	// Varivel que recebe o nmero de campos de uma consulta SQL
-	private static int fieldsIndex;
 
 	String[] fields, jsonFields, fieldObjectValues, fieldsAux, fieldObjAux; //Nome dos campos // Valores de cada campo -> Atribuidos a variavis do modelo  
 
@@ -290,19 +287,10 @@ public class SatReportsController {
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
 	}
-		
-	public static int getFieldsIndex() {
-		return fieldsIndex;
-	}
-
-	public static void setFieldsIndex(int fieldsIndex) {
-		SatReportsController.fieldsIndex = fieldsIndex;
-	}
 	
 	 ///////////////////////////////////
     //CONSTRUCTOR
     ///////////////////////////////// 
-
 
 	@PostConstruct
 	public void initialize() {
@@ -670,24 +658,23 @@ public class SatReportsController {
 
 			// Table fields
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"),
-					localeLabel.getStringKey("sat_reports_general_equipment"), localeLabel.getStringKey("sat_reports_speed_50km"), 
-					localeLabel.getStringKey("sat_reports_speed_70km"),	localeLabel.getStringKey("sat_reports_speed_90km"), 
-					localeLabel.getStringKey("sat_reports_speed_120km"), localeLabel.getStringKey("sat_reports_speed_150km"), 
-					localeLabel.getStringKey("sat_reports_speed_150km_bigger"), localeLabel.getStringKey("sat_reports_general_total") };
+					localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
+					localeLabel.getStringKey("sat_reports_speed_90km"), localeLabel.getStringKey("sat_reports_speed_120km"), 	   
+					localeLabel.getStringKey("sat_reports_speed_150km"), localeLabel.getStringKey("sat_reports_speed_150km_bigger"), 
+					localeLabel.getStringKey("sat_reports_general_total") };
 			
 			// Table Objects
-			fieldObjectValues = new String[] {"date", "dateTime", "equipment", "speed50km", "speed70km", "speed90km", "speed120km", "speed150km", "speed150km_bigger", "total"};
+			fieldObjectValues = new String[] {"date", "dateTime", "speed50km", "speed70km", "speed90km", "speed120km", "speed150km", "speed150km_bigger", "total"};
 					
 			//JSON chart fields
-		/*	jsonFields = new String[] {localeLabel.getStringKey("sat_reports_chart_haxis"), localeLabel.getStringKey("sat_reports_general_equipment"),
-					localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
+			jsonFields = new String[] {localeLabel.getStringKey("sat_reports_chart_haxis"), localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
 					localeLabel.getStringKey("sat_reports_speed_90km"), localeLabel.getStringKey("sat_reports_speed_120km"), 	   
 					localeLabel.getStringKey("sat_reports_speed_150km"), localeLabel.getStringKey("sat_reports_speed_150km_bigger"), 
 					localeLabel.getStringKey("sat_reports_general_total") };
 			
 			//JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sat_reports_chart_title_speed");	
-			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_speed");*/
+			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_speed");
 			
 		}
 
@@ -743,16 +730,16 @@ public class SatReportsController {
 
 			// Table fields
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"),
-					localeLabel.getStringKey("sat_reports_general_equipment"), localeLabel.getStringKey("sat_reports_speed_50km"), 
-					localeLabel.getStringKey("sat_reports_speed_70km"),	localeLabel.getStringKey("sat_reports_speed_90km"), 
-					localeLabel.getStringKey("sat_reports_speed_120km"), localeLabel.getStringKey("sat_reports_speed_150km"), 
-					localeLabel.getStringKey("sat_reports_speed_150km_bigger"), localeLabel.getStringKey("sat_reports_general_total") };
+					localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
+					localeLabel.getStringKey("sat_reports_speed_90km"), localeLabel.getStringKey("sat_reports_speed_120km"), 	   
+					localeLabel.getStringKey("sat_reports_speed_150km"), localeLabel.getStringKey("sat_reports_speed_150km_bigger"), 
+					localeLabel.getStringKey("sat_reports_general_total") };
 
 			// Table Objects
-			fieldObjectValues = new String[] {"date", "dateTime", "equipment", "speed50km", "speed70km", "speed90km", "speed120km", "speed150km", "speed150km_bigger", "total"};
+			fieldObjectValues = new String[] {"date", "dateTime", "speed50km", "speed70km", "speed90km", "speed120km", "speed150km", "speed150km_bigger", "total"};
 
 			//JSON chart fields
-			/*jsonFields = new String[] {localeLabel.getStringKey("sat_reports_chart_haxis"),
+			jsonFields = new String[] {localeLabel.getStringKey("sat_reports_chart_haxis"),
 					localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
 					localeLabel.getStringKey("sat_reports_speed_90km"), localeLabel.getStringKey("sat_reports_speed_120km"), 	   
 					localeLabel.getStringKey("sat_reports_speed_150km"), localeLabel.getStringKey("sat_reports_speed_150km_bigger"), 
@@ -760,7 +747,7 @@ public class SatReportsController {
 			
 			//JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sat_reports_chart_title_ccr_speed"); 		
-			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_ccr_speed");	*/
+			imageName = localeLabel.getStringKey("sat_reports_chart_file_name_ccr_speed");	
 			
 		}
 
@@ -846,7 +833,7 @@ public class SatReportsController {
 
 		GlobalReportsDAO dao = new GlobalReportsDAO();	//GlobalReportsDAO
 				
-		String startDate = null, endDate = null, data_anterior = null, equip_anterior = null;
+		String startDate = null, endDate = null, data_anterior = null;
 					
 		/*** Obter parmetros que vem no submit de cada pesquisa ***/
 
@@ -903,9 +890,8 @@ public class SatReportsController {
 		//Initialize ResultList
 		//Builder class -> for construct objects
 		resultList = new ArrayList<Builder>();	
-						
-		int numRegisters = 0;		
-	
+
+
 		/**** FLUXO MENSAL  ****/
 		if(type.equals("3")) {
 
@@ -944,29 +930,13 @@ public class SatReportsController {
 			setNumRegisters(((daysInMonth * periodRange) * satReport.equipments.length)); // Nmero de registros
 
 		}
-		
+
 		/** CASO CONTRARIO -- OUTROS TIPOS **/
 
 		else {
 
 			//RETORNA NMERO DE REGISTROS POR PERIODO E DATAS SELECIONADAS	
-			numRegisters = dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod()); 
-			
-			// ------------------------------------------------------------------------------------------
-			
-			// NÚMERO DE REGISTROS
-									
-			if(type.equals("8") || type.equals("11")) {
-				
-				setNumRegisters(numRegisters * satReport.getEquipments().length);
-			    setFieldsIndex(satReport.getEquipments().length / numRegisters);
-			    
-			    System.out.println("Registers: "+getNumRegisters());
-						
-			}else setNumRegisters(numRegisters);
-			
-			// ------------------------------------------------------------------------------------------
-			
+			setNumRegisters(dta.RegistersNumbers(satReport.getStartDate(), satReport.getEndDate(), satReport.getPeriod())); 
 						
 			//CONTAGEM DOS DIAS
 			if(satReport.getStartDate() != null && satReport.getEndDate() != null)
@@ -974,21 +944,13 @@ public class SatReportsController {
 
 			//INTERVALO POR PERIODO
 			periodRange = dta.periodsRange(satReport.getPeriod());
-			range = periodRange; // Range to INC
-			
-			//SPEED CASE PERIOD RANGE
-			if(type.equals("8") || type.equals("11"))
-				periodRange *= satReport.getEquipments().length;
 						
 		}
 		
 		startDate = dta.StringDBDateFormat(satReport.getStartDate());
 		endDate = dta.StringDBDateFormat(satReport.getEndDate());
 		data_anterior = startDate;
-		
-		if(type.equals("8") || type.equals("11"))
-			equip_anterior = satReport.getEquipments()[0];
-							
+				
 		start = dta.DateTimeToStringIni(startDate); 
 		end = dta.DateTimeToStringFim(endDate); 
 
@@ -1013,7 +975,7 @@ public class SatReportsController {
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = SelectQueryType(type, models, satModels);
 		
-		System.out.println(query); //debug
+	    System.out.println(query); //debug
 
 		//EXECUO DA QUERY
 		String[][] auxResult = dao.ExecuteQuery(query, getNumRegisters(), getFieldsNumber());
@@ -1021,7 +983,8 @@ public class SatReportsController {
 		//CASO EXISTA REGISTROS ENTRA AQUI
 		if(auxResult.length > 0) {
 		
-		//// NEW METHOD		
+		//// NEW METHOD
+		
 		int minuto = 0;
 		int iterator= 0;
 		int pos = 0;
@@ -1029,224 +992,134 @@ public class SatReportsController {
  		
 		int lin = 0;
 		int col = 0;
-		int p = 0;	
-		int inc = 0;
-				
+		int p = 0;
+		
 		lin = auxResult.length;
 		col = auxResult[0].length;
-				
+			
 		//DATAS
 		dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  periodRange, startDate); 
 		
 		//JSON DATA
-		if(!type.equals("8") && !type.equals("11"))
-		   dta.preencherJSONDataPorPeriodo(jsonArray, 0, getNumRegisters(),  periodRange, startDate); 
+		dta.preencherJSONDataPorPeriodo(jsonArray, 0, getNumRegisters(),  periodRange, startDate); 
 		
 		//PERIODOS
 		//NEW
 		if(satReport.getPeriod().equals("05 minutes")) {			
 			 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
-			 
-			 if(!type.equals("8") && !type.equals("11"))
 			 dta.intervaloJSON05Minutos(jsonArray, 0, getNumRegisters());				 
 		}
 					
 		if(satReport.getPeriod().equals("06 minutes"))	{		
 		     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
-		     
-		     if(!type.equals("8") && !type.equals("11"))
 		     dta.intervaloJSON06Minutos(jsonArray, 0, getNumRegisters());			
 		}
 		
 		if(satReport.getPeriod().equals("10 minutes")) {		
 			dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
-			
-			if(!type.equals("8") && !type.equals("11"))
 			dta.intervaloJSON10Minutos(jsonArray, 0, getNumRegisters());	
 		}
 		   			
 		if(satReport.getPeriod().equals("15 minutes"))	{	
 		    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
-		    
-		    if(!type.equals("8") && !type.equals("11"))
 		    dta.intervaloJSON15Minutos(jsonArray, 0, getNumRegisters());	
 		}
 		
 		if(satReport.getPeriod().equals("30 minutes"))	{	
 			dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
-			
-			if(!type.equals("8") && !type.equals("11"))
 		    dta.intervaloJSON30Minutos(jsonArray, 0, getNumRegisters());	
 		}
 			   		        			
 		if(satReport.getPeriod().equals("01 hour")) { 	
 			dta.preencherHora(resultQuery, 1, getNumRegisters());
-			
-			if(!type.equals("8") && !type.equals("11"))
 			dta.intervaloJSON01Hora(jsonArray, 0, getNumRegisters());	
 		}
 		
 		if(satReport.getPeriod().equals("06 hours")) {	
 		    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
-		    
-		    if(!type.equals("8") && !type.equals("11"))
 		    dta.intervaloJSON06Horas(jsonArray, 0, getNumRegisters());	
 		}
 		
-		 if(satReport.getPeriod().equals("24 hours")) {
-		    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());	 
-									
-		 }
-		 
-		 //Fill Date Range
-		 if(type.equals("8") || type.equals("11"))
-		    dta.fillEquipName(listSats, resultQuery, satReport.getEquipments(), 2, getNumRegisters(), range, daysCount);
-		   			 
+		 if(satReport.getPeriod().equals("24 hours"))
+		    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
+												
 		for(int j = 0; j < lin; j++) {
 		   for(int i = 0; i < col; i++) {
 		
 		// CASO NO EXISTA VALOR >>>>>>> PASSA	   
 		if(auxResult[j][0] != null)	 {  
-					
+		
 		if(satReport.getPeriod().equals("01 hour") || satReport.getPeriod().equals("06 hours"))
 			   hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
-					
+			
 		else if(!satReport.getPeriod().equals("24 hours") && !satReport.getPeriod().equals("01 hour") && !satReport.getPeriod().equals("06 hours")) {
 			    hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
 			    minuto =  Integer.parseInt(auxResult[j][1].substring(3, 5));	
 			    			 
-			}	
-		
-		  if(type.equals("8") || type.equals("11")) {
-		
-		      // ------------------------------------------------------------------------------------ 
-		      // TODA VEZ QUE FOR REALIZADA A LEITURA DE UM REGISTRO DO BANCO DE DADOS
-		      // VERIFICA SE O REGISTRO É DIFERENTE DA DATA ANTERIOR		     
-			
-			 if (!auxResult[j][0].equals(data_anterior)) {								
-											
-			    // CASO SEJA DIFERENTE PEGA-SE A DIFERENÇA DE DIAS
-			    // DATA ANTERIOR, DATA QUE VEM DA BASE DE DADOS E INTERVALO DO PERIODO
-			    iterator = dta.daysDifference(data_anterior, auxResult[j][0], periodRange);	
-			    				
-			    // ADICIONA-SE O ITERATOR A POSICAO
-				pos = iterator;	
-				
-				// INCREMENTO
-				inc = 0;
-				
-				// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
-				data_anterior = auxResult[j][0];
-				
-				// ADICIONA-SE O EQUIPAMENTO ANTERIOR
-				equip_anterior =  auxResult[j][2];				
-																						
-			 }	
-			 					 
-			if(!auxResult[j][2].equals(equip_anterior)) {
-				inc += range;			 
-			    equip_anterior = auxResult[j][2];
-			    
 			}
-				 				 			 						
-			// ------------------------------------------------------------------------------------ 
+		
+			// Restrio caso no haja dados nos primeiros registros
+			if ((startDate != null) && (!auxResult[j][0].equals(startDate))) {   // Executa uma unica vez
+				
+				if(satReport.getPeriod().equals("24 hours"))
+					iterator = (int) dta.daysDifference(startDate, auxResult[j][0]);
+
+				else iterator = dta.daysDifference(startDate, auxResult[j][0], periodRange);	
+				
+				pos+= iterator;
+				startDate = null;
+
+			} else if (!auxResult[j][0].equals(data_anterior)) {								
+											
+				if(satReport.getPeriod().equals("24 hours"))
+					iterator = (int) dta.daysDifference(data_anterior, auxResult[j][0]);
+				   
+				else iterator = dta.daysDifference(data_anterior, auxResult[j][0], periodRange);	
+				
+				pos+= iterator;							
+			} 			
+			
+			data_anterior = auxResult[j][0];
 			
 			 if(satReport.getPeriod().equals("05 minutes"))	{
 				 p = dta.index05Minutes(hr, minuto);
-				 p = p + pos + inc;
+				 p = p + pos;
 			 }
 			 else if(satReport.getPeriod().equals("06 minutes")) {	
 					 p = dta.index06Minutes(hr, minuto);
-					 p = p + pos + inc;
+					 p = p + pos;
 			 }
 			 else if(satReport.getPeriod().equals("10 minutes")) {
 			    	 p = dta.index10Minutes(hr, minuto);
-			    	 p = p + pos + inc;
+			    	 p = p + pos;
 			 }
 			 else if(satReport.getPeriod().equals("15 minutes")) {	
 					 p = dta.index15Minutes(hr, minuto);
-			         p = p + pos + inc;
+			         p = p + pos;
 							
 			 }
 			 else if(satReport.getPeriod().equals("30 minutes")) {	
 					 p = dta.index30Minutes(hr, minuto);
-					 p = p + pos + inc;
+					 p = p + pos;
 			 }
-			 
 			 else if(satReport.getPeriod().equals("01 hour"))				
-				p = pos + hr + inc;
+				p = pos + hr;
 						
 			else if(satReport.getPeriod().equals("06 hours")) {
 				
 				p = dta.index06Hours(hr);				
-				p = pos + p + inc;
+				p = pos + p;
 				
 			}
 			
 			else if(satReport.getPeriod().equals("24 hours"))
-				     p = pos + inc;
-			 					 			 								 
-			if(i > 2 ) 
-			    resultQuery[p][i] = auxResult[j][i];	
-			
-		    }
-		  
-		  else {
-			  
-			  if (!auxResult[j][0].equals(data_anterior)) {								
+				     p = pos;
 					
-				    // CASO SEJA DIFERENTE PEGA-SE A DIFERENÇA DE DIAS
-				    // DATA ANTERIOR, DATA QUE VEM DA BASE DE DADOS E INTERVALO DO PERIODO
-				    iterator = dta.daysDifference(data_anterior, auxResult[j][0], periodRange);	
-				    				
-				    // ADICIONA-SE O ITERATOR A POSICAO
-					pos = iterator;	
-									
-					// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
-					data_anterior = auxResult[j][0];
-																											
-				 }	
-			  
-				 if(satReport.getPeriod().equals("05 minutes"))	{
-					 p = dta.index05Minutes(hr, minuto);
-					 p = p + pos;
-				 }
-				 else if(satReport.getPeriod().equals("06 minutes")) {	
-						 p = dta.index06Minutes(hr, minuto);
-						 p = p + pos;
-				 }
-				 else if(satReport.getPeriod().equals("10 minutes")) {
-				    	 p = dta.index10Minutes(hr, minuto);
-				    	 p = p + pos;
-				 }
-				 else if(satReport.getPeriod().equals("15 minutes")) {	
-						 p = dta.index15Minutes(hr, minuto);
-				         p = p + pos;
-								
-				 }
-				 else if(satReport.getPeriod().equals("30 minutes")) {	
-						 p = dta.index30Minutes(hr, minuto);
-						 p = p + pos;
-				 }
-				 else if(satReport.getPeriod().equals("01 hour"))				
-					p = pos + hr;
-							
-				else if(satReport.getPeriod().equals("06 hours")) {
-					
-					p = dta.index06Hours(hr);				
-					p = pos + p;
-					
-				}
-				
-				else if(satReport.getPeriod().equals("24 hours"))
-					     p = pos;
-						
-									 
-				if(i > 1 ) {
-				    resultQuery[p][i] = auxResult[j][i];			  
-			  
-		 																	
-			//JSON ARRAY 
+								 
+			if(i > 1 ) {
+			    resultQuery[p][i] = auxResult[j][i];
+			 
+			    //JSON ARRAY 
 			if(type.equals("6") &&  i  < 12) // CLASS
 			       jsonArray[p][i-1] = auxResult[j][i];
 			 
@@ -1267,21 +1140,20 @@ public class SatReportsController {
 			  
 			  else if(!type.equals("6") && !type.equals("7") && !type.equals("9") && !type.equals("10") && !type.equals("11") && !type.equals("12"))
 			      jsonArray[p][i-1] = auxResult[j][i];
-			}		
+			}
+			  				
 			
-		   } //  JSON 
-		 } // CASO NO EXISTA VALOR >>>>>>> PASSA
-		
-		}
-		   
+		   } // CASO NO EXISTA VALOR >>>>>>> PASSA
+		 }
 	   }
+
 		    //// NEW METHOD
 
 			//SADA PARA A TABELA
 			OutPutResult(type);
 			
 			//SADA DO EXCEL
-		    ExcelOutPut(type, model);
+			ExcelOutPut(type, model);
 
 			//BOTO DE LIMPAR 
 			setClearBool(false);
@@ -1292,8 +1164,7 @@ public class SatReportsController {
 			//LINK PARA ACESSAR O GRÁFICO
 			setChartBool(false);
 			
-			if(!type.equals("8") && !type.equals("11"))
-			   JSONData(isChartBool(), satReport.getPeriod(), satReport.getEquipment());
+			JSONData(isChartBool(), satReport.getPeriod(), satReport.getEquipment());
 									
 			//UPDATE RESET BUTTON
 			RequestContext.getCurrentInstance().update("form-btns:#btn-tab-reset");
@@ -1515,32 +1386,6 @@ public class SatReportsController {
 		return query;
 	}
 	
-	// -------------------- NEW INDEX -----------------------------------------
-	
-	/*** SPEED VEHICLES CCR ***/
-	public String BuildMainQuerySpeed(QueriesReportsModels models, String mainQuery, String index) {    	 
-
-		String query = null;
-
-		query = models.BuildQuery(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableCCR),
-				models.whereClauseForSpeed(satReport.getEquipments(), start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrderMultiple(satReport.getPeriod()));
-		
-		return query;
-	}
-	
-	// -----------------------------------------------------------------------
-	
-	/*** SPEED VEHICLES LL ***/
-	public String BuildMainQuerySpeedLL(QueriesReportsModels models, String mainQuery, String index) {    	 
-
-		String query = null;
-
-		query = models.BuildQueryLL(models.QueryHeader(satReport.getPeriod()), mainQuery, models.QueryFromSatTable(satReport.getPeriod(), RoadConcessionaire.tableLL),
-				models.innerJoinSat(), models.whereClauseForSpeed(satReport.getEquipments(), start, end), models.vehicleSelectionWhereClause(satReport.vehicles), models.QuerySatGroupAndOrderMultiple(satReport.getPeriod()));
-		
-		return query;
-	}
-	
 	
      //////////////////////
      //// WITHOUT INDEX
@@ -1639,10 +1484,10 @@ public class SatReportsController {
 		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
 		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeCCRMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break; //MUDANA CCR
 		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
-		case "8": query = BuildMainQuerySpeed(models, satModels.SpeedMainQuery(), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break; 
+		case "8": query = BuildMainQueryType3(models, satModels.SpeedMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break; 
 		case "9": query = BuildMainQueryLLType2(models, satModels.CCRClasses(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
 		case "10": query = BuildMainQueryLLType2(models, satModels.CCRTipos(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  	
-		case "11": query = BuildMainQuerySpeedLL(models, satModels.CCRVelocidade(), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
+		case "11": query = BuildMainQueryLLType2(models, satModels.CCRVelocidade(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
 		case "12": query = BuildMainQueryCCRType2(models, satModels.CCRAllClasses(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA);  ; break;  
 
 		default: query = null; break;
@@ -1659,6 +1504,7 @@ public class SatReportsController {
 	//QUERY FOR METHODS
 	/////////////////////////////////
 	
+	/**********************************************************************************************************/
 	/**********************************************************************************************************/
 
 	///////////////////////////////////
@@ -2607,20 +2453,24 @@ public class SatReportsController {
 
 			countMergeHeader = new String[] {"A1:B4", "C1:H4", "I1:J4"}; // Merge cells
 
-			col = new int[] {3500, 3500, 4250, 3500, 3500, 3500, 3500, 3500, 4500, 3500}; // Col size 
+			col = new int[] {3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}; // Col size 
 
 			colStartDate = 8; colEndDate = 9; // Col ini & end date
-								
+			
+			// get equipment values from DB 
+			if(!satReport.getEquipment().equals(""))
+			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+
 			//Equipment Info
-			equip = " --- "; road = " --- "; km = " --- "; 
-			lanes = " --- "; city = " --- ";
+			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
+			lanes = String.valueOf(info.getNumFaixas()); city = info.getCidade();
 									
 			model.StandardFonts(); // Fonts
 			model.StandardStyles(); // Styles
 			model.StandardBorders(); // Borders
 
 			//Standard Excel Model
-			model.StandardEquipExcelModel(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
+			model.StandardExcelModel(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 				RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
 				col, colStartDate, colEndDate, resultQuery);
 
@@ -2726,27 +2576,32 @@ public class SatReportsController {
 
 					countMergeHeader = new String[] {"A1:B4", "C1:L4", "M1:O4"}; // Merge Cells
 
-					col = new int[] {3500, 3500, 4250, 3500, 3500, 3500, 3500, 3500, 4500, 3500}; // Col size 
-					
+					col = new int[] {3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500, 3500}; // Col size 
+
 					colStartDate = 12; colEndDate = 14; //Col start & end date
-														
-					//Equipment Info
-					equip = " --- "; road = " --- "; km = " --- "; 
-					lanes = " --- "; city = " --- ";
+					
+					// get equipment values from DB 
+					if(!satReport.getEquipment().equals(""))
+					info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+
+					//Equipments Info
+					equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
+					lanes = String.valueOf(info.getNumFaixas()); city = info.getCidade();
+					lane1 = info.getFaixa1();
 
 					//Directions 
-					direction1 = " --- ";
-					direction2 = " --- ";
+					direction1 = tm.CheckDirection(lane1);
+					direction2 = tm.Check2ndDirection(lane1);
 
 					//Colunas que iniciam Sentido 1 e Sentido 2
-					int iniDir1 = 10, iniDir2 = 17;		
+					int iniDir1 = 9, iniDir2 = 16;		
 
 					model.StandardFonts(); //Set Fonts
 					model.StandardStyles(); // Set Styles
 					model.StandardBorders(); //Set Borders
 
 					//Excel Model with Directions
-					model.ExcelModelEquipDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
+					model.ExcelModelDirections(fields, getNumRegisters(), periodRange, daysCount, satReport.getPeriod(), dta.currentTime(), type, module,  				  
 						RoadConcessionaire.externalImagePath, excel_title, equip, city, road, km, lanes, direction1, direction2, satReport.getStartDate(), satReport.getEndDate(), countMergeHeader, 
 						col, colStartDate, colEndDate, resultQuery, iniDir1, iniDir2);
 
@@ -5273,14 +5128,13 @@ public class SatReportsController {
 
 			resultList.add(new SatReports.Builder().date(resultQuery[k][0])
 					.dateTime(resultQuery[k][1])
-					.equipment(resultQuery[k][2])
-					.speed50km(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3]))
-					.speed70km(resultQuery[k][4] == null? 0 : Integer.parseInt(resultQuery[k][4]))
-					.speed90km(resultQuery[k][5] == null? 0 : Integer.parseInt(resultQuery[k][5]))
-					.speed120km(resultQuery[k][6] == null? 0 : Integer.parseInt(resultQuery[k][6]))
-					.speed150km(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7]))
-					.speed150Bigger(resultQuery[k][8] == null? 0 : Integer.parseInt(resultQuery[k][8]))
-					.total(resultQuery[k][9] == null? 0 : Integer.parseInt(resultQuery[k][9])));    				    				 
+					.speed50km(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))
+					.speed70km(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3]))
+					.speed90km(resultQuery[k][4] == null? 0 : Integer.parseInt(resultQuery[k][4]))
+					.speed120km(resultQuery[k][5] == null? 0 : Integer.parseInt(resultQuery[k][5]))
+					.speed150km(resultQuery[k][6] == null? 0 : Integer.parseInt(resultQuery[k][6]))
+					.speed150Bigger(resultQuery[k][7] == null? 0 : Integer.parseInt(resultQuery[k][7]))
+					.total(resultQuery[k][8] == null? 0 : Integer.parseInt(resultQuery[k][8])));    				    				 
 		} 	 
 	}
 
@@ -5377,22 +5231,8 @@ public class SatReportsController {
 	/////////////////////////////////  
 	
 	/**********************************************************************************************************/
+	/**********************************************************************************************************/
 	
-	public String equipName(List<? extends Equipments> list, String equip) {
-		
-		String eqp = "";
-		
-		for(int i = 0; i < list.size(); i++) {
-			
-			if(list.get(i).getEquip_id() == Integer.parseInt(equip)) {
-				eqp = list.get(i).getNome();
-				break;
-			}					
-	     }
-	
-	     return eqp;
 
-    }
-	
-	
+
 }
