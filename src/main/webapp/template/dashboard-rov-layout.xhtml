@@ -44,6 +44,7 @@
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
 	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
 	<ui:param name="Phone" value="#{ permission == 8 || permission == 2 }" />
+	<ui:param name="Notify" value="#{ loginAccount.load.en_dai || loginAccount.load.en_colas }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
   <h:body p:user="#{ loginAccount.user.username }">
@@ -502,64 +503,67 @@
     </div>
     <!-- TOAST END -->
 
-    <ui:fragment rendered="#{loginAccount.load.en_dai}">
-    <!-- Notification DAI -->
-    <div class="p-3 toast-start-bottom" id="notifyDAI" style="z-index: 1100">
-      
-    </div>
-    <h:form prependId="false" id="sendDate">
-      <h:inputHidden name="filterDate" id="filterDate" />
-      <h:commandButton style="display: none;" id="filterDateButton">
-        <f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getSpecificFile()}" />
-      </h:commandButton>
-    </h:form>
-    <div class="modal fade" id="DAIpopup"
-			data-keyboard="false" tabindex="-1" aria-hidden="true">
-			<h:form prependId="false" id="modalPopUp">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
-							</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-6">
-									<p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.incident_mod1} <h:outputText value="#{daiBean.traffic.incident}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.date_mod} <h:outputText value="#{daiBean.traffic.date}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.time_mod}<h:outputText value="#{daiBean.traffic.hour}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.camera_mod} <h:outputText value="#{daiBean.traffic.channel}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{daiLabels.track_mod1}<h:outputText value="#{daiBean.traffic.lane}" /></p>
-								</div>
-								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal">#{daiLabels.back}</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</h:form>
-		</div>
-    <!-- Notification DAI END -->
-  </ui:fragment>
+    <ui:fragment rendered="#{ Notify }">
+      <div class="p-3 toast-start-bottom" id="notifyPopUp" style="z-index: 1100">
+          
+      </div>
+
+      <ui:fragment rendered="#{loginAccount.load.en_dai}">
+        <!-- Notification DAI -->
+        <h:form prependId="false" id="sendDate">
+          <h:inputHidden name="filterDate" id="filterDate" />
+          <h:commandButton style="display: none;" id="filterDateButton">
+            <f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getSpecificFile()}" />
+          </h:commandButton>
+        </h:form>
+        <div class="modal fade" id="DAIpopup"
+          data-keyboard="false" tabindex="-1" aria-hidden="true">
+          <h:form prependId="false" id="modalPopUp">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">
+                    <i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{daiBean.traffic.path}"/>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p>#{daiLabels.local} <h:outputText value="#{daiBean.traffic.direction}" /></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p>#{daiLabels.incident_mod1} <h:outputText value="#{daiBean.traffic.incident}" /></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p>#{daiLabels.date_mod} <h:outputText value="#{daiBean.traffic.date}" /></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p>#{daiLabels.time_mod}<h:outputText value="#{daiBean.traffic.hour}" /></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p>#{daiLabels.camera_mod} <h:outputText value="#{daiBean.traffic.channel}" /></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p>#{daiLabels.track_mod1}<h:outputText value="#{daiBean.traffic.lane}" /></p>
+                    </div>
+                    <button type="button" class="btn btn-dark btn1"
+                      data-dismiss="modal">#{daiLabels.back}</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </h:form>
+        </div>
+        <!-- Notification DAI END -->
+      </ui:fragment>
+    </ui:fragment>
 
     <!-- Footer -->
     <footer class=" page-footer font-small indigo">
@@ -615,6 +619,10 @@
     
     <ui:fragment rendered="#{loginAccount.load.en_dai}">
       <h:outputScript name="dai_event.js?version=#{notificationsView.timestamp}" library="js/dai" />
+    </ui:fragment>
+    
+    <ui:fragment rendered="#{loginAccount.load.en_colas}">
+      <h:outputScript name="colas_event.js?version=#{notificationsView.timestamp}" library="js/colas" />
     </ui:fragment>
    
     <ui:fragment rendered="#{loginAccount.load.en_sos}">

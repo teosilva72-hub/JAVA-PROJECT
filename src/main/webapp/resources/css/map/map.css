@@ -1202,8 +1202,7 @@ span.close-x {
 	bottom: 115px;
 }
 
-<<<<<<< HEAD
-.fa-plus, .fa-minus, .fa-play {
+/* .fa-plus, .fa-minus, .fa-play { //! Alterar os nomes das classes para nao ter conflito com outras partes da pagina
 	border: unset;
 	color: black;
 	font-size: 20px;
@@ -1211,7 +1210,7 @@ span.close-x {
 	position: relative;
 	left: 19px;
 	bottom: 120px;
-}
+} */
 
 .modal-content.x {
 	height: 265px;
@@ -1221,18 +1220,7 @@ span.close-x {
 	border: unset;
 }
 
-=======
-/* .fa-plus, .fa-minus, .fa-play { //! Alterar os nomes das classes para nao ter conflito com outras partes da pagina
-	border: none;
-    color: black;
-    position: relative;
-    top: 152px;
-    left: 10px;
-    font-size: 23px;
-    cursor: pointer;
-} */
->>>>>>> 3442d6ef8f2837241e4d5b1e46b618bd3f16faeb
-.top {
+/* .top {
 	height: 30px;
 	width: 37%;
 	position: relative;
@@ -1286,7 +1274,7 @@ span.close-x {
 
 .bottom:hover {
 	box-shadow: inset 0 0 0 5px black;
-}
+} */
 
 .modal-op.none {
 	display: none !important;

@@ -1,4 +1,4 @@
-let notify = $("#notifyDAI")
+var notify = $("#notifyPopUp")
 let send_date = $("#sendDate")
 let DAIpopup = $("#DAIpopup")
 
@@ -12,21 +12,6 @@ const bodyDai = " \
 			</div> \
 			<div class=\"toast-body\"> \
 				<img style=\"cursor: pointer;\" src=\"data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" class=\"rounded mr-2 w-100 searchDai\" alt=\"\" /> \
-			</div> \
-		</div> \
-	</div> \
-"
-const bodyColas = " \
-	<div class=\"position-fixed p-3\" style=\"z-index: 5; left: 0; bottom: 0;\"> \
-		<div class=\"toast hide\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\" data-bs-delay=\"15000\" data-delay=\"15000\"> \
-			<div class=\"bg-primary text-dark toast-header\"> \
-				<strong class=\"mr-auto me-auto\"></strong> \
-				<span class=\"mr-auto me-auto\">COLAS</span> \
-				<small></small> \
-				<button type=\"button\" class=\"ml-2 mb-1 close btn-close\" data-dismiss=\"toast\" aria-label=\"Close\"></button> \
-			</div> \
-			<div class=\"toast-body\"> \
-				<img src=\"data:image/jpg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=\" class=\"rounded mr-2 w-100\" alt=\"\" /> \
 			</div> \
 		</div> \
 	</div> \
@@ -82,11 +67,7 @@ const callback_alert = response => {
 	let date_abs = response.absTime
 	let elmt
 	
-	if (response.ipAddress != "192.168.1.65")
-		elmt = $(bodyDai)
-	else
-		elmt = $(bodyColas)
-		
+	elmt = $(bodyDai)		
 	
     elmt.find("strong").text(response.channelName);
     elmt.find("small").text(date);
