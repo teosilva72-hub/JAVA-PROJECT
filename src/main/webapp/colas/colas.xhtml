@@ -164,7 +164,7 @@
 									</select>
 								</div>
 								<div class="col-md-4">
-									<span>#{daiLabels.track}</span> <select
+									<span>#{colasLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
 										<option value="">#{colasLabels.select}</option>
@@ -177,7 +177,7 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
 								data-dismiss="modal">#{colasLabels.back}</button>
-							<h:commandButton value="#{daiLabels.search}" id="btnSearch" onclick="disPdfDetail()"
+							<h:commandButton value="#{colasLabels.search}" id="btnSearch" onclick="disPdfDetail()"
 								styleClass="btn btn-danger" pt:data-dismiss="modal">
 								<f:ajax execute="@form" render=":mainTable"
 									listener="#{colasBean.getFilesFiltered()}"
