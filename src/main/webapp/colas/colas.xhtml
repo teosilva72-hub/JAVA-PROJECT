@@ -35,17 +35,14 @@
 					<div class="table">
 						<!-- TABELA -->
 						<h:dataTable id="colas-table" var="data" disabled="true"
-							value="#{colasBean.traffics}"
+							value="#{colasBean.queues}"
 							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
 							cellspacing="0" width="100" headerClass="custom-table-header"
-							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							columnClasses="idColumn, nameColumn, textColumn, actionColumn">
 							<h:column>
 								<f:facet name="header">#{colasLabels.toll}</f:facet>
-								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
+								<h:outputText value="CDF-#{data.device}"
 									style="font-size: 12px; " />
-								<h:commandButton style="display: none" pt:setParameter="setParameter">
-									<f:ajax execute="@this" render=":modalPopUpColas" listener="#{colasBean.getTrafficById(data.id)}" />
-								</h:commandButton>
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane}</f:facet>
@@ -57,16 +54,8 @@
 								<h:outputText value="#{data.date}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{colasLabels.hour}</f:facet>
-								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
-							</h:column>
-							<h:column>
-								<f:facet name="header">#{colasLabels.way}</f:facet>
-								<h:outputText value="#{data.channel}" style="font-size: 12px; " />
-							</h:column>
-							<h:column>
 								<f:facet name="header">#{colasLabels.waiting_time}</f:facet>
-								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
+								<h:outputText value="#{data.getTime()}" style="font-size: 12px; " />
 							</h:column>
 							
 						</h:dataTable>
@@ -75,7 +64,7 @@
 				</h:form>
 			</div>
 			<!--  -->
-			<div class="col-md-2">
+			<!-- <div class="col-md-2">
 				<div class="btns">
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
@@ -84,54 +73,8 @@
 					<button type="button" class="btn btn-danger btn1" id="btnPdf"
 						data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
-    <!-- Notification COLAS -->
-    <div class="modal fade" id="COLASpopup"
-			data-keyboard="false" tabindex="-1" aria-hidden="true">
-			<h:form prependId="false" id="modalPopUpColas">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
-							</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{colasBean.traffic.path}"/>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-									<p>#{colasLabels.number}: <h:outputText value="#{colasBean.traffic.plate}" /></p>
-								</div>
-								
-								<div class="col-md-6">
-									<p>#{colasLabels.lane}: <h:outputText value="#{colasBean.traffic.lane}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.way}: <h:outputText value="#{colasBean.traffic.direction}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.date}: <h:outputText value="#{colasBean.traffic.date}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.hour}:  <h:outputText value="#{colasBean.traffic.hour}" /></p>
-								</div>
-								
-								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal">#{daiLabels.back}</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</h:form>
-		</div>
-		<!-- final modal detalhes -->
 		<!-- Modal pesquisa -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
 			aria-labelledby="modalPesquisa" aria-hidden="true">
@@ -185,9 +128,9 @@
 								data-dismiss="modal">#{daiLabels.back}</button>
 							<h:commandButton value="#{daiLabels.search}" id="btnSearch" onclick="disPdfDetail()"
 								styleClass="btn btn-danger" pt:data-dismiss="modal">
-								<f:ajax execute="@form" render=":mainTable"
-									listener="#{colasBean.getFilesFiltered()}"
-									onevent="onFilterFunction" />
+								<!-- <f:ajax execute="@form" render=":mainTable"
+									
+									onevent="onFilterFunction" /> -->
 							</h:commandButton>
 						</div>
 					</div>

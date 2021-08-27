@@ -68,13 +68,13 @@ const init = () => {
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
-
+					$('#OPmodal').modal('toggle');
 					//add btn setting cftv and icon
-					if(type !="cftv"){
+					/*if(type !="cftv"){
 						cftvModal(type)
 						$('#OPmodal').modal('toggle');
 					}								
-					else if(type == "cftv") cftvModal(type)
+					else if(type == "cftv") cftvModal(type)*/
 					////////////////////////////////////////
 				});
 

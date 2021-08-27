@@ -8,7 +8,7 @@ function getTr(){
 		"autoWidth": true,			  	   	
 		"scrollY": `${screen.availHeight / 2}px`,
 		"scrollCollapse": true,
-		"order": [[ 4, 'desc' ], [ 5, 'desc' ]],
+		"order": [[ 2, 'desc' ]],
 		"paging": false,
 		"bInfo" : false
 	});
