@@ -23,7 +23,7 @@ $(async function () {
     notificationBadge();
   });
 
-  toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 3000 })
+  toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 7000 })
 
   while (typeof rabbitmq == "undefined" || typeof asterisk == "undefined") {
     await new Promise(r => setTimeout(r, 100))

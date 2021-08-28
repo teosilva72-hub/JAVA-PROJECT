@@ -38,14 +38,16 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.colas.ColasQueue;
+import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 @ManagedBean(name="colasBean")
 @ViewScoped
 public class ColasBean {
 	LocaleUtil localeColas;
-	public List<Traffic> traffics;
-	public Traffic traffic;
+	public List<ColasQueue> queues;
+	public ColasQueue queue;
 	private String logo;
 
 	public String getLogo() {
@@ -58,257 +60,42 @@ public class ColasBean {
 			return "";
 		}
 	}
-	public Traffic getTraffic() {
-		return traffic;
+	public ColasQueue getQueue() {
+		return queue;
 	}
 
-	public void setTraffic(Traffic traffic) {
-		this.traffic = traffic;
+	public void setQueue(ColasQueue queue) {
+		this.queue = queue;
 	}
 
-	public List<Traffic> getTraffics() {
-		return traffics;
+	public List<ColasQueue> getQueues() {
+		return queues;
 	}
 
 	@PostConstruct
-	public void initalize(){
-		SimpleDateFormat formattter = new SimpleDateFormat("yyyyMMdd");
+	public void initalize() {
+		SimpleDateFormat formattter = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 
 		try {
-			getAllFile(formattter.format(date));
-			traffic = new Traffic();
-		}catch (Exception e) {
+			getAllQueue(formattter.format(date));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-	}
-	
-	public static class Traffic {
-		int id;
-		String waiting_time;
-		String date;
-		String channel;
-		String lane;
-		String direction;
-		String hour;
-		String plate;
-		Path file;
-
-		Traffic(Path path, int idx) throws IOException, ParseException {
-			file = path;
-			
-			String[] pathS = path.toString().split("\\\\");
-			String[] info = pathS[pathS.length-1].split("\\.")[0].split("_");
-			Date date_new = new SimpleDateFormat("yyyyMMdd").parse(info[4]);
-			Date hour_new = new SimpleDateFormat("HHmmssSSS").parse(info[5]);
-			SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy/MM/dd");
-			SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
-			
-			id = idx;
-			waiting_time = info[0];
-			channel = info[1];
-			lane = info[2];
-			direction = info[3];
-			date = date_formatter.format(date_new);
-			hour = hour_formatter.format(hour_new);
-			plate = info[6];
-		}
-		
-		Traffic() {
-			waiting_time = "";
-			date = "";
-			channel = "";
-			lane = "";
-			direction = "";
-			hour = "";
-			plate = "";
-		}
-		
-		public int getId() {
-			return id;
-		}
-		
-		public String getLane() {
-			return lane;
-		}
-
-		public String getDirection() {
-			TranslationMethods trad = new TranslationMethods();
-			return trad.colasLabels(direction);
-		}
-		
-		public String getChannel() {
-			return channel;
-		}
-		 
-		public String getWaiting() {
-			TranslationMethods trad = new TranslationMethods();
-			return trad.colasLabels(waiting_time);
-		}
-
-		public String getDate() {
-			return date;
-		}
-
-		public String getHour() {
-			return hour;
-		}
-
-		public String getPlate() {
-			return plate;
-		}
-
-		public String getPath() {
-			try {
-				if (file != null) {				
-						return Base64.getEncoder().encodeToString(Files.readAllBytes(file));
-				} else {
-					return Base64.getEncoder().encodeToString(Files.readAllBytes(Paths.get("C:\\Tracevia\\Software\\External\\Unknown\\no-image.jpg")));
-				}
-			} catch (IOException e) {}
-			return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-		}
-
-		static List<Traffic> all_traffic(List<Path> list, int idx) throws IOException, ParseException {
-			List<Traffic> new_list = new ArrayList<>();
-			for (final Path path : list) {
-				new_list.add(new Traffic(path, idx));
-				idx++;
-			}
-			
-			return new_list;
-		}
-
-		static List<Traffic> all_traffic(List<Path> list, int idx, String filter_channel, String filter_lane) throws IOException, ParseException {
-			List<Traffic> new_list = new ArrayList<>();
-			for (final Path path : list) {
-				Traffic traffic = new Traffic(path, idx);
-				if (
-					(traffic.channel.contains(filter_channel) ||
-					traffic.channel.isEmpty()) && 
-					(traffic.lane.contains(filter_lane) ||
-					traffic.lane.isEmpty()))
-					new_list.add(traffic);
-				else
-					continue;
-				idx++;
-			}
-			
-			return new_list;
-		}
-	}
-	
-	public void getTrafficById(int id) {
-		traffic = traffics.get(id);
+		queue = new ColasQueue();
 	}
 
-	public void getSpecificFile() throws IOException, ParseException {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-		SimpleDateFormat date_parse = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
-		SimpleDateFormat hour_formatter = new SimpleDateFormat("HH:mm:ss:SSS");
-
-		Date date = date_parse.parse(params.get("filterDate"));
-
-		String hour = hour_formatter.format(date);
-		List<Path> list = getAllFolders(date_formatter.format(date));
-
-		for (final Path path : list) {
-			List<Path> files = listAllFiles(path.toString());
-			for (final Path file : files) {
-				Traffic verify_traffic = new Traffic(file, 0);
-				
-				if (verify_traffic.hour.equals(hour)) {
-					traffic = verify_traffic;
-				}
-			}
-		}
-
-	}
-	
-	public void getAllFile(String date) throws IOException, ParseException {
-		List<Path> list = getAllFolders(date);
-		List<Traffic> new_list = new ArrayList<>();
-		for (final Path path : list) {
-			List<Path> files = listAllFiles(path.toString());
-			new_list.addAll(Traffic.all_traffic(files, new_list.size()));
-		}
+	public void getAllQueue(String date) {
+		ColasDAO dao = new ColasDAO();
 		
-		traffics = new_list;
-	}
-
-	public void getFilesFiltered() {
-		FacesContext context = FacesContext.getCurrentInstance();
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-
-		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
-
-		String date = params.get("dateSearch");
-		String lane = params.get("laneSearch");
-		String channel = params.get("channelSearch");
-
 		try {
-			List<Path> list = getAllFolders((date.isEmpty() ? date_formatter.format(new Date()) : date.replaceAll("-", "")));
-			List<Traffic> new_list = new ArrayList<>();
-			for (final Path path : list) {
-				List<Path> files = listAllFiles(path.toString());
-				new_list.addAll(Traffic.all_traffic(files, new_list.size(), channel, lane));
-			}
-			
-			traffics = new_list;
-		} catch (IOException e) {
-			traffics = new ArrayList<>();
-			
-			e.printStackTrace();
-		} catch (ParseException e) {
-			traffics = new ArrayList<>();
-			
+			queues = dao.history_queue(date);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
-	public List<Path> getAllFolders(String date) {
-		String folder = "C:\\Cameras\\COLAS\\";
-		List<Path> allPath = new ArrayList<>();
-		String[] allEquip = listFolder(folder);
-		if (allEquip != null)
-			for (final String path : allEquip) {			
-				try {
-					allPath.addAll(listAllFiles(folder + path + "\\Traffic Incident\\" + date));
-				} catch (IOException e) {}
-			}
-		
-		return allPath;
-	}
-
-	public static String[] listFolder(String folder) {
-
-        File file = new File(folder);
-		String[] directories = file.list(new FilenameFilter() {
-			@Override
-			public boolean accept(File current, String name) {
-				return new File(current, name).isDirectory();
-			}
-		});
-        return directories;
-
-    }
-
-	public static List<Path> listAllFiles(String pathS) throws IOException {
-
-        List<Path> result;
-        Path path = Paths.get(pathS); 
-        try (Stream<Path> walk = Files.walk(path)) {
-            result = walk.filter(Files::isRegularFile)
-                    .collect(Collectors.toList());
-        }
-        return result;
-
-    }
 
 	public void pdf() {
 		
@@ -355,14 +142,12 @@ public class ColasBean {
 				document.add(tuxpanL);
 			}
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeColas.getStringKey("camera")+": "+traffic.plate));
-			document.add(new Paragraph(localeColas.getStringKey("way")+": "+trad.colasLabels(traffic.direction)));
-			document.add(new Paragraph(localeColas.getStringKey("lane")+": "+traffic.lane));
-			document.add(new Paragraph(localeColas.getStringKey("date")+": "+traffic.date));
-			document.add(new Paragraph(localeColas.getStringKey("hour")+": "+traffic.hour));
-			document.add(new Paragraph(localeColas.getStringKey("waiting_time")+": "+traffic.waiting_time));
+			document.add(new Paragraph(localeColas.getStringKey("camera")+": "+queue.device));
+			document.add(new Paragraph(localeColas.getStringKey("lane")+": "+queue.lane));
+			document.add(new Paragraph(localeColas.getStringKey("date")+": "+queue.date));
+			document.add(new Paragraph(localeColas.getStringKey("waiting_time")+": "+queue.getTime()));
 			String noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
-			File img1 = new File(traffic.file.toString());
+			File img1 = new File("");
 			if(img1.exists()) {
 				Image imgX = Image.getInstance(img1.getPath());
 				imgX.setAbsolutePosition(50, 200);
@@ -381,7 +166,7 @@ public class ColasBean {
 			// DOWNLOAD
 
 			externalContext.setResponseContentType("application/pdf");
-			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"colas_"+traffic.date+".pdf\"");
+			externalContext.setResponseHeader("Content-Disposition","attachment; filename=\"colas_"+queue.date+".pdf\"");
 
 			externalContext.setResponseContentLength(baos.size());
 

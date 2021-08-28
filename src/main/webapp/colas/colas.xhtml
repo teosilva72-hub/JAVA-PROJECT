@@ -35,17 +35,14 @@
 					<div class="table">
 						<!-- TABELA -->
 						<h:dataTable id="colas-table" var="data" disabled="true"
-							value="#{colasBean.traffics}"
+							value="#{colasBean.queues}"
 							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
 							cellspacing="0" width="100" headerClass="custom-table-header"
-							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+							columnClasses="idColumn, nameColumn, textColumn, actionColumn">
 							<h:column>
 								<f:facet name="header">#{colasLabels.toll}</f:facet>
-								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
+								<h:outputText value="CDF-#{data.device}"
 									style="font-size: 12px; " />
-								<h:commandButton style="display: none" pt:setParameter="setParameter">
-									<f:ajax execute="@this" render=":modalPopUpColas" listener="#{colasBean.getTrafficById(data.id)}" />
-								</h:commandButton>
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane}</f:facet>
@@ -57,16 +54,8 @@
 								<h:outputText value="#{data.date}" style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{colasLabels.hour}</f:facet>
-								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
-							</h:column>
-							<h:column>
-								<f:facet name="header">#{colasLabels.way}</f:facet>
-								<h:outputText value="#{data.channel}" style="font-size: 12px; " />
-							</h:column>
-							<h:column>
 								<f:facet name="header">#{colasLabels.waiting_time}</f:facet>
-								<h:outputText value="#{data.hour}" style="font-size: 12px; " />
+								<h:outputText value="#{data.getTime()}" style="font-size: 12px; " />
 							</h:column>
 							
 						</h:dataTable>
@@ -75,63 +64,17 @@
 				</h:form>
 			</div>
 			<!--  -->
-			<div class="col-md-2">
+			<!-- <div class="col-md-2">
 				<div class="btns">
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
-						onclick="dataPicker()">#{daiLabels.search}</button>
-					<button id="btnDetalhes" class="btn btn-dark btn1">#{daiLabels.details}</button>
+						onclick="dataPicker()">#{colasLabels.search}</button>
+					<button id="btnDetalhes" class="btn btn-dark btn1">#{colasLabels.details}</button>
 					<button type="button" class="btn btn-danger btn1" id="btnPdf"
-						data-toggle="modal" data-target="#modalPdf">#{daiLabels.pdf}</button>
+						data-toggle="modal" data-target="#modalPdf">#{colasLabels.pdf}</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
-    <!-- Notification COLAS -->
-    <div class="modal fade" id="COLASpopup"
-			data-keyboard="false" tabindex="-1" aria-hidden="true">
-			<h:form prependId="false" id="modalPopUpColas">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="staticBackdropLabel">
-								<i class="fas fa-exclamation-triangle"></i> #{daiLabels.details}
-							</h5>
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-						</div>
-						<div class="modal-body">
-							<h:graphicImage style="width: 100%;" value="data:image/jpg;base64, #{colasBean.traffic.path}"/>
-						</div>
-						<div class="modal-body">
-							<div class="row">
-								<div class="col-md-12">
-									<p>#{colasLabels.number}: <h:outputText value="#{colasBean.traffic.plate}" /></p>
-								</div>
-								
-								<div class="col-md-6">
-									<p>#{colasLabels.lane}: <h:outputText value="#{colasBean.traffic.lane}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.way}: <h:outputText value="#{colasBean.traffic.direction}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.date}: <h:outputText value="#{colasBean.traffic.date}" /></p>
-								</div>
-								<div class="col-md-6">
-									<p>#{colasLabels.hour}:  <h:outputText value="#{colasBean.traffic.hour}" /></p>
-								</div>
-								
-								<button type="button" class="btn btn-dark btn1"
-									data-dismiss="modal">#{daiLabels.back}</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</h:form>
-		</div>
-		<!-- final modal detalhes -->
 		<!-- Modal pesquisa -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
 			aria-labelledby="modalPesquisa" aria-hidden="true">
@@ -139,7 +82,7 @@
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="modal-title">#{daiLabels.search_filter}</h5>
+							<h5 class="modal-title" id="modal-title">#{colasLabels.search_filter}</h5>
 							<button type="button" class="close" data-dismiss="modal"
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
@@ -153,41 +96,32 @@
 										name="dateSearch" pt:placeholder="yyyy-mm-dd"></h:inputText>
 								</div>
 								<div class="col-md-4">
-									<span>#{daiLabels.camera}</span> <select
+									<span>#{colasLabels.camera}</span> <select
 										class="form-control inputDesign" id="channelSearch"
 										name="channelSearch">
-										<option value="">#{daiLabels.select}</option>
-										<option value="1">#{daiLabels.channel} 1</option>
-										<option value="2">#{daiLabels.channel} 2</option>
-										<option value="3">#{daiLabels.channel} 3</option>
-										<option value="4">#{daiLabels.channel} 4</option>
+										<option value="">#{colasLabels.select}</option>
+										<option value="1">#{colasLabels.channel} 1</option>
 									</select>
 								</div>
 								<div class="col-md-4">
-									<span>#{daiLabels.track}</span> <select
+									<span>#{colasLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
-										<option value="">#{daiLabels.select}</option>
-										<option value="01">#{daiLabels.track} 01</option>
-										<option value="02">#{daiLabels.track} 02</option>
-										<option value="03">#{daiLabels.track} 03</option>
-										<option value="04">#{daiLabels.track} 04</option>
-										<option value="05">#{daiLabels.track} 05</option>
-										<option value="06">#{daiLabels.track} 06</option>
-										<option value="07">#{daiLabels.track} 07</option>
-										<option value="08">#{daiLabels.track} 08</option>
+										<option value="">#{colasLabels.select}</option>
+										<option value="01">#{colasLabels.track} 01</option>
+			
 									</select>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">#{daiLabels.back}</button>
-							<h:commandButton value="#{daiLabels.search}" id="btnSearch" onclick="disPdfDetail()"
+								data-dismiss="modal">#{colasLabels.back}</button>
+							<h:commandButton value="#{colasLabels.search}" id="btnSearch" onclick="disPdfDetail()"
 								styleClass="btn btn-danger" pt:data-dismiss="modal">
-								<f:ajax execute="@form" render=":mainTable"
-									listener="#{colasBean.getFilesFiltered()}"
-									onevent="onFilterFunction" />
+								<!-- <f:ajax execute="@form" render=":mainTable"
+									
+									onevent="onFilterFunction" /> -->
 							</h:commandButton>
 						</div>
 					</div>
@@ -213,14 +147,14 @@
 						<div class="modal-body">
 
 							<div class="row">
-								<div class="col-md-12">#{daiLabels.download}</div>
+								<div class="col-md-12">#{colasLabels.download}</div>
 							</div>
 							<hr></hr>
 							<div class="row">
 								<div class="col-md-6"></div>
 								<div class="col-md-2">
 									<button type="button" class="btn btn-dark "
-										data-dismiss="modal">#{daiLabels.back}</button>
+										data-dismiss="modal">#{colasLabels.back}</button>
 								</div>
 								<div class="col-md-4">
 									<h:commandButton pt:onclose="download" pt:data-toggle="modal"
