@@ -1227,7 +1227,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 				
 				//createCellWithFormula(sheet, row, r, totalCol, "SUM("+initialColumnLetter+""+ (r) + ":"+maxColumnLetter+"" + (r) + ")");
 				
-				createCellWithFormula(sheet, row, rowMax, col, "ROUND(AVERAGE("+columnLetter+""+ (totalStartRow) + ":"+columnLetter+"" + (rowMax) + "), 2)");	
+				createCellWithFormula(sheet, row, rowMax, col, "ROUND(AVERAGEIF("+columnLetter+""+ (totalStartRow) + ":"+columnLetter+"" + (rowMax) + ", \">0\"), 2)");	
 									
 			   // createCellWithFormula(sheet, row, rowMax, totalCol, "SUM("+totalColumnLetter+""+ (totalStartRow) + ":"+totalColumnLetter+"" + (rowMax) + ")");
 			
@@ -1394,6 +1394,44 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		
 		/* *********************************************************************************************************************************************************************************** */
 		
+    		  // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    		  
+    		   // USE FOR SOS
+    		     
+    		   // CALL COUNT
+    		  
+    		    		public void fillDataEquipSingleSOSAmount(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
+    					 
+    					int rowLenght = startRow + endRow ;
+    											
+    					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+    						   for(int col = colStart; col < maxCol; col++) {
+    						   				 					   
+    					            row = sheet.getRow((short) rowIndex);
+    					          
+    					            cells[lin][col] = row.createCell((short) col);	
+    					            
+    					            try {
+    					            				            	
+    					            	if(col == 0 || col == 1 || col == 2 || (values[lin][col] != null && values[lin][col].contains(":")))		            		
+    					            		cells[lin][col].setCellValue(values[lin][col] == null ? "00:00:00" : values[lin][col]);	
+    					            	
+    					            	else if(values[lin][col] == null && col == (maxCol - 1))			            		
+    					            		 cells[lin][col].setCellValue("00:00:00");
+    					            			      			            	
+    					            	else cells[lin][col].setCellValue(values[lin][col] == null ? 0 : Integer.parseInt(values[lin][col]));
+    					            				            				            			            			          			            
+    					            }catch(NullPointerException ex) {
+    					            	ex.printStackTrace();
+    					           }		
+    					            
+    					          }		       
+    					      }     	   
+    				       }
+    		    		    		   
+    		   /* *********************************************************************************************************************************************************************************** */
+    	     	
+    		
     		 //SOS AMOUNT USE
     		 
     		public void fillDataRangeSOSAmount(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange) {
@@ -1428,7 +1466,40 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     		              }	
     		
     		/* *********************************************************************************************************************************************************************************** */
+    		    		 
+    		public void fillDataEquipRangeSOSAmount(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow, int day, int periodRange) {
+    			 
+    			int rowLenght = startRow + endRow ;
+    			int index = 0;
+    				    	  		    	  
+    					   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+    						   for(int col = colStart; col < maxCol; col++) {
+    						   
+    						   index = lin + (day * periodRange);
+    							
+    					            row = sheet.getRow((short) rowIndex);
+    					            cells[index][col] = row.createCell((short) col);	
+    					            
+    					            try {
+    					            				            	
+    					            	if(col == 0 || col == 1 || col == 2 || (values[index][col] != null && values[index][col].contains(":")))			            		
+    					           	         cells[index][col].setCellValue(values[index][col]);		
+    					            	
+    					            	else if(values[index][col] == null && col == (maxCol - 1))			            		
+  							              cells[index][col].setCellValue("00:00:00");	
+    						            	
+    					            	    					            	    					            	
+    					            	else cells[index][col].setCellValue(values[index][col] == null? 0 : Integer.parseInt(values[index][col]));
+    					            						           					            			          			            
+    					            }catch(NullPointerException ex) {
+    					            	ex.printStackTrace();
+    					           }				         
+    					        }				        
+    					     }		    	  
+    		              }	
     		
+    		/* *********************************************************************************************************************************************************************************** */
+    		    		
     		public void excelStringBasic(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, int startRow) {
     			
     			int rowLenght = startRow + values.length;
@@ -1454,6 +1525,40 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     			          }		       
     			      }     	   
     		       }
+    		
+    		/* *********************************************************************************************************************************************************************************** */
+			
+			//OK -> 03/06/2021
+			//STANDARD EXCEL MODEL USED
+			//DAYS / MONTH / YEAR
+			public void fillDataEquipSOSSingle(XSSFSheet sheet, XSSFRow row, Cell[][] cells, String[][] values, String period, int colStart, int maxCol, int startRow, int endRow) {
+				 
+				int rowLenght = startRow + endRow ;
+										
+				   for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < endRow ; rowIndex++, lin++) {
+					   for(int col = colStart; col < maxCol; col++) {
+					   				 					   
+				            row = sheet.getRow((short) rowIndex);
+				          
+				            cells[lin][col] = row.createCell((short) col);	
+				            
+				            try {
+				            				            	
+				            	if(col == 0 || col == 1 || col == 2)
+				            	cells[lin][col].setCellValue(values[lin][col]);			            			            
+				            						            	
+				            	else cells[lin][col].setCellValue(values[lin][col] == null ? 0 : Integer.parseInt(values[lin][col]));
+				            				            				            			            			          			            
+				            }catch(NullPointerException ex) {
+				            	ex.printStackTrace();
+				           }		
+				            
+				          }		       
+				      }     	   
+			       }
+			
+		/* *********************************************************************************************************************************************************************************** */
+			
     		
     		
 }

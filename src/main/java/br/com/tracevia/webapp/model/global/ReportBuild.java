@@ -22,7 +22,7 @@ import br.com.tracevia.webapp.model.sat.SatReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
-public class ReportsBuild {
+public class ReportBuild {
 
 	// Lists
 	private List<SelectItem> equipments;  
@@ -76,12 +76,12 @@ public class ReportsBuild {
 	private String fileName;
 	private String currentDate;
 	
-	// Enable button (Front End)
+	// Variáveis para habilitar botões
 	private boolean clearBool;
 	private boolean excelBool;
 	private boolean chartBool;
 	
-	// String Query
+	// Query
 	private String query;
 	
 	// JSON for table 
@@ -103,7 +103,7 @@ public class ReportsBuild {
 	ExcelModels model;
 	
 	// Builder
-	public ReportsBuild() {}
+	public ReportBuild() {}
 	
 	public List<SelectItem> getEquipments() {
 		return equipments;
@@ -137,13 +137,13 @@ public class ReportsBuild {
 		return numRegisters;
 	}
 	public static void setNumRegisters(int numRegisters) {
-		ReportsBuild.numRegisters = numRegisters;
+		ReportBuild.numRegisters = numRegisters;
 	}
 	public static int getFieldsNumber() {
 		return fieldsNumber;
 	}
 	public static void setFieldsNumber(int fieldsNumber) {
-		ReportsBuild.fieldsNumber = fieldsNumber;
+		ReportBuild.fieldsNumber = fieldsNumber;
 	}
 	public int getBreakTime() {
 		return breakTime;
@@ -309,7 +309,7 @@ public class ReportsBuild {
 		
 	// ----------------------------------------------------------------------------------------------------------------------
 		
-		public void GetReports(String type, ReportsSelection selection) throws Exception{
+		public void GetReports(String type, ReportSelection selection) throws Exception{
 						
 			// RESET ON RESTART
 		    // resetFormValues(type);

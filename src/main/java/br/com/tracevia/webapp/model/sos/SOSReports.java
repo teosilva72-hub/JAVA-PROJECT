@@ -13,7 +13,8 @@ public class SOSReports {
 	private String solarAmp;
 	private String openDoor;
 	private String doorNumber;
-	private String sosStatus;
+	private String sosStatusOpened;
+	private String sosStatusClosed;
 	private String sosStatusTime;
 	private String sosStatusType;
 	private String callStatus;
@@ -56,7 +57,8 @@ public class SOSReports {
 		public String solarAmp;
 		public String openDoor;
 		public String doorNumber;
-		public String sosStatus;
+		public String sosStatusOpened;
+		public String sosStatusClosed;
 		public String sosStatusTime;
 		public String sosStatusType;
 		public String callStatus;
@@ -65,8 +67,8 @@ public class SOSReports {
 		public String callMissed;	
 		public String callEnded;
 		public String callError;
-		private String callDuration;	
-		private String operator;
+		public String callDuration;	
+		public String operator;
 		public int callReceivedAmount;	
 		public int callAnsweredAmount;		
 		public int callMissedAmount;	
@@ -147,13 +149,19 @@ public class SOSReports {
 			return this;			
 		}	
 		
-		// SOS Status
-		public Builder sosStatus(String sosStatus) {
-			this.sosStatus = sosStatus; 
+		// SOS Status Opened
+		public Builder sosStatusOpened(String sosStatusOpened) {
+			this.sosStatusOpened = sosStatusOpened; 
 			return this;			
 		}
 		
-		// SOS Status Time
+		// SOS Status Closed
+		public Builder sosStatusClosed(String sosStatusClosed) {
+			this.sosStatusClosed = sosStatusClosed; 
+			return this;			
+		}
+		
+		// SOS Status Duration
 		public Builder sosStatusTime(String sosStatusTime) {
 			this.sosStatusTime = sosStatusTime; 
 			return this;			
@@ -297,8 +305,12 @@ public class SOSReports {
 			return doorNumber;
 		}
 
-		public String getSosStatus() {
-			return sosStatus;
+		public String getSosStatusOpened() {
+			return sosStatusOpened;
+		}
+
+		public String getSosStatusClosed() {
+			return sosStatusClosed;
 		}
 
 		public String getSosStatusTime() {
@@ -472,12 +484,20 @@ public class SOSReports {
 		this.doorNumber = doorNumber;
 	}
 
-	public String getSosStatus() {
-		return sosStatus;
+	public String getSosStatusOpened() {
+		return sosStatusOpened;
 	}
 
-	public void setSosStatus(String sosStatus) {
-		this.sosStatus = sosStatus;
+	public void setSosStatusOpened(String sosStatusOpened) {
+		this.sosStatusOpened = sosStatusOpened;
+	}
+
+	public String getSosStatusClosed() {
+		return sosStatusClosed;
+	}
+
+	public void setSosStatusClosed(String sosStatusClosed) {
+		this.sosStatusClosed = sosStatusClosed;
 	}
 
 	public String getCallStatus() {
@@ -487,7 +507,7 @@ public class SOSReports {
 	public void setCallStatus(String callStatus) {
 		this.callStatus = callStatus;
 	}
-	
+		
 	public String getSosStatusTime() {
 		return sosStatusTime;
 	}

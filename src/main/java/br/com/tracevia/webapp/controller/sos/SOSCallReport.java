@@ -373,6 +373,8 @@ public class SOSCallReport {
 		end = dta.DateTimeToStringFim(endDate);
 		
 		 String query = SOSCallRegister(models, sosModels.Calls(sosReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SOS);
+		 
+		// System.out.println(query);
 		 		 
 		 resultList = dao.callRegisters(query);
 		 

@@ -5,8 +5,9 @@ public class SOSMainQueries {
 	public String AlarmsStatus(String equip_id) {
 		
 		String query = "IFNULL(al.type_id, 0) 'TYPE', " +
-				"CONCAT('OPEN') 'STATUS', " +
-				"SEC_TO_TIME(TIMESTAMPDIFF(SECOND, al.start, al.end)) 'STATUS TIME' ";
+				"DATE_FORMAT(al.start, '%H:%i:%s') 'OPEN', " +
+				"DATE_FORMAT(al.end, '%H:%i:%s') 'CLOSED', " +
+				"SEC_TO_TIME(TIMESTAMPDIFF(SECOND, al.start, al.end)) 'DURATION' ";
 					
 		return query;
 		
@@ -21,7 +22,8 @@ public class SOSMainQueries {
 				"IFNULL(IF(cl.state_id = 3 , DATE_FORMAT(cl.end_date, '%H:%i:%s'), NULL), ' --- ') 'ENDED', " + 
 				"IFNULL(IF(cl.state_id = 5 , DATE_FORMAT(cl.end_date, '%H:%i:%s'), NULL), ' --- ') 'LOST', " + 
 				"IFNULL(IF(cl.state_id = 6 , DATE_FORMAT(cl.end_date, '%H:%i:%s'), NULL), ' --- ') 'ERROR', " + 
-				"SEC_TO_TIME(TIMESTAMPDIFF(SECOND, cl.start_date, cl.end_date)) 'DURATION', IFNULL(cl.user, ' --- ') 'OPERATOR' ";
+				"IF((cl.state_id = 3 OR cl.state_id = 6) AND cl.answered_date <> '', SEC_TO_TIME(TIMESTAMPDIFF(SECOND, cl.answered_date, cl.end_date)), ' --- ') 'DURATION', " +
+				"IFNULL(cl.user, ' --- ') 'OPERATOR' ";
 		
 		return query;
 		
@@ -29,15 +31,16 @@ public class SOSMainQueries {
 
     // -----------------------------------------------------------------
 
-    public String Statitictics(String equip_id) {
+    public String Statitictics() {
 	
-	String query = "IFNULL(ROUND(SUM(IF((cl.state_id = 3 OR cl.state_id = 5 OR cl.state_id = 6) AND cl.start_date <> '' , 1, NULL)),0),0) 'RECEIVED', " +
+	String query = "equip_id 'EQUIP', " +
+			"IFNULL(ROUND(SUM(IF((cl.state_id = 3 OR cl.state_id = 5 OR cl.state_id = 6) AND cl.start_date <> '' , 1, NULL)),0),0) 'RECEIVED', " +
 			"IFNULL(ROUND(SUM(IF((cl.state_id = 3 OR cl.state_id = 6) AND cl.answered_date <> '' , 1, NULL)),0),0) 'ANSWERED', " +
 			"IFNULL(ROUND(SUM(IF(cl.state_id = 3 , 1, NULL)),0),0) 'ENDED', " +
 			"IFNULL(ROUND(SUM(IF(cl.state_id = 5 , 1, NULL)),0),0) 'LOST', " +
 			"IFNULL(ROUND(SUM(IF(cl.state_id = 6 , 1, NULL)),0),0) 'ERROR', " +
-			"SEC_TO_TIME(ROUND(AVG(TIMESTAMPDIFF(SECOND, cl.start_date, cl.end_date)),0)) 'DURATION' ";
-	
+			"IFNULL(SEC_TO_TIME(ROUND(AVG(CASE WHEN cl.answered_date <> '' THEN TIMESTAMPDIFF(SECOND, cl.answered_date, cl.end_date) END),0)), '00:00:00') 'DURATION' ";  
+				
 	return query;
 	
    }

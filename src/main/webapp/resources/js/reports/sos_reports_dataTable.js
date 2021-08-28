@@ -31,12 +31,18 @@ $(document).ready(function () {
    
     //Call Datatables jQuery plugin
      $('#sos-status-table').DataTable({
+        "autoWidth": true,
         "scrollY": "50.3vh",
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
         "bInfo": false,
-        "deferRender": true        
+        "deferRender": true,
+         columnDefs: [
+            { width: '20%', targets: 0 }
+],
+
+fixedColumns: true       
    });
    
 });
@@ -54,14 +60,21 @@ $('#info').show();
 }
 
 function drawTable(table, scrollHeight) {
-$(table).DataTable({			  	   	
+$(table).DataTable({	
+"autoWidth": true,		  	   	
 "scrollY": scrollHeight,
 "scrollX": true,
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo": false,
 "deferRender": true,
-"ordering": false
+"ordering": false,
+ columnDefs: [
+            { width: '20%', targets: 0 }
+],
+
+fixedColumns: true
+
  });
   $('.dataTables_length').removeClass('bs-select');
  }
