@@ -3,12 +3,9 @@ package br.com.tracevia.webapp.controller.sos;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -479,8 +476,7 @@ public class SOSReportsBean {
 			//Get external application contents
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = facesContext.getExternalContext();
-
-			SOSQueryModels models = new SOSQueryModels(); //QuerieReportsModel class
+		
 			SOSMainQueries sosModels = new SOSMainQueries(); // SOS MODEL QUERIE	    
 			QueryModelsBattery batteryModels = new QueryModelsBattery();   // SOS MODEL QUERIE	    
 			DateTimeApplication dta = new DateTimeApplication(); //DateTimeApsplication class
@@ -567,12 +563,9 @@ public class SOSReportsBean {
 			//JSON ARRAY DATA RANGE						
 			jsonArray = new String[getNumRegisters()][jsonFields.length];	
 			
-			//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
-			if(type.equals("2"))
-				query = BatteryQuery(type, batteryModels, sosModels, module);
-			
-			else query = CallQuery(type, models, sosModels, module);		
-			
+			//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO		
+			query = BatteryQuery(type, batteryModels, sosModels, module);
+							
 			//System.out.println(query);
 		  
 			//EXECUO DA QUERY
@@ -836,28 +829,7 @@ public class SOSReportsBean {
 		// SOS DATABASE METHODS
 		///////////////////////////////// 
 				
-		// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-		
-		/**
-		 * @author Wellington 20/08/2021
-		 * Método para criar montar uma query a ser executada 
-		 * @param models - Objeto do tipo QuerieReportsModels
-		 * @param mainQuery - Query principal a ser adicionada
-		 * @param index - Index a ser usada na query
-		 * @return
-		 */
-		
-		public String SOSCalls(SOSQueryModels models, String mainQuery, String index) {    	 
-
-			String query = null;
-
-			query = models.BuildSOSQueryBase(models.SOSCallsHeader(sosReport.getPeriod()), mainQuery, models.SOSCallsFromTable(), models.UseIndex(index),
-					models.WhereClauseSOSCalls(start, end, sosReport.getEquipment()),  models.SOSCallsQueryGroupAndOrderBy(sosReport.getPeriod()));
-			
-			return query;
-			
-		}		
-	  	
+		  	
 		// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 			public String SOSBattery(QueryModelsBattery models, String mainQuery, String index, String type) {    	 
@@ -873,23 +845,6 @@ public class SOSReportsBean {
 			  
 		// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	  
-		/**
-		 * Mtodo que retorna um query especfica de acordo com tipo
-		 * @param type - Tipo de especfico do relatrio
-		 * @param models - Objeto do tipo QueriesReportsModels
-		 * @param satModels - Objeto do tipo SatQueriesModels
-		 * @return query
-		 * @throws Exception 
-		 */
-			
-		public String CallQuery(String type, SOSQueryModels models, SOSMainQueries sosModel, String equip_type) throws Exception {   
-				
-			return  SOSCalls(models, sosModel.Statitictics(sosReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SOS);			
-			
-		}	  
-		
-		// -------------------------------------------------------------------------------------------------------------------------------------
-
 		/**
 		 * Mtodo que retorna um query especfica de acordo com tipo
 		 * @param type - Tipo de especfico do relatrio
@@ -931,27 +886,11 @@ public class SOSReportsBean {
 			fields = (String[]) externalContext.getSessionMap().get("fields");
 			fieldObjectValues =  (String[]) externalContext.getSessionMap().get("fieldsObject");
 
-			/**** COUNT VEHICLES ****/
-			if(type.equals("1")) {  
-
-				// STATUS
-				SOSStatisticBuilder();
-					 
-				// DRAW TABLE -- BUILD HEADER
-				drawTable(fields, fieldObjectValues);
-
-			}
-
-			/**** COUNT VEHICLES PERIOD ****/
-			if(type.equals("2")) {
-
 				// CHAMADA
 				SOSBatteryBuilder();
 
 				// DRAW TABLE -- BUILD HEADER
-				drawTable(fields, fieldObjectValues);
-
-			}  	 
+				drawTable(fields, fieldObjectValues); 
 		
 		} 
 
@@ -1019,22 +958,7 @@ public class SOSReportsBean {
 				model.StandardStyles(); //Set Style
 				model.StandardBorders(); // Set Borders
 								
-			// STATISTIC
-			if(type.equals("1")) {
-				
-				//Define fileName
-				fileName = localeLabel.getStringKey("sos_excel_file_name_statistic"); // File Name
-				String title = localeLabel.getStringKey("sos_excel_file_title_statistic"); // File Title
-				String sheetName = localeLabel.getStringKey("sos_excel_file_sheet_name_statistic"); // File sheetName
-							
-				//Chamada ao Mtodo padro do Excel
-				model.specialSOSReport(fields, getNumRegisters(), periodRange, daysCount, sosReport.getPeriod(), dta.currentTime(), type, module,  				  
-						RoadConcessionaire.externalImagePath, title, sheetName, equip, city, road, km, lanes, sosReport.getStartDate(), sosReport.getEndDate(), mergedCells, 
-						col, dateStartCell, dateEndCell, resultQuery);
-			
-			/**** COUNT VEHICLES PERIOD ****/
-			}else  if(type.equals("2")) {
-
+		
 				//Define fileName
 				fileName = localeLabel.getStringKey("sos_excel_file_name_battery"); // File Name
 				String title = localeLabel.getStringKey("sos_excel_file_title_battery"); // File Title
@@ -1042,8 +966,7 @@ public class SOSReportsBean {
 				model.StandardBatteryExcelModel(fields, getNumRegisters(), periodRange, daysCount, sosReport.getPeriod(), dta.currentTime(), type, module,  				  
 						RoadConcessionaire.externalImagePath, title, equip, city, road, km, lanes, sosReport.getStartDate(), sosReport.getEndDate(), mergedCells, 
 						col, dateStartCell, dateEndCell, resultQuery);
-			}
-
+			
 			//Define Values in session map !important
 			facesContext.getExternalContext().getSessionMap().put("xlsModel", model); 
 			facesContext.getExternalContext().getSessionMap().put("current", dta.currentTime());
@@ -1119,26 +1042,7 @@ public class SOSReportsBean {
 		// CONSTRUCTORS FOR RESULTLIST
 		/////////////////////////////////  
 				
-	   // SOS STATISTIC Builder
-		
-		public void SOSStatisticBuilder() {
-
-			for(int k = 0; k < getNumRegisters(); k++) {      
-
-				resultList.add(new SOSReports.Builder().date(resultQuery[k][0]) 
-						.time(resultQuery[k][1])						
-						.callReceivedAmount(resultQuery[k][2] == null? 0 : Integer.parseInt(resultQuery[k][2]))					
-						.callAnsweredAmount(resultQuery[k][3] == null? 0 : Integer.parseInt(resultQuery[k][3]))
-						.callEndedAmount(resultQuery[k][4] == null? 0 : Integer.parseInt(resultQuery[k][4]))
-						.callMissedAmount(resultQuery[k][5] == null? 0 : Integer.parseInt(resultQuery[k][5]))	
-						.callErrorAmount(resultQuery[k][6] == null? 0 : Integer.parseInt(resultQuery[k][6]))	
-						.callDuration(resultQuery[k][7] == null ? "00:00:00" : resultQuery[k][7]));						 			 
-			   } 
-		  }
-		
-		// -------------------------------------------------------------------------------------------------------------------------
-
-        // SOS BATTERY Builder
+		// SOS BATTERY Builder
 		
 		public void SOSBatteryBuilder() {
 

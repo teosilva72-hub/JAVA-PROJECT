@@ -1,6 +1,11 @@
 package br.com.tracevia.webapp.model.global;
 
-public class ReportsSelection {
+/**
+ * Esta classe destinada a contar variáveis que farão a conexão entre 
+ * frontend e o backend.
+ */
+
+public class ReportSelection {
 		
 	private String[] equipments;	
 	private String[] vehicles;	
@@ -13,28 +18,8 @@ public class ReportsSelection {
 	private String endDate;
 	private String year;
 	private String month;	
-	private String lanes;
-
 	
-	public ReportsSelection(String[] equipments, String[] vehicles, String[] directions, String[] axles,
-			String[] classes, String equipment, String period, String startDate, String endDate, String year,
-			String month, String lanes) {
-		
-		this.equipments = equipments;
-		this.vehicles = vehicles;
-		this.directions = directions;
-		this.axles = axles;
-		this.classes = classes;
-		this.equipment = equipment;
-		this.period = period;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.year = year;
-		this.month = month;
-		this.lanes = lanes;
-	}
-
-	public ReportsSelection() {}
+	public ReportSelection() {}
 
 
 	public String[] getEquipments() {
@@ -146,14 +131,5 @@ public class ReportsSelection {
 		this.month = month;
 	}
 
-
-	public String getLanes() {
-		return lanes;
-	}
-
-
-	public void setLanes(String lanes) {
-		this.lanes = lanes;
-	}
 	
 }

@@ -4282,6 +4282,77 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 		}
 
 		//--------------------------------------------------------------------------------------------------------------
+		
+		//--------------------------------------------------------------------------------------------------------------
+		
+				/**
+				 * Método para obter o nome de um equipamento
+				 * @author Wellington
+				 * @version 1.0
+				 * @since Release 1.0	
+				 * @param id - Equipamento ID
+				 * @param table - Table id	
+				 * @return String - Retorna o nome do equipamento
+				 */
+
+				public List<SOS> listSOStoXLS(String[] equips) throws Exception {
+
+					List<SOS> lista = new ArrayList<SOS>();
+								
+					try {
+
+						conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+						//CHECK
+						String select = "SELECT s.name, c.city_name, r.road_name, s.km FROM sos_equipment s " +
+							"INNER JOIN concessionaire_cities c ON c.city_id = s.city " +
+							"INNER JOIN concessionaire_roads r ON r.road_id = s.road " +
+							" WHERE equip_id IN(";
+						
+						String aux = "";
+						
+						for(int i = 0; i < equips.length; i++) {
+							aux += equips[i];
+										
+						if(equips[i] != equips[equips.length - 1])
+							aux +=", ";
+							
+						}
+						
+						aux += ")"; // CLOSE STATEMENT
+						
+						select += aux; // JOIN AUX VAR
+										 
+						ps = conn.prepareStatement(select);
+						
+						rs = ps.executeQuery();
+
+						if(rs.isBeforeFirst())
+							while(rs.next()) {
+								
+							SOS sos = new SOS();
+
+							 sos.setNome(rs.getString(1));
+							 sos.setCidade(rs.getString(2)); 
+							 sos.setEstrada(rs.getString(3)); 
+							 sos.setKm(rs.getString(4)); 							
+							 
+							 lista.add(sos);
+												
+							} 
+					}
+
+					catch (SQLException sqle) {
+						throw new Exception("Erro ao inserir dados " + sqle);        		    
+
+					} finally {
+						ConnectionFactory.closeConnection(conn, ps);
+					}
+
+					return lista;	
+				}
+
+		//--------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Método para definir tipo de faixas em um determinado equipamento SAT

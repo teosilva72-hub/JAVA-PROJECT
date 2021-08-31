@@ -271,11 +271,13 @@
 										
 			//Table Fields
 			 fields = new String[]{localeLabel.getStringKey("sos_report_column_date"), 	
-					 localeLabel.getStringKey("sos_report_column_type"),  localeLabel.getStringKey("sos_report_column_status"),
-					 localeLabel.getStringKey("sos_report_column_time_status")};
+					 localeLabel.getStringKey("sos_report_column_type"), 
+					 localeLabel.getStringKey("sos_report_column_opened"),
+					 localeLabel.getStringKey("sos_report_column_closed"),
+					 localeLabel.getStringKey("sos_report_column_time")};
 			
 			// Table Objects
-			 fieldObjectValues = new String[] {"date", "sosStatusType", "sosStatus", "sosStatusTime"};
+			 fieldObjectValues = new String[] {"date", "sosStatusType", "sosStatusOpened", "sosStatusClosed", "sosStatusTime"};
 									
 		  // -----------------------------------------------------------------------------
 									
@@ -373,7 +375,7 @@
 			
 			 String query = SOSAlarmRegister(models, sosModels.AlarmsStatus(sosReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SOS);
 			 
-			 System.out.println(query);
+			// System.out.println(query);
 			 		 
 			 resultList = dao.callAlarms(query);
 			 
@@ -387,8 +389,9 @@
 				 								
 					resultQuery[pos][0] = sos.getDate();
 					resultQuery[pos][1] = sos.getSosStatusType();
-					resultQuery[pos][2] = sos.getSosStatus();
-					resultQuery[pos][3] = sos.getSosStatusTime();
+					resultQuery[pos][2] = sos.getSosStatusOpened();
+					resultQuery[pos][3] = sos.getSosStatusClosed();				
+					resultQuery[pos][4] = sos.getSosStatusTime();
 							
 					pos++;
 												

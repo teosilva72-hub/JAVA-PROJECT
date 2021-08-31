@@ -32,6 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class ExcelModels {
@@ -5258,6 +5259,282 @@ public class ExcelModels {
 			}
 		}				
 	}
+	
+	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		public void StandardEquipSOSExcelModel(String[] columnsHeader, int registers, String[] name, int range, int daysCount, String period, String currentDate, String module, String logo, 
+				String fileTitle, String sheetName, List<SOS> sosList, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
+
+			dta = new DateTimeApplication(); // M�todos Date and Time	
+			tm = new TranslationMethods();
+			sheet = null;		
+			row = null;
+
+			int rowMax = 0;
+			int total = 0;
+			int registerLength = 0;
+			int sheetRows = 0;
+
+			int ini = 12;
+			int startColumn = 0;
+			int totalStartColumn = 2;
+			int rowIni = ini ;
+			int length = columnsHeader.length;
+			int cellMaxCol = (length - 1);
+			int cellMinCol = 0;
+			int colHeaderEnd = colStartDate - 1;
+
+			String intervalDate = "";
+
+			//Excel Cells - header 
+			headerCells = new Cell[length];
+			cellData = new Cell[registers][length];
+
+			if(period.equals("24 hours")) {
+
+				rowMax = (ini + registers); 
+				total = (rowMax + 1);			 
+				registerLength = registers;
+				cellMinCol = 3;
+			
+				intervalDate = localeExcel.getStringKey("excel_report_from")+": " + startDate+ "\n"+localeExcel.getStringKey("excel_report_to")+": " + endDate;
+				
+				sheet = workbook.createSheet(sheetName);	
+
+				//Imagem
+				spreadSheet.InsertExcelImage(workbook, sheet, logo, 0, 0, 2, 4, 1, 1, 1, 1, 1); // criar Imagem
+
+				// Criar Linhas
+				spreadSheet.createRows(sheet, row, 0, 4);
+
+				//Criar C�lulas
+				spreadSheet.createCells(sheet, row, 0, length, 0, 3);
+
+				//Mesclar C�lulas		
+				for(int i = 0; i < mergeCells.length; i++)
+					spreadSheet.mergeCells(sheet, mergeCells[i]);
+
+				//Largura das Colunas		
+				for(int i = 0; i < columnsWidth.length; i++)
+					spreadSheet.columnsWidth(sheet, i, columnsWidth[i]);
+							
+				//HEADER	
+
+				// Criar Linhas
+				spreadSheet.createRows(sheet, row, 0, 3);
+				spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
+
+				spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // T�tulo
+
+				spreadSheet.getCell(sheet, row, 0, colStartDate, intervalDate); // Per�odo
+
+				spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
+				spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
+
+				//Merge Cells
+				spreadSheet.mergeCells(sheet, "A6:B6");		
+				spreadSheet.mergeCells(sheet, "F6:H6");
+				spreadSheet.mergeCells(sheet, "I6:J6");
+
+				spreadSheet.createRow(sheet, row, 5);
+				spreadSheet.createCell(sheet, row, 5, 0, localeExcel.getStringKey("excel_report_consultation_equipment"));
+				spreadSheet.createCell(sheet, row, 5, 2, " --- ");
+				spreadSheet.createCell(sheet, row, 5, 5, localeExcel.getStringKey("excel_report_consultation_date"));
+				spreadSheet.createCell(sheet, row, 5, 8, " " + currentDate);
+
+				spreadSheet.setStyle(sheet, row, 5, boldRightAlignStyle, 0);
+				spreadSheet.setStyle(sheet, row, 5, boldRightAlignStyle, 5);
+				spreadSheet.setStyle(sheet, row, 5, centerAlignStyle, 2);
+				spreadSheet.setStyle(sheet, row, 5, leftAlignStyle, 8);
+
+				spreadSheet.createRow(sheet, row, 6);	
+				spreadSheet.createCell(sheet, row, 6, 1, localeExcel.getStringKey("excel_report_consultation_highway"));
+				spreadSheet.createCell(sheet, row, 6, 2, " --- " );
+				spreadSheet.createCell(sheet, row, 6, 7, localeExcel.getStringKey("excel_report_consultation_direction"));
+				spreadSheet.createCell(sheet, row, 6, 8, localeDirections.getStringKey("directions_all") );
+
+				spreadSheet.createRow(sheet, row, 6);	
+				spreadSheet.createCell(sheet, row, 6, 1, localeExcel.getStringKey("excel_report_consultation_city"));
+				spreadSheet.createCell(sheet, row, 6, 2, " --- " );
+				spreadSheet.createCell(sheet, row, 6, 7, localeExcel.getStringKey("excel_report_consultation_direction"));
+				spreadSheet.createCell(sheet, row, 6, 8, " --- " );
+
+				spreadSheet.setStyle(sheet, row, 6, boldCenterStyle, 1);
+				spreadSheet.setStyle(sheet, row, 6, boldCenterStyle, 7);
+				spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 2);
+				spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 8);
+
+				spreadSheet.createRow(sheet, row, 7);	
+				spreadSheet.createCell(sheet, row, 7, 1, localeExcel.getStringKey("excel_report_consultation_highway"));
+				spreadSheet.createCell(sheet, row, 7, 2, " --- " );
+				spreadSheet.createCell(sheet, row, 7, 7, localeExcel.getStringKey("excel_report_consultation_period"));
+				spreadSheet.createCell(sheet, row, 7, 8, tm.periodName(period));
+
+				spreadSheet.setStyle(sheet, row, 7, boldCenterStyle, 1);
+				spreadSheet.setStyle(sheet, row, 7, boldCenterStyle, 7);
+				spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 2);
+				spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 8);
+
+				spreadSheet.createRow(sheet, row, 8);	
+				spreadSheet.createCell(sheet, row, 8, 1, localeExcel.getStringKey("excel_report_consultation_km"));
+				spreadSheet.createCell(sheet, row, 8, 2, " --- " );
+
+				spreadSheet.setStyle(sheet, row, 8, boldCenterStyle, 1);
+				spreadSheet.setStyle(sheet, row, 8, centerAlignStyle, 2);
+
+				spreadSheet.createRow(sheet, row, 9);	
+				spreadSheet.createCell(sheet, row, 9, 1, localeExcel.getStringKey("excel_report_consultation_lanes"));
+				spreadSheet.createCell(sheet, row, 9, 2, " --- ");
+
+				spreadSheet.setStyle(sheet, row, 9, boldCenterStyle, 1);
+				spreadSheet.setStyle(sheet, row, 9, centerAlignStyle, 2);
+
+				//HEADER
+
+				// BODY
+				spreadSheet.createRow(sheet, row, 11);
+				spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
+				spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
+
+				spreadSheet.createRows(sheet, row, ini, total); // Criar o n�mero de linhas		
+
+				spreadSheet.fillDataEquipSingleSOSAmount(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength); // Preencher a colunas
+
+				spreadSheet.createCells(sheet, row, 0, length, rowMax, rowMax);			 
+				spreadSheet.getCell(sheet, row, rowMax, 0, localeExcel.getStringKey("excel_report_excel_total"));
+
+				spreadSheet.totalExcelEquip(sheet, row, period, totalStartColumn, (length-1), rowIni, rowMax);						
+				spreadSheet.totalExcelDateFormat(workbook, sheet, row, 8, rowIni, rowMax);	
+
+				spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 2); 
+				spreadSheet.setStyle(sheet, row, rowMax, rowMax, tableHeaderStyle, 0, 0);
+				spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol-1);	
+				spreadSheet.setStyle(sheet, row, ini, rowMax-1, standardStyle, cellMaxCol, cellMaxCol);    
+
+				// BODY
+
+			}else {
+
+				sheetRows = (daysCount * range);
+				rowMax = (ini + sheetRows); 
+				total = (rowMax + 1);			  
+				registerLength = sheetRows;
+				cellMinCol = 3;
+								
+				
+				for(int d = 0; d < name.length; d++) {
+
+					//SheetName
+					String sheetName_ = String.valueOf(name[d]); // Cria��o das tabs
+					sheet = workbook.createSheet(sheetName_);	
+
+					//Imagem
+					spreadSheet.InsertExcelImage(workbook, sheet, logo, 0, 0, 2, 4, 1, 1, 1, 1, 1); // criar Imagem
+
+					// Criar Linhas
+					spreadSheet.createRows(sheet, row, 0, 4);
+
+					//Criar C�lulas
+					spreadSheet.createCells(sheet, row, 0, length, 0, 3);
+
+					//Mesclar C�lulas		
+					for(int i = 0; i < mergeCells.length; i++)
+						spreadSheet.mergeCells(sheet, mergeCells[i]);
+
+					//Largura das Colunas		
+					for(int i = 0; i < columnsWidth.length; i++)
+						spreadSheet.columnsWidth(sheet, i, columnsWidth[i]);
+
+					//HEADER	
+
+					// Criar Linhas
+					spreadSheet.createRows(sheet, row, 0, 3);
+					spreadSheet.createCells(sheet, row, 0, colEndDate, 0, 3);
+
+					spreadSheet.getCell(sheet, row, 0, 2,  fileTitle); // T�tulo
+
+					spreadSheet.getCell(sheet, row, 0, colStartDate, localeExcel.getStringKey("excel_report_from")+": " + startDate+ DateTimeApplication.HOUR_TIME_FORMAT_START_DATE +
+							"\n"+localeExcel.getStringKey("excel_report_to")+": " + endDate + DateTimeApplication.HOUR_TIME_FORMAT_END_DATE); // Per�odo
+
+					spreadSheet.setStyle(sheet, row, 0, 3, headerStyle, 0, colHeaderEnd); //Aplicar Borda - Header
+					spreadSheet.setStyle(sheet, row, 0, 3, datePeriodStyle, colStartDate, colEndDate); //Aplicar Borda - Header
+
+					//Merge Cells
+					spreadSheet.mergeCells(sheet, "A6:B6");
+					spreadSheet.mergeCells(sheet, "C7:D7");	
+					spreadSheet.mergeCells(sheet, "F6:H6");
+					spreadSheet.mergeCells(sheet, "I6:J6");
+
+					spreadSheet.createRow(sheet, row, 5);
+					spreadSheet.createCell(sheet, row, 5, 0, localeExcel.getStringKey("excel_report_consultation_equipment"));
+					spreadSheet.createCell(sheet, row, 5, 2, sosList.get(d).getNome());
+					spreadSheet.createCell(sheet, row, 5, 5, localeExcel.getStringKey("excel_report_consultation_date"));
+					spreadSheet.createCell(sheet, row, 5, 8, " " + currentDate);
+
+					spreadSheet.setStyle(sheet, row, 5, boldRightAlignStyle, 0);
+					spreadSheet.setStyle(sheet, row, 5, boldRightAlignStyle, 5);
+					spreadSheet.setStyle(sheet, row, 5, centerAlignStyle, 2);
+					spreadSheet.setStyle(sheet, row, 5, leftAlignStyle, 8);
+
+					spreadSheet.createRow(sheet, row, 6);	
+					spreadSheet.createCell(sheet, row, 6, 1, localeExcel.getStringKey("excel_report_consultation_city"));
+					spreadSheet.createCell(sheet, row, 6, 2, sosList.get(d).getCidade() );
+					spreadSheet.createCell(sheet, row, 6, 7, localeExcel.getStringKey("excel_report_consultation_direction"));
+					spreadSheet.createCell(sheet, row, 6, 8, localeDirections.getStringKey("directions_all") );
+
+					spreadSheet.setStyle(sheet, row, 6,  boldCenterStyle, 1);
+					spreadSheet.setStyle(sheet, row, 6,  boldCenterStyle, 7);
+					spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 2);
+					spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 8);
+
+					spreadSheet.createRow(sheet, row, 7);	
+					spreadSheet.createCell(sheet, row, 7, 1, localeExcel.getStringKey("excel_report_consultation_highway"));
+					spreadSheet.createCell(sheet, row, 7, 2, sosList.get(d).getEstrada() );
+					spreadSheet.createCell(sheet, row, 7, 7, localeExcel.getStringKey("excel_report_consultation_period"));
+					spreadSheet.createCell(sheet, row, 7, 8, tm.periodName(period));
+
+					spreadSheet.setStyle(sheet, row, 7,  boldCenterStyle, 1);
+					spreadSheet.setStyle(sheet, row, 7,  boldCenterStyle, 7);
+					spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 2);
+					spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 8);
+
+					spreadSheet.createRow(sheet, row, 8);	
+					spreadSheet.createCell(sheet, row, 8, 1, localeExcel.getStringKey("excel_report_consultation_km"));
+					spreadSheet.createCell(sheet, row, 8, 2, sosList.get(d).getKm() );
+
+					spreadSheet.setStyle(sheet, row, 8,  boldCenterStyle, 1);
+					spreadSheet.setStyle(sheet, row, 8, centerAlignStyle, 2);
+					
+					//HEADER
+
+					// BODY
+					spreadSheet.createRow(sheet, row, 11);
+					spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
+					spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
+
+					spreadSheet.createRows(sheet, row, ini, total); // Criar o n�mero de linhas		
+
+					spreadSheet.fillDataEquipRangeSOSAmount(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registerLength, d, sheetRows); // Preencher a colunas
+
+					spreadSheet.createCells(sheet, row, 0, length, rowMax, rowMax);			 
+					spreadSheet.getCell(sheet, row, rowMax, 0, localeExcel.getStringKey("excel_report_excel_total"));
+
+					spreadSheet.totalExcelEquip(sheet, row, period, totalStartColumn, length, rowIni, rowMax);	  
+					spreadSheet.totalExcelDateFormat(workbook, sheet, row, 8, rowIni, rowMax);	
+
+					spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 2); 
+					spreadSheet.setStyle(sheet, row, rowMax, rowMax, tableHeaderStyle, 0, 0);
+					spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol-1);	
+					spreadSheet.setStyle(sheet, row, ini, rowMax-1, standardStyle, cellMaxCol, cellMaxCol);    
+
+					// BODY
+
+				}
+			}				
+		}
+		
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
 	
 	
 }

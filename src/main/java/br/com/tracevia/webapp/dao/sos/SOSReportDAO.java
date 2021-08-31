@@ -94,16 +94,11 @@ public class SOSReportDAO {
 					else sos.setSosStatusType(label.getStringKey("sos_type_name_bottom_door"));
 					
 					// ------------------------------------------------------------------------------
-					
-					if(rs.getString(3).equals("OPEN"))				
-					    sos.setSosStatus(label.getStringKey("sos_status_name_door_open"));
-					
-					else sos.setSosStatus(label.getStringKey("sos_status_name_door_closed"));
-					
-					// ------------------------------------------------------------------------------
-					
-					sos.setSosStatusTime(rs.getString(4));
-					
+												
+					 sos.setSosStatusOpened(rs.getString(3));					
+					 sos.setSosStatusClosed(rs.getString(4)); 	
+					 sos.setSosStatusTime(rs.getString(5)); 
+								
 					// ------------------------------------------------------------------------------
 								
 					lista.add(sos);		

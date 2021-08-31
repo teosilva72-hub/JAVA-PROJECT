@@ -142,32 +142,35 @@ public class OCRDAO{
 	}
 	
 	public String findVehicleImage(OCR data) {
+		
+		String path = "";
 						
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
-		
-		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
-		
-		else ftpFolder += nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
 				
-		return ftpFolder;	 					
+		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
+		    path =  ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
 		
+		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
+					
+		return path;
+				
 	}
 	
 	public String findPlateImage(OCR data) {			
 	
+		String path = "";
 		String dateVeh = formataDados(data.getDataHour());
 		String subFolder = dateVeh.substring(0, 8);		
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 				
 		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-			ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+		  path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
 		
-		else ftpFolder += nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
-				
-		return ftpFolder;				
+		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
+							
+		return path;			
 		
 	}
 	
