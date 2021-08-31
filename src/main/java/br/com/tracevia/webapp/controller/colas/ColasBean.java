@@ -49,7 +49,32 @@ public class ColasBean {
 	public List<ColasQueue> queues;
 	public ColasQueue queue;
 	private String logo;
-
+	private String Toll, Lane, Date, Waiting_time;
+	
+	public String getToll() {
+		return Toll;
+	}
+	public void setToll(String toll) {
+		Toll = toll;
+	}
+	public String getLane() {
+		return Lane;
+	}
+	public void setLane(String lane) {
+		Lane = lane;
+	}
+	public String getDate() {
+		return Date;
+	}
+	public void setDate(String date) {
+		Date = date;
+	}
+	public String getWaiting_time() {
+		return Waiting_time;
+	}
+	public void setWaiting_time(String waiting_time) {
+		Waiting_time = waiting_time;
+	}
 	public String getLogo() {
 		try {
 
@@ -71,7 +96,14 @@ public class ColasBean {
 	public List<ColasQueue> getQueues() {
 		return queues;
 	}
-
+	private String teste;
+	
+	public String getTeste() {
+		return teste;
+	}
+	public void setTeste(String teste) {
+		this.teste = teste;
+	}
 	@PostConstruct
 	public void initalize() {
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,11 +122,40 @@ public class ColasBean {
 		ColasDAO dao = new ColasDAO();
 		
 		try {
-			queues = dao.history_queue(date);
+			queues = dao.history_queue(date, 0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void getQueueFiltered() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+		String date = params.get("dateSearch");
+		String lane = params.get("laneSearch");
+		// String channel = params.get("channelSearch");
+
+		ColasDAO dao = new ColasDAO();
+
+		try {
+			queues = dao.history_queue(date.isEmpty() ? date_formatter.format(new Date()) : date, Integer.parseInt(lane));
+		} catch (IOException e) {
+			queues = new ArrayList<>();
+			
+			e.printStackTrace();
+		} catch (ParseException e) {
+			queues = new ArrayList<>();
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void pdf() {
