@@ -58,11 +58,11 @@
 	 
 	 <!---->
 	 
-	 <h:dataTable id="vehicle-speed-table" value="#{prototipoBean.resultList}" var="speed" autocomplete="off"				               
+	 <h:dataTable id="vehicle-speed-table" value="#{prototipoBean.build.resultList}" var="speed" autocomplete="off"				               
      styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%"	
      headerClass="custom-table-header" > <!-- DATATABALE JSF -->
      
-         <c:forEach items="#{prototipoBean.columns}" var="header" varStatus="loop"> <!-- LOOP TAG -->
+         <c:forEach items="#{prototipoBean.build.columns}" var="header" varStatus="loop"> <!-- LOOP TAG -->
             <h:column> <!-- COLUMN -->
               <f:facet name ="header">#{header.field}</f:facet> <!-- HEADER -->
               <h:outputText value="#{speed[header.value]}" /> <!-- VALUE -->
@@ -167,7 +167,7 @@
 							   <!---->
 							     <option value="">#{reportsLabels.reports_select_equipments}</option> <!-- DEFAULT OPTION -->
 							     <!---->
-									<ui:repeat var="eqp" value="#{prototipoBean.select.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
+									<ui:repeat var="eqp" value="#{prototipoBean.build.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
 									<!---->
 									  <option value="#{eqp.value}">#{eqp.label}</option> <!-- OPTIONS -->
 									<!---->
@@ -193,7 +193,7 @@
 								 <!---->
 								 <option value="">#{reportsLabels.reports_select_periods}</option> <!-- DEFAULT OPTION -->
 								  <!---->
-								  <ui:repeat var="per" value="#{prototipoBean.select.periods}" varStatus="perStatus"> <!-- LOOP -->
+								  <ui:repeat var="per" value="#{prototipoBean.build.periods}" varStatus="perStatus"> <!-- LOOP -->
 									<!---->
 									 <option value="#{per.value}">#{per.label}</option> <!-- OPTIONS -->
 									<!---->

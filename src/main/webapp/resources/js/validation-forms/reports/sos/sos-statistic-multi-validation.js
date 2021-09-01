@@ -26,8 +26,8 @@ $(function () {
    //Date Validation
    maxDateCheck('#dateStart', '#dateEnd', '#dateEnd-error', maxDateMsg);
    greaterThanEndDate('#dateStart', '#dateEnd', '#dateEnd-error', greatherThanMsg);
-
-    validationTemplate2('#report-form', '#dateStart', requiredEquipmentsMsg, requiredVehiclesMsg,
+        
+    validationTemplate7('#report-form', '#dateStart', requiredEquipmentsMsg, 
         requiredPeriodsMsg, requiredDateStartMsg, requiredDateEndMsg, requiredValidDateMsg);
 
     //Validate on change value

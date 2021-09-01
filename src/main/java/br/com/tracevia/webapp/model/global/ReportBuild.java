@@ -1,62 +1,62 @@
 package br.com.tracevia.webapp.model.global;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.context.RequestContext;
-
 import com.google.gson.Gson;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
-import br.com.tracevia.webapp.dao.global.GlobalReportsDAO;
-import br.com.tracevia.webapp.dao.sat.SatQueriesModels;
-import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.ExcelModels;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.sat.SatReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.QueriesReportsModels;
 
 public class ReportBuild {
 
 	// Lists
-	private List<SelectItem> equipments;  
-	private List<SelectItem> months;  
-	private List<SelectItem> years;	
-	private List<SelectItem> periods;  
-	private List<ColumnModel> columns;  
-	private List<Builder> resultList;		
-	private List<String> header;  
+	public List<SelectItem> equipments;  
+	public List<SelectItem> items;  
+	public List<SelectItem> years;	
+	public List<SelectItem> periods;  
+	public List<SelectItem> classes;  
+	public List<SelectItem> axles;  
+	public List<SelectItem> vehiclesCCR;  
+	public List<SelectItem> vehicles;  
+	public List<ColumnModel> columns;  
+	public List<Builder> resultList;		
+	public List<String> header;  
+
 
 	// Date Format 
-	private final String dateFormat = "dd/MM/yyyy";
-	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
+	public final String dateFormat = "dd/MM/yyyy";
+	public final String datetimeFormat = "dd/MM/yyyy HH:mm";
 			
 	// Registers of an array
-	private static int numRegisters;	
+	public static int numRegisters;	
 
 	// Fields number of an array
-	private static int fieldsNumber;	
+	public static int fieldsNumber;	
 		
 	// Interval
-    private int breakTime;
+    public int breakTime;
     
     // Interval Index to increment
-    private int breakTimeIndex;
+    public int breakTimeIndex;
     
     // Days Count Interval
-    private int daysCount;
+    public int daysCount;
     
     // For Reports Columns
-    private String[] fields;   
-    private String[] fieldObjectValues;
-    private String[] fieldsAux;
-    private String[] fieldObjAux; 
+    public String[] fields;   
+    public String[] fieldObjectValues;
+    public String[] fieldsAux;
+    public String[] fieldObjAux; 
     
     // JSON FIELDS
     public String[][] jsonArray;
@@ -69,216 +69,76 @@ public class ReportBuild {
  	public Gson gson;
     
 	// JSON Attributes
-	private String jsColumn;
-	private String jsData;
-	private String jsChartTitle;
-	private String jsImageName;
-	private String fileName;
-	private String currentDate;
+	public String jsColumn;
+	public String jsData;
+	public String jsChartTitle;
+	public String jsImageName;
+	public String fileName;
+	public String currentDate;
 	
 	// Variáveis para habilitar botões
-	private boolean clearBool;
-	private boolean excelBool;
-	private boolean chartBool;
+	public boolean clearBool;
+	public boolean excelBool;
+	public boolean chartBool;
 	
 	// Query
-	private String query;
+	public String query;
 	
 	// JSON for table 
-	private String jsTableId;
-	private String jsTableScrollHeight;
+	public String jsTableId;
+	public  String jsTableScrollHeight;
 	
 	// Locale
-	public LocaleUtil localeLabel; 
-	LocaleUtil localeLabelPeriods;
-	LocaleUtil localeLabelCharts;
-	LocaleUtil localeLabelExcel; 
-	LocaleUtil localeLabelReports; 
-	LocaleUtil localeMessage; 
+	public LocaleUtil localeLabels; 
+	public LocaleUtil localeMessages; 
+	public LocaleUtil localeLabelSelectItems;
+	public LocaleUtil localeLabelCharts;	
+	public LocaleUtil localeLabelExcel; 
+	public LocaleUtil localeLabelReports; 
 	
-	// Equipment DAO Class
-	EquipmentsDAO equipDAO;
+	// Equipment DAO
+	public EquipmentsDAO equipDAO;
 	
-	// TESTE
-	ExcelModels model;
+	// Excel Method
+	public ExcelModels model;
 	
-	// Builder
-	public ReportBuild() {}
-	
-	public List<SelectItem> getEquipments() {
-		return equipments;
-	}
-	
-	public List<SelectItem> getMonths() {
-		return months;
-	}
-	
-	public List<SelectItem> getYears() {
-		return years;
-	}
-	
-	public List<SelectItem> getPeriods() {
-		return periods;
-	}
-	
-	public List<ColumnModel> getColumns() {
-		return columns;
-	}
-	
-	public List<Builder> getResultList() {
-		return resultList;
-	}
-	
-	public List<String> getHeader() {
-		return header;
-	}
-	
-	public static int getNumRegisters() {
-		return numRegisters;
-	}
-	public static void setNumRegisters(int numRegisters) {
-		ReportBuild.numRegisters = numRegisters;
-	}
-	public static int getFieldsNumber() {
-		return fieldsNumber;
-	}
-	public static void setFieldsNumber(int fieldsNumber) {
-		ReportBuild.fieldsNumber = fieldsNumber;
-	}
-	public int getBreakTime() {
-		return breakTime;
-	}
-	public void setBreakTime(int breakTime) {
-		this.breakTime = breakTime;
-	}
-	public int getBreakTimeIndex() {
-		return breakTimeIndex;
-	}
-	public void setBreakTimeIndex(int breakTimeIndex) {
-		this.breakTimeIndex = breakTimeIndex;
-	}
-	
-	public String[] getFields() {
-		return fields;
-	}
-	
-	public void setFields(String[] fields) {
-		this.fields = fields;
-	}
-
-	public String[] getFieldObjectValues() {
-		return fieldObjectValues;
-	}
-	public void setFieldObjectValues(String[] fieldObjectValues) {
-		this.fieldObjectValues = fieldObjectValues;
-	}
-	public String[] getFieldsAux() {
-		return fieldsAux;
-	}
-	public void setFieldsAux(String[] fieldsAux) {
-		this.fieldsAux = fieldsAux;
-	}
-	public String[] getFieldObjAux() {
-		return fieldObjAux;
-	}
-	public void setFieldObjAux(String[] fieldObjAux) {
-		this.fieldObjAux = fieldObjAux;
-	}
-	
-	public String getJsColumn() {
-		return jsColumn;
-	}
-	public void setJsColumn(String jsColumn) {
-		this.jsColumn = jsColumn;
-	}
-	public String getJsData() {
-		return jsData;
-	}
-	public void setJsData(String jsData) {
-		this.jsData = jsData;
-	}
-	public String getJsChartTitle() {
-		return jsChartTitle;
-	}
-	public void setJsChartTitle(String jsChartTitle) {
-		this.jsChartTitle = jsChartTitle;
-	}
-	public String getJsImageName() {
-		return jsImageName;
-	}
-	public void setJsImageName(String jsImageName) {
-		this.jsImageName = jsImageName;
-	}
-	public boolean isClearBool() {
-		return clearBool;
-	}
-	public void setClearBool(boolean clearBool) {
-		this.clearBool = clearBool;
-	}
-	public boolean isExcelBool() {
-		return excelBool;
-	}
-	public void setExcelBool(boolean excelBool) {
-		this.excelBool = excelBool;
-	}
-	public boolean isChartBool() {
-		return chartBool;
-	}
-	public void setChartBool(boolean chartBool) {
-		this.chartBool = chartBool;
-	}
-	public String getQuery() {
-		return query;
-	}
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	public String getJsTableId() {
-		return jsTableId;
-	}
-	public void setJsTableId(String jsTableId) {
-		this.jsTableId = jsTableId;
-	}
-	public String getJsTableScrollHeight() {
-		return jsTableScrollHeight;
-	}
-	public void setJsTableScrollHeight(String jsTableScrollHeight) {
-		this.jsTableScrollHeight = jsTableScrollHeight;
-	}
-	public String getDateFormat() {
-		return dateFormat;
-	}
-	public String getDatetimeFormat() {
-		return datetimeFormat;
-	}	
-	
-	public int getDaysCount() {
-		return daysCount;
-	}
-
-	public void setDaysCount(int daysCount) {
-		this.daysCount = daysCount;
-	}
+	// Construtor
+	public ReportBuild() {
+				
+		localeLabelSelectItems = new LocaleUtil();	
+		localeLabelSelectItems.getResourceBundle(LocaleUtil.LABELS_SELECTION_ITEM);
 		
+	}
+			
 	// ----------------------------------------------------------------------------------------------------------------------
 		
 	/**
-	 * Método para criar o cabeçalho dos relatórios
-	 * @param field - Nome dos campos
-	 * @param objectValue - Objeto de cada campo
+	 * Método para desenhar as colunas de uma tabela
+	 * @author Wellington
+	 * @version 1.0
+	 * @since version 1.0
+	 * @param field - Array contendo os nomes de cada campo
+	 * @param objectValue - Array contendo o valor do objeto para cada campo
+	 * @return - vazio
 	 */
+	
 	public void drawTable(String[] field, String[] objectValue) {
 
 		columns = new ArrayList<ColumnModel>();
 
 		for(int i = 0; i < field.length; i++)
-			columns.add(new ColumnModel(field[i], objectValue[i]));		
-
+			columns.add(new ColumnModel(field[i], objectValue[i]));	
 	}
 	
-	// ----------------------------------------------------------------------------------------------------------------------
-	
-	   // Download File Method
+	 // ----------------------------------------------------------------------------------------------------------------------
+		  
+	 /**
+	  * Método para realizar o download de um arquivo formato .xls
+	  * @author Wellington
+	  * @version 1.0 
+	  * @since version 1.0
+	  * @return - vazio
+	  */
 		public void download() {
 
 			FacesContext facesContext = FacesContext.getCurrentInstance();	
@@ -298,440 +158,373 @@ public class ReportBuild {
 				e.printStackTrace();
 			}
 			
-			finally {
-				
-				//externalContext.getSessionMap().remove("xlsModel");
-				//externalContext.getSessionMap().remove("current");
-				//externalContext.getSessionMap().remove("fileName");					
-			}
-
 		}   
 		
-	// ----------------------------------------------------------------------------------------------------------------------
+		// ----------------------------------------------------------------------------------------------------------------------
 		
-		public void GetReports(String type, ReportSelection selection) throws Exception{
-						
-			// RESET ON RESTART
-		    // resetFormValues(type);
-			
-			// --------------------------------------------------------------------------------------------------------------
+		 /**
+		  * Método para realizar o download de um arquivo formato .txt
+		  * @author Wellington
+		  * @version 1.0
+		  * @since version 1.0
+		  * @return - vazio
+		  */
+		public void downloadTextFile() throws Exception {
 
-			// GET EXTERNAL CONTENT
+			FacesContext facesContext = FacesContext.getCurrentInstance();	
+			ExternalContext externalContext = facesContext.getExternalContext();
+
+			TranslationMethods tm = new TranslationMethods();
+
+			//Get Site information
+			String siteID = (String) externalContext.getSessionMap().get("selectedEquip");
+			String month = (String) String.valueOf(externalContext.getSessionMap().get("selectedMonth"));
+			String year = (String) String.valueOf(externalContext.getSessionMap().get("selectedYear"));    
+			
+			byte[] bytes = (byte[]) externalContext.getSessionMap().get("bytes");
+			
+				EquipmentsDAO dao = new EquipmentsDAO();
+
+				String siteName = dao.EquipmentName("sat", siteID);
+
+				externalContext.setResponseContentType("text/plain");
+				externalContext.setResponseHeader("Content-Disposition",
+						"attachment; filename=\"VBV_"+siteName+"_"+tm.MonthAbbreviation(month)+"_"+tm.YearAbbreviation(year)+".txt\"");
+
+				OutputStream responseOutputStream = externalContext.getResponseOutputStream();
+
+				responseOutputStream.write(bytes);
+				responseOutputStream.flush();
+				responseOutputStream.close();
+
+				facesContext.responseComplete(); 	
+		
+		}
+
+		// ----------------------------------------------------------------------------------------------------------------------
+			
+		 /**
+		  * Método para limpar valores da sessão do relatório
+		  * @author Wellington
+		  * @version 1.0
+		  * @since version 1.0
+		  * @return - vazio
+		  */
+		public void resetReportValues() {
+			
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			ExternalContext externalContext = facesContext.getExternalContext();
-			SatQueriesModels satModels = new SatQueriesModels(); // SatReportsModel class	    
-			QueriesReportsModels models = new QueriesReportsModels(); // QUERY MODEL CLASS		
-			DateTimeApplication dta = new DateTimeApplication(); // DATETIME APPLICATION CLASS
-
-			GlobalReportsDAO dao = new GlobalReportsDAO();	// GLOBAL REPORTS DAO					
-					
-			String startDate = null, endDate = null, data_anterior = null, equip_anterior = null; // STRING AUX VARS
-						
-			// --------------------------------------------------------------------------------------------------------------
 			
-			// MAP REQUEST VARS
-			
-			// GET REQUEST VALUES FOR MULTIPLE SELECTION FIELDS
-			Map<String, String[]> parameterMap = (Map<String, String[]>) externalContext.getRequestParameterValuesMap();
-
-			// GET REQUEST VALUE FOR SINGLE SELECTION FIELD
-			Map<String, String> parameterMap2 = (Map<String, String>) externalContext.getRequestParameterMap();
-			
-			// ----------------------------------------------------------------------------------------------------------------			
-			// PARAMS			
-			// ----------------------------------------------------------------------------------------------------------------
-
-			// MULTIPLE PARAMS
-			
-			// EQUIPMENTS
-			selection.setEquipments(parameterMap.get("equips"));
-
-			// VEHICLES
-			selection.setVehicles(parameterMap.get("vehicles"));
-
-			// AXLES
-			selection.setAxles(parameterMap.get("axles"));
-
-			// CLASSES
-			selection.setClasses(parameterMap.get("classes"));
-
-			// ----------------------------------------------------------------------------------------------------------------
-
-			// SINGLE PARAMS
-
-			// EQUIPMENT
-			selection.setEquipment(parameterMap2.get("equip"));
-
-			// DATE START
-			selection.setStartDate(parameterMap2.get("dateStart"));
-
-			// DATE END
-			selection.setEndDate(parameterMap2.get("dateEnd"));
-
-			// PERIODS
-			selection.setPeriod(parameterMap2.get("periods"));
-
-			// MONTH
-			selection.setMonth(parameterMap2.get("month"));
-
-			// YEAR
-			selection.setYear(parameterMap2.get("year"));
-			
-			// TABLE ID
-			jsTableId = parameterMap2.get("jsTable");
-			
-			// TABLE SCROLL HEIGHT
-			jsTableScrollHeight = parameterMap2.get("jsTableScrollHeight");
-
-			// ----------------------------------------------------------------------------------------------------------------
-			// PARAMS			
-			// ----------------------------------------------------------------------------------------------------------------
-			// ----------------------------------------------------------------------------------------------------------------			
-			// PROCESS DATA			
-			// ----------------------------------------------------------------------------------------------------------------
-			
-			// LIST TO SHOW DATA
-			resultList = new ArrayList<Builder>();	
-							
-			// INITIALIZE NUMBER OF REGISTERS TO FILL ARRAY TWO-DIMENSIONAL
-			int numRegisters = 0;								
-			
-			// ----------------------------------------------------------------------------------------------------------------
-
-			 // RETORNA NÚMERO DE REGISTROS CALCULADOS PELO PERIODO E AS DATAS SELECIONADAS	
-			 numRegisters = dta.RegistersNumbers(selection.getStartDate(), selection.getEndDate(), selection.getPeriod()); 
-				
-			// ----------------------------------------------------------------------------------------------------------------
-										
-			// CONTAGEM DOS NÚMERO DE DIAS - SELECIONADO A PARTIR DA DATA DE INICIO COM A DATA DE FIM			 
-			if(selection.getStartDate() != null && selection.getEndDate() != null)
-				 daysCount = ((int) dta.diferencaDias(selection.getStartDate(), selection.getEndDate()) + 1);
-
-				// INTERVALO POR PERIODO
-				breakTimeIndex = dta.periodsRange(selection.getPeriod()); // INDICE 
-				breakTime = breakTimeIndex; // INCREMENTO
-								
-			   // DATA DE INICIO - FORMATO DATABASE				
-			   startDate = dta.StringDBDateFormat(selection.getStartDate());
-			   // DATA DE FIM - FORMATO DATABASE		
-			   endDate = dta.StringDBDateFormat(selection.getEndDate());			   
-			   //DATA ANTERIOR
-			   data_anterior = startDate;
-														
-			  //start = dta.DateTimeToStringIni(startDate); 
-			   //end = dta.DateTimeToStringFim(endDate); 
-					
-			resultQuery = new String[getNumRegisters()][getFieldsNumber()];	
-			
-			//JSON ARRAY DATA RANGE					
-			jsonArray = new String[getNumRegisters()][jsonFields.length];	
-			
-			//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
-		//	query = SelectQueryType(type, models, satModels);
-			
-			System.out.println(query); //debug
-
-			//EXECUO DA QUERY
-			String[][] auxResult = dao.ExecuteQuery(query, getNumRegisters(), getFieldsNumber());
-			
-			//CASO EXISTA REGISTROS ENTRA AQUI
-			if(auxResult.length > 0) {
-			
-			//// NEW METHOD		
-			int minuto = 0;
-			int iterator= 0;
-			int pos = 0;
-			int hr = 0;
-	 		
-			int lin = 0;
-			int col = 0;
-			int p = 0;	
-			int inc = 0;
-					
-			lin = auxResult.length;
-			col = auxResult[0].length;
-					
-			//DATAS
-			dta.preencherDataPorPeriodo(resultQuery, 0, getNumRegisters(),  breakTimeIndex, startDate); 
-			
-			//JSON DATA
-			if(!type.equals("8") && !type.equals("11"))
-			   dta.preencherJSONDataPorPeriodo(jsonArray, 0, getNumRegisters(),  breakTimeIndex, startDate); 
-			
-			//PERIODOS
-			//NEW
-			if(selection.getPeriod().equals("05 minutes")) {			
-				 dta.intervalo05Minutos(resultQuery, 1, getNumRegisters());	
-				 
-				 if(!type.equals("8") && !type.equals("11"))
-				 dta.intervaloJSON05Minutos(jsonArray, 0, getNumRegisters());				 
-			}
-						
-			if(selection.getPeriod().equals("06 minutes"))	{		
-			     dta.intervalo06Minutos(resultQuery, 1, getNumRegisters());
-			     
-			     if(!type.equals("8") && !type.equals("11"))
-			     dta.intervaloJSON06Minutos(jsonArray, 0, getNumRegisters());			
-			}
-			
-			if(selection.getPeriod().equals("10 minutes")) {		
-				dta.intervalo10Minutos(resultQuery, 1, getNumRegisters());
-				
-				if(!type.equals("8") && !type.equals("11"))
-				dta.intervaloJSON10Minutos(jsonArray, 0, getNumRegisters());	
-			}
-			   			
-			if(selection.getPeriod().equals("15 minutes"))	{	
-			    dta.intervalo15Minutos(resultQuery, 1, getNumRegisters());	
-			    
-			    if(!type.equals("8") && !type.equals("11"))
-			    dta.intervaloJSON15Minutos(jsonArray, 0, getNumRegisters());	
-			}
-			
-			if(selection.getPeriod().equals("30 minutes"))	{	
-				dta.intervalo30Min(resultQuery, 1, getNumRegisters());	
-				
-				if(!type.equals("8") && !type.equals("11"))
-			    dta.intervaloJSON30Minutos(jsonArray, 0, getNumRegisters());	
-			}
-				   		        			
-			if(selection.getPeriod().equals("01 hour")) { 	
-				dta.preencherHora(resultQuery, 1, getNumRegisters());
-				
-				if(!type.equals("8") && !type.equals("11"))
-				dta.intervaloJSON01Hora(jsonArray, 0, getNumRegisters());	
-			}
-			
-			if(selection.getPeriod().equals("06 hours")) {	
-			    dta.intervalo06Horas(resultQuery, 1, getNumRegisters());
-			    
-			    if(!type.equals("8") && !type.equals("11"))
-			    dta.intervaloJSON06Horas(jsonArray, 0, getNumRegisters());	
-			}
-			
-			 if(selection.getPeriod().equals("24 hours")) {
-			    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());	 
-										
-			 }
-			 						   			 
-			for(int j = 0; j < lin; j++) {
-			   for(int i = 0; i < col; i++) {
-			
-			// CASO NO EXISTA VALOR >>>>>>> PASSA	   
-			if(auxResult[j][0] != null)	 {  
-						
-			if(selection.getPeriod().equals("01 hour") || selection.getPeriod().equals("06 hours"))
-				   hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
-						
-			else if(!selection.getPeriod().equals("24 hours") && !selection.getPeriod().equals("01 hour") && !selection.getPeriod().equals("06 hours")) {
-				    hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
-				    minuto =  Integer.parseInt(auxResult[j][1].substring(3, 5));	
-				    			 
-				}	
-			
-			  if(type.equals("8") || type.equals("11")) {
-			
-			      // ------------------------------------------------------------------------------------ 
-			      // TODA VEZ QUE FOR REALIZADA A LEITURA DE UM REGISTRO DO BANCO DE DADOS
-			      // VERIFICA SE O REGISTRO É DIFERENTE DA DATA ANTERIOR		     
-				
-				 if (!auxResult[j][0].equals(data_anterior)) {								
-												
-				    // CASO SEJA DIFERENTE PEGA-SE A DIFERENÇA DE DIAS
-				    // DATA ANTERIOR, DATA QUE VEM DA BASE DE DADOS E INTERVALO DO PERIODO
-				    iterator = dta.daysDifference(data_anterior, auxResult[j][0], breakTimeIndex);	
-				    				
-				    // ADICIONA-SE O ITERATOR A POSICAO
-					pos = iterator;	
-					
-					// INCREMENTO
-					inc = 0;
-					
-					// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
-					data_anterior = auxResult[j][0];
-					
-					// ADICIONA-SE O EQUIPAMENTO ANTERIOR
-					equip_anterior =  auxResult[j][2];				
-																							
-				 }	
-				 					 
-				if(!auxResult[j][2].equals(equip_anterior)) {
-					inc += breakTime;			 
-				    equip_anterior = auxResult[j][2];
-				    
-				}
-					 				 			 						
-				// ------------------------------------------------------------------------------------ 
-				
-				 if(selection.getPeriod().equals("05 minutes"))	{
-					 p = dta.index05Minutes(hr, minuto);
-					 p = p + pos + inc;
-				 }
-				 else if(selection.getPeriod().equals("06 minutes")) {	
-						 p = dta.index06Minutes(hr, minuto);
-						 p = p + pos + inc;
-				 }
-				 else if(selection.getPeriod().equals("10 minutes")) {
-				    	 p = dta.index10Minutes(hr, minuto);
-				    	 p = p + pos + inc;
-				 }
-				 else if(selection.getPeriod().equals("15 minutes")) {	
-						 p = dta.index15Minutes(hr, minuto);
-				         p = p + pos + inc;
-								
-				 }
-				 else if(selection.getPeriod().equals("30 minutes")) {	
-						 p = dta.index30Minutes(hr, minuto);
-						 p = p + pos + inc;
-				 }
-				 
-				 else if(selection.getPeriod().equals("01 hour"))				
-					p = pos + hr + inc;
-							
-				else if(selection.getPeriod().equals("06 hours")) {
-					
-					p = dta.index06Hours(hr);				
-					p = pos + p + inc;
-					
-				}
-				
-				else if(selection.getPeriod().equals("24 hours"))
-					     p = pos + inc;
-				 					 			 								 
-				if(i > 2 ) 
-				    resultQuery[p][i] = auxResult[j][i];	
-				
-			    }
-			  
-			  else {
-				  
-				  if (!auxResult[j][0].equals(data_anterior)) {								
-						
-					    // CASO SEJA DIFERENTE PEGA-SE A DIFERENÇA DE DIAS
-					    // DATA ANTERIOR, DATA QUE VEM DA BASE DE DADOS E INTERVALO DO PERIODO
-					    iterator = dta.daysDifference(data_anterior, auxResult[j][0], breakTimeIndex);	
-					    				
-					    // ADICIONA-SE O ITERATOR A POSICAO
-						pos = iterator;	
-										
-						// ADICIONA-SE A DATA ANTERIOR A DATA DO REGISTRO ATUAL
-						data_anterior = auxResult[j][0];
-																												
-					 }	
-				  
-					 if(selection.getPeriod().equals("05 minutes"))	{
-						 p = dta.index05Minutes(hr, minuto);
-						 p = p + pos;
-					 }
-					 else if(selection.getPeriod().equals("06 minutes")) {	
-							 p = dta.index06Minutes(hr, minuto);
-							 p = p + pos;
-					 }
-					 else if(selection.getPeriod().equals("10 minutes")) {
-					    	 p = dta.index10Minutes(hr, minuto);
-					    	 p = p + pos;
-					 }
-					 else if(selection.getPeriod().equals("15 minutes")) {	
-							 p = dta.index15Minutes(hr, minuto);
-					         p = p + pos;
+			externalContext.getSessionMap().remove("xlsModel");
+			externalContext.getSessionMap().remove("current");
+			externalContext.getSessionMap().remove("fileName");		
+			externalContext.getSessionMap().remove("fields");
+			externalContext.getSessionMap().remove("jsonFields");
+			externalContext.getSessionMap().remove("fieldsObject");
 									
-					 }
-					 else if(selection.getPeriod().equals("30 minutes")) {	
-							 p = dta.index30Minutes(hr, minuto);
-							 p = p + pos;
-					 }
-					 else if(selection.getPeriod().equals("01 hour"))				
-						p = pos + hr;
-								
-					else if(selection.getPeriod().equals("06 hours")) {
-						
-						p = dta.index06Hours(hr);				
-						p = pos + p;
-						
-					}
-					
-					else if(selection.getPeriod().equals("24 hours"))
-						     p = pos;
-							
-										 
-					if(i > 1 ) {
-					    resultQuery[p][i] = auxResult[j][i];			  
-				  
-			 																	
-				//JSON ARRAY 
-				if(type.equals("6") &&  i  < 12) // CLASS
-				       jsonArray[p][i-1] = auxResult[j][i];
-				 
-				else  if(type.equals("7") && i  < 12) //AXLE
-				       jsonArray[p][i-1] = auxResult[j][i];
-				
-				else  if(type.equals("9") && i  < 8) //CLASS CCR
-				       jsonArray[p][i-1] = auxResult[j][i];
-				
-				else  if(type.equals("10") && i  < 5) //TYPE CCR
-				       jsonArray[p][i-1] = auxResult[j][i];
-				
-				else  if(type.equals("11") && i < 9) // SPEED CCR
-				       jsonArray[p][i-1] = auxResult[j][i];
-				    
-				else if(type.equals("12") && i  < 20) //ALL CLASSES
-				       jsonArray[p][i-1] = auxResult[j][i];
-				  
-				  else if(!type.equals("6") && !type.equals("7") && !type.equals("9") && !type.equals("10") && !type.equals("11") && !type.equals("12"))
-				      jsonArray[p][i-1] = auxResult[j][i];
-				}		
-				
-			   } //  JSON 
-			 } // CASO NO EXISTA VALOR >>>>>>> PASSA
+		}				
+		
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		 /**
+		  * Método para limpar valores da sessão dos relatório
+		  * @author Wellington
+		  * @version 1.0 
+		  * @since version 1.0
+		  * @return - vazio
+		  */
+		public void resetReportTextValues() {
 			
-			}
-			   
-		   }
-			    //// NEW METHOD
-
-				//SADA PARA A TABELA
-				//OutPutResult(type);
-				
-				//SADA DO EXCEL
-			   // ExcelOutPut(type, model);
-
-				//BOTO DE LIMPAR 
-				setClearBool(false);
-
-				//LINK DE DOWNLOAD DO EXCEL
-				setExcelBool(false);	
-				
-				//LINK PARA ACESSAR O GRÁFICO
-				setChartBool(false);
-				
-				//JSONData(isChartBool(), selection.getPeriod(), selection.getEquipment());
-										
-				//UPDATE RESET BUTTON
-				RequestContext.getCurrentInstance().update("form-btns:#btn-tab-reset");
-
-				//UPDATE BUTTON GENERATE EXCEL
-				RequestContext.getCurrentInstance().update("form-excel:#excel-act");	
-				
-				//UPDATE TABLE JQUERY ON RELOAD PAGE
-				RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"', '"+jsTableScrollHeight+"');");	
-									    					
-				//CASO CONTRARIO ENTRA AQUI
-				
-			} else {
-						    
-			          //EXECUTE JS
-					  RequestContext.getCurrentInstance().execute("hideMessage();");
-					  
-					  //UPDATE TABLE JQUERY ON RELOAD PAGE
-					  RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"', '"+jsTableScrollHeight+"'); showMessage();");	
-					  			     											
-		    }		
+			FacesContext facesContext = FacesContext.getCurrentInstance();	
+			ExternalContext externalContext = facesContext.getExternalContext();
 			
-		}	
+			externalContext.getSessionMap().remove("selectedEquip");
+			externalContext.getSessionMap().remove("selectedMonth");
+			externalContext.getSessionMap().remove("selectedYear");
+			externalContext.getSessionMap().remove("bytes");
+						
+		}				
 		
-		// ----------------------------------------------------------------------------------------------------------------
+		// ----------------------------------------------------------------------------------------------------------------------
+				
+				
+		/**
+		 * Método para popular uma lista com informações dos equipamentos
+		 * @author Wellington
+		 * @version 1.0
+	     * @since version 1.0
+		 * @param module - modulo para buscar equipamentos disponiveis
+		 * @return - Uma lista com id e nome dos equipamentos
+		 * @throws Exception
+		 */
+	    public List<SelectItem> selectEquips(String module) throws Exception{
 		
-	
+		    List<Equipments> list = new ArrayList<Equipments>(); 
+		    List<SelectItem> items = new ArrayList<SelectItem>(); 
+				
+		    EquipmentsDAO dao = new EquipmentsDAO();		 
+		    list = dao.EquipmentSelectOptions(module);
+		 
+		    for (Equipments e : list) {
+			   SelectItem s = new SelectItem();
+
+			   s.setValue(e.getEquip_id());
+			   s.setLabel(e.getNome());
+				
+			   items.add(s);				
+			 }
+		 
+		 return items;
 		
-	
+	   }
+	   
+	  // ----------------------------------------------------------------------------------------------------------------------
+	    
+	    /**
+		 * Método para popular uma lista com períodos para seleção
+		 * @author Wellington
+		 * @version 1.0 
+	     * @since version 1.0 		 
+		 * @return - Uma lista com as opções dos períodos
+		 * @throws Exception
+		 */
+	    public List<SelectItem> selectPeriods() throws Exception{
+	    	
+	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+	    	  
+	    	items.add(new SelectItem("05 minutes", localeLabelSelectItems.getStringKey("select_item_periods_five_minutes")));
+	      	items.add(new SelectItem("06 minutes", localeLabelSelectItems.getStringKey("select_item_periods_six_minutes")));
+	      	items.add(new SelectItem("10 minutes", localeLabelSelectItems.getStringKey("select_item_periods_teen_minutes")));
+	      	items.add(new SelectItem("15 minutes", localeLabelSelectItems.getStringKey("select_item_periods_fifteen_minutes")));
+	      	items.add(new SelectItem("30 minutes", localeLabelSelectItems.getStringKey("select_item_periods_thirty_minutes")));  
+	      	items.add(new SelectItem("01 hour", localeLabelSelectItems.getStringKey("select_item_periods_one_hour")));
+	      	items.add(new SelectItem("06 hours", localeLabelSelectItems.getStringKey("select_item_periods_six_hours")));
+	      	items.add(new SelectItem("24 hours", localeLabelSelectItems.getStringKey("select_item_periods_twenty_four_hours")));
+	    	
+	    	return items;
+	    }
+	    
+	 // ----------------------------------------------------------------------------------------------------------------------   
+	    
+	    /**
+	     * Método para popular uma lista com meses para seleção	
+	     * @author Wellington
+	     * @version 1.0
+	     * @since version 1.0
+	     * @return - Uma lista com as opções dos meses
+	     * @throws Exception
+	     */
+        public List<SelectItem> selectMonth() throws Exception{
+	    	
+	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+		
+	    	items.add(new SelectItem(1, localeLabelSelectItems.getStringKey("select_item_january")));  
+			items.add(new SelectItem(2, localeLabelSelectItems.getStringKey("select_item_february")));  
+			items.add(new SelectItem(3, localeLabelSelectItems.getStringKey("select_item_march")));  
+			items.add(new SelectItem(4, localeLabelSelectItems.getStringKey("select_item_april")));  
+			items.add(new SelectItem(5, localeLabelSelectItems.getStringKey("select_item_may")));
+			items.add(new SelectItem(6, localeLabelSelectItems.getStringKey("select_item_june")));
+			items.add(new SelectItem(7, localeLabelSelectItems.getStringKey("select_item_july")));
+			items.add(new SelectItem(8, localeLabelSelectItems.getStringKey("select_item_august")));
+			items.add(new SelectItem(9, localeLabelSelectItems.getStringKey("select_item_september")));
+			items.add(new SelectItem(10, localeLabelSelectItems.getStringKey("select_item_october")));
+			items.add(new SelectItem(11, localeLabelSelectItems.getStringKey("select_item_november")));
+			items.add(new SelectItem(12, localeLabelSelectItems.getStringKey("select_item_december")));
+	    	
+	    	return items;
+	    	
+        }
+        
+       // ----------------------------------------------------------------------------------------------------------------------   
+	    
+             /**
+      		 * Método para popular uma lista com classes para seleção (padrão)	 
+      		 * @author Wellington
+	         * @version 1.0
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções das classes
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectClasses() throws Exception{
+	    	
+	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+	    	
+	    		items.add(new SelectItem("1", localeLabelSelectItems.getStringKey("select_item_class_light")));
+	    		items.add(new SelectItem("9", localeLabelSelectItems.getStringKey("select_item_class_motorcycle")));
+				items.add(new SelectItem("5", localeLabelSelectItems.getStringKey("select_item_class_trailer")));
+				items.add(new SelectItem("3", localeLabelSelectItems.getStringKey("select_item_class_semi_trailer")));
+				items.add(new SelectItem("2A", localeLabelSelectItems.getStringKey("select_item_class_bus_2_axles")));
+				items.add(new SelectItem("4A", localeLabelSelectItems.getStringKey("select_item_class_bus_3_axles")));
+				items.add(new SelectItem("2", localeLabelSelectItems.getStringKey("select_item_class_truck_2_axles")));
+				items.add(new SelectItem("4", localeLabelSelectItems.getStringKey("select_item_class_truck_3_axles")));
+				items.add(new SelectItem("6", localeLabelSelectItems.getStringKey("select_item_class_truck_4_axles")));
+				items.add(new SelectItem("7", localeLabelSelectItems.getStringKey("select_item_class_truck_5_axles")));
+				items.add(new SelectItem("8", localeLabelSelectItems.getStringKey("select_item_class_truck_6_axles")));
+				items.add(new SelectItem("10", localeLabelSelectItems.getStringKey("select_item_class_truck_7_axles")));
+				items.add(new SelectItem("11", localeLabelSelectItems.getStringKey("select_item_class_truck_8_axles")));
+				items.add(new SelectItem("E9", localeLabelSelectItems.getStringKey("select_item_class_truck_9_axles")));
+				items.add(new SelectItem("10N", localeLabelSelectItems.getStringKey("select_item_class_truck_10_axles")));
+			    		    	
+	    	return items;
+	    	
+        }
+            
+         // ----------------------------------------------------------------------------------------------------------------------   
+    	    
+            /**
+      		 * Método para popular uma lista com classes para seleção (Opção 2 => usado em CCR LL) 
+      		 * @author Wellington
+	         * @version 1.0
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções das classes
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectClassesOP2() throws Exception{
+	    	
+	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+	    	
+	    		items.add(new SelectItem("1", localeLabelSelectItems.getStringKey("select_item_class_light")));
+	    		items.add(new SelectItem("10", localeLabelSelectItems.getStringKey("select_item_class_motorcycle")));
+				items.add(new SelectItem("12", localeLabelSelectItems.getStringKey("select_item_class_trailer")));
+				items.add(new SelectItem("11", localeLabelSelectItems.getStringKey("select_item_class_semi_trailer")));				
+				items.add(new SelectItem("13", localeLabelSelectItems.getStringKey("select_item_class_bus_2_axles")));
+				items.add(new SelectItem("14", localeLabelSelectItems.getStringKey("select_item_class_bus_3_axles")));
+				items.add(new SelectItem("15", localeLabelSelectItems.getStringKey("select_item_class_bus_4_axles")));
+				items.add(new SelectItem("16", localeLabelSelectItems.getStringKey("select_item_class_bus_5_axles")));
+				items.add(new SelectItem("17", localeLabelSelectItems.getStringKey("select_item_class_bus_6_axles")));								
+				items.add(new SelectItem("2", localeLabelSelectItems.getStringKey("select_item_class_truck_2_axles")));	
+				items.add(new SelectItem("18", localeLabelSelectItems.getStringKey("select_item_class_truck_2_axles_class18")));	
+				items.add(new SelectItem("19", localeLabelSelectItems.getStringKey("select_item_class_truck_2_axles_class19")));					
+				items.add(new SelectItem("3", localeLabelSelectItems.getStringKey("select_item_class_truck_3_axles")));
+				items.add(new SelectItem("4", localeLabelSelectItems.getStringKey("select_item_class_truck_4_axles")));
+				items.add(new SelectItem("5", localeLabelSelectItems.getStringKey("select_item_class_truck_5_axles")));
+				items.add(new SelectItem("6", localeLabelSelectItems.getStringKey("select_item_class_truck_6_axles")));
+				items.add(new SelectItem("7", localeLabelSelectItems.getStringKey("select_item_class_truck_7_axles")));
+				items.add(new SelectItem("8", localeLabelSelectItems.getStringKey("select_item_class_truck_8_axles")));
+				items.add(new SelectItem("9", localeLabelSelectItems.getStringKey("select_item_class_truck_9_axles")));
+				items.add(new SelectItem("20", localeLabelSelectItems.getStringKey("select_item_class_truck_10_axles")));				
+							    		    	
+	    	return items;
+	    	
+        }
+                                   
+       	 // ----------------------------------------------------------------------------------------------------------------------   
+       	    
+            /**
+      		 * Método para popular uma lista com eixos para seleção 
+      		 * @author Wellington
+	         * @version 1.0
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções dos eixos
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectAxles() throws Exception{
+       	    	
+       	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+       		
+       	    	items.add(new SelectItem("2", localeLabelSelectItems.getStringKey("select_item_axles_2")));
+       	    	items.add(new SelectItem("3", localeLabelSelectItems.getStringKey("select_item_axles_3")));
+       	    	items.add(new SelectItem("4", localeLabelSelectItems.getStringKey("select_item_axles_4")));
+       	    	items.add(new SelectItem("5", localeLabelSelectItems.getStringKey("select_item_axles_5")));
+       	    	items.add(new SelectItem("6", localeLabelSelectItems.getStringKey("select_item_axles_6")));
+       	    	items.add(new SelectItem("7", localeLabelSelectItems.getStringKey("select_item_axles_7")));
+       	    	items.add(new SelectItem("8", localeLabelSelectItems.getStringKey("select_item_axles_8")));
+       	    	items.add(new SelectItem("9", localeLabelSelectItems.getStringKey("select_item_axles_9")));
+       	    	items.add(new SelectItem("10", localeLabelSelectItems.getStringKey("select_item_axles_10")));
+       	    	
+       	    	return items;
+       	    	
+               }   
+               
+         // ----------------------------------------------------------------------------------------------------------------------
+
+            /**
+      		 * Método para popular uma lista com direções para seleção (padrão)	 
+      		 * @author Wellington
+	         * @version 1.0 
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções das direções
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectDirections() throws Exception{
+       	    	
+       	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+       		
+       	    	items.add(new SelectItem("1", localeLabelSelectItems.getStringKey("select_item_direction_label1")));
+       	    	items.add(new SelectItem("2", localeLabelSelectItems.getStringKey("select_item_direction_label2")));
+       	    	       	    	
+       	    	return items;
+       	    	
+               }   
+            
+        // ----------------------------------------------------------------------------------------------------------------------
+            
+            /**
+      		 * Método para popular uma lista com veículos para seleção (padrão)	 
+      		 * @author Wellington
+	         * @version 1.0 
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções dos veículos
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectVehicles() throws Exception{
+       	    	
+       	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+       	    	
+       	 	    items.add(new SelectItem(1, localeLabelSelectItems.getStringKey("select_item_vehicles_light")));   
+    		    items.add(new SelectItem(2, localeLabelSelectItems.getStringKey("select_item_vehicles_motorcycle")));  
+    		    items.add(new SelectItem(3, localeLabelSelectItems.getStringKey("select_item_vehicles_heavy")));  
+       		       	    	
+       	    	return items;
+       	    	
+               }   
+            
+       // ----------------------------------------------------------------------------------------------------------------------
+            
+            /**
+      		 * Método para popular uma lista com veículos para seleção (Opção 2 => usado em CCR LL)	 
+      		 * @author Wellington
+	         * @version 1.0 
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções dos veículos
+      		 * @throws Exception
+      		 */
+            public List<SelectItem> selectVehiclesOP2() throws Exception{
+       	    	
+       	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+       	    	
+       	 	    items.add(new SelectItem(1, localeLabelSelectItems.getStringKey("select_item_vehicles_light")));   
+    		    items.add(new SelectItem(2, localeLabelSelectItems.getStringKey("select_item_vehicles_motorcycle")));  
+    		    items.add(new SelectItem(3, localeLabelSelectItems.getStringKey("select_item_vehicles_small_heavy")));  
+    		    items.add(new SelectItem(4, localeLabelSelectItems.getStringKey("select_item_vehicles_long_heavy")));  
+    		    items.add(new SelectItem(5, localeLabelSelectItems.getStringKey("select_item_vehicles_bus")));  
+       		       	    	
+       	    	return items;
+       	    	
+             }  
+            
+      // ----------------------------------------------------------------------------------------------------------------------
+                        
+            /**
+      		 * Método para popular uma lista com anos para seleção 
+      		 * @author Wellington
+	         * @version 1.0 
+	         * @since version 1.0
+      		 * @return - Uma lista com as opções dos anos
+      		 * @throws Exception
+      		 */            
+            public List<SelectItem> selectYears() throws Exception{
+       	    	
+       	    	List<SelectItem> items = new ArrayList<SelectItem>(); 
+       	    	       	            				
+        		  for(int year = 2016; year < 2027; year++)   
+        			items.add(new SelectItem(year, String.valueOf(year)));  
+       		       	    	
+       	    	return items;
+       	    	
+               }  
+            
+      // ----------------------------------------------------------------------------------------------------------------------
+                       
+          
 }

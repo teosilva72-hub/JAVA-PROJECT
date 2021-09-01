@@ -32,6 +32,7 @@ public class LocaleUtil {
 	public static final String LABELS_PDF = "bundle.labels.system.pdf.labels_pdf_";
 	public static final String LABELS_CHARTS = "bundle.labels.system;.charts.labels_charts_";
 	public static final String LABELS_REPORTS = "bundle.labels.system.reports.labels_reports_";
+	public static final String LABELS_SELECTION_ITEM = "bundle.labels.system.select-item.labels_select_item_";	
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";
 	public static final String MESSAGES_EMAIL = "bundle.messages.system.email.messages_email_";

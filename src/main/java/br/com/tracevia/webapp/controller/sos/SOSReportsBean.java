@@ -393,34 +393,8 @@ public class SOSReportsBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		// -----------------------------------------------------------------------------
-		
-			     // SOS ESTATÍSTICA REPORT
-			
-					if(type.equals("1")) {
-						
-						//Table Fields
-						 fields = new String[]{localeLabel.getStringKey("sos_report_column_date"), localeLabel.getStringKey("sos_report_column_datetime"),
-								localeLabel.getStringKey("sos_report_column_call_received"), localeLabel.getStringKey("sos_report_column_call_answered"), localeLabel.getStringKey("sos_report_column_call_ended"),
-								localeLabel.getStringKey("sos_report_column_call_missed"), localeLabel.getStringKey("sos_report_column_call_error"), localeLabel.getStringKey("sos_report_column_call_duration_avg")};
-						
-						// Table Objects
-						 fieldObjectValues = new String[] {"date", "time", "callReceivedAmount", "callAnsweredAmount", "callEndedAmount", "callMissedAmount", "callErrorAmount", "callDuration"};
-												
-							//JSON chart fields
-							jsonFields = new String[] {localeLabel.getStringKey("sos_reports_chart_hAxis"),
-									localeLabel.getStringKey("sos_report_column_call_received"), localeLabel.getStringKey("sos_report_column_call_answered"), localeLabel.getStringKey("sos_report_column_call_ended"),
-									localeLabel.getStringKey("sos_report_column_call_missed"), localeLabel.getStringKey("sos_report_column_call_error")};
-													
-							//JSON chart title and subtitle
-							chartTitle = localeLabel.getStringKey("sos_chart_title_statistic"); 		
-							imageName = localeLabel.getStringKey("sos_chart_file_name_statistic");	
-					
-					
-					
-					}
-					
-				// -----------------------------------------------------------------------------
-					
+					  				
+							
 					// SOS BATTERY REPORT
 					
 					if(type.equals("2")) {

@@ -1509,7 +1509,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
     				    	     				      				   				 					   
     			            row = sheet.getRow((short) rowIndex);
     			            
-    			            System.out.println(rowIndex);
+    			           // System.out.println(rowIndex);
     			          
     			            cells[lin][col] = row.createCell((short) col);	
     			            

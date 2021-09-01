@@ -11,7 +11,7 @@ $(async () => {
 	for (const c of calls)
         ringCall(c)
 
-    consumeSOS({ callback_calls: ringCall })
+    consumeSOS({ callback_calls: ringCall, callback_alarms : null, callback_states: null})
     
     window.onstorage = eventGetReaction;
 
@@ -24,7 +24,7 @@ const ringCall = async response => {
     switch (response.CallStateID) {
         case 1: // Atendido
 		case 3: // Finalizado
-		case 5: // Deligado
+		case 5: // Desligado
             count--
 			break
 		

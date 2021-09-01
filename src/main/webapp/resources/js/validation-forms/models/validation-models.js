@@ -1593,7 +1593,237 @@ function validationTemplate6(formId, equipMessage) {
 	});
 }
 
+
 /* ******************************************************************************************************** */
+
+/** Validation template 7
+ *  
+ * @author Wellington da Silva : 2021-05-07
+ * @summary Validation function used when there is a start date, end date and equipments field in the form template
+ * @since version 1.0
+ * @version 1.1 
+ * @description Validate form template 2
+ * @copyright Tracevia S/A 2021 
+ * @param {string} formId  form id to be checked
+ * @param {string} dateStartId dateStart input id
+ * @param {string} equipsMessage required equipments multiselect message
+ * @param {string} periodsMessage required periods message
+ * @param {string} dateStartMessage required dateStart message
+ * @param {string} dateEndMessage required dateEnd message
+ * @param {string} validDateMessage check validation date message
+ * @returns {void}
+**/
+
+function validationTemplate7(formId, dateStartId, equipsMessage, periodsMessage, dateStartMessage, dateEndMessage, validDateMessage) {
+
+	$(formId).validate({
+		ignore: [],
+		rules: {
+			equips: "required",		
+			periods: {
+				required: true
+			},
+			dateStart: {
+				required: true,
+				dateITA: true
+			},
+			dateEnd: {
+				required: true,
+				greaterThan: dateStartId,
+				maxDate: maxDays,
+				dateITA: true
+			}
+		},
+
+		messages: {
+
+			equips: { required: equipsMessage },
+		
+			periods: { required: periodsMessage },
+
+			dateStart: {
+				required: dateStartMessage,
+				dateITA: validDateMessage
+			},
+
+			dateEnd: {
+				required: dateEndMessage,
+				dateITA: validDateMessage
+			},
+		},
+
+		errorClass: "error",
+		validClass: "success",
+		errorElement: "label",
+
+		errorPlacement: function (error, element) { //Place elements for place errors	 
+		},
+
+		success: function (label, element) {
+
+			//If no have errors set check success status	
+			//Show span validation icon
+			$(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+
+			//FontAwesome Icon Check for success
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+
+		},
+
+		// highlight - add class error in case of errors
+
+		highlight: function (element, errorClass, validClass) {
+			$(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+
+			$(element.form).find("input[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+			$(element.form).find("select[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+
+			//Show span validation icon
+			$(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+
+			//FontAwesome Icon Times for error
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-times error'></i>");
+
+			//Multiselect button configuration to set invalid
+			if ($(element.form).find("select[id=" + element.id + "]").hasClass('invalid')) {
+				$(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+
+			}
+		},
+
+		// unhighlight - remove error class if error was solved
+
+		unhighlight: function (element, errorClass, validClass) {
+			$(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
+
+			$(element.form).find("input[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+			$(element.form).find("select[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+
+			//FontAwesome Icon Check for success
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+
+			//Multiselect button configuration to set valid
+			if ($(element.form).find("select[id=" + element.id + "]").hasClass('valid')) {
+				$(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+			}
+		}
+	});
+}
+
+/* ******************************************************************************************************** */
+
+/** Validation template 1
+ *  
+ * @author Wellington da Silva : 2021-05-07
+ * @summary Validation function used when there is a start date and end date in the form template
+ * @since version 1.0
+ * @version 1.1 
+ * @description Validate form template 1
+ * @copyright Tracevia S/A 2021 
+ * @param {string} formId  form id to be checked
+ * @param {string} dateStartId dateStart input id
+ * @param {string} equipMessage required equipment message
+ * @param {string} dateStartMessage required dateStart message
+ * @param {string} dateEndMessage required dateEnd message
+ * @param {string} validDateMessage check validation date message
+ * @returns {void}
+**/
+
+function validationTemplate8(formId, dateStartId, equipMessage, dateStartMessage, dateEndMessage, validDateMessage) {
+
+	$(formId).validate({
+		rules: {
+			equip: {
+				required: true
+			},
+
+			dateStart: {
+				required: true,
+				dateITA: true
+			},
+			dateEnd: {
+				required: true,
+				greaterThan: dateStartId,
+				maxDate: maxDays,
+				dateITA: true
+			}
+		},
+
+		messages: {
+
+			equip: { required: equipMessage },
+			
+			dateStart: {
+				required: dateStartMessage,
+				dateITA: validDateMessage
+			},
+
+			dateEnd: {
+				required: dateEndMessage,
+				dateITA: validDateMessage
+			},
+		},
+
+		errorClass: "error",
+		validClass: "success",
+		errorElement: "label",
+
+		errorPlacement: function (error, element) {	//Place elements for place errors
+		},
+
+		success: function (label, element) {
+
+			//If no have errors set check success status	
+			//Show span validation icon
+			$(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+
+			//FontAwesome Icon Check for success
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+
+		},
+
+		// highlight - add class error in case of errors
+
+		highlight: function (element, errorClass, validClass) {
+			$(element.form).find("label[for=" + element.id + "]").addClass(errorClass);
+
+			$(element.form).find("input[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+			$(element.form).find("select[id=" + element.id + "]").removeClass('valid').addClass('invalid');
+
+			//Show span validation icon
+			$(element.form).find("span[for=" + element.id + "]").removeClass('valid-icon-hidden').addClass('valid-icon-visible');
+
+			//FontAwesome Icon Times for error
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-times error'></i>");
+
+			//Multiselect button configuration to set invalid
+			if ($(element.form).find("select[id=" + element.id + "]").hasClass('invalid')) {
+				$(element).next('.btn-group').find('button').removeClass('valid').addClass('invalid');
+
+			}
+		},
+
+		// unhighlight - remove error class if error was solved
+
+		unhighlight: function (element, errorClass, validClass) {
+			$(element.form).find("label[for=" + element.id + "]").removeClass(errorClass);
+
+			$(element.form).find("input[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+			$(element.form).find("select[id=" + element.id + "]").removeClass('invalid').addClass('valid');
+
+			//FontAwesome Icon Check for success
+			$(element.form).find("span[for=" + element.id + "]").html("<i class='fa fa-check success'></i>");
+
+			//Multiselect button configuration to set valid
+			if ($(element.form).find("select[id=" + element.id + "]").hasClass('valid')) {
+				$(element).next('.btn-group').find('button').removeClass('invalid').addClass('valid');
+			}
+		}
+	});
+}
+
+/* ******************************************************************************************************** */
+
 
 /** Validate user form
  *
