@@ -158,6 +158,12 @@
         	<base-name>bundle.labels.phone.labels_phone</base-name>
         	<var>phoneLabels</var>
         </resource-bundle>
+        
+         <resource-bundle>
+        	<base-name>bundle.labels.system.select-item.labels_select_item</base-name>
+        	<var>selectItemLabels</var>
+        </resource-bundle>
+        
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -262,7 +268,8 @@
 		<message-bundle>bundle.labels.system.restricted.labels_restricted</message-bundle>
 		<message-bundle>bundle.labels.system.realtime.labels_realtime</message-bundle>	
 		<message-bundle>bundle.labels.system.access-denied.labels_access_denied</message-bundle>
-		<message-bundle>bundle.labels.system.informations.labels_info</message-bundle>				
+		<message-bundle>bundle.labels.system.informations.labels_info</message-bundle>	
+		<message-bundle>bundle.labels.system.select-item.labels_select_item</message-bundle>			
         <message-bundle>bundle.labels.users.labels_users</message-bundle>
         <message-bundle>bundle.labels.occ.labels_occ</message-bundle>
         <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
@@ -275,10 +282,12 @@
         <message-bundle>bundle.labels.system.excel-sheet.labels_excel_sheet</message-bundle>
         <message-bundle>bundle.labels.system.pdf.labels_pdf</message-bundle>
         <message-bundle>bundle.labels.system.charts.labels_charts</message-bundle>
-       <message-bundle>bundle.labels.aba.labels_aba</message-bundle>
+        <message-bundle>bundle.labels.aba.labels_aba</message-bundle>
         <message-bundle>bundle.labels.phone.labels_phone</message-bundle>
-     
+        
+                    
         <!-- CONFIG MESSAGES -->
+        
         <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>
         <message-bundle>bundle.messages.login.messages_login</message-bundle>
         <message-bundle>bundle.messages.pmv.messages_pmv</message-bundle>	

@@ -7,7 +7,7 @@ package br.com.tracevia.webapp.model.global;
 
 public class ReportSelection {
 		
-	private String[] equipments;	
+	public String[] equipments;	
 	private String[] vehicles;	
 	private String[] directions;
 	private String[] axles;

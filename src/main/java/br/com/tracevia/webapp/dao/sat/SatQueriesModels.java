@@ -1699,8 +1699,7 @@ public class SatQueriesModels {
                     	        query += total;                    	                                              	                       	   
                     	   
                     	        return query;  	 
-                    	   
-                    	   
+                    	                       	   
                           }
                                                                               
                           public String VBVs() { 

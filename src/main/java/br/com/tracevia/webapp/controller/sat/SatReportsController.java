@@ -62,7 +62,7 @@ public class SatReportsController {
 	private final String dateFormat = "dd/MM/yyyy";
 	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
 
-	//Locale Docs
+	// Locale Docs
 	LocaleUtil localeLabel, localeCalendar, localeDir, localeSat;  
 
 	int periodRange, daysInMonth, daysCount; 
@@ -332,7 +332,7 @@ public class SatReportsController {
 
 		for (Equipments e : listSats) {
 			SelectItem s = new SelectItem();
-
+				
 			s.setValue(e.getEquip_id());
 			s.setLabel(e.getNome());
 			equipments.add(s);				
@@ -738,7 +738,7 @@ public class SatReportsController {
 			// Table Objects
 			fieldObjectValues = new String[] {"date", "dateTime", "speed50km", "speed70km", "speed90km", "speed120km", "speed150km", "speed150km_bigger", "total"};
 
-			//JSON chart fields
+			// JSON chart fields
 			jsonFields = new String[] {localeLabel.getStringKey("sat_reports_chart_haxis"),
 					localeLabel.getStringKey("sat_reports_speed_50km"), localeLabel.getStringKey("sat_reports_speed_70km"),
 					localeLabel.getStringKey("sat_reports_speed_90km"), localeLabel.getStringKey("sat_reports_speed_120km"), 	   
@@ -1179,10 +1179,10 @@ public class SatReportsController {
 			
 		} else {
 					    
-		          //EXECUTE JS
+		          // EXECUTE JS
 				  RequestContext.getCurrentInstance().execute("hideMessage();");
 				  
-				  //UPDATE TABLE JQUERY ON RELOAD PAGE
+				  // UPDATE TABLE JQUERY ON RELOAD PAGE
 				  RequestContext.getCurrentInstance().execute("drawTable('#"+jsTableId+"', '"+jsTableScrollHeight+"'); showMessage();");	
 				  			     											
 	    }

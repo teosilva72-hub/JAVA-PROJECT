@@ -324,11 +324,11 @@
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		 
 		  <!-- EQUIPMENTS LIST FROM BACKING BEAN -->		
-		  <ui:repeat value="#{satSpeedMultiBean.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
+		  <ui:repeat value="#{sosMultiStatistic.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
 		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
 		  </ui:repeat> <!---->
 		 	
-		 <input type="hidden" name="equipmentSelectMsg" value="#{satLabels.sat_reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
+		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
 		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
