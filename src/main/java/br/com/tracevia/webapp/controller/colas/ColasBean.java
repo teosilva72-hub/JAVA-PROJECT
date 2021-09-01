@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,12 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.colas.ColasQueue;
+import br.com.tracevia.webapp.model.global.UserAccount;
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments.listEquips;
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -48,8 +54,42 @@ public class ColasBean {
 	LocaleUtil localeColas;
 	public List<ColasQueue> queues;
 	public ColasQueue queue;
+	public List<Equipments> colas;
 	private String logo;
-
+	private String Toll, Lane, Date, Waiting_time;
+	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
+	
+	public String getToll() {
+		return Toll;
+	}
+	public void setToll(String toll) {
+		Toll = toll;
+	}
+	public String getLane() {
+		return Lane;
+	}
+	public void setLane(String lane) {
+		Lane = lane;
+	}
+	public String getDate() {
+		return Date;
+	}
+	public void setDate(String date) {
+		Date = date;
+	}
+	public String getWaiting_time() {
+		return Waiting_time;
+	}
+	public void setWaiting_time(String waiting_time) {
+		Waiting_time = waiting_time;
+	}
+	
+	public List<Equipments> getColas() {
+		return colas;
+	}
+	
 	public String getLogo() {
 		try {
 
@@ -71,7 +111,14 @@ public class ColasBean {
 	public List<ColasQueue> getQueues() {
 		return queues;
 	}
-
+	private String teste;
+	
+	public String getTeste() {
+		return teste;
+	}
+	public void setTeste(String teste) {
+		this.teste = teste;
+	}
 	@PostConstruct
 	public void initalize() {
 		SimpleDateFormat formattter = new SimpleDateFormat("yyyy-MM-dd");
@@ -79,6 +126,7 @@ public class ColasBean {
 
 		try {
 			getAllQueue(formattter.format(date));
+			collectColas();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,13 +138,53 @@ public class ColasBean {
 		ColasDAO dao = new ColasDAO();
 		
 		try {
-			queues = dao.history_queue(date);
+			queues = dao.history_queue(date, 0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	public void getQueueFiltered() {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+
+		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+		String date = params.get("dateSearch");
+		String lane = params.get("laneSearch");
+		// String channel = params.get("channelSearch");
+
+		ColasDAO dao = new ColasDAO();
+
+		try {
+			queues = dao.history_queue(date.isEmpty() ? date_formatter.format(new Date()) : date, Integer.parseInt(lane));
+		} catch (IOException e) {
+			queues = new ArrayList<>();
+			
+			e.printStackTrace();
+		} catch (ParseException e) {
+			queues = new ArrayList<>();
+			
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void collectColas() throws Exception {
+		
+		Colas colas = new Colas();
+		
+		
+		UserAccount actual_login = login.getLogin();
+		int permission_id = actual_login.getPermission_id();
+		
+		this.colas = colas.listEquipments("colas", permission_id); 
+	}
+	
 	public void pdf() {
 		
 		try {

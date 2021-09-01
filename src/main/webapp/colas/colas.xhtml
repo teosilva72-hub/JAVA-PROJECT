@@ -64,16 +64,16 @@
 				</h:form>
 			</div>
 			<!--  -->
-			<!-- <div class="col-md-2">
+			 <div class="col-md-2">
 				<div class="btns">
 					<button type="button" class="btn btn-warning btn1"
 						data-toggle="modal" data-target="#modalPesquisa"
 						onclick="dataPicker()">#{colasLabels.search}</button>
-					<button id="btnDetalhes" class="btn btn-dark btn1">#{colasLabels.details}</button>
+					<!-- <button id="btnDetalhes" class="btn btn-dark btn1">#{colasLabels.details}</button>
 					<button type="button" class="btn btn-danger btn1" id="btnPdf"
-						data-toggle="modal" data-target="#modalPdf">#{colasLabels.pdf}</button>
+						data-toggle="modal" data-target="#modalPdf">#{colasLabels.pdf}</button> -->
 				</div>
-			</div> -->
+			</div>
 		</div>
 		<!-- Modal pesquisa -->
 		<div class="modal fade" id="modalPesquisa" tabindex="-1"
@@ -95,20 +95,23 @@
 									<h:inputText class="form-control inputDesign" id="dateSearch"
 										name="dateSearch" pt:placeholder="yyyy-mm-dd"></h:inputText>
 								</div>
-								<div class="col-md-4">
+								<!-- <div class="col-md-4">
 									<span>#{colasLabels.camera}</span> <select
 										class="form-control inputDesign" id="channelSearch"
 										name="channelSearch">
 										<option value="">#{colasLabels.select}</option>
 										<option value="1">#{colasLabels.channel} 1</option>
 									</select>
-								</div>
+								</div> -->
 								<div class="col-md-4">
 									<span>#{colasLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
-										<option value="">#{colasLabels.select}</option>
-										<option value="01">#{colasLabels.track} 01</option>
+										<option value="0">#{colasLabels.select}</option>
+										<option value="1">#{colasLabels.track} 01</option>
+										<option value="2">#{colasLabels.track} 02</option>
+										<option value="3">#{colasLabels.track} 03</option>
+										<option value="4">#{colasLabels.track} 04</option>
 			
 									</select>
 								</div>
@@ -119,9 +122,9 @@
 								data-dismiss="modal">#{colasLabels.back}</button>
 							<h:commandButton value="#{colasLabels.search}" id="btnSearch" onclick="disPdfDetail()"
 								styleClass="btn btn-danger" pt:data-dismiss="modal">
-								<!-- <f:ajax execute="@form" render=":mainTable"
-									
-									onevent="onFilterFunction" /> -->
+								<f:ajax execute="@form" render=":mainTable"
+									listener="#{colasBean.getQueueFiltered()}"
+									onevent="onFilterFunction" />
 							</h:commandButton>
 						</div>
 					</div>
@@ -148,6 +151,10 @@
 
 							<div class="row">
 								<div class="col-md-12">#{colasLabels.download}</div>
+								<h:inputText value="#{colasBean}" id="toll"></h:inputText>
+								<h:inputText value="#{colasBean}" id="lane"></h:inputText>
+								<h:inputText value="#{colasBean}" id="date"></h:inputText>
+								<h:inputText value="#{colasBean}" id="waiting_time"></h:inputText>
 							</div>
 							<hr></hr>
 							<div class="row">

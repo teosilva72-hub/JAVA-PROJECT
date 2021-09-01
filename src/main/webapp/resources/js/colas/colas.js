@@ -12,7 +12,18 @@ function getTr(){
 		"paging": false,
 		"bInfo" : false
 	});
-	 
+	 	$('#colas-table tbody').on( 'click', 'tr', function () {
+		//get info table
+	   	var toll = $(table.row( this ).data()[0]).text()
+		var lane = $(table.row( this ).data()[1]).text()
+		var date = $(table.row( this ).data()[2]).text()
+		var waiting_time = $(table.row( this ).data()[3]).text()
+		//set info table
+		document.getElementById("toll").value = toll
+		document.getElementById("lane").value = lane
+		document.getElementById("date").value = date
+		document.getElementById("waiting_time").value = waiting_time
+	});
 	table
 		.on( 'user-select', function ( e, dt, type, cell, originalEvent ) {
 			if ( type === 'row' ) {
@@ -26,6 +37,7 @@ function getTr(){
 		e.stopPropagation()
 	})
 }
+
 function dataPicker(){
 	var  date = $('#dateSearch')
     date.on('click', function() {
