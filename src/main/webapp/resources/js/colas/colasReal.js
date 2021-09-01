@@ -15,7 +15,7 @@ const callback_realtime_colas = response => {
 
 	let time;
 	let lane = response.Lane;
-	let table_lane = $(`#mainTable [lane=${lane}]`)
+	let table_lane = $(`#mainTable [deviceid=${response.Device_Id}][lane=${lane}]`)
 
 	switch (response.CMD) {
         case 3:
