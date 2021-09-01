@@ -65,7 +65,6 @@ public class ColasDAO {
 			query += " AND lane = " + laneS;
 		try {
 
-			System.out.println(query);
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(query);

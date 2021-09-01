@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,12 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.colas.ColasQueue;
+import br.com.tracevia.webapp.model.global.UserAccount;
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.ListEquipments.listEquips;
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -48,8 +54,12 @@ public class ColasBean {
 	LocaleUtil localeColas;
 	public List<ColasQueue> queues;
 	public ColasQueue queue;
+	public List<Equipments> colas;
 	private String logo;
 	private String Toll, Lane, Date, Waiting_time;
+	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
 	
 	public String getToll() {
 		return Toll;
@@ -75,6 +85,11 @@ public class ColasBean {
 	public void setWaiting_time(String waiting_time) {
 		Waiting_time = waiting_time;
 	}
+	
+	public List<Equipments> getColas() {
+		return colas;
+	}
+	
 	public String getLogo() {
 		try {
 
@@ -111,6 +126,7 @@ public class ColasBean {
 
 		try {
 			getAllQueue(formattter.format(date));
+			collectColas();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -157,7 +173,18 @@ public class ColasBean {
 		}
 
 	}
-
+	
+	public void collectColas() throws Exception {
+		
+		Colas colas = new Colas();
+		
+		
+		UserAccount actual_login = login.getLogin();
+		int permission_id = actual_login.getPermission_id();
+		
+		this.colas = colas.listEquipments("colas", permission_id); 
+	}
+	
 	public void pdf() {
 		
 		try {

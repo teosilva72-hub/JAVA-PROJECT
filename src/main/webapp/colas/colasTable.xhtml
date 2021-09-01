@@ -21,7 +21,7 @@
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet library="css/occ" name="occurrences.css" />
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" />
-		<h:outputScript library="js/colas" name="colas.js" />
+		<h:outputScript library="js/colas" name="colasReal.js" />
 	</ui:define>
 	<ui:define name="main-content">
 		<div class="row">
@@ -34,39 +34,39 @@
 				<h:form prependId="false" id="mainTable">
 					<div class="table">
 						<!-- TABELA -->
-						<h:dataTable id="colas-table" var="data" disabled="true"
-							value="#{colasBean.queues}"
+						<h:dataTable id="colas-tableReal" var="data" disabled="true"
+							value="#{colasBean.colas}"
 							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
 							cellspacing="0" width="100" headerClass="custom-table-header"
 							columnClasses="idColumn, nameColumn, textColumn, actionColumn">
 							<h:column>
 								<f:facet name="header">#{colasLabels.camera}</f:facet>
-								<h:outputText value="CDF-#{data.device}"
+								<h:outputText value="#{data.nome}"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 1</f:facet>
-								<h:outputText value="#{data.lane}"
+								<h:outputText value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 2</f:facet>
-								<h:outputText value="#{data.lane}"
+								<h:outputText value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 3</f:facet>
-								<h:outputText value="#{data.lane}"
+								<h:outputText value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 4</f:facet>
-								<h:outputText value="#{data.lane}"
+								<h:outputText value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.waiting_time}</f:facet>
-								<h:outputText value="#{data.getTime()}" style="font-size: 12px; " />
+								<h:outputText value="0" style="font-size: 12px; " />
 							</h:column>
 							
 						</h:dataTable>

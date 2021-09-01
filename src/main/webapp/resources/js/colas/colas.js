@@ -37,6 +37,7 @@ function getTr(){
 		e.stopPropagation()
 	})
 }
+
 function dataPicker(){
 	var  date = $('#dateSearch')
     date.on('click', function() {
