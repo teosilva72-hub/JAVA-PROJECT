@@ -92,6 +92,14 @@ public class NavigationBean {
 		return navigation_page;
 
 	}
+	
+	public String colasRealtime() {
+
+		navigation_page = "/colas/colasTable.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+
+	}
 	//MTO PANEL    
 	public String redirectToMTOPanel() {
 

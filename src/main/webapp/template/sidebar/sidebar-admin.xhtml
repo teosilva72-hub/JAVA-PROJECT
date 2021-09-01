@@ -114,7 +114,18 @@
 								</h:commandLink></li>
 						</ui:fragment>
 						<!---->
+						
+						<!-- Colas ITEM -->
 
+						<ui:fragment rendered="#{loginAccount.load.en_colas}">
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.colasRealtime}" value="">
+									<i class="fas fa-car icon-sub"></i>
+									<span class="text-sub">#{colasLabels.colasReal}</span>
+								</h:commandLink></li>
+						</ui:fragment>
+						
+						
 						<!---->
 
 					</ul></li>
