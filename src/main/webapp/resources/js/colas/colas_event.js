@@ -5,7 +5,7 @@ const connectCOLAS = async (request, debug) => {
 	return await sendMsgStomp(request, 'ColasRequest', debug)
 }
 
-const callback_notify = response => {
+const callback_notify_default = response => {
     response = JSON.parse(response.body);
 	let time
 
@@ -28,7 +28,7 @@ const callback_notify = response => {
         case 4:
             switch (response.Local) {
                 case 1:
-                    time = 3
+                    time = 2
                     break
                 
                 case 2:
@@ -36,7 +36,7 @@ const callback_notify = response => {
                     break
 
                 case 3:
-                    time = 4
+                    time = 3
                     break
                 
                 default:
@@ -49,11 +49,12 @@ const callback_notify = response => {
     alertToast(msg)
 }
 
-const consumeCOLAS = async debug => {
+const consumeCOLAS = async ({ callback_notify = callback_notify_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
-		client.subscribe(`/exchange/colas_notify/colas_notify`, callback_notify)
+        if (typeof callback_notify == "function")
+		    client.subscribe(`/exchange/colas_notify/colas_notify`, callback_notify)
 	};
 
 	var on_error =  function() {

@@ -46,42 +46,35 @@
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 1</f:facet>
-								<h:outputText value="0"
+								<h:outputText pt:deviceid="#{data.equip_id}" pt:lane="1" value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 2</f:facet>
-								<h:outputText value="0"
+								<h:outputText pt:deviceid="#{data.equip_id}" pt:lane="2" value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 3</f:facet>
-								<h:outputText value="0"
+								<h:outputText pt:deviceid="#{data.equip_id}" pt:lane="3" value="0"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
 								<f:facet name="header">#{colasLabels.lane} 4</f:facet>
-								<h:outputText value="0"
+								<h:outputText pt:deviceid="#{data.equip_id}" pt:lane="4" value="0"
 									style="font-size: 12px; " />
 							</h:column>
-							<h:column>
-								<f:facet name="header">#{colasLabels.waiting_time}</f:facet>
-								<h:outputText value="0" style="font-size: 12px; " />
-							</h:column>
-							
 						</h:dataTable>
 					</div>
 
 				</h:form>
 			</div>
 		</div>
-		
+	</ui:define>
+	
+	<ui:define name="jscript">
 		<h:outputScript name="datepicker.js" library="js/datepicker" />
 		<h:outputScript name="locales-datepicker.js" library="js/datepicker" />
-		<h:outputScript name="jquery.validate.min.js"
-			library="js/jquery-validation" />
-		<h:outputScript name="additional-methods.min.js"
-			library="js/jquery-validation" />
 		<h:outputScript name="bootstrap.bundle.min.js" library="bootstrap/js" />
-	</ui:define>
+    </ui:define>
 </ui:composition>

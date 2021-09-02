@@ -61,6 +61,12 @@ public class ColasBean {
 	@ManagedProperty("#{loginAccount}")
 	private LoginAccountBean login;
 	
+	public LoginAccountBean getLogin() {
+		return login;
+	}
+	public void setLogin(LoginAccountBean login) {
+		this.login = login;
+	}
 	public String getToll() {
 		return Toll;
 	}
