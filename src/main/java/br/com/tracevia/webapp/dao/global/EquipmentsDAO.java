@@ -933,8 +933,8 @@ public class EquipmentsDAO {
 					+ "VALUES (null, ?, ?, ?, ?)"; 
 
 			// CONNECTION MONITOR TABLE INSERT QUERY
-			String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name, equip_last_status, equip_status) "        							
-					+ "VALUES (null, ?, ?, ?, ?, ?, ?)";   
+			//String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name) "        							
+			//		+ "VALUES (null, ?, ?, ?, ?)";   
 
 			// SAT ADD	
 			ps = conn.prepareStatement(query);
@@ -984,23 +984,8 @@ public class EquipmentsDAO {
 
 				int successNotif = ps.executeUpdate();
 
-				if(successNotif > 0) {
-
-					// CONNECTION MONITOR ADD		
-					ps = conn.prepareStatement(queryConnection);
-
-					ps.setString(1, equip.getEquip_type());
-					ps.setInt(2, equip.getEquip_id()); 
-					ps.setString(3, equip.getEquip_ip());
-					ps.setString(4, equip.getNome());
-					ps.setInt(5, equip.getLastStatus()); 
-					ps.setInt(6, equip.getStatus()); 
-
-					int successConn = ps.executeUpdate();
-
-					if(successConn > 0)            			
-						status = true;	   
-				}
+					if(successNotif > 0)            			
+						status = true;	   				
 			}             			
 
 		} catch (SQLException sqle) {
@@ -1049,8 +1034,8 @@ public class EquipmentsDAO {
 					+ "VALUES (null, ?, ?, ?, ?)"; 
 
 			// CONNECTION MONITOR TABLE INSERT QUERY
-			String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name, equip_last_status, equip_status) "        							
-					+ "VALUES (null, ?, ?, ?, ?, ?, ?)";   
+			String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name) "        							
+					+ "VALUES (null, ?, ?, ?, ?)";   
 
 
 			//DMS ADD		
@@ -1107,23 +1092,9 @@ public class EquipmentsDAO {
 
 					int successNotif = ps.executeUpdate();
 
-					if(successNotif > 0) { 
-
-						//CONNECTION MONITOR ADD	
-						ps = conn.prepareStatement(queryConnection);
-
-						ps.setString(1, equip.getEquip_type());
-						ps.setInt(2, equip.getEquip_id()); 
-						ps.setString(3, equip.getDms_ip());
-						ps.setString(4, equip.getNome());
-						ps.setInt(5, equip.getLastStatus()); 
-						ps.setInt(6, equip.getStatus()); 
-
-						int successConn = ps.executeUpdate();
-
-						if(successConn > 0)            			
+					if(successNotif > 0)		
 							status = true;	                				         
-					}
+					
 				}     				 	
 			}            				  	
 
@@ -1167,8 +1138,8 @@ public class EquipmentsDAO {
 				+ "VALUES (null, ?, ?, ?, ?)"; 
 
 		// CONNECTION MONITOR TABLE INSERT QUERY
-		String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name, equip_last_status, equip_status) "        							
-				+ "VALUES (null, ?, ?, ?, ?, ?, ?)";   
+		String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name) "        							
+				+ "VALUES (null, ?, ?, ?, ?)";   
 
 
 		try {
@@ -1217,23 +1188,9 @@ public class EquipmentsDAO {
 
 					int successNotif = ps.executeUpdate();
 
-					if(successNotif > 0) { 
-
-						//CONNECTION MONITOR ADD		
-						ps = conn.prepareStatement(queryConnection);
-
-						ps.setString(1, equip.getEquip_type());
-						ps.setInt(2, equip.getEquip_id()); 
-						ps.setString(3, equip.getEquip_ip());
-						ps.setString(4, equip.getNome());
-						ps.setInt(5, equip.getLastStatus()); 
-						ps.setInt(6, equip.getStatus()); 
-
-						int successConn = ps.executeUpdate();
-
-						if(successConn > 0)            			
-							status = true;	                				         
-					}         				  
+					if(successNotif > 0)    			
+						status = true;	                				         
+					     				  
 				}  	
 
 		} catch (SQLException sqle) {
@@ -1245,6 +1202,129 @@ public class EquipmentsDAO {
 
 		return status;	
 	}
+	
+	// --------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para salvar um equipamento genérico
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip - Objeto do tipo genérico
+	 * @param table - Table id	 
+	 * @return boolean - Verdairo ou falso
+	 * @throws Exception
+	 */
+	
+	public boolean EquipRegisterSpeedMap(Speed equip, String table) throws Exception {
+		
+		System.out.println("HERE");
+
+		boolean status = false;     
+
+		// GENERIC TABLE INSERT QUERY
+		String query = "INSERT INTO speed_equipment (equip_id, creation_date, creation_username, equip_ip_speed, equip_ip_radar, name, city, road, km, "
+				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+				+ "vw_map_width, vw_map_posX, vw_map_posY, visible)"
+				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	
+		// NOTIFICATION TABLE INSERT QUERY
+		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_name, equip_type, equip_km) "        							
+				+ "VALUES (null, ?, ?, ?, ?)"; 
+
+		// CONNECTION MONITOR TABLE INSERT QUERY
+		String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name) "        							
+				+ "VALUES (null, ?, ?, ?, ?)";
+				
+		
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+				// GENERIC ADD			
+				ps = conn.prepareStatement(query);
+
+				ps.setInt(1, equip.getEquip_id());
+				ps.setString(2, equip.getCreation_date());
+				ps.setString(3, equip.getCreation_username());
+				ps.setString(4, equip.getEquip_ip_speed());
+				ps.setString(5, equip.getEquip_ip_radar());			
+				ps.setString(6, equip.getNome());
+				ps.setString(7, equip.getCidade());
+				ps.setString(8, equip.getEstrada());
+				ps.setString(9, equip.getKm());	
+				ps.setInt(10, 30); // Linear Width
+				ps.setInt(11, 30); // Linear posX
+				ps.setInt(12, 500); // Linear posY
+				ps.setInt(13, 30); // VIDEO WALL Linear Width
+				ps.setInt(14, 30); // VIDEO WALL Linear posX
+				ps.setInt(15, 500); // VIDEO WALL Linear posY
+				ps.setInt(16, 20); // Map Width
+				ps.setInt(17, 50); // Map posX
+				ps.setInt(18, 50); // Map posY
+				ps.setInt(19, 20); // VIDEO WALL Map Width
+				ps.setInt(20, 50); // VIDEO WALL Map posX
+				ps.setInt(21, 50); // VIDEO WALL Map posY			
+				ps.setBoolean(22, true);
+
+				int success = ps.executeUpdate();
+
+				if(success > 0) {    
+
+					//NOTIFICATION ADD		
+					ps = conn.prepareStatement(queryNotification);
+
+					ps.setInt(1, equip.getEquip_id());             		
+					ps.setString(2, equip.getNome());
+					ps.setString(3, equip.getEquip_type()); 
+					ps.setString(4, equip.getKm());
+
+					int successNotif = ps.executeUpdate();
+
+					if(successNotif > 0) { 
+
+						//CONNECTION MONITOR ADD		
+						ps = conn.prepareStatement(queryConnection);
+
+						ps.setString(1, equip.getEquip_type()+" I");
+						ps.setInt(2, equip.getEquip_id()); 
+						ps.setString(3, equip.getEquip_ip_speed());
+						ps.setString(4, equip.getNome());
+					
+						int successConn = ps.executeUpdate();
+
+						if(successConn > 0) {
+							
+							//CONNECTION MONITOR ADD		
+							ps = conn.prepareStatement(queryConnection);
+
+							ps.setString(1, equip.getEquip_type()+" R" );
+							ps.setInt(2, equip.getEquip_id()); 
+							ps.setString(3, equip.getEquip_ip_radar());
+							ps.setString(4, equip.getNome());					
+							
+							int success2 = ps.executeUpdate();
+							
+							   if(success2 > 0)
+								   status = true;   
+								 				  							
+						}
+					 }
+					 
+				  }  	
+
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao inserir dados " + sqle);
+
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
+
+		return status;	
+	}
+	
+	
+	// --------------------------------------------------------------------------------------------------------------
 
 	public boolean EquipRegisterMap(Equipments equip, String table) throws Exception {
 
@@ -1261,8 +1341,8 @@ public class EquipmentsDAO {
 				+ "VALUES (null, ?, ?, ?, ?)"; 
 
 		// CONNECTION MONITOR TABLE INSERT QUERY
-		String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name, equip_last_status, equip_status) "        							
-				+ "VALUES (null, ?, ?, ?, ?, ?, ?)";   
+		String queryConnection = "INSERT INTO connection_monitor (id_conn, equip_type, equip_id, equip_ip, equip_name) "        							
+				+ "VALUES (null, ?, ?, ?, ?)";   
 
 
 		try {
@@ -1317,9 +1397,7 @@ public class EquipmentsDAO {
 						ps.setInt(2, equip.getEquip_id()); 
 						ps.setString(3, equip.getEquip_ip());
 						ps.setString(4, equip.getNome());
-						ps.setInt(5, equip.getLastStatus()); 
-						ps.setInt(6, equip.getStatus()); 
-
+				
 						int successConn = ps.executeUpdate();
 
 						if(successConn > 0)            			
@@ -1354,6 +1432,21 @@ public class EquipmentsDAO {
 	public boolean EquipUpdateMap(Equipments equip, String table, String updateView, int permission) throws Exception {    
 
 		boolean updated = false;
+		
+		int id = 0;
+		
+		// STATUS -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String notifications = "UPDATE notifications_status SET equip_name = ?, equip_km = ? WHERE equip_id = ? ";
+		
+		// MONITOR -----------------------------------------------------------------------------------------------------------------------------------------
+		
+		String monitorConnection = "UPDATE connection_monitor SET equip_name = ?, equip_ip = ? WHERE id_conn = ? ";
+		
+		// SELECT BEFORE UPDATE -----------------------------------------------------------------------------------------------------------------------------------------
+					
+		String connectionSql = "SELECT id_conn FROM connection_monitor WHERE equip_id = ? and equip_type = ? ";
+	
 
 		try { //GET SLQException     
 			
@@ -1399,12 +1492,49 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
+										
+	              if (res > 0) {
+					
+					ps = conn.prepareStatement(notifications);
+					
+					ps.setString(1, equip.getNome()); 				
+					ps.setString(2, equip.getKm());						
+					ps.setInt(3, equip.getEquip_id());					
 
-				if (rs > 0) 
-					updated = true;            	  
-
-			} 
+					int res2 = ps.executeUpdate();
+					
+					if(res2 > 0) {
+						
+						ps = conn.prepareStatement(connectionSql);
+						
+						ps.setInt(1, equip.getEquip_id());
+						ps.setString(2, ModulesEnum.CFTV.getModule());	
+																							
+						rs = ps.executeQuery();
+						
+						if(rs != null) {
+							while(rs.next()) {
+																
+								id = rs.getInt(1);								
+								
+							}							
+						}										
+						
+						ps = conn.prepareStatement(monitorConnection);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getEquip_ip());						
+						ps.setInt(3, id);
+						
+						int res3 = ps.executeUpdate();
+						
+						if(res3 > 0) 
+						    updated = true;						 
+						
+					}
+	              }
+	           } 
 
 			// --------------------------------------------------------------------------------------------------------------
 
@@ -1451,10 +1581,48 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
+
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.COLAS.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		              }
 
 			} 
 
@@ -1503,10 +1671,48 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;           	  
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
+
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.COMMS.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		             }          	  
 
 			}  
 
@@ -1555,10 +1761,48 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());         			            			  
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;              	  
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
+
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.DAI.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		            }            	  
 
 			} 
 
@@ -1609,10 +1853,48 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
+
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.OCR.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		              }
 
 
 			}  
@@ -1662,64 +1944,49 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());    			            			  
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;          	  
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
 
-			}  
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			//VIDEO WALL SWITCH
-			if(table.equals("speed")) { // SPEED
-				
-				String queryLinear = "";
-				String queryMap = "";
-
-				String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
-
-				String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
-				
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-				
-				String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
-
-				String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
-				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-				
-                if(permission != 9) {
-					
-					queryLinear = querySpeedLinear;
-					queryMap = querySpeedMap;			
-					
-				}else { 
-					
-					queryLinear = VWquerySpeedLinear;
-					queryMap = VWquerySpeedMap;		
-					
-				}				
-
-            	if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else  ps = conn.prepareStatement(queryMap);
-
-				ps.setString(1,  equip.getNome());
-				ps.setString(2,  equip.getEquip_ip());
-				ps.setString(3,  equip.getCidade());
-				ps.setString(4,  equip.getEstrada());
-				ps.setString(5,  equip.getKm());
-				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());     			            			  
-
-				int rs = ps.executeUpdate();
-
-				if (rs > 0) 
-					updated = true;             	  
-
-			}  // SPEED
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.MTO.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		            }   
+				 }  
 
 			// --------------------------------------------------------------------------------------------------------------
 
@@ -1766,10 +2033,48 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());     			            			  
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true;          	  
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
+
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.SV.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		              }      	  
 
 			} 
 
@@ -1818,12 +2123,50 @@ public class EquipmentsDAO {
 				ps.setInt(6,     equip.getMapWidth());            
 				ps.setInt(7,  equip.getEquip_id());    			            			  
 
-				int rs = ps.executeUpdate();
+				int res = ps.executeUpdate();
 
-				if (rs > 0) 
-					updated = true; ;            	  
+				  if (res > 0) {
+						
+						ps = conn.prepareStatement(notifications);
+						
+						ps.setString(1, equip.getNome()); 				
+						ps.setString(2, equip.getKm());						
+						ps.setInt(3, equip.getEquip_id());					
 
-			} 			
+						int res2 = ps.executeUpdate();
+						
+						if(res2 > 0) {
+							
+							ps = conn.prepareStatement(connectionSql);
+							
+							ps.setInt(1, equip.getEquip_id());
+							ps.setString(2, ModulesEnum.WIM.getModule());	
+																								
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}										
+							
+							ps = conn.prepareStatement(monitorConnection);
+							
+							ps.setString(1, equip.getNome()); 				
+							ps.setString(2, equip.getEquip_ip());						
+							ps.setInt(3, id);
+							
+							int res3 = ps.executeUpdate();
+							
+							if(res3 > 0) 
+							    updated = true;						 
+							
+						}
+		            }          	  
+
+			    } 			
 
 		}catch(SQLException sqle) {
 
@@ -2107,6 +2450,172 @@ public class EquipmentsDAO {
 
 		return updated;
 	}
+	
+	// --------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Método para atualizar um equipamento do tipo SAT
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0
+		 * @param sat - Objeto do tipo SAT
+		 * @param table - Table id	
+		 * @param view - Mapa a ser atualizado 
+		 * @return boolean - Verdairo ou falso
+		 * @throws Exception
+		 */
+
+		public boolean EquipSpeedUpdateMap(Speed speed, String table, String updateView, int permission) throws Exception {    
+
+			boolean updated = false;
+			int id = 0;
+			
+			String queryLinear = "";
+			String queryMap = "";
+
+			String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_speed = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, linear_width = ? " 
+					+ " WHERE equip_id = ? ";
+
+			String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_speed = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, map_width = ? " 
+					+ " WHERE equip_id = ? ";
+			
+			// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+			
+			String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_speed = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_linear_width = ? " 
+					+ " WHERE equip_id = ? ";
+
+			String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_speed = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_map_width = ?  " 
+					+ " WHERE equip_id = ? ";
+
+			// STATUS -----------------------------------------------------------------------------------------------------------------------------------------
+			
+			String speedNotifications = "UPDATE notifications_status SET equip_name = ?, equip_km = ? WHERE equip_id = ? ";
+			
+			// MONITOR -----------------------------------------------------------------------------------------------------------------------------------------
+			
+			String speedConnection = "UPDATE connection_monitor SET equip_name = ?, equip_ip = ? WHERE id_conn = ? ";
+			
+			// SELECT BEFORE UPDATE -----------------------------------------------------------------------------------------------------------------------------------------
+						
+			String speedISql = "SELECT id_conn FROM connection_monitor WHERE equip_id = ? and equip_type = ? ";
+			String speedRSql = "SELECT id_conn FROM connection_monitor WHERE equip_id = ? and equip_type = ? ";
+			
+			try {
+
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				//VIDEO WALL SWITCH
+	            if(permission != 9) {
+					
+					queryLinear = querySpeedLinear;
+					queryMap = querySpeedMap;			
+					
+				}else { 
+					
+					queryLinear = VWquerySpeedLinear;
+					queryMap = VWquerySpeedMap;		
+					
+				}				
+
+				if(updateView.equals("linear"))
+					ps = conn.prepareStatement(queryLinear);
+
+				else ps = conn.prepareStatement(queryMap);
+				
+				ps.setString(1, speed.getNome()); 
+				ps.setString(2, speed.getEquip_ip_speed());
+				ps.setString(3, speed.getEquip_ip_radar());
+				ps.setString(4, speed.getCidade());
+				ps.setString(5, speed.getEstrada());
+				ps.setString(6, speed.getKm());			
+				ps.setInt(7, speed.getMapWidth());			
+				ps.setInt(8, speed.getEquip_id());
+
+				int res = ps.executeUpdate();
+
+				if (res > 0) {
+					
+					ps = conn.prepareStatement(speedNotifications);
+					
+					ps.setString(1, speed.getNome()); 				
+					ps.setString(2, speed.getKm());						
+					ps.setInt(3, speed.getEquip_id());					
+
+					int res2 = ps.executeUpdate();
+					
+					if(res2 > 0) {
+						
+						ps = conn.prepareStatement(speedISql);
+						
+						ps.setInt(1, speed.getEquip_id());
+						ps.setString(2, ModulesEnum.SPEED.getModule()+" I");	
+																							
+						rs = ps.executeQuery();
+						
+						if(rs != null) {
+							while(rs.next()) {
+																
+								id = rs.getInt(1);								
+								
+							}							
+						}
+												
+						
+						ps = conn.prepareStatement(speedConnection);
+						
+						ps.setString(1, speed.getNome()); 				
+						ps.setString(2, speed.getEquip_ip_speed());						
+						ps.setInt(3, id);
+						
+						int res3 = ps.executeUpdate();
+						
+						if(res3 > 0) {
+							
+							ps = conn.prepareStatement(speedRSql);
+							
+							ps.setInt(1, speed.getEquip_id());
+							ps.setString(2, ModulesEnum.SPEED.getModule()+" R");
+							
+							rs = ps.executeQuery();
+							
+							if(rs != null) {
+								while(rs.next()) {
+																	
+									id = rs.getInt(1);								
+									
+								}							
+							}
+							
+							ps = conn.prepareStatement(speedConnection);
+							
+							ps.setString(1, speed.getNome()); 				
+							ps.setString(2, speed.getEquip_ip_radar());						
+							ps.setInt(3, id);
+														
+							int res4 = ps.executeUpdate();
+							
+							if(res4 > 0)
+								updated = true; 
+						}						
+					}				
+				}
+				
+			}catch(SQLException sqle) {
+
+				sqle.printStackTrace();
+			}
+			finally { //Close Connection
+
+				ConnectionFactory.closeConnection(conn, ps);
+
+			}
+
+			return updated;			    
+
+		}
+	
+		// --------------------------------------------------------------------------------------------------------------
+		
 	public Equipments cftvCam(int id) throws Exception {
 		String script = "SELECT name, equip_ip, km FROM cftv_equipment WHERE equip_id= "+id+"";
 		Equipments data = new Equipments();
@@ -2557,68 +3066,7 @@ public class EquipmentsDAO {
 				return sos;            	  
 
 			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("speed")) { // SPEED
-				
-				String queryLinear = "";
-				String queryMap = "";
-
-				Speed speed = new Speed();
-
-				String querySpeedLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM speed_equipment WHERE equip_id = ? ";
-
-				String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-				
-				String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM speed_equipment WHERE equip_id = ? ";
-
-				String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM speed_equipment WHERE equip_id = ? ";
-
-				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-				
-				//VIDEO WALL SWITCH
-	            if(permission != 9) {
-					
-					queryLinear = querySpeedLinear;
-					queryMap = querySpeedMap;			
-					
-				}else { 
-					
-					queryLinear = VWquerySpeedLinear;
-					queryMap = VWquerySpeedMap;		
-					
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						speed.setEquip_id(rs.getInt(1));
-						speed.setEquip_ip(rs.getString(2));  	
-						speed.setNome(rs.getString(3));
-						speed.setCidade(rs.getString(4));
-						speed.setEstrada(rs.getString(5));
-						speed.setKm(rs.getString(6));
-						speed.setMapWidth(rs.getInt(7));  			       			            			  
-
-					}
-				}
-
-				return speed;            	  
-
-			} 
-
+		
 			// --------------------------------------------------------------------------------------------------------------
 
 			if(table.equals("sv")) { // SV
@@ -2979,6 +3427,69 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 	// --------------------------------------------------------------------------------------------------------------
 
+public Speed EquipSpeedSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
+	
+	String queryLinear = "";
+	String queryMap = "";
+
+	Speed speed = new Speed();
+
+	String querySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_speed, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, linear_width FROM speed_equipment WHERE equip_id = ? ";
+
+	String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip_speed, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";	
+	
+	// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+	
+	String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_speed, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_linear_width FROM speed_equipment WHERE equip_id = ? ";
+
+	String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip_speed, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_map_width FROM speed_equipment WHERE equip_id = ? ";	
+			
+	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	
+	//VIDEO WALL SWITCH
+    if(permission != 9) {
+		
+		queryLinear = querySpeedLinear;
+		queryMap = querySpeedMap;			
+		
+	}else { 
+		
+		queryLinear = VWquerySpeedLinear;
+		queryMap = VWquerySpeedMap;		
+		
+	}			
+
+	if(interfaceView.equals("linear"))
+		ps = conn.prepareStatement(queryLinear);
+
+	else  ps = conn.prepareStatement(queryMap);
+
+	ps.setInt(1,  id);
+	rs = ps.executeQuery();
+
+	if(rs != null) {
+		while(rs.next()){
+
+			speed.setEquip_id(rs.getInt(1));
+			speed.setEquip_ip_speed(rs.getString(2));
+			speed.setEquip_ip_radar(rs.getString(3));		
+			speed.setNome(rs.getString(4));	  			  
+			speed.setCidade(rs.getString(5));
+			speed.setEstrada(rs.getString(6));
+			speed.setKm(rs.getString(7));
+			speed.setMapWidth(rs.getInt(8)); 
+		 
+
+		}
+	}
+
+	return speed;            	  
+
+}
+
+// --------------------------------------------------------------------------------------------------------------
+
+
 
 	/**
 	 * Método para deleção de um equipamento
@@ -3166,7 +3677,7 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 			if(table.equals("ocr")) { // OCR
 
-				String queryOCR= "DELETE FROM ocr_equipment WHERE equip_id = ?";
+				String queryOCR = "DELETE FROM ocr_equipment WHERE equip_id = ?";
 
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
 
@@ -3253,9 +3764,7 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 				String queryDMS= "DELETE FROM pmv_equipment WHERE equip_id = ?";
 				String queryDMSActive = "DELETE FROM pmv_messages_active WHERE id_equip = ?";  
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
-
-				String queryConnection = "DELETE FROM connection_monitor WHERE equip_id = ? AND equip_type = ? ";
-
+				
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 				//DELETE TABLE EQUIP
@@ -3278,20 +3787,11 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 						ps.setInt(1,  id);
 						ps.setString(2, ModulesEnum.PMV.getModule());
 
-						int rs3 =  ps.executeUpdate();
+						int rs3 = ps.executeUpdate();
 
-						if(rs3 > 0) {
-
-							//DELETE CONNECTION MONITOR
-							ps = conn.prepareStatement(queryConnection);
-							ps.setInt(1,  id);
-							ps.setString(2, ModulesEnum.PMV.getModule());
-
-							int rs4 =  ps.executeUpdate();
-
-							if(rs4 > 0)
-								deleted = true;
-						}		
+						if(rs3 > 0) 
+							deleted = true;
+							
 
 					}
 
@@ -3305,8 +3805,6 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 				String querySAT= "DELETE FROM sat_equipment WHERE equip_id = ?";
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
-
-				String queryConnection = "DELETE FROM connection_monitor WHERE equip_id = ? AND equip_type = ? ";
 
 				//DELETE TABLE EQUIP
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -3323,19 +3821,8 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 					int rs2 =  ps.executeUpdate();
 
-					if(rs2 > 0) {
-
-						//DELETE CONNECTION MONITOR
-						ps = conn.prepareStatement(queryConnection);
-						ps.setInt(1,  id);
-						ps.setString(2, ModulesEnum.SAT.getModule());
-
-						int rs3 =  ps.executeUpdate();
-
-						if(rs3 > 0)
-							deleted = true;
-					}		
-
+					if(rs2 > 0)
+					   deleted = true;				
 				}
 
 			}
@@ -3346,9 +3833,7 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 				String querySOS= "DELETE FROM sos_equipment WHERE equip_id = ?";
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
-
-				String queryConnection = "DELETE FROM connection_monitor WHERE equip_id = ? AND equip_type = ? ";
-
+				
 				//DELETE TABLE EQUIP
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				ps = conn.prepareStatement(querySOS);
@@ -3364,18 +3849,8 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 
 					int rs2 =  ps.executeUpdate();
 
-					if(rs2 > 0) {
-
-						//DELETE CONNECTION MONITOR
-						ps = conn.prepareStatement(queryConnection);
-						ps.setInt(1,  id);
-						ps.setString(2, ModulesEnum.SOS.getModule());
-
-						int rs3 =  ps.executeUpdate();
-
-						if(rs3 > 0)
-							deleted = true;
-					}		
+					if(rs2 > 0) 
+						deleted = true;				
 
 				}           	  
 
@@ -3410,12 +3885,24 @@ public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int per
 						//DELETE CONNECTION MONITOR
 						ps = conn.prepareStatement(queryConnection);
 						ps.setInt(1,  id);
-						ps.setString(2, ModulesEnum.SPEED.getModule());
+						ps.setString(2, ModulesEnum.SPEED.getModule()+" I");
 
 						int rs3 =  ps.executeUpdate();
 
-						if(rs3 > 0)
-							deleted = true;
+						if(rs3 > 0) {
+							
+							//DELETE CONNECTION MONITOR
+							ps = conn.prepareStatement(queryConnection);
+							ps.setInt(1,  id);
+							ps.setString(2, ModulesEnum.SPEED.getModule()+" R");
+							
+							int rs4 =  ps.executeUpdate();
+							
+							if(rs4 > 0)
+							   deleted = true;
+							
+						}
+							
 					}		
 
 				}        	  

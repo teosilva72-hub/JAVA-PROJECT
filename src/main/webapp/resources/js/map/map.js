@@ -95,6 +95,9 @@ const init = () => {
 		if(window.initSOS)
 		  initSOS();
 
+		if(window.initMonitor)		
+			initMonitor();
+	  
 	})
 }
 
@@ -176,9 +179,10 @@ $(function () {
 			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
-				$('.dmsHidden-edit').hide();
-				$('.mtoHidden-edit').hide();
+				$('.dmsHidden-edit').hide();			
 				$('.sosInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+				$('.ipAddressShow-edit').show();
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -237,31 +241,35 @@ $(function () {
 					});
 			} else if (selectVAL == 8) {
 
-				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
-				$('.mtoHidden-edit').hide();
+				$('.dmsHidden-edit').show(); // DIV DMS TYPE				
 				$('.satInputs-edit').hide();
 				$('.sosInputs-edit').hide();
-
-			} else if (selectVAL == 6) {
-
-				$('.mtoHidden-edit').show();
-				$('.dmsHidden-edit').hide();
-				$('.satInputs-edit').hide();
-				$('.sosInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+				$('.ipAddressShow-edit').show();
 			
-			} else if (selectVAL == 10) {
+			}else if (selectVAL == 10) {
 				
-				$('.sosInputs-edit').show();
-				$('.mtoHidden-edit').hide();
+				$('.sosInputs-edit').show();			
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+                $('.ipAddressShow-edit').show();
+
+			} else if (selectVAL == 11) {
+				
+				$('.sosInputs-edit').hide();			
+				$('.dmsHidden-edit').hide();
+				$('.satInputs-edit').hide();
+				$('.speedHidden-edit').show();
+                $('.ipAddressShow-edit').hide();
 
 			} else {
 
-				$('.dmsHidden-edit').hide();
-				$('.mtoHidden-edit').hide();
+				$('.dmsHidden-edit').hide();			
 				$('.satInputs-edit').hide();
 				$('.sosInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+                $('.ipAddressShow-edit').show();
 			}
 
 		}, 100)
@@ -598,7 +606,7 @@ function posEquip(equip) {
 		}
 	}
 
-	if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
+	/*if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
 	
 	    let tableId = equip.attr('id');
 		let statusValue = equip.find('input').attr("status");
@@ -626,7 +634,7 @@ function posEquip(equip) {
 						
 		}			
 	
-	}
+	}*/
 }
 // EQUIPMENT POSITION END
 
@@ -995,8 +1003,9 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
-				$('.mtoHidden').hide();
-				$('.sosInputs').hide();
+			    $('.sosInputs').hide();
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 				$("#lanes").change(
 					function () {
@@ -1053,27 +1062,40 @@ $(function () {
 							$('#direction8').show();
 						}
 					});
+
 			} else if (selectVAL == 8) {
-				$('.dmsHidden').show(); // DIV DMS TYPE	
-				$('.mtoHidden').hide();
+				
+				$('.dmsHidden').show(); // DIV DMS TYPE				
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
-			} else if (selectVAL == 6) {
-				$('.mtoHidden').show();
-				$('.dmsHidden').hide();
-				$('.satInputs').hide();
-				$('.sosInputs').hide();
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();
+
 			} else if (selectVAL == 10) {
-				$('.sosInputs').show();
-				$('.dmsHidden').hide();
+
+				$('.sosInputs').show();				
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
-			} else {
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();
+
+			} else if (selectVAL == 11) {
+
+				$('.speedHidden').show();
+				$('.sosInputs').hide();
 				$('.dmsHidden').hide();
-				$('.mtoHidden').hide();
+				$('.satInputs').hide();				
+				$('.ipAddressShow').hide();
+
+			} else {
+
+				$('.dmsHidden').hide();			
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();				
 			}
+
 		}, 100)
 	});
 });

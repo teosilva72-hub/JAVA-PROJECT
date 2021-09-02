@@ -64,6 +64,9 @@ const init = () => {
 
 		if(window.initSOS)
 		  initSOS();
+
+	    if(window.initMonitor)		
+	      initMonitor();
 	})
 }
 
@@ -129,8 +132,10 @@ $(function () {
 			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
-				$('.dmsHidden-edit').hide();
-				$('.mtoHidden-edit').hide();
+				$('.dmsHidden-edit').hide();			
+				$('.sosInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+				$('.ipAddressShow-edit').show();
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -190,20 +195,34 @@ $(function () {
 			} else if (selectVAL == 8) {
 
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
-				$('.mtoHidden-edit').hide();
-				$('.satInputs-edit').hide();
+                $('.satInputs-edit').hide();
+                $('.sosInputs-edit').hide();
+                $('.speedHidden-edit').hide();
+                $('.ipAddressShow-edit').show();						
 
-			} else if (selectVAL == 6) {
-
-				$('.mtoHidden-edit').show();
+			}else if (selectVAL == 10) {
+				
+				$('.sosInputs-edit').show();			
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+                $('.ipAddressShow-edit').show();
+
+			} else if (selectVAL == 11) {
+				
+				$('.sosInputs-edit').hide();			
+				$('.dmsHidden-edit').hide();
+				$('.satInputs-edit').hide();
+				$('.speedHidden-edit').show();
+                $('.ipAddressShow-edit').hide();
 
 			} else {
 
-				$('.dmsHidden-edit').hide();
-				$('.mtoHidden-edit').hide();
+				$('.dmsHidden-edit').hide();			
 				$('.satInputs-edit').hide();
+				$('.sosInputs-edit').hide();
+				$('.speedHidden-edit').hide();
+                $('.ipAddressShow-edit').show();
 			}
 
 		}, 100)
@@ -853,7 +872,9 @@ $('[id$="equips"]').click(function btnSave() {
 	if (selectVAL == 9) {
 		$('.satInputs').show(); // DIV FAIXAS 1	
 		$('.dmsHidden').hide();
-		$('.mtoHidden').hide();
+		$('.sosInputs').hide();
+		$('.speedHidden').hide();
+		$('.ipAddressShow').show();		
 		$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 		$("#lanes").change(
 			function () {
@@ -910,20 +931,41 @@ $('[id$="equips"]').click(function btnSave() {
 					$('#direction8').show();
 				}
 			});
-	} else if (selectVAL == 8) {
-		$('.dmsHidden').show(); // DIV DMS TYPE	
-		$('.mtoHidden').hide();
-		$('.satInputs').hide();
 
-	} else if (selectVAL == 6) {
-		$('.mtoHidden').show();
-		$('.dmsHidden').hide();
-		$('.satInputs').hide();
-	} else {
-		$('.dmsHidden').hide();
-		$('.mtoHidden').hide();
-		$('.satInputs').hide();
-	}
+		} else if (selectVAL == 8) {
+
+			$('.dmsHidden').show(); // DIV DMS TYPE	
+			$('.satInputs').hide();
+			$('.sosInputs').hide();
+			$('.speedHidden').hide();
+			$('.ipAddressShow').show();
+
+		} else if (selectVAL == 10) {
+
+			$('.sosInputs').show();				
+			$('.satInputs').hide();
+			$('.mtoHidden').hide();
+			$('.speedHidden').hide();
+			$('.ipAddressShow').show();
+
+		} else if (selectVAL == 11) {
+
+			$('.speedHidden').show();
+			$('.sosInputs').hide();
+			$('.dmsHidden').hide();
+			$('.satInputs').hide();				
+			$('.ipAddressShow').hide();
+			
+		} else {
+
+			$('.dmsHidden').hide();			
+			$('.satInputs').hide();
+			$('.sosInputs').hide();
+			$('.speedHidden').hide();
+			$('.ipAddressShow').show();	
+
+		}
+									
    }, 100)
 });
 });

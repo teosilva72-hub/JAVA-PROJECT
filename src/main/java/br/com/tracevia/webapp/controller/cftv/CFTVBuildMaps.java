@@ -47,11 +47,11 @@ public class CFTVBuildMaps {
 		
 		try {
 			
-			CFTVDAO cftvDAO = new CFTVDAO();  
-			NotificationsBean notif = new NotificationsBean();			
+			//CFTVDAO cftvDAO = new CFTVDAO();  
+			//NotificationsBean notif = new NotificationsBean();			
 																			
-			cftvStatus = new ArrayList<CFTV>();			
-			cftvStatus = cftvDAO.Status();				
+			//cftvStatus = new ArrayList<CFTV>();			
+			//cftvStatus = cftvDAO.Status();				
 				
             }catch(IndexOutOfBoundsException ex) {}
 		

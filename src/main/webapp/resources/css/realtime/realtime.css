@@ -275,67 +275,109 @@ body {
 /* **********************  MODAL CONTENTS ***********************************/
 
 /* CREATION */
-
 [id$="equips"] {
-  width: 100%;
+	width: 100%;
 }
-[id$="equipId"] {
-  width: 100%;
+
+[id$="equipsType"] {
+	width: 100%;
 }
+
 [id$="mtoType"] {
-  width: 100%;
+	width: 100%;
 }
+
+[id$="equipId"] {
+	width: 100%;
+}
+
 [id$="dmsType"] {
-  width: 100%;
+	width: 100%;
 }
+
 [id$="equipIp"] {
-  width: 100%;
+	width: 100%;
 }
+
+[id$="equipPort"] {
+	width: 100%;
+}
+
 [id$="equipName"] {
-  width: 100%;
+	width: 100%;
 }
+
+[id$="sip"] {
+	width: 100%;
+}
+
+[id$="model"] {
+	width: 100%;
+}
+
 [id$="km"] {
-  width: 100%;
-}  
+	width: 100%;
+}
+
 [id$="cities"] {
-  width: 100%;
-} 
+	width: 100%;
+}
+
 [id$="roads"] {
-  width: 100%;
+	width: 100%;
 }
 
 /* EDIT */
-
 [id$="equips-edit"] {
-  width: 100%;
+	width: 100%;
 }
-[id$="equipId-edit"] {
-  width: 100%;
-}
+
 [id$="mtoType-edit"] {
-  width: 100%;
+	width: 100%;
 }
+
+[id$="equipId-edit"] {
+	width: 100%;
+}
+
 [id$="dmsType-edit"] {
-  width: 100%;
+	width: 100%;
 }
+
 [id$="equipIp-edit"] {
-  width: 100%;
+	width: 100%;
 }
+
 [id$="equipNameEdit"] {
-  width: 100%;
+	width: 100%;
 }
 
 [id$="citiesEdit"] {
-  width: 100%;
-} 
-[id$="roadsEdit"] {
-  width: 100%;
+	width: 100%;
 }
+
+[id$="roadsEdit"] {
+	width: 100%;
+}
+
+[id$="equipPort-edit"] {
+	width: 100%;
+}
+
+[id$="sipEdit"] {
+	width: 100%;
+}
+
+[id$="modelEdit"] {
+	width: 100%;
+}
+
 [id$="kmEdit"] {
-  width: 100%;
-}  
+	width: 100%;
+}
+
 [id$="width-edit"] {
-  width: 100%;   
+	width: 100%;
 }
 
 [id$="cancelPos"] {
@@ -477,6 +519,31 @@ opacity: 0.7;
 .padding-pmv {
   margin-left: 4px !important;
 }
+
+.dmsHidden {
+	display: none;
+}
+
+.dmsHidden-edit {
+	display: none;
+}
+
+.speedHidden {
+	display: none;
+}
+
+.speedHidden-edit {
+	display: none;
+}
+
+.ipAddressShow {
+	display: block;
+}
+
+.ipAddressShow-edit {
+	display: block;
+}
+
 
 /* **********************  SAT  ***********************************/
 .equip-box-sat {

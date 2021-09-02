@@ -275,7 +275,7 @@
 
 								<!-- IP ADDRESS -->
 								
-								<div class="form-row"> <!-- ROW -->
+								<div class="form-row ipAddressShow"> <!-- ROW -->
 									<div class="form-group col-md-12 input-field "> <!-- INPUT DIV -->
 										<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
 											<input type="text" autocomplete="off"
@@ -288,6 +288,81 @@
 								<!-- ***** IP ADDRESS ***** -->
 								
 								<!--  ******************************************************************************************************* -->
+								
+							<!-- IP ADDRESS SPEED -->
+
+							<div class="form-row speedHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="speed-equipIp"
+										id="speed-equipIp"
+										placeholder="#{mapLabels.map_ip_address_speed_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS SPEED ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							  <!-- IP ADDRESS RADAR  -->
+
+							<div class="form-row speedHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="radar-equipIp"
+										id="radar-equipIp"
+										placeholder="#{mapLabels.map_ip_address_radar_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS RADAR ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- PORT -->
+
+							<div class="form-row sosInputs" style="display: none;">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-door-open"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="equipPort"
+										id="equipPort"
+										placeholder="#{mapLabels.map_creation_input_port}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERRO DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** PORT ***** -->
+
+							<!--  ******************************************************************************************************* -->
 															
 								<!-- ***** EQUIPMENT NAME ***** -->
 								
@@ -302,75 +377,154 @@
 									<div class="error-label"> <!-- ERROR DIV -->	 
 										<label for="equipName" class="error" id="equipName-error"></label>
 									</div> <!---->
-								</div> <!----> 
-														
-								
+								</div> <!----> 																						
 								
 								<!-- ***** EQUIPMENT NAME ***** -->
 								
 								<!--  ******************************************************************************************************* -->
 
-								<!-- ***** CITY ***** -->
-								
-								<div class="form-row"> <!-- ROW --> 
-									<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
-											<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->	
-											<span for="cities" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->										
-												<select name="cities" id="cities" size="1">
-												<option value="">#{mapLabels.map_creation_select_city}</option>
-												<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
-													<option value="#{city.value}">#{city.label}</option>
-												</ui:repeat>
-											</select> <!-- SELECT --> 									
-									</div>  <!----> 								
-											<div class="error-label"> 											
-												<label for="cities" class="error" id="cities-error"></label>		
-											</div>  <!----> 								
-									</div>  <!----> 
-								
-									<!-- ***** CITY ***** -->
-									
-									<!--  ******************************************************************************************************* -->
+							<!-- ***** CITY ***** -->
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="citiesEdit" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="citiesEdit" id="citiesEdit" size="1">
+										<option value="">#{mapLabels.map_creation_select_city}</option>
+										<ui:repeat var="city" value="#{equipsBean.cities}"
+											varStatus="cityStatus">
+											<option value="#{city.value}">#{city.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** CITY ***** -->
+
+							<!--  ******************************************************************************************************* -->
 
 									<!-- ***** ROAD ***** -->
-									<div class="form-row">
-									<div class="col-md-6"> <!-- ROW --> 
-									<div class="form-group  select-field-half"> <!-- SELECT DIV --> 										
-											<span><i class="fas fa-road"></i></span> <!-- SPAN ICON --> 
-											<span for="roads" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->											
-												<select name="roads" id="roads" size="1">
-												<option value="">#{mapLabels.map_creation_select_road}</option>
-												<ui:repeat var="road" value="#{equipsBean.roads}" varStatus="roadStatus">
-													<option value="#{road.value}">#{road.label}</option>
-												</ui:repeat>
-											</select>  <!-- SELECT -->													
-										</div>	<!----> 
-										<div class="error-label"> 										
-											<label for="roads" class="error" id="roads-error"></label>
-										</div>  <!----> 													
-									</div> <!---->
+							<div class="form-row">
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group  select-field-half">
+										<!-- SELECT DIV -->
+										<span><i class="fas fa-road"></i></span>
+										<!-- SPAN ICON -->
+										<span for="roads" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<select name="roads" id="roads" size="1">
+											<option value="">#{mapLabels.map_creation_select_road}</option>
+											<ui:repeat var="road" value="#{equipsBean.roads}"
+												varStatus="roadStatus">
+												<option value="#{road.value}">#{road.label}</option>
+											</ui:repeat>
+										</select>
+										<!-- SELECT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="roads" class="error" id="roads-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
 
 								<!-- ***** ROAD ***** -->
-								
+
 								<!--  ******************************************************************************************************* -->
 
 								<!-- ***** KM ***** -->
 
-								<div class="col-md-6"> <!-- ROW --> 
-									<div class="form-group input-field-half"> <!-- ROW --> 
-										<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->
-										<span for="km" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
-											<input type="text" autocomplete="off" name="km" id="km" maxlength="7" class="km"
-											placeholder="#{mapLabels.map_creation_input_km}" />	<!-- INPUT --> 								
-									</div> <!----> 
-									<div class="error-label"> 										
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-sign"></i></span>
+										<!-- SPAN ICON -->
+										<span for="km" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="km" id="km"
+											maxlength="7" class="km"
+											placeholder="#{mapLabels.map_creation_input_km}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
 										<label for="km" class="error" id="km-error"></label>
-									</div>  <!----> 																							
-								</div> <!----> 	
-							</div> <!---->
+									</div>
+									<!---->
+								</div>
+								<!---->
+							</div>
+							<!---->
 							<!-- ***** KM ***** -->
 								
 							<!--  ******************************************************************************************************* -->
+							
+								<!-- ***** MODEL ***** -->
+							<div class="form-row sosInputs" style="display: none;">
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-phone-alt"></i></span>
+										<!-- SPAN ICON -->
+										<span for="modelEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="modelEdit"
+											id="modelEdit" maxlength="1" class="model"
+											placeholder="#{mapLabels.map_creation_input_model}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="modelEdit" class="error" id="modelEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+
+								<!-- ***** MODEL ***** -->
+
+								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-sitemap"></i></span>
+										<!-- SPAN ICON -->
+										<span for="sipEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="sipEdit"
+											id="sipEdit" class="sip"
+											placeholder="#{mapLabels.map_creation_input_sip}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="sipEdit" class="error" id="sipEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+							</div>
+							<!-- ***** SIP ***** -->
+							
+						<!--  ******************************************************************************************************* -->
 																						
 								<!-- ***** TRACKS ***** -->
 															
@@ -725,7 +879,7 @@
 
 								<!-- IP ADDRESS -->
 								
-								<div class="form-row"> <!-- ROW -->
+								<div class="form-row ipAddressShow-edit"> <!-- ROW -->
 									<div class="form-group col-md-12 input-field "> <!-- INPUT DIV -->
 										<span><i class="fas fa-signature"></i></span> <!-- SPAN ICON -->
 											<input type="text" autocomplete="off"
@@ -738,6 +892,81 @@
 								<!-- ***** IP ADDRESS ***** -->
 								
 								<!--  ******************************************************************************************************* -->
+								
+									<!-- IP ADDRESS SPEED -->
+
+							<div class="form-row speedHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="speed-equipIp-edit"
+										id="speed-equipIp-edit"
+										placeholder="#{mapLabels.map_ip_address_speed_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS SPEED ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							  <!-- IP ADDRESS RADAR  -->
+
+							<div class="form-row speedHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="radar-equipIp-edit"
+										id="radar-equipIp-edit"
+										placeholder="#{mapLabels.map_ip_address_radar_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS RADAR ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- PORT -->
+
+							<div class="form-row sosInputs-edit" style="display: none;">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-door-open"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="equipPort-edit"
+										id="equipPort-edit"
+										placeholder="#{mapLabels.map_creation_input_port}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERRO DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** PORT ***** -->
+							
+							<!--  ******************************************************************************************************* -->
 															
 								<!-- ***** EQUIPMENT NAME ***** -->
 																						
@@ -758,23 +987,31 @@
 								<!--  ******************************************************************************************************* -->
 
 								<!-- ***** CITY ***** -->
-								<div class="form-row"> <!-- ROW --> 
-									<div class="form-group col-md-12 select-field">	 <!-- SELECT --> 								
-											<span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->	
-											<span for="citiesEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->										
-												<select name="citiesEdit" id="citiesEdit" size="1">
-												<option value="">#{mapLabels.map_creation_select_city}</option>
-												<ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
-													<option value="#{city.value}">#{city.label}</option>
-												</ui:repeat>
-											</select> <!-- SELECT --> 									
-									</div>  <!----> 								
-											<div class="error-label"> 
-												<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
-										</div>  <!----> 								
-									</div>  <!----> 
-								
-									<!-- ***** CITY ***** -->
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="citiesEdit" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="citiesEdit" id="citiesEdit" size="1">
+										<option value="">#{mapLabels.map_creation_select_city}</option>
+										<ui:repeat var="city" value="#{equipsBean.cities}"
+											varStatus="cityStatus">
+											<option value="#{city.value}">#{city.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
 									
 									<!--  ******************************************************************************************************* -->
 
@@ -799,52 +1036,130 @@
 								<!-- ***** ROAD ***** -->
 								
 								<!--  ******************************************************************************************************* -->
-															
-								<!-- ***** KM ***** -->
-								
-								<div class="form-row"> <!-- ROW --> 
-									<div class="col-md-6"> <!-- COL -->
-									<div class="form-group input-field-half"> <!-- INPUT DIV --> 
-										<span><i class="fas fa-sign"></i></span> <!-- SPAN ICON -->  
-										<span for="kmEdit" class="valid-icon-hidden"></span><!-- SPAN VALIDATION -->
-											<input type="text" autocomplete="off" name="kmEdit" id="kmEdit" maxlength="7" class="km"
-											placeholder="#{mapLabels.map_creation_input_km}" /> <!-- INPUT -->									
-									</div> <!---->		
-									<div class="error-label"> 
-										<label for="kmEdit" class="error" id="kmEdit-error"></label>	
-									</div> <!---->					
-								</div> <!---->	
-													
-									<div class="col-md-6"> <!-- COL -->						
-									<div class="form-group input-field"> <!-- INPUT DIV -->
-										<span><i class="fas fa-arrows-alt-h"></i></span> <!-- SPAN ICON --> 
+																	
+							<!-- ***** KM ***** -->
+
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-sign"></i></span>
+										<!-- SPAN ICON -->
+										<span for="kmEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="kmEdit"
+											id="kmEdit" maxlength="7" class="km"
+											placeholder="#{mapLabels.map_creation_input_km}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="kmEdit" class="error" id="kmEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-arrows-alt-h"></i></span>
+										<!-- SPAN ICON -->
 										<div class="input-group mb-3">
-											<input class="form-control" type="text" autocomplete="off" name="width-edit" id="width-edit" 
-											placeholder="#{mapLabels.map_creation_input_width}" /> <!-- INPUT -->
+											<input class="form-control" type="text" autocomplete="off"
+												name="width-edit" id="width-edit"
+												placeholder="#{mapLabels.map_creation_input_width}" />
+											<!-- INPUT -->
 											<div class="input-group-append">
-												<h:commandButton
-													value="Todos"
-													id="btn-form-all-equip"
-													class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
+												<h:commandButton value="Todos" id="btn-form-all-equip"
+													class="btn btn-dark form-modal-draw-button btn-all-equip"
+													onclick="sendType();">
 													<c:choose>
 														<c:when test="#{ VideoWall }">
-															<f:ajax execute="@all" listener='#{equipsBean.setAll("vw_linear")}' onevent="onEventRealtimeFunction"></f:ajax>
+															<f:ajax execute="@all"
+																listener='#{equipsBean.setAll("vw_linear")}'
+																onevent="onEventRealtimeFunction"></f:ajax>
 														</c:when>
 														<c:otherwise>
-															<f:ajax execute="@all" listener='#{equipsBean.setAll("linear")}' onevent="onEventRealtimeFunction"></f:ajax>
+															<f:ajax execute="@all"
+																listener='#{equipsBean.setAll("linear")}'
+																onevent="onEventRealtimeFunction"></f:ajax>
 														</c:otherwise>
 													</c:choose>
 												</h:commandButton>
 											</div>
 										</div>
-										<div class="error-label"> <!-- ERROR DIV --> </div> <!---->
-									</div> <!---->					
-								</div> <!----> 	
-							</div> <!----> 	
-								
-								<!-- ***** KM ***** -->
-								
+										<div class="error-label">
+											<!-- ERROR DIV -->
+										</div>
+										<!---->
+									</div>
+									<!---->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** KM ***** -->
+
+							<!--  ******************************************************************************************************* -->
+
+								<!-- ***** MODEL ***** -->
+							<div class="form-row sosInputs-edit" style="display: none;">
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-phone-alt"></i></span>
+										<!-- SPAN ICON -->
+										<span for="modelEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="modelEdit"
+											id="modelEdit" maxlength="1" class="model"
+											placeholder="#{mapLabels.map_creation_input_model}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="modelEdit" class="error" id="modelEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+
+								<!-- ***** MODEL ***** -->
+
 								<!--  ******************************************************************************************************* -->
+
+								<!-- ***** SIP ***** -->
+								<!-- ROW -->
+								<div class="col-md-6">
+									<!-- COL -->
+									<div class="form-group input-field-half">
+										<!-- INPUT DIV -->
+										<span><i class="fas fa-sitemap"></i></span>
+										<!-- SPAN ICON -->
+										<span for="sipEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="sipEdit"
+											id="sipEdit" class="sip"
+											placeholder="#{mapLabels.map_creation_input_sip}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="sipEdit" class="error" id="sipEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+							</div>
+							<!-- ***** SIP ***** -->
+
+							<!--  ******************************************************************************************************* -->
 																						
 								<!-- ***** TRACKS ***** -->
 															

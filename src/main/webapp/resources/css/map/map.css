@@ -1038,13 +1038,22 @@ input[type="number"] {
 	display: none;
 }
 
-.mtoHidden {
+.speedHidden {
 	display: none;
 }
 
-.mtoHidden-edit {
+.speedHidden-edit {
 	display: none;
 }
+
+.ipAddressShow {
+	display: block;
+}
+
+.ipAddressShow-edit {
+	display: block;
+}
+
 
 /* Disabled bubttons on edit modal */
 input#equipId-edit:disabled, input#dmsType-edit:disabled {

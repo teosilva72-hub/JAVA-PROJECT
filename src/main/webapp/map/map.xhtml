@@ -525,7 +525,7 @@
 
 							<!-- IP ADDRESS -->
 
-							<div class="form-row">
+							<div class="form-row ipAddressShow">
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
@@ -547,6 +547,57 @@
 							<!-- ***** IP ADDRESS ***** -->
 
 							<!--  ******************************************************************************************************* -->
+							
+						  <!-- IP ADDRESS SPEED -->
+
+							<div class="form-row speedHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="speed-equipIp"
+										id="speed-equipIp"
+										placeholder="#{mapLabels.map_ip_address_speed_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS SPEED ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							  <!-- IP ADDRESS RADAR  -->
+
+							<div class="form-row speedHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="radar-equipIp"
+										id="radar-equipIp"
+										placeholder="#{mapLabels.map_ip_address_radar_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS RADAR ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
 
 							<!-- PORT -->
 
@@ -999,7 +1050,7 @@
 							<h:commandButton id="btn-form-send" p:data-toggle="modal"
 								p:data-target="#modaladd" style="display: none;">
 								<f:ajax execute="@form"
-									render=":equips :equipIds :equipName :cities :roads :km
+									render=":equips :equipIds :equipName :cities :roads :km 
 									:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 									listener="#{equipsBean.createEquipment}"
 									onevent="onEventMapFunction" />
@@ -1357,7 +1408,7 @@
 
 							<!-- IP ADDRESS -->
 
-							<div class="form-row">
+							<div class="form-row ipAddressShow-edit">
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
@@ -1377,6 +1428,58 @@
 							<!---->
 
 							<!-- ***** IP ADDRESS ***** -->
+							
+							<!--  ******************************************************************************************************* -->
+							
+							<!-- IP ADDRESS SPEED -->
+
+							<div class="form-row speedHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="speed-equipIp-edit"
+										id="speed-equipIp-edit"
+										placeholder="#{mapLabels.map_ip_address_speed_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS SPEED ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							  <!-- IP ADDRESS RADAR  -->
+
+							<div class="form-row speedHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field ">
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-signature"></i></span>
+									<!-- SPAN ICON -->
+									<input type="text" autocomplete="off" name="radar-equipIp-edit"
+										id="radar-equipIp-edit"
+										placeholder="#{mapLabels.map_ip_address_radar_place_holder}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- INPUT -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- ***** IP ADDRESS RADAR ***** -->
+
+							<!--  ******************************************************************************************************* -->
 
 							<!-- PORT -->
 

@@ -1,3 +1,34 @@
+const changeGenericStates = response => {
+
+	let name = `${response.EquipType}${response.Id}`
+	let status = response.Status
+	let equip = $(`#${name.toLowerCase()}`)
+	let sidebar = $(`#status${name.toLowerCase()}`)
+	
+	switch (status) {
+		case 1:
+
+			status = 'active'
+			sidebar.css("color", "#00FF00")
+			break
+
+		default:
+
+			status = ''
+			sidebar.css("color", "purple")
+			break
+
+			
+	}
+																	
+	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
+
+	console.log(status, equip, name)
+
+}
+
+
+
 
 const consumeMonitor = async ({ debug = false } = {}) => {
 	var client = await getStomp();
@@ -31,11 +62,14 @@ const initMonitor = async debug => {
 		
     console.log(response)
 
-	//for (const r of response)
-	//	changeStates(r)
+	for (const r of response)
+		changeGenericStates(r)
 				
 	consumeMonitor();
 }
 
-initMonitor();
+// SAVE ON WINDOW
+window.initMonitor = initMonitor;
+
+//initMonitor();
 

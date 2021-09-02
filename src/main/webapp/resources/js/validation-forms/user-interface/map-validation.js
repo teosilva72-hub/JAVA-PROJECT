@@ -24,6 +24,12 @@ $(function () {
 	resetFieldOnModalClose('#modaladd', 'equips');
 	resetFieldOnModalClose('#modaladd', 'equipId');
 	resetFieldOnModalClose('#modaladd', 'dmsType ');
+	resetFieldOnModalClose('#modaladd', 'equipIp');
+	resetFieldOnModalClose('#modaladd', 'speed-equipIp');
+	resetFieldOnModalClose('#modaladd', 'radar-equipIp');
+	resetFieldOnModalClose('#modaladd', 'equipPort');
+	resetFieldOnModalClose('#modaladd', 'model');
+	resetFieldOnModalClose('#modaladd', 'sip');
 	resetFieldOnModalClose('#modaladd', 'equipName ');
 	resetFieldOnModalClose('#modaladd', 'roads');
 	resetFieldOnModalClose('#modaladd', 'cities');
@@ -59,15 +65,20 @@ $(function () {
     //Dismiss modal function
     $("#modaladd").on("hidden.bs.modal", function() {
     	$('.satInputs').hide();	
-		$('.dmsHidden').hide();
-		$('.mtoHidden').hide();			  
+		$('.dmsHidden').hide();		
+		$('.sosInputs').hide();
+		$('.speedHidden').hide();
+		$('.ipAddressShow').show();
+				  
       });
     
     //reset form function
     $(".reset-btn").on("click", function() {	    		    
     	$('.satInputs').hide();	
-		$('.dmsHidden').hide();
-		$('.mtoHidden').hide();		  
+		$('.dmsHidden').hide();	
+		$('.sosInputs').hide();
+		$('.speedHidden').hide();
+		$('.ipAddressShow').show();	  
 	    $('#modaladd').modal('hide');
       }); 	 
     
@@ -86,7 +97,13 @@ $(function () {
 	    //Reset Fields on close modal
 		resetFieldOnModalClose('#editmodal', 'equips-edit');
 		resetFieldOnModalClose('#editmodal', 'equipId-edit');
-		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
+		resetFieldOnModalClose('#editmodal', 'dmsType-edit');		
+        resetFieldOnModalClose('#editmodal', 'equipIp-edit');
+        resetFieldOnModalClose('#editmodal', 'speed-equipIp-edit');
+        resetFieldOnModalClose('#editmodal', 'radar-equipIp-edit');
+        resetFieldOnModalClose('#editmodal', 'equipPort-edit');
+        resetFieldOnModalClose('#editmodal', 'modelEdit');
+        resetFieldOnModalClose('#editmodal', 'sipEdit');
 		resetFieldOnModalClose('#editmodal', 'equipNameEdit');
 		resetFieldOnModalClose('#editmodal', 'roadsEdit');
 		resetFieldOnModalClose('#editmodal', 'citiesEdit');
@@ -119,13 +136,20 @@ $(function () {
           	    
 	    //Dismiss modal function
 	    $("#editmodal").on("hidden.bs.modal", function() {
-	    	$('.satInputs-edit').hide();				  
+			$('.satInputs-edit').hide();	
+            $('.dmsHidden-edit').hide();       
+	    	$('.satInputs-edit').hide();	
+			$('.speedHidden-edit').hide();
+			$('.ipAddressShow-edit').show();	 				  
 	      });
 	    
 	    //reset form function
 	    $(".reset-btn-edit").on("click", function() {	    		    
-	    	$('.satInputs-edit').hide();			  
-		    $('#editmodal').modal('hide');
+	    	$('.satInputs-edit').hide();
+			$('.dmsHidden-edit').hide();    	
+			$('.speedHidden-edit').hide();
+			$('.ipAddressShow-edit').show();
+			$('#editmodal').modal('hide');
 	      }); 	     
 
 });

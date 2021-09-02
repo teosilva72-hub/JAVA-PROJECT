@@ -26,6 +26,7 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
+import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 import org.primefaces.context.RequestContext;
@@ -45,6 +46,7 @@ public class EquipmentsBean implements Serializable {
 	Equipments equip;
 	SAT sat;
 	DMS dms;
+	Speed speed;
 
 	private int equipId;
 	private String equipTable, equipDel, cftvController;
@@ -286,13 +288,17 @@ public class EquipmentsBean implements Serializable {
 
 		//FOR PMV
 		DMS dms = new DMS();
+		
+		//FOR Speed
+		Speed speed = new Speed();
+			
 
 		//CHECK MODULES	
 		int moduleID = (parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips")));
 
 		//EQUIP ID
 		int equipId = (parameterMap.get("equipId") == "" ? 0 : Integer.parseInt(parameterMap.get("equipId")));
-
+	
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 		//DMS CHECKING
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -496,12 +502,75 @@ public class EquipmentsBean implements Serializable {
 
 			sat = new SAT(); // RESET
 		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
+		//SPEED CHECKING
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if((moduleID != 0 &&  moduleID == 11) && (equipId != 0)) {
 
+			//EQUIP TABLE BY MODULE
+			String table = defineTableById(moduleID);
+
+			//For Equipment ID
+			speed.setEquip_id(equipId);
+
+			//For Equipment CreationDate
+			speed.setCreation_date(dta.currentTimeDBformat());
+
+			//For Equipment CreationUsername		
+			speed.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+
+			//Equip Type
+			speed.setEquip_type(defineEquipType(table));
+
+			//For Equipment Name
+			speed.setNome(parameterMap.get("equipName"));
+
+			//EQUIP IP
+			speed.setEquip_ip_speed(parameterMap.get("speed-equipIp"));
+			
+			//EQUIP IP
+			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp"));
+
+			//For Equipment City
+			speed.setCidade(parameterMap.get("cities"));
+
+			//For Equipment Road
+			speed.setEstrada(parameterMap.get("roads"));
+
+			//For Equipment KM
+			speed.setKm(parameterMap.get("km"));		 
+
+			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
+			
+			System.out.println(checked);
+
+			if(checked)
+				request.execute("alertOptions('#equip-save-error');");
+
+			else {
+
+				checked = equipDAO.EquipRegisterSpeedMap(speed, table);
+
+				if(checked) {
+					request.execute("alertOptions('#equip-save');");
+					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+				}
+
+				else  request.execute("alertOptions('#equip-save-error');");
+
+			}  //VALIDATION
+			
+			speed = new Speed(); // RESET
+
+		} // END METHOD
+
+				
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 		//GENERIC CHECKING
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		else if((moduleID != 0 && (moduleID != 9 && moduleID != 8 && moduleID != 10)) && (equipId != 0)) {
+		else if((moduleID != 0 && (moduleID != 9 && moduleID != 8 && moduleID != 10 && moduleID != 11)) && (equipId != 0)) {
 
 			//EQUIP TABLE BY MODULE
 			String table = defineTableById(moduleID);
@@ -585,6 +654,7 @@ public class EquipmentsBean implements Serializable {
 		sat = new SAT();
 		dms = new DMS();
 		sos = new SOS();
+		speed = new Speed();
 
 		int moduleId = getModuleByName(equipTable);
 
@@ -646,8 +716,7 @@ public class EquipmentsBean implements Serializable {
 			sos = dao.EquipSOSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
 			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");			
 			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sos.getNome()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+sos.getEquip_ip()+"');");
 			RequestContext.getCurrentInstance().execute("$('#equipPort-edit').val('"+sos.getPort()+"');");
@@ -657,8 +726,24 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
 			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
+			
+			System.out.println(sos.getSip()+""+sos.getModel());
 
-		} else {		
+		} else if (moduleId == 11) {
+
+			speed = dao.EquipSpeedSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
+
+			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+speed.getEquip_id()+"');");			
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+speed.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#speed-equipIp-edit').val('"+speed.getEquip_ip_speed()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#radar-equipIp-edit').val('"+speed.getEquip_ip_radar()+"');");		
+			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+speed.getCidade()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+speed.getKm()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
+		
+		}else {		
 
 			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
@@ -733,6 +818,7 @@ public class EquipmentsBean implements Serializable {
 		DMS dms = new DMS();
 		SAT sat = new SAT();
 		SOS sos = new SOS();
+		Speed speed = new Speed();
 		Equipments equip = new Equipments();
 
 		int equipId = getEquipId();		 
@@ -911,7 +997,55 @@ public class EquipmentsBean implements Serializable {
 			}
 
 
-		}else if((moduleId != 0 && (moduleId != 9 && moduleId != 8))) {
+		} else if(moduleId != 0 && moduleId == 11) {		
+
+			//Table definition
+			String table = defineTableById(moduleId);
+
+			//For Equipment Update Date
+			speed.setUpdate_date(dta.currentTimeDBformat());
+
+			//For Equipment Update Username		
+			speed.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));			
+
+			//Speed ID
+			speed.setEquip_id(equipId);
+
+			//For Equipment Name
+			speed.setNome(parameterMap.get("equipNameEdit"));
+
+			//For Equipment IP
+			speed.setEquip_ip_speed(parameterMap.get("speed-equipIp-edit"));
+			
+			//For Equipment IP
+			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp-edit"));
+			
+			//For Equipment City
+			speed.setCidade(parameterMap.get("citiesEdit"));
+
+			//For Equipment Road
+			speed.setEstrada(parameterMap.get("roadsEdit"));
+
+			//For Equipment KM
+			speed.setKm(parameterMap.get("kmEdit"));
+		
+			//For Equipment Map Width / Linear Width			    			    
+			if(parameterMap.get("width-edit") == "0")
+				speed.setMapWidth(1);			    
+
+			else speed.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
+
+			update = dao.EquipSpeedUpdateMap(speed, table, interfaceView, login.getLogin().getPermission_id());
+
+			if(update) {
+				request.execute("alertOptions('#equip-update');");
+				request.execute("updated = '" + equipTable + equipId + "';");
+			} else {
+				request.execute("alertOptions('#equip-update-error');");
+			}    
+
+
+		}else if((moduleId != 0 && (moduleId != 8 && moduleId != 9 && moduleId != 10 && moduleId != 11))) {
 
 			// Table definition
 			String table = defineTableById(moduleId);

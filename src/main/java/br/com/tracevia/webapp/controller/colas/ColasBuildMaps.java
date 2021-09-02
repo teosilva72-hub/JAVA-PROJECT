@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.controller.colas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -8,7 +7,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
-import br.com.tracevia.webapp.dao.colas.ColasDAO;
 import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.global.ListEquipments;
 
@@ -47,11 +45,9 @@ public class ColasBuildMaps {
 		
 		try {
 			
-			ColasDAO colasDAO = new ColasDAO();
+			//ColasDAO colasDAO = new ColasDAO();
 						
-			colasStatus = new ArrayList<Colas>();			
-			colasStatus = colasDAO.Status();	
-				
+							
             }catch(IndexOutOfBoundsException ex) {}
 		
 		}catch(Exception ex) {}		
