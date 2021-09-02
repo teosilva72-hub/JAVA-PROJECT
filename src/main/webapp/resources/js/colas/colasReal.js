@@ -1,5 +1,6 @@
 function getTrReal(){
 	var table = $('#colas-tableReal').DataTable({
+		"searching": false,
 		"select": false,
 		"autoWidth": true,			  	   	
 		"scrollY": `${screen.availHeight / 1.5}px`,
