@@ -1305,3 +1305,10 @@ span.close-x {
     bottom: 112px;
     right: 10px;
 }
+
+/* HORIZONTAL DOTTED LINE */
+.horizontal_dotted_line {
+	border-bottom: 1px dotted brown;
+	width: 20px;
+}
+/* HORIZONTAL DOTTED LINE END */
