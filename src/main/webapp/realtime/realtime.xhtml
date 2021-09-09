@@ -390,9 +390,9 @@
 									<!-- SELECT -->
 									<span><i class="fas fa-city"></i></span>
 									<!-- SPAN ICON -->
-									<span for="citiesEdit" class="valid-icon-hidden"></span>
+									<span for="cities" class="valid-icon-hidden"></span>
 									<!-- SPAN VALIDATION -->
-									<select name="citiesEdit" id="citiesEdit" size="1">
+									<select name="cities" id="cities" size="1">
 										<option value="">#{mapLabels.map_creation_select_city}</option>
 										<ui:repeat var="city" value="#{equipsBean.cities}"
 											varStatus="cityStatus">
@@ -403,7 +403,7 @@
 								</div>
 								<!---->
 								<div class="error-label">
-									<label for="citiesEdit" class="error" id="citiesEdit-error"></label>
+									<label for="cities" class="error" id="cities-error"></label>
 								</div>
 								<!---->
 							</div>
@@ -481,16 +481,16 @@
 										<!-- INPUT DIV -->
 										<span><i class="fas fa-phone-alt"></i></span>
 										<!-- SPAN ICON -->
-										<span for="modelEdit" class="valid-icon-hidden"></span>
+										<span for="model" class="valid-icon-hidden"></span>
 										<!-- SPAN VALIDATION -->
-										<input type="text" autocomplete="off" name="modelEdit"
-											id="modelEdit" maxlength="1" class="model"
+										<input type="text" autocomplete="off" name="model"
+											id="model" maxlength="1" class="model"
 											placeholder="#{mapLabels.map_creation_input_model}" />
 										<!-- INPUT -->
 									</div>
 									<!---->
 									<div class="error-label">
-										<label for="modelEdit" class="error" id="modelEdit-error"></label>
+										<label for="model" class="error" id="model-error"></label>
 									</div>
 									<!---->
 								</div>
@@ -508,16 +508,16 @@
 										<!-- INPUT DIV -->
 										<span><i class="fas fa-sitemap"></i></span>
 										<!-- SPAN ICON -->
-										<span for="sipEdit" class="valid-icon-hidden"></span>
+										<span for="sip" class="valid-icon-hidden"></span>
 										<!-- SPAN VALIDATION -->
-										<input type="text" autocomplete="off" name="sipEdit"
-											id="sipEdit" class="sip"
+										<input type="text" autocomplete="off" name="sip"
+											id="sip" class="sip"
 											placeholder="#{mapLabels.map_creation_input_sip}" />
 										<!-- INPUT -->
 									</div>
 									<!---->
 									<div class="error-label">
-										<label for="sipEdit" class="error" id="sipEdit-error"></label>
+										<label for="sip" class="error" id="sip-error"></label>
 									</div>
 									<!---->
 								</div>

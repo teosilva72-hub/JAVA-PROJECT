@@ -942,9 +942,9 @@ $('[id$="equips"]').click(function btnSave() {
 
 		} else if (selectVAL == 10) {
 
-			$('.sosInputs').show();				
-			$('.satInputs').hide();
-			$('.mtoHidden').hide();
+			$('.sosInputs').show();	 // DIV SOS TYPE
+			$('.dmsHidden').show(); 				
+			$('.satInputs').hide();		
 			$('.speedHidden').hide();
 			$('.ipAddressShow').show();
 

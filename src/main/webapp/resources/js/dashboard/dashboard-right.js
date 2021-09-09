@@ -16,13 +16,6 @@ $(async function () {
     adjustSidebar();
   });
 
-
-  //UPDATE NOTIFICATIONS NUMBER ON LOAD
-  $("#notification").load('/template/dashboard-rov-notifications.xhtml', () => {
-
-    notificationBadge();
-  });
-
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 7000 })
 
   while (typeof rabbitmq == "undefined" || typeof asterisk == "undefined") {
@@ -64,18 +57,6 @@ $('#navCall').on('click', function (event) {
     window.alert('Telefone já esta aberto.');
   }
 });
-
-//NOTIFICATIONS BADGE
-function notificationBadge() {
-
-  var badge = Number(document.getElementById('badge-notif').innerHTML);
-
-  if (badge > 0)
-    document.getElementById('badge-notif').style.display = 'block';
-
-  else document.getElementById('badge-notif').style.display = 'none';
-
-}
 
 const showStatesCallbox = action => {
   let client = $("#sipClient .sipStatus")

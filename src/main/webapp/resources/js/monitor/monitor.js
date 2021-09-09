@@ -1,6 +1,36 @@
+
+const changeNotificationStatus = response => {
+
+   let counter = response.Count;
+
+   // FORMAT UNDEFINED VALUE
+   const replacer = (key, value) =>
+     typeof value === 'undefined' ? 0 : value;
+
+	counter = JSON.stringify(counter, replacer);
+
+    if (counter > 0)
+	   $('#badge-notif').css('display','block')
+    
+	else $('#badge-notif').css('display','none')
+
+	 // BADGE VALUE	
+    $('#badge-notif').html(`${counter}`)
+
+	//console.log(counter)
+			
+}
+
 const changeGenericStates = response => {
 
-	let name = `${response.EquipType}${response.Id}`
+	//Tipo equipamento
+	let type = response.EquipType
+
+	//Separação em caso do SPEED
+	if(type == "SPEED I" || type == "SPEED R")
+        type = "SPEED"
+
+	let name = `${type}${response.Id}`
 	let status = response.Status
 	let equip = $(`#${name.toLowerCase()}`)
 	let sidebar = $(`#status${name.toLowerCase()}`)
@@ -15,29 +45,88 @@ const changeGenericStates = response => {
 		default:
 
 			status = ''
-			sidebar.css("color", "purple")
+			sidebar.css("color", "#FF0000")
 			break
-
 			
 	}
-																	
-	equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
 
-	console.log(status, equip, name)
-
+	if(response.EquipType == "SPEED R")	     
+	     equip.find(`span.equip-status-radar`).attr("class", `equip-status-radar ${status}`.trim())
+	
+    else equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
+	 	    
+	//console.log(type)
 }
 
+  const listNotifications = response => {		
+	 			
+	 $('#notifications-list').empty()
 
+	 $(response).each(function(i,item){			 
+		
+        if(item.EquipType == "none")
 
+		$('#notifications-list').append(	
+					
+			'<a value="#" class="dropdown-item text-font dropdown-notif-style '+item.ViewedBgColor+'" id="'+item.EquipType.toLowerCase()+item.EquipId+'" >'+
+			
+			'<div style="font-size: 12px;">' +
+			   item.Description +
+			'</div>' +
+			
+		'</a>'	
+	
+		)// END APPEND
+	
+		else
+			
+		$('#notifications-list').append(	
+					
+			'<a value="#" class="dropdown-item text-font dropdown-notif-style '+item.ViewedBgColor+'" id="n'+item.EquipType.toLowerCase()+item.EquipId+'" >'+
+			
+			'<div style="font-size: 10px; margin-left: 0px;">' +
+			   item.DateTime +
+		    '</div>' +
 
-const consumeMonitor = async ({ debug = false } = {}) => {
+		    '<div style="font-size: 12px;">' +
+		      item.EquipName+' - '+item.Description +
+		    '</div>' +
+			
+		'</a>'	
+		)		
+	 })	
+   }
+  
+
+const callback_states = response => {
+	let res = JSON.parse(response.body);
+	changeGenericStates(res);
+} 
+
+const callback_count = response => {
+	let res = JSON.parse(response.body);
+	changeNotificationStatus(res);	
+} 
+
+const callback_notifications = response => {
+	let res = JSON.parse(response.body);
+	listNotifications(res)
+} 
+
+const consumeMonitor = async ({ callback1 = callback_states, callback2 = callback_count, callback3 = callback_notifications, debug } = {}) => {
 	var client = await getStomp();
 
-	var on_connect = function() {	
-			client.subscribe(`/exchange/monitor/monitor`, response => {
-                let resp = JSON.parse(response.body)
-                  console.log(resp)
-            })
+	var on_connect = function() {
+		if (typeof callback_states == "function")	
+			client.subscribe(`/exchange/monitor/monitor`, callback1)
+			
+		if (typeof callback_count == "function")
+			client.subscribe(`/exchange/counter/counter`, callback2)
+
+		if (typeof callback_notifications == "function")
+	        client.subscribe(`/exchange/notification/notification`, callback3)
+	
+			
 	};
 
 	var on_error =  function() {
@@ -59,16 +148,24 @@ const connectMonitor = async function(request, debug) {
 
 const initMonitor = async debug => {
 	let response = await connectMonitor('getMonitorStatus', true)
-		
-    console.log(response)
-
+	let count = await connectMonitor('getNotificationsCount', true)
+	let notifications = await connectMonitor('getNotificationsAlert', true)
+		  
 	for (const r of response)
 		changeGenericStates(r)
-				
-	consumeMonitor();
+
+	for (const n of notifications)
+         listNotifications(n)
+
+		 changeNotificationStatus(count);
+	
+		consumeMonitor();
 }
 
 // SAVE ON WINDOW
+
+window.consumeMonitor = consumeMonitor;
+window.connectMonitor = connectMonitor;
 window.initMonitor = initMonitor;
 
 //initMonitor();

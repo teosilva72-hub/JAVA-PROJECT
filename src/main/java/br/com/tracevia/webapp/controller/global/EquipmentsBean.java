@@ -726,9 +726,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
 			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
-			
-			System.out.println(sos.getSip()+""+sos.getModel());
-
+		
 		} else if (moduleId == 11) {
 
 			speed = dao.EquipSpeedSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
@@ -742,7 +740,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+speed.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
-		
+				
 		}else {		
 
 			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
@@ -755,7 +753,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
-
+		
 		}				   
 	}
 

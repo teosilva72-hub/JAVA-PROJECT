@@ -319,7 +319,12 @@ footer {
   background: #e6e6fa !important;
 }
 .dropdown-item:active {
-  background: #212529 !important;
+  background: #212529 !important;  
+}
+
+/* ACTIVE NOTIFICATION ACTIVE INFORMATION COLOR */
+.dropdown-nofit-alert:active, .dropdown-nofit-none:active {
+	color: #FFF !important;	
 }
 
 .navbar .dropdown.show .notif-dropdown a {
@@ -344,7 +349,7 @@ footer {
 }
 
 .dropdown-nofit-none {
-  background: #FFFFFF; /*LAVANDER BLUSH*/  
+  background: #FFFFFF; /* NONE */ 
 }
 
 /* DROPDOWN ITEM STYLES */
