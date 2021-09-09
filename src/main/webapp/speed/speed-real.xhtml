@@ -1,0 +1,251 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="default-stylesheet">
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css/speed" name="speed-real.css" />
+	</ui:define>
+
+	<ui:define name="default-jquery">
+
+	</ui:define>
+
+	<ui:define name="default-content">
+		<div class="jumbotron bg-dark px-3">
+			<!-- INICIO DO FORMULARIO EQUIP -->
+
+			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
+			<div class="row conteudoPag">
+				<!-- INICIO DA TABELA SELECAO -->
+				<div class="col-auto">
+				
+					<div class="message-block" id="showOption">
+						<div id="label-message-content">
+							<span class="label-message-block">#{dmsLabels.dms_active_messages_label_selection}</span>
+						</div>
+						<!-- INICIO DO PAINEL -->
+						<div class="card border-dark mb-3" style="z-index: 2;">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-sm">
+										<!-- INICIO DO CHECK BOX TOPO -->
+										<div class="form-check form-switch">
+											<input type="checkbox" class="form-check-input" id="checkListAll" />
+											<label class="form-check-label"
+												for="checkListAll">#{dmsLabels.dms_active_messages_select_all}</label>
+										</div>
+										<!-- FINAL DO CHECK BOX TOPO -->
+									</div>
+									<div class="col typePMV">
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV1"
+												value="driver1" checked="checked" />
+											<label class="form-check-label" for="typePMV1">T1</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV2"
+												value="driver2" />
+											<label class="form-check-label" for="typePMV2">T2</label>
+										</div>
+										<div class="form-check form-check-inline me-1">
+											<input class="form-check-input" type="radio" name="typePMV" id="typePMV3"
+												value="driver3" />
+											<label class="form-check-label" for="typePMV3">T3</label>
+										</div>
+									</div>
+								</div>
+								<!-- INICIO SELECT OPTION -->
+								<div id="selection-div">
+									<div id="mt-2">
+										<select id="selectionType" class="form-select" aria-label="select type">
+											<option value="All" selected="selected">#{dmsLabels.dms_active_messages_all}</option>
+											<c:forEach items="#{pmvMessage.type}" var="opt">
+												<option value="#{opt.value}">#{opt.label}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<!-- FINAL SELECT OPTION -->
+							</div>
+							<div class="card-body">
+								<div id="page-pmv">
+
+									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.5">
+
+										<!-- Table with DIV -->
+
+										<div class="tableStyle card on">
+											<div class="dms-name card-header py-0">
+												<div class="text-center dmsTab#{item.equip_id}">
+												</div>
+											</div>
+											<div class="row text-center card-body p-0">
+												<div id="child-img" class="col-2 padding-pmv">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box primary" id-img="0" />
+												</div>
+												<div id="child-msg" class="col-auto msg-pos">
+													<div id="message" class="table-message">
+														<div class="row border-table-right message1" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-1"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-2"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-3"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-4"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-5"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-6"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-7"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-8"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-9"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-10"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-11"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-12"></span>
+															</div>
+														</div>
+														<div class="row border-table-right message2" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-13"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-14"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-15"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-16"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-17"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-18"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-19"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-20"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-21"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-22"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-23"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-24"></span>
+															</div>
+														</div>
+														<div class="row border-table-right bottom message3" msg="">
+															<div class="col-1 px-0 border-table">
+																<span id="box-25"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-26"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-27"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-28"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-29"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-30"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-31"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-32"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-33"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-34"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-35"></span>
+															</div>
+															<div class="col-1 px-0 border-table">
+																<span id="box-36"></span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div id="child-img" class="col-2 second-img ms-auto">
+													<img src="/resources/images/pictures/#{pmvMessage.image}"
+														class="picture-box secondary" id-img="0" />
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								
+								
+							</div>
+						</div>
+						<!-- FINAL DO PAINEL -->
+					</div>
+				</div>
+				<!-- FINAL DA TABELA SELECAO -->
+				
+			</div>
+			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
+		</div>
+		<!-- FINAL DO FORMULARIO EQUIP -->
+		<form name="variable">
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_show}" name="showButton" />
+			<input style="display:none" value="#{dmsLabels.dms_available_messages_btn_hide}" name="hiddenButton" />
+		</form>
+	</ui:define>
+
+	<ui:define name="modal-content"></ui:define>
+
+	<ui:define name="default-plugins">
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
+	</ui:define>
+	
+	<ui:define name="jscript">
+	</ui:define>
+</ui:composition>
