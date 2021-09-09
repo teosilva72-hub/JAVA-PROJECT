@@ -1235,7 +1235,7 @@ public class EquipmentsDAO {
 				ps.setInt(1, equip.getEquip_id());
 				ps.setString(2, equip.getCreation_date());
 				ps.setString(3, equip.getCreation_username());
-				ps.setString(4, equip.getEquip_ip_speed());
+				ps.setString(4, equip.getEquip_ip_indicator());
 				ps.setString(5, equip.getEquip_ip_radar());			
 				ps.setString(6, equip.getNome());
 				ps.setString(7, equip.getCidade());
@@ -1277,7 +1277,7 @@ public class EquipmentsDAO {
 
 						ps.setInt(1, equip.getEquip_id()); 		
 						ps.setString(2, equip.getEquip_type()+" I");
-						ps.setString(3, equip.getEquip_ip_speed());
+						ps.setString(3, equip.getEquip_ip_indicator());
 						ps.setString(4, "I "+equip.getNome());
 						ps.setString(5, equip.getKm());
 					
@@ -2494,7 +2494,7 @@ public class EquipmentsDAO {
 				else ps = conn.prepareStatement(queryMap);
 				
 				ps.setString(1, speed.getNome()); 
-				ps.setString(2, speed.getEquip_ip_speed());
+				ps.setString(2, speed.getEquip_ip_indicator());
 				ps.setString(3, speed.getEquip_ip_radar());
 				ps.setString(4, speed.getCidade());
 				ps.setString(5, speed.getEstrada());
@@ -2549,7 +2549,7 @@ public class EquipmentsDAO {
 						
 					    ps = conn.prepareStatement(notifications);
 						
-						ps.setString(1, speed.getEquip_ip_speed());
+						ps.setString(1, speed.getEquip_ip_indicator());
 						ps.setString(2, "I "+speed.getNome()); 
 						ps.setString(3, speed.getKm());						
 						ps.setInt(4, id);	
@@ -3432,7 +3432,7 @@ public Speed EquipSpeedSearchMap(int id, String table, String interfaceView, int
 		while(rs.next()){
 
 			speed.setEquip_id(rs.getInt(1));
-			speed.setEquip_ip_speed(rs.getString(2));
+			speed.setEquip_ip_indicator(rs.getString(2));
 			speed.setEquip_ip_radar(rs.getString(3));		
 			speed.setNome(rs.getString(4));	  			  
 			speed.setCidade(rs.getString(5));
