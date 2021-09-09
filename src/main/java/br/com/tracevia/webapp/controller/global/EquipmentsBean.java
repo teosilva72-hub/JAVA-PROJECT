@@ -527,7 +527,7 @@ public class EquipmentsBean implements Serializable {
 			speed.setNome(parameterMap.get("equipName"));
 
 			//EQUIP IP
-			speed.setEquip_ip_speed(parameterMap.get("speed-equipIp"));
+			speed.setEquip_ip_indicator(parameterMap.get("indicator-equipIp"));
 			
 			//EQUIP IP
 			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp"));
@@ -736,7 +736,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
 			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+speed.getEquip_id()+"');");			
 			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+speed.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#speed-equipIp-edit').val('"+speed.getEquip_ip_speed()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#indicator-equipIp-edit').val('"+speed.getEquip_ip_indicator()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#radar-equipIp-edit').val('"+speed.getEquip_ip_radar()+"');");		
 			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+speed.getCidade()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
@@ -1015,7 +1015,7 @@ public class EquipmentsBean implements Serializable {
 			speed.setNome(parameterMap.get("equipNameEdit"));
 
 			//For Equipment IP
-			speed.setEquip_ip_speed(parameterMap.get("speed-equipIp-edit"));
+			speed.setEquip_ip_indicator(parameterMap.get("indicator-equipIp-edit"));
 			
 			//For Equipment IP
 			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp-edit"));
