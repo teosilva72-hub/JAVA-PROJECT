@@ -147,7 +147,7 @@ public class NotificationsDAO {
 								  // ONLINE STATUS
 								 //-------------------------------
 							   
-							   if(rs.getBoolean("st.online_status") == true && rs.getBoolean("st.online_last_status") == false) {						
+							   if(rs.getBoolean("st.online_status") == false && rs.getBoolean("st.online_last_status") == true) {						
 									
 								      not = new Notifications();	
 								   
@@ -228,7 +228,7 @@ public class NotificationsDAO {
 	  } 	
      
      
-     public List<Notifications> NotificationStatus(String type) throws Exception{
+     /*public List<Notifications> NotificationStatus(String type) throws Exception{
  		
  		List<Notifications> lista = new ArrayList<Notifications>();
  			  		
@@ -266,7 +266,7 @@ public class NotificationsDAO {
  				}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
 
  		  return lista;
- 	  } 	
+ 	  } 	*/
       
           
      public Integer notificationsCount() throws Exception {

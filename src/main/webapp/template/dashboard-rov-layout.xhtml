@@ -179,7 +179,9 @@
           <!-- Notificações -->
 
           <ul class="navbar-nav header-menu" id="notification">
+
             <li class="nav-item dropdown">
+
               <a class="nav-link p-0" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false"
                 title="#{dashboardLabels.dashboard_navbar_icon_notifications_title}">
@@ -190,7 +192,15 @@
                   </path>
                 </svg>
 
+                <span class="header-badge" id="badge-notif" ></span> 
+
               </a>
+              
+             <div class="dropdown-menu dropdown-menu-right dropdown-notif" aria-labelledby="navbarDropdown2">
+                <div class="square" id="square-notif"></div>
+                  <div id="notifications-list">
+                  </div>                         
+              </div> 
 
             </li>
           </ul>
@@ -637,7 +647,7 @@
       
     </ui:fragment>
 
-    <h:outputScript name="monitor.js?version=#{notificationsView.timestamp}" library="js/monitor" />
+    <h:outputScript name="monitor.js?version=#{notificationsView.timestamp}" library="js/monitor" />s
 
     <!-- Import JavaScript from another pages -->
     <ui:insert name="jscript">

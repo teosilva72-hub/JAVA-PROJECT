@@ -605,36 +605,6 @@ function posEquip(equip) {
 			$(`#status${sat_name}`).css({ "color": '#FF0000' });
 		}
 	}
-
-	/*if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
-	
-	    let tableId = equip.attr('id');
-		let statusValue = equip.find('input').attr("status");
-		let equipStatus = equip.find("span").attr("id");						
-										
-		if(statusValue == 1){
-		  $('#'+equipStatus).css({
-				"background-color": '#00FF0D',
-				color: 'white'
-			});			
-
-			// status equip color
-			
-			$(`#status${tableId}`).css({ "color": '#00FF0D !important' }); // status side menu
-						
-	   } else if(statusValue == 0){ 
-	            $('#'+equipStatus).css({
-				"background-color": '#FF0000',
-				color: 'white'
-			}); 
-			
-			// status equip color
-			
-			$(`#status${tableId}`).css({ "color": '#FF0000 !important' }); // status side menu
-						
-		}			
-	
-	}*/
 }
 // EQUIPMENT POSITION END
 

@@ -98,8 +98,8 @@ public class NotificationsBean {
 			
 		try {
 			
-			findNotifications();
-			countNotifications();
+			//findNotifications();
+			//countNotifications();
 				
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class NotificationsBean {
 					
 	}
 	
-	public List<Notifications> getNotificationStatus(String type) throws Exception {
+/*	public List<Notifications> getNotificationStatus(String type) throws Exception {
 		
 		notificationStatus = new ArrayList<Notifications>();
 		NotificationsDAO dao = new NotificationsDAO();
@@ -140,7 +140,7 @@ public class NotificationsBean {
 		return notificationStatus = dao.NotificationStatus(type);		
 		
 		
-	}
+	}*/
 	
 	
 	public void countNotifications() throws Exception {

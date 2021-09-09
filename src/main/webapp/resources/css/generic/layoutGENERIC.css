@@ -60,7 +60,19 @@
   bottom: 2.8125rem;
 }
 
+.equip-status-radar {
+  background-color: #FF0000;
+  border-radius: 100%;
+  padding: 0.375rem;
+  position: absolute;
+  right: 0;
+}
+
 .equip-status.active {
+  background-color: #00FF00;
+}
+
+.equip-status-radar.active {
   background-color: #00FF00;
 }
 

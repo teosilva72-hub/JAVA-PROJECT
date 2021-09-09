@@ -183,9 +183,9 @@ table {
 	color: #ff000d;
 }
 
-.fa-circle:not( [id^=statussos], [id^=statusdms]) {
+/*.fa-circle:not( [id^=statussos], [id^=statusdms]) {
 	color: #00ff0d;
-}
+}*/
 
 .equip-box-sat {
 	height: auto !important;
