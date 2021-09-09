@@ -1,0 +1,92 @@
+body {
+  overflow-y: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.jumbotron {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 5px;
+  margin-top: 10px;
+}
+
+#messages-list {
+  position: relative;
+  margin-top: 100px;
+}
+
+.check-select {
+  float: left;
+  margin-top: 7%;
+  margin-right: 70px;
+  z-index: 0;
+}
+
+/*CONTEUDO PRINCIPAL ACTIVATE*/
+.option {
+  border: 1px solid transparent;
+  width: 95%;
+  height: 100px;
+  margin-left: 2.5%;
+  position: relative;
+}
+
+/* HEADER OPTION */
+
+/*Equips Content labels header*/
+.label-header-content {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 15px;
+  display: block;
+}
+
+/*LABEL MESSAGE BLOCK DIV CONTENT*/
+#label-message-content {
+  padding-left: 230px;
+  margin-bottom: 10px;
+}
+
+/*LABEL MESSAGE BLOCK*/
+.label-message-block {
+  font-weight: bold;
+  font-size: 22px;
+  color: white;
+}
+
+#showOption {
+  display: none;
+}
+
+.typePMV {
+  width: 175px;
+}
+
+#allPMV {
+  overflow: auto;
+}
+
+.equip-info {
+	z-index: -1;
+}
+
+.logo-concessionaire {
+    left: 50%;
+    bottom: unset;
+    transform: translateX(-50%);
+    top: 10px;
+    opacity: 1;
+    z-index: 1030;
+}
+
+/* TEMPORARY CSS */
+
+.temporaryboot {
+  left: -130px;
+}

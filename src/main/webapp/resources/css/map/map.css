@@ -1307,8 +1307,22 @@ span.close-x {
 }
 
 /* HORIZONTAL DOTTED LINE */
+
 .horizontal_dotted_line {
-	border-bottom: 1px dotted brown;
+	border-bottom: 4px dotted brown;
 	width: 20px;
 }
 /* HORIZONTAL DOTTED LINE END */
+
+/* SQUARE TOOL */
+.square_tool {
+	position: fixed;
+	margin-top: -19%;
+	margin-left: 15px;
+	width: 30px;
+	height: 30px;
+	border: 2px solid;
+	border-color: #f00;
+	z-index: 1;
+}
+/* SQUARE TOOL END */
