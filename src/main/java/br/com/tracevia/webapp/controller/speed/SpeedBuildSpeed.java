@@ -20,6 +20,7 @@ public class SpeedBuildSpeed {
 	private ListEquipments equips;
 	
 	List<Speed> speedStatus;
+	List<Speed> listSpeed;
 		
 	public ListEquipments getEquips() {
 		return equips;
@@ -31,6 +32,10 @@ public class SpeedBuildSpeed {
 	
 	public List<Speed> getSpeedStatus() {
 		return speedStatus;
+	}
+	
+	public List<Speed> getListSpeed() {
+		return listSpeed;
 	}
 
 	public void setSpeedStatus(List<Speed> speedStatus) {
@@ -54,6 +59,7 @@ public class SpeedBuildSpeed {
 			
 			speedStatus = new ArrayList<Speed>();			
 			speedStatus = dao.Status();			
+			listSpeed = dao.getSpeeds();			
 				
             }catch(IndexOutOfBoundsException ex) {}
 		
