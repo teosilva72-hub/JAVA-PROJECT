@@ -83,7 +83,7 @@ body {
 }
 
 .speed-card .card-footer {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
