@@ -15,16 +15,64 @@ body {
   margin-top: 10px;
 }
 
-#messages-list {
-  position: relative;
-  margin-top: 100px;
+.speed-card {
+  max-width: min-content;
+  font-size: 14px;
+  color: black;
 }
 
-.check-select {
-  float: left;
-  margin-top: 7%;
-  margin-right: 70px;
-  z-index: 0;
+.speed-card .speed-limit {
+  border-left: 0.5em solid #da0909;
+}
+
+.speed-card .speed-speedy {
+  border-left: 0.5em solid #da0909;
+}
+
+.speed-card .card-header * {
+  margin: 0 !important;
+  font-weight: 700;
+}
+
+.speed-card .speed-border {
+  border: 0.14em solid black;
+  padding: 0.1em;
+}
+
+.speed-card .speed-mold {
+  border: 0.2em solid black;
+}
+
+.speed-card .speed-color {
+  background-color: #ffc003;
+}
+
+.speed-card .speed-name {
+  font-size: 1.2em;
+  height: 3em;
+}
+
+.speed-card .speed-number {
+  font-size: 3em;
+}
+
+.speed-card .speed-plate {
+  height: 3.6em;
+  width: 7em;
+  border: 0.4em solid black;
+  line-height: 3em;
+}
+
+.speed-card .speed-limit .speed-plate {
+  color: #da0909;
+}
+
+.speed-card .speed-speedy .speed-plate {
+  color: #f6ff04;
+}
+
+.speed-card .card-footer {
+  font-weight: 600;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
@@ -60,22 +108,6 @@ body {
   color: white;
 }
 
-#showOption {
-  display: none;
-}
-
-.typePMV {
-  width: 175px;
-}
-
-#allPMV {
-  overflow: auto;
-}
-
-.equip-info {
-	z-index: -1;
-}
-
 .logo-concessionaire {
     left: 50%;
     bottom: unset;
@@ -83,10 +115,4 @@ body {
     top: 10px;
     opacity: 1;
     z-index: 1030;
-}
-
-/* TEMPORARY CSS */
-
-.temporaryboot {
-  left: -130px;
 }

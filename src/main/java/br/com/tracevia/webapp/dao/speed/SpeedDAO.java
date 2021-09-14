@@ -51,6 +51,42 @@ public class SpeedDAO {
 			return list;
 			
 		}	
+
+	   public List<Speed> getSpeeds() throws Exception {
+						
+			List<Speed> list = new ArrayList<Speed>();		
+							
+			String select = "SELECT equip_id, name, km FROM speed_equipment WHERE visible != 0 ";
+										
+		  try {
+				
+			   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(select);			
+										
+				rs = ps.executeQuery();
+				
+				if (rs != null) {
+					while (rs.next()) {
+						
+						Speed speed = new Speed();
+
+				         speed.setEquip_id(rs.getInt("equip_id"));
+				         speed.setNome(rs.getString("name"));
+				         speed.setKm(rs.getString("km"));
+				         speed.setTable_id("speed");
+				        															
+						list.add(speed);
+					}				
+				 }			
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+	 				
+			return list;
+			
+		}	
 	
 
 }
