@@ -173,5 +173,5 @@ window.consumeMonitor = consumeMonitor;
 window.connectMonitor = connectMonitor;
 window.initMonitor = initMonitor;
 
-//initMonitor();
+initMonitor();
 
