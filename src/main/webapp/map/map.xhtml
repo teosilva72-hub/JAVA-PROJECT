@@ -36,8 +36,9 @@
 	</ui:define>
 
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
-	<ui:param name="SuperAdmin"
-		value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
+	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
 	<ui:define name="main-content">
@@ -2144,11 +2145,17 @@
 
 	<ui:define name="jscript">
 
-		<h:outputScript name="dmsAnimation.js" p:type="module"
-			library="js/dms" />
-		<h:outputScript name="map.js" library="js/map" />
+		<c:if test="#{ DMS }">
+			<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
+		</c:if>
 
-		<c:if test="#{SuperAdmin}">
+		<c:if test="#{ SPEED }">
+			<h:outputScript name="speed_event.js" library="js/speed" />
+		</c:if>
+		
+		<h:outputScript name="map.js" library="js/map" />
+		
+		<c:if test="#{ SuperAdmin }">
 
 			<!-- Mudança -->
 
