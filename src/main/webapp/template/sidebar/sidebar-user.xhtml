@@ -113,7 +113,29 @@
 									<span class="text-sub">#{wimLabels.wimReal}</span>
 								</h:commandLink></li>
 						</ui:fragment>
+						
 						<!---->
+						
+							<!-- Colas ITEM -->
+
+						<ui:fragment rendered="#{loginAccount.load.en_colas}">
+							<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.colasRealtime}" value="">
+									<i class="fas fa-car icon-sub"></i>
+									<span class="text-sub">#{colasLabels.colasReal}</span>
+								</h:commandLink></li>
+						</ui:fragment>
+						
+						<!-- SPEED ITEM -->
+						
+						<ui:fragment rendered="#{loginAccount.load.en_speed}">
+							<!-- <li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.speedRealtime}" value="">
+									<i class="fas fa-shipping-fast icon-sub"></i>
+									<span class="text-sub">#{speedLabels.speedReal}</span>
+								</h:commandLink></li> -->
+						</ui:fragment>
+						
 
 						<!---->
 
