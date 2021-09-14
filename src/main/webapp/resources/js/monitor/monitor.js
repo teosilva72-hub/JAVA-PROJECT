@@ -49,10 +49,12 @@ const changeGenericStates = response => {
 	}
 
 	if(response.EquipType == "SPEED I")	     
-	     equip.find(`span.equip-status-indicator`).attr("class", `equip-status-indicator ${status}`.trim())
+	     equip.find(`.equip-status-indicator`).attr("class", `card-body p-1 speed-limit equip-status-indicator ${status}`.trim())
 	
-    else equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
-	 	    	
+    else if(response.EquipType == "SPEED R") equip.find(`.equip-status`).attr("class", `card-body p-1 speed-speedy equip-status ${status}`.trim())
+	 	    
+	else equip.find(`.equip-status`).attr("class", `equip-status ${status}`.trim())
+
 }
 
   const listNotifications = response => {		
