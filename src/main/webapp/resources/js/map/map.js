@@ -98,6 +98,8 @@ const init = () => {
 		if(window.initMonitor)		
 			initMonitor();
 	  
+		if(window.initSPEED)		
+			initSPEED();
 	})
 }
 
