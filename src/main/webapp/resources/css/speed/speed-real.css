@@ -82,7 +82,7 @@ body {
   color: #f6ff04;
 }
 
-.speed-card .card-footer {
+.speed-card .card-footer small {
   font-weight: 600 !important;
 }
 
