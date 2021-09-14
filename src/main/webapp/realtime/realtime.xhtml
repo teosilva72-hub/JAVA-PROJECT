@@ -13,6 +13,7 @@
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+		<h:outputStylesheet name="speed-real.css" library="css/speed" />
 		<h:outputStylesheet name="realtime.css" library="css/realtime" />
 	    <h:outputStylesheet library="css/validation" name="validation-style.css" />
 
@@ -25,6 +26,8 @@
 
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
 	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="DMS" value="#{ loginAccount.load.en_pmv }" />
+	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
 	<ui:define name="main-content">
@@ -1414,7 +1417,13 @@
 
 	<ui:define name="jscript">
 	
-		<h:outputScript name="dmsAnimation.js?version=#{notificationsView.timestamp}" p:type="module" library="js/dms" />
+		<c:if test="#{ DMS }">
+			<h:outputScript name="dmsAnimation.js?version=#{notificationsView.timestamp}" p:type="module" library="js/dms" />
+		</c:if>
+		<c:if test="#{ SPEED }">
+			<h:outputScript name="speed_event.js" library="js/speed" />
+		</c:if>
+		
 		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
 			
 		<c:if test="#{ SuperAdmin }">
