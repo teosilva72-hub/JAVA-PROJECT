@@ -502,8 +502,10 @@ function resizeEquipScale(container) {
 	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
 	let plaque = $('.plaque');
 	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
+	let toolbox = $('.square_tool');
 	let barSize = Number($('#bar-size').val()) || 1
 	let scaleA;
+	let scaleB;
 
 	equips.each(function () {
 		let equip = $(this)
@@ -521,6 +523,10 @@ function resizeEquipScale(container) {
 
 	scaleA = ((max / allEquip.length) / plaque.width());
 	plaque.css('transform', `translateX(-50%) scale(${scaleA * scale})`).attr('scale', scaleA)
+
+	scaleB = ((max / allEquip.length) / toolbox.width());
+	toolbox.css('transform', `translateX(-50%) scale(${scaleB * scale})`).attr('scale', scaleB)
+	
 }
 
 //RESIZE EQUIPMENT

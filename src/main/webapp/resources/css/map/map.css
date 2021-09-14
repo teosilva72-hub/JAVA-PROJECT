@@ -1306,23 +1306,59 @@ span.close-x {
     right: 10px;
 }
 
-/* HORIZONTAL DOTTED LINE */
-
-.horizontal_dotted_line {
-	border-bottom: 4px dotted brown;
-	width: 20px;
-}
-/* HORIZONTAL DOTTED LINE END */
-
 /* SQUARE TOOL */
+
 .square_tool {
-	position: fixed;
+	position: absolute;
+	transform: translateX(-50%) scale(0.2);
+	transform-origin: 50% 0%;
+	z-index: -1;
+	
+}
+
+#toolOne {
+	width: 80px;
+	height: 80px;
+	border: 2px solid;
+	border-color: #f00;	
+	margin-top: -19%;
+	margin-left: 30px;
+}
+
+#toolTwo {
+	width: 80px;
+	height: 80px;
+	border: 2px solid;
+	border-color: #f00;	
 	margin-top: -19%;
 	margin-left: 15px;
-	width: 30px;
-	height: 30px;
-	border: 2px solid;
-	border-color: #f00;
-	z-index: 1;
 }
+
+
 /* SQUARE TOOL END */
+
+/* FOLLOW EQUIP LINE */
+
+.equipLine {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	background: black;
+	top: -29px;
+	left: 31px;
+	border-radius: 50%;
+	animation: go-back 1s infinite alternative;
+	
+}
+
+@keyframes go-back {
+	0% {
+		transform: translateX(100px);	
+	}
+	100% {
+		transform: translateX(0px);
+	}
+}
+
+
+/* FOLLOW EQUIP LINE END */
