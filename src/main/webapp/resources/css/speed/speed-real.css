@@ -18,6 +18,8 @@ body {
 .speed-card {
   max-width: min-content;
   width: revert !important;
+  background-color: #fff !important;
+  background-clip: border-box !important;
   font-size: 14px;
   color: black;
 }
@@ -80,8 +82,8 @@ body {
   color: #f6ff04;
 }
 
-.speed-card .card-footer {
-  font-weight: 600;
+.speed-card .card-footer small {
+  font-weight: 600 !important;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
