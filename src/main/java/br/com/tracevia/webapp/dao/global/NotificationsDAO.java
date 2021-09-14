@@ -228,7 +228,7 @@ public class NotificationsDAO {
 	  } 	
      
      
-     /*public List<Notifications> NotificationStatus(String type) throws Exception{
+    public List<Notifications> NotificationStatus(String type) throws Exception{
  		
  		List<Notifications> lista = new ArrayList<Notifications>();
  			  		
@@ -266,7 +266,7 @@ public class NotificationsDAO {
  				}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
 
  		  return lista;
- 	  } 	*/
+ 	  }
       
           
      public Integer notificationsCount() throws Exception {

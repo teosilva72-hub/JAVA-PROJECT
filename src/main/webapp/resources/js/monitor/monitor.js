@@ -16,9 +16,7 @@ const changeNotificationStatus = response => {
 
 	 // BADGE VALUE	
     $('#badge-notif').html(`${counter}`)
-
-	//console.log(counter)
-			
+				
 }
 
 const changeGenericStates = response => {
@@ -50,12 +48,11 @@ const changeGenericStates = response => {
 			
 	}
 
-	if(response.EquipType == "SPEED R")	     
-	     equip.find(`span.equip-status-radar`).attr("class", `equip-status-radar ${status}`.trim())
+	if(response.EquipType == "SPEED I")	     
+	     equip.find(`span.equip-status-indicator`).attr("class", `equip-status-indicator ${status}`.trim())
 	
     else equip.find(`span.equip-status`).attr("class", `equip-status ${status}`.trim())
-	 	    
-	//console.log(type)
+	 	    	
 }
 
   const listNotifications = response => {		
@@ -93,24 +90,30 @@ const changeGenericStates = response => {
 		    '</div>' +
 			
 		'</a>'	
-		)		
+		)
 	 })	
+
    }
   
 
 const callback_states = response => {
 	let res = JSON.parse(response.body);
-	changeGenericStates(res);
+
+	for(const r of res)
+	  changeGenericStates(r);
 } 
 
 const callback_count = response => {
 	let res = JSON.parse(response.body);
-	changeNotificationStatus(res);	
+	changeNotificationStatus(res);
 } 
 
-const callback_notifications = response => {
+const callback_notifications = response => {	
 	let res = JSON.parse(response.body);
-	listNotifications(res)
+
+	for(const r of res)
+	   listNotifications(r)		 
+	
 } 
 
 const consumeMonitor = async ({ callback1 = callback_states, callback2 = callback_count, callback3 = callback_notifications, debug } = {}) => {
@@ -147,9 +150,9 @@ const connectMonitor = async function(request, debug) {
 }
 
 const initMonitor = async debug => {
-	let response = await connectMonitor('getMonitorStatus', true)
-	let count = await connectMonitor('getNotificationsCount', true)
-	let notifications = await connectMonitor('getNotificationsAlert', true)
+	let response = await connectMonitor('getMonitorStatus')
+	let count = await connectMonitor('getNotificationsCount')
+	let notifications = await connectMonitor('getNotificationsAlert')
 		  
 	for (const r of response)
 		changeGenericStates(r)
