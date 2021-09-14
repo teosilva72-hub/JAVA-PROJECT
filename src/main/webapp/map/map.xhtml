@@ -385,16 +385,20 @@
 				value="#{loginAccount.mapUI}" />
 		</div>
 		
-		<div class="horizontal_dotted_line"></div>
+		
 		
 		<!-- Label -->
 		<div id="labelPos">
 			<label id="posX"></label> <label id="posY"></label>
 		</div>
-
+		
+		<div class="horizontal_dotted_line"></div>
 		<!-- Drag Items --> <!-- CAUSE -->
 
 		<div class="draggable" id="equipAll"></div>
+		
+		<div class="square_tool" id="toolOne"></div>
+				
 		<!--  --> <!-- Plaque --> <ui:fragment
 			rendered="#{loginAccount.plaque ne ''}">
 			<div>
@@ -406,6 +410,8 @@
 					</div>
 				</c:forEach>
 			</div>
+
+		
 		</ui:fragment> </section>
 
 	</ui:define>
@@ -558,7 +564,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-digital-tachograph"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="indicator-equipIp"
 										id="indicator-equipIp"
@@ -573,6 +579,7 @@
 							</div>
 							<!---->
 
+							<!-- ***** IP ADDRESS INDICATOR ***** -->
 							  <!-- IP ADDRESS INDICATOR -->
 
 							<!--  ******************************************************************************************************* -->
@@ -583,7 +590,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-tachometer-alt"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="radar-equipIp"
 										id="radar-equipIp"
@@ -1435,13 +1442,13 @@
 							
 							<!--  ******************************************************************************************************* -->
 							
-							<!-- IP ADDRESS SPEED -->
+							<!-- IP ADDRESS INDICATOR -->
 
 							<div class="form-row speedHidden-edit">
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-digital-tachograph"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="indicator-equipIp-edit"
 										id="indicator-equipIp-edit"
@@ -1456,7 +1463,7 @@
 							</div>
 							<!---->
 
-							<!-- ***** IP ADDRESS SPEED ***** -->
+							<!-- ***** IP ADDRESS INDICATOR ***** -->
 
 							<!--  ******************************************************************************************************* -->
 							
@@ -1466,7 +1473,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-techometer-alt"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="radar-equipIp-edit"
 										id="radar-equipIp-edit"

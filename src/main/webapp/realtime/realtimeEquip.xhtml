@@ -347,6 +347,51 @@
                          </div>
                                 
                             </c:when>
+
+                            <c:when test="#{item.table_id eq 'speed'}">
+
+                                <!-- Card Speed -->
+                                <div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
+                                    posY="#{item.mapPosY}" item-width="#{item.mapWidth}">
+
+                                    <div class="card-header py-0 text-center">
+                                        <p>#{item.nome}</p>
+                                    </div>
+                                    <div class="card-body p-1 speed-limit equip-status-indicator">
+                                        <div class="speed-border rounded bg-light">
+                                            <div class="speed-mold rounded">
+                                                <div class="row text-center">
+                                                    <div class="col-12 speed-name">Velocidad Maxima</div>
+                                                    <div class="col-12 m-1">
+                                                        <div class="bg-secondary rounded speed-plate">
+                                                            <div class="speed-number">000</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-1 speed-speedy equip-status">
+                                        <div class="speed-border rounded speed-color">
+                                            <div class="speed-mold rounded">
+                                                <div class="row text-center">
+                                                    <div class="col-12 speed-name">Su Velocidad</div>
+                                                    <div class="col-12 m-1">
+                                                        <div class="bg-secondary rounded speed-plate">
+                                                            <div class="speed-number">000</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-0 text-center">
+                                        <small class="text-muted">#{item.km}</small>
+                                    </div>
+                                </div>
+                                <!-- Card Speed End -->
+
+                            </c:when>
                                                                 
                             <c:otherwise>
                                 <div id="#{item.table_id}#{item.equip_id}" posX="#{item.linearPosX}"
@@ -390,11 +435,6 @@
                                         </svg>
                                         <div class="text-danger row"></div>
                                     </div>
-                                </c:if>
-                                <c:if test="#{item.table_id eq 'speed'}">
-                                    <span id="#{item.table_id}#{item.equip_id}Status2" class="equip-status-indicator"></span>	
-                                    <h:graphicImage class="equip-imageSPD"
-                                        value="/resources/images/equips/speed.png" />
                                 </c:if>
                                 <c:if test="#{item.table_id eq 'wim'}">
                                     <h:graphicImage class="equip-image"
