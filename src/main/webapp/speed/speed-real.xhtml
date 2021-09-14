@@ -28,9 +28,9 @@
 				<!-- INICIO DA TABELA SELECAO -->
 				<c:forEach items="#{speedMapsView.listSpeed}" var="item" varStatus="loop">
 
-					<div class="col-4 mb-3">
+					<div class="col-3 mb-3">
 	
-						<div class="rounded p-2 w-100 bg-body">
+						<div class="rounded p-2 w-100 bg-body d-flex">
 	
 							<!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
@@ -70,6 +70,14 @@
 								</div>
 							</div>
 							<!-- Card Speed End -->
+
+							<div class="last-registry col row row-cols-1">
+								<span>75 km/h</span>
+								<span>80 km/h</span>
+								<span>56 km/h</span>
+								<span>90 km/h</span>
+								<span>76 km/h</span>
+							</div>
 	
 						</div>
 					

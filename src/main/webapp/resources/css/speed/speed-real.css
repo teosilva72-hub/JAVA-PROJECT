@@ -86,6 +86,14 @@ body {
   font-weight: 600 !important;
 }
 
+.last-registry {
+  max-width: max-content;
+  margin-top: 1.5rem!important;
+  margin-right: auto!important;
+  margin-left: auto!important;
+  display: grid!important;
+}
+
 /*CONTEUDO PRINCIPAL ACTIVATE*/
 .option {
   border: 1px solid transparent;
