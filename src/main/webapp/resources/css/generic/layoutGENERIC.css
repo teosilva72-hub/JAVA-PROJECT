@@ -51,7 +51,7 @@
 }
 
 /*INTERNAL CONTENT OF EQUIPMENT*/
-.equip-status {
+.equip-status:not(.speed-speedy) {
   background-color: #FF0000;
   border-radius: 100%;
   padding: 0.375rem;
@@ -60,31 +60,19 @@
   bottom: 2.8125rem;
 }
 
-.equip-status-indicator {
-  background-color: #FF0000;
-  border-radius: 100%;
-  padding: 0.375rem;
-  position: absolute;
-  right: 0;
-}
-
-.equip-status.active {
-  background-color: #00FF00;
-} 
-
-.equip-status-indicator.active {
+.equip-status:not(.speed-speedy).active {
   background-color: #00FF00;
 }
 
-.equip-status.using {
+.equip-status:not(.speed-speedy).using {
   background-color: blue;
 }
 
-.equip-status.warning {
+.equip-status:not(.speed-speedy).warning {
   background-color: orange;
 }
 
-.equip-status.alarm {
+.equip-status:not(.speed-speedy).alarm {
   animation: alarm .2s infinite;
 }
 
