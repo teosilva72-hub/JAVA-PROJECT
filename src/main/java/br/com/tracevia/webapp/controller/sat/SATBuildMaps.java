@@ -46,7 +46,7 @@ public class SATBuildMaps {
 	@PostConstruct
 	public void initalize() {
 
-		BuildSAT();
+		//BuildSAT();
 		
 	}
 

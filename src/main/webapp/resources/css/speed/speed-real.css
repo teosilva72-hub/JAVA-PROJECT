@@ -17,12 +17,30 @@ body {
 
 .speed-card {
   max-width: min-content;
+  width: revert !important;
   font-size: 14px;
   color: black;
 }
 
+.speed-card .speed-limit {
+  border-left: 0.5em solid #da0909;
+}
+
+.speed-card .speed-limit.active {
+  border-left: 0.5em solid #00FF00;
+}
+
+.speed-card .speed-speedy {
+  border-left: 0.5em solid #da0909;
+}
+
+.speed-card .speed-speedy.active {
+  border-left: 0.5em solid #00FF00;
+}
+
 .speed-card .card-header * {
   margin: 0 !important;
+  font-weight: 700;
 }
 
 .speed-card .speed-border {
@@ -40,6 +58,7 @@ body {
 
 .speed-card .speed-name {
   font-size: 1.2em;
+  height: 3em;
 }
 
 .speed-card .speed-number {
@@ -53,13 +72,16 @@ body {
   line-height: 3em;
 }
 
-
 .speed-card .speed-limit .speed-plate {
   color: #da0909;
 }
 
 .speed-card .speed-speedy .speed-plate {
   color: #f6ff04;
+}
+
+.speed-card .card-footer {
+  font-weight: 600;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/

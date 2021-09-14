@@ -1263,9 +1263,9 @@ public class EquipmentsDAO {
 					ps = conn.prepareStatement(queryNotification);
 							
 					ps.setInt(1, equip.getEquip_id()); 		
-					ps.setString(2, equip.getEquip_type()+" R");
-					ps.setString(3, equip.getEquip_ip_radar());
-					ps.setString(4, "R "+equip.getNome());
+					ps.setString(2, equip.getEquip_type()+" I");
+					ps.setString(3, equip.getEquip_ip_indicator());
+					ps.setString(4, "I "+equip.getNome());
 					ps.setString(5, equip.getKm());
 
 					int successNotif = ps.executeUpdate();
@@ -2509,7 +2509,7 @@ public class EquipmentsDAO {
 				    ps = conn.prepareStatement(notificationSafety);
 				    
 				    ps.setInt(1, speed.getEquip_id());	
-					ps.setString(2, ModulesEnum.SPEED.getModule()+" R");
+					ps.setString(2, ModulesEnum.SPEED.getModule()+" I");
 					
 					rs = ps.executeQuery();
 					
@@ -2523,8 +2523,8 @@ public class EquipmentsDAO {
 				    					
                     ps = conn.prepareStatement(notifications);
 					
-					ps.setString(1, speed.getEquip_ip_radar());
-					ps.setString(2, "R "+speed.getNome()); 
+					ps.setString(1, speed.getEquip_ip_indicator());
+					ps.setString(2, "I "+speed.getNome()); 
 					ps.setString(3, speed.getKm());						
 					ps.setInt(4, id);						
 			
@@ -2535,7 +2535,7 @@ public class EquipmentsDAO {
 						 ps = conn.prepareStatement(notificationSafety);
 						    
 						    ps.setInt(1, speed.getEquip_id());	
-							ps.setString(2, ModulesEnum.SPEED.getModule()+" I");
+							ps.setString(2, ModulesEnum.SPEED.getModule()+" R");
 							
 							rs = ps.executeQuery();
 							
