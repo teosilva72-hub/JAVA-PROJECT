@@ -543,7 +543,7 @@ public class EquipmentsBean implements Serializable {
 
 			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
 			
-			System.out.println(checked);
+			//System.out.println(checked);
 
 			if(checked)
 				request.execute("alertOptions('#equip-save-error');");
@@ -975,7 +975,7 @@ public class EquipmentsBean implements Serializable {
 
 			else sat.setNumFaixas(2);
 
-			//SET LANES DEFINITION
+			// SET LANES DEFINITION
 			defineDirection(sat, 1, parameterMap.get("direction1-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")));
 			defineDirection(sat, 2, parameterMap.get("direction2-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")));
 			defineDirection(sat, 3, parameterMap.get("direction3-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")));
