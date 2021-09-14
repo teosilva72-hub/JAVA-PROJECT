@@ -2,12 +2,16 @@ const connectSPEED = async (request, debug) => {
 	return await sendMsgStomp(request, 'SpeedRequest', debug)
 }
 
-const callback_speed = response => {
-    response = JSON.parse(response.body);
-    
+const refresh_speed = response => {
     let speed = $(`#speed${response.Id}`);
     speed.find(".speed-limit .speed-number").text(response.Limit);
     speed.find(".speed-speedy .speed-number").text(response.Registry);
+}
+
+const callback_speed = response => {
+    response = JSON.parse(response.body);
+    
+    refresh_speed(response);
 }
 
 const consumeSPEED = async debug => {
@@ -28,7 +32,12 @@ const consumeSPEED = async debug => {
 }
 
 const initSPEED = async debug => {
-    $(function () {
+    $(async function () {
+        let last_status = await connectSPEED("LastStatus");
+
+        for (let status of last_status)
+            refresh_speed(status)
+
 		consumeSPEED(debug);
 	});
 }

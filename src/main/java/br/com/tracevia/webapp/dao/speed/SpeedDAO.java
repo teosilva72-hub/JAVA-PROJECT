@@ -39,6 +39,7 @@ public class SpeedDAO {
 				         speed.setEquip_id(rs.getInt("equip_id"));
 				         speed.setNome(rs.getString("equip_name"));
 				         speed.setStatus(rs.getInt("equip_status"));
+				         speed.setTable_id("speed");
 				        															
 						list.add(speed);
 					}				
