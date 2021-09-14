@@ -100,6 +100,18 @@ public class NavigationBean {
 		return navigation_page;
 
 	}
+	
+	
+	//SPEED report
+
+	public String speedRealtime() {
+
+		navigation_page = "/speed/speed-real.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+
+	}
+	
 	//MTO PANEL    
 	public String redirectToMTOPanel() {
 
