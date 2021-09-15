@@ -95,11 +95,50 @@ body {
 }
 
 .last-registry {
-  max-width: max-content;
-  margin-top: 1.5rem!important;
+  position: relative;
+  margin-top: 2.5rem!important;
   margin-right: auto!important;
   margin-left: auto!important;
-  display: grid!important;
+}
+
+.last-registry [class^=speed-history-], .last-registry [class^=number-] {
+  position: absolute;
+}
+
+.last-registry [class^=number-] {
+  left: -75%;
+}
+
+.last-registry .speed-history-1 {
+  top: 0em;
+}
+
+.last-registry .speed-history-2 {
+  top: 3em;
+}
+
+.last-registry .speed-history-3 {
+  top: 6em;
+}
+
+.last-registry .speed-history-4 {
+  top: 9em;
+}
+
+.last-registry .speed-history-5 {
+  top: 12em;
+}
+
+.last-registry [class^=number-].spawn {
+  animation: new-number .5s linear 0s 1;
+}
+
+.last-registry [class^=number-].start {
+  animation: number-down 1s linear 0s 1;
+}
+
+.last-registry .number-5.start {
+  animation: end-number 1s linear 0s 1;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
@@ -142,4 +181,33 @@ body {
     top: 10px;
     opacity: 1;
     z-index: 1030;
+}
+
+@keyframes new-number {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes number-down {
+  from {
+    top: 0;
+  }
+  to {
+    top: 3em;
+  }
+}
+
+@keyframes end-number {
+  from {
+    top: 0em;
+    opacity: 1;
+  }
+  to {
+    top: 3em;
+    opacity: 0;
+  }
 }

@@ -71,12 +71,22 @@
 							</div>
 							<!-- Card Speed End -->
 
-							<div class="last-registry col row row-cols-1">
-								<span>75 km/h</span>
-								<span>80 km/h</span>
-								<span>56 km/h</span>
-								<span>90 km/h</span>
-								<span>76 km/h</span>
+							<div class="last-registry">
+								<div class="speed-history-1">
+									<span class="number-1">75</span> km/h
+								</div>
+								<div class="speed-history-2">
+									<span class="number-2">80</span> km/h
+								</div>
+								<div class="speed-history-3">
+									<span class="number-3">56</span> km/h
+								</div>
+								<div class="speed-history-4">
+									<span class="number-4">90</span> km/h
+								</div>
+								<div class="speed-history-5">
+									<span class="number-5">76</span> km/h
+								</div>
 							</div>
 	
 						</div>
@@ -99,5 +109,6 @@
 	
 	<ui:define name="jscript">
 		<h:outputScript name="speed_event.js" library="js/speed" />
+		<h:outputScript name="speed_animation.js" library="js/speed" />
 	</ui:define>
 </ui:composition>

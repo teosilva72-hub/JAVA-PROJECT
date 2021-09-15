@@ -31,7 +31,7 @@ const callback_speed = response => {
     refresh_speed(response);
 }
 
-const consumeSPEED = async debug => {
+const consumeSPEED = async ({ callback_speed = callback_speed, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
@@ -48,17 +48,15 @@ const consumeSPEED = async debug => {
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const initSPEED = async debug => {
+const initSPEED = async (object = {}) => {
     $(async function () {
-        let last_status = await connectSPEED("LastStatus");
+        // let last_status = await connectSPEED("LastStatus");
 
-        for (let status of last_status)
-            refresh_speed(status)
+        // for (let status of last_status)
+        //     refresh_speed(status)
 
-		consumeSPEED(debug);
+		consumeSPEED(object);
 	});
 }
 
 window.initSPEED = initSPEED
-
-initSPEED();
