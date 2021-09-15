@@ -82,6 +82,14 @@ body {
   color: #f6ff04;
 }
 
+.speed-card .speed-speedy .speed-plate.speed-warn {
+  color: #f69f04;
+}
+
+.speed-card .speed-speedy .speed-plate.speed-alert {
+  color: #f60f04;
+}
+
 .speed-card .card-footer small {
   font-weight: 600 !important;
 }

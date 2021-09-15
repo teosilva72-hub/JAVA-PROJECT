@@ -4,8 +4,25 @@ const connectSPEED = async (request, debug) => {
 
 const refresh_speed = response => {
     let speed = $(`#speed${response.Id}`);
-    speed.find(".speed-limit .speed-number").text(response.Limit);
-    speed.find(".speed-speedy .speed-number").text(response.Registry);
+	let plate = speed.find(".speed-speedy .speed-plate");
+	let registry = response.Registry;
+	let limit = response.Limit;
+
+	if (registry > response.Tolerance)
+		plate
+			.addClass("speed-alert")
+			.removeClass("speed-warn")
+	else if (registry > limit)
+		plate
+			.addClass("speed-warn")
+			.removeClass("speed-alert")
+	else
+		plate
+			.removeClass("speed-warn")
+			.removeClass("speed-alert")
+
+    speed.find(".speed-limit .speed-number").text(limit);
+    speed.find(".speed-speedy .speed-number").text(registry);
 }
 
 const callback_speed = response => {
@@ -41,5 +58,7 @@ const initSPEED = async debug => {
 		consumeSPEED(debug);
 	});
 }
+
+window.initSPEED = initSPEED
 
 initSPEED();
