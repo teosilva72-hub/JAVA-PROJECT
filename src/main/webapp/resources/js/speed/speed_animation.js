@@ -7,6 +7,9 @@ const speed_animation = response => {
         let speed_number = speed.find("[class^=number-]");
     
         speed_number.addClass("start");
+
+        let date = new Date(Number.parseInt(response.Date.replace("s", "")) * 1000)
+        let date_format = date.toLocaleString()
     
         setTimeout(() => {
             let list = speed_number.get().reverse()
@@ -14,7 +17,7 @@ const speed_animation = response => {
             for (let s of list)
                 s.innerText = $(s).parent().prev().find("span").text()
     
-            last.text(`${response.Registry} km/h - ${response.Date}`).addClass("spawn")
+            last.text(`${response.Registry} km/h - ${date_format}`).addClass("spawn")
     
             setTimeout(() => {
                 last.removeClass("spawn");
