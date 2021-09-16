@@ -24,17 +24,17 @@
 			<!-- INICIO DO FORMULARIO EQUIP -->
 
 			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
-			<div class="row conteudoPag">
+			<div class="row contentPage">
 				<!-- INICIO DA TABELA SELECAO -->
 				<c:forEach items="#{speedMapsView.listSpeed}" var="item" varStatus="loop">
 
-					<div class="col-4 mb-3">
+					<div class="col-speed">
 	
-						<div class="rounded p-2 w-100 bg-body">
+						<div class="rounded p-2 w-100 bg-body d-flex">
 	
 							<!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
-								<div class="card-header py-0 text-center">
+								<div class="card-header py-0 text-center text-white">
 									<p>#{item.nome}</p>
 								</div>
 								<div class="card-body p-1 speed-limit equip-status-indicator">
@@ -66,10 +66,33 @@
 									</div>
 								</div>
 								<div class="card-footer p-0 text-center">
-									<small class="text-muted">#{item.km}</small>
+									<small class="text-white">#{item.km}</small>
 								</div>
 							</div>
 							<!-- Card Speed End -->
+
+							<div class="card last-registry">
+								<div class="card-header text-center">
+									Last Registry
+								</div>
+								<div class="card-body">
+									<div class="speed-history-1">
+										<span class="number-1 border-bottom"></span>
+									</div>
+									<div class="speed-history-2">
+										<span class="number-2 border-bottom"></span>
+									</div>
+									<div class="speed-history-3">
+										<span class="number-3 border-bottom"></span>
+									</div>
+									<div class="speed-history-4">
+										<span class="number-4 border-bottom"></span>
+									</div>
+									<div class="speed-history-5">
+										<span class="number-5 border-bottom"></span>
+									</div>
+								</div>
+							</div>
 	
 						</div>
 					
@@ -91,5 +114,6 @@
 	
 	<ui:define name="jscript">
 		<h:outputScript name="speed_event.js" library="js/speed" />
+		<h:outputScript name="speed_animation.js" library="js/speed" />
 	</ui:define>
 </ui:composition>

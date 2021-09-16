@@ -15,13 +15,34 @@ body {
   margin-top: 10px;
 }
 
+.contentPage {
+  flex-direction: column;
+  overflow-x: auto;
+  height: 100%;
+}
+
+.col-speed {
+  flex: 1 1 auto;
+  width: auto;
+}
+
 .speed-card {
   max-width: min-content;
+  min-width: auto;
   width: revert !important;
   background-color: #fff !important;
   background-clip: border-box !important;
   font-size: 14px;
   color: black;
+}
+
+.speed-card .card-header,
+.speed-card .card-footer {
+  background-color: #313131;
+}
+
+.speed-card .card-body {
+  background-color: #5d5d5d;
 }
 
 .speed-card .speed-limit {
@@ -82,8 +103,69 @@ body {
   color: #f6ff04;
 }
 
+.speed-card .speed-speedy .speed-plate.speed-warn {
+  color: #f69f04;
+}
+
+.speed-card .speed-speedy .speed-plate.speed-alert {
+  color: #f60f04;
+}
+
 .speed-card .card-footer small {
   font-weight: 600 !important;
+  font-size: 1em;
+}
+
+.last-registry {
+  position: relative;
+  margin-right: 0.9em!important;
+  margin-left: 0.9em!important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.last-registry .card-body {
+  width: 12.630625em;
+}
+
+.last-registry [class^=speed-history-], .last-registry [class^=number-] {
+  position: relative;
+  font-size: .9em;
+}
+
+.last-registry .speed-history-1 {
+  top: 0em;
+}
+
+.last-registry .speed-history-2 {
+  top: 2em;
+}
+
+.last-registry .speed-history-3 {
+  top: 4em;
+}
+
+.last-registry .speed-history-4 {
+  top: 6em;
+}
+
+.last-registry .speed-history-5 {
+  top: 8em;
+}
+
+.last-registry [class^=number-].spawn {
+  animation: new-number .5s linear 0s 1;
+}
+
+.last-registry [class^=number-].start {
+  animation: number-down 1s linear 0s 1;
+}
+
+.last-registry .number-5.start {
+  animation: end-number 1s linear 0s 1;
 }
 
 /*CONTEUDO PRINCIPAL ACTIVATE*/
@@ -126,4 +208,33 @@ body {
     top: 10px;
     opacity: 1;
     z-index: 1030;
+}
+
+@keyframes new-number {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes number-down {
+  from {
+    top: 0;
+  }
+  to {
+    top: 3.7em;
+  }
+}
+
+@keyframes end-number {
+  from {
+    top: 0em;
+    opacity: 1;
+  }
+  to {
+    top: 3em;
+    opacity: 0;
+  }
 }
