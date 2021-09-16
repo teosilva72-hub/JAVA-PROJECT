@@ -25,14 +25,14 @@ const refresh_speed = response => {
     speed.find(".speed-speedy .speed-number").text(registry);
 }
 
-const callback_speed = response => {
+const callback_speed_default = response => {
 	if (response.body)
     	response = JSON.parse(response.body);
     
     refresh_speed(response);
 }
 
-const consumeSPEED = async ({ callback_speed = callback_speed, debug = false } = {}) => {
+const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
@@ -49,12 +49,12 @@ const consumeSPEED = async ({ callback_speed = callback_speed, debug = false } =
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const initSPEED = async (object = { callback_speed = callback_speed } = {}) => {
+const initSPEED = async (object = { callback_speed = callback_speed_default, debug = false } = {}) => {
     $(async function () {
-        // let last_status = await connectSPEED("LastStatus");
+        let last_status = await connectSPEED("LastStatus");
 
-        // for (let status of last_status)
-		// 	callback_speed(status)
+        for (let status of last_status)
+			callback_speed(status)
 
 		consumeSPEED(object);
 	});
