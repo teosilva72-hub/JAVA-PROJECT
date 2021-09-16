@@ -53,17 +53,18 @@ const changeGenericStates = response => {
 	
     else if(response.EquipType == "SPEED R") equip.find(`.equip-status`).attr("class", `card-body p-1 speed-speedy equip-status ${status}`.trim())
 	 	    
-	else equip.find(`.equip-status`).attr("class", `equip-status ${status}`.trim())
+	else if(response.EquipType != "PMV" && response.EquipType != "SOS")   
+		      equip.find(`.equip-status`).attr("class", `equip-status ${status}`.trim())
 
 }
 
   const listNotifications = response => {		
 	 			
-	 $('#notifications-list').empty()
-
-	 $(response).each(function(i,item){			 
+	$('#notifications-list').empty()
+       
+    for (const item of response)
 		
-        if(item.EquipType == "none")
+     if(item.EquipType == "none")
 
 		$('#notifications-list').append(	
 					
@@ -91,11 +92,10 @@ const changeGenericStates = response => {
 		      item.EquipName+' - '+item.Description +
 		    '</div>' +
 			
-		'</a>'	
-		)
-	 })	
-
-   }
+		'</a>'	 
+		)  
+     }
+   
   
 
 const callback_states = response => {
@@ -111,11 +111,8 @@ const callback_count = response => {
 } 
 
 const callback_notifications = response => {	
-	let res = JSON.parse(response.body);
-
-	for(const r of res)
-	   listNotifications(r)		 
-	
+	let res = JSON.parse(response.body); 	
+	   listNotifications(res)		 	
 } 
 
 const consumeMonitor = async ({ callback1 = callback_states, callback2 = callback_count, callback3 = callback_notifications, debug } = {}) => {
@@ -130,8 +127,7 @@ const consumeMonitor = async ({ callback1 = callback_states, callback2 = callbac
 
 		if (typeof callback_notifications == "function")
 	        client.subscribe(`/exchange/notification/notification`, callback3)
-	
-			
+				
 	};
 
 	var on_error =  function() {
@@ -152,18 +148,20 @@ const connectMonitor = async function(request, debug) {
 }
 
 const initMonitor = async debug => {
-	let response = await connectMonitor('getMonitorStatus')
-	let count = await connectMonitor('getNotificationsCount')
-	let notifications = await connectMonitor('getNotificationsAlert')
-		  
-	for (const r of response)
-		changeGenericStates(r)
 
-	for (const n of notifications)
-         listNotifications(n)
+		connectMonitor('getMonitorStatus').then(response => {
+			for (const r of response)
+				changeGenericStates(r)		
+		})
 
-		 changeNotificationStatus(count);
-	
+		connectMonitor('getNotificationsCount').then(count => {
+			changeNotificationStatus(count);	
+		})
+
+		connectMonitor('getNotificationsAlert').then(notifications => {			
+				 listNotifications(notifications)		
+		})
+		
 		consumeMonitor();
 }
 
