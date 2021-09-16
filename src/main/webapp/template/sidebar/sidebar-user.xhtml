@@ -110,21 +110,23 @@
 							<li class="nav-item"><h:commandLink class="nav-link"
 									action="#{navigationController.wimRealtime}" value="">
 									<i class="fas fa-truck-moving icon-sub"></i>
-									<span class="text-sub">#{wimLabels.wimReal}</span>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_wim_realtime}</span>
 								</h:commandLink></li>
 						</ui:fragment>
-						
 						<!---->
 						
-							<!-- Colas ITEM -->
+						<!-- Colas ITEM -->
 
 						<ui:fragment rendered="#{loginAccount.load.en_colas}">
 							<li class="nav-item"><h:commandLink class="nav-link"
 									action="#{navigationController.colasRealtime}" value="">
 									<i class="fas fa-car icon-sub"></i>
-									<span class="text-sub">#{colasLabels.colasReal}</span>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_realtime}</span>
 								</h:commandLink></li>
 						</ui:fragment>
+						
+						
+						<!---->
 						
 						<!-- SPEED ITEM -->
 						
@@ -132,11 +134,9 @@
 							<li class="nav-item"><h:commandLink class="nav-link"
 									action="#{navigationController.speedRealtime}" value="">
 									<i class="fas fa-shipping-fast icon-sub"></i>
-									<span class="text-sub">#{speedLabels.speedReal}</span>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_speed_realtime}</span>
 								</h:commandLink></li>
 						</ui:fragment>
-						
-						<!---->
 
 					</ul></li>
 				<!---->
