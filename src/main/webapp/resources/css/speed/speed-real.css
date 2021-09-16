@@ -15,13 +15,33 @@ body {
   margin-top: 10px;
 }
 
+.contentPage {
+  flex-direction: column;
+  overflow-x: auto;
+  height: 100%;
+}
+
+.col-speed {
+  flex: 1 1 auto;
+  width: auto;
+}
+
 .speed-card {
   max-width: min-content;
-  width: revert !important;
+  min-width: auto;
   background-color: #fff !important;
   background-clip: border-box !important;
   font-size: 14px;
   color: black;
+}
+
+.speed-card .card-header,
+.speed-card .card-footer {
+  background-color: #313131;
+}
+
+.speed-card .card-body {
+  background-color: #5d5d5d;
 }
 
 .speed-card .speed-limit {
@@ -92,21 +112,27 @@ body {
 
 .speed-card .card-footer small {
   font-weight: 600 !important;
+  font-size: 1em;
 }
 
 .last-registry {
   position: relative;
-  margin-top: 2.5rem!important;
-  margin-right: auto!important;
-  margin-left: auto!important;
+  margin-right: 0.9em!important;
+  margin-left: 0.9em!important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.last-registry .card-body {
+  width: 12.630625em;
 }
 
 .last-registry [class^=speed-history-], .last-registry [class^=number-] {
-  position: absolute;
-}
-
-.last-registry [class^=number-] {
-  left: -75%;
+  position: relative;
+  font-size: .9em;
 }
 
 .last-registry .speed-history-1 {
@@ -114,19 +140,19 @@ body {
 }
 
 .last-registry .speed-history-2 {
-  top: 3em;
+  top: 2em;
 }
 
 .last-registry .speed-history-3 {
-  top: 6em;
+  top: 4em;
 }
 
 .last-registry .speed-history-4 {
-  top: 9em;
+  top: 6em;
 }
 
 .last-registry .speed-history-5 {
-  top: 12em;
+  top: 8em;
 }
 
 .last-registry [class^=number-].spawn {
@@ -197,7 +223,7 @@ body {
     top: 0;
   }
   to {
-    top: 3em;
+    top: 3.7em;
   }
 }
 
