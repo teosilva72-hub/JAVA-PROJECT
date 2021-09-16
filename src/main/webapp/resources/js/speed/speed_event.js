@@ -56,7 +56,7 @@ const initSPEED = async ({ callback_speed = callback_speed_default, debug = fals
         for (let status of last_status)
 			callback_speed(status)
 
-		consumeSPEED({ callback_speed = callback_speed_default, debug = false } = {});
+		consumeSPEED({ callback_speed, debug });
 	});
 }
 
