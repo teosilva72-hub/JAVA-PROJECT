@@ -246,3 +246,9 @@ body {
     opacity: 0;
   }
 }
+
+/* TEMPORARY CSS */
+
+.dropdown-notif {
+  left: -130px;
+}
