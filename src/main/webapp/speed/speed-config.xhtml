@@ -1,0 +1,187 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="default-stylesheet">
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css/speed" name="speed-real.css" />
+		<h:outputStylesheet library="css/speed" name="speed-conf.css" />
+	</ui:define>
+
+	<ui:define name="default-jquery">
+
+	</ui:define>
+
+	<ui:define name="default-content">
+		<div class="jumbotron bg-dark px-3">
+			<!-- INICIO DO FORMULARIO EQUIP -->
+
+			<!-- INICIO DA GRID - ESTRUTURA DO DAS TRABELAS -->
+			<div class="row contentPage">
+				<!-- INICIO DA TABELA SELECAO -->
+				<c:forEach items="#{speedMapsView.listSpeed}" var="item" varStatus="loop">
+
+					<div class="col-speed">
+	
+						<div class="rounded p-2 w-100 bg-body d-flex front">
+	
+							<!-- Card Speed -->
+							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
+								<div class="card-header py-0 text-center text-white">
+									<p class="speed-title">#{item.nome}</p>
+								</div>
+								<div class="card-body p-1 speed-limit equip-status-indicator">
+									<div class="speed-border rounded bg-light">
+										<div class="speed-mold rounded">
+											<div class="row text-center">
+												<div class="col-12 speed-name">#{speedLabels.speed_realtime_indicator}</div>
+												<div class="col-12 m-1">
+													<div class="bg-secondary rounded speed-plate">
+														<div class="speed-number">000</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card-body p-1 speed-speedy equip-status">
+									<div class="speed-border rounded speed-color">
+										<div class="speed-mold rounded">
+											<div class="row text-center">
+												<div class="col-12 speed-name">#{speedLabels.speed_realtime_radar}</div>
+												<div class="col-12 m-1">
+													<div class="bg-secondary rounded speed-plate">
+														<div class="speed-number">000</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="card-footer p-0 text-center">
+									<small class="text-white">#{item.km}</small>
+								</div>
+							</div>
+							<!-- Card Speed End -->
+
+							<div class="card last-registry">
+								<div class="card-header text-center speed-config">
+									#{speedLabels.speed_realtime_last_registers}
+								</div>
+								<div class="card-body">
+									<div class="speed-history-1">
+										<span class="number-1 border-bottom"></span>
+									</div>
+									<div class="speed-history-2">
+										<span class="number-2 border-bottom"></span>
+									</div>
+									<div class="speed-history-3">
+										<span class="number-3 border-bottom"></span>
+									</div>
+									<div class="speed-history-4">
+										<span class="number-4 border-bottom"></span>
+									</div>
+									<div class="speed-history-5">
+										<span class="number-5 border-bottom"></span>
+									</div>
+								</div>
+							</div>
+	
+						</div>
+
+                        <div class="rounded p-2 w-100 bg-body d-flex back">
+                            <div class="card w-100">
+                                <div class="card-header text-center speed-config">
+                                    Settings
+                                </div>
+                                <div class="card-body">
+                                    <form class="speed-form">
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="stealthMode" />
+											<label class="form-check-label" for="stealthMode">
+												Switch to "Stealth" Mode
+											</label>
+										</div>
+										<div class="row mb-1">
+											<label for="displayRange" class="col-auto col-form-label py-1">Display Range: </label>
+											<div class="input-group col px-0">
+											  <input type="text" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
+											  <span class="input-group-text">to </span>
+											  <input type="text" class="form-control form-control-sm speed-input" name="displayRange2" id="displayRange2" />
+											  <span class="input-group-text">km/h</span>
+											</div>
+										</div>
+										<div class="row mb-1">
+											<label for="displayLimit" class="col-auto col-form-label py-1">Display Limit: </label>
+											<div class="input-group col px-0">
+											  <input type="text" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
+											  <span class="input-group-text">km/h</span>
+											</div>
+										</div>
+										<div class="row mb-1">
+											<label for="displayTolerated" class="col-auto col-form-label py-1">Tolerated Speed: </label>
+											<div class="input-group col px-0">
+											  <input type="text" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
+											  <span class="input-group-text">km/h</span>
+											</div>
+										</div>
+										<div class="row mb-1 ms-0">
+											<div class="col-auto form-check pe-0 py-1">
+												<input class="form-check-input" type="checkbox" value="" id="displayFlashOption" />
+											</div>
+											<label for="displayFlashOption" class="col-auto col-form-label py-1 px-0">Flash Digits at Speed: </label>
+											<div class="input-group col px-0">
+												<input type="text" class="form-control form-control-sm speed-input" name="displayFlash" id="displayFlash" />
+												<span class="input-group-text">km/h</span>
+											</div>
+										</div>
+										<div class="row mb-1 ms-0">
+											<div class="col-auto form-check pe-0 py-1">
+												<input class="form-check-input" type="checkbox" value="" id="displayStrobeOption" />
+											</div>
+											<label for="displayStrobeOption" class="col-auto col-form-label py-1 px-0">Turn Strobe ON at Speed: </label>
+											<div class="input-group col px-0">
+											  <input type="text" class="form-control form-control-sm speed-input" name="displayStrobe" id="displayStrobe" />
+											  <span class="input-group-text">km/h</span>
+											</div>
+										</div>
+										<div class="form-check">
+											<input class="form-check-input" type="checkbox" value="" id="stealthMode" />
+											<label class="form-check-label" for="stealthMode">
+												Turn OFF Strobe above Maximum Displayed Speed
+											</label>
+										</div>
+									</form>
+                                </div>
+                            </div>
+                        </div>
+					
+					</div>
+
+				</c:forEach>
+				<!-- FINAL DA TABELA SELECAO -->
+				
+			</div>
+			<!-- FINAL DA GRID - ESTRUTURA DO DAS TRABELAS -->
+		</div>
+	</ui:define>
+
+	<ui:define name="modal-content"></ui:define>
+
+	<ui:define name="default-plugins">
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
+	</ui:define>
+	
+	<ui:define name="jscript">
+		<h:outputScript name="speed_event.js" library="js/speed" />
+		<h:outputScript name="speed_config.js" library="js/speed" />
+	</ui:define>
+</ui:composition>
