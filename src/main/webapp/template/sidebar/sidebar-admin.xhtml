@@ -31,8 +31,9 @@
 
 				<li class="nav-item"><a href="#realTimeSubmenu"
 					data-toggle="collapse" aria-expanded="false" class="nav-link">
-						<!-- REALTIME MENU --> <i class="fas fa-road icon"></i><span
-						class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
+					
+						<!-- REALTIME MENU -->
+						 <i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
 				</a>
 
 					<ul class="collapse list-unstyled" id="realTimeSubmenu">
@@ -127,16 +128,6 @@
 						
 						
 						<!---->
-						
-						<!-- SPEED ITEM -->
-						
-						<ui:fragment rendered="#{loginAccount.load.en_speed}">
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.speedRealtime}" value="">
-									<i class="fas fa-shipping-fast icon-sub"></i>
-									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_speed_realtime}</span>
-								</h:commandLink></li>
-						</ui:fragment>
 
 					</ul></li>
 				<!---->
@@ -179,7 +170,26 @@
 				<!---->
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
+				
+				<!-- SPEED MENU -->
+				
+				<ui:fragment rendered="#{loginAccount.load.en_speed}">
+					<li class="nav-item"><a class="nav-link" href="#speedUiSubmenu"
+						data-toggle="collapse" aria-expanded="false"><i
+							class="fas fa-shipping-fast icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
+							
+							<ul class="collapse list-unstyled" id="speedUiSubmenu">
+								<li class="nav-item"><h:commandLink class="nav-link"
+									action="#{navigationController.speedMonitor}" value="">
+									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_monitor}</span>
+								</h:commandLink></li>
+							
+							</ul> <!----></li>
+							
+				</ui:fragment>
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+				
 				<!-- METEREOLOGICOS -->
 
 				<ui:fragment rendered="#{loginAccount.load.en_meteo}">

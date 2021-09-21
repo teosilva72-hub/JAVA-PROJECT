@@ -1341,13 +1341,15 @@ span.close-x {
 
 .equipLine {
 	position: absolute;
-	width: 10px;
-	height: 10px;
-	background: black;
-	top: -29px;
-	left: 31px;
-	border-radius: 50%;
-	animation: go-back 1s infinite alternative;
+	bottom: 123px;
+	left: 38px;
+	
+}
+
+.equipLineTop {
+	position: absolute;
+	top: 114px;
+	left: 38px;
 	
 }
 

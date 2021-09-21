@@ -1,0 +1,57 @@
+/* Animation */
+.contentPage {
+    perspective: 60em;
+}
+
+.contentPage .col-speed {
+    height: 20em;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: 1s;
+}
+
+.contentPage .col-speed.invert {
+    transform: rotateY(180deg);
+}
+
+.contentPage .col-speed .front {
+    transform: translateZ(1px);
+}
+
+.contentPage .col-speed .back {
+    transform: translateY(-100%) rotateY(180deg);
+    height: 20em;
+}
+
+/* Form */
+.speed-form {
+    width: 21.25375em;
+  }
+  
+  .speed-form .speed-input {
+    width: 3.59375em;
+    height: 1.9375em;
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+  
+  .speed-form .input-group-text {
+    height: 1.9375em;
+  }
+  
+  .speed-form .form-check-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+  
+  /* .speed-form .form-check-label:hover {
+    text-overflow: clip;
+    white-space: normal;
+    border: 1px solid;
+    border-radius: 5px;
+    background-color: white;
+    width: 100%;
+  } */
+  

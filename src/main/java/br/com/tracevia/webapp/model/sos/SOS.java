@@ -12,12 +12,12 @@ public class SOS extends Equipments {
 	public SOS(int equip_id, String table_id, String equip_type, String equip_ip, int port, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, int model, String master_sip, int status, int lastStatus, boolean notificacao,
+			int height, int linearWidth, int dlgPosX, int dlgPosY,  int model, String master_sip, String direction, int status, int lastStatus, boolean notificacao,
 			boolean visible) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username, nome,
 				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY, 
-				status, lastStatus, notificacao, visible);
+				direction, status, lastStatus, notificacao, visible);
 		
 		this.sip = master_sip;
 		this.port = port;
