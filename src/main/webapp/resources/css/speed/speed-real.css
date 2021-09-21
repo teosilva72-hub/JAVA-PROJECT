@@ -41,6 +41,14 @@ body {
   background-color: #313131;
 }
 
+.speed-card .speed-title {
+  flex-flow: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 7.242142857142857em;
+  text-overflow: ellipsis;
+}
+
 .speed-card .card-body {
   background-color: #5d5d5d;
 }
@@ -237,4 +245,10 @@ body {
     top: 3em;
     opacity: 0;
   }
+}
+
+/* TEMPORARY CSS */
+
+.dropdown-notif {
+  left: -130px;
 }
