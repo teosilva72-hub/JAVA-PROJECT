@@ -25,7 +25,7 @@ public class SAT extends Equipments {
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, int status, int lastStatus, boolean notificacao,
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
 			boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2,
 			int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
 			String faixa6, String faixa7, String faixa8, String sentido1, String sentido2,
@@ -33,7 +33,7 @@ public class SAT extends Equipments {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, status, lastStatus, notificacao, visible);
+				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, visible);
 		
 		this.numFaixas = numFaixas;
 		this.quantidadeS1 = quantidadeS1;

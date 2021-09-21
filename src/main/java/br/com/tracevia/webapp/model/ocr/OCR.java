@@ -22,7 +22,7 @@ public class OCR extends Equipments {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, status, lastStatus, notificacao, visible);
+				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, visible);
 		
 		this.id = id;
 		this.dataHour = dataHour;
