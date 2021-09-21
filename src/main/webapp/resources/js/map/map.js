@@ -1135,3 +1135,15 @@ function cftvRight(){
 function cftvBottom(){
 	alert("v")
 }
+
+/* top and bottom line */
+
+if ('[id$=#{item.table_id}]') {
+	$('.equipLine').show();
+	$('.equipLineTop').hidden();
+} else {
+	$('.equipLineTop').show();
+	$('.equipLine').hidden();
+}
+
+/* top and bottom line [end] */
