@@ -24,8 +24,8 @@ const saveSpeedBtn = e => {
     return false
 }
 
-const saveAllSpeed = e => {
-    $("form.speed-form").each((idx, form) => {
+const saveAllSpeed = (e, sameKm) => {
+    $(`form.speed-form${ sameKm ? `[km='${e.attributes.km.value}']` : "" }`).each((idx, form) => {
         form.stealthMode.checked = e.stealthMode.checked
         form.Strobe.checked = e.Strobe.checked
         form.displayRange.value = e.displayRange.value

@@ -109,7 +109,7 @@
 										#{speedLabels.speed_config_settings}
 									</div>
 									<div class="card-body">
-										<form onsubmit="return saveSpeedBtn(this)" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form row">
+										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form row">
 											<input type="hidden" name="id" value="#{item.equip_id}" />
 											<div class="col-12 my-auto">
 												<div class="form-check disabled">
@@ -170,6 +170,7 @@
 											</div>
 											<div class="speed-button row">
 												<button type="submit" class="btn btn-sm btn-warning col-auto m-auto mb-1">#{speedLabels.speed_config_save}</button>
+												<button type="button" onclick="return saveAllSpeed(this.form, true)" class="btn btn-outline-danger btn-sm col-auto m-auto">Same Km</button>
 												<button type="button" onclick="return saveAllSpeed(this.form)" class="btn btn-outline-danger btn-sm col-auto m-auto">#{speedLabels.speed_config_save_all}</button>
 											</div>
 										</form>
