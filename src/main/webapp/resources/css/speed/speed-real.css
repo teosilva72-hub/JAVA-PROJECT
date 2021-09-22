@@ -26,6 +26,10 @@ body {
   width: auto;
 }
 
+.speed-background {
+  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
+}
+
 .speed-card {
   max-width: min-content;
   min-width: auto;

@@ -36,7 +36,7 @@
 
 					<div id="col-#{item.table_id}#{item.equip_id}" class="col-speed">
 	
-						<div class="rounded p-2 w-100 bg-body d-flex front">
+						<div class="speed-background shadow rounded p-2 w-100 bg-body d-flex front">
 	
 							<!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
@@ -103,7 +103,7 @@
 						</div>
 
 						<c:if test="#{ SuperAdmin }">
-							<div class="rounded p-2 w-100 bg-body d-flex back">
+							<div class="speed-background shadow rounded p-2 w-100 bg-body d-flex back">
 								<div class="card bg-dark text-white w-100">
 									<div class="card-header text-center speed-config">
 										#{speedLabels.speed_config_settings}
