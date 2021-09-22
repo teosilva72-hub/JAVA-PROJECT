@@ -8,14 +8,14 @@ const saveSpeedBtn = e => {
     else 
         mode = 1
 
-    range = [e.displayRange.value  > 0 ? e.displayRange.value : 20, e.displayRange2.value > 0 ? e.displayRange2.value : 200]
-    limit = e.displayLimit.value > 0 ? e.displayLimit.value : 100;
-    tolerance = e.displayTolerated.value > limit ? e.displayTolerated.value : limit;
+    range = [Number(e.displayRange.value  > 0 ? e.displayRange.value : 20), Number(e.displayRange2.value > 0 ? e.displayRange2.value : 200)]
+    limit = Number(e.displayLimit.value > 0 ? e.displayLimit.value : 100);
+    tolerance = Number(e.displayTolerated.value > limit ? e.displayTolerated.value : limit);
 
     if (e.displayFlashOption.checked && !e.stealthMode.checked)
-        flash = e.displayFlash.value > 0 ? e.displayFlash.value : limit;
+        flash = Number(e.displayFlash.value > 0 ? e.displayFlash.value : limit);
     if (e.displayStrobeOption.checked)
-        strobe = e.displayStrobe.value > 0 ? e.displayStrobe.value : limit;
+        strobe = Number(e.displayStrobe.value > 0 ? e.displayStrobe.value : limit);
 
     connectSPEED(`SetConfig;${e.id.value};${mode};${range[0]};${range[1]};${limit};${tolerance};${flash};${strobe}`)
 
