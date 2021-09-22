@@ -13,12 +13,17 @@
 
 	<ui:define name="head">
 		<h:outputStylesheet library="css/speed" name="speed-real.css" />
-		<h:outputStylesheet library="css/speed" name="speed-conf.css" />
+		<c:if test="#{ SuperAdmin }">
+			<h:outputStylesheet library="css/speed" name="speed-conf.css" />
+		</c:if>
 	</ui:define>
 
 	<ui:define name="default-jquery">
 
 	</ui:define>
+
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
 
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
@@ -29,7 +34,7 @@
 				<!-- INICIO DA TABELA SELECAO -->
 				<c:forEach items="#{speedMapsView.listSpeed}" var="item" varStatus="loop">
 
-					<div class="col-speed">
+					<div id="col-#{item.table_id}#{item.equip_id}" class="col-speed">
 	
 						<div class="rounded p-2 w-100 bg-body d-flex front">
 	
@@ -97,72 +102,81 @@
 	
 						</div>
 
-                        <div class="rounded p-2 w-100 bg-body d-flex back">
-                            <div class="card bg-dark text-white w-100">
-                                <div class="card-header text-center speed-config">
-                                    Settings
-                                </div>
-                                <div class="card-body">
-                                    <form class="speed-form">
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" value="" id="stealthMode" />
-											<label class="form-check-label" for="stealthMode">
-												Switch to "Stealth" Mode
-											</label>
-										</div>
-										<div class="row mb-1">
-											<label for="displayRange" class="col-auto col-form-label py-1">Display Range: </label>
-											<div class="input-group col px-0">
-											  <input type="text" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
-											  <span class="input-group-text">to </span>
-											  <input type="text" class="form-control form-control-sm speed-input" name="displayRange2" id="displayRange2" />
-											  <span class="input-group-text">km/h</span>
+						<c:if test="#{ SuperAdmin }">
+							<div class="rounded p-2 w-100 bg-body d-flex back">
+								<div class="card bg-dark text-white w-100">
+									<div class="card-header text-center speed-config">
+										Settings
+									</div>
+									<div class="card-body">
+										<form onsubmit="return saveSpeedBtn(this)" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form row">
+											<input type="hidden" name="id" value="#{item.equip_id}" />
+											<div class="col-12 my-auto">
+												<div class="form-check disabled">
+													<input class="form-check-input" type="checkbox" value="" name="stealthMode" id="stealthMode" />
+													<label class="form-check-label" for="stealthMode">
+														Switch to "Stealth" Mode
+													</label>
+												</div>
+												<div class="row mb-1 disabled">
+													<label for="displayRange" class="col-auto col-form-label py-1">Display Range: </label>
+													<div class="input-group col px-0">
+													  <input type="text" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
+													  <span class="input-group-text">to </span>
+													  <input type="text" class="form-control form-control-sm speed-input" name="displayRange2" id="displayRange2" />
+													  <span class="input-group-text">km/h</span>
+													</div>
+												</div>
+												<div class="row mb-1">
+													<label for="displayLimit" class="col-auto col-form-label py-1">Display Limit: </label>
+													<div class="input-group col px-0">
+													  <input type="text" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
+													  <span class="input-group-text">km/h</span>
+													</div>
+												</div>
+												<div class="row mb-1 disabled">
+													<label for="displayTolerated" class="col-auto col-form-label py-1">Tolerated Speed: </label>
+													<div class="input-group col px-0">
+													  <input type="text" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
+													  <span class="input-group-text">km/h</span>
+													</div>
+												</div>
+												<div class="row mb-1 disabled ms-0">
+													<div class="col-auto form-check pe-0 py-1">
+														<input class="form-check-input" type="checkbox" value="" name="displayFlashOption" id="displayFlashOption" />
+													</div>
+													<label for="displayFlashOption" class="col-auto col-form-label py-1 px-0">Flash Digits at Speed: </label>
+													<div class="input-group col px-0">
+														<input type="text" class="form-control form-control-sm speed-input" name="displayFlash" id="displayFlash" />
+														<span class="input-group-text">km/h</span>
+													</div>
+												</div>
+												<div class="row mb-1 disabled ms-0">
+													<div class="col-auto form-check pe-0 py-1">
+														<input class="form-check-input" type="checkbox" value="" name="displayStrobeOption" id="displayStrobeOption" />
+													</div>
+													<label for="displayStrobeOption" class="col-auto col-form-label py-1 px-0">Turn Strobe ON at Speed: </label>
+													<div class="input-group col px-0">
+													  <input type="text" class="form-control form-control-sm speed-input" name="displayStrobe" id="displayStrobe" />
+													  <span class="input-group-text">km/h</span>
+													</div>
+												</div>
+												<div class="form-check disabled">
+													<input class="form-check-input" type="checkbox" value="" name="Strobe" id="Strobe" />
+													<label class="form-check-label" for="Strobe">
+														Turn OFF Strobe above Maximum Displayed Speed
+													</label>
+												</div>
 											</div>
-										</div>
-										<div class="row mb-1">
-											<label for="displayLimit" class="col-auto col-form-label py-1">Display Limit: </label>
-											<div class="input-group col px-0">
-											  <input type="text" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
-											  <span class="input-group-text">km/h</span>
+											<div class="speed-button row">
+												<button type="submit" class="btn btn-sm btn-warning col-auto m-auto mb-1">Salvar</button>
+												<button type="button" onclick="return saveAllSpeed(this.form)" class="btn btn-outline-danger btn-sm col-auto m-auto">Salvar para Todos</button>
 											</div>
-										</div>
-										<div class="row mb-1">
-											<label for="displayTolerated" class="col-auto col-form-label py-1">Tolerated Speed: </label>
-											<div class="input-group col px-0">
-											  <input type="text" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
-											  <span class="input-group-text">km/h</span>
-											</div>
-										</div>
-										<div class="row mb-1 ms-0">
-											<div class="col-auto form-check pe-0 py-1">
-												<input class="form-check-input" type="checkbox" value="" id="displayFlashOption" />
-											</div>
-											<label for="displayFlashOption" class="col-auto col-form-label py-1 px-0">Flash Digits at Speed: </label>
-											<div class="input-group col px-0">
-												<input type="text" class="form-control form-control-sm speed-input" name="displayFlash" id="displayFlash" />
-												<span class="input-group-text">km/h</span>
-											</div>
-										</div>
-										<div class="row mb-1 ms-0">
-											<div class="col-auto form-check pe-0 py-1">
-												<input class="form-check-input" type="checkbox" value="" id="displayStrobeOption" />
-											</div>
-											<label for="displayStrobeOption" class="col-auto col-form-label py-1 px-0">Turn Strobe ON at Speed: </label>
-											<div class="input-group col px-0">
-											  <input type="text" class="form-control form-control-sm speed-input" name="displayStrobe" id="displayStrobe" />
-											  <span class="input-group-text">km/h</span>
-											</div>
-										</div>
-										<div class="form-check">
-											<input class="form-check-input" type="checkbox" value="" id="stealthMode" />
-											<label class="form-check-label" for="stealthMode">
-												Turn OFF Strobe above Maximum Displayed Speed
-											</label>
-										</div>
-									</form>
-                                </div>
-                            </div>
-                        </div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</c:if>
 					
 					</div>
 
@@ -182,6 +196,8 @@
 	
 	<ui:define name="jscript">
 		<h:outputScript name="speed_event.js" library="js/speed" />
-		<h:outputScript name="speed_config.js" library="js/speed" />
+		<c:if test="#{ SuperAdmin }">
+			<h:outputScript name="speed_config.js" library="js/speed" />
+		</c:if>
 	</ui:define>
 </ui:composition>

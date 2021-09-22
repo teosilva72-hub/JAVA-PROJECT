@@ -6,23 +6,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.ocr.OCR;
-import br.com.tracevia.webapp.model.wim.WimData;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class reportDAO {
 	private Connection conn;
-	private PreparedStatement ps, ps1;
-	private ResultSet rs, rs1;
+	private PreparedStatement ps;
+	private ResultSet rs;
 	OCR data = new OCR();
 	
 	public ArrayList<OCR> searchTable(String start, String end, String classe) throws Exception {
 		
-		String search = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"'";
-		String search1 = "SELECT * FROM ocr_data WHERE datetime BETWEEN'"+ start +"'AND'"+ end+"'";
 		
-		ArrayList<OCR> list = new ArrayList<OCR>();
+	     String search = "SELECT ocr.id_ocr_data, ocr.site_name, " +	 		
+			      "ocr.datetime, ocr.plate, eq.km, " + 			
+			      "eq.direction FROM ocr_data ocr " +
+		          "INNER JOIN ocr_equipment eq " +			
+				  "ON eq.name = ocr.site_name AND ocr.datetime " +
+				  "WHERE datetime BETWEEN'"+ start +"'AND'"+ end +"'AND site_name ='"+ classe+"'";
+		
+		
+		 ArrayList<OCR> list = new ArrayList<OCR>();
+		 TranslationMethods tr = new TranslationMethods();
 		
 		try {
 			
@@ -30,10 +36,8 @@ public class reportDAO {
 			
 			ps = conn.prepareStatement(search);
 			rs = ps.executeQuery();
-			ps1 = conn.prepareStatement(search1);
-			rs1 = ps1.executeQuery();
-			
-			System.out.println(search);
+					
+			//System.out.println(search);
 			
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
@@ -42,9 +46,10 @@ public class reportDAO {
 					
 					data.setId(rs.getString(1));
 					data.setCam(rs.getString(2));
-					data.setDataHour(rs.getString(3));
-					
+					data.setDataHour(rs.getString(3));					
 					data.setPlaca(rs.getString(4));
+					data.setKm(rs.getString(5));
+					data.setDirection(tr.translateDirections(rs.getString(6)));
 					
 					list.add(data);
 				}				
@@ -59,12 +64,15 @@ public class reportDAO {
 	}
 	public ArrayList<OCR> searchTable2(String start, String end) throws Exception {
 		
-		String search = "SELECT ocr_data.id_ocr_data, ocr_data.site_name, "
-				+ "ocr_data.datetime, ocr_data.plate, ocr_equipment.km, "
-				+ "ocr_equipment.direction FROM ocr_data INNER JOIN ocr_equipment "
-				+ "ON ocr_data.site_name = ocr_equipment.name AND ocr_data.datetime "
-				+ "BETWEEN '"+start+"' AND '" +end+"'";
+		String search = "SELECT ocr.id_ocr_data, ocr.site_name, " +	 		
+				"ocr.datetime, ocr.plate, eq.km, " + 			
+				"eq.direction FROM ocr_data ocr " +
+				"INNER JOIN ocr_equipment eq " +			
+				"ON eq.name = ocr.site_name AND ocr.datetime " +				
+				"BETWEEN '"+start+"' AND '" +end+"'";
+		
 		ArrayList<OCR> list = new ArrayList<OCR>();
+		 TranslationMethods tr = new TranslationMethods();
 		
 		try {
 			
@@ -82,7 +90,7 @@ public class reportDAO {
 					data.setDataHour(rs.getString(3));
 					data.setPlaca(rs.getString(4));
 					data.setKm(rs.getString(5));
-					data.setDirection(rs.getString(6));
+					data.setDirection(tr.translateDirections(rs.getString(6)));
 					
 					list.add(data);
 				}				
@@ -99,12 +107,14 @@ public class reportDAO {
 		
 		OCR data = new OCR();
 		
-		String search = "SELECT ocr_data.id_ocr_data, ocr_data.site_name, "
-				+ "ocr_data.datetime, ocr_data.plate, "
-				+"ocr_equipment.km, ocr_equipment.direction "
-				+"FROM ocr_data INNER JOIN ocr_equipment ON "
-				+ "ocr_data.site_name = ocr_equipment.name WHERE ocr_data.id_ocr_data ='"+id+"'";
-		DateTimeApplication dtm = new DateTimeApplication();
+		String search = "SELECT ocr.id_ocr_data, ocr.site_name, "
+				+ "ocr.datetime, ocr.plate, "
+				+"eq.km, eq.direction "
+				+"FROM ocr_data ocr "
+				+"INNER JOIN ocr_equipment eq ON eq.name = ocr.site_name "
+				+"WHERE ocr.id_ocr_data ='"+id+"'";
+				
+		 TranslationMethods tr = new TranslationMethods();
 		
 		try {
 			conn = ConnectionFactory.connectToTraceviaApp();
@@ -118,7 +128,7 @@ public class reportDAO {
 					data.setDataHour(rs.getString(3));
 					data.setPlaca(rs.getString(4));
 					data.setKm(rs.getString(5));
-					data.setDirection(rs.getString(6));
+					data.setDirection(tr.translateDirections(rs.getString(6)));
 				}				
 			}
 		} catch (SQLException e) {

@@ -26,6 +26,7 @@
 /* Form */
 .speed-form {
     width: 21.25375em;
+    height: 100%;
   }
   
   .speed-form .speed-input {
@@ -44,6 +45,17 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+  }
+
+  .speed-form .speed-button {
+    flex-direction: column;
+    margin-top: auto!important;
+    margin-right: auto!important;
+    margin-left: auto!important;
+  }
+
+  .speed-form .disabled {
+    display: none;
   }
   
   /* .speed-form .form-check-label:hover {

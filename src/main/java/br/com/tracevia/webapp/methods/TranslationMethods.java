@@ -644,6 +644,34 @@ public class TranslationMethods {
 
 		return selectMonth;
 	}
+	
+	// -------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Método que retorna o nome de uma direção de acordo com sua sigla
+	 * @author Wellington 21/09/2021	
+	 * @version 1.0
+	 * @since 1.0
+	 * @param direction - Sigla da direção a ser apresentada
+	 * @return O nome da direção
+	 */
+	public String translateDirections(String direction) {
+		
+		String dir = "";		
+		
+		switch(direction) {
+		
+		case "N": dir = localeDirections.getStringKey("directions_north"); break;
+		case "S": dir = localeDirections.getStringKey("directions_south"); break;
+		case "L": dir = localeDirections.getStringKey("directions_east"); break;
+		case "O": dir = localeDirections.getStringKey("directions_west"); break;		
+		
+		}		
+		
+		return dir;	
+		
+	}
+	
+	// -------------------------------------------------------------------------------------------------------
 
 }
