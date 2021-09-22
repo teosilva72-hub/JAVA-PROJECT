@@ -109,16 +109,16 @@
 										#{speedLabels.speed_config_settings}
 									</div>
 									<div class="card-body">
-										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form row">
+										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form">
 											<input type="hidden" name="id" value="#{item.equip_id}" />
-											<div class="col-12 my-auto">
+											<div class="my-auto">
 												<div class="form-check disabled">
 													<input class="form-check-input" type="checkbox" value="" name="stealthMode" id="stealthMode" />
 													<label class="form-check-label" for="stealthMode">
 														#{speedLabels.speed_config_hidden_mode}
 													</label>
 												</div>
-												<div class="row mb-1 disabled">
+												<div class="row mb-1 me-0 disabled">
 													<label for="displayRange" class="col-auto col-form-label py-1">#{speedLabels.speed_config_display_range} </label>
 													<div class="input-group col px-0">
 													  <input type="text" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
@@ -127,21 +127,21 @@
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1">
+												<div class="row mb-1 me-0">
 													<label for="displayLimit" class="col-auto col-form-label py-1">#{speedLabels.speed_config_display_limit} </label>
 													<div class="input-group col px-0">
 													  <input type="text" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled">
+												<div class="row mb-1 me-0 disabled">
 													<label for="displayTolerated" class="col-auto col-form-label py-1">#{speedLabels.speed_config_tolerated_speed} </label>
 													<div class="input-group col px-0">
 													  <input type="text" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled ms-0">
+												<div class="row mb-1 me-0 disabled ms-0">
 													<div class="col-auto form-check pe-0 py-1">
 														<input class="form-check-input" type="checkbox" value="" name="displayFlashOption" id="displayFlashOption" />
 													</div>
@@ -151,7 +151,7 @@
 														<span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled ms-0">
+												<div class="row mb-1 me-0 disabled ms-0">
 													<div class="col-auto form-check pe-0 py-1">
 														<input class="form-check-input" type="checkbox" value="" name="displayStrobeOption" id="displayStrobeOption" />
 													</div>

@@ -25,7 +25,8 @@
 
 /* Form */
 .speed-form {
-    width: 21.25375em;
+    min-width: 21.25375em;
+    display: grid;
     height: 100%;
   }
   
