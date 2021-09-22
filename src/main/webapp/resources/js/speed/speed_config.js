@@ -1,15 +1,12 @@
 const saveSpeedBtn = e => {
-    let mode,
-        range,
-        limit,
-        tolerance,
-        flash,
-        strobe = 0;
+    let mode = range = limit = tolerance = flash = strobe = 0;
     
     if (e.stealthMode.checked)
         mode = 1 | (4 << 4);
     else if (e.Strobe.checked && !e.Strobe.disabled)
         mode = 1 | (2 << 4);
+    else 
+        mode = 1
 
     range = [e.displayRange.value  > 0 ? e.displayRange.value : 20, e.displayRange2.value > 0 ? e.displayRange2.value : 200]
     limit = e.displayLimit.value > 0 ? e.displayLimit.value : 100;
