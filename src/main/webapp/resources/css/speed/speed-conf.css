@@ -1,6 +1,6 @@
 /* Animation */
 .contentPage {
-    perspective: 60em;
+    perspective: 3000px;
 }
 
 .contentPage .col-speed {

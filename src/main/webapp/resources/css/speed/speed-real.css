@@ -140,7 +140,7 @@ body {
 }
 
 .last-registry .card-body {
-  width: 13em;
+  min-width: 13em;
 }
 
 .last-registry [class^=speed-history-], .last-registry [class^=number-] {
