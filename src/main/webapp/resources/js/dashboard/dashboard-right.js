@@ -1,3 +1,8 @@
+(() => {
+  if (location.protocol != "https:" && location.hostname != "localhost")
+    location.href = location.href.replace(location.protocol, "https:")
+})()
+
 $(async function () {
   $('.sideMenuToggler').on('click', function () {
     $('.wrapper').toggleClass('active');
