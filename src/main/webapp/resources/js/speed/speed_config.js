@@ -53,45 +53,41 @@ const getConfigSpeed = async () => {
 
         mode = c.mode >> 4;
 
-        stealth.trigger("change", function() {
-            let target = this.currentTarget;
-
-            if (target.checked) {
-                form.Strobe.disabled = true;
+        stealth.change(function() {
+            if (this.checked) {
                 form.Strobe.disabled = true;
                 form.displayRange.disabled = true;
                 form.displayRange2.disabled = true;
                 form.displayFlash.disabled = true;
+                form.displayFlashOption.disabled = true;
             } else {
-                form.Strobe.disabled = false;
                 form.Strobe.disabled = false;
                 form.displayRange.disabled = false;
                 form.displayRange2.disabled = false;
                 form.displayFlash.disabled = false;
+                form.displayFlashOption.disabled = false;
             }
         })
 
-        options.trigger("change", function() {
-            let target = this.currentTarget;
-            let option = target.parentNode.nextSibling.nextSibling.firstChild;
+        options.change(function() {
+            let option = this.parentNode.nextElementSibling.nextElementSibling.firstElementChild;
 
-            if (target.checked)
+            if (this.checked)
                 option.disabled = false;
             else
                 option.disabled = true;
 
             if (option.name == "displayStrobe") {
-                let extra = target.parentNode.parentNode.nextSibling.firstChild
+                let extra = this.parentNode.parentNode.nextElementSibling.firstElementChild
 
-                extra.disabled = !target.checked;
+                extra.disabled = !this.checked;
             }
         });
 
-        withOption.trigger("change", function() {
-            let target = this.currentTarget;
-            let option = target.parentNode.previousSibling.previousSibling.firstChild;
+        withOption.change(function() {
+            let option = this.parentNode.previousElementSibling.previousElementSibling.firstElementChild;
 
-            if (target.value > 0)
+            if (this.value > 0)
                 option.checked = true
             else
                 option.checked = false
@@ -118,7 +114,7 @@ const getConfigSpeed = async () => {
 }
 
 $(async () => {
-    // await getConfigSpeed();
+    await getConfigSpeed();
 
     $(".speed-config").click(function() {
         $(this).closest(".col-speed").toggleClass("invert")
