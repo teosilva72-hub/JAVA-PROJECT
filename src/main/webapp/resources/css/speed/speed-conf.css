@@ -58,6 +58,11 @@
   .speed-form .disabled {
     display: none;
   }
+
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
   
   /* .speed-form .form-check-label:hover {
     text-overflow: clip;
