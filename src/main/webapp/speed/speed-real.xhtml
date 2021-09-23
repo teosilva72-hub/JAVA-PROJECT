@@ -13,7 +13,7 @@
 
 	<ui:define name="head">
 		<h:outputStylesheet library="css/speed" name="speed-real.css" />
-		<c:if test="#{ SuperAdmin }">
+		<c:if test="#{ SuperAdmin || Cco }">
 			<h:outputStylesheet library="css/speed" name="speed-conf.css" />
 		</c:if>
 	</ui:define>
@@ -24,6 +24,7 @@
 
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
 	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="Cco" value="#{ permission == 2 }" />
 
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
@@ -102,7 +103,7 @@
 	
 						</div>
 
-						<c:if test="#{ SuperAdmin }">
+						<c:if test="#{ SuperAdmin || Cco }">
 							<div class="speed-background shadow rounded p-2 w-100 bg-body d-flex back">
 								<div class="card bg-dark text-white w-100">
 									<div class="card-header text-center speed-config">
@@ -198,7 +199,7 @@
 	<ui:define name="jscript">
 		<h:outputScript name="speed_event.js" library="js/speed" />
 		<h:outputScript name="speed_animation.js" library="js/speed" />
-		<c:if test="#{ SuperAdmin }">
+		<c:if test="#{ SuperAdmin || Cco }">
 			<h:outputScript name="speed_config.js" library="js/speed" />
 		</c:if>
 	</ui:define>
