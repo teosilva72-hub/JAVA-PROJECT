@@ -81,11 +81,6 @@
 							<div class="card bg-dark text-white last-registry">
 								<div class="card-header text-center speed-config">
 									#{speedLabels.speed_realtime_last_registers}
-									<c:if test="#{ SuperAdmin || Cco }">
-										<svg width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-											<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
-										</svg>
-									</c:if>
 								</div>
 								<div class="card-body">
 									<div class="speed-history-1">
@@ -113,9 +108,6 @@
 								<div class="card bg-dark text-white w-100">
 									<div class="card-header text-center speed-config">
 										#{speedLabels.speed_config_settings}
-										<svg width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-											<path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
-										</svg>
 									</div>
 									<div class="card-body">
 										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form">
