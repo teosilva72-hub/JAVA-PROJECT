@@ -46,7 +46,9 @@ const getConfigSpeed = async () => {
     let content = $(`.contentPage`);
     
     for (let c of config) {
-        let form = content.find(`#col-speed${c.Id} .speed-form`)[0];
+        let speed = content.find(`#col-speed${c.Id}`);
+        let form = speed.find(`.speed-form`)[0];
+        let card = speed.find(`.speed-config`);
         let withOption = $([form.displayFlash, form.displayStrobe]);
         let options = $([form.displayFlashOption, form.displayStrobeOption]);
         let stealth = $(form.stealthMode);
@@ -95,9 +97,8 @@ const getConfigSpeed = async () => {
             $(option).trigger("change")
         })
 
-        if (mode == 4) {
+        if (mode == 4)
             form.stealthMode.checked = true;
-        }
         else if (mode == 2)
             form.Strobe.checked = true;
 
@@ -108,6 +109,11 @@ const getConfigSpeed = async () => {
         form.displayFlash.value = c.Flash;
         form.displayStrobe.value = c.Strobe;
 
+        if (c.Online)
+            card.click(function() {
+                $(this).closest(".col-speed").toggleClass("invert")
+            })
+
         stealth.trigger("change");
         withOption.trigger("change");
     }
@@ -115,8 +121,4 @@ const getConfigSpeed = async () => {
 
 $(async () => {
     await getConfigSpeed();
-
-    $(".speed-config").click(function() {
-        $(this).closest(".col-speed").toggleClass("invert")
-    })
 })
