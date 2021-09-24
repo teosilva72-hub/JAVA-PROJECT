@@ -11,7 +11,7 @@ const saveSpeedBtn = e => {
     range = [Number(e.displayRange.value  > 0 ? e.displayRange.value : 20), Number(e.displayRange2.value > 0 ? e.displayRange2.value : 200)]
     limit = Number(e.displayLimit.value > 0 ? e.displayLimit.value : 100);
     // tolerance = Number(e.displayTolerated.value > limit ? e.displayTolerated.value : limit);
-    tolerance = Number(limit *= 1.05); // ever 5% more than the limit
+    tolerance = limit * 1.05; // ever 5% more than the limit
 
     if (e.displayFlashOption.checked && !e.stealthMode.checked)
         flash = Number(e.displayFlash.value > 0 ? e.displayFlash.value : limit);
