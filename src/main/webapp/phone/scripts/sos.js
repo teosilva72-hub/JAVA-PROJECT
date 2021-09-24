@@ -168,8 +168,11 @@ const consumeSOS = async ({ callback_calls = callback_calls_default, callback_al
 			client.subscribe(`/exchange/sos_calls/sos_calls`, callback_calls)
 	};
 
-	var on_error =  function() {
+	var on_error = async function() {
 	    console.log('error');
+		await sleep(1000);
+
+		consumeSOS({callback_calls, callback_alarms, callback_states, debug})
 	};
 
 	client.heartbeat.outgoing = PING

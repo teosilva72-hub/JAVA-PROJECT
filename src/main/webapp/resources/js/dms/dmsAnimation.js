@@ -40,8 +40,11 @@ const consumeDMS = async ({ callback = callback_dms, debug } = {}) => {
 		client.subscribe(`/exchange/dms_states/dms_states`, callback)
 	};
 
-	var on_error =  function() {
+	var on_error = async function() {
 	    console.log('error');
+		await sleep(1000);
+
+		consumeDMS({callback, debug})
 	};
 
 	if (!debug)
