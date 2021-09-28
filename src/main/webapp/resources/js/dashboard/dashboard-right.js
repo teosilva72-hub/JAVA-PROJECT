@@ -271,19 +271,29 @@ function sidenavAction3() {
   document.getElementById("sidenav3").style.display = "block";
 }
 
-function clicked(id) {
-  var element = document.getElementById(id);
-  if (element.style.display === "none") {
-    element.style.display = "block";
-  } else {
-    element.style.display = "none";
+function clicked(id, action) {
+
+  let element = document.getElementById(id); // div id element to show / hide
+
+  let act = document.getElementById(action); // action button element
+  
+  if (element.style.display === "none") 
+       element.style.display = "block";  
+
+   else element.style.display = "none";
+   
+// ----------------------------------------
+
+   // PLUS AND MINUS BUTTON SWITCH
+
+  if(act.style.display !== "none")
+      act.style.display = "block";
+     
+   else pls.style.display = "none";
+
   }
-}
 
-function toggleBtnEquips() {
-  $(this).find(".plusMinus").toggleClass('fa-plus fa-minus');
-};
-
+  // ----------------------------------------
 
 /*  function reloadNotifications(){
       var container = document.getElementById("testess");
@@ -332,5 +342,87 @@ $(function () {
 $('[toggle]').click(function () {
   $('.equipments > [id^=' + $(this).attr('toggle').toLowerCase() + ']').toggle()
 })
-      // Visibility Equipments End
+      
+// Visibility Equipments End
 
+// LOAD FUNCTION FOR NOTIFICATIONS
+
+$(function () { 
+  
+    // GET VALUES FROM FORM NOTIFY
+    let notify = document.forms.notifyForm;
+       
+       // READ VALUES
+      for (messages of notify)
+         window[messages.name] = messages.value
+
+     // ARRAY WITH TITLE     
+    let titles = new Array (batteryTitle, connectionTitle, doorTitle, energyTitle, eventTitle, presenceTitle, temperatureTitle);
+     
+     // ARRAY WITH LIST IDS
+    let list = new Array ('notification-battery', 'notification-connection', 'notification-door', 'notification-energy', 'notification-event', 'notification-presence', 'notification-temperature');
+    
+    // ARRAY WITH BUTTON IDS
+    let buttons = new Array ('btn-battery', 'btn-connection', 'btn-door', 'btn-energy', 'btn-event', 'btn-presence', 'btn-temperature');
+
+    // DIV ITEMS TO SHOW / HIDE
+    let divItems = new Array ('div-battery', 'div-connection', 'div-door', 'div-energy', 'div-event', 'div-presence', 'div-temperature');
+
+    // ARRAY WITH PLUS IDS
+    let actionButtons = new Array ('btn-act-battery', 'btn-act-connection', 'btn-act-door', 'btn-act-energy', 'btn-act-event', 'btn-act-presence', 'btn-act-temperature');
+     
+    // DINAMIC NOTIFICATION DIV
+    for(let i = 0; i < titles.length; i++){    
+       
+      // GROUP
+      let html = '<div id=\''+divItems[i]+'\' class="content-notification" style="display:none;"> ' +
+   
+      '<a id=\''+buttons[i]+'\' class="link-show-hide text-decoration-none" '+
+        'onclick="clicked(\''+list[i]+'\', \''+actionButtons[i]+'\');"> ' +
+            
+        '<span id=\''+actionButtons[i]+'\' class="notification-badge">5</span> ' +
+            
+          '<label class="label-notification-title">'+titles[i]+'</label> ' +                 
+          '</a>' +     
+
+      '<div id='+list[i]+' style="display: none;"> </div> ' +                   
+                   
+      '</div>'
+       
+      // CREATE DIV COMPONENT
+      let div = document.createElement('div');
+      div.innerHTML = html; 
+     
+      // APPEND DIV
+      document.getElementById('notif-dropdown').appendChild(div);
+    
+      $('.content-notification').on('click', function(e) {
+        e.stopPropagation();
+
+      });
+    
+      }
+
+      // SINGLE
+      let html2 = '<div id="div-single" class="content-notification" style="display:none;"> ' +                                
+ 
+      '<div id="notification-list"></div> ' +                   
+                   
+      '</div>'
+
+       // CREATE DIV COMPONENT
+      let div = document.createElement('div');
+        div.innerHTML = html2; 
+
+       // APPEND DIV
+       document.getElementById('notif-dropdown').appendChild(div);
+
+       $('.content-notification').on('click', function(e) {
+        e.stopPropagation();
+      });   
+
+  });
+
+ 
+ 
+ 

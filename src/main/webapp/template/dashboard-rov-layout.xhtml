@@ -192,16 +192,14 @@
                   </path>
                 </svg>
 
-                <span class="header-badge" id="badge-notif" ></span> 
+                <span class="header-badge" id="badge-notif"></span> 
 
               </a>
               
-             <div class="dropdown-menu dropdown-menu-right dropdown-notif" aria-labelledby="navbarDropdown2">
-                <div class="square" id="square-notif"></div>
-                  <div id="notifications-list">
-                  </div>                         
+             <div id="notif-dropdown" class="dropdown-menu dropdown-menu-right dropdown-notif" aria-labelledby="navbarDropdown2">
+                <div class="square square-notify-background" id="square-notif"></div>
+                                        
               </div> 
-
             </li>
           </ul>
 
@@ -247,25 +245,31 @@
           </ul>
         </div>
 
+        <!-- MOBILE SETTINGS -->
+
         <ul class="dropdown-menu dropdown-menu-right navbar-toggler border " id="navbarMaximizeMenu">
           <li class="square" id="square-profile-maxsize"></li>
-          <li class="nav-item dropdown">
+          
+         <!-- <li class="nav-item dropdown"> 
+
             <a class="dropdown-item" href="#" data-target="#user" data-toggle="collapse" aria-haspopup="true"
-              aria-expanded="false" onclick="setId();">
+              aria-expanded="false" onclick="setId();"> 
               <h:graphicImage value="/resources/images/avatar/user_light.png" alt=""
                 class="rounded-circle profile-dropdown-scale fa-fw" />
               <span>#{user}</span>
             </a>
-            <div class="collapse" id="user">
+            
+            <div class="collapse" id="user"> 
               <a class="dropdown-item text-font" href="#">
                 <i class="fas fa-fw fa-user ml-3"></i>
-                <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_profile}</span></a>
-              <a class="dropdown-item text-font" href="#">
+                <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_profile}</span></a> 
+              <a class="dropdown-item text-font" href="#"> 
                 <i class="fas fa-fw fa-cog ml-3"></i>
-                <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_settings}</span></a>
-            </div>
-          </li>
-          <!--  <li class="nav-item dropdown">
+                  <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_settings}</span></a> 
+            </div> 
+          </li> 
+
+          <li class="nav-item dropdown">
        <a class="dropdown-item" href="#" data-target="#msg" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
               <i class="far fa-fw fa-comments"></i>
               <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_messages}</span>
@@ -284,33 +288,31 @@
         </div>
       </li> -->
 
-          <li class="nav-item dropdown">
+         <!-- <li class="nav-item dropdown">
             <a class="dropdown-item" href="#" data-target="#notif" data-toggle="collapse" aria-haspopup="true"
               aria-expanded="false">
               <i class="fas fa-fw fa-bell"></i>
               <span>#{dashboardLabels.dashboard_navbar_icon_user_settings_messages}</span>
-              <!-- <span class="navbar-dropdown-bagde ml-2">3</span> --> </a>
+              <span class="navbar-dropdown-bagde ml-2">3</span>  </a>
 
-            <!-- <div class="collapse" id="notif">
+             <div class="collapse" id="notif">
           <a class="dropdown-item text-font" href="#"><i class="fas fa-fw fa-envelope ml-3"></i> Notification 1</a>
           <a class="dropdown-item text-font" href="#"><i class="fas fa-fw fa-envelope ml-3"></i> Notification 2</a>
           <a class="dropdown-item text-font" href="#"><i class="fas fa-fw fa-envelope ml-3"></i> Notification 3</a>
-        </div>-->
-          </li>
+        </div>
+        </li> -->
           
-           <li class="nav-item dropdown">          
-          
-            	<!-- USER CHANGE PASSWORD -->
+      <!--  <li class="nav-item dropdown">          
+                      
 				 <h:form>
 				 <h:commandLink class="dropdown-item"
-						action="#{navigationController.redirectToChangePassword}" value="">
+						action="#" value="">
 						<i class="fas fa-fw fa-unlock-alt"></i>
 						<span class="text">#{dashboardLabels.dashboard_navbar_icon_user_settings_change_password}</span>
 					</h:commandLink>					
 				</h:form>
-				<!---->
-				
-			</li>
+								
+			</li> -->
           
           <li class="nav-item dropdown">
             <div class="dropdown-divider"></div>
@@ -653,6 +655,19 @@
     <!-- Import JavaScript from another pages -->
     <ui:insert name="jscript">
     </ui:insert>
+
+    <form name="notifyForm"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		      
+    <input type="hidden" name="batteryTitle" value="#{notificationLabels.notifications_status_battery}" />	<!-- BATTERY ITEM TITLE -->
+    <input type="hidden" name="connectionTitle" value="#{notificationLabels.notifications_status_connection}" />	<!-- CONNECTION ITEM TITLE -->		 	
+    <input type="hidden" name="doorTitle" value="#{notificationLabels.notifications_status_door}" /> <!-- DOOR ITEM TITLE -->
+    <input type="hidden" name="energyTitle" value="#{notificationLabels.notifications_status_power}" /> <!-- POWER ITEM TITLE -->
+    <input type="hidden" name="eventTitle" value="#{notificationLabels.notifications_status_events}" /> <!-- EVENTS ITEM TITLE -->
+    <input type="hidden" name="presenceTitle" value="#{notificationLabels.notifications_status_presence}" /> <!-- PRESENCE ITEM TITLE -->
+    <input type="hidden" name="temperatureTitle" value="#{notificationLabels.notifications_status_temperature}" /> <!-- TEMPERATURE ITEM TITLE -->
+    <input type="hidden" name="notificationNotFound" value="#{notificationLabels.notifications_status_without_notifications}" /> <!-- WITHOUT NOTIFICATIONS MESSAGE -->
+    
+    </form> <!----> 
 
   </h:body>
 </f:view>

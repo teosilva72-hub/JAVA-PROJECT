@@ -1138,12 +1138,12 @@ function cftvBottom(){
 
 /* top and bottom line */
 
-if ('[id$=#{item.table_id}]') {
+/*if ('[id$=#{item.table_id}]') {
 	$('.equipLine').show();
 	$('.equipLineTop').hidden();
 } else {
 	$('.equipLineTop').show();
 	$('.equipLine').hidden();
-}
+}*/
 
 /* top and bottom line [end] */
