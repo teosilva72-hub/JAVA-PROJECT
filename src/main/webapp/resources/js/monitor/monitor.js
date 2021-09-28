@@ -354,7 +354,8 @@ const changeNotificationStatus = response => {
 	 $(id).remove();
   }
 
-  var on_error = async function() {
+  // GUIGO
+  let on_error = async function() {
 	console.log('error');
 	await sleep(1000);
 
