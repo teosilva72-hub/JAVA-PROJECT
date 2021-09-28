@@ -10,7 +10,8 @@ const saveSpeedBtn = e => {
 
     range = [Number(e.displayRange.value  > 0 ? e.displayRange.value : 20), Number(e.displayRange2.value > 0 ? e.displayRange2.value : 200)]
     limit = Number(e.displayLimit.value > 0 ? e.displayLimit.value : 100);
-    tolerance = Number(e.displayTolerated.value > limit ? e.displayTolerated.value : limit);
+    // tolerance = Number(e.displayTolerated.value > limit ? e.displayTolerated.value : limit);
+    tolerance = Number.parseInt(limit * 1.05); // ever 5% more than the limit
 
     if (e.displayFlashOption.checked && !e.stealthMode.checked)
         flash = Number(e.displayFlash.value > 0 ? e.displayFlash.value : limit);
@@ -44,54 +45,62 @@ const saveAllSpeed = (e, sameKm) => {
 const getConfigSpeed = async () => {
     let config = await connectSPEED("GetAllConfig");
     let content = $(`.contentPage`);
+
+    const addRotate = config => {
+        let body = '<svg width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">\
+                        <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>\
+                    </svg>';
+
+        config.click(function() {
+            $(this).closest(".col-speed").toggleClass("invert")
+        }).append(body)
+    }
     
     for (let c of config) {
-        let form = content.find(`#col-speed${c.Id} .speed-form`)[0];
+        let speed = content.find(`#col-speed${c.Id}`);
+        let form = speed.find(`.speed-form`)[0];
+        let card = speed.find(`.speed-config`);
         let withOption = $([form.displayFlash, form.displayStrobe]);
         let options = $([form.displayFlashOption, form.displayStrobeOption]);
         let stealth = $(form.stealthMode);
 
         mode = c.mode >> 4;
 
-        stealth.trigger("change", function() {
-            let target = this.currentTarget;
-
-            if (target.checked) {
-                form.Strobe.disabled = true;
+        stealth.change(function() {
+            if (this.checked) {
                 form.Strobe.disabled = true;
                 form.displayRange.disabled = true;
                 form.displayRange2.disabled = true;
                 form.displayFlash.disabled = true;
+                form.displayFlashOption.disabled = true;
             } else {
-                form.Strobe.disabled = false;
                 form.Strobe.disabled = false;
                 form.displayRange.disabled = false;
                 form.displayRange2.disabled = false;
                 form.displayFlash.disabled = false;
+                form.displayFlashOption.disabled = false;
             }
         })
 
-        options.trigger("change", function() {
-            let target = this.currentTarget;
-            let option = target.parentNode.nextSibling.nextSibling.firstChild;
+        options.change(function() {
+            let option = this.parentNode.nextElementSibling.nextElementSibling.firstElementChild;
 
-            if (target.checked)
+            if (this.checked)
                 option.disabled = false;
             else
                 option.disabled = true;
 
             if (option.name == "displayStrobe") {
-                let extra = target.parentNode.parentNode.nextSibling.firstChild
+                let extra = this.parentNode.parentNode.nextElementSibling.firstElementChild
 
-                extra.disabled = !target.checked;
+                extra.disabled = !this.checked;
             }
         });
 
-        withOption.trigger("change", function() {
-            let target = this.currentTarget;
-            let option = target.parentNode.previousSibling.previousSibling.firstChild;
+        withOption.change(function() {
+            let option = this.parentNode.previousElementSibling.previousElementSibling.firstElementChild;
 
-            if (target.value > 0)
+            if (this.value > 0)
                 option.checked = true
             else
                 option.checked = false
@@ -99,9 +108,8 @@ const getConfigSpeed = async () => {
             $(option).trigger("change")
         })
 
-        if (mode == 4) {
+        if (mode == 4)
             form.stealthMode.checked = true;
-        }
         else if (mode == 2)
             form.Strobe.checked = true;
 
@@ -112,15 +120,14 @@ const getConfigSpeed = async () => {
         form.displayFlash.value = c.Flash;
         form.displayStrobe.value = c.Strobe;
 
+        if (c.Online)
+            addRotate(card);
+
         stealth.trigger("change");
         withOption.trigger("change");
     }
 }
 
 $(async () => {
-    // await getConfigSpeed();
-
-    $(".speed-config").click(function() {
-        $(this).closest(".col-speed").toggleClass("invert")
-    })
+    await getConfigSpeed();
 })

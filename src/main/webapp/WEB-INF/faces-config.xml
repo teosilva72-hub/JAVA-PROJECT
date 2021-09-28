@@ -169,6 +169,11 @@
         	<var>speedLabels</var>
         </resource-bundle>
         
+          <resource-bundle>
+          <base-name>bundle.labels.system.notifications.labels_notifications</base-name>           
+          <var>notificationLabels</var>        
+        </resource-bundle>
+        
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -290,7 +295,7 @@
         <message-bundle>bundle.labels.aba.labels_aba</message-bundle>
         <message-bundle>bundle.labels.phone.labels_phone</message-bundle>
         <message-bundle>bundle.labels.speed.labels_speed</message-bundle>
-        
+        <message-bundle>bundle.labels.system.notifications.labels_notifications</message-bundle>        
                     
         <!-- CONFIG MESSAGES -->
         

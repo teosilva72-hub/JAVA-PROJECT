@@ -39,8 +39,11 @@ const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = f
 		client.subscribe(`/exchange/speed_notify/speed_notify`, callback_speed)
 	};
 
-	var on_error =  function() {
+	var on_error = async function() {
 	    console.log('error');
+		await sleep(1000);
+
+		consumeSPEED({callback_speed, debug})
 	};
 
 	if (!debug)

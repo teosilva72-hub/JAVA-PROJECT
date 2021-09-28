@@ -13,7 +13,7 @@
 
 	<ui:define name="head">
 		<h:outputStylesheet library="css/speed" name="speed-real.css" />
-		<c:if test="#{ SuperAdmin }">
+		<c:if test="#{ SuperAdmin || Cco }">
 			<h:outputStylesheet library="css/speed" name="speed-conf.css" />
 		</c:if>
 	</ui:define>
@@ -24,6 +24,7 @@
 
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
 	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="Cco" value="#{ permission == 2 }" />
 
 	<ui:define name="default-content">
 		<div class="jumbotron bg-dark px-3">
@@ -36,7 +37,7 @@
 
 					<div id="col-#{item.table_id}#{item.equip_id}" class="col-speed">
 	
-						<div class="rounded p-2 w-100 bg-body d-flex front">
+						<div class="speed-background shadow rounded p-2 w-100 bg-body d-flex front">
 	
 							<!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
@@ -81,83 +82,83 @@
 								<div class="card-header text-center speed-config">
 									#{speedLabels.speed_realtime_last_registers}
 								</div>
-								<div class="card-body">
-									<div class="speed-history-1">
-										<span class="number-1 border-bottom"></span>
+								<div class="card-body px-0 mx-2">
+									<div class="speed-history-1 text-center">
+										<span class="number-1">dafsdfsad</span>
 									</div>
-									<div class="speed-history-2">
-										<span class="number-2 border-bottom"></span>
+									<div class="speed-history-2 text-center">
+										<span class="number-2">dafsdfsad</span>
 									</div>
-									<div class="speed-history-3">
-										<span class="number-3 border-bottom"></span>
+									<div class="speed-history-3 text-center">
+										<span class="number-3">dafsdfsad</span>
 									</div>
-									<div class="speed-history-4">
-										<span class="number-4 border-bottom"></span>
+									<div class="speed-history-4 text-center">
+										<span class="number-4">dafsdfsad</span>
 									</div>
-									<div class="speed-history-5">
-										<span class="number-5 border-bottom"></span>
+									<div class="speed-history-5 text-center">
+										<span class="number-5">dafsdfsad</span>
 									</div>
 								</div>
 							</div>
 	
 						</div>
 
-						<c:if test="#{ SuperAdmin }">
-							<div class="rounded p-2 w-100 bg-body d-flex back">
+						<c:if test="#{ SuperAdmin || Cco }">
+							<div class="speed-background shadow rounded p-2 w-100 bg-body d-flex back">
 								<div class="card bg-dark text-white w-100">
 									<div class="card-header text-center speed-config">
 										#{speedLabels.speed_config_settings}
 									</div>
 									<div class="card-body">
-										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form row">
+										<form onsubmit="return saveSpeedBtn(this)" km="#{item.km}" name="speed#{item.equip_id}form" id="speed#{item.equip_id}form" class="speed-form">
 											<input type="hidden" name="id" value="#{item.equip_id}" />
-											<div class="col-12 my-auto">
+											<div class="my-auto">
 												<div class="form-check disabled">
 													<input class="form-check-input" type="checkbox" value="" name="stealthMode" id="stealthMode" />
 													<label class="form-check-label" for="stealthMode">
 														#{speedLabels.speed_config_hidden_mode}
 													</label>
 												</div>
-												<div class="row mb-1 disabled">
+												<div class="row mb-1 me-0 disabled">
 													<label for="displayRange" class="col-auto col-form-label py-1">#{speedLabels.speed_config_display_range} </label>
 													<div class="input-group col px-0">
-													  <input type="text" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
+													  <input type="number" class="form-control form-control-sm speed-input" name="displayRange" id="displayRange" />
 													  <span class="input-group-text">#{speedLabels.speed_config_to} </span>
-													  <input type="text" class="form-control form-control-sm speed-input" name="displayRange2" id="displayRange2" />
+													  <input type="number" class="form-control form-control-sm speed-input" name="displayRange2" id="displayRange2" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1">
+												<div class="row mb-1 me-0">
 													<label for="displayLimit" class="col-auto col-form-label py-1">#{speedLabels.speed_config_display_limit} </label>
 													<div class="input-group col px-0">
-													  <input type="text" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
+													  <input type="number" class="form-control form-control-sm speed-input" name="displayLimit" id="displayLimit" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled">
+												<div class="row mb-1 me-0 disabled">
 													<label for="displayTolerated" class="col-auto col-form-label py-1">#{speedLabels.speed_config_tolerated_speed} </label>
 													<div class="input-group col px-0">
-													  <input type="text" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
+													  <input type="number" class="form-control form-control-sm speed-input" name="displayTolerated" id="displayTolerated" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled ms-0">
+												<div class="row mb-1 me-0 disabled ms-0">
 													<div class="col-auto form-check pe-0 py-1">
 														<input class="form-check-input" type="checkbox" value="" name="displayFlashOption" id="displayFlashOption" />
 													</div>
 													<label for="displayFlashOption" class="col-auto col-form-label py-1 px-0">#{speedLabels.speed_config_flash_digits_at_speed} </label>
 													<div class="input-group col px-0">
-														<input type="text" class="form-control form-control-sm speed-input" name="displayFlash" id="displayFlash" />
+														<input type="number" class="form-control form-control-sm speed-input" name="displayFlash" id="displayFlash" />
 														<span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
-												<div class="row mb-1 disabled ms-0">
+												<div class="row mb-1 me-0 disabled ms-0">
 													<div class="col-auto form-check pe-0 py-1">
 														<input class="form-check-input" type="checkbox" value="" name="displayStrobeOption" id="displayStrobeOption" />
 													</div>
 													<label for="displayStrobeOption" class="col-auto col-form-label py-1 px-0">#{speedLabels.speed_config_turn_strobe_on}</label>
 													<div class="input-group col px-0">
-													  <input type="text" class="form-control form-control-sm speed-input" name="displayStrobe" id="displayStrobe" />
+													  <input type="number" class="form-control form-control-sm speed-input" name="displayStrobe" id="displayStrobe" />
 													  <span class="input-group-text">#{speedLabels.speed_config_kmh}</span>
 													</div>
 												</div>
@@ -170,7 +171,7 @@
 											</div>
 											<div class="speed-button row">
 												<button type="submit" class="btn btn-sm btn-warning col-auto m-auto mb-1">#{speedLabels.speed_config_save}</button>
-												<button type="button" onclick="return saveAllSpeed(this.form, true)" class="btn btn-outline-warning btn-sm col-auto m-auto mb-1">Same Km</button>
+												<button type="button" onclick="return saveAllSpeed(this.form, true)" class="btn btn-outline-warning btn-sm col-auto m-auto mb-1">#{speedLabels.speed_config_same}</button>
 												<button type="button" onclick="return saveAllSpeed(this.form)" class="btn btn-outline-danger btn-sm col-auto m-auto">#{speedLabels.speed_config_save_all}</button>
 											</div>
 										</form>
@@ -197,7 +198,8 @@
 	
 	<ui:define name="jscript">
 		<h:outputScript name="speed_event.js" library="js/speed" />
-		<c:if test="#{ SuperAdmin }">
+		<h:outputScript name="speed_animation.js" library="js/speed" />
+		<c:if test="#{ SuperAdmin || Cco }">
 			<h:outputScript name="speed_config.js" library="js/speed" />
 		</c:if>
 	</ui:define>

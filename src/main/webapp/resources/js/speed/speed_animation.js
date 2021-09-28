@@ -4,7 +4,7 @@ const speed_animation = response => {
 
     let timestamp = Number.parseInt(response.Date.replace("s", "")) * 1000;
     let speed = $(`#speed${response.Id}`).next();
-    let speed_number = speed.find("[class^=number-]");
+    let speed_number = speed.find("[class^=speed-history-]");
 
     if (timestamp == 0) return;
 
@@ -17,16 +17,16 @@ const speed_animation = response => {
         let list = speed_number.get().reverse()
         let last = $(list.pop())
         for (let s of list)
-            s.innerText = $(s).parent().prev().find("span").text()
+            $(s).find("span").text($(s).prev().find("span").text())
 
-        last.text(`${response.Registry} km/h - ${date_format}`).addClass("spawn")
+        last.addClass("spawn").find("span").text(`${response.Registry} km/h - ${date_format}`)
 
         setTimeout(() => {
             last.removeClass("spawn");
         }, 500);
         
         speed_number.removeClass("start");
-    }, 1000);
+    }, 990);
 
     refresh_speed(response)
 }

@@ -95,8 +95,11 @@ const consumeDAI = async debug => {
 		client.subscribe(`/exchange/dai_image/dai_image`, callback_image)
 	};
 
-	var on_error =  function() {
+	var on_error = async function() {
 	    console.log('error');
+		await sleep(1000);
+
+		consumeDAI(debug)
 	};
 
 	if (!debug)

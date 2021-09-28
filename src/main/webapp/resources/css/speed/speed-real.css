@@ -26,6 +26,10 @@ body {
   width: auto;
 }
 
+.speed-background {
+  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
+}
+
 .speed-card {
   max-width: min-content;
   min-width: auto;
@@ -126,8 +130,8 @@ body {
 
 .last-registry {
   position: relative;
-  margin-right: 0.9em!important;
-  margin-left: 0.9em!important;
+  margin-right: 0em!important;
+  margin-left: .5em!important;
   overflow-x: auto;
   overflow-y: hidden;
   text-overflow: ellipsis;
@@ -136,43 +140,38 @@ body {
 }
 
 .last-registry .card-body {
-  width: 13em;
+  min-width: 13em;
+  max-height: 16.3125em;
+  padding-top: 0.9em;
+  padding-bottom: 0.1em;
+  margin-bottom: .2em;
+  border: 1px solid #dee2e6;
 }
 
 .last-registry [class^=speed-history-], .last-registry [class^=number-] {
   position: relative;
   font-size: .9em;
+  padding-bottom: 1em;
 }
 
-.last-registry .speed-history-1 {
-  top: 0em;
+.last-registry [class^=speed-history-]:not(.speed-history-1) {
+  padding-top: 1em;
+  top: 0;
 }
 
-.last-registry .speed-history-2 {
-  top: 2em;
+.last-registry [class^=speed-history-]:not(.speed-history-5) {
+  border-bottom: 1px solid #dee2e6;
 }
 
-.last-registry .speed-history-3 {
-  top: 4em;
-}
-
-.last-registry .speed-history-4 {
-  top: 6em;
-}
-
-.last-registry .speed-history-5 {
-  top: 8em;
-}
-
-.last-registry [class^=number-].spawn {
+.last-registry [class^=speed-history-].spawn {
   animation: new-number .5s linear 0s 1;
 }
 
-.last-registry [class^=number-].start {
+.last-registry [class^=speed-history-].start {
   animation: number-down 1s linear 0s 1;
 }
 
-.last-registry .number-5.start {
+.last-registry .speed-history-5.start {
   animation: end-number 1s linear 0s 1;
 }
 
@@ -229,10 +228,10 @@ body {
 
 @keyframes number-down {
   from {
-    top: 0;
+    top: 0em;
   }
   to {
-    top: 3.7em;
+    top: 3.5em;
   }
 }
 
@@ -242,7 +241,7 @@ body {
     opacity: 1;
   }
   to {
-    top: 3em;
+    top: 2em;
     opacity: 0;
   }
 }

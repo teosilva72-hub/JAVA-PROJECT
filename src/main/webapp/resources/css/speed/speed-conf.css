@@ -1,6 +1,6 @@
 /* Animation */
 .contentPage {
-    perspective: 60em;
+    perspective: 3000px;
 }
 
 .contentPage .col-speed {
@@ -25,7 +25,8 @@
 
 /* Form */
 .speed-form {
-    width: 21.25375em;
+    min-width: 21.25375em;
+    display: grid;
     height: 100%;
   }
   
@@ -56,6 +57,25 @@
 
   .speed-form .disabled {
     display: none;
+  }
+
+  .speed-config .bi-arrow-left-right {
+    position: absolute;
+    cursor: pointer;
+    transition: .2s;
+    right: .5em;
+    opacity: 0;
+    color: lightgray;
+    top: .8em;
+  }
+
+  .speed-config:hover .bi-arrow-left-right {
+    opacity: 1;
+  }
+
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   
   /* .speed-form .form-check-label:hover {
