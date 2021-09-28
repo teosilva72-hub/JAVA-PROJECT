@@ -250,7 +250,6 @@ const changeNotificationStatus = response => {
 			 }else {
  
 				$('#notification-energy').append(HasNotification(item));
-
 				$('#div-energy').css('display','block')	
 			 }			 
 		}
@@ -354,6 +353,14 @@ const changeNotificationStatus = response => {
   function removeItem(id){
 	 $(id).remove();
   }
+
+  var on_error = async function() {
+	console.log('error');
+	await sleep(1000);
+
+	consumeMonitor({callback1, callback2, callback3, debug})
+};
+
 	   
  // ITEM 
  const callback_states = response => {

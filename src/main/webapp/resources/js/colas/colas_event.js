@@ -57,8 +57,11 @@ const consumeCOLAS = async ({ callback_notify = callback_notify_default, debug =
 		    client.subscribe(`/exchange/colas_notify/colas_notify`, callback_notify)
 	};
 
-	var on_error =  function() {
+	var on_error = async function() {
 	    console.log('error');
+		await sleep(1000);
+
+		consumeCOLAS({callback_notify, debug})
 	};
 
 	if (!debug)

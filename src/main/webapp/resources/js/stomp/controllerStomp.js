@@ -36,5 +36,6 @@ const sendMsgStomp = async function(request, to, debug) {
 	
 }
 
+window.sleep = sleep;
 window.getStomp = getStomp;
 window.sendMsgStomp = sendMsgStomp;
