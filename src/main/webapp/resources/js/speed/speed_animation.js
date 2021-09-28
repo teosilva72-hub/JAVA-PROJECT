@@ -26,7 +26,7 @@ const speed_animation = response => {
         }, 500);
         
         speed_number.removeClass("start");
-    }, 1000);
+    }, 990);
 
     refresh_speed(response)
 }
