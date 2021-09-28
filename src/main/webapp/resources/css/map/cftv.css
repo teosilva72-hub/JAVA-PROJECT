@@ -1,0 +1,108 @@
+.img-cftv-div {
+	position: absolute;
+	width: 250px;
+	height: 125px;
+	bottom: 40px;
+	left: 350px;
+}
+
+.close-cftv {
+	color: #ffffff00;
+	position: relative;
+	left: 92%;
+	bottom: 35px;
+	z-index: 1;
+	transition: 2s;
+}
+
+.close-cftv:hover {
+	color: blue;
+}
+
+.video-img {
+	position: relative;
+	width: 100%;
+	height: 123px;
+	background: black;
+	bottom: 63px;
+	border: black 2px solid;
+}
+
+.text-cftv-barra {
+	position: relative;
+	left: 3%;
+	top: 3px;
+	z-index: 1;
+	color: blue;
+	font-weight: 900;
+}
+
+#cftv-modal-setting {
+	z-index: 10040;
+}
+
+.img-cftv-setting {
+	width: 290px;
+	height: 150px;
+	background: black;
+}
+
+.img-cftv-controller {
+	width: 80px;
+	position: relative;
+	left: 50px;
+	bottom: 30px;
+}
+
+.zoom-in-cftv {
+	position: relative;
+	top: 30px;
+	color: black;
+	right: 10px;
+}
+.zoom-out-cftv {
+	position: relative;
+	top: 30px;
+	color: black;
+	right: 10px;
+}
+#cftv-top, #cftv-bottom, #cftv-left,
+#cftv-right, #cftv-zoom-in, #cftv-zoom-out{
+	position: relative;
+	width: 25px;
+	height: 25px;
+	transition: 1s;
+}
+#cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover,
+#cftv-right:hover, #cftv-zoom-in:hover, #cftv-zoom-out:hover{
+	position: relative;
+	width: 25px;
+	height: 25px;
+	border: solid black 2px;
+}
+#cftv-top{
+    left: 371px;
+    bottom: 145px;	
+}
+#cftv-bottom{
+    left: 371px;
+    bottom: 115px;
+}
+#cftv-left{
+    left: 344px;
+    bottom: 168px;
+}
+#cftv-right{
+    left: 399px;
+    bottom: 192px;
+}
+#cftv-zoom-in{
+    left: 363px;
+    bottom: 159px;
+    width: 20px;
+}
+#cftv-zoom-out{
+    left: 383px;
+    width: 20px;
+    bottom: 184px;
+}

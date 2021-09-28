@@ -1361,6 +1361,18 @@ span.close-x {
 		transform: translateX(0px);
 	}
 }
-
-
 /* FOLLOW EQUIP LINE END */
+/*INITIALIZE STYLE CFTV*/
+/*Mateus Silva*/
+.cftv-card.block{
+	display: block;
+}
+.cftv-card{
+	display: none;
+}
+.video-cftv{
+	width: 100%;
+	height: 200px;
+	background: black;
+}
+/*END EDITION CFTV*/
