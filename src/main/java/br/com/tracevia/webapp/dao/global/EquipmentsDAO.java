@@ -4873,7 +4873,39 @@ public Speed EquipSpeedSearchMap(int id, String table, String interfaceView, int
 		return eq;
 	}	
 
-	// --------------------------------------------------------------------------------------------------------------
+	
+// --------------------------------------------------------------------------------------------------------------
+	
+//	public Equipments FollowEquip(String type, String equip_id) throws Exception {
 
+//		Equipments eq = new Equipments();
 
-}
+//		try {
+
+//			//GET CONNECTION			
+//			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+//			String sql = "SELECT st.direction FROM "+type+"_equipment st "
+//			+ "WHERE st.equip_id = '"+ equip_id +"' AND st.visible = 1";
+					
+
+//			ps = conn.prepareStatement(sql);
+//			rs = ps.executeQuery();
+
+//			if (rs != null) {
+//				while (rs.next()) {
+
+//					eq.setDestino(rs.getString(1));
+				
+//				}
+//			}
+
+//		} catch (SQLException sqle) {
+//			sqle.printStackTrace();
+//		}finally {ConnectionFactory.closeConnection(conn, ps);}
+
+//		return eq;
+//	}	
+	
+
+} 
