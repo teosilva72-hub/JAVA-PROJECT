@@ -1,3 +1,7 @@
+:root {
+  --padding-table: 0.4em
+}
+
 body {
   overflow-y: hidden;
   width: 100%;
@@ -142,20 +146,32 @@ body {
 .last-registry .card-body {
   min-width: 13em;
   max-height: 16.3125em;
-  padding-top: 0.9em;
+  padding-top: var(--padding-table);
   padding-bottom: 0.1em;
   margin-bottom: .2em;
   border: 1px solid #dee2e6;
+  background-color: #353535;
 }
 
-.last-registry [class^=speed-history-], .last-registry [class^=number-] {
+.last-registry [class^=speed-history-] {
   position: relative;
+  padding-bottom: var(--padding-table);
+  --bs-gutter-x: 0rem !important;
   font-size: .9em;
-  padding-bottom: 1em;
+}
+
+.last-registry [class^=number-] {
+  display: flex;
+  flex-direction: column;
+}
+
+.last-registry [class^=number-] span {
+  font-size: .8em;
+  font-weight: 700;
 }
 
 .last-registry [class^=speed-history-]:not(.speed-history-1) {
-  padding-top: 1em;
+  padding-top: var(--padding-table);
   top: 0;
 }
 

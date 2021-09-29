@@ -423,6 +423,44 @@
 							</div>
 							<!-- Card Speed End -->
 
+                            <div id="pop#{item.table_id}#{item.equip_id}" style="display: none;">
+                                <div class="popover-header">#{infoLabels.info_label_header}</div>
+
+                                <div class="popover-body">
+                                
+                                    <div class="row">
+                                        <div class="equip-label-left"> <b>#{infoLabels.info_label_equip_module}
+                                                :</b>&nbsp;#{item.equip_type}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="equip-label-left"><b>#{infoLabels.info_label_equip_id}
+                                                :</b>&nbsp;#{item.equip_id}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="equip-label-left"> <b>#{infoLabels.info_label_name}
+                                                :</b>&nbsp;#{item.nome}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="equip-label-left"><b>#{infoLabels.info_label_highway}
+                                                :</b>&nbsp;#{item.estrada}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="equip-label-left"><b>#{infoLabels.info_label_km}
+                                                :</b>&nbsp;#{item.km}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="equip-label-left"><b>#{infoLabels.info_label_city}
+                                                :</b>&nbsp;#{item.cidade}&nbsp;&nbsp;&nbsp;</div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                         </c:when>
                         
                         <c:otherwise>
