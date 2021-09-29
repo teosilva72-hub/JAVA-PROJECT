@@ -1101,21 +1101,7 @@ public class EquipmentsBean implements Serializable {
 	 * @return void
 	 * @throws Exception
 	 */
-	public void searchCftv() {
-
-		EquipmentsDAO search = new EquipmentsDAO();
-		equip = new Equipments();
-
-		try {
-			equip = search.cftvCam(id);
-			//RequestContext.getCurrentInstance().execute("dblModalHidden()");
-			imgControle = "C:\\Tracevia\\Software\\External\\Cftv\\controller\\controller.png";
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//return equip;
-	}
+	
 	public void DeleteEquipment() throws Exception {
 
 		boolean delete = false;
