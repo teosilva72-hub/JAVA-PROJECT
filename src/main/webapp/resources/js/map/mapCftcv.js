@@ -1,3 +1,15 @@
+const cftvEvent = data => {
+	var status = data.status;
+	switch (status) {
+		case "begin":
+			break;
+		case "complete":
+			break;
+		case "success":
+			cftvVideo();
+			break;
+	}
+}
 function getInfo(){
 	$("#send-cftv-id").click();
 }
@@ -15,20 +27,8 @@ function cftvVideo(){
 		close(`.ptz-close${id}`, `.ptz${id}`);
 		dragdrop(`.img-cftv-div`);
 }
-const cftvEvent = data => {
-	var status = data.status;
-	switch (status) {
-		case "begin":
-			break;
-		case "complete":
-			break;
-		case "success":
-			cftvVideo();
-			break;
-	}
-}
 function close(cam, close){
-	setTimeout(() => {		
+	setTimeout(() => {	
 		$(cam).click(function() {
 	  		$(close).remove();
 		});
