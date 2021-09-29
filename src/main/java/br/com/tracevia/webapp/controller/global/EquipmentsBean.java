@@ -1257,7 +1257,7 @@ public class EquipmentsBean implements Serializable {
 		case "sat": table="sat"      ; break;
 		case "sos": table="sos"       ; break;
 		case "speed": table="speed"   ; break;
-		case "sv": table="sv"    ; break;
+		case "sv": table="sv"         ; break;
 		case "wim": table="wim"       ; break;
 		}
 
