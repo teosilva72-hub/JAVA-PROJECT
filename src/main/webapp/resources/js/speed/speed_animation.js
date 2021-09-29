@@ -9,9 +9,9 @@ const speed_animation = response => {
     if (timestamp == 0) return;
 
     let color;
-    if (response.Registry < response.Limit)
+    if (response.Registry <= response.Limit)
         color = '#0f0'
-    else if (response.Registry < response.Tolerance)
+    else if (response.Registry <= response.Tolerance)
         color = '#ff0'
     else
         color = '#f00'
