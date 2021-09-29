@@ -1190,7 +1190,7 @@
 									</div>
 									<!---->
 									<!-- INICIO BOTAO CFTV MODAL-->
-									<div class="col-md-4 cftv-modal-btn" style="display:none">
+									<div class="col-md-4 cftv-modal-btn">
 										<h:commandButton id="setting-cftv-one" value="Configuração"
 											class="btn btn-dark form-modal-draw-button"
 											onclick="getInfo()">
@@ -1200,11 +1200,11 @@
 											<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" />
 										</h:commandButton>
 									</div>
-									<div class="col-md-4 cftv-modal-btn" style="display:none">
+									<div class="col-md-4 cftv-modal-btn">
 										<h:commandLink id="setting-cftv-two" value="Janela"
 											class="btn btn-dark form-modal-draw-button"
-											onclick="cftvVideo()">
-											<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" />
+											onclick="cftvVideo()" >
+											<f:ajax execute="@form" render=":id-cftv :img-cftv-cam :cftv-modal-setting" />
 										</h:commandLink>
 									</div>
 									<!-- FINAL BOTÃO CFTV MODAL -->
@@ -1237,11 +1237,12 @@
 								</button>
 							</div>
 							<div class="modal-body">
+							<h:inputHidden id="url-img" value="#{CftvCam.camCftv}"/>
 								<img src="#{CftvCam.camCftv}" class="img-cftv-setting" /> <img
 									src="data:image/png;base64, #{CftvCam.imgControle}"
-									class="img-cftv-controller" /> <i
-									class="fas fa-search-plus zoom-in-cftv"></i> <i
-									class="fas fa-search-minus zoom-out-cftv"></i>
+									class="img-cftv-controller" />
+									<i class="fas fa-search-plus zoom-in-cftv"></i>
+									<i class="fas fa-search-minus zoom-out-cftv"></i>
 									<div id="cftv-top" onclick="cftvTop()"></div>
 									<div id="cftv-bottom" onclick="cftvBottom()"></div>
 									<div id="cftv-left" onclick="cftvLeft()"></div>
@@ -1292,7 +1293,7 @@
 			<h:form prependId="false" id="id-cftv">
 				<h:commandButton id="send-cftv-id" style="display:none">
 					<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-						listener="#{CftvCam.searchCftv}" />
+						listener="#{CftvCam.searchCftv}"/>
 				</h:commandButton>
 				<h:inputHidden value="#{CftvCam.id}" id="cftvId"></h:inputHidden>
 			</h:form>
