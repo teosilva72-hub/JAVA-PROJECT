@@ -50,8 +50,11 @@ const init = () => {
 					if(type =="cftv"){
 						var cod = document.getElementById("cftvId")
 						cod.value = id
-						  
-					} 
+						$('.cftv-modal-btn').removeClass('none')
+						getInfo()
+					}else{
+						$('.cftv-modal-btn').addClass('none')
+					}
 					////////////////////////////////////////
 				});
 
