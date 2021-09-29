@@ -4876,36 +4876,36 @@ public Speed EquipSpeedSearchMap(int id, String table, String interfaceView, int
 	
 // --------------------------------------------------------------------------------------------------------------
 	
-//	public Equipments FollowEquip(String type, String equip_id) throws Exception {
+	public Equipments FollowEquip(String type, String equip_id) throws Exception {
 
-//		Equipments eq = new Equipments();
+		Equipments eq = new Equipments();
 
-//		try {
+		try {
 
-//			//GET CONNECTION			
-//			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			//GET CONNECTION			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-//			String sql = "SELECT st.direction FROM "+type+"_equipment st "
-//			+ "WHERE st.equip_id = '"+ equip_id +"' AND st.visible = 1";
+			String sql = "SELECT st.direction FROM "+type+"_equipment st "
+			+ "WHERE st.equip_id = '"+ equip_id +"' AND st.visible = 1";
 					
 
-//			ps = conn.prepareStatement(sql);
-//			rs = ps.executeQuery();
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
 
-//			if (rs != null) {
-//				while (rs.next()) {
+			if (rs != null) {
+				while (rs.next()) {
 
-//					eq.setDestino(rs.getString(1));
+					eq.setDirection(rs.getString(1));
 				
-//				}
-//			}
+				}
+			}
 
-//		} catch (SQLException sqle) {
-//			sqle.printStackTrace();
-//		}finally {ConnectionFactory.closeConnection(conn, ps);}
+		} catch (SQLException sqle) {
+			sqle.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps);}
 
-//		return eq;
-//	}	
+		return eq;
+	}	
 	
 
 } 
