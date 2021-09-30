@@ -1115,12 +1115,12 @@ function cftvBottom(){
 
 /* top and bottom line */
 
-/*if ('[id$=#{item.table_id}]') {
+if ('[direction$="#{item.direction}"] == "N"') {
 	$('.equipLine').show();
 	$('.equipLineTop').hidden();
 } else {
 	$('.equipLineTop').show();
 	$('.equipLine').hidden();
-}*/
+}
 
 /* top and bottom line [end] */
