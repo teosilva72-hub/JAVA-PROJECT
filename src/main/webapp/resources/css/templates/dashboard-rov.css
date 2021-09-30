@@ -38,7 +38,7 @@ body,
   background-color: #ffffff;
 }
 
-#realTimeSubmenu, #pmvUiSubmenu, #modMenu, #meteoUiSubmenu{
+#realTimeSubmenu, #pmvUiSubmenu, #modMenu, #meteoUiSubmenu, #speedUiSubmenu{
 	 background-color: #000 !important;
 }
 
