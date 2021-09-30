@@ -1355,6 +1355,22 @@ span.close-x {
 	
 }
 
+.equipLineSPEED {
+	position: absolute;
+	bottom: 302px;
+	left: 38px;
+	width: 1px;
+	
+}
+
+.equipLineTopSPEED {
+	position: absolute;
+	top: 304px;
+	left: 38px;
+	width: 1px;
+	
+}
+
 @keyframes go-back {
 	0% {
 		transform: translateX(100px);	
