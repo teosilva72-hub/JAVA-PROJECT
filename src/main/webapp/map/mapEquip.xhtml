@@ -74,8 +74,8 @@
                                     <div class="dms-name card-header py-0">											
                                         <div class="text-center dmsTab#{item.equip_id}">		
                                         
-                                      <svg class="equipLine"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2;visibility:hidden"></polygon></svg> 
-                               		  <svg class="equipLineTop"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2;visibility:hidden"></polygon></svg> 						
+                                      <svg class="equipLine"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 
+                               		  <svg class="equipLineTop"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 						
                                         
                                         <a role="button" class="dms-info-bagde" data-toggle="popover" 
                                          data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>													
@@ -381,10 +381,14 @@
 						<svg><line x1="5" y1="10" x2="200" y2="100" style="stroke:rgb(255,0,0);stroke-width:2"></line></svg>
 						
                         <c:when test="#{item.table_id eq 'speed'}">
-
+                        
+                        
                             <!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
                                 posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                
+                            <svg class="equipLine"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 
+                            <svg class="equipLineTop"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 
 
 								<div class="card-header py-0 text-center text-white">
 									<p>#{item.nome}</p>
@@ -514,8 +518,8 @@
                                         value="/resources/images/equips/wim.png" />
                                 </c:if>
                                 
-                               <svg class="equipLine"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg>
-                               <svg class="equipLineTop"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2;visibility:hidden"></polygon></svg>
+                                <svg class="equipLine"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 
+                               		  <svg class="equipLineTop"><polygon points="0,200 0,0" style="stroke:black;stroke-width:2"></polygon></svg> 	
                                
                                                                                      
                                <a role="button" class="generic-info-bagde" data-toggle="popover" 
