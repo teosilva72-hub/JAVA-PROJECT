@@ -1343,6 +1343,7 @@ span.close-x {
 	position: absolute;
 	bottom: 123px;
 	left: 38px;
+	width: 1px;
 	
 }
 
@@ -1350,6 +1351,23 @@ span.close-x {
 	position: absolute;
 	top: 114px;
 	left: 38px;
+	width: 1px;
+	
+}
+
+.equipLineSPEED {
+	position: absolute;
+	bottom: 302px;
+	left: 38px;
+	width: 1px;
+	
+}
+
+.equipLineTopSPEED {
+	position: absolute;
+	top: 304px;
+	left: 38px;
+	width: 1px;
 	
 }
 

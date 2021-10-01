@@ -68,6 +68,7 @@ const init = () => {
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
+		DirectionEquip();
 		
 		if(window.initPMV)
 		  initPMV();
@@ -1116,14 +1117,23 @@ function cftvBottom(){
 	alert("v")
 }
 
+function DirectionEquip(){
 /* top and bottom line */
 
-if ('[direction$="#{item.direction}"] == "N"') {
-	$('.equipLine').show();
-	$('.equipLineTop').hidden();
-} else {
-	$('.equipLineTop').show();
-	$('.equipLine').hidden();
-}
+$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item){
+	item = $(item)
+	if(item.attr('direction') == 'N') { 
+	item.find('.equipLine').show();
+	item.find('.equipLineSPEED').show();
+	item.find('.equipLineTop').hide();
+	item.find('.equipLineTopSPEED').hide();
+	} else {
+		item.find('.equipLineTop').show();
+		item.find('.equipLineTopSPEED').show();
+		item.find('.equipLine').hide();
+		item.find('.equipLineSPEED').hide();
+	}
+	 })
 
 /* top and bottom line [end] */
+}
