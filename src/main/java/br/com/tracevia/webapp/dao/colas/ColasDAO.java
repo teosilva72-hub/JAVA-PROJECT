@@ -50,7 +50,7 @@ public class ColasDAO {
 		
 	}
 
-	public List<ColasQueue> history_queue(String date, int device, int laneS) throws Exception {
+	public List<ColasQueue> history_queue(String date, int deviceS, int laneS) throws Exception {
 
 		List<ColasQueue> list = new ArrayList<>();
 		String query = "SELECT device, update_date, lane, local FROM colas_history "
@@ -63,8 +63,8 @@ public class ColasDAO {
 
 		if (laneS > 0)
 			query += " AND lane = " + laneS;
-		if (device > 0)
-			query += " AND device = " + device;
+		if (deviceS > 0)
+			query += " AND device = " + deviceS;
 
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);

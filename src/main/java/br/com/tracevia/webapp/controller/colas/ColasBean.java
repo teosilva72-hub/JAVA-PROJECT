@@ -144,7 +144,7 @@ public class ColasBean {
 		ColasDAO dao = new ColasDAO();
 		
 		try {
-			queues = dao.history_queue(date, 0);
+			queues = dao.history_queue(date, 0, 0);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
