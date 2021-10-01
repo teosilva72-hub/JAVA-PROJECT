@@ -158,13 +158,14 @@ public class ColasBean {
 		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 		String date = params.get("dateSearch");
-		String lane = params.get("laneSearch");
+		String device = params.get("deviceSearch");
+		// String lane = params.get("laneSearch");
 		// String channel = params.get("channelSearch");
 
 		ColasDAO dao = new ColasDAO();
 
 		try {
-			queues = dao.history_queue(date.isEmpty() ? date_formatter.format(new Date()) : date, Integer.parseInt(lane));
+			queues = dao.history_queue(date.isEmpty() ? date_formatter.format(new Date()) : date, Integer.parseInt(device), 0);
 		} catch (IOException e) {
 			queues = new ArrayList<>();
 			

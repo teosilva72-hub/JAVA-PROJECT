@@ -104,6 +104,17 @@
 									</select>
 								</div> -->
 								<div class="col-md-4">
+									<span>#{colasLabels.toll}</span> <select
+										class="form-control inputDesign" id="deviceSearch"
+										name="deviceSearch">
+										<option value="0">#{colasLabels.select}</option>
+										<c:forEach items="#{colasBean.colas}" var="item">
+											<option value="#{item.table_id}">CDF-#{item.table_id}</option>
+										</c:forEach>
+			
+									</select>
+								</div>
+								<!-- <div class="col-md-4">
 									<span>#{colasLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
@@ -114,7 +125,7 @@
 										<option value="4">#{colasLabels.track} 04</option>
 			
 									</select>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="modal-footer">

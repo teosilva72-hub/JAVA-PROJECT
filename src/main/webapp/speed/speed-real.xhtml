@@ -41,8 +41,8 @@
 	
 							<!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="card speed-card border border-dark">
-								<div class="card-header py-0 text-center text-white">
-									<p class="speed-title">#{item.nome}</p>
+								<div class="card-header py-0 text-center text-white" data-bs-toggle="tooltip" data-bs-placement="bottom" title="#{speedLabels.speed_name_equip} #{item.equip_id}">
+									<p class="speed-title">#{speedLabels.speed_name_equip_simplify}#{item.equip_id}</p>
 								</div>
 								<div class="card-body p-1 speed-limit equip-status-indicator">
 									<div class="speed-border rounded bg-light">
