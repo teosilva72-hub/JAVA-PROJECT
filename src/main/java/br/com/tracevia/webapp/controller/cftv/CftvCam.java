@@ -1,6 +1,4 @@
 package br.com.tracevia.webapp.controller.cftv;
-
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -39,12 +37,18 @@ public class CftvCam {
 	private String cftv15 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2015&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
 	private String cftv16 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2016&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km,
+	private String cam, MoveUp, MoveDown, MoveLeft, km, preset,
 	MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
 	//getters and setters
 	
 	public String getCam() {
 		return cam;
+	}
+	public String getPreset() {
+		return preset;
+	}
+	public void setPreset(String preset) {
+		this.preset = preset;
 	}
 	public String getKm() {
 		return km;
@@ -121,8 +125,14 @@ public class CftvCam {
 		//return equip;
 	}
 	public void getCam(int id) {
+		String zero ="";
 		if(id > 0 && id != 0) {
-			if(id == 1)camCftv = cftv01;
+			if(id == 1) {
+				camCftv = cftv01;
+				if(id < 10) zero = "0";
+				preset = "http://10.14.110.83:8601/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%2006&Value=20"+zero+id+"&ResponseFormat=XML&AuthUser=admin";
+				System.out.println(preset);
+			}
 			else if(id == 2)camCftv = cftv02;
 			else if(id == 3)camCftv = cftv03;
 			else if(id == 4)camCftv = cftv04;
@@ -139,7 +149,6 @@ public class CftvCam {
 			else if(id == 15)camCftv = cftv15;
 			else if(id == 16)camCftv = cftv16;
 		}
-		System.out.println(camCftv+ "testando aqui");
 	}
 	public void UpMove() {
 		try {
@@ -254,8 +263,5 @@ public class CftvCam {
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
-	}
-	public void xxx() {
-		//H264Decoder decoder = new H264Decoder();
 	}
 }
