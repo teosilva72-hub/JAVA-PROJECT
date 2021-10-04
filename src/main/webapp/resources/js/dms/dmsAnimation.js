@@ -42,7 +42,7 @@ const consumeDMS = async ({ callback = callback_dms, debug } = {}) => {
 
 	var on_error = async function() {
 	    console.log('error');
-		await sleep(1000);
+		await sleep(5000);
 
 		consumeDMS({callback, debug})
 	};
