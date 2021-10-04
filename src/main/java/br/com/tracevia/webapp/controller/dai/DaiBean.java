@@ -92,7 +92,7 @@ public class DaiBean {
 		String lane;
 		String direction;
 		String hour;
-		String plate;
+		String name;
 		Path file;
 
 		Traffic(Path path, int idx) throws IOException, ParseException {
@@ -112,7 +112,7 @@ public class DaiBean {
 			direction = info[3];
 			date = date_formatter.format(date_new);
 			hour = hour_formatter.format(hour_new);
-			plate = info[6];
+			name = info[6];
 		}
 		
 		Traffic() {
@@ -122,7 +122,7 @@ public class DaiBean {
 			lane = "";
 			direction = "";
 			hour = "";
-			plate = "";
+			name = "";
 		}
 		
 		public int getId() {
@@ -155,8 +155,8 @@ public class DaiBean {
 			return hour;
 		}
 
-		public String getPlate() {
-			return plate;
+		public String getName() {
+			return name;
 		}
 
 		public String getPath() {
@@ -355,7 +355,7 @@ public class DaiBean {
 				document.add(tuxpanL);
 			}
 			document.add(new Paragraph("\n\n"));
-			document.add(new Paragraph(localeDai.getStringKey("camera")+": "+traffic.plate));
+			document.add(new Paragraph(localeDai.getStringKey("camera")+": "+traffic.name));
 			document.add(new Paragraph(localeDai.getStringKey("way")+": "+trad.daiLabels(traffic.direction)));
 			document.add(new Paragraph(localeDai.getStringKey("track")+": "+traffic.lane));
 			document.add(new Paragraph(localeDai.getStringKey("channel")+": "+traffic.channel));

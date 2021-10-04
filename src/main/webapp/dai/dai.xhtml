@@ -41,7 +41,7 @@
 							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 							<h:column>
 								<f:facet name="header">#{daiLabels.camera}</f:facet>
-								<h:outputText value="#{data.plate}" pt:idx="#{data.id}"
+								<h:outputText value="#{data.name}" pt:idx="#{data.id}"
 									style="font-size: 12px; " />
 								<h:commandButton style="display: none" pt:setParameter="setParameter">
 									<f:ajax execute="@this" render=":modalPopUp" listener="#{daiBean.getTrafficById(data.id)}" />
