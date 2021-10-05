@@ -35,8 +35,6 @@ const init = () => {
 			})
 		})
 
-		borderEquip(updated);
-
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();

@@ -50,6 +50,11 @@
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
+								<f:facet name="header">#{mapLabels.map_creation_input_km}</f:facet>
+								<h:outputText value="#{data.km}"
+									style="font-size: 12px; " />
+							</h:column>
+							<h:column>
 								<f:facet name="header">#{colasLabels.date}</f:facet>
 								<h:outputText value="#{data.date}" style="font-size: 12px; " />
 							</h:column>
@@ -104,12 +109,12 @@
 									</select>
 								</div> -->
 								<div class="col-md-4">
-									<span>#{colasLabels.toll}</span> <select
+									<span style="white-space: nowrap;">#{colasLabels.toll}</span> <select
 										class="form-control inputDesign" id="deviceSearch"
 										name="deviceSearch">
 										<option value="0">#{colasLabels.select}</option>
 										<c:forEach items="#{colasBean.colas}" var="item">
-											<option value="#{item.table_id}">CDF-#{item.table_id}</option>
+											<option value="#{item.equip_id}">CDF-#{item.equip_id}</option>
 										</c:forEach>
 			
 									</select>

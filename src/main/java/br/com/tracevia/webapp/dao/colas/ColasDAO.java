@@ -53,7 +53,7 @@ public class ColasDAO {
 	public List<ColasQueue> history_queue(String date, int deviceS, int laneS) throws Exception {
 
 		List<ColasQueue> list = new ArrayList<>();
-		String query = "SELECT device, update_date, lane, local FROM colas_history "
+		String query = "SELECT device, update_date, lane, local, km FROM colas_history h INNER JOIN colas_equipment "
 				+ "WHERE update_date >= '"
 				+ date
 				+ " 00:00:00' "
@@ -79,8 +79,9 @@ public class ColasDAO {
 					int device = rs.getInt("device");
 					int lane = rs.getInt("lane");
 					int local = rs.getInt("local");
+					String km = rs.getString("km");
 
-					ColasQueue colas = new ColasQueue(device, lane, local);
+					ColasQueue colas = new ColasQueue(device, lane, local, km);
 
 					colas.setDate(rs.getTimestamp("update_date"));
 

@@ -18,9 +18,10 @@
 
 		<h:outputStylesheet name="bootstrap.css" library="bootstrap/css" />
 
+		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
-		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
+		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 
 		<!-- Script -->
@@ -58,15 +59,18 @@
 						</div> <!--  -->
 
 						<!-- Plaque -->
-
 						<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
 							<div>
-								<c:forEach begin="1" end="20" var="item">
-									<div class="plaque km#{item * 5}">
-										<img width="75" src="/resources/images/plaques/#{loginAccount.plaque}/#{item * 5}km.webp" />
+								<c:forEach items="#{roadView.plaque}" var="plaque">
+									<div class="plaque" posX="#{plaque.map_posX}"
+										posY="#{plaque.map_posY}">
+										<img width="75"
+											src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 									</div>
 								</c:forEach>
 							</div>
+
 						</ui:fragment>
 
 					</section>
@@ -92,6 +96,10 @@
  
 			<h:outputScript name="dmsAnimation.js" p:type="module" library="js/dms" />
 
+		</ui:fragment>
+
+		<ui:fragment rendered="#{loginAccount.load.en_speed}">
+			<h:outputScript name="speed_event.js" library="js/speed" />
 		</ui:fragment>
 
 		<h:outputScript name="mapView.js" library="js/map" />

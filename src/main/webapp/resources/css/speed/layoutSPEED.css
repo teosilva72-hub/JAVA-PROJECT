@@ -37,7 +37,8 @@ body {
 .speed-card {
   max-width: min-content;
   min-width: auto;
-  width: revert !important;
+  width: 9.663em !important;
+  height: 21.89em;
   background-color: #fff !important;
   background-clip: border-box !important;
   font-size: 14px;
