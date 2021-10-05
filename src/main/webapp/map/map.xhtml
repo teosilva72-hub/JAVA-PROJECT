@@ -382,11 +382,13 @@
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="2.5" max-scale="12"
 			id="content"> <!-- START SECTION -->
-			<div id="zoomtext" scale="1" class="section">
-				<!-- MAP FRONT IMAGE -->
-				<h:graphicImage class="grab-map" width="100%"
-					value="#{loginAccount.mapUI}" />
-			</div>
+		<div id="zoomtext" scale="1" class="section">
+			<!-- MAP FRONT IMAGE -->
+			
+		<canvas	id="mapDraw"></canvas>
+		<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+				value="#{loginAccount.mapUI}" />
+		</div>
 
 
 
