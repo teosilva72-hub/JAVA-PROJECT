@@ -1,14 +1,18 @@
 package br.com.tracevia.webapp.controller.cftv;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.model.SelectItem;
 
 import org.primefaces.context.RequestContext;
 
@@ -19,36 +23,38 @@ import br.com.tracevia.webapp.model.global.Equipments;
 public class CftvCam {
 	Equipments equip;
 	private int id;
-	//VARIABLES LINK´S IMAGE CAM
-	private String cftv01 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2001&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv02 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2002&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin"; 
-	private String cftv03 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2003&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv04 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2004&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv05 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2005&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv06 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2006&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv07 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2007&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv08 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2008&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv09 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2009&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv10 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2010&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv11 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2011&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv12 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2012&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv13 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2013&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv14 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2014&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv15 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2015&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
-	private String cftv16 = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%2016&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km, preset,
-	MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
+	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall, presetSet,
+	presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
+	private List<SelectItem> presetList;
 	//getters and setters
-	
+
 	public String getCam() {
 		return cam;
 	}
-	public String getPreset() {
-		return preset;
+	public String getPresetDetails() {
+		return presetDetails;
 	}
-	public void setPreset(String preset) {
-		this.preset = preset;
+	public void setPresetDetails(String presetDetails) {
+		this.presetDetails = presetDetails;
+	}
+	public String getPresetSet() {
+		return presetSet;
+	}
+	public void setPresetSet(String presetSet) {
+		this.presetSet = presetSet;
+	}
+	public List<SelectItem> getPresetList() {
+		return presetList;
+	}
+	public void setPresetList(List<SelectItem> presetList) {
+		this.presetList = presetList;
+	}
+	public String getPresetCall() {
+		return presetCall;
+	}
+	public void setPresetCall(String presetCall) {
+		this.presetCall = presetCall;
 	}
 	public String getKm() {
 		return km;
@@ -108,46 +114,93 @@ public class CftvCam {
 		MoveRight = moveRight;
 	}
 	//Methods
-	public void searchCftv() {
-
+	public int searchCftv() {
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();
-		getCam(id);
+		try {
+			getCam(Integer.toString(id));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		presetList();
 		try {
 			equip = search.cftvCam(id);
 			setKm(equip.getKm());
-			RequestContext.getCurrentInstance().execute("dblModalHidden()");
 			imgControle = "C:\\Tracevia\\Software\\External\\Cftv\\controller\\controller.png";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//return equip;
+		return id;
 	}
-	public void getCam(int id) {
-		String zero ="";
+	public void getCam(String ptz) throws IOException {
+		String ext ="";
 		if(id > 0 && id != 0) {
-			if(id == 1) {
-				camCftv = cftv01;
-				if(id < 10) zero = "0";
-				preset = "http://10.14.110.83:8601/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%2006&Value=20"+zero+id+"&ResponseFormat=XML&AuthUser=admin";
-				System.out.println(preset);
+			if(id < 10)ext="0";
+			camCftv = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%20"+ext+ptz+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
+			URL url = new URL(camCftv);
+			HttpURLConnection http = (HttpURLConnection)url.openConnection();
+			http.disconnect();
+		}
+	}
+	public void presetList() {
+		presetList = new  ArrayList<SelectItem>();
+		for(int m = 0; m <= 300; m++){				 
+			presetList.add(new SelectItem(String.valueOf(m), String.valueOf(m)));
+		}
+	}
+	public int callPreset() {
+		try {
+			presetCall(Integer.toString(id));
+			//System.out.println("callPreset");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+	public void presetCall(String id) throws IOException {
+		if(presetCall == "")RequestContext.getCurrentInstance().execute("validatePresetCall()");
+		else {
+			RequestContext.getCurrentInstance().execute("validatePresetCall()");
+			String ext ="";
+			if(Integer.parseInt(id) >= 0) {
+				if(Integer.parseInt(id) < 10)ext="0";
+				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%20"+ext+id+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
+				System.out.println(call);
+				URL url = new URL(call);
+				HttpURLConnection http = (HttpURLConnection)url.openConnection();
+				http.disconnect();
+				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+				setPresetCall("");
 			}
-			else if(id == 2)camCftv = cftv02;
-			else if(id == 3)camCftv = cftv03;
-			else if(id == 4)camCftv = cftv04;
-			else if(id == 5)camCftv = cftv05;
-			else if(id == 6)camCftv = cftv06;
-			else if(id == 7)camCftv = cftv07;
-			else if(id == 8)camCftv = cftv08;
-			else if(id == 9)camCftv = cftv09;
-			else if(id == 10)camCftv = cftv10;
-			else if(id == 11)camCftv = cftv11;
-			else if(id == 12)camCftv = cftv12;
-			else if(id == 13)camCftv = cftv13;
-			else if(id == 14)camCftv = cftv14;
-			else if(id == 15)camCftv = cftv15;
-			else if(id == 16)camCftv = cftv16;
+		}
+	}
+	public int setPreset() {
+		try {
+			//System.out.println("set preset");
+			presetSet(Integer.toString(id));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+	public void presetSet(String id) throws IOException {
+		if(presetSet == "" || presetDetails == "")RequestContext.getCurrentInstance().execute("validatePresetSet()");
+		else{
+			RequestContext.getCurrentInstance().execute("validatePresetSet()");
+			String ext ="";
+			if(Integer.parseInt(id) > 0) {
+				if(Integer.parseInt(id) < 10)ext="0";
+				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/SetPreset?Camera=PTZ%20"+ext+id+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
+				System.out.println(call);
+				URL url = new URL(call);
+				HttpURLConnection http = (HttpURLConnection)url.openConnection();
+				http.disconnect();
+				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
+			}
 		}
 	}
 	public void UpMove() {

@@ -12,6 +12,7 @@ const cftvEvent = data => {
 }
 function getInfo(){
 	$("#send-cftv-id").click();
+	comeBack()
 }
 function cftvVideo(){
 	var id = document.getElementById("cftvId").value
@@ -54,4 +55,31 @@ function cftvZoomIn(){
 }
 function cftvZoomOut(){
 	$("#cftvMoveOut" ).click();
+}
+function validatePresetCall(){
+	let call = document.getElementById("presetCall")
+	if(call.value == "") call.style.border = "solid 2px red"
+	else{
+		call.style.border = "solid 2px green"
+		comeBack()
+	}	
+}
+function validatePresetSet(){
+	let set = document.getElementById("presetSet")
+	let detail = document.getElementById("preset-set-details")
+	if(set.value == "") set.style.border ="Solid red 2px"
+	else{
+		set.style.border ="Solid green 2px"
+		comeBack()
+	}
+	if(detail.value == "") detail.style.border = "Solid red 2px"
+	else{
+		detail.style.border = "Solid green 2px"
+		comeBack()
+	}
+}
+function comeBack(){
+	$('#presetCall').val('')
+	$('#presetSet').val('')
+	$('#preset-set-details').val('')
 }

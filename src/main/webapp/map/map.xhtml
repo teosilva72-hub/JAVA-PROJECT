@@ -394,7 +394,7 @@
 		<div id="labelPos">
 			<label id="posX"></label> <label id="posY"></label>
 		</div>
-		
+
 		<!-- Drag Items --> <!-- CAUSE -->
 
 		<div class="draggable" id="equipAll"></div>
@@ -1191,7 +1191,7 @@
 									<!---->
 									<!-- INICIO BOTAO CFTV MODAL-->
 									<div class="col-md-4 cftv-modal-btn none">
-										<h:commandButton id="setting-cftv-one"
+										<h:commandButton id="setting-cftv-one" onclick="comeBack()"
 											class="btn btn-dark form-modal-draw-button">
 											<i class="fas fa-sliders-h setting-cftv"></i>
 											<f:passThroughAttribute name="data-toggle" value="modal" />
@@ -1202,9 +1202,10 @@
 									</div>
 									<div class="col-md-4 cftv-modal-btn none">
 										<h:commandLink id="setting-cftv-two"
-											class="btn btn-dark form-modal-draw-button" >
+											class="btn btn-dark form-modal-draw-button">
 											<i class="far fa-window-restore"></i>
-											<f:ajax execute="@this" onevent="cftvEvent" render=":id-cftv :img-cftv-cam :cftv-modal-setting" />
+											<f:ajax execute="@this" onevent="cftvEvent"
+												render=":id-cftv :img-cftv-cam :cftv-modal-setting" />
 										</h:commandLink>
 									</div>
 									<!-- FINAL BOTÃO CFTV MODAL -->
@@ -1230,57 +1231,101 @@
 						<h:form prependId="false" id="img-cftv-cam">
 							<div class="modal-header">
 								<h5 class="modal-title" id="staticBackdropLabel">
-									<b>PTZ: #{CftvCam.id}</b> - <b>Km: #{CftvCam.km}</b></h5>
+									<b>PTZ: #{CftvCam.id}</b> - <b>Km: #{CftvCam.km}</b>
+								</h5>
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
-							<div class="modal-body">
-							<h:inputHidden id="url-img" value="#{CftvCam.camCftv}"/>
+							<div class="modal-body height-cftv-modal">
+								<h:inputHidden id="url-img" value="#{CftvCam.camCftv}" />
 								<img src="#{CftvCam.camCftv}" class="img-cftv-setting" /> <img
 									src="data:image/png;base64, #{CftvCam.imgControle}"
-									class="img-cftv-controller" />
-									<i class="fas fa-search-plus zoom-in-cftv"></i>
-									<i class="fas fa-search-minus zoom-out-cftv"></i>
-									<div id="cftv-top" onclick="cftvTop()"></div>
-									<div id="cftv-bottom" onclick="cftvBottom()"></div>
-									<div id="cftv-left" onclick="cftvLeft()"></div>
-									<div id="cftv-right" onclick="cftvRight()"></div>
-									<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
-									<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
-									<h:commandButton style="display:none" id="cftvMoveUp">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.UpMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveDown">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.downMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveLeft">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.leftMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveRight">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.rightMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveIn">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.zoomInMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveOut">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.zoomOutMove}"/>
-									</h:commandButton>
-									
+									class="img-cftv-controller" /> <i
+									class="fas fa-search-plus zoom-in-cftv"></i> <i
+									class="fas fa-search-minus zoom-out-cftv"></i>
+								<div id="cftv-top" onclick="cftvTop()"></div>
+								<div id="cftv-bottom" onclick="cftvBottom()"></div>
+								<div id="cftv-left" onclick="cftvLeft()"></div>
+								<div id="cftv-right" onclick="cftvRight()"></div>
+								<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
+								<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
+								<div class="row preset-call-row">
+									<div class="col-md-9">
+										<span class="text-center">#{mapLabels.preset_call}</span>
+										<h:selectOneMenu value="#{CftvCam.presetCall}"
+											name="presetCall" id="presetCall"
+											class="form-control inputDesign">
+											<f:selectItem itemLabel="#{mapLabels.placeholder_select_call}" itemValue="" />
+											<!-- falta alterar parametro -->
+											<f:selectItems value="#{CftvCam.presetList}" />
+										</h:selectOneMenu>
+									</div>
+									<div class="col-md-3">
+										<h:commandLink class="btn btn-warning call-preset" value="">
+											<i class="fas fa-share"></i>
+											<f:ajax execute="@form" render=":img-cftv-cam :id-cftv"
+												listener="#{CftvCam.callPreset}" />
+										</h:commandLink>
+									</div>
+								</div>
+								<div class="row preset-set-row">
+									<div class="col-md-4">
+										<span class="text-center">#{mapLabels.preset_set}</span>
+										<h:selectOneMenu value="#{CftvCam.presetSet}" name="presetSet"
+											id="presetSet" class="form-control inputDesign">
+											<f:selectItem itemLabel="#{mapLabels.placeholder_select_set}" itemValue="" />
+											<!-- falta alterar parametro -->
+											<f:selectItems value="#{CftvCam.presetList}" />
+										</h:selectOneMenu>
+									</div>
+
+									<div class="col-md-5">
+										<span>#{mapLabels.preset_description}</span>
+										<h:inputText value="#{CftvCam.presetDetails}"
+											class="form-control inputDesign" id="preset-set-details"></h:inputText>
+									</div>
+									<div class="col-md-3">
+										<h:commandLink class="btn btn-danger call-preset" value="">
+											<i class="fas fa-paper-plane"></i>
+											<f:ajax execute="@form" render=":img-cftv-cam :id-cftv"
+												listener="#{CftvCam.setPreset}" />
+										</h:commandLink>
+									</div>
+								</div>
+								<h:commandButton style="display:none" id="cftvMoveUp">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.UpMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveDown">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.downMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveLeft">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.leftMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveRight">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.rightMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveIn">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.zoomInMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveOut">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.zoomOutMove}" />
+								</h:commandButton>
+
 							</div>
 
 						</h:form>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Understood</button>
+							<button type="button" class="btn btn-dark" data-dismiss="modal">
+								<i class="fas fa-undo-alt"></i>
+							</button>
 						</div>
 					</div>
 				</div>
@@ -1293,7 +1338,7 @@
 			<h:form prependId="false" id="id-cftv">
 				<h:commandButton id="send-cftv-id" style="display:none">
 					<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-						listener="#{CftvCam.searchCftv}"/>
+						listener="#{CftvCam.searchCftv}" />
 				</h:commandButton>
 				<h:inputHidden value="#{CftvCam.id}" id="cftvId"></h:inputHidden>
 			</h:form>
