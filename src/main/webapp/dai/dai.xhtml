@@ -53,6 +53,11 @@
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
+								<f:facet name="header">#{mapLabels.map_creation_input_km}</f:facet>
+								<h:outputText value="#{data.km}"
+									style="font-size: 12px; " />
+							</h:column>
+							<h:column>
 								<f:facet name="header">#{daiLabels.track}</f:facet>
 								<h:outputText value="#{data.lane}" style="font-size: 12px; " />
 							</h:column>
@@ -109,6 +114,16 @@
 								</div>
 								<div class="col-md-4">
 									<span>#{daiLabels.camera}</span> <select
+										class="form-control inputDesign" id="nameSearch"
+										name="nameSearch">
+										<option value="">#{daiLabels.select}</option>
+										<c:forEach items="#{daiBean.listDai}" var="item">
+											<option value="#{item.nome}">#{item.nome}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<!-- <div class="col-md-4">
+									<span>#{daiLabels.camera}</span> <select
 										class="form-control inputDesign" id="channelSearch"
 										name="channelSearch">
 										<option value="">#{daiLabels.select}</option>
@@ -117,8 +132,8 @@
 										<option value="3">#{daiLabels.channel} 3</option>
 										<option value="4">#{daiLabels.channel} 4</option>
 									</select>
-								</div>
-								<div class="col-md-4">
+								</div> -->
+								<!-- <div class="col-md-4">
 									<span>#{daiLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
@@ -132,7 +147,7 @@
 										<option value="07">#{daiLabels.track} 07</option>
 										<option value="08">#{daiLabels.track} 08</option>
 									</select>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="modal-footer">

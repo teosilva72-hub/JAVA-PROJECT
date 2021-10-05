@@ -21,6 +21,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,12 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.dai.DAI;
+import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.global.LoadStartupModules;
+import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 
 @ManagedBean(name="daiBean")
 @ViewScoped
@@ -46,6 +52,7 @@ public class DaiBean {
 	LocaleUtil localeDai;
 	public List<Traffic> traffics;
 	public Traffic traffic;
+	public static List<Equipments> listDai;
 	private String logo;
 
 	public String getLogo() {
@@ -76,23 +83,32 @@ public class DaiBean {
 		Date date = new Date();
 
 		try {
-			getAllFile(formattter.format(date));
+			DAI dai = new DAI();
+			listDai = dai.listEquipments("dai", 0);
 			traffic = new Traffic();
+			
+			getAllFile(formattter.format(date));
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 	}
 	
+	public List<Equipments> getListDai() {
+		return listDai;
+	}
+
 	public static class Traffic {
 		int id;
-		String incident;
-		String date;
-		String channel;
-		String lane;
-		String direction;
-		String hour;
-		String name;
+		String 	incident,
+				date,
+				channel,
+				lane,
+				direction,
+				hour,
+				name,
+				km = "unknown";
+
 		Path file;
 
 		Traffic(Path path, int idx) throws IOException, ParseException {
@@ -113,6 +129,14 @@ public class DaiBean {
 			date = date_formatter.format(date_new);
 			hour = hour_formatter.format(hour_new);
 			name = info[6];
+			
+			for (Equipments dai : listDai)
+				if (dai.getNome().equals(name)) {
+					km = dai.getKm();
+					
+					break;
+				}
+					
 		}
 		
 		Traffic() {
@@ -127,6 +151,10 @@ public class DaiBean {
 		
 		public int getId() {
 			return id;
+		}
+		
+		public String getKm() {
+			return km;
 		}
 		
 		public String getLane() {
@@ -180,16 +208,18 @@ public class DaiBean {
 			return new_list;
 		}
 
-		static List<Traffic> all_traffic(List<Path> list, int idx, String filter_channel, String filter_lane) throws IOException, ParseException {
+		static List<Traffic> all_traffic(List<Path> list, int idx, String filter_name, String filter_channel, String filter_lane) throws IOException, ParseException {
 			List<Traffic> new_list = new ArrayList<>();
 			for (final Path path : list) {
 				Traffic traffic = new Traffic(path, idx);
 				if (
+					(traffic.name.contains(filter_name) ||
+							filter_name.isEmpty()) && 
 					(traffic.channel.contains(filter_channel) ||
-					traffic.channel.isEmpty()) && 
+							filter_channel.isEmpty()) && 
 					(traffic.lane.contains(filter_lane) ||
-					traffic.lane.isEmpty()))
-					new_list.add(traffic);
+							filter_lane.isEmpty()))
+						new_list.add(traffic);
 				else
 					continue;
 				idx++;
@@ -247,15 +277,16 @@ public class DaiBean {
 		SimpleDateFormat date_formatter = new SimpleDateFormat("yyyyMMdd");
 
 		String date = params.get("dateSearch");
-		String lane = params.get("laneSearch");
-		String channel = params.get("channelSearch");
+		String name = params.get("nameSearch");
+		// String lane = params.get("laneSearch");
+		// String channel = params.get("channelSearch");
 
 		try {
 			List<Path> list = getAllFolders((date.isEmpty() ? date_formatter.format(new Date()) : date.replaceAll("-", "")));
 			List<Traffic> new_list = new ArrayList<>();
 			for (final Path path : list) {
 				List<Path> files = listAllFiles(path.toString());
-				new_list.addAll(Traffic.all_traffic(files, new_list.size(), channel, lane));
+				new_list.addAll(Traffic.all_traffic(files, new_list.size(), name, "", ""));
 			}
 			
 			traffics = new_list;

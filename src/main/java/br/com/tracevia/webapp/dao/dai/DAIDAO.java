@@ -53,8 +53,9 @@ public class DAIDAO {
 		
 	}
 
-	public DAI getEquipment(String name) {
-		String select = "SELECT equip_id, name, km FROM connection_monitor WHERE name = ? ";
+	public DAI getEquipment(String name) throws Exception {
+		DAI dai = new DAI();
+		String select = "SELECT equip_id, name, km FROM dai_equipment WHERE name = ? ";
 
 		try {
 			
@@ -66,9 +67,8 @@ public class DAIDAO {
 			rs = ps.executeQuery();
 			
 			if (rs.isBeforeFirst()) {
-				rs.next()
+				rs.next();
 					
-				DAI dai = new DAI();
 
 				dai.setEquip_id(rs.getInt("equip_id"));
 				dai.setNome(rs.getString("name"));
