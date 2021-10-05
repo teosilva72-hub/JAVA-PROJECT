@@ -17,40 +17,70 @@ public class DAIDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
-	   public List<DAI> Status() throws Exception {
-			
-			
-			List<DAI> list = new ArrayList<DAI>();		
-							
-			String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'DAI' ";
-										
-		  try {
-				
-			   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-				
-				ps = conn.prepareStatement(select);			
-										
-				rs = ps.executeQuery();
-				
-				if (rs != null) {
-					while (rs.next()) {
+	public List<DAI> Status() throws Exception {
+		
+		
+		List<DAI> list = new ArrayList<DAI>();		
 						
-						DAI dai = new DAI();
-
-				         dai.setEquip_id(rs.getInt("equip_id"));
-				         dai.setNome(rs.getString("equip_name"));
-				         dai.setStatus(rs.getInt("equip_status"));
-				        															
-						list.add(dai);
-					}				
-				 }			
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
-	 				
-			return list;
+		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'DAI' ";
+									
+		try {
 			
-		}
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);			
+									
+			rs = ps.executeQuery();
+			
+			if (rs != null) {
+				while (rs.next()) {
+					
+					DAI dai = new DAI();
+
+						dai.setEquip_id(rs.getInt("equip_id"));
+						dai.setNome(rs.getString("equip_name"));
+						dai.setStatus(rs.getInt("equip_status"));
+																				
+					list.add(dai);
+				}				
+				}			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+				
+		return list;
+		
+	}
+
+	public DAI getEquipment(String name) throws Exception {
+		DAI dai = new DAI();
+		String select = "SELECT equip_id, name, km FROM dai_equipment WHERE name = ? ";
+
+		try {
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
+			ps = conn.prepareStatement(select);
+			ps.setString(0, name);
+									
+			rs = ps.executeQuery();
+			
+			if (rs.isBeforeFirst()) {
+				rs.next();
+					
+
+				dai.setEquip_id(rs.getInt("equip_id"));
+				dai.setNome(rs.getString("name"));
+				dai.setKm(rs.getString("km"));
+			}			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+				
+		return dai;
+		
+	}
 
 }

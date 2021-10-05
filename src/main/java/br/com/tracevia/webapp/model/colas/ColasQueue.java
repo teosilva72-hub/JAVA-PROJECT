@@ -6,14 +6,16 @@ public class ColasQueue {
 	public int device;
     public int lane;
     public int local;
+    public String km;
     public Date date;
 
 	public ColasQueue() {}
 
-	public ColasQueue(int device, int lane, int local) {
+	public ColasQueue(int device, int lane, int local, String km) {
         this.device = device;
         this.lane = lane;
         this.local = local;
+        this.km = km;
     }
 
 	public int getDevice() {
@@ -38,6 +40,14 @@ public class ColasQueue {
 
 	public void setLocal(int local) {
 		this.local = local;
+	}
+
+	public String getKm() {
+		return km;
+	}
+
+	public void setKm(String km) {
+		this.km = km;
 	}
 
 	public Date getDate() {

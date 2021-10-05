@@ -54,6 +54,7 @@ const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = f
 
 const initSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
     $(async function () {
+		let tooltip = $('.speed-card [data-bs-toggle=tooltip]').tooltip()
         let last_status = await connectSPEED("LastStatus");
 
         for (let status of last_status)

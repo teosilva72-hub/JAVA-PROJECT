@@ -1137,3 +1137,15 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 
 /* top and bottom line [end] */
 }
+
+/* Draw Map */
+
+//const canvas = document.getElementById('mapDraw');
+//const ctx = canvas.getContext('2d');
+//const image = document.getElementById('mapTuxpan');
+
+//image.addEventListener('load', e => {
+//	ctx.drawImage(image, )
+//})
+
+/* Draw Map [end] */

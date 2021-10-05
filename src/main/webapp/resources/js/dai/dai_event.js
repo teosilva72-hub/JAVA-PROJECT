@@ -97,7 +97,7 @@ const consumeDAI = async debug => {
 
 	var on_error = async function() {
 	    console.log('error');
-		await sleep(1000);
+		await sleep(5000);
 
 		consumeDAI(debug)
 	};

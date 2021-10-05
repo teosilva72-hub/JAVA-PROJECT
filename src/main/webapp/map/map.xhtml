@@ -17,10 +17,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>#{mapLabels.home_map}</title>
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
+		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
-		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="speed-real.css" library="css/speed" />
+		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="cftv.css" library="css/map" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 		<h:outputStylesheet library="css/validation"
@@ -384,35 +384,38 @@
 			id="content"> <!-- START SECTION -->
 		<div id="zoomtext" scale="1" class="section">
 			<!-- MAP FRONT IMAGE -->
-			<h:graphicImage class="grab-map" width="100%"
+			
+		<canvas	id="mapDraw"></canvas>
+		<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
 				value="#{loginAccount.mapUI}" />
 		</div>
 
 
 
-		<!-- Label -->
-		<div id="labelPos">
-			<label id="posX"></label> <label id="posY"></label>
-		</div>
-
-		<!-- Drag Items --> <!-- CAUSE -->
-
-		<div class="draggable" id="equipAll"></div>
-
-		<!-- <div class="square_tool" id="toolOne"></div> --> <!--  --> <!-- Plaque -->
-		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
-			<div>
-				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
-						<img width="75"
-							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
-					</div>
-				</c:forEach>
+			<!-- Label -->
+			<div id="labelPos">
+				<label id="posX"></label> <label id="posY"></label>
 			</div>
+			
+			<!-- Drag Items --> <!-- CAUSE -->
 
+			<div class="draggable" id="equipAll"></div>
 
-		</ui:fragment> </section>
+			<!-- Plaque -->
+			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+				<div>
+					<c:forEach items="#{roadView.plaque}" var="plaque">
+						<div class="plaque" posX="#{plaque.map_posX}"
+							posY="#{plaque.map_posY}">
+							<img width="75"
+								src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+						</div>
+					</c:forEach>
+				</div>
+
+			</ui:fragment>
+		</section>
 
 	</ui:define>
 
