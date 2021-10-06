@@ -30,10 +30,10 @@
 
 .text-cftv-barra {
 	position: relative;
-    left: 3%;
-    bottom: 150px;
-    color: blue;
-    font-weight: 900;
+	left: 3%;
+	bottom: 150px;
+	color: blue;
+	font-weight: 900;
 }
 
 #cftv-modal-setting {
@@ -59,55 +59,85 @@
 	color: black;
 	right: 10px;
 }
+
 .zoom-out-cftv {
 	position: relative;
 	top: 30px;
 	color: black;
 	right: 10px;
 }
-#cftv-top, #cftv-bottom, #cftv-left,
-#cftv-right, #cftv-zoom-in, #cftv-zoom-out{
+
+#cftv-top, #cftv-bottom, #cftv-left, #cftv-right, #cftv-zoom-in,
+	#cftv-zoom-out {
 	position: relative;
 	width: 25px;
 	height: 25px;
 	transition: 1s;
 }
-#cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover,
-#cftv-right:hover, #cftv-zoom-in:hover, #cftv-zoom-out:hover{
+
+#cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover, #cftv-right:hover,
+	#cftv-zoom-in:hover, #cftv-zoom-out:hover {
 	position: relative;
 	width: 25px;
 	height: 25px;
 	border: solid black 2px;
 }
-#cftv-top{
-    left: 371px;
-    bottom: 145px;	
+
+#cftv-top {
+	left: 371px;
+	bottom: 145px;
 }
-#cftv-bottom{
-    left: 371px;
-    bottom: 115px;
+
+#cftv-bottom {
+	left: 371px;
+	bottom: 115px;
 }
-#cftv-left{
-    left: 344px;
-    bottom: 168px;
+
+#cftv-left {
+	left: 344px;
+	bottom: 168px;
 }
-#cftv-right{
-    left: 399px;
-    bottom: 192px;
+
+#cftv-right {
+	left: 399px;
+	bottom: 192px;
 }
-#cftv-zoom-in{
-    left: 363px;
-    bottom: 159px;
-    width: 20px;
+
+#cftv-zoom-in {
+	left: 363px;
+	bottom: 159px;
+	width: 20px;
 }
-#cftv-zoom-out{
-    left: 383px;
-    width: 20px;
-    bottom: 184px;
+
+#cftv-zoom-out {
+	left: 383px;
+	width: 20px;
+	bottom: 184px;
 }
-.setting-cftv{
+
+.setting-cftv {
 	position: relative;
-    bottom: 32px;
-    left: 46px;
-    color: white;
+	bottom: 32px;
+	left: 46px;
+	color: white;
+}
+
+.call-preset {
+	width: 100%;
+	position: relative;
+	top: 23px;
+}
+
+.preset-call-row {
+	position: relative;
+	bottom: 137px;
+}
+
+.preset-set-row {
+	position: relative;
+	bottom: 115px;
+}
+
+.height-cftv-modal {
+	height: 50vh;
 }
