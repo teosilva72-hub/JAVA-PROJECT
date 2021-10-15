@@ -6,15 +6,23 @@ const cftvEvent = data => {
 		case "complete":
 			break;
 		case "success":
-			cftvVideo();
+			cftvVideo(id);
 			break;
 	}
 }
+$(function(){
+	$(".d-cftv-value").click(function() {
+    var value = $(this).val();
+	var cod = document.getElementById("cftvId")
+	cod.value = value
+	console.log(value)
+	cftvVideo(value)
+});
+})
 function getInfo(){
 	$("#send-cftv-id").click();
-	comeBack()
 }
-function cftvVideo(){
+function cftvVideo(id){
 	var id = document.getElementById("cftvId").value
 	var url = document.getElementById("url-img")
 		$("#dinamic-div-cftv").append(`\
@@ -27,6 +35,7 @@ function cftvVideo(){
 		document.querySelector(".video-img"+id).src = url.value
 		close(`.ptz-close${id}`, `.ptz${id}`);
 		dragdrop(`.img-cftv-div`);
+		$( ".video-img" ).resizable()
 }
 function close(cam, close){
 	setTimeout(() => {	
@@ -57,29 +66,60 @@ function cftvZoomOut(){
 	$("#cftvMoveOut" ).click();
 }
 function validatePresetCall(){
-	let call = document.getElementById("presetCall")
-	if(call.value == "") call.style.border = "solid 2px red"
-	else{
-		call.style.border = "solid 2px green"
+	let calls = document.getElementById("window-cftv")
+	let calls1 = document.getElementById("window-cftv1")
+	if(calls.value == "" && calls1.value == ""){
+		calls.style.border ="Solid red 2px"
+		calls1.style.border = "Solid red 2px"
+		$('.msg-danger').addClass('show').fadeOut(2000)
+	}else{
+		$('.msg-success').addClass('show').fadeOut(2000)
+		calls.style.border ="Solid green 2px"
+		calls1.style.border = "Solid green 2px"
 		comeBack()
-	}	
+	}
 }
-function validatePresetSet(){
-	let set = document.getElementById("presetSet")
-	let detail = document.getElementById("preset-set-details")
-	if(set.value == "") set.style.border ="Solid red 2px"
-	else{
-		set.style.border ="Solid green 2px"
-		comeBack()
-	}
-	if(detail.value == "") detail.style.border = "Solid red 2px"
-	else{
-		detail.style.border = "Solid green 2px"
-		comeBack()
-	}
+function presetCftv(){
+	$(".btns-cftv-number").click(function(event){
+	    var digito = $(this).html();
+	    $("#window-cftv").val(function(){ return $(this).val()+digito; }).attr('maxlength','3');
+		event.preventDefault()
+	}).click(function(event){
+	    var digito = $(this).html();
+	    $("#window-cftv1").val(function(){ return $(this).val()+digito; }).attr('maxlength','3');
+		event.preventDefault()
+	});
+	comeBack()
+}
+function removeNumber(){
+	var texto = $("#window-cftv").val();
+	var texto1 = $("#window-cftv1").val();
+	$("#window-cftv").val(texto.substring(0, texto.length - 1));
+	$("#window-cftv1").val(texto1.substring(0, texto1.length - 1));
 }
 function comeBack(){
-	$('#presetCall').val('')
-	$('#presetSet').val('')
-	$('#preset-set-details').val('')
+	$('#window-cftv1').val('')
+	//$('#presetSet').val('')
+	$('#window-cftv').val('')
+}
+function patrol(){
+	$('[id$=updateDetails]').click();
+	preventDefault();
+}
+function msgError(){
+	$('.msg-danger').addClass('show').fadeOut(2000)
+	presetCftv()
+	
+}
+function btnPreset(){
+	var x = document.querySelector(".preset-call-row")
+	var y = document.querySelector(".preset-patrol-row")
+	x.style.display = "block"
+	y.style.displayc = "none"	
+}
+function btnPatrol(){
+	var x = document.querySelector(".preset-call-row")
+	var y = document.querySelector(".preset-patrol-row")
+	x.style.display = "none"
+	y.style.displayc = "block"
 }

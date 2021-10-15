@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
+import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -24,8 +26,8 @@ public class CftvCam {
 	Equipments equip;
 	private int id;
 	//GLOBAL VARIABLES
-	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall, presetSet,
-	presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
+	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
+	String callsArray[];
 	private List<SelectItem> presetList;
 	//getters and setters
 
@@ -117,6 +119,7 @@ public class CftvCam {
 	public int searchCftv() {
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();
+		presetCall = "";
 		try {
 			getCam(Integer.toString(id));
 		} catch (IOException e1) {
@@ -160,10 +163,37 @@ public class CftvCam {
 		}
 		return id;
 	}
-	public void presetCall(String id) throws IOException {
-		if(presetCall == "")RequestContext.getCurrentInstance().execute("validatePresetCall()");
-		else {
+	public String presetCall(String id) throws IOException {
+		if(presetCall == "") {
 			RequestContext.getCurrentInstance().execute("validatePresetCall()");
+			RequestContext.getCurrentInstance().execute("presetCftv()");
+			//return presetCall = "teste";
+		}
+		else {
+			int z = 0, o = 0, t = 0;
+			String zr = "", on = "", tw= "";
+			callsArray = presetCall.split("");
+			if(callsArray.length == 1) {
+				if(!callsArray[0].equals("0")) {
+					z = Integer.parseInt(callsArray[0]) - 1;
+					presetCall = String.valueOf(z);
+				}
+			}else if(callsArray.length == 2) {
+				if(!callsArray[1].equals("0")) {
+					o = Integer.parseInt(callsArray[1]) - 1;
+					presetCall = callsArray[0]+ String.valueOf(o);
+				}
+			}else if(callsArray.length == 3) {
+				if(!callsArray[2].equals("0")) {
+					t = Integer.parseInt(callsArray[2]) - 1;
+					presetCall = callsArray[0]+ callsArray[1]+ String.valueOf(t);
+				}
+			}else {
+				RequestContext.getCurrentInstance().execute("msgError()");
+				return presetCall = "";
+			}
+			RequestContext.getCurrentInstance().execute("validatePresetCall()");
+			RequestContext.getCurrentInstance().execute("presetCftv()");
 			String ext ="";
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
@@ -173,9 +203,10 @@ public class CftvCam {
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
 				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
-				setPresetCall("");
+				presetCall = "";
 			}
 		}
+		return presetCall;
 	}
 	public int setPreset() {
 		try {

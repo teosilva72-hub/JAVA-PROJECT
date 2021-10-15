@@ -5,7 +5,6 @@
 	bottom: 40px;
 	left: 350px;
 }
-
 .close-cftv {
 	color: #ffffff00;
 	position: relative;
@@ -14,11 +13,9 @@
 	z-index: 1;
 	transition: 2s;
 }
-
 .close-cftv:hover {
 	color: blue;
 }
-
 .video-img {
 	position: relative;
 	width: 100%;
@@ -29,11 +26,14 @@
 }
 
 .text-cftv-barra {
-	position: relative;
+	position: absolute;
 	left: 3%;
-	bottom: 150px;
+	bottom: 78px;
 	color: blue;
 	font-weight: 900;
+	color: #FFF;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #000;
 }
 
 #cftv-modal-setting {
@@ -67,8 +67,15 @@
 	right: 10px;
 }
 
+.play-cftv {
+	position: relative;
+	top: 30px;
+	color: black;
+	right: 10px;
+}
+
 #cftv-top, #cftv-bottom, #cftv-left, #cftv-right, #cftv-zoom-in,
-	#cftv-zoom-out {
+	#cftv-zoom-out, #cftv-play {
 	position: relative;
 	width: 25px;
 	height: 25px;
@@ -76,7 +83,7 @@
 }
 
 #cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover, #cftv-right:hover,
-	#cftv-zoom-in:hover, #cftv-zoom-out:hover {
+	#cftv-zoom-in:hover, #cftv-zoom-out:hover, #cftv-play:hover {
 	position: relative;
 	width: 25px;
 	height: 25px;
@@ -115,6 +122,12 @@
 	bottom: 184px;
 }
 
+#cftv-play {
+	left: 406px;
+	width: 20px;
+	bottom: 211px;
+}
+
 .setting-cftv {
 	position: relative;
 	bottom: 32px;
@@ -122,15 +135,15 @@
 	color: white;
 }
 
-.call-preset {
-	width: 100%;
-	position: relative;
-	top: 23px;
-}
-
 .preset-call-row {
 	position: relative;
-	bottom: 137px;
+	bottom: 165px;
+}
+
+.btns-cftv-number {
+	width: 0;
+	margin-top: 5%;
+	font-size: 10pt;
 }
 
 .preset-set-row {
@@ -138,6 +151,64 @@
 	bottom: 115px;
 }
 
+.input-preset-cftv {
+	width: 45%;
+}
+
 .height-cftv-modal {
 	height: 50vh;
+}
+
+.msg-danger {
+	display: none
+}
+
+.msg-danger.show {
+	display: block;
+}
+
+.msg-success {
+	display: none;
+}
+
+.msg-success.show {
+	display: block;
+}
+
+.btn-preset-patrol {
+	position: relative;
+	bottom: 200px;
+	left: 307px;
+	height: 29px;
+}
+.cftv-dropdown{
+    left: 280px;
+    top: 2px;
+}
+.cftv-dropdown > button{
+	height: 40px;
+}
+.drop-down-ptz{
+	width: 184px;
+}
+#dropdown-cftv-btn-icone{
+	font-weight: 900;
+}
+.col-dropdown-cftv > button{
+	font-weight: 900;
+}
+.col-dropdown-cftv > button:hover{
+	font-weight: 900;
+	color: white;
+	background: green !important;
+}
+.d-cftv1,.d-cftv3,.d-cftv5,.d-cftv7,
+.d-cftv9,.d-cftv11,.d-cftv13,.d-cftv15{
+	position: relative;
+	left: 15px;
+}
+.d-cftv2,.d-cftv4,.d-cftv6,.d-cftv8,
+.d-cftv10,.d-cftv12,.d-cftv14,.d-cftv16{
+	position: relative;
+    right: 15px;
 }
