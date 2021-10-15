@@ -279,84 +279,9 @@ $(function () {
 			.find('.grid-img').css('height', area / 3)
 	})
 
-	//FULLSCREEN
-	// $('.zoomFull').addClass('img-enlargeable').click(function () {
-	//	var src = this.getAttribute('target');
-	//	var modal;
-	//	let pos = { top: 0, left: 0, x: 0, y: 0 }
-	//	let img = $('<img />').attr('src', src).addClass('box-img')
-	//	let frame = $('<div></div>').css({
-	//		width: '90%', height: '90%',
-	//		transform: 'translate(-50%, -50%)',
-	//		position: 'relative',
-	//		top: '50%', left: '50%',
-	//		overflow: 'hidden',
-	//	}).append(img)
-
-	//	function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
-
-	//	modal = $('<div></div>').css({
-	//		background: 'RGBA(0,0,0,1.0)',
-	//		width: '100%', height: '100%',
-	//		position: 'fixed',
-	//		zIndex: '10000',
-	//		top: '0', left: '0',
-	//	}).append(frame).click(function () { removeModal(); }).appendTo('body')
-	//Zoom
-	//	img.click(function (e) { e.stopPropagation() })
-	//		.on("dragstart", function () { return false })
-	//		.on("mousedown", function (down) {
-	//			if (down.target.hasAttribute("zoom")) {
-	//				pos = {
-	//					left: frame.scrollLeft(),
-	//					top: frame.scrollTop(),
-	//					x: down.clientX,
-	//					y: down.clientY,
-	//				};
-	//				img.on("mousemove", function (move) {
-	//					img.css({ "cursor": "grabbing" })
-	//						.off("mouseup").on("mouseup", function () {
-	//							img.css({ "cursor": "zoom-out" }).off("mousemove")
-	//						})
-	//					const dx = move.clientX - pos.x;
-	//					const dy = move.clientY - pos.y;
-	//					frame
-	//						.scrollTop(pos.top - dy)
-	//						.scrollLeft(pos.left - dx)
-	//				}).off("mouseup").on("mouseup", function () {
-	//					img.css({ "cursor": "zoom-in" }).off("mousemove")
-	//					this.toggleAttribute("zoom")
-	//				})
-	//			} else {
-	//				img.off("mouseup").on("mouseup", function (e) {
-	//					let click = {
-	//						top: (e.pageY - img.offset().top) / img.height(),
-	//						left: (e.pageX - img.offset().left) / img.width(),
-	//					}
-	//					this.toggleAttribute("zoom")
-	//					img.css({ "cursor": "zoom-out" })
-	//					frame
-	//						.scrollLeft(
-	//							click.left * e.target.scrollWidth - frame.width() / 2
-	//						).scrollTop(
-	//							click.top * e.target.scrollHeight - frame.height() / 2
-
-	//						)
-
-	//				})
-	//			}
-	//		});
-
-	// handling ESC
-	//	$('body').on('keyup.modal-close', function (e) {
-	//		if (e.key === 'Escape') { removeModal(); }
-	//	});
-	//	});
-	// FULLSCREEN END
-
 	// POS EQUIP
 
-
+	drawImageActualSize();
 
 	//Equipments change sizes END
 
@@ -1140,12 +1065,16 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 
 /* Draw Map */
 
-//const canvas = document.getElementById('mapDraw');
-//const ctx = canvas.getContext('2d');
-//const image = document.getElementById('mapTuxpan');
+function drawImageActualSize() {
+	
+	const canvas = document.getElementById('mapDraw');
+	const ctx = canvas.getContext('2d');
+	const image = document.getElementById('mapCity');
 
-//image.addEventListener('load', e => {
-//	ctx.drawImage(image, )
-//})
+	canvas.width = image.width;
+	canvas.height = image.height;
 
+	ctx.drawImage(image, 0, 0, image.width, image.height);
+	
+}
 /* Draw Map [end] */
