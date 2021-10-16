@@ -12,16 +12,15 @@ const cftvEvent = data => {
 }
 $(function(){
 	$(".d-cftv-value").click(function() {
-	    var id = $(this).val();
+	    var value = $(this).val();
+		var id = $(this).attr('id');
+		$(`#${id}`).prop('disabled', true);
 		var cod = document.getElementById("cftvId")
-		cod.value = id
+		cod.value = value
 		getInfo()
-		console.log(id + "  << testando aqui")
-		
-		var url = document.getElementById("url-img")
-		//document.querySelector(".video-img"+id).src = url.value
+		//var url = document.getElementById("url-img")
 		setTimeout(() => {
-			cftvVideo(id, url)
+			cftvVideo(value, url)
 		}, 1000)
 	})
 })
@@ -39,16 +38,19 @@ function cftvVideo(id, url){
 		</div>`)
 		$(".img-cftv-div").fadeIn(3000);
 		document.querySelector(".video-img"+id).src = url.value
-		close(`.ptz-close${id}`, `.ptz${id}`);
+		close(`.ptz-close${id}`, `.ptz${id}`, id);
 		dragdrop(`.img-cftv-div`);
-		$([".video-img"][".img-cftv-div"] ).resizable()
-		console.log("Testando aqui >> "+ url.value +"\n\n"+id + " <<")
+		$(".img-cftv-div").resizable()
 }
-function close(cam, close){
+function disabledListCftv(id){
+		$(`#ptz-window${id}`).prop('disabled', false);
+}
+function close(cam, close, id){
 	setTimeout(() => {	
 		$(cam).click(function() {
 	  		$(close).remove();
-		});
+			disabledListCftv(id)
+		})
 	}, 1000)
 }
 function dragdrop(cam){

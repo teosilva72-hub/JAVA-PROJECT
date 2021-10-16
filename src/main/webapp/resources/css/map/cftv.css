@@ -19,19 +19,19 @@
 .video-img {
 	position: relative;
 	width: 100%;
-	height: 123px;
+	height: 100%;
 	background: black;
 	bottom: 25px;
 	border: black 2px solid;
 }
 
 .text-cftv-barra {
-	position: absolute;
-	left: 3%;
-	bottom: 78px;
-	color: blue;
-	font-weight: 900;
-	color: #FFF;
+    position: absolute;
+    left: 3%;
+    bottom: 66%;
+    color: blue;
+    font-weight: 900;
+    color: #FFF;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #000;
 }
