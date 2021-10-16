@@ -6,25 +6,31 @@ const cftvEvent = data => {
 		case "complete":
 			break;
 		case "success":
-			cftvVideo(id);
+			cftvVideo(id, url);
 			break;
 	}
 }
 $(function(){
 	$(".d-cftv-value").click(function() {
-    var value = $(this).val();
-	var cod = document.getElementById("cftvId")
-	cod.value = value
-	console.log(value)
-	cftvVideo(value)
-});
+	    var id = $(this).val();
+		var cod = document.getElementById("cftvId")
+		cod.value = id
+		getInfo()
+		console.log(id + "  << testando aqui")
+		
+		var url = document.getElementById("url-img")
+		//document.querySelector(".video-img"+id).src = url.value
+		setTimeout(() => {
+			cftvVideo(id, url)
+		}, 1000)
+	})
 })
 function getInfo(){
 	$("#send-cftv-id").click();
 }
-function cftvVideo(id){
-	var id = document.getElementById("cftvId").value
-	var url = document.getElementById("url-img")
+function cftvVideo(id, url){
+	id = document.getElementById("cftvId").value
+	url = document.getElementById("url-img")
 		$("#dinamic-div-cftv").append(`\
 		<div class="img-cftv-div bg-dark ptz${id}">\				
 				<i class="fas fa-times close-cftv ptz-close${id}"></i>\
@@ -35,7 +41,8 @@ function cftvVideo(id){
 		document.querySelector(".video-img"+id).src = url.value
 		close(`.ptz-close${id}`, `.ptz${id}`);
 		dragdrop(`.img-cftv-div`);
-		$( ".video-img" ).resizable()
+		$([".video-img"][".img-cftv-div"] ).resizable()
+		console.log("Testando aqui >> "+ url.value +"\n\n"+id + " <<")
 }
 function close(cam, close){
 	setTimeout(() => {	
