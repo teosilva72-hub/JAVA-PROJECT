@@ -37,6 +37,20 @@ const init = () => {
 			let equip = $(this)
 
 			posEquip(equip)
+			
+			if (!equip.attr('class').includes('plaque'))
+			equip.mousedown(function(ev){
+				//posReset();
+				id = equip.attr('id').match(/\d+/g)[0];
+					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+					toDrag = `#${equip.attr('id')}`
+      				if(ev.which == 3 && type=="cftv"){
+            			//função option cftv
+						rightButtonCftv(type, id)
+						//console.log("passo one")
+						ev.preventDefault()
+      				}
+				})
 
 			if (!equip.attr('class').includes('plaque'))
 				equip.dblclick(function () {

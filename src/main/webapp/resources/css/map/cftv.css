@@ -203,12 +203,22 @@
 	background: green !important;
 }
 .d-cftv1,.d-cftv3,.d-cftv5,.d-cftv7,
-.d-cftv9,.d-cftv11,.d-cftv13,.d-cftv15{
+.d-cftv9,.d-cftv11,.d-cftv13,.d-cftv15,
+.d-cftv17,.d-cftv19{
 	position: relative;
 	left: 15px;
 }
 .d-cftv2,.d-cftv4,.d-cftv6,.d-cftv8,
-.d-cftv10,.d-cftv12,.d-cftv14,.d-cftv16{
+.d-cftv10,.d-cftv12,.d-cftv14,.d-cftv16,
+.d-cftv18,.d-cftv20{
 	position: relative;
     right: 15px;
+}
+.mouseDownCftv{
+	z-index: 1;
+    border: solid 2px red;
+    position: relative;
+    background: #ecf17e;
+    color: black;
+    bottom: 0px;
 }

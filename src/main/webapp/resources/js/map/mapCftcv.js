@@ -23,6 +23,10 @@ $(function(){
 			cftvVideo(value, url)
 		}, 1000)
 	})
+	//remove option click btn right mouse
+	$(document).contextmenu(function() {
+    return false
+	});
 })
 function getInfo(){
 	$("#send-cftv-id").click();
@@ -131,4 +135,14 @@ function btnPatrol(){
 	var y = document.querySelector(".preset-patrol-row")
 	x.style.display = "none"
 	y.style.displayc = "block"
+}
+function rightButtonCftv(type, id){
+	console.log("chegamos aqui menino")
+	$(`#${type}${id}`).append(`
+		<div class="mouseDownCftv">
+			<button type="button" class="btn btn-success">Configuração</button>
+			<button type="button" class="btn btn-danger">Danger</button>
+			<button type="button" class="btn btn-warning">Warning</button>
+		</div>
+	`)
 }
