@@ -491,7 +491,8 @@ function posEquip(equip) {
 		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 	});
 
-	changeLine(equip);
+	if (!equip.hasClass("plaque"))
+		changeLine(equip);
 
 	if (equip.attr("class").includes('equip-box-sat')) {
 		let sat_status = equip.attr('status')
@@ -1187,6 +1188,7 @@ const changeLine = equip => {
 	})
 
 	let id = equip.attr("id");
+	let km = window.innerWidth * (Number(equip.attr("item-km").replace("+", ".")) / 102);
 	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
 	let pos = {
 		"x": Number(equip.css("left").replace("px", "")),
@@ -1200,7 +1202,7 @@ const changeLine = equip => {
 		draw.append(l);
 	}
 	
-	l.find("polyline").attr("points", `${lines[id] ? lines[id] : `${pos.x / scale},${pos.y / scale}`} ${pos.x / scale},${pos.y / scale}`);
+	l.find("polyline").attr("points", `${false ? lines[id] : `${km},400`} ${pos.x / scale},${pos.y / scale}`);
 }
 
 /* Get Canvas Position X/Y */

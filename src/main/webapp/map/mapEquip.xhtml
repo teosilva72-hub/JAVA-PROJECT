@@ -65,7 +65,7 @@
                                     timer="#{item.message.pages[4].timer}" />
                             </div>
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
-                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}" item-width="#{item.mapWidth}" direction="#{item.direction}">
 
                                 <!-- Table with DIV -->
                                 <div class="tableStyle card">		
@@ -262,7 +262,7 @@
                         <c:when test="#{item.table_id eq 'sat'}">
                         
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
-                                posX="#{item.mapPosX}" posY="#{item.mapPosY}"
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
                                 item-width="#{item.mapWidth}" direction="#{item.direction}"
                                 status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}"
                                 status="#{satMapsView.satStatus.get(loop.index).status}">
@@ -379,7 +379,7 @@
                         
                             <!-- Card Speed -->
 							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}">
                                 
 								<div class="card-header py-0 text-center text-white">
 									<p>#{item.nome}</p>
@@ -460,7 +460,7 @@
                         
                         <c:otherwise>
                             <div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}" class="equip-box #{item.table_id}">                                       
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}" class="equip-box #{item.table_id}">                                       
                                 
                                 <c:if test="#{item.table_id eq 'cftv'}">                                                                                               
                                     <h:graphicImage class="equip-image"
