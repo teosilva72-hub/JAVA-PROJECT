@@ -475,6 +475,8 @@ function posEquip(equip) {
 		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 	});
 
+	changeLine(equip);
+
 	if (equip.attr("class").includes('equip-box-sat')) {
 		let sat_status = equip.attr('status')
 		let sat_name = equip.attr('id')
@@ -631,6 +633,8 @@ function dragEquip() {
 			.on("mousemove", function (e) {
 				e.preventDefault();
 
+				console.log(elmt);
+
 				// Calculate the new cursor position:
 				pos1 = pos3 - e.clientX;
 				pos2 = pos4 - e.clientY;
@@ -653,6 +657,8 @@ function dragEquip() {
 					top: pos.top,
 					left: pos.left
 				})
+
+				changeLine(elmt);
 
 				// Save element position on input 
 				document.getElementById("real:equipIdPos").value = id;
@@ -1063,7 +1069,7 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 /* top and bottom line [end] */
 }
 
-/* Draw Map */
+/* Draw Map [end] */
 
 function drawImageActualSize() {
 	
@@ -1078,3 +1084,121 @@ function drawImageActualSize() {
 	
 }
 /* Draw Map [end] */
+
+lines = {
+	"sos1": "100,200",
+	"sos2": "110,200",
+	"sos3": "120,200",
+	"sos4": "130,200",
+	"sos5": "140,200",
+	"sos6": "150,200",
+	"sos7": "160,200",
+	"sos8": "170,200",
+	"sos9": "180,200",
+	"sos10": "190,200",
+	"sos11": "200,200",
+	"sos12": "210,200",
+	"sos13": "220,200",
+	"sos14": "230,200",
+	"sos15": "240,200",
+	"sos16": "250,200",
+	"sos17": "260,200",
+	"sos18": "270,200",
+	"sos19": "280,200",
+	"sos20": "290,200",
+	"sos21": "300,200",
+	"sos22": "310,200",
+	"sos23": "320,200",
+	"sos23": "330,200",
+	"sos24": "340,200",
+	"sos25": "350,200",
+	"sos26": "360,200",
+	"sos27": "370,200",
+	"sos28": "380,200",
+	"sos29": "390,200",
+	"sos30": "400,200",
+	"sos31": "410,200",
+	"sos32": "420,200",
+	"sos33": "430,200",
+	"sos34": "440,200",
+	"sos35": "450,200",
+	"sos36": "460,200",
+	"sos37": "470,200",
+	"sos38": "480,200",
+	"sos39": "490,200",
+	"sos40": "500,200",
+	"sos41": "510,200",
+}
+
+const setLines = () => {
+	let draw = $('.drawLines');
+	let container = $("#zoomtext.section");
+	let equips = $('.equip-box, .equip-info, .equip-box-sat');
+
+	draw.css({
+		"width": container.css("width"),
+		"height": container.css("height")
+	})
+
+	for (const equip of equips) { // ᓚᘏᗢ´  ಥ_ಥ
+		let e = $(equip);
+		let id = e.attr("id");
+		let l = draw.find(`.equipLine.${id}`);
+		let pos = {
+			"x": Number(e.css("left").replace("px", "")),
+			"y": Number(e.css("top").replace("px", ""))
+		};
+		
+		if (!l.length) {
+			let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
+			l = line;
+			
+			draw.append(l);
+		}
+		
+		l.find("polyline").attr("points", `${lines[id]} ${pos.x / scale},${pos.y / scale}`);
+	}
+
+}
+
+const changeLine = equip => {
+	let draw = $('.drawLines');
+	let container = $("#zoomtext.section");
+
+	draw.css({
+		"width": container.css("width"),
+		"height": container.css("height")
+	})
+
+	let id = equip.attr("id");
+	let l = draw.find(`.equipLine.${id}`);
+	let pos = {
+		"x": Number(equip.css("left").replace("px", "")),
+		"y": Number(equip.css("top").replace("px", ""))
+	};
+	
+	if (!l.length) {
+		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
+		l = line;
+		
+		draw.append(l);
+	}
+	
+	l.find("polyline").attr("points", `${lines[id]} ${pos.x / scale},${pos.y / scale}`);
+}
+
+/* Get Canvas Position X/Y */
+
+// function getPosition(e) {
+// 	// getBoundingClientRect to retrieve the position of our canvas in the doc
+// 	var rect = this.getBoundingClientRect();
+// 	// we also need to use clientX and clientY values now
+// 	var x = e.clientX - rect.left;
+// 	var y = e.clientY - rect.top;
+// 	var coord = "x=" + x + ", y=" + y;
+// 	var c = this.getContext('2d');
+// 	var p = c.getImageData(x, y, 1, 1).data;
+//   }
+  
+ /* Get Canvas Position X/Y [end] */
+
