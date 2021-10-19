@@ -297,7 +297,7 @@ $(function () {
 
 	// POS EQUIP
 
-	drawImageActualSize();
+	// drawImageActualSize();
 
 	//Equipments change sizes END
 
@@ -649,7 +649,7 @@ function dragEquip() {
 			.on("mousemove", function (e) {
 				e.preventDefault();
 
-				console.log(elmt);
+				console.log(elmnt);
 
 				// Calculate the new cursor position:
 				pos1 = pos3 - e.clientX;
@@ -674,7 +674,7 @@ function dragEquip() {
 					left: pos.left
 				})
 
-				changeLine(elmt);
+				changeLine(elmnt);
 
 				// Save element position on input 
 				document.getElementById("real:equipIdPos").value = id;
@@ -1087,18 +1087,18 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 
 /* Draw Map [end] */
 
-function drawImageActualSize() {
+// function drawImageActualSize() {
 	
-	const canvas = document.getElementById('mapDraw');
-	const ctx = canvas.getContext('2d');
-	const image = document.getElementById('mapCity');
+// 	const canvas = document.getElementById('mapDraw');
+// 	const ctx = canvas.getContext('2d');
+// 	const image = document.getElementById('mapCity');
 
-	canvas.width = image.width;
-	canvas.height = image.height;
+// 	canvas.width = image.width;
+// 	canvas.height = image.height;
 
-	ctx.drawImage(image, 0, 0, image.width, image.height);
+// 	ctx.drawImage(image, 0, 0, image.width, image.height);
 	
-}
+// }
 /* Draw Map [end] */
 
 lines = {
@@ -1146,36 +1146,36 @@ lines = {
 	"sos41": "510,200",
 }
 
-const setLines = () => {
-	let draw = $('.drawLines');
-	let container = $("#zoomtext.section");
-	let equips = $('.equip-box, .equip-info, .equip-box-sat');
+// const setLines = () => {
+// 	let draw = $('.drawLines');
+// 	let container = $("#zoomtext.section");
+// 	let equips = $('.equip-box, .equip-info, .equip-box-sat');
 
-	draw.css({
-		"width": container.css("width"),
-		"height": container.css("height")
-	})
+// 	draw.css({
+// 		"width": container.css("width"),
+// 		"height": container.css("height")
+// 	})
 
-	for (const equip of equips) { // ᓚᘏᗢ´  ಥ_ಥ
-		let e = $(equip);
-		let id = e.attr("id");
-		let l = draw.find(`.equipLine.${id}`);
-		let pos = {
-			"x": Number(e.css("left").replace("px", "")),
-			"y": Number(e.css("top").replace("px", ""))
-		};
+// 	for (const equip of equips) { // ᓚᘏᗢ´  ಥ_ಥ
+// 		let e = $(equip);
+// 		let id = e.attr("id");
+// 		let l = draw.find(`.equipLine.${id}`);
+// 		let pos = {
+// 			"x": Number(e.css("left").replace("px", "")),
+// 			"y": Number(e.css("top").replace("px", ""))
+// 		};
 		
-		if (!l.length) {
-			let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
-			l = line;
+// 		if (!l.length) {
+// 			let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
+// 			l = line;
 			
-			draw.append(l);
-		}
+// 			draw.append(l);
+// 		}
 		
-		l.find("polyline").attr("points", `${lines[id]} ${pos.x / scale},${pos.y / scale}`);
-	}
+// 		l.find("polyline").attr("points", `${lines[id] ? lines[id] : `${pos.x / scale},${pos.y / scale}`} ${pos.x / scale},${pos.y / scale}`);
+// 	}
 
-}
+// }
 
 const changeLine = equip => {
 	let draw = $('.drawLines');
@@ -1187,20 +1187,20 @@ const changeLine = equip => {
 	})
 
 	let id = equip.attr("id");
-	let l = draw.find(`.equipLine.${id}`);
+	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
 	let pos = {
 		"x": Number(equip.css("left").replace("px", "")),
 		"y": Number(equip.css("top").replace("px", ""))
 	};
 	
 	if (!l.length) {
-		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
+		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
 		l = line;
 		
 		draw.append(l);
 	}
 	
-	l.find("polyline").attr("points", `${lines[id]} ${pos.x / scale},${pos.y / scale}`);
+	l.find("polyline").attr("points", `${lines[id] ? lines[id] : `${pos.x / scale},${pos.y / scale}`} ${pos.x / scale},${pos.y / scale}`);
 }
 
 /* Get Canvas Position X/Y */
