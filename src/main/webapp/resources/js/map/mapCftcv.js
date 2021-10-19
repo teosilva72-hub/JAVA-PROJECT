@@ -44,7 +44,16 @@ function cftvVideo(id, url){
 		document.querySelector(".video-img"+id).src = url.value
 		close(`.ptz-close${id}`, `.ptz${id}`, id);
 		dragdrop(`.img-cftv-div`);
-		$(".img-cftv-div").resizable()
+		$(".img-cftv-div").resizable({
+      		aspectRatio: 16 / 9,
+			maxHeight: 250,
+      		maxWidth: 350,
+      		minHeight: 90,
+      		minWidth: 120,
+			//grid: 30
+			animate: true,
+			helper: "ui-resizable-helper"
+    	})
 }
 function disabledListCftv(id){
 		$(`#ptz-window${id}`).prop('disabled', false);
