@@ -23,6 +23,10 @@ $(function(){
 			cftvVideo(value, url)
 		}, 1000)
 	})
+	//remove option click btn right mouse
+	$(document).contextmenu(function() {
+    return false
+	});
 })
 function getInfo(){
 	$("#send-cftv-id").click();
@@ -44,6 +48,7 @@ function cftvVideo(id, url){
 }
 function disabledListCftv(id){
 		$(`#ptz-window${id}`).prop('disabled', false);
+		$(`.window-mouse-right${id}`).prop('disabled', false);
 }
 function close(cam, close, id){
 	setTimeout(() => {	
@@ -131,4 +136,42 @@ function btnPatrol(){
 	var y = document.querySelector(".preset-patrol-row")
 	x.style.display = "none"
 	y.style.displayc = "block"
+}
+function rightButtonCftv(type, id){
+	if($('#cftv6').children('div').length < 2){
+		$(`#${type}${id}`).append(`
+			<div class="mouseDownCftv cftv-right-mouse" id="mouseDownPTZ${id}">
+				<button type="button"
+					class="btn btn-secondary dinamic-mouse-right" onclick="settingCftv()">Setting
+				</button>
+				<button type="button"
+					class="btn btn-dark dinamic-mouse-right window-mouse-right${id}" onclick="windowCftvRight()">PTZ Window
+				</button>
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" onclick="moreOptionCftv()">More Option</button>
+			</div>
+		`);
+	}
+	$(`div#mouseDownPTZ${id}`).mouseleave(function(){
+		$(`div#mouseDownPTZ${id}`).remove()
+	})
+}
+function windowCftvRight(){
+	getInfo()
+	var value = document.getElementById("cftvId").value
+	var url = document.getElementById("url-img").value
+	$(`#ptz-window${value}`).prop('disabled', true);
+	$(`.window-mouse-right${value}`).prop('disabled', true);
+	setTimeout(() =>{
+		cftvVideo(value, url)
+	},500)
+}
+function moreOptionCftv(){
+	$('#OPmodal').modal('toggle');
+}
+function settingCftv(){
+	getInfo()
+	setTimeout(() =>{
+		$('#cftv-modal-setting').modal('toggle')
+		presetCftv()
+	},500)
 }
