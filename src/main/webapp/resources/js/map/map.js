@@ -75,7 +75,7 @@ const init = () => {
 				});
 
 			$(window).resize(function () {
-				posEquip(equip)
+				posEquip(equip);
 			})
 		})
 
@@ -1103,48 +1103,48 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 /* Draw Map [end] */
 
 lines = {
-	"sos1": "100,200",
-	"sos2": "110,200",
-	"sos3": "120,200",
-	"sos4": "130,200",
-	"sos5": "140,200",
-	"sos6": "150,200",
-	"sos7": "160,200",
-	"sos8": "170,200",
-	"sos9": "180,200",
-	"sos10": "190,200",
-	"sos11": "200,200",
-	"sos12": "210,200",
-	"sos13": "220,200",
-	"sos14": "230,200",
-	"sos15": "240,200",
-	"sos16": "250,200",
-	"sos17": "260,200",
-	"sos18": "270,200",
-	"sos19": "280,200",
-	"sos20": "290,200",
-	"sos21": "300,200",
-	"sos22": "310,200",
-	"sos23": "320,200",
-	"sos23": "330,200",
-	"sos24": "340,200",
-	"sos25": "350,200",
-	"sos26": "360,200",
-	"sos27": "370,200",
-	"sos28": "380,200",
-	"sos29": "390,200",
-	"sos30": "400,200",
-	"sos31": "410,200",
-	"sos32": "420,200",
-	"sos33": "430,200",
-	"sos34": "440,200",
-	"sos35": "450,200",
-	"sos36": "460,200",
-	"sos37": "470,200",
-	"sos38": "480,200",
-	"sos39": "490,200",
-	"sos40": "500,200",
-	"sos41": "510,200",
+	"sos1": [.1, .2],
+	"sos2": [.11, .2],
+	"sos3": [.12, .2],
+	"sos4": [.13, .2],
+	"sos5": [.14, .2],
+	"sos6": [.15, .2],
+	"sos7": [.16, .2],
+	"sos8": [.17, .2],
+	"sos9": [.18, .2],
+	"sos10": [.19, .2],
+	"sos11": [.2, .2],
+	"sos12": [.21, .2],
+	"sos13": [.22, .2],
+	"sos14": [.23, .2],
+	"sos15": [.24, .2],
+	"sos16": [.25, .2],
+	"sos17": [.26, .2],
+	"sos18": [.27, .2],
+	"sos19": [.28, .2],
+	"sos20": [.29, .2],
+	"sos21": [.3, .2],
+	"sos22": [.31, .2],
+	"sos23": [.32, .2],
+	"sos23": [.33, .2],
+	"sos24": [.34, .2],
+	"sos25": [.35, .2],
+	"sos26": [.36, .2],
+	"sos27": [.37, .2],
+	"sos28": [.38, .2],
+	"sos29": [.39, .2],
+	"sos30": [-1, .2],
+	"sos31": [.41, .2],
+	"sos32": [.42, .2],
+	"sos33": [.43, .2],
+	"sos34": [.44, .2],
+	"sos35": [.45, .2],
+	"sos36": [.46, .2],
+	"sos37": [.47, .2],
+	"sos38": [.48, .2],
+	"sos39": [.49, .2],
+	"sos40": [.5, .2],
+	"sos41": [.51, .2],
 }
 
 // const setLines = () => {
@@ -1180,7 +1180,9 @@ lines = {
 
 const changeLine = equip => {
 	let draw = $('.drawLines');
-	let container = $("#zoomtext.section");
+	let container = draw.closest("#zoomtext.section");
+	let map = container.find("img.grab-map");
+	let zoom = container.closest("[scroll-zoom]");
 
 	draw.css({
 		"width": container.css("width"),
@@ -1188,13 +1190,18 @@ const changeLine = equip => {
 	})
 
 	let id = equip.attr("id");
-	let km = window.innerWidth * (Number(equip.attr("item-km").replace("+", ".")) / 102);
+	let km = (Number(equip.attr("item-km").replace("+", ".")) / 102 * scale) * zoom.width() + map.offset().left - zoom.offset().left;
 	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
 	let pos = {
 		"x": Number(equip.css("left").replace("px", "")),
 		"y": Number(equip.css("top").replace("px", ""))
 	};
 	
+	let point = {
+		"x": lines[id] ? lines[id][0] != -1 ? lines[id][0] * scale * zoom.width() + map.offset().left - zoom.offset().left : km : km,
+		"y": lines[id] ? lines[id][1] * scale * map.height() + map.offset().top - zoom.offset().top : .5 * scale * map.height() + map.offset().top - zoom.offset().top
+	};
+
 	if (!l.length) {
 		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
 		l = line;
@@ -1202,7 +1209,7 @@ const changeLine = equip => {
 		draw.append(l);
 	}
 	
-	l.find("polyline").attr("points", `${false ? lines[id] : `${km},400`} ${pos.x / scale},${pos.y / scale}`);
+	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x / scale},${pos.y / scale}`);
 }
 
 /* Get Canvas Position X/Y */
