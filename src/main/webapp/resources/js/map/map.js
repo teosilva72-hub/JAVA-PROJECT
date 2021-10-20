@@ -1181,7 +1181,6 @@ lines = {
 const changeLine = equip => {
 	let draw = $('.drawLines');
 	let container = draw.closest("[scroll-zoom]");
-	let map = container.find("img.grab-map");
 
 	draw.css({
 		"width": container.css("width"),
@@ -1189,8 +1188,6 @@ const changeLine = equip => {
 	})
 
 	let id = equip.attr("id");
-	let heightScaled = scale * map.height();
-	let widthScaled = scale * map.width();
 	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
 	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
 	let pos = {
@@ -1199,8 +1196,8 @@ const changeLine = equip => {
 	};
 	
 	let point = {
-		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * widthScaled,
-		"y": (lines[id] ? lines[id][1] : .5) * heightScaled + map.offset().top - container.offset().top
+		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
+		"y": (lines[id] ? lines[id][1] : .5) * container.height()
 	};
 
 	if (!l.length) {
