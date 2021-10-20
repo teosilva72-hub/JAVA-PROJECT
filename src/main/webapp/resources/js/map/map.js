@@ -1180,9 +1180,8 @@ lines = {
 
 const changeLine = equip => {
 	let draw = $('.drawLines');
-	let container = draw.closest("#zoomtext.section");
+	let container = draw.closest("[scroll-zoom]");
 	let map = container.find("img.grab-map");
-	let zoom = container.closest("[scroll-zoom]");
 
 	draw.css({
 		"width": container.css("width"),
@@ -1190,7 +1189,9 @@ const changeLine = equip => {
 	})
 
 	let id = equip.attr("id");
-	let km = (Number(equip.attr("item-km").replace("+", ".")) / 102 * scale) * zoom.width() + map.offset().left - zoom.offset().left;
+	let heightScaled = scale * map.height();
+	let widthScaled = scale * map.width();
+	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
 	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
 	let pos = {
 		"x": Number(equip.css("left").replace("px", "")),
@@ -1198,8 +1199,8 @@ const changeLine = equip => {
 	};
 	
 	let point = {
-		"x": lines[id] ? lines[id][0] != -1 ? lines[id][0] * scale * zoom.width() + map.offset().left - zoom.offset().left : km : km,
-		"y": lines[id] ? lines[id][1] * scale * map.height() + map.offset().top - zoom.offset().top : .5 * scale * map.height() + map.offset().top - zoom.offset().top
+		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * widthScaled,
+		"y": (lines[id] ? lines[id][1] : .5) * heightScaled + map.offset().top - container.offset().top
 	};
 
 	if (!l.length) {
