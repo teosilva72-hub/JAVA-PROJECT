@@ -129,34 +129,40 @@
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
 				<!-- CFTV OPTION DROPDOWN EQUIPMENT BTN CLICK RIGHT MOUSE -->
-				
+
 				<!--  -->
 				<!-- CFTV LIST EQUIPS TOP PAGE-->
-				<div class="dropdown cftv-dropdown">
-					<button class="btn btn-dark dropdown-toggle" type="button"
-						id="dropdown-cftv-btn-icone" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">
-						PTZ <i class="far fa-window-restore"></i>
-					</button>
-					<div class="dropdown-menu drop-down-ptz"
-						aria-labelledby="dropdownMenu2">
-						<div class="row">
-							<c:forEach begin="1" end="16" var="ptz">
-								<div class="col-md-6 col-dropdown-cftv">
-									<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
-										type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
-										#{ptz}</button>
-								</div>
-							</c:forEach>
+				<h:form prependId="false" id="sumIdCftv">
+					<div class="dropdown cftv-dropdown">
+						<button class="btn btn-dark dropdown-toggle" type="button"
+							id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							PTZ <i class="far fa-window-restore"></i>
+						</button>
+						<div class="dropdown-menu drop-down-ptz"
+							aria-labelledby="dropdownMenu2">
+							<div class="row">
+								<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+									<div class="col-md-6 col-dropdown-cftv">
+										<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+											type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+											#{ptz}</button>
+									</div>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
-				</div>
+					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+					<h:commandButton style="display:none;" id="btnCftvSumTotal">
+						<f:ajax execute="@form" render=":sumIdCftv" listener="#{CftvCam.totalId}"/>
+					</h:commandButton>
+				</h:form>
 				<!--  -->
 				<c:if test="#{ SuperAdmin }">
 
 					<input id="addequip" type="button"
 						class="btn btn-dark form-modal-draw-button"
-						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
+						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();cftvInput();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
 						value="#{mapLabels.map_creation_btn_add_equipment}"> </input>
 
@@ -1079,12 +1085,12 @@
 
 							<button id="btn-form-confirm"
 								class="btn btn-dark form-modal-draw-button" type="button"
-								onclick="verif('#register-equip-form', '[id$=btn-form-send]')">#{mapLabels.map_creation_btn_save_equipment}</button>
+								onclick="verif('#register-equip-form', '[id$=btn-form-send]'),  updateTotalId()">#{mapLabels.map_creation_btn_save_equipment}</button>
 
 							<h:commandButton id="btn-form-send" p:data-toggle="modal"
 								p:data-target="#modaladd" style="display: none;">
 								<f:ajax execute="@form"
-									render=":equips :equipIds :equipName :cities :roads :km 
+									render=":equips :equipIds :equipName :cities :roads :km :sumIdCftv
 									:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 									listener="#{equipsBean.createEquipment}"
 									onevent="onEventMapFunction" />
@@ -1280,8 +1286,8 @@
 								<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
 								<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
 								<div id="cftv-play" onclick="cftvPlay"></div>
-								<div class="btn-group btn-group-sm btn-preset-patrol" style="display: none;"
-									role="group" aria-label="Basic example">
+								<div class="btn-group btn-group-sm btn-preset-patrol"
+									style="display: none;" role="group" aria-label="Basic example">
 									<button type="button" class="btn btn-primary"
 										id="preset-row-btn" onclick="btnPreset()">Preset</button>
 									<button type="button" class="btn btn-dark" id="patrol-row-btn"
@@ -2132,8 +2138,8 @@
 										class="btn btn-dark form-modal-draw-button"
 										p:data-toggle="modal" p:data-target="#deletemodal"
 										onclick="deleteParameters();">
-										<f:ajax execute="@all" render="@none"
-											listener="#{equipsBean.DeleteEquipment}" />
+										<f:ajax execute="@form" render=":sumIdCftv"
+											listener="#{equipsBean.DeleteEquipment}"/>
 									</h:commandButton>
 									<!---->
 

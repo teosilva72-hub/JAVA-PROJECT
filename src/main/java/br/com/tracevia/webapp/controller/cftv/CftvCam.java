@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
@@ -18,21 +19,36 @@ import javax.faces.model.SelectItem;
 import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.primefaces.context.RequestContext;
 
+import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
+import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.Equipments;
 @ManagedBean(name="CftvCam")
 @ViewScoped
 public class CftvCam {
 	Equipments equip;
-	private int id;
+	private int id, idTotal, sumId;
 	//GLOBAL VARIABLES
 	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
 	String callsArray[];
 	private List<SelectItem> presetList;
+	private CFTVDAO cftv;
 	//getters and setters
-
+	
 	public String getCam() {
 		return cam;
+	}
+	public int getSumId() {
+		return sumId;
+	}
+	public void setSumId(int sumId) {
+		this.sumId = sumId;
+	}
+	public int getIdTotal() {
+		return idTotal;
+	}
+	public void setIdTotal(int idTotal) {
+		this.idTotal = idTotal;
 	}
 	public String getPresetDetails() {
 		return presetDetails;
@@ -116,6 +132,22 @@ public class CftvCam {
 		MoveRight = moveRight;
 	}
 	//Methods
+	@PostConstruct
+	public void initialize() {
+		CFTVDAO ptz = new CFTVDAO();
+		totalId() ;
+	}
+	public int totalId() {
+		CFTVDAO ptz = new CFTVDAO();
+		try {
+			equip = ptz.getTotalId();
+			idTotal = equip.getEquip_id();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return idTotal;
+	}
 	public int searchCftv() {
 		EquipmentsDAO search = new EquipmentsDAO();
 		equip = new Equipments();

@@ -18,7 +18,6 @@ $(function(){
 		var cod = document.getElementById("cftvId")
 		cod.value = value
 		getInfo()
-		//var url = document.getElementById("url-img")
 		setTimeout(() => {
 			cftvVideo(value, url)
 		}, 1000)
@@ -51,8 +50,8 @@ function cftvVideo(id, url){
       		minHeight: 90,
       		minWidth: 120,
 			//grid: 30
-			animate: true,
-			helper: "ui-resizable-helper"
+			//animate: true,
+			//helper: "ui-resizable-helper"
     	})
 }
 function disabledListCftv(id){
@@ -183,4 +182,29 @@ function settingCftv(){
 		$('#cftv-modal-setting').modal('toggle')
 		presetCftv()
 	},500)
+}
+function updateTotalId(){
+	$('#btnCftvSumTotal').click()
+}
+function cftvInput(){
+	var x = document.getElementById("equips")
+	var currentId = document.getElementById("equipId")
+		var icon = document.querySelector(".fa-ideal")
+		currentId.style.display = "block"
+		icon.style.display = "block"
+	x.addEventListener("change", function(){
+		if(x.value == "1"){
+			currentId.style.display = "none"
+			icon.style.display = "none"
+			$('#btnCftvSumTotal').click()
+			setTimeout(()=>{
+				var lastId = document.getElementById("totalIdCftv")
+				currentId.value = Number(lastId.value) + 1;
+			},300)
+		}else{
+			currentId.style.display = "block"
+			icon.style.display = "block"
+			$('#equipId').val('')
+		}
+	})
 }

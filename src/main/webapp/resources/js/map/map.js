@@ -49,12 +49,10 @@ const init = () => {
 						cod.value = id
             			//função option cftv
 						rightButtonCftv(type, id)
-						//console.log("passo one")
 						ev.preventDefault()
       				}
 				})
-			//doble click
-			if (!equip.attr('class').includes('plaque'))
+			if (!equip.attr('class').includes('plaque') && equip.attr('id').match(/[a-zA-Z]+/g)[0] != "cftv")
 				equip.dblclick(function () {
 					posReset();
 
@@ -777,8 +775,12 @@ function sendType() {
 }
 
 function deleteParameters() {
+	
 	document.getElementById('delete-equip-form:equipDel').value = id;
 	document.getElementById('delete-equip-form:tableDel').value = type;
+	setTimeout(()=>{
+		updateTotalId()
+	},300)
 }
 
 function deleteInfo() {
