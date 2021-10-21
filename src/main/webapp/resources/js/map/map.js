@@ -1214,13 +1214,13 @@ const changeLine = equip => {
 
 	if (difference.absX > difference.absY) {
 		let x = difference.x / difference.absX;
-		pos.x += dimension.width * .6 * x;
+		pos.x += dimension.width * .65 * x;
 	} else {
 		let y = difference.y / difference.absY;
-		pos.y += dimension.height * .6 * y;
+		pos.y += dimension.height * .85 * y;
 	}
-	pos.x += dimension.width * .1;
-	pos.y += dimension.height * .1;
+	pos.x += dimension.width / (dimension.width - 1);
+	// pos.y += dimension.height / (dimension.height - .1);
 
 	if (!l.length) {
 		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
