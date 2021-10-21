@@ -412,38 +412,39 @@
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="2.5" max-scale="12"
 			id="content"> <!-- START SECTION -->
-		<div id="zoomtext" scale="1" class="section">
-			<!-- MAP FRONT IMAGE -->
+			<div id="zoomtext" scale="1" class="section">
 
-			<canvas id="mapDraw"></canvas>
-			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
-				value="#{loginAccount.mapUI}" />
-		</div>
+				<!-- MAP FRONT IMAGE -->
 
-
-
-		<!-- Label -->
-		<div id="labelPos">
-			<label id="posX"></label> <label id="posY"></label>
-		</div>
-
-		<!-- Drag Items --> <!-- CAUSE -->
-
-		<div class="draggable" id="equipAll"></div>
-
-		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
-
-			<div>
-				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
-						<img width="75"
-							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
-					</div>
-				</c:forEach>
+				<div class="drawLines grab-map"></div>
+				<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+					value="#{loginAccount.mapUI}" />
 			</div>
 
-		</ui:fragment> </section>
+			<!-- Label -->
+			<div id="labelPos">
+				<label id="posX"></label> <label id="posY"></label>
+			</div>
+
+			<!-- Drag Items --> <!-- CAUSE -->
+
+			<div class="draggable" id="equipAll"></div>
+
+			<!-- Plaque -->
+			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+				<div>
+					<c:forEach items="#{roadView.plaque}" var="plaque">
+						<div class="plaque" posX="#{plaque.map_posX}"
+							posY="#{plaque.map_posY}">
+							<img width="75"
+								src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+						</div>
+					</c:forEach>
+				</div>
+
+			</ui:fragment>
+		</section>
 
 	</ui:define>
 
