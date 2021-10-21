@@ -1103,48 +1103,48 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 /* Draw Map [end] */
 
 lines = {
-	"sos1": [.1, .2],
-	"sos2": [.11, .2],
-	"sos3": [.12, .2],
-	"sos4": [.13, .2],
-	"sos5": [.14, .2],
-	"sos6": [.15, .2],
-	"sos7": [.16, .2],
-	"sos8": [.17, .2],
-	"sos9": [.18, .2],
-	"sos10": [.19, .2],
-	"sos11": [.2, .2],
-	"sos12": [.21, .2],
-	"sos13": [.22, .2],
-	"sos14": [.23, .2],
-	"sos15": [.24, .2],
-	"sos16": [.25, .2],
-	"sos17": [.26, .2],
-	"sos18": [.27, .2],
-	"sos19": [.28, .2],
-	"sos20": [.29, .2],
-	"sos21": [.3, .2],
-	"sos22": [.31, .2],
-	"sos23": [.32, .2],
-	"sos23": [.33, .2],
-	"sos24": [.34, .2],
-	"sos25": [.35, .2],
-	"sos26": [.36, .2],
-	"sos27": [.37, .2],
-	"sos28": [.38, .2],
-	"sos29": [.39, .2],
-	"sos30": [-1, .2],
-	"sos31": [.41, .2],
-	"sos32": [.42, .2],
-	"sos33": [.43, .2],
-	"sos34": [.44, .2],
-	"sos35": [.45, .2],
-	"sos36": [.46, .2],
-	"sos37": [.47, .2],
-	"sos38": [.48, .2],
-	"sos39": [.49, .2],
-	"sos40": [.5, .2],
-	"sos41": [.51, .2],
+// 	"sos1": [.1, .2],
+// 	"sos2": [.11, .2],
+// 	"sos3": [.12, .2],
+// 	"sos4": [.13, .2],
+// 	"sos5": [.14, .2],
+// 	"sos6": [.15, .2],
+// 	"sos7": [.16, .2],
+// 	"sos8": [.17, .2],
+// 	"sos9": [.18, .2],
+// 	"sos10": [.19, .2],
+// 	"sos11": [.2, .2],
+// 	"sos12": [.21, .2],
+// 	"sos13": [.22, .2],
+// 	"sos14": [.23, .2],
+// 	"sos15": [.24, .2],
+// 	"sos16": [.25, .2],
+// 	"sos17": [.26, .2],
+// 	"sos18": [.27, .2],
+// 	"sos19": [.28, .2],
+// 	"sos20": [.29, .2],
+// 	"sos21": [.3, .2],
+// 	"sos22": [.31, .2],
+// 	"sos23": [.32, .2],
+// 	"sos23": [.33, .2],
+// 	"sos24": [.34, .2],
+// 	"sos25": [.35, .2],
+// 	"sos26": [.36, .2],
+// 	"sos27": [.37, .2],
+// 	"sos28": [.38, .2],
+// 	"sos29": [.39, .2],
+// 	"sos30": [-1, .2],
+// 	"sos31": [.41, .2],
+// 	"sos32": [.42, .2],
+// 	"sos33": [.43, .2],
+// 	"sos34": [.44, .2],
+// 	"sos35": [.45, .2],
+// 	"sos36": [.46, .2],
+// 	"sos37": [.47, .2],
+// 	"sos38": [.48, .2],
+// 	"sos39": [.49, .2],
+// 	"sos40": [.5, .2],
+// 	"sos41": [.51, .2],
 }
 
 // const setLines = () => {
@@ -1190,15 +1190,37 @@ const changeLine = equip => {
 	let id = equip.attr("id");
 	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
 	let l = draw.find(`.equipLine.${id}`); // ᓚᘏᗢ´  ಥ_ಥ 
+	let equipScale = equip.attr("scale");
+	let dimension = {
+		"width": equip.width() * equipScale,
+		"height": equip.height() * equipScale,
+	}
 	let pos = {
-		"x": Number(equip.css("left").replace("px", "")),
-		"y": Number(equip.css("top").replace("px", ""))
+		"x": Number(equip.css("left").replace("px", "")) / scale,
+		"y": Number(equip.css("top").replace("px", "")) / scale
 	};
 	
 	let point = {
 		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
 		"y": (lines[id] ? lines[id][1] : .5) * container.height()
 	};
+
+	let difference = {
+		"x": point.x - pos.x,
+		"y": point.y - pos.y,
+	}
+	difference.absX = Math.abs(difference.x);
+	difference.absY = Math.abs(difference.y);
+
+	if (difference.absX > difference.absY) {
+		let x = difference.x / difference.absX;
+		pos.x += dimension.width * .6 * x;
+	} else {
+		let y = difference.y / difference.absY;
+		pos.y += dimension.height * .6 * y;
+	}
+	pos.x += dimension.width * .1;
+	pos.y += dimension.height * .1;
 
 	if (!l.length) {
 		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
@@ -1207,7 +1229,7 @@ const changeLine = equip => {
 		draw.append(l);
 	}
 	
-	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x / scale},${pos.y / scale}`);
+	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
 }
 
 /* Get Canvas Position X/Y */
