@@ -39,20 +39,20 @@ const init = () => {
 			posEquip(equip)
 			//mouse cftv botão direito
 			if (!equip.hasClass('plaque'))
-			equip.on("contextmenu", function(ev){
-				posReset();
-				console.log("aqui  1")
-				id = equip.attr('id').match(/\d+/g)[0];
+				equip.on("contextmenu", function (ev) {
+					posReset();
+					console.log("aqui  1")
+					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
-      				if(ev.which == 3 && type=="cftv"){
+					if (ev.which == 3 && type == "cftv") {
 						console.log("aqui  2")
 						var cod = document.getElementById("cftvId")
 						cod.value = id
-            			//função option cftv
+						//função option cftv
 						rightButtonCftv(type, id)
 						ev.preventDefault()
-      				}
+					}
 				})
 			if (!equip.hasClass('plaque') && equip.attr('id').match(/[a-zA-Z]+/g)[0] != "cftv")
 				equip.dblclick(function () {
@@ -63,12 +63,12 @@ const init = () => {
 					toDrag = `#${equip.attr('id')}`
 					$('#OPmodal').modal('toggle');
 					//add btn setting cftv and icon
-					if(type =="cftv"){
+					if (type == "cftv") {
 						var cod = document.getElementById("cftvId")
 						cod.value = id
 						$('.cftv-modal-btn').removeClass('none')
 						getInfo()
-					}else{
+					} else {
 						$('.cftv-modal-btn').addClass('none')
 					}
 					////////////////////////////////////////
@@ -85,17 +85,17 @@ const init = () => {
 		setEquipToolTip();
 		showGenericName();
 		DirectionEquip();
-		
-		if(window.initPMV)
-		  initPMV();
 
-		if(window.initSOS)
-		  initSOS();
+		if (window.initPMV)
+			initPMV();
 
-		if(window.initMonitor)		
+		if (window.initSOS)
+			initSOS();
+
+		if (window.initMonitor)
 			initMonitor();
-	  
-		if(window.initSPEED)		
+
+		if (window.initSPEED)
 			initSPEED();
 	})
 }
@@ -178,7 +178,7 @@ $(function () {
 			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
-				$('.dmsHidden-edit').hide();			
+				$('.dmsHidden-edit').hide();
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
@@ -245,30 +245,30 @@ $(function () {
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
-			
-			}else if (selectVAL == 10) {
-				
-				$('.sosInputs-edit').show();			
+
+			} else if (selectVAL == 10) {
+
+				$('.sosInputs-edit').show();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.ipAddressShow-edit').show();
 
 			} else if (selectVAL == 11) {
-				
-				$('.sosInputs-edit').hide();			
+
+				$('.sosInputs-edit').hide();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').show();
-                $('.ipAddressShow-edit').hide();
+				$('.ipAddressShow-edit').hide();
 
 			} else {
 
-				$('.dmsHidden-edit').hide();			
+				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.ipAddressShow-edit').show();
 			}
 
 		}, 100)
@@ -450,7 +450,7 @@ function resizeEquipScale(container) {
 
 	scaleB = ((max / allEquip.length) / toolbox.width());
 	toolbox.css('transform', `translateX(-50%) scale(${scaleB * scale})`).attr('scale', scaleB)
-	
+
 }
 
 //RESIZE EQUIPMENT
@@ -784,12 +784,12 @@ function sendType() {
 }
 
 function deleteParameters() {
-	
+
 	document.getElementById('delete-equip-form:equipDel').value = id;
 	document.getElementById('delete-equip-form:tableDel').value = type;
-	setTimeout(()=>{
+	setTimeout(() => {
 		updateTotalId()
-	},300)
+	}, 300)
 }
 
 function deleteInfo() {
@@ -914,7 +914,7 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
-			    $('.sosInputs').hide();
+				$('.sosInputs').hide();
 				$('.speedHidden').hide();
 				$('.ipAddressShow').show();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
@@ -975,7 +975,7 @@ $(function () {
 					});
 
 			} else if (selectVAL == 8) {
-				
+
 				$('.dmsHidden').show(); // DIV DMS TYPE				
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
@@ -984,7 +984,7 @@ $(function () {
 
 			} else if (selectVAL == 10) {
 
-				$('.sosInputs').show();				
+				$('.sosInputs').show();
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
@@ -995,16 +995,16 @@ $(function () {
 				$('.speedHidden').show();
 				$('.sosInputs').hide();
 				$('.dmsHidden').hide();
-				$('.satInputs').hide();				
+				$('.satInputs').hide();
 				$('.ipAddressShow').hide();
 
 			} else {
 
-				$('.dmsHidden').hide();			
+				$('.dmsHidden').hide();
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
-				$('.ipAddressShow').show();				
+				$('.ipAddressShow').show();
 			}
 
 		}, 100)
@@ -1056,44 +1056,44 @@ $(function () {
 
 /* show hidden buttons */
 
-function cftvTop(){
+function cftvTop() {
 	alert("^")
 }
-function cftvLeft(){
+function cftvLeft() {
 	alert("<")
 }
-function cftvRight(){
+function cftvRight() {
 	alert(">")
 }
-function cftvBottom(){
+function cftvBottom() {
 	alert("v")
 }
 
-function DirectionEquip(){
-/* top and bottom line */
+function DirectionEquip() {
+	/* top and bottom line */
 
-$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item){
-	item = $(item)
-	if(item.attr('direction') == 'N') { 
-	item.find('.equipLine').show();
-	item.find('.equipLineSPEED').show();
-	item.find('.equipLineTop').hide();
-	item.find('.equipLineTopSPEED').hide();
-	} else {
-		item.find('.equipLineTop').show();
-		item.find('.equipLineTopSPEED').show();
-		item.find('.equipLine').hide();
-		item.find('.equipLineSPEED').hide();
-	}
-	 })
+	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item) {
+		item = $(item)
+		if (item.attr('direction') == 'N') {
+			item.find('.equipLine').show();
+			item.find('.equipLineSPEED').show();
+			item.find('.equipLineTop').hide();
+			item.find('.equipLineTopSPEED').hide();
+		} else {
+			item.find('.equipLineTop').show();
+			item.find('.equipLineTopSPEED').show();
+			item.find('.equipLine').hide();
+			item.find('.equipLineSPEED').hide();
+		}
+	})
 
-/* top and bottom line [end] */
+	/* top and bottom line [end] */
 }
 
 /* Draw Map [end] */
 
 // function drawImageActualSize() {
-	
+
 // 	const canvas = document.getElementById('mapDraw');
 // 	const ctx = canvas.getContext('2d');
 // 	const image = document.getElementById('mapCity');
@@ -1102,52 +1102,29 @@ $('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').ea
 // 	canvas.height = image.height;
 
 // 	ctx.drawImage(image, 0, 0, image.width, image.height);
-	
+
 // }
 /* Draw Map [end] */
 
 lines = {
- 	"sos1": [-1, .558],
- 	"sos2": [-1, .57],
- 	"sos3": [-1, .575],
- 	"sos4": [-1, .579],
- 	"sos5": [-1, .582],
- 	"sos6": [-1, .588],
- 	"sos7": [-1, .594],
- 	"sos8": [-1, .593],
- 	"sos9": [-1, .593],
- 	"sos10": [-1, .592],
- 	"sos11": [-1, .578],
- 	"sos12": [-1, .568],
- 	"sos13": [-1, .565],
- 	"sos14": [-1, .557],
- 	"sos15": [-1, .552],
- 	"sos16": [-1, .55],
- 	"sos17": [-1, .55],
- 	"sos18": [-1, .55],
- 	"sos19": [-1, .56],
- 	"sos20": [-1, .574],
- 	"sos21": [-1, .58],
- 	"sos22": [-1, .584],
- 	"sos23": [-1, .586],
- 	"sos24": [-1, .575],
- 	"sos25": [-1, .56],
- 	"sos26": [-1, .542],
- 	"sos27": [-1, .522],
- 	"sos28": [-1, .518],
- 	"sos29": [-1, .514],
-	"sos30": [-1, .506],
- 	"sos31": [-1, .503],
- 	"sos32": [-1, .494],
- 	"sos33": [-1, .484],
- 	"sos34": [-1, .478],
- 	"sos35": [-1, .47],
- 	"sos36": [-1, .47],
- 	"sos37": [-1, .468],
- 	"sos38": [-1, .448],
- 	"sos39": [-1, .431],
- 	"sos40": [-1, .431],
- 	"sos41": [-1, .431],
+	"sos1": [-1, .558],"sos2": [-1, .57],"sos3": [-1, .575],"sos4": [-1, .579],"sos5": [-1, .582],"sos6": [-1, .588],"sos7": [-1, .594],"sos8": [-1, .593],"sos9": [-1, .593],"sos10": [-1, .592],"sos11": [-1, .578],"sos12": [-1, .568],"sos13": [-1, .565],"sos14": [-1, .557],"sos15": [-1, .552],"sos16": [-1, .55],"sos17": [-1, .55],"sos18": [-1, .55],"sos19": [-1, .56],"sos20": [-1, .574],"sos21": [-1, .58],"sos22": [-1, .584],"sos23": [-1, .586],"sos24": [-1, .575],"sos25": [-1, .56],"sos26": [-1, .542],"sos27": [-1, .522],"sos28": [-1, .518],"sos29": [-1, .514],"sos30": [-1, .506],"sos31": [-1, .503],"sos32": [-1, .494],"sos33": [-1, .484],"sos34": [-1, .478],"sos35": [-1, .47],"sos36": [-1, .47],"sos37": [-1, .468],"sos38": [-1, .448],"sos39": [-1, .431],"sos40": [-1, .431],"sos41": [-1, .431],
+	"dai1": [-1, .549],"dai2": [-1, .544],"dai3": [-1, .582],"dai4": [-1, .582],"dai5": [-1, .578],"dai6": [-1, .586],"dai7": [-1, .584],"dai8": [-1, .584],"dai9": [-1, .428],"dai10": [-1, .428],
+	"cftv1": [-1, .558],
+	"cftv2": [-1, .565],
+	"cftv3": [-1, .582],
+	"cftv4": [-1, .549],
+	"cftv5": [-1, .549],
+	"cftv6": [-1, .549],
+	"cftv7": [-1, .549],
+	"cftv8": [-1, .549],
+	"cftv9": [-1, .549],
+	"cftv10": [-1, .549],
+	"cftv11": [-1, .549],
+	"cftv12": [-1, .549],
+	"cftv13": [-1, .549],
+	"cftv14": [-1, .549],
+	"cftv15": [-1, .549],
+	"cftv16": [-1, .549],
 }
 
 // const setLines = () => {
@@ -1168,14 +1145,14 @@ lines = {
 // 			"x": Number(e.css("left").replace("px", "")),
 // 			"y": Number(e.css("top").replace("px", ""))
 // 		};
-		
+
 // 		if (!l.length) {
 // 			let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
 // 			l = line;
-			
+
 // 			draw.append(l);
 // 		}
-		
+
 // 		l.find("polyline").attr("points", `${lines[id] ? lines[id] : `${pos.x / scale},${pos.y / scale}`} ${pos.x / scale},${pos.y / scale}`);
 // 	}
 
@@ -1192,7 +1169,7 @@ const changeLine = equip => {
 
 	let id = equip.attr("id");
 	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
-	let l = draw.find(`.equipLine.${id}`); 
+	let l = draw.find(`.equipLine.${id}`);
 	let equipScale = equip.attr("scale");
 	let dimension = {
 		"width": equip.width() * equipScale,
@@ -1202,7 +1179,7 @@ const changeLine = equip => {
 		"x": Number(equip.css("left").replace("px", "")) / scale,
 		"y": Number(equip.css("top").replace("px", "")) / scale
 	};
-	
+
 	let point = {
 		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
 		"y": (lines[id] ? lines[id][1] : .5) * container.height()
@@ -1228,10 +1205,10 @@ const changeLine = equip => {
 	if (!l.length) {
 		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
 		l = line;
-		
+
 		draw.append(l);
 	}
-	
+
 	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
 }
 
@@ -1247,6 +1224,6 @@ const changeLine = equip => {
 // 	var c = this.getContext('2d');
 // 	var p = c.getImageData(x, y, 1, 1).data;
 //   }
-  
- /* Get Canvas Position X/Y [end] */
+
+/* Get Canvas Position X/Y [end] */
 
