@@ -1161,7 +1161,11 @@ const clearLines = () => {
 	let draw = $('.drawLines');
 	let checkedLines = $("#visiblelines");
 	if (checkedLines.prop("checked"))
-		updateLine();
+		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+
+			updateLine(equip);
+		});
 	else
 		draw.empty();
 }
