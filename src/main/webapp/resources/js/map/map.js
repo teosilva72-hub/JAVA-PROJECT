@@ -302,7 +302,7 @@ $(function () {
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
-	$(".visiblelines").change(clearLines);
+	$("#visiblelines").change(clearLines);
 })
 
 function posReset() {
@@ -1159,14 +1159,15 @@ lines = {
 
 const clearLines = () => {
 	let draw = $('.drawLines');
-	if (checkedLines.prop("check"))
+	let checkedLines = $("#visiblelines");
+	if (checkedLines.prop("checked"))
 		updateLine();
 	else
 		draw.empty();
 }
 
 const updateLine = equip => {
-	let checkedLines = $(".visiblelines");
+	let checkedLines = $("#visiblelines");
 	if (!checkedLines.prop("checked"))
 		return
 		
