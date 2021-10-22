@@ -785,9 +785,10 @@ function sendType() {
 function deleteParameters() {
 
 	document.getElementById('delete-equip-form:equipDel').value = id;
-	document.getElementById('delete-equip-form:tableDel').value = type;
+	document.getElementById('delete-equip-form:tableDel').value = type;	
 	setTimeout(() => {
 		updateTotalId()
+		clearLines();
 	}, 300)
 }
 
@@ -1160,14 +1161,12 @@ lines = {
 const clearLines = () => {
 	let draw = $('.drawLines');
 	let checkedLines = $("#visiblelines");
+	draw.empty();
 	if (checkedLines.prop("checked"))
-		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-			let equip = $(this)
-
-			updateLine(equip);
-		});
-	else
-		draw.empty();
+	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equip = $(this)
+		updateLine(equip);
+	});
 }
 
 const updateLine = equip => {
