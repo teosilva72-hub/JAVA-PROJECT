@@ -304,7 +304,7 @@ $(function () {
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
-	$(".visiblelines").change(updateLines);
+	$(".visiblelines").change(clearLines);
 })
 
 function posReset() {
@@ -1159,16 +1159,21 @@ lines = {
 
 // }
 
+const clearLines = () => {
+	let draw = $('.drawLines');
+	if (checkedLines.prop("check"))
+		updateLine();
+	else
+		draw.empty();
+}
+
 const updateLine = equip => {
 	let checkedLines = $(".visiblelines");
+	if (!checkedLines.prop("checked"))
+		return
+		
 	let draw = $('.drawLines');
 	let container = draw.closest("[scroll-zoom]");
-	if (checkedLines.prop("check")) {
-		draw.empty();
-
-		return
-	}
-	
 
 	draw.css({
 		"width": container.css("width"),
