@@ -1183,8 +1183,15 @@ lines = {
 // }
 
 const changeLine = equip => {
+	let checkedLines = $("#visiblelines");
 	let draw = $('.drawLines');
 	let container = draw.closest("[scroll-zoom]");
+	if (checkedLines.prop("check")) {
+		draw.empty();
+
+		return
+	}
+	
 
 	draw.css({
 		"width": container.css("width"),
