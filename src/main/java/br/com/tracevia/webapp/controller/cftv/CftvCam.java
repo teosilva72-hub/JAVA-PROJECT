@@ -235,7 +235,7 @@ public class CftvCam {
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
 				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
-				presetCall = "";
+				//presetCall = "";
 			}
 		}
 		return presetCall;

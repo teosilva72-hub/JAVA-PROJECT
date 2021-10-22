@@ -145,17 +145,33 @@ function btnPatrol(){
 	x.style.display = "none"
 	y.style.displayc = "block"
 }
+var settingPtz, windowPtz, moreOptionPtz
 function rightButtonCftv(type, id){
+	
+	var add = document.getElementById("addequip")
+	if(add.value == "Añadir"){
+		settingPtz = "Configuración"
+		windowPtz = "PTZ Ventana"
+		moreOptionPtz = "+ Opción"
+	}else if(add.value == "ADICIONAR"){
+		settingPtz = "Configuração"
+		windowPtz = "PTZ Janela"
+		moreOptionPtz = "+ Opção"
+	}else{
+		settingPtz = "Setting"
+		windowPtz = "PTZ Window"
+		moreOptionPtz = "+ Option"
+	} 
 	if($('#cftv6').children('div').length < 2){
 		$(`#${type}${id}`).append(`
 			<div class="mouseDownCftv cftv-right-mouse" id="mouseDownPTZ${id}">
 				<button type="button"
-					class="btn btn-secondary dinamic-mouse-right" onclick="settingCftv()">Setting
+					class="btn btn-secondary dinamic-mouse-right" onclick="settingCftv()">${settingPtz}
 				</button>
 				<button type="button"
-					class="btn btn-dark dinamic-mouse-right window-mouse-right${id}" onclick="windowCftvRight()">PTZ Window
+					class="btn btn-dark dinamic-mouse-right window-mouse-right${id}" onclick="windowCftvRight()">${windowPtz}
 				</button>
-				<button type="button" class="btn btn-secondary dinamic-mouse-right" onclick="moreOptionCftv()">More Option</button>
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" onclick="moreOptionCftv()">${moreOptionPtz}</button>
 			</div>
 		`);
 	}
