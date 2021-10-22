@@ -41,12 +41,10 @@ const init = () => {
 			if (!equip.hasClass('plaque'))
 				equip.on("contextmenu", function (ev) {
 					posReset();
-					console.log("aqui  1")
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
 					if (ev.which == 3 && type == "cftv") {
-						console.log("aqui  2")
 						var cod = document.getElementById("cftvId")
 						cod.value = id
 						//função option cftv

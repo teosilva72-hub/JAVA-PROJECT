@@ -188,7 +188,6 @@ public class CftvCam {
 	public int callPreset() {
 		try {
 			presetCall(Integer.toString(id));
-			//System.out.println("callPreset");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -230,11 +229,9 @@ public class CftvCam {
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
 				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%20"+ext+id+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
-				System.out.println(call);
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 				//presetCall = "";
 			}
 		}
@@ -242,7 +239,6 @@ public class CftvCam {
 	}
 	public int setPreset() {
 		try {
-			//System.out.println("set preset");
 			presetSet(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -258,17 +254,14 @@ public class CftvCam {
 			if(Integer.parseInt(id) > 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
 				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/SetPreset?Camera=PTZ%20"+ext+id+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
-				System.out.println(call);
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
-				System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 			}
 		}
 	}
 	public void UpMove() {
 		try {
-			System.out.println("pra cima");
 			moveUp(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -279,16 +272,13 @@ public class CftvCam {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		MoveUp = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveUp&ResponseFormat=XML&AuthUser=admin";
-		System.out.println(MoveUp);
 		URL url = new URL(MoveUp);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 	public void downMove() {
 		try {
 			moveDown(Integer.toString(id));
-			System.out.println("Pra baixo");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -299,14 +289,11 @@ public class CftvCam {
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		MoveDown = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveDown&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveDown);
-		System.out.println(MoveDown);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 	public void leftMove() {
 		try {
-			System.out.println("Pra esquerda");
 			moveLeft(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -318,14 +305,11 @@ public class CftvCam {
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		MoveLeft = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveLeft);
-		System.out.println(MoveLeft);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 	public void rightMove() {
 		try {
-			System.out.println("Pra direita");
 			moveRight(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -337,14 +321,11 @@ public class CftvCam {
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		MoveRight = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveRight&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(MoveRight);
-		System.out.println(MoveRight);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 	public void zoomInMove() {
 		try {
-			System.out.println("zoom +");
 			MoveZoomIn(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -356,14 +337,11 @@ public class CftvCam {
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		ZoomIn = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(ZoomIn);
-		System.out.println(ZoomIn);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 	public void zoomOutMove() {
 		try {
-			System.out.println("zoom -");
 			MoveZoomOut(Integer.toString(id));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -375,9 +353,7 @@ public class CftvCam {
 		if(Integer.parseInt(cam) < 10)zero = "0";
 		ZoomOut = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser=admin";
 		URL url = new URL(ZoomOut);
-		System.out.println(ZoomOut);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
-		System.out.println(http.getResponseCode() + " " + http.getResponseMessage());
 		http.disconnect();
 	}
 }
