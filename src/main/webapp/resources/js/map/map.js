@@ -302,6 +302,7 @@ $(function () {
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
+	$(".visiblelines").change(updateLines);
 })
 
 function posReset() {
@@ -490,7 +491,7 @@ function posEquip(equip) {
 	});
 
 	if (!equip.hasClass("plaque"))
-		changeLine(equip);
+		updateLine(equip);
 
 	if (equip.attr("class").includes('equip-box-sat')) {
 		let sat_status = equip.attr('status')
@@ -673,7 +674,7 @@ function dragEquip() {
 					left: pos.left
 				})
 
-				changeLine(elmnt);
+				updateLine(elmnt);
 
 				// Save element position on input 
 				document.getElementById("real:equipIdPos").value = id;
@@ -1105,8 +1106,8 @@ function DirectionEquip() {
 /* Draw Map [end] */
 
 lines = {
-	"sos1": [-1, .558],"sos2": [-1, .57],"sos3": [-1, .575],"sos4": [-1, .579],"sos5": [-1, .582],"sos6": [-1, .588],"sos7": [-1, .594],"sos8": [-1, .593],"sos9": [-1, .593],"sos10": [-1, .592],"sos11": [-1, .578],"sos12": [-1, .568],"sos13": [-1, .565],"sos14": [-1, .557],"sos15": [-1, .552],"sos16": [-1, .55],"sos17": [-1, .55],"sos18": [-1, .55],"sos19": [-1, .56],"sos20": [-1, .574],"sos21": [-1, .58],"sos22": [-1, .584],"sos23": [-1, .586],"sos24": [-1, .575],"sos25": [-1, .56],"sos26": [-1, .542],"sos27": [-1, .522],"sos28": [-1, .518],"sos29": [-1, .514],"sos30": [-1, .506],"sos31": [-1, .503],"sos32": [-1, .494],"sos33": [-1, .484],"sos34": [-1, .478],"sos35": [-1, .47],"sos36": [-1, .47],"sos37": [-1, .468],"sos38": [-1, .448],"sos39": [-1, .431],"sos40": [-1, .431],"sos41": [-1, .431],
-	"dai1": [-1, .549],"dai2": [-1, .544],"dai3": [-1, .582],"dai4": [-1, .582],"dai5": [-1, .578],"dai6": [-1, .586],"dai7": [-1, .584],"dai8": [-1, .584],"dai9": [-1, .428],"dai10": [-1, .428],
+	"sos1": [-1, .558], "sos2": [-1, .57], "sos3": [-1, .575], "sos4": [-1, .579], "sos5": [-1, .582], "sos6": [-1, .588], "sos7": [-1, .594], "sos8": [-1, .593], "sos9": [-1, .593], "sos10": [-1, .592], "sos11": [-1, .578], "sos12": [-1, .568], "sos13": [-1, .565], "sos14": [-1, .557], "sos15": [-1, .552], "sos16": [-1, .55], "sos17": [-1, .55], "sos18": [-1, .55], "sos19": [-1, .56], "sos20": [-1, .574], "sos21": [-1, .58], "sos22": [-1, .584], "sos23": [-1, .586], "sos24": [-1, .575], "sos25": [-1, .56], "sos26": [-1, .542], "sos27": [-1, .522], "sos28": [-1, .518], "sos29": [-1, .514], "sos30": [-1, .506], "sos31": [-1, .503], "sos32": [-1, .494], "sos33": [-1, .484], "sos34": [-1, .478], "sos35": [-1, .47], "sos36": [-1, .47], "sos37": [-1, .468], "sos38": [-1, .448], "sos39": [-1, .431], "sos40": [-1, .431], "sos41": [-1, .431],
+	"dai1": [-1, .549], "dai2": [-1, .544], "dai3": [-1, .582], "dai4": [-1, .582], "dai5": [-1, .578], "dai6": [-1, .586], "dai7": [-1, .584], "dai8": [-1, .584], "dai9": [-1, .428], "dai10": [-1, .428],
 	"cftv1": [-1, .558],
 	"cftv2": [-1, .565],
 	"cftv3": [-1, .582],
@@ -1156,9 +1157,16 @@ lines = {
 
 // }
 
-const changeLine = equip => {
+const updateLine = equip => {
+	let checkedLines = $(".visiblelines");
 	let draw = $('.drawLines');
 	let container = draw.closest("[scroll-zoom]");
+	if (checkedLines.prop("check")) {
+		draw.empty();
+
+		return
+	}
+	
 
 	draw.css({
 		"width": container.css("width"),
