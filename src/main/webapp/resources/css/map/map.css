@@ -1412,3 +1412,9 @@ span.close-x {
 
 .drawLines {
 }
+
+.linesbox{
+	position: fixed;
+	left: 49%;
+	bottom: 34px;
+}
