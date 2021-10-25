@@ -25,6 +25,7 @@ public class TesterBean {
 	public List<String> columnsName; 
 	public List<String> searchParameters; 
 
+	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	
 	private ReportSelection select;
@@ -61,6 +62,19 @@ public class TesterBean {
 		List<String> columnsName = Arrays.asList(columns.split(","));
 
 		this.columnsName = columnsName;
+		this.columnsInUse = columnsName;
+	}
+	
+	public List<String> getColumnsInUse() {
+		return columnsInUse;
+	}
+	
+	public void setColumnsInUse(String[] columns) {
+		List<String> cols = new ArrayList<>();
+		for (String col : columns) {
+			cols.add(columnsName.get(Integer.parseInt(col)));
+		}
+		columnsInUse = cols;
 	}
 
 	public void setSearchParameters(String parameter) {
@@ -171,10 +185,12 @@ public class TesterBean {
 	public void createFields() throws Exception {
 		int count = 0;
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
+		String[] columns = SessionUtil.getRequestParameterValuesMap().get("allColumns");
+		setColumnsInUse(columns);
 						
 		String query = "Select ";
-		for (String parameter : searchParameters) {
-			query += String.format("%s, ", parameter);
+		for (String col : columns) {
+			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 

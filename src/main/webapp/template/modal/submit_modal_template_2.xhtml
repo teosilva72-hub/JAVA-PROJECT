@@ -41,6 +41,22 @@
 					<br />
 					<!-- LINE BREAK -->
 
+					<div class="col-12">
+						<div class="form-group col-sm-12 checkbox-field">
+							<span><i class="fas fa-hdd"></i></span> <span for="equips"
+									class="valid-icon-hidden"></span> <select name="allColumns"
+									id="allColumns" multiple="multiple">
+								<c:forEach var="column" items="#{testerBean.columnsInUse}"
+									varStatus="loop">
+									<option value="#{loop.index}">#{column}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="error-label">
+							<label for="allColumns" class="error" id="allColumns-error"></label>
+						</div>
+					</div>
+
 					<!-- EQUIPMENTS OPTIONS -->
 
 					<div class="col-12">

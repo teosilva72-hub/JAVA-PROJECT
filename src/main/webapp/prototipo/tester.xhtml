@@ -37,6 +37,8 @@
 		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
 		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+
 			
 		<!---->
 		
@@ -46,6 +48,8 @@
 		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/speed" name="speed-records-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
 	
 	   <!---->
@@ -90,7 +94,7 @@
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">
 		<!-- DATATABALE JSF -->
-		<c:forEach items="#{testerBean.report.columnName}" var="header" varStatus="loop">
+		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
