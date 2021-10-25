@@ -15,13 +15,13 @@
 	<f:metadata>
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('EQUIP, DATA, STATE')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, state_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_equipment')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Nome de Criação, Data de Criação, Porta, Nome, KM, Direção')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, creation_username, creation_date, port, name, km, direction')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Inicio da chamada')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('end_date', 'Término da chamada')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('creation_date', 'Data da Criação')}" />
+
 		          
     </f:metadata>
 	

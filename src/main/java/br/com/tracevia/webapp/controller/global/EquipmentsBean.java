@@ -1470,7 +1470,12 @@ public class EquipmentsBean implements Serializable {
 	
 		String[] info = new String[4];
 		
-		info = dao.genericInfo(module, id);
+		try {
+			info = dao.genericInfo(module, id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		return info;
 				
@@ -1524,7 +1529,12 @@ public class EquipmentsBean implements Serializable {
 		
 		String[] info = new String[5];
 		
-		info = dao.satInfo(id);
+		try {
+			info = dao.satInfo(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		return info;
 				
@@ -1578,7 +1588,12 @@ public class EquipmentsBean implements Serializable {
 		
 		String[] info = new String[4];
 		
-		info = dao.sosInfo(id);
+		try {
+			info = dao.sosInfo(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		return info;
 				
@@ -1632,7 +1647,12 @@ public class EquipmentsBean implements Serializable {
  		
 		EquipmentsDAO dao = new EquipmentsDAO();
 		
-		info = dao.dmsInfo(id);
+		try {
+			info = dao.dmsInfo(id);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
 		return info;
 				

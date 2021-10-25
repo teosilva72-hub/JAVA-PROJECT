@@ -614,13 +614,6 @@ public class ExcelTemplate {
 	// MAIN TEMPLATES
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	
-	public void generateExcelFile(List<String[]> rows) {
-		
-		
-		  // utilSheet.fileBodySingle(sheet, row, rows, 0, rows, 2);
-	}
-
 	/**  
 	 * Método para criar um modelo para um relátorio para uma única planilha
 	 * @author Wellington 15/10/2021
