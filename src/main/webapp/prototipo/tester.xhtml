@@ -19,7 +19,9 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('EQUIP, DATA, STATE')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
-
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Inicio da chamada')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('end_date', 'Término da chamada')}" />
 		          
     </f:metadata>
 	
@@ -84,7 +86,7 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="speed-records-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">
 		<!-- DATATABALE JSF -->
