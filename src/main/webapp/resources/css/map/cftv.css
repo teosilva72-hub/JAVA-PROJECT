@@ -4,37 +4,38 @@
 	height: 125px;
 	bottom: 40px;
 	left: 350px;
+	height: 125px;
+	bottom: 40px;
 }
 
 .close-cftv {
-	color: #ffffff00;
+	color: white;
 	position: relative;
 	left: 92%;
-	bottom: 35px;
+	bottom: 0;
 	z-index: 1;
 	transition: 2s;
-}
-
-.close-cftv:hover {
-	color: blue;
+	-webkit-text-stroke-width: 1px;
+	-webkit-text-stroke-color: white;
 }
 
 .video-img {
 	position: relative;
 	width: 100%;
-	height: 123px;
+	height: 100%;
 	background: black;
-	bottom: 63px;
+	bottom: 25px;
 	border: black 2px solid;
 }
 
 .text-cftv-barra {
-	position: relative;
-	left: 3%;
-	top: 3px;
-	z-index: 1;
-	color: blue;
-	font-weight: 900;
+    position: sticky;
+    /* left: 41%!important; */
+    bottom: 97%;
+    font-weight: 900;
+    color: #FFF;
+    -webkit-text-stroke-width: 1 px;
+    -webkit-text-stroke-color:  black;
 }
 
 #cftv-modal-setting {
@@ -60,49 +61,189 @@
 	color: black;
 	right: 10px;
 }
+
 .zoom-out-cftv {
 	position: relative;
 	top: 30px;
 	color: black;
 	right: 10px;
 }
-#cftv-top, #cftv-bottom, #cftv-left,
-#cftv-right, #cftv-zoom-in, #cftv-zoom-out{
+
+.play-cftv {
+	position: relative;
+	top: 30px;
+	color: black;
+	right: 10px;
+}
+
+#cftv-top, #cftv-bottom, #cftv-left, #cftv-right, #cftv-zoom-in,
+	#cftv-zoom-out, #cftv-play {
 	position: relative;
 	width: 25px;
 	height: 25px;
 	transition: 1s;
 }
-#cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover,
-#cftv-right:hover, #cftv-zoom-in:hover, #cftv-zoom-out:hover{
+
+#cftv-top:hover, #cftv-bottom:hover, #cftv-left:hover, #cftv-right:hover,
+	#cftv-zoom-in:hover, #cftv-zoom-out:hover, #cftv-play:hover {
 	position: relative;
 	width: 25px;
 	height: 25px;
 	border: solid black 2px;
 }
-#cftv-top{
-    left: 371px;
-    bottom: 145px;	
+
+#cftv-top {
+	left: 371px;
+	bottom: 145px;
 }
-#cftv-bottom{
-    left: 371px;
-    bottom: 115px;
+
+#cftv-bottom {
+	left: 371px;
+	bottom: 115px;
 }
-#cftv-left{
-    left: 344px;
-    bottom: 168px;
+
+#cftv-left {
+	left: 344px;
+	bottom: 168px;
 }
-#cftv-right{
-    left: 399px;
-    bottom: 192px;
+
+#cftv-right {
+	left: 399px;
+	bottom: 192px;
 }
-#cftv-zoom-in{
-    left: 363px;
-    bottom: 159px;
-    width: 20px;
+
+#cftv-zoom-in {
+	left: 363px;
+	bottom: 159px;
+	width: 20px;
 }
-#cftv-zoom-out{
-    left: 383px;
-    width: 20px;
-    bottom: 184px;
+
+#cftv-zoom-out {
+	left: 383px;
+	width: 20px;
+	bottom: 184px;
+}
+
+#cftv-play {
+	left: 406px;
+	width: 20px;
+	bottom: 211px;
+}
+
+.setting-cftv {
+	position: relative;
+	bottom: 32px;
+	left: 46px;
+	color: white;
+}
+
+.preset-call-row {
+	position: relative;
+	bottom: 165px;
+}
+
+.btns-cftv-number {
+	width: 0;
+	margin-top: 5%;
+	font-size: 10pt;
+}
+
+.preset-set-row {
+	position: relative;
+	bottom: 115px;
+}
+
+.input-preset-cftv {
+	width: 45%;
+}
+
+.height-cftv-modal {
+	height: 300px;
+}
+
+.msg-danger {
+	display: none
+}
+
+.msg-danger.show {
+	display: block;
+}
+
+.msg-success {
+	display: none;
+}
+
+.msg-success.show {
+	display: block;
+}
+
+.btn-preset-patrol {
+	position: relative;
+	bottom: 200px;
+	left: 307px;
+	height: 29px;
+}
+
+.cftv-dropdown {
+	left: 280px;
+	top: 2px;
+}
+
+.cftv-dropdown>button {
+	height: 40px;
+}
+
+.drop-down-ptz {
+	width: 184px;
+}
+
+button#dropdown-cftv-btn-icone {
+	font-weight: 900;
+}
+
+button#dropdown-cftv-btn-icone:hover {
+	background: #FF3030;
+	-webkit-box-shadow: 0px 9px 10px -2px rgb(0 0 0/ 55%);
+	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+	box-shadow: 0px 9px 10px -2px rgb(0 0 0/ 55%);
+	-webkit-box-shadow: 0px 9px 10px -2px rgb(0 0 0/ 55%);
+	border: unset;
+}
+
+.col-dropdown-cftv>button {
+	font-weight: 900;
+}
+
+.col-dropdown-cftv>button:hover {
+	font-weight: 900;
+	color: white;
+	background: gray !important;
+}
+
+.d-cftv1, .d-cftv3, .d-cftv5, .d-cftv7, .d-cftv9, .d-cftv11, .d-cftv13,
+	.d-cftv15, .d-cftv17, .d-cftv19 {
+	position: relative;
+	left: 15px;
+}
+
+.d-cftv2, .d-cftv4, .d-cftv6, .d-cftv8, .d-cftv10, .d-cftv12, .d-cftv14,
+	.d-cftv16, .d-cftv18, .d-cftv20 {
+	position: relative;
+	right: 15px;
+}
+
+.mouseDownCftv {
+	z-index: 1;
+	position: relative;
+	color: black;
+	bottom: 0px;
+	width: 150px;
+}
+
+.dinamic-mouse-right {
+	width: 100%;
+}
+
+#listPMV1 {
+	display: none;
 }

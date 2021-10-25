@@ -295,8 +295,6 @@ table {
 /* MAP OPTIONS DIV */
 .map-options {
 	position: absolute;
-	width: 700px;
-	height: 50px;
 	z-index: 9999;
 	margin-top: 1px;
 	margin-left: 5px;
@@ -332,8 +330,9 @@ table {
 }
 
 #addequip {
-	margin-left: 190px;
-	margin-top: 2px;
+    position: relative;
+    left: 149px;
+    bottom: 38px;
 }
 
 #cancelPos {
@@ -761,10 +760,25 @@ input[type="number"] {
 /* INPUT NUMBER ARROWS REMOVED END */
 
 /* BUTTON EQUIP SIZE */
-#dropdwnsizebtn {
-	position: fixed;
-	right: 20px;
-	z-index: 999;
+button#dropdwnsizebtn {
+    position: fixed;
+    right: 20px;
+    z-index: 999;
+    height: 40px;
+    top: 89px;
+}
+@media (max-width:595px){
+	#dropdwnsizebtn{
+		display:none;
+	}
+}
+button#dropdwnsizebtn:hover{
+	 background: #FF3030;
+    -webkit-box-shadow: 0px 9px 10px -2px rgb(0 0 0 / 55%);
+    -moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
+    box-shadow: 0px 9px 10px -2px rgb(0 0 0 / 55%);
+    -webkit-box-shadow: 0px 9px 10px -2px rgb(0 0 0 / 55%);
+    border: unset;
 }
 /* BUTTON EQUIP SIZE END */
 
@@ -1341,8 +1355,8 @@ span.close-x {
 
 .equipLine {
 	position: absolute;
-	bottom: 123px;
-	left: 38px;
+	width: 100%;
+	height: 100%;
 	
 }
 
@@ -1350,6 +1364,23 @@ span.close-x {
 	position: absolute;
 	top: 114px;
 	left: 38px;
+	width: 1px;
+	
+}
+
+.equipLineSPEED {
+	position: absolute;
+	bottom: 302px;
+	left: 38px;
+	width: 1px;
+	
+}
+
+.equipLineTopSPEED {
+	position: absolute;
+	top: 304px;
+	left: 38px;
+	width: 1px;
 	
 }
 
@@ -1376,3 +1407,14 @@ span.close-x {
 	background: black;
 }
 /*END EDITION CFTV*/
+
+/* Draw Lines */
+
+.drawLines {
+}
+
+.linesbox{
+	position: fixed;
+	left: 52%;
+	bottom: 34px;
+}

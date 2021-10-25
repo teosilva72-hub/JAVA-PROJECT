@@ -351,45 +351,45 @@
                             <c:when test="#{item.table_id eq 'speed'}">
 
                                 <!-- Card Speed -->
-                                <div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.linearPosX}"
-                                    posY="#{item.linearPosY}" item-width="#{item.linearWidth}">
-
-                                    <div class="card-header py-0 text-center">
-                                        <p>#{item.nome}</p>
-                                    </div>
-                                    <div class="card-body p-1 speed-limit equip-status-indicator">
-                                        <div class="speed-border rounded bg-light">
-                                            <div class="speed-mold rounded">
-                                                <div class="row text-center">
-                                                    <div class="col-12 speed-name">Velocidad Maxima</div>
-                                                    <div class="col-12 m-1">
-                                                        <div class="bg-secondary rounded speed-plate">
-                                                            <div class="speed-number">000</div>
-                                                        </div>
+                                <div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                
+                                <div class="card-header py-0 text-center text-white">
+                                    <p>#{item.nome}</p>
+                                </div>
+                                <div class="card-body p-1 speed-limit equip-status-indicator">
+                                    <div class="speed-border rounded bg-light">
+                                        <div class="speed-mold rounded">
+                                            <div class="row text-center">
+                                                <div class="col-12 speed-name">#{speedLabels.speed_realtime_indicator}</div>
+                                                <div class="col-12 m-1">
+                                                    <div class="bg-secondary rounded speed-plate">
+                                                        <div class="speed-number">000</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body p-1 speed-speedy equip-status">
-                                        <div class="speed-border rounded speed-color">
-                                            <div class="speed-mold rounded">
-                                                <div class="row text-center">
-                                                    <div class="col-12 speed-name">Su Velocidad</div>
-                                                    <div class="col-12 m-1">
-                                                        <div class="bg-secondary rounded speed-plate">
-                                                            <div class="speed-number">000</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer p-0 text-center">
-                                        <small class="text-muted">#{item.km}</small>
                                     </div>
                                 </div>
-                                <!-- Card Speed End -->
+                                <div class="card-body p-1 speed-speedy equip-status">
+                                    <div class="speed-border rounded speed-color">
+                                        <div class="speed-mold rounded">
+                                            <div class="row text-center">
+                                                <div class="col-12 speed-name">#{speedLabels.speed_realtime_radar}</div>
+                                                <div class="col-12 m-1">
+                                                    <div class="bg-secondary rounded speed-plate">
+                                                        <div class="speed-number">000</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-0 text-center">
+                                    <small class="text-white">#{item.km}</small>
+                                </div>
+                            </div>
+                            <!-- Card Speed End -->
 
                             </c:when>
                                                                 

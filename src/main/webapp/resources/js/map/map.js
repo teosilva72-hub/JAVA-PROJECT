@@ -37,8 +37,22 @@ const init = () => {
 			let equip = $(this)
 
 			posEquip(equip)
-
-			if (!equip.attr('class').includes('plaque'))
+			//mouse cftv botão direito
+			if (!equip.hasClass('plaque'))
+				equip.on("contextmenu", function (ev) {
+					posReset();
+					id = equip.attr('id').match(/\d+/g)[0];
+					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
+					toDrag = `#${equip.attr('id')}`
+					if (ev.which == 3 && type == "cftv") {
+						var cod = document.getElementById("cftvId")
+						cod.value = id
+						//função option cftv
+						rightButtonCftv(type, id)
+						ev.preventDefault()
+					}
+				})
+			if (!equip.hasClass('plaque') && equip.attr('id').match(/[a-zA-Z]+/g)[0] != "cftv")
 				equip.dblclick(function () {
 					posReset();
 
@@ -47,16 +61,19 @@ const init = () => {
 					toDrag = `#${equip.attr('id')}`
 					$('#OPmodal').modal('toggle');
 					//add btn setting cftv and icon
-					if(type =="cftv"){
+					if (type == "cftv") {
 						var cod = document.getElementById("cftvId")
 						cod.value = id
-						  
-					} 
+						$('.cftv-modal-btn').removeClass('none')
+						getInfo()
+					} else {
+						$('.cftv-modal-btn').addClass('none')
+					}
 					////////////////////////////////////////
 				});
 
 			$(window).resize(function () {
-				posEquip(equip)
+				posEquip(equip);
 			})
 		})
 
@@ -65,17 +82,18 @@ const init = () => {
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
-		
-		if(window.initPMV)
-		  initPMV();
+		DirectionEquip();
 
-		if(window.initSOS)
-		  initSOS();
+		if (window.initPMV)
+			initPMV();
 
-		if(window.initMonitor)		
+		if (window.initSOS)
+			initSOS();
+
+		if (window.initMonitor)
 			initMonitor();
-	  
-		if(window.initSPEED)		
+
+		if (window.initSPEED)
 			initSPEED();
 	})
 }
@@ -158,7 +176,7 @@ $(function () {
 			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
-				$('.dmsHidden-edit').hide();			
+				$('.dmsHidden-edit').hide();
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
@@ -225,30 +243,30 @@ $(function () {
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
-			
-			}else if (selectVAL == 10) {
-				
-				$('.sosInputs-edit').show();			
+
+			} else if (selectVAL == 10) {
+
+				$('.sosInputs-edit').show();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.ipAddressShow-edit').show();
 
 			} else if (selectVAL == 11) {
-				
-				$('.sosInputs-edit').hide();			
+
+				$('.sosInputs-edit').hide();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').show();
-                $('.ipAddressShow-edit').hide();
+				$('.ipAddressShow-edit').hide();
 
 			} else {
 
-				$('.dmsHidden-edit').hide();			
+				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.sosInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.ipAddressShow-edit').show();
 			}
 
 		}, 100)
@@ -275,90 +293,16 @@ $(function () {
 			.find('.grid-img').css('height', area / 3)
 	})
 
-	//FULLSCREEN
-	// $('.zoomFull').addClass('img-enlargeable').click(function () {
-	//	var src = this.getAttribute('target');
-	//	var modal;
-	//	let pos = { top: 0, left: 0, x: 0, y: 0 }
-	//	let img = $('<img />').attr('src', src).addClass('box-img')
-	//	let frame = $('<div></div>').css({
-	//		width: '90%', height: '90%',
-	//		transform: 'translate(-50%, -50%)',
-	//		position: 'relative',
-	//		top: '50%', left: '50%',
-	//		overflow: 'hidden',
-	//	}).append(img)
-
-	//	function removeModal() { modal.remove(); $('body').off('keyup.modal-close'); }
-
-	//	modal = $('<div></div>').css({
-	//		background: 'RGBA(0,0,0,1.0)',
-	//		width: '100%', height: '100%',
-	//		position: 'fixed',
-	//		zIndex: '10000',
-	//		top: '0', left: '0',
-	//	}).append(frame).click(function () { removeModal(); }).appendTo('body')
-	//Zoom
-	//	img.click(function (e) { e.stopPropagation() })
-	//		.on("dragstart", function () { return false })
-	//		.on("mousedown", function (down) {
-	//			if (down.target.hasAttribute("zoom")) {
-	//				pos = {
-	//					left: frame.scrollLeft(),
-	//					top: frame.scrollTop(),
-	//					x: down.clientX,
-	//					y: down.clientY,
-	//				};
-	//				img.on("mousemove", function (move) {
-	//					img.css({ "cursor": "grabbing" })
-	//						.off("mouseup").on("mouseup", function () {
-	//							img.css({ "cursor": "zoom-out" }).off("mousemove")
-	//						})
-	//					const dx = move.clientX - pos.x;
-	//					const dy = move.clientY - pos.y;
-	//					frame
-	//						.scrollTop(pos.top - dy)
-	//						.scrollLeft(pos.left - dx)
-	//				}).off("mouseup").on("mouseup", function () {
-	//					img.css({ "cursor": "zoom-in" }).off("mousemove")
-	//					this.toggleAttribute("zoom")
-	//				})
-	//			} else {
-	//				img.off("mouseup").on("mouseup", function (e) {
-	//					let click = {
-	//						top: (e.pageY - img.offset().top) / img.height(),
-	//						left: (e.pageX - img.offset().left) / img.width(),
-	//					}
-	//					this.toggleAttribute("zoom")
-	//					img.css({ "cursor": "zoom-out" })
-	//					frame
-	//						.scrollLeft(
-	//							click.left * e.target.scrollWidth - frame.width() / 2
-	//						).scrollTop(
-	//							click.top * e.target.scrollHeight - frame.height() / 2
-
-	//						)
-
-	//				})
-	//			}
-	//		});
-
-	// handling ESC
-	//	$('body').on('keyup.modal-close', function (e) {
-	//		if (e.key === 'Escape') { removeModal(); }
-	//	});
-	//	});
-	// FULLSCREEN END
-
 	// POS EQUIP
 
-
+	// drawImageActualSize();
 
 	//Equipments change sizes END
 
 	$('#coefSize').change(function () {
 		resizeEquipScale($('[scroll-zoom]'))
 	})
+	$("#visiblelines").change(clearLines);
 })
 
 function posReset() {
@@ -505,7 +449,7 @@ function resizeEquipScale(container) {
 
 	scaleB = ((max / allEquip.length) / toolbox.width());
 	toolbox.css('transform', `translateX(-50%) scale(${scaleB * scale})`).attr('scale', scaleB)
-	
+
 }
 
 //RESIZE EQUIPMENT
@@ -545,6 +489,9 @@ function posEquip(equip) {
 		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
 		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 	});
+
+	if (!equip.hasClass("plaque"))
+		updateLine(equip);
 
 	if (equip.attr("class").includes('equip-box-sat')) {
 		let sat_status = equip.attr('status')
@@ -702,6 +649,8 @@ function dragEquip() {
 			.on("mousemove", function (e) {
 				e.preventDefault();
 
+				console.log(elmnt);
+
 				// Calculate the new cursor position:
 				pos1 = pos3 - e.clientX;
 				pos2 = pos4 - e.clientY;
@@ -724,6 +673,8 @@ function dragEquip() {
 					top: pos.top,
 					left: pos.left
 				})
+
+				updateLine(elmnt);
 
 				// Save element position on input 
 				document.getElementById("real:equipIdPos").value = id;
@@ -832,8 +783,13 @@ function sendType() {
 }
 
 function deleteParameters() {
+
 	document.getElementById('delete-equip-form:equipDel').value = id;
-	document.getElementById('delete-equip-form:tableDel').value = type;
+	document.getElementById('delete-equip-form:tableDel').value = type;	
+	setTimeout(() => {
+		updateTotalId()
+		clearLines();
+	}, 300)
 }
 
 function deleteInfo() {
@@ -958,7 +914,7 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
-			    $('.sosInputs').hide();
+				$('.sosInputs').hide();
 				$('.speedHidden').hide();
 				$('.ipAddressShow').show();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
@@ -1019,7 +975,7 @@ $(function () {
 					});
 
 			} else if (selectVAL == 8) {
-				
+
 				$('.dmsHidden').show(); // DIV DMS TYPE				
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
@@ -1028,7 +984,7 @@ $(function () {
 
 			} else if (selectVAL == 10) {
 
-				$('.sosInputs').show();				
+				$('.sosInputs').show();
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
@@ -1039,16 +995,16 @@ $(function () {
 				$('.speedHidden').show();
 				$('.sosInputs').hide();
 				$('.dmsHidden').hide();
-				$('.satInputs').hide();				
+				$('.satInputs').hide();
 				$('.ipAddressShow').hide();
 
 			} else {
 
-				$('.dmsHidden').hide();			
+				$('.dmsHidden').hide();
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
-				$('.ipAddressShow').show();				
+				$('.ipAddressShow').show();
 			}
 
 		}, 100)
@@ -1100,27 +1056,189 @@ $(function () {
 
 /* show hidden buttons */
 
-function cftvTop(){
+function cftvTop() {
 	alert("^")
 }
-function cftvLeft(){
+function cftvLeft() {
 	alert("<")
 }
-function cftvRight(){
+function cftvRight() {
 	alert(">")
 }
-function cftvBottom(){
+function cftvBottom() {
 	alert("v")
 }
 
-/* top and bottom line */
+function DirectionEquip() {
+	/* top and bottom line */
 
-/*if ('[id$=#{item.table_id}]') {
-	$('.equipLine').show();
-	$('.equipLineTop').hidden();
-} else {
-	$('.equipLineTop').show();
-	$('.equipLine').hidden();
-}*/
+	$('.equip-info[direction], .equip-box[direction], .equip-box-sat[direction]').each(function (idx, item) {
+		item = $(item)
+		if (item.attr('direction') == 'N') {
+			item.find('.equipLine').show();
+			item.find('.equipLineSPEED').show();
+			item.find('.equipLineTop').hide();
+			item.find('.equipLineTopSPEED').hide();
+		} else {
+			item.find('.equipLineTop').show();
+			item.find('.equipLineTopSPEED').show();
+			item.find('.equipLine').hide();
+			item.find('.equipLineSPEED').hide();
+		}
+	})
 
-/* top and bottom line [end] */
+	/* top and bottom line [end] */
+}
+
+/* Draw Map [end] */
+
+// function drawImageActualSize() {
+
+// 	const canvas = document.getElementById('mapDraw');
+// 	const ctx = canvas.getContext('2d');
+// 	const image = document.getElementById('mapCity');
+
+// 	canvas.width = image.width;
+// 	canvas.height = image.height;
+
+// 	ctx.drawImage(image, 0, 0, image.width, image.height);
+
+// }
+/* Draw Map [end] */
+
+lines = {
+	"sos1": [-1, .558], "sos2": [-1, .57], "sos3": [-1, .575], "sos4": [-1, .579], "sos5": [-1, .582], "sos6": [-1, .588], "sos7": [-1, .594], "sos8": [-1, .593], "sos9": [-1, .593], "sos10": [-1, .592], "sos11": [-1, .578], "sos12": [-1, .568], "sos13": [-1, .565], "sos14": [-1, .557], "sos15": [-1, .552], "sos16": [-1, .55], "sos17": [-1, .55], "sos18": [-1, .55], "sos19": [-1, .56], "sos20": [-1, .574], "sos21": [-1, .58], "sos22": [-1, .584], "sos23": [-1, .586], "sos24": [-1, .575], "sos25": [-1, .56], "sos26": [-1, .542], "sos27": [-1, .522], "sos28": [-1, .518], "sos29": [-1, .514], "sos30": [-1, .506], "sos31": [-1, .503], "sos32": [-1, .494], "sos33": [-1, .484], "sos34": [-1, .478], "sos35": [-1, .47], "sos36": [-1, .47], "sos37": [-1, .468], "sos38": [-1, .448], "sos39": [-1, .431], "sos40": [-1, .431], "sos41": [-1, .431],
+	"dai1": [-1, .549], "dai2": [-1, .544], "dai3": [-1, .582], "dai4": [-1, .582], "dai5": [-1, .578], "dai6": [-1, .586], "dai7": [-1, .584], "dai8": [-1, .584], "dai9": [-1, .428], "dai10": [-1, .428],
+	"cftv1": [-1, .558],
+	"cftv2": [-1, .565],
+	"cftv3": [-1, .582],
+	"cftv4": [-1, .549],
+	"cftv5": [-1, .549],
+	"cftv6": [-1, .549],
+	"cftv7": [-1, .549],
+	"cftv8": [-1, .549],
+	"cftv9": [-1, .549],
+	"cftv10": [-1, .549],
+	"cftv11": [-1, .549],
+	"cftv12": [-1, .549],
+	"cftv13": [-1, .549],
+	"cftv14": [-1, .549],
+	"cftv15": [-1, .549],
+	"cftv16": [-1, .549],
+}
+
+// const setLines = () => {
+// 	let draw = $('.drawLines');
+// 	let container = $("#zoomtext.section");
+// 	let equips = $('.equip-box, .equip-info, .equip-box-sat');
+
+// 	draw.css({
+// 		"width": container.css("width"),
+// 		"height": container.css("height")
+// 	})
+
+// 	for (const equip of equips) { // ᓚᘏᗢ´  ಥ_ಥ
+// 		let e = $(equip);
+// 		let id = e.attr("id");
+// 		let l = draw.find(`.equipLine.${id}`);
+// 		let pos = {
+// 			"x": Number(e.css("left").replace("px", "")),
+// 			"y": Number(e.css("top").replace("px", ""))
+// 		};
+
+// 		if (!l.length) {
+// 			let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:1"></polyline></svg>`);
+// 			l = line;
+
+// 			draw.append(l);
+// 		}
+
+// 		l.find("polyline").attr("points", `${lines[id] ? lines[id] : `${pos.x / scale},${pos.y / scale}`} ${pos.x / scale},${pos.y / scale}`);
+// 	}
+
+// }
+
+const clearLines = () => {
+	let draw = $('.drawLines');
+	let checkedLines = $("#visiblelines");
+	draw.empty();
+	if (checkedLines.prop("checked"))
+	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		let equip = $(this)
+		updateLine(equip);
+	});
+}
+
+const updateLine = equip => {
+	let checkedLines = $("#visiblelines");
+	if (!checkedLines.prop("checked"))
+		return
+		
+	let draw = $('.drawLines');
+	let container = draw.closest("[scroll-zoom]");
+
+	draw.css({
+		"width": container.css("width"),
+		"height": container.css("height")
+	})
+
+	let id = equip.attr("id");
+	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
+	let l = draw.find(`.equipLine.${id}`);
+	let equipScale = equip.attr("scale");
+	let dimension = {
+		"width": equip.width() * equipScale,
+		"height": equip.height() * equipScale,
+	}
+	let pos = {
+		"x": Number(equip.css("left").replace("px", "")) / scale,
+		"y": Number(equip.css("top").replace("px", "")) / scale
+	};
+
+	let point = {
+		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
+		"y": (lines[id] ? lines[id][1] : .5) * container.height()
+	};
+
+	let difference = {
+		"x": point.x - pos.x,
+		"y": point.y - pos.y,
+	}
+	difference.absX = Math.abs(difference.x);
+	difference.absY = Math.abs(difference.y);
+
+	if (difference.absX > difference.absY) {
+		let x = difference.x / difference.absX;
+		pos.x += dimension.width * .65 * x;
+	} else {
+		let y = difference.y / difference.absY;
+		pos.y += dimension.height * .85 * y;
+	}
+	pos.x += dimension.width / (dimension.width - 1);
+	// pos.y += dimension.height / (dimension.height - .1);
+
+	if (!l.length) {
+		let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.4"></polyline></svg>`);
+		l = line;
+
+		draw.append(l);
+	}
+
+	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
+}
+
+/* Get Canvas Position X/Y */
+
+// function getPosition(e) {
+// 	// getBoundingClientRect to retrieve the position of our canvas in the doc
+// 	var rect = this.getBoundingClientRect();
+// 	// we also need to use clientX and clientY values now
+// 	var x = e.clientX - rect.left;
+// 	var y = e.clientY - rect.top;
+// 	var coord = "x=" + x + ", y=" + y;
+// 	var c = this.getContext('2d');
+// 	var p = c.getImageData(x, y, 1, 1).data;
+//   }
+
+/* Get Canvas Position X/Y [end] */
+

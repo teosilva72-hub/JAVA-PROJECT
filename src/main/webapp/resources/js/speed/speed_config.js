@@ -33,8 +33,8 @@ const saveAllSpeed = (e, sameKm) => {
         form.displayRange2.value = e.displayRange2.value
         form.displayLimit.value = e.displayLimit.value
         form.displayTolerated.value = e.displayTolerated.value
-        form.displayFlash.value = e.displayFlash.value
-        form.displayStrobe.value = e.displayStrobe.value
+        form.displayFlash.value = e.displayFlashOption.checked ? e.displayFlash.value : 0
+        form.displayStrobe.value = e.displayStrobeOption.checked ? e.displayStrobe.value : 0
 
         $([form.stealthMode, form.displayFlash, form.displayStrobe]).trigger("change")
     }).submit()

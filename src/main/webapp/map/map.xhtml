@@ -17,10 +17,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>#{mapLabels.home_map}</title>
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
+		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
 		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
-		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
-		<h:outputStylesheet name="speed-real.css" library="css/speed" />
+		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="cftv.css" library="css/map" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 		<h:outputStylesheet library="css/validation"
@@ -128,16 +128,46 @@
 					data-trigger="hover">
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
+				<!-- CFTV OPTION DROPDOWN EQUIPMENT BTN CLICK RIGHT MOUSE -->
 
+				<!--  -->
+				<!-- CFTV LIST EQUIPS TOP PAGE-->
+				<h:form prependId="false" id="sumIdCftv">
+					<div class="dropdown cftv-dropdown">
+						<button class="btn btn-dark dropdown-toggle" type="button"
+							id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							PTZ <i class="far fa-window-restore"></i>
+						</button>
+						<div class="dropdown-menu drop-down-ptz"
+							aria-labelledby="dropdownMenu2">
+							<div class="row">
+								<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+									<div class="col-md-6 col-dropdown-cftv">
+										<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+											type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+											#{ptz}</button>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+					<h:commandButton style="display:none;" id="btnCftvSumTotal">
+						<f:ajax execute="@form" render=":sumIdCftv" listener="#{CftvCam.totalId}"/>
+					</h:commandButton>
+				</h:form>
+				<!--  -->
 				<c:if test="#{ SuperAdmin }">
 
 					<input id="addequip" type="button"
 						class="btn btn-dark form-modal-draw-button"
-						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();"
+						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();cftvInput();"
 						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
 						value="#{mapLabels.map_creation_btn_add_equipment}"> </input>
 
 				</c:if>
+
 				<div class="paleta-cores">
 					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
 						onclick="color()" href="#paleta" role="button"
@@ -167,7 +197,15 @@
 						</div>
 					</div>
 				</div>
-			</div>
+				
+					<div class="linesbox">
+						<div>
+	  						<input type="checkbox" id="visiblelines" name="visiblelines" checked=""></input>
+	  						<label for="visiblelines">Lines</label>
+						</div>
+					</div>
+					
+				</div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
@@ -220,7 +258,7 @@
 		<!-- DropDown Equip Size Menu -->
 		<div class="dropleft">
 
-			<button class="btn btn-secondary dropdown-toggle" type="button"
+			<button class="btn btn-dark dropdown-toggle" type="button"
 				id="dropdwnsizebtn" data-toggle="dropdown" aria-haspopup="true"
 				aria-expanded="false">#{mapLabels.map_size_equip_button}</button>
 
@@ -382,38 +420,39 @@
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="2.5" max-scale="12"
 			id="content"> <!-- START SECTION -->
-		<div id="zoomtext" scale="1" class="section">
-			<!-- MAP FRONT IMAGE -->
-			<h:graphicImage class="grab-map" width="100%"
-				value="#{loginAccount.mapUI}" />
-		</div>
+			<div id="zoomtext" scale="1" class="section">
 
+				<!-- MAP FRONT IMAGE -->
 
-
-		<!-- Label -->
-		<div id="labelPos">
-			<label id="posX"></label> <label id="posY"></label>
-		</div>
-
-		<!-- <div class="horizontal_dotted_line"></div> --> <!-- Drag Items -->
-		<!-- CAUSE -->
-
-		<div class="draggable" id="equipAll"></div>
-
-		<!-- <div class="square_tool" id="toolOne"></div> --> <!--  --> <!-- Plaque -->
-		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
-			<div>
-				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
-						<img width="75"
-							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
-					</div>
-				</c:forEach>
+				<div class="drawLines grab-map"></div>
+				<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+					value="#{loginAccount.mapUI}" />
 			</div>
 
+			<!-- Label -->
+			<div id="labelPos">
+				<label id="posX"></label> <label id="posY"></label>
+			</div>
 
-		</ui:fragment> </section>
+			<!-- Drag Items --> <!-- CAUSE -->
+
+			<div class="draggable" id="equipAll"></div>
+
+			<!-- Plaque -->
+			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+				<div>
+					<c:forEach items="#{roadView.plaque}" var="plaque">
+						<div class="plaque" posX="#{plaque.map_posX}"
+							posY="#{plaque.map_posY}">
+							<img width="75"
+								src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+						</div>
+					</c:forEach>
+				</div>
+
+			</ui:fragment>
+		</section>
 
 	</ui:define>
 
@@ -1055,12 +1094,12 @@
 
 							<button id="btn-form-confirm"
 								class="btn btn-dark form-modal-draw-button" type="button"
-								onclick="verif('#register-equip-form', '[id$=btn-form-send]')">#{mapLabels.map_creation_btn_save_equipment}</button>
+								onclick="verif('#register-equip-form', '[id$=btn-form-send]'),  updateTotalId()">#{mapLabels.map_creation_btn_save_equipment}</button>
 
 							<h:commandButton id="btn-form-send" p:data-toggle="modal"
 								p:data-target="#modaladd" style="display: none;">
 								<f:ajax execute="@form"
-									render=":equips :equipIds :equipName :cities :roads :km 
+									render=":equips :equipIds :equipName :cities :roads :km :sumIdCftv
 									:lanes :direction1 :direction2 :direction3 :direction4 :direction5 :direction6 :direction7 : direction8"
 									listener="#{equipsBean.createEquipment}"
 									onevent="onEventMapFunction" />
@@ -1191,21 +1230,23 @@
 									</div>
 									<!---->
 									<!-- INICIO BOTAO CFTV MODAL-->
-									<div class="col-md-4 cftv-modal-btn">
-										<h:commandButton id="setting-cftv-one" value="Configuração"
-											class="btn btn-dark form-modal-draw-button"
-											onclick="getInfo()">
+									<div class="col-md-4 cftv-modal-btn none">
+										<h:commandButton id="setting-cftv-one"
+											class="btn btn-dark form-modal-draw-button">
+											<i class="fas fa-sliders-h setting-cftv"></i>
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
 												value="#cftv-modal-setting" />
-											<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" />
+											<f:ajax execute="@form" onevent="presetCftv"
+												render=":id-cftv :img-cftv-cam" />
 										</h:commandButton>
 									</div>
-									<div class="col-md-4 cftv-modal-btn">
-										<h:commandLink id="setting-cftv-two" value="Janela"
-											class="btn btn-dark form-modal-draw-button"
-											onclick="cftvVideo()">
-											<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" />
+									<div class="col-md-4 cftv-modal-btn none">
+										<h:commandLink id="setting-cftv-two"
+											class="btn btn-dark form-modal-draw-button">
+											<i class="far fa-window-restore"></i>
+											<f:ajax execute="@this" onevent="cftvEvent"
+												render=":id-cftv :img-cftv-cam :cftv-modal-setting" />
 										</h:commandLink>
 									</div>
 									<!-- FINAL BOTÃO CFTV MODAL -->
@@ -1231,61 +1272,112 @@
 						<h:form prependId="false" id="img-cftv-cam">
 							<div class="modal-header">
 								<h5 class="modal-title" id="staticBackdropLabel">
-									<b>PTZ: #{CftvCam.id}</b> - <b>Km: #{CftvCam.km}</b></h5>
+									<b>PTZ: #{CftvCam.id}</b> - <b>Km: #{CftvCam.km}</b>
+								</h5>
 								<button type="button" class="close" data-dismiss="modal"
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
-							<div class="modal-body">
+							<div class="modal-body height-cftv-modal">
+								<h:inputHidden id="url-img" value="#{CftvCam.camCftv}" />
 								<img src="#{CftvCam.camCftv}" class="img-cftv-setting" /> <img
 									src="data:image/png;base64, #{CftvCam.imgControle}"
 									class="img-cftv-controller" /> <i
 									class="fas fa-search-plus zoom-in-cftv"></i> <i
 									class="fas fa-search-minus zoom-out-cftv"></i>
-									<div id="cftv-top" onclick="cftvTop()"></div>
-									<div id="cftv-bottom" onclick="cftvBottom()"></div>
-									<div id="cftv-left" onclick="cftvLeft()"></div>
-									<div id="cftv-right" onclick="cftvRight()"></div>
-									<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
-									<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
-									<h:commandButton style="display:none" id="cftvMoveUp">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.UpMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveDown">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.downMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveLeft">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.leftMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveRight">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.rightMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveIn">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.zoomInMove}"/>
-									</h:commandButton>
-									<h:commandButton style="display:none" id="cftvMoveOut">
-										<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
-											listener="#{CftvCam.zoomOutMove}"/>
-									</h:commandButton>
-									
-							</div>
+								<!--  <i
+									class="fas fa-play play-cftv"></i>-->
+								<div id="cftv-top" onclick="cftvTop()"></div>
+								<div id="cftv-bottom" onclick="cftvBottom()"></div>
+								<div id="cftv-left" onclick="cftvLeft()"></div>
+								<div id="cftv-right" onclick="cftvRight()"></div>
+								<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
+								<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
+								<div id="cftv-play" onclick="cftvPlay"></div>
+								<div class="btn-group btn-group-sm btn-preset-patrol"
+									style="display: none;" role="group" aria-label="Basic example">
+									<button type="button" class="btn btn-primary"
+										id="preset-row-btn" onclick="btnPreset()">Preset</button>
+									<button type="button" class="btn btn-dark" id="patrol-row-btn"
+										onclick="btnPatrol()">#{mapLabels.cftv_patrol}</button>
+								</div>
+								<div class="row preset-call-row">
+									<div class="col-md-12">
+										<div class="alert alert-danger msg-danger" role="alert">#{mapLabels.cftv_preset_error}</div>
+										<div class="alert alert-success msg-success" role="alert">#{mapLabels.cftv_preset_sucess}</div>
+										<span class="text-center"
+											style="font-weight: 900; color: black;">#{mapLabels.preset_call}:
+										</span> <input class="input-preset-cftv"
+											value="#{CftvCam.presetCall}" id="window-cftv1"
+											disabled="true" maxlength="3" type="number" />
+										<h:inputHidden id="window-cftv" class="input-preset-cftv"
+											value="#{CftvCam.presetCall}" maxlength="3" />
+										<br></br>
+									</div>
+									<div class="col-md-12">
+										<div class="btn-toolbar mb-3" role="toolbar"
+											aria-label="Toolbar with button groups">
+											<div class="btn-group mr-2" role="group"
+												aria-label="First group">
+												<c:forEach begin="0" end="9" var="number">
+													<button type="button" class="btn btn-dark btns-cftv-number"
+														id="number-preset#{number}">#{number}</button>
+													<hr></hr>
+												</c:forEach>
+												<h:commandLink type="button" class="btn btn-success"
+													id="number-preset-ok" style="margin-top: 5%;">
+													<i class="fas fa-paper-plane"></i>
+													<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+														listener="#{CftvCam.callPreset}" />
+												</h:commandLink>
+												<button type="button" class="btn btn-danger"
+													onclick="removeNumber()" style="margin-top: 5%;">
+													<i class="fas fa-backspace"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row preset-patrol-row" style="display: none">
+									asd</div>
+								<h:commandButton style="display:none" id="cftvMoveUp">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.UpMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveDown">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.downMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveLeft">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.leftMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveRight">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.rightMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveIn">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.zoomInMove}" />
+								</h:commandButton>
+								<h:commandButton style="display:none" id="cftvMoveOut">
+									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
+										listener="#{CftvCam.zoomOutMove}" />
+								</h:commandButton>
 
+							</div>
 						</h:form>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary"
-								data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Understood</button>
+							<button type="button" class="btn btn-dark" data-dismiss="modal">
+								<i class="fas fa-undo-alt"></i>
+							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- FINAL CFTV SETTING MODAL -->
+			<!-- CFTV WINDOW MIN -->
 			<h:form prependId="false" id="cftv-videos">
 				<div id="dinamic-div-cftv"></div>
 			</h:form>
@@ -2055,8 +2147,8 @@
 										class="btn btn-dark form-modal-draw-button"
 										p:data-toggle="modal" p:data-target="#deletemodal"
 										onclick="deleteParameters();">
-										<f:ajax execute="@all" render="@none"
-											listener="#{equipsBean.DeleteEquipment}" />
+										<f:ajax execute="@form" render=":sumIdCftv"
+											listener="#{equipsBean.DeleteEquipment}"/>
 									</h:commandButton>
 									<!---->
 

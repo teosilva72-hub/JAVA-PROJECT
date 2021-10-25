@@ -2,6 +2,7 @@ var widthMax = 1000
 var heightMax = 1000
 var scale = 1
 
+////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))
@@ -19,8 +20,14 @@ const init = () => {
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
-
 					$('#OPmodal').modal('toggle');
+					//add btn setting cftv and icon
+					if(type =="cftv"){
+						var cod = document.getElementById("cftvId")
+						cod.value = id
+						  
+					} 
+					////////////////////////////////////////
 				});
 
 			$(window).resize(function () {
@@ -37,6 +44,12 @@ const init = () => {
 
 		if(window.initSOS)
 		  initSOS();
+
+		if(window.initMonitor)		
+			initMonitor();
+	  
+		if(window.initSPEED)		
+			initSPEED();
 	})
 }
 

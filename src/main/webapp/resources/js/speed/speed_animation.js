@@ -8,18 +8,32 @@ const speed_animation = response => {
 
     if (timestamp == 0) return;
 
+    let color;
+    if (response.Registry <= response.Limit)
+        color = '#0f0'
+    else if (response.Registry <= response.Tolerance)
+        color = '#ff0'
+    else
+        color = '#f00'
+
     speed_number.addClass("start");
 
     let date = new Date(timestamp)
-    let date_format = date.toLocaleString()
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let hour = date.getHours();
+    let minute = date.getMinutes();
+    let second = date.getSeconds();
+    let date_format =  `${ month <= 9 ? '0' + month : month }/${ day <= 9 ? '0' + day : day }/${ year } ${ hour <= 9 ? '0' + hour : hour }:${ minute }:${ second }`
 
     setTimeout(() => {
         let list = speed_number.get().reverse()
         let last = $(list.pop())
         for (let s of list)
-            $(s).find("span").text($(s).prev().find("span").text())
+            $(s).html($(s).prev().html())
 
-        last.addClass("spawn").find("span").text(`${response.Registry} km/h - ${date_format}`)
+        last.addClass("spawn").find("svg").css("color", color).next().html(`${response.Registry} km/h<span>${date_format}</span>`)
 
         setTimeout(() => {
             last.removeClass("spawn");

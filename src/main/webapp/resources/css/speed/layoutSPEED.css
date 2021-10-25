@@ -1,3 +1,7 @@
+:root {
+  --padding-table: 0.4em
+}
+
 body {
   overflow-y: hidden;
   width: 100%;
@@ -33,7 +37,8 @@ body {
 .speed-card {
   max-width: min-content;
   min-width: auto;
-  width: revert !important;
+  width: 9.663em !important;
+  height: 21.89em;
   background-color: #fff !important;
   background-clip: border-box !important;
   font-size: 14px;
@@ -142,20 +147,32 @@ body {
 .last-registry .card-body {
   min-width: 13em;
   max-height: 16.3125em;
-  padding-top: 0.9em;
+  padding-top: var(--padding-table);
   padding-bottom: 0.1em;
   margin-bottom: .2em;
   border: 1px solid #dee2e6;
+  background-color: #353535;
 }
 
-.last-registry [class^=speed-history-], .last-registry [class^=number-] {
+.last-registry [class^=speed-history-] {
   position: relative;
+  padding-bottom: var(--padding-table);
+  --bs-gutter-x: 0rem !important;
   font-size: .9em;
-  padding-bottom: 1em;
+}
+
+.last-registry [class^=number-] {
+  display: flex;
+  flex-direction: column;
+}
+
+.last-registry [class^=number-] span {
+  font-size: .8em;
+  font-weight: 700;
 }
 
 .last-registry [class^=speed-history-]:not(.speed-history-1) {
-  padding-top: 1em;
+  padding-top: var(--padding-table);
   top: 0;
 }
 
@@ -244,6 +261,37 @@ body {
     top: 2em;
     opacity: 0;
   }
+}
+
+.speed-info-bagde {
+  position: absolute;
+  top: -4px;
+  margin-left: -8px;
+  background-color: #1e90ff;
+  color: #ffffff !important;
+  text-align: center;
+  line-height: 22px;
+  min-width: 22px;
+  display: block;
+  border-radius: 50%;
+  float: left;
+  cursor: pointer;
+  z-index: 3;
+  text-indent: 0px;
+  text-decoration: none;
+  font-size: 18px;
+  border: 1px solid black;
+}
+
+.speed-info-bagde:hover {
+  text-decoration: none;
+  background: #ffc107;
+  color: #555;
+}
+
+.speed-info-bagde:focus {
+  background: #000080;
+  outline: none;
 }
 
 /* TEMPORARY CSS */

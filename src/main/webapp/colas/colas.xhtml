@@ -45,8 +45,13 @@
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
-								<f:facet name="header">#{colasLabels.lane}</f:facet>
+								<f:facet name="header">#{colasLabels.id}</f:facet>
 								<h:outputText value="#{data.lane}"
+									style="font-size: 12px; " />
+							</h:column>
+							<h:column>
+								<f:facet name="header">#{mapLabels.map_creation_input_km}</f:facet>
+								<h:outputText value="#{data.km}"
 									style="font-size: 12px; " />
 							</h:column>
 							<h:column>
@@ -104,17 +109,28 @@
 									</select>
 								</div> -->
 								<div class="col-md-4">
+									<span style="white-space: nowrap;">#{colasLabels.toll}</span> <select
+										class="form-control inputDesign" id="deviceSearch"
+										name="deviceSearch">
+										<option value="0">#{colasLabels.select}</option>
+										<c:forEach items="#{colasBean.colas}" var="item">
+											<option value="#{item.equip_id}">CDF-#{item.equip_id}</option>
+										</c:forEach>
+			
+									</select>
+								</div>
+								<!-- <div class="col-md-4">
 									<span>#{colasLabels.track}</span> <select
 										class="form-control inputDesign" id="laneSearch"
 										name="laneSearch">
 										<option value="0">#{colasLabels.select}</option>
-										<option value="1">#{colasLabels.track} 01</option>
-										<option value="2">#{colasLabels.track} 02</option>
-										<option value="3">#{colasLabels.track} 03</option>
-										<option value="4">#{colasLabels.track} 04</option>
+										<option value="1">#{colasLabels.toll} 01</option>
+										<option value="2">#{colasLabels.toll} 02</option>
+										<option value="3">#{colasLabels.toll} 03</option>
+										<option value="4">#{colasLabels.toll} 04</option>
 			
 									</select>
-								</div>
+								</div> -->
 							</div>
 						</div>
 						<div class="modal-footer">
