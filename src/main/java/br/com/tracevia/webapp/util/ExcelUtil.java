@@ -1384,36 +1384,6 @@ public class ExcelUtil {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	/*public void fileBodySingle(XSSFSheet sheet, XSSFRow row, List<String[]> rows, int startCol, int endCol, int startRow) {
-
-		int rowLenght = startRow + rows.size();
-
-		for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < rows.size(); rowIndex++, lin++) {
-			for(int col = startCol; col < endCol; col++) {
-
-				row = sheet.getRow((short) rowIndex);												   				 				   
-
-				try {
-													
-					if(rows.get(2).)
-						row.getCell(col).setCellValue(Integer.parseInt(rows.get(lin)));
-						
-					else if(rows[lin].matches(DOUBLE_REGEX))
-							row.getCell(col).setCellValue(Double.parseDouble(rows[lin]));
-						
-						else row.getCell(col).setCellValue(rows[lin]);	
-					
-
-				}catch(NullPointerException ex) {
-					ex.printStackTrace();
-				}		
-
-			}		       
-		}     	   
-	}*/
-
-	
-	
 	
 	
 	// USE FOR SOS

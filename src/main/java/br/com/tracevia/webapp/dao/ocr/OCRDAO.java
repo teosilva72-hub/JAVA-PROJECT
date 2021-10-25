@@ -18,12 +18,14 @@ public class OCRDAO{
 	private PreparedStatement ps;
 	private ResultSet rs;
 	
-	private String ftpFolder;
+	private String ftpFolder, noImageFolder;
 	
 	public OCRDAO() {
 		
 		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\";
 		
+		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
+				
 	}
 
 	public ArrayList<OCR> searchTable(String start, String end, String ocr_site_name) throws Exception {
@@ -150,7 +152,8 @@ public class OCRDAO{
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 				
 		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-		    path =  ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+			 path = noImageFolder.concat("no-image.jpg");
+			// path =  ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
 		
 		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
 					
@@ -166,7 +169,10 @@ public class OCRDAO{
 		String nameVeh = data.getCam().replaceAll(" ", "_");
 				
 		if(data.getPlaca().equals("XXXXXXX") || data.getPlaca().equals(""))
-		  path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+			path = noImageFolder.concat("no-image.jpg");
+		  //path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_.jpg";
+		
+		  
 		
 		else path = ftpFolder+""+nameVeh+"\\"+subFolder+"\\Plate"+nameVeh+"_"+dateVeh+"_"+data.getPlaca()+".jpg";
 							

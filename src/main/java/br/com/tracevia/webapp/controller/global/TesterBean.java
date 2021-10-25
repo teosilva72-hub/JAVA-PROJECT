@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,10 +10,12 @@ import javax.faces.bean.RequestScoped;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
+import br.com.tracevia.webapp.methods.ExcelModels;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
+import br.com.tracevia.webapp.util.ExcelTemplate;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="testerBean")
@@ -22,7 +25,7 @@ public class TesterBean {
 	public String table; 
 	public List<String> columnsName; 
 	public List<String> searchParameters; 
-
+	ExcelModels model;
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
@@ -121,7 +124,8 @@ public class TesterBean {
 		// Instantiate Objects - build and select class
 
 		select = new ReportSelection();
-				
+		build = new ReportBuild();
+	
 		// ---------------------------------------------------------------------------
 				   		
 		// SELECT ITEMS LISTS		
@@ -154,51 +158,107 @@ public class TesterBean {
     	// ----------------------------------------------------------------------------
         	
     	 // Disabled Buttons
-    	//  build.clearBool = true;
-    	//  build.excelBool = true;
-    	//  build.chartBool = true;						
+    	  build.clearBool = true;
+    	  build.excelBool = true;
+    	 // build.chartBool = true;						
 	 
 	 }	
 	
-    // ----------------------------------------------------------------------------------------------------------------
+	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	public void createReport() throws Exception {
+				
 		// Table Fields
 		 report = new ReportDAO(columnsName);
+		 
 	}
 
 	// CAMPOS
 		 		
 	public void createFields() throws Exception {
 						
+		 model = new ExcelModels(); // HERE
+		 
+		 resetForm();
+		 
 		String query = "Select ";
 		for (String parameter : searchParameters) {
 			query += String.format("%s, ", parameter);
 		}
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
-		
+					
 		// Table Fields
 		 report.getReport(query);
-		 		
-       // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  		          	
+		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
 		 
 			 // GUARDAR VALORES NA SESS�O		     
-		     SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
-		    //  SessionUtil.setParam("fields", build.fields);	//Fields
+		     //SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
+		     // SessionUtil.setParam("fields", build.fields);	//Fields
 		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
-		     //  SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
-		     
-		     System.out.println(""+query+"  "+ columnsName);
-		     
-		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
-		     
-		     
-		 
+		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
 		     
 		  
 		     
-		    		
+		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
+		   
+	        // GENERATE EXCEL
+		     
+		     model.StandardFonts();  //Set Font
+			 model.StandardStyles(); //Set Style
+			 model.StandardBorders(); // Set Borders
+		     
+		     model.generateExcelFile(report.columnName, report.lines);
+		     
+		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
+		     
+			 build.clearBool = false; // BOTÃO DE LIMPAR		    	 
+	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
+	      	 
+	      		  		    		
 	  }
+	
+		
+	   // -------------------------------------------------------------------------------------------------------------------------------------------------
+	
+	   public void download() {
+			
+		// MANTER VALORES NA SESSÃO
+		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
+		//String fileName = (String) SessionUtil.getExternalContext().getSessionMap().get("fileName");
+		 
+		model = (ExcelModels) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
+	
+		String file = "teste_file";
+					
+		try {
+			
+			model.download(ExcelModels.workbook, file);
+			
+		} catch (IOException e) {	
+			
+			e.printStackTrace();
+		}
+		
+	}
+	   
+		
+	   // -------------------------------------------------------------------------------------------------------------------------------------------------	
+		 public void resetForm() {
+				
+				// Limpa valores da sessão
+				build.resetReportValues();
+				
+				// Reinicializa valores armazenados nas variáveis abaixo
+				build = new ReportBuild();
+				select = new ReportSelection();
+							
+				build.excelBool = true;
+				build.clearBool = true;
+											
+			}	
+	
+	 		
+	   // -------------------------------------------------------------------------------------------------------------------------------------------------
+	  	
 }

@@ -36,6 +36,9 @@ import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class ExcelModels {
+	
+	private static String NUMBER_REGEX = "\\d+";
+	private static String DOUBLE_REGEX = "\\d*\\.\\d+$";
 
 	DateTimeApplication dta;
 	TranslationMethods tm;
@@ -5532,6 +5535,58 @@ public class ExcelModels {
 		
 		// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	
+		public void generateExcelFile(List<String> columns, List<String[]> rows) {
+			
+			sheet = null;		
+			row = null;
+					
+			int startRow = 2;
+			int endRow = startRow + rows.size();
+			int startCol = 0;
+			int endCol = columns.size() - 1;
+			
+			sheet = workbook.createSheet("TRACEVIA");
+								
+			// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
+			spreadSheet.createRows(sheet, row, startRow, endRow);
+			spreadSheet.createCells(sheet, row, startCol, endCol, startRow, endRow);
+			
+			spreadSheet.columnsWidth(sheet, 1, 4500); // DATE
+					 		
+			fileBodySingle(sheet, row, columns, rows, startCol, endCol, startRow);
+						
+		}
+		
+		// ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		public void fileBodySingle(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
+
+			int rowLenght = startRow + values.size() ;
+						  			
+			  for (int col = startCol; col < columnName.size(); col++) {
+				  
+				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+			 		
+					row = sheet.getRow((short) rowIndex);	
+									
+					try {
+																								
+					if(values.get(lin)[col].matches(NUMBER_REGEX))
+					   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+							
+					else if(values.get(lin)[col].matches(DOUBLE_REGEX))
+					   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+							
+					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+						
+					}catch(NullPointerException ex) {
+						ex.printStackTrace();
+					}		
+
+				}		       
+			}     	   
+		}
+		
+		// ------------------------------------------------------------------------------------------------------------
 	
 }
