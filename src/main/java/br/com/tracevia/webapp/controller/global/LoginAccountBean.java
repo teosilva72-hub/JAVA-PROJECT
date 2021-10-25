@@ -1,23 +1,19 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
-
-import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.dao.global.LoginAccountDAO;
 import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
-import br.com.tracevia.webapp.methods.EmailModels;
+import br.com.tracevia.webapp.methods.EmailModel;
 import br.com.tracevia.webapp.model.global.InMemoryAuthentication;
 import br.com.tracevia.webapp.model.global.LoadStartupModules;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
@@ -27,6 +23,16 @@ import br.com.tracevia.webapp.util.EncryptPasswordUtil;
 import br.com.tracevia.webapp.util.GeneratePasswordUtil;
 import br.com.tracevia.webapp.util.InMemoryAuthenticationUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.LogUtils;
+import br.com.tracevia.webapp.util.SessionUtil;
+
+
+/**
+ * Classe para ger�ncia de logins
+ * @author Wellington 05/06/2020
+ * @version 1.0
+ * @since 1.0
+ */
 
 @ManagedBean(name = "loginAccount")
 @SessionScoped
@@ -36,10 +42,6 @@ public class LoginAccountBean {
 	private UserAccount login;
 	private String credentials;    
 
-	private static final String EMAIL_PATTERN = "[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
-
-	private static final String LOGS_ERROR_PATH = "C:/Tracevia/software/logs/error";
-
 	LocaleUtil locale, locale1, locale2;
 
 	LoadStartupModules load;
@@ -47,15 +49,15 @@ public class LoginAccountBean {
 	String plaque;
 	String logo;
 	boolean mapEnabled, reportsLLEnabled;
-
-	InetAddress addr;
-
+	
 	@ManagedProperty("#{language}")
 	private LanguageBean language;
 
 	public String getCredentials() {
+		
 		String cred = credentials;
 		credentials = new String();
+		
 		return cred;
 	}
 
@@ -138,6 +140,30 @@ public class LoginAccountBean {
 	public void setReportsLLEnabled(boolean reportsLLEnabled) {
 		this.reportsLLEnabled = reportsLLEnabled;
 	}
+	
+	    // --------------------------------------------------------------------------------------------
+	
+		// CLASS PATH
+		
+		private static String classLocation = LoginAccountBean.class.getCanonicalName();
+		
+		// --------------------------------------------------------------------------------------------
+		
+		// CLASS LOG FOLDER
+		
+		private static String classErrorPath = LogUtils.ERROR.concat("login\\");
+		
+		// --------------------------------------------------------------------------------------------
+		
+		// EXCEPTION FILENAMES
+		
+		private static String loginValidationExceptionLog = classErrorPath.concat("validation_exception_");
+		private static String loginNullExceptionLog = classErrorPath.concat("null_pointer_exception_");
+		private static String recoveryPasswordExceptionLog = classErrorPath.concat("recovery_password_exception_");
+			
+		// --------------------------------------------------------------------------------------------		
+		
+		// CONSTRUTOR 
 
 	@PostConstruct
 	public void initialize() {
@@ -150,35 +176,32 @@ public class LoginAccountBean {
 		locale1.getResourceBundle(LocaleUtil.MESSAGES_EMAIL);
 
 		locale2 = new LocaleUtil();
-		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);
-
-		// GET LOCAL HOST ADDRESS
-		try {
-
-			addr = InetAddress.getLocalHost();
-
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		
-		//ip = addr.getHostAddress();
-
+		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
+				
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
-	public String loginValidation() throws Exception {
+	/**
+	 * M�todo para valida��o de um acesso
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 
+	 * @return uma url de acesso
+	 */
+	public String loginValidation() {
 		
 		load = new LoadStartupModules(); // Carregar os m�dulos
 	
 		boolean status = false, inMemory = false, isName = false;
-		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();
-		InMemoryAuthenticationUtil memoryUtil = new InMemoryAuthenticationUtil();
-		EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
-			
-		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();
-		FacesContext context = FacesContext.getCurrentInstance();
+		
+		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();					
+		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();		
 
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
 		isName = roadConcessionaire.defineConcessionarieValues(language.concessionaire);
+		
+		try {
 		
 		// CHANGES
 		LoginAccountDAO dao = new LoginAccountDAO();
@@ -186,18 +209,18 @@ public class LoginAccountBean {
 		if (isName) {
 
 			// First - Auth memory user
-			inMemory = memoryUtil.validateUserInMemory(user.getUsername());
+			inMemory = InMemoryAuthenticationUtil.validateUserInMemory(user.getUsername());
 
 			if (inMemory) {
 
-				memoryAuth = memoryUtil.authUserInMemory(user.getUsername(), user.getPassword());
+				memoryAuth = InMemoryAuthenticationUtil.authUserInMemory(user.getUsername(), user.getPassword());
 
 				// System.out.println("Memory: "+memoryAuth.getUsername());
 
 				if (memoryAuth.getUsername() == null) {
-
-					RequestContext.getCurrentInstance().execute("showLoginErrorMessage();");
-					RequestContext.getCurrentInstance().execute("hideLoginErrorMessage();");
+										
+					SessionUtil.executeScript("showLoginErrorMessage();");
+					SessionUtil.executeScript("hideLoginErrorMessage();");
 
 				}
 
@@ -205,13 +228,12 @@ public class LoginAccountBean {
 					
 					//FIX					
 					login = new UserAccount();
-					login.setPermission_id(memoryAuth.getPermission_id());
-
-					context.getExternalContext().getSessionMap().put("user", memoryAuth.getUsername());
-					context.getExternalContext().getSessionMap().put("nivel", memoryAuth.getPermission_id()); // Super
-																												// User
-					context.getExternalContext().getSessionMap().put("concessionaria",
-							RoadConcessionaire.roadConcessionaire);
+					login.setPermission_id(memoryAuth.getPermission_id());					
+				
+					SessionUtil.setParam("user", memoryAuth.getUsername()); // User
+					SessionUtil.setParam("nivel", memoryAuth.getPermission_id()); // Super
+																												
+					SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire); // Concessionaire
 									
 					load.startupComponents(); // Inicializar Componentes
 								
@@ -244,15 +266,14 @@ public class LoginAccountBean {
 				if (status) {
 
 					login = new UserAccount();
-					login = dao.loginValidation(user.getUsername(), encrypt.encryptPassword(user.getPassword()));
+					login = dao.loginValidation(user.getUsername(), EncryptPasswordUtil.encryptPassword(user.getPassword()));
 
 					if (login != null) {
 						if (login.isActiveStatus() == true) {
 
-							context.getExternalContext().getSessionMap().put("user", login.getUsername());
-							context.getExternalContext().getSessionMap().put("nivel", login.getPermission_id());
-							context.getExternalContext().getSessionMap().put("concessionaria",
-									RoadConcessionaire.roadConcessionaire);
+							SessionUtil.setParam("user", login.getUsername());
+							SessionUtil.setParam("nivel", login.getPermission_id());
+							SessionUtil.setParam("concessionaria", RoadConcessionaire.roadConcessionaire);
 																			
 							load.startupComponents(); // Inicializar Componentes
 						
@@ -273,86 +294,134 @@ public class LoginAccountBean {
 
 						} else {
 
-							RequestContext.getCurrentInstance().execute("showInactiveErrorMessage();");
-							RequestContext.getCurrentInstance().execute("hideInactiveErrorMessage();");
+							SessionUtil.executeScript("showInactiveErrorMessage();");
+							SessionUtil.executeScript("hideInactiveErrorMessage();");
 						}
 
 					} else {
 
-						RequestContext.getCurrentInstance().execute("showLoginErrorMessage();");
-						RequestContext.getCurrentInstance().execute("hideLoginErrorMessage();");
+						SessionUtil.executeScript("showLoginErrorMessage();");
+						SessionUtil.executeScript("hideLoginErrorMessage();");
 					}
 
 				} else {
 
-					RequestContext.getCurrentInstance().execute("showNotFoundMessage();");
-					RequestContext.getCurrentInstance().execute("hideNotFoundMessage();");
+					SessionUtil.executeScript("showNotFoundMessage();");
+					SessionUtil.executeScript("hideNotFoundMessage();");
 				}
 
 			} // Fim do Else - Do Nothing
 
 		} else {
 
-			RequestContext.getCurrentInstance().execute("showConnectionErrorMessage();");
-			RequestContext.getCurrentInstance().execute("hideConnectionErrorMessage();");
+			SessionUtil.executeScript("showConnectionErrorMessage();");
+			SessionUtil.executeScript("hideConnectionErrorMessage();");
 
+		   }
+		
+	    }catch(NullPointerException nex) {
+			
+			StringWriter errors = new StringWriter(); 
+			nex.printStackTrace(new PrintWriter(errors));	
+			
+			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginNullExceptionLog), classLocation, nex.getMessage(), errors.toString());
+						
+		}catch(Exception ex) {
+			
+			StringWriter errors = new StringWriter(); 
+			ex.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logError(LogUtils.fileDateTimeFormatter(loginValidationExceptionLog), classLocation, ex.getMessage(), errors.toString());
+						
 		}
 
 		return null;
 
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
+	/**
+	 * M�todo para encerrar uma sess�o
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 	
+	 */
 	public void LogOut() throws IOException {
-
-		FacesContext context = FacesContext.getCurrentInstance();
-
-		ExternalContext externalContext = context.getExternalContext();
-		externalContext.getFlash().setKeepMessages(true);
-		externalContext.invalidateSession();
-		externalContext.redirect("login.xhtml");
-
+			
+		SessionUtil.invalidate();
+		SessionUtil.redirectToUrl("login.xhtml");
+			
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
+	/**
+	 * M�todo para redirecionar para p�gina de recupera��o de senha
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 
+     * @return retorna para p�gina de recupera��o de senha	
+	 */
 	public String forgetPasswordRedirect() {
 
 		user = new UserAccount(); // RESET
 
-		RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form
-		RequestContext.getCurrentInstance()
-				.execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove
-																													// Validation
-																													// icons
-
+		SessionUtil.executeScript("$('#form-reset')[0].reset();"); // reset form
+		SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove Validation Icons																											
+																													
 		return "/forget.xhtml?faces-redirect=true";
 
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
+	/**
+	 * M�todo para redirecionar para p�gina de confirma��o da recupera��o de senha
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 
+     * @return retorna para p�gina de confirma��o da recupera��o de senha	
+	 */
 	public String forgetConfirmationRedirect() {
 
 		user = new UserAccount(); // RESET
 
-		RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form
-		RequestContext.getCurrentInstance()
-				.execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove
-																													// Validation
-																													// icons
+		SessionUtil.executeScript("$('#form-reset')[0].reset();"); // reset form
+		SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove Validation Icons	
+																													
 
 		return "/forget-confirmation.xhtml?faces-redirect=true";
 	}
 
+	// --------------------------------------------------------------------------------------------
+	
+	/**
+	 * M�todo para redirecionar para p�gina de login
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 
+     * @return retorna para p�gina de login
+	 */	
 	public String loginRedirect() {
 
 		user = new UserAccount(); // RESET
 
-		RequestContext.getCurrentInstance().execute("$('#form-reset')[0].reset();"); // reset form
-		RequestContext.getCurrentInstance()
-				.execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove
-																													// Validation
-																													// icons
+		SessionUtil.executeScript("$('#form-reset')[0].reset();"); // reset form
+		SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');"); // Remove Validation Icons																									
 
 		return "/login.xhtml?faces-redirect=true";
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
+	/**
+	 * M�todo para verificar o n�vel de permiss�o do usu�rio
+	 * @author Guilherme 12/08/2021
+     * @version 1.0
+     * @since 1.0 
+     * @return retorna verdadeiro caso se enquadre em uma das op��es desejadas
+	 */
 	public boolean permissionAdminOrSuper(int roleID) {
 
 		if (roleID == 1 || roleID == 6)
@@ -361,17 +430,23 @@ public class LoginAccountBean {
 		else
 			return false;
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
+	/**
+	 * M�todo para processar a recupera��o de senha
+	 * @author Wellington 12/06/2018
+     * @version 1.0
+     * @since 1.0 
+     * @return retorna para p�gina de confirma��o da recupera��o de senha em caso de sucesso	
+	 */
 	public String passwordRecovery() {
 
 		String generatedPass = "";
 
 		boolean response = false;
-
-		GeneratePasswordUtil generate = new GeneratePasswordUtil();
-		EncryptPasswordUtil encrypt = new EncryptPasswordUtil();	
-		EmailUtil mail = new EmailUtil();
-		EmailModels changeMail = new EmailModels();
+		
+		EmailModel changeMail = new EmailModel();
 
 		try {
 
@@ -379,22 +454,22 @@ public class LoginAccountBean {
 			RoadConcessionaireDAO road = new RoadConcessionaireDAO();
 			UserAccount usr = new UserAccount();
 
-			String roadConcessionaire = road.IdentifyRoadConcessionarie(addr.getHostAddress());
+			String roadConcessionaire = road.IdentifyRoadConcessionarie(language.addr.getHostAddress());				
 
 			usr = dao.emailValidation(user.getEmail(), roadConcessionaire);
 
 			if (usr.getUsername() == null) {
 
-				RequestContext.getCurrentInstance().execute("showEmailInfoMessage();");
-				RequestContext.getCurrentInstance().execute("hideEmailInfoMessage();");
+				SessionUtil.executeScript("showEmailInfoMessage();");
+				SessionUtil.executeScript("hideEmailInfoMessage();");
 
 			} else {
-
+							
 				// Criar Senha
-				generatedPass = generate.generatePassword();
+				generatedPass = GeneratePasswordUtil.generatePassword();
 
 				// Encriptar password para MD5
-				usr.setPassword(encrypt.encryptPassword(generatedPass));
+				usr.setPassword(EncryptPasswordUtil.encryptPassword(generatedPass));
 
 				// Gerar Assunto do Cadastro
 				String assunto = changeMail.recoverySubject();
@@ -408,30 +483,51 @@ public class LoginAccountBean {
 
 				if (response) {
 
-					mail.sendEmailHtml(user.getEmail(), assunto, mensagem);
+					EmailUtil.sendEmailHtml(user.getEmail(), assunto, mensagem);
 
 					return forgetConfirmationRedirect();
 
 				} else {
-
-					RequestContext.getCurrentInstance().execute("showEmailRecoverySendErrorMessage();");
-					RequestContext.getCurrentInstance().execute("hideEmailRecoverySendErrorMessage();");
+									
+					SessionUtil.executeScript("showEmailRecoverySendErrorMessage();");
+					SessionUtil.executeScript("hideEmailRecoverySendErrorMessage();");
 
 				}
 			}
 
+		}catch(NullPointerException n) {
+								
+			SessionUtil.executeScript("hideEmailRecoveryProcessMessage();");
+			
+			SessionUtil.executeScript("showConnectionErrorMessage();");
+			SessionUtil.executeScript("hideConnectionErrorMessage();");
+			
 		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+			
+			StringWriter errors = new StringWriter(); 
+			ex.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logError(LogUtils.fileDateTimeFormatter(recoveryPasswordExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+						
+		}		
 
 		return null;
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
-	// Pull Credentials
+	/**
+	 * M�todo para obter as credenciais de um aplicativo
+	 * @author Guilherme 12/07/2021
+     * @version 1.0
+     * @since 1.0    
+	 */
 	public void getCred() throws Exception {
+		
 		ModulesDAO mod = new ModulesDAO();
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		String name = context.getRequestParameterMap().get("serviceName");
+		
+		String name = SessionUtil.getParametersValue("serviceName");							
+			
 		String[] cred = mod.getCred(name);
 
 		credentials = "{\"name\": \""
@@ -446,4 +542,6 @@ public class LoginAccountBean {
 					+ cred[4]
 					+ "\"}";
 	}
+	
+	// --------------------------------------------------------------------------------------------
 }

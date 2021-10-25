@@ -4,26 +4,48 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class EncryptPasswordUtil {
+/**
+ * Classe utilizada para criptografar senhas 
+ * @version 1.0
+ * @since 1.0
+ * @author Wellington 29/09/2021
+ *
+ */
+
+public class EncryptPasswordUtil {	
 	
-	MessageDigest mDigest;
+	/**
+	 * Método para criptografar a senha de um usuário no formato HASH MD5
+	 * @author Wellington 29/09/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @see https://docs.oracle.com/javase/7/docs/api/java/security/MessageDigest.html
+	 * @param password - senha a ser criptografada
+	 * @return o password criptografado
+	 */
 	
-	public String encryptPassword(String password) {
+	public static String encryptPassword(String password) {
 
 		try { 
 			
-			//Instanciar HASH MD5
-			mDigest = MessageDigest.getInstance("MD5");
+			
+			// FORMATOS SUPORTADOS
+			// MD5
+			// SHA-1
+			// SHA-256
+			
+			// Instanciar o objeto para o formato HASH MD5
+			MessageDigest mDigest = MessageDigest.getInstance("MD5");
 
-			//Converte a String valor para um array de bytes em MD5
-			byte[] passwordMD5 = mDigest.digest(password.getBytes("UTF-8"));
-
-			//Convertemos os bytes para hexadecimal
-			//Salvar no banco 
-			//Comparar senhas
+			// Transformar password em bytes formatado em UFT-8
+			byte[] passwordMD5 = mDigest.digest(password.getBytes("UTF-8"));			
 
 			StringBuffer sb = new StringBuffer();
+			
+			//percorrer o array de bytes 
 			for (byte b : passwordMD5){
+				
+				// Converter os bytes para hexadecimal
 				sb.append(Integer.toHexString((b & 0xFF) | 0x100).substring(1,3));
 			}
 
@@ -40,5 +62,7 @@ public class EncryptPasswordUtil {
 			return null;
 		}
 	}
+	
+	// --------------------------------------------------------------------------------------------
 
 }

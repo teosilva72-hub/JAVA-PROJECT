@@ -2897,7 +2897,6 @@ public class ExcelModels {
 
 				spreadSheet.createRow(sheet, row, headerPos1);
 
-
 				spreadSheet.createCells(sheet, row, 2, 19, headerPos1, headerPos1);
 				spreadSheet.getCell(sheet, row, headerPos1, 2, localeSat.getStringKey("sat_reports_header_lights"));
 				spreadSheet.getCell(sheet, row, headerPos1, 6, localeSat.getStringKey("sat_reports_header_trucks"));
@@ -2912,7 +2911,6 @@ public class ExcelModels {
 				///////////////////////
 				//HEADER 2
 				/////////////////////
-
 
 				spreadSheet.createRow(sheet, row, rowHeaderDir1);
 				spreadSheet.createHeaderCells(sheet, row, rowHeaderDir1, headerCells, columnsHeader);
@@ -2983,7 +2981,6 @@ public class ExcelModels {
 		}				
 	}
 
-
 	public void ExcelModelCountFlow(String[] columnsHeader, int registers, int range, int daysCount, String period, String currentDate, String type, String module, String logo, 
 			String fileTitle, String equip, String city, String road, String km, String numLanes, String direction1, String direction2, String startDate, String endDate, String[] mergeCells, int[] columnsWidth, int colStartDate, int colEndDate, String[][] resultQuery ) throws Exception {
 
@@ -3007,11 +3004,11 @@ public class ExcelModels {
 		headerCells = new Cell[length];
 		cellData = new Cell[registers][length];
 
-		//Mesclar C�lulas		
+		// Mesclar Células		
 		for(int i = 0; i < mergeCells.length; i++)
 			spreadSheet.mergeCells(sheet, mergeCells[i]);
 
-		//Largura das Colunas		
+		// Largura das Colunas		
 		for(int i = 0; i < columnsWidth.length; i++)
 			spreadSheet.columnsWidth(sheet, i, columnsWidth[i]);	
 
@@ -5364,7 +5361,7 @@ public class ExcelModels {
 				spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 2);
 				spreadSheet.setStyle(sheet, row, 6, centerAlignStyle, 8);
 
-				spreadSheet.createRow(sheet, row, 7);	
+				spreadSheet.createRow(sheet, row, 7);
 				spreadSheet.createCell(sheet, row, 7, 1, localeExcel.getStringKey("excel_report_consultation_highway"));
 				spreadSheet.createCell(sheet, row, 7, 2, " --- " );
 				spreadSheet.createCell(sheet, row, 7, 7, localeExcel.getStringKey("excel_report_consultation_period"));
@@ -5375,14 +5372,14 @@ public class ExcelModels {
 				spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 2);
 				spreadSheet.setStyle(sheet, row, 7, centerAlignStyle, 8);
 
-				spreadSheet.createRow(sheet, row, 8);	
+				spreadSheet.createRow(sheet, row, 8);
 				spreadSheet.createCell(sheet, row, 8, 1, localeExcel.getStringKey("excel_report_consultation_km"));
 				spreadSheet.createCell(sheet, row, 8, 2, " --- " );
 
 				spreadSheet.setStyle(sheet, row, 8, boldCenterStyle, 1);
 				spreadSheet.setStyle(sheet, row, 8, centerAlignStyle, 2);
 
-				spreadSheet.createRow(sheet, row, 9);	
+				spreadSheet.createRow(sheet, row, 9);
 				spreadSheet.createCell(sheet, row, 9, 1, localeExcel.getStringKey("excel_report_consultation_lanes"));
 				spreadSheet.createCell(sheet, row, 9, 2, " --- ");
 
@@ -5392,6 +5389,7 @@ public class ExcelModels {
 				//HEADER
 
 				// BODY
+				
 				spreadSheet.createRow(sheet, row, 11);
 				spreadSheet.createHeaderCells(sheet, row, 11, headerCells, columnsHeader);
 				spreadSheet.setStyleHeaderBody(sheet, row, 11, headerCells, length, tableHeaderStyle);
@@ -5420,8 +5418,7 @@ public class ExcelModels {
 				total = (rowMax + 1);			  
 				registerLength = sheetRows;
 				cellMinCol = 3;
-								
-				
+										
 				for(int d = 0; d < name.length; d++) {
 
 					//SheetName

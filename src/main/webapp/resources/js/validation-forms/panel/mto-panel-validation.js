@@ -29,3 +29,19 @@ $(function () {
                  
         
 });
+
+// --------------------------------------------------------
+
+//HIDE MESSAGE DISPLAY	
+function hideInfoMessage() {
+    setTimeout(function () {
+        $('#info').hide();
+    }, 5000);
+}
+
+//SHOW MESSAGE DISPLAY	
+function showInfoMessage() {
+    $('#info').show();
+}
+
+// ----------------------------------------------------------

@@ -16,7 +16,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
 import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="mtoPanelBean")
 @RequestScoped
@@ -26,9 +26,7 @@ public class MtoPanelController {
 	private List<SelectItem> equipments;
 	
 	LocaleUtil localeLabel, localeCalendar, localeMto;
-	
-	MessagesUtil message;
-	
+		
 	EquipmentsDAO dao;
 	MeteoDAO mtoDao;	
 	
@@ -117,9 +115,8 @@ public class MtoPanelController {
 	//Inicializar Painel
 	public void InitializePanelValues(){
 		
-		try {					
-			
-			message = new MessagesUtil();
+		try {			
+					
 			mtoDao = new MeteoDAO();
 			panel = new MtoPanel();
 			
@@ -134,7 +131,7 @@ public class MtoPanelController {
 			  		  
 			 }		
 			
-			RequestContext.getCurrentInstance().execute("checkMtoStatus();");	
+			SessionUtil.executeScript("checkMtoStatus();");	
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -149,7 +146,7 @@ public class MtoPanelController {
 			if(station != null) {
 										
 			mtoDao = new MeteoDAO();	
-			message = new MessagesUtil();
+		
 			panel = new MtoPanel();		
 						
 			type = mtoDao.MtoPanelType(station);
@@ -171,10 +168,13 @@ public class MtoPanelController {
 				
 				panel = new MtoPanel();	// Inst�ncia o objeto novamente.
 				initPanelZero(panel);				
-				message.InfoMessage(localeMto.getStringKey("mto_message_records_not_found_title"),localeMto.getStringKey("mto_message_equipment_no_data"));
+				
+				SessionUtil.executeScript("showInfoMessage();");
+				SessionUtil.executeScript("hideInfoMessage();");
+	
 			}
 			
-			RequestContext.getCurrentInstance().execute("checkMtoStatus();");			
+			SessionUtil.executeScript("checkMtoStatus();");			
 		  								
 			}
 			

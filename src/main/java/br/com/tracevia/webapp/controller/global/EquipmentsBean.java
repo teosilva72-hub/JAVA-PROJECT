@@ -1451,5 +1451,222 @@ public class EquipmentsBean implements Serializable {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
-
+	// GENERIC
+	//--------------------------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informações de um equipamento do tipo GENÉRICO
+	 * @author Wellington 20/10/2021
+	 * @version 1.0
+	 * @since 1.0   	
+	 * @param module - módulo do equipamento
+	 * @param id - ID do equipamento
+	 * @return matriz com informações dos equipamentos
+	 */
+	public String[] genericInfo(String module, String id) {
+		
+		EquipmentsDAO dao = new EquipmentsDAO();
+	
+		String[] info = new String[4];
+		
+		info = dao.genericInfo(module, id);
+				
+		return info;
+				
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informações de vários equipamentos do tipo GENERIC
+	 * @author Wellington 20/10/2021
+	 * @version 1.0
+	 * @since 1.0   	
+	 * @param module - módulo do equipamento
+	 * @param id - matriz com ID dos equipamentos
+	 * @return matriz com informações dos equipamentos
+	 */
+    public String[][] multiGenericInfo(String module, String[] id) {
+		
+		EquipmentsDAO dao = new EquipmentsDAO();
+		
+		// INFO TWO-DIMENSIONAL ARRAY 
+		String[][] info = new String[id.length][4];	
+		
+		try {
+			
+			info = dao.multiGenericInfo(id, module);
+			
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+				
+		return info;
+				
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	// SAT
+	//--------------------------------------------------------------------------------------------------------------
+    /**
+	 * Método para obter informações de um equipamento do tipo SAT
+	 * @author Wellington 20/10/2021
+	 * @version 1.0
+	 * @since 1.0 
+	 * @param id - ID do equipamento
+	 * @return matriz com informações dos equipamentos
+	 */
+     public String[] satInfo(String id) {
+		
+		EquipmentsDAO dao = new EquipmentsDAO();
+		
+		String[] info = new String[5];
+		
+		info = dao.satInfo(id);
+				
+		return info;
+				
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+     
+     /**
+ 	 * Método para obter informações de vários equipamentos do tipo SAT
+ 	 * @author Wellington 20/10/2021
+ 	 * @version 1.0
+ 	 * @since 1.0	
+ 	 * @param id - matriz com ID dos equipamentos
+ 	 * @return matriz com informações dos equipamentos
+ 	 */
+     public String[][] multiSatInfo(String[] id) {
+ 		
+ 		EquipmentsDAO dao = new EquipmentsDAO();
+ 		
+ 		// INFO TWO-DIMENSIONAL ARRAY 
+		String[][] info = new String[id.length][4];		
+ 		
+ 		try {
+ 			
+ 			info = dao.multiSatInfo(id);
+ 			
+ 		} catch (Exception e) {			
+ 			e.printStackTrace();
+ 		}
+ 				
+ 		return info;
+ 				
+ 	}
+ 	
+ 	//--------------------------------------------------------------------------------------------------------------
+ 	//--------------------------------------------------------------------------------------------------------------
+ 	// SOS
+ 	//--------------------------------------------------------------------------------------------------------------
+     
+     /**
+ 	 * Método para obter informações de um equipamento do tipo SOS
+ 	 * @author Wellington 20/10/2021
+ 	 * @version 1.0
+ 	 * @since 1.0
+ 	 * @param id - ID do equipamento
+ 	 * @return matriz com informações dos equipamentos
+ 	 */
+     public String[] sosInfo(String id) {
+ 		
+		EquipmentsDAO dao = new EquipmentsDAO();
+		
+		String[] info = new String[4];
+		
+		info = dao.sosInfo(id);
+				
+		return info;
+				
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+     
+     /**
+  	 * Método para obter informações de vários equipamentos do tipo SOS
+  	 * @author Wellington 20/10/2021
+  	 * @version 1.0
+  	 * @since 1.0	
+  	 * @param id - matriz com ID dos equipamentos
+  	 * @return matriz com informações dos equipamentos
+  	 */
+     public String[][] multiSosInfo(String[] id) {
+ 		
+ 		EquipmentsDAO dao = new EquipmentsDAO();
+ 	  
+ 		// INFO TWO-DIMENSIONAL ARRAY 
+ 		String[][] info = new String[id.length][3];		
+ 		
+ 		try {
+ 			
+ 			info = dao.multiSosInfo(id);
+ 			
+ 		} catch (Exception e) {			
+ 			e.printStackTrace();
+ 		}
+ 				
+ 		return info;
+ 				
+ 	}
+ 	
+ 	//--------------------------------------------------------------------------------------------------------------
+ 	//--------------------------------------------------------------------------------------------------------------
+ 	// DMS
+ 	//--------------------------------------------------------------------------------------------------------------
+         
+     /**
+ 	 * Método para obter informações de um equipamento do tipo DMS
+ 	 * @author Wellington 20/10/2021
+ 	 * @version 1.0
+ 	 * @since 1.0
+ 	 * @param id - ID do equipamento
+ 	 * @return matriz com informações dos equipamentos
+ 	 */
+     public String[] dmsInfo(String id) {
+    	 
+    	String[] info = new String[4];
+ 		
+		EquipmentsDAO dao = new EquipmentsDAO();
+		
+		info = dao.dmsInfo(id);
+				
+		return info;
+				
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
+     
+     /**
+  	 * Método para obter informações de vários equipamentos do tipo DMS
+  	 * @author Wellington 20/10/2021
+  	 * @version 1.0
+  	 * @since 1.0	
+  	 * @param id - matriz com ID dos equipamentos
+  	 * @return matriz com informações dos equipamentos
+  	 */
+     public String[][] multiDmsInfo(String[] id) {
+  		
+  		EquipmentsDAO dao = new EquipmentsDAO();
+  		
+  	    // INFO TWO-DIMENSIONAL ARRAY 
+  	 	String[][] info = new String[id.length][3];	
+  		
+  		try {
+  			
+  			info = dao.multiDmsInfo(id);
+  			
+  		} catch (Exception e) {			
+  			e.printStackTrace();
+  		}
+  				
+  		return info;
+  				
+  	}
+  	
+  	//--------------------------------------------------------------------------------------------------------------
+       
 }

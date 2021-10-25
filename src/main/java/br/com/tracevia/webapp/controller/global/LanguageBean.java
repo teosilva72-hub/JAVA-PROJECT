@@ -2,7 +2,6 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
@@ -19,38 +18,39 @@ import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 @SessionScoped
 public class LanguageBean implements Serializable {
 
-	/**
-	 * Autor: Wellington for Tracevia in 12/05/2020
-	 * updated: 26/06/2020 - Wellington
+	/**	
+	 * @author: Wellington 12/05/2020
+	 * @version 1.2
+	 * @since 1.0
 	 */
-	
-	 private static final long serialVersionUID = 1L;
-		
-	 private final Locale ENGLISH = new Locale("en","US");
-	 private final Locale SPANISH = new Locale("es", "ES");	 
-	 // private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
-	 // private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
-	 // private final Locale MEXICAN_SPANISH = new Locale("es", "CO");
-	 private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");	
-	 
-	 private Locale locale = Locale.getDefault();
-	
-	 RoadConcessionaire roadConcessionaire;
-	 RoadConcessionaireDAO dao;
-			 
-	 InetAddress addr;
-	 
-	 String concessionaire;	
-		 
-	 public Locale getLocale() {
+
+	private static final long serialVersionUID = 1L;
+
+	private final Locale ENGLISH = new Locale("en","US");
+	private final Locale SPANISH = new Locale("es", "ES");	 
+ /* private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
+	 private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
+	 private final Locale COLOMBIAN_SPANISH = new Locale("es", "CO");*/
+	private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");	
+
+	private Locale locale = Locale.getDefault();
+
+	RoadConcessionaire roadConcessionaire;
+	RoadConcessionaireDAO dao;
+
+	InetAddress addr;
+
+	String concessionaire;	
+
+	public Locale getLocale() {
 		return  (locale);
-	 }
-			 	  	
-	 public void setLocale(Locale locale) {
+	}
+
+	public void setLocale(Locale locale) {
 		this.locale = locale;
-	 }
-	 	 	 
-	 public String getConcessionaire() {
+	}
+
+	public String getConcessionaire() {
 		return concessionaire;
 	}
 
@@ -59,70 +59,104 @@ public class LanguageBean implements Serializable {
 	}
 
 	@PostConstruct
-	 public void defaultLanguage() {
-		 
-		 roadConcessionaire = new RoadConcessionaire();
-		 dao = new RoadConcessionaireDAO();
-		 
-			// GET LOCAL HOST ADDRESS
-			try {
+	public void defaultLanguage() {
 
-				addr = InetAddress.getLocalHost();
+		roadConcessionaire = new RoadConcessionaire();
+		dao = new RoadConcessionaireDAO();
 
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
+		// GET LOCAL HOST ADDRESS
+		try {
+
+			addr = InetAddress.getLocalHost();
+
+			concessionaire = dao.IdentifyRoadConcessionarie(addr.getHostAddress());
+
+			if(concessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()) ||
+					concessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
+
+				Locale.setDefault(SPANISH);
+				locale = Locale.getDefault(); 					
 			}
-			
-			try {
-				
-				 concessionaire = dao.IdentifyRoadConcessionarie(addr.getHostAddress());
-								
-				if(concessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()) ||
-						concessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
-					
-					  Locale.setDefault(SPANISH);
-					  locale = Locale.getDefault(); 					
-				}
-				
-				else {
-					
-					 Locale.setDefault(PORTUGUESE_BRAZILIAN);
-					 locale = Locale.getDefault(); 
-				}
-			
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}				 		
-	 }
-			 
-	 public void English(ActionEvent event) {
-		 		 
-	   Locale.setDefault(ENGLISH);	   
-	   locale = Locale.getDefault();   
-	   updateViewLocale(locale);
-	   
-	 }
-	 
-	 public void Spanish(ActionEvent event) {
-		
+
+			else {
+
+				Locale.setDefault(PORTUGUESE_BRAZILIAN);
+				locale = Locale.getDefault(); 
+			}
+
+		} catch (Exception ex) { /* DO NOTHING */ } 	
+
+	}
+
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para alterar o idioma do sistema (Inglês Americano)
+	 * @author Wellington 12/05/2020
+	 * version 1.1
+	 * @since 1.0
+	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
+	 * @param event - evento originado lançado na interface do sistema
+	 */
+	public void English(ActionEvent event) {
+
+		Locale.setDefault(ENGLISH);	   
+		locale = Locale.getDefault();   
+		updateViewLocale(locale);
+
+	}
+
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para alterar o idioma do sistema (Espanhol)
+	 * @author Wellington 12/05/2020
+	 * version 1.1
+	 * @since 1.0
+	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
+	 * @param event - evento originado lançado na interface do sistema
+	 */
+	public void Spanish(ActionEvent event) {
+
 		Locale.setDefault(SPANISH);
 		locale = Locale.getDefault();
 		updateViewLocale(locale);	
-		
+
 	}
 
-	 public void Portuguese(ActionEvent event) {
-	
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para alterar o idioma do sistema (Português do Brasil)
+	 * @author Wellington 12/05/2020
+	 * version 1.1
+	 * @since 1.0
+	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
+	 * @param event - evento originado lançado na interface do sistema
+	 */
+	public void Portuguese(ActionEvent event) {
+
 		Locale.setDefault(PORTUGUESE_BRAZILIAN);
 		locale = Locale.getDefault();
 		updateViewLocale(locale);
-	  
-	 }	 
-	 
-	 private void updateViewLocale(Locale locale) {
+
+	}	
+
+	// --------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para alterar o idioma nas interfaces do sistema
+	 * @author Wellington 12/05/2020
+	 * version 1.1
+	 * @since 1.0
+	 * @see https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html
+	 * @param locale - representa uma cultura especifíca, politíca ou geográfica
+	 */
+	private void updateViewLocale(Locale locale) {
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
-	
-     }
+
+	}
+
+	// --------------------------------------------------------------------------------------------
 
 }

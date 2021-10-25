@@ -1,65 +1,77 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.html.HtmlDataTable;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
-import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.UserAccountDAO;
-import br.com.tracevia.webapp.methods.EmailModels;
+import br.com.tracevia.webapp.methods.EmailModel;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.EmailUtil;
 import br.com.tracevia.webapp.util.EncryptPasswordUtil;
 import br.com.tracevia.webapp.util.GeneratePasswordUtil;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
+import br.com.tracevia.webapp.util.LogUtils;
+import br.com.tracevia.webapp.util.SessionUtil;
 
+/**
+ * Classe modelo para conta de usuário
+ * @author Wellington 10/06/2020
+ * @version 1.0
+ * @since 1.0
+ */
 
 @ManagedBean(name="userAccount")
 @SessionScoped
 public class UserAccountBean implements Serializable {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+	
+		private static final long serialVersionUID = 1L;		
 		
-		private boolean selectAll;
-		private String parametro;
-		private String sendParametro;		
-		private UserAccount user;	
-		private String user_id;
-		private String date_register;
-		private String name;
-		private String job_position;
-		private String email;
-		private String username;
-		private int role_permission;
-		private boolean status;
-		private HtmlDataTable dataTable;
-		private String rowkey;
+		// --------------------------------------------------------------------------------------------
+		
+		// CLASS PATH
+			
+		private static String classLocation = UserAccountBean.class.getCanonicalName();
+			
+		// --------------------------------------------------------------------------------------------
+			
+		// CLASS LOG FOLDER
+			
+		private static String classErrorPath = LogUtils.ERROR.concat("users\\");
+			
+		// --------------------------------------------------------------------------------------------
+			
+		// EXCEPTION FILENAMES
+			
+		private static String registerExceptionLog = classErrorPath.concat("register_ex_");
+		private static String updateInfoExceptionLog = classErrorPath.concat("update_info_ex_");
+		private static String listExceptionLog = classErrorPath.concat("list_ex_");
+		private static String updateExceptionLog = classErrorPath.concat("update_user_ex");
+		private static String deleteExceptionLog = classErrorPath.concat("delete_ex_");
+		private static String changePasswordExceptionLog = classErrorPath.concat("sql_user_validate_");
+							
+		// --------------------------------------------------------------------------------------------	
+		
+		private UserAccount user;
+		
+		LocaleUtil localeEmail, localeUsers;					
+		
+		String lastUsername, lastEmail; // Aux to user for check
+		
+		UserAccountDAO dao;
 		
 		DataModel<UserAccount> userDataModel;
 	
-		private ArrayList<UserAccount> usersList;
-		
-		UserAccountDAO dao;
-
 		private ArrayList<UserAccount> usuarios;
-		
-		LocaleUtil localeEmail, localeUsers;
-		
-		String lastUsername, lastEmail; // Aux to user for check		
-				
+		private ArrayList<UserAccount> usersList;	
+									
 		public DataModel<UserAccount> getUserDataModel() {
 			return userDataModel;
 		}
@@ -79,23 +91,11 @@ public class UserAccountBean implements Serializable {
 		public ArrayList<UserAccount> getUsersList() {
 			return usersList;
 		}
-		
-		public HtmlDataTable getDataTable() {
-			return dataTable;
-		}
-
-		public void setDataTable(HtmlDataTable dataTable) {
-			this.dataTable = dataTable;
+			 					 		 			
+		public ArrayList<UserAccount> getUsuarios() {
+				return usuarios;
 		}
 		
-		public String getRowkey() {
-			return rowkey;
-		}
-
-		public void setRowkey(String rowkey) {
-			this.rowkey = rowkey;
-		}
-
 		@PostConstruct
 		public void initialize() {
 			
@@ -111,37 +111,38 @@ public class UserAccountBean implements Serializable {
 									
 		}
 		
+		// --------------------------------------------------------------------------------------------	
+		
+		/**
+		 * Método para cadastrar um usuário
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0
+		 */
 		public void cadastroUsuario() {
 								
 			String generatedPass = "";		
 			boolean response = false, email = false, usernameCheck = false, emailCheck = false;
-			MessagesUtil message = new MessagesUtil();
-			
-			//Get external application contents
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ExternalContext externalContext = facesContext.getExternalContext();
-									
+																			
 			try {
 									
 				dao = new UserAccountDAO();
-				GeneratePasswordUtil generate = new GeneratePasswordUtil();
-				EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
-				EmailUtil mail = new EmailUtil();
-				EmailModels cadMail = new EmailModels();
+				
+				EmailModel cadMail = new EmailModel();
 				
 				if(user.getName() != "" && user.getJob_position() != "" &&
 						user.getEmail() != "" && user.getUsername() != "" && user.getPermission_id() != 0) {
 				
 				//Criar Senha
-				generatedPass = generate.generatePassword();
+				generatedPass = GeneratePasswordUtil.generatePassword();
 				
 				//System.out.println(generatedPass);
 				
 				//Encriptar password para MD5
-				user.setPassword(encrypt.encryptPassword(generatedPass));
+				user.setPassword(EncryptPasswordUtil.encryptPassword(generatedPass));
 				
 				//Salvar usu�rio da sess�o que criou usu�rio
-				user.setCreatedBy((String) facesContext.getExternalContext().getSessionMap().get("user"));
+				user.setCreatedBy((String) SessionUtil.getParam("user"));
 				
 				//Gerar Assunto do Cadastro
 				String assunto = cadMail.registerSubject();
@@ -161,23 +162,23 @@ public class UserAccountBean implements Serializable {
 						
         				if(response) {        					
         					
-        					email = mail.sendEmailHtml(user.getEmail(), assunto , mensagem); //Método para enviar email
+        					email = EmailUtil.sendEmailHtml(user.getEmail(), assunto , mensagem); //Método para enviar email
         						
         					if(email) {	
         						        
-        						  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
-        						  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
-        						  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
-        						  RequestContext.getCurrentInstance().execute("$('#success #mail').html('"+user.getEmail()+"'); ");
+        						  SessionUtil.executeScript("hideInfoMessage();");
+        						  SessionUtil.executeScript("showSuccessMessage();");	
+        						  SessionUtil.executeScript("hideSuccessMessage();");	
+        						  SessionUtil.executeScript("$('#success #mail').html('"+user.getEmail()+"'); ");
         						  
-        						  RequestContext.getCurrentInstance().execute("$('#form-register')[0].reset();"); // reset form
+        						  SessionUtil.executeScript("$('#form-register')[0].reset();"); // reset form
         						          		
         						  //Remove Validation icons
-        						  RequestContext.getCurrentInstance().execute("$('span[for=fullname]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-        						  RequestContext.getCurrentInstance().execute("$('span[for=jobPosition]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-        						  RequestContext.getCurrentInstance().execute("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-        						  RequestContext.getCurrentInstance().execute("$('span[for=username]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-        						  RequestContext.getCurrentInstance().execute("$('span[for=permissions]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  SessionUtil.executeScript("$('span[for=fullname]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  SessionUtil.executeScript("$('span[for=jobPosition]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  SessionUtil.executeScript("$('span[for=email]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  SessionUtil.executeScript("$('span[for=username]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+        						  SessionUtil.executeScript("$('span[for=permissions]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
         						        	        						        						  
         						  clearFields(); // limpar objeto user  
         						  
@@ -188,22 +189,22 @@ public class UserAccountBean implements Serializable {
         					
         				} else {
         					
-        					  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
-        					  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
-        					  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+        					  SessionUtil.executeScript("hideInfoMessage();");
+        					  SessionUtil.executeScript("showErrorMessage();");	
+        					  SessionUtil.executeScript("hideErrorMessage();");	
         				}        				               		
                 		
                 	} else {
                 		
-                		  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
-                		  RequestContext.getCurrentInstance().execute("showUsernameErrorMessage();");	
-    					  RequestContext.getCurrentInstance().execute("hideUsernameErrorMessage();");	
+                		  SessionUtil.executeScript("hideInfoMessage();");
+                		  SessionUtil.executeScript("showUsernameErrorMessage();");	
+    					  SessionUtil.executeScript("hideUsernameErrorMessage();");	
                    }
                 }else {
                 	
-                	  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
-                	  RequestContext.getCurrentInstance().execute("showEmailErrorMessage();");	
-					  RequestContext.getCurrentInstance().execute("hideEmailErrorMessage();");	
+                	  SessionUtil.executeScript("hideInfoMessage();");
+                	  SessionUtil.executeScript("showEmailErrorMessage();");	
+					  SessionUtil.executeScript("hideEmailErrorMessage();");	
                 }						     
             
 				 listarUsuarios(); //listar após cadastrar
@@ -213,16 +214,27 @@ public class UserAccountBean implements Serializable {
 
 			}catch(Exception ex) {
 				
-				ex.printStackTrace();
+				  StringWriter errors = new StringWriter(); 
+				  ex.printStackTrace(new PrintWriter(errors));	
 
-				  RequestContext.getCurrentInstance().execute("hideInfoMessage();");
-				  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
-				  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+				  LogUtils.logError(LogUtils.fileDateTimeFormatter(registerExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+			
+								
+				  SessionUtil.executeScript("hideInfoMessage();");
+				  SessionUtil.executeScript("showErrorMessage();");	
+				  SessionUtil.executeScript("hideErrorMessage();");	
 				
 			}		
-		}		
+		}	
+		
+		// --------------------------------------------------------------------------------------------	
 
-		//Criar metodos daqui
+		/**
+		 * Método para listar usuários
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0 
+		 */
 		public void listarUsuarios() {
 		
 			try {
@@ -238,14 +250,31 @@ public class UserAccountBean implements Serializable {
 				
 			
 			}catch(Exception ex) {
-				ex.printStackTrace();
+				
+				StringWriter errors = new StringWriter(); 
+				ex.printStackTrace(new PrintWriter(errors));	
+
+				LogUtils.logError(LogUtils.fileDateTimeFormatter(listExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+			
 			}		
 		}
 		
-		public String usuarioInfoToUp() throws Exception {
+		// --------------------------------------------------------------------------------------------	
+		
+         /**
+          * Método para obter informações de um usuário para atualizar
+          * @author Wellington 10/06/2020
+		  * @version 1.0
+		  * @since 1.0
+          * @return para página de atualizaçaõ de um usuário
+          * @throws Exception
+          */
+		public String usuarioInfoToUp() {
 
-			String parametro = getSendParametro();			
+			String parametro = user.getSendParametro();			
 											
+			try {				
+			
 				dao = new UserAccountDAO();
 				user = new UserAccount();	
 				
@@ -262,15 +291,31 @@ public class UserAccountBean implements Serializable {
 				user.isActiveStatus();					
 				lastUsername = user.getUsername();
 				lastEmail = user.getEmail();
-							
+				
 				return "/users/update_user.xhtml?faces-redirect=true";
-			
+				
 				}
-							
+				
+				}catch(Exception ex) {
+					
+					StringWriter errors = new StringWriter(); 
+					ex.printStackTrace(new PrintWriter(errors));	
+
+					LogUtils.logError(LogUtils.fileDateTimeFormatter(updateInfoExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+					
+				}					
+										
 			return null;
 		}
-				
 			
+		// --------------------------------------------------------------------------------------------	
+			
+		/**
+		 * Método para excluir um usuário
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0
+		 */
 		public void excluirUsuario() {
 
 			boolean response = false;
@@ -280,7 +325,7 @@ public class UserAccountBean implements Serializable {
 				dao = new UserAccountDAO();
 				user = new UserAccount();
 				
-				response = dao.deletarRegistro(getSendParametro());
+				response = dao.deletarRegistro(user.getSendParametro());
 								
 				if(response) {
 										
@@ -289,83 +334,167 @@ public class UserAccountBean implements Serializable {
 					usersList = new ArrayList<UserAccount>();									
 					userDataModel = new ListDataModel<UserAccount>();
 					
-					  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
-					  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
+					  SessionUtil.executeScript("showSuccessMessage();");	
+					  SessionUtil.executeScript("hideSuccessMessage();");	
 										
 				} 
 				
 			}catch(Exception ex) {
-				ex.printStackTrace();
 				
-				 RequestContext.getCurrentInstance().execute("showErrorMessage();");	
-				 RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+				 StringWriter errors = new StringWriter(); 
+				 ex.printStackTrace(new PrintWriter(errors));	
+
+				 LogUtils.logError(LogUtils.fileDateTimeFormatter(deleteExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+				
+				 SessionUtil.executeScript("showErrorMessage();");	
+				 SessionUtil.executeScript("hideErrorMessage();");	
 				
 			}	
 			
 			listarUsuarios(); // listar usuários
 		}
 		
+		// --------------------------------------------------------------------------------------------	
+		
+          /**
+           * Método para atualizar um usuário
+           * @author Wellington 10/06/2020
+		   * @version 1.0
+		   * @since 1.0
+           */
           public void atualizarCadastro() {
 								
 			boolean response = false, emailCheck = false, usernameCheck = false;
-			
-			//Get external application contents
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ExternalContext externalContext = facesContext.getExternalContext();
-		
+							
 			try {
 
 				dao = new UserAccountDAO();						
 				
-				  // USER ID -> Needs to access this method				
-				 user.setUserID(externalContext.getRequestParameterMap().get("myUserId"));
-				 										
-				   emailCheck = dao.checkEmailToUpdate(user.getEmail(), lastEmail);
-				                
-	                if(!emailCheck) {	                	
+				 // USER ID -> Needs to access this method				
+				 user.setUserID(SessionUtil.getParametersValue("myUserId"));
+				 								 										
+				   emailCheck = dao.checkEmail(user.getEmail());
+				   								                
+	                if(emailCheck && (user.getEmail().equals(lastEmail)) || !emailCheck) {	                	
 	            	                	
-	                	usernameCheck = dao.checkUsernameToUpdate(user.getUsername(), lastUsername);
-	                		                	
-	                	if(!usernameCheck) {
+	                	usernameCheck = dao.checkUsername(user.getUsername());
+	                		                		                	
+	                	if(usernameCheck && (user.getUsername().equals(lastUsername)) || !usernameCheck) {
 	                		             		                		
 	                		response = dao.atualizar(user);	
 	            			
 	        				if(response) {
 	        					
-	        					  RequestContext.getCurrentInstance().execute("showSuccessMessage();");	
-	        					  RequestContext.getCurrentInstance().execute("hideSuccessMessage();");	
+	        					  SessionUtil.executeScript("showSuccessMessage();");	
+	        					  SessionUtil.executeScript("hideSuccessMessage();");	
 	        					 
-	        					  RequestContext.getCurrentInstance().execute("redirecToSearch();");	  //redirect to table					  
+	        					  SessionUtil.executeScript("redirecToSearch();");	  //redirect to table				  
 	        					  				
-	        				} 
-	        			
+	        				} 	        			
 	                		
 	                	} else {
                 		
-              		  RequestContext.getCurrentInstance().execute("showUsernameErrorMessage();");	
-  					  RequestContext.getCurrentInstance().execute("hideUsernameErrorMessage();");  					   
+              		  SessionUtil.executeScript("showUsernameErrorMessage();");	
+  					  SessionUtil.executeScript("hideUsernameErrorMessage();");  					   
   					  
                  }
 	                	
               }else {
               	
-              	  RequestContext.getCurrentInstance().execute("showEmailErrorMessage();");	
-				  RequestContext.getCurrentInstance().execute("hideEmailErrorMessage();");	
+              	  SessionUtil.executeScript("showEmailErrorMessage();");	
+				  SessionUtil.executeScript("hideEmailErrorMessage();");	
 				  
 			   }	           								
 				
 			}catch(Exception ex) {
-				ex.printStackTrace();				
+				
+				  StringWriter errors = new StringWriter(); 
+				  ex.printStackTrace(new PrintWriter(errors));	
+
+				  LogUtils.logError(LogUtils.fileDateTimeFormatter(updateExceptionLog),  classLocation, ex.getMessage(), errors.toString());
 					
-				  RequestContext.getCurrentInstance().execute("showErrorMessage();");	
-				  RequestContext.getCurrentInstance().execute("hideErrorMessage();");	
+				  SessionUtil.executeScript("showErrorMessage();");	
+				  SessionUtil.executeScript("hideErrorMessage();");	
 			}	
 			
 			listarUsuarios(); // listar usuários
 		}
+          
+      	// --------------------------------------------------------------------------------------------	
+          
+      	/**
+  		 * Método para redefinir a senha de usuário
+  		 * @author Wellington 10/06/2020
+  		 * @version 1.0
+  		 * @since 1.0
+  		 */
+  		public void changePassword() {
+  						
+  			boolean response = false;		
+  	
+  			String usuario = (String) SessionUtil.getParam("user");				
+  		
+  			String password = EncryptPasswordUtil.encryptPassword(user.getPassword());
+  			String newPassword = EncryptPasswordUtil.encryptPassword(user.getNewPassword());
+  			String confPassword = EncryptPasswordUtil.encryptPassword(user.getConfPassword());
 
-				
-		public String cancelUpdate() {
+  			try {
+
+  				UserAccountDAO dao = new UserAccountDAO();	
+  				
+  				if(!password.equals(newPassword)) {
+  				
+  				 if(newPassword.equals(confPassword)) {				
+
+  						response  = dao.changePassword(usuario, newPassword );
+
+  						if(response) {		
+  							
+  							  SessionUtil.executeScript("showSuccessMessage();");
+  							  SessionUtil.executeScript("hideSuccessMessage();");
+  							 
+  							  SessionUtil.executeScript("$('#change-password-form')[0].reset();"); // reset form
+  				          		
+      						  //Remove Validation icons
+      						  SessionUtil.executeScript("$('span[for=password]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+      						  SessionUtil.executeScript("$('span[for=newPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+      						  SessionUtil.executeScript("$('span[for=confPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
+      						 						
+  							  resetChangePassword(); // Reset Password		
+
+  				      }						
+  				} // ELSE NOT NECESSARY BECAUSE JQUERY VALIDATOR DO IT
+  				 
+  			}else {
+  				
+  				 SessionUtil.executeScript("showChangeErrorMessage();");
+  				 SessionUtil.executeScript("hideChangeErrorMessage();");
+  			}				
+
+  			}catch(Exception ex) {
+  				
+  				StringWriter errors = new StringWriter(); 
+  				ex.printStackTrace(new PrintWriter(errors));	
+
+  				LogUtils.logError(LogUtils.fileDateTimeFormatter(changePasswordExceptionLog),  classLocation, ex.getMessage(), errors.toString());
+  							
+  				SessionUtil.executeScript("showErrorMessage();");
+  				SessionUtil.executeScript("hideErrorMessage();");
+  				
+  			}			
+  		}
+  		
+  		// --------------------------------------------------------------------------------------------	
+  		
+ 				
+		/**
+		 * Método para redirecionar a página de painel de usuário
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0
+	     * @return url da página do painel de usuários
+		 */
+           public String redirectToPanel() {
 			
 			user = new UserAccount();
 			
@@ -374,205 +503,84 @@ public class UserAccountBean implements Serializable {
 			return "/users/panel_user.xhtml?faces-redirect=true";
 			
 		}
-		
-           public String backPanel() {
-			
-			user = new UserAccount();
-			
-			listarUsuarios(); // listar usuários
-						 			  
-			return "/users/panel_user.xhtml?faces-redirect=true";
-			
-		}
-		
+           
+       	// --------------------------------------------------------------------------------------------	
+           
+        /**
+   		 * Método para redirecionar a página de registro de usuário
+   		 * @author Wellington 10/06/2020
+   		 * @version 1.0
+   		 * @since 1.0
+   	     * @return url da página de registro de usuário
+   		 */
 		public String newUser() {
 			  
 			return  "/users/register_user.xhtml?faces-redirect=true";	
 			
 		}
+		
+		// --------------------------------------------------------------------------------------------	
 			
+		/**
+		 * Método para redefinir o objeto user
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0	
+		 */
 		public void clearFields(){
 			
 			user = new UserAccount();			
 			
 		}
 		
-						
-		public void changePassword() {
-						
-			boolean response = false;
+		// --------------------------------------------------------------------------------------------					
 			
-			MessagesUtil message = new MessagesUtil();
-
-			FacesContext context = FacesContext.getCurrentInstance();			
-
-			String usuario = (String) context.getExternalContext().getSessionMap().get("user");
-					
-			EncryptPasswordUtil encrypt = new EncryptPasswordUtil();
-
-			String password = encrypt.encryptPassword(user.getPassword());
-			String newPassword = encrypt.encryptPassword(user.getNewPassword());
-			String confPassword = encrypt.encryptPassword(user.getConfPassword());
-
-			try {
-
-				UserAccountDAO dao = new UserAccountDAO();	
-				
-				if(!password.equals(newPassword)) {
-				
-				 if(newPassword.equals(confPassword)) {				
-
-						response  = dao.changePassword(usuario, newPassword );
-
-						if(response) {		
-							
-							 RequestContext.getCurrentInstance().execute("showSuccessMessage();");
-							 RequestContext.getCurrentInstance().execute("hideSuccessMessage();");
-							 
-							  RequestContext.getCurrentInstance().execute("$('#change-password-form')[0].reset();"); // reset form
-				          		
-    						  //Remove Validation icons
-    						  RequestContext.getCurrentInstance().execute("$('span[for=password]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-    						  RequestContext.getCurrentInstance().execute("$('span[for=newPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-    						  RequestContext.getCurrentInstance().execute("$('span[for=confPassword]').removeClass('valid-icon-visible').addClass('valid-icon-hidden');");
-    						 						
-							  resetChangePassword(); // Reset Password		
-
-				      }						
-				} // ELSE NOT NECESSARY BECAUSE JQUERY VALIDATOR DO IT
-				 
-			}else {
-				
-				 RequestContext.getCurrentInstance().execute("showChangeErrorMessage();");
-				 RequestContext.getCurrentInstance().execute("hideChangeErrorMessage();");
-			}
-				
-
-			}catch(Exception ex) {
-				ex.printStackTrace();
-				
-				 RequestContext.getCurrentInstance().execute("showErrorMessage();");
-				 RequestContext.getCurrentInstance().execute("hideErrorMessage();");
-			}			
-		}
-				
+		/**
+		 * Método para obter o valor de uma linha da tabela
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0 
+		 */
 		 public void getRowValue() {
 			 
 		     UserAccount user = new UserAccount();
 						 
-			  user = userDataModel.getRowData(); // There it is.
+			 user = userDataModel.getRowData(); // There it is.
 			 
-			 rowkey = String.valueOf(user.getUser_id());
+			 user.setRowkey(String.valueOf(user.getUser_id()));
 			 			 
-			 RequestContext.getCurrentInstance().update("dialog-form:modal-text");   
+			 SessionUtil.updateElement("dialog-form:modal-text");   
 			 			 
 		 }
-		 		 
-			
-		public boolean isSelectAll() {
-			return selectAll;
-		}
-
-		public void setSelectAll(boolean selectAll) {
-			this.selectAll = selectAll;
-		}
-
-		public String getParametro() {
-			return parametro;
-		}
-
-		public void setParametro(String parametro) {
-			this.parametro = parametro;
-		}
-
-		public ArrayList<UserAccount> getUsuarios() {
-			return usuarios;
-		}
-
-		public String getSendParametro() {
-			return sendParametro;
-		}
-
-		public void setSendParametro(String sendParametro) {
-			this.sendParametro = sendParametro;
-		}
-
-		public boolean getStatus() {
-			return status;
-		}
-
-		public void setStatus(boolean b) {
-			this.status = b;
-		}
-
-		public int getRole_permission() {
-			return role_permission;
-		}
-
-		public void setRole_permission(int role_permission) {
-			this.role_permission = role_permission;
-		}
-
-		public String getUsername() {
-			return username;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
-		public String getEmail() {
-			return email;
-		}
-
-		public void setEmail(String email) {
-			this.email = email;
-		}
-
-		public String getJob_position() {
-			return job_position;
-		}
-
-		public void setJob_position(String job_position) {
-			this.job_position = job_position;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getDate_register() {
-			return date_register;
-		}
-
-		public void setDate_register(String date_register) {
-			this.date_register = date_register;
-		}
-
-		public String getUser_id() {
-			return user_id;
-		}
-
-		public void setUser_id(String user_id) {
-			this.user_id = user_id;
-		}
 		
-		//RESET METHODS
+		// ------------------------------------------------------------------------------------------------------- // 
+		
+		/**
+		 * Método para resetar objeto do usuário
+		 * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0  
+		 */
         public void resetChangePassword(){
 			
 		  user = new UserAccount();
 			
 		}
         
-        public int userPermision() {
-        	FacesContext context = FacesContext.getCurrentInstance();
-        	int role = (int) context.getExternalContext().getSessionMap().get("nivel");
+     // ------------------------------------------------------------------------------------------------------- // 
+        
+        /**
+         * Método para obter a permissão de um usuário
+         * @author Wellington 10/06/2020
+		 * @version 1.0
+		 * @since 1.0  
+         * @return código do nível de acesso
+         */
+        public int userPermision() {        	        
         	
-        	return role;
+        	return (int) SessionUtil.getParam("nivel");
         }
+        
+     // ------------------------------------------------------------------------------------------------------- // 
 
 }

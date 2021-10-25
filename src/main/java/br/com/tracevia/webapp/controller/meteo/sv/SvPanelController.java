@@ -8,15 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
-import org.primefaces.context.RequestContext;
-
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="svPanelBean")
 @RequestScoped
@@ -27,7 +25,6 @@ public class SvPanelController {
 	
 	LocaleUtil localeLabel, localeCalendar, localeSV;
 	
-	MessagesUtil message;
 	
 	EquipmentsDAO dao;
 	MeteoDAO mtoDao;	
@@ -112,8 +109,7 @@ public class SvPanelController {
 	public void InitializePanelValues(){
 		
 		try {					
-			
-			message = new MessagesUtil();
+						
 			mtoDao = new MeteoDAO();
 			panel = new SvPanel();
 					
@@ -126,7 +122,7 @@ public class SvPanelController {
 			  		  
 			 }		
 			
-			RequestContext.getCurrentInstance().execute("checkMtoStatus();");	
+			  SessionUtil.executeScript("checkMtoStatus();");	
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -141,7 +137,7 @@ public class SvPanelController {
 			if(station != null) {
 										
 			mtoDao = new MeteoDAO();	
-			message = new MessagesUtil();
+		
 			panel = new SvPanel();				
 			panel = mtoDao.SvPanelInformation(station);	
 						
@@ -153,12 +149,14 @@ public class SvPanelController {
 						
 			if(panel == null) {
 				
-				panel = new SvPanel();	// Inst�ncia o objeto novamente.
+				panel = new SvPanel();	// Instância o objeto novamente.
 				initPanelZero(panel);				
-				message.InfoMessage(localeSV.getStringKey("sv_message_records_not_found_title"),localeSV.getStringKey("sv_message_equipment_no_data"));
+				
+				SessionUtil.executeScript("showInfoMessage();");
+				SessionUtil.executeScript("hideInfoMessage();");
 			}
 			
-			RequestContext.getCurrentInstance().execute("checkMtoStatus();");			
+			   SessionUtil.executeScript("checkMtoStatus();");			
 		  								
 			}
 			

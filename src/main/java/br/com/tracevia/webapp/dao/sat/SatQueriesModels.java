@@ -1683,8 +1683,7 @@ public class SatQueriesModels {
                     	                     	   
                     	   for(int i = 0; i < station_id.length; i++) {				
                     			 
-                               query += " SUM(st.siteID = "+station_id[i]+") 'equip "+(i+1)+"', " ;
-                       		   		             
+                               query += " SUM(st.siteID = "+station_id[i]+") 'equip "+(i+1)+"', " ;                       		   	             
                     	               	                    	   
                     	       //Adding total count
               			        total +="st.siteID = '"+station_id[i]+"'";

@@ -1,0 +1,136 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
+    
+   <h:body>
+   
+     <!-- SUBMIT MODAL -->
+	  	  
+	  <div class="modal fade" id="modalReportOptions" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel"> <!-- MODAL COMPONENT DIV -->
+			<!---->
+			<div class="modal-dialog" role="document"> <!-- MODAL DIALOG DIV -->
+			<!---->
+				<h:form class="modal-content" name="report-form" id="report-form"> <!-- MODAL FORM -->
+				<!---->
+					<div class="modal-header text-center"> <!-- MODAL HEADER DIV -->
+					 <!---->
+						<h4 class="modal-title w-100 font-weight-bold">#{reportsLabels.reports_modal_title}</h4> <!-- MODAL TITLE -->
+						<!---->
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <!-- MODAL CLOSE BUTTON -->
+							<span aria-hidden="true">&times;</span> <!-- SPAN ICON -->
+						</button> <!-- MODAL CLOSE BUTTON END  -->
+						<!---->
+					</div> <!-- MODAL HEADER DIV END -->
+				 <!---->
+				<div class="modal-body"> <!-- MODAL BODY DIV -->
+				
+					<br /> <!-- LINE BREAK -->
+
+					<!-- EQUIPMENTS OPTIONS -->
+
+					<div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 checkbox-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="fas fa-hdd"></i></span> <!-- SPAN ICON -->
+							<span for="equips" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->							
+							  <select name="equips" id="equips"  multiple="multiple" > <!-- SELECT OPTIONS -->
+							   <!---->							
+								<ui:repeat var="eqp" value="#{speedBean.build.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
+									<!---->
+									  <option value="#{eqp.value}">#{eqp.label}</option> <!-- OPTIONS -->
+									<!---->
+								    </ui:repeat> <!-- LOOP END -->
+								 <!---->								 								
+							   </select><!-- SELECT OPTIONS END -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				      <label for="equips" class="error" id="equips-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+						  
+				 <!---->																 	
+				
+				<!-- START DATE -->
+				
+                 <div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="far fa-calendar-alt"></i></span> <!-- SPAN ICON -->
+							<span for="dateStart" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->
+							 <!---->
+							  <input type="text" class="datepicker" autocomplete="off" name="dateStart" id="dateStart"
+							   placeholder="#{reportsLabels.reports_input_date_start_placeholder}" /> <!-- INPUT -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				       <label for="dateStart" class="error" id="dateStart-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+			    
+			    <!---->
+
+				<!-- END DATE -->
+				
+				   <div class="form-row"> <!-- FORM ROW DIV -->
+						<div class="form-group col-sm-12 input-field"> <!-- FORM GROUP DIV -->
+						  <span><i class="far fa-calendar-alt"></i></span> <!-- SPAN ICON -->
+							<span for="dateEnd" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->
+							 <!---->
+							  <input type="text" class="datepicker" autocomplete="off" name="dateEnd" id="dateEnd"
+							   placeholder="#{reportsLabels.reports_input_date_start_placeholder}" /> <!-- INPUT -->
+							 <!---->
+						 </div> <!-- FORM GROUP DIV END -->
+					   <div class="error-label"> <!-- ERROR LABEL DIV -->
+				       <label for="dateEnd" class="error" id="dateEnd-error"></label> <!-- ERROR LABEL -->
+				   </div> <!-- ERROR LABEL DIV END -->
+			    </div> <!-- FORM ROW DIV END -->
+
+                <!---->
+                							
+				<input type="hidden" name="jsTable" value="speed-records-table" />	<!-- TABLE NAME -->
+				<input type="hidden" name="jsTableScrollHeight" value="50.3vh" />	<!-- TABLE VIEW HEIGHT -->
+				<input type="hidden" name="isMulti" value="true" />	<!-- TABLE VIEW HEIGHT -->
+				
+				<!---->
+							
+		     </div> <!-- MODAL BODY DIV END -->	
+		     			
+                  <!---->
+			   <div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+				    <!---->
+				   <button type="button" id="btn-form-confirm"	class="btn btn-dark form-modal-draw-button" 
+					   onclick="verif('#report-form', '[id$=btn-form-send]')">#{reportsLabels.reports_form_btn_send}
+				   </button> <!-- SUBMIT BUTTON -->
+				   
+                <!---->
+                
+				<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none;"
+					id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+					 <f:ajax execute="@form" render="form-table form-btns" listener="#{speedBean.getReport()}" onevent="onEventFunction" />
+				</h:commandButton> <!-- SUBMIT HIDDEN BUTTON -->
+				
+                <!---->
+                
+				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
+					id="btn-form-reset" immediate="true" type="reset"							
+				    class="btn btn-dark form-modal-draw-button  reset-btn">
+				     <f:ajax execute="@form"	render=":equip :periods :dateStart :dateEnd" /> 
+				</h:commandButton><!-- BUTTON RESET -->
+				
+			    <!---->
+			    
+			    </div> <!-- MODAL FOOTER DIV END -->
+			  </h:form> <!-- MODAL FORM END -->
+			</div> <!-- MODAL DIALOG DIV END --> 
+		</div> <!-- MODAL COMPONENT DIV END -->
+			
+    <!-- =============================================================================================================================================== -->
+   
+   
+   </h:body>        
+                                
+</html>

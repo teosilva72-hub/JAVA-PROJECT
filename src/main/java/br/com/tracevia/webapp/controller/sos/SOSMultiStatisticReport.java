@@ -545,7 +545,7 @@ public class SOSMultiStatisticReport {
 		 if(sosReport.getPeriod().equals("24 hours"))
 		    dta.intervalo24Horas(resultQuery, 1, getNumRegisters());
 		 	
-		//HERE		
+		// HERE		
 		for(int k = 0; k < sosReport.getEquipments().length; k++) {
 		
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
@@ -659,17 +659,16 @@ public class SOSMultiStatisticReport {
 			if(i > 2 ) 
 			    resultQuery[index][i] = auxResult[j][i];	
 			
-		    }			
-			
-		 }		
-		   			   
+		    }		
+		 }
+		   
 		   index++; // Index Increment
-	   }		 								    					
-			//CASO CONTRARIO ENTRA AQUI
+	   }	
+		
+		// CASO CONTRARIO ENTRA AQUI
 			
 		} else {
-			
-			
+						
 			pos += lin;
 			empty++;
 			
@@ -733,8 +732,7 @@ public class SOSMultiStatisticReport {
 			 * @param mainQuery - Query principal a ser adicionada
 			 * @param index - Index a ser usada na query
 			 * @return
-			 */
-							
+			 */							
 				public String ExcuteQuery(SOSQueryModels models, SOSMainQueries sosModel , int index) throws Exception {  
 
 				String query = null;

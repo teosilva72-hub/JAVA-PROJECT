@@ -526,6 +526,7 @@
 				
 				String equip = "", road = "", km = "", lanes = "", city = "";  //Equipment Info
 				
+				
 				// Get equipment values from DB			
 				info = dao.GenericInfo(module, sosReport.getEquipment());
 				

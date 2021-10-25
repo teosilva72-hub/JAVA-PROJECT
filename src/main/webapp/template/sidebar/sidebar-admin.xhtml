@@ -101,20 +101,7 @@
 								</ul> <!----></li>
 							<!---->
 						</ui:fragment>
-						<!---->
-
-						<!---->
-
-						<!-- WIM ITEM -->
-
-						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.wimRealtime}" value="">
-									<i class="fas fa-truck-moving icon-sub"></i>
-									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_wim_realtime}</span>
-								</h:commandLink></li>
-						</ui:fragment>
-						<!---->
+					<!--  -->
 						
 						<!-- Colas ITEM -->
 
@@ -190,84 +177,6 @@
 				</ui:fragment>
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 				
-				<!-- METEREOLOGICOS -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_meteo}">
-
-					<li class="nav-item">
-						<!-- METEO SUBMENU --> <a class="nav-link" href="#meteoUiSubmenu"
-						data-toggle="collapse" aria-expanded="false"><i
-							class="fas fa-wind icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_module_meteo}</span></a>
-
-						<ul class="collapse list-unstyled" id="meteoUiSubmenu">
-							<!-- METEO SUBMENU ITEM -->
-
-							<!-- MTO ITEM -->
-
-							<ui:fragment rendered="#{loginAccount.load.en_mto}">
-
-								<!-- MTO SUBMENU ITEM  -->
-
-								<li class="nav-item"><a class="nav-link"
-									href="#mtoUiSubmenu" data-toggle="collapse"
-									aria-expanded="false"><i class="fas fa-cloud icon-sub"></i><span
-										class="text-sub">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
-
-									<ul class="collapse list-unstyled" id="mtoUiSubmenu">
-										<!-- MTO SUBMENU ITEM -->
-
-										<!-- MTO PANEL -->
-										<li class="nav-item"><h:commandLink class="nav-link"
-												action="#{navigationController.redirectToMTOPanel}" value="">
-												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_panel_mto}</span>
-											</h:commandLink></li>
-										<!---->
-
-									</ul></li>
-								<!---->
-							</ui:fragment>
-							<!---->
-
-							<!---->
-
-							<!-- SV ITEM -->
-
-							<ui:fragment rendered="#{loginAccount.load.en_sv}">
-
-								<!-- SV SUBMENU -->
-
-								<li class="nav-item"><a class="nav-link"
-									href="#svUiSubmenu" data-toggle="collapse"
-									aria-expanded="false"><i class="fas fa-sun icon-sub"></i><span
-										class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
-
-									<ul class="collapse list-unstyled" id="svUiSubmenu">
-										<!-- SV ITEM -->
-
-										<!-- SV PANEL -->
-										<li class="nav-item"><h:commandLink class="nav-link"
-												action="#{navigationController.redirectToVSPanel}" value="">
-												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_panel_sv}</span>
-											</h:commandLink></li>
-										<!---->
-
-									</ul></li>
-								<!---->
-							</ui:fragment>
-							<!---->
-
-						</ul> <!---->
-					</li>
-					<!---->
-				</ui:fragment>
-				<!---->
-
-				<!---->
-
-				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
 				<!-- REPORTS MENU -->
 				<li class="nav-item"><a href="#modMenu" data-toggle="collapse"
 					aria-expanded="false" class="nav-link"> <i

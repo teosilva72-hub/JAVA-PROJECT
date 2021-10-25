@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.dao.global;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +15,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.util.LogUtils;
 
 public class UserAccountDAO {
 
@@ -22,163 +25,59 @@ public class UserAccountDAO {
 	private PreparedStatement ps, ps1, ps2;
 	private ResultSet rs, rs1;
 	private int id;
+	
+	// --------------------------------------------------------------------------------------------
+	
+	// CLASS PATH
+		
+	private static String classLocation = UserAccountDAO.class.getCanonicalName();
+		
+	// --------------------------------------------------------------------------------------------
+		
+	// CLASS LOG FOLDER
+		
+	private static String classErrorPath = LogUtils.ERROR.concat("users\\");
+		
+	// --------------------------------------------------------------------------------------------
+		
+	// EXCEPTION FILENAMES
+		
+	private static String sqlRegisterExceptionLog = classErrorPath.concat("sql_register_");
+	private static String sqlUpdateExceptionLog = classErrorPath.concat("sql_update_");
+	private static String sqlListExceptionLog = classErrorPath.concat("sql_list_");
+	private static String sqlSearchExceptionLog = classErrorPath.concat("sql_search_");
+	private static String sqlDeleteExceptionLog = classErrorPath.concat("sql_delete_");
+	private static String sqlUserValidateExceptionLog = classErrorPath.concat("sql_user_validate_");
+	private static String sqlEmailExceptionLog = classErrorPath.concat("sql_email_validate_");
+	private static String sqlUsernameExceptionLog = classErrorPath.concat("sql_username_validate_");
+	private static String sqlPasswordExceptionLog = classErrorPath.concat("sql_change_password_");
+				
+	// --------------------------------------------------------------------------------------------		
+		
+	// CONSTRUTOR		
 
 	public UserAccountDAO() throws Exception {
 
-		try {
-
-			this.conn = ConnectionFactory.connectToTraceviaApp();
-
-		} catch (Exception e) {
-
-			throw new Exception("erro: \n" + e.getMessage());
-		}
-	}
-	
-	
-	public boolean checkEmail(String email) throws Exception {
-
-		boolean response = false;
-
-		try {
-					
-			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-						
-			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
-			ps.setString(1, email);
-			
-			rs =  ps.executeQuery();
-			
-			if (rs.next() != false)
-			     response = true;
-			
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao consultar dados: " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);		
-		}
-
-		return response;
-	}
-	
-	public boolean checkUsername(String username) throws Exception {
-
-		boolean response = false;
-
-		try {
-					
-			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-						
-			ps = conn.prepareStatement(usernameCheck); //CHECK EMAIL EXISTS
-			ps.setString(1, username);
-			
-			rs =  ps.executeQuery();
-			
-			if (rs.next() != false)
-			     response = true;			
+		LogUtils.createLogsFolder(classErrorPath);
 		
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao consultar dados: " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);		
-		}
-
-		return response;
 	}
 	
-	public boolean checkEmailToUpdate(String email, String lastEmail) throws Exception {
-
-		boolean response = false;
-		
-		String rsEmail = "";
-
-		try {
-					
-			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-						
-			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
-			ps.setString(1, email);
-			
-			rs =  ps.executeQuery();					
-			
-			if(rs.isBeforeFirst()) {
-			    while(rs.next()) {
-				  
-				   rsEmail = rs.getString("email");
-			   }			    
-			}
-						
-			if(!rsEmail.equals(lastEmail))
-			     response = true;				
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao consultar dados: " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);		
-		}
-
-		return response;
-	}
+	// --------------------------------------------------------------------------------------------		
 	
-	public boolean checkUsernameToUpdate(String username, String lastUsername) throws Exception {
-
-		boolean response = false;
-		
-		String rsUsername = "";
-
-		try {
-					
-			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-										
-			ps = conn.prepareStatement(usernameCheck); // CHECK EMAIL EXISTS
-			ps.setString(1, username);
-			
-			rs =  ps.executeQuery();
-			
-			if(rs.isBeforeFirst()) {
-			    while(rs.next()) {
-				  
-				   rsUsername = rs.getString("username");
-			   }			    
-			}
-						
-			if(!rsUsername.equals(lastUsername))
-			     response = true;	
-			
-		
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao consultar dados:  " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);		
-		}
-
-		return response;
-	}
-	
-	
-	@SuppressWarnings("static-access")
-	public boolean cadastroUsuario(UserAccount user) throws Exception {
+	/**
+	 * Método para registrar usuários no sistema
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param user - objeto do tipo userAccount
+	 * @return verdadeiro caso o cadastro foi efetuado com sucesso 	
+	 */
+	public boolean cadastroUsuario(UserAccount user) {
 
 		boolean status = false;
-
-		if (user == null)
-			throw new Exception("O valor passado nao pode ser nulo");
-
+	
 		try {
+			
 			String sql = "INSERT INTO users_register (user_id, date_register, creation_username, name, job_position, email, username, password)"
 					+ " values  ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -239,25 +138,36 @@ public class UserAccountDAO {
 			// Caso retorno for de sucesso
 
 		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
 
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlRegisterExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
 		} finally {
-			connection.closeConnection(conn, ps);
-			connection.closeConnection(conn, ps1, rs1);
-			connection.closeConnection(conn, ps2);			
+			
+			ConnectionFactory.closeConnection(conn, ps);
+			ConnectionFactory.closeConnection(conn, ps1, rs1);
+			ConnectionFactory.closeConnection(conn, ps2);			
 		}
 
 		return status;
 	}
 
 
-	@SuppressWarnings("static-access")
-	public boolean atualizar(UserAccount usuario) throws Exception {
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para atualizar um usuário no sistema
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param user - objeto do tipo userAccount
+	 * @return verdadeiro caso o cadastro foi efetuado com sucesso 	
+	*/
+	public boolean atualizar(UserAccount usuario) {
 
 		boolean status = false;
-
-		if (usuario == null)
-			throw new Exception("O valor passado nao pode ser nulo");
 
 		try {
 
@@ -293,15 +203,33 @@ public class UserAccountDAO {
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception("Erro ao alterar dados " + sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUpdateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+			
 		} finally {
-			connection.closeConnection(conn, ps);
+			
+			ConnectionFactory.closeConnection(conn, ps);
 		}
 
 		return status;
 	}
 
-	public ArrayList<UserAccount> BuscarUsuarios() throws Exception {
+	
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para listar usuários
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0			
+	 * @return uma lista com objetos do tipo UserAccount
+	*/
+	public ArrayList<UserAccount> BuscarUsuarios() {
+		
 		TranslationMethods trad = new TranslationMethods();
 	
 		String sql = "";
@@ -335,23 +263,39 @@ public class UserAccountDAO {
 					user.setEmail(rs.getString("email"));
 					user.setUsername(rs.getString("username"));
 					user.setPermission_role(trad.convertPermission(rs.getString("permission_role")));
-					user.setCheckActive(trad.isActive(rs.getBoolean("status")));
+					user.setActiveStatusName(trad.isActive(rs.getBoolean("status")));
 
 					lista.add(user);
 				}
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception(sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlListExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+			
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return lista;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
 
-	@SuppressWarnings("static-access")
-	public UserAccount procurarUsuarioByID(String parametro) throws Exception {
+	/**
+	 * Método para buscar um usuário específico pelo ID
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param parametro - um parametro de busca do usuário
+	 * @return um objeto do tipo UserAccount	
+	 */
+	public UserAccount procurarUsuarioByID(String parametro) {
 
 		UserAccount user = new UserAccount();
 
@@ -384,24 +328,37 @@ public class UserAccountDAO {
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception(sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlSearchExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+			
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return user;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
 
-	@SuppressWarnings("static-access")
-	public boolean deletarRegistro(String parametro) throws Exception {
+	/**
+	 * Método para deletar um usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param parametro - um parametro de deleção do usuário
+	 * @return verdadeiro caso seja ação realizada com sucesso
+	 */
+	public boolean deletarRegistro(String parametro) {
 
 		boolean response = false;
 
 		int success = 0, success2 = 0;
-
-		if (parametro == null)
-			throw new Exception("O valor passado nao pode ser nulo");
-
+	
 		try {
 
 			String sql = "DELETE FROM users_register WHERE user_id = ?";
@@ -430,16 +387,33 @@ public class UserAccountDAO {
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception("Erro ao deletar dados " + sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlDeleteExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+			
 		} finally {
-			connection.closeConnection(conn, ps);
+			
+			ConnectionFactory.closeConnection(conn, ps);
+			
 		}
 
 		return response;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
 
-	@SuppressWarnings("static-access")
-	public boolean validaUsuario(String usuario) throws Exception {
+	/**
+	 * Método para validar um usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param usuario - um parametro de validação do usuário
+	 * @return verdadeiro caso seja ação realizada com sucesso
+	 */
+	public boolean validaUsuario(String usuario) {
 
 		try {
 
@@ -453,58 +427,38 @@ public class UserAccountDAO {
 					return true;
 			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException sqle) {
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUserValidateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return false;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
 
-	@SuppressWarnings("static-access")
-	public UserAccount validaLogin(String usuario, String senha) throws Exception {
-
-		UserAccount user = new UserAccount();
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(
-					"SELECT username, job_position, status, password FROM users_register WHERE username = ? and password = ?");
-			ps.setString(1, usuario);
-			ps.setString(2, senha);
-			rs = ps.executeQuery();
-			if (rs != null) {
-				while (rs.next()) {
-
-					user.setUsername(rs.getString("username"));
-					user.setJob_position(rs.getString("job_position"));
-					user.setPassword(rs.getString("password"));
-					user.setActiveStatus(rs.getBoolean("status"));
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-
-		return user;
-	}
-
-	public boolean changePassword(String usuario, String senha) throws Exception {
+	/**
+	 * Método para alterar a senha de um usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param usuario - nome de usuário
+	 * @param senha - senha de usuário
+	 * @return verdadeiro caso seja ação realizada com sucesso
+	 */
+	public boolean changePassword(String usuario, String senha) {
 
 		boolean status = false;
 
-		if (usuario == null)
-			throw new Exception("O valor passado nao pode ser nulo");
-
 		try {
 
-			String sql = "UPDATE users_register SET  password = ? WHERE username = ? ";
+			String sql = "UPDATE users_register SET password = ? WHERE username = ? ";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -518,12 +472,105 @@ public class UserAccountDAO {
 			status = true;
 
 		} catch (SQLException sqle) {
-			throw new Exception("Erro ao alterar dados " + sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlPasswordExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				
 		} finally {
 			ConnectionFactory.closeConnection(conn, ps);
 		}
 
 		return status;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para verificar se um email existe
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param email - endereço de email	
+	 * @return verdadeiro caso seja ação realizada com sucesso
+	 */	
+	public boolean checkEmail(String email) {
 
+		boolean response = false;
+
+		try {
+					
+			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
+			ps.setString(1, email);
+			
+			rs =  ps.executeQuery();
+			
+			if (rs.next() != false)
+			     response = true;
+			
+
+		} catch (SQLException sqle) {
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlEmailExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+	
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para verificar se um usuário existe
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0		
+	 * @param username - nome de usuário
+	 * @return verdadeiro caso seja ação realizada com sucesso
+	 */	
+	public boolean checkUsername(String username) {
+
+		boolean response = false;
+
+		try {
+					
+			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
+			
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						
+			ps = conn.prepareStatement(usernameCheck); //CHECK EMAIL EXISTS
+			ps.setString(1, username);
+			
+			rs =  ps.executeQuery();
+			
+			if (rs.next() != false)
+			     response = true;			
+		
+
+		} catch (SQLException sqle) {
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUsernameExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+		} finally {
+			
+			ConnectionFactory.closeConnection(conn, ps);		
+		}
+
+		return response;
+	}
+
+	// --------------------------------------------------------------------------------------------		
 }
