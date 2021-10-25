@@ -256,7 +256,7 @@ public class TesterBean {
 			 model.StandardStyles(); //Set Style
 			 model.StandardBorders(); // Set Borders
 		     
-		     model.generateExcelFile(report.columnName, report.lines);
+		     model.generateExcelFile(columnsInUse, report.lines);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
