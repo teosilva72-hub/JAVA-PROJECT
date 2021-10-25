@@ -138,7 +138,6 @@ let onEventFunction = data => {
 
 		case "success":
 			$('[id$=cancelDownload]').click()
-			drawTable('#"+tableId+"', '"+scrollHgt+"');
 			break;
 			
 			

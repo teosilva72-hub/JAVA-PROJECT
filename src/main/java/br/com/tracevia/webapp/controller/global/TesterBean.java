@@ -1,8 +1,10 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -37,6 +39,9 @@ public class TesterBean {
 	private static String EQUIP_COLUMN = "id_speed";
 		
 	// ----------------------------------------------------------------------------------------------------------------
+
+	private List<String> columnsInUse = new ArrayList<>(); 
+	private List<String[]> dateSearch = new ArrayList<>();
 	
 	private ReportSelection select;
 	private ReportBuild build;
@@ -72,12 +77,33 @@ public class TesterBean {
 		List<String> columnsName = Arrays.asList(columns.split(","));
 
 		this.columnsName = columnsName;
+		this.columnsInUse = columnsName;
+	}
+	
+	public List<String> getColumnsInUse() {
+		return columnsInUse;
+	}
+	
+	public void setColumnsInUse(String[] columns) {
+		List<String> cols = new ArrayList<>();
+		for (String col : columns) {
+			cols.add(columnsName.get(Integer.parseInt(col)));
+		}
+		columnsInUse = cols;
 	}
 
 	public void setSearchParameters(String parameter) {
 		List<String> searchParameters = Arrays.asList(parameter.split(","));
 		
 		this.searchParameters = searchParameters;
+	}
+
+	public List<String[]> getDateSearch() {
+		return dateSearch;
+	}
+
+	public void setDateSearch(String dateSearch, String nameColumn) {
+		this.dateSearch.add(new String[]{dateSearch, nameColumn});
 	}
 	
 	public void setTable(String table) {
@@ -175,17 +201,40 @@ public class TesterBean {
 	// CAMPOS
 		 		
 	public void createFields() throws Exception {
+		int count = 0;
+		Map<String, String> map = SessionUtil.getRequestParameterMap();
+		String[] columns = SessionUtil.getRequestParameterValuesMap().get("allColumns");
+		setColumnsInUse(columns);
 						
 		 model = new ExcelModels(); // HERE
 		 
 		 resetForm();
 		 
 		String query = "Select ";
-		for (String parameter : searchParameters) {
-			query += String.format("%s, ", parameter);
+		for (String col : columns) {
+			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 					
+
+		if (!dateSearch.isEmpty())
+			for (String[] search : dateSearch) {
+				String dateStart = map.get(String.format("%s-start", search[0]));
+				String dateEnd = map.get(String.format("%s-end", search[0]));
+
+				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
+					query += " WHERE";
+
+				if (!dateStart.isEmpty()) {
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= %s", count > 0 ? " AND" : "", dateStart, search[0]);
+					count++;
+				}
+				if (!dateEnd.isEmpty()) {
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= %s", count > 0 ? " AND" : "", dateEnd, search[0]);
+					count++;
+				}
+			}
+		
 		// Table Fields
 		 report.getReport(query);
 		          	
@@ -197,12 +246,11 @@ public class TesterBean {
 		     // SessionUtil.setParam("fields", build.fields);	//Fields
 		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
 		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
-		     
-		  
-		     
+		      		     
 		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
 		   
 	        // GENERATE EXCEL
+		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
 		     
 		     model.StandardFonts();  //Set Font
 			 model.StandardStyles(); //Set Style

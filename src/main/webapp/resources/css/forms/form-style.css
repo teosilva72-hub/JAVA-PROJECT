@@ -216,3 +216,7 @@ button.close{
 /****************** REPORT MODAL ********************/
 /***************************************************/
 
+.datepicker.date {
+	max-width: 100%;
+    text-overflow: ellipsis;
+}
