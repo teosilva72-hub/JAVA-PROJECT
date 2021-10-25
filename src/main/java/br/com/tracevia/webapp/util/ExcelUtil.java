@@ -1384,7 +1384,7 @@ public class ExcelUtil {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	public void fileBodySingle(XSSFSheet sheet, XSSFRow row, List<String[]> rows, int startCol, int endCol, int startRow) {
+	/*public void fileBodySingle(XSSFSheet sheet, XSSFRow row, List<String[]> rows, int startCol, int endCol, int startRow) {
 
 		int rowLenght = startRow + rows.size();
 
@@ -1395,8 +1395,8 @@ public class ExcelUtil {
 
 				try {
 													
-					if(rows.get(lin) == 0)
-						row.getCell(col).setCellValue(Integer.parseInt(rows[lin]));
+					if(rows.get(2).)
+						row.getCell(col).setCellValue(Integer.parseInt(rows.get(lin)));
 						
 					else if(rows[lin].matches(DOUBLE_REGEX))
 							row.getCell(col).setCellValue(Double.parseDouble(rows[lin]));
@@ -1410,7 +1410,7 @@ public class ExcelUtil {
 
 			}		       
 		}     	   
-	}
+	}*/
 
 	
 	

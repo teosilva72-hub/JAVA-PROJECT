@@ -147,18 +147,19 @@ public class ConnectionFactory {
 		return connection5;
 	}
     
-	public static void closeConnection(Connection conn, PreparedStatement ps, ResultSet rs) throws Exception {
+	public static void closeConnection(Connection conn, PreparedStatement ps, ResultSet rs){
 		
 		try {
 			
 			close(conn, ps, rs);
 	
 		}catch(Exception e) {
-		System.out.println("Erro ao encerrar conex�o: "+e.getMessage());
+		
+			System.out.println("Erro ao encerrar conex�o: "+e.getMessage());
 	}		
 }
 
-	public static void closeConnection(Connection conn, PreparedStatement ps) throws Exception {
+	public static void closeConnection(Connection conn, PreparedStatement ps) {
 		
 		try {
 		
@@ -184,18 +185,38 @@ public class ConnectionFactory {
 	
 	
 	
-	public static Connection useConnection(String roadConcessionaire) throws Exception {
+	public static Connection useConnection(String roadConcessionaire) {
 		
 		Connection conn = null;
 							
 		 //GET CONNECTION			
 	    if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
-	           conn = connectToCCR();
-	    
-	    else if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
-	           conn = connectToViaPaulista();
-	    
-	    else conn = connectToTraceviaApp();
+			
+	    	try {
+				
+				conn = connectToCCR();
+				
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+	    	
+		else if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
+			try {
+				
+				conn = connectToViaPaulista();
+				
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
+		else
+			
+			try {
+				
+				conn = connectToTraceviaApp();
+				
+			} catch (Exception e) {				
+				e.printStackTrace();
+			}
 
 	    return conn;
 		

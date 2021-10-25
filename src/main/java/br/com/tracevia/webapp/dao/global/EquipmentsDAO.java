@@ -4883,8 +4883,9 @@ public class EquipmentsDAO {
 	 * @param module - módulo do equipamento	
 	 * @param equip_id - ID	do equipamento
 	 * @return matriz com informações dos equipamentos
+	 * @throws Exception 
 	 */
-	public String[] genericInfo(String module, String equip_id) {
+	public String[] genericInfo(String module, String equip_id) throws Exception {
 
 		String[] info = new String[4];
 
@@ -4928,8 +4929,9 @@ public class EquipmentsDAO {
 	 * @since 1.0	 
 	 * @param equip_id - ID	do equipamento
 	 * @return matriz com informações dos equipamentos
+	 * @throws Exception 
 	 */
-	public String[] satInfo(String equip_id) {
+	public String[] satInfo(String equip_id) throws Exception {
 
 		String[] info = new String[5];
 
@@ -4977,8 +4979,9 @@ public class EquipmentsDAO {
 	 * @since 1.0	
 	 * @param equip_id - ID	do equipamento
 	 * @return matriz com informações dos equipamentos
+	 * @throws Exception 
 	 */
-	public String[] sosInfo(String equip_id) {
+	public String[] sosInfo(String equip_id) throws Exception {
 
 		String[] info = new String[4];
 
@@ -5026,8 +5029,9 @@ public class EquipmentsDAO {
 	 * @since 1.0	
 	 * @param equip_id - ID	do equipamento
 	 * @return matriz com informações dos equipamentos
+	 * @throws Exception 
 	 */
-	public String[] dmsInfo(String equip_id) {
+	public String[] dmsInfo(String equip_id) throws Exception {
 
 		String[] info = new String[4];
 

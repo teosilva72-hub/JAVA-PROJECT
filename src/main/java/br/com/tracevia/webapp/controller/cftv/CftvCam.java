@@ -16,7 +16,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import org.apache.logging.log4j.core.util.ArrayUtils;
 import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.cftv.CFTVDAO;

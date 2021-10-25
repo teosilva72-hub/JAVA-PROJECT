@@ -7,17 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.primefaces.context.RequestContext;
-
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
-import br.com.tracevia.webapp.util.ExcelTemplate;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="testerBean")
@@ -200,7 +195,7 @@ public class TesterBean {
 		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
 		     
 		     
-		    // ExcelTemplate.generateExcelFile(report.lines);
+		 
 		     
 		  
 		     

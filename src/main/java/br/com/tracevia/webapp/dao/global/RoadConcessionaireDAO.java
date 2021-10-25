@@ -66,14 +66,15 @@ public class RoadConcessionaireDAO {
 	// --------------------------------------------------------------------------------------------			
 
 	/**
-	 * Método para identificar a concessionária através do endereço de ip
+	 * Mï¿½todo para identificar a concessionï¿½ria atravï¿½s do endereï¿½o de ip
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
-	 * @param serverAddress - endereço de ip do servidor a ser verificado
-	 * @return o nome da concessionária
+	 * @param serverAddress - endereï¿½o de ip do servidor a ser verificado
+	 * @return o nome da concessionï¿½ria
+	 * @throws Exception 
 	 */
-	public String IdentifyRoadConcessionarie(String serverAddress) {
+	public String IdentifyRoadConcessionarie(String serverAddress) throws Exception {
 
 		String concessionarieName = "";
 		
@@ -121,14 +122,15 @@ public class RoadConcessionaireDAO {
 	// --------------------------------------------------------------------------------------------		
 	
 	/**
-	 * Método para obter uma lista com as cidades disponíveis
+	 * Mï¿½todo para obter uma lista com as cidades disponï¿½veis
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
-	 * @return lista contendo o id e o nome das cidades disponíveis
+	 * @return lista contendo o id e o nome das cidades disponï¿½veis
+	 * @throws Exception 
 	 */
 
-	public ArrayList<SelectItem> cityDefinitions() {
+	public ArrayList<SelectItem> cityDefinitions() throws Exception {
 
 		ArrayList<SelectItem> city = new ArrayList<SelectItem>();
 
@@ -172,13 +174,14 @@ public class RoadConcessionaireDAO {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter uma lista com as estradas disponíveis
+	 * Mï¿½todo para obter uma lista com as estradas disponï¿½veis
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
-	 * @return lista contendo o id e o nome das estradas disponíveis
+	 * @return lista contendo o id e o nome das estradas disponï¿½veis
+	 * @throws Exception 
 	 */
-	public ArrayList<SelectItem> roadDefinitions() {
+	public ArrayList<SelectItem> roadDefinitions() throws Exception {
 
 		ArrayList<SelectItem> roads = new ArrayList<SelectItem>();
 
@@ -211,7 +214,12 @@ public class RoadConcessionaireDAO {
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			try {
+				ConnectionFactory.closeConnection(conn, ps, rs);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 		}
 
@@ -221,13 +229,14 @@ public class RoadConcessionaireDAO {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter uma lista com os módulos disponíveis
+	 * Mï¿½todo para obter uma lista com os mï¿½dulos disponï¿½veis
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
-	 * @return lista contendo o id e o nome dos módulos disponíveis
+	 * @return lista contendo o id e o nome dos mï¿½dulos disponï¿½veis
+	 * @throws Exception 
 	 */
-	public List<SelectItem> moduleDefinitions() {
+	public List<SelectItem> moduleDefinitions() throws Exception {
 
 		ArrayList<SelectItem> modules = new ArrayList<SelectItem>();
 
@@ -275,13 +284,14 @@ public class RoadConcessionaireDAO {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter uma lista com as placas disponíveis
+	 * Mï¿½todo para obter uma lista com as placas disponï¿½veis
 	 * @author Guilherme 10/07/2021
 	 * @version 1.0
 	 * @since 1.0
-	 * @return lista atributos das placas disponíveis
+	 * @return lista atributos das placas disponï¿½veis
+	 * @throws Exception 
 	 */
-	public List<Plaque> getPlaque() {
+	public List<Plaque> getPlaque() throws Exception {
 
 		ArrayList<Plaque> all_plaque = new ArrayList<>();
 

@@ -62,9 +62,10 @@ public class LoginAccountDAO {
 	 * @since 1.0
 	 * @param userParam - parametro de usuário (email ou username)
 	 * @return verdadeiro caso seja validado	
+	 * @throws Exception 
 	 */
 
-	public boolean UserValidation(String userParam) {
+	public boolean UserValidation(String userParam) throws Exception {
 
 		boolean validation = false, isEmail = false, isUserName = false;
 
