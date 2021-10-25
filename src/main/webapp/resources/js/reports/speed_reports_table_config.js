@@ -12,6 +12,7 @@ $(function () {
 
     $('.dataTables_length').removeClass('bs-select');
 
+	drawTable('#generic-report-table', '50.3vh')
 });
 
 //RESET MESSAGE DISPLAY	
