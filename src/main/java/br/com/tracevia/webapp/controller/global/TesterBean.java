@@ -1,7 +1,9 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -23,17 +25,7 @@ public class TesterBean {
 	public List<String> columnsName; 
 	public List<String> searchParameters; 
 
-	
-	// ----------------------------------------------------------------------------------------------------------------
-	
-	private static String DATE_COLUMN = "save_date";
-	private static String TABLE = "speed_registry";
-	private static String MODULE = "speed";
-	private static String INDEX_NAME = "idx_date_speed_id";
-	private static String JOIN_COLUMN = "equip_id";
-	private static String EQUIP_COLUMN = "id_speed";
-		
-	// ----------------------------------------------------------------------------------------------------------------
+	private List<String[]> dateSearch = new ArrayList<>();
 	
 	private ReportSelection select;
 	private ReportBuild build;
@@ -75,6 +67,14 @@ public class TesterBean {
 		List<String> searchParameters = Arrays.asList(parameter.split(","));
 		
 		this.searchParameters = searchParameters;
+	}
+
+	public List<String[]> getDateSearch() {
+		return dateSearch;
+	}
+
+	public void setDateSearch(String dateSearch, String nameColumn) {
+		this.dateSearch.add(new String[]{dateSearch, nameColumn});
 	}
 	
 	public void setTable(String table) {
@@ -169,12 +169,32 @@ public class TesterBean {
 	// CAMPOS
 		 		
 	public void createFields() throws Exception {
+		int count = 0;
+		Map<String, String> map = SessionUtil.getRequestParameterMap();
 						
 		String query = "Select ";
 		for (String parameter : searchParameters) {
 			query += String.format("%s, ", parameter);
 		}
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
+
+		if (!dateSearch.isEmpty())
+			for (String[] search : dateSearch) {
+				String dateStart = map.get(String.format("%s-start", search[0]));
+				String dateEnd = map.get(String.format("%s-end", search[0]));
+
+				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
+					query += " WHERE";
+
+				if (!dateStart.isEmpty()) {
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= %s", count > 0 ? " AND" : "", dateStart, search[0]);
+					count++;
+				}
+				if (!dateEnd.isEmpty()) {
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= %s", count > 0 ? " AND" : "", dateEnd, search[0]);
+					count++;
+				}
+			}
 		
 		// Table Fields
 		 report.getReport(query);
@@ -192,7 +212,7 @@ public class TesterBean {
 		     
 		     System.out.println(""+query+"  "+ columnsName);
 		     
-		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
+		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
 		     
 		     
 		 
