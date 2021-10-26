@@ -28,8 +28,11 @@ import br.com.tracevia.webapp.util.SessionUtil;
 public class TesterBean {
 
 	public String table; 
-	public List<String> columnsName,
-						searchParameters; 
+	public List<String> columnsName; 
+	public List<String> searchParameters; 
+	ExcelTemplate model;
+	
+	// ----------------------------------------------------------------------------------------------------------------
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -221,10 +224,10 @@ public class TesterBean {
 	 }	
 	
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
-
+	
 	public void createReport() throws Exception {
 				
-		// Table Fields
+		 // Table Fields
 		 report = new ReportDAO(columnsName);
 		 
 	}
@@ -232,15 +235,18 @@ public class TesterBean {
 	// CAMPOS
 		 		
 	public void createFields() throws Exception {
+		
 		int count = 0;
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		String[] columns = SessionUtil.getRequestParameterValuesMap().get("allColumns");
 		setColumnsInUse(columns);
 						
-		 model = new ExcelModels(); // HERE
-		 
-		 resetForm();
-		 
+		model = new ExcelTemplate(); // HERE
+		
+		String dateStart = "", dateEnd = "";
+				
+		resetForm();
+		
 		String query = "Select ";
 		for (String col : columns) {
 			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
@@ -250,8 +256,8 @@ public class TesterBean {
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
-				String dateStart = map.get(String.format("%s-start", search[0]));
-				String dateEnd = map.get(String.format("%s-end", search[0]));
+				 dateStart = map.get(String.format("%s-start", search[0]));
+				 dateEnd = map.get(String.format("%s-end", search[0]));
 
 				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
 					query += " WHERE";
@@ -294,12 +300,8 @@ public class TesterBean {
 		   
 	        // GENERATE EXCEL
 		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
-		     
-		     model.StandardFonts();  //Set Font
-			 model.StandardStyles(); //Set Style
-			 model.StandardBorders(); // Set Borders
-		     
-		     model.generateExcelFile(columnsInUse, report.lines);
+				     
+		     model.generateExcelFile(columnsInUse, report.lines, dateStart, dateEnd, "", "Teste", columns);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
@@ -307,7 +309,7 @@ public class TesterBean {
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
 	      	 
 	      		  		    		
-	  }
+	    }
 	
 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -318,13 +320,13 @@ public class TesterBean {
 		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
 		//String fileName = (String) SessionUtil.getExternalContext().getSessionMap().get("fileName");
 		 
-		model = (ExcelModels) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
+		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
 	
 		String file = "teste_file";
 					
 		try {
 			
-			model.download(ExcelModels.workbook, file);
+			model.download(file);
 			
 		} catch (IOException e) {	
 			

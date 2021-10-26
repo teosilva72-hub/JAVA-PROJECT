@@ -5551,7 +5551,7 @@ public class ExcelModels {
 			spreadSheet.createRows(sheet, row, startRow, endRow);
 			spreadSheet.createCells(sheet, row, startCol, endCol, startRow, endRow);
 			
-			spreadSheet.columnsWidth(sheet, 1, 4500); // DATE
+			//spreadSheet.columnsWidth(sheet, 1, 4500); // DATE
 					 		
 			fileBodySingle(sheet, row, columns, rows, startCol, endCol, startRow);
 						

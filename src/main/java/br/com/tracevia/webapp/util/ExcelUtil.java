@@ -7,7 +7,9 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.hwpf.usermodel.BorderCode;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -42,6 +44,12 @@ public class ExcelUtil {
 	
 	private static String NUMBER_REGEX = "\\d+";
 	private static String DOUBLE_REGEX = "\\d*\\.\\d+$";
+	
+	public static String ALL_BORDERS = "ALL";
+	public static String TOP_BORDER = "TOP";
+	public static String BOTTOM_BORDER = "BOTTOM";
+	public static String LEFT_BORDER = "LEFT";
+	public static String RIGHT_BORDER = "RIGHT";
 
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
@@ -450,18 +458,20 @@ public class ExcelUtil {
 	 * @param fontName - nome da fonte
 	 * @param fontHeight - tamanho da fonte    
 	 * @param bold - definir fonte em negrito
-	 * @param italic - definir fonte em itálico    
+	 * @param italic - definir fonte em itálico  
+	 * @param fontColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)     
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Font.html
 	 * @return uma fonte pré configurada
 	 */
-	public Font createFont(XSSFWorkbook workbook, String fontName, int fontHeight, boolean bold, boolean italic) {
+	public Font createFont(XSSFWorkbook workbook, String fontName, int fontHeight, boolean bold, boolean italic, IndexedColors color) {
 
-		Font font = workbook.createFont();		
+		Font font = workbook.createFont();			
 		font.setFontName(fontName); 
 		font.setFontHeightInPoints((short) fontHeight);	
 		font.setBold(bold);	
 		font.setItalic(italic);
+		font.setColor(color.getIndex());
 
 		return font;
 	}
@@ -478,7 +488,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Font.html
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
 	 */
-	public void setFontColor(Font font, IndexedColors color) {		
+	public void setFontColor(Font font, IndexedColors color) {
 		font.setColor(color.getIndex());
 	}
 
@@ -666,9 +676,9 @@ public class ExcelUtil {
 	 * @author Wellington 13/10/2021
 	 * @version 1.0
 	 * @since 1.0
-	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
+	 * @param style - objeto de representação de alto nível de estilos em uma planilha
 	 * @param type - valor de enumeração que indica o estilo de linha de uma borda
-	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html  
+	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
 	public void setBorders(CellStyle style, BorderStyle type) {
@@ -939,35 +949,10 @@ public class ExcelUtil {
 	// INITIALIZE METHODS
 	// ----------------------------------------------------------------------------------------------------------------		
 
-	// FONT
-
-	/**
-	 * Método para criar uma nova fonte
-	 * @author Wellington 14/10/2021
-	 * @version 1.0
-	 * @since 1.0 
-	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho do Excel
-	 * @param fontName - nome da fonte
-	 * @param fontHeight - tamanho da fonta    
-	 * @param bold - definir fonte em negrito
-	 * @param italic - definir fonte em itálico         
-	 * @param fontColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)   
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	    
-	 */
-
-	public void createNewFont(XSSFWorkbook workbook, Font font, String fontName, int fontHeight, boolean bold, boolean italic, IndexedColors fontColor) {
-
-		font = createFont(workbook, fontName, fontHeight, bold, italic);
-		setFontColor(font, fontColor);
-	}	 
-
-	// ----------------------------------------------------------------------------------------------------------------		
-	// ----------------------------------------------------------------------------------------------------------------
-
 	// STYLES
 
 	/**		 
-	 * Método para criar uma novo estilo
+	 * Método para criar uma novo estilo com quebra de linha, bordas e alinhamento horizontal e vertical
 	 * @author Wellington 14/10/2021
 	 * @version 1.0
 	 * @since 1.0 
@@ -979,58 +964,70 @@ public class ExcelUtil {
 	 * @param wrapText - define o uso de uma quebra de linha  
 	 * @param backgroundColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
+	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
+	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	 
-	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html  
+	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/VerticalAlignment.html
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html  
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public void createNewStyle(XSSFWorkbook workbook, CellStyle style, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical,
-			boolean wrapText, IndexedColors backgroundColor, FillPatternType pattern) {
+	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical,
+			boolean wrapText, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
-		style = createCellStyle(workbook);
+		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);
 		setStyleVerticalAlignment(style, vertical);
 		setWrapText(style, true);
 		setFont(style, font);
 		setCellBackgroundColor(style, backgroundColor, pattern);
+		borderTemplate(borderTemplate, style, borderStyle);
+				
+		return style;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	/**		 
-	 * Método para criar uma novo estilo
+	/**
+	 * Método para criar uma novo estilo com bordas e alinhamento horizontal e vertical
 	 * @author Wellington 14/10/2021
 	 * @version 1.0
-	 * @since 1.0 
+	 * @since 1.0
 	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho do Excel
-	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
-	 * @param font - objeto do tipo Font    	
+	 * @param style - objeto de representação de alto nível de estilos em uma planilha
+	 * @param font - objeto do tipo Font
 	 * @param horizontal - valor de enumeração que indica o alinhamento horizontal de uma célula
-	 * @param vertical - valor de enumeração que indica o alinhamento vertical de uma célula	
+	 * @param vertical - valor de enumeração que indica o alinhamento vertical de uma célula
 	 * @param backgroundColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	 
-	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html  
+	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
+	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html 
+	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/VerticalAlignment.html
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html  
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html 
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public void createNewStyle(XSSFWorkbook workbook, CellStyle style, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical, IndexedColors backgroundColor, FillPatternType pattern) {
+	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, VerticalAlignment vertical, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
-		style = createCellStyle(workbook);
+		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);    
 		setStyleVerticalAlignment(style, vertical);    
 		setFont(style, font);
-		setCellBackgroundColor(style, backgroundColor, pattern);    	
+		setCellBackgroundColor(style, backgroundColor, pattern);   
+		borderTemplate(borderTemplate, style, borderStyle);
+		
+		return style;
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
 	/**		 
-	 * Método para criar uma novo estilo
+	 * Método para criar uma novo estilo com bordas e alinhamento horizontal
 	 * @author Wellington 14/10/2021
 	 * @version 1.0
 	 * @since 1.0 
@@ -1040,18 +1037,24 @@ public class ExcelUtil {
 	 * @param horizontal - valor de enumeração que indica o alinhamento horizontal de uma célula		
 	 * @param backgroundColor - objeto de indexação de cores que ainda é necessário para alguns registros (obsoleto)
 	 * @param pattern - O valor de enumeração que indica o estilo do padrão de preenchimento
+	 * @param borderTemplate - template a ser utilizado (ALL, TOP, BOTTOM, LEFT, RIGHT)
+	 * @param borderStyle - valor de enumeração que indica o estilo de linha de uma borda 
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	 
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html  
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/HorizontalAlignment.html 
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/IndexedColors.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/FillPatternType.html  
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/BorderStyle.html
 	 */
-	public void createNewStyle(XSSFWorkbook workbook, CellStyle style, Font font, HorizontalAlignment horizontal, IndexedColors backgroundColor, FillPatternType pattern) {
+	public CellStyle createCellStyle(XSSFWorkbook workbook, Font font, HorizontalAlignment horizontal, IndexedColors backgroundColor, FillPatternType pattern, String borderTemplate, BorderStyle borderStyle) {
 
-		style = createCellStyle(workbook);
-		setStyleHorizontalAlignment(style, horizontal);  
+		CellStyle style = createCellStyle(workbook);
+		setStyleHorizontalAlignment(style, horizontal);
 		setFont(style, font);
 		setCellBackgroundColor(style, backgroundColor, pattern);
+		borderTemplate(borderTemplate, style, borderStyle);
+		
+		return style;
 
 	}
 
@@ -1221,15 +1224,14 @@ public class ExcelUtil {
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// CREATE FONT	
-		Font font = createFont(wb, FONT_ARIAL, 10, false, false);
+		Font font = createFont(wb, FONT_ARIAL, 10, false, false, IndexedColors.BLACK);
 
 		// CREATE STYLE
 		CellStyle cellStyle = createCellStyle(wb);
 
 		// SET STYLE
-		createNewStyle(wb, cellStyle, font, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		setBorders(cellStyle, BorderStyle.THIN); // SET BORDERS
-
+		cellStyle = createCellStyle(wb, font, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ALL_BORDERS, BorderStyle.THIN);
+	
 		// HELPER							
 		CreationHelper createHelper = wb.getCreationHelper();
 
@@ -1384,7 +1386,37 @@ public class ExcelUtil {
 
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+	public void fileBodySingle(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
+
+		int rowLenght = startRow + values.size() ;
+					  			
+		  for (int col = startCol; col < columnName.size(); col++) {
+			  
+			  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+		 		
+				row = sheet.getRow((short) rowIndex);	
+								
+				try {
+																							
+				if(values.get(lin)[col].matches(NUMBER_REGEX))
+				   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+						
+				else if(values.get(lin)[col].matches(DOUBLE_REGEX))
+				   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+						
+				else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+					
+				}catch(NullPointerException ex) {
+					ex.printStackTrace();
+				}		
+
+			}		       
+		}     	   
+	}
 	
+	// ------------------------------------------------------------------------------------------------------------
+
 	
 	// USE FOR SOS
 
@@ -2326,5 +2358,56 @@ public class ExcelUtil {
 
 	}
 	
+	// -----------------------------------------------------------------------------------------------------------------------------------------------
+	
+	  public void borderTemplate(String template, CellStyle style, BorderStyle borderStyle) {
+				  
+		  switch(template) {
+		  
+		  case "TOP": setBorderTop(style, borderStyle); break;
+		  case "BOTTOM": setBorderBottom(style, borderStyle); break;
+		  case "LEFT": setBorderLeft(style, borderStyle); break;
+		  case "RIGHT": setBorderRight(style, borderStyle); break;
+		  case "ALL": setBorders(style, borderStyle); break;
+		  		  		  
+		  }	  
+	  }
+	  
+	// -----------------------------------------------------------------------------------------------------------------------------------------------
+		
+		public void fileBodySimple(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow) {
 
-}
+			int rowLenght = startRow + values.size() ;
+						  			
+			  for (int col = startCol; col < columnName.size(); col++) {
+				  
+				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+			 		
+					row = sheet.getRow((short) rowIndex);	
+									
+					try {
+						
+					if(!values.get(lin)[col].equals("")) {	
+																														
+					if(values.get(lin)[col].matches(NUMBER_REGEX))
+					   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+							
+					else if(values.get(lin)[col].matches(DOUBLE_REGEX))
+					   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+							
+					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+					
+					}
+						
+					}catch(NullPointerException ex) {
+						ex.printStackTrace();
+					}		
+
+				}		       
+			}     	   
+		}
+		
+		// -----------------------------------------------------------------------------------------------------------------------------------------------
+		
+		
+	}

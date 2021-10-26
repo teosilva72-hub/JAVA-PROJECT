@@ -14,6 +14,10 @@
 	
 	<f:metadata>
 	
+	    <!-- SET OPTIONS -->
+	    <f:viewAction onPostback="true" action="#{reportConfigBean.defineEquipmentsOption('sos')}" />
+	    <f:viewAction onPostback="true" action="#{reportConfigBean.definePeriodsOption()}" />
+	    
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
@@ -35,13 +39,12 @@
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
 	    <!-- CCS STYLE -->
-	        
+	    
 	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
 		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
 		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
 		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
-
 			
 		<!---->
 		
