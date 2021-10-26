@@ -77,7 +77,9 @@ public class ReportDAO {
         if (rs.isBeforeFirst()) {
             while (rs.next()) {
                 String value = rs.getString(1);
-                if (!fields.contains(value))
+                if (value == null)
+                    value = "";
+                if (!fields.contains(value) && !value.isEmpty())
                     fields.add(value);
             }
         } 
