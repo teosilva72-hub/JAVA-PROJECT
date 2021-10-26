@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ReportBuild;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
 /**
  * Classe com modelos de planilhas EXCEL
@@ -44,7 +45,7 @@ public class ExcelTemplate {
 	// titleFont - fonte para títulos dos relatórios
 	// tableHeaderFont - fonte para cabeçalho das tabelas
 
-	Font standardFont, boldFont, titleFont, tableHeaderFont;
+	Font standardFont, boldFont, titleFont, tableHeadFont;
 
 	// COUNT FLOW FONTS	
 
@@ -68,7 +69,7 @@ public class ExcelTemplate {
 	// centerBoldStyle - estilo em negrito para centralizar
 	// centerAlignStandardStyle - estilo padrão para centralizar	
 
-	CellStyle titleStyle, standardStyle, tableHeaderStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
+	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
 	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle;   
 
 	// COUNT FLOW STYLES 
@@ -86,78 +87,78 @@ public class ExcelTemplate {
 	public ExcelTemplate() {
 
 		utilSheet = new ExcelUtil();
+		workbook = new XSSFWorkbook();
 
 		localeExcel = new LocaleUtil();		
 		localeExcel.getResourceBundle(LocaleUtil.LABELS_EXCELSHEET);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// DEFAULT FONTS 	
-
-		utilSheet.createNewFont(workbook, standardFont, FONT_ARIAL, 10, false, false, IndexedColors.BLACK);
-		utilSheet.createNewFont(workbook, boldFont, FONT_ARIAL, 10, true, false, IndexedColors.BLACK);
-		utilSheet.createNewFont(workbook, tableHeaderFont, FONT_ARIAL, 10, true, false, IndexedColors.WHITE);
-		utilSheet.createNewFont(workbook, titleFont, FONT_ARIAL, 16, true, false, IndexedColors.BLACK);
-
+		// DEFAULT FONTS 
+		
+		standardFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.BLACK); // FONTE DE USO PADRÃO 			 
+	    boldFont = utilSheet.createFont(workbook,  FONT_ARIAL, 10, true, false, IndexedColors.BLACK); // FONTE EM NEGRITO
+	    titleFont = utilSheet.createFont(workbook,  FONT_ARIAL, 16, true, false, IndexedColors.BLACK); // FONTE PARA O TÍTULO
+	    tableHeadFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.WHITE); // FONT PARA CABEÇALHO DA TABELA
+	    
 		// COUNT FLOW FONTS
-
-		utilSheet.createNewFont(workbook, countFlowFont, FONT_ARIAL, 11, true, false, IndexedColors.WHITE);
-		utilSheet.createNewFont(workbook, countFlowFontBody1, FONT_ARIAL, 10, false, false, IndexedColors.ORANGE);
-		utilSheet.createNewFont(workbook, countFlowFontBody2, FONT_ARIAL, 10, false, false, IndexedColors.GREEN);
+	    
+	    countFlowFont = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE); // FONTE PADRÃO COUNT FLOW
+	    countFlowFontBody1 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.ORANGE); // FONTE PARA APRESENTAÇÃO DE DADOS 1
+	    countFlowFontBody2 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.GREEN); // FONTE PARA APRESENTAÇÃO DE DADOS 2	       
 
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// DEFAULT STYLES	
-
-		utilSheet.createNewStyle(workbook, titleStyle, titleFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, standardStyle, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, tableHeaderStyle, tableHeaderFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, rightAlignBoldStyle, boldFont, HorizontalAlignment.RIGHT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, leftAlignStandardStyle, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, dateTitleStyle, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, dateTimeStyle, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, centerBoldStyle, boldFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, centerAlignStandardStyle, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND);
+	    
+	    // ESTILO PADRÃO
+	    standardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO PARA TÍTULO
+	    titleStyle = utilSheet.createCellStyle(workbook, titleFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO PARA CABEÇALHO DAS TABELAS
+	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃO
+	    leftAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO PARA CABEÇALHO ENTRE DATAS 
+	    dateTitleStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO PARA CAMPO DE DATAS EM NEGRITO
+	    dateTimeStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+        // ESTILO NEGRITO CENTRALIZADO   
+	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO PADRÃO DE ALINHAMENTO CENTRAL	    
+	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 
 		// COUNT FLOW STYLES
 
-		utilSheet.createNewStyle(workbook, bgColorHeaderStyle, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.BLUE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, bgColorSubHeaderStyle1, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, bgColorSubHeaderStyle2, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_ORANGE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, bgColorBodyStyle1, countFlowFontBody1, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_CORNFLOWER_BLUE, FillPatternType.SOLID_FOREGROUND);
-		utilSheet.createNewStyle(workbook, bgColorBodyStyle2, countFlowFontBody2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_YELLOW, FillPatternType.SOLID_FOREGROUND);
+	    // ESTILO HEADER
+	    bgColorHeaderStyle = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO SUB HEADER 1
+	    bgColorSubHeaderStyle1 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO SUB HEADER 2
+	    bgColorSubHeaderStyle2 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_ORANGE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    // ESTILO BODY 1
+	    bgColorBodyStyle1 = utilSheet.createCellStyle(workbook, countFlowFontBody1, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_CORNFLOWER_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    //ESTILO BODY 2
+	    bgColorBodyStyle2 = utilSheet.createCellStyle(workbook, countFlowFontBody2, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_YELLOW, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 
 		// ----------------------------------------------------------------------------------------------------------------
-
-		// PLACE ALL BORDERS STYLE
-
-		utilSheet.setBorders(titleStyle, BorderStyle.THIN);
-		utilSheet.setBorders(tableHeaderStyle, BorderStyle.THIN);
-		utilSheet.setBorders(dateTitleStyle, BorderStyle.THIN);
-		utilSheet.setBorders(dateTimeStyle, BorderStyle.THIN);
-		utilSheet.setBorders(standardStyle, BorderStyle.THIN);	   	   
-		utilSheet.setBorders(bgColorHeaderStyle, BorderStyle.THIN);
-		utilSheet.setBorders(bgColorSubHeaderStyle1, BorderStyle.THIN);
-		utilSheet.setBorders(bgColorSubHeaderStyle2, BorderStyle.THIN);
-		utilSheet.setBorders(bgColorBodyStyle1, BorderStyle.THIN);
-		utilSheet.setBorders(bgColorBodyStyle2, BorderStyle.THIN);	 
-
-	}
-
+	
+	}	
+	  	 
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String[] columns, String fileTitle, 
+	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, int columns, String fileTitle, 
 			String startDate, String endDate, String period, String[] equipInfo, boolean isSat) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
 
 		// INDEX DA COLUNA DE ÍNICIO DA DATA
-		int columnStartDateIndex = columns.length - 2;
-		int columnEndDateIndex = columns.length;
+		int columnStartDateIndex = columns - 2;
+		int columnEndDateIndex = columns;
 		int columnTitleEndIndex = columnStartDateIndex - 1;
 
 		// ----------------------------------------------------------------------------------------------------------------
@@ -166,7 +167,7 @@ public class ExcelTemplate {
 
 		// CRIAR COLUNAS E LINHAS DO HEADER
 		utilSheet.createRows(sheet, row, 0, 4);
-		utilSheet.createCells(sheet, row, 0, columns.length, 0, 3);
+		utilSheet.createCells(sheet, row, 0, columns, 0, 3);
 
 		// DEFINIR IMAGEM
 		utilSheet.createImage(workbook, sheet, pathLogo, 0, 0, 2, 4, 1, 1, 1, 1, 1); 
@@ -180,12 +181,12 @@ public class ExcelTemplate {
 
 		// INSERIR O TEMPLATE
 		utilSheet.setCellValue(sheet, row, 0, columnStartDateIndex, headerDates);	
-		utilSheet.setCellsStyle(sheet, row, dateTitleStyle, 0, 3,columnStartDateIndex, columnEndDateIndex); // ESTILO DATAS
+		//utilSheet.setCellsStyle(sheet, row, dateTitleStyle, 0, 3, columnStartDateIndex, columnEndDateIndex); // ESTILO DATAS
 		
 		// HEADER COLUMNS DINAMIC MERGE
 		utilSheet.mergeBetweenColumns(sheet, 0, 1, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, 2, columns.length, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, columns.length + 1, columns.length + 3, 1, 4);
+		utilSheet.mergeBetweenColumns(sheet, 2, columns, 1, 4);
+		utilSheet.mergeBetweenColumns(sheet, columns + 1, columns + 3, 1, 4);
 		
 		// ----------------------------------------------------------------------------------------------------------------	    
 		// SUBHEADER 
@@ -315,12 +316,12 @@ public class ExcelTemplate {
 		// ----------------------------------------------------------------------------------------------------------------
 		
 		// TABLE COLUMNS LENGTH
-		utilSheet.columnsWidthAuto(sheet, columns.length);
+		utilSheet.columnsWidthAuto(sheet, columns);
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String[] names, String[] columns, String fileTitle, 
+	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String[] columns, String fileTitle, 
 			String startDate, String endDate, String period, String[][] equipInfo, boolean isSat, int posArray) {
 
 		DateTimeApplication dta = new DateTimeApplication();
@@ -643,7 +644,7 @@ public class ExcelTemplate {
 
 		utilSheet.createCells(sheet, row, startColumn, columns, firstRow, firstRow); // CRIAR A CÉLULAS DO CABEÇALHO		 
 		utilSheet.setCellsValues(sheet, row, firstRow, columnsHeader); // INSERIR VALORES		 
-		utilSheet.setCellsStyle(sheet, row, tableHeaderStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
 
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, iniRow, endRow);
@@ -690,7 +691,7 @@ public class ExcelTemplate {
 
 		utilSheet.createCells(sheet, row, startColumn, columns, firstRow, firstRow); // CRIAR A CÉLULAS DO CABEÇALHO		 
 		utilSheet.setCellsValues(sheet, row, firstRow, columnsHeader); // INSERIR VALORES		 
-		utilSheet.setCellsStyle(sheet, row, tableHeaderStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
 
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, iniRow, endRow);
@@ -730,7 +731,7 @@ public class ExcelTemplate {
 		
 		for(int d = 0; d < equipNames.length; d++) {
 		
-		    spreadSheetHeader(workbook, sheet, row, pathLogo, equipNames, columns, fileTitle, startDate, endDate, period, equipInfo, isSat, d);		    
+		    //spreadSheetHeader(workbook, sheet, row, pathLogo, equipNames, columns, fileTitle, startDate, endDate, period, equipInfo, isSat, d);		    
 		    multipleTemplate(sheet, row, true, isSat, firstRow, columns, values, iniRow, endRow, d, interval);
 		    	    		
 		}
@@ -738,4 +739,32 @@ public class ExcelTemplate {
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
+	
+	public void generateExcelFile(List<String> columns, List<String[]> rows, String startDate, String endDate, String period, String fileTitle, String[] equipInfo) {
+		
+		sheet = null;		
+		row = null;
+				
+		int startRow = 2;
+		int endRow = startRow + rows.size();
+		int startCol = 0;
+		int endCol = columns.size() - 1;
+		
+		sheet = workbook.createSheet("TRACEVIA");
+		
+		spreadSheetHeader(workbook, sheet, row, RoadConcessionaire.logo, columns.size(), fileTitle, 
+				startDate, endDate, period, equipInfo, false) ;
+		
+									
+		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
+		utilSheet.createRows(sheet, row, startRow, endRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, startRow, endRow);
+								 		
+		utilSheet.fileBodySimple(sheet, row, columns, rows, startCol, endCol, startRow);
+		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, startRow, endRow);
+		
+		// ----------------------------------------------------------------------------------------------------------------
+					
+	}
 }

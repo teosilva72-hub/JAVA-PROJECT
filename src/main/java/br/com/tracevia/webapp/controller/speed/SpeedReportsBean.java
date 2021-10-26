@@ -202,8 +202,7 @@ public class SpeedReportsBean implements Serializable {
 		 
 		     resetForm(); // RESET FORM BEFORE FILL ANOTHER  
 		     		     		     
-		     // VARIABLES	   
-							 
+		     // VARIABLES	   						 
 		   
 		        // GET REQUEST PARAMS
 		  		   				    	
@@ -306,7 +305,7 @@ public class SpeedReportsBean implements Serializable {
 			select = new ReportSelection();
 			
 			if(!resultList.isEmpty())
-			     resultList.clear();
+			    resultList.clear();
 			
 		}	
 		 

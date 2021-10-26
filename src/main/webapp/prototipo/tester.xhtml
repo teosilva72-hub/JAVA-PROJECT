@@ -14,15 +14,20 @@
 	
 	<f:metadata>
 	
+	    <!-- SET OPTIONS -->
+	    <f:viewAction onPostback="true" action="#{reportConfigBean.defineEquipmentsOption('sos')}" />
+	    <f:viewAction onPostback="true" action="#{reportConfigBean.definePeriodsOption()}" />
+	    
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('EQUIP, DATA, STATE')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, state_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('EQUIP, DATA INICIAL, DATA FINAL, USUÁRIO, STATE')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, user, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Inicio da chamada')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('end_date', 'Término da chamada')}" />
-		          
+		<!-- FILTERS -->
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Inicio')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('end_date', 'Término')}" />
+	 
     </f:metadata>
 	
 	<!---->
@@ -32,13 +37,12 @@
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
 	    <!-- CCS STYLE -->
-	        
+	    
 	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
 		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
 		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
 		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
 		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
-
 			
 		<!---->
 		

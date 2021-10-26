@@ -39,7 +39,7 @@
 							<span for="equips" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION ICON -->							
 							  <select name="equips" id="equips"  multiple="multiple" > <!-- SELECT OPTIONS -->
 							   <!---->							
-								<ui:repeat var="eqp" value="#{speedBean.build.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
+								<ui:repeat var="eqp" value="#{reportConfigBean.build.equipments}" varStatus="eqpStatus"> <!-- LOOP -->
 									<!---->
 									  <option value="#{eqp.value}">#{eqp.label}</option> <!-- OPTIONS -->
 									<!---->
