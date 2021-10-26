@@ -100,7 +100,7 @@
 
 						<h:column>
 							<f:facet name="header">#{usersLabels.user_panel_table_col_status}</f:facet>
-							<h:outputText value="#{user.checkActive}" />
+							<h:outputText value="#{user.activeStatusName}" />
 						</h:column>
 
 						<h:column>
@@ -112,7 +112,7 @@
 											value="">
 											<span><i class="fas fa-user-edit edit-icon"></i></span>
 											<f:setPropertyActionListener value="#{user.user_id}"
-												target="#{userAccount.sendParametro}" />
+												target="#{userAccount.user.sendParametro}" />
 										</h:commandLink>
 									</h:form>
 								</div>
@@ -121,7 +121,7 @@
 										<h:commandLink action="#{userAccount.getRowValue}" value="">
 											<span><i class="fas fa-trash-alt trash-alt-icon"></i></span>
 											<f:setPropertyActionListener
-												target="#{userAccount.sendParametro}"
+												target="#{userAccount.user.sendParametro}"
 												value="#{user.user_id}" />
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target"
@@ -154,7 +154,7 @@
 						</div>
 						<div class="modal-body">
 						    <p class="text-center"><b style="color:black;">#{usersLabels.user_delete_modal_body} : </b>
-						   <b style='color: red;'> <h:outputText id="modal-text" value="#{userAccount.rowkey} ?" /> </b></p> 	
+						   <b style='color: red;'> <h:outputText id="modal-text" value="#{userAccount.user.rowkey} ?" /> </b></p> 	
 						</div>
 						<div class="modal-footer">
 							<div class="submit-modal">

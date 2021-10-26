@@ -106,12 +106,21 @@ public class NavigationBean {
 
 	public String speedMonitor() {
 
-		navigation_page = "/speed/speed-real.xhtml?faces-redirect=true";		
+		navigation_page = "/speed/realtime/speed-real.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 
 	}
 	
+	public String speedReport() {
+
+		navigation_page = "/speed/report/speed-report.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+
+	}
+	
+	//SPEED report
 	
 	//MTO PANEL    
 	public String redirectToMTOPanel() {

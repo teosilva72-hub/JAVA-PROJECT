@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.dao.global;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,27 +10,60 @@ import java.sql.SQLException;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.global.UserAccount;
 import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.util.LogUtils;
 
 public class LoginAccountDAO {
 
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
+	
 	private static final String EMAIL_PATTERN = "[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
 
 	private static final String USER_PATTERN = "^([a-zA-Z]+[a-zA-Z0-9\\._]*[a-zA-Z0-9]+)$";
+	
+	// --------------------------------------------------------------------------------------------
+	
+	// CLASS PATH
+		
+	private static String classLocation = LoginAccountDAO.class.getCanonicalName();
+		
+	// --------------------------------------------------------------------------------------------
+		
+	// CLASS LOG FOLDER
+		
+	private static String classErrorPath = LogUtils.ERROR.concat("login\\");
+		
+	// --------------------------------------------------------------------------------------------
+		
+	// EXCEPTION FILENAMES
+		
+	private static String sqlUserValidateExceptionLog = classErrorPath.concat("sql_user_validate_");
+	private static String sqlEmailValidateExceptionLog = classErrorPath.concat("sql_email_validate_");	
+	private static String sqlLoginValidateExceptionLog = classErrorPath.concat("sql_login_validate_");
+	private static String sqlChangePasswordExceptionLog = classErrorPath.concat("sql_change_password_validate_");	
+		
+	// --------------------------------------------------------------------------------------------		
 
-	public LoginAccountDAO() throws Exception {
-
-		try {
-
-			this.conn = ConnectionFactory.connectToTraceviaApp();
-
-		} catch (Exception e) {
-
-			throw new Exception("erro: \n" + e.getMessage());
-		}
+	// CONSTRUTOR
+	
+	public LoginAccountDAO(){
+		
+		LogUtils.createLogsFolder(classErrorPath);
+		
 	}
+	
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para validar login do usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param userParam - parametro de usuário (email ou username)
+	 * @return verdadeiro caso seja validado	
+	 * @throws Exception 
+	 */
 
 	public boolean UserValidation(String userParam) throws Exception {
 
@@ -71,21 +106,39 @@ public class LoginAccountDAO {
 				rs = ps.executeQuery();
 			
 				if (rs.next() != false)
-					validation = true; // Existe				
+					 validation = true; // Existe				
 				
 			}				
 
 		} catch (SQLException sqle) {
-			throw new Exception(sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUserValidateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+					
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return validation;
-
 	}
 
-	public UserAccount emailValidation(String email, String roadConcessionaire) throws Exception {
+	
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para validar email de usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param email - endereço de email
+	 * @param roadConcessionaire - nome da concessionária
+	 * @return um objeto do tipo UserAccount	
+	*/
+	
+	public UserAccount emailValidation(String email, String roadConcessionaire) {
 
 		UserAccount user = new UserAccount();
 
@@ -114,16 +167,32 @@ public class LoginAccountDAO {
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception(sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlEmailValidateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return user;
 	}
 
-	// Login Validation
-	public UserAccount loginValidation(String username, String password) throws Exception {
+	// --------------------------------------------------------------------------------------------		
+	
+	/**
+     * Método para validar login de usuário
+	 * @author Wellington 10/06/2021
+	 * @version 1.0
+     * @since 1.0
+	 * @param username - nome de usuário
+	 * @param password - senha do usuário
+	 * @return um objeto do tipo UserAccount	
+	*/	
+	public UserAccount loginValidation(String username, String password) {
 
 		try {
 
@@ -158,22 +227,38 @@ public class LoginAccountDAO {
 			}
 
 		} catch (SQLException sqle) {
-			throw new Exception(sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlLoginValidateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+		
+			
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return null;
 	}
+	
+	// --------------------------------------------------------------------------------------------		
+	
+		/**
+	     * Método para alterar a senha de usuário
+		 * @author Wellington 10/06/2021
+		 * @version 1.0
+	     * @since 1.0
+		 * @param usuario - nome de usuário
+		 * @param senha - senha do usuário
+		 * @param roadConcessionaire - nome da concessionária
+		 * @return um objeto do tipo UserAccount	
+		*/	
 
-	@SuppressWarnings("static-access")
-	public boolean changePassword(String usuario, String senha, int id, String roadConcessionaire) throws Exception {
+	public boolean changePassword(String usuario, String senha, int id, String roadConcessionaire) {
 
 		boolean status = false;
-
-		if (usuario == null)
-			throw new Exception("O valor passado nao pode ser nulo");
-
+		
 		try {
 
 			String sql = "UPDATE users_register SET  password = ? WHERE username = ? and user_id = ?";
@@ -191,12 +276,20 @@ public class LoginAccountDAO {
 			status = true;
 
 		} catch (SQLException sqle) {
-			throw new Exception("Erro ao alterar dados " + sqle);
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));	
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlChangePasswordExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+					
 		} finally {
+			
 			ConnectionFactory.closeConnection(conn, ps);
 		}
 
 		return status;
 	}
+	
+	// --------------------------------------------------------------------------------------------	
 
 }

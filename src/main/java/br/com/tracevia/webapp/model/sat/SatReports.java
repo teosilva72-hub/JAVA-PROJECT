@@ -39,6 +39,7 @@ public class SatReports {
 			this.dateTime = dateTime;			
 			return this;			
 		}
+		
 		public Builder total(int total) {
 			this.total = total;			
 			return this;			

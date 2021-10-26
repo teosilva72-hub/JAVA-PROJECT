@@ -36,7 +36,7 @@
 		
 		  <!-- ALERT MESSAGE -->
 		  
-		      <div id="emailInfo" class="alert alert-info" role="alert" style="display: none;"> <!-- ALERT INFO -->
+		      <div id="emailInfo" class="alert alert-warning" role="alert" style="display: none;"> <!-- ALERT INFO -->
 				#{emailMessages.email_recovery_not_found}				
 			  </div><!---->
 			  		
@@ -46,11 +46,12 @@
 			  
 			   <div id="emailRecoverySendError" class="alert alert-danger" role="alert" style="display: none;"> <!-- ALERT ERROR -->
 				#{emailMessages.email_recovery_unsuccess_send_header} - #{emailMessages.email_recovery_unsuccess_send_body}				
-			  </div><!---->			  			 
-             						  
-			   <div id="process" class="alert alert-info" role="alert" style="display: none;"> <!-- ALERT INFO -->
-				#{emailMessages.email_user_recovery_process_info}				
+			  </div><!---->	            			 
+						  
+			  <div id="connectionError" class="alert alert-danger" role="alert" style="display:none;"> <!-- ALERT ERROR -->
+				#{loginMessages.login_message_server_connection_error}
 			  </div><!---->
+			  
 			  						  
 			  <!---->
 			  
@@ -105,7 +106,7 @@
                                     
                                      <div class="form-row"> <!-- BUTTON ROW -->								
 											<div class="col-sm-12">
-												<h:commandButton class="button btn btn-send" onclick="showEmailRecoveryProcessMessage();"
+												<h:commandButton class="button btn btn-send" 
 													value="#{loginLabels.login_forget_btn_send}"
 													action="#{loginAccount.passwordRecovery}" />
 											</div> <!---->

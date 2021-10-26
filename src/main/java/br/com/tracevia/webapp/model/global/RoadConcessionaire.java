@@ -13,6 +13,14 @@ import br.com.tracevia.webapp.classes.ViaPaulista;
 import br.com.tracevia.webapp.classes.ViaRondon;
 import br.com.tracevia.webapp.classes.ViaSul;
 
+/**
+ * Classe para definir atributos de acordo com a concessionária
+ * @author Wellington 10/03/2020
+ * @version 1.0
+ * @since 1.0
+ *
+ */
+
 public class RoadConcessionaire {
 	
 	public static int id;
@@ -75,7 +83,12 @@ public class RoadConcessionaire {
 	public static String tableStatus;
 	public static String plaque;    
 	public static boolean mapEnabled;
-	public static boolean reportsLLEnabled;		
+	public static boolean reportsLLEnabled;	
+			
+			
+	// --------------------------------------------------------------------------------------------
+		
+	// CONSTRUTOR 
 		
 	public RoadConcessionaire() {
 		
@@ -86,11 +99,24 @@ public class RoadConcessionaire {
 		
 	}
 	
-	public boolean defineConcessionarieValues(String concessionaire) throws Exception {
+	//--------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para definição de configuração de uma concessionária a partir do nome
+	 * @author Wellington 10/03/2020
+	 * @version 1.0
+	 * @since 1.0
+	 * @param concessionaire - nome de concessionária
+	 * @return verdaeiro caso exista o nome da concessionária
+	 */
+	
+	public boolean defineConcessionarieValues(String concessionaire) {
 						
 		boolean checkRoadConcessionaire = false;
 					
 		roadConcessionaire = concessionaire;
+		
+		try {
 				
 		//Caso contrario nï¿½o acontece nada
 		 if(!roadConcessionaire.equals("")) 
@@ -293,9 +319,7 @@ public class RoadConcessionaire {
 			mapEnabled = true;
 			reportsLLEnabled = false;
 													
-		}
-		
-       
+		}		      
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
 			
@@ -478,8 +502,13 @@ public class RoadConcessionaire {
 				  
          }	
               		 
+       
+		}catch(Exception ex){ /* DO NOTHING */ }
+       
 		 return checkRoadConcessionaire;
     
 	 }
+	
+	//--------------------------------------------------------------------------------------------
 	
 }

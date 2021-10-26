@@ -74,10 +74,17 @@ function showEmailRecoverySendErrorMessage() {
 
 /********************************/
 
+//RESET MESSAGE DISPLAY	
+function hideConnectionErrorMessage() {
+    setTimeout(function () {
+        $('#connectionError').hide();
+    }, 5000);
+}
+
 //SHOW MESSAGE DISPLAY	
-function showEmailRecoveryProcessMessage() {
-  if($("#form-reset").valid())
-    $('#process').show();
+function showConnectionErrorMessage() {
+    $('#connectionError').show();
 }
 
 /********************************/
+

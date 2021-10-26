@@ -49,37 +49,37 @@ const changeNotificationStatus = response => {
 		
 		$('#badge-notif').css('display','block')
 
-         if(battery > 1)
+         if(battery > 0)
 		    $('#btn-act-battery').css('display','block')
 
 		    else $('#btn-act-battery').css('display','none')
 
-		 if(connection > 1)
+		 if(connection > 0)
 			$('#btn-act-connection').css('display','block')
 
 			else $('#btn-act-connection').css('display','none')
 
-		 if(door > 1)
+		 if(door > 0)
 			$('#btn-act-door').css('display','block')
 
 			else $('#btn-act-door').css('display','none')
 
-		 if(energy > 1)
+		 if(energy > 0)
 			$('#btn-act-energy').css('display','block')
 
 			else $('#btn-act-energy').css('display','none')
 
-		 if(events > 1)
+		 /*if(events > 0)
 			$('#btn-act-event').css('display','block')
 
-			else $('#btn-act-event').css('display','none')
+			else $('#btn-act-event').css('display','none')*/
 
-		 if(presence > 1)
+		 if(presence > 0)
 			$('#btn-act-presence').css('display','block')
 
 			else $('#btn-act-presence').css('display','none')
 
-		 if(temperature > 1)
+		 if(temperature > 0)
 			$('#btn-act-temperature').css('display','block')
 
 			else $('#btn-act-temperature').css('display','none')
@@ -167,183 +167,64 @@ const changeNotificationStatus = response => {
 	 let event = 0;
 	 let presence = 0;
 	 let temperature = 0;
-
-	 let last_battery_id, last_connection_id, last_door_id, last_energy_id, last_presence_id, last_temperature_id;
  		
 	for (const item of response){	
 		
 	   if(item.AlarmType == 2) {
+
+		   $('#notification-battery').append(HasNotification(item));
+		   $('#div-battery').css('display','block')
 			 	
-		    battery++;
-            
-			if(battery == 1){
+		      battery++;
 
-			   $('#notification-list').append(HasNotification(item));
-			   $('#notification-battery').append(HasNotification(item)); 
-					   
-			   last_battery_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
-		
-		    } else if(battery == 2) {
-				
-			 removeItem("#notification-list "+last_battery_id);	
-			
-			 $('#notification-battery').append(HasNotification(item));
-			
-			 $('#div-battery').css('display','block');
-
-		    }else {
-					
-				removeItem("#notification-list #n"+last_battery_id);	
-
-			   $('#notification-battery').append(HasNotification(item));			   
-			   $('#div-battery').css('display','block')
-
-			}
-	    }
-	   
-		else if(item.AlarmType == 4){		 
+        } else if(item.AlarmType == 4){		 
 				     
-		     door++;
-
-			 if(door == 1){
-				
-				$('#notification-list').append(HasNotification(item));
-				$('#notification-door').append(HasNotification(item));
-			
-				last_door_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
-			 
-			 } else if(door == 2) {
-				
-				removeItem("#notification-list "+last_door_id);	
-							
-				$('#notification-door').append(HasNotification(item));
-				
-				$('#div-door').css('display','block');	
-
-			 }else {
- 
-				$('#notification-door').append(HasNotification(item));
-
-				$('#div-door').css('display','block')	
-			 }
-		}
-
-		else if(item.AlarmType == 6){		 
+		   $('#notification-door').append(HasNotification(item));
+		   $('#div-door').css('display','block')
+		  
+		      door++;
+		 
+		} else if(item.AlarmType == 6){		 
 		
-             energy++;
+			$('#notification-energy').append(HasNotification(item));
+			$('#div-energy').css('display','block')	
+			
+              energy++;
 
-			 if(energy == 1){
-
-				$('#notification-list').append(HasNotification(item));
-				$('#notification-energy').append(HasNotification(item));
-							
-				last_energy_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
- 		
-			} else if(energy == 2) {
-
-				removeItem("#notification-list "+last_door_id);	
-					
-				$('#notification-energy').append(HasNotification(item));
-				
-				$('#div-energy').css('display','block');	
-
-			 }else {
- 
-				$('#notification-energy').append(HasNotification(item));
-				$('#div-energy').css('display','block')	
-			 }			 
 		}
 
-		else if(item.AlarmType == 8){		 
+		else if(item.AlarmType == 8){	
+			
+			$('#notification-connection').append(HasNotification(item));
+			$('#div-connection').css('display','block')
 		 
              connection++;
 
-			 if(connection == 1){
-
-				$('#notification-list').append(HasNotification(item));
-				$('#notification-connection').append(HasNotification(item));
-											
-				last_connection_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
- 		
-			} else if(connection == 2) {
-
-				removeItem("#notification-list "+last_connection_id);
-				
-				$('#notification-connection').append(HasNotification(item));
-				
-				$('#div-connection').css('display','block');	
-
-			 }else {
- 
-				$('#notification-connection').append(HasNotification(item));
-
-				$('#div-connection').css('display','block')
-			 }
 		  }
 
 		else if(item.AlarmType == 10){		 
 		
-			presence++;
+			$('#notification-presence').append(HasNotification(item));
+			$('#div-presence').css('display','block')	
 
-			if(presence == 1){
-
-				$('#notification-list').append(HasNotification(item));
-				$('#notification-presence').append(HasNotification(item));		
-
-				last_presence_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
-				 		
-			} else if(presence == 2) {
-
-				removeItem("#notification-list "+last_presence_id);	
-
-				$('#notification-presence').append(HasNotification(item));
-				
-				$('#div-presence').css('display','block');	
-
-			 }else {
+			   presence++;
  
-				$('#notification-presence').append(HasNotification(item));
+		 }	
 
-				$('#div-presence').css('display','block')	
-			 }
-		}
-
-		else if(item.AlarmType == 12){		 
+		else if(item.AlarmType == 12){		
+			
+			$('#notification-temperature').append(HasNotification(item));
+			$('#div-temperature').css('display','block')	
 		 
             temperature++;
-
-			if(temperature == 1){
-
-				$('#notification-list').append(HasNotification(item));
-				$('#notification-temperature').append(HasNotification(item));	
-					 		
-				last_temperature_id = "#n"+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId;
-
-			} else if(temperature == 2) {
-			
-				removeItem("#notification-list "+last_temperature_id);
-
-				$('#notification-temperature').append(HasNotification(item));
-				
-				$('#div-temperatura').css('display','block');	
-
-			 }else {
- 
-				$('#notification-temperature').append(HasNotification(item));
-
-				$('#div-temperature').css('display','block')	
-			 }
+ 			 
 		}
 
 		//SE NÃO HOUVER NOTIFICAÇÔES ENTRAR AQUI
-		if(battery == 0 && connection == 0 && door == 0 && energy == 0 && presence == 0 && temperature == 0 )		
+		if(battery == 0 && connection == 0 && door == 0 && energy == 0 && presence == 0 && temperature == 0 ){		
 		     $('#notification-list').append(WithoutNotification(item));	
-
-        // CASO HAJA AOS MENOS UMA NOTIFICAÇÂO FAZ AQUI
-	    if(battery == 1 || connection == 1 || door == 1 || energy == 1 || presence == 1 || temperature == 1)	
-		     $('#div-single').css('display','block'); 
-
-		else $('#div-single').css('display','none'); // CASO CONTRÁRIO ENTRA NESSA CONDIÇÃO
+			 $('#div-single').css('display','block')
+		}
         
      } // END OF FOR	 
 
@@ -353,14 +234,6 @@ const changeNotificationStatus = response => {
   function removeItem(id){
 	 $(id).remove();
   }
-
-  // GUIGO
-  let on_error = async function() {
-	console.log('error');
-	await sleep(1000);
-
-	consumeMonitor({callback1, callback2, callback3, debug})
-};
 
 	   
  // ITEM 
@@ -396,10 +269,14 @@ const changeNotificationStatus = response => {
 				 
 	 };
  
-	 var on_error =  function() {
-		 console.log('error');
-	 };
- 
+   	   // GUIGO
+		  let on_error = async function() {
+			console.log('error');
+			await sleep(1000);
+		
+			consumeMonitor({callback1, callback2, callback3, debug})
+		};
+		 
 	 client.heartbeat.outgoing = PING
  
 	 if (!debug)

@@ -814,20 +814,20 @@ public class SatReportsController {
 	// Recebe uma String que define qual o reltorio vai ser chamado
 
 	/**
-	 * Mtodo par criar um relatrio de acordo com tipo
-	 * @param type tipo do relatrio 
+	 * Mtodo par criar um relatório de acordo com tipo
+	 * @param type tipo do relatório 
 	 * @throws Exception
 	 */	
 	public void GetReports(String type) throws Exception{
 		
-		//RESET ON RESTART
+		// RESET ON RESTART
 	    resetFormValues(type);
 
-		//Get external application contents
+		// Get external application contents
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ExternalContext externalContext = facesContext.getExternalContext();
 
-		QueriesReportsModels models = new QueriesReportsModels(); //QuerieReportsModel class
+		QueriesReportsModels models = new QueriesReportsModels(); // QuerieReportsModel class
 		SatQueriesModels satModels = new SatQueriesModels(); // SatReportsModel class	    
 		DateTimeApplication dta = new DateTimeApplication(); //DateTimeApsplication class
 
@@ -1114,8 +1114,7 @@ public class SatReportsController {
 			
 			else if(satReport.getPeriod().equals("24 hours"))
 				     p = pos;
-					
-								 
+													 
 			if(i > 1 ) {
 			    resultQuery[p][i] = auxResult[j][i];
 			 
@@ -1146,7 +1145,6 @@ public class SatReportsController {
 		   } // CASO NO EXISTA VALOR >>>>>>> PASSA
 		 }
 	   }
-
 		    //// NEW METHOD
 
 			//SADA PARA A TABELA
@@ -1584,10 +1582,10 @@ public class SatReportsController {
 			 
 			//REORDERNAR HEADERS DE ACORDO COM SELEO => CHECKBOXES DE CLASSES
 			//if(satReport.classes.length < 13)
-			//   ReorderTableHeaderForWeighing(satReport.classes);  
+			//ReorderTableHeaderForWeighing(satReport.classes);  
 			
 			// DRAW TABLE -- BUILD HEADER
-			   drawTable(fields, fieldObjectValues);	
+			drawTable(fields, fieldObjectValues);	
 
 		}  
 
@@ -2083,10 +2081,8 @@ public class SatReportsController {
 		}
 
 		/**** PESAGEM  ****/
-		if(type.equals("5")) {
-			
+		if(type.equals("5")) {			
 			 fields = length;
-
 		}
 
 		/**** CLASS TYPE  ****/
@@ -2096,14 +2092,12 @@ public class SatReportsController {
 		}
 
 		/**** AXLE TYPE ****/
-		if(type.equals("7")) {
-			
+		if(type.equals("7")) {			
 			 fields = length + 20;
-
 		}
 
 		/**** SPEED ****/
-		if(type.equals("8")) {			
+		if(type.equals("8")) {
 			fields = length;
 
 		}

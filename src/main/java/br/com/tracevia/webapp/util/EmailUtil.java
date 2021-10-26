@@ -13,13 +13,33 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * Classe para manipular envios de emails
+ * @author Wellington 29/09/2021
+ * @since 1.0
+ * @since 1.0 
+ * @see https://docs.oracle.com/javaee/7/api/javax/mail/package-summary.html
+ */
+
 public class EmailUtil {
 	
-	   private String host ="smtp.gmail.com" ;
-	   private String username = "developers.tracevia@gmail.com";
-	   private String password = "ufxcqungtdvwjwde";
+	   // AUTH EMAIL CONFIG
 	
-	 public Session createSessionMail() {
+	   private static String host ="smtp.gmail.com" ;
+	   private static String username = "developers.tracevia@gmail.com";
+	   private static String password = "ufxcqungtdvwjwde";
+	   
+		// --------------------------------------------------------------------------------------------
+	
+	   /**
+	    * Método para criar uma sessão para o correio eletrônico
+	    * @author Wellington 29/09/2021
+	    * @version 1.0
+	    * @since 1.0
+	    * @see https://javaee.github.io/javamail/docs/api/javax/mail/Session.html
+	    * @return Object do tipo Session
+	    */
+	   private static Session createSessionMail() {
 
 			Properties props = new Properties();
 			
@@ -41,10 +61,20 @@ public class EmailUtil {
 
 			return session;
 		}
-		
-	 
-	    //SEND EMAIL DEFAULT
-		public boolean sendEmail(String to, String assunto, String conteudo) {
+	   
+		// --------------------------------------------------------------------------------------------
+			 
+	   /**
+	    * Método para envio de um correio eletrônico
+	    * @author Wellington 29/09/2021
+	    * @version 1.0
+	    * @since 1.0	
+	    * @param to - destinatário
+	    * @param subject - assunto
+	    * @param msg - mensagem a ser enviada
+	    * @return verdadeiro caso seja enviado
+	    */
+		public static boolean sendEmail(String to, String subject, String msg) {
 
 			boolean response = false;
 			
@@ -65,8 +95,8 @@ public class EmailUtil {
             //TO
 			message.setRecipients(Message.RecipientType.TO, EMAIL_TO);  			 		     
 			message.setSentDate(new Date());
-			message.setSubject(assunto); 
-			message.setText(conteudo);	
+			message.setSubject(subject); 
+			message.setText(msg);	
 			
 			/** Metodo para enviar a mensagem criada */         
 
@@ -91,9 +121,21 @@ public class EmailUtil {
 			return response;	
 
 		}
+		
+		// --------------------------------------------------------------------------------------------
 				
-		 //SEND EMAIL DEFAULT WITH CONTACTS
-		public boolean sendEmail(String to, String cc, String assunto, String conteudo) {
+		/**
+		 * Método para envio de um correio eletrônico
+		 * @author Wellington 29/09/2021
+		 * @version 1.0
+		 * @since 1.0	
+		 * @param to - destinatário
+		 * @param cc - cópia para outros destinatário
+		 * @param subject - assunto
+		 * @param msg - mensagem a ser enviada
+		 * @return verdadeiro caso seja enviado
+		 */
+		public static boolean sendEmail(String to, String cc, String subject, String msg) {
 
 			boolean response = false;
 			
@@ -119,8 +161,8 @@ public class EmailUtil {
 			message.setRecipients(Message.RecipientType.CC, EMAIL_CC);  
 				     
 			message.setSentDate(new Date());
-			message.setSubject(assunto); 
-			message.setText(conteudo);	
+			message.setSubject(subject); 
+			message.setText(msg);	
 			
 			/** Metodo para enviar a mensagem criada */         
 
@@ -145,9 +187,20 @@ public class EmailUtil {
 			return response;
 
 		}
+		
+		// --------------------------------------------------------------------------------------------
 			
-		 //SEND EMAIL HTML
-		public boolean sendEmailHtml(String to, String assunto, String conteudo){
+		/**
+		 * Método para envio de um correio eletrônico (formatação HTML)
+		 * @author Wellington 29/09/2021
+		 * @version 1.0
+		 * @since 1.0	
+		 * @param to - destinatário		
+		 * @param subject - assunto
+		 * @param msg - mensagem a ser enviada
+		 * @return verdadeiro caso seja enviado
+		 */
+		public static boolean sendEmailHtml(String to, String subject, String msg){
 			
 			boolean response = false;
 			
@@ -155,7 +208,7 @@ public class EmailUtil {
 			
 			String from = username;
 			
-			Session session = createSessionMail(); // Criando a Sess�o
+			Session session = createSessionMail(); // Criando a Sessão
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
@@ -168,8 +221,8 @@ public class EmailUtil {
             //TO
 			message.setRecipients(Message.RecipientType.TO, EMAIL_TO); 			     
 			message.setSentDate(new Date());
-			message.setSubject(assunto); 	
-			message.setContent(conteudo, "text/html");
+			message.setSubject(subject); 	
+			message.setContent(msg, "text/html");
 
 			/** Metodo para enviar a mensagem criada */     
 
@@ -195,8 +248,20 @@ public class EmailUtil {
 
 		}
 		
-		 //SEND EMAIL HTML WITH CONTACTS
-		public boolean sendEmailHtml(String to, String cc, String assunto, String conteudo) {
+		// --------------------------------------------------------------------------------------------
+		
+		/**
+		 * Método para envio de um correio eletrônico (formatação HTML)
+		 * @author Wellington 29/09/2021
+		 * @version 1.0
+		 * @since 1.0	
+		 * @param to - destinatário
+		 * @param cc - cópia para outros destinatário
+		 * @param subject - assunto
+		 * @param msg - mensagem a ser enviada
+		 * @return verdadeiro caso seja enviado
+		 */
+		public static boolean sendEmailHtml(String to, String cc, String subject, String msg) {
 			
 			boolean response = false;
 			
@@ -222,8 +287,8 @@ public class EmailUtil {
 			message.setRecipients(Message.RecipientType.CC, EMAIL_CC);  
 			
 			message.setSentDate(new Date());
-			message.setSubject(assunto); 		
-			message.setContent(conteudo, "text/html");
+			message.setSubject(subject); 		
+			message.setContent(msg, "text/html");
 
 			/** Metodo para enviar a mensagem criada */       
 
@@ -248,5 +313,7 @@ public class EmailUtil {
 			return response;
 
 		}
+		
+	// --------------------------------------------------------------------------------------------
 		
 }

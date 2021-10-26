@@ -29,7 +29,9 @@ $(async function () {
 
   let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
   let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
+  let url_digifort = `${digifort.address}:${digifort.port}`
 
+  TestCert(url_digifort);
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
 
@@ -114,6 +116,7 @@ const credEvent = data => {
 
 getCred('rabbitmq'); // Rabbit init
 getCred('asterisk');
+getCred('digifort');
 
 const TestCert = async (uri, init) => {
   try {

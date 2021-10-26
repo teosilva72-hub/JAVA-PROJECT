@@ -1,0 +1,73 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
+    
+   <h:body>
+   
+    <!-- MODAL DOWNLOAD: MODAL PARA EFETUAR DOWNLOAD DE UM ARQUIVO EXCEL -->
+	   
+	   	<div class="modal fade" id="modalDownload" tabindex="-1"
+			aria-labelledby="downloadModalLabel" aria-hidden="true"> <!-- MODAL COMPONENT DIV -->  	
+			 <!---->
+				<div class="modal-dialog confirmation-modal" > <!-- MODAL DIALOG DIV -->
+				<!---->
+					<h:form class="modal-content" name="form-download" id="form-download"> <!-- MODAL FORM -->
+					  <!---->
+						<div class="modal-header"> <!-- MODAL HEADER DIV --> 
+						  <!---->
+							  <h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h5>
+						   <!---->
+						   </div> <!-- MODAL HEADER DIV END -->
+						    <!---->
+						    <div class="modal-body"> <!-- MODAL BODY DIV -->
+							  <p class="modal-alert-msg"> <!-- MESSAGE PARAGRAPH -->
+							    #{reportsLabels.reports_modal_alert_download_file_excel} <!-- MESSAGE 1 -->
+							  <span class="extension">#{reportsLabels.reports_modal_alert_extension_xlsx}</span> ? <!-- MESSAGE 2 -->
+						      </p> <!-- MESSAGE PARAGRAPH END -->
+						    <!---->
+						    </div> <!-- MODAL BODY DIV END -->	
+						    					
+						   <!---->						
+						  <div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+
+						   <!---->
+						   
+						    <!-- DOWNLOAD BUTTON -->						    
+						   <h:commandButton p:onclose="download"
+						     value="#{reportsLabels.reports_modal_alert_btn_yes}"
+						     p:data-toggle="modal" p:data-target="#modalDownload"
+						     action="#{testerBean.download}"
+						     class="btn btn-dark form-draw-button" /> <!-- DOWNLOAD BUTTON -->
+								
+						  <!---->
+								
+							<!-- CANCEL DOWNLOAD BUTTON -->	
+						   <h:commandButton id="cancelDownload"
+							 value="#{reportsLabels.reports_modal_alert_btn_no}"
+							 class="btn btn-dark form-draw-button">
+						     <f:passThroughAttribute name="data-dismiss" value="modal" />
+							 <f:ajax execute="@form" render="@none" />
+						  </h:commandButton> <!-- CANCEL DOWNLOAD BUTTON -->
+							
+							  <!---->
+							
+					  </div> <!-- MODAL FOOTER DIV END --> 
+						
+				  <!---->
+						
+			  </h:form> <!-- MODAL FORM END -->
+		   </div> <!-- MODAL DIALOG DIV END -->
+	    </div> <!-- MODAL COMPONENT DIV END --> 
+			  	
+	   <!---->
+			
+    <!-- =============================================================================================================================================== -->
+   
+   
+   </h:body>        
+                                
+</html>

@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
 
+import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 
@@ -56,17 +57,20 @@ public class PrototipoController implements Serializable{
 		// ---------------------------------------------------------------------------
 				   		
 		// SELECT ITEMS LISTS		
-        build.equipments = new ArrayList<SelectItem>();	  
-        build.periods = new ArrayList<SelectItem>();	  
+      //  build.equipments = new ArrayList<SelectItem>();	  
+       // build.periods = new ArrayList<SelectItem>();	
+        
+        // COLUMNS LIST
+      //  build.columns = new ArrayList<ColumnModel>();
         
         try {
         	
         	// EQUIPMENTS
-        	 build.equipments = build.selectEquips(module);
-        	 select.equipments = new String[build.equipments.size()];  
+       // 	 build.equipments = build.selectEquips(module);
+        //	 select.equipments = new String[build.equipments.size()];  
         	 
         	 // PERIODS
-        	 build.periods = build.selectPeriods();
+        //	 build.periods = build.selectPeriods();
         	 			
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -96,7 +100,20 @@ public class PrototipoController implements Serializable{
 		
 		// FILTRO DO TIPO DE RELATÓRIO	
 		
-		switch(type) {
+		/**** SPEED REPORT ****/
+		
+		//Table Fields
+	//	 build.fields = new String[]{"TESTE", "TESTE"};
+		
+	//	// Table Objects
+	//build.fieldObjectValues = new String[] {"date", "time", "register", "speed", "direction", "equipment"};
+			
+	   // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+					 
+	//	 build.drawTable(build.columns, build.fields, build.fieldObjectValues);
+		
+		
+	/*	switch(type) {
 		
 		case "1":  ;break;
 		case "2":  ;break;
@@ -113,7 +130,7 @@ public class PrototipoController implements Serializable{
 		case "13":  ;break;
 		
 		
-		}		
+		}*/		
 		
 	}
 	

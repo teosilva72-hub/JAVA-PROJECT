@@ -465,7 +465,7 @@ public class OccurrencesDAO {
 			if(rs != null) {
 				while(rs.next()) {
 
-					occ.setUser_id(rs.getString(1));
+					occ.getUser().setUser_id(rs.getInt(1));
 
 				}
 			}

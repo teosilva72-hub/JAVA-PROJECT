@@ -1043,9 +1043,15 @@ input.apple-switch:checked:before {
 
 /* NOTIFICATIONS */
 
-.dropdown-notif {
+.dropdown-notif, .dropdown-profile {
   max-height: 284px !important;
   overflow-y: auto;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.dropdown-notif{   
+border: 3px solid #4F4F4F;
 }
 
 /* CLASS MINUS */
@@ -1089,7 +1095,8 @@ width: fit-content;
 }
 
 .content-notification:hover {
-  background: #444;
+  background: #828282;
+  cursor:pointer;
 }
 
 .dropdown-nofit-alert, 

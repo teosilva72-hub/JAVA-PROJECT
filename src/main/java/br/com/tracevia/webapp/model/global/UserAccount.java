@@ -5,6 +5,7 @@ public class UserAccount {
 	private int user_id;
 	private int permission_id;
 	private int permission_user_id;
+	private int role_permission;	
 	private String date_register;
 	private String createdBy;
 	private String name;
@@ -16,17 +17,20 @@ public class UserAccount {
 	private String userID;
 	private String confPassword;
 	private String newPassword;	
-	private String checkActive;
+	private String sendParametro;
+	private String rowkey;
+	private String activeStatusName;
 	private boolean activeStatus;
 	
-		
-	public UserAccount(int user_id, int permission_id, int permission_user_id, String date_register, String createdBy, String name,
-			String job_position, String email, String username, String password, String permission_role, String userID,
-			String confPassword, String newPassword, String checkActive, boolean activeStatus) {
-		
+	public UserAccount(int user_id, int permission_id, int permission_user_id, int role_permission,
+			String date_register, String createdBy, String name, String job_position, String email, String username,
+			String password, String permission_role, String userID, String confPassword, String newPassword,
+			String sendParametro, String rowkey, String activeStatusName, boolean activeStatus) {
+
 		this.user_id = user_id;
 		this.permission_id = permission_id;
 		this.permission_user_id = permission_user_id;
+		this.role_permission = role_permission;
 		this.date_register = date_register;
 		this.createdBy = createdBy;
 		this.name = name;
@@ -38,13 +42,14 @@ public class UserAccount {
 		this.userID = userID;
 		this.confPassword = confPassword;
 		this.newPassword = newPassword;
-		this.checkActive = checkActive;
+		this.sendParametro = sendParametro;
+		this.rowkey = rowkey;
+		this.activeStatusName = activeStatusName;
 		this.activeStatus = activeStatus;
+		
 	}
 
-	
 	public UserAccount() {}
-	
 
 	public int getUser_id() {
 		return user_id;
@@ -70,6 +75,14 @@ public class UserAccount {
 		this.permission_user_id = permission_user_id;
 	}
 
+	public int getRole_permission() {
+		return role_permission;
+	}
+
+	public void setRole_permission(int role_permission) {
+		this.role_permission = role_permission;
+	}
+
 	public String getDate_register() {
 		return date_register;
 	}
@@ -77,7 +90,7 @@ public class UserAccount {
 	public void setDate_register(String date_register) {
 		this.date_register = date_register;
 	}
-	
+
 	public String getCreatedBy() {
 		return createdBy;
 	}
@@ -85,7 +98,6 @@ public class UserAccount {
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
-
 
 	public String getName() {
 		return name;
@@ -159,12 +171,28 @@ public class UserAccount {
 		this.newPassword = newPassword;
 	}
 	
-	public String getCheckActive() {
-		return checkActive;
+	public String getSendParametro() {
+		return sendParametro;
 	}
 
-	public void setCheckActive(String checkActive) {
-		this.checkActive = checkActive;
+	public void setSendParametro(String sendParametro) {
+		this.sendParametro = sendParametro;
+	}
+
+	public String getRowkey() {
+		return rowkey;
+	}
+
+	public void setRowkey(String rowkey) {
+		this.rowkey = rowkey;
+	}
+	
+	public String getActiveStatusName() {
+		return activeStatusName;
+	}
+
+	public void setActiveStatusName(String activeStatusName) {
+		this.activeStatusName = activeStatusName;
 	}
 
 	public boolean isActiveStatus() {
@@ -174,6 +202,5 @@ public class UserAccount {
 	public void setActiveStatus(boolean activeStatus) {
 		this.activeStatus = activeStatus;
 	}
-
-	
+			
 }

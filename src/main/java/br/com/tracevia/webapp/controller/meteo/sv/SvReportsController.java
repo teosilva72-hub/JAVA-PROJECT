@@ -28,12 +28,10 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.meteo.mto.MtoReports;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.meteo.sv.SvReports;
 import br.com.tracevia.webapp.model.meteo.sv.SvReports.Builder;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.MessagesUtil;
 import br.com.tracevia.webapp.util.QueriesReportsModels;
 
 @ManagedBean(name="svReportsBean")
@@ -986,7 +984,7 @@ if(type.equals("3")) {
  	     	     	  
  	  int[] col;
  	 
- 	  String equip = "", road = "", km = "", lanes = "", city = "", svType = "SV";
+ 	  String equip = "", road = "", km = "", city = "", svType = "SV";
  	  
  	  
  	 if(type.equals("1")) {

@@ -2,7 +2,7 @@
  //CREATE / DEFINE MULTISELECT
 function defineMultiselect(id, label){
 	   	
-    $(id).multiselect({
+    $(`${id}, #allColumns`).multiselect({
         columns: 1,       
         allSelectedText: 'All',
         maxHeight: 200,
@@ -10,7 +10,8 @@ function defineMultiselect(id, label){
         buttonWidth:'100%',
         nonSelectedText: label
         
-    });
+    }).multiselect('selectAll', false)
+    .multiselect('updateButtonText');
 }
 
 //CHECKED BY DEFAULT
