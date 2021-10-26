@@ -55,8 +55,10 @@ public class ReportDAO {
                 for (int idx = 1; idx <= columnsNumber; idx++) {
                     if (!custom)
                         this.columnName.add(rsmd.getColumnName(idx));
+
+                    String value = rs.getString(idx);
                     
-                    column[idx - 1] = rs.getString(idx);
+                    column[idx - 1] = value != null && value != "" ? value : "-";
                 }
 
                 lines.add(column);
