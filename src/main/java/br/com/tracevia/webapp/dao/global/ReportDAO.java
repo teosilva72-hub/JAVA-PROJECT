@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class ReportDAO {
 
     public ReportDAO(List<String> columnName) throws Exception {
         
+        conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
     	custom = !columnName.isEmpty();
         
         if (custom)
@@ -35,8 +38,6 @@ public class ReportDAO {
     public void getReport(String query) throws Exception {
        
     	List<String[]> lines = new ArrayList<>();
-    	    	
-        conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
@@ -63,6 +64,24 @@ public class ReportDAO {
 
             this.lines = lines;
         }
+    }
+
+    public List<String> getOtherElementTable(String table, String column) throws SQLException {
+        List<String> fields = new ArrayList<>();
+
+        String query = String.format("SELECT %s FROM %s", column, table);
+
+        ps = conn.prepareStatement(query);
+        rs = ps.executeQuery();
+
+        if (rs.isBeforeFirst()) {
+            while (rs.next()) {
+                String value = rs.getString(1);
+                if (!fields.contains(value))
+                    fields.add(value);
+            }
+        } 
+        return fields;
     }
 
    

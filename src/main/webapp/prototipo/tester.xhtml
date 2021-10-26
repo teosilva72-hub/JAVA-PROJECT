@@ -15,12 +15,15 @@
 	<f:metadata>
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_equipment')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Nome de Criação, Data de Criação, Porta, Nome, KM, Direção')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, creation_username, creation_date, port, name, km, direction')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, answered_date, user, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('creation_date', 'Data da Criação')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearchByTable('equip_id', 'ID', 'sos_equipment.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado')}" />
 
 		          
     </f:metadata>

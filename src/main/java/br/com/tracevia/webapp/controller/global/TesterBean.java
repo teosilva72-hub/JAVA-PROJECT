@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
+import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
@@ -25,23 +28,15 @@ import br.com.tracevia.webapp.util.SessionUtil;
 public class TesterBean {
 
 	public String table; 
-	public List<String> columnsName; 
-	public List<String> searchParameters; 
-	ExcelModels model;
+	public List<String> columnsName,
+						searchParameters; 
 	
-	// ----------------------------------------------------------------------------------------------------------------
-	
-	private static String DATE_COLUMN = "save_date";
-	private static String TABLE = "speed_registry";
-	private static String MODULE = "speed";
-	private static String INDEX_NAME = "idx_date_speed_id";
-	private static String JOIN_COLUMN = "equip_id";
-	private static String EQUIP_COLUMN = "id_speed";
-		
 	// ----------------------------------------------------------------------------------------------------------------
 
+	private ExcelModels model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
+	private List<Pair<String[], List<String>>> filterSearch = new ArrayList<>();
 	
 	private ReportSelection select;
 	private ReportBuild build;
@@ -105,6 +100,33 @@ public class TesterBean {
 	public void setDateSearch(String dateSearch, String nameColumn) {
 		this.dateSearch.add(new String[]{dateSearch, nameColumn});
 	}
+
+	public List<Pair<String[], List<String>>> getFilterSearch() {
+		return filterSearch;
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn) {
+		if (report != null)
+			try {
+				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(table, filterSearch)));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+	public void setFilterSearchByTable(String filterSearch, String nameColumn, String tableWithName) {
+		String[] tableName = tableWithName.split("\\.");
+		System.out.println(tableName.toString());
+		
+		if (report != null)
+			try {
+				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(tableName[0], tableName[1])));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 	
 	public void setTable(String table) {
 		this.table = table;
@@ -117,6 +139,14 @@ public class TesterBean {
 
 	public void setReport(ReportDAO report) {
 		this.report = report;
+	}
+	
+	public String[] getLeft(Pair<String[], List<String>> pair) {
+		return pair.left;
+	}
+	
+	public List<String> getRight(Pair<String[], List<String>> pair) {
+		return pair.right;
 	}
 	
 				
@@ -191,6 +221,7 @@ public class TesterBean {
 	 }	
 	
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
+
 	public void createReport() throws Exception {
 				
 		// Table Fields
@@ -231,6 +262,18 @@ public class TesterBean {
 				}
 				if (!dateEnd.isEmpty()) {
 					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= %s", count > 0 ? " AND" : "", dateEnd, search[0]);
+					count++;
+				}
+			}
+		if (!filterSearch.isEmpty())
+			for (Pair<String[], List<String>> search : filterSearch) {
+				String filter = map.get(String.format("%s-filter", search.left[0]));
+
+				if (count == 0 && !filter.isEmpty())
+					query += " WHERE";
+
+				if (!filter.isEmpty()) {
+					query += String.format("%s '%s' = %s", count > 0 ? " AND" : "", filter, search.left[0]);
 					count++;
 				}
 			}
