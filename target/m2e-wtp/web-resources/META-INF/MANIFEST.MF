@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< HEAD
 Built-By: Wellington
 Build-Jdk: 1.8.0_251
+=======
+Built-By: guigo
+Build-Jdk: 15.0.1
+>>>>>>> f535648155abf6a6de1d9e7f74deec7c53fad6df
 Created-By: Maven Integration for Eclipse
 

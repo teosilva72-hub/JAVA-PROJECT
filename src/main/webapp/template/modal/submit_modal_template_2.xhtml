@@ -41,7 +41,8 @@
 					<br />
 					<!-- LINE BREAK -->
 
-					<div class="col-12">
+					<!-- REMOVE FIELDS FROM SEARCH | TEMPORARILY INACTIVE -->
+					<div class="col-12" style="display: none">
 						<div class="form-group col-sm-12 checkbox-field">
 							<span><i class="fas fa-hdd"></i></span> <span for="equips"
 									class="valid-icon-hidden"></span> <select name="allColumns"
@@ -131,6 +132,49 @@
 					</div>
 
 					<!---->
+
+					<!-- FILTER FIEDS -->
+
+					<c:forEach var="filterSearch"  items="${testerBean.filterSearch}">
+						<div class="col-12">
+							<!-- FORM ROW DIV -->
+							<div class="form-group col-sm-12 select-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="fas fa-hdd"></i></span>
+								<!-- SPAN ICON -->
+								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+								<!---->
+								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" size="1">
+									<!-- SELECT OPTIONS -->
+									<!---->
+									<option value="">
+										#{testerBean.getLeft(filterSearch)[1]}
+									</option>
+									<!---->
+									<ui:repeat var="filter" value="#{testerBean.getRight(filterSearch)}">
+										<!-- LOOP -->
+										<!---->
+										<option value="#{filter}">#{filter}</option>
+										<!---->
+									</ui:repeat>
+									<!---->
+								</select>
+								<!-- INPUT -->
+								<!---->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="error" id="#{testerBean.getLeft(filterSearch)[0]}-filter-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+						<!-- FORM ROW DIV END -->
+
+						<!---->
+					</c:forEach>
 
 					<!-- START DATE -->
 
