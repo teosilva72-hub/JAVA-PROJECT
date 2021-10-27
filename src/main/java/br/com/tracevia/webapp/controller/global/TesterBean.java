@@ -281,6 +281,8 @@ public class TesterBean {
 		
 		   // Table Fields
 		    report.getReport(query, idTable);
+
+			System.out.println(report.IDs);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
