@@ -186,6 +186,10 @@ public class TesterBean {
 	public void defineSat() {
 		this.sat = true;
 	}
+	
+	public boolean isTotal() {
+		return total == null ? false : true;
+	}
 		
 	public ReportDAO getReport() {
 		return report;
