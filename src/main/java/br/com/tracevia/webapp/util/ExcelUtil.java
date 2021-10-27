@@ -204,7 +204,31 @@ public class ExcelUtil {
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 	// SET CELL VALUES
-	// ----------------------------------------------------------------------------------------------------------------			
+	// ----------------------------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para inserir valores no cabeçalho da tabela de dados
+	 * @author Wellington 13/10/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - indice da linha	 
+	 * @param columns - lista com as colunas a serem inseridas no arquivo
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void setHeaderCellsValue(Sheet sheet, Row row, int rowNumber, List<String> columns) {		
+
+		 row = sheet.getRow(rowNumber);	
+		
+		for(int col = 0; col < columns.size(); col++)		     		
+		     row.getCell(col).setCellValue(columns.get(col));	
+		
+	  }	
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 
 	/**
 	 * Método para inserir valor em uma única célula de uma planilha Excel
@@ -836,7 +860,7 @@ public class ExcelUtil {
 	 */	
 	public void createImage(Workbook workbook, Sheet sheet, String logo, int col1, int col2,  int row1, int row2, 
 			int dx1, int dy1, int dx2, int dy2, int resize) {
-
+		
 		try {
 
 			InputStream my_banner_image = new FileInputStream(logo);
@@ -850,6 +874,16 @@ public class ExcelUtil {
 			XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();		
 			XSSFClientAnchor my_anchor = new XSSFClientAnchor();
 
+			my_anchor.setCol1(col1);
+			my_anchor.setRow1(row1);
+			my_anchor.setCol2(col2);
+			my_anchor.setRow2(row2);
+
+			my_anchor.setDx1(dx1);
+			my_anchor.setDy1(dy1);
+			my_anchor.setDx2(dx2);
+			my_anchor.setDy2(dy2);
+			
 			my_anchor.setCol1(col1);
 			my_anchor.setRow1(row1);
 			my_anchor.setCol2(col2);
@@ -2369,7 +2403,7 @@ public class ExcelUtil {
 		  case "LEFT": setBorderLeft(style, borderStyle); break;
 		  case "RIGHT": setBorderRight(style, borderStyle); break;
 		  case "ALL": setBorders(style, borderStyle); break;
-		  		  		  
+				  		  		  		  
 		  }	  
 	  }
 	  
@@ -2386,9 +2420,7 @@ public class ExcelUtil {
 					row = sheet.getRow((short) rowIndex);	
 									
 					try {
-						
-					if(!values.get(lin)[col].equals("")) {	
-																														
+																																				
 					if(values.get(lin)[col].matches(NUMBER_REGEX))
 					   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
 							
@@ -2396,12 +2428,8 @@ public class ExcelUtil {
 					   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
 							
 					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
-					
-					}
-						
-					}catch(NullPointerException ex) {
-						ex.printStackTrace();
-					}		
+									
+					}catch(NullPointerException ex) {}		
 
 				}		       
 			}     	   

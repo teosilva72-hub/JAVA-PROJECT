@@ -68,23 +68,45 @@ public class ReportDAO {
         }
     }
 
-    public List<String> getOtherElementTable(String table, String column) throws SQLException {
-        List<String> fields = new ArrayList<>();
+    public List<String[]> getOtherElementTable(String table, String column) throws SQLException {
+        return getOtherElementTable(table, new String[]{ column, column });
+    }
+    
+    public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
+    	List<String[]> fields = new ArrayList<>();
+    	List<List<String>> fieldsTemp = new ArrayList<>();
+        boolean doubleField = !column[0].equals(column[1]);
+        for (int i = 0; i < (doubleField ? 2 : 1); i++)
+        	fieldsTemp.add(new ArrayList<>());
 
-        String query = String.format("SELECT %s FROM %s", column, table);
+        String query = String.format("SELECT %s FROM %s", doubleField ? String.format("%s, %s", column[0], column[1]) : column[0], table);
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
 
         if (rs.isBeforeFirst()) {
             while (rs.next()) {
-                String value = rs.getString(1);
-                if (value == null)
-                    value = "";
-                if (!fields.contains(value) && !value.isEmpty())
-                    fields.add(value);
+                for (int i = 0; i < (doubleField ? 2 : 1); i++) {
+                    String value = rs.getString(i + 1);
+                    if (value == null)
+                        value = "";
+                    if (!fieldsTemp.get(i).contains(value) && !value.isEmpty())
+                    	fieldsTemp.get(i).add(value);
+                    else if (i > 0)
+                    	fieldsTemp.get(0).remove(0);
+                    else
+                    	break;
+                }
+
             }
-        } 
+        }
+        
+        int size = fieldsTemp.get(0).size();
+        for (int i = 0; i < size; i++) {
+        	String value = fieldsTemp.get(0).get(i);
+        	fields.add(new String[] { value, doubleField ? fieldsTemp.get(1).get(i) : value });
+		}
+        
         return fields;
     }
 

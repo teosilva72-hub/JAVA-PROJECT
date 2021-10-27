@@ -31,13 +31,11 @@ public class TesterBean {
 	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
-	
-	// ----------------------------------------------------------------------------------------------------------------
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
-	private List<Pair<String[], List<String>>> filterSearch = new ArrayList<>();
+	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
 	
 	private ReportSelection select;
 	private ReportBuild build;
@@ -45,7 +43,7 @@ public class TesterBean {
 	private ReportDAO report;
 	public List<Builder> resultList;	
 
-	List<? extends Equipments> listSpeed;  
+	List<? extends Equipments> listEquips;  
 			
 	public String[] equipNames;
 		
@@ -80,6 +78,10 @@ public class TesterBean {
 		return columnsInUse;
 	}
 	
+	public List<? extends Equipments> getListEquips() {
+		return listEquips;
+	}
+	
 	public void setColumnsInUse(String[] columns) {
 		List<String> cols = new ArrayList<>();
 		for (String col : columns) {
@@ -102,25 +104,33 @@ public class TesterBean {
 		this.dateSearch.add(new String[]{dateSearch, nameColumn});
 	}
 
-	public List<Pair<String[], List<String>>> getFilterSearch() {
+	public List<Pair<String[], List<String[]>>> getFilterSearch() {
 		return filterSearch;
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn) {
-		if (report != null)
-			try {
-				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(table, filterSearch)));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse método pode ser mais rapido do que o método acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+		setFilterSearch(filterSearch, nameColumn, tableWithName, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
+
+		String extra = multiple ? "multiple" : "";
 		
 		if (report != null)
 			try {
-				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(tableName[0], tableName[1])));
+				if (tableName[1].contains("|"))
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
+				else
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1])));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -129,8 +139,7 @@ public class TesterBean {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	
-	
+		
 	public ReportDAO getReport() {
 		return report;
 	}
@@ -170,8 +179,6 @@ public class TesterBean {
 		
 		// CONSTRUTOR 
 	
-
-
 	@PostConstruct
 	public void initialize() {
 		
@@ -181,36 +188,7 @@ public class TesterBean {
 		build = new ReportBuild();
 	
 		// ---------------------------------------------------------------------------
-				   		
-		// SELECT ITEMS LISTS		
-        // build.equipments = new ArrayList<SelectItem>();	  
-        // build.periods = new ArrayList<SelectItem>();
-        
-        // listSpeed = new ArrayList<Equipments>();
-                
-        // COLUMNS LIST
-        // build.columns = new ArrayList<ColumnModel>();
-        
-        //DEFINE LOCALE
-        // build.localeLabels = LocaleUtil.setLocale(LocaleUtil.LABELS_SPEED);
-        
-        try {
-        		        	
-        	EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSpeed = dao.EquipmentSelectOptions("speed");
-        	
-        	// EQUIPMENTS
-        	//  build.equipments = build.selectEquips(listSpeed);
-        	//  select.equipments = new String[build.equipments.size()];  
-        	 
-        	//  build.periods = build.selectPeriods();
-        	        	                	 			
-		} catch (Exception e) {			
-			e.printStackTrace();
-		}
-                 	
-    	// ----------------------------------------------------------------------------
-        	
+	        	
     	 // Disabled Buttons
     	  build.clearBool = true;
     	  build.excelBool = true;
@@ -233,12 +211,13 @@ public class TesterBean {
 		
 		int count = 0;
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
-		String[] columns = SessionUtil.getRequestParameterValuesMap().get("allColumns");
+		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
+		String[] columns = mapArray.get("allColumns");
 		setColumnsInUse(columns);
 						
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "";
+		String dateStart = "", dateEnd = "", equipId = "";
 				
 		resetForm();
 		
@@ -251,8 +230,8 @@ public class TesterBean {
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
-				 dateStart = map.get(String.format("%s-start", search[0]));
-				 dateEnd = map.get(String.format("%s-end", search[0]));
+				dateStart = map.get(String.format("%s-start", search[0]));
+				dateEnd = map.get(String.format("%s-end", search[0]));
 
 				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
 					query += " WHERE";
@@ -267,20 +246,36 @@ public class TesterBean {
 				}
 			}
 		if (!filterSearch.isEmpty())
-			for (Pair<String[], List<String>> search : filterSearch) {
-				String filter = map.get(String.format("%s-filter", search.left[0]));
+			for (Pair<String[], List<String[]>> search : filterSearch) {
+				String filter = "";
+				if (search.left[2].equals("multiple")) {
+					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[0]));
+					String newFilter = "";
+
+					if (filterArray != null) {						
+						for (String f : filterArray) {
+							newFilter = String.format("%s, BINARY '%s'", newFilter, f);
+						}
+						filter = newFilter.substring(2);
+					}
+				}
+				else {
+					String f = map.get(String.format("%s-filter", search.left[0]));
+					if (!f.isEmpty())
+						filter = String.format("BINARY '%s'", f);
+				}
 
 				if (count == 0 && !filter.isEmpty())
 					query += " WHERE";
 
 				if (!filter.isEmpty()) {
-					query += String.format("%s '%s' = %s", count > 0 ? " AND" : "", filter, search.left[0]);
+					query += String.format("%s %s IN (%s)", count > 0 ? " AND" : "", search.left[0], filter);
 					count++;
 				}
 			}
 		
-		// Table Fields
-		 report.getReport(query);
+		   // Table Fields
+		    report.getReport(query);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
@@ -296,14 +291,13 @@ public class TesterBean {
 	        // GENERATE EXCEL
 		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, dateStart, dateEnd, "", "Teste", columns);
+		     model.generateExcelFile(columnsInUse, report.lines,"sos", dateStart, dateEnd, equipId, "", "TRACEVIA", "Teste", false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
-			 build.clearBool = false; // BOTÃO DE LIMPAR		    	 
+			 build.clearBool = false; // BOTÃO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
-	      	 
-	      		  		    		
+	      	 	      		  		    		
 	    }
 	
 		
@@ -349,4 +343,52 @@ public class TesterBean {
 	 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
+
+			/**
+			 * Método para carregar equipamentos disponíveis para seleção
+			 * @author Wellington 26/10/2021
+			 * @version 1.0
+			 * @since 1.0
+			 * @param module - modulo que os equipamentosa devem ser carregados
+			 */
+			public void defineEquipmentsOption(String module) {
+
+				try {
+
+					EquipmentsDAO dao = new EquipmentsDAO();		 
+					listEquips = dao.EquipmentSelectOptions(module);
+
+					build.equipments = build.selectEquips(listEquips);
+
+					// EQUIPMENTS
+					// build.equipments = build.selectEquips(listSpeed);
+					// select.equipments = new String[build.equipments.size()];  
+
+				} catch (Exception e) {			
+					e.printStackTrace();
+				}
+			}
+
+			// --------------------------------------------------------------------------------------------		
+
+			/**
+			 * Método para carregar períodos disponíveis para seleção
+			 * @author Wellington 26/10/2021
+			 * @version 1.0
+			 * @since 1.0	
+			 */
+			public void definePeriodsOption() {
+
+				try {
+
+					build.periods = build.selectPeriods();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// --------------------------------------------------------------------------------------------	
+
 }

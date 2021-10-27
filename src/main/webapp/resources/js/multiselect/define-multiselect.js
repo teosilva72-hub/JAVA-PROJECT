@@ -2,16 +2,22 @@
  //CREATE / DEFINE MULTISELECT
 function defineMultiselect(id, label){
 	   	
-    $(`${id}, #allColumns`).multiselect({
-        columns: 1,       
-        allSelectedText: 'All',
-        maxHeight: 200,
-        includeSelectAllOption: true,
-        buttonWidth:'100%',
-        nonSelectedText: label
-        
-    }).multiselect('selectAll', false)
-    .multiselect('updateButtonText');
+    $(`${id}, [multiple=multiple]`).each(function() {
+        let self = $(this);
+        let allSelected = self.attr("field") || "All";
+        let nonSelected = self.attr("field") || label;
+
+        self.multiselect({
+            columns: 1,       
+            allSelectedText: allSelected,
+            maxHeight: 200,
+            includeSelectAllOption: true,
+            buttonWidth:'100%',
+            nonSelectedText: nonSelected
+            
+        }).multiselect('selectAll', false)
+        .multiselect('updateButtonText');
+    })
 }
 
 //CHECKED BY DEFAULT

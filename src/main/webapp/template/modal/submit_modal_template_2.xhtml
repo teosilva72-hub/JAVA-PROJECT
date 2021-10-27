@@ -46,7 +46,7 @@
 						<div class="form-group col-sm-12 checkbox-field">
 							<span><i class="fas fa-hdd"></i></span> <span for="equips"
 									class="valid-icon-hidden"></span> <select name="allColumns"
-									id="allColumns" multiple="multiple">
+									id="allColumns" field="Column" multiple="multiple">
 								<c:forEach var="column" items="#{testerBean.columnsInUse}"
 									varStatus="loop">
 									<option value="#{loop.index}">#{column}</option>
@@ -58,104 +58,31 @@
 						</div>
 					</div>
 
-					<!-- EQUIPMENTS OPTIONS -->
-
-					<div class="col-12">
-						<!-- FORM ROW DIV -->
-						<div class="form-group col-sm-12 select-field">
-							<!-- FORM GROUP DIV -->
-							<span><i class="fas fa-hdd"></i></span>
-							<!-- SPAN ICON -->
-							<span for="equips" class="valid-icon-hidden"></span>
-							<!-- SPAN VALIDATION ICON -->
-							<select name="equip" id="equip">
-								<!-- SELECT OPTIONS -->
-								<!---->
-								<option value="">
-									#{reportsLabels.reports_select_equipments}
-								</option>
-								<!---->
-								<ui:repeat var="eqp" value="#{reportConfigBean.build.equipments}" varStatus="eqpStatus">
-									<!-- LOOP -->
-									<!---->
-									<option value="#{eqp.value}">#{eqp.label}</option>
-									<!-- OPTIONS -->
-									<!---->
-								</ui:repeat>
-								<!-- LOOP END -->
-								<!---->
-							</select><!-- SELECT OPTIONS END -->
-							<!---->
-						</div>
-						<!-- FORM GROUP DIV END -->
-						<div class="error-label">
-							<!-- ERROR LABEL DIV -->
-							<label for="equip" class="error" id="equip-error"></label>
-							<!-- ERROR LABEL -->
-						</div>
-						<!-- ERROR LABEL DIV END -->
-					</div>
-					<!-- FORM ROW DIV END -->
-
-					<!---->
-
-					<!-- PERIODS OPTIONS -->
-
-					<div class="col-12">
-						<!-- FORM ROW DIV -->
-						<div class="form-group col-sm-12 select-field">
-							<!-- FORM GROUP DIV -->
-							<span><i class="fas fa-clock"></i></span>
-							<!-- SPAN ICON -->
-							<span for="periods" class="valid-icon-hidden"></span>
-							<!-- SPAN VALIDATION ICON -->
-							<select name="periods" id="periods" size="1">
-								<!-- SELECT OPTIONS -->
-								<!---->
-								<option value="">
-									#{reportsLabels.reports_select_periods}
-								</option>
-								<!---->
-								<ui:repeat var="per" value="#{reportConfigBean.build.periods}" varStatus="perStatus">
-									<!-- LOOP -->
-									<!---->
-									<option value="#{per.value}">#{per.label}</option>
-									<!---->
-								</ui:repeat>
-								<!---->
-							</select>
-							<!---->
-						</div>
-						<div class="error-label">
-							<label for="periods" class="error" id="periods-error"></label>
-						</div>
-					</div>
-
-					<!---->
-
 					<!-- FILTER FIEDS -->
 
 					<c:forEach var="filterSearch"  items="${testerBean.filterSearch}">
 						<div class="col-12">
 							<!-- FORM ROW DIV -->
-							<div class="form-group col-sm-12 select-field">
+							<div class="form-group col-sm-12 checkbox-field">
 								<!-- FORM GROUP DIV -->
 								<span><i class="fas fa-hdd"></i></span>
 								<!-- SPAN ICON -->
 								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
-								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" size="1">
+								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" field="#{testerBean.getLeft(filterSearch)[1]}" multiple="#{testerBean.getLeft(filterSearch)[2]}">
 									<!-- SELECT OPTIONS -->
 									<!---->
-									<option value="">
-										#{testerBean.getLeft(filterSearch)[1]}
-									</option>
+									<c:if test="#{testerBean.getLeft(filterSearch)[2] ne 'multiple'}">
+										<option value="">
+											#{testerBean.getLeft(filterSearch)[1]}
+										</option>
+									</c:if>
 									<!---->
 									<ui:repeat var="filter" value="#{testerBean.getRight(filterSearch)}">
 										<!-- LOOP -->
 										<!---->
-										<option value="#{filter}">#{filter}</option>
+										<option value="#{filter[0]}">#{filter[1]}</option>
 										<!---->
 									</ui:repeat>
 									<!---->
