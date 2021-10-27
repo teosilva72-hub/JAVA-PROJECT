@@ -13,6 +13,13 @@
 	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
 	
 	<f:metadata>
+
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineTitle('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheet('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineTotal('state_id')}" /> -->
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineSat()}" /> -->
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
