@@ -350,7 +350,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl9 = Br153.NOT_ID_CLASS_9AXLES.getClasse();	
 			externalImagePath += "";
 			logo = "";
-			linearMapUI = "";
+			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.webp";
 			mapUI = "/resources/images/map/br153/br153.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
