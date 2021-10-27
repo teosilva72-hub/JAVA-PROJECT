@@ -46,7 +46,7 @@
 						<div class="form-group col-sm-12 checkbox-field">
 							<span><i class="fas fa-hdd"></i></span> <span for="equips"
 									class="valid-icon-hidden"></span> <select name="allColumns"
-									id="allColumns" multiple="multiple">
+									id="allColumns" field="Column" multiple="multiple">
 								<c:forEach var="column" items="#{testerBean.columnsInUse}"
 									varStatus="loop">
 									<option value="#{loop.index}">#{column}</option>
