@@ -33,6 +33,15 @@ public class TesterBean {
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
+	public String 	fileName,
+					title,
+					sheet = "Report";
+	public String 	module,
+					total;
+	public boolean 	sat = false;
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
@@ -102,7 +111,11 @@ public class TesterBean {
 	}
 
 	public void setDateSearch(String dateSearch, String nameColumn) {
-		this.dateSearch.add(new String[]{dateSearch, nameColumn});
+		setDateSearch(dateSearch, nameColumn, false);
+	}
+
+	public void setDateSearch(String dateSearch, String nameColumn, boolean mandatory) {
+		this.dateSearch.add(new String[]{dateSearch, nameColumn, mandatory ? "required" : ""});
 	}
 
 	public List<Pair<String[], List<String[]>>> getFilterSearch() {
@@ -110,28 +123,33 @@ public class TesterBean {
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), false);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch));
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory) {
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, mandatory);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
-		setFilterSearch(filterSearch, nameColumn, tableWithName, false);
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, false, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 
-		String extra = multiple ? "multiple" : "";
+		String extra1 = multiple ? "multiple" : "";
+		String extra2 = mandatory ? "required" : "";
 		
 		if (report != null)
 			try {
 				if (tableName[1].contains("|"))
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
 				else
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1])));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1])));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -143,6 +161,30 @@ public class TesterBean {
 	
 	public void setIdTable(String idTable) {
 		this.idTable = idTable;
+	}
+	
+	public void defineFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	public void defineTitle(String title) {
+		this.title = title;
+	}
+	
+	public void defineSheet(String sheet) {
+		this.sheet = sheet;
+	}
+	
+	public void defineModule(String module) {
+		this.module = module;
+	}
+	
+	public void defineTotal(String total) {
+		this.total = total;
+	}
+	
+	public void defineSat() {
+		this.sat = true;
 	}
 		
 	public ReportDAO getReport() {
