@@ -35,7 +35,7 @@ public class TesterBean {
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
-	private List<Pair<String[], List<String>>> filterSearch = new ArrayList<>();
+	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
 	
 	private ReportSelection select;
 	private ReportBuild build;
@@ -104,25 +104,33 @@ public class TesterBean {
 		this.dateSearch.add(new String[]{dateSearch, nameColumn});
 	}
 
-	public List<Pair<String[], List<String>>> getFilterSearch() {
+	public List<Pair<String[], List<String[]>>> getFilterSearch() {
 		return filterSearch;
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn) {
-		if (report != null)
-			try {
-				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(table, filterSearch)));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse método pode ser mais rapido do que o método acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+		setFilterSearch(filterSearch, nameColumn, tableWithName, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
+
+		String extra = multiple ? "multiple" : "";
 		
 		if (report != null)
 			try {
-				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(tableName[0], tableName[1])));
+				if (tableName[1].contains("|"))
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
+				else
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1])));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -221,8 +229,8 @@ public class TesterBean {
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
-				 dateStart = map.get(String.format("%s-start", search[0]));
-				 dateEnd = map.get(String.format("%s-end", search[0]));
+				dateStart = map.get(String.format("%s-start", search[0]));
+				dateEnd = map.get(String.format("%s-end", search[0]));
 
 				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
 					query += " WHERE";
@@ -237,14 +245,14 @@ public class TesterBean {
 				}
 			}
 		if (!filterSearch.isEmpty())
-			for (Pair<String[], List<String>> search : filterSearch) {
+			for (Pair<String[], List<String[]>> search : filterSearch) {
 				String filter = map.get(String.format("%s-filter", search.left[0]));
 
 				if (count == 0 && !filter.isEmpty())
 					query += " WHERE";
 
 				if (!filter.isEmpty()) {
-					query += String.format("%s '%s' = %s", count > 0 ? " AND" : "", filter, search.left[0]);
+					query += String.format("%s %s = BINARY '%s'", count > 0 ? " AND" : "", search.left[0], filter);
 					count++;
 				}
 			}

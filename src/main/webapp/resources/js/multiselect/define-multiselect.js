@@ -2,7 +2,7 @@
  //CREATE / DEFINE MULTISELECT
 function defineMultiselect(id, label){
 	   	
-    $(`${id}, #allColumns`).multiselect({
+    $(`${id}, [multiple=multiple]`).multiselect({
         columns: 1,       
         allSelectedText: 'All',
         maxHeight: 200,

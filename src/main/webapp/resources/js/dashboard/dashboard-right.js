@@ -31,7 +31,7 @@ $(async function () {
   let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
   let url_digifort = `${digifort.address}:${digifort.port}`
 
-  TestCert(url_digifort);
+  TestCert(url_digifort, "digi");
   TestCert(url_rabbitmq);
   TestCert(url_asterisk, "sip");
 
@@ -124,7 +124,7 @@ const TestCert = async (uri, init) => {
     while (request.readyState == 0) {
       await new Promise(r => setTimeout(r, 100))
     }
-    if (request.readyState > 1) {
+    if (request.readyState > 1 && init != "digi") {
       window.open(`https://${uri}`);
     }
   }
