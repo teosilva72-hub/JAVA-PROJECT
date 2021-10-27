@@ -26,7 +26,8 @@ import br.com.tracevia.webapp.util.SessionUtil;
 @RequestScoped
 public class TesterBean {
 
-	public String table; 
+	public String table;
+	public String idTable;
 	public List<String> columnsName; 
 	public List<String> searchParameters;
 	
@@ -139,6 +140,10 @@ public class TesterBean {
 	public void setTable(String table) {
 		this.table = table;
 	}
+	
+	public void setIdTable(String idTable) {
+		this.idTable = idTable;
+	}
 		
 	public ReportDAO getReport() {
 		return report;
@@ -211,7 +216,8 @@ public class TesterBean {
 		
 		int count = 0;
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
-		String[] columns = SessionUtil.getRequestParameterValuesMap().get("allColumns");
+		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
+		String[] columns = mapArray.get("allColumns");
 		setColumnsInUse(columns);
 						
 		model = new ExcelTemplate(); // HERE
@@ -246,19 +252,37 @@ public class TesterBean {
 			}
 		if (!filterSearch.isEmpty())
 			for (Pair<String[], List<String[]>> search : filterSearch) {
-				String filter = map.get(String.format("%s-filter", search.left[0]));
+				String filter = "";
+				if (search.left[2].equals("multiple")) {
+					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[0]));
+					String newFilter = "";
+
+					if (filterArray != null) {						
+						for (String f : filterArray) {
+							newFilter = String.format("%s, BINARY '%s'", newFilter, f);
+						}
+						filter = newFilter.substring(2);
+					}
+				}
+				else {
+					String f = map.get(String.format("%s-filter", search.left[0]));
+					if (!f.isEmpty())
+						filter = String.format("BINARY '%s'", f);
+				}
 
 				if (count == 0 && !filter.isEmpty())
 					query += " WHERE";
 
 				if (!filter.isEmpty()) {
-					query += String.format("%s %s = BINARY '%s'", count > 0 ? " AND" : "", search.left[0], filter);
+					query += String.format("%s %s IN (%s)", count > 0 ? " AND" : "", search.left[0], filter);
 					count++;
 				}
 			}
 		
 		   // Table Fields
-		    report.getReport(query);
+		    report.getReport(query, idTable);
+
+			System.out.println(report.IDs);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);

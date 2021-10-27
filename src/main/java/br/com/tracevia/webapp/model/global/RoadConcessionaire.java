@@ -4,6 +4,7 @@ import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.BahiaNorte;
+import br.com.tracevia.webapp.classes.Br153;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.LitoralSul;
 import br.com.tracevia.webapp.classes.Tracevia;
@@ -319,7 +320,50 @@ public class RoadConcessionaire {
 			mapEnabled = true;
 			reportsLLEnabled = false;
 													
-		}		      
+		}
+       
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.Br153.getConcessionaire())) {
+			
+			classLight = Br153.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = Br153.MOTORCYCLES.getClasse();
+			classUnknown = Br153.UNKNOWN_CLASS.getClasse();	
+			classTrailer = Br153.TRAILER.getClasse();	
+			classSemiTrailer = Br153.SEMI_TRAILER.getClasse();
+			classBus2Axles = Br153.BUS_2AXLES.getClasse();	
+			classBus3Axles = Br153.BUS_3AXLES.getClasse();
+			classTruck2Axles = Br153.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = Br153.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = Br153.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = Br153.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = Br153.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = Br153.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = Br153.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = Br153.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = Br153.TRUCK_10AXLES.getClasse();	
+			classNotIdentifiedAxl2 = Br153.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = Br153.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = Br153.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = Br153.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = Br153.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = Br153.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = Br153.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = Br153.NOT_ID_CLASS_9AXLES.getClasse();	
+			externalImagePath += "";
+			logo = "";
+			linearMapUI = "";
+			mapUI = "/resources/images/map/br153/br153.webp";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
+			mapEnabled = true;
+			reportsLLEnabled = false;
+													
+		}
+       
+       
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
 			

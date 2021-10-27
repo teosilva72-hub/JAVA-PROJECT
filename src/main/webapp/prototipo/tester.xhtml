@@ -14,12 +14,9 @@
 	
 	<f:metadata>
 	
-	    <!-- SET OPTIONS -->
-	    <f:viewAction onPostback="true" action="#{testerBean.defineEquipmentsOption('sos')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.definePeriodsOption()}" />
-	    
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, answered_date, user, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
