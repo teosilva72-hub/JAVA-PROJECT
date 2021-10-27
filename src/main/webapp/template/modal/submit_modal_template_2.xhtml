@@ -58,81 +58,6 @@
 						</div>
 					</div>
 
-					<!-- EQUIPMENTS OPTIONS -->
-
-					<div class="col-12">
-						<!-- FORM ROW DIV -->
-						<div class="form-group col-sm-12 select-field">
-							<!-- FORM GROUP DIV -->
-							<span><i class="fas fa-hdd"></i></span>
-							<!-- SPAN ICON -->
-							<span for="equips" class="valid-icon-hidden"></span>
-							<!-- SPAN VALIDATION ICON -->
-							<select name="equip" id="equip">
-								<!-- SELECT OPTIONS -->
-								<!---->
-								<option value="">
-									#{reportsLabels.reports_select_equipments}
-								</option>
-								<!---->
-								<ui:repeat var="eqp" value="#{testerBean.build.equipments}" varStatus="eqpStatus">
-									<!-- LOOP -->
-									<!---->
-									<option value="#{eqp.value}">#{eqp.label}</option>
-									<!-- OPTIONS -->
-									<!---->
-								</ui:repeat>
-								<!-- LOOP END -->
-								<!---->
-							</select><!-- SELECT OPTIONS END -->
-							<!---->
-						</div>
-						<!-- FORM GROUP DIV END -->
-						<div class="error-label">
-							<!-- ERROR LABEL DIV -->
-							<label for="equip" class="error" id="equip-error"></label>
-							<!-- ERROR LABEL -->
-						</div>
-						<!-- ERROR LABEL DIV END -->
-					</div>
-					<!-- FORM ROW DIV END -->
-
-					<!---->
-
-					<!-- PERIODS OPTIONS -->
-
-					<div class="col-12">
-						<!-- FORM ROW DIV -->
-						<div class="form-group col-sm-12 select-field">
-							<!-- FORM GROUP DIV -->
-							<span><i class="fas fa-clock"></i></span>
-							<!-- SPAN ICON -->
-							<span for="periods" class="valid-icon-hidden"></span>
-							<!-- SPAN VALIDATION ICON -->
-							<select name="periods" id="periods" size="1">
-								<!-- SELECT OPTIONS -->
-								<!---->
-								<option value="">
-									#{reportsLabels.reports_select_periods}
-								</option>
-								<!---->
-								<ui:repeat var="per" value="#{testerBean.build.periods}" varStatus="perStatus">
-									<!-- LOOP -->
-									<!---->
-									<option value="#{per.value}">#{per.label}</option>
-									<!---->
-								</ui:repeat>
-								<!---->
-							</select>
-							<!---->
-						</div>
-						<div class="error-label">
-							<label for="periods" class="error" id="periods-error"></label>
-						</div>
-					</div>
-
-					<!---->
-
 					<!-- FILTER FIEDS -->
 
 					<c:forEach var="filterSearch"  items="${testerBean.filterSearch}">
@@ -145,7 +70,7 @@
 								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
-								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" multiple="#{testerBean.getLeft(filterSearch)[2]}">
+								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" field="#{testerBean.getLeft(filterSearch)[1]}" multiple="#{testerBean.getLeft(filterSearch)[2]}">
 									<!-- SELECT OPTIONS -->
 									<!---->
 									<c:if test="#{testerBean.getLeft(filterSearch)[2] ne 'multiple'}">
