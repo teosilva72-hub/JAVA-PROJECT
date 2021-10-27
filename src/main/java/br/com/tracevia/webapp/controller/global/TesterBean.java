@@ -31,8 +31,6 @@ public class TesterBean {
 	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
-	
-	// ----------------------------------------------------------------------------------------------------------------
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -45,7 +43,7 @@ public class TesterBean {
 	private ReportDAO report;
 	public List<Builder> resultList;	
 
-	List<? extends Equipments> listSpeed;  
+	List<? extends Equipments> listEquips;  
 			
 	public String[] equipNames;
 		
@@ -78,6 +76,10 @@ public class TesterBean {
 	
 	public List<String> getColumnsInUse() {
 		return columnsInUse;
+	}
+	
+	public List<? extends Equipments> getListEquips() {
+		return listEquips;
 	}
 	
 	public void setColumnsInUse(String[] columns) {
@@ -137,8 +139,7 @@ public class TesterBean {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	
-	
+		
 	public ReportDAO getReport() {
 		return report;
 	}
@@ -178,8 +179,6 @@ public class TesterBean {
 		
 		// CONSTRUTOR 
 	
-
-
 	@PostConstruct
 	public void initialize() {
 		
@@ -189,36 +188,7 @@ public class TesterBean {
 		build = new ReportBuild();
 	
 		// ---------------------------------------------------------------------------
-				   		
-		// SELECT ITEMS LISTS		
-        // build.equipments = new ArrayList<SelectItem>();	  
-        // build.periods = new ArrayList<SelectItem>();
-        
-        // listSpeed = new ArrayList<Equipments>();
-                
-        // COLUMNS LIST
-        // build.columns = new ArrayList<ColumnModel>();
-        
-        //DEFINE LOCALE
-        // build.localeLabels = LocaleUtil.setLocale(LocaleUtil.LABELS_SPEED);
-        
-        try {
-        		        	
-        	EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSpeed = dao.EquipmentSelectOptions("speed");
-        	
-        	// EQUIPMENTS
-        	//  build.equipments = build.selectEquips(listSpeed);
-        	//  select.equipments = new String[build.equipments.size()];  
-        	 
-        	//  build.periods = build.selectPeriods();
-        	        	                	 			
-		} catch (Exception e) {			
-			e.printStackTrace();
-		}
-                 	
-    	// ----------------------------------------------------------------------------
-        	
+	        	
     	 // Disabled Buttons
     	  build.clearBool = true;
     	  build.excelBool = true;
@@ -247,7 +217,7 @@ public class TesterBean {
 						
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "";
+		String dateStart = "", dateEnd = "", equipId = "";
 				
 		resetForm();
 		
@@ -304,8 +274,8 @@ public class TesterBean {
 				}
 			}
 		
-		// Table Fields
-		 report.getReport(query);
+		   // Table Fields
+		    report.getReport(query);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
@@ -321,14 +291,13 @@ public class TesterBean {
 	        // GENERATE EXCEL
 		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, dateStart, dateEnd, "", "Teste", columns);
+		     model.generateExcelFile(columnsInUse, report.lines,"sos", dateStart, dateEnd, equipId, "", "TRACEVIA", "Teste", false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
-			 build.clearBool = false; // BOTÃO DE LIMPAR		    	 
+			 build.clearBool = false; // BOTÃO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
-	      	 
-	      		  		    		
+	      	 	      		  		    		
 	    }
 	
 		
@@ -374,4 +343,52 @@ public class TesterBean {
 	 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
+
+			/**
+			 * Método para carregar equipamentos disponíveis para seleção
+			 * @author Wellington 26/10/2021
+			 * @version 1.0
+			 * @since 1.0
+			 * @param module - modulo que os equipamentosa devem ser carregados
+			 */
+			public void defineEquipmentsOption(String module) {
+
+				try {
+
+					EquipmentsDAO dao = new EquipmentsDAO();		 
+					listEquips = dao.EquipmentSelectOptions(module);
+
+					build.equipments = build.selectEquips(listEquips);
+
+					// EQUIPMENTS
+					// build.equipments = build.selectEquips(listSpeed);
+					// select.equipments = new String[build.equipments.size()];  
+
+				} catch (Exception e) {			
+					e.printStackTrace();
+				}
+			}
+
+			// --------------------------------------------------------------------------------------------		
+
+			/**
+			 * Método para carregar períodos disponíveis para seleção
+			 * @author Wellington 26/10/2021
+			 * @version 1.0
+			 * @since 1.0	
+			 */
+			public void definePeriodsOption() {
+
+				try {
+
+					build.periods = build.selectPeriods();
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			// --------------------------------------------------------------------------------------------	
+
 }
