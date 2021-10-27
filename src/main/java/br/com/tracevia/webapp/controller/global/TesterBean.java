@@ -26,7 +26,8 @@ import br.com.tracevia.webapp.util.SessionUtil;
 @RequestScoped
 public class TesterBean {
 
-	public String table; 
+	public String table;
+	public String idTable;
 	public List<String> columnsName; 
 	public List<String> searchParameters;
 	
@@ -138,6 +139,10 @@ public class TesterBean {
 	
 	public void setTable(String table) {
 		this.table = table;
+	}
+	
+	public void setIdTable(String idTable) {
+		this.idTable = idTable;
 	}
 		
 	public ReportDAO getReport() {
@@ -275,7 +280,7 @@ public class TesterBean {
 			}
 		
 		   // Table Fields
-		    report.getReport(query);
+		    report.getReport(query, idTable);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);

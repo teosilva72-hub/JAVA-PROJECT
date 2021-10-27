@@ -21,6 +21,7 @@ public class ReportDAO {
 
     public List<String> columnName;
     public List<String[]> lines;
+    public List<String> IDs;
 
     public ReportDAO(List<String> columnName) throws Exception {
         
@@ -35,9 +36,10 @@ public class ReportDAO {
         
     }
 
-    public void getReport(String query) throws Exception {
+    public void getReport(String query, String id) throws Exception {
        
     	List<String[]> lines = new ArrayList<>();
+    	List<String> field = new ArrayList<>();
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
@@ -53,18 +55,22 @@ public class ReportDAO {
                 String[] column = new String[columnsNumber];
                 
                 for (int idx = 1; idx <= columnsNumber; idx++) {
+                    String name = rsmd.getColumnName(idx);
                     if (!custom)
-                        this.columnName.add(rsmd.getColumnName(idx));
+                        this.columnName.add(name);
 
                     String value = rs.getString(idx);
                     
                     column[idx - 1] = value != null && value != "" ? value : "-";
+                    if (id == name)
+                        field.add(value);
                 }
 
                 lines.add(column);
             }
 
             this.lines = lines;
+            this.IDs = field;
         }
     }
 
@@ -119,6 +125,9 @@ public class ReportDAO {
 		return lines;
 	}
 	
+	public List<String> getIDs() {
+		return IDs;
+	}
 	
 	
 	
