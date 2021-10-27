@@ -62,7 +62,7 @@ public class ReportDAO {
                     String value = rs.getString(idx);
                     
                     column[idx - 1] = value != null && value != "" ? value : "-";
-                    if (name.equals(id) && !field.contains(id))
+                    if (name.equals(id) && !field.contains(value))
                         field.add(value);
                 }
 
