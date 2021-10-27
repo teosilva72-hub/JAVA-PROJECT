@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -39,7 +40,7 @@ public class ExcelTemplate {
 	private static XSSFRow row;
 	
 	private EquipmentsDAO dao;
-	private Equipments equipInfo;
+	private List<Equipments> equipsInfo;
 
 	private static String FONT_ARIAL = "Arial";
 
@@ -159,12 +160,12 @@ public class ExcelTemplate {
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void excelSingleFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, int columns, String module, String fileTitle, 
-			String startDate, String endDate, String period, String equipId, boolean isSat) {
+	public void excelSingleFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+			String startDate, String endDate, String period, List<String> equipId, boolean isSat) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
-
+	
 		// INDEX DA COLUNA DE ÍNICIO DA DATA
 		
 		int columnsIndex = 0;
@@ -181,10 +182,15 @@ public class ExcelTemplate {
 		columnEndDate = columns + 3;	
 	
 		// ----------------------------------------------------------------------------------------------------------------
+			
+		if(equipId.size() == 1 || !module.equals(""))		
+		   equipsInfo = equipmentInfo(equipId, module);
 		
-		equipInfo = equipmentInfo(equipId, module);
-		
+		else equipsInfo = defaultGenericInfo();			
+			
 		// ----------------------------------------------------------------------------------------------------------------
+		
+		System.out.println(equipsInfo);
 		
 		// HEADER
 
@@ -234,7 +240,7 @@ public class ExcelTemplate {
 		
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, 5, 2);
-		utilSheet.setCellValue(sheet, row, 5, 2, equipInfo.getNome());
+		utilSheet.setCellValue(sheet, row, 5, 2, equipsInfo.get(0).getNome());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
 
 		// DATA DE CONSULTA LABEL
@@ -259,7 +265,7 @@ public class ExcelTemplate {
 
 		// CIDADE
 		utilSheet.createCell(sheet, row, 6, 2);
-		utilSheet.setCellValue(sheet, row, 6, 2, equipInfo.getCidade());
+		utilSheet.setCellValue(sheet, row, 6, 2, equipsInfo.get(0).getCidade());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
 
 		// SENTIDO LABEL
@@ -284,7 +290,7 @@ public class ExcelTemplate {
 
 		// NOME DA RODOVIA / ESTRADA
 		utilSheet.createCell(sheet, row, 7, 2);
-		utilSheet.setCellValue(sheet, row, 7, 2, equipInfo.getEstrada());
+		utilSheet.setCellValue(sheet, row, 7, 2, equipsInfo.get(0).getEstrada());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
 		
 		if(!period.equals("")) {
@@ -313,7 +319,7 @@ public class ExcelTemplate {
 
 		// KM
 		utilSheet.createCell(sheet, row, 8, 2);
-		utilSheet.setCellValue(sheet, row, 8, 2, equipInfo.getKm());
+		utilSheet.setCellValue(sheet, row, 8, 2, equipsInfo.get(0).getKm());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 8, 2);
 
 		// ----------------------------------------------------------------------------------------------------------------
@@ -538,7 +544,7 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, boolean isMulti, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
+	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE ROW TOTAL
 		utilSheet.createRow(sheet, row, rowTotal);		 
@@ -547,7 +553,7 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
-		utilSheet.totalExcelSum(sheet, row, standard, rowTotal, isMulti, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelSum(sheet, row, standard, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
@@ -724,7 +730,7 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 0, 1, iniRow, endRow); // ESTILOS
 		utilSheet.setCellsStyle(sheet, row, standardStyle, minCol, maxCol, iniRow, endRow); // ESTILOS
 
-		//totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
+		// totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
 
 	}
 
@@ -762,7 +768,7 @@ public class ExcelTemplate {
 
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void generateExcelFile(List<String> columns, List<String[]> rows, String module, String startDate, String endDate, String equipId, String period, String sheetName, String fileTitle, boolean isSat) {
+	public void generateExcelFile(List<String> columns, List<String[]> rows, String module, List<String> equips, String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal) {
 		
 		sheet = null;		
 		row = null;
@@ -772,11 +778,12 @@ public class ExcelTemplate {
 		int dataEndRow = 0;
 		int startCol = 0;
 		int endCol = columns.size() - 1;
+		int dataTotalRow = columns.size();
 		
 		sheet = workbook.createSheet(sheetName);
 										
-		excelSingleFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, columns.size(), fileTitle, module, 
-				startDate, endDate, period, module, isSat);
+		excelSingleFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				startDate, endDate, period, equips, isSat);
 									    		
 		// CASO EXISTA FAIXAS NO EQUIPAMENTO
 		if(isSat) {
@@ -805,19 +812,28 @@ public class ExcelTemplate {
 		// TABLE COLUMNS AUTO SIZE 
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 		
+		if(isTotal)
+			totalSum(sheet, row, standardStyle, tableHeadStyle, columns.size(), dataTotalRow, dataStartRow, dataEndRow); // TOTAL
+			
+		
 	// ----------------------------------------------------------------------------------------------------------------
 					
 	}	
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public Equipments equipmentInfo(String equipId, String module) {
+	public List<Equipments> equipmentInfo(List<String> equipId, String module) {
 		
-		Equipments info = new Equipments();
+		List<Equipments> info = new ArrayList<Equipments>();
+		 dao = new EquipmentsDAO();
 		
-		 try {
+		try {
+						 			 
+			 for(int s = 0; s < equipId.size(); s++) {
 	        	
-			 info = dao.EquipReportInfo(equipId, module);
+			 info = dao.EquipReportInfo(equipId.get(s), module);
+			 			 
+			 }	 
 				
 			} catch (Exception e) {			
 				e.printStackTrace();
@@ -828,4 +844,22 @@ public class ExcelTemplate {
 	  }
 	
   // ----------------------------------------------------------------------------------------------------------------
+	
+	public List<Equipments> defaultGenericInfo(){
+		
+		List<Equipments> lista = new ArrayList<Equipments>();
+		
+		Equipments equip = new Equipments();
+		
+		equip.setNome(" --- ");		
+		equip.setCidade(" --- ");
+		equip.setEstrada(" --- ");
+		equip.setKm(" --- ");
+		
+		lista.add(equip);
+		
+		return lista;
+		
+	}
+	
 }
