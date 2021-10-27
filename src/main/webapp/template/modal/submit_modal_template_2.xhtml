@@ -75,7 +75,7 @@
 									#{reportsLabels.reports_select_equipments}
 								</option>
 								<!---->
-								<ui:repeat var="eqp" value="#{reportConfigBean.build.equipments}" varStatus="eqpStatus">
+								<ui:repeat var="eqp" value="#{testerBean.build.equipments}" varStatus="eqpStatus">
 									<!-- LOOP -->
 									<!---->
 									<option value="#{eqp.value}">#{eqp.label}</option>
@@ -116,7 +116,7 @@
 									#{reportsLabels.reports_select_periods}
 								</option>
 								<!---->
-								<ui:repeat var="per" value="#{reportConfigBean.build.periods}" varStatus="perStatus">
+								<ui:repeat var="per" value="#{testerBean.build.periods}" varStatus="perStatus">
 									<!-- LOOP -->
 									<!---->
 									<option value="#{per.value}">#{per.label}</option>
