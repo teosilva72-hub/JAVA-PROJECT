@@ -148,9 +148,11 @@
 								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" multiple="#{testerBean.getLeft(filterSearch)[2]}">
 									<!-- SELECT OPTIONS -->
 									<!---->
-									<option value="">
-										#{testerBean.getLeft(filterSearch)[1]}
-									</option>
+									<c:if test="#{testerBean.getLeft(filterSearch)[2] ne 'multiple'}">
+										<option value="">
+											#{testerBean.getLeft(filterSearch)[1]}
+										</option>
+									</c:if>
 									<!---->
 									<ui:repeat var="filter" value="#{testerBean.getRight(filterSearch)}">
 										<!-- LOOP -->
