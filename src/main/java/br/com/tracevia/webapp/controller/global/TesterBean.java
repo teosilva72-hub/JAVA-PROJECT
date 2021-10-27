@@ -28,11 +28,11 @@ public class TesterBean {
 
 	public String table; 
 	public List<String> columnsName; 
-	public List<String> searchParameters; 
-	ExcelTemplate model;
+	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
+	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String>>> filterSearch = new ArrayList<>();
@@ -113,20 +113,17 @@ public class TesterBean {
 			try {
 				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(table, filterSearch)));
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
 
-	public void setFilterSearchByTable(String filterSearch, String nameColumn, String tableWithName) {
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse método pode ser mais rapido do que o método acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
-		System.out.println(tableName.toString());
 		
 		if (report != null)
 			try {
 				this.filterSearch.add(new Pair<String[], List<String>>(new String[]{filterSearch, nameColumn}, report.getOtherElementTable(tableName[0], tableName[1])));
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}

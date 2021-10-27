@@ -20,6 +20,7 @@ import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.cftv.CFTVDAO;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
+import br.com.tracevia.webapp.dao.global.ModulesDAO;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.Equipments;
 @ManagedBean(name="CftvCam")
@@ -28,6 +29,7 @@ public class CftvCam {
 	Equipments equip;
 	private int id, idTotal, sumId;
 	//GLOBAL VARIABLES
+	private String[] credentials;
 	private String cam, MoveUp, MoveDown, MoveLeft, km, presetCall="", presetSet, presetDetails, MoveRight, command, ZoomIn, ZoomOut, camCftv, imgControle = "";
 	String callsArray[];
 	private List<SelectItem> presetList;
@@ -134,7 +136,18 @@ public class CftvCam {
 	@PostConstruct
 	public void initialize() {
 		CFTVDAO ptz = new CFTVDAO();
-		totalId() ;
+		totalId();
+		try {
+			credentials();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public String[] credentials() throws Exception {
+			ModulesDAO mod = new ModulesDAO();
+			credentials = mod.getCred("digifort");
+		return credentials;
 	}
 	public int totalId() {
 		CFTVDAO ptz = new CFTVDAO();
@@ -172,7 +185,7 @@ public class CftvCam {
 		String ext ="";
 		if(id > 0 && id != 0) {
 			if(id < 10)ext="0";
-			camCftv = "http://10.14.110.83:8601/Interface/Cameras/GetJPEGStream?Camera=PTZ%20"+ext+ptz+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser=admin";
+			camCftv = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/GetJPEGStream?Camera=PTZ%20"+ext+ptz+"&Width=480&Height=320&Quality=20&FPS=30&ResponseFormat=Text&AuthUser="+credentials[1];
 			URL url = new URL(camCftv);
 			HttpURLConnection http = (HttpURLConnection)url.openConnection();
 			http.disconnect();
@@ -227,7 +240,7 @@ public class CftvCam {
 			String ext ="";
 			if(Integer.parseInt(id) >= 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%20"+ext+id+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser=admin";
+				String call = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/CallPreset?Camera=PTZ%20"+ext+id+"&Value="+presetCall+"&ResponseFormat=XML&AuthUser="+credentials[1];
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
@@ -252,7 +265,7 @@ public class CftvCam {
 			String ext ="";
 			if(Integer.parseInt(id) > 0) {
 				if(Integer.parseInt(id) < 10)ext="0";
-				String call = "http://10.14.110.83:8601/Interface/Cameras/PTZ/SetPreset?Camera=PTZ%20"+ext+id+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
+				String call = "https://10.14.110.83:8602/Interface/Cameras/PTZ/SetPreset?Camera=PTZ%20"+ext+id+"&Value="+presetSet+"&Description="+presetDetails+"&ResponseFormat=XML&AuthUser=admin";
 				URL url = new URL(call);
 				HttpURLConnection http = (HttpURLConnection)url.openConnection();
 				http.disconnect();
@@ -270,7 +283,7 @@ public class CftvCam {
 	public void moveUp(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveUp = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveUp&ResponseFormat=XML&AuthUser=admin";
+		MoveUp = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveUp&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(MoveUp);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -286,7 +299,7 @@ public class CftvCam {
 	public void moveDown(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveDown = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveDown&ResponseFormat=XML&AuthUser=admin";
+		MoveDown = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveDown&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(MoveDown);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -302,7 +315,7 @@ public class CftvCam {
 	public void moveLeft(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveLeft = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser=admin";
+		MoveLeft = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveLeft&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(MoveLeft);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -318,7 +331,7 @@ public class CftvCam {
 	public void moveRight(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		MoveRight = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveRight&ResponseFormat=XML&AuthUser=admin";
+		MoveRight = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=MoveRight&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(MoveRight);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -334,7 +347,7 @@ public class CftvCam {
 	public void MoveZoomIn(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomIn = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser=admin";
+		ZoomIn = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomTele&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(ZoomIn);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
@@ -350,7 +363,7 @@ public class CftvCam {
 	public void MoveZoomOut(String cam) throws IOException {
 		String zero = "";
 		if(Integer.parseInt(cam) < 10)zero = "0";
-		ZoomOut = "http://10.14.110.83:8601/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser=admin";
+		ZoomOut = "https://"+credentials[3]+":"+credentials[4]+"/Interface/Cameras/PTZ/Simple?Camera=PTZ%20"+zero+cam+"&Operation=ZoomWide&ResponseFormat=XML&AuthUser="+credentials[1];
 		URL url = new URL(ZoomOut);
 		HttpURLConnection http = (HttpURLConnection)url.openConnection();
 		http.disconnect();
