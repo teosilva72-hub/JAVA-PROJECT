@@ -19,6 +19,10 @@ const sendMsgStomp = async function(request, to, debug) {
 		response = JSON.parse(m.body);
 		client.disconnect()
 	}
+
+	let on_error = async function() {
+		console.log('error');
+	};
 	
 	var on_connect = function() {
 		client.send(`/amq/queue/${to}`, {"reply-to": `/temp-queue/${to}`, durable: false}, `"${request}"`)
