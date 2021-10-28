@@ -1,3 +1,7 @@
+/*
+	@Mateus Silva
+	Tracevia 28/10/2021
+ */
 const cftvEvent = data => {
 	var status = data.status;
 	switch (status) {
@@ -10,6 +14,7 @@ const cftvEvent = data => {
 			break;
 	}
 }
+// DROPDOWN CFTV TOP MAP
 $(function(){
 	$(".d-cftv-value").click(function() {
 	    var value = $(this).val();
@@ -27,9 +32,11 @@ $(function(){
     return false
 	});
 })
+//SEND INFO BACK END CFTV ID
 function getInfo(){
 	$("#send-cftv-id").click();
 }
+//OPEN WINDOW BOTTOM CFTV
 function cftvVideo(id, url){
 	id = document.getElementById("cftvId").value
 	url = document.getElementById("url-img")
@@ -41,9 +48,13 @@ function cftvVideo(id, url){
 		</div>`)
 		$(".img-cftv-div").fadeIn(3000);
 		document.querySelector(".video-img"+id).src = url.value
+		//CLOSE WINDOW
 		close(`.ptz-close${id}`, `.ptz${id}`, id);
+		//MOVE WINDOW
 		dragdrop(`.img-cftv-div`);
+		//RESIZABLE WINDOW
 		$(".img-cftv-div").resizable({
+			//PARAMETERS
       		aspectRatio: 16 / 9,
 			maxHeight: 250,
       		maxWidth: 350,
@@ -54,10 +65,12 @@ function cftvVideo(id, url){
 			//helper: "ui-resizable-helper"
     	})
 }
+//DISABLED OPTION WINDOWN TOP
 function disabledListCftv(id){
 		$(`#ptz-window${id}`).prop('disabled', false);
 		$(`.window-mouse-right${id}`).prop('disabled', false);
 }
+//CLOSED WINDOW CFTV
 function close(cam, close, id){
 	setTimeout(() => {	
 		$(cam).click(function() {
@@ -66,9 +79,11 @@ function close(cam, close, id){
 		})
 	}, 1000)
 }
+//MOVE WINDOWN CFTV
 function dragdrop(cam){
 	$(cam).draggable();
 }
+///////BUTTONS CONTROLLER CFTV//////
 function cftvTop(){
 	$("#cftvMoveUp" ).click();
 }
@@ -87,6 +102,7 @@ function cftvZoomIn(){
 function cftvZoomOut(){
 	$("#cftvMoveOut" ).click();
 }
+////////////VALIDATE PRESET///////////////////////////////
 function validatePresetCall(){
 	let calls = document.getElementById("window-cftv")
 	let calls1 = document.getElementById("window-cftv1")
@@ -101,6 +117,7 @@ function validatePresetCall(){
 		comeBack()
 	}
 }
+/////ADD NUMBER PRESET//////////////////////////////
 function presetCftv(){
 	$(".btns-cftv-number").click(function(event){
 	    var digito = $(this).html();
@@ -113,26 +130,26 @@ function presetCftv(){
 	});
 	comeBack()
 }
+////////REMOVE NUMBER PRESET////////////////////////
 function removeNumber(){
 	var texto = $("#window-cftv").val();
 	var texto1 = $("#window-cftv1").val();
 	$("#window-cftv").val(texto.substring(0, texto.length - 1));
 	$("#window-cftv1").val(texto1.substring(0, texto1.length - 1));
 }
+/////CLEAR INPUT NUMBER PRESET////////////////////
 function comeBack(){
 	$('#window-cftv1').val('')
 	//$('#presetSet').val('')
 	$('#window-cftv').val('')
 }
-function patrol(){
-	$('[id$=updateDetails]').click();
-	preventDefault();
-}
+////MENSEGER ERROR PRESET///////////////////
 function msgError(){
 	$('.msg-danger').addClass('show').fadeOut(2000)
 	presetCftv()
 	
 }
+////IS NOT BEING USED/////////////////////////
 function btnPreset(){
 	var x = document.querySelector(".preset-call-row")
 	var y = document.querySelector(".preset-patrol-row")
@@ -145,9 +162,11 @@ function btnPatrol(){
 	x.style.display = "none"
 	y.style.displayc = "block"
 }
+//////////////////////////////////////////
+//////////CLICK BUTTON RIGHT MOUSE/////
 var settingPtz, windowPtz, moreOptionPtz
 function rightButtonCftv(type, id){
-	
+	//TRADUCTOR BTNS
 	var add = document.getElementById("addequip")
 	if(add.value == "Añadir"){
 		settingPtz = "Configuración"
@@ -162,6 +181,7 @@ function rightButtonCftv(type, id){
 		windowPtz = "PTZ Window"
 		moreOptionPtz = "+ Option"
 	} 
+	//OPTIONS BTN
 	if($('#cftv6').children('div').length < 2){
 		$(`#${type}${id}`).append(`
 			<div class="mouseDownCftv cftv-right-mouse" id="mouseDownPTZ${id}">
@@ -175,10 +195,12 @@ function rightButtonCftv(type, id){
 			</div>
 		`);
 	}
+	//
 	$(`div#mouseDownPTZ${id}`).mouseleave(function(){
 		$(`div#mouseDownPTZ${id}`).remove()
 	})
 }
+//DISABLED BTN WINDOWN BOTTOM
 function windowCftvRight(){
 	getInfo()
 	var value = document.getElementById("cftvId").value
@@ -189,9 +211,11 @@ function windowCftvRight(){
 		cftvVideo(value, url)
 	},500)
 }
+//OPTIONS > POSITION, EDITE AND DELETE EQUIP
 function moreOptionCftv(){
 	$('#OPmodal').modal('toggle');
 }
+//OPEN MODAL SETTING CONTROLLER
 function settingCftv(){
 	getInfo()
 	setTimeout(() =>{
@@ -199,9 +223,11 @@ function settingCftv(){
 		presetCftv()
 	},500)
 }
+//SUM ID CFTV AUTO INCREMENT SQL
 function updateTotalId(){
 	$('#btnCftvSumTotal').click()
 }
+//HIDDEN INPUT ID ADD EQUIPAMENT CFTV
 function cftvInput(){
 	var x = document.getElementById("equips")
 	var currentId = document.getElementById("equipId")
