@@ -14,24 +14,22 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineTitle('CALLS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheet('CALLS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportSAT')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineTitle('SAT')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheet('SAT')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineTotal('state_id')}" /> -->
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineSat()}" /> -->
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, answered_date, user, state_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_dados_15')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('ID_DADO')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Nome da Estação, Automóveis, Motos, Veiculos Longos, Velocidade Média')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('ID_DADO, NOME_ESTACAO, VOLUME_AUTO, VOLUME_MOTOS, VOLUME_LONGO, VEL_MEDIA_TOTAL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipe', 'sos_equipment.equip_id|name', true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('NOME_ESTACAO','Nome da Estação', true)}"/>
 			          
     </f:metadata>
 	
@@ -56,7 +54,7 @@
 		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
 		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
-		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="js/validation-forms/reports/speed" name="speed-records-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
