@@ -70,7 +70,9 @@
 								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
-								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter" field="#{testerBean.getLeft(filterSearch)[1]}" required="#{testerBean.getLeft(filterSearch)[3]}" multiple="#{testerBean.getLeft(filterSearch)[2]}">
+								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter"
+									field="#{testerBean.getLeft(filterSearch)[1]}" multiple="#{testerBean.getLeft(filterSearch)[2]}"
+									required="#{testerBean.getLeft(filterSearch)[3]}">
 									<!-- SELECT OPTIONS -->
 									<!---->
 									<c:if test="#{testerBean.getLeft(filterSearch)[2] ne 'multiple'}">

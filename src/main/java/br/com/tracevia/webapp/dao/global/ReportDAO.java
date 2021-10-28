@@ -27,10 +27,12 @@ public class ReportDAO {
         
         conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-    	custom = !columnName.isEmpty();
+        if (columnName == null)
+        	columnName = new ArrayList<>();
         
-        if (custom)
-            this.columnName = columnName;
+    	custom = !columnName.isEmpty();
+    	
+        this.columnName = columnName;
         
         lines = new ArrayList<>();
         

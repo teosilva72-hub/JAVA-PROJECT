@@ -71,7 +71,7 @@ public class ExcelUtil {
 	public void createRows(XSSFSheet sheet, XSSFRow row, int initRow, int endRow) {
 
 		for (int rowIndex = initRow; rowIndex <= endRow;  rowIndex++) { 				
-			row = sheet.createRow((short) rowIndex);
+			row = sheet.createRow(rowIndex);
 
 		}
 	}

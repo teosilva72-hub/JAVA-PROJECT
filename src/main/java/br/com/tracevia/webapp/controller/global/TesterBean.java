@@ -38,7 +38,8 @@ public class TesterBean {
 					sheet = "Report";
 	public String 	module,
 					total;
-	public boolean 	sat = false;
+	public boolean 	sat,
+					caseSensitive = false;
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -133,9 +134,13 @@ public class TesterBean {
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory) {
 		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, mandatory);
 	}
-
+	
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, false, false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, multiple, false);
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
@@ -185,6 +190,10 @@ public class TesterBean {
 	
 	public void defineSat() {
 		this.sat = true;
+	}
+	
+	public void defineCaseSensitive() {
+		this.caseSensitive = true;
 	}
 	
 	public boolean isTotal() {
@@ -305,7 +314,7 @@ public class TesterBean {
 
 					if (filterArray != null) {						
 						for (String f : filterArray) {
-							newFilter = String.format("%s, BINARY '%s'", newFilter, f);
+							newFilter = String.format("%s,%s '%s'", newFilter, caseSensitive ? " BINARY" : "", f);
 						}
 						filter = newFilter.substring(2);
 					}
@@ -313,7 +322,7 @@ public class TesterBean {
 				else {
 					String f = map.get(String.format("%s-filter", search.left[0]));
 					if (!f.isEmpty())
-						filter = String.format("BINARY '%s'", f);
+						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 				}
 
 				if (count == 0 && !filter.isEmpty())
