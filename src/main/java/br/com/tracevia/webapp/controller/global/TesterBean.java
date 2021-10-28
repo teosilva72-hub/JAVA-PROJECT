@@ -15,6 +15,7 @@ import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
@@ -353,7 +354,7 @@ public class TesterBean {
 	        // GENERATE EXCEL
 		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
 				     
-		     model.generateExcelFile(columnsInUse, report.lines,"sos", dateStart, dateEnd, equipId, "", "TRACEVIA", "Teste", false);
+		     model.generateExcelFile(columnsInUse, report.lines,"sos", report.IDs, dateStart, dateEnd, "", "TRACEVIA", "Teste", false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
@@ -366,6 +367,8 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	   public void download() {
+		   
+		   DateTimeApplication dta = new DateTimeApplication();
 			
 		// MANTER VALORES NA SESSÃO
 		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
@@ -373,7 +376,7 @@ public class TesterBean {
 		 
 		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
 	
-		String file = "teste_file";
+		String file = "teste_file_"+dta.currentDateToExcelFile();
 					
 		try {
 			
