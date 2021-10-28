@@ -744,9 +744,9 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */
 
-	public Equipments EquipReportInfo(String equip_id, String module) throws Exception {
+	public List<Equipments> EquipReportInfo(String equip_id, String module) throws Exception {
 
-		Equipments eq = new Equipments();
+		List<Equipments> list = new ArrayList<>();
 
 		try {
 
@@ -763,11 +763,15 @@ public class EquipmentsDAO {
 
 			if (rs != null) {
 				while (rs.next()) {
+					
+					Equipments eq = new Equipments();
 
 					eq.setNome(rs.getString(1));
 					eq.setCidade(rs.getString(2));
 					eq.setEstrada(rs.getString(3));
-					eq.setKm(rs.getString(4));			
+					eq.setKm(rs.getString(4));
+					
+					list.add(eq);
 				}
 			}
 
@@ -777,7 +781,7 @@ public class EquipmentsDAO {
 
 		}finally {ConnectionFactory.closeConnection(conn, ps);}
 
-		return eq;
+		return list;
 	}	
 
 	// --------------------------------------------------------------------------------------------------------------

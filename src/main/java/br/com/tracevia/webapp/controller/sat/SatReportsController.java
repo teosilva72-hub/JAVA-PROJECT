@@ -2535,7 +2535,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+			  info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipments Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 

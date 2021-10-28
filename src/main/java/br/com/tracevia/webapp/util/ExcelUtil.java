@@ -71,7 +71,7 @@ public class ExcelUtil {
 	public void createRows(XSSFSheet sheet, XSSFRow row, int initRow, int endRow) {
 
 		for (int rowIndex = initRow; rowIndex <= endRow;  rowIndex++) { 				
-			row = sheet.createRow((short) rowIndex);
+			row = sheet.createRow(rowIndex);
 
 		}
 	}
@@ -204,7 +204,31 @@ public class ExcelUtil {
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 	// SET CELL VALUES
-	// ----------------------------------------------------------------------------------------------------------------			
+	// ----------------------------------------------------------------------------------------------------------------		
+	
+	/**
+	 * Método para inserir valores no cabeçalho da tabela de dados
+	 * @author Wellington 13/10/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param sheet - objeto de representação de alto nível de uma planilha
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
+	 * @param rowNumber - indice da linha	 
+	 * @param columns - lista com as colunas a serem inseridas no arquivo
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
+	 */
+	public void setHeaderCellsValue(Sheet sheet, Row row, int rowNumber, List<String> columns) {		
+
+		 row = sheet.getRow(rowNumber);	
+		
+		for(int col = 0; col < columns.size(); col++)		     		
+		     row.getCell(col).setCellValue(columns.get(col));	
+		
+	  }	
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 
 	/**
 	 * Método para inserir valor em uma única célula de uma planilha Excel
@@ -836,7 +860,7 @@ public class ExcelUtil {
 	 */	
 	public void createImage(Workbook workbook, Sheet sheet, String logo, int col1, int col2,  int row1, int row2, 
 			int dx1, int dy1, int dx2, int dy2, int resize) {
-
+		
 		try {
 
 			InputStream my_banner_image = new FileInputStream(logo);
@@ -850,6 +874,16 @@ public class ExcelUtil {
 			XSSFDrawing drawing = (XSSFDrawing) sheet.createDrawingPatriarch();		
 			XSSFClientAnchor my_anchor = new XSSFClientAnchor();
 
+			my_anchor.setCol1(col1);
+			my_anchor.setRow1(row1);
+			my_anchor.setCol2(col2);
+			my_anchor.setRow2(row2);
+
+			my_anchor.setDx1(dx1);
+			my_anchor.setDy1(dy1);
+			my_anchor.setDx2(dx2);
+			my_anchor.setDy2(dy2);
+			
 			my_anchor.setCol1(col1);
 			my_anchor.setRow1(row1);
 			my_anchor.setCol2(col2);
@@ -1072,7 +1106,6 @@ public class ExcelUtil {
 	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
 	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
 	 * @param rowTotal - última linha a ser apresentado o total		
-	 * @param multi - define o total para múltiplos equipamentos ou não
 	 * @param columnsLength - número de colunas 
 	 * @param rowIni - linha inicial
 	 * @param rowEnd - linha final 		
@@ -1081,7 +1114,7 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, int rowTotal, boolean multi,  int columnsLength, int rowIni, int rowEnd) {
+	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
 
 		int startColumn = 0;
 
@@ -1089,19 +1122,19 @@ public class ExcelUtil {
 
 		// VERIFICA SE É UM RELATÓRIO COM MULTIPLA SELEÇÃO DE EQUIPAMENTOS
 
-		if(multi) {			
+		/*if(multi) {			
 
 			startColumn = 3;  // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 3   	
 			mergeCells(sheet, "A"+(rowTotal)+":C"+(rowTotal)); // MERGE CELLS    	
 
 		}
 
-		else {				   
+		else {	*/			   
 
 			startColumn = 2; // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 2	    	
 			mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); // MERGE CELLS 				     	
 
-		}
+		//}
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -2369,7 +2402,7 @@ public class ExcelUtil {
 		  case "LEFT": setBorderLeft(style, borderStyle); break;
 		  case "RIGHT": setBorderRight(style, borderStyle); break;
 		  case "ALL": setBorders(style, borderStyle); break;
-		  		  		  
+				  		  		  		  
 		  }	  
 	  }
 	  
@@ -2386,9 +2419,7 @@ public class ExcelUtil {
 					row = sheet.getRow((short) rowIndex);	
 									
 					try {
-						
-					if(!values.get(lin)[col].equals("")) {	
-																														
+																																				
 					if(values.get(lin)[col].matches(NUMBER_REGEX))
 					   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
 							
@@ -2396,18 +2427,42 @@ public class ExcelUtil {
 					   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
 							
 					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
-					
-					}
-						
-					}catch(NullPointerException ex) {
-						ex.printStackTrace();
-					}		
+									
+					}catch(NullPointerException ex) {}		
 
 				}		       
 			}     	   
 		}
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
+		
+		public void fileBodyMulti(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow, int day, int periodRange) {
+
+			int rowLenght = startRow + values.size() ;
+						  			
+			  for (int col = startCol; col < columnName.size(); col++) {
+				  
+				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+			 		
+					row = sheet.getRow((short) rowIndex);	
+									
+					try {
+																																				
+					 if(values.get(lin)[col].matches(NUMBER_REGEX))
+					    row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+							
+					 else if(values.get(lin)[col].matches(DOUBLE_REGEX))
+					    row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+							
+					 else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+									
+					}catch(NullPointerException ex) {}		
+
+				}		       
+			}     	   
+		}
+		
+	// -----------------------------------------------------------------------------------------------------------------------------------------------
 		
 		
 	}

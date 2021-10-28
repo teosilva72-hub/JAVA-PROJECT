@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -9,13 +10,17 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 
@@ -33,6 +38,9 @@ public class ExcelTemplate {
 	private static XSSFWorkbook workbook;	
 	private static XSSFSheet sheet;
 	private static XSSFRow row;
+	
+	private EquipmentsDAO dao;
+	private List<Equipments> equipsInfo;
 
 	private static String FONT_ARIAL = "Arial";
 
@@ -113,22 +121,24 @@ public class ExcelTemplate {
 	    
 	    // ESTILO PADRÃO
 	    standardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	    // ESTILO PARA TÍTULO
+	   	// ESTILO PARA TÍTULO
 	    titleStyle = utilSheet.createCellStyle(workbook, titleFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CABEÇALHO DAS TABELAS
-	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃO
-	    leftAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CABEÇALHO ENTRE DATAS 
 	    dateTitleStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CAMPO DE DATAS EM NEGRITO
 	    dateTimeStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-        // ESTILO NEGRITO CENTRALIZADO   
-	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	    // ESTILO PADRÃO DE ALINHAMENTO CENTRAL	    
-	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-
-		// COUNT FLOW STYLES
+        // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
+	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+	    // ESTILO PADRÃO DE ALINHAMENTO CENTRAL	(SEM BORDAS)  
+	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃO (SEM BORDAS)
+	    leftAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+		// ESTILO PARA ALINHAMENTO A DIREITA EM NEGRITO (SEM BORDAS)
+	    rightAlignBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.RIGHT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
+		
+	    // COUNT FLOW STYLES
 
 	    // ESTILO HEADER
 	    bgColorHeaderStyle = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
@@ -150,50 +160,70 @@ public class ExcelTemplate {
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, int columns, String fileTitle, 
-			String startDate, String endDate, String period, String[] equipInfo, boolean isSat) {
+	public void excelSingleFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+			String startDate, String endDate, String period, List<String> equipId, boolean isSat) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
-
+	
 		// INDEX DA COLUNA DE ÍNICIO DA DATA
-		int columnStartDateIndex = columns - 2;
-		int columnEndDateIndex = columns;
-		int columnTitleEndIndex = columnStartDateIndex - 1;
-
+		
+		int columnsIndex = 0;
+		int columnStartDate = 0;
+		int columnEndDate = 0;
+			
+		// MINIMO 5 COLUNAS PADRÃO
+		if(columns < 5)
+			columnsIndex = 5;
+		
+		else columnsIndex = columns;
+		
+		columnStartDate = columns + 1;
+		columnEndDate = columns + 3;	
+	
 		// ----------------------------------------------------------------------------------------------------------------
-
+			
+		if(equipId.size() == 1 || !module.equals(""))		
+		   equipsInfo = equipmentInfo(equipId, module);
+		
+		else equipsInfo = defaultGenericInfo();			
+			
+		// ----------------------------------------------------------------------------------------------------------------
+		
+		System.out.println(equipsInfo);
+		
 		// HEADER
 
 		// CRIAR COLUNAS E LINHAS DO HEADER
 		utilSheet.createRows(sheet, row, 0, 4);
-		utilSheet.createCells(sheet, row, 0, columns, 0, 3);
+		utilSheet.createCells(sheet, row, 0, columnEndDate, 0, 3);
 
 		// DEFINIR IMAGEM
-		utilSheet.createImage(workbook, sheet, pathLogo, 0, 0, 2, 4, 1, 1, 1, 1, 1); 
-
+		utilSheet.createImage(workbook, sheet, pathLogo, 0, 2, 0, 4, 1, 1, 1, 1, 1); // CRIAR IMAGEM
+		utilSheet.setCellsStyle(sheet, row, standardStyle, 0, 1, 0, 3); // ESTILO CAMPOS IMAGEM
+		
 		// DEFINIR O TÍTULO	DO HEADER					
 		utilSheet.setCellValue(sheet, row, 0, 2, fileTitle);
-		utilSheet. setCellsStyle(sheet, row, titleStyle, 0, 3, 0, columnTitleEndIndex); // ESTILO TITULO
+		utilSheet. setCellsStyle(sheet, row, titleStyle, 2, columnsIndex, 0, 3); // ESTILO TITULO
 
 		// HEADER DATE TEMPLATE
 		String headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + startDate+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + endDate;
 
 		// INSERIR O TEMPLATE
-		utilSheet.setCellValue(sheet, row, 0, columnStartDateIndex, headerDates);	
-		//utilSheet.setCellsStyle(sheet, row, dateTitleStyle, 0, 3, columnStartDateIndex, columnEndDateIndex); // ESTILO DATAS
+		utilSheet.setCellValue(sheet, row, 0, columnStartDate, headerDates);	
+		utilSheet.setCellsStyle(sheet, row, dateTitleStyle, columnStartDate, columnEndDate, 0, 3); // ESTILO DATAS
 		
 		// HEADER COLUMNS DINAMIC MERGE
-		utilSheet.mergeBetweenColumns(sheet, 0, 1, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, 2, columns, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, columns + 1, columns + 3, 1, 4);
-		
+		utilSheet.mergeBetweenColumns(sheet, 0, 1, 1, 4); // IMAGE
+		utilSheet.mergeBetweenColumns(sheet, 2, columnsIndex, 1, 4); // TITLE
+		utilSheet.mergeBetweenColumns(sheet, columnStartDate, columnEndDate, 1, 4); // DATE AND TIME
+		//
 		// ----------------------------------------------------------------------------------------------------------------	    
 		// SUBHEADER 
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// MERGE CELLS
-		utilSheet.mergeCells(sheet, "A6:B6");	
+		//utilSheet.mergeCells(sheet, "A6:B6");	
 		utilSheet.mergeCells(sheet, "F6:H6");
 		utilSheet.mergeCells(sheet, "I6:J6");
 		
@@ -203,19 +233,20 @@ public class ExcelTemplate {
 		utilSheet.createRow(sheet, row, 5);
 
 		// EQUIPAMENTO LABEL
-		utilSheet.createCell(sheet, row, 5, 0);
-		utilSheet.setCellValue(sheet, row, 5, 0, localeExcel.getStringKey("excel_sheet_header_equipment"));
-		utilSheet.setCellStyle(sheet, row, rightAlignBoldStyle, 5, 0); 
-
+		utilSheet.createCell(sheet, row, 5, 1);
+		utilSheet.setCellValue(sheet, row, 5, 1, localeExcel.getStringKey("excel_sheet_header_equipment"));
+		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 5, 1); 	
+       		
+		
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, 5, 2);
-		utilSheet.setCellValue(sheet, row, 5, 2, equipInfo[0]);
+		utilSheet.setCellValue(sheet, row, 5, 2, equipsInfo.get(0).getNome());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
 
 		// DATA DE CONSULTA LABEL
 		utilSheet.createCell(sheet, row, 5, 5);
 		utilSheet.setCellValue(sheet, row, 5, 5, localeExcel.getStringKey("excel_sheet_header_consultation_date"));
-		utilSheet.setCellStyle(sheet, row, rightAlignBoldStyle, 5, 5); 
+		utilSheet.setCellStyle(sheet, row, rightAlignBoldStyle, 5, 5);
 
 		// DATA
 		utilSheet.createCell(sheet, row, 5, 8);
@@ -234,7 +265,7 @@ public class ExcelTemplate {
 
 		// CIDADE
 		utilSheet.createCell(sheet, row, 6, 2);
-		utilSheet.setCellValue(sheet, row, 6, 2, equipInfo[1]);
+		utilSheet.setCellValue(sheet, row, 6, 2, equipsInfo.get(0).getCidade());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
 
 		// SENTIDO LABEL
@@ -259,7 +290,7 @@ public class ExcelTemplate {
 
 		// NOME DA RODOVIA / ESTRADA
 		utilSheet.createCell(sheet, row, 7, 2);
-		utilSheet.setCellValue(sheet, row, 7, 2, equipInfo[2]);
+		utilSheet.setCellValue(sheet, row, 7, 2, equipsInfo.get(0).getEstrada());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
 		
 		if(!period.equals("")) {
@@ -288,7 +319,7 @@ public class ExcelTemplate {
 
 		// KM
 		utilSheet.createCell(sheet, row, 8, 2);
-		utilSheet.setCellValue(sheet, row, 8, 2, equipInfo[3]);
+		utilSheet.setCellValue(sheet, row, 8, 2, equipsInfo.get(0).getKm());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 8, 2);
 
 		// ----------------------------------------------------------------------------------------------------------------
@@ -308,15 +339,13 @@ public class ExcelTemplate {
 
 			// NÚMERO DE LINHAS
 			utilSheet.createCell(sheet, row, 9, 2);
-			utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(equipInfo[4]));
+			utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt("LANES"));
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------
-		
-		// TABLE COLUMNS LENGTH
-		utilSheet.columnsWidthAuto(sheet, columns);
+				
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
@@ -515,7 +544,7 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, boolean isMulti, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
+	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE ROW TOTAL
 		utilSheet.createRow(sheet, row, rowTotal);		 
@@ -524,7 +553,7 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
-		utilSheet.totalExcelSum(sheet, row, standard, rowTotal, isMulti, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelSum(sheet, row, standard, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
@@ -559,11 +588,11 @@ public class ExcelTemplate {
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
 		utilSheet.totalExcelAverage(sheet, row, standard, rowTotal, isMulti, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
-
+    
 	}
-
+    
 	// ----------------------------------------------------------------------------------------------------------------
-
+    
 	/**
 	 * Método para criar colunas com total para TEMPO
 	 * @author Wellington 15/10/2021
@@ -615,22 +644,22 @@ public class ExcelTemplate {
 	// MAIN TEMPLATES
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	/**  
+	/**
 	 * Método para criar um modelo para um relátorio para uma única planilha
 	 * @author Wellington 15/10/2021
 	 * @version 1.0
-	 * @since 1.0 
+	 * @since 1.0
 	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha		
+	 * @param row - objeto de representação de alto nível de uma linha de uma planilha	
 	 * @param multi - define o total para múltiplos equipamentos ou não
 	 * @param numLanes - número de linhas caso equipmemnto possua
 	 * @param columnsHeader - matriz com os valores das colunas
 	 * @param values - matriz com os valores obtidos pelo banco
 	 * @param rowTotal - linha dos valores a serem somados no total
 	 * @param iniRow - linha inicial
-	 * @param endRow - linha final	
+	 * @param endRow - linha final
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFSheet.html
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFRow.html	
+	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFRow.html
 	 */
 	public void singleTempateWithSum(XSSFSheet sheet, XSSFRow row, boolean multi, boolean isSat, int firstRow,String[] columnsHeader, String[][] values, int rowTotal, int iniRow, int endRow) {
 
@@ -656,7 +685,6 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, standardStyle, minCol, maxCol, iniRow, endRow); // ESTILOS
 
 		//totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
-
 
 	}
 
@@ -702,7 +730,7 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 0, 1, iniRow, endRow); // ESTILOS
 		utilSheet.setCellsStyle(sheet, row, standardStyle, minCol, maxCol, iniRow, endRow); // ESTILOS
 
-		//totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
+		// totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
 
 	}
 
@@ -740,31 +768,98 @@ public class ExcelTemplate {
 
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void generateExcelFile(List<String> columns, List<String[]> rows, String startDate, String endDate, String period, String fileTitle, String[] equipInfo) {
+	public void generateExcelFile(List<String> columns, List<String[]> rows, String module, List<String> equips, String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal) {
 		
 		sheet = null;		
 		row = null;
 				
-		int startRow = 2;
-		int endRow = startRow + rows.size();
+		int tableStartRow = 0;
+		int dataStartRow = 0;
+		int dataEndRow = 0;
 		int startCol = 0;
 		int endCol = columns.size() - 1;
+		int dataTotalRow = columns.size();
 		
-		sheet = workbook.createSheet("TRACEVIA");
+		sheet = workbook.createSheet(sheetName);
+										
+		excelSingleFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				startDate, endDate, period, equips, isSat);
+									    		
+		// CASO EXISTA FAIXAS NO EQUIPAMENTO
+		if(isSat) {
+			tableStartRow = 11;
+			dataStartRow = 12;
+
+		// CASO NÃO EXISTA FAIXAS NO EQUIPAMENTO 
+	    }else {  tableStartRow = 10; dataStartRow = 11; }
 		
-		spreadSheetHeader(workbook, sheet, row, RoadConcessionaire.logo, columns.size(), fileTitle, 
-				startDate, endDate, period, equipInfo, false) ;
+		dataEndRow = dataStartRow + rows.size() - 1;
+						
+		utilSheet.createRow(sheet, row, tableStartRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
+		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
 		
-									
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
+													
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
-		utilSheet.createRows(sheet, row, startRow, endRow);
-		utilSheet.createCells(sheet, row, startCol, endCol, startRow, endRow);
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 								 		
-		utilSheet.fileBodySimple(sheet, row, columns, rows, startCol, endCol, startRow);
+		utilSheet.fileBodySimple(sheet, row, columns, rows, startCol, endCol, dataStartRow);
 		
-		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, startRow, endRow);
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
-		// ----------------------------------------------------------------------------------------------------------------
+		// TABLE COLUMNS AUTO SIZE 
+		utilSheet.columnsWidthAuto(sheet, columns.size());
+		
+		if(isTotal)
+			totalSum(sheet, row, standardStyle, tableHeadStyle, columns.size(), dataTotalRow, dataStartRow, dataEndRow); // TOTAL
+			
+		
+	// ----------------------------------------------------------------------------------------------------------------
 					
+	}	
+	
+	// ----------------------------------------------------------------------------------------------------------------
+	
+	public List<Equipments> equipmentInfo(List<String> equipId, String module) {
+		
+		List<Equipments> info = new ArrayList<Equipments>();
+		 dao = new EquipmentsDAO();
+		
+		try {
+						 			 
+			 for(int s = 0; s < equipId.size(); s++) {
+	        	
+			 info = dao.EquipReportInfo(equipId.get(s), module);
+			 			 
+			 }	 
+				
+			} catch (Exception e) {			
+				e.printStackTrace();
+			}
+		 
+		 return info;
+				
+	  }
+	
+  // ----------------------------------------------------------------------------------------------------------------
+	
+	public List<Equipments> defaultGenericInfo(){
+		
+		List<Equipments> lista = new ArrayList<Equipments>();
+		
+		Equipments equip = new Equipments();
+		
+		equip.setNome(" --- ");		
+		equip.setCidade(" --- ");
+		equip.setEstrada(" --- ");
+		equip.setKm(" --- ");
+		
+		lista.add(equip);
+		
+		return lista;
+		
 	}
+	
 }
