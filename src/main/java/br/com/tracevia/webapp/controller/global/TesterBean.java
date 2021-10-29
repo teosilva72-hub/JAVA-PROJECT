@@ -377,6 +377,9 @@ public class TesterBean {
 		   
 	        // GENERATE EXCEL
 		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
+
+			 if (report.lines.isEmpty())
+			 	return;
 				     
 		     model.generateExcelFile(columnsInUse, report.lines,"sos", report.IDs, dateStart, dateEnd, "", "TRACEVIA", "Teste", false, false);
 		     

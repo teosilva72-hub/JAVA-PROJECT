@@ -70,10 +70,10 @@ public class ReportDAO {
 
                 lines.add(column);
             }
-
-            this.lines = lines;
-            this.IDs = field;
         }
+
+        this.lines = lines;
+        this.IDs = field;
     }
 
     public List<String[]> getOtherElementTable(String table, String column) throws SQLException {
