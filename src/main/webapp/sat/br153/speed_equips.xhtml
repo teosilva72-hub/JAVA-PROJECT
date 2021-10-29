@@ -26,8 +26,8 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, DIA, HORAS, até 50km/h, 50km/h ~ 70km/h, 70km/h ~ 90km/h, 90km/h ~ 120km/h, 120km/h ~ 150km/h, acima de 150km/h, VELOCIDADE')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('siteID; DATE(data) as sd; TIME($period)@sd; SUM(IF(sp less than 50, 1, 0)); SUM(IF(sp than > 1, 1, 0)); SUM(IF(sp not in (1, 9), 1, 0)); AVG(speed) as sp')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, DIA, HORAS, até 50km/h, 50km/h ~ 70km/h, 70km/h ~ 90km/h, 90km/h ~ 120km/h, 120km/h ~ 150km/h, acima de 150km/h, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('siteID; DATE(data) as sd; TIME($period)@sd; SUM(IF(speed &lt; 50, 1, 0)); SUM(IF(speed between 50 and 69, 1, 0)); SUM(IF(speed between 70 and 89, 1, 0)); SUM(IF(speed between 90 and 119, 1, 0)); SUM(IF(speed between 120 and 150, 1, 0)); SUM(IF(speed &gt; 150, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
@@ -36,7 +36,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', '1 dia')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
 			          
