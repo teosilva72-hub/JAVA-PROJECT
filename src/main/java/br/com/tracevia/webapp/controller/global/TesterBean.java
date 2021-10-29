@@ -328,14 +328,14 @@ public class TesterBean {
 		
 		String query = "SELECT ";
 		for (String col : columns) {
-			if (searchParameters.get(Integer.parseInt(col)).trim().equals("$period") && hasPeriod()) {
-				query += genPeriod(selectedPeriod.split(","));
-				setPeriod = true;
-			} else
-				query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
+			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
-		if (!setPeriod && period != null)
-			query += genPeriod(selectedPeriod.split(","));
+		if (!setPeriod && hasPeriod() && query.contains("$period")) {
+			String[] selected = selectedPeriod.split(",");
+			query.replace("$period", genPeriod(selected));
+			selectedPeriod = selected[2];
+			setPeriod = true;
+		}
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 					
