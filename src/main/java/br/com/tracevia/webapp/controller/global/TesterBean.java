@@ -237,13 +237,13 @@ public class TesterBean {
 	public String genPeriod(String[] time) {
 		switch (time[1].toUpperCase()) {
 			case "MINUTE":
-				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s MINUTE) as dat, ", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat", periodColumn, time[0]);
 
 			case "HOUR":
-				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s HOUR) as dat, ", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat", periodColumn, time[0]);
 		
 			default:
-				return String.format("DATE(%s) as dat, ", periodColumn);
+				return String.format("DATE(%s) as dat", periodColumn);
 		}
 	}
 	
@@ -332,7 +332,7 @@ public class TesterBean {
 		}
 		if (!setPeriod && hasPeriod() && query.contains("$period")) {
 			String[] selected = selectedPeriod.split(",");
-			query.replace("$period", genPeriod(selected));
+			query = query.replace("$period", genPeriod(selected));
 			selectedPeriod = selected[2];
 			setPeriod = true;
 		}
