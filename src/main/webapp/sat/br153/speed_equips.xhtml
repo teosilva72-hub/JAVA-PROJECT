@@ -27,7 +27,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, DIA, HORAS, MOTOS, PASSEIO, PESADOS, VELOCIDADE')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('siteID; DATE(data); TIME($period); SUM(IF(classe = 9, 1, 0)); SUM(IF(classe = 1, 1, 0)); SUM(IF(classe not in (1, 9), 1, 0))')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('siteID; DATE(data) as sd; TIME($period)@sd; SUM(IF(classe = 9, 1, 0)); SUM(IF(classe = 1, 1, 0)); SUM(IF(classe not in (1, 9), 1, 0)); AVG(speed)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
