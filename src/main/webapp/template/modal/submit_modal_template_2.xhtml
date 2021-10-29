@@ -105,6 +105,42 @@
 						<!---->
 					</c:forEach>
 
+					<!-- PERIOD FIEDS -->
+
+					<c:if test="#{testerBean.hasPeriod()}">
+						<div class="col-12">
+							<!-- FORM ROW DIV -->
+							<div class="form-group col-sm-12 checkbox-field">
+								<!-- FORM GROUP DIV -->
+								<span><i class="fas fa-hdd"></i></span>
+								<!-- SPAN ICON -->
+								<span for="date-period" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
+								<!---->
+								<select name="date-period" id="date-period" required="required">
+									<!-- SELECT OPTIONS -->
+									<ui:repeat var="period" value="#{testerBean.getPeriod()}" varStatus="status">
+										<!-- LOOP -->
+										<!---->
+										<option value="#{period[0]},#{period[1]}">#{period[2]}</option>
+										<!---->
+									</ui:repeat>
+									<!---->
+								</select>
+								<!-- INPUT -->
+								<!---->
+							</div>
+							<!-- FORM GROUP DIV END -->
+							<div class="error-label">
+								<!-- ERROR LABEL DIV -->
+								<label for="date-period" class="error" id="date-period-error"></label>
+								<!-- ERROR LABEL -->
+							</div>
+							<!-- ERROR LABEL DIV END -->
+						</div>
+					</c:if>
+					<!-- FORM ROW DIV END -->
+
 					<!-- START DATE -->
 
 					<c:forEach var="dateSearch"  items="${testerBean.dateSearch}">

@@ -45,7 +45,8 @@ public class TesterBean {
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	private String period;
+	private String periodColumn;
+	private List<String[]> period = new ArrayList<>();
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -172,6 +173,18 @@ public class TesterBean {
 		this.idTable = idTable;
 	}
 	
+	public void setPeriodColumn(String column) {
+		this.periodColumn = column;
+	}
+	
+	public void setPeriod(int time, String step, String name) {
+		this.period.add(new String[]{String.valueOf(time), step, name});
+	}
+	
+	public List<String[]> getPeriod() {
+		return period;
+	}
+	
 	public void defineFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -221,16 +234,21 @@ public class TesterBean {
 		this.report = report;
 	}
 
-	public void periodMinutes(int minute, String date) {
-		this.period = String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$d) * %2$d, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$d MINUTE) as dat, ", date, minute);
-	}
+	public String genPeriod(String[] time) {
+		switch (time[1].toUpperCase()) {
+			case "MINUTE":
+				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s MINUTE) as dat, ", periodColumn, time[0]);
 
-	public void periodHours(int hour, String date) {
-		this.period = String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$d) * %2$d, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$d HOUR) as dat, ", date, hour);
+			case "HOUR":
+				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s HOUR) as dat, ", periodColumn, time[0]);
+		
+			default:
+				return String.format("DATE(%s) as dat, ", periodColumn);
+		}
 	}
 	
-	public void periodDay(String date) {
-		this.period = String.format("DATE(%s) as dat, ", date);
+	public boolean hasPeriod() {
+		return periodColumn != null ? true : false;
 	}
 	
 	public String[] getLeft(Pair<String[], List<String>> pair) {
@@ -299,6 +317,7 @@ public class TesterBean {
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
 		String[] columns = mapArray.get("allColumns");
+		String selectedPeriod = (String) map.get("date-period");
 		setColumnsInUse(columns);
 						
 		model = new ExcelTemplate(); // HERE
@@ -309,14 +328,14 @@ public class TesterBean {
 		
 		String query = "SELECT ";
 		for (String col : columns) {
-			if (searchParameters.get(Integer.parseInt(col)).trim().equals("$period") && period != null) {
-				query += period;
+			if (searchParameters.get(Integer.parseInt(col)).trim().equals("$period") && hasPeriod()) {
+				query += genPeriod(selectedPeriod.split(","));
 				setPeriod = true;
 			} else
 				query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
 		if (!setPeriod && period != null)
-			query += period;
+			query += genPeriod(selectedPeriod.split(","));
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 					
@@ -366,7 +385,7 @@ public class TesterBean {
 					count++;
 				}
 			}
-			if (setPeriod && period != null)
+			if (setPeriod && hasPeriod())
 				query += " GROUP BY dat ORDER BY dat DESC";
 			
 			System.out.println(query);
