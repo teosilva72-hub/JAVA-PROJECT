@@ -30,12 +30,12 @@ $(function () {
             let end = $(`#${id.substr(0, id.length - 6)}-end`).val()
             let endSplit = end.split("/")
             if (end)
-                range = timestamp < Date.parse(`${endSplit[2]}/${endSplit[1]}/${endSplit[0]}`)
+                range = timestamp <= Date.parse(`${endSplit[2]}/${endSplit[1]}/${endSplit[0]}`)
         } else {
             let start = $(`#${id.substr(0, id.length - 4)}-start`).val()
             let startSplit = start.split("/")
             if (start)
-                range = timestamp > Date.parse(`${startSplit[2]}/${startSplit[1]}/${startSplit[0]}`)
+                range = timestamp >= Date.parse(`${startSplit[2]}/${startSplit[1]}/${startSplit[0]}`)
         }
 
         let check = date.toLocaleDateString() == value && timestamp < Date.now() && range
