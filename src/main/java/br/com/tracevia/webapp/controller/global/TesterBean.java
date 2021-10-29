@@ -35,7 +35,7 @@ public class TesterBean {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public String 	fileName,
-					title,
+					fileTitle,
 					sheetName = "Report";
 	public String 	module,
 					total;
@@ -189,8 +189,8 @@ public class TesterBean {
 		this.fileName = fileName;
 	}
 	
-	public void defineTitle(String title) {
-		this.title = title;
+	public void defineFileTitle(String fileTitle) {
+		this.fileTitle = fileTitle;
 	}
 	
 	public void defineSheetName(String sheetName) {
@@ -210,22 +210,21 @@ public class TesterBean {
 	}
 	
 	public void defineJsTable(String jsTable) {
-		this.jsTable = jsTable;
-		
+		this.jsTable = jsTable;		
 	}
 	
 	public void defineJsTableScroll(String jsTableScroll) {
-		this.jsTableScroll = jsTableScroll;
-		
+		this.jsTableScroll = jsTableScroll;		
 	}
+	
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
 	
 	public boolean isTotal() {
-		return total == null ? false : true;
+		return total == null ? false : true; 
 	}
-		
+	
 	public ReportDAO getReport() {
 		return report;
 	}
@@ -237,10 +236,10 @@ public class TesterBean {
 	public String genPeriod(String[] time) {
 		switch (time[1].toUpperCase()) {
 			case "MINUTE":
-				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s MINUTE) as dat, ", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat, ", periodColumn, time[0]);
 
 			case "HOUR":
-				return String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$s HOUR) as dat, ", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat, ", periodColumn, time[0]);
 		
 			default:
 				return String.format("DATE(%s) as dat, ", periodColumn);
@@ -386,7 +385,7 @@ public class TesterBean {
 				}
 			}
 			if (setPeriod && hasPeriod())
-				query += " GROUP BY dat ORDER BY dat DESC";
+				query += " GROUP BY dat ORDER BY dat ASC";
 			
 			System.out.println(query);
 
@@ -409,7 +408,7 @@ public class TesterBean {
 			 if (report.lines.isEmpty())
 			 	return;
 				     
-		     model.generateExcelFile(columnsInUse, report.lines,"sos", report.IDs, dateStart, dateEnd, "", "TRACEVIA", "Teste", false, false);
+		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, "", sheetName, fileTitle, false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
