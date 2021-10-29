@@ -408,7 +408,7 @@ public class TesterBean {
 			 if (report.lines.isEmpty())
 			 	return;
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, "", sheetName, fileTitle, false, false);
+		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
