@@ -404,7 +404,7 @@ public class TesterBean {
 				}
 			}
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %1$s%s ORDER BY %1$s ASC", group, extraGroup);
+				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
 			System.out.println(query);
 
