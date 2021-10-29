@@ -338,7 +338,7 @@ public class TesterBean {
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
-					group += String.format(", %s", alias[1]);
+					group = String.format("%s, %s", alias[1], group);
 				} else
 					query += String.format("%s as %s, ", column, group);
 				selectedPeriod = selected[2];
