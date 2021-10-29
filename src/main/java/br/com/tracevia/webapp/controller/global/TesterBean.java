@@ -105,7 +105,7 @@ public class TesterBean {
 	}
 
 	public void setSearchParameters(String parameter) {
-		List<String> searchParameters = Arrays.asList(parameter.split(","));
+		List<String> searchParameters = Arrays.asList(parameter.split(";"));
 		
 		this.searchParameters = searchParameters;
 	}
