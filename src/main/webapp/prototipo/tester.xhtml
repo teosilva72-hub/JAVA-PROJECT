@@ -25,8 +25,10 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, answered_date, user, state_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, $period, end_date, answered_date, user, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{testerBean.periodMinutes(15, 'start_date')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipe', 'sos_equipment.equip_id|name', true)}" />

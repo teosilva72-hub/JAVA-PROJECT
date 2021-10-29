@@ -44,6 +44,8 @@ public class TesterBean {
 
 	// ----------------------------------------------------------------------------------------------------------------
 
+	private String period;
+
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
@@ -208,6 +210,18 @@ public class TesterBean {
 	public void setReport(ReportDAO report) {
 		this.report = report;
 	}
+
+	public void periodMinutes(int minute, String date) {
+		this.period = String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$d) * %2$d, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$d MINUTE) as dat, ", date, minute);
+	}
+
+	public void periodHours(int hour, String date) {
+		this.period = String.format("DATE_ADD(STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$d) * %2$d, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s'), INTERVAL %2$d HOUR) as dat, ", date, hour);
+	}
+	
+	public void periodDay(String date) {
+		this.period = String.format("DATE(%s) as dat, ", date);
+	}
 	
 	public String[] getLeft(Pair<String[], List<String>> pair) {
 		return pair.left;
@@ -271,6 +285,7 @@ public class TesterBean {
 	public void createFields() throws Exception {
 		
 		int count = 0;
+		boolean setPeriod = false;
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
 		String[] columns = mapArray.get("allColumns");
@@ -278,14 +293,21 @@ public class TesterBean {
 						
 		model = new ExcelTemplate(); // HERE
 		
-		String dateStart = "", dateEnd = "", equipId = "";
+		String dateStart = "", dateEnd = "";
 				
 		resetForm();
 		
-		String query = "Select ";
+		String query = "SELECT ";
 		for (String col : columns) {
-			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
+			if (searchParameters.get(Integer.parseInt(col)).trim().equals("$period") && period != null) {
+				query += period;
+				setPeriod = true;
+			} else
+				query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
+		if (!setPeriod && period != null)
+			query += period;
+
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 					
 
@@ -334,7 +356,9 @@ public class TesterBean {
 					count++;
 				}
 			}
-		
+			if (setPeriod && period != null)
+				query += " GROUP BY dat ORDER BY dat DESC";
+
 		   // Table Fields
 		    report.getReport(query, idTable);
 
