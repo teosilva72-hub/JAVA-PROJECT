@@ -36,9 +36,10 @@ public class TesterBean {
 
 	public String 	fileName,
 					title,
-					sheet = "Report";
+					sheetName = "Report";
 	public String 	module,
 					total;
+	public String jsTable, jsTableScroll;
 	public boolean 	sat,
 					caseSensitive = false;
 
@@ -192,8 +193,8 @@ public class TesterBean {
 		this.title = title;
 	}
 	
-	public void defineSheet(String sheet) {
-		this.sheet = sheet;
+	public void defineSheetName(String sheetName) {
+		this.sheetName = sheetName;
 	}
 	
 	public void defineModule(String module) {
@@ -208,6 +209,15 @@ public class TesterBean {
 		this.sat = true;
 	}
 	
+	public void defineJsTable(String jsTable) {
+		this.jsTable = jsTable;
+		
+	}
+	
+	public void defineJsTableScroll(String jsTableScroll) {
+		this.jsTableScroll = jsTableScroll;
+		
+	}
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
@@ -377,6 +387,8 @@ public class TesterBean {
 			}
 			if (setPeriod && hasPeriod())
 				query += " GROUP BY dat ORDER BY dat DESC";
+			
+			System.out.println(query);
 
 		   // Table Fields
 		    report.getReport(query, idTable);
@@ -392,10 +404,7 @@ public class TesterBean {
 		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
 		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
 		      		     
-		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
-		   
-	        // GENERATE EXCEL
-		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
+			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 
 			 if (report.lines.isEmpty())
 			 	return;
@@ -422,7 +431,7 @@ public class TesterBean {
 		 
 		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
 	
-		String file = "teste_file_"+dta.currentDateToExcelFile();
+		String file = fileName+"_"+dta.currentDateToExcelFile();
 					
 		try {
 			
