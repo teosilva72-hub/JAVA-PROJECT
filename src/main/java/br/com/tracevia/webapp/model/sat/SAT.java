@@ -18,6 +18,7 @@ public class SAT extends Equipments {
 	private String faixa6;
 	private String faixa7;
 	private String faixa8;
+	private String qtdeFaixas;
 	private String sentido1;
 	private String sentido2;
 	private String posicao_nivel_servico;	
@@ -28,7 +29,7 @@ public class SAT extends Equipments {
 			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
 			boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2,
 			int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
-			String faixa6, String faixa7, String faixa8, String sentido1, String sentido2,
+			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentido1, String sentido2,
 			String posicao_nivel_servico) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
@@ -49,6 +50,7 @@ public class SAT extends Equipments {
 		this.faixa6 = faixa6;
 		this.faixa7 = faixa7;
 		this.faixa8 = faixa8;
+		this.qtdeFaixas = qtdeFaixas;
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
 		this.posicao_nivel_servico = posicao_nivel_servico;
@@ -152,6 +154,13 @@ public class SAT extends Equipments {
 	}
 	public void setFaixa8(String faixa8) {
 		this.faixa8 = faixa8;
+	}
+	public String getQtdeFaixas() {
+		return qtdeFaixas;
+	}
+
+	public void setQtdeFaixas(String qtdeFaixas) {
+		this.qtdeFaixas = qtdeFaixas;
 	}
 
 	public String getSentido1() {
