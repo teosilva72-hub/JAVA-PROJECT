@@ -423,6 +423,42 @@ public class NavigationBean {
 	
 	// ----------------------------------------------------------------
 	
+	public String speedReportURL() {
+
+		navigation_page = "/sat/br153/speed.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+	public String speedMultiReportURL() {
+
+		navigation_page = "/sat/br153/speed_equips.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+	public String typeReportURL() {
+
+		navigation_page = "/sat/br153/tipos.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
+	public String countReportURL() {
+
+		navigation_page = "/sat/br153/contagem.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
+	
+	// ----------------------------------------------------------------
+	
     /* SAT REPORTS */
 
 	public String sidebarSource() {
