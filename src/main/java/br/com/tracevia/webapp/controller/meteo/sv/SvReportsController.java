@@ -992,7 +992,7 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
+		  info = dao.EquipReportsInfo(svReport.getEquipment(), module);    		 
 		   		 
 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_year"); 
@@ -1022,7 +1022,7 @@ if(type.equals("3")) {
  		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
+		  info = dao.EquipReportsInfo(svReport.getEquipment(), module);    		 
  		   		 
  		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
  		  excel_title = localeLabel.getStringKey("excel_report_weather_title_month");
@@ -1051,7 +1051,7 @@ if(type.equals("3")) {
 		  EquipmentsDAO dao = new EquipmentsDAO();
 		  Equipments info = new Equipments();
 		  
-		  info = dao.EquipReportInfo(svReport.getEquipment(), module);    		 
+		  info = dao.EquipReportsInfo(svReport.getEquipment(), module);    		 
 		   		 
 		  fileName = localeLabel.getStringKey("excel_report_weather_file")+"_"+tm.periodName(svReport.getPeriod());
 		  excel_title = localeLabel.getStringKey("excel_report_weather_title_periods");

@@ -787,6 +787,60 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
+	 * Método para obter informação de um equipamento específico
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id - Equipamento ID
+	 * @param module - Módulo	 
+	 * @return Equipments - Objeto com informações do tipo Equipments
+	 * @throws Exception
+	 */
+
+	public Equipments EquipReportsInfo(String equip_id, String module) throws Exception {
+
+		Equipments eq = new Equipments();
+		
+		List<Equipments> list = new ArrayList<>();
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			String sql = "SELECT st.name, c.city_name, r.road_name, st.km "
+					+ "FROM "+module+"_equipment st "
+					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
+					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+					+ " WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			if (rs != null) {
+				while (rs.next()) {
+					
+					
+
+					eq.setNome(rs.getString(1));
+					eq.setCidade(rs.getString(2));
+					eq.setEstrada(rs.getString(3));
+					eq.setKm(rs.getString(4));
+					
+				}
+			}
+
+		} catch (SQLException sqle) {
+
+			sqle.printStackTrace();
+
+		}finally {ConnectionFactory.closeConnection(conn, ps);}
+
+		return eq;
+	}	
+
+	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
 	 * Método para obter informação de um equipamentos específico
 	 * @author Wellington
 	 * @version 1.0
