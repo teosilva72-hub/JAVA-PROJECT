@@ -14,25 +14,26 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportSAT')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineTitle('SAT')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('SAT')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('50.3vh')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineTitle('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('jsTableScroll')}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineTotal('state_id')}" /> -->
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineSat()}" /> -->
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_dados_15')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('NOME_ESTACAO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Nome da Estação, Automóveis, Motos, Veiculos Longos, Velocidade Média')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('ID_DADO, NOME_ESTACAO, VOLUME_AUTO, VOLUME_MOTOS, VOLUME_LONGO, VEL_MEDIA_TOTAL, DATA_HORA')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Término, Atendida, Usuario, Estado')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id, start_date, end_date, answered_date, user, state_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('DATA_HORA', 'Data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('NOME_ESTACAO','Nome da Estação', 'sat_equipment.equip_id|name', true)}"/>
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipe', 'sos_equipment.equip_id|name', true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" />
 			          
     </f:metadata>
 	
