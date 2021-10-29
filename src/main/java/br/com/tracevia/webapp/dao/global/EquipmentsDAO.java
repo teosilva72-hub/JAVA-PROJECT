@@ -760,7 +760,7 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-
+						
 			if (rs != null) {
 				while (rs.next()) {
 					
@@ -785,6 +785,61 @@ public class EquipmentsDAO {
 	}	
 
 	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informação de um equipamento específico
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id - Equipamento ID
+	 * @param module - Módulo	 
+	 * @return Equipments - Objeto com informações do tipo Equipments
+	 * @throws Exception
+	 */
+
+	public List<SAT> SATReportInfo(String equip_id) throws Exception {
+
+		List<SAT> list = new ArrayList<>();
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes "
+					+ "FROM sat_equipment st "
+					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
+					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+					+ "WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+						
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+					
+					SAT sat = new SAT();
+
+					sat.setNome(rs.getString(1));
+				    sat.setCidade(rs.getString(2));
+					sat.setEstrada(rs.getString(3));
+					sat.setKm(rs.getString(4));
+					sat.setQtdeFaixas(rs.getString(5));
+					
+					list.add(sat);
+				}
+			}
+
+		} catch (SQLException sqle) {
+
+			sqle.printStackTrace();
+
+		}finally {ConnectionFactory.closeConnection(conn, ps);}
+
+		return list;
+	}	
+
+	// --------------------------------------------------------------------------------------------------------------
+
 
 	/**
 	 * Método para obter informação de um equipamento específico
