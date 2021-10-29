@@ -351,7 +351,12 @@ public class ExcelTemplate {
 
 			// NÃšMERO DE LINHAS
 			utilSheet.createCell(sheet, row, 9, 2);
-			utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(0).getQtdeFaixas().toString());
+			
+			if(satInfo.get(0).getQtdeFaixas().matches(NUMBER_REGEX))
+				utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(satInfo.get(0).getQtdeFaixas()));
+			
+			else utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(0).getQtdeFaixas()); 
+			
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 
 		}
