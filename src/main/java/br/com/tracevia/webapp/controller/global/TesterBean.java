@@ -47,6 +47,7 @@ public class TesterBean {
 
 	private String periodColumn;
 	private List<String[]> period = new ArrayList<>();
+	private String extraGroup = "";
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -183,6 +184,10 @@ public class TesterBean {
 	
 	public List<String[]> getPeriod() {
 		return period;
+	}
+	
+	public void setExtraGroup(String extraGroup) {
+		this.extraGroup = ", " + extraGroup;
 	}
 	
 	public void defineFileName(String fileName) {
@@ -396,7 +401,7 @@ public class TesterBean {
 				}
 			}
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %1$s ORDER BY %1$s ASC", group);
+				query += String.format(" GROUP BY %1$s%s ORDER BY %1$s ASC", group, extraGroup);
 			
 			System.out.println(query);
 
