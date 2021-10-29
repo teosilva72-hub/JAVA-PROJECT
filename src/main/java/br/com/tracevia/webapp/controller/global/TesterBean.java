@@ -237,13 +237,13 @@ public class TesterBean {
 	public String genPeriod(String[] time) {
 		switch (time[1].toUpperCase()) {
 			case "MINUTE":
-				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', HOUR(%1$s), ':', FLOOR(MINUTE(%1$s) / %2$s) * %2$s, ':00'), '%%Y-%%m-%%d %%H:%%i:%%s')", periodColumn, time[0]);
 
 			case "HOUR":
-				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s') as dat", periodColumn, time[0]);
+				return String.format("STR_TO_DATE(CONCAT(DATE(%1$s), ' ', FLOOR(HOUR(%1$s) / %2$s) * %2$s, ':00:00'), '%%Y-%%m-%%d %%H:%%i:%%s')", periodColumn, time[0]);
 		
 			default:
-				return String.format("DATE(%s) as dat", periodColumn);
+				return String.format("DATE(%s)", periodColumn);
 		}
 	}
 	
@@ -330,9 +330,9 @@ public class TesterBean {
 		for (String col : columns) {
 			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
 		}
-		if (!setPeriod && hasPeriod() && query.contains("$period")) {
+		if (hasPeriod() && query.contains("$period")) {
 			String[] selected = selectedPeriod.split(",");
-			query = query.replace("$period", genPeriod(selected));
+			query = String.format("%s as dat", query.replace("$period", genPeriod(selected)));
 			selectedPeriod = selected[2];
 			setPeriod = true;
 		}
@@ -349,11 +349,11 @@ public class TesterBean {
 					query += " WHERE";
 
 				if (!dateStart.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= %s", count > 0 ? " AND" : "", dateStart, search[0]);
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= DATE(%s)", count > 0 ? " AND" : "", dateStart, search[0]);
 					count++;
 				}
 				if (!dateEnd.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= %s", count > 0 ? " AND" : "", dateEnd, search[0]);
+					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= DATE(%s)", count > 0 ? " AND" : "", dateEnd, search[0]);
 					count++;
 				}
 			}
