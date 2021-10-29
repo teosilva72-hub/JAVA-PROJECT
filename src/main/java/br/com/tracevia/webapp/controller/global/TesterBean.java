@@ -47,6 +47,7 @@ public class TesterBean {
 
 	private String periodColumn;
 	private List<String[]> period = new ArrayList<>();
+	private String extraGroup = "";
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -185,6 +186,10 @@ public class TesterBean {
 		return period;
 	}
 	
+	public void setExtraGroup(String extraGroup) {
+		this.extraGroup = ", " + extraGroup;
+	}
+	
 	public void defineFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -318,6 +323,7 @@ public class TesterBean {
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
+		List<String> idSearch = new ArrayList<>();
 		String group = "dat";
 		setColumnsInUse(columns);
 						
@@ -385,6 +391,8 @@ public class TesterBean {
 					String f = map.get(String.format("%s-filter", search.left[0]));
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
+					if (search.left[0].equals(idTable))
+						idSearch.add(f);
 				}
 
 				if (count == 0 && !filter.isEmpty())
@@ -396,7 +404,7 @@ public class TesterBean {
 				}
 			}
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %1$s ORDER BY %1$s ASC", group);
+				query += String.format(" GROUP BY %1$s%s ORDER BY %1$s ASC", group, extraGroup);
 			
 			System.out.println(query);
 
@@ -416,8 +424,10 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 
-			 if (report.lines.isEmpty())
-			 	return;
+			if (report.lines.isEmpty())
+				return;
+			if (report.IDs.isEmpty())
+				report.IDs.addAll(idSearch);
 				     
 		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, false, false);
 		     
