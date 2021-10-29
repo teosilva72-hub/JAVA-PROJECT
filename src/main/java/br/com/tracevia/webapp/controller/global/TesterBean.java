@@ -39,7 +39,7 @@ public class TesterBean {
 					sheetName = "Report";
 	public String 	module,
 					total;
-	public String jsTable, jsTableScroll;
+	public String 	jsTable, jsTableScroll;
 	public boolean 	sat,
 					caseSensitive = false;
 
