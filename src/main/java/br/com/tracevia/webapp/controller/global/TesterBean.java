@@ -419,7 +419,7 @@ public class TesterBean {
 			 if (report.lines.isEmpty())
 			 	return;
 				     
-		     model.generateExcelFile(columnsInUse, report.lines,"sos", report.IDs, dateStart, dateEnd, "", "TRACEVIA", "Teste", false, false);
+		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
