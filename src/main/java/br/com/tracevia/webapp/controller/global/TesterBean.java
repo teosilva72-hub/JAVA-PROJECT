@@ -210,21 +210,22 @@ public class TesterBean {
 	}
 	
 	public void defineJsTable(String jsTable) {
-		this.jsTable = jsTable;		
+		this.jsTable = jsTable;
+		
 	}
 	
 	public void defineJsTableScroll(String jsTableScroll) {
-		this.jsTableScroll = jsTableScroll;		
+		this.jsTableScroll = jsTableScroll;
+		
 	}
-	
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
 	
 	public boolean isTotal() {
-		return total == null ? false : true; 
+		return total == null ? false : true;
 	}
-	
+		
 	public ReportDAO getReport() {
 		return report;
 	}
@@ -317,6 +318,7 @@ public class TesterBean {
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
+		String group = "dat";
 		setColumnsInUse(columns);
 						
 		model = new ExcelTemplate(); // HERE
@@ -326,14 +328,23 @@ public class TesterBean {
 		resetForm();
 		
 		String query = "SELECT ";
+		System.out.println(searchParameters);
+		System.out.println(columns);
 		for (String col : columns) {
-			query += String.format("%s, ", searchParameters.get(Integer.parseInt(col)));
-		}
-		if (hasPeriod() && query.contains("$period")) {
-			String[] selected = selectedPeriod.split(",");
-			query = String.format("%s as dat", query.replace("$period", genPeriod(selected)));
-			selectedPeriod = selected[2];
-			setPeriod = true;
+			String column = searchParameters.get(Integer.parseInt(col));
+			if (!setPeriod && hasPeriod() && column.contains("$period")) {
+				String[] selected = selectedPeriod.split(",");
+				column = column.replace("$period", genPeriod(selected));
+				if (column.contains("@")) {
+					String[] alias = column.split("@");
+					query += String.format("%s as %s, ", alias[0], group);
+					group += String.format(", %s", alias[1]);
+				} else
+					query += String.format("%s as %s, ", column, group);
+				selectedPeriod = selected[2];
+				setPeriod = true;
+			} else
+				query += String.format("%s, ", column);
 		}
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
@@ -385,7 +396,7 @@ public class TesterBean {
 				}
 			}
 			if (setPeriod && hasPeriod())
-				query += " GROUP BY dat ORDER BY dat ASC";
+				query += String.format(" GROUP BY %1$s ORDER BY %1$s ASC", group);
 			
 			System.out.println(query);
 
@@ -408,7 +419,7 @@ public class TesterBean {
 			 if (report.lines.isEmpty())
 			 	return;
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, false, false);
+		     model.generateExcelFile(columnsInUse, report.lines,"sos", report.IDs, dateStart, dateEnd, "", "TRACEVIA", "Teste", false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
