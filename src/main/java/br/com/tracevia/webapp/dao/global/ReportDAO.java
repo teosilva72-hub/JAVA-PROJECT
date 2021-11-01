@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.conf.ConnectionUrlParser.Pair;
+
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -21,6 +23,7 @@ public class ReportDAO {
 
     public List<String> columnName;
     public List<String[]> lines;
+    public List<Pair<String, List<String[]>>> secondaryLines;
     public List<String> IDs;
 
     public ReportDAO(List<String> columnName) throws Exception {
@@ -38,10 +41,23 @@ public class ReportDAO {
         
     }
 
-    public void getReport(String query, String id) throws Exception {
+    public void getReport(String query, String id, String[] division) throws Exception {
        
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
+    	List<String[]> allOptions = new ArrayList<>();
+
+        if (division != null) {
+            String search = "";
+            allOptions = this.getOtherElementTable(division[0], division[1]);
+
+            for (String[] option : allOptions) {
+                search += String.format("%s, %s", search, option[0]);
+            }
+            this.completeSecondary(query, allOptions);
+
+            query = query.replace("@division", search.substring(2));
+        }
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
@@ -74,6 +90,42 @@ public class ReportDAO {
 
         this.lines = lines;
         this.IDs = field;
+    }
+
+    private void completeSecondary(String query, List<String[]> fields) throws Exception {     
+    	List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
+    	
+        for (int index = 0; index < fields.size(); index++) {
+            List<String[]> secondaryList = new ArrayList<>();
+            String division = fields.get(index)[0];
+
+            String newQuery = query.replace("@division", division);
+            
+            ps = conn.prepareStatement(newQuery);
+            rs = ps.executeQuery();
+    
+            if (rs.isBeforeFirst()) {
+                while (rs.next()) {
+                   
+                    ResultSetMetaData rsmd = rs.getMetaData();
+                    int columnsNumber = rsmd.getColumnCount();
+                    String[] column = new String[columnsNumber];
+                    
+                    for (int idx = 1; idx <= columnsNumber; idx++) {
+    
+                        String value = rs.getString(idx);
+                        
+                        column[idx - 1] = value != null && value != "" ? value : "-";
+                    }
+    
+                    secondaryList.add(column);
+                }
+            }
+            
+            secondaryLines.add(new Pair<String, List<String[]>>(division, secondaryList));
+        }
+        
+        this.secondaryLines = secondaryLines;
     }
 
     public List<String[]> getOtherElementTable(String table, String column) throws SQLException {

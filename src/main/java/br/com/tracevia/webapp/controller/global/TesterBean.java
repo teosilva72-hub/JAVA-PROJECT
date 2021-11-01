@@ -48,6 +48,7 @@ public class TesterBean {
 	private String periodColumn;
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
+	private String division;
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -178,6 +179,10 @@ public class TesterBean {
 		this.periodColumn = column;
 	}
 	
+	public void setDivision(String division) {
+		this.division = division;
+	}
+	
 	public void setPeriod(int time, String step, String name) {
 		this.period.add(new String[]{String.valueOf(time), step, name});
 	}
@@ -229,6 +234,10 @@ public class TesterBean {
 	
 	public boolean isTotal() {
 		return total == null ? false : true;
+	}
+	
+	public boolean isDivision() {
+		return division == null ? false : true;
 	}
 		
 	public ReportDAO getReport() {
@@ -403,13 +412,20 @@ public class TesterBean {
 					count++;
 				}
 			}
+			if (isDivision()) {
+				if (count == 0)
+					query += " WHERE";
+				
+				query += String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division);
+			}
+
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
 			System.out.println(query);
 
 		   // Table Fields
-		    report.getReport(query, idTable);
+		    report.getReport(query, idTable, isDivision() ? new String[] { table, division } : null);
 
 			System.out.println(report.IDs);
 		          	
