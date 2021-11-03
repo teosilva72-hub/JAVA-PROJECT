@@ -2,8 +2,12 @@ package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +52,8 @@ public class TesterBean {
 	private String periodColumn;
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
-	private String division;
+	private String columnDate;
+	private String[] division;
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
@@ -64,33 +69,20 @@ public class TesterBean {
 	List<? extends Equipments> listEquips;  
 			
 	public String[] equipNames;
+
+	// Get
 		
 	public ReportSelection getSelect() {
 		return select;
-	}
-		
-	public void setSelect(ReportSelection select) {
-		this.select = select;
 	}
 	
 	public ReportBuild getBuild() {
 		return build;
 	}
 
-	public void setBuild(ReportBuild build) {
-		this.build = build;
-	}
-
 	public List<Builder> getResultList() {
 		return resultList;
     }
-	
-	public void setColumnsName(String columns) {
-		List<String> columnsName = Arrays.asList(columns.split(","));
-
-		this.columnsName = columnsName;
-		this.columnsInUse = columnsName;
-	}
 	
 	public List<String> getColumnsInUse() {
 		return columnsInUse;
@@ -98,6 +90,35 @@ public class TesterBean {
 	
 	public List<? extends Equipments> getListEquips() {
 		return listEquips;
+	}
+
+	public List<String[]> getDateSearch() {
+		return dateSearch;
+	}
+
+	public List<Pair<String[], List<String[]>>> getFilterSearch() {
+		return filterSearch;
+	}
+		
+	public ReportDAO getReport() {
+		return report;
+	}
+
+	// Set
+
+	public void setBuild(ReportBuild build) {
+		this.build = build;
+	}
+		
+	public void setSelect(ReportSelection select) {
+		this.select = select;
+	}
+	
+	public void setColumnsName(String columns) {
+		List<String> columnsName = Arrays.asList(columns.split(","));
+
+		this.columnsName = columnsName;
+		this.columnsInUse = columnsName;
 	}
 	
 	public void setColumnsInUse(String[] columns) {
@@ -114,20 +135,16 @@ public class TesterBean {
 		this.searchParameters = searchParameters;
 	}
 
-	public List<String[]> getDateSearch() {
-		return dateSearch;
-	}
-
 	public void setDateSearch(String dateSearch, String nameColumn) {
 		setDateSearch(dateSearch, nameColumn, false);
 	}
 
 	public void setDateSearch(String dateSearch, String nameColumn, boolean mandatory) {
-		this.dateSearch.add(new String[]{dateSearch, nameColumn, mandatory ? "required" : ""});
+		setDateSearch(dateSearch, nameColumn, mandatory, false);
 	}
 
-	public List<Pair<String[], List<String[]>>> getFilterSearch() {
-		return filterSearch;
+	public void setDateSearch(String dateSearch, String nameColumn, boolean mandatory, boolean forProcess) {
+		this.dateSearch.add(new String[]{dateSearch, nameColumn, mandatory ? "required" : "", forProcess ? "" : null});
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn) {
@@ -180,7 +197,11 @@ public class TesterBean {
 	}
 	
 	public void setDivision(String division) {
-		this.division = division;
+		this.division = division.split(",");
+	}
+	
+	public void setColumnDate(String columnDate) {
+		this.columnDate = columnDate;
 	}
 	
 	public void setPeriod(int time, String step, String name) {
@@ -194,6 +215,12 @@ public class TesterBean {
 	public void setExtraGroup(String extraGroup) {
 		this.extraGroup = ", " + extraGroup;
 	}
+
+	public void setReport(ReportDAO report) {
+		this.report = report;
+	}
+
+	// Devines
 	
 	public void defineFileName(String fileName) {
 		this.fileName = fileName;
@@ -231,6 +258,8 @@ public class TesterBean {
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
+
+	// Verif
 	
 	public boolean isTotal() {
 		return total == null ? false : true;
@@ -239,14 +268,16 @@ public class TesterBean {
 	public boolean isDivision() {
 		return division == null ? false : true;
 	}
-		
-	public ReportDAO getReport() {
-		return report;
+	
+	public boolean hasPeriod() {
+		return periodColumn != null ? true : false;
+	}
+	
+	public boolean hasColumnDate() {
+		return columnDate != null ? true : false;
 	}
 
-	public void setReport(ReportDAO report) {
-		this.report = report;
-	}
+	// Util
 
 	public String genPeriod(String[] time) {
 		switch (time[1].toUpperCase()) {
@@ -259,10 +290,6 @@ public class TesterBean {
 			default:
 				return String.format("DATE(%s)", periodColumn);
 		}
-	}
-	
-	public boolean hasPeriod() {
-		return periodColumn != null ? true : false;
 	}
 	
 	public String[] getLeft(Pair<String[], List<String>> pair) {
@@ -333,7 +360,9 @@ public class TesterBean {
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
 		List<String> idSearch = new ArrayList<>();
-		String group = "dat";
+		String group = "$period";
+		Date[] dateProcess = null;
+		String[] period = null;
 		setColumnsInUse(columns);
 						
 		model = new ExcelTemplate(); // HERE
@@ -343,33 +372,36 @@ public class TesterBean {
 		resetForm();
 		
 		String query = "SELECT ";
-		System.out.println(searchParameters);
-		System.out.println(columns);
 		for (String col : columns) {
 			String column = searchParameters.get(Integer.parseInt(col));
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
-				String[] selected = selectedPeriod.split(",");
-				column = column.replace("$period", genPeriod(selected));
+				period = selectedPeriod.split(",");
+				column = column.replace("$period", genPeriod(period));
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
 					group = String.format("%s, %s", alias[1], group);
 				} else
 					query += String.format("%s as %s, ", column, group);
-				selectedPeriod = selected[2];
+				selectedPeriod = period[2];
 				setPeriod = true;
 			} else
 				query += String.format("%s, ", column);
 		}
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
-					
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
 				dateStart = map.get(String.format("%s-start", search[0]));
 				dateEnd = map.get(String.format("%s-end", search[0]));
 
+				if (search[3] != null && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
+					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					Date start = format.parse(dateStart);
+					Date end = format.parse(dateEnd);
+					dateProcess = new Date[] { start, end };
+				}
 				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
 					query += " WHERE";
 
@@ -416,7 +448,7 @@ public class TesterBean {
 				if (count == 0)
 					query += " WHERE";
 				
-				query += String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division);
+				query += String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division[1]);
 			}
 
 			if (setPeriod && hasPeriod())
@@ -425,7 +457,10 @@ public class TesterBean {
 			System.out.println(query);
 
 		   // Table Fields
-		    report.getReport(query, idTable, isDivision() ? new String[] { table, division } : null);
+		    report.getReport(query, idTable, isDivision() ? new String[] { division[0], division[1], division[2] } : null);
+
+			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
+				this.setIntervalDate(dateProcess, columnDate, period);
 
 			System.out.println(report.IDs);
 		          	
@@ -478,6 +513,89 @@ public class TesterBean {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
+		Calendar calendar = Calendar.getInstance();
+		List<String[]> newList = new ArrayList<>();
+		calendar.setTime(date[0]);
+		String[] model = new String[report.columnName.size()];
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		boolean sep = column.contains("@");
+		int[] col = new int[2];
+		Arrays.fill(model, "-");
+		int interval;
+		Date step;
+
+		switch (period[1].toUpperCase()) {
+			case "MINUTE":
+				interval = Calendar.MINUTE;
+				break;
+
+			case "HOUR":
+				interval = Calendar.HOUR;
+				break;
+				
+			default:
+				interval = Calendar.DAY_OF_MONTH;
+		}
+
+		if (sep) {
+			String[] c = column.split("@");
+			col[0] = Integer.parseInt(c[0]);
+			col[1] = Integer.parseInt(c[1]);
+		} else {
+			col[0] = Integer.parseInt(column);
+		}
+
+		for (String[] lines : report.lines) {
+			String d;
+
+			if (sep) {
+				d = String.format("%s %s", lines[col[0]], lines[col[1]]);
+			} else {
+				d = String.format("%s", lines[col[0]]);
+			}
+
+			Date dateReport = formatter.parse(d);
+			
+			step = calendar.getTime();
+			
+			while (step.before(dateReport) && step.before(date[1])) {
+				String f = formatter.format(step);
+				if (sep) {
+					String[] split = f.split(" ");
+					model[col[0]] = split[0];
+					model[col[1]] = split[1];
+				} else
+					model[col[0]] = f;
+
+				newList.add(model.clone());
+				calendar.add(interval, Integer.parseInt(period[0]));
+				step = calendar.getTime();
+			}
+
+			newList.add(lines);
+			calendar.add(interval, Integer.parseInt(period[0]));
+		}
+
+		step = calendar.getTime();
+
+		while (step.before(date[1])) {
+			String f = formatter.format(step);
+			if (sep) {
+				String[] split = f.split(" ");
+				model[col[0]] = split[0];
+				model[col[1]] = split[1];
+			} else
+				model[col[0]] = f;
+
+			newList.add(model.clone());
+			calendar.add(interval, Integer.parseInt(period[0]));
+			step = calendar.getTime();
+		}
+
+		report.lines = newList;
 	}
 	   
 		

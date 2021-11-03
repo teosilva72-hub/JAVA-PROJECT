@@ -33,10 +33,12 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('start_date')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', '6 hours')}" />
-
-		<f:viewAction onPostback="true" action="#{testerBean.setDivision('state_id')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('dat', 'Data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDivision('sos_equipment, equip_id, km')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('1@2')}" />
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.setExtraGroup('end_date')}" /> -->
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data', false, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipe', 'sos_equipment.equip_id|name', true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" />
