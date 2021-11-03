@@ -49,10 +49,10 @@ public class ReportDAO {
 
         if (division != null) {
             String search = "";
-            allOptions = this.getOtherElementTable(division[0], division[1]);
+            allOptions = this.getOtherElementTable(division[0], new String[] { division[1], division[2] });
 
             for (String[] option : allOptions) {
-                search += String.format("%s, %s", search, option[0]);
+                search = String.format("%s, %s", search, option[0]);
             }
             this.completeSecondary(query, allOptions);
 
@@ -70,7 +70,7 @@ public class ReportDAO {
                
             	ResultSetMetaData rsmd = rs.getMetaData();
                 int columnsNumber = rsmd.getColumnCount();
-                String[] column = new String[columnsNumber];
+                String[] row = new String[columnsNumber];
                 
                 for (int idx = 1; idx <= columnsNumber; idx++) {
                     String name = rsmd.getColumnName(idx);
@@ -79,12 +79,12 @@ public class ReportDAO {
 
                     String value = rs.getString(idx);
                     
-                    column[idx - 1] = value != null && value != "" ? value : "-";
+                    row[idx - 1] = value != null && value != "" ? value : "-";
                     if (name.equals(id) && !field.contains(value))
                         field.add(value);
                 }
 
-                lines.add(column);
+                lines.add(row);
             }
         }
 
@@ -97,9 +97,9 @@ public class ReportDAO {
     	
         for (int index = 0; index < fields.size(); index++) {
             List<String[]> secondaryList = new ArrayList<>();
-            String division = fields.get(index)[0];
+            String[] division = fields.get(index);
 
-            String newQuery = query.replace("@division", division);
+            String newQuery = query.replace("@division", division[0]);
             
             ps = conn.prepareStatement(newQuery);
             rs = ps.executeQuery();
@@ -122,7 +122,7 @@ public class ReportDAO {
                 }
             }
             
-            secondaryLines.add(new Pair<String, List<String[]>>(division, secondaryList));
+            secondaryLines.add(new Pair<String, List<String[]>>(division[1], secondaryList));
         }
         
         this.secondaryLines = secondaryLines;
@@ -136,10 +136,11 @@ public class ReportDAO {
     	List<String[]> fields = new ArrayList<>();
     	List<List<String>> fieldsTemp = new ArrayList<>();
         boolean doubleField = !column[0].equals(column[1]);
+        String select = doubleField ? String.format("%s, %s", column[0], column[1]) : column[0];
         for (int i = 0; i < (doubleField ? 2 : 1); i++)
         	fieldsTemp.add(new ArrayList<>());
 
-        String query = String.format("SELECT %s FROM %s", doubleField ? String.format("%s, %s", column[0], column[1]) : column[0], table);
+        String query = String.format("SELECT DISTINCT %s FROM %s GROUP BY %1$s", select, table);
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
