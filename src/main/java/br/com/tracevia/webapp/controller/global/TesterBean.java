@@ -263,13 +263,6 @@ public class TesterBean {
 		this.caseSensitive = true;
 	}
 		
-
-	// Verif
-	
-	public boolean isTotal() {
-		return total == null ? false : true;
-	}
-	
 	public boolean isDivision() {
 		return division == null ? false : true;
 	}
@@ -521,7 +514,7 @@ public class TesterBean {
 		}
 		
 	}	   
-	}
+
 
 	public void setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
