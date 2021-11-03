@@ -13,7 +13,6 @@
 	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
 	
 	<f:metadata>
-
   
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('CALLS')}" />
@@ -21,20 +20,20 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('jsTableScroll')}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineTotal('state_id')}" /> -->
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineSat()}" /> -->
+	    <f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, DATA, MOTOS, PASSEIO, PESADOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('siteID; $period; SUM(IF(classe = 9, 1, 0)); SUM(IF(classe = 1, 1, 0)); SUM(IF(classe not in (1, 9), 1, 0))')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, HORA, MOTOS, PASSEIO, PESADOS, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(classe = 9, 1, 0)); SUM(IF(classe = 1, 1, 0)); SUM(IF(classe not in (1, 9), 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hora')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', '1 dia')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true)}" />

@@ -583,6 +583,17 @@ public class DateTimeApplication {
 
 		return difference;
 	}	
+	
+	
+	public int daysDiff(String startDate, String endDate) throws ParseException {
+
+		int days=0;
+
+		days = (int) diferencaDias(startDate, endDate);
+			
+
+		return days;
+	}	
 
 	//Sobrecarga 24 HRS		
 	public int daysDifference(String startDate, String endDate) throws ParseException {
@@ -625,6 +636,26 @@ public class DateTimeApplication {
 	public String DateTimeToStringFim(String data) throws ParseException {
 
 		SimpleDateFormat dtf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = dtf.parse(data);
+		dtf.applyPattern("yyyy-MM-dd 23:59:59");
+		String dataFormatada = dtf.format(date);
+
+		return dataFormatada;
+	}
+	
+	public String DateTimeStartView(String data) throws ParseException {
+
+		SimpleDateFormat dtf = new SimpleDateFormat(DATE_TIME_FORMAT_DATE_VIEW);
+		Date date = dtf.parse(data);
+		dtf.applyPattern("yyyy-MM-dd 00:00:00");
+		String dataFormatada = dtf.format(date);
+
+		return dataFormatada;
+	}
+	
+	public String DateTimeEndView(String data) throws ParseException {
+
+		SimpleDateFormat dtf = new SimpleDateFormat(DATE_TIME_FORMAT_DATE_VIEW);
 		Date date = dtf.parse(data);
 		dtf.applyPattern("yyyy-MM-dd 23:59:59");
 		String dataFormatada = dtf.format(date);
@@ -2060,5 +2091,27 @@ public class DateTimeApplication {
 	}
 
 	// ------------------------------------------------------------------------------------------------------
-
+	
+	 public Integer defineInterval(String period) {
+		 
+		 int interval = 0;
+		 
+		 switch(period){
+			 
+		 case "05 minutes": interval = 288; break;
+		 case "06 minutes": interval = 240; break;
+		 case "10 minutes": interval = 144; break;
+		 case "15 minutes": interval = 96; break;
+		 case "30 minutes": interval = 48; break;
+		 case "01 hour": interval = 24; break;
+		 case "06 hours": interval = 4; break;
+			 
+		 }
+		 
+		 return interval;					 
+		 
+	 }
+	 
+   // ------------------------------------------------------------------------------------------------------
+	
 }

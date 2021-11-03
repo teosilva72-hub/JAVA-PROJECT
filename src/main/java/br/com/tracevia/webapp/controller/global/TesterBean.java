@@ -37,10 +37,10 @@ public class TesterBean {
 	public String 	fileName,
 					fileTitle,
 					sheetName = "Report";
-	public String 	module,
-					total;
+	public String 	module;
+	
 	public String 	jsTable, jsTableScroll;
-	public boolean 	sat,
+	public boolean 	isSat, haveTotal, multiTab = false,
 					caseSensitive = false;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -211,12 +211,16 @@ public class TesterBean {
 		this.module = module;
 	}
 	
-	public void defineTotal(String total) {
-		this.total = total;
+	public void haveTotal(boolean total) {
+		this.haveTotal = total;
 	}
 	
-	public void defineSat() {
-		this.sat = true;
+	public void isSat(boolean sat) {
+		this.isSat = sat;
+	}
+	
+	public void isMultiTab(boolean multiTab) {
+		this.multiTab = multiTab;
 	}
 	
 	public void defineJsTable(String jsTable) {
@@ -231,11 +235,7 @@ public class TesterBean {
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
-	
-	public boolean isTotal() {
-		return total == null ? false : true;
-	}
-	
+		
 	public boolean isDivision() {
 		return division == null ? false : true;
 	}
@@ -323,13 +323,15 @@ public class TesterBean {
 	}
 
 	// CAMPOS
-		 		
+	
 	public void createFields() throws Exception {
 		
 		int count = 0;
 		boolean setPeriod = false;
+		
 		Map<String, String> map = SessionUtil.getRequestParameterMap();
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
+		
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
 		List<String> idSearch = new ArrayList<>();
@@ -433,7 +435,7 @@ public class TesterBean {
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
 		 
 			 // GUARDAR VALORES NA SESS�O		     
-		     //SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
+		     // SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
 		     // SessionUtil.setParam("fields", build.fields);	//Fields
 		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
 		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
@@ -441,11 +443,11 @@ public class TesterBean {
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 
 			if (report.lines.isEmpty())
-				return;
+				 return;
 			if (report.IDs.isEmpty())
-				report.IDs.addAll(idSearch);
+				 report.IDs.addAll(idSearch);
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, false, false);
+		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, isSat, haveTotal);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
@@ -478,11 +480,11 @@ public class TesterBean {
 			e.printStackTrace();
 		}
 		
-	}
-	   
+	}	   
 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------	
-		 public void resetForm() {
+		
+	   public void resetForm() {
 				
 				// Limpa valores da sessão
 				build.resetReportValues();
@@ -495,11 +497,9 @@ public class TesterBean {
 				build.clearBool = true;
 											
 			}	
-	
 	 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
-
 			/**
 			 * Método para carregar equipamentos disponíveis para seleção
 			 * @author Wellington 26/10/2021
