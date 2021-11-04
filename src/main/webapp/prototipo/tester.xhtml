@@ -20,8 +20,8 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineTotal('state_id')}" /> -->
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.defineSat()}" /> -->
+	    <f:viewAction onPostback="true" action="#{testerBean.haveTotal('false')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('false')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
