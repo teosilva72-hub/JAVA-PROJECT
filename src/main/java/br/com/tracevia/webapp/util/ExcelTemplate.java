@@ -458,7 +458,7 @@ public class ExcelTemplate {
 				
 				// NOME DO EQUIPAMENTO
 				utilSheet.createCell(sheet, row, 5, 2);		
-				utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat")? satInfo.get(index).getNome() : equipsInfo.get(index).getNome()); // null? 0 :
+				utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat")? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
 				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
 		 
 				// DATA DE CONSULTA LABEL
@@ -483,7 +483,7 @@ public class ExcelTemplate {
 
 				// CIDADE
 				utilSheet.createCell(sheet, row, 6, 2);
-				utilSheet.setCellValue(sheet, row, 6, 2, module.equals("sat")? satInfo.get(index).getCidade() : equipsInfo.get(index).getCidade());
+				utilSheet.setCellValue(sheet, row, 6, 2, module.equals("sat")? satInfo.get(0).getCidade() : equipsInfo.get(0).getCidade());
 				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
 
 				// SENTIDO LABEL
@@ -508,7 +508,7 @@ public class ExcelTemplate {
 
 				// NOME DA RODOVIA / ESTRADA
 				utilSheet.createCell(sheet, row, 7, 2);
-				utilSheet.setCellValue(sheet, row, 7, 2, module.equals("sat")? satInfo.get(index).getEstrada() : equipsInfo.get(index).getEstrada());
+				utilSheet.setCellValue(sheet, row, 7, 2, module.equals("sat")? satInfo.get(0).getEstrada() : equipsInfo.get(0).getEstrada());
 				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
 				
 				if(!period.equals("")) {
@@ -537,7 +537,7 @@ public class ExcelTemplate {
 
 				// KM
 				utilSheet.createCell(sheet, row, 8, 2);
-				utilSheet.setCellValue(sheet, row, 8, 2, module.equals("sat")? satInfo.get(index).getKm() : equipsInfo.get(index).getKm());
+				utilSheet.setCellValue(sheet, row, 8, 2, module.equals("sat")? satInfo.get(0).getKm() : equipsInfo.get(0).getKm());
 				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 8, 2);
 
 				// ----------------------------------------------------------------------------------------------------------------
@@ -558,10 +558,10 @@ public class ExcelTemplate {
 					// NÃšMERO DE LINHAS
 					utilSheet.createCell(sheet, row, 9, 2);
 					
-					if(satInfo.get(index).getQtdeFaixas().matches(NUMBER_REGEX))
-						utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(satInfo.get(index).getQtdeFaixas()));
+					if(satInfo.get(0).getQtdeFaixas().matches(NUMBER_REGEX))
+						utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(satInfo.get(0).getQtdeFaixas()));
 					
-					else utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(index).getQtdeFaixas()); 
+					else utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(0).getQtdeFaixas()); 
 					
 					utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 
