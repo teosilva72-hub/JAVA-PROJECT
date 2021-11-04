@@ -398,8 +398,11 @@ public class TesterBean {
 
 				if (search[3] != null && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
 					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(format.parse(dateEnd));
+					calendar.add(Calendar.DAY_OF_MONTH, 1);
 					Date start = format.parse(dateStart);
-					Date end = format.parse(dateEnd);
+					Date end = calendar.getTime();
 					dateProcess = new Date[] { start, end };
 				}
 				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
@@ -523,7 +526,7 @@ public class TesterBean {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		boolean sep = column.contains("@");
 		int[] col = new int[2];
-		Arrays.fill(model, "-");
+		Arrays.fill(model, "0");
 		int interval;
 		Date step;
 
@@ -554,7 +557,7 @@ public class TesterBean {
 			if (sep) {
 				d = String.format("%s %s", lines[col[0]], lines[col[1]]);
 			} else {
-				d = String.format("%s", lines[col[0]]);
+				d = lines[col[0]];
 			}
 
 			Date dateReport = formatter.parse(d);
