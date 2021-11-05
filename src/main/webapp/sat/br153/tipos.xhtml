@@ -38,7 +38,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
 			          
@@ -121,7 +121,7 @@
 		</c:forEach> <!-- LOOP TAG END -->
 	</h:dataTable> <!-- DATATABALE JSF END -->
 	<!---->
-</h:form><!-- FORM TABLE END-->
+   </h:form><!-- FORM TABLE END-->
 	 
 	  <!-- ============================================================================================================================= -->
 	 
