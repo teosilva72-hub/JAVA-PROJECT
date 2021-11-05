@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
@@ -49,12 +50,12 @@ public class ReportDAO {
 
         if (division != null) {
             String search = "";
-            allOptions = this.getOtherElementTable(division[0], new String[] { division[1], division[2] });
+            String[] div = Arrays.copyOfRange(division, 1, division.length);
+            allOptions = this.getOtherElementTable(division[0], div);
 
             for (String[] option : allOptions) {
-                search = String.format("%s, %s", search, option[0]);
+                search += String.format(", %s", option[0]);
             }
-            this.completeSecondary(query, allOptions);
 
             query = query.replace("@division", search.substring(2));
         }
@@ -90,6 +91,9 @@ public class ReportDAO {
 
         this.lines = lines;
         this.IDs = field;
+
+        if (division != null)
+            this.completeSecondary(query, allOptions);
     }
 
     private void completeSecondary(String query, List<String[]> fields) throws Exception {     
@@ -135,26 +139,27 @@ public class ReportDAO {
     public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
     	List<String[]> fields = new ArrayList<>();
     	List<List<String>> fieldsTemp = new ArrayList<>();
-        boolean doubleField = !column[0].equals(column[1]);
-        String select = doubleField ? String.format("%s, %s", column[0], column[1]) : column[0];
-        for (int i = 0; i < (doubleField ? 2 : 1); i++)
+        String select = "";
+        for (String col : column) {
+            select += String.format(", %s", col);
+            
         	fieldsTemp.add(new ArrayList<>());
+        }
 
-        String query = String.format("SELECT DISTINCT %s FROM %s GROUP BY %1$s", select, table);
+        int tempSize = fieldsTemp.size();
+        String query = String.format("SELECT DISTINCT %s FROM %s GROUP BY %1$s", select.substring(2), table);
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();
 
         if (rs.isBeforeFirst()) {
             while (rs.next()) {
-                for (int i = 0; i < (doubleField ? 2 : 1); i++) {
+                for (int i = 0; i < tempSize; i++) {
                     String value = rs.getString(i + 1);
                     if (value == null)
                         value = "";
-                    if (!fieldsTemp.get(i).contains(value) && !value.isEmpty())
+                    if ((!fieldsTemp.get(i).contains(value) && !value.isEmpty() || i > 0))
                     	fieldsTemp.get(i).add(value);
-                    else if (i > 0)
-                    	fieldsTemp.get(0).remove(0);
                     else
                     	break;
                 }
@@ -164,8 +169,12 @@ public class ReportDAO {
         
         int size = fieldsTemp.get(0).size();
         for (int i = 0; i < size; i++) {
-        	String value = fieldsTemp.get(0).get(i);
-        	fields.add(new String[] { value, doubleField ? fieldsTemp.get(1).get(i) : value });
+            String[] val = new String[tempSize];
+            for (int r = 0; r < tempSize; r++) {
+                List<String> temp = fieldsTemp.get(r);
+                val[r] = temp.get(i);
+            }
+        	fields.add(val);
 		}
         
         return fields;

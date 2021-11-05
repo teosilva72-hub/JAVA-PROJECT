@@ -374,15 +374,18 @@ public class TesterBean {
 		String query = "SELECT ";
 		for (String col : columns) {
 			String column = searchParameters.get(Integer.parseInt(col));
+
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
 				period = selectedPeriod.split(",");
 				column = column.replace("$period", genPeriod(period));
+
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
 					group = String.format("%s, %s", alias[1], group);
 				} else
 					query += String.format("%s as %s, ", column, group);
+					
 				selectedPeriod = period[2];
 				setPeriod = true;
 			} else
