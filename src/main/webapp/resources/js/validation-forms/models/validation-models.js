@@ -1856,8 +1856,8 @@ function validationTemplate9(formId, dateStartId, equipMessage, dateStartMessage
 			},
 			dateEnd: {
 				required: true,
-				greaterThan: dateStartId,
-				maxDate: maxDays,
+				date: true,
+				searchDays: true,			
 				dateITA: true
 			}
 		},

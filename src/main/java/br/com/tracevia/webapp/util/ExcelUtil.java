@@ -2448,7 +2448,7 @@ public class ExcelUtil {
 						  			
 			  for (int col = startCol; col < columnName.size(); col++) {
 				  
-				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < periodRange; rowIndex++, lin++) {
 					  
 				    index = lin + (day * periodRange);
 			 		
