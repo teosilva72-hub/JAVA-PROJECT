@@ -14,12 +14,12 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('CALLS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('CALLS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('velocidade')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Velocidade')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ARTERIS')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('jsTableScroll')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('false')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
@@ -35,8 +35,10 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
 			               
@@ -137,7 +139,7 @@
 	  
 	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
-	      <ui:include src="/template/modal/submit_modal_template_2.xhtml" />
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
       <!-- ============================================================================================================================= -->
              

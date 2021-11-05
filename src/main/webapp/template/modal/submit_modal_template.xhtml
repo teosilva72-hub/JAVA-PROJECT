@@ -112,10 +112,7 @@
 							<!-- FORM ROW DIV -->
 							<div class="form-group col-sm-12 checkbox-field">
 								<!-- FORM GROUP DIV -->
-								<span><i class="fas fa-hdd"></i></span>
-								<!-- SPAN ICON -->
-								<span for="date-period" class="valid-icon-hidden"></span>
-								<!-- SPAN VALIDATION ICON -->
+								<span><i class="fas fa-hdd"></i></span>							
 								<!---->
 								<select name="date-period" id="date-period" required="required">
 									<!-- SELECT OPTIONS -->
@@ -129,6 +126,9 @@
 								</select>
 								<!-- INPUT -->
 								<!---->
+								<!-- SPAN ICON -->
+								<span for="date-period" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
 							</div>
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
@@ -149,13 +149,14 @@
 							<div class="form-group input-field">
 								<!-- FORM GROUP DIV -->
 								<span><i class="far fa-calendar-alt"></i></span>
-								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-start" class="valid-icon-hidden"></span>
-								<!-- SPAN VALIDATION ICON -->
 								<!---->
 								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-start" id="#{dateSearch[0]}-start" required="#{dateSearch[2]}"
 									placeholder="#{dateSearch[1]} #{'INICIO'}" />
 								<!-- INPUT -->
+								<!---->
+								<!-- SPAN ICON -->
+								<span for="#{dateSearch[0]}-start" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
@@ -176,14 +177,15 @@
 							<!-- FORM ROW DIV -->
 							<div class="form-group input-field">
 								<!-- FORM GROUP DIV -->
-								<span><i class="far fa-calendar-alt"></i></span>
-								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-end" class="valid-icon-hidden"></span>
-								<!-- SPAN VALIDATION ICON -->
+								<span><i class="far fa-calendar-alt"></i></span>								
 								<!---->
 								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-end" id="#{dateSearch[0]}-end" required="#{dateSearch[2]}"
 									placeholder="#{dateSearch[1]} #{'FIM'}" />
 								<!-- INPUT -->
+								<!---->
+								<!-- SPAN ICON -->
+								<span for="#{dateSearch[0]}-end" class="valid-icon-hidden"></span>
+								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
@@ -233,7 +235,6 @@
 
 					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
 						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn">
-						<f:ajax execute="@form" render=":equip :periods :dateStart :dateEnd" />
 					</h:commandButton><!-- BUTTON RESET -->
 
 					<!---->

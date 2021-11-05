@@ -500,7 +500,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
-			String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal) {
+			String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet) {
 		
 		sheet = null;		
 		row = null;
@@ -511,7 +511,7 @@ public class ExcelTemplate {
 		int startCol = 0;
 		int endCol = columns.size() - 1;
 		
-		if(period.equals("day") || period.equals("month") || period.equals("year") || period.equals("single")) {
+		if(!isMultiSheet || (isMultiSheet && period.equals("day") || period.equals("month") || period.equals("year"))) {
 			
 			String[] dates = new String[2];
 			
@@ -615,7 +615,8 @@ public class ExcelTemplate {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	} else {		
+	} else if(isMultiSheet && (period.equals("5 minutes") || period.equals("6 minutes") || period.contentEquals("10 minutes")
+			|| period.equals("15 minutes") || period.equals("30 minutes") || period.equals("6 hours") || period.contentEquals("1 hour"))){		
 		
 		DateTimeApplication dt = new DateTimeApplication();
 		
@@ -682,6 +683,8 @@ public class ExcelTemplate {
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
+		
+		System.out.println(lines);
 								 		
 		utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, d , interval);
 		
