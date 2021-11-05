@@ -842,8 +842,6 @@ public class ExcelTemplate {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println(sheetNames[0]);
 					
 		// SHEETNAME BY DATE SELECTION										
 				
