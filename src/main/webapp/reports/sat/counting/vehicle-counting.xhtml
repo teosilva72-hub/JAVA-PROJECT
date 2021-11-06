@@ -14,35 +14,33 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('ReportCall')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('CALLS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('CALLS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.haveTotal('false')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('false')}" />
+			<f:viewAction onPostback="true" action="#{testerBean.defineFileName('contagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Contagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ARTERIS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('jsTableScroll')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('false')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Hora, Término, Atendida, Usuario, Estado')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id; DATE(start_date) as sd; TIME($period)@sd; end_date; answered_date; user; state_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS, SAT01, SAT02, SAT03, SAT04, SAT05, SAT06, SAT07, SAT08, SAT09, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(siteID = 1, 1, 0)); SUM(IF(siteID = 2, 1, 0)); SUM(IF(siteID = 3, 1, 0)); SUM(IF(siteID = 4, 1, 0)); SUM(IF(siteID = 5, 1, 0)); 
+		SUM(IF(siteID = 6, 1, 0)); SUM(IF(siteID = 7, 1, 0)); SUM(IF(siteID = 8, 1, 0)); SUM(IF(siteID = 9, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('start_date')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', '6 hours')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hours')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDivision('sos_equipment, equip_id, km')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('1@2')}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setExtraGroup('end_date')}" /> -->
+		 <f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipe', 'sos_equipment.equip_id|name', true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" />
-			          
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', true, true)}" />
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
     </f:metadata>
 	
 	<!---->
@@ -100,7 +98,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{speedLabels.speed_records_report_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatório de Contagem" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

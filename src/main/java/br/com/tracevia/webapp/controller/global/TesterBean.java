@@ -44,7 +44,7 @@ public class TesterBean {
 	public String 	module;
 	
 	public String 	jsTable, jsTableScroll;
-	public boolean 	isSat, haveTotal, multiTab = false,
+	public boolean 	isSat, haveTotal, multiSheet = true,
 					caseSensitive = false;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -246,8 +246,8 @@ public class TesterBean {
 		this.isSat = sat;
 	}
 	
-	public void isMultiTab(boolean multiTab) {
-		this.multiTab = multiTab;
+	public void defineMultiSheet(boolean multiSheet) {
+		this.multiSheet = multiSheet;
 	}
 	
 	public void defineJsTable(String jsTable) {
@@ -486,7 +486,7 @@ public class TesterBean {
 			if (report.IDs.isEmpty())
 				 report.IDs.addAll(idSearch);
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, isSat, haveTotal);
+		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, isSat, haveTotal, multiSheet);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
