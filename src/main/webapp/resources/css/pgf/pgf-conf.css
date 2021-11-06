@@ -1,0 +1,119 @@
+/* Animation */
+.contentPage {
+    perspective: 3000px;
+}
+
+.contentPage .col-speed {
+    height: 20em;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: 1s;
+}
+
+.contentPage .col-speed.invert {
+    transform: rotateY(180deg);
+}
+
+.contentPage .col-speed .front {
+    transform: translateZ(1px);
+}
+
+.contentPage .col-speed .back {
+    transform: translateY(-100%) rotateY(180deg);
+    height: 20em;
+}
+
+.PGFdark {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 5px;
+  margin-top: 10px;
+  width: 35%;
+}
+
+.PGFclean {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;	
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 36%;
+  margin-top: 10px;
+  margin-left: 1px;
+  width: 10%;
+  background-color: #c5c5c5 !important;
+  -webkit-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
+   -moz-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
+   box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
+  ;
+}
+
+.pgf1 {
+	border: solid 2px black;
+	width: 400px;
+	height: 300px;
+	margin-left: 7.5%;
+	margin-top: -8px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgf2 {
+	border: solid 2px black;
+	width: 400px;
+	height: 300px;
+	margin-left: -15%;
+	margin-top: -8px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgf3 {
+	border: solid 2px black;
+	width: 400px;
+	height: 300px;
+	margin-left: 7.5%;
+	margin-top: 25px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgf4 {
+	border: solid 2px black;
+	width: 400px;
+	height: 300px;
+	margin-left: -15%;
+	margin-top: 25px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgfmin {
+	border: solid 2px black;
+	width: 400px;
+	height: 100px;
+	margin-left: 23%;
+	margin-top: 14px;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgf-card{
+	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
+}
+
+.rowPGF{
+	margin-left: 45%;
+	margin-top: 1%;
+}
+  
