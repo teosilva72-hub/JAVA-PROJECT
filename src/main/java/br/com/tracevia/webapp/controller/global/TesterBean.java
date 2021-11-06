@@ -33,7 +33,7 @@ public class TesterBean {
 
 	public String table;
 	public String idTable;
-	public List<String> columnsName; 
+	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
@@ -57,6 +57,7 @@ public class TesterBean {
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
+	private List<Pair<String, List<String>>> listArgs = new ArrayList<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
 	
@@ -115,10 +116,34 @@ public class TesterBean {
 	}
 	
 	public void setColumnsName(String columns) {
-		List<String> columnsName = Arrays.asList(columns.split(","));
+		for (String col : columns.split(",")) {
+			if (col.contains("$foreach")) {
+				try {
+					ReportDAO report = new ReportDAO(columnsName);
+					List<String> args = new ArrayList<>();
 
-		this.columnsName = columnsName;
-		this.columnsInUse = columnsName;
+					String[] table = col.split("=")[1].split("\\.");
+					String[] alias = table[1].split("@"); //asd
+					
+					List<String[]> fields = report.getOtherElementTable(table[0], alias[0].split("\\|"));
+
+					for (String[] field : fields) {
+						setColumns(field[0]);
+						args.add(field[1]);
+					}
+					listArgs.add(new Pair<String, List<String>>(alias[1], args));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				setColumns(col);
+			}
+		}
+	}
+	
+	public void setColumns(String col) {
+		this.columnsName.add(col);
+		this.columnsInUse.add(col);
 	}
 	
 	public void setColumnsInUse(String[] columns) {
@@ -389,8 +414,17 @@ public class TesterBean {
 					
 				selectedPeriod = period[2];
 				setPeriod = true;
-			} else if (columnName.contains("$foreach")) {
-				
+			} else if (columnName.contains("$foreach") && column.contains("$custom")) {
+				String alias = column.split("@")[1];
+				for (Pair<String, List<String>> args : listArgs) {
+					if (alias.startsWith(args.left)) {
+						for (String arg : args.right) {
+							String columns_replace = column.replace(String.format("$custom@%s", alias), arg);
+	
+							query += String.format("%s, ", columns_replace);
+						}
+					}
+				}
 			} else
 				query += String.format("%s, ", column);
 		}
