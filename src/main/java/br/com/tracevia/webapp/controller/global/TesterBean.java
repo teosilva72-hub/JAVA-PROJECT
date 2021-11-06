@@ -373,6 +373,7 @@ public class TesterBean {
 		
 		String query = "SELECT ";
 		for (String col : columns) {
+			String columnName = columnsName.get(Integer.parseInt(col));
 			String column = searchParameters.get(Integer.parseInt(col));
 
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
@@ -388,6 +389,8 @@ public class TesterBean {
 					
 				selectedPeriod = period[2];
 				setPeriod = true;
+			} else if (columnName.contains("$foreach")) {
+				
 			} else
 				query += String.format("%s, ", column);
 		}

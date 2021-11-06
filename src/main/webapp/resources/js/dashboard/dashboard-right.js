@@ -27,13 +27,25 @@ $(async function () {
     await new Promise(r => setTimeout(r, 100))
   }
 
-  let url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
-  let url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
-  let url_digifort = `${digifort.address}:${digifort.port}`
+  while (location.hostname != "localhost") {
+    let url_rabbitmq
+    let url_asterisk
+    let url_digifort
 
-  TestCert(url_digifort, "digi");
-  TestCert(url_rabbitmq);
-  TestCert(url_asterisk, "sip");
+    try {
+      url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
+      url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
+      url_digifort = `${digifort.address}:${digifort.port}`
+    } catch {
+      continue
+    }
+
+    TestCert(url_digifort, "digi");
+    TestCert(url_rabbitmq);
+    TestCert(url_asterisk, "sip");
+
+    break
+  }
 
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });

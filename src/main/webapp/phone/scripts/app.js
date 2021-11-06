@@ -1189,4 +1189,4 @@ async function initPhone() {
 };
 
 initPhone()
-initSOS()
+// initSOS()
