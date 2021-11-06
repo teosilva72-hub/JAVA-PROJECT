@@ -429,10 +429,20 @@ public class TesterBean {
 				if (search.left[2].equals("multiple")) {
 					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[0]));
 					String newFilter = "";
-
+					
 					if (filterArray != null) {						
 						for (String f : filterArray) {
-							newFilter = String.format("%s,%s '%s'", newFilter, caseSensitive ? " BINARY" : "", f);
+							if (f.contains(",")) {
+								String[] splitF = f.split(",");
+
+								for (String new_f : splitF) {
+									new_f = new_f.trim();
+
+									newFilter = String.format("%s,%s '%s'", newFilter, caseSensitive ? " BINARY" : "", new_f);
+								}
+							} else {
+								newFilter = String.format("%s,%s '%s'", newFilter, caseSensitive ? " BINARY" : "", f);
+							}
 						}
 						filter = newFilter.substring(2);
 					}
