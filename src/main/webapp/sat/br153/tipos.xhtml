@@ -41,6 +41,8 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('user', 'Usuario')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('state_id', 'Estado', true)}" /> -->
+		
+		<f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet(false)}" />
 			          
     </f:metadata>
 	
@@ -139,7 +141,7 @@
 	  
 	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
-	      <ui:include src="/template/modal/submit_modal_template_2.xhtml" />
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
       <!-- ============================================================================================================================= -->
              

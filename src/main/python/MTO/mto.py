@@ -1,25 +1,18 @@
 # Imports
-import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
 from sqlalchemy import create_engine
-import sys
-import os
+from tkinter import *
 
-user = "root"
-passwd = "trcvbr18"
-host = "localhost"
+# 
+user = "service_storm"
+passwd = "trac3viabras1l"
+host = "10.12.100.18"
 port = 3306
 db = "tracevia_app"
 
-def main():
-    try:
-        path = sys.argv[1]
-        absolute_path = os.path.abspath(path)
-    except Exception as err:
-        print(f"Houve um erro ao coletar o caminho do arquivo: {err}")
-
-    df = pd.read_excel(absolute_path, skiprows=2)
+def save_db(path):
+  
+    df = pd.read_excel(path, skiprows=2)
     df = df.replace("Timeout", 0)
     list_df = divide_df(df)
     list_table = ["sv_data", "mto_data"]
@@ -45,16 +38,16 @@ def divide_df(dataflame):
     }, inplace=True)
 
     sv3 = dataflame.iloc[:,7:11].copy()
-    # sv1=df.iloc[:,12:16].copy()
+    sv1 = dataflame.iloc[:,12:16].copy()
     # sv5=df.iloc[:,16:20].copy()
     sv3["datetime_"] = dataflame["datetime_"]
-    #sv1["datetime_"] = dataflame["datetime_"]
+    sv1["datetime_"] = dataflame["datetime_"]
     #sv5["datetime_"] = dataflame["datetime_"]
 
     svmeteo = dataflame.iloc[:,:7].copy()
     svmeteo["road_temperature"] = dataflame["road_temperature"]
 
-    return [sv3, svmeteo]
+    return [sv3, sv1, svmeteo]
 
 def get_con():
     #Create connection to the MySQL database
