@@ -54,7 +54,7 @@ public class ReportDAO {
             allOptions = this.getOtherElementTable(division[0], div);
 
             for (String[] option : allOptions) {
-                search += String.format(", %s", option[0]);
+                search += String.format(", '%s'", option[0]);
             }
 
             query = query.replace("@division", search.substring(2));
@@ -103,7 +103,7 @@ public class ReportDAO {
             List<String[]> secondaryList = new ArrayList<>();
             String[] division = fields.get(index);
 
-            String newQuery = query.replace("@division", division[0]);
+            String newQuery = query.replace("'@division'", division[0]);
             
             ps = conn.prepareStatement(newQuery);
             rs = ps.executeQuery();
