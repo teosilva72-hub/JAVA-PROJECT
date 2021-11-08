@@ -44,6 +44,7 @@ public class ReportDAO {
 
     public void getReport(String query, String id, String[] division) throws Exception {
        
+    	String newQuery = query;
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
     	List<String[]> allOptions = new ArrayList<>();
@@ -57,10 +58,10 @@ public class ReportDAO {
                 search += String.format(", '%s'", option[0]);
             }
 
-            query = query.replace("@division", search.substring(2));
+            newQuery = query.replace("@division", search.substring(2));
         }
 
-        ps = conn.prepareStatement(query);
+        ps = conn.prepareStatement(newQuery);
         rs = ps.executeQuery();
 
         if (!custom)
@@ -105,7 +106,7 @@ public class ReportDAO {
 
             String newQuery = query.replace("@division", String.format("'%s'", division[0]));
 
-            System.out.println(newQuery);
+          //  System.out.println(newQuery);
             
             ps = conn.prepareStatement(newQuery);
             rs = ps.executeQuery();

@@ -635,6 +635,7 @@ public class TesterBean {
 			if (count > 0)
 				if (report.secondaryLines.size() >= count) {
 					temp = report.secondaryLines.get(count - 1).right;
+					calendar.setTime(date[0]);
 					newList = new ArrayList<>();
 				} else
 					break;

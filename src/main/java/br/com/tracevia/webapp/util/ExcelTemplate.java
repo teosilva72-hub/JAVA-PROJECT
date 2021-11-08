@@ -717,9 +717,9 @@ public class ExcelTemplate {
 				// -----------------------------------------------------
 				
 				if(isTotal)
-				  dataEndRow = dataStartRow + p.right.size(); 
+				  dataEndRow = dataStartRow + interval; 
 				
-				else dataEndRow = dataStartRow + p.right.size() - 1;
+				else dataEndRow = dataStartRow + interval - 1;
 				
 				// -----------------------------------------------------
 			   	

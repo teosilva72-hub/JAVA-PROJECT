@@ -2249,6 +2249,11 @@ public class EquipmentsDAO {
 		String VWquerySATMap = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, number_lanes = ?, " 
 				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
 				+ " WHERE equip_id = ? ";
+		
+
+		// SAT EQUIPMENT TABLE INSERT QUERY
+		String updateQueryDirections = "UPDATE filter_directions SET direction = ? WHERE id = ?";
+		String selectQueryDirections = "SELECT id FROM filter_directions WHERE lane = ? AND equip_id = ?";
 
 		try {
 
@@ -2317,11 +2322,54 @@ public class EquipmentsDAO {
 
 				int res2 = ps.executeUpdate();
 
-				if(res2 > 0)
-					updated = true;						 
-
-			}          	  
-
+				if(res2 > 0) {
+					
+				   int res3 = 0;
+				   int dirID = 0;				  
+					
+				  for(int ln = 1; ln <= sat.getNumFaixas(); ln++) {
+					  
+					ps = conn.prepareStatement(selectQueryDirections);
+					
+					ps.setInt(1, ln);
+					ps.setInt(2, sat.getEquip_id());
+					
+					rs = ps.executeQuery();
+										
+					if(rs.isBeforeFirst()) {
+						while(rs.next()) {
+							
+						dirID = rs.getInt("id");	
+							
+						}					
+					}			
+					
+					ps = conn.prepareStatement(updateQueryDirections);
+																					
+					switch(ln) {
+					
+					case 1: ps.setString(1, sat.getFaixa1()); break;
+					case 2: ps.setString(1, sat.getFaixa2()); break;
+					case 3: ps.setString(1, sat.getFaixa3()); break;
+					case 4: ps.setString(1, sat.getFaixa4()); break;
+					case 5: ps.setString(1, sat.getFaixa5()); break;
+					case 6: ps.setString(1, sat.getFaixa6()); break;
+					case 7: ps.setString(1, sat.getFaixa7()); break;
+					case 8: ps.setString(1, sat.getFaixa8()); break;
+					
+					}
+					
+					ps.setInt(2, dirID);
+								
+				    res3 = ps.executeUpdate();
+				    					
+				  }		
+										
+					if(res3 > 0)
+						updated = true;	
+					
+				}
+			}       	  
 
 		}catch(SQLException sqle) {
 
@@ -2340,7 +2388,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 
-	/**
+	/** 
 	 * Método para atualizar um equipamento do tipo PMV
 	 * @author Wellington
 	 * @version 1.0
@@ -3838,7 +3886,8 @@ public class EquipmentsDAO {
 
 				String querySAT= "DELETE FROM sat_equipment WHERE equip_id = ?";
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
-
+				String queryDirections = "DELETE FROM filter_directions WHERE equip_id = ? ";
+				
 				//DELETE TABLE EQUIP
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 				ps = conn.prepareStatement(querySAT);
@@ -3855,7 +3904,13 @@ public class EquipmentsDAO {
 					int rs2 =  ps.executeUpdate();
 
 					if(rs2 > 0)
-						deleted = true;				
+						ps = conn.prepareStatement(queryDirections);
+					    ps.setInt(1,  id);
+					    
+						int rs3 =  ps.executeUpdate();
+						
+						if(rs3 > 0)
+						  deleted = true;				
 				}
 
 			}
@@ -4368,7 +4423,7 @@ public class EquipmentsDAO {
 				String VWquerySATLinear = "UPDATE sat_equipment SET vw_linear_posX = ?, vw_linear_posY = ? WHERE equip_id = ?";
 
 				String VWquerySATMap = "UPDATE sat_equipment SET vw_map_posX = ?, vw_map_posY = ? WHERE equip_id = ?";
-
+						
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 				//VIDEO WALL SWITCH
