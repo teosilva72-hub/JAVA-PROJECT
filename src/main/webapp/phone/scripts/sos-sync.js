@@ -49,6 +49,21 @@ const eventGetReaction = () => {
     let reaction = localStorage.getItem("CallBoxReaction");
     let ringtone = localStorage.getItem("RingTone");
     let ringbacktone = localStorage.getItem("RingBackTone");
+    let hasSecondaryAudio = localStorage.getItem("deviceOutput");
+    let secondaryAudio = new Audio();
+
+    if (hasSecondaryAudio && hasSecondaryAudio !== "unselected") {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const audioDevices = devices.filter(device => device.kind === 'audiooutput');
+
+        for (media of audioDevices)
+            if (media.label === hasSecondaryAudio) {
+                secondaryAudio.setSinkId(media.deviceId);
+                secondaryAudio.src = ringtone.src;
+
+                break;
+            }
+    }
 
     $("#txtRegStatus").html(status || ".");
     $('#txtCallStatus').html(reaction);
@@ -59,9 +74,15 @@ const eventGetReaction = () => {
         showStatesCallbox('close')
 
     if (ringtone)
-        try { RingTone.play() } catch (e) {}
+        try {
+            RingTone.play()
+            secondaryAudio.play()
+        } catch (e) {}
     else
-        try { RingTone.pause() } catch (e) {}
+        try {
+            RingTone.pause()
+            secondaryAudio.play()
+        } catch (e) {}
         
     if (ringbacktone)
         try { RingBackTone.play() } catch (e) {}
