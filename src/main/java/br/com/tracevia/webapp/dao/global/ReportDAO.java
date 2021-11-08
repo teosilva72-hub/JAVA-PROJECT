@@ -104,6 +104,8 @@ public class ReportDAO {
             String[] division = fields.get(index);
 
             String newQuery = query.replace("@division", String.format("'%s'", division[0]));
+
+            System.out.println(newQuery);
             
             ps = conn.prepareStatement(newQuery);
             rs = ps.executeQuery();
