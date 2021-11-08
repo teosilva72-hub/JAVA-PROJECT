@@ -37,7 +37,6 @@ async function initPhone() {
         callVolume          : 1,
         Stream              : null,
         hasSecondaryAudio   : null,
-        secondaryAudio      : null,
 
         /**
          * Parses a SIP uri and returns a formatted US phone number.
@@ -85,7 +84,7 @@ async function initPhone() {
 
         // Genereates a rendom string to ID a call
         getUniqueID : function() {
-            return Math.random().toString(36).substr(2, 9);
+            return Math.random().toString(36).substring(2, 9);
         },
 
         newSession : function(newSess) {
@@ -201,22 +200,7 @@ async function initPhone() {
         },
 
         getUserMediaSuccess : async function(stream) {
-            const audio = new Audio();
-
             ctxSip.Stream = stream;
-
-            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected") {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const audioDevices = devices.filter(device => device.kind === 'audiooutput');
-
-                for (media of audioDevices)
-                    if (media.label === ctxSip.hasSecondaryAudio) {
-                        audio.srcObject = ctxSip.stream;
-                        audio.setSinkId(media.deviceId)
-                        ctxSip.secondaryAudio = audio; 
-                    }
-            }
-
         },
 
         /**
@@ -866,17 +850,12 @@ async function initPhone() {
             }
         });
 
-        if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
-            ctxSip.secondaryAudio.play();
-
         s.on('bye', function() {
             ctxSip.logCall(session, 'ended')
             connectSOS(`TerminateCall;${session.Sip}`)
             
             if (session.CallStateID != 2) {
                 ctxSip.callActiveID = null;
-                if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
-                    ctxSip.secondaryAudio.pause();
             }
             
             r.hide();
@@ -887,18 +866,12 @@ async function initPhone() {
         s.on('hold', function(e) {
             ctxSip.callActiveID = null;
             ctxSip.logCall(session, 'holding');
-
-            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
-                ctxSip.secondaryAudio.pause();
             // r.hide();
         });
 
         s.on('unhold', function(e) {
             ctxSip.logCall(session, 'resumed');
             ctxSip.callActiveID = session.ctxid;
-
-            if (ctxSip.hasSecondaryAudio && ctxSip.hasSecondaryAudio !== "unselected")
-                ctxSip.secondaryAudio.play();
             // r.showVol();
         });
 

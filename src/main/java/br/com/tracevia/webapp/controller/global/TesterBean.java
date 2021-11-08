@@ -56,6 +56,7 @@ public class TesterBean {
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
 	private String columnDate;
+	private String innerJoin;
 	private String[] division;
 
 	private ExcelTemplate model;
@@ -228,6 +229,10 @@ public class TesterBean {
 		this.division = division.split(",");
 	}
 	
+	public void setInnerJoin(String innerJoin) {
+		this.innerJoin = innerJoin;
+	}
+	
 	public void setColumnDate(String columnDate) {
 		this.columnDate = columnDate;
 	}
@@ -290,9 +295,15 @@ public class TesterBean {
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
+
+	// Check
 		
 	public boolean isDivision() {
 		return division == null ? false : true;
+	}
+
+	public boolean withInnerJoin() {
+		return innerJoin == null ? false : true;
 	}
 	
 	public boolean hasPeriod() {
@@ -442,6 +453,9 @@ public class TesterBean {
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 
+		if (withInnerJoin())
+			query += String.format(" %s", innerJoin);
+
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
 				dateStart = map.get(String.format("%s-start", search[0]));
@@ -521,7 +535,7 @@ public class TesterBean {
 			System.out.println(query);
 
 		   // Table Fields
-		    report.getReport(query, idTable, isDivision() ? new String[] { division[0], division[1], division[2] } : null);
+		    report.getReport(query, idTable, isDivision() ? division : null);
 
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
 				this.setIntervalDate(dateProcess, columnDate, period);
