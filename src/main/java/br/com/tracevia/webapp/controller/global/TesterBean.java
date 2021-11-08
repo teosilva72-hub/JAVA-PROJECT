@@ -595,6 +595,7 @@ public class TesterBean {
 
 	public void setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
+		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
 		List<String[]> newList = new ArrayList<>();
 		calendar.setTime(date[0]);
 		String[] model = new String[report.columnName.size()];
@@ -602,6 +603,8 @@ public class TesterBean {
 		boolean sep = column.contains("@");
 		int[] col = new int[2];
 		Arrays.fill(model, "0");
+		int count = 0;
+		List<String[]> temp;
 		int interval;
 		Date step;
 
@@ -626,20 +629,50 @@ public class TesterBean {
 			col[0] = Integer.parseInt(column);
 		}
 
-		for (String[] lines : report.lines) {
-			String d;
+		temp = report.lines;
 
-			if (sep) {
-				d = String.format("%s %s", lines[col[0]], lines[col[1]]);
-			} else {
-				d = lines[col[0]];
+		do {
+			if (count > 0)
+				if (report.secondaryLines.size() >= count) {
+					temp = report.secondaryLines.get(count - 1).right;
+					newList = new ArrayList<>();
+				} else
+					break;
+
+			for (String[] lines : temp) {
+				String d;
+	
+				if (sep) {
+					d = String.format("%s %s", lines[col[0]], lines[col[1]]);
+				} else {
+					d = lines[col[0]];
+				}
+	
+				Date dateReport = formatter.parse(d);
+				
+				step = calendar.getTime();
+				
+				while (step.before(dateReport) && step.before(date[1])) {
+					String f = formatter.format(step);
+					if (sep) {
+						String[] split = f.split(" ");
+						model[col[0]] = split[0];
+						model[col[1]] = split[1];
+					} else
+						model[col[0]] = f;
+	
+					newList.add(model.clone());
+					calendar.add(interval, Integer.parseInt(period[0]));
+					step = calendar.getTime();
+				}
+	
+				newList.add(lines);
+				calendar.add(interval, Integer.parseInt(period[0]));
 			}
-
-			Date dateReport = formatter.parse(d);
-			
+	
 			step = calendar.getTime();
-			
-			while (step.before(dateReport) && step.before(date[1])) {
+	
+			while (step.before(date[1])) {
 				String f = formatter.format(step);
 				if (sep) {
 					String[] split = f.split(" ");
@@ -647,33 +680,22 @@ public class TesterBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-
+	
 				newList.add(model.clone());
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 			}
-
-			newList.add(lines);
-			calendar.add(interval, Integer.parseInt(period[0]));
-		}
-
-		step = calendar.getTime();
-
-		while (step.before(date[1])) {
-			String f = formatter.format(step);
-			if (sep) {
-				String[] split = f.split(" ");
-				model[col[0]] = split[0];
-				model[col[1]] = split[1];
+	
+			if (count > 0) {
+				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			} else
-				model[col[0]] = f;
+				report.lines = newList;
 
-			newList.add(model.clone());
-			calendar.add(interval, Integer.parseInt(period[0]));
-			step = calendar.getTime();
-		}
+			count++;
+		} while (report.secondaryLines != null);
 
-		report.lines = newList;
+		if (count > 0)
+			report.secondaryLines = secondaryLines;
 	}
 	   
 		
