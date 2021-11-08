@@ -2098,13 +2098,13 @@ public class DateTimeApplication {
 		 
 		 switch(period){
 			 
-		 case "05 minutes": interval = 288; break;
-		 case "06 minutes": interval = 240; break;
+		 case "5 minutes": interval = 288; break;
+		 case "6 minutes": interval = 240; break;
 		 case "10 minutes": interval = 144; break;
 		 case "15 minutes": interval = 96; break;
 		 case "30 minutes": interval = 48; break;
-		 case "01 hour": interval = 24; break;
-		 case "06 hours": interval = 4; break;
+		 case "1 hour": interval = 24; break;
+		 case "6 hours": interval = 4; break;
 			 
 		 }
 		 

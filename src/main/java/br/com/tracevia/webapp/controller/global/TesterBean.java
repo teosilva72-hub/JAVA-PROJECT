@@ -481,7 +481,6 @@ public class TesterBean {
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
 				this.setIntervalDate(dateProcess, columnDate, period);
 
-			System.out.println(report.IDs);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
