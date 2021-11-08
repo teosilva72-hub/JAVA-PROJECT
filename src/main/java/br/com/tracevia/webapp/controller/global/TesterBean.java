@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -33,7 +36,7 @@ public class TesterBean {
 
 	public String table;
 	public String idTable;
-	public List<String> columnsName; 
+	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
@@ -57,6 +60,7 @@ public class TesterBean {
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
+	private HashMap<String, List<String>> listArgs = new HashMap<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
 	
@@ -115,10 +119,34 @@ public class TesterBean {
 	}
 	
 	public void setColumnsName(String columns) {
-		List<String> columnsName = Arrays.asList(columns.split(","));
+		for (String col : columns.split(",")) {
+			if (col.contains("$foreach")) {
+				try {
+					ReportDAO report = new ReportDAO(columnsName);
+					List<String> args = new ArrayList<>();
 
-		this.columnsName = columnsName;
-		this.columnsInUse = columnsName;
+					String[] table = col.split("=")[1].split("\\.");
+					String[] alias = table[1].split("@"); //asd
+					
+					List<String[]> fields = report.getOtherElementTable(table[0], alias[0].split("\\|"));
+
+					for (String[] field : fields) {
+						setColumns(field[0]);
+						args.add(field[1]);
+					}
+					listArgs.put(alias[1], args);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				setColumns(col);
+			}
+		}
+	}
+	
+	public void setColumns(String col) {
+		this.columnsName.add(col);
+		this.columnsInUse.add(col);
 	}
 	
 	public void setColumnsInUse(String[] columns) {
@@ -130,7 +158,7 @@ public class TesterBean {
 	}
 
 	public void setSearchParameters(String parameter) {
-		List<String> searchParameters = Arrays.asList(parameter.split(";"));
+		List<String> searchParameters = Arrays.asList(parameter.replace("`", "'").split(";"));
 		
 		this.searchParameters = searchParameters;
 	}
@@ -343,7 +371,27 @@ public class TesterBean {
 	public void createReport() throws Exception {
 				
 		 // Table Fields
-		 report = new ReportDAO(columnsName);
+		report = new ReportDAO(columnsName);
+		List<String> parameters = new ArrayList<>();
+
+		for (String column : searchParameters) {
+			if (column.contains("$custom")) {
+				Pattern pattern = Pattern.compile("^\\w+");
+				Matcher alias = pattern.matcher(column.split("@")[1]);
+				if (alias.find())
+					if (listArgs.containsKey(alias.group(0))) {
+						List<String> values = listArgs.get(alias.group(0));
+						for (String arg : values) {
+							String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
+	
+							parameters.add(String.format("%s", columns_replace));
+						}
+					}
+			} else
+				parameters.add(column);
+		}
+
+		searchParameters = parameters;
 		 
 	}
 
@@ -373,7 +421,6 @@ public class TesterBean {
 		
 		String query = "SELECT ";
 		for (String col : columns) {
-			String columnName = columnsName.get(Integer.parseInt(col));
 			String column = searchParameters.get(Integer.parseInt(col));
 
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
@@ -389,8 +436,6 @@ public class TesterBean {
 					
 				selectedPeriod = period[2];
 				setPeriod = true;
-			} else if (columnName.contains("$foreach")) {
-				
 			} else
 				query += String.format("%s, ", column);
 		}
