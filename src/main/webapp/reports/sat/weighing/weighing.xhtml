@@ -27,11 +27,11 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, LEVES, PESADO 2 EIXOS, PESADO 3 EIXOS, PESADO 4 EIXOS, PESADO 5 EIXOS, PESADO 6 EIXOS, PESADO 7 EIXOS, PESADO 8 EIXOS, PESADO 9 EIXOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = 1 OR (axlNumber &lt; 10) OR classe=9 OR classe = 3 OR (classe = 5 AND gross &lt;= 3650), gross, NULL )), 0); 
-		ROUND(AVG(IF(classe = 2, gross, NULL )), 0); ROUND(AVG(IF(classe = 4, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = 6, gross, NULL )), 0); ROUND(AVG(IF(classe = 7, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = 8, gross, NULL )), 0); ROUND(AVG(IF(classe = 10, gross, NULL )), 0);
-		ROUND(AVG(IF(classe = 11, gross, NULL )), 0); ROUND(AVG(IF(axlNumber = 9, gross, NULL )), 0)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650), gross, NULL )), 0); 
+		ROUND(AVG(IF(classe = `2` OR classe = `2A`, gross, NULL )), 0); ROUND(AVG(IF(classe = `4` OR classe = `4A` OR classe = `3N`, gross, NULL )), 0);
+		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
+		ROUND(AVG(IF(classe = `8` OR classe = `6N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `10` OR classe = `7N`, gross, NULL )), 0);
+		ROUND(AVG(IF(classe = `11` OR classe = `8N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), gross, NULL )), 0)')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 

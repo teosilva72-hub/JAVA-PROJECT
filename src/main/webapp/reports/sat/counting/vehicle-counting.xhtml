@@ -14,7 +14,7 @@
 	
 	<f:metadata>
 
-			<f:viewAction onPostback="true" action="#{testerBean.defineFileName('contagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('contagem')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Contagem')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ARTERIS')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
@@ -26,9 +26,8 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS, SAT01, SAT02, SAT03, SAT04, SAT05, SAT06, SAT07, SAT08, SAT09, TOTAL DE VEÍCULOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(siteID = 1, 1, 0)); SUM(IF(siteID = 2, 1, 0)); SUM(IF(siteID = 3, 1, 0)); SUM(IF(siteID = 4, 1, 0)); SUM(IF(siteID = 5, 1, 0)); 
-		SUM(IF(siteID = 6, 1, 0)); SUM(IF(siteID = 7, 1, 0)); SUM(IF(siteID = 8, 1, 0)); SUM(IF(siteID = 9, 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS,  $foreach=sat_equipment.name|equip_id@equip, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(siteID = $custom@equip, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />

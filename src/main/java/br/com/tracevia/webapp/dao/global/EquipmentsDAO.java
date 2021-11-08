@@ -1041,7 +1041,7 @@ public class EquipmentsDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			// SAT EQUIPMENT TABLE INSERT QUERY
-			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, number_lanes, equip_ip, name, city, road, km, "
+			String query = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, number_lanes, equip_ip, name, city, road, km, "
 					+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
 					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, visible) "
@@ -1050,7 +1050,9 @@ public class EquipmentsDAO {
 			// NOTIFICATION STATUS TABLE INSERT QUERY
 			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
 					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
+			
+			// SAT EQUIPMENT TABLE INSERT QUERY
+			String queryDirections = "INSERT INTO filter_directions(id, equip_id, lane, direction) VALUES (null,?,?,?)";
 
 			// SAT ADD	
 			ps = conn.prepareStatement(query);
@@ -1088,21 +1090,52 @@ public class EquipmentsDAO {
 
 			int success = ps.executeUpdate();
 
-			if(success > 0) {    
-
+			if(success > 0) { 
+				
+				int successDir = 0;
+				
+			  for(int ln = 1; ln <= equip.getNumFaixas(); ln++) {
+				
 				// NOTIFICATION ADD		
-				ps = conn.prepareStatement(queryNotification);
-
+				ps = conn.prepareStatement(queryDirections);
+		
 				ps.setInt(1, equip.getEquip_id()); 			
-				ps.setString(2, equip.getEquip_type());
-				ps.setString(3, equip.getEquip_ip());
-				ps.setString(4, equip.getNome());
-				ps.setString(5, equip.getKm());
+				ps.setInt(2, ln);
+								
+				switch(ln) {
+				
+				case 1: ps.setString(3, equip.getFaixa1()); break;
+				case 2: ps.setString(3, equip.getFaixa2()); break;
+				case 3: ps.setString(3, equip.getFaixa3()); break;
+				case 4: ps.setString(3, equip.getFaixa4()); break;
+				case 5: ps.setString(3, equip.getFaixa5()); break;
+				case 6: ps.setString(3, equip.getFaixa6()); break;
+				case 7: ps.setString(3, equip.getFaixa7()); break;
+				case 8: ps.setString(3, equip.getFaixa8()); break;
+				
+				}
+				
+				successDir = ps.executeUpdate();
+				
+			}		
+				if(successDir > 0) {
+					
+					// NOTIFICATION ADD		
+					ps = conn.prepareStatement(queryNotification);
 
-				int successNotif = ps.executeUpdate();
+					ps.setInt(1, equip.getEquip_id()); 			
+					ps.setString(2, equip.getEquip_type());
+					ps.setString(3, equip.getEquip_ip());
+					ps.setString(4, equip.getNome());
+					ps.setString(5, equip.getKm());
 
-				if(successNotif > 0)            			
-					status = true;	   				
+					int successNotif = ps.executeUpdate();
+					
+					if(successNotif > 0)
+						status = true;	
+
+				}
+				   				
 			}             			
 
 		} catch (SQLException sqle) {
