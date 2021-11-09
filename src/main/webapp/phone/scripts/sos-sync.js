@@ -42,7 +42,7 @@ const ringCall = async response => {
 			try { localStorage.setItem("RingTone", "true") } catch (e) {}
 }
 
-const eventGetReaction = () => {
+const eventGetReaction = async () => {
     let last_status = $('#txtRegStatus').html()
     let last_reaction = $('#txtCallStatus').html()
     let status = localStorage.getItem("CallBoxStatus");
@@ -50,7 +50,6 @@ const eventGetReaction = () => {
     let ringtone = localStorage.getItem("RingTone");
     let ringbacktone = localStorage.getItem("RingBackTone");
     let hasSecondaryAudio = localStorage.getItem("deviceOutput");
-    let secondaryAudio = new Audio();
 
     if (hasSecondaryAudio && hasSecondaryAudio !== "unselected") {
         const devices = await navigator.mediaDevices.enumerateDevices();
@@ -59,7 +58,6 @@ const eventGetReaction = () => {
         for (media of audioDevices)
             if (media.label === hasSecondaryAudio) {
                 secondaryAudio.setSinkId(media.deviceId);
-                secondaryAudio.src = ringtone.src;
 
                 break;
             }
@@ -81,7 +79,7 @@ const eventGetReaction = () => {
     else
         try {
             RingTone.pause()
-            secondaryAudio.play()
+            secondaryAudio.pause()
         } catch (e) {}
         
     if (ringbacktone)
