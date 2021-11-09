@@ -465,7 +465,7 @@ public class TesterBean {
 		if (withIndex())
 			query += String.format(" USE INDEX(%s)", useIndex);
 		if (withInnerJoin())
-			query += String.format(" %s", innerJoin);
+			query += String.format(" INNER JOIN %s", innerJoin);
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
