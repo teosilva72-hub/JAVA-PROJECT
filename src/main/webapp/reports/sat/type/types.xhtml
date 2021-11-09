@@ -28,13 +28,15 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, HORA, MOTOS, LEVES, PESADOS, TOTAL DE VEÍCULOS')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(classe = 9, 1, 0)); SUM(IF(classe = 1, 1, 0)); SUM(IF(classe not in (1, 9), 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('a INNER JOIN filter_directions q ON equip_id = siteID AND q.lane = a.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
-		
+				
+		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
