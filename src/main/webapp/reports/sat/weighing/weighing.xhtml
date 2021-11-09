@@ -32,7 +32,6 @@
 		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `8` OR classe = `6N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `10` OR classe = `7N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `11` OR classe = `8N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), gross, NULL )), 0)')}" />
-		
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
