@@ -57,6 +57,7 @@ public class TesterBean {
 	private String extraGroup = "";
 	private String columnDate;
 	private String innerJoin;
+	private String useIndex;
 	private String[] division;
 
 	private ExcelTemplate model;
@@ -233,6 +234,10 @@ public class TesterBean {
 		this.innerJoin = innerJoin;
 	}
 	
+	public void setUseIndex(String useIndex) {
+		this.useIndex = useIndex;
+	}
+	
 	public void setColumnDate(String columnDate) {
 		this.columnDate = columnDate;
 	}
@@ -304,6 +309,10 @@ public class TesterBean {
 
 	public boolean withInnerJoin() {
 		return innerJoin == null ? false : true;
+	}	
+
+	public boolean withIndex() {
+		return useIndex == null ? false : true;
 	}
 	
 	public boolean hasPeriod() {
@@ -453,6 +462,8 @@ public class TesterBean {
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
 
+		if (withIndex())
+			query += String.format(" USE INDEX(%s)", useIndex);
 		if (withInnerJoin())
 			query += String.format(" %s", innerJoin);
 
