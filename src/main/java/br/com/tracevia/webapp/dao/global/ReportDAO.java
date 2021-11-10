@@ -27,10 +27,12 @@ public class ReportDAO {
         
         conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-    	custom = !columnName.isEmpty();
+        if (columnName == null)
+        	columnName = new ArrayList<>();
         
-        if (custom)
-            this.columnName = columnName;
+    	custom = !columnName.isEmpty();
+    	
+        this.columnName = columnName;
         
         lines = new ArrayList<>();
         
@@ -68,10 +70,10 @@ public class ReportDAO {
 
                 lines.add(column);
             }
-
-            this.lines = lines;
-            this.IDs = field;
         }
+        
+        this.lines = lines;
+        this.IDs = field;
     }
 
     public List<String[]> getOtherElementTable(String table, String column) throws SQLException {

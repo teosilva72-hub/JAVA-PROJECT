@@ -24,6 +24,10 @@ const sendMsgStomp = async function(request, to, debug) {
 		client.send(`/amq/queue/${to}`, {"reply-to": `/temp-queue/${to}`, durable: false}, `"${request}"`)
 	};
 
+	let on_error = async function() {
+		console.log('error');
+	};
+
 	if (!debug)
 		client.debug = null
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');

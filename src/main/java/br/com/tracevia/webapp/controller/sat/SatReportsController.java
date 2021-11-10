@@ -814,8 +814,8 @@ public class SatReportsController {
 	// Recebe uma String que define qual o reltorio vai ser chamado
 
 	/**
-	 * Mtodo par criar um relatório de acordo com tipo
-	 * @param type tipo do relatório 
+	 * Mtodo par criar um relatÃ³rio de acordo com tipo
+	 * @param type tipo do relatÃ³rio 
 	 * @throws Exception
 	 */	
 	public void GetReports(String type) throws Exception{
@@ -1048,6 +1048,8 @@ public class SatReportsController {
 		
 		// CASO NO EXISTA VALOR >>>>>>> PASSA	   
 		if(auxResult[j][0] != null)	 {  
+			
+			// 
 		
 		if(satReport.getPeriod().equals("01 hour") || satReport.getPeriod().equals("06 hours"))
 			   hr = Integer.parseInt(auxResult[j][1].substring(0, 2));
@@ -1159,7 +1161,7 @@ public class SatReportsController {
 			//LINK DE DOWNLOAD DO EXCEL
 			setExcelBool(false);	
 			
-			//LINK PARA ACESSAR O GRÁFICO
+			//LINK PARA ACESSAR O GRÃ�FICO
 			setChartBool(false);
 			
 			JSONData(isChartBool(), satReport.getPeriod(), satReport.getEquipment());

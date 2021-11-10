@@ -771,7 +771,7 @@ public class ExcelModels {
 
 				spreadSheet.totalExcel(sheet, row, period, totalStartColumn, length, rowIni, rowMax);	   
 
-				spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 0); 
+				spreadSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 0, 1); 
 				spreadSheet.setStyle(sheet, row, rowMax, rowMax, tableHeaderStyle, 0, 0);
 				spreadSheet.setStyle(sheet, row, ini, rowMax, standardStyle, cellMinCol, cellMaxCol);	    
 

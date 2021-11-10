@@ -160,7 +160,7 @@ public class RoadConcessionaire {
 			mapEnabled = false;
 			reportsLLEnabled = false;
 		}	
-		
+						
         if(roadConcessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire())) {
 			
 			classLight = CardelPozaRica.LIGHT_VEHICLES.getClasse();
@@ -322,33 +322,55 @@ public class RoadConcessionaire {
 													
 		}
        
-       if(roadConcessionaire.equals(RoadConcessionairesEnum.Br153.getConcessionaire())) {
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.BR153.getConcessionaire())) {
 			
-			classLight = Br153.LIGHT_VEHICLES.getClasse();
-			classMotorcycle = Br153.MOTORCYCLES.getClasse();
-			classUnknown = Br153.UNKNOWN_CLASS.getClasse();	
-			classTrailer = Br153.TRAILER.getClasse();	
-			classSemiTrailer = Br153.SEMI_TRAILER.getClasse();
-			classBus2Axles = Br153.BUS_2AXLES.getClasse();	
-			classBus3Axles = Br153.BUS_3AXLES.getClasse();
-			classTruck2Axles = Br153.TRUCK_2AXLES.getClasse();	
-			classTruck3Axles = Br153.TRUCK_3AXLES.getClasse();		
-			classTruck4Axles = Br153.TRUCK_4AXLES.getClasse();	
-			classTruck5Axles = Br153.TRUCK_5AXLES.getClasse();	
-			classTruck6Axles = Br153.TRUCK_6AXLES.getClasse();	
-			classTruck7Axles = Br153.TRUCK_7AXLES.getClasse();	
-			classTruck8Axles = Br153.TRUCK_8AXLES.getClasse();	
-			classTruck9Axles = Br153.TRUCK_9AXLES.getClasse();	
-			classTruck10Axles = Br153.TRUCK_10AXLES.getClasse();	
-			classNotIdentifiedAxl2 = Br153.NOT_ID_CLASS_2AXLES.getClasse();
-			classNotIdentifiedAxl3 = Br153.NOT_ID_CLASS_3AXLES.getClasse();
-			classNotIdentifiedAxl4 = Br153.NOT_ID_CLASS_4AXLES.getClasse();
-			classNotIdentifiedAxl5 = Br153.NOT_ID_CLASS_5AXLES.getClasse();
-			classNotIdentifiedAxl6 = Br153.NOT_ID_CLASS_6AXLES.getClasse();
-			classNotIdentifiedAxl7 = Br153.NOT_ID_CLASS_7AXLES.getClasse();
-			classNotIdentifiedAxl8 = Br153.NOT_ID_CLASS_8AXLES.getClasse();
-			classNotIdentifiedAxl9 = Br153.NOT_ID_CLASS_9AXLES.getClasse();	
-			externalImagePath += "";
+    		classLight = ViaSul.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = ViaSul.MOTORCYCLES.getClasse();
+			classUnknown = ViaSul.UNKNOWN_CLASS.getClasse();	
+			classTrailer = ViaSul.TRAILER.getClasse();	
+			classSemiTrailer = ViaSul.SEMI_TRAILER.getClasse();
+			classBus2Axles = ViaSul.BUS_2AXLES.getClasse();	
+			classBus3Axles = ViaSul.BUS_3AXLES.getClasse();
+			classTruck2Axles = ViaSul.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = ViaSul.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = ViaSul.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = ViaSul.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = ViaSul.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = ViaSul.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = ViaSul.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = ViaSul.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = ViaSul.TRUCK_10AXLES.getClasse();	
+			
+			classCCRLight = ViaSul.CCR_LIGHT_VEHICLES.getClasse();
+			classCCRMotorcycle = ViaSul.CCR_MOTORCYCLES.getClasse();		
+			classCCRTrailer = ViaSul.CCR_TRAILER.getClasse();	
+			classCCRSemiTrailer = ViaSul.CCR_SEMI_TRAILER.getClasse();
+			classCCRTruck2Axles = ViaSul.CCR_TRUCK_2AXLES.getClasse();	
+			classCCRTruckSimple2Axles1 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_1.getClasse();				
+			classCCRTruckSimple2Axles2 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_2.getClasse();	
+			classCCRTruck3Axles = ViaSul.CCR_TRUCK_3AXLES.getClasse();		
+			classCCRTruck4Axles = ViaSul.CCR_TRUCK_4AXLES.getClasse();	
+			classCCRTruck5Axles = ViaSul.CCR_TRUCK_5AXLES.getClasse();	
+			classCCRTruck6Axles = ViaSul.CCR_TRUCK_6AXLES.getClasse();	
+			classCCRTruck7Axles = ViaSul.CCR_TRUCK_7AXLES.getClasse();	
+			classCCRTruck8Axles = ViaSul.CCR_TRUCK_8AXLES.getClasse();	
+			classCCRTruck9Axles = ViaSul.CCR_TRUCK_9AXLES.getClasse();	
+			classCCRTruck10Axles = ViaSul.CCR_TRUCK_10AXLES.getClasse();	
+			classCCRBus2Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
+			classCCRBus3Axles = ViaSul.CCR_BUS_3AXLES.getClasse();	
+			classCCRBus4Axles = ViaSul.CCR_BUS_4AXLES.getClasse();	
+			classCCRBus5Axles = ViaSul.CCR_BUS_5AXLES.getClasse();	
+			classCCRBus6Axles = ViaSul.CCR_BUS_6AXLES.getClasse();			
+			
+			classNotIdentifiedAxl2 = ViaSul.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = ViaSul.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = ViaSul.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = ViaSul.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = ViaSul.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = ViaSul.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
+			externalImagePath += "tracevia.jpg";	
 			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/br153/br153_linear.webp";
 			mapUI = "/resources/images/map/br153/br153.webp";
@@ -362,8 +384,7 @@ public class RoadConcessionaire {
 			reportsLLEnabled = false;
 													
 		}
-       
-       
+             
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire())) {
 			

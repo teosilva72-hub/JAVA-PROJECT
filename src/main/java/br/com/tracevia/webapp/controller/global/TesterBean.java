@@ -15,6 +15,7 @@ import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
@@ -31,6 +32,17 @@ public class TesterBean {
 	public List<String> columnsName; 
 	public List<String> searchParameters;
 	
+	// ----------------------------------------------------------------------------------------------------------------
+
+	public String 	fileName,
+					title,
+					sheetName = "Report";
+	public String 	module,
+					total;
+	public String jsTable, jsTableScroll;
+	public boolean 	sat,
+					caseSensitive = false;
+
 	// ----------------------------------------------------------------------------------------------------------------
 
 	private ExcelTemplate model;
@@ -102,7 +114,11 @@ public class TesterBean {
 	}
 
 	public void setDateSearch(String dateSearch, String nameColumn) {
-		this.dateSearch.add(new String[]{dateSearch, nameColumn});
+		setDateSearch(dateSearch, nameColumn, false);
+	}
+
+	public void setDateSearch(String dateSearch, String nameColumn, boolean mandatory) {
+		this.dateSearch.add(new String[]{dateSearch, nameColumn, mandatory ? "required" : ""});
 	}
 
 	public List<Pair<String[], List<String[]>>> getFilterSearch() {
@@ -110,28 +126,37 @@ public class TesterBean {
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), false);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch));
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory) {
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, mandatory);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, false, false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, multiple, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
-		setFilterSearch(filterSearch, nameColumn, tableWithName, false);
-	}
-
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 
-		String extra = multiple ? "multiple" : "";
+		String extra1 = multiple ? "multiple" : "";
+		String extra2 = mandatory ? "required" : "";
 		
 		if (report != null)
 			try {
 				if (tableName[1].contains("|"))
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
 				else
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra}, report.getOtherElementTable(tableName[0], tableName[1])));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1])));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -143,6 +168,48 @@ public class TesterBean {
 	
 	public void setIdTable(String idTable) {
 		this.idTable = idTable;
+	}
+	
+	public void defineFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	
+	public void defineTitle(String title) {
+		this.title = title;
+	}
+	
+	public void defineSheetName(String sheetName) {
+		this.sheetName = sheetName;
+	}
+	
+	public void defineModule(String module) {
+		this.module = module;
+	}
+	
+	public void defineTotal(String total) {
+		this.total = total;
+	}
+	
+	public void defineSat() {
+		this.sat = true;
+	}
+	
+	public void defineJsTable(String jsTable) {
+		this.jsTable = jsTable;
+		
+	}
+	
+	public void defineJsTableScroll(String jsTableScroll) {
+		this.jsTableScroll = jsTableScroll;
+		
+	}
+	
+	public void defineCaseSensitive() {
+		this.caseSensitive = true;
+	}
+	
+	public boolean isTotal() {
+		return total == null ? false : true;
 	}
 		
 	public ReportDAO getReport() {
@@ -259,7 +326,7 @@ public class TesterBean {
 
 					if (filterArray != null) {						
 						for (String f : filterArray) {
-							newFilter = String.format("%s, BINARY '%s'", newFilter, f);
+							newFilter = String.format("%s,%s '%s'", newFilter, caseSensitive ? " BINARY" : "", f);
 						}
 						filter = newFilter.substring(2);
 					}
@@ -267,7 +334,7 @@ public class TesterBean {
 				else {
 					String f = map.get(String.format("%s-filter", search.left[0]));
 					if (!f.isEmpty())
-						filter = String.format("BINARY '%s'", f);
+						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 				}
 
 				if (count == 0 && !filter.isEmpty())
@@ -281,28 +348,29 @@ public class TesterBean {
 		
 		   // Table Fields
 		    report.getReport(query, idTable);
+		 
 
 			System.out.println(report.IDs);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
 		 
-			 // GUARDAR VALORES NA SESS�O		     
+			 // GUARDAR VALORES NA SESSï¿½O		     
 		     //SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
 		     // SessionUtil.setParam("fields", build.fields);	//Fields
 		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
 		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
-		      		     
-		     SessionUtil.executeScript("drawTable('#speed-records-table', '50.3vh');");
-		   
-	        // GENERATE EXCEL
-		     SessionUtil.executeScript("drawTable('#generic-report-table', '50.3vh');");
-				     
-		     model.generateExcelFile(columnsInUse, report.lines,"sos", dateStart, dateEnd, equipId, "", "TRACEVIA", "Teste", false);
+								      		     
+			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
+						   
+		    if (report.lines.isEmpty())
+		    	return;
+					     
+		     model.generateExcelFile(columnsInUse, report.lines, module, report.IDs, dateStart, dateEnd, "", sheetName , title, false, false);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
-			 build.clearBool = false; // BOTÃO DE LIMPAR	 
+			 build.clearBool = false; // BOTÃƒO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
 	      	 	      		  		    		
 	    }
@@ -311,14 +379,16 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	   public void download() {
+		   
+		   DateTimeApplication dta = new DateTimeApplication();
 			
-		// MANTER VALORES NA SESSÃO
+		// MANTER VALORES NA SESSÃƒO
 		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
 		//String fileName = (String) SessionUtil.getExternalContext().getSessionMap().get("fileName");
 		 
 		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
 	
-		String file = "teste_file";
+		String file = fileName+"_"+dta.currentDateToExcelFile();
 					
 		try {
 			
@@ -335,10 +405,10 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------	
 		 public void resetForm() {
 				
-				// Limpa valores da sessão
+				// Limpa valores da sessÃ£o
 				build.resetReportValues();
 				
-				// Reinicializa valores armazenados nas variáveis abaixo
+				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
 							
@@ -352,7 +422,7 @@ public class TesterBean {
 	  	
 
 			/**
-			 * Método para carregar equipamentos disponíveis para seleção
+			 * MÃ©todo para carregar equipamentos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0
@@ -379,7 +449,7 @@ public class TesterBean {
 			// --------------------------------------------------------------------------------------------		
 
 			/**
-			 * Método para carregar períodos disponíveis para seleção
+			 * MÃ©todo para carregar perÃ­odos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0	

@@ -21,6 +21,7 @@ public class DateTimeApplication {
 	public final static String DATE_TIME_FORMAT_HOUR_MINUTE_DATABASE = "yyyy-MM-dd HH:mm";
 	public final static String DATE_TIME_FORMAT_DATE_DATABASE = "yyyy-MM-dd";
 	public final static String DATE_TIME_FORMAT_DATE_FILE = "yyyy.MM.dd";
+	public final static String DATE_TIME_FORMAT_DATE_EXCEL_FILE = "yyyy_MM_dd_HH_mm_ss";
 
 	public final static String DATE_TIME_FORMAT_STANDARD_VIEW = "dd/MM/yyyy HH:mm:ss";
 	public final static String DATE_TIME_FORMAT_HOUR_MINUTE_VIEW = "dd/MM/yyyy HH:mm";	
@@ -178,6 +179,17 @@ public class DateTimeApplication {
 
 		return  currentDate;
 	}
+	
+	
+	//FORMATTER FOR DATE - DATABASE FORMAT
+		public String currentDateToExcelFile() {
+
+			DateTimeFormatter databasefmt = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_DATE_EXCEL_FILE);			 
+
+			String currentDate = LocalDateTime.now().format(databasefmt);
+
+			return  currentDate;
+		}
 
 	//FORMATTER FOR DATETIME - DATABASE TO VIEW
 
