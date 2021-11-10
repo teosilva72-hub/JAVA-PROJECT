@@ -615,8 +615,8 @@ public class ExcelTemplate {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	} else if(isMultiSheet && (period.equals("5 minutes") || period.equals("6 minutes") || period.contentEquals("10 minutes")
-			|| period.equals("15 minutes") || period.equals("30 minutes") || period.equals("6 hours") || period.contentEquals("1 hour"))){		
+	} else if(isMultiSheet && (period.equals("5 minutes") || period.equals("6 minutes") || period.equals("10 minutes")
+			|| period.equals("15 minutes") || period.equals("30 minutes") || period.equals("6 hours") || period.equals("1 hour"))){		
 		
 		DateTimeApplication dt = new DateTimeApplication();
 		
@@ -683,9 +683,7 @@ public class ExcelTemplate {
 		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
-		
-		System.out.println(lines);
-								 		
+										 		
 		utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, d , interval);
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
@@ -719,9 +717,9 @@ public class ExcelTemplate {
 				// -----------------------------------------------------
 				
 				if(isTotal)
-				  dataEndRow = dataStartRow + p.right.size(); 
+				  dataEndRow = dataStartRow + interval; 
 				
-				else dataEndRow = dataStartRow + p.right.size() - 1;
+				else dataEndRow = dataStartRow + interval - 1;
 				
 				// -----------------------------------------------------
 			   	

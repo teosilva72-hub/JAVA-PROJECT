@@ -1,7 +1,8 @@
-const PING 			= 10000
-const RingTone      = document.getElementById('ringtone');
-const RingBackTone  = document.getElementById('ringbacktone');
-const DtmfTone      = document.getElementById('dtmfTone');
+const PING 				= 10000
+const RingTone      	= document.getElementById('ringtone');
+const RingBackTone  	= document.getElementById('ringbacktone');
+const DtmfTone      	= document.getElementById('dtmfTone');
+const secondaryAudio 	= [];
 
 let on_error =  function() {
     console.log('error');

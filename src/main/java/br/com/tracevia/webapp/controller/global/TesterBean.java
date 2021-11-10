@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -33,7 +36,7 @@ public class TesterBean {
 
 	public String table;
 	public String idTable;
-	public List<String> columnsName; 
+	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters;
 	
 	// ----------------------------------------------------------------------------------------------------------------
@@ -53,10 +56,13 @@ public class TesterBean {
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
 	private String columnDate;
+	private String innerJoin;
+	private String useIndex;
 	private String[] division;
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
+	private HashMap<String, List<String>> listArgs = new HashMap<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
 	
@@ -115,10 +121,34 @@ public class TesterBean {
 	}
 	
 	public void setColumnsName(String columns) {
-		List<String> columnsName = Arrays.asList(columns.split(","));
+		for (String col : columns.split(",")) {
+			if (col.contains("$foreach")) {
+				try {
+					ReportDAO report = new ReportDAO(columnsName);
+					List<String> args = new ArrayList<>();
 
-		this.columnsName = columnsName;
-		this.columnsInUse = columnsName;
+					String[] table = col.split("=")[1].split("\\.");
+					String[] alias = table[1].split("@"); //asd
+					
+					List<String[]> fields = report.getOtherElementTable(table[0], alias[0].split("\\|"));
+
+					for (String[] field : fields) {
+						setColumns(field[0]);
+						args.add(field[1]);
+					}
+					listArgs.put(alias[1], args);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else {
+				setColumns(col);
+			}
+		}
+	}
+	
+	public void setColumns(String col) {
+		this.columnsName.add(col);
+		this.columnsInUse.add(col);
 	}
 	
 	public void setColumnsInUse(String[] columns) {
@@ -130,7 +160,7 @@ public class TesterBean {
 	}
 
 	public void setSearchParameters(String parameter) {
-		List<String> searchParameters = Arrays.asList(parameter.split(";"));
+		List<String> searchParameters = Arrays.asList(parameter.replace("`", "'").split(";"));
 		
 		this.searchParameters = searchParameters;
 	}
@@ -200,6 +230,14 @@ public class TesterBean {
 		this.division = division.split(",");
 	}
 	
+	public void setInnerJoin(String innerJoin) {
+		this.innerJoin = innerJoin;
+	}
+	
+	public void setUseIndex(String useIndex) {
+		this.useIndex = useIndex;
+	}
+	
 	public void setColumnDate(String columnDate) {
 		this.columnDate = columnDate;
 	}
@@ -262,9 +300,19 @@ public class TesterBean {
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
+
+	// Check
 		
 	public boolean isDivision() {
 		return division == null ? false : true;
+	}
+
+	public boolean withInnerJoin() {
+		return innerJoin == null ? false : true;
+	}	
+
+	public boolean withIndex() {
+		return useIndex == null ? false : true;
 	}
 	
 	public boolean hasPeriod() {
@@ -343,7 +391,27 @@ public class TesterBean {
 	public void createReport() throws Exception {
 				
 		 // Table Fields
-		 report = new ReportDAO(columnsName);
+		report = new ReportDAO(columnsName);
+		List<String> parameters = new ArrayList<>();
+
+		for (String column : searchParameters) {
+			if (column.contains("$custom")) {
+				Pattern pattern = Pattern.compile("^\\w+");
+				Matcher alias = pattern.matcher(column.split("@")[1]);
+				if (alias.find())
+					if (listArgs.containsKey(alias.group(0))) {
+						List<String> values = listArgs.get(alias.group(0));
+						for (String arg : values) {
+							String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
+	
+							parameters.add(String.format("%s", columns_replace));
+						}
+					}
+			} else
+				parameters.add(column);
+		}
+
+		searchParameters = parameters;
 		 
 	}
 
@@ -373,7 +441,6 @@ public class TesterBean {
 		
 		String query = "SELECT ";
 		for (String col : columns) {
-			String columnName = columnsName.get(Integer.parseInt(col));
 			String column = searchParameters.get(Integer.parseInt(col));
 
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
@@ -389,13 +456,16 @@ public class TesterBean {
 					
 				selectedPeriod = period[2];
 				setPeriod = true;
-			} else if (columnName.contains("$foreach")) {
-				
 			} else
 				query += String.format("%s, ", column);
 		}
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
+
+		if (withIndex())
+			query += String.format(" USE INDEX(%s)", useIndex);
+		if (withInnerJoin())
+			query += String.format(" INNER JOIN %s", innerJoin);
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
@@ -476,12 +546,11 @@ public class TesterBean {
 			System.out.println(query);
 
 		   // Table Fields
-		    report.getReport(query, idTable, isDivision() ? new String[] { division[0], division[1], division[2] } : null);
+		    report.getReport(query, idTable, isDivision() ? division : null);
 
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
 				this.setIntervalDate(dateProcess, columnDate, period);
 
-			System.out.println(report.IDs);
 		          	
 		     // DESENHAR TABLE
 		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
@@ -537,6 +606,7 @@ public class TesterBean {
 
 	public void setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
+		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
 		List<String[]> newList = new ArrayList<>();
 		calendar.setTime(date[0]);
 		String[] model = new String[report.columnName.size()];
@@ -544,6 +614,8 @@ public class TesterBean {
 		boolean sep = column.contains("@");
 		int[] col = new int[2];
 		Arrays.fill(model, "0");
+		int count = 0;
+		List<String[]> temp;
 		int interval;
 		Date step;
 
@@ -568,20 +640,51 @@ public class TesterBean {
 			col[0] = Integer.parseInt(column);
 		}
 
-		for (String[] lines : report.lines) {
-			String d;
+		temp = report.lines;
 
-			if (sep) {
-				d = String.format("%s %s", lines[col[0]], lines[col[1]]);
-			} else {
-				d = lines[col[0]];
+		do {
+			if (count > 0)
+				if (report.secondaryLines.size() >= count) {
+					temp = report.secondaryLines.get(count - 1).right;
+					calendar.setTime(date[0]);
+					newList = new ArrayList<>();
+				} else
+					break;
+
+			for (String[] lines : temp) {
+				String d;
+	
+				if (sep) {
+					d = String.format("%s %s", lines[col[0]], lines[col[1]]);
+				} else {
+					d = lines[col[0]];
+				}
+	
+				Date dateReport = formatter.parse(d);
+				
+				step = calendar.getTime();
+				
+				while (step.before(dateReport) && step.before(date[1])) {
+					String f = formatter.format(step);
+					if (sep) {
+						String[] split = f.split(" ");
+						model[col[0]] = split[0];
+						model[col[1]] = split[1];
+					} else
+						model[col[0]] = f;
+	
+					newList.add(model.clone());
+					calendar.add(interval, Integer.parseInt(period[0]));
+					step = calendar.getTime();
+				}
+	
+				newList.add(lines);
+				calendar.add(interval, Integer.parseInt(period[0]));
 			}
-
-			Date dateReport = formatter.parse(d);
-			
+	
 			step = calendar.getTime();
-			
-			while (step.before(dateReport) && step.before(date[1])) {
+	
+			while (step.before(date[1])) {
 				String f = formatter.format(step);
 				if (sep) {
 					String[] split = f.split(" ");
@@ -589,33 +692,22 @@ public class TesterBean {
 					model[col[1]] = split[1];
 				} else
 					model[col[0]] = f;
-
+	
 				newList.add(model.clone());
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 			}
-
-			newList.add(lines);
-			calendar.add(interval, Integer.parseInt(period[0]));
-		}
-
-		step = calendar.getTime();
-
-		while (step.before(date[1])) {
-			String f = formatter.format(step);
-			if (sep) {
-				String[] split = f.split(" ");
-				model[col[0]] = split[0];
-				model[col[1]] = split[1];
+	
+			if (count > 0) {
+				secondaryLines.add(new Pair<String, List<String[]>>(report.secondaryLines.get(count - 1).left, newList));
 			} else
-				model[col[0]] = f;
+				report.lines = newList;
 
-			newList.add(model.clone());
-			calendar.add(interval, Integer.parseInt(period[0]));
-			step = calendar.getTime();
-		}
+			count++;
+		} while (report.secondaryLines != null);
 
-		report.lines = newList;
+		if (count > 0)
+			report.secondaryLines = secondaryLines;
 	}
 	   
 		

@@ -26,8 +26,9 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Hora, Término, $foreach=sos_equipment.name|equip_id@equip Atendida, Usuario, Estado')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, Data, Hora, Término, $foreach=sos_equipment.name|equip_id@equip, Atendida, Usuario, Estado')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('equip_id; DATE(start_date) as sd; TIME($period)@sd; end_date; SUM($custom@equip); answered_date; user; state_id')}" />
+		<!-- <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sat_directions q ON equip_id = siteID AND q.lane = sos_calls.lane')}" /> -->
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('start_date')}" />
