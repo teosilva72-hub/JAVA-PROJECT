@@ -1,0 +1,227 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="default-stylesheet">
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+	</ui:define>
+
+	<ui:define name="head">
+		<c:if test="#{ SuperAdmin || Cco }">
+			<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
+		</c:if>
+	</ui:define>
+
+	<ui:define name="default-jquery">
+
+	</ui:define>
+
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="Cco" value="#{ permission == 2 }" />
+
+	<ui:define name="default-content">
+		<div class="jumbotron PGFdark bg-dark px-3">
+		 <div class='row'>
+			<c:forEach var="pgf-card" begin='1' step='1' end='8' varStatus="loop">
+			 <div class='col-6 p-1'>
+			 		  <div class="pgf-card shadow rounded p-2 bg-body">
+								<div class="card">
+									<div class="card-body bg-dark text-white">
+										<form  class="pgf-form">
+											<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label" style='font-size: xx-large'> AAAXXXX
+													</label>
+												</div>
+												<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label "> DATA
+													</label>
+													<label class="form-label "> PESAGEM(WIM)
+													</label>
+												</div>
+								
+											</div>
+										</form>
+									</div>
+								</div>
+					  </div>
+			 </div>
+			</c:forEach>
+			</div>
+		</div>
+		
+		<div class="jumbotron PGFclean px-3">
+			<div class="pgf-card2 shadow rounded p-1 bg-body">
+								<div class="card">
+									<div class="card-body bg-dark text-white">
+										<form  class="pgf-form">
+											<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label" style="color:"> --km/h
+													</label>
+												</div>
+												<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label"> L:--km/m
+													</label>
+													<label class="form-label "> Velocidade
+													</label>
+												</div>
+								
+											</div>
+										</form>
+									</div>
+								</div>
+			 </div>
+			 <div class="pgf-card2 shadow rounded p-1 bg-body">
+								<div class="card">
+									<div class="card-body bg-dark text-white">
+										<form  class="pgf-form">
+											<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label"> --,-m
+													</label>
+												</div>
+												<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label "> L:-m
+													</label>
+													<label class="form-label "> Altura
+													</label>
+												</div>
+								
+											</div>
+										</form>
+									</div>
+								</div>
+			 </div>
+			 <div class="pgf-card2 shadow rounded p-1 bg-body">
+								<div class="card">
+									<div class="card-body bg-dark text-white">
+										<form  class="pgf-form">
+											<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label"> --,-m
+													</label>
+												</div>
+												<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label "> L:-m
+													</label>
+													<label class="form-label "> Largura
+													</label>
+												</div>
+								
+											</div>
+										</form>
+									</div>
+								</div>
+			 </div>
+			 <div class="pgf-card2 shadow rounded p-1 bg-body">
+								<div class="card">
+									<div class="card-body bg-dark text-white">
+										<form  class="pgf-form">
+											<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label"> --,-m
+													</label>
+												</div>
+												<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label "> L: -m
+													</label>
+													<label class="form-label "> Comprimento
+													</label>
+												</div>
+								
+											</div>
+										</form>
+									</div>
+								</div>
+			 </div>
+		</div>
+		 
+		<div class="jumbotron PGFpicture px-3">
+		 	<div class="card"> 
+				<div class='card-body'>
+				 <div class="row rowPGF">
+			
+						<div class="col-lg-6">								
+								<img class="pgf1" src="data:image/jpg;base64" ></img>
+						</div>
+							
+						<div class="col-lg-6">
+								<img class="pgf2" src="data:image/jpg;base64" ></img>
+						</div>
+						
+						<div class="col-lg-6">								
+								<img class="pgf3" src="data:image/jpg;base64" ></img>
+						</div>
+							
+						<div class="col-lg-6">
+								<div class="pgf4"  >
+									<div class="my-auto">
+												<div class="form-check text-center disabled">
+													<label class="form-label" style='font-size: xx-large'> AAAXXXX
+													</label>
+													<div class="row mb-1 text-center me-0 disabled">
+													<label class="form-label "> DATA
+													</label>
+													<label class="form-label "> PESAGEM(WIM)
+													</label>
+													<button type="button" class="btnpgf btn btn-success fourth btn1"> LIBERADO
+												</button>
+												<div> --,-m </div>
+												<div> --,-m </div>
+												</div>
+												</div>
+												
+												
+									</div>
+								
+								</div>
+						</div>
+							
+						<div class="col-lg-2">
+								<div class="lbltire"> --,-m </div>
+								<img class="pgftires1" src="data:image/jpg;base64" ></img>
+								<div> --,-m </div>
+						</div>
+										
+						<div class="col-lg-2">
+								<div> --,-m </div>
+								<img class="pgftires2" src="data:image/jpg;base64" ></img>
+								<div> --,-m </div>
+						</div>
+						
+						<div class="col-lg-2">
+								<div> --,-m </div>
+								<img class="pgftires3" src="data:image/jpg;base64" ></img>
+								<div> --,-m </div>
+						</div>
+						
+						<div class="col-lg-6">
+								<img class="pgfmin" src="data:image/jpg;base64" ></img>
+						</div>
+						
+					</div>													
+	 	 		 </div>
+	 		</div>
+		</div>
+	</ui:define>
+
+	<ui:define name="modal-content"></ui:define>
+
+	<ui:define name="default-plugins">
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
+	</ui:define>
+	
+	<ui:define name="jscript">
+
+		<c:if test="#{ SuperAdmin || Cco }">
+
+		</c:if>
+	</ui:define>
+</ui:composition>

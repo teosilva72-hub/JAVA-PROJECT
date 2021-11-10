@@ -1,5 +1,14 @@
 //VALIDATION DEFINITIONS
 
+const SPANISH = "es_ES";
+const ARGENTINE_SPANISH = "es_AR";
+const COLOMBIAN_SPANISH = "es_CO"; 
+const MEXICAN_SPANISH = "es_MX";
+const AMERICAN_ENGLISH = "en_US";
+const BRAZILIAN_PORTUGUESE = "pt_BR";
+
+const maxDayCheck = 60;
+
 $(function () {
 	
 	//Get equipments from backing bean
@@ -16,13 +25,15 @@ $(function () {
     //Create / Define multiselect
     defineMultiselect('#equips', equipmentSelectMsg);      
 
-    $.validator.methods.date = function (value, element) {
+
+   $.validator.methods.date = function (value, element) {
         //This is not ideal but Chrome passes dates through in ISO1901 format regardless of locale 
         //and despite displaying in the specified format.
 
         let a = value.split("/");
         let date = new Date(a[2], a[1] - 1, a[0])
         let timestamp = Date.parse(date);
+        let maxRange = true;
         let range = true;
         let id = element.id
 
@@ -30,23 +41,43 @@ $(function () {
             let end = $(`#${id.substr(0, id.length - 6)}-end`).val()
             let endSplit = end.split("/")
             if (end)
-                range = timestamp < Date.parse(`${endSplit[2]}/${endSplit[1]}/${endSplit[0]}`)
+                range = timestamp <= Date.parse(`${endSplit[2]}/${endSplit[1]}/${endSplit[0]}`)
+
         } else {
+	
             let start = $(`#${id.substr(0, id.length - 4)}-start`).val()
             let startSplit = start.split("/")
-            if (start)
-                range = timestamp > Date.parse(`${startSplit[2]}/${startSplit[1]}/${startSplit[0]}`)
+            if (start){
+	
+	            let start_date = new Date(`${startSplit[2]}/${startSplit[1]}/${startSplit[0]}`);
+                range = timestamp >= Date.parse(start_date);
+
+                start_date.setDate(start_date.getDate() + maxDayCheck);
+
+				maxRange = Date.parse(start_date) > timestamp;
+        
+
+          }
         }
 
-        let check = date.toLocaleDateString() == value && timestamp < Date.now() && range
+        let check = date.toLocaleDateString() == value && timestamp < Date.now() && range && maxRange
 
         return this.optional(element) || check;
-    }
+    };
 
     //Language
    $('.datepicker').datepickerLocale(language);
 
    validationTemplate9("#report-form", '#dateStart', requiredEquipmentsMsg, requiredDateStartMsg, requiredDateEndMsg, requiredValidDateMsg);
+
+
+  if(language == SPANISH || language == ARGENTINE_SPANISH || language == COLOMBIAN_SPANISH || language == MEXICAN_SPANISH)
+        spanishValidationMessages();
+
+   else if(language == AMERICAN_ENGLISH)
+        englishValidationMessages();
+
+    else portugueseValidationMessages();
 
 	//Clean Form validation on close modal
     cleanValidationOnModalClose("#report-form", '#modalReportOptions');

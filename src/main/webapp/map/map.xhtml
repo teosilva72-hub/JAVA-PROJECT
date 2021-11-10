@@ -154,7 +154,8 @@
 					</div>
 					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
 					<h:commandButton style="display:none;" id="btnCftvSumTotal">
-						<f:ajax execute="@form" render=":sumIdCftv" listener="#{CftvCam.totalId}"/>
+						<f:ajax execute="@form" render=":sumIdCftv"
+							listener="#{CftvCam.totalId}" />
 					</h:commandButton>
 				</h:form>
 				<!--  -->
@@ -197,15 +198,15 @@
 						</div>
 					</div>
 				</div>
-				
-					<div class="linesbox">
-						<div>
-	  						<input type="checkbox" id="visiblelines" name="visiblelines" checked=""></input>
-	  						<label for="visiblelines">Lines</label>
-						</div>
+
+				<div class="linesbox">
+					<div>
+						<input type="checkbox" id="visiblelines" name="visiblelines"
+							checked=""></input> <label for="visiblelines">Lines</label>
 					</div>
-					
 				</div>
+
+			</div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
@@ -420,39 +421,37 @@
 		<!-- OVERFLOW -->
 		<section class="overflow" scroll-zoom="2.5" max-scale="12"
 			id="content"> <!-- START SECTION -->
-			<div id="zoomtext" scale="1" class="section">
+		<div id="zoomtext" scale="1" class="section">
 
-				<!-- MAP FRONT IMAGE -->
+			<!-- MAP FRONT IMAGE -->
 
-				<div class="drawLines grab-map"></div>
-				<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
-					value="#{loginAccount.mapUI}" />
+			<div class="drawLines grab-map"></div>
+			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
+				value="#{loginAccount.mapUI}" />
+		</div>
+
+		<!-- Label -->
+		<div id="labelPos">
+			<label id="posX"></label> <label id="posY"></label>
+		</div>
+
+		<!-- Drag Items --> <!-- CAUSE -->
+
+		<div class="draggable" id="equipAll"></div>
+
+		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
+
+			<div>
+				<c:forEach items="#{roadView.plaque}" var="plaque">
+					<div class="plaque" posX="#{plaque.map_posX}"
+						posY="#{plaque.map_posY}">
+						<img width="75"
+							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
+					</div>
+				</c:forEach>
 			</div>
 
-			<!-- Label -->
-			<div id="labelPos">
-				<label id="posX"></label> <label id="posY"></label>
-			</div>
-
-			<!-- Drag Items --> <!-- CAUSE -->
-
-			<div class="draggable" id="equipAll"></div>
-
-			<!-- Plaque -->
-			<ui:fragment rendered="#{loginAccount.plaque ne ''}">
-
-				<div>
-					<c:forEach items="#{roadView.plaque}" var="plaque">
-						<div class="plaque" posX="#{plaque.map_posX}"
-							posY="#{plaque.map_posY}">
-							<img width="75"
-								src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
-						</div>
-					</c:forEach>
-				</div>
-
-			</ui:fragment>
-		</section>
+		</ui:fragment> </section>
 
 	</ui:define>
 
@@ -1295,6 +1294,7 @@
 								<div id="cftv-zoom-in" onclick="cftvZoomIn()"></div>
 								<div id="cftv-zoom-out" onclick="cftvZoomOut()"></div>
 								<div id="cftv-play" onclick="cftvPlay"></div>
+								<!-- BTN PRESET/PATROL -->
 								<div class="btn-group btn-group-sm btn-preset-patrol"
 									style="display: none;" role="group" aria-label="Basic example">
 									<button type="button" class="btn btn-primary"
@@ -1302,6 +1302,7 @@
 									<button type="button" class="btn btn-dark" id="patrol-row-btn"
 										onclick="btnPatrol()">#{mapLabels.cftv_patrol}</button>
 								</div>
+								<!--  -->
 								<div class="row preset-call-row">
 									<div class="col-md-12">
 										<div class="alert alert-danger msg-danger" role="alert">#{mapLabels.cftv_preset_error}</div>
@@ -1339,8 +1340,18 @@
 										</div>
 									</div>
 								</div>
-								<div class="row preset-patrol-row" style="display: none">
-									asd</div>
+								<!--  -->
+								<div id="preset-patrol-row" style="display:none">
+									<div class="row">
+										<c:forEach begin="0" end="6" var="patrol">
+											<div class="col-md-4">
+												
+											</div>
+										</c:forEach>
+										
+									</div>
+								</div>
+								<!--  -->
 								<h:commandButton style="display:none" id="cftvMoveUp">
 									<f:ajax execute="@form" render=":id-cftv :img-cftv-cam"
 										listener="#{CftvCam.UpMove}" />
@@ -2148,7 +2159,7 @@
 										p:data-toggle="modal" p:data-target="#deletemodal"
 										onclick="deleteParameters();">
 										<f:ajax execute="@form" render=":sumIdCftv"
-											listener="#{equipsBean.DeleteEquipment}"/>
+											listener="#{equipsBean.DeleteEquipment}" />
 									</h:commandButton>
 									<!---->
 

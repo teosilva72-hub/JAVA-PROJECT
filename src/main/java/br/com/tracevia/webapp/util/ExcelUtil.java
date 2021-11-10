@@ -44,6 +44,7 @@ public class ExcelUtil {
 	
 	private static String NUMBER_REGEX = "\\d+";
 	private static String DOUBLE_REGEX = "\\d*\\.\\d+$";
+	private static String NUMBER_DECIMAL = "^[0-9]\\d*(\\.\\d+)?$";
 	
 	public static String ALL_BORDERS = "ALL";
 	public static String TOP_BORDER = "TOP";
@@ -1105,6 +1106,7 @@ public class ExcelUtil {
 	 * @param sheet - objeto de representação de alto nível de uma planilha
 	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
 	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
+	 * @param lines - lista com dados
 	 * @param rowTotal - última linha a ser apresentado o total		
 	 * @param columnsLength - número de colunas 
 	 * @param rowIni - linha inicial
@@ -1114,27 +1116,28 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
+	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
 
 		int startColumn = 0;
+		int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
+		
+		String startColumnLetter = "A";
+		String endColumnLetter = "";
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// VERIFICA SE É UM RELATÓRIO COM MULTIPLA SELEÇÃO DE EQUIPAMENTOS
-
-		/*if(multi) {			
-
-			startColumn = 3;  // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 3   	
-			mergeCells(sheet, "A"+(rowTotal)+":C"+(rowTotal)); // MERGE CELLS    	
-
-		}
-
-		else {	*/			   
-
-			startColumn = 2; // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 2	    	
-			mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); // MERGE CELLS 				     	
-
-		//}
+		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+		
+			for(int c = 0; c < 3; c++) {
+				 
+				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
+					startColumn++;
+				    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
+				}					
+			}
+		 	    	
+			// MERGE START CELLS ON INIT TOTAL
+			mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));  				     	
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -1160,9 +1163,9 @@ public class ExcelUtil {
 	 * @since 1.0  
 	 * @param sheet - objeto de representação de alto nível de uma planilha
 	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
-	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
+	 * @param style - objeto de representação de alto nível de estilos em uma planilha
+	 * @param lines - lista com dados 
 	 * @param rowTotal - última linha a ser apresentado o total	
-	 * @param multi - define o total para múltiplos equipamentos ou não
 	 * @param columnsLength - número de colunas  			 
 	 * @param rowIni - linha inicial
 	 * @param rowEnd - linha final 			
@@ -1171,27 +1174,28 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelAverage(Sheet sheet, Row row, CellStyle style, int rowTotal, boolean multi, int columnsLength, int rowIni, int rowEnd) {
+	public void totalExcelAverage(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
 
-		int startColumn = 0;
+        int startColumn = 0;
+		
+		String startColumnLetter = "A";
+		String endColumnLetter = "";
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// VERIFICA SE É UM RELATÓRIO COM MULTIPLA SELEÇÃO DE EQUIPAMENTOS
+		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+		
+			for(int c = 0; c < 3; c++) {
+				 
+				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
+					startColumn++;
+					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER						 
+				}					
+			}
+		 	    	
+			// MERGE START CELLS ON INIT TOTAL
+			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
 
-		if(multi) {			
-
-			startColumn = 3;  // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 3   	
-			mergeCells(sheet, "A"+(rowTotal)+":C"+(rowTotal)); // MERGE CELLS    	
-
-		}
-
-		else {				   
-
-			startColumn = 2; // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 2	    	
-			mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); // MERGE CELLS 				     	
-
-		}
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -1220,9 +1224,9 @@ public class ExcelUtil {
 	 * @param wb - objeto de representação de alto nível de uma pasta de trabalho do Excel
 	 * @param sheet - objeto de representação de alto nível de uma planilha
 	 * @param row - objeto de representação de alto nível de uma linha de uma planilha 
-	 * @param style - objeto de representação de alto nível de estilos em uma planilha   
+	 * @param style - objeto de representação de alto nível de estilos em uma planilha 
+	 * @param lines - lista com dados  
 	 * @param rowTotal - linha total
-	 * @param multi - define o total para múltiplos equipamentos ou não
 	 * @param columnsLength - número de colunas
 	 * @param colNumber - coluna a ser feita soma dos dados
 	 * @param rowIni - linha inicial
@@ -1232,27 +1236,27 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/CreationHelper.html 
 	 */
-	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle style, boolean multi, int rowTotal, int columnsLength, int colNumber, int rowIni, int rowEnd) {
+	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int colNumber, int rowIni, int rowEnd) {
 
-		int startColumn = 0;
+        int startColumn = 0;
+		
+		String startColumnLetter = "A";
+		String endColumnLetter = "";
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// VERIFICA SE É UM RELATÓRIO COM MULTIPLA SELEÇÃO DE EQUIPAMENTOS
-
-		if(multi) {			
-
-			startColumn = 3;  // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 3   	
-			mergeCells(sheet, "A"+(rowTotal)+":C"+(rowTotal)); // MERGE CELLS    	
-
-		}
-
-		else {				   
-
-			startColumn = 2; // REGISTROS SERÃO PREENCHIDOS A PARTIR DA COLUNA 2	    	
-			mergeCells(sheet, "A"+(rowTotal)+":B"+(rowTotal)); // MERGE CELLS 				     	
-
-		}
+		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+		
+			for(int c = 0; c < 3; c++) {
+				 
+				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
+					startColumn++;
+					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
+				}					
+			}
+		 	    	
+			// MERGE START CELLS ON INIT TOTAL
+			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -1433,10 +1437,10 @@ public class ExcelUtil {
 				try {
 																							
 				if(values.get(lin)[col].matches(NUMBER_REGEX))
-				   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+				     row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
 						
 				else if(values.get(lin)[col].matches(DOUBLE_REGEX))
-				   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+				        row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
 						
 				else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
 					
@@ -2421,10 +2425,10 @@ public class ExcelUtil {
 					try {
 																																				
 					if(values.get(lin)[col].matches(NUMBER_REGEX))
-					   row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+					     row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
 							
 					else if(values.get(lin)[col].matches(DOUBLE_REGEX))
-					   row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+					     row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
 							
 					else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
 									
@@ -2436,25 +2440,29 @@ public class ExcelUtil {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------
 		
-		public void fileBodyMulti(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow, int day, int periodRange) {
+	
+		 public void fileBodyMulti(XSSFSheet sheet, XSSFRow row, List<String> columnName, List<String[]> values, int startCol, int endCol, int startRow, int day, int periodRange) {
 
 			int rowLenght = startRow + values.size() ;
+			int index = 0;
 						  			
 			  for (int col = startCol; col < columnName.size(); col++) {
 				  
-				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < values.size(); rowIndex++, lin++) {
+				  for (int rowIndex = startRow, lin = 0; rowIndex < rowLenght && lin < periodRange; rowIndex++, lin++) {
+					  
+				    index = lin + (day * periodRange);
 			 		
 					row = sheet.getRow((short) rowIndex);	
 									
 					try {
 																																				
-					 if(values.get(lin)[col].matches(NUMBER_REGEX))
-					    row.getCell(col).setCellValue(Integer.parseInt(values.get(lin)[col]));
+					 if(values.get(index)[col].matches(NUMBER_REGEX))
+					    row.getCell(col).setCellValue(Integer.parseInt(values.get(index)[col]));
 							
-					 else if(values.get(lin)[col].matches(DOUBLE_REGEX))
-					    row.getCell(col).setCellValue(Double.parseDouble(values.get(lin)[col]));
+					 else if(values.get(index)[col].matches(DOUBLE_REGEX))
+					    row.getCell(col).setCellValue(Double.parseDouble(values.get(index)[col]));
 							
-					 else row.getCell(col).setCellValue(values.get(lin)[col].toString());	
+					 else row.getCell(col).setCellValue(values.get(index)[col].toString());	
 									
 					}catch(NullPointerException ex) {}		
 
@@ -2463,6 +2471,5 @@ public class ExcelUtil {
 		}
 		
 	// -----------------------------------------------------------------------------------------------------------------------------------------------
-		
-		
+			
 	}

@@ -1843,40 +1843,10 @@ function validationTemplate8(formId, dateStartId, equipMessage, dateStartMessage
  * @returns {void}
 **/
 
-function validationTemplate9(formId, dateStartId, equipMessage, dateStartMessage, dateEndMessage, validDateMessage) {
+function validationTemplate9(formId) {
 
 	$(formId).validate({
-		ignore: [],		
-		  rules: {
-		      equips: "required",
-			 vehicles: "required",
-			dateStart: {
-				required: true,
-				dateITA: true
-			},
-			dateEnd: {
-				required: true,
-				greaterThan: dateStartId,
-				maxDate: maxDays,
-				dateITA: true
-			}
-		},
-
-		messages: {
-
-			equips: { required: equipMessage },
-			
-			dateStart: {
-				required: dateStartMessage,
-				dateITA: validDateMessage
-			},
-
-			dateEnd: {
-				required: dateEndMessage,
-				dateITA: validDateMessage
-			},
-		},
-
+			 
 		errorClass: "error",
 		validClass: "success",
 		errorElement: "label",
@@ -2159,3 +2129,84 @@ function validateChangePassword(formId, newPasswordId, equalsToMsg, passwordMinL
 }
 
 /* **************************************************************************************************** */
+
+   function englishValidationMessages(){
+	
+  $.extend(jQuery.validator.messages, {
+    required: "This field is required.",
+    remote: "Please fix this field.",
+    email: "Please enter a valid email address.",
+    url: "Please enter a valid URL.",
+    date: "Insira data válida.",
+    dateISO: "Please enter a valid date (ISO).",
+    number: "Please enter a valid number.",
+    digits: "Please enter only digits.",
+    creditcard: "Please enter a valid credit card number.",
+    equalTo: "Please enter the same value again.",
+    accept: "Please enter a value with a valid extension.",
+    maxlength: jQuery.validator.format("Please enter no more than {0} characters."),
+    minlength: jQuery.validator.format("Please enter at least {0} characters."),
+    rangelength: jQuery.validator.format("Please enter a value between {0} and {1} characters long."),
+    range: jQuery.validator.format("Please enter a value between {0} and {1}."),
+    max: jQuery.validator.format("Please enter a value less than or equal to {0}."),
+    min: jQuery.validator.format("Please enter a value greater than or equal to {0}.")
+  
+  });
+	
+}
+
+// ------------------------------------------------------------------------------------------------------
+
+ function spanishValidationMessages(){
+	
+  $.extend(jQuery.validator.messages, {
+    required: "Este campo es requerido.",
+    remote: "Por favor arregla este campo.",
+    email: "Por favor, introduce una dirección de correo electrónico válida.",
+    url: "Por favor introduzca un URL válido.",
+    date: "Por favor introduzca una fecha valida.",
+    dateISO: "Introduzca una fecha válida (ISO).",
+    number: "Please enter a valid number.",
+    digits: "Por favor ingrese un número valido.",
+    creditcard: "Por favor, introduzca un número de tarjeta de crédito válida.",
+    equalTo: "Por favor, introduzca el mismo valor de nuevo.",
+    accept: "Ingrese un valor con una extensión válida.",
+    maxlength: $.validator.format("No ingrese más de {0} caracteres."),
+    minlength: $.validator.format("Ingrese al menos {0} caracteres."),
+    rangelength: $.validator.format("Introduzca un valor de entre {0} y {1} caracteres."),
+    range: $.validator.format("Ingrese un valor entre {0} y {1}."),
+    max: $.validator.format("Ingrese un valor menor o igual a {0}."),
+    min: $.validator.format("Ingrese un valor mayor o igual que {0}.")
+  
+  });
+	
+}
+
+// ------------------------------------------------------------------------------------------------------
+
+  function portugueseValidationMessages(){
+	
+  $.extend(jQuery.validator.messages, {
+    required: "Este campo é obrigatório.",
+    remote: "Corrija este campo.",
+    email: "Por favor insira um endereço de e-mail válido.",
+    url: "Por favor, insira um URL válido.",
+    date: "Insira data válida.",
+    dateISO: "Insira uma data válida (ISO).",
+    number: "Por favor insira um número válido.",
+    digits: "Por favor, insira apenas dígitos.",
+    creditcard: "Por favor digite um número de cartão de crédito válido.",
+    equalTo: "Please enter the same value again.",
+    accept: "Por favor entre com o mesmo valor novamente.",
+    maxlength: jQuery.validator.format("Insira no máximo {0} caracteres."),
+    minlength: jQuery.validator.format("Insira pelo menos {0} caracteres."),
+    rangelength: jQuery.validator.format("Insira um valor entre {0} e {1} caracteres."),
+    range: jQuery.validator.format("Insira um valor entre {0} e {1}."),
+    max: jQuery.validator.format("Insira um valor menor ou igual a {0}."),
+    min: jQuery.validator.format("Insira um valor maior ou igual a {0}.")
+  
+  });
+	
+}
+
+// ------------------------------------------------------------------------------------------------------

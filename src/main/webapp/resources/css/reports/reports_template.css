@@ -189,24 +189,46 @@ body {
 
 /*****************************************************/
 /****************** TABLE CONTAINER ******************/
-/*****************************************************/cc
+/*****************************************************/
 
 /* Validation icon position type select checkbox options */
  .checkbox-field .valid-icon-hidden,
  .checkbox-field .valid-icon-visible {
-  margin-left: 86% !important;
+  position: absolute;
+  top: 5%;
+  right: -75%;
+  transition: right 0.2s;
 } 
 
 /* Validation icon position type (input/select) */
  .input-field .valid-icon-hidden, .input-field .valid-icon-visible,
  .select-field .valid-icon-hidden, .select-field .valid-icon-visible
  {
-  margin-left: 90% !important;
+  position: absolute;
+  float: right;
+  top: 12%;
+  right: 10%;
+  transition: right 0.2s;
 }
+
+/* SELECT NONE ARROW ICON */
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+/* ------------------ */
 
 /* input and select width definition */ 
 #equips, #equip, #periods, #dateStart, #dateEnd, #month, 
-#year, #start_month, #end_month, [id$=-filter] {width: 100%;}
+#year, #start_month, #end_month, [id$=-filter], [id$=-period] {width: 100%;}
 
 /*****************************************************/
 /****************** FORM CONTAINER ******************/
@@ -386,3 +408,5 @@ hr{
     opacity: .8;
     z-index: 1;
 }
+
+

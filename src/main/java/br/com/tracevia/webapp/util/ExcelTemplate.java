@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.util;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,12 +18,15 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.mysql.cj.conf.ConnectionUrlParser.Pair;
+
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.sat.SAT;
 
 /**
  * Classe com modelos de planilhas EXCEL
@@ -41,25 +45,28 @@ public class ExcelTemplate {
 	
 	private EquipmentsDAO dao;
 	private List<Equipments> equipsInfo;
+	private List<SAT> satInfo;
 
 	private static String FONT_ARIAL = "Arial";
+	
+	private static String NUMBER_REGEX = "\\d+";
 
 	LocaleUtil localeExcel;
 
 	// DEFAULT FONTS
 
-	// standardFont - fonte padrão para os relátorios
+	// standardFont - fonte padrÃƒÂ£o para os relÃƒÂ¡torios
 	// boldFont - fonte em negrito
-	// titleFont - fonte para títulos dos relatórios
-	// tableHeaderFont - fonte para cabeçalho das tabelas
+	// titleFont - fonte para tÃƒÂ­tulos dos relatÃƒÂ³rios
+	// tableHeaderFont - fonte para cabeÃƒÂ§alho das tabelas
 
 	Font standardFont, boldFont, titleFont, tableHeadFont;
 
 	// COUNT FLOW FONTS	
 
 	// countFlowFont - fonte para uso no header e subheaders
-	// countFlowFontBody1 - fonte para a primeira parte do corpo do relatório
-	// countFlowFontBody2 - fonte para a segunda parte do corpo do relatório
+	// countFlowFontBody1 - fonte para a primeira parte do corpo do relatÃƒÂ³rio
+	// countFlowFontBody2 - fonte para a segunda parte do corpo do relatÃƒÂ³rio
 
 	Font countFlowFont, countFlowFontBody1, countFlowFontBody2;
 
@@ -67,26 +74,26 @@ public class ExcelTemplate {
 
 	// DEFAULT STYLES 
 
-	// titleStyle - estilo para o título principal do relatório
-	// standardStyle - estilo padrão para uso no corpo do relatório
-	// tableHeaderStyle - estilo para uso no cabeçalho da tabela
-	// leftAlignStandardStyle - estilo para alinhamento a esquerda (padrão)
+	// titleStyle - estilo para o tÃƒÂ­tulo principal do relatÃƒÂ³rio
+	// standardStyle - estilo padrÃƒÂ£o para uso no corpo do relatÃƒÂ³rio
+	// tableHeaderStyle - estilo para uso no cabeÃƒÂ§alho da tabela
+	// leftAlignStandardStyle - estilo para alinhamento a esquerda (padrÃƒÂ£o)
 	// rightAlignBoldStyle - estilo em negrito com alinhamento a direita
-	// dateTitleStyle - estilo para datas ao lado do título principal
-	// dateTimeStyle - estilo para data e hora no corpo do relatório
+	// dateTitleStyle - estilo para datas ao lado do tÃƒÂ­tulo principal
+	// dateTimeStyle - estilo para data e hora no corpo do relatÃƒÂ³rio
 	// centerBoldStyle - estilo em negrito para centralizar
-	// centerAlignStandardStyle - estilo padrão para centralizar	
+	// centerAlignStandardStyle - estilo padrÃƒÂ£o para centralizar	
 
 	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
 	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle;   
 
 	// COUNT FLOW STYLES 
 
-	// bgColorHeaderStyle - estilo do cabeçalho principal
+	// bgColorHeaderStyle - estilo do cabeÃƒÂ§alho principal
 	// bgColorSubHeaderStyle1 - estilo do primeiro subheader
 	// bgColorSubHeaderStyle2 - estilo do segundo subheader
-	// bgColorBodyStyle1 - estilo da primeira parte do corpo do relatório
-	// bgColorBodyStyle2 - estilo da segunda parte do corpo do relatório
+	// bgColorBodyStyle1 - estilo da primeira parte do corpo do relatÃƒÂ³rio
+	// bgColorBodyStyle2 - estilo da segunda parte do corpo do relatÃƒÂ³rio
 
 	CellStyle bgColorHeaderStyle, bgColorSubHeaderStyle1, bgColorSubHeaderStyle2, bgColorBodyStyle1, bgColorBodyStyle2;
 
@@ -104,36 +111,36 @@ public class ExcelTemplate {
 
 		// DEFAULT FONTS 
 		
-		standardFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.BLACK); // FONTE DE USO PADRÃO 			 
+		standardFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.BLACK); // FONTE DE USO PADRÃƒÆ’O 			 
 	    boldFont = utilSheet.createFont(workbook,  FONT_ARIAL, 10, true, false, IndexedColors.BLACK); // FONTE EM NEGRITO
-	    titleFont = utilSheet.createFont(workbook,  FONT_ARIAL, 16, true, false, IndexedColors.BLACK); // FONTE PARA O TÍTULO
-	    tableHeadFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.WHITE); // FONT PARA CABEÇALHO DA TABELA
+	    titleFont = utilSheet.createFont(workbook,  FONT_ARIAL, 16, true, false, IndexedColors.BLACK); // FONTE PARA O TÃƒï¿½TULO
+	    tableHeadFont = utilSheet.createFont(workbook, FONT_ARIAL, 10, true, false, IndexedColors.WHITE); // FONT PARA CABEÃƒâ€¡ALHO DA TABELA
 	    
 		// COUNT FLOW FONTS
 	    
-	    countFlowFont = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE); // FONTE PADRÃO COUNT FLOW
-	    countFlowFontBody1 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.ORANGE); // FONTE PARA APRESENTAÇÃO DE DADOS 1
-	    countFlowFontBody2 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.GREEN); // FONTE PARA APRESENTAÇÃO DE DADOS 2	       
+	    countFlowFont = utilSheet.createFont(workbook, FONT_ARIAL, 11, true, false, IndexedColors.WHITE); // FONTE PADRÃƒÆ’O COUNT FLOW
+	    countFlowFontBody1 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.ORANGE); // FONTE PARA APRESENTAÃƒâ€¡ÃƒÆ’O DE DADOS 1
+	    countFlowFontBody2 = utilSheet.createFont(workbook, FONT_ARIAL, 10, false, false, IndexedColors.GREEN); // FONTE PARA APRESENTAÃƒâ€¡ÃƒÆ’O DE DADOS 2	       
 
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// DEFAULT STYLES	
 	    
-	    // ESTILO PADRÃO
+	    // ESTILO PADRÃƒÆ’O
 	    standardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	   	// ESTILO PARA TÍTULO
+	   	// ESTILO PARA TÃƒï¿½TULO
 	    titleStyle = utilSheet.createCellStyle(workbook, titleFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	    // ESTILO PARA CABEÇALHO DAS TABELAS
+	    // ESTILO PARA CABEÃƒâ€¡ALHO DAS TABELAS
 	    tableHeadStyle = utilSheet.createCellStyle(workbook, tableHeadFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND,ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
-	    // ESTILO PARA CABEÇALHO ENTRE DATAS 
+	    // ESTILO PARA CABEÃƒâ€¡ALHO ENTRE DATAS 
 	    dateTitleStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO PARA CAMPO DE DATAS EM NEGRITO
 	    dateTimeStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
         // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
 	    centerBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
-	    // ESTILO PADRÃO DE ALINHAMENTO CENTRAL	(SEM BORDAS)  
+	    // ESTILO PADRÃƒÆ’O DE ALINHAMENTO CENTRAL	(SEM BORDAS)  
 	    centerAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
-		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃO (SEM BORDAS)
+		// ESTILO PARA ALINHAMENTO A ESQUERDA FONTE PADRÃƒÆ’O (SEM BORDAS)
 	    leftAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 		// ESTILO PARA ALINHAMENTO A DIREITA EM NEGRITO (SEM BORDAS)
 	    rightAlignBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.RIGHT, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
@@ -160,19 +167,21 @@ public class ExcelTemplate {
 	// HEADER
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public void excelSingleFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
-			String startDate, String endDate, String period, List<String> equipId, boolean isSat) {
+	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
+			String[] dates, String period, List<String> equipId, int dayIndex) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
 	
-		// INDEX DA COLUNA DE ÍNICIO DA DATA
+		// INDEX DA COLUNA DE INICIO DA DATA
 		
 		int columnsIndex = 0;
 		int columnStartDate = 0;
 		int columnEndDate = 0;
 			
-		// MINIMO 5 COLUNAS PADRÃO
+		String headerDates = "";
+		
+		// MINIMO 5 COLUNAS PADRÃƒO
 		if(columns < 5)
 			columnsIndex = 5;
 		
@@ -182,16 +191,24 @@ public class ExcelTemplate {
 		columnEndDate = columns + 3;	
 	
 		// ----------------------------------------------------------------------------------------------------------------
-			
-		if(equipId.size() == 1 || !module.equals(""))		
-		   equipsInfo = equipmentInfo(equipId, module);
+					
+		if(!module.equals("sat")) {
+		    if(equipId.size() == 1)		
+		      equipsInfo = genericInfo(equipId, module);
+				
+		     else equipsInfo = defaultGenericInfo();	
 		
-		else equipsInfo = defaultGenericInfo();			
+		}else {
 			
+			 if(equipId.size() == 1)		
+			     satInfo = SATInfo(equipId);
+					
+			 else satInfo = defaultSATInfo();			
+		   
+		     }
+					
 		// ----------------------------------------------------------------------------------------------------------------
-		
-		System.out.println(equipsInfo);
-		
+				
 		// HEADER
 
 		// CRIAR COLUNAS E LINHAS DO HEADER
@@ -202,13 +219,18 @@ public class ExcelTemplate {
 		utilSheet.createImage(workbook, sheet, pathLogo, 0, 2, 0, 4, 1, 1, 1, 1, 1); // CRIAR IMAGEM
 		utilSheet.setCellsStyle(sheet, row, standardStyle, 0, 1, 0, 3); // ESTILO CAMPOS IMAGEM
 		
-		// DEFINIR O TÍTULO	DO HEADER					
+		// DEFINIR O TÃƒï¿½TULO	DO HEADER					
 		utilSheet.setCellValue(sheet, row, 0, 2, fileTitle);
 		utilSheet. setCellsStyle(sheet, row, titleStyle, 2, columnsIndex, 0, 3); // ESTILO TITULO
-
+		
 		// HEADER DATE TEMPLATE
-		String headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + startDate+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + endDate;
+		
+		if(period.equals("day") || period.equals("month") || period.equals("year")) 	
+		    headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[0]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[1];
 
+		else headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[dayIndex]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[dayIndex];
+
+		
 		// INSERIR O TEMPLATE
 		utilSheet.setCellValue(sheet, row, 0, columnStartDate, headerDates);	
 		utilSheet.setCellsStyle(sheet, row, dateTitleStyle, columnStartDate, columnEndDate, 0, 3); // ESTILO DATAS
@@ -239,10 +261,10 @@ public class ExcelTemplate {
        		
 		
 		// NOME DO EQUIPAMENTO
-		utilSheet.createCell(sheet, row, 5, 2);
-		utilSheet.setCellValue(sheet, row, 5, 2, equipsInfo.get(0).getNome());
+		utilSheet.createCell(sheet, row, 5, 2);		
+		utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat")? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
-
+ 
 		// DATA DE CONSULTA LABEL
 		utilSheet.createCell(sheet, row, 5, 5);
 		utilSheet.setCellValue(sheet, row, 5, 5, localeExcel.getStringKey("excel_sheet_header_consultation_date"));
@@ -265,7 +287,7 @@ public class ExcelTemplate {
 
 		// CIDADE
 		utilSheet.createCell(sheet, row, 6, 2);
-		utilSheet.setCellValue(sheet, row, 6, 2, equipsInfo.get(0).getCidade());
+		utilSheet.setCellValue(sheet, row, 6, 2, module.equals("sat")? satInfo.get(0).getCidade() : equipsInfo.get(0).getCidade());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
 
 		// SENTIDO LABEL
@@ -290,12 +312,12 @@ public class ExcelTemplate {
 
 		// NOME DA RODOVIA / ESTRADA
 		utilSheet.createCell(sheet, row, 7, 2);
-		utilSheet.setCellValue(sheet, row, 7, 2, equipsInfo.get(0).getEstrada());
+		utilSheet.setCellValue(sheet, row, 7, 2, module.equals("sat")? satInfo.get(0).getEstrada() : equipsInfo.get(0).getEstrada());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
 		
 		if(!period.equals("")) {
 
-		// PERÍODO LABEL
+		// PERÃƒï¿½ODO LABEL
 		utilSheet.createCell(sheet, row, 7, 7);
 		utilSheet.setCellValue(sheet, row, 7, 7, localeExcel.getStringKey("excel_sheet_header_period"));
 		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 7, 7);
@@ -319,15 +341,15 @@ public class ExcelTemplate {
 
 		// KM
 		utilSheet.createCell(sheet, row, 8, 2);
-		utilSheet.setCellValue(sheet, row, 8, 2, equipsInfo.get(0).getKm());
+		utilSheet.setCellValue(sheet, row, 8, 2, module.equals("sat")? satInfo.get(0).getKm() : equipsInfo.get(0).getKm());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 8, 2);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
-		// CASO O NÚMERO DE LINHAS FOR MAIOR QUE 1 
-		// ENTRA NESSA CONDIÇÃO
+		// CASO O NÃƒÅ¡MERO DE LINHAS FOR MAIOR QUE 1 
+		// ENTRA NESSA CONDIÃƒâ€¡ÃƒÆ’O
 		// UTILIZADA ESPECIFICAMENTE PARA O SAT
-		if(isSat) {
+		if(module.equals("sat")) {
 
 			// CRIAR LINHA 5 - SUBHEADER
 			utilSheet.createRow(sheet, row, 9);
@@ -337,9 +359,14 @@ public class ExcelTemplate {
 			utilSheet.setCellValue(sheet, row, 9, 1, localeExcel.getStringKey("excel_sheet_header_lanes"));
 			utilSheet.setCellStyle(sheet, row, centerBoldStyle, 9, 1); 
 
-			// NÚMERO DE LINHAS
+			// NÃƒÅ¡MERO DE LINHAS
 			utilSheet.createCell(sheet, row, 9, 2);
-			utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt("LANES"));
+			
+			if(satInfo.get(0).getQtdeFaixas().matches(NUMBER_REGEX))
+				utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(satInfo.get(0).getQtdeFaixas()));
+			
+			else utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(0).getQtdeFaixas()); 
+			
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 
 		}
@@ -348,195 +375,23 @@ public class ExcelTemplate {
 				
 	}
 	
-	// ----------------------------------------------------------------------------------------------------------------
-	
-	public void spreadSheetHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String[] columns, String fileTitle, 
-			String startDate, String endDate, String period, String[][] equipInfo, boolean isSat, int posArray) {
-
-		DateTimeApplication dta = new DateTimeApplication();
-		TranslationMethods tm = new TranslationMethods();
-
-		// INDEX DA COLUNA DE ÍNICIO DA DATA
-		int columnStartDateIndex = columns.length - 2;
-		int columnEndDateIndex = columns.length;
-		int columnTitleEndIndex = columnStartDateIndex - 1;
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// HEADER
-
-		// CRIAR COLUNAS E LINHAS DO HEADER
-		utilSheet.createRows(sheet, row, 0, 4);
-		utilSheet.createCells(sheet, row, 0, columns.length, 0, 3);
-
-		// DEFINIR IMAGEM
-		utilSheet.createImage(workbook, sheet, pathLogo, 0, 0, 2, 4, 1, 1, 1, 1, 1); 
-
-		// DEFINIR O TÍTULO	DO HEADER					
-		utilSheet.setCellValue(sheet, row, 0, 2, fileTitle);
-		utilSheet. setCellsStyle(sheet, row, titleStyle, 0, 3, 0, columnTitleEndIndex); // ESTILO TITULO
-
-		// HEADER DATE TEMPLATE
-		String headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + startDate+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + endDate;
-
-		// INSERIR O TEMPLATE
-		utilSheet.setCellValue(sheet, row, 0, columnStartDateIndex, headerDates);	
-		utilSheet.setCellsStyle(sheet, row, dateTitleStyle, 0, 3,columnStartDateIndex, columnEndDateIndex); // ESTILO DATAS
-		
-		// HEADER COLUMNS DINAMIC MERGE
-		utilSheet.mergeBetweenColumns(sheet, 0, 1, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, 2, columns.length, 1, 4);
-		utilSheet.mergeBetweenColumns(sheet, columns.length + 1, columns.length + 3, 1, 4);
-		
-		// ----------------------------------------------------------------------------------------------------------------	    
-		// SUBHEADER 
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// MERGE CELLS
-		utilSheet.mergeCells(sheet, "A6:B6");	
-		utilSheet.mergeCells(sheet, "F6:H6");
-		utilSheet.mergeCells(sheet, "I6:J6");
-		
-		// ----------------------------------------------------------------------------------------------------------------				
-				
-		// CRIAR LINHA 1 - SUBHEADER
-		utilSheet.createRow(sheet, row, 5);
-
-		// EQUIPAMENTO LABEL
-		utilSheet.createCell(sheet, row, 5, 0);
-		utilSheet.setCellValue(sheet, row, 5, 0, localeExcel.getStringKey("excel_sheet_header_equipment"));
-		utilSheet.setCellStyle(sheet, row, rightAlignBoldStyle, 5, 0); 
-
-		// NOME DO EQUIPAMENTO
-		utilSheet.createCell(sheet, row, 5, 2);
-		utilSheet.setCellValue(sheet, row, 5, 2, equipInfo[posArray][0]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 5, 2); 
-
-		// DATA DE CONSULTA LABEL
-		utilSheet.createCell(sheet, row, 5, 5);
-		utilSheet.setCellValue(sheet, row, 5, 5, localeExcel.getStringKey("excel_sheet_header_consultation_date"));
-		utilSheet.setCellStyle(sheet, row, rightAlignBoldStyle, 5, 5); 
-
-		// DATA
-		utilSheet.createCell(sheet, row, 5, 8);
-		utilSheet.setCellValue(sheet, row, 5, 8, " " + dta.currentDateTime());
-		utilSheet.setCellStyle(sheet, row, leftAlignStandardStyle, 5, 8);
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// CRIAR LINHA 2 - SUBHEADER
-		utilSheet.createRow(sheet, row, 6);
-
-		// CIDADE LABEL
-		utilSheet.createCell(sheet, row, 6, 1);
-		utilSheet.setCellValue(sheet, row, 6, 1, localeExcel.getStringKey("excel_sheet_header_city"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 1);
-
-		// CIDADE
-		utilSheet.createCell(sheet, row, 6, 2);
-		utilSheet.setCellValue(sheet, row, 6, 2, equipInfo[posArray][1]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
-
-		// SENTIDO LABEL
-		utilSheet.createCell(sheet, row, 6, 7);
-		utilSheet.setCellValue(sheet, row, 6, 7, localeExcel.getStringKey("excel_sheet_header_direction"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 7);
-
-		// SENTIDO
-		utilSheet.createCell(sheet, row, 6, 8);
-		utilSheet.setCellValue(sheet, row, 6, 8, localeExcel.getStringKey("excel_sheet_header_all_directions"));
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 8);
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// CRIAR LINHA 3 - SUBHEADER
-		utilSheet.createRow(sheet, row, 7);
-
-		// RODOVIA / ESTRADA LABEL
-		utilSheet.createCell(sheet, row, 7, 1);
-		utilSheet.setCellValue(sheet, row, 7, 1, localeExcel.getStringKey("excel_sheet_header_highway"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 7, 1);
-
-		// NOME DA RODOVIA / ESTRADA
-		utilSheet.createCell(sheet, row, 7, 2);
-		utilSheet.setCellValue(sheet, row, 7, 2, equipInfo[posArray][2]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
-		
-		if(!period.equals("")) {
-
-		// PERÍODO LABEL
-		utilSheet.createCell(sheet, row, 7, 7);
-		utilSheet.setCellValue(sheet, row, 7, 7, localeExcel.getStringKey("excel_sheet_header_period"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 7, 7);
-
-		// PERIODO
-		utilSheet.createCell(sheet, row, 7, 8);
-		utilSheet.setCellValue(sheet, row, 7, 8, tm.periodName(period));
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 8);
-		
-		}
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// CRIAR LINHA 4 - SUBHEADER
-		utilSheet.createRow(sheet, row, 8);
-
-		// KM LABEL
-		utilSheet.createCell(sheet, row, 8, 1);
-		utilSheet.setCellValue(sheet, row, 8, 1, localeExcel.getStringKey("excel_sheet_header_km"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 8, 1);
-
-		// KM
-		utilSheet.createCell(sheet, row, 8, 2);
-		utilSheet.setCellValue(sheet, row, 8, 2, equipInfo[posArray][3]);
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 8, 2);
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// CASO O NÚMERO DE LINHAS FOR MAIOR QUE 1 
-		// ENTRA NESSA CONDIÇÃO
-		// UTILIZADA ESPECIFICAMENTE PARA O SAT
-		if(isSat) {
-
-			// CRIAR LINHA 5 - SUBHEADER
-			utilSheet.createRow(sheet, row, 9);
-
-			// LANE LABELS
-			utilSheet.createCell(sheet, row, 9, 1);
-			utilSheet.setCellValue(sheet, row, 9, 1, localeExcel.getStringKey("excel_sheet_header_lanes"));
-			utilSheet.setCellStyle(sheet, row, centerBoldStyle, 9, 1); 
-
-			// NÚMERO DE LINHAS
-			utilSheet.createCell(sheet, row, 9, 2);
-			utilSheet.setCellValue(sheet, row, 9, 2, Integer.parseInt(equipInfo[posArray][4]));
-			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
-
-		}
-		
-		// ----------------------------------------------------------------------------------------------------------------
-		
-		// TABLE COLUMNS LENGTH
-		utilSheet.columnsWidthAuto(sheet, columns.length);
-	}
-	
-
 	// ----------------------------------------------------------------------------------------------------------------
 	// TOTAL
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para criar colunas com total para SOMA
+	 * MÃƒÂ©todo para criar colunas com total para SOMA
 	 * @author Wellington 15/10/2021
 	 * @version 1.0
 	 * @since 1.0  
-	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
-	 * @param standard - estilo padrão para colunas atribuidas a fórmula
+	 * @param sheet - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma planilha
+	 * @param row - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma linha de uma planilha
+	 * @param standard - estilo padrÃƒÂ£o para colunas atribuidas a fÃƒÂ³rmula
 	 * @param tableHeader - estilo apenas para a string "TOTAL"
-	 * @param rowTotal - última linha a ser apresentado o total	
-	 * @param multi - define se o template do total é de múltiplos equipamentos ou não
-	 * @param columnsLength - número de colunas  
+	 * @param rowTotal - ÃƒÂºltima linha a ser apresentado o total	
+	 * @param multi - define se o template do total ÃƒÂ© de mÃƒÂºltiplos equipamentos ou nÃƒÂ£o
+	 * @param columnsLength - nÃƒÂºmero de colunas  
 	 * @param rowIni - linha inicial		
 	 * @param rowEnd - linha final	
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFSheet.html
@@ -544,7 +399,7 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
+	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE ROW TOTAL
 		utilSheet.createRow(sheet, row, rowTotal);		 
@@ -553,24 +408,24 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
-		utilSheet.totalExcelSum(sheet, row, standard, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelSum(sheet, row, standard, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para criar colunas com total MÉDIA
+	 * MÃƒÂ©todo para criar colunas com total MÃƒâ€°DIA
 	 * @author Wellington 15/10/2021
 	 * @version 1.0
 	 * @since 1.0  
-	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
-	 * @param standard - estilo padrão para colunas atribuidas a fórmula
+	 * @param sheet - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma planilha
+	 * @param row - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma linha de uma planilha
+	 * @param standard - estilo padrÃƒÂ£o para colunas atribuidas a fÃƒÂ³rmula
 	 * @param tableHeader - estilo apenas para a string "TOTAL"
-	 * @param rowTotal - última linha a ser apresentado o total	
-	 * @param multi - define se o template do total é de múltiplos equipamentos ou não
-	 * @param columnsLength - número de colunas  
+	 * @param rowTotal - ÃƒÂºltima linha a ser apresentado o total	
+	 * @param multi - define se o template do total ÃƒÂ© de mÃƒÂºltiplos equipamentos ou nÃƒÂ£o
+	 * @param columnsLength - nÃƒÂºmero de colunas  
 	 * @param rowIni - linha inicial		
 	 * @param rowEnd - linha final	
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFSheet.html
@@ -578,7 +433,7 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, boolean isMulti, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
+	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE ROW TOTAL
 		utilSheet.createRow(sheet, row, rowTotal);		 
@@ -587,25 +442,25 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
-		utilSheet.totalExcelAverage(sheet, row, standard, rowTotal, isMulti, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelAverage(sheet, row, standard, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
     
 	}
     
 	// ----------------------------------------------------------------------------------------------------------------
     
 	/**
-	 * Método para criar colunas com total para TEMPO
+	 * MÃƒÂ©todo para criar colunas com total para TEMPO
 	 * @author Wellington 15/10/2021
 	 * @version 1.0
 	 * @since 1.0  
-	 * @param workbook - objeto de representação de alto nível de uma pasta de trabalho para uma planilha
-	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha
-	 * @param standard - estilo padrão para colunas atribuidas a fórmula
+	 * @param workbook - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma pasta de trabalho para uma planilha
+	 * @param sheet - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma planilha
+	 * @param row - objeto de representaÃƒÂ§ÃƒÂ£o de alto nÃƒÂ­vel de uma linha de uma planilha
+	 * @param standard - estilo padrÃƒÂ£o para colunas atribuidas a fÃƒÂ³rmula
 	 * @param tableHeader - estilo apenas para a string "TOTAL"
-	 * @param rowTotal - última linha a ser apresentado o total	
-	 * @param multi - define se o template do total é de múltiplos equipamentos ou não
-	 * @param columnsLength - número de colunas  
+	 * @param rowTotal - ÃƒÂºltima linha a ser apresentado o total	
+	 * @param multi - define se o template do total ÃƒÂ© de mÃƒÂºltiplos equipamentos ou nÃƒÂ£o
+	 * @param columnsLength - nÃƒÂºmero de colunas  
 	 * @param rowIni - linha inicial		
 	 * @param rowEnd - linha final		
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFWorkbook.html	
@@ -614,7 +469,7 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalTime(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, boolean isMulti, 
+	public void totalTime(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, 
 			int columnsLength, int columnNumber, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE ROW TOTAL
@@ -624,7 +479,7 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
 		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
 
-		utilSheet.totalExcelDate(workbook, sheet, row, standard, isMulti, rowTotal, columnsLength, columnNumber, rowIni, rowEnd); // SET CELL FORMULA					
+		utilSheet.totalExcelDate(workbook, sheet, row, standard, lines, rowTotal, columnsLength, columnNumber, rowIni, rowEnd); // SET CELL FORMULA					
 
 	}
 	
@@ -641,134 +496,11 @@ public class ExcelTemplate {
 
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
-	// MAIN TEMPLATES
-	// ----------------------------------------------------------------------------------------------------------------
-	
-	/**
-	 * Método para criar um modelo para um relátorio para uma única planilha
-	 * @author Wellington 15/10/2021
-	 * @version 1.0
-	 * @since 1.0
-	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha	
-	 * @param multi - define o total para múltiplos equipamentos ou não
-	 * @param numLanes - número de linhas caso equipmemnto possua
-	 * @param columnsHeader - matriz com os valores das colunas
-	 * @param values - matriz com os valores obtidos pelo banco
-	 * @param rowTotal - linha dos valores a serem somados no total
-	 * @param iniRow - linha inicial
-	 * @param endRow - linha final
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFSheet.html
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFRow.html
-	 */
-	public void singleTempateWithSum(XSSFSheet sheet, XSSFRow row, boolean multi, boolean isSat, int firstRow,String[] columnsHeader, String[][] values, int rowTotal, int iniRow, int endRow) {
-
-		int columns = columnsHeader.length; // TOTAL DE COLUNAS		
-		int startColumn = 0; // COLUNA INICIAL		
-		int maxCol = (columns - 1); // INDEX MAX DAS COLUNAS
-		int minCol = 2; // INDEX INICIAL DAS COLUNAS
-
-		// CRIAR PRIMEIRA LINHA DO CABEÇALHO
-		utilSheet.createRow(sheet, row, firstRow);	
-
-		utilSheet.createCells(sheet, row, startColumn, columns, firstRow, firstRow); // CRIAR A CÉLULAS DO CABEÇALHO		 
-		utilSheet.setCellsValues(sheet, row, firstRow, columnsHeader); // INSERIR VALORES		 
-		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
-
-		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
-		utilSheet.createRows(sheet, row, iniRow, endRow);
-		utilSheet.createCells(sheet, row, startColumn, columns, iniRow, endRow);
-
-		utilSheet.fileBodySingle(sheet, row, values, startColumn, columns, iniRow, endRow); // PREENCHER DADOS
-
-		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 0, 1, iniRow, endRow); // ESTILOS
-		utilSheet.setCellsStyle(sheet, row, standardStyle, minCol, maxCol, iniRow, endRow); // ESTILOS
-
-		//totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------
-
-	/**  
-	 * Método para criar um modelo para um relátorio para multiplas planilhas
-	 * @author Wellington 15/10/2021
-	 * @version 1.0
-	 * @since 1.0 
-	 * @param sheet - objeto de representação de alto nível de uma planilha
-	 * @param row - objeto de representação de alto nível de uma linha de uma planilha		
-	 * @param multi - define o total para múltiplos equipamentos ou não
-	 * @param numLanes - número de linhas caso equipmemnto possua
-	 * @param columnsHeader - matriz com os valores das colunas
-	 * @param values - matriz com os valores obtidos pelo banco
-	 * @param rowTotal - linha dos valores a serem somados no total
-	 * @param iniRow - linha inicial
-	 * @param endRow - linha final	
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFSheet.html
-	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/xssf/usermodel/XSSFRow.html	
-	 */
-	public void multipleTemplate(XSSFSheet sheet, XSSFRow row, boolean multi, boolean isSat, int firstRow, String[] columnsHeader, String[][] values, int iniRow, int endRow, int day, int interval) {
-	
-		int columns = columnsHeader.length; // TOTAL DE COLUNAS		
-		int startColumn = 0; // COLUNA INICIAL		
-		int maxCol = (columns - 1); // INDEX MAX DAS COLUNAS
-		int minCol = 2; // INDEX INICIAL DAS COLUNAS
-
-		// CRIAR PRIMEIRA LINHA DO CABEÇALHO
-		utilSheet.createRow(sheet, row, firstRow);	
-
-		utilSheet.createCells(sheet, row, startColumn, columns, firstRow, firstRow); // CRIAR A CÉLULAS DO CABEÇALHO		 
-		utilSheet.setCellsValues(sheet, row, firstRow, columnsHeader); // INSERIR VALORES		 
-		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startColumn, columns, firstRow, firstRow); // DEFINIR ESTILO
-
-		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
-		utilSheet.createRows(sheet, row, iniRow, endRow);
-		utilSheet.createCells(sheet, row, startColumn, columns, iniRow, endRow);
-
-		utilSheet.fileBodyMulti(sheet, row, values, startColumn, columns, iniRow, endRow, day, interval); // PREENCHER DADOS
-
-		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 0, 1, iniRow, endRow); // ESTILOS
-		utilSheet.setCellsStyle(sheet, row, standardStyle, minCol, maxCol, iniRow, endRow); // ESTILOS
-
-		// totalSum(sheet, row, standardStyle, tableHeaderStyle, multi, columns, rowTotal, iniRow, endRow); // TOTAL
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------
 	// TEMPLATE MODEL
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public void generateMultiExcelFile(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String[] equipNames, String[] columns, String fileTitle,
-				String startDate, String endDate, String period, String[][] equipInfo, boolean isSat, String[][] values, int interval) {
-		
-		int firstRow = 0; // PRIMEIRAS LINHA DO HEADER
-		
-		// CASO EXISTA FAIXAS NO EQUIPAMENTO
-		if(isSat)
-			firstRow = 11;
-
-		// CASO NÃO EXISTA FAIXAS NO EQUIPAMENTO
-		else firstRow = 10;
-				
-		// ----------------------------------------------------------------------------------------------------------------
-		
-		int iniRow = firstRow + 2;
-		int endRow = iniRow + ReportBuild.numRegisters;
-		
-		// ----------------------------------------------------------------------------------------------------------------
-		
-		for(int d = 0; d < equipNames.length; d++) {
-		
-		    //spreadSheetHeader(workbook, sheet, row, pathLogo, equipNames, columns, fileTitle, startDate, endDate, period, equipInfo, isSat, d);		    
-		    multipleTemplate(sheet, row, true, isSat, firstRow, columns, values, iniRow, endRow, d, interval);
-		    	    		
-		}
-
-	}
-
-	// ----------------------------------------------------------------------------------------------------------------
-	
-	public void generateExcelFile(List<String> columns, List<String[]> rows, String module, List<String> equips, String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal) {
+	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
+			String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet) {
 		
 		sheet = null;		
 		row = null;
@@ -780,61 +512,281 @@ public class ExcelTemplate {
 		int endCol = columns.size() - 1;
 		int dataTotalRow = columns.size();
 		
+		if(!isMultiSheet || (isMultiSheet && period.equals("day") || period.equals("month") || period.equals("year"))) {
+			
+			String[] dates = new String[2];
+			
+			dates[0] = startDate;
+			dates[1] = endDate;
+				
 		sheet = workbook.createSheet(sheetName);
 										
-		excelSingleFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-				startDate, endDate, period, equips, isSat);
+		excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				dates, period, equips, 0);
 									    		
 		// CASO EXISTA FAIXAS NO EQUIPAMENTO
-		if(isSat) {
+		if(module.equals("sat")) {
 			tableStartRow = 11;
 			dataStartRow = 12;
-
-		// CASO NÃO EXISTA FAIXAS NO EQUIPAMENTO 
+		
+		// CASO NÃƒÆ’O EXISTA FAIXAS NO EQUIPAMENTO 
 	    }else {  tableStartRow = 10; dataStartRow = 11; }
 		
-		dataEndRow = dataStartRow + rows.size() - 1;
+		// -----------------------------------------------------
+		
+		if(isTotal)
+			dataEndRow = dataStartRow + lines.size();
+		
+		else dataEndRow = dataStartRow + lines.size() - 1;
+		
+		// -----------------------------------------------------
 						
 		utilSheet.createRow(sheet, row, tableStartRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
-		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
-		
+		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
 		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
 													
-		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
+		// CRIAR LINHAS PARA APRESENTAï¿½ï¿½O DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 								 		
-		utilSheet.fileBodySimple(sheet, row, columns, rows, startCol, endCol, dataStartRow);
+		utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow);
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
+		if(isTotal)
+		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL		
+		
+		// ---------------------------------------------------------------------------------------------------
+				
+		if(secondRows != null) {
+		
+			for(Pair<String, List<String[]>> p : secondRows) {
+				
+				// CREATE ROW
+				utilSheet.createRow(sheet, row, (dataEndRow + 3));
+				
+				// SENTIDO LABEL
+				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 2);
+				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+				utilSheet.setCellStyle(sheet, row, centerBoldStyle, (dataEndRow + 3), columns.size() - 2);
+
+				// SENTIDO
+				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 1);
+				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 1, p.left);
+				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, (dataEndRow + 3), columns.size() - 1);
+				
+				tableStartRow = dataEndRow + 5;
+				
+				dataStartRow = tableStartRow + 1;
+				
+				// -----------------------------------------------------
+				
+				if(isTotal)
+				  dataEndRow = dataStartRow + p.right.size(); 
+				
+				else dataEndRow = dataStartRow + p.right.size() - 1;
+				
+				// -----------------------------------------------------
+			   	
+				// CABEÃ‡ALHO DA TABELA		
+				utilSheet.createRow(sheet, row, tableStartRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
+				utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
+				utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
+				
+				// CRIAR LINHAS PARA APRESENTAÃ‡ÃƒO DOS DADOS
+				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
+						
+				utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
+				
+				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
+				
+				if(isTotal)
+				    totalSum(sheet, row, standardStyle, tableHeadStyle, p.right, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL
+				
+		   }		
+		}
+		
+		// -----------------------------------------------------------------------------------------------------------------------------------------------------
+						
 		// TABLE COLUMNS AUTO SIZE 
 		utilSheet.columnsWidthAuto(sheet, columns.size());
 		
-		if(isTotal)
-			totalSum(sheet, row, standardStyle, tableHeadStyle, columns.size(), dataTotalRow, dataStartRow, dataEndRow); // TOTAL
-			
+		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	// ----------------------------------------------------------------------------------------------------------------
+	} else if(isMultiSheet && (period.equals("5 minutes") || period.equals("6 minutes") || period.equals("10 minutes")
+			|| period.equals("15 minutes") || period.equals("30 minutes") || period.equals("6 hours") || period.equals("1 hour"))){		
+		
+		DateTimeApplication dt = new DateTimeApplication();
+		
+		int daysCount = 0;
+		int interval = 0;
+				
+		try {
+				
+			daysCount = (int) dt.diferencaDias(startDate, endDate) + 1; // DIFERENÃ‡A DIAS
+			interval = dt.defineInterval(period); // INTERVALO EM RELAÃ‡ÃƒO AOS PERIODO SELECIONADO
+											
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+			
+		String[] dates = new String[daysCount];
+		String[] sheetNames = new String[daysCount];
+			
+		try {
+			
+			// CABEÃ‡ALHO COM DATAS
+			// APRESENTA UMA DATA POR VEZ A CADA FOLHA
+			dates = dt.dateRangeForHeader(startDate, endDate, daysCount);
+			
+			//SHEET NAMES
+			sheetNames = dt.dateRangeForSheetName(startDate, endDate, daysCount);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 					
+		// SHEETNAME BY DATE SELECTION										
+				
+	    for(int d = 0; d < daysCount; d++) {
+	    	
+	    	// SheetName
+			sheet = workbook.createSheet(sheetNames[d]); // CREATE SHEET NAMES
+		
+			excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
+				dates, period, equips, d);
+									    		
+		// CASO EXISTA FAIXAS NO EQUIPAMENTO
+		if(module.equals("sat")) {
+			tableStartRow = 11;
+			dataStartRow = 12;
+		
+		// CASO NÃƒÆ’O EXISTA FAIXAS NO EQUIPAMENTO 
+	    }else {  tableStartRow = 10; dataStartRow = 11; }
+		
+		// -----------------------------------------------------
+		
+		if(isTotal)
+			dataEndRow = dataStartRow + interval;
+		
+		else dataEndRow = dataStartRow + interval - 1;
+		
+		// -----------------------------------------------------
+						
+		utilSheet.createRow(sheet, row, tableStartRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
+		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
+		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
+													
+		// CRIAR LINHAS PARA APRESENTAÃ‡ÃƒO DOS DADOS
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
+										 		
+		utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, d , interval);
+		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
+		
+		if(isTotal)
+		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL		
+		
+		// ---------------------------------------------------------------------------------------------------
+				
+		if(secondRows != null) {
+		
+			for(Pair<String, List<String[]>> p : secondRows) {
+				
+				// CREATE ROW
+				utilSheet.createRow(sheet, row, (dataEndRow + 3));
+				
+				// SENTIDO LABEL
+				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 2);
+				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+				utilSheet.setCellStyle(sheet, row, centerBoldStyle, (dataEndRow + 3), columns.size() - 2);
+
+				// SENTIDO
+				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 1);
+				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 1, p.left);
+				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, (dataEndRow + 3), columns.size() - 1);
+				
+				tableStartRow = dataEndRow + 5;
+				
+				dataStartRow = tableStartRow + 1;
+				
+				// -----------------------------------------------------
+				
+				if(isTotal)
+				  dataEndRow = dataStartRow + interval; 
+				
+				else dataEndRow = dataStartRow + interval - 1;
+				
+				// -----------------------------------------------------
+			   	
+				// CABEÃ‡ALHO DA TABELA		
+				utilSheet.createRow(sheet, row, tableStartRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
+				utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
+				utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
+				
+				// CRIAR LINHAS PARA APRESENTAÃ‡ÃƒO DOS DADOS
+				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
+						
+			    utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, d, interval);
+				
+				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
+				
+				if(isTotal)
+				    totalSum(sheet, row, standardStyle, tableHeadStyle, p.right, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL
+				
+		   }		
+		}
+		
+		// -----------------------------------------------------------------------------------------------------------------------------------------------------
+						
+		// TABLE COLUMNS AUTO SIZE 
+		utilSheet.columnsWidthAuto(sheet, columns.size());
+		
+		}		
+	}
+					
+		// ----------------------------------------------------------------------------------------------------------------						
 	}	
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
-	public List<Equipments> equipmentInfo(List<String> equipId, String module) {
+	public List<Equipments> genericInfo(List<String> equipId, String module) { 
 		
 		List<Equipments> info = new ArrayList<Equipments>();
 		 dao = new EquipmentsDAO();
 		
 		try {
 						 			 
-			 for(int s = 0; s < equipId.size(); s++) {
-	        	
-			 info = dao.EquipReportInfo(equipId.get(s), module);
-			 			 
-			 }	 
+			 for(int s = 0; s < equipId.size(); s++)	        	
+			    info = dao.EquipReportInfo(equipId.get(s), module);
+			 								
+			} catch (Exception e) {			
+				e.printStackTrace();
+			}
+		 
+		 return info;
 				
+	  }
+	
+  // ----------------------------------------------------------------------------------------------------------------
+	
+public List<SAT> SATInfo(List<String> equipId) { 
+		
+		List<SAT> info = new ArrayList<SAT>();
+		 dao = new EquipmentsDAO();
+		
+		try {
+						 			 
+			 for(int s = 0; s < equipId.size(); s++)	        	
+			    info = dao.SATReportInfo(equipId.get(s));
+			 								
 			} catch (Exception e) {			
 				e.printStackTrace();
 			}
@@ -861,5 +813,27 @@ public class ExcelTemplate {
 		return lista;
 		
 	}
+	
+	 // ----------------------------------------------------------------------------------------------------------------
+	
+	public List<SAT> defaultSATInfo(){
+		
+		List<SAT> lista = new ArrayList<SAT>();
+		
+		SAT sat = new SAT();
+		
+		sat.setNome(" --- ");		
+		sat.setCidade(" --- ");
+		sat.setEstrada(" --- ");
+		sat.setKm(" --- ");
+		sat.setQtdeFaixas(" --- ");
+		
+		lista.add(sat);
+		
+		return lista;
+		
+	}
+	
+	 // ----------------------------------------------------------------------------------------------------------------	
 	
 }
