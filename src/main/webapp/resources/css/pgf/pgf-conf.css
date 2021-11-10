@@ -47,15 +47,23 @@
   margin-left: 1px;
   width: 10%;
   background-color: #c5c5c5 !important;
-  -webkit-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-   -moz-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-   box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-  ;
+}
+
+.PGFpicture {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 45%;
+  margin-top: -6px;
+  width: 54%; 
 }
 
 .pgf1 {
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
 	margin-left: 7.5%;
 	margin-top: -8px;
@@ -66,9 +74,8 @@
 
 .pgf2 {
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
-	margin-left: -15%;
 	margin-top: -8px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -77,7 +84,7 @@
 
 .pgf3 {
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
 	margin-left: 7.5%;
 	margin-top: 25px;
@@ -88,20 +95,42 @@
 
 .pgf4 {
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
-	margin-left: -15%;
 	margin-top: 25px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50	, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+}
+
+.pgftires1 {
+	border: solid 2px black;
+	width: 41%;
+	height: 66px;
+}
+
+.pgftires2 {
+	border: solid 2px black;
+	width: 62%;
+	height: 66px;
+	margin-left: -11%;
+}
+
+.pgftires3 {
+	border: solid 2px black;
+	width: 62%;
+	height: 66px;
+	margin-left: 11%;
+}
+
+.lbltire{
 }
 
 .pgfmin {
 	border: solid 2px black;
-	width: 400px;
+	width: 50%;
 	height: 100px;
-	margin-left: 23%;
+	margin-left: 22%;
 	margin-top: 14px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -112,8 +141,17 @@
 	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
 }
 
+.pgf-card2{
+	  margin-top: 20%;
+	  background: rgba(120, 120, 120, 1);
+}
+
+.btnpgf{
+	margin-left: 30%;
+	width: 42%;
+}
+
 .rowPGF{
-	margin-left: 45%;
 	margin-top: 1%;
 }
   
