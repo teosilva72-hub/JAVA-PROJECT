@@ -321,7 +321,7 @@ public class RoadConcessionaire {
 			reportsLLEnabled = false;
 													
 		}
-       if(roadConcessionaire.equals(RoadConcessionairesEnum.Br153.getConcessionaire())) {
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.BR153.getConcessionaire())) {
 			
           	classLight = ViaSul.LIGHT_VEHICLES.getClasse();
    			classMotorcycle = ViaSul.MOTORCYCLES.getClasse();
