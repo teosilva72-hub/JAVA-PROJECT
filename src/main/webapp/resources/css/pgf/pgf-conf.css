@@ -32,7 +32,7 @@
   right: 5px;
   left: 5px;
   margin-top: 10px;
-  width: 35%;
+  width: 30%;
 }
 
 .PGFclean {
@@ -42,10 +42,10 @@
   top: 65px;
   bottom: 45px;
   right: 5px;
-  left: 36%;
+  left: 31%;
   margin-top: 10px;
   margin-left: 1px;
-  width: 10%;
+  width: 15%;
   background-color: #c5c5c5 !important;
 }
 
@@ -121,9 +121,6 @@
 	width: 62%;
 	height: 66px;
 	margin-left: 11%;
-}
-
-.lbltire{
 }
 
 .pgfmin {
