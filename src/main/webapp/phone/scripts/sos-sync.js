@@ -1,5 +1,6 @@
 localStorage.removeItem("RingTone");
 localStorage.removeItem("RingBackTone");
+let idInterval = 0
 let count = 0
 let debug = false;
 
@@ -54,6 +55,19 @@ const ringCall = async response => {
 			try { localStorage.setItem("RingTone", "true") } catch (e) {}
 }
 
+const focusWindowPhone = () => {
+    if (!idInterval)
+        idInterval = setInterval(() => {
+            if (phoneWindow)
+                phoneWindow.focus()
+        }, 1000);
+}
+
+const cancelFocusPhone = () => {
+    clearInterval(idInterval);
+    idInterval = 0;
+}
+
 const eventGetReaction = async () => {
     let last_status = $('#txtRegStatus').html()
     let last_reaction = $('#txtCallStatus').html()
@@ -72,12 +86,14 @@ const eventGetReaction = async () => {
 
     if (ringtone)
         try {
+            focusWindowPhone();
             // RingTone.play()
             for (const ring of secondaryAudio)
                 ring.play()
         } catch (e) {}
     else
         try {
+            cancelFocusPhone();
             // RingTone.pause()
             for (const ring of secondaryAudio)
                 ring.pause()

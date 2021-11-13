@@ -1,3 +1,5 @@
+let phoneWindow;
+
 (() => {
   if (location.protocol != "https:" && location.hostname != "localhost")
     location.href = location.href.replace(location.protocol, "https:")
@@ -143,7 +145,7 @@ $('.sipStatus').on('click', function (event) {
   event.preventDefault();
   // This is set when the phone is open and removed on close
   // if (!localStorage.getItem('ctxPhone')) {
-    window.open(url, 'ctxPhone', features);
+    phoneWindow = window.open(url, 'ctxPhone', features);
     return false;
   // } else {
   //   window.alert('Phone already open.');
