@@ -450,7 +450,10 @@ public class TesterBean {
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
-					group = String.format("%s, %s", alias[1], group);
+					if (period[1].toUpperCase().equals("DAY"))
+						group = alias[1];
+					else
+						group = String.format("%s, %s", alias[1], group);
 				} else
 					query += String.format("%s as %s, ", column, group);
 					
@@ -481,15 +484,11 @@ public class TesterBean {
 					Date end = calendar.getTime();
 					dateProcess = new Date[] { start, end };
 				}
-				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
-					query += " WHERE";
+				if (!dateStart.isEmpty() || !dateEnd.isEmpty()) {
+					if (count == 0)
+						query += " WHERE";
 
-				if (!dateStart.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= DATE(%s)", count > 0 ? " AND" : "", dateStart, search[0]);
-					count++;
-				}
-				if (!dateEnd.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= DATE(%s)", count > 0 ? " AND" : "", dateEnd, search[0]);
+					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					count++;
 				}
 			}
