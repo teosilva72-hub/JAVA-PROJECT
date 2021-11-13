@@ -7,11 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tools.ant.taskdefs.AbstractCvsTask.Module;
-
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.dms.MessagesDAO;
-import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.colas.Colas;
@@ -21,9 +18,9 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
+import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
@@ -44,7 +41,7 @@ public class EquipmentsDAO {
 	 * @author 
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param mod - Módulo
+	 * @param mod - M�dulo
 	 * @param view - Mapa gis ou linear
 	 * @param width - Comprimento a ser alterado
 	 * @throws Exception
@@ -73,14 +70,15 @@ public class EquipmentsDAO {
 		}
 	}
 
+	
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para listar equipamentos por módulo
+	 * M�todo para listar equipamentos por m�dulo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param mod - Módulo
+	 * @param mod - M�dulo
 	 * @return ArrayList - Lista de equipamentos
 	 * @throws Exception
 	 */
@@ -154,11 +152,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para listar equipamentos por módulo
+	 * M�todo para listar equipamentos por m�dulo
 	 * @author Guilherme
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param mod - Módulo
+	 * @param mod - M�dulo
 	 * @return ArrayList - Lista de equipamentos
 	 * @throws Exception
 	 */
@@ -233,7 +231,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para listar equipamentos do tipo SAT
+	 * M�todo para listar equipamentos do tipo SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -349,7 +347,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para listar equipamentos do tipo PMV
+	 * M�todo para listar equipamentos do tipo PMV
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -444,11 +442,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para listar informações de equipamentos para seleção
+	 * M�todo para listar informa��es de equipamentos para sele��o
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param modulo - Módulo
+	 * @param modulo - M�dulo
 	 * @return ArrayList - Lista de equipamentos
 	 * @throws Exception
 	 */
@@ -495,7 +493,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o tipo de um equipamento MTO
+	 * M�todo para obter o tipo de um equipamento MTO
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -541,11 +539,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter número de faixas de um equipamento SAT
+	 * M�todo para obter n�mero de faixas de um equipamento SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param modulo - Módulo
+	 * @param modulo - M�dulo
 	 * @param equipID - Equipamento ID
 	 * @return ArrayList - Lista de equipamentos
 	 * @throws Exception
@@ -588,11 +586,11 @@ public class EquipmentsDAO {
 
 
 	/**
-	 * Método para obter número de faixas (n) equipamentos SAT
+	 * M�todo para obter n�mero de faixas (n) equipamentos SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param mod - Módulo
+	 * @param mod - M�dulo
 	 * @param equips - Array de equipamentos
 	 * @return int[] - Array com numero de faixas por equipamentos
 	 * @throws Exception
@@ -640,11 +638,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o nome de um equipamento
+	 * M�todo para obter o nome de um equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param modulo - Módulo
+	 * @param modulo - M�dulo
 	 * @param equipId - Equipamento ID
 	 * @return String - Nome do equipamento
 	 * @throws Exception
@@ -685,12 +683,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informações para relatórios do tipo SAT
+	 * M�todo para obter informa��es para relat�rios do tipo SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip_id - Equipamento ID	
-	 * @return SAT - Informações da classe SAT
+	 * @return SAT - Informa��es da classe SAT
 	 * @throws Exception
 	 */
 
@@ -734,13 +732,13 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informação de um equipamento específico
+	 * M�todo para obter informa��o de um equipamento espec�fico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip_id - Equipamento ID
-	 * @param module - Módulo	 
-	 * @return Equipments - Objeto com informações do tipo Equipments
+	 * @param module - M�dulo	 
+	 * @return Equipments - Objeto com informa��es do tipo Equipments
 	 * @throws Exception
 	 */
 
@@ -890,13 +888,13 @@ public class EquipmentsDAO {
 
 		}finally {ConnectionFactory.closeConnection(conn, ps);}
 
-		return eq;
+		return list;
 	}	
 
 	// --------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter informação de um equipamentos específico
+	 * M�todo para obter informa��o de um equipamentos espec�fico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0 
@@ -978,12 +976,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o primeiro sentido de um equipamento SAT
+	 * M�todo para obter o primeiro sentido de um equipamento SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip - Equipamento	  
-	 * @return String - Primeira direção de um equipamento SAT
+	 * @return String - Primeira dire��o de um equipamento SAT
 	 * @throws Exception
 	 */
 
@@ -1022,13 +1020,13 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para salvar um equipamento do tipo SAT 
+	 * M�todo para salvar um equipamento do tipo SAT 
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip - Objeto do tipo SAT
 	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso após operação
+	 * @return boolean - Verdairo ou falso ap�s opera��o
 	 * @throws Exception
 	 */
 
@@ -1151,13 +1149,13 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para salvar um equipamento do tipo PMV
+	 * M�todo para salvar um equipamento do tipo PMV
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip - Objeto do tipo PMV
 	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso após operação
+	 * @return boolean - Verdairo ou falso ap�s opera��o
 	 * @throws Exception
 	 */
 
@@ -1260,11 +1258,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para salvar um equipamento genérico
+	 * M�todo para salvar um equipamento gen�rico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param equip - Objeto do tipo genérico
+	 * @param equip - Objeto do tipo gen�rico
 	 * @param table - Table id	 
 	 * @return boolean - Verdairo ou falso
 	 * @throws Exception
@@ -1349,11 +1347,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para salvar um equipamento genérico
+	 * M�todo para salvar um equipamento gen�rico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param equip - Objeto do tipo genérico
+	 * @param equip - Objeto do tipo gen�rico
 	 * @param table - Table id	 
 	 * @return boolean - Verdairo ou falso
 	 * @throws Exception
@@ -1529,11 +1527,11 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para atualizar um equipamento genérico
+	 * M�todo para atualizar um equipamento gen�rico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
-	 * @param equip - Objeto do tipo genérico
+	 * @param equip - Objeto do tipo gen�rico
 	 * @param table - Table id	
 	 * @param view - Mapa a ser atualizado 
 	 * @return boolean - Verdairo ou falso
@@ -2209,7 +2207,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para atualizar um equipamento do tipo SAT
+	 * M�todo para atualizar um equipamento do tipo SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -2507,14 +2505,14 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para localizar dados de um equipamento genérico
+	 * M�todo para localizar dados de um equipamento gen�rico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param id - Equipamento ID
 	 * @param table - Table id	
 	 * @param interfacesview - Mapa a ser atualizado 
-	 * @return Equipments - Objeto com informações genéricos
+	 * @return Equipments - Objeto com informa��es gen�ricos
 	 * @throws Exception
 	 */
 
@@ -2628,7 +2626,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para atualizar um equipamento do tipo SAT
+	 * M�todo para atualizar um equipamento do tipo SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -3362,14 +3360,14 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para localizar dados de um equipamento SAT
+	 * M�todo para localizar dados de um equipamento SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param id - Equipamento ID
 	 * @param table - Table id	
 	 * @param interfacesview - Mapa a ser atualizado 
-	 * @return SAT - Objeto do com informações de um SAT
+	 * @return SAT - Objeto do com informa��es de um SAT
 	 * @throws Exception
 	 */
 
@@ -3453,14 +3451,14 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para localizar dados de um equipamento PMV
+	 * M�todo para localizar dados de um equipamento PMV
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param id - Equipamento ID
 	 * @param table - Table id	
 	 * @param interfacesview - Mapa a ser atualizado 
-	 * @return DMS - Objeto com informações de um PMV
+	 * @return DMS - Objeto com informa��es de um PMV
 	 * @throws Exception
 	 */
 
@@ -3651,7 +3649,7 @@ public class EquipmentsDAO {
 
 
 	/**
-	 * Método para deleção de um equipamento
+	 * M�todo para dele��o de um equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -4059,14 +4057,14 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para posicionar equipamentos
+	 * M�todo para posicionar equipamentos
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param id - Equipamento ID
 	 * @param table - Table id	
-	 * @param posX - Posição eixo X
-	 * @param posY - Posiçaõ eixo Y
+	 * @param posX - Posi��o eixo X
+	 * @param posY - Posi�a� eixo Y
 	 * @param positionView - Interface a posicinar
 	 * @return boolean- Verdadeiro ou falso
 	 * @throws Exception
@@ -4660,7 +4658,7 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para verificar se um equipamento existe
+	 * M�todo para verificar se um equipamento existe
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -4705,7 +4703,7 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o nome de um equipamento
+	 * M�todo para obter o nome de um equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -4751,7 +4749,7 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o nome de um equipamento
+	 * M�todo para obter o nome de um equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -4823,7 +4821,7 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter o nome de um equipamento
+	 * M�todo para obter o nome de um equipamento
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -4892,13 +4890,13 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para definir tipo de faixas em um determinado equipamento SAT
+	 * M�todo para definir tipo de faixas em um determinado equipamento SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
 	 * @param sat - Obejto do tipo SAT
-	 * @param numberLanes - Número de faixas
-	 * @param dir - Direção
+	 * @param numberLanes - N�mero de faixas
+	 * @param dir - Dire��o
 	 * @return void
 	 */
 
@@ -4995,12 +4993,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter um módulo pelo tipo
+	 * M�todo para obter um m�dulo pelo tipo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
-	 * @param type - Tipo de módulo
-	 * @return String - Retorna o nome do módulo
+	 * @param type - Tipo de m�dulo
+	 * @return String - Retorna o nome do m�dulo
 	 */
 
 	public String getModule(String type) { 
@@ -5030,12 +5028,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter informações para relatórios do tipo SAT
+	 * M�todo para obter informa��es para relat�rios do tipo SAT
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
 	 * @param equip_id - Equipamento ID	
-	 * @return SAT - Informações da classe SAT
+	 * @return SAT - Informa��es da classe SAT
 	 * @throws Exception
 	 */
 
@@ -5077,13 +5075,13 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informações de um equipamento GENERIC
+	 * M�todo para obter informa��es de um equipamento GENERIC
 	 * @author Wellington 20/10/2021
 	 * @version 1.0
 	 * @since 1.0
-	 * @param module - módulo do equipamento	
+	 * @param module - m�dulo do equipamento	
 	 * @param equip_id - ID	do equipamento
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 * @throws Exception 
 	 */
 	public String[] genericInfo(String module, String equip_id) throws Exception {
@@ -5124,12 +5122,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informações de um equipamento SAT
+	 * M�todo para obter informa��es de um equipamento SAT
 	 * @author Wellington 20/10/2021
 	 * @version 1.0
 	 * @since 1.0	 
 	 * @param equip_id - ID	do equipamento
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 * @throws Exception 
 	 */
 	public String[] satInfo(String equip_id) throws Exception {
@@ -5174,12 +5172,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informações de um equipamento SOS
+	 * M�todo para obter informa��es de um equipamento SOS
 	 * @author Wellington 20/10/2021
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equip_id - ID	do equipamento
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 * @throws Exception 
 	 */
 	public String[] sosInfo(String equip_id) throws Exception {
@@ -5224,12 +5222,12 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para obter informações de um equipamento DMS
+	 * M�todo para obter informa��es de um equipamento DMS
 	 * @author Wellington 20/10/2021
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equip_id - ID	do equipamento
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 * @throws Exception 
 	 */
 	public String[] dmsInfo(String equip_id) throws Exception {
@@ -5273,13 +5271,13 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter o informações de diversos equipamentos do tipo GENERIC
+	 * M�todo para obter o informa��es de diversos equipamentos do tipo GENERIC
 	 * @author Wellington 20/10/2020
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equips - matriz com o ID dos equipamentos
-	 * @param module - módulo do equipamento genérico
-	 * @return matriz com informações dos equipamentos
+	 * @param module - m�dulo do equipamento gen�rico
+	 * @return matriz com informa��es dos equipamentos
 	 */
 	public String[][] multiGenericInfo(String[] equips, String module) throws Exception {
 
@@ -5342,12 +5340,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter o informações de diversos equipamentos do tipo SAT
+	 * M�todo para obter o informa��es de diversos equipamentos do tipo SAT
 	 * @author Wellington 20/10/2020
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equips - matriz com o ID dos equipamentos
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 */
 	public String[][] multiSatInfo(String[] equips) throws Exception {
 
@@ -5411,12 +5409,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter o informações de diversos equipamentos do tipo SOS
+	 * M�todo para obter o informa��es de diversos equipamentos do tipo SOS
 	 * @author Wellington 20/10/2020
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equips - matriz com o ID dos equipamentos
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 */
 	public String[][] multiSosInfo(String[] equips) throws Exception {
 
@@ -5482,12 +5480,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter o informações de diversos equipamentos do tipo DMS
+	 * M�todo para obter o informa��es de diversos equipamentos do tipo DMS
 	 * @author Wellington 20/10/2020
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equips - matriz com o ID dos equipamentos
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 */
 	public String[][] multiDmsInfo(String[] equips) throws Exception {
 
@@ -5552,12 +5550,12 @@ public class EquipmentsDAO {
 	//--------------------------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para obter o informações de diversos equipamentos do tipo DMS
+	 * M�todo para obter o informa��es de diversos equipamentos do tipo DMS
 	 * @author Wellington 20/10/2020
 	 * @version 1.0
 	 * @since 1.0	
 	 * @param equips - matriz com o ID dos equipamentos
-	 * @return matriz com informações dos equipamentos
+	 * @return matriz com informa��es dos equipamentos
 	 */
 	public Integer numberOfEquips(String module) throws Exception {
 		

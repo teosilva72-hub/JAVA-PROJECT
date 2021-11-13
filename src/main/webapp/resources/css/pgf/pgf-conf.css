@@ -1,27 +1,4 @@
-/* Animation */
-.contentPage {
-    perspective: 3000px;
-}
 
-.contentPage .col-speed {
-    height: 20em;
-    transform-style: preserve-3d;
-    transform: rotateY(0deg);
-    transition: 1s;
-}
-
-.contentPage .col-speed.invert {
-    transform: rotateY(180deg);
-}
-
-.contentPage .col-speed .front {
-    transform: translateZ(1px);
-}
-
-.contentPage .col-speed .back {
-    transform: translateY(-100%) rotateY(180deg);
-    height: 20em;
-}
 
 .PGFdark {
   margin: 0 10px;
@@ -32,7 +9,7 @@
   right: 5px;
   left: 5px;
   margin-top: 10px;
-  width: 35%;
+  width: 30%;
 }
 
 .PGFclean {
@@ -42,10 +19,10 @@
   top: 65px;
   bottom: 45px;
   right: 5px;
-  left: 36%;
+  left: 31%;
   margin-top: 10px;
   margin-left: 1px;
-  width: 10%;
+  width: 15%;
   background-color: #c5c5c5 !important;
 }
 
@@ -62,6 +39,7 @@
 }
 
 .pgf1 {
+	object-fit: cover;
 	border: solid 2px black;
 	width: 90%;
 	height: 300px;
@@ -69,20 +47,22 @@
 	margin-top: -8px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf2 {
+	object-fit: cover;
 	border: solid 2px black;
 	width: 90%;
 	height: 300px;
 	margin-top: -8px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf3 {
+	object-fit: cover;
 	border: solid 2px black;
 	width: 90%;
 	height: 300px;
@@ -90,7 +70,7 @@
 	margin-top: 25px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf4 {
@@ -100,33 +80,34 @@
 	margin-top: 25px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50	, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgftires1 {
+	object-fit: contain;
 	border: solid 2px black;
 	width: 41%;
 	height: 66px;
+	margin-left: 5%;
 }
 
 .pgftires2 {
+	object-fit: contain;
 	border: solid 2px black;
 	width: 62%;
 	height: 66px;
-	margin-left: -11%;
+
 }
 
 .pgftires3 {
+	object-fit: contain;
 	border: solid 2px black;
 	width: 62%;
 	height: 66px;
-	margin-left: 11%;
-}
-
-.lbltire{
 }
 
 .pgfmin {
+	object-fit: contain;
 	border: solid 2px black;
 	width: 50%;
 	height: 100px;
@@ -134,7 +115,7 @@
 	margin-top: 14px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf-card{
@@ -155,3 +136,12 @@
 	margin-top: 1%;
 }
   
+
+.logo-concessionaire {
+  left: 50%;
+  bottom: unset;
+  transform: translateX(-50%);
+  top: 10px;
+  opacity: 1;
+  z-index: 1030;
+}

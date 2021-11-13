@@ -223,6 +223,13 @@ public class NavigationBean {
 	}
 
 	/* SAT REPORTS */
+	
+	public String satTestNewTable() {
+
+		navigation_page = "/sat/reports/sat_speed_test.xhtml?faces-redirect=true";		
+
+		return navigation_page;
+	}
 
 	public String redirectToCountVehicles() {
 

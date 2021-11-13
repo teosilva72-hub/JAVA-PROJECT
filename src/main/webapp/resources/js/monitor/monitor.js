@@ -277,7 +277,6 @@ const changeNotificationStatus = response => {
 			consumeMonitor({callback1, callback2, callback3, debug})
 		};
 		 
-	 client.heartbeat.outgoing = PING
  
 	 if (!debug)
 		 client.debug = null
