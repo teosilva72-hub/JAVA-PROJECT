@@ -510,6 +510,7 @@ public class ExcelTemplate {
 		int dataEndRow = 0;
 		int startCol = 0;
 		int endCol = columns.size() - 1;
+		int dataTotalRow = columns.size();
 		
 		if(!isMultiSheet || (isMultiSheet && period.equals("day") || period.equals("month") || period.equals("year"))) {
 			
@@ -545,7 +546,7 @@ public class ExcelTemplate {
 		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
 		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
 													
-		// CRIAR LINHAS PARA APRESENTAÇÃO DOS DADOS
+		// CRIAR LINHAS PARA APRESENTA��O DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 								 		

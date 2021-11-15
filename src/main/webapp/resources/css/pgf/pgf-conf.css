@@ -1,27 +1,4 @@
-/* Animation */
-.contentPage {
-    perspective: 3000px;
-}
 
-.contentPage .col-speed {
-    height: 20em;
-    transform-style: preserve-3d;
-    transform: rotateY(0deg);
-    transition: 1s;
-}
-
-.contentPage .col-speed.invert {
-    transform: rotateY(180deg);
-}
-
-.contentPage .col-speed .front {
-    transform: translateZ(1px);
-}
-
-.contentPage .col-speed .back {
-    transform: translateY(-100%) rotateY(180deg);
-    height: 20em;
-}
 
 .PGFdark {
   margin: 0 10px;
@@ -32,7 +9,7 @@
   right: 5px;
   left: 5px;
   margin-top: 10px;
-  width: 35%;
+  width: 30%;
 }
 
 .PGFclean {
@@ -42,78 +19,129 @@
   top: 65px;
   bottom: 45px;
   right: 5px;
-  left: 36%;
+  left: 31%;
   margin-top: 10px;
   margin-left: 1px;
-  width: 10%;
+  width: 15%;
   background-color: #c5c5c5 !important;
-  -webkit-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-   -moz-box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-   box-shadow: 4px 7px 5px rgba(50, 50, 50, 0.77);
-  ;
+}
+
+.PGFpicture {
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 45%;
+  margin-top: -6px;
+  width: 54%; 
 }
 
 .pgf1 {
+	object-fit: cover;
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
 	margin-left: 7.5%;
 	margin-top: -8px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf2 {
+	object-fit: cover;
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
-	margin-left: -15%;
 	margin-top: -8px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf3 {
+	object-fit: cover;
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
 	margin-left: 7.5%;
 	margin-top: 25px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf4 {
 	border: solid 2px black;
-	width: 400px;
+	width: 90%;
 	height: 300px;
-	margin-left: -15%;
 	margin-top: 25px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50	, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.pgftires1 {
+	object-fit: contain;
+	border: solid 2px black;
+	width: 41%;
+	height: 66px;
+	margin-left: 5%;
+}
+
+.pgftires2 {
+	object-fit: contain;
+	border: solid 2px black;
+	width: 62%;
+	height: 66px;
+
+}
+
+.pgftires3 {
+	object-fit: contain;
+	border: solid 2px black;
+	width: 62%;
+	height: 66px;
 }
 
 .pgfmin {
+	object-fit: contain;
 	border: solid 2px black;
-	width: 400px;
+	width: 50%;
 	height: 100px;
-	margin-left: 23%;
+	margin-left: 22%;
 	margin-top: 14px;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
-	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
 .pgf-card{
 	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
 }
 
+.pgf-card2{
+	  margin-top: 20%;
+	  background: rgba(120, 120, 120, 1);
+}
+
+.btnpgf{
+	margin-left: 30%;
+	width: 42%;
+}
+
 .rowPGF{
-	margin-left: 45%;
 	margin-top: 1%;
 }
   
+
+.logo-concessionaire {
+  left: 50%;
+  bottom: unset;
+  transform: translateX(-50%);
+  top: 10px;
+  opacity: 1;
+  z-index: 1030;
+}

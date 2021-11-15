@@ -1,3 +1,5 @@
+let phoneWindow;
+
 (() => {
   if (location.protocol != "https:" && location.hostname != "localhost")
     location.href = location.href.replace(location.protocol, "https:")
@@ -23,29 +25,17 @@ $(async function () {
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 7000 })
 
-  while (typeof rabbitmq == "undefined" || typeof asterisk == "undefined") {
+  while (
+      typeof rabbitmq == "undefined" ||
+      typeof digifort == "undefined" ||
+      typeof asterisk == "undefined"
+    ) {
     await new Promise(r => setTimeout(r, 100))
   }
 
-  while (location.hostname != "localhost") {
-    let url_rabbitmq
-    let url_asterisk
-    let url_digifort
-
-    try {
-      url_rabbitmq = `${rabbitmq.address}:${rabbitmq.port}/ws`
-      url_asterisk = `${asterisk.address}:${asterisk.port}/ws`
-      url_digifort = `${digifort.address}:${digifort.port}`
-    } catch {
-      continue
-    }
-
-    TestCert(url_digifort, "digi");
-    TestCert(url_rabbitmq);
-    TestCert(url_asterisk, "sip");
-
-    break
-  }
+  TestCert(rabbitmq);
+  TestCert(asterisk, "sip");
+  TestCert(digifort, "digi");
 
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });
@@ -130,7 +120,10 @@ getCred('rabbitmq'); // Rabbit init
 getCred('asterisk');
 getCred('digifort');
 
-const TestCert = async (uri, init) => {
+const TestCert = async (c, init) => {
+  if (c.name == "null")
+    return
+  let uri = `${c.address}:${c.port}/ws`
   try {
     let request = new WebSocket(`wss://${uri}`, init);
     while (request.readyState == 0) {
@@ -152,7 +145,7 @@ $('.sipStatus').on('click', function (event) {
   event.preventDefault();
   // This is set when the phone is open and removed on close
   // if (!localStorage.getItem('ctxPhone')) {
-    window.open(url, 'ctxPhone', features);
+    phoneWindow = window.open(url, 'ctxPhone', features);
     return false;
   // } else {
   //   window.alert('Phone already open.');

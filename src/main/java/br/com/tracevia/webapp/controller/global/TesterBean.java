@@ -465,7 +465,10 @@ public class TesterBean {
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
-					group = String.format("%s, %s", alias[1], group);
+					if (period[1].toUpperCase().equals("DAY"))
+						group = alias[1];
+					else
+						group = String.format("%s, %s", alias[1], group);
 				} else
 					query += String.format("%s as %s, ", column, group);
 					
@@ -496,15 +499,11 @@ public class TesterBean {
 					Date end = calendar.getTime();
 					dateProcess = new Date[] { start, end };
 				}
-				if (count == 0 && (!dateStart.isEmpty() || !dateEnd.isEmpty()))
-					query += " WHERE";
+				if (!dateStart.isEmpty() || !dateEnd.isEmpty()) {
+					if (count == 0)
+						query += " WHERE";
 
-				if (!dateStart.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') <= DATE(%s)", count > 0 ? " AND" : "", dateStart, search[0]);
-					count++;
-				}
-				if (!dateEnd.isEmpty()) {
-					query += String.format("%s STR_TO_DATE('%s', '%%d/%%m/%%Y') >= DATE(%s)", count > 0 ? " AND" : "", dateEnd, search[0]);
+					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					count++;
 				}
 			}
@@ -587,7 +586,7 @@ public class TesterBean {
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
-			 build.clearBool = false; // BOTÃO DE LIMPAR	 
+			 build.clearBool = false; // BOTÃƒO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
 	      	 
 	      	 if(isChart) {
@@ -604,7 +603,7 @@ public class TesterBean {
 		   
 		   DateTimeApplication dta = new DateTimeApplication();
 			
-		// MANTER VALORES NA SESSÃO
+		// MANTER VALORES NA SESSÃƒO
 		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
 		//String fileName = (String) SessionUtil.getExternalContext().getSessionMap().get("fileName");
 		 
@@ -735,10 +734,10 @@ public class TesterBean {
 		
 	   public void resetForm() {
 				
-				// Limpa valores da sessão
+				// Limpa valores da sessÃ£o
 				build.resetReportValues();
 				
-				// Reinicializa valores armazenados nas variáveis abaixo
+				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
 							
@@ -751,7 +750,7 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
 			/**
-			 * Método para carregar equipamentos disponíveis para seleção
+			 * MÃ©todo para carregar equipamentos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0
@@ -778,7 +777,7 @@ public class TesterBean {
 			// --------------------------------------------------------------------------------------------		
 
 			/**
-			 * Método para carregar períodos disponíveis para seleção
+			 * MÃ©todo para carregar perÃ­odos disponÃ­veis para seleÃ§Ã£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0	

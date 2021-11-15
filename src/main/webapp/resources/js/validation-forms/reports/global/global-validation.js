@@ -20,7 +20,6 @@ $(function () {
     for (messages of validation)
         if (messages.name == "")
             equipsArray.push(messages.value);
-
        else window[messages.name] = messages.value
 
     //Create / Define multiselect

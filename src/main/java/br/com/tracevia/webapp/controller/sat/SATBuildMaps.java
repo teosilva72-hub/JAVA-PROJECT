@@ -87,19 +87,19 @@ public class SATBuildMaps {
 				satListStatusAux = satDAO.statusByData30();
 
 				// CASO NAO ENCONTRE NENHUM STATUS DO ULTIMOS 30 MINUTOS				
-				// VERIFICA��O DA LISTA DE DADOS
+				// VERIFICAï¿½ï¿½O DA LISTA DE DADOS
 				if (satListStatusAux.isEmpty()) {      
 					
 					satListStatusAux = satDAO.statusByData45();
 					
-				// VERIFICA SE H� DADOS DOS ULTIMOS 45 MINUTOS					
+				// VERIFICA SE Hï¿½ DADOS DOS ULTIMOS 45 MINUTOS					
 				  if(!satListStatusAux.isEmpty()) { 
 						
 						status30 = false;						
 					    status45 = true;
 					
-				 // CASO NÃO HAJA DADOS DOS ULTIMOS 45 MINUTOS 
-				 // VERIFICA SE HÁ DADOS DAS ULTIMAS 8 HORAS
+				 // CASO NÃƒO HAJA DADOS DOS ULTIMOS 45 MINUTOS 
+				 // VERIFICA SE HÃ� DADOS DAS ULTIMAS 8 HORAS
 				}else {
 						
 						satListStatusAux = satDAO.statusByData08();
@@ -115,7 +115,7 @@ public class SATBuildMaps {
 						//DEFAULT == TRUE
 						
 					}
-				} // VERIFICA��O DA LISTA DE DADOS 
+				} // VERIFICAï¿½ï¿½O DA LISTA DE DADOS 
 					
 				//VERIFICA O STATUS 45 MINUTOS
 				if (status45) {
@@ -124,7 +124,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
+						pass = true; // VERIFICA SE Hï¿½ DADOS NA COMPARAï¿½ï¿½O ENTRE LISTAS
 						
                         //LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
@@ -137,9 +137,9 @@ public class SATBuildMaps {
 								satListStatusAux.remove(r);
 								pass = false;
 																				
-								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 								//TECNICAMENTE NAO PRECISA COMPARAR IDs PORQUE AO CRIAR EQUIPAMENTO
-								//CRIA - SE UMA INSTÂNCIA NA TABELA DE NOTIFICAÇÕES
+								//CRIA - SE UMA INSTÃ‚NCIA NA TABELA DE NOTIFICAÃ‡Ã•ES
 								if(listStatus.get(s).getStatus() == 1)
 								     notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
@@ -148,7 +148,7 @@ public class SATBuildMaps {
 							}
 						}
 						
-						//CASO N�O HAJA DADOS ENTRA NESSA CONDI��O
+						//CASO Nï¿½O HAJA DADOS ENTRA NESSA CONDIï¿½ï¿½O
 						if (pass) {
 
 							//BUSCA DADOS DAS ULTIMAS 08 HORAS
@@ -159,7 +159,7 @@ public class SATBuildMaps {
 								
 								satStatus.add(satListObj);
 								
-								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
 								    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 								
@@ -191,7 +191,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
+						pass = true; // VERIFICA SE Hï¿½ DADOS NA COMPARAï¿½ï¿½O ENTRE LISTAS
                          
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
@@ -204,7 +204,7 @@ public class SATBuildMaps {
 								satListStatusAux.remove(r);
 								pass = false;
 								
-								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
 								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
@@ -214,7 +214,7 @@ public class SATBuildMaps {
 							}
 						}
 						
-					    //CASO N�O HAJA DADOS ENTRA NESSA CONDI��O
+					    //CASO Nï¿½O HAJA DADOS ENTRA NESSA CONDIï¿½ï¿½O
 						if (pass) {
 
 							//BUSCA DADOS DOS ULTIMAS 45 MINUTOS
@@ -225,7 +225,7 @@ public class SATBuildMaps {
 								
 								satStatus.add(satListObj);
 								
-								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
 								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
@@ -243,7 +243,7 @@ public class SATBuildMaps {
 									
 									satStatus.add(satListObj);
 									
-									//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+									//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 									if(listStatus.get(s).getStatus() == 1)
 									   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
@@ -277,7 +277,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
+						pass = true; // VERIFICA SE Hï¿½ DADOS NA COMPARAï¿½ï¿½O ENTRE LISTAS
 						
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListStatusAux.size(); r++) {
@@ -290,7 +290,7 @@ public class SATBuildMaps {
 								satListStatusAux.remove(r);
 								pass = false;
 								
-								//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
+								//SE VERIFICAR QUE HÃ� NOTIFICAÃ‡ÃƒO OFFLINE ENTÃƒO ATUALIZA PARA ONLINE
 								if(listStatus.get(s).getStatus() == 1)
 								   notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
 
@@ -300,9 +300,9 @@ public class SATBuildMaps {
 							}
 						}
 						
-						//CASO NÃO HAJA DADOS ENTRA NESSA CONDI��O
+						//CASO NÃƒO HAJA DADOS ENTRA NESSA CONDIï¿½ï¿½O
 						//CASO CONTRARIO PREENCHE COM 0
-						//NOTIFICAÇÃO????
+						//NOTIFICAÃ‡ÃƒO????
 						if (pass) {							
 							
 								SAT satListObj1 = new SAT();
@@ -322,7 +322,7 @@ public class SATBuildMaps {
 					
 					
 				
-			    // CASO N�O ENCONTROU NADA 
+			    // CASO Nï¿½O ENCONTROU NADA 
 			    // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
 				}else { intializeNullStatus(equips.getSatList()); 
 				
@@ -349,19 +349,19 @@ public class SATBuildMaps {
 				satListValuesAux = satDAO.dataInfo30();
 
 				// CASO NAO ENCONTRE NENHUM STATUS DO ULTIMOS 30 MINUTOS				
-				// VERIFICA��O DA LISTA DE DADOS
+				// VERIFICAï¿½ï¿½O DA LISTA DE DADOS
 				if(satListValuesAux.isEmpty()) {      
 					
 					satListValuesAux = satDAO.dataInfo45();
 					
-				// VERIFICA SE H� DADOS DOS ULTIMOS 45 MINUTOS					
+				// VERIFICA SE Hï¿½ DADOS DOS ULTIMOS 45 MINUTOS					
 				  if(!satListValuesAux.isEmpty()) { 
 						
 						values30 = false;						
 					    values45 = true;
 					
-				 // CASO N�O HAJA DADOS DOS ULTIMOS 45 MINUTOS 
-				 // VERIFICA SE H� DADOS DAS ULTIMAS 8 HORAS
+				 // CASO Nï¿½O HAJA DADOS DOS ULTIMOS 45 MINUTOS 
+				 // VERIFICA SE Hï¿½ DADOS DAS ULTIMAS 8 HORAS
 				}else {
 						
 						satListValuesAux = satDAO.dataInfo08();
@@ -377,7 +377,7 @@ public class SATBuildMaps {
 						// DEFAULT == TRUE
 						
 					}
-				} // VERIFICAÇÃO DA LISTA DE DADOS 
+				} // VERIFICAÃ‡ÃƒO DA LISTA DE DADOS 
 			
 				//VERIFICA O STATUS 45 MINUTOS
 				if (values45) {
@@ -386,7 +386,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
+						pass = true; // VERIFICA SE Hï¿½ DADOS NA COMPARAï¿½ï¿½O ENTRE LISTAS
 
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListValuesAux.size(); r++) {
@@ -409,7 +409,7 @@ public class SATBuildMaps {
 							}
 						}
 						
-						//CASO NAO HAJA DADOS ENTRA NESSA CONDIÇÃO
+						//CASO NAO HAJA DADOS ENTRA NESSA CONDIÃ‡ÃƒO
 						if (pass) {
 							
 							//BUSCA DADOS DAS ULTIMAS 08 HORAS
@@ -442,7 +442,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE HÁ DADOS NA COMPARAÇÃO ENTRE LISTAS
+						pass = true; // VERIFICA SE HÃ� DADOS NA COMPARAÃ‡ÃƒO ENTRE LISTAS
 
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListValuesAux.size(); r++) {
@@ -464,7 +464,7 @@ public class SATBuildMaps {
 
 							}
 						}
-						 //CASO N�O HAJA DADOS ENTRA NESSA CONDI��O
+						 //CASO Nï¿½O HAJA DADOS ENTRA NESSA CONDIï¿½ï¿½O
 						if (pass) {
 							
 							//BUSCA DADOS DOS ULTIMAS 45 MINUTOS
@@ -510,7 +510,7 @@ public class SATBuildMaps {
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 						SAT satListObj = new SAT();
-						pass = true; // VERIFICA SE H� DADOS NA COMPARA��O ENTRE LISTAS
+						pass = true; // VERIFICA SE Hï¿½ DADOS NA COMPARAï¿½ï¿½O ENTRE LISTAS
 
 						//LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListValuesAux.size(); r++) {
@@ -533,7 +533,7 @@ public class SATBuildMaps {
 							}
 						}
 						
-						//CASO NAO HAJA DADOS ENTRA NESSA CONDI��O
+						//CASO NAO HAJA DADOS ENTRA NESSA CONDIï¿½ï¿½O
 						if (pass) {
 							
 							//CASO CONTRARIO PREENCHE COM 0
@@ -550,17 +550,17 @@ public class SATBuildMaps {
 					   }
 					} // FOR END					
 					
-				   // CASO N�O ENCONTROU NADA 
+				   // CASO Nï¿½O ENCONTROU NADA 
 				  // PREENCHE TODOS EQUIPAMENTOS COM ZEROS
 				}else
 					
-					intializeNullList(equips.getSatList()); // CASO N�O EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS
+					intializeNullList(equips.getSatList()); // CASO Nï¿½O EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS
 
 				 ////////////////////////////////////////////////////////////////////////////////////////////
 			     ///// SAT VALUES
 			    ///////////////////////////////////////////////////////////////////////////////////////////
 
-				// Caso n�o tenha equipamentos faz nada
+				// Caso nï¿½o tenha equipamentos faz nada
 
 			} catch (IndexOutOfBoundsException ex) {
 
