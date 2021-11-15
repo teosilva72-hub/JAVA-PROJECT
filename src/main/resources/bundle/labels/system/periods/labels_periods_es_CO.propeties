@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------
 
-periods_title = Períodos
+periods_title = PerÃ­odos
 periods_five_minutes = 05 minutos
 periods_six_minutes = 06 minutos
 periods_teen_minutes = 10 minutos
@@ -11,8 +11,8 @@ periods_thirty_minutes = 30 minutos
 periods_one_hour = 01 hora
 periods_six_hours = 06 horas
 periods_twenty_four_hours = 24 horas
-periods_month = Mensal
-periods_year = Anual
+periods_month = Mensual
+periods_year = Annual
 
 # ------------------------------------------------------------------
 
@@ -22,9 +22,9 @@ period_15_minutes = 15 minutos
 period_30_minutes = 30 minutos
 period_1_hour = 1 hora
 period_6_hours = 6 horas
-period_day = Dia
-period_month = Mês
-period_year = Ano
+period_day = DÃ­a
+period_month = Mes
+period_year = AÃ±o
 
 # ------------------------------------------------------------------
 

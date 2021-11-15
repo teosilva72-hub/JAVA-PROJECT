@@ -24,7 +24,7 @@ $(function () {
        else window[messages.name] = messages.value
 
     //Create / Define multiselect
-    defineMultiselect('#equips', equipmentSelectMsg);      
+    defineMultiselect('#multiple', '');      
 
 
    $.validator.methods.date = function (value, element) {
@@ -69,8 +69,7 @@ $(function () {
     //Language
    $('.datepicker').datepickerLocale(language);
 
-   validationTemplate9("#report-form", '#dateStart', requiredEquipmentsMsg, requiredDateStartMsg, requiredDateEndMsg, requiredValidDateMsg);
-
+   validationTemplate9("#report-form");
 
   if(language == SPANISH || language == ARGENTINE_SPANISH || language == COLOMBIAN_SPANISH || language == MEXICAN_SPANISH)
         spanishValidationMessages();
@@ -80,8 +79,12 @@ $(function () {
 
     else portugueseValidationMessages();
 
+    validateInputFieldOnChange(); // Validate Input
+    validateSelectFieldOnChange() // Validate Select
+    validateCheckboxFieldOnChange(); // Validate Checkbox Field
+
 	//Clean Form validation on close modal
-    cleanValidationOnModalClose("#report-form", '#modalReportOptions');
+    cleanModalOnClose("#report-form", '#modalReportOptions');
 
     //Reset validation form
     //click reset button action

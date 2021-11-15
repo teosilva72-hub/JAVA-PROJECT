@@ -16,7 +16,7 @@
   
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('tipos')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório por Tipo')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ARTERIS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
@@ -24,11 +24,11 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, HORA, MOTOS, LEVES, PESADOS, TOTAL DE VEÍCULOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(classe = `9`, 1, 0)); SUM(IF(classe = `1`, 1, 0)); SUM(IF(classe not in (`1`, `9`), 1, 0)); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('a INNER JOIN filter_directions q ON equip_id = siteID AND q.lane = a.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR (classe = `UC` AND axlNumber &lt; 10) OR classe = `2N`, 1, 0 )); SUM(IF(classe <> `1` AND classe <> `9`, 1, 0)); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
@@ -168,23 +168,8 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		  
-		  <!-- EQUIPAMENTOS A SEREM INICIALIZADOS NO FORMULÁRIO -->	
-		  
-		  <ui:repeat value="#{testerBean.build.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
-		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
-		  </ui:repeat> <!---->
-		 		  	 	
-		 <!-- VÁRIAVEIS E MENSAGENS -->		
-		   	 	
+		 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
-		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
-		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
-		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
-		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
-		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
-		 <input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
 		 
 		 </form> <!-- FORM VALIDATION END -->
 		 

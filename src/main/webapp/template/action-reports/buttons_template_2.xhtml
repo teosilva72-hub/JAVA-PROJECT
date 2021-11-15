@@ -36,7 +36,7 @@
 				<h:commandButton id="btn-tab-reset"
 				   class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 				   value="" data-toggle="tooltip" data-placement="bottom"
-				  disabled="#{speedBean.build.clearBool}"
+				  disabled="#{testerBean.build.clearBool}"
 				   title="#{reportsLabels.reports_btn_clean}"> <!-- RESET BUTTON -->
 				   <f:passThroughAttribute name="data-toggle" value="modal" /> <!-- DATA TOGGLE -->
 				   <f:passThroughAttribute name="data-target" value="#modalClear" /> <!-- DATA TARGET -->
@@ -52,7 +52,7 @@
 		   <div id="btn-excel"> <!-- BUTTON EXCEL DIV -->	
 		      <!---->
 				<h:commandButton id="excel-act" value=""
-					disabled="#{speedBean.build.excelBool}"
+					disabled="#{testerBean.build.excelBool}"
 					class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 					data-placement="bottom" title="#{reportsLabels.reports_btn_excel}"
 					widgetVar="excelWgt"> <!-- EXCEL BUTTON -->
@@ -69,7 +69,7 @@
 		 			   
 		   <div id="btn-chart"> <!-- BUTTON CHART DIV -->	
 				<h:commandButton id="chart-act" value="" 
-				  onclick="toggleChart();" disabled="#{satReportsBean.chartBool}"							
+				  onclick="toggleChart();" disabled="#{testerBean.build.chartBool}"							
 				  class="fas fa-chart-pie fa-2x" data-toggle="tooltip"
 				  data-placement="bottom" title="#{reportsLabels.reports_btn_chart}" widgetVar="chartWgt">	
 			      <f:ajax execute="@form" render="@none" />	<!-- F:AJAX -->	

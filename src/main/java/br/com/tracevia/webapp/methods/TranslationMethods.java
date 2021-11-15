@@ -673,5 +673,40 @@ public class TranslationMethods {
 	}
 	
 	// -------------------------------------------------------------------------------------------------------
+	
+	/** 
+	 * Método para traduzir valor do texto de um período selecionado
+	 * @author wellington 13/11/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param period texto do período a ser traduzido
+	 * @return texto do período traduzido para um idioma
+	 */
+	public String periodTranslator(String period) {
+
+		String periodLabel = "";
+		
+		switch(period) {
+		
+		case "5 minutes" : periodLabel = localePeriod.getStringKey("periods_five_minutes"); break;
+		case "6 minutes" : periodLabel = localePeriod.getStringKey("periods_six_minutes"); break;
+		case "10 minutes" : periodLabel = localePeriod.getStringKey("periods_teen_minutes"); break;
+		case "15 minutes" : periodLabel = localePeriod.getStringKey("periods_fifteen_minutes"); break;
+		case "30 minutes" : periodLabel = localePeriod.getStringKey("periods_thirty_minutes"); break;
+		case "1 hour" : periodLabel = localePeriod.getStringKey("periods_one_hour"); break;
+		case "6 hours" : periodLabel = localePeriod.getStringKey("periods_six_hours"); break;
+		case "day" : periodLabel = localePeriod.getStringKey("periods_twenty_four_hours"); break;
+		case "month" : periodLabel = localePeriod.getStringKey("periods_month"); break;
+		case "year" : periodLabel = localePeriod.getStringKey("periods_year"); break;
+		default: periodLabel = " ---- "; break;
+						
+		}
+
+		
+		return periodLabel;			
+
+	}
+	
+	// -------------------------------------------------------------------------------------------------------
 
 }

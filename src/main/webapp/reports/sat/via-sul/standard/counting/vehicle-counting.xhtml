@@ -14,9 +14,9 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('eixos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório por Eixos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('contagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Contagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
@@ -24,26 +24,22 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, 2 EIXOS, 3 EIXOS, 4 EIXOS, 5 EIXOS, 6 EIXOS, 7 EIXOS,8 EIXOS, 9 EIXOS, TOTAL VEÍCULOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(axlNumber = 0 OR axlNumber = 1 OR axlNumber = 2, 1, 0)); SUM(axlNumber = 3); SUM(axlNumber = 4); 
-		SUM(axlNumber = 5); SUM(axlNumber = 6); SUM(axlNumber = 7); SUM(axlNumber = 8); SUM(axlNumber = 9); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS,  $foreach=sat_equipment.name|equip_id@equip, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(siteID = $custom@equip); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		 <f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', 'Eixos', 'filter_axles.id_axles|name' , true, true)}" />
-
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipamentos', 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', 'Veículos', 'filter_vehicles.id_vehicle|name' , true, true)}" />
 
     </f:metadata>
 	
@@ -102,7 +98,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de Eixos" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatório de Contagem" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -169,7 +165,7 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		   	 	
+		   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 
 		 </form> <!-- FORM VALIDATION END -->

@@ -1,11 +1,12 @@
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
-<h:body>
+   <h:body>
+   
 	<!-- SUBMIT MODAL -->
 
 	<div class="modal fade" id="modalReportOptions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -44,7 +45,7 @@
 					<!-- REMOVE FIELDS FROM SEARCH | TEMPORARILY INACTIVE -->
 					<div class="col-12" style="display: none">
 						<div class="form-group col-sm-12 checkbox-field">
-							<span><i class="fas fa-hdd"></i></span> <span for="equips"
+							<span><i class="fas fa-hdd"></i></span> <span
 									class="valid-icon-hidden"></span> <select name="allColumns"
 									id="allColumns" field="Column" multiple="multiple">
 								<c:forEach var="column" items="#{testerBean.columnsInUse}"

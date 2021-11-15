@@ -584,7 +584,7 @@ public class SatSpeedMultiReportController {
 		//SELECIONA UMA QUERY DE ACORDO COM TIPO SELECIONADO
 		query = ExcuteQuery(models, satModels, k);
 		
-	   // System.out.println(query); //debug
+	    System.out.println(query); //debug
 
 		//EXECUO DA QUERY
 		String[][] auxResult = dao.ExecuteQuery(query, getNumRegisters(), getFieldsNumber());				

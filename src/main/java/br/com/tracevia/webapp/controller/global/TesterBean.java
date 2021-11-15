@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -18,11 +20,15 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.primefaces.context.RequestContext;
+
+import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.ReportDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
@@ -39,15 +45,18 @@ public class TesterBean {
 	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters;
 	
+	private final String dateFormat = "dd/MM/yyyy";
+	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
+	
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public String 	fileName,
-					fileTitle,
+					fileTitle, usePeriod,
 					sheetName = "Report";
 	public String 	module;
 	
 	public String 	jsTable, jsTableScroll;
-	public boolean 	isSat, haveTotal, multiSheet = true,
+	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false,
 					caseSensitive = false;
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -280,6 +289,10 @@ public class TesterBean {
 		this.haveTotal = total;
 	}
 	
+	public void haveChart(boolean chart) {
+		this.isChart = chart;
+	}
+	
 	public void isSat(boolean sat) {
 		this.isSat = sat;
 	}
@@ -382,7 +395,7 @@ public class TesterBean {
     	 // Disabled Buttons
     	  build.clearBool = true;
     	  build.excelBool = true;
-    	 // build.chartBool = true;						
+    	  build.chartBool = true;						
 	 
 	 }	
 	
@@ -427,6 +440,8 @@ public class TesterBean {
 		
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
+		usePeriod = selectedPeriod;
+		
 		List<String> idSearch = new ArrayList<>();
 		String group = "$period";
 		Date[] dateProcess = null;
@@ -574,6 +589,11 @@ public class TesterBean {
 		     
 			 build.clearBool = false; // BOTÃO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
+	      	 
+	      	 if(isChart) {
+	      		 build.chartBool = false;
+	      		 chartData(build.chartBool, usePeriod);
+	      	 }
 	      	 	      		  		    		
 	    }
 	
@@ -724,6 +744,7 @@ public class TesterBean {
 							
 				build.excelBool = true;
 				build.clearBool = true;
+				build.chartBool = true;
 											
 			}	
 	 		
@@ -775,5 +796,52 @@ public class TesterBean {
 			}
 
 			// --------------------------------------------------------------------------------------------	
+			
+	public void chartData(boolean chartBool, String period) {
+		
+		TranslationMethods trm = new TranslationMethods();
+				
+		String vAxisTitle = "veiculos";
+		
+		LocalDateTime local =  LocalDateTime.now();
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm");  
+	    String formatDateTime = local.format(format);  
+	  
+	    String title = " - " + trm.periodTranslator(period); // IF IS NOT A SINGLE EQUIPEMENT DO THIS
+	      		
+		
+		String imageName = formatDateTime; //NAME OF FILE WITH TIME
+		
+		if(!chartBool) {
+					 		  	   		
+	        // Create a new instance of Gson
+	       Gson gson = new Gson();
+	    
+	        // Converting multidimensional array into JSON	      
+	        String jsColumn = gson.toJson(columnsInUse);	
+	        
+	        String jsData = gson.toJson(report.lines);	
+	        	     	        
+	        jsData = jsData.toString().replaceAll("\"", "");	        
+	        // jsData = jsData.toString().replaceAll("\\(", "\\'");
+	        // jsData.toString().replaceAll("\\)", "\\'");
+	        jsData = jsData.toString().replaceAll("null", "0");	
+	       	        	     
+	        //DEBUG
+	        System.out.println("Header = " + jsColumn);
+	        System.out.println("Data = " + jsData);
+	        
+	        System.out.println(usePeriod);
+	       	        
+	        if(period.equals("day"))
+	        	SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
+	        
+	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxisTitle+"', '"+ datetimeFormat +"', '"+imageName+"');");
+	        	     	        
+		}
+     }	
+		
+	 // --------------------------------------------------------------------------------------------	
 
 }

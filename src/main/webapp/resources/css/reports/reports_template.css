@@ -290,6 +290,10 @@ button.close{
  font-weight: 300;
 }
 
+#modalReportOptions{	
+	margin-top:6%;	
+}
+
 /* Alert Modal */
 
 /*****************************************************/

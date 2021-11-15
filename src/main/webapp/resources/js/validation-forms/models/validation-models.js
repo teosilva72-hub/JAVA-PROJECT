@@ -189,6 +189,58 @@ function validateOnChange(id) {
 
 /* ******************************************************************************************************** */
 
+/** Validate on change
+ *  
+ * @author Wellington da Silva : 2021-05-07
+ * @summary Function used to check for changes in field values
+ * @since version 1.0
+ * @version 1.1 
+ * @description validate in value changes
+ * @copyright Tracevia S/A 2021 
+ * @param {string} id  element id to check changes
+ * @returns {void}
+ * 
+**/
+
+function validateInputFieldOnChange() {
+	
+	$('.input-field input').on('change', function () {
+		
+		let id = $(this).attr('id');
+		console.log('input', id)
+        validateOnChange('#'+id);
+
+	})	
+  }
+
+/* ******************************************************************************************************** */
+
+function validateSelectFieldOnChange() {
+	
+	$('.select-field select').on('change', function () {
+		
+		let id = $(this).attr('id');
+		console.log('select', id)
+        validateOnChange('#'+id);
+
+	})	
+  }
+
+/* ******************************************************************************************************** */
+
+function validateCheckboxFieldOnChange() {
+	
+	$('.checkbox-field select').on('change', function () {
+		
+		let id = $(this).attr('id');
+		console.log('input', id)
+        validateOnChange('#'+id);
+
+	})	
+  }
+
+/* ******************************************************************************************************** */
+
 /** Remove validation icon
  *  
  * @author Wellington da Silva : 2021-05-07
@@ -348,9 +400,49 @@ function resetFormValidation(formId, btn) {
 
 		var validator = $(formId).validate();
 		validator.resetForm();
+		   
+    
+		$(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".select-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".checkbox-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
 
 	})
 }
+
+/* ******************************************************************************************************** */
+
+/** Clean form on modal close
+ *  
+ * @author Wellington da Silva : 2021-11-13
+ * @summary Function used to  clear fields on modal close
+ * @since version 1.0
+ * @version 1.1 
+ * @description clear modal fields
+ * @copyright Tracevia S/A 2021 
+ * @param {string} formId form id to reset validation
+ * @param {string} modalId modal id to hide 
+ * @returns {void}
+ * 
+**/
+
+function cleanModalOnClose(formId, modalId) {
+
+	$(modalId).on("hide.bs.modal", function () {
+
+		//Hide span by class        				
+		$(formId).validate().resetForm(); // reset form validation
+		
+	    $(this).find(formId)[0].reset();
+		
+        $(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".select-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".checkbox-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		
+	})
+}
+
+
+
 
 /* ******************************************************************************************************** */
 
@@ -1853,7 +1945,7 @@ function validationTemplate9(formId) {
 
 		errorPlacement: function (error, element) {	//Place elements for place errors
 		},
-
+				
 		success: function (label, element) {
 
 			//If no have errors set check success status	

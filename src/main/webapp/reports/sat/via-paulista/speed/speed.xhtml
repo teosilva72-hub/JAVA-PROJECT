@@ -16,7 +16,7 @@
 
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('velocidade')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Velocidade')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ARTERIS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
@@ -24,11 +24,11 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS, ATÉ 50KM/H, 50KM/HORA ~ 70KM/H, 70KM/H ~ 90KM/H, 90KM/H ~ 120KM/H, 120KM/H ~ 150KM/H, acima de 150, TOTAL DE VEÍCULOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(speed &lt; 50, 1, 0)); SUM(IF(speed between 50 and 69, 1, 0)); SUM(IF(speed between 70 and 89, 1, 0)); SUM(IF(speed between 90 and 119, 1, 0)); SUM(IF(speed between 120 and 150, 1, 0)); SUM(IF(speed &gt; 150, 1, 0)); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('a INNER JOIN filter_directions q ON equip_id = siteID AND q.lane = a.lane')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
@@ -43,7 +43,6 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipamento', 'sat_equipment.equip_id|name', false, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', 'Veículos', 'filter_vehicles.id_vehicle|name' , true, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('', 'Sentidos', 'filter_direction.id_direction|name' , true, true)}" /> -->
-
 			               
     </f:metadata>
 	
@@ -169,24 +168,9 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		  
-		  <!-- EQUIPAMENTOS A SEREM INICIALIZADOS NO FORMULÁRIO -->	
-		  
-		  <ui:repeat value="#{testerBean.build.equipments}" var="eqp"> <!-- JSF UI REPEAT LOOP -->
-		     <input type="hidden" value="#{eqp.value}" /> <!-- INPUT TO GET VALUES FROM LIST -->
-		  </ui:repeat> <!---->
-		 		  	 	
-		 <!-- VÁRIAVEIS E MENSAGENS -->		
-		   	 	
+		 		   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-		 <input type="hidden" name="maxDateMsg" value="#{validatorMessages.validator_max_date}" /> <!-- MAX DATE VALIDATION MESSAGE -->
-		 <input type="hidden" name="greatherThanMsg" value="#{validatorMessages.validator_start_date_greater_than_end_date_header}" /> <!-- START DATE GREATHER THAN END DATE VALIDATION MESSAGE -->
-		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->
-		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
-		 <input type="hidden" name="requiredDateStartMsg" value="#{requiredMessages.required_reports_input_date_start}" /> <!-- REQUIRED START DATE MESSAGE -->
-		 <input type="hidden" name="requiredDateEndMsg" value="#{requiredMessages.required_reports_input_date_end}" /> <!-- REQUIRED END DATE MESSAGE -->
-		 <input type="hidden" name="requiredValidDateMsg" value="#{validatorMessages.validator_valid_date}" /> <!-- VALID DATE MESSAGE -->
-		 
+			 
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->

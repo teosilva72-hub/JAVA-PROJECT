@@ -14,27 +14,38 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('eixos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório por Eixos')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('classes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório por Classes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('50vh')}" />
+
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, 2 EIXOS, 3 EIXOS, 4 EIXOS, 5 EIXOS, 6 EIXOS, 7 EIXOS,8 EIXOS, 9 EIXOS, TOTAL VEÍCULOS')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(axlNumber = 0 OR axlNumber = 1 OR axlNumber = 2, 1, 0)); SUM(axlNumber = 3); SUM(axlNumber = 4); 
-		SUM(axlNumber = 5); SUM(axlNumber = 6); SUM(axlNumber = 7); SUM(axlNumber = 8); SUM(axlNumber = 9); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
-
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, MOTOS, AUTOS, SEMIRREBOQUE, REBOQUE, 2 EIXOS, 3 EIXOS, 4 EIXOS, 5 EIXOS, 6 EIXOS, 7 EIXOS, 8 EIXOS, 9 EIXOS, 10 EIXOS, TOTAL VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(classe = `10`); SUM(IF(classe = `1` OR (classe = `0` AND axlNumber &lt; 10) OR classe = `2N`, 1, 0 )); 
+        SUM(classe = `11`); SUM(classe = `12`); SUM(IF(classe = `2` OR classe = `13` OR classe = `18` OR classe = `19`, 1, 0 ));
+        SUM(IF(classe = `3` OR classe = `14` OR classe = `3N`, 1, 0)); SUM(IF(classe = `4` OR classe = `15` OR classe = `4N`, 1, 0 )); 
+        SUM(IF(classe = `5` OR classe = `16` OR  classe = `5N`, 1, 0 )); SUM(IF(classe = `6` OR classe = `17` OR classe = `6N`, 1, 0));
+        SUM(IF(classe = `7` OR classe = `7N`, 1, 0 ));  SUM(IF(classe = `8` OR classe = `8N`, 1, 0 )); 
+        SUM(IF(classe = `9` OR classe = `9N` OR (classe=`0` AND axlNumber = 9), 1, 0 ));
+		SUM(IF(classe = `20` OR (classe=`0` AND axlNumber &gt;= 10), 1, 0 )); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', '5 minutes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', '6 minutes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', '10 minutes')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', '30 minutes')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', '6 hours')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
@@ -42,8 +53,7 @@
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', 'Eixos', 'filter_axles.id_axles|name' , true, true)}" />
-
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', 'Classes', 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>
 	
@@ -72,6 +82,9 @@
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		
+	    <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
 	
 	   <!---->
 	
@@ -102,7 +115,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de Eixos" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatório de Contagem" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -113,30 +126,67 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header">
-		<!-- DATATABALE JSF -->
+		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
+	  <f:facet name="header"> <!-- Header -->
+	 
+	  <!-- First Level -->
+	         
+      <tr>
+        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(0)}</th>
+        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(1)}</th>
+        <th colspan="4" class="custom-table-header" >#{satLabels.sat_reports_header_lights}</th> <!-- SUB HEADER -->
+        <th colspan="9" class="custom-table-header" >#{satLabels.sat_reports_header_commercials}</th> <!-- SUB HEADER -->        
+        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(15)}</th> 
+      </tr>
+      
+      <!-- Second Level -->
+      
+      <tr>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(2)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(3)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(4)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(5)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(6)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(7)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(8)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(9)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(10)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(11)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(12)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(13)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(14)}</th>
+      </tr>
+      
+     </f:facet> <!---->	
+     
+     <!---->		
+	
 		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+				<!-- <f:facet name="header">#{header}</f:facet> --> <!-- HEADER -->
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->
-	</h:dataTable> <!-- DATATABALE JSF END -->
+	    </h:dataTable> <!-- DATATABALE JSF END -->
 	<!---->
-</h:form><!-- FORM TABLE END-->
+    </h:form><!-- FORM TABLE END-->
 	 
-	  <!-- ============================================================================================================================= -->
+	 	  <!-- ============================================================================================================================= -->
 	 
 	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
-	      <ui:include src="/template/action-reports/buttons_template_1.xhtml" />
+	      <ui:include src="/template/action-reports/buttons_template_2.xhtml" />
 	  
 	  <!-- ============================================================================================================================= -->
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  	  	  
+	  <!-- ============================================================================================================================= -->
 	  
-	  <!-- DIV DE ESTRUTURA DA TABELA -->   
+	    <!-- CHART CONTAINER -->  
+	  
+	    <ui:include src="/template/chart/chart_template.xhtml" />
 		
 	  <!-- ============================================================================================================================= -->
 	  
@@ -169,7 +219,7 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		   	 	
+		 			   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 
 		 </form> <!-- FORM VALIDATION END -->
