@@ -853,8 +853,6 @@ public class EquipmentsDAO {
 	public Equipments EquipReportsInfo(String equip_id, String module) throws Exception {
 
 		Equipments eq = new Equipments();
-		
-		List<Equipments> list = new ArrayList<>();
 
 		try {
 
@@ -888,7 +886,7 @@ public class EquipmentsDAO {
 
 		}finally {ConnectionFactory.closeConnection(conn, ps);}
 
-		return list;
+		return eq;
 	}	
 
 	// --------------------------------------------------------------------------------------------------------------
