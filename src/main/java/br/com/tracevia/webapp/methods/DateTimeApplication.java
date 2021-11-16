@@ -2092,19 +2092,14 @@ public class DateTimeApplication {
 
 	// ------------------------------------------------------------------------------------------------------
 	
-	 public Integer defineInterval(String period) {
+	 public Integer defineInterval(String[] period) {
 		 
 		 int interval = 0;
 		 
-		 switch(period){
-			 
-		 case "5 minutes": interval = 288; break;
-		 case "6 minutes": interval = 240; break;
-		 case "10 minutes": interval = 144; break;
-		 case "15 minutes": interval = 96; break;
-		 case "30 minutes": interval = 48; break;
-		 case "1 hour": interval = 24; break;
-		 case "6 hours": interval = 4; break;
+		 switch(period[1].toUpperCase()){
+		 
+		 case "MINUTE": interval = 1440 / Integer.parseInt(period[0]); break;
+		 case "HOUR": interval = 24 / Integer.parseInt(period[0]); break;
 			 
 		 }
 		 

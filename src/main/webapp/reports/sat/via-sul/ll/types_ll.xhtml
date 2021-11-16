@@ -14,8 +14,8 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('eixos_ll')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório por Eixos LL')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_sul_types_ll_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(via_sul_types_ll_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
@@ -26,7 +26,7 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ll')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, MOTOS, LEVES, COMERCIAIS, TOTAL VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, satLabels.class_commercial_vehicles_column, satLabels.global_total_vehicles_column))}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR classe = `2N` OR (classe = `0` AND length &lt;= 650), 1, 0));
 		SUM(IF(classe = `2` OR classe = `3` OR classe = `8` OR classe = `2A`, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ll.lane')}" />
@@ -46,7 +46,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipe', 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 		
     </f:metadata>
 	
@@ -105,7 +105,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de Eixos" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.via_sul_types_ll_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

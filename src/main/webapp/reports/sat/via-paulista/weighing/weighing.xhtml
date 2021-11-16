@@ -14,8 +14,8 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('pesagem')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Pesagem')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_paulista_axle_weight_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_paulista_axle_weight_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
@@ -26,7 +26,11 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORA, LEVES, PESADO 2 EIXOS, PESADO 3 EIXOS, PESADO 4 EIXOS, PESADO 5 EIXOS, PESADO 6 EIXOS, PESADO 7 EIXOS, PESADO 8 EIXOS, PESADO 9 EIXOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
+		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_light_vehicles_column, satLabels.class_heavy_vehicles_2_axles, satLabels.class_heavy_vehicles_3_axles,
+		satLabels.class_heavy_vehicles_4_axles, satLabels.class_heavy_vehicles_5_axles, satLabels.class_heavy_vehicles_6_axles, satLabels.class_heavy_vehicles_7_axles,
+		satLabels.class_heavy_vehicles_8_axles, satLabels.class_heavy_vehicles_9_axles))}" />
+		
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650), gross, NULL )), 0); 
 		ROUND(AVG(IF(classe = `2` OR classe = `2A`, gross, NULL )), 0); ROUND(AVG(IF(classe = `4` OR classe = `4A` OR classe = `3N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
@@ -47,8 +51,8 @@
 		 <f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipamento', 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', 'Classes', 'filter_weighing.id_weighing|name' , true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
 
     </f:metadata>
 	
@@ -107,7 +111,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de Pesagem" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.via_paulista_axle_weight_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

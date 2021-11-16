@@ -14,8 +14,8 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName('velocidade')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatório de Velocidade')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_sul_speed_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_sul_speed_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
@@ -26,24 +26,25 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DIA, HORAS, ATÉ 50KM/H, 50KM/HORA ~ 70KM/H, 70KM/H ~ 90KM/H, 90KM/H ~ 120KM/H, 120KM/H ~ 150KM/H, acima de 150, TOTAL DE VEÍCULOS')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
+		
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', '5 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', '6 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', '10 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', '30 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', '6 hours')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', 'Equipamento', 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 			               
     </f:metadata>
 	
@@ -102,7 +103,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de Velocidade" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.via_sul_speed_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
