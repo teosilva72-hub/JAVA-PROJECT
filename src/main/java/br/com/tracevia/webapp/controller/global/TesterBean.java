@@ -20,8 +20,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -34,6 +32,7 @@ import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.util.ExcelTemplate;
+import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="testerBean")
@@ -77,13 +76,15 @@ public class TesterBean {
 	
 	private ReportSelection select;
 	private ReportBuild build;
-	
+		
 	private ReportDAO report;
 	public List<Builder> resultList;	
 
 	List<? extends Equipments> listEquips;  
 			
 	public String[] equipNames;
+	
+	LocaleUtil locale;
 
 	// Get
 		
@@ -130,6 +131,7 @@ public class TesterBean {
 	}
 	
 	public void setColumnsName(String columns) {
+		
 		for (String col : columns.split(",")) {
 			if (col.contains("$foreach")) {
 				try {
@@ -441,7 +443,7 @@ public class TesterBean {
 		String[] columns = mapArray.get("allColumns");
 		String selectedPeriod = (String) map.get("date-period");
 		usePeriod = selectedPeriod;
-		
+				
 		List<String> idSearch = new ArrayList<>();
 		String group = "$period";
 		Date[] dateProcess = null;
@@ -582,7 +584,7 @@ public class TesterBean {
 			if (report.IDs.isEmpty())
 				 report.IDs.addAll(idSearch);
 				     
-		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, selectedPeriod, sheetName, fileTitle, isSat, haveTotal, multiSheet);
+		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		     
@@ -842,5 +844,5 @@ public class TesterBean {
      }	
 		
 	 // --------------------------------------------------------------------------------------------	
-
+	
 }

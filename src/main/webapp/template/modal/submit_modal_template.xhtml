@@ -116,6 +116,7 @@
 								<span><i class="fas fa-hdd"></i></span>							
 								<!---->
 								<select name="date-period" id="date-period" required="required">
+									<option value="">#{reportsLabels.reports_select_period}</option>
 									<!-- SELECT OPTIONS -->
 									<ui:repeat var="period" value="#{testerBean.getPeriod()}" varStatus="status">
 										<!-- LOOP -->
@@ -152,7 +153,7 @@
 								<span><i class="far fa-calendar-alt"></i></span>
 								<!---->
 								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-start" id="#{dateSearch[0]}-start" required="#{dateSearch[2]}"
-									placeholder="#{dateSearch[1]} #{'INICIO'}" />
+									placeholder="#{reportsLabels.reports_input_date_start_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->
@@ -181,7 +182,7 @@
 								<span><i class="far fa-calendar-alt"></i></span>								
 								<!---->
 								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-end" id="#{dateSearch[0]}-end" required="#{dateSearch[2]}"
-									placeholder="#{dateSearch[1]} #{'FIM'}" />
+									placeholder="#{reportsLabels.reports_input_date_end_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->

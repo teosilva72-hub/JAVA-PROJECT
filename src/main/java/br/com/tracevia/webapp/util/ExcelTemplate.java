@@ -168,7 +168,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
-			String[] dates, String period, List<String> equipId, int dayIndex) {
+			String[] dates, String[] period, List<String> equipId, int dayIndex) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
@@ -225,7 +225,7 @@ public class ExcelTemplate {
 		
 		// HEADER DATE TEMPLATE
 		
-		if(period.equals("day") || period.equals("month") || period.equals("year")) 	
+		if(period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR")) 	
 		    headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[0]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[1];
 
 		else headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[dayIndex]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[dayIndex];
@@ -324,7 +324,7 @@ public class ExcelTemplate {
 
 		// PERIODO
 		utilSheet.createCell(sheet, row, 7, 8);
-		utilSheet.setCellValue(sheet, row, 7, 8, tm.periodName(period));
+		utilSheet.setCellValue(sheet, row, 7, 8, period[2]);
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 8);
 		
 		}
@@ -500,7 +500,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
-			String startDate, String endDate, String period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet) {
+			String startDate, String endDate, String[] period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet) {
 		
 		sheet = null;		
 		row = null;
@@ -512,7 +512,7 @@ public class ExcelTemplate {
 		int endCol = columns.size() - 1;
 		int dataTotalRow = columns.size();
 		
-		if(!isMultiSheet || (isMultiSheet && period.equals("day") || period.equals("month") || period.equals("year"))) {
+		if(!isMultiSheet || (isMultiSheet && period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR"))) {
 			
 			String[] dates = new String[2];
 			
@@ -616,8 +616,7 @@ public class ExcelTemplate {
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 		
-	} else if(isMultiSheet && (period.equals("5 minutes") || period.equals("6 minutes") || period.equals("10 minutes")
-			|| period.equals("15 minutes") || period.equals("30 minutes") || period.equals("6 hours") || period.equals("1 hour"))){		
+	} else if(isMultiSheet && (period[1].toUpperCase().equals("MINUTE") || period[1].toUpperCase().equals("HOUR"))){		
 		
 		DateTimeApplication dt = new DateTimeApplication();
 		
