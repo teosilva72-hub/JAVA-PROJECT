@@ -1,0 +1,162 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	template="/template/dashboard-rov-layout.xhtml">
+
+	<ui:define name="default-stylesheet">
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+	</ui:define>
+
+	<ui:define name="head">
+		<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
+		<h:outputStylesheet library="css/pgf" name="pgf-sat.css" />
+		<h:outputStylesheet library="css/sat" name="layoutSAT.css" />
+	</ui:define>
+
+	<ui:define name="default-jquery">
+
+	</ui:define>
+
+	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
+	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
+	<ui:param name="Cco" value="#{ permission == 2 }" />
+
+	<ui:define name="default-content">
+		<div class="row wim-jumbotron">
+
+			<div class="jumbotron col-3 PGFdark bg-dark px-3">
+				<div class='row'>
+					<div class='col-12 p-1'>
+						<div class="pgf-card shadow rounded p-2 bg-body">
+							<div class="card card-scroll">
+								
+							</div>
+						</div>
+					</div>
+	
+				</div>
+			</div>
+
+			<div class="container col-9 mt-3">
+				<div class="card h-100">
+					<div class="card-header text-center">title</div>
+					<div class="card-body">
+						<div class="card-body-division">
+							<div class="division my-auto">
+								<div class="row w-100">
+									<div class="col-3 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Altura</div>
+										<div class="card-body p-1 small">5 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:4,4m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Largura</div>
+										<div class="card-body p-1 small">2,6 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:2,6m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Comprimento</div>
+										<div class="card-body p-1 small">23,2m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:-m</div>
+									</div>
+								</div>
+									
+								<div class="row w-100">
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-3 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Total</div>
+										<div class="card-body p-1 small">33,6 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:40ton</div>
+									</div>
+								</div>
+							</div>
+							<div class="division my-auto">
+								<div class="row w-100">
+									<div class="col-3 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Altura</div>
+										<div class="card-body p-1 small">5 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:4,4m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Largura</div>
+										<div class="card-body p-1 small">2,6 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:2,6m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Comprimento</div>
+										<div class="card-body p-1 small">23,2m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:-m</div>
+									</div>
+								</div>
+									
+								<div class="row w-100">
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-2 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Velocidade</div>
+										<div class="card-body p-1 small">70km/h</div>	
+										<div class="card-footer p-1 card-subtitle small">L:--km/m</div>
+									</div>
+									<div class="col-3 card p-0 my-auto text-white bg-dark text-center mx-auto">
+										<div class="card-header p-1">Total</div>
+										<div class="card-body p-1 small">33,6 m</div>	
+										<div class="card-footer p-1 card-subtitle small">L:40ton</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+
+	<ui:define name="modal-content"></ui:define>
+
+	<ui:define name="default-plugins">
+		<!-- <h:outputScript name="bootstrap-5.bundle.min.js" library="bootstrap/js" /> -->
+	</ui:define>
+
+	<ui:define name="jscript">
+
+		<c:if test="#{ SuperAdmin || Cco }">
+
+		</c:if>
+	</ui:define>
+</ui:composition>
