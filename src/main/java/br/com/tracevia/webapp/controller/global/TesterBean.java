@@ -583,7 +583,7 @@ public class TesterBean {
 				 return;
 			if (report.IDs.isEmpty())
 				 report.IDs.addAll(idSearch);
-				     
+										     
 		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 

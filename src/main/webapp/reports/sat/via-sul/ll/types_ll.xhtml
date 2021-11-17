@@ -27,20 +27,21 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ll')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, satLabels.class_commercial_vehicles_column, satLabels.global_total_vehicles_column))}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR classe = `2N` OR (classe = `0` AND length &lt;= 650), 1, 0));
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR classe = `2N` OR (classe = `0` AND lenght &lt;= 650), 1, 0));
 		SUM(IF(classe = `2` OR classe = `3` OR classe = `8` OR classe = `2A`, 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ll.lane')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', '5 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', '6 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', '10 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', '15 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', '30 minutes')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', '1 hour')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', '6 hours')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', 'day')}" />
+        <f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />

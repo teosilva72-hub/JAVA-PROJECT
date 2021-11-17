@@ -803,14 +803,23 @@ public class EquipmentsDAO {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes "
-					+ "FROM sat_equipment st "
-					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
-					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
-					+ "WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
+			String sql = "SELECT st.name, c.city_name, r.road_name, st.km, st.number_lanes, "
+						+"CASE "
+					    +"WHEN dir_lane1 = 'N' THEN 'NORTH / SOUTH' "
+					    +"WHEN dir_lane1 = 'S' THEN 'SOUTH / NORTH' "
+						+"WHEN dir_lane1 = 'L' THEN 'EAST / WEST' "
+					    +"WHEN dir_lane1 = 'O' THEN 'WEST / EAST' " 			 
+					    +"ELSE ' --- ' "
+					    +"END 'directions' "
+						+"FROM sat_equipment st "
+						+"INNER JOIN concessionaire_cities c ON c.city_id = st.city "
+						+"INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+						+"WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
+			// System.out.println(sql);
 						
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
@@ -822,6 +831,7 @@ public class EquipmentsDAO {
 					sat.setEstrada(rs.getString(3));
 					sat.setKm(rs.getString(4));
 					sat.setQtdeFaixas(rs.getString(5));
+					sat.setSentidos(rs.getNString(6));
 					
 					list.add(sat);
 				}

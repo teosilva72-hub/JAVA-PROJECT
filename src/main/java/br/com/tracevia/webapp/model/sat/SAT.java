@@ -4,7 +4,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 
 public class SAT extends Equipments {
 		
-	private int numFaixas;		
+	private int numFaixas;	
 	private int quantidadeS1;
 	private int velocidadeS1;
 	private int quantidadeS2;	
@@ -19,9 +19,10 @@ public class SAT extends Equipments {
 	private String faixa7;
 	private String faixa8;
 	private String qtdeFaixas;
+	private String sentidos;
 	private String sentido1;
 	private String sentido2;
-	private String posicao_nivel_servico;	
+	private String posicao_nivel_servico;
 		
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
@@ -29,7 +30,7 @@ public class SAT extends Equipments {
 			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
 			boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2,
 			int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
-			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentido1, String sentido2,
+			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentidos, String sentido1, String sentido2,
 			String posicao_nivel_servico) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
@@ -51,6 +52,7 @@ public class SAT extends Equipments {
 		this.faixa7 = faixa7;
 		this.faixa8 = faixa8;
 		this.qtdeFaixas = qtdeFaixas;
+		this.sentidos = sentidos;
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
 		this.posicao_nivel_servico = posicao_nivel_servico;
@@ -161,6 +163,14 @@ public class SAT extends Equipments {
 
 	public void setQtdeFaixas(String qtdeFaixas) {
 		this.qtdeFaixas = qtdeFaixas;
+	}
+	
+	public String getSentidos() {
+		return sentidos;
+	}
+	
+	public void setSentidos(String sentidos) {
+		this.sentidos = sentidos;
 	}
 
 	public String getSentido1() {
