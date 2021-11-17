@@ -14,3 +14,8 @@
 .card-body-division .division .card-body {
 	height: fit-content;
 }
+
+.card-body-division .division .col-division {
+	flex: 0 0 24%;
+	width: 24%;
+}
