@@ -13,6 +13,7 @@ import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class ReportDAO {
 	
@@ -26,6 +27,7 @@ public class ReportDAO {
     public List<String[]> lines;
     public List<Pair<String, List<String[]>>> secondaryLines;
     public List<String> IDs;
+    
 
     public ReportDAO(List<String> columnName) throws Exception {
         
@@ -140,6 +142,10 @@ public class ReportDAO {
     }
     
     public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
+    	
+    	LocaleUtil locale = new LocaleUtil();
+    	locale.getResourceBundle(LocaleUtil.LABELS_REPORTS);
+    	    	    	
     	List<String[]> fields = new ArrayList<>();
     	List<List<String>> fieldsTemp = new ArrayList<>();
         String select = "";
@@ -158,7 +164,7 @@ public class ReportDAO {
         if (rs.isBeforeFirst()) {
             while (rs.next()) {
                 for (int i = 0; i < tempSize; i++) {
-                    String value = rs.getString(i + 1);
+                    String value = translateFilters(locale, rs.getString(i + 1));
                     if (value == null)
                         value = "";
                     if ((!fieldsTemp.get(i).contains(value) && !value.isEmpty() || i > 0))
@@ -182,7 +188,56 @@ public class ReportDAO {
         
         return fields;
     }
+    
+    // ------------------------------------------------------------------------------------
+    
+    private String translateFilters(LocaleUtil locale, String value) {
+    	
+    	switch (value) {
+    	
+			case "2 axles": return locale.getStringKey("reports_filter_2_axles_option");
+			case "3 axles": return locale.getStringKey("reports_filter_3_axles_option");
+			case "4 axles": return locale.getStringKey("reports_filter_4_axles_option");
+			case "5 axles": return locale.getStringKey("reports_filter_5_axles_option");
+			case "6 axles": return locale.getStringKey("reports_filter_6_axles_option");
+			case "7 axles": return locale.getStringKey("reports_filter_7_axles_option");
+			case "8 axles": return locale.getStringKey("reports_filter_8_axles_option");
+			case "9 axles": return locale.getStringKey("reports_filter_9_axles_option");
+			case "10 axles": return locale.getStringKey("reports_filter_10_axles_option");
+    		case "light": return locale.getStringKey("reports_filter_light_class_option");
+    		case "moto": return locale.getStringKey("reports_filter_moto_class_option");
+    		case "heavy": return locale.getStringKey("reports_filter_heavy_vehicles_option");
+    		case "trailer": return locale.getStringKey("reports_filter_trailer_class_option");
+    		case "semi-trailer": return locale.getStringKey("reports_filter_semi_trailer_class_option");      		
+    		case "heavy 2 axles": return locale.getStringKey("reports_filter_heavy_2_axles_class_option"); 
+    		case "heavy 3 axles": return locale.getStringKey("reports_filter_heavy_3_axles_class_option");
+    		case "heavy 4 axles": return locale.getStringKey("reports_filter_heavy_4_axles_class_option");
+    		case "heavy 5 axles": return locale.getStringKey("reports_filter_heavy_5_axles_class_option");
+    		case "heavy 6 axles": return locale.getStringKey("reports_filter_heavy_6_axles_class_option");
+    		case "heavy 7 axles": return locale.getStringKey("reports_filter_heavy_7_axles_class_option");
+    		case "heavy 8 axles": return locale.getStringKey("reports_filter_heavy_8_axles_class_option");
+    		case "heavy 9 axles": return locale.getStringKey("reports_filter_heavy_9_axles_class_option");
+    		case "heavy 10 axles": return locale.getStringKey("reports_filter_heavy_10_axles_class_option");
+    		case "2 axle bus": return locale.getStringKey("reports_filter_bus_2_axles_class_option");
+    		case "3 axle bus": return locale.getStringKey("reports_filter_bus_3_axles_class_option");
+    		case "4 axle bus": return locale.getStringKey("reports_filter_bus_4_axles_class_option");
+    		case "5 axle bus": return locale.getStringKey("reports_filter_bus_5_axles_class_option");
+    		case "6 axle bus": return locale.getStringKey("reports_filter_bus_6_axles_class_option");
+    		case "2 axle truck": return locale.getStringKey("reports_filter_truck_2_axles_class_option");
+    		case "3 axle truck": return locale.getStringKey("reports_filter_truck_3_axles_class_option");
+    		case "4 axle truck": return locale.getStringKey("reports_filter_truck_4_axles_class_option");
+    		case "5 axle truck": return locale.getStringKey("reports_filter_truck_5_axles_class_option");
+    		case "6 axle truck": return locale.getStringKey("reports_filter_truck_6_axles_class_option");
+    		case "7 axle truck": return locale.getStringKey("reports_filter_truck_7_axles_class_option");
+    		case "8 axle truck": return locale.getStringKey("reports_filter_truck_8_axles_class_option");
+    		case "9 axle truck": return locale.getStringKey("reports_filter_truck_9_axles_class_option");
+    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option");
+    		    		
+    		default: return value;
+    	}
+    }
 
+    // ------------------------------------------------------------------------------------
    
 	public List<String> getColumnName() {
 		return columnName;
