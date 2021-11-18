@@ -128,37 +128,40 @@
 							</div>
 	
 							<div class="col-6 my-auto pgf-picture">
-								<div class="pgf4">
+								<div class="pgf4 bg-dark">
 									<div class="row h-100">
-										<div class="col-3 my-auto">
+										<div class="col-3">
 											<div class="card pgf-warn bg-success mx-auto">
 												<div class="card-body p-1">
-													<p class="btnpgf text-white m-0">LIBERADO</p>
+													<p class="btnpgf text-white py-5 my-auto">LIBERADO</p>
 												</div>
 											</div>
 										</div>
 
 										<div class="col-9">
-											<div class="row text-center h-100">
-		
+											<div class="row text-center h-100">												
 												<div class="col-lg-12 my-auto">
 													<img class="pgfmin" src="/resources/images/pgf/truck-side.webp"></img>
-												</div>	
-																						
-												<div class="col-4 my-auto">
-													<div> 5,7 ton </div>
-													<img class="pgftires1" src="/resources/images/pgf/tires1.webp"></img>
-													<div> L:6 ton </div>
-												</div>
-												<div class="col-4 my-auto">
-														<div> 12,6 ton </div>
-														<img class="pgftires2" src="/resources/images/pgf/tires2.webp"></img>
-														<div> L:17 ton </div>
-												</div>
-												<div class="col-4 my-auto">
-														<div> 15,1 ton </div>
-														<img class="pgftires3" src="/resources/images/pgf/tires2.webp"></img>
-														<div> L:17 ton </div>	
+												</div>														
+												<div class="shadow rounded p-1 bg-body" id="pgf-tires">
+													<div class="card card-scroll">
+														<c:forEach begin="1" end="4" var="pgf-form">
+															<div class="card-body pgf-form border-bottom p-1 bg-dark text-white">
+																<div class="row">
+																	<div class="my-auto">
+																		<div class="row text-center me-0 disabled">
+																			<label class="form-label list-pgf p-0 col-3 mx-auto"> Eixo 1
+																			</label>
+																			<label class="form-label list-pgf p-0 col-4 mx-auto"> 16,40 ton
+																			</label>
+																			<label class="form-label list-pgf p-0 col-4 mx-auto"> L:12,00 ton
+																			</label>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</c:forEach>
+													</div>
 												</div>
 											</div>
 										</div>
