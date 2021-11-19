@@ -3,12 +3,13 @@
     flex-wrap: wrap;
     height: 100%;
     background: linear-gradient(0deg, rgb(53, 53, 53) 50%, rgb(79, 79, 79) 50%);
+	flex-direction: column;
 }
 
 .card-body-division .division {
 	display: flex;
 	flex-wrap: wrap;
-	height: 45%;
+	flex: 0 0 45%;
 	width: 100%;
 }
 

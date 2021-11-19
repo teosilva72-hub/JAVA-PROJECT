@@ -7,13 +7,18 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 
-	<ui:define name="default-stylesheet">
-		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
-	</ui:define>
 
+	<ui:define name="default-stylesheet">
+		<!-- CSS -->
+		<h:outputStylesheet name="bootstrap-5.min.css" library="bootstrap/css" />
+		<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
+		
+		<!-- Script -->
+		<h:outputScript library="js/pgf/" name="pgf-real.js" />
+	</ui:define>
+	
 	<ui:define name="head">
 		<c:if test="#{ SuperAdmin || Cco }">
-			<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
 		</c:if>
 	</ui:define>
 
@@ -33,7 +38,7 @@
 					<div class='col-12 p-1'>
 						<div class="pgf-card shadow rounded p-2 bg-body">
 							<div class="card card-scroll">
-								<c:forEach begin="1" end="12" var="pgf-form">
+								<c:forEach begin="1" end="10" var="pgf-form">
 									<div class="card-body pgf-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
 											<div class="my-auto">
@@ -52,64 +57,61 @@
 							</div>
 						</div>
 					</div>
+					<div class='col-12 p-1'>
+						<div class="pgf-card-details shadow rounded p-2 bg-body">
+							<div class="card card-scroll">
+									<div class="card-body pgf-form p-1 bg-dark text-white">
+										<div class="row">
+											<div class="my-auto">
+												<div class="row text-center border-bottom me-0 disabled">
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> Velocidade
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> 70 km/h
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> L:--km/m
+													</label>
+												</div>
+												<div class="row text-center border-bottom me-0 disabled">
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> Altura
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> 5 m
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> L:4,4 m
+													</label>
+												</div>
+												<div class="row text-center border-bottom me-0 disabled">
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> Largura
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> 2,6 m
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> L:2,6 m
+													</label>
+												</div>
+												<div class="row text-center border-bottom me-0 disabled">
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> Comprimento
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> 23,2 m
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> L:-m
+													</label>
+												</div>
+												<div class="row text-center border-bottom me-0 disabled">
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> Total
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> 33,6 ton
+													</label>
+													<label class="form-label list-pgf p-0 col-4 mx-auto"> L:40 ton
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+							</div>
+						</div>
+					</div>
 	
 				</div>
 			</div>
-
-			<div class="jumbotron col-2 PGFclean px-3">
-				<div class="my-auto">
-					<div class="row mb-1 text-center me-0 disabled text-black" style="font-size:small">
-						<label class="form-label" style="font-size: x-large; color:black;"> 70km/h
-						</label>	
-						<label class="form-label" style="color:black;"> L:--km/m
-						</label>
-						<label class="form-label" style="color:black;"> Velocidade
-						</label>
-					</div>
-				</div>
-				<div class="my-auto">
-					<div class="row mb-1 text-center me-0 disabled text-black" style="font-size:small">
-						<label class="form-label" style="font-size: x-large; color:black;"> 33,6 m
-						</label>	
-						<label class="form-label" style="color:black;"> L:40ton
-						</label>
-						<label class="form-label" style="color:black;"> Total
-						</label>
-					</div>
-				</div>
-				<div class="my-auto">
-					<div class="row mb-1 text-center me-0 disabled text-black" style="font-size:small">
-						<label class="form-label" style="font-size: x-large; color:black;"> 5 m
-						</label>	
-						<label class="form-label" style="color:black;"> L:4,4m
-						</label>
-						<label class="form-label" style="color:black;"> Altura
-						</label>
-					</div>
-				</div>
-				<div class="my-auto">
-					<div class="row mb-1 text-center me-0 disabled text-black" style="font-size:small">
-						<label class="form-label" style="font-size: x-large; color:black;"> 2,6 m
-						</label>	
-						<label class="form-label" style="color:black;"> L:2,6m
-						</label>
-						<label class="form-label" style="color:black;"> Largura
-						</label>
-					</div>
-				</div>
-				<div class="my-auto">
-					<div class="row mb-1 text-center me-0 disabled text-black" style="font-size:small">
-						<label class="form-label" style="font-size: x-large; color:black;"> 23,2m
-						</label>	
-						<label class="form-label" style="color:black;"> L:-m
-						</label>
-						<label class="form-label" style="color:black;"> Comprimento
-						</label>
-					</div>
-				</div>
-				
-			</div>
-
 			<div class="jumbotron col PGFpicture px-3">
 				<div class="card" style="height: 100%;">
 					<div class='card-body h-100'>
@@ -131,7 +133,7 @@
 								<div class="pgf4 bg-dark">
 									<div class="row h-100">
 										<div class="col-3">
-											<div class="card pgf-warn bg-success mx-auto">
+											<div class="card pgf-warn bg-success my-auto">
 												<div class="card-body p-1">
 													<p class="btnpgf text-white py-5 my-auto">LIBERADO</p>
 												</div>
