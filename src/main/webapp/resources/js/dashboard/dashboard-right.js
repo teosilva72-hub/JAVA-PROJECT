@@ -12,8 +12,8 @@ $(async function () {
   });
 
   var adjustSidebar = function () {
-    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 20 })
-    $(".equips-div").slimScroll({ height: window.innerHeight - 20 })
+    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 40 })
+    $(".equips-div").slimScroll({ height: window.innerHeight - 40 })
       .css('height', window.innerHeight - 200)
 
   };

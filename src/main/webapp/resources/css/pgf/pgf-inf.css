@@ -79,8 +79,8 @@
 .pgfmin {
 	object-fit: contain;
 	border: solid 1px black;
-	width: 50%;
-	height: 50px;
+	width: 100%;
+	height: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
@@ -88,8 +88,8 @@
 
 .pgf-card{
 	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
-	  /* height: 40%; */
 }
+
 
 .pgf-form {
 	cursor: pointer;
