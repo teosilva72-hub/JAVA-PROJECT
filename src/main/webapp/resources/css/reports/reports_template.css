@@ -196,7 +196,7 @@ body {
  .checkbox-field .valid-icon-visible {
   position: absolute;
   top: 5%;
-  right: -75%;
+  right: 7%;
   transition: right 0.2s;
 } 
 

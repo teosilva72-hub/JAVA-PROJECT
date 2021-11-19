@@ -14,12 +14,16 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName(via_sul_axles_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(via_sul_axles_title)}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_sul_axles_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_sul_axles_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_sul_axles_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_sul_axles_title)}" />		
+		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
@@ -31,7 +35,7 @@
 		satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column, satLabels.number_of_axles_8_column, satLabels.number_of_axles_9_column, 
 		satLabels.number_of_axles_10_column, satLabels.global_total_vehicles_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; SUM(IF(axlNumber = 0 OR axlNumber = 1 OR axlNumber = 2, 1, 0)); SUM(axlNumber = 3); SUM(axlNumber = 4); 
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(axlNumber = 0 OR axlNumber = 1 OR axlNumber = 2, 1, 0)); SUM(axlNumber = 3); SUM(axlNumber = 4); 
 		SUM(axlNumber = 5); SUM(axlNumber = 6); SUM(axlNumber = 7); SUM(axlNumber = 8); SUM(axlNumber = 9); SUM(axlNumber &gt;= 10); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
@@ -79,7 +83,9 @@
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
-	
+	    <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
+	 	
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
@@ -137,13 +143,18 @@
 	 
 	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
-	      <ui:include src="/template/action-reports/buttons_template_1.xhtml" />
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
 	  
 	  <!-- ============================================================================================================================= -->
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
 	  
-	  <!-- DIV DE ESTRUTURA DA TABELA -->   
+	  <!-- ============================================================================================================================= -->
+	  
+	    <!-- CHART CONTAINER -->  
+	  
+	    <ui:include src="/template/chart/chart_template.xhtml" />
+	 
 		
 	  <!-- ============================================================================================================================= -->
 	  

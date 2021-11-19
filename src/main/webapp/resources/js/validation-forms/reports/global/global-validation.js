@@ -23,7 +23,7 @@ $(function () {
        else window[messages.name] = messages.value
 
     //Create / Define multiselect
-    defineMultiselect('#multiple', '');      
+    defineMultiselect('[multiple]', '');      
 
 
    $.validator.methods.date = function (value, element) {
@@ -89,5 +89,5 @@ $(function () {
     //click reset button action
     resetFormValidation("#report-form", "reset-btn");
 
-	
+
 });

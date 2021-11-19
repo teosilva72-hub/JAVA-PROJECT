@@ -40,7 +40,7 @@ public class LocaleUtil {
 	public static final String LABELS_SOS = "bundle.labels.sos.labels_sos_";
 	public static final String LABELS_EXCELSHEET = "bundle.labels.system.excel-sheet.labels_excel_sheet_";
 	public static final String LABELS_PDF = "bundle.labels.system.pdf.labels_pdf_";
-	public static final String LABELS_CHARTS = "bundle.labels.system;.charts.labels_charts_";
+	public static final String LABELS_CHARTS = "bundle.labels.system.charts.labels_charts_";
 	public static final String LABELS_REPORTS = "bundle.labels.system.reports.labels_reports_";
 	public static final String LABELS_SELECTION_ITEM = "bundle.labels.system.select-item.labels_select_item_";	
 	public static final String LABELS_SPEED = "bundle.labels.speed.labels_speed_";	

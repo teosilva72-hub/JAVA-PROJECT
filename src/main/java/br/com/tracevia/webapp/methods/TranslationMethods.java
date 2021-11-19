@@ -1,6 +1,5 @@
 package br.com.tracevia.webapp.methods;
 
-import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
@@ -34,6 +33,7 @@ public class TranslationMethods {
 		localeDai.getResourceBundle(LocaleUtil.LABELS_DAI);
 
 	}
+	
 	public String daiLabels(String dai) {
 		String converteDai= "";
 		switch (dai) {
@@ -747,5 +747,22 @@ public class TranslationMethods {
       
    // -------------------------------------------------------------------------------------------------------
 
-
+     public String verticalAxisTranslate(String vAxis) {
+	    	
+	    	LocaleUtil locale = new LocaleUtil();
+	    	locale.getResourceBundle(LocaleUtil.LABELS_CHARTS);
+	    	
+	    	String vertical = "";
+	    	
+	    	switch(vAxis) {
+	    	
+	    	case "vehicle": vertical = locale.getStringKey("chart_h_axis_vehicles"); break;
+		    	
+	    	}
+	    	   	    		    	
+	    	return vertical;
+	    	
+	    }
+     
+     // -------------------------------------------------------------------------------------------------------
 }

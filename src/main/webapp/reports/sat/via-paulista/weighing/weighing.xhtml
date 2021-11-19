@@ -31,7 +31,7 @@
 		satLabels.class_heavy_vehicles_4_axles, satLabels.class_heavy_vehicles_5_axles, satLabels.class_heavy_vehicles_6_axles, satLabels.class_heavy_vehicles_7_axles,
 		satLabels.class_heavy_vehicles_8_axles, satLabels.class_heavy_vehicles_9_axles))}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE(data) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650), gross, NULL )), 0); 
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(AVG(IF(classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650), gross, NULL )), 0); 
 		ROUND(AVG(IF(classe = `2` OR classe = `2A`, gross, NULL )), 0); ROUND(AVG(IF(classe = `4` OR classe = `4A` OR classe = `3N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `8` OR classe = `6N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `10` OR classe = `7N`, gross, NULL )), 0);

@@ -384,6 +384,7 @@ public class SatReportsController {
 		periods.add(new SelectItem("24 hours", localeLabel.getStringKey("sat_reports_select_periods_twenty_four_hours")));
 
 		/* CLASSES */		
+		
 		classes = new ArrayList<SelectItem>();	
 		classes.add(new SelectItem("1", localeLabel.getStringKey("sat_reports_select_class_light")));
 		classes.add(new SelectItem("9", localeLabel.getStringKey("sat_reports_select_class_motorcycle")));
@@ -401,6 +402,7 @@ public class SatReportsController {
 
 
 		/* AXLES */		
+		
 		axles = new ArrayList<SelectItem>();	
 		axles.add(new SelectItem("2", localeLabel.getStringKey("sat_reports_select_axles_2")));
 		axles.add(new SelectItem("3", localeLabel.getStringKey("sat_reports_select_axles_3")));

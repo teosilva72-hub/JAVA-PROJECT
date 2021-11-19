@@ -249,8 +249,6 @@ public class ReportDAO {
 	
 	public List<String> getIDs() {
 		return IDs;
-	}
-	
-	
+	}	
 	
 }

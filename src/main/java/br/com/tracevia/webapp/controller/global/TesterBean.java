@@ -20,6 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.primefaces.context.RequestContext;
+
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -54,7 +56,7 @@ public class TesterBean {
 					sheetName = "Report";
 	public String 	module;
 	
-	public String 	jsTable, jsTableScroll;
+	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;
 	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false,
 					caseSensitive = false;
 
@@ -163,6 +165,11 @@ public class TesterBean {
 	}
 	
 	public void setColumnsInUse(String[] columns) {
+		if (columns == null) {
+			columnsInUse = columnsName;
+			return;
+		}
+		
 		List<String> cols = new ArrayList<>();
 		for (String col : columns) {
 			cols.add(columnsName.get(Integer.parseInt(col)));
@@ -287,6 +294,18 @@ public class TesterBean {
 		this.module = module;
 	}
 	
+	public void defineChartTitle(String chartTitle) {
+		this.chartTitle = chartTitle;
+	}
+	
+	public void defineImageName(String imageName) {
+		this.imageName = imageName;
+	}
+	
+	public void defineAxis(String vAxis) {
+		this.vAxis = vAxis;
+	}
+	
 	public void haveTotal(boolean total) {
 		this.haveTotal = total;
 	}
@@ -404,7 +423,7 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	public void createReport() throws Exception {
-				
+	
 		 // Table Fields
 		report = new ReportDAO(columnsName);
 		List<String> parameters = new ArrayList<>();
@@ -441,10 +460,12 @@ public class TesterBean {
 		Map<String, String[]> mapArray = SessionUtil.getRequestParameterValuesMap();
 		
 		String[] columns = mapArray.get("allColumns");
+		List<String> columnsTemp = columns != null ? Arrays.asList(columns) : searchParameters;
 		String selectedPeriod = (String) map.get("date-period");
 		usePeriod = selectedPeriod;
 				
-		List<String> idSearch = new ArrayList<>();
+		List<String> idSearch = new ArrayList<>();		
+				
 		String group = "$period";
 		Date[] dateProcess = null;
 		String[] period = null;
@@ -454,11 +475,10 @@ public class TesterBean {
 		
 		String dateStart = "", dateEnd = "";
 				
-		resetForm();
-		
 		String query = "SELECT ";
-		for (String col : columns) {
-			String column = searchParameters.get(Integer.parseInt(col));
+		for (String col : columnsTemp) {
+			String column = columns != null ? searchParameters.get(Integer.parseInt(col)) : col;
+				
 
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
 				period = selectedPeriod.split(",");
@@ -559,7 +579,7 @@ public class TesterBean {
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
-			System.out.println(query);
+			// System.out.println(query);
 
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);
@@ -587,28 +607,26 @@ public class TesterBean {
 		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
-		     
+		 	 
+		 	List<String[]> array = processChartData();
+		     	 					 			 			     
 			 build.clearBool = false; // BOTÃƒO DE LIMPAR	 
 	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
 	      	 
 	      	 if(isChart) {
 	      		 build.chartBool = false;
-	      		 chartData(build.chartBool, usePeriod);
-	      	 }
-	      	 	      		  		    		
-	    }
+	      		 createChartData(build.chartBool, period, columnsInUse, array);
+	      	 }      	 
+	      	 
+	      }
 	
 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	   public void download() {
 		   
-		   DateTimeApplication dta = new DateTimeApplication();
+		DateTimeApplication dta = new DateTimeApplication();
 			
-		// MANTER VALORES NA SESSÃƒO
-		//String fileDate = (String) SessionUtil.getExternalContext().getSessionMap().get("datetime");
-		//String fileName = (String) SessionUtil.getExternalContext().getSessionMap().get("fileName");
-		 
 		model = (ExcelTemplate) SessionUtil.getExternalContext().getSessionMap().get("xlsModel");
 	
 		String file = fileName+"_"+dta.currentDateToExcelFile();
@@ -631,7 +649,7 @@ public class TesterBean {
 		List<String[]> newList = new ArrayList<>();
 		calendar.setTime(date[0]);
 		String[] model = new String[report.columnName.size()];
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		boolean sep = column.contains("@");
 		int[] col = new int[2];
 		Arrays.fill(model, "0");
@@ -746,6 +764,12 @@ public class TesterBean {
 				build.excelBool = true;
 				build.clearBool = true;
 				build.chartBool = true;
+				
+				if(!columnsName.isEmpty())
+				   columnsName.clear();
+				
+				//if(!report.lines.isEmpty())
+				   //  report.lines.clear();
 											
 			}	
 	 		
@@ -796,53 +820,113 @@ public class TesterBean {
 
 			}
 
-			// --------------------------------------------------------------------------------------------	
+	    // --------------------------------------------------------------------------------------------	
 			
-	public void chartData(boolean chartBool, String period) {
-		
-		TranslationMethods trm = new TranslationMethods();
+	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines) {
+					
+	    TranslationMethods tm = new TranslationMethods();
+	    	
+		String vAxisTitle = tm.verticalAxisTranslate(vAxis);
 				
-		String vAxisTitle = "veiculos";
-		
 		LocalDateTime local =  LocalDateTime.now();
 		
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm");  
 	    String formatDateTime = local.format(format);  
 	  
-	    String title = " - " + trm.periodTranslator(period); // IF IS NOT A SINGLE EQUIPEMENT DO THIS
+	    String title =  chartTitle+ " - " + period[2]; // IF IS NOT A SINGLE EQUIPEMENT DO THIS
 	      		
-		
-		String imageName = formatDateTime; //NAME OF FILE WITH TIME
+		 imageName += "_"+formatDateTime; //NAME OF FILE WITH TIME
 		
 		if(!chartBool) {
 					 		  	   		
 	        // Create a new instance of Gson
-	       Gson gson = new Gson();
+	        Gson gson = new Gson();
 	    
 	        // Converting multidimensional array into JSON	      
-	        String jsColumn = gson.toJson(columnsInUse);	
+	        String jsColumn = gson.toJson(columns);	
 	        
-	        String jsData = gson.toJson(report.lines);	
+	        //String jsData = hAxisTitle;
+	        String jsData = "";
+	        
+	        jsData += gson.toJson(lines);
 	        	     	        
-	        jsData = jsData.toString().replaceAll("\"", "");	        
-	        // jsData = jsData.toString().replaceAll("\\(", "\\'");
-	        // jsData.toString().replaceAll("\\)", "\\'");
-	        jsData = jsData.toString().replaceAll("null", "0");	
-	       	        	     
-	        //DEBUG
-	        System.out.println("Header = " + jsColumn);
-	        System.out.println("Data = " + jsData);
-	        
-	        System.out.println(usePeriod);
-	       	        
-	        if(period.equals("day"))
-	        	SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
+	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	        
+	        	   	       	        
+	        if(period[1].toUpperCase().equals("DAY"))
+	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
 	        
 	        else SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"','"+vAxisTitle+"', '"+ datetimeFormat +"', '"+imageName+"');");
-	        	     	        
+	       		
 		}
      }	
 		
 	 // --------------------------------------------------------------------------------------------	
-	
+	    
+	   public List<String[]> processChartData() throws ParseException{
+		   
+		    List<String[]> array = new ArrayList<>();
+	    	
+		  	boolean sep = columnDate.contains("@");
+	    	int[] col = new int[2];
+	    	
+	    	if (sep) {
+				String[] c = columnDate.split("@");
+				col[0] = Integer.parseInt(c[0]);
+				col[1] = Integer.parseInt(c[1]);
+			} else {
+				col[0] = Integer.parseInt(columnDate);
+			}
+	    	
+	    	if (sep) {
+	    		int big = col[0] > col[1] ? 0 : 1;
+	    		
+	    		columnsInUse.remove(col[big]);	
+	    		columnsInUse.remove(col[big ^ 1]);
+	    			    		
+									
+			} else {
+				columnsInUse.remove(col[0]);
+			}
+	    	
+	    	columnsInUse.add(0, "DATE");
+	    			    	
+	    for(String[] sa : report.lines) {
+	    	String date = "new Date(@aspas%s@aspas)";
+	    	int c = 1;
+	    	String[] newArray = new String[sa.length - (sep ? 1 : 0)];
+	    	
+	    	for(int i = 0; i < sa.length; i++) {
+	    		if (sep) {		    			
+	    			if (col[1] == i || col[0] == i) 
+	    				continue;
+	    		} else
+	    			if (col[0] == i)
+	    				continue;
+	    		
+	    		newArray[c] = sa[i];
+	    		c++;
+	    	}
+	    	
+	    	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+	    	SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    	Date d;
+	    	
+	    	if (sep)
+	    		d = formatter.parse(String.format("%s %s", sa[col[0]], sa[col[1]]));
+	    	else
+    			d = formatter.parse(sa[col[0]]);
+	    	date = String.format(date, formatter2.format(d));
+	    	
+	    	newArray[0] = date;
+	    	array.add(newArray);
+	    }
+	    
+	    return array;
+	    	
+	  }
+	    
+	    
+	// --------------------------------------------------------------------------------------------	
+		
+			    
 }
