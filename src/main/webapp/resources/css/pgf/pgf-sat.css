@@ -9,7 +9,7 @@
 .card-body-division .division {
 	display: flex;
 	flex-wrap: wrap;
-	flex: 0 0 45%;
+	flex: 0 0 50%;
 	width: 100%;
 }
 
@@ -32,5 +32,6 @@
 }
 
 .card-header.card-l {
-	writing-mode: sideways-lr;
+	writing-mode: vertical-lr;
+    transform: scale(-1);
 }
