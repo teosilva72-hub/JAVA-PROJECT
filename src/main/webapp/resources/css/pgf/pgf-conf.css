@@ -25,14 +25,12 @@
   padding-top: 1rem;
 }
 
-.PGF-row-8 {
-  height: 60%;
-  flex: 1 0 40%;
+.PGF-row-6 {
+  flex: 1 0 60%;
 }
 
-.PGF-row-2 {
-	height: 20%;
-	flex: 1 0 20%;
+.PGF-row-4 {
+	flex: 1 0 40%;
 }
 
 .card-scroll {
@@ -144,7 +142,7 @@
 	text-orientation: upright;
 	overflow: hidden;
     text-overflow: ellipsis;
-    font-size: small;
+    font-size: x-small;
 } 
 
 .logo-concessionaire {
