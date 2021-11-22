@@ -22,6 +22,8 @@ public class SAT extends Equipments {
 	private String sentidos;
 	private String sentido1;
 	private String sentido2;
+	private String sentido1Abbr;
+	private String sentido2Abbr;
 	private String posicao_nivel_servico;
 		
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
@@ -31,7 +33,7 @@ public class SAT extends Equipments {
 			boolean visible, int numFaixas, int quantidadeS1, int velocidadeS1, int quantidadeS2, int velocidadeS2,
 			int statusInterval, String faixa1, String faixa2, String faixa3, String faixa4, String faixa5,
 			String faixa6, String faixa7, String faixa8, String qtdeFaixas, String sentidos, String sentido1, String sentido2,
-			String posicao_nivel_servico) {
+			 String sentido1Abbr, String sentido2Abbr, String posicao_nivel_servico) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
@@ -55,6 +57,8 @@ public class SAT extends Equipments {
 		this.sentidos = sentidos;
 		this.sentido1 = sentido1;
 		this.sentido2 = sentido2;
+		this.sentido1Abbr = sentido1Abbr;
+		this.sentido2Abbr = sentido2Abbr;
 		this.posicao_nivel_servico = posicao_nivel_servico;
 	}
 
@@ -187,6 +191,22 @@ public class SAT extends Equipments {
 
 	public void setSentido2(String sentido2) {
 		this.sentido2 = sentido2;
+	}
+	
+	public String getSentido1Abbr() {
+		return sentido1Abbr;
+	}
+
+	public void setSentido1Abbr(String sentido1Abbr) {
+		this.sentido1Abbr = sentido1Abbr;
+	}
+
+	public String getSentido2Abbr() {
+		return sentido2Abbr;
+	}
+
+	public void setSentido2Abbr(String sentido2Abbr) {
+		this.sentido2Abbr = sentido2Abbr;
 	}
 
 	public String getPosicao_nivel_servico() {

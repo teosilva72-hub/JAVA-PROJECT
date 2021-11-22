@@ -60,7 +60,7 @@ public class SatTableFields {
 
     				// Table Objects
     			  fieldObjectValues = new String[] { "date", "dateTime", "lightDir1", "motoDir1", "heavyDir1",
-    			"lightDir2", "motoDir2", "heavyDir2", "total"};			
+    			  "lightDir2", "motoDir2", "heavyDir2", "total"};			
 					
    }
    

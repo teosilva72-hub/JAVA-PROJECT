@@ -831,7 +831,7 @@ public class EquipmentsDAO {
 					sat.setEstrada(rs.getString(3));
 					sat.setKm(rs.getString(4));
 					sat.setQtdeFaixas(rs.getString(5));
-					sat.setSentidos(rs.getNString(6));
+					sat.setSentidos(rs.getString(6));
 					
 					list.add(sat);
 				}
@@ -847,6 +847,61 @@ public class EquipmentsDAO {
 	}	
 
 	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informação de um equipamento específico
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id - Equipamento ID
+	 * @param module - Módulo	 
+	 * @return Equipments - Objeto com informações do tipo Equipments
+	 * @throws Exception
+	 */
+
+	public SAT headerInfoSAT(String equip_id) throws Exception {
+
+		TranslationMethods tm = new TranslationMethods();
+		
+		SAT sat = new SAT();
+		
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			String sql = "SELECT st.name, st.km, r.road_name, dir_lane1 "					
+						+"FROM sat_equipment st "						
+						+"INNER JOIN concessionaire_roads r ON r.road_id = st.road "
+						+"WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+		
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+										
+					sat.setNome(rs.getString(1));	
+					sat.setKm(rs.getString(2));
+					sat.setEstrada(rs.getString(3));
+				    sat.setSentido1(tm.direction(rs.getString(4)));
+				    sat.setSentido2(tm.oppositeDirection(rs.getString(4)));
+				    sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(4)));
+				    sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(4)));
+					
+				}
+			}
+
+		} catch (SQLException sqle) {
+
+			sqle.printStackTrace();
+
+		}finally {ConnectionFactory.closeConnection(conn, ps);}
+
+		return sat;
+	}	
+
+	// --------------------------------------------------------------------------------------------------------------
+
 
 
 	/**

@@ -1688,5 +1688,26 @@ public class EquipmentsBean implements Serializable {
   	}
   	
   	//--------------------------------------------------------------------------------------------------------------
+     		
+	   public SAT satHeaderInformation(String id) {
+		   
+		   SAT sat = new SAT();
+		   EquipmentsDAO dao = new EquipmentsDAO();
+		   
+		   try {
+			   
+			sat = dao.headerInfoSAT(id);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		   		   
+		   return sat;
+		   		   
+	   }
+	   
+	// --------------------------------------------------------------------------------------------		
+	   
        
 }

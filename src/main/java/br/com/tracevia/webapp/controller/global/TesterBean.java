@@ -20,8 +20,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -32,9 +30,9 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.global.ReportSelection;
+import br.com.tracevia.webapp.model.sat.SatTableHeader;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.util.ExcelTemplate;
-import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="testerBean")
@@ -51,15 +49,16 @@ public class TesterBean {
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
-	public String 	fileName,
-					fileTitle, usePeriod,
-					sheetName = "Report";
-	public String 	module;
+	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
-	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;
-	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false,
-					caseSensitive = false;
-
+	public String 	module;	
+	
+	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
+	
+	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, caseSensitive = false;
+	
+	public String displayEquipInfo, displayDirection1, displayDirection2, displayDirection1Abbr, displayDirection2Abbr;
+	
 	// ----------------------------------------------------------------------------------------------------------------
 
 	private String periodColumn;
@@ -78,6 +77,7 @@ public class TesterBean {
 	
 	private ReportSelection select;
 	private ReportBuild build;
+	private SatTableHeader satTab;
 		
 	private ReportDAO report;
 	public List<Builder> resultList;	
@@ -86,8 +86,6 @@ public class TesterBean {
 			
 	public String[] equipNames;
 	
-	LocaleUtil locale;
-
 	// Get
 		
 	public ReportSelection getSelect() {
@@ -318,6 +316,14 @@ public class TesterBean {
 		this.isSat = sat;
 	}
 	
+	public void isSpecial(boolean special) {
+		this.special = special;
+	}
+	
+	public void haveHeaderInfo(boolean headerInfo) {
+		this.headerInfo = headerInfo;
+	}
+	
 	public void defineMultiSheet(boolean multiSheet) {
 		this.multiSheet = multiSheet;
 	}
@@ -356,7 +362,55 @@ public class TesterBean {
 	public boolean hasColumnDate() {
 		return columnDate != null ? true : false;
 	}
+	
+	public String getDisplayEquipInfo() {
+		return displayEquipInfo;
+	}
 
+	public void setDisplayEquipInfo(String displayEquipInfo) {
+		this.displayEquipInfo = displayEquipInfo;
+	}
+
+	public String getDisplayDirection1() {
+		return displayDirection1;
+	}
+
+	public void setDisplayDirection1(String displayDirection1) {
+		this.displayDirection1 = displayDirection1;
+	}
+
+	public String getDisplayDirection2() {
+		return displayDirection2;
+	}
+
+	public void setDisplayDirection2(String displayDirection2) {
+		this.displayDirection2 = displayDirection2;
+	}
+
+	public String getDisplayDirection1Abbr() {
+		return displayDirection1Abbr;
+	}
+
+	public void setDisplayDirection1Abbr(String displayDirection1Abbr) {
+		this.displayDirection1Abbr = displayDirection1Abbr;
+	}
+
+	public String getDisplayDirection2Abbr() {
+		return displayDirection2Abbr;
+	}
+
+	public void setDisplayDirection2Abbr(String displayDirection2Abbr) {
+		this.displayDirection2Abbr = displayDirection2Abbr;
+	}
+		
+	public SatTableHeader getSatTab() {
+		return satTab;
+	}
+
+	public void setSatTab(SatTableHeader satTab) {
+		this.satTab = satTab;
+	}
+	
 	// Util
 
 	public String genPeriod(String[] time) {
@@ -379,8 +433,7 @@ public class TesterBean {
 	public List<String> getRight(Pair<String[], List<String>> pair) {
 		return pair.right;
 	}
-	
-				
+					
 	// ----------------------------------------------------------------------------------------------------------------
 		
 		// CLASS PATH
@@ -406,19 +459,28 @@ public class TesterBean {
 	@PostConstruct
 	public void initialize() {
 		
-		// Instantiate Objects - build and select class
+		// Instantiate Objects - build and select class		
 
 		select = new ReportSelection();
 		build = new ReportBuild();
+		
 	
 		// ---------------------------------------------------------------------------
 	        	
-    	 // Disabled Buttons
+    	  // Disabled Buttons
     	  build.clearBool = true;
     	  build.excelBool = true;
-    	  build.chartBool = true;						
-	 
+    	  build.chartBool = true;	
+    	      	
 	 }	
+	
+	
+	public void initiliazeSatHeader() {
+				
+		satTab = new SatTableHeader();		
+		satTab.initialize();
+				
+	}
 	
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
@@ -586,16 +648,19 @@ public class TesterBean {
 
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
 				this.setIntervalDate(dateProcess, columnDate, period);
-
-		          	
-		     // DESENHAR TABLE
-		    //  build.drawTable(build.columns, build.fields, build.fieldObjectValues);
-		 
-			 // GUARDAR VALORES NA SESS�O		     
-		     // SessionUtil.setParam("fieldsLength", columnsName.size()); //Length of Fields
-		     // SessionUtil.setParam("fields", build.fields);	//Fields
-		     // SessionUtil.setParam("jsonFields", build.jsonFields);	//Fields
-		     // SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
+		          										
+			// -------------------------------------------------------------------------------------
+			
+			// TABLE DINAMIC HEADER
+			
+			if(headerInfo) {
+				
+			//	headerInformation(module, "1");			
+				System.out.println("FIZ");
+				
+			}
+			
+			// -------------------------------------------------------------------------------------	
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 
@@ -603,8 +668,11 @@ public class TesterBean {
 				 return;
 			if (report.IDs.isEmpty())
 				 report.IDs.addAll(idSearch);
-										     
+			
+			if(!special)										     
 		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
+			
+			//else 
 		     
 		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
 		 	 
@@ -765,12 +833,9 @@ public class TesterBean {
 				build.clearBool = true;
 				build.chartBool = true;
 				
-				if(!columnsName.isEmpty())
-				   columnsName.clear();
-				
-				//if(!report.lines.isEmpty())
-				   //  report.lines.clear();
-											
+				//if(!columnsName.isEmpty())
+				//   columnsName.clear();
+																		
 			}	
 	 		
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -927,6 +992,5 @@ public class TesterBean {
 	    
 	    
 	// --------------------------------------------------------------------------------------------	
-		
-			    
+			 	   	
 }

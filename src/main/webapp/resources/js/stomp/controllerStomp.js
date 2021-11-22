@@ -7,7 +7,7 @@ const getStomp = async () => {
 		await sleep(100);
 	}
 
-	var ws = new WebSocket(`wss://${rabbitmq.address}:${rabbitmq.port}/ws`);
+	var ws = new WebSocket(`ws://${rabbitmq.address}:${rabbitmq.port}/ws`);
 	return Stomp.over(ws);
 }
 
