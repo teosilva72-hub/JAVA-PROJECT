@@ -51,13 +51,12 @@ public class TesterBean {
 
 	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
-	public String 	module;	
+	public String 	module, specialName;	
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
 	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, caseSensitive = false;
 	
-	public String displayEquipInfo, displayDirection1, displayDirection2, displayDirection1Abbr, displayDirection2Abbr;
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -280,6 +279,10 @@ public class TesterBean {
 		this.fileName = fileName;
 	}
 	
+	public void defineSpecialName(String specialName) {
+		this.specialName = specialName;
+	}
+	
 	public void defineFileTitle(String fileTitle) {
 		this.fileTitle = fileTitle;
 	}
@@ -362,47 +365,7 @@ public class TesterBean {
 	public boolean hasColumnDate() {
 		return columnDate != null ? true : false;
 	}
-	
-	public String getDisplayEquipInfo() {
-		return displayEquipInfo;
-	}
-
-	public void setDisplayEquipInfo(String displayEquipInfo) {
-		this.displayEquipInfo = displayEquipInfo;
-	}
-
-	public String getDisplayDirection1() {
-		return displayDirection1;
-	}
-
-	public void setDisplayDirection1(String displayDirection1) {
-		this.displayDirection1 = displayDirection1;
-	}
-
-	public String getDisplayDirection2() {
-		return displayDirection2;
-	}
-
-	public void setDisplayDirection2(String displayDirection2) {
-		this.displayDirection2 = displayDirection2;
-	}
-
-	public String getDisplayDirection1Abbr() {
-		return displayDirection1Abbr;
-	}
-
-	public void setDisplayDirection1Abbr(String displayDirection1Abbr) {
-		this.displayDirection1Abbr = displayDirection1Abbr;
-	}
-
-	public String getDisplayDirection2Abbr() {
-		return displayDirection2Abbr;
-	}
-
-	public void setDisplayDirection2Abbr(String displayDirection2Abbr) {
-		this.displayDirection2Abbr = displayDirection2Abbr;
-	}
-		
+			
 	public SatTableHeader getSatTab() {
 		return satTab;
 	}
@@ -641,7 +604,7 @@ public class TesterBean {
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
-			// System.out.println(query);
+			 System.out.println(query);
 
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);
@@ -655,10 +618,12 @@ public class TesterBean {
 			
 			if(headerInfo) {
 				
-			//	headerInformation(module, "1");			
-				System.out.println("FIZ");
-				
-			}
+				if(module.equals("sat")) {
+					
+					if(specialName.equals("couting-flow"))
+						satTab.satHeaderInformation(module, "1");
+				}
+			 }
 			
 			// -------------------------------------------------------------------------------------	
 		      		     
@@ -670,18 +635,19 @@ public class TesterBean {
 				 report.IDs.addAll(idSearch);
 			
 			if(!special)										     
-		     model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
+		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
 			
-			//else 
+			else generateSpecialFile(model, specialName);
 		     
-		 	 SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
+		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
+			
+			build.clearBool = false; // BOTÃO DE LIMPAR	 
+			build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
+			
+			if(isChart) {
 		 	 
-		 	List<String[]> array = processChartData();
-		     	 					 			 			     
-			 build.clearBool = false; // BOTÃƒO DE LIMPAR	 
-	      	 build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
+		 	     List<String[]> array = processChartData();
 	      	 
-	      	 if(isChart) {
 	      		 build.chartBool = false;
 	      		 createChartData(build.chartBool, period, columnsInUse, array);
 	      	 }      	 
@@ -828,6 +794,7 @@ public class TesterBean {
 				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
+				satTab = new SatTableHeader();
 							
 				build.excelBool = true;
 				build.clearBool = true;
@@ -991,6 +958,17 @@ public class TesterBean {
 	  }
 	    
 	    
+	// --------------------------------------------------------------------------------------------	
+	   
+	   public void generateSpecialFile(ExcelTemplate model, String name) throws Exception {
+		   		   
+		   switch(name) {
+		   			   
+		   case "couting-flow":  model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+		   
+		   }
+	   }
+	   
 	// --------------------------------------------------------------------------------------------	
 			 	   	
 }

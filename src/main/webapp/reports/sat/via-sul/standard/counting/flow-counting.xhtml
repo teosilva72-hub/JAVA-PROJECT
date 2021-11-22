@@ -19,22 +19,35 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('42vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveHeaderInfo('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSpecial('true')}" /> 
+	     <f:viewAction onPostback="true" action="#{testerBean.defineSpecialName('couting-flow')}" /> 
 	   		
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr s')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 
 		satLabels.class_light_vehicles_column, satLabels.class_motos_column, satLabels.class_heavy_vehicles_column, 
 		satLabels.class_light_vehicles_column, satLabels.class_motos_column, satLabels.class_heavy_vehicles_column, satLabels.global_total_vehicles_column))}" />
-		 <f:viewAction onPostback="true" action="#{testerBean.initiliazeSatHeader}" />
+		<f:viewAction onPostback="true" action="#{testerBean.initiliazeSatHeader}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(siteID = $custom@equip); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; 
+		SUM((s.classe = `1` OR (s.classe = `0` AND s.axlNumber &lt; 10) OR s.classe = `2N`) AND f.direction IN(`N`, `L`));
+        SUM((s.classe = `10`) AND f.direction IN(`N`, `L`));
+        SUM(((s.classe &lt;&gt; `1` OR (s.classe = `0` AND s.axlNumber &lt; 10) OR s.classe = `2N`) AND s.classe &lt;&gt; `10`) AND f.direction IN(`N`, `L`));
+       
+        SUM((s.classe = `1` OR (s.classe = `0` AND s.axlNumber &lt; 10) OR s.classe = `2N`) AND f.direction IN(`S`, `O`));
+        SUM((s.classe = `10`) AND f.direction IN(`S`, `O`));
+        SUM(((s.classe &lt;&gt; `1` OR (s.classe = `0` AND s.axlNumber &lt; 10) OR s.classe = `2N`) AND s.classe &lt;&gt; `10`) AND f.direction IN(`S`, `O`));
+              
+        SUM(1)')}" />
+		
+		
 		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />

@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -23,6 +26,7 @@ import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
+import br.com.tracevia.webapp.model.sat.SatTableHeader;
 
 /**
  * Classe com modelos de planilhas EXCEL
@@ -766,8 +770,98 @@ public class ExcelTemplate {
 		}		
 	}
 					
-		// ----------------------------------------------------------------------------------------------------------------						
+						
 	}	
+	
+	// ----------------------------------------------------------------------------------------------------------------		
+	
+	
+	public void generateCountFlow(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info) throws Exception {
+
+		//dta = new DateTimeApplication(); // M�todos Date and Time	
+		//tm = new TranslationMethods();
+		sheet = null;		
+		row = null;
+		
+		int dataStartRow = 3;
+		int dataEndRow = 0;
+		int startCol = 0;
+		int endCol = columns.size() - 1;		
+	
+		sheet = workbook.createSheet(sheetName);	
+				
+		dataEndRow = ((dataStartRow + lines.size()) - 1);
+
+		//Excel Cells - header 
+		//headerCells = new Cell[length];
+		//cellData = new Cell[registers][length];
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// MESCLAR CÉLULAS
+
+		String[] mergeCells = new String[] {"A1:B1", "C1:I1", "C2:E2", "F2:H2", "A2:A3", "B2:B3", "I2:I3"}; // Define Merge columns
+					
+		for(int i = 0; i < mergeCells.length; i++)
+			utilSheet.mergeCells(sheet, mergeCells[i]);
+		
+		// ------------------------------------------------------------------------------------------------------------
+				
+		// FIRST LEVEL COLUMNS
+		
+		utilSheet.createRow(sheet, row, 0);
+		utilSheet.createCells(sheet, row, 0, 8, 0, 0);
+		utilSheet.setCellValue(sheet, row, 0, 0, info.getEquipDescription());
+		utilSheet.setCellValue(sheet, row, 0, 2, localeExcel.getStringKey("excel_sheet_table_flow_counting"));
+		utilSheet.setHeight(sheet, 0, 700);
+		
+		utilSheet.setCellsStyle(sheet, row, bgColorHeaderStyle, 0, 8, 0, 0);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		// SECOND LEVEL COLUMNS 1
+
+		utilSheet.createRow(sheet, row, 1);
+		utilSheet.createCells(sheet, row, 0, 8, 1, 1);
+		utilSheet.setCellValue(sheet, row, 1, 0, columns.get(0));
+		utilSheet.setCellValue(sheet, row, 1, 1, columns.get(1));
+		utilSheet.setCellValue(sheet, row, 1, 2, info.getDirection1());
+		utilSheet.setCellValue(sheet, row, 1, 5, info.getDirection2());
+		utilSheet.setCellValue(sheet, row, 1, 8, columns.get(8));
+
+		utilSheet.setCellsStyle(sheet, row, bgColorHeaderStyle, 0, 8, 1, 1);
+		
+		// ------------------------------------------------------------------------------------------------------------
+
+		// SECOND LEVEL COLUMNS 2
+		
+		utilSheet.createRow(sheet, row, 2);
+		utilSheet.createCells(sheet, row, 0, 8, 2, 2);
+		utilSheet.setCellValue(sheet, row, 2, 2, columns.get(2));
+		utilSheet.setCellValue(sheet, row, 2, 3, columns.get(3));
+		utilSheet.setCellValue(sheet, row, 2, 4, columns.get(4));
+		utilSheet.setCellValue(sheet, row, 2, 5, columns.get(5));
+		utilSheet.setCellValue(sheet, row, 2, 6, columns.get(6));
+		utilSheet.setCellValue(sheet, row, 2, 7, columns.get(7));
+							
+		utilSheet.setCellsStyle(sheet, row, bgColorSubHeaderStyle1, 2, 4, 2, 2);
+		utilSheet.setCellsStyle(sheet, row, bgColorSubHeaderStyle2, 5, 7, 2, 2);	
+		
+		// ------------------------------------------------------------------------------------------------------------
+
+		//utilSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas
+
+		//utilSheet.fillDataSingleFlow(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registers); // Preencher a colunas
+
+		/*utilSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 1, 1);	
+		utilSheet.setStyle(sheet, row, ini, rowMax, standardStyle, 0, 0);	
+		utilSheet.setStyle(sheet, row, ini, rowMax, standardStyle, 8, 8);
+		utilSheet.setStyle(sheet, row, ini, rowMax, backgroundColorBody, 2, 4);
+		utilSheet.setStyle(sheet, row, ini, rowMax, backgroundColorBody2, 5, 7);	*/		
+		
+		utilSheet.columnsWidthAuto(sheet, columns.size());
+
+	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
 	
