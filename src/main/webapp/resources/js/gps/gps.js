@@ -1,49 +1,39 @@
+let draw = $(".drawLines")
+
 const connectGPS = async (request, debug) => {
 	return await sendMsgStomp(request, 'GpsRequest', debug)
 }
 
-const refresh_speed = response => {
-    let speed = $(`#speed${response.Id}`);
-	let plate = speed.find(".speed-speedy .speed-plate");
-	let registry = response.Registry;
-	let limit = response.Limit;
-
-	if (registry > response.Tolerance)
-		plate
-			.addClass("speed-alert")
-			.removeClass("speed-warn")
-	else if (registry > limit)
-		plate
-			.addClass("speed-warn")
-			.removeClass("speed-alert")
-	else
-		plate
-			.removeClass("speed-warn")
-			.removeClass("speed-alert")
-
-    speed.find(".speed-limit .speed-number").text(limit);
-    speed.find(".speed-speedy .speed-number").text(registry);
+const drawPoint = item => {
+	let divItem = draw.find(`#${item.i}`)
+	let i = $("<div>")
+	i.css({position: 'absolute', left: '100px', top: '100px', width: "50px", height: '50px', 'background-color': 'black'})
+	if (divItem.length) {
+		divItem.empty().append(i)
+	} else {
+		let n = $(`<div id="${item.i}">`).append(i)
+		draw.append(n)
+	}
+	console.log(i)
 }
 
-const callback_speed_default = response => {
+const callback_gps_default = response => {
 	if (response.body)
-    	response = JSON.parse(response.body);
-    
-    refresh_speed(response);
+    	response = JSON.parse(response.body).events.forEach(r => drawPoint(r));
 }
 
-const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
+const consumeGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
-		client.subscribe(`/exchange/speed_notify/speed_notify`, callback_speed)
+		client.subscribe(`/exchange/gps_localization/gps_localization`, callback_gps)
 	};
 
 	var on_error = async function() {
 	    console.log('error');
 		await sleep(1000);
 
-		consumeSPEED({callback_speed, debug})
+		consumeGPS({callback_gps, debug})
 	};
 
 	if (!debug)
@@ -52,16 +42,12 @@ const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = f
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
-const initSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
+const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
-		let tooltip = $('.speed-card [data-bs-toggle=tooltip]').tooltip()
-        let last_status = await connectSPEED("LastStatus");
 
-        for (let status of last_status)
-			callback_speed(status)
 
-		consumeSPEED({ callback_speed, debug });
+		consumeGPS({ callback_gps, debug });
 	});
 }
 
-window.initSPEED = initSPEED
+window.initGPS = initGPS
