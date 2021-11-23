@@ -5,14 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -150,9 +147,9 @@ public class ExcelTemplate {
 	    // ESTILO HEADER
 	    bgColorHeaderStyle = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO SUB HEADER 1
-	    bgColorSubHeaderStyle1 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    bgColorSubHeaderStyle1 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, IndexedColors.LIGHT_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO SUB HEADER 2
-	    bgColorSubHeaderStyle2 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, true, IndexedColors.LIGHT_ORANGE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    bgColorSubHeaderStyle2 = utilSheet.createCellStyle(workbook, countFlowFont, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false, IndexedColors.LIGHT_ORANGE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    // ESTILO BODY 1
 	    bgColorBodyStyle1 = utilSheet.createCellStyle(workbook, countFlowFontBody1, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, IndexedColors.LIGHT_CORNFLOWER_BLUE, FillPatternType.SOLID_FOREGROUND, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
 	    //ESTILO BODY 2
@@ -509,13 +506,14 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
-			String startDate, String endDate, String[] period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet) {
+			String startDate, String endDate, String[] period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet, String classSubHeader) {
 		
 		sheet = null;		
 		row = null;
 				
 		TranslationMethods tm = new TranslationMethods();
 		
+		int subHeaderRow = 0;
 		int tableStartRow = 0;
 		int dataStartRow = 0;
 		int dataEndRow = 0;
@@ -537,11 +535,21 @@ public class ExcelTemplate {
 									    		
 		// CASO EXISTA FAIXAS NO EQUIPAMENTO
 		if(module.equals("sat")) {
-			tableStartRow = 11;
-			dataStartRow = 12;
-		
+			
+			if(!classSubHeader.equals("light-heavy") && !classSubHeader.equals("light-heavy-bus")) {
+			    
+				tableStartRow = 11;
+			    dataStartRow = 12;
+			    
+			} else {
+				
+				 subHeaderRow = 11;
+				 tableStartRow = 12;
+				 dataStartRow = 13;				 
+			}
+						   			   		
 		// CASO NÃƒO EXISTA FAIXAS NO EQUIPAMENTO 
-	    }else {  tableStartRow = 10; dataStartRow = 11; }
+	    }else { tableStartRow = 10; dataStartRow = 11; }
 		
 		// -----------------------------------------------------
 		
@@ -551,10 +559,35 @@ public class ExcelTemplate {
 		else dataEndRow = dataStartRow + lines.size() - 1;
 		
 		// -----------------------------------------------------
+		
+		if(module.contentEquals("sat")) {
+		
+		System.out.println(classSubHeader);
+		
+		utilSheet.createRow(sheet, row, subHeaderRow);
+		
+		if(classSubHeader.equals("light-heavy")) {		
+					
+		utilSheet.createCell(sheet, row,subHeaderRow, 2);
+		utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+		//utilSheet.setCellStyle(sheet, row, tableHeadStyle, 2, subHeaderRow);
+		
+		utilSheet.createCell(sheet, row, subHeaderRow, 6);
+		utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
+		//utilSheet.setCellStyle(sheet, row, tableHeadStyle, 6, subHeaderRow);
+		
+		utilSheet.mergeCells(sheet, "C12:F12");	
+		utilSheet.mergeCells(sheet, "G12:O12");
+				
+		}
+		
+		// -----------------------------------------------------
+	}
+		
 						
 		utilSheet.createRow(sheet, row, tableStartRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
-		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);		
+		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
 		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
 													
 		// CRIAR LINHAS PARA APRESENTA��O DOS DADOS
@@ -566,7 +599,7 @@ public class ExcelTemplate {
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
 		if(isTotal)
-		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL		
+		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL	
 		
 		// ---------------------------------------------------------------------------------------------------
 				
@@ -774,12 +807,9 @@ public class ExcelTemplate {
 	}	
 	
 	// ----------------------------------------------------------------------------------------------------------------		
-	
-	
+		
 	public void generateCountFlow(List<String> columns, List<String[]> lines, String sheetName, SatTableHeader info) throws Exception {
 
-		//dta = new DateTimeApplication(); // M�todos Date and Time	
-		//tm = new TranslationMethods();
 		sheet = null;		
 		row = null;
 		
@@ -791,19 +821,23 @@ public class ExcelTemplate {
 		sheet = workbook.createSheet(sheetName);	
 				
 		dataEndRow = ((dataStartRow + lines.size()) - 1);
-
-		//Excel Cells - header 
-		//headerCells = new Cell[length];
-		//cellData = new Cell[registers][length];
 		
 		// ------------------------------------------------------------------------------------------------------------
 		
 		// MESCLAR CÉLULAS
 
 		String[] mergeCells = new String[] {"A1:B1", "C1:I1", "C2:E2", "F2:H2", "A2:A3", "B2:B3", "I2:I3"}; // Define Merge columns
-					
+								
 		for(int i = 0; i < mergeCells.length; i++)
 			utilSheet.mergeCells(sheet, mergeCells[i]);
+		
+		// ------------------------------------------------------------------------------------------------------------
+		
+		    // SPECIFIC WIDTH COLUMNS 
+		
+			utilSheet.columnWidth(sheet, 0, 4000);
+			utilSheet.columnWidth(sheet, 1, 4000);
+			utilSheet.columnWidth(sheet, 8, 4000);				
 		
 		// ------------------------------------------------------------------------------------------------------------
 				
@@ -816,7 +850,7 @@ public class ExcelTemplate {
 		utilSheet.setHeight(sheet, 0, 700);
 		
 		utilSheet.setCellsStyle(sheet, row, bgColorHeaderStyle, 0, 8, 0, 0);
-		
+						
 		// ------------------------------------------------------------------------------------------------------------
 		
 		// SECOND LEVEL COLUMNS 1
@@ -844,23 +878,26 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, 2, 6, columns.get(6));
 		utilSheet.setCellValue(sheet, row, 2, 7, columns.get(7));
 							
+		utilSheet.setCellsStyle(sheet, row, bgColorHeaderStyle, 0, 8, 2, 2);
 		utilSheet.setCellsStyle(sheet, row, bgColorSubHeaderStyle1, 2, 4, 2, 2);
 		utilSheet.setCellsStyle(sheet, row, bgColorSubHeaderStyle2, 5, 7, 2, 2);	
 		
+		utilSheet.columnsWidthAuto(sheet, columns.size()); // COLUMNS SIZE AUTO
+			
 		// ------------------------------------------------------------------------------------------------------------
 
-		//utilSheet.createRows(sheet, row, ini, rowMax); // Criar o número de linhas
-
-		//utilSheet.fillDataSingleFlow(sheet, row, cellData, resultQuery, period, startColumn, length, ini, registers); // Preencher a colunas
-
-		/*utilSheet.setStyle(sheet, row, ini, rowMax, dateHourStyle, 1, 1);	
-		utilSheet.setStyle(sheet, row, ini, rowMax, standardStyle, 0, 0);	
-		utilSheet.setStyle(sheet, row, ini, rowMax, standardStyle, 8, 8);
-		utilSheet.setStyle(sheet, row, ini, rowMax, backgroundColorBody, 2, 4);
-		utilSheet.setStyle(sheet, row, ini, rowMax, backgroundColorBody2, 5, 7);	*/		
+		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow); // CRIAR LINHAS 
 		
-		utilSheet.columnsWidthAuto(sheet, columns.size());
-
+		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow); // CRIAR CÉLULAS
+		
+		utilSheet.fileBodySimple(sheet, row, columns, lines, startCol, endCol, dataStartRow); // PREENCHER DADOS
+		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, startCol, dataStartRow, dataEndRow); // ESTILO		
+		utilSheet.setCellsStyle(sheet, row, standardStyle, endCol, endCol, dataStartRow, dataEndRow);
+		utilSheet.setCellsStyle(sheet, row, dateTimeStyle, 1, 1, dataStartRow, dataEndRow);		
+		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle1, 2, 4, dataStartRow, dataEndRow);
+		utilSheet.setCellsStyle(sheet, row, bgColorBodyStyle2, 5, 7, dataStartRow, dataEndRow);	
+		
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------
