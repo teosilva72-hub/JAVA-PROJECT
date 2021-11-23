@@ -2,6 +2,7 @@ package br.com.tracevia.webapp.model.sat;
 
 import br.com.tracevia.webapp.controller.global.EquipmentsBean;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 public class SatTableHeader {
 	
@@ -91,12 +92,13 @@ public class SatTableHeader {
 		 if(module.equals("sat")) {				  
 			  
 			sat =  eqp.satHeaderInformation(equip_id);
-		 
+				 
 		   equipDescription = sat.getNome().concat(" "+sat.getKm()).concat(" "+sat.getEstrada());
 		   direction1 = sat.getSentido1();
 		   direction2 = sat.getSentido2();
 		   directionAbbr1 = sat.getSentido1Abbr();
 		   directionAbbr2 = sat.getSentido2Abbr();
+	   		   
 		   
 		 }		 
 	

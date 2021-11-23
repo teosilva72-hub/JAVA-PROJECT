@@ -876,6 +876,8 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
+			
+			//System.out.println(sql);
 		
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
@@ -883,8 +885,8 @@ public class EquipmentsDAO {
 					sat.setNome(rs.getString(1));	
 					sat.setKm(rs.getString(2));
 					sat.setEstrada(rs.getString(3));
-				    sat.setSentido1(tm.direction(rs.getString(4)));
-				    sat.setSentido2(tm.oppositeDirection(rs.getString(4)));
+				    sat.setSentido1(tm.directionTab(rs.getString(4)));
+				    sat.setSentido2(tm.oppositeDirectionTab(rs.getString(4)));
 				    sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(4)));
 				    sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(4)));
 					

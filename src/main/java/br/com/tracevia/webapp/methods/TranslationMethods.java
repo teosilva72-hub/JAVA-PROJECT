@@ -748,7 +748,7 @@ public class TranslationMethods {
    // -------------------------------------------------------------------------------------------------------
      
      
-     public String directionHeader(String direction) {
+     public String directionTab(String direction) {
  		
  		String dir = "";		
  		
@@ -768,7 +768,7 @@ public class TranslationMethods {
    // -------------------------------------------------------------------------------------------------------
      
      
-     public String oppositeDirection(String direction) {
+     public String oppositeDirectionTab(String direction) {
   		
   		String dir = "";		
   		
