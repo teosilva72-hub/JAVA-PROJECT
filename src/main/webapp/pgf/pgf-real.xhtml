@@ -32,23 +32,26 @@
 
 	<ui:define name="default-content">
 		<div class="row wim-jumbotron">
-
 			<div class="jumbotron col-3 PGFdark bg-dark px-3">
+			   <div class="text-center text-white"> SP255 NORTE</div>
 				<div class='row'>
 					<div class='col-12 p-1'>
 						<div class="pgf-card shadow rounded p-2 bg-body">
 							<div class="card card-scroll">
-								<c:forEach begin="1" end="15" var="pgf-form">
+								<c:forEach begin="1" end="14" var="pgf-form">
 									<div class="card-body pgf-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
 											<div class="my-auto">
 												<div class="row text-center me-0 disabled">
-													<label class="form-label list-pgf p-0 col-3 mx-auto"> HER8879
+													<label class="form-label list-pgf p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-pgf p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
-													<label class="form-label list-pgf p-0 col-4 mx-auto"> PESAGEM(WIM)
-													</label>
+													<div class="card col bg-success">
+														<div class="card-body p-0">
+															LIBERADO
+														</div>
+													</div>
 												</div>
 											</div>
 										</div>
@@ -60,7 +63,7 @@
 				</div>
 			</div>
 				<div class="row col flex-column h-100" >
-					<div class="jumbotron col-12 PGFpicture PGF-row-6 px-3">
+					<div class="jumbotron col-12 PGFpicture PGF-row-35 px-3">
 						<div class="card h-100">
 							<div class='card-body h-100'>
 								<div class="row h-100">
@@ -80,14 +83,13 @@
 														</div>
 													</div>
 												</div>
-		
 												<div class="d-flex flex-column col-10 ps-0">
 													<div class="row text-center my-auto">												
 														<div class="col-lg-12">
 															<img class="pgfmin" src="/resources/images/pgf/truck-side.webp"></img>
 														</div>														
 													</div>
-													<div class="my-auto">
+													<div class="m-auto">
 														<img class="pgf3" src="/resources/images/pgf/plaque_truck.png"></img>
 													</div>
 												</div>
@@ -98,9 +100,35 @@
 							</div>
 						</div>
 					</div>
-					<div class="jumbotron col-12 PGFpicture PGF-row-4 px-3">
+					<div class="jumbotron col-12 PGFpicture PGF-row-1 px-3">
+						<div class="card h-100">
+							<div class='card-body h-100'>
+								<div class="row h-100">
+									<div class="col my-auto text-center">
+										<div> 5,7 ton </div>
+										<img class="tires1" src="/resources/images/pgf/tires1.png"></img>
+									</div>
+									<div class="col my-auto text-center">
+										<div class="fontTires"> 3,1m</div>
+									</div>
+									<div class="col my-auto text-center">
+										<div> 12,6 ton </div>
+										<img class="tires2" src="/resources/images/pgf/tires2.png"></img>
+									</div>
+									<div class="col my-auto text-center">
+										<div class="fontTires"> 6,5m</div>
+									</div>
+									<div class="col my-auto text-center">
+										<div> 15,1 ton </div>
+										<img class="tires3" src="/resources/images/pgf/tires3.png"></img>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="jumbotron col-12 PGFpicture PGF-row-1 px-3">
 						<div class="card bg-dark" style="height:100%;">
-							<div class="card-body d-flex flex-column py-0" style="background: linear-gradient(0deg, rgb(53, 53, 53) 50%, rgb(79, 79, 79) 50%);">
+							<div class="card-body d-flex flex-column py-0" style="background: linear-gradient(0deg, #000 50%, #333 50%, transparent);">
 								<div class="d-flex my-auto">
 									<div class="rounded border border-dark overflow-hidden text-center w-100">
 										<table id="message-table" class="table table-sm small table-striped table-hover table-dark custom-table m-0">
@@ -109,28 +137,15 @@
 													<th>Eixo 1</th>
 													<th>Eixo 2</th>
 													<th>Eixo 3</th>
-													<th>Eixo 4</th>
-													<th>Eixo 5</th>
 												</tr>
 											</thead>
 											<tbody class="custom-table-odd-row odd">
 												<tr>
-													<td>5,7 ton</td>
-													<td>12,6 ton</td>
-													<td>15,1 ton</td>
-													<td>12,1 ton</td>
-													<td>5,1 ton</td>
+													<td>5,7ton  - L:6ton</td>
+													<td>12,6ton - L:17ton</td>
+													<td>15,1ton  - L:17ton</td>
 												</tr>
 											</tbody>
-											<tfoot class="custom-table-even-row even">
-												<tr>
-													<th>L:6 ton</th>
-													<th>L:17 ton</th>
-													<th>L:17 ton</th>
-													<th>L:14 ton</th>
-													<th>L:4 ton</th>
-												</tr>
-											</tfoot>
 										</table>
 									</div>
 								</div>
@@ -148,22 +163,13 @@
 											</thead>
 											<tbody class="custom-table-odd-row odd">
 												<tr>
-													<td>70km/h</td>
-													<td>5 m</td>
-													<td>2,6 m</td>
-													<td>23,2m</td>
-													<td>33,6 m</td>
+													<td>70km/h  - L:--km/m</td>
+													<td>5m  - L:4,4m</td>
+													<td>2,6m  - L:2,6m</td>
+													<td>23,2m  - L:-m</td>
+													<td>33,6ton  - L:40ton</td>
 												</tr>
 											</tbody>
-											<tfoot class="custom-table-even-row even">
-												<tr>
-													<th>L:--km/m</th>
-													<th>L:4,4m</th>
-													<th>L:2,6m</th>
-													<th>L:-m</th>
-													<th>L:40ton</th>
-												</tr>
-											</tfoot>
 										</table>
 									</div>
 								</div>
