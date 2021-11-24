@@ -25,12 +25,16 @@
   padding-top: 1rem;
 }
 
-.PGF-row-6 {
-	flex: 1 0 60%;
+.PGF-row-35 {
+	flex: 1 0 35%;
   }
 
-.PGF-row-4 {
-	flex: 1 0 40%;
+.PGF-row-1 {
+	flex: 1 0 10%;
+  }
+
+.PGF-row-37 {
+	flex: 1 0 37%;
 }
 
 .card-scroll {
@@ -74,6 +78,33 @@
 	height: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50	, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.tires1 {
+	object-fit: cover;
+	border: solid 2px black;
+	width: 55%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.tires2 {
+	object-fit: cover;
+	border: solid 2px black;
+	width: 80%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
+}
+
+.tires3 {
+	object-fit: cover;
+	border: solid 2px black;
+	width: 100%;
+	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
