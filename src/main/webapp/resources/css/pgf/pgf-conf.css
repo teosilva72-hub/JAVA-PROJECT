@@ -30,7 +30,7 @@
   }
 
 .PGF-row-1 {
-	flex: 1 0 10%;
+	flex: 1 0 20%;
   }
 
 .PGF-row-37 {
@@ -66,7 +66,8 @@
 .pgf3 {
 	object-fit: cover;
 	border: solid 2px black;
-	width: 100%;
+	width: 80%;
+	margin-left: 5%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
@@ -81,9 +82,13 @@
 	box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.25);
 }
 
+.fontTires{
+	font-weight:bold;
+	font-size:x-large;
+}
+
 .tires1 {
 	object-fit: cover;
-	border: solid 2px black;
 	width: 55%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -92,7 +97,6 @@
 
 .tires2 {
 	object-fit: cover;
-	border: solid 2px black;
 	width: 80%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -101,7 +105,6 @@
 
 .tires3 {
 	object-fit: cover;
-	border: solid 2px black;
 	width: 100%;
 	-webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
 	-moz-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
@@ -179,10 +182,10 @@
 } 
 
 .logo-concessionaire {
-  left: 50%;
-  bottom: unset;
-  transform: translateX(-50%);
-  top: 10px;
-  opacity: 1;
-  z-index: 1030;
+  left: 50% !important;
+  bottom: unset !important;
+  transform: translateX(-50%) !important;
+  top: 10px !important;
+  opacity: 1 !important;
+  z-index: 1030 !important;
 }

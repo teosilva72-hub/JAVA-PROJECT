@@ -370,7 +370,7 @@ public class RoadConcessionaire {
    			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
    			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
    			externalImagePath += "tracevia.jpg";	
-   			logo = "";
+   			logo = "/resources/images/home/arteris-viapaulista.webp";
    			linearMapUI = "/resources/images/realTimeInterface/br153/br153_linear.webp";
    			mapUI = "/resources/images/map/br153/br153.webp";
    			tableVBV = TraceviaTables.TraceviaVBV.getTable();
