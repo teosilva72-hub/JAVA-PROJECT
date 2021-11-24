@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -48,7 +49,7 @@ public class ExcelTemplate {
 	
 	private static String NUMBER_REGEX = "\\d+";
 
-	LocaleUtil localeExcel;
+	LocaleUtil localeExcel, localeSAT;
 
 	// DEFAULT FONTS
 
@@ -82,7 +83,7 @@ public class ExcelTemplate {
 	// centerAlignStandardStyle - estilo padrÃ£o para centralizar	
 
 	CellStyle titleStyle, standardStyle, tableHeadStyle, leftAlignStandardStyle, rightAlignBoldStyle, dateTitleStyle,   
-	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle;   
+	dateTimeStyle, centerBoldStyle, centerAlignStandardStyle, subHeaderClassStyle;   
 
 	// COUNT FLOW STYLES 
 
@@ -103,6 +104,9 @@ public class ExcelTemplate {
 
 		localeExcel = new LocaleUtil();		
 		localeExcel.getResourceBundle(LocaleUtil.LABELS_EXCELSHEET);
+		
+		localeSAT = new LocaleUtil();		
+		localeSAT.getResourceBundle(LocaleUtil.LABELS_SAT);
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -141,7 +145,9 @@ public class ExcelTemplate {
 	    leftAlignStandardStyle = utilSheet.createCellStyle(workbook, standardFont, HorizontalAlignment.LEFT, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
 		// ESTILO PARA ALINHAMENTO A DIREITA EM NEGRITO (SEM BORDAS)
 	    rightAlignBoldStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.RIGHT, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.NONE);
-		
+	    // ESTILO NEGRITO CENTRALIZADO (SEM BORDAS)  
+	    subHeaderClassStyle = utilSheet.createCellStyle(workbook, boldFont, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.NO_FILL, ExcelUtil.ALL_BORDERS, BorderStyle.THIN);
+	    
 	    // COUNT FLOW STYLES
 
 	    // ESTILO HEADER
@@ -244,7 +250,7 @@ public class ExcelTemplate {
 		// MERGE CELLS
 		//utilSheet.mergeCells(sheet, "A6:B6");	
 		utilSheet.mergeCells(sheet, "F6:H6");
-		utilSheet.mergeCells(sheet, "I6:J6");
+		utilSheet.mergeCells(sheet, "I6:K6");
 		
 		// ----------------------------------------------------------------------------------------------------------------				
 				
@@ -269,7 +275,7 @@ public class ExcelTemplate {
 
 		// DATA
 		utilSheet.createCell(sheet, row, 5, 8);
-		utilSheet.setCellValue(sheet, row, 5, 8, " " + dta.currentDateTime());
+		utilSheet.setCellValue(sheet, row, 5, 8, " " + dta.currentDateTime());	
 		utilSheet.setCellStyle(sheet, row, leftAlignStandardStyle, 5, 8);
 
 		// ----------------------------------------------------------------------------------------------------------------
@@ -315,26 +321,7 @@ public class ExcelTemplate {
 		utilSheet.createCell(sheet, row, 7, 2);
 		utilSheet.setCellValue(sheet, row, 7, 2, module.equals("sat")? satInfo.get(0).getEstrada() : equipsInfo.get(0).getEstrada());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 2);
-				
-	    if(module.equals("sat")) {
-		
-		// SENTIDO LABEL
-		utilSheet.createCell(sheet, row, 7, 7);
-		utilSheet.setCellValue(sheet, row, 7, 7, localeExcel.getStringKey("excel_sheet_header_direction"));
-		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 7, 7);
-
-		// SENTIDO
-		utilSheet.createCell(sheet, row, 7, 8);
-		
-		if(equipId.size() == 1)		
-		    utilSheet.setCellValue(sheet, row, 7, 8, tm.directions(satInfo.get(0).getSentidos()));
-		
-		else utilSheet.setCellValue(sheet, row, 7, 8, satInfo.get(0).getSentidos());
-		
-		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 7, 8);
-		
-		}
-
+					    
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// CRIAR LINHA 4 - SUBHEADER
@@ -359,6 +346,7 @@ public class ExcelTemplate {
 
 			// CRIAR LINHA 5 - SUBHEADER
 			utilSheet.createRow(sheet, row, 9);
+			utilSheet.createRow(sheet, row, 10);
 
 			// LANE LABELS
 			utilSheet.createCell(sheet, row, 9, 1);
@@ -374,7 +362,24 @@ public class ExcelTemplate {
 			else utilSheet.setCellValue(sheet, row, 9, 2, satInfo.get(0).getQtdeFaixas()); 
 			
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
+			
+			// -------------------------------------------------------------------------------------------------------
+							
+			// SENTIDO LABEL
+			 utilSheet.createCell(sheet, row, 10, columns - 2);
+			 utilSheet.setCellValue(sheet, row, 10, columns-2, localeExcel.getStringKey("excel_sheet_header_direction"));
+			 utilSheet.setCellStyle(sheet, row, centerBoldStyle, 10, columns - 2);
 
+			 // SENTIDO
+			 utilSheet.createCell(sheet, row, 10, columns - 1);
+			
+			if(equipId.size() == 1)		
+			    utilSheet.setCellValue(sheet, row, 10, columns - 1, tm.directions(satInfo.get(0).getSentidos()));
+			
+			else utilSheet.setCellValue(sheet, row, 10, columns - 1, satInfo.get(0).getSentidos());
+			
+			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
+								
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------
@@ -406,15 +411,13 @@ public class ExcelTemplate {
 	 * 
 	 */
 	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
-
+		
 		// CREATE ROW TOTAL
 		utilSheet.createRow(sheet, row, rowTotal);		 
 
 		utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
-		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
-		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
-
-		utilSheet.totalExcelSum(sheet, row, standard, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE		
+		utilSheet.totalExcelSum(sheet, row, standard, tableHeader, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
@@ -514,13 +517,36 @@ public class ExcelTemplate {
 		TranslationMethods tm = new TranslationMethods();
 		
 		int subHeaderRow = 0;
+		int startLightCol = 0;
+		int startHeavyCol = 0;
+		int startTruckCol = 0;
+		int startBusCol = 0;
 		int tableStartRow = 0;
 		int dataStartRow = 0;
 		int dataEndRow = 0;
 		int startCol = 0;
 		int endCol = columns.size() - 1;
-		int dataTotalRow = columns.size();
 		
+		// --------------------------------------------------------------------------------------
+		
+		if(module.equals("sat")) {
+									
+		if(!classSubHeader.equals("light-heavy") && !classSubHeader.equals("light-heavy-bus")) {
+			    
+				tableStartRow = 12;
+			    dataStartRow = 13;
+			    
+			} else {
+				
+				 subHeaderRow = 12;
+				 tableStartRow = 13;
+				 dataStartRow = 14;				 
+			}							   			   		
+		
+	    }else { tableStartRow = 11; dataStartRow = 12; }
+		
+		// --------------------------------------------------------------------------------------
+				
 		if(!isMultiSheet || (isMultiSheet && period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR"))) {
 			
 			String[] dates = new String[2];
@@ -532,25 +558,7 @@ public class ExcelTemplate {
 										
 		excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 				dates, period, equips, 0);
-									    		
-		// CASO EXISTA FAIXAS NO EQUIPAMENTO
-		if(module.equals("sat")) {
-			
-			if(!classSubHeader.equals("light-heavy") && !classSubHeader.equals("light-heavy-bus")) {
-			    
-				tableStartRow = 11;
-			    dataStartRow = 12;
-			    
-			} else {
 				
-				 subHeaderRow = 11;
-				 tableStartRow = 12;
-				 dataStartRow = 13;				 
-			}
-						   			   		
-		// CASO NÃƒO EXISTA FAIXAS NO EQUIPAMENTO 
-	    }else { tableStartRow = 10; dataStartRow = 11; }
-		
 		// -----------------------------------------------------
 		
 		if(isTotal)
@@ -561,30 +569,53 @@ public class ExcelTemplate {
 		// -----------------------------------------------------
 		
 		if(module.contentEquals("sat")) {
-		
-		System.out.println(classSubHeader);
-		
-		utilSheet.createRow(sheet, row, subHeaderRow);
-		
-		if(classSubHeader.equals("light-heavy")) {		
-					
-		utilSheet.createCell(sheet, row,subHeaderRow, 2);
-		utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
-		//utilSheet.setCellStyle(sheet, row, tableHeadStyle, 2, subHeaderRow);
-		
-		utilSheet.createCell(sheet, row, subHeaderRow, 6);
-		utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
-		//utilSheet.setCellStyle(sheet, row, tableHeadStyle, 6, subHeaderRow);
-		
-		utilSheet.mergeCells(sheet, "C12:F12");	
-		utilSheet.mergeCells(sheet, "G12:O12");
+										
+			if(classSubHeader.equals("light-heavy")) {	
 				
-		}
+				utilSheet.createRow(sheet, row, subHeaderRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+										
+				utilSheet.createCell(sheet, row,subHeaderRow, 2);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 6);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+				
+				utilSheet.mergeCells(sheet, "C13:F13");	
+				utilSheet.mergeCells(sheet, "G13:O13");
+				
+		  }
+			
+		    // -----------------------------------------------------
+			
+			else if(classSubHeader.equals("light-heavy-bus")) {
+				
+				utilSheet.createRow(sheet, row, subHeaderRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row,subHeaderRow, 2);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 6);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_truck_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 15);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 15, localeExcel.getStringKey("excel_sheet_bus_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 15, endCol-1, subHeaderRow, subHeaderRow);
+								
+				utilSheet.mergeCells(sheet, "C13:F13");	
+				utilSheet.mergeCells(sheet, "G13:O13");	
+				utilSheet.mergeCells(sheet, "P13:T13");	
+				
+			}
 		
-		// -----------------------------------------------------
-	}
-		
-						
+	      	// -----------------------------------------------------
+     	}
+								
 		utilSheet.createRow(sheet, row, tableStartRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
 		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
@@ -604,29 +635,36 @@ public class ExcelTemplate {
 		// ---------------------------------------------------------------------------------------------------
 				
 		if(secondRows != null) {
-		
+			
 			for(Pair<String, List<String[]>> p : secondRows) {
+							
+				dataEndRow = dataEndRow + 3;
 				
 				// CREATE ROW
-				utilSheet.createRow(sheet, row, (dataEndRow + 3));
+				utilSheet.createRow(sheet, row, dataEndRow);
 				
 				if(module.equals("sat")) {
 				
 				// SENTIDO LABEL
-				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 2);
-				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
-				utilSheet.setCellStyle(sheet, row, centerBoldStyle, (dataEndRow + 3), columns.size() - 2);
+				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
+				utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+				utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
 
 				// SENTIDO
-				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 1);
-				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 1, tm.direction(p.left));
-				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, (dataEndRow + 3), columns.size() - 1);
+				utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
+				utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
+				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
 				
 				}
 				
-				tableStartRow = dataEndRow + 5;
-				
-				dataStartRow = tableStartRow + 1;
+				// TABLE HEADER
+				if(classSubHeader.equals("light-heavy") || classSubHeader.equals("light-heavy-bus")) {
+				    tableStartRow = dataEndRow + 3;	
+				    subHeaderRow = tableStartRow - 1;
+			
+				}else  tableStartRow = dataEndRow + 2;	
+										
+				   dataStartRow = tableStartRow + 1;				   		
 				
 				// -----------------------------------------------------
 				
@@ -636,6 +674,54 @@ public class ExcelTemplate {
 				else dataEndRow = dataStartRow + p.right.size() - 1;
 				
 				// -----------------------------------------------------
+								
+				if(module.equals("sat")) {
+													
+					if(classSubHeader.equals("light-heavy")) {	
+						
+					utilSheet.createRow(sheet, row, subHeaderRow);
+					utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+											
+					utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+					utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+														
+					utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
+					utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol - 1, subHeaderRow, subHeaderRow);
+								
+					utilSheet.mergeCells(sheet, "C".concat(""+(subHeaderRow + 1)).concat(":").concat("F").concat(""+(subHeaderRow + 1)));	
+					utilSheet.mergeCells(sheet, "G".concat(""+(subHeaderRow + 1)).concat(":").concat("O").concat(""+(subHeaderRow + 1)));
+									
+				  }
+					
+					// -----------------------------------------------------
+					
+					else if(classSubHeader.equals("light-heavy-bus")) {
+						
+						utilSheet.createRow(sheet, row, subHeaderRow);
+						utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+						
+						utilSheet.createCell(sheet, row,subHeaderRow, 2);
+						utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+						utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+						
+						utilSheet.createCell(sheet, row, subHeaderRow, 6);
+						utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_truck_vehicles_column"));
+						utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+						
+						utilSheet.createCell(sheet, row, subHeaderRow, 15);
+						utilSheet.setCellValue(sheet, row, subHeaderRow, 15, localeExcel.getStringKey("excel_sheet_bus_column"));
+						utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 15, endCol-1, subHeaderRow, subHeaderRow);
+										
+						utilSheet.mergeCells(sheet, "C".concat(""+(subHeaderRow + 1)).concat(":").concat("F").concat(""+(subHeaderRow + 1)));
+						utilSheet.mergeCells(sheet, "G".concat(""+(subHeaderRow + 1)).concat(":").concat("O").concat(""+(subHeaderRow + 1)));		
+						utilSheet.mergeCells(sheet, "P".concat(""+(subHeaderRow + 1)).concat(":").concat("T").concat(""+(subHeaderRow + 1)));												
+																
+					}
+				
+			      	// -----------------------------------------------------
+				
+		     	}
+				
 			   	
 				// CABEÇALHO DA TABELA		
 				utilSheet.createRow(sheet, row, tableStartRow);
@@ -705,21 +791,61 @@ public class ExcelTemplate {
 		
 			excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
 				dates, period, equips, d);
-									    		
-		// CASO EXISTA FAIXAS NO EQUIPAMENTO
-		if(module.equals("sat")) {
-			tableStartRow = 11;
-			dataStartRow = 12;
-		
-		// CASO NÃƒO EXISTA FAIXAS NO EQUIPAMENTO 
-	    }else {  tableStartRow = 10; dataStartRow = 11; }
-		
+										  	
 		// -----------------------------------------------------
 		
 		if(isTotal)
 			dataEndRow = dataStartRow + interval;
 		
 		else dataEndRow = dataStartRow + interval - 1;
+		
+		// -----------------------------------------------------
+		
+		if(module.contentEquals("sat")) {
+			
+			if(classSubHeader.equals("light-heavy")) {	
+				
+				utilSheet.createRow(sheet, row, subHeaderRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+										
+				utilSheet.createCell(sheet, row,subHeaderRow, 2);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 6);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+				
+				utilSheet.mergeCells(sheet, "C13:F13");	
+				utilSheet.mergeCells(sheet, "G13:O13");
+				
+		  }
+			
+		    // -----------------------------------------------------
+			
+			else if(classSubHeader.equals("light-heavy-bus")) {
+				
+				utilSheet.createRow(sheet, row, subHeaderRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row,subHeaderRow, 2);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 6);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_truck_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+				
+				utilSheet.createCell(sheet, row, subHeaderRow, 15);
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 15, localeExcel.getStringKey("excel_sheet_bus_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 15, endCol-1, subHeaderRow, subHeaderRow);
+								
+				utilSheet.mergeCells(sheet, "C13:F13");	
+				utilSheet.mergeCells(sheet, "G13:O13");	
+				utilSheet.mergeCells(sheet, "P13:T13");	
+				
+			}			      	
+     	}
 		
 		// -----------------------------------------------------
 						
@@ -741,39 +867,94 @@ public class ExcelTemplate {
 		
 		// ---------------------------------------------------------------------------------------------------
 				
-		if(secondRows != null) {
 		
-			for(Pair<String, List<String[]>> p : secondRows) {
-				
-				// CREATE ROW
-				utilSheet.createRow(sheet, row, (dataEndRow + 3));
-				
-				if(module.equals("sat")) {
-				
-				// SENTIDO LABEL
-				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 2);
-				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
-				utilSheet.setCellStyle(sheet, row, centerBoldStyle, (dataEndRow + 3), columns.size() - 2);
+	if(secondRows != null) {
+		
+		for(Pair<String, List<String[]>> p : secondRows) {
+						
+			dataEndRow = dataEndRow + 3;
+			
+			// CREATE ROW
+			utilSheet.createRow(sheet, row, dataEndRow);
+			
+			if(module.equals("sat")) {
+			
+			// SENTIDO LABEL
+			utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 2);
+			utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 2, localeExcel.getStringKey("excel_sheet_header_direction"));
+			utilSheet.setCellStyle(sheet, row, centerBoldStyle, dataEndRow, columns.size() - 2);
 
-				// SENTIDO
-				utilSheet.createCell(sheet, row, (dataEndRow + 3), columns.size() - 1);
-				utilSheet.setCellValue(sheet, row, (dataEndRow + 3), columns.size() - 1, tm.direction(p.left));
-				utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, (dataEndRow + 3), columns.size() - 1);
+			// SENTIDO
+			utilSheet.createCell(sheet, row, dataEndRow, columns.size() - 1);
+			utilSheet.setCellValue(sheet, row, dataEndRow, columns.size() - 1, tm.direction(p.left));
+			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, dataEndRow, columns.size() - 1);
+			
+			}
+			
+			// TABLE HEADER
+			if(classSubHeader.equals("light-heavy") || classSubHeader.equals("light-heavy-bus")) {
+			    tableStartRow = dataEndRow + 3;	
+			    subHeaderRow = tableStartRow - 1;
+		
+			}else  tableStartRow = dataEndRow + 2;	
+									
+			   dataStartRow = tableStartRow + 1;	
+			
+			// -----------------------------------------------------
+			
+			if(isTotal)
+			  dataEndRow = dataStartRow + p.right.size(); 
+			
+			else dataEndRow = dataStartRow + p.right.size() - 1;
+			
+			// -----------------------------------------------------
+							
+			if(module.equals("sat")) {
+												
+				if(classSubHeader.equals("light-heavy")) {	
+					
+				utilSheet.createRow(sheet, row, subHeaderRow);
+				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+										
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+													
+				utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_heavy_vehicles_column"));
+				utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol - 1, subHeaderRow, subHeaderRow);
+							
+				utilSheet.mergeCells(sheet, "C".concat(""+(subHeaderRow + 1)).concat(":").concat("F").concat(""+(subHeaderRow + 1)));	
+				utilSheet.mergeCells(sheet, "G".concat(""+(subHeaderRow + 1)).concat(":").concat("O").concat(""+(subHeaderRow + 1)));
+								
+			  }
 				
+				// -----------------------------------------------------
+				
+				else if(classSubHeader.equals("light-heavy-bus")) {
+					
+					utilSheet.createRow(sheet, row, subHeaderRow);
+					utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
+					
+					utilSheet.createCell(sheet, row,subHeaderRow, 2);
+					utilSheet.setCellValue(sheet, row, subHeaderRow, 2, localeExcel.getStringKey("excel_sheet_light_vehicles_column"));
+					utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 2, 5, subHeaderRow, subHeaderRow);
+					
+					utilSheet.createCell(sheet, row, subHeaderRow, 6);
+					utilSheet.setCellValue(sheet, row, subHeaderRow, 6, localeExcel.getStringKey("excel_sheet_truck_vehicles_column"));
+					utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 6, endCol-1, subHeaderRow, subHeaderRow);
+					
+					utilSheet.createCell(sheet, row, subHeaderRow, 15);
+					utilSheet.setCellValue(sheet, row, subHeaderRow, 15, localeExcel.getStringKey("excel_sheet_bus_column"));
+					utilSheet.setCellsStyle(sheet, row, subHeaderClassStyle, 15, endCol-1, subHeaderRow, subHeaderRow);
+									
+					utilSheet.mergeCells(sheet, "C".concat(""+(subHeaderRow + 1)).concat(":").concat("F").concat(""+(subHeaderRow + 1)));
+					utilSheet.mergeCells(sheet, "G".concat(""+(subHeaderRow + 1)).concat(":").concat("O").concat(""+(subHeaderRow + 1)));		
+					utilSheet.mergeCells(sheet, "P".concat(""+(subHeaderRow + 1)).concat(":").concat("T").concat(""+(subHeaderRow + 1)));												
+															
 				}
-				
-				tableStartRow = dataEndRow + 5;
-				
-				dataStartRow = tableStartRow + 1;
-				
-				// -----------------------------------------------------
-				
-				if(isTotal)
-				  dataEndRow = dataStartRow + interval; 
-				
-				else dataEndRow = dataStartRow + interval - 1;
-				
-				// -----------------------------------------------------
+			
+		      	// -----------------------------------------------------
+			
+	     	}
 			   	
 				// CABEÇALHO DA TABELA		
 				utilSheet.createRow(sheet, row, tableStartRow);
@@ -981,5 +1162,54 @@ public List<SAT> SATInfo(List<String> equipId) {
 	}
 	
 	 // ----------------------------------------------------------------------------------------------------------------	
+		
+	public Integer lightColumn(List<String> columns) {
+		
+		int maxCol = 0; // INITIALIZE
+				
+		for(int c = 0; c < columns.size(); c++) {
+			
+			if(columns.get(c).equals(localeSAT.getStringKey("class_motorcycles_column")) || columns.get(c).equals(localeSAT.getStringKey("class_light_column"))
+					|| columns.get(c).equals(localeSAT.getStringKey("class_semi_trailer_column")) || columns.get(c).equals(localeSAT.getStringKey("class_trailer_column"))) 
+				maxCol = c;				
+							
+		    }
+						
+		return maxCol;
+	}
+	
+	 // ----------------------------------------------------------------------------------------------------------------	
+	
+	public Integer heavyColumn(List<String> columns) {
+		
+		int maxCol = 0;
+		
+		for(int c = 0; c < columns.size(); c++) {
+		
+		if(columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_2")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_3"))
+				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_4")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_5"))
+				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_6")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_7"))
+				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_8")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_9"))
+				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_10")))
+				
+			maxCol = c;				
+						
+	      }		
+	 		
+		return maxCol;
+	}
+	
+	 // ----------------------------------------------------------------------------------------------------------------	
+	
+	public Integer busColumns() {
+		
+		
+		
+		return 0;
+	}
+	
+	
+	
+	
 	
 }

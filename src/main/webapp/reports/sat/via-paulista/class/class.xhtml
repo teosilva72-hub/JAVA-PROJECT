@@ -26,6 +26,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineClassSublHeader('light-heavy')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
@@ -133,8 +134,8 @@
       <tr>
         <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(0)}</th>
         <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(1)}</th>
-        <th colspan="4" class="custom-table-header" >#{satLabels.sat_reports_header_lights}</th> <!-- SUB HEADER -->
-        <th colspan="9" class="custom-table-header" >#{satLabels.sat_reports_header_commercials}</th> <!-- SUB HEADER -->        
+        <th colspan="4" class="custom-table-header" >#{satLabels.class_light_vehicles_column}</th> <!-- SUB HEADER -->
+        <th colspan="9" class="custom-table-header" >#{satLabels.class_heavy_vehicles_column}</th> <!-- SUB HEADER -->        
         <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(15)}</th> 
       </tr>
       

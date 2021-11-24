@@ -1116,7 +1116,7 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
+	public void totalExcelSum(Sheet sheet, Row row, CellStyle standard, CellStyle header, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
 
 		int startColumn = 0;
 		int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
@@ -1137,8 +1137,9 @@ public class ExcelUtil {
 			}
 		 	    	
 			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));  				     	
-
+			mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));			
+			setCellsStyle(sheet, row, header, 0, startColumn-1, rowTotal, rowTotal); // SET FIRST CELL STYLE	
+		
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// LOOP
@@ -1150,7 +1151,7 @@ public class ExcelUtil {
 
 		}
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
+		setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
 
 	}
 

@@ -53,7 +53,7 @@ public class TesterBean {
 
 	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
-	public String 	module, specialName, classSubHeader;	
+	public String 	module, specialName, classSubHeader = "default";	
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
@@ -72,6 +72,7 @@ public class TesterBean {
 
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
+	private List<String> columnsHeader = new ArrayList<>(); 
 	private HashMap<String, List<String>> listArgs = new HashMap<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
@@ -104,7 +105,11 @@ public class TesterBean {
 	public List<String> getColumnsInUse() {
 		return columnsInUse;
 	}
-	
+				
+	public List<String> getColumnsHeader() {
+		return columnsHeader;
+	}
+
 	public List<? extends Equipments> getListEquips() {
 		return listEquips;
 	}
@@ -163,6 +168,12 @@ public class TesterBean {
 		this.columnsInUse.add(col);
 	}
 	
+	public void setColumnsHeader(String columns) {
+	
+		for (String col : columns.split(","))
+			this.columnsHeader.add(col);		    	   
+	}
+			
 	public void setColumnsInUse(String[] columns) {
 		if (columns == null) {
 			columnsInUse = new ArrayList<>(columnsName);
@@ -461,7 +472,7 @@ public class TesterBean {
 		 // Table Fields
 		report = new ReportDAO(columnsName);
 		List<String> parameters = new ArrayList<>();
-
+		
 		for (String column : searchParameters) {
 			if (column.contains("$custom")) {
 				Pattern pattern = Pattern.compile("^\\w+");
@@ -504,7 +515,7 @@ public class TesterBean {
 		Date[] dateProcess = null;
 		String[] period = null;
 		setColumnsInUse(columns);
-						
+								
 		model = new ExcelTemplate(); // HERE
 		
 		String dateStart = "", dateEnd = "";
@@ -672,7 +683,7 @@ public class TesterBean {
 					Pair<List<String>, List<String[]>> data = processChartData();
 	      	 
 		 	    	build.chartBool = false;
-	      		    createChartData(build.chartBool, period, data.left, data.right);
+	      		    createChartData(build.chartBool, period, data.left, data.right, report.IDs);
 	      	    }     			
 			
 	        }
@@ -877,20 +888,40 @@ public class TesterBean {
 
 	    // --------------------------------------------------------------------------------------------	
 			
-	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines) {
+	    public void createChartData(boolean chartBool, String[] period, List<String> columns, List<String[]> lines, List<String> ids) {
 					
 	    TranslationMethods tm = new TranslationMethods();
 	    	
 		String vAxisTitle = tm.verticalAxisTranslate(vAxis);
 				
 		LocalDateTime local =  LocalDateTime.now();
-		
+		EquipmentsDAO dao = new EquipmentsDAO();
+						
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd_MM_yyyy_HH_mm");  
 	    String formatDateTime = local.format(format);  
+	    
+	    String equipName = "";
 	  
-	    String title =  chartTitle+ " - " + period[2]; // IF IS NOT A SINGLE EQUIPEMENT DO THIS
+	     String title = "";
 	      		
 		 imageName += "_"+formatDateTime; //NAME OF FILE WITH TIME
+		 
+		// -------------------------------------------------------------------
+		 
+		 if(ids.size() == 1) {
+			 
+			try {
+				
+				equipName =  dao.EquipmentName(module, ids.get(0));				
+				title =  chartTitle+ " - " + period[2] + " ("+equipName+")"; 
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		 } else  title =  chartTitle+ " - " + period[2];
+		 
+		 // -------------------------------------------------------------------
 		
 		if(!chartBool) {
 					 		  	   		
