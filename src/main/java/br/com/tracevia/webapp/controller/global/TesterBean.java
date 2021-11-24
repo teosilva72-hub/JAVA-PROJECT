@@ -20,6 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import org.primefaces.context.RequestContext;
+
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -51,11 +53,11 @@ public class TesterBean {
 
 	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
-	public String 	module, specialName;	
+	public String 	module, specialName, classSubHeader;	
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
-	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, caseSensitive = false;
+	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
 	
 	
 	// ----------------------------------------------------------------------------------------------------------------
@@ -163,7 +165,7 @@ public class TesterBean {
 	
 	public void setColumnsInUse(String[] columns) {
 		if (columns == null) {
-			columnsInUse = columnsName;
+			columnsInUse = new ArrayList<>(columnsName);
 			return;
 		}
 		
@@ -273,12 +275,15 @@ public class TesterBean {
 		this.report = report;
 	}
 
-	// Devines
-	
+	// Devines	
 	public void defineFileName(String fileName) {
 		this.fileName = fileName;
 	}
 	
+	public void defineClassSublHeader(String classSubHeader) {
+		this.classSubHeader = classSubHeader;
+	}
+		
 	public void defineSpecialName(String specialName) {
 		this.specialName = specialName;
 	}
@@ -325,6 +330,10 @@ public class TesterBean {
 	
 	public void haveHeaderInfo(boolean headerInfo) {
 		this.headerInfo = headerInfo;
+	}
+	
+	public void hasClassHeader(boolean classHead) {
+		this.classHead = classHead;
 	}
 	
 	public void defineMultiSheet(boolean multiSheet) {
@@ -605,56 +614,69 @@ public class TesterBean {
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
 			 System.out.println(query);
-
+			  
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);
+		    boolean hasValue = true;
 
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)
-				this.setIntervalDate(dateProcess, columnDate, period);
+				hasValue = this.setIntervalDate(dateProcess, columnDate, period);
 		          										
 			// -------------------------------------------------------------------------------------
+					
+			// CASO NÃO EXISTA VALOR			
+			if (report.lines.isEmpty() || !hasValue) {
+				SessionUtil.executeScript("showMessage(); hideMessage();");	
+				
+				build.chartBool = true; // BOTÃO DO GRÁFICO	 
+							
+				if (report.lines.isEmpty()) {
+					 SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");					
+					 return;
+				}				
+			}
 			
+			if (report.IDs.isEmpty())
+				report.IDs.addAll(idSearch);
+			
+			// -------------------------------------------------------------------------------------
+		
 			// TABLE DINAMIC HEADER
 			
 			if(headerInfo) {
 				
 				if(module.equals("sat")) {
 					
-					if(specialName.equals("couting-flow"))
-						satTab.satHeaderInformation(module, "1");
+					if(specialName.equals("counting-flow"))
+						satTab.satHeaderInformation(module, report.IDs);
 				}
 			 }
 			
 			// -------------------------------------------------------------------------------------	
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
-
-			if (report.lines.isEmpty())
-				 return;
-			if (report.IDs.isEmpty())
-				 report.IDs.addAll(idSearch);
-			
+						
 			if(!special)										     
-		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet);
+		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet, classSubHeader);
 			
 			else generateSpecialFile(model, specialName);
 		     
-		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 
-			
-			build.clearBool = false; // BOTÃO DE LIMPAR	 
-			build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
-			
-			if(isChart) {
-		 	 
-		 	     List<String[]> array = processChartData();
+		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
+		    
+		    // ------------------------------------------------------------
+		    			
+		    build.excelBool = false; // LINK DE DOWNLOAD DO EXCEL
+		    build.clearBool = false; // LINK DE DOWNLOAD DO EXCEL
+		    
+			if(isChart && !report.lines.isEmpty() && hasValue) {
+					Pair<List<String>, List<String[]>> data = processChartData();
 	      	 
-	      		 build.chartBool = false;
-	      		 createChartData(build.chartBool, period, columnsInUse, array);
-	      	 }      	 
-	      	 
-	      }
-	
-		
+		 	    	build.chartBool = false;
+	      		    createChartData(build.chartBool, period, data.left, data.right);
+	      	    }     			
+			
+	        }
+			
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	   public void download() {
@@ -677,7 +699,7 @@ public class TesterBean {
 	}	   
 
 
-	public void setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
+	public boolean setIntervalDate(Date[] date, String column, String[] period) throws ParseException {
 		Calendar calendar = Calendar.getInstance();
 		List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
 		List<String[]> newList = new ArrayList<>();
@@ -685,6 +707,7 @@ public class TesterBean {
 		String[] model = new String[report.columnName.size()];
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		boolean sep = column.contains("@");
+		boolean hasLine = !report.lines.isEmpty();
 		int[] col = new int[2];
 		Arrays.fill(model, "0");
 		int count = 0;
@@ -781,6 +804,8 @@ public class TesterBean {
 
 		if (count > 0)
 			report.secondaryLines = secondaryLines;
+		
+		return hasLine;
 	}
 	   
 		
@@ -794,14 +819,12 @@ public class TesterBean {
 				// Reinicializa valores armazenados nas variÃ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
-				satTab = new SatTableHeader();
-							
+										
 				build.excelBool = true;
 				build.clearBool = true;
-				build.chartBool = true;
+				build.chartBool = true;		
 				
-				//if(!columnsName.isEmpty())
-				//   columnsName.clear();
+				initiliazeSatHeader(); // ONLY HEADER 
 																		
 			}	
 	 		
@@ -894,9 +917,10 @@ public class TesterBean {
 		
 	 // --------------------------------------------------------------------------------------------	
 	    
-	   public List<String[]> processChartData() throws ParseException{
+	   public Pair<List<String>, List<String[]>> processChartData() throws ParseException{
 		   
 		    List<String[]> array = new ArrayList<>();
+		    List<String> column = new ArrayList<>(columnsInUse);
 	    	
 		  	boolean sep = columnDate.contains("@");
 	    	int[] col = new int[2];
@@ -912,15 +936,15 @@ public class TesterBean {
 	    	if (sep) {
 	    		int big = col[0] > col[1] ? 0 : 1;
 	    		
-	    		columnsInUse.remove(col[big]);	
-	    		columnsInUse.remove(col[big ^ 1]);
+	    		column.remove(col[big]);	
+	    		column.remove(col[big ^ 1]);
 	    			    		
 									
 			} else {
-				columnsInUse.remove(col[0]);
+				column.remove(col[0]);
 			}
 	    	
-	    	columnsInUse.add(0, "DATE");
+	    	column.add(0, "DATE");
 	    			    	
 	    for(String[] sa : report.lines) {
 	    	String date = "new Date(@aspas%s@aspas)";
@@ -953,7 +977,7 @@ public class TesterBean {
 	    	array.add(newArray);
 	    }
 	    
-	    return array;
+	    return new Pair<>(column, array);
 	    	
 	  }
 	    
@@ -964,7 +988,7 @@ public class TesterBean {
 		   		   
 		   switch(name) {
 		   			   
-		   case "couting-flow":  model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
+		   case "counting-flow":  model.generateCountFlow(columnsInUse, report.lines, sheetName, satTab);
 		   
 		   }
 	   }

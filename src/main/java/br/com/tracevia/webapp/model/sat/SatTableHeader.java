@@ -1,5 +1,7 @@
 package br.com.tracevia.webapp.model.sat;
 
+import java.util.List;
+
 import br.com.tracevia.webapp.controller.global.EquipmentsBean;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
@@ -84,14 +86,14 @@ public class SatTableHeader {
 	
 	// -----------------------------------------------------------------------------
 	
-      public void satHeaderInformation(String module, String equip_id) {
+      public void satHeaderInformation(String module, List<String> equip_id) {
 		  
 		  EquipmentsBean eqp = new EquipmentsBean();
 		  SAT sat = new SAT();
 		   
 		 if(module.equals("sat")) {				  
 			  
-			sat =  eqp.satHeaderInformation(equip_id);
+			sat =  eqp.satHeaderInformation(equip_id.get(0));
 				 
 		   equipDescription = sat.getNome().concat(" "+sat.getKm()).concat(" "+sat.getEstrada());
 		   direction1 = sat.getSentido1();

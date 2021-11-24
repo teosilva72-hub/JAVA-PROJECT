@@ -1015,7 +1015,7 @@ public class ExcelUtil {
 		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);
 		setStyleVerticalAlignment(style, vertical);
-		setWrapText(style, true);
+		setWrapText(style, wrapText);
 		setFont(style, font);
 		setCellBackgroundColor(style, backgroundColor, pattern);
 		borderTemplate(borderTemplate, style, borderStyle);

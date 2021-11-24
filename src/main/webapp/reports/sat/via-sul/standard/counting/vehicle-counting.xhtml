@@ -94,13 +94,11 @@
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	          <!----> 	    
-	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
-                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
-              </div> <!-- ALERT MESSAGE END DIV -->	
-       
-             <!----> 
-             
+	         
+	          <!-- ALERT MESSAGE -->
+	 
+	          <ui:include src="/template/alerts/alert.xhtml" />
+	                   
        <!-- ============================================================================================================================= -->
            
            <!-- NOME DO RELATÓRIO -->   
