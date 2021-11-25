@@ -28,12 +28,12 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
 	   
 	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
@@ -96,12 +96,10 @@
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	          <!----> 	    
-	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
-                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
-              </div> <!-- ALERT MESSAGE END DIV -->	
-       
-             <!----> 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
              
        <!-- ============================================================================================================================= -->
            

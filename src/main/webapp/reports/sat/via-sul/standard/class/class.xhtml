@@ -25,11 +25,13 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_sul_class_title)}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
-	
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />	   	   
+	    <f:viewAction onPostback="true" action="#{testerBean.defineClassSublHeader('light-heavy')}" />
+	   	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+							
 		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
 		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motorcycles_column, satLabels.class_light_column, satLabels.class_semi_trailer_column, satLabels.class_trailer_column,
 		satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column,
@@ -110,12 +112,10 @@
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	          <!----> 	    
-	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
-                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
-              </div> <!-- ALERT MESSAGE END DIV -->	
-       
-             <!----> 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
              
        <!-- ============================================================================================================================= -->
            

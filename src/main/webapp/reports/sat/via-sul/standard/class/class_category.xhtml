@@ -26,6 +26,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineClassSublHeader('light-heavy-bus')}" />
 	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
@@ -109,15 +110,13 @@
 	 		
 	   <!-- DIV DE ESTRUTURA DA TABELA --> 
 	    
-	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 	
 	       <!----> 		
-	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	          <!----> 	    
-	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
-                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
-              </div> <!-- ALERT MESSAGE END DIV -->	
-       
-             <!----> 
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 	
+	     
+	      <!-- ALERT MESSAGE -->
+	 
+	      <ui:include src="/template/alerts/alert.xhtml" /> 
              
        <!-- ============================================================================================================================= -->
            

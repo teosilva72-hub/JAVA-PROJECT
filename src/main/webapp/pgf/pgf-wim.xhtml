@@ -13,7 +13,7 @@
 
 	<ui:define name="head">
 		<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
-		<h:outputStylesheet library="css/pgf" name="pgf-sat.css" />
+		<h:outputStylesheet library="css/pgf" name="pgf-wim.css" />
 		<h:outputStylesheet library="css/sat" name="layoutSAT.css" />
 	</ui:define>
 
@@ -27,8 +27,7 @@
 
 	<ui:define name="default-content">
 		<div class="row wim-jumbotron">
-
-			<div class="jumbotron col-3 PGFdark bg-dark px-3">
+			<div class="jumbotron col-3 PGFdark bg-dark px-3" style="display:none;">
 				<div class='row'>
 					<div class='col-12 p-1'>
 						<div class="pgf-card shadow rounded p-2 bg-body">
@@ -106,9 +105,9 @@
 											<table id="message-table" class="table table-sm small table-striped table-hover table-dark custom-table m-0">
 												<thead class="custom-table-header">
 													<tr>
-														<th>Eixo 1</th>
-														<th>Eixo 2</th>
-														<th>Eixo 3</th>
+														<th>Eixo 1 - L:6 ton</th>
+														<th>Eixo 2 - L:14 ton</th>
+														<th>Eixo 3 - L:17 ton</th>
 													</tr>
 												</thead>
 												<tbody class="custom-table-odd-row odd">

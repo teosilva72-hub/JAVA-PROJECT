@@ -99,12 +99,10 @@
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	          <!----> 	    
-	           <div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT MESSAGE DIV -->
-                  <b>#{reportsMessages.reports_message_records_not_found_title}</b> : #{reportsMessages.reports_message_records_not_found} <!-- MESSAGE -->
-              </div> <!-- ALERT MESSAGE END DIV -->	
-       
-             <!----> 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
              
        <!-- ============================================================================================================================= -->
            
@@ -139,7 +137,7 @@
 	 
 	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
-	      <ui:include src="/template/action-reports/buttons_template_1.xhtml" />
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
 	  
 	  <!-- ============================================================================================================================= -->
 		
