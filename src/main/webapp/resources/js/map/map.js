@@ -95,6 +95,9 @@ const init = () => {
 
 		if (window.initSPEED)
 			initSPEED();
+
+		if (window.initGPS)
+			initGPS();
 	})
 }
 

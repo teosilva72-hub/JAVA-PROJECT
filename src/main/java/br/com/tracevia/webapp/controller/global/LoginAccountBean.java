@@ -42,6 +42,8 @@ public class LoginAccountBean {
 	private UserAccount login;
 	private String credentials;    
 
+	public double[][] coord = new double[2][3];    
+
 	LocaleUtil locale, locale1, locale2;
 
 	LoadStartupModules load;
@@ -141,6 +143,10 @@ public class LoginAccountBean {
 		this.reportsLLEnabled = reportsLLEnabled;
 	}
 	
+	public double[][] getCoord() {
+		coordMap();
+		return coord;
+	}
 	    // --------------------------------------------------------------------------------------------
 	
 		// CLASS PATH
@@ -176,8 +182,7 @@ public class LoginAccountBean {
 		locale1.getResourceBundle(LocaleUtil.MESSAGES_EMAIL);
 
 		locale2 = new LocaleUtil();
-		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
-				
+		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);		
 	}
 	
 	// --------------------------------------------------------------------------------------------
@@ -541,6 +546,20 @@ public class LoginAccountBean {
 					+ "\", \"port\": \""
 					+ cred[4]
 					+ "\"}";
+	}
+
+	/**
+	 * M�todo para obter as credenciais de um aplicativo
+	 * @author Guilherme 12/07/2021
+     * @version 1.0
+     * @since 1.0    
+	 */
+	public void coordMap() {
+		
+		LoginAccountDAO dao = new LoginAccountDAO();
+
+		coord[0] = dao.getCoord("start");
+		coord[1] = dao.getCoord("end");
 	}
 	
 	// --------------------------------------------------------------------------------------------

@@ -5655,37 +5655,6 @@ public class EquipmentsDAO {
 		return count;	
 	}
 
-	public double[] getCoord(String name) {
-		double[] coord = new double[2];
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// CHECK
-			String select = "SELECT latitude, longitude FROM map_coordinate WHERE name = ?";
-
-			ps = conn.prepareStatement(select);
-
-			ps.setString(1, name);
-			rs = ps.executeQuery();
-
-			if(rs.isBeforeFirst()) {
-				rs.next();
-
-				coord[0] = rs.getDouble("latitude");
-				coord[1] = rs.getDouble("longitude");
-		    }
-
-		}catch (SQLException sqle) {
-			System.out.println("Erro ao buscar dados " + sqle);        		    
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-		
-		return coord;
-	}
-
 	//--------------------------------------------------------------------------------------------------------------
 		
 

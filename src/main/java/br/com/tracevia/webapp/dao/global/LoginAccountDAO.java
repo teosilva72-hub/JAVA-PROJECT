@@ -289,6 +289,38 @@ public class LoginAccountDAO {
 
 		return status;
 	}
+
+	public double[] getCoord(String name) {
+		double[] coord = new double[3];
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			// CHECK
+			String select = "SELECT latitude, longitude, y_pos FROM map_coordinate WHERE name = ?";
+
+			ps = conn.prepareStatement(select);
+
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+
+			if(rs.isBeforeFirst()) {
+				if (rs.next()) {
+					coord[0] = rs.getDouble("longitude");
+					coord[1] = rs.getDouble("latitude");
+					coord[2] = rs.getDouble("y_pos");
+				}
+		    }
+
+		}catch (SQLException sqle) {
+			System.out.println("Erro ao buscar dados " + sqle);        		    
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+		
+		return coord;
+	}
 	
 	// --------------------------------------------------------------------------------------------	
 
