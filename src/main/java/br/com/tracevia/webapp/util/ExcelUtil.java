@@ -199,7 +199,8 @@ public class ExcelUtil {
 	public void createCell(Sheet sheet, Row row, int rowNumber, int cellNumber) {		
 
 		row = sheet.getRow(rowNumber);		
-		row.createCell(cellNumber);				
+		row.createCell(cellNumber);	
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -245,9 +246,11 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 */
 	public void setCellValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String value) {		
+		
+		System.out.println(value);
 
 		row = sheet.getRow(rowNumber);			
-		row.getCell(cellNumber)
+		row.getCell(cellNumber)	
 		.setCellValue(value);		
 
 	}	
