@@ -2,7 +2,7 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from tkinter import *
-
+from openpyxl import *
 # 
 user = "service_storm"
 passwd = "trac3viabras1l"
@@ -39,15 +39,15 @@ def divide_df(dataflame):
 
     sv3 = dataflame.iloc[:,7:11].copy()
     sv1 = dataflame.iloc[:,12:16].copy()
-    # sv5=df.iloc[:,16:20].copy()
+    sv5=  dataflame.iloc[:,16:20].copy()
     sv3["datetime_"] = dataflame["datetime_"]
     sv1["datetime_"] = dataflame["datetime_"]
-    #sv5["datetime_"] = dataflame["datetime_"]
+    sv5["datetime_"] = dataflame["datetime_"]
 
     svmeteo = dataflame.iloc[:,:7].copy()
     svmeteo["road_temperature"] = dataflame["road_temperature"]
 
-    return [sv3, sv1, svmeteo]
+    return [sv3, sv1, sv5, svmeteo]
 
 def get_con():
     #Create connection to the MySQL database

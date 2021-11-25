@@ -12,9 +12,12 @@
 	</ui:define>
 
 	<ui:define name="head">
+		<!-- CSS -->
 		<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
 		<h:outputStylesheet library="css/pgf" name="pgf-wim.css" />
-		<h:outputStylesheet library="css/sat" name="layoutSAT.css" />
+		
+		<!-- Script -->
+		<h:outputScript library="js/pgf/" name="pgf-wim.js" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -27,7 +30,7 @@
 
 	<ui:define name="default-content">
 		<div class="row wim-jumbotron">
-			<div class="jumbotron col-3 PGFdark bg-dark px-3" style="display:none;">
+			<div class="jumbotron col-3 PGFdark bg-dark px-3 collapse" id="collapseInfo">
 				<div class='row'>
 					<div class='col-12 p-1'>
 						<div class="pgf-card shadow rounded p-2 bg-body">
@@ -47,7 +50,9 @@
 			<div class="container col pt-3 h-100">
 				<div class="card bg-dark h-100 flex-row">
 					<div class="card-header text-white card-l text-center d-flex px-0">
-						<span class="my-auto">SP255 Sul</span><span class="my-auto">SP255 Norte</span>
+						<span class="my-auto">SP255 Sul</span>
+						<button class="text-white bg-secondary" id="btncollapse" data-toggle="collapse" onclick="clickCollapse();" href="#collapseInfo">&lt;</button>
+						<span class="my-auto">SP255 Norte</span>
 					</div>
 					<div class="card-body p-0">
 						<div class="card-body-division">
