@@ -3,6 +3,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 from tkinter import *
 from openpyxl import *
+from MySQLdb import *
+
 # 
 user = "service_storm"
 passwd = "trac3viabras1l"
@@ -34,6 +36,8 @@ def divide_df(dataflame):
         "precipitation absol.\n600 [l/m²] Cur": "absolute_precipitation",
         "temperature\n100 [°C] Cur.1": "temperature", "wind speed\n405 [km/h] Cur.1": "wind_speed", "wind direction\n500 [°] Cur.1": "wind_direction",
         "precipitation absol.\n600 [l/m²] Cur.1": "absolute_precipitation",
+         "temperature\n100 [°C] Cur.2": "temperature", "wind speed\n405 [km/h] Cur.2": "wind_speed", "wind direction\n500 [°] Cur.2": "wind_direction",
+        "precipitation absol.\n600 [l/m²] Cur.2": "absolute_precipitation",
         "road temperature\n100 [norm value] Cur": "road_temperature"
     }, inplace=True)
 
