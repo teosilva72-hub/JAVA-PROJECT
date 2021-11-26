@@ -427,9 +427,9 @@
 
 			<ui:param name="Coord" value="#{ loginAccount.coord }" />
 
-			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
 				value="#{loginAccount.mapUI}" />
+			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 		</div>
 
 		<!-- Label -->
