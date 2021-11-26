@@ -2,6 +2,8 @@
 import pandas as pd
 from sqlalchemy import create_engine
 from tkinter import *
+from openpyxl import *
+from MySQLdb import *
 
 # 
 user = "service_storm"
@@ -34,20 +36,22 @@ def divide_df(dataflame):
         "precipitation absol.\n600 [l/m²] Cur": "absolute_precipitation",
         "temperature\n100 [°C] Cur.1": "temperature", "wind speed\n405 [km/h] Cur.1": "wind_speed", "wind direction\n500 [°] Cur.1": "wind_direction",
         "precipitation absol.\n600 [l/m²] Cur.1": "absolute_precipitation",
+         "temperature\n100 [°C] Cur.2": "temperature", "wind speed\n405 [km/h] Cur.2": "wind_speed", "wind direction\n500 [°] Cur.2": "wind_direction",
+        "precipitation absol.\n600 [l/m²] Cur.2": "absolute_precipitation",
         "road temperature\n100 [norm value] Cur": "road_temperature"
     }, inplace=True)
 
     sv3 = dataflame.iloc[:,7:11].copy()
     sv1 = dataflame.iloc[:,12:16].copy()
-    # sv5=df.iloc[:,16:20].copy()
+    sv5=  dataflame.iloc[:,16:20].copy()
     sv3["datetime_"] = dataflame["datetime_"]
     sv1["datetime_"] = dataflame["datetime_"]
-    #sv5["datetime_"] = dataflame["datetime_"]
+    sv5["datetime_"] = dataflame["datetime_"]
 
     svmeteo = dataflame.iloc[:,:7].copy()
     svmeteo["road_temperature"] = dataflame["road_temperature"]
 
-    return [sv3, sv1, svmeteo]
+    return [sv3, sv1, sv5, svmeteo]
 
 def get_con():
     #Create connection to the MySQL database
