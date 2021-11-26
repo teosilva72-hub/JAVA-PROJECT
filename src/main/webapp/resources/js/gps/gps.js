@@ -1,11 +1,12 @@
 let draw = $(".drawLines")
 
 const connectGPS = async (request, debug) => {
-	return await sendMsgStomp(request, 'GpsRequest', debug)
+	return await sendMsgStomp(request, 'GPSRequest', debug, 'request')
 }
 
 const drawPoint = item => {
-	let divItem = draw.find(`#${item.i}`)
+	let id = item.i || item.id;
+	let divItem = draw.find(`#${id}`)
 	let start = draw.attr('gps_start').replaceAll(',', '.').split(';')
 	let end = draw.attr('gps_end').replaceAll(',', '.').split(';')
 	let pos = {
@@ -13,28 +14,31 @@ const drawPoint = item => {
 		s2: Number(start[1]),
 		e1: Number(end[0]),
 		e2: Number(end[1]),
-		ps: Number(start[2]),
-		pe: Number(end[2]),
-		x: Number(item.d.pos.x),
-		y: Number(item.d.pos.y)
+		ps: Number(start[2] / 1000 * draw.height()),
+		pe: Number(end[2] / 1000 * draw.height()),
+		x: Number(item.d ? item.d.pos.x : item.pos.x),
+		y: Number(item.d ? item.d.pos.y : item.pos.y)
 	}
 	let distance = {
-		longitude: Math.abs(pos.e1 - pos.s1),
-		latitude: Math.abs(pos.e2 - pos.s2),
+		longitude: pos.e1 - pos.s1,
+		latitude: pos.e2 - pos.s2,
 		x: draw.width(),
-		y: Math.abs(pos.pe - pos.ps),
+		y: pos.pe - pos.ps,
 		hypotenuse: () => Math.sqrt(Math.pow(distance.longitude, 2) + Math.pow(distance.latitude, 2)),
 		radius: () => Math.atan(distance.latitude / distance.longitude),
+		radiusOpposite: () => Math.atan(distance.longitude / distance.latitude),
 		pixel: () => Math.sqrt(Math.pow(draw.width(), 2) + Math.pow(distance.y, 2)),
 		radiusPixel: () => Math.atan(distance.y / distance.x),
 	}
 	let diff = {
-		longitude: Math.abs(pos.x - pos.s1),
-		latitude: Math.abs(pos.y - pos.s2),
+		longitude: pos.x - pos.s1,
+		latitude: pos.y - pos.s2,
 		hypotenuse: () => Math.sqrt(Math.pow(diff.longitude, 2) + Math.pow(diff.latitude, 2)),
 		radius: () => Math.atan(diff.latitude / diff.longitude),
-		radiusDiff: () => distance.radius() - diff.radius() + distance.radiusPixel()
+		radiusOpposite: () => Math.atan(diff.longitude / diff.latitude),
+		radiusDiff: () => (invert ? -(distance.radiusOpposite() - diff.radiusOpposite()) : distance.radius() - diff.radius()) + distance.radiusPixel()
 	}
+	let invert = Math.sign(distance.longitude) != Math.sign(diff.longitude)
 	let percent = {
 		longitude: diff.longitude / distance.longitude,
 		latitude: diff.latitude / distance.latitude,
@@ -42,7 +46,7 @@ const drawPoint = item => {
 	}
 	let point = {
 		x: percent.hypotenuse * distance.pixel() * Math.cos(diff.radiusDiff()),
-		y: pos.ps - percent.hypotenuse * distance.pixel() * Math.sin(diff.radiusDiff()),
+		y: pos.ps + percent.hypotenuse * distance.pixel() * Math.sin(diff.radiusDiff()),
 	}
 	let outRange = point.x > draw.width() || point.y > draw.height() || pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
 	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, 'border-bottom': "5px solid transparent", 'border-top': '5px solid transparent', 'border-left': '5px solid red'}
@@ -53,13 +57,17 @@ const drawPoint = item => {
 		else
 			divItem.css(defaultCss)
 	} else if (!outRange) {
-		let n = $(`<div id="${item.i}">`).css(defaultCss)
+		let n = $(`<div id="${id}">`).css(defaultCss)
 		draw.append(n)
 	}
 
 
-	console.log("id: " + item.i)
+	console.log("id: " + id)
 	console.log(distance.radiusPixel())
+	console.log(distance.radius())
+	console.log(diff.radius())
+	console.log(distance.radius() * 180/Math.PI)
+	console.log(diff.radius() * 180/Math.PI)
 	console.log(distance.radius() - diff.radius())
 	console.log(diff.radiusDiff())
 	console.log(Math.sin(diff.radiusDiff()))
@@ -95,7 +103,10 @@ const consumeGPS = async ({ callback_gps = callback_gps_default, debug = false }
 
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
+		let units = await connectGPS('AllUnits')
 
+		for (const item of units.items)
+			drawPoint(item)
 
 		consumeGPS({ callback_gps, debug });
 	});

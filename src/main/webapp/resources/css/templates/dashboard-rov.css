@@ -253,6 +253,14 @@ footer {
 	color: #ec6271 !important;
 }
 
+#phone-icon, #navbarDropdown2{
+  color: #FFFFFF !important;
+}
+
+#phone-icon:hover, #navbarDropdown2:hover{
+	color: #ec6271 !important;
+}
+
 .header-menu > li > a .header-badge {
   position: absolute;
   right: -2px;
@@ -1129,3 +1137,16 @@ a > .notification-badge {
 
 
 /* NOTIFICATIONS */
+
+/* CALL CENTER WIM */
+
+#call-toten {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  width: 8em;
+  z-index: 1;
+  margin-top: -2.5em;
+  transition: 0.5s;
+}
+/* CALL CENTER WIM [END] */
