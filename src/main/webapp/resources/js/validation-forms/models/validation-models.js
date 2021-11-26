@@ -405,6 +405,8 @@ function resetFormValidation(formId, btn) {
 		$(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
 		$(".select-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
 		$(".checkbox-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		
+		$(setTimeout(() => $('[multiple]').multiselect('selectAll', false).multiselect('updateButtonText'), 100));
 
 	})
 }
@@ -433,10 +435,12 @@ function cleanModalOnClose(formId, modalId) {
 		$(formId).validate().resetForm(); // reset form validation
 		
 	    $(this).find(formId)[0].reset();
-		
-        $(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+       
+		$(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
 		$(".select-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
 		$(".checkbox-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		
+		$(setTimeout(() => $('[multiple]').multiselect('selectAll', false).multiselect('updateButtonText'), 100));
 		
 	})
 }

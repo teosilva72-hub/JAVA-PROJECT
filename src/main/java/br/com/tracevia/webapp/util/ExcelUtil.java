@@ -247,8 +247,6 @@ public class ExcelUtil {
 	 */
 	public void setCellValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String value) {		
 		
-		System.out.println(value);
-
 		row = sheet.getRow(rowNumber);			
 		row.getCell(cellNumber)	
 		.setCellValue(value);		

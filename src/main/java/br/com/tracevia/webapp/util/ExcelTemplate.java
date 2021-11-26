@@ -180,14 +180,20 @@ public class ExcelTemplate {
 			
 		String headerDates = "";
 		
-		// MINIMO 5 COLUNAS PADRÃO
-		if(columns < 5)
-			columnsIndex = 5;
+		// MINIMO 6 COLUNAS PADRÃO
+		if(columns < 6) {
+			columnsIndex = 6;
+			columnStartDate = columnsIndex + 1;
+			columnEndDate = columnsIndex + 3;	
+			
+		}		
+		else { 
+			
+			columnsIndex = columns;
+			columnStartDate = columnsIndex + 1;
+			columnEndDate = columnsIndex + 3;	
+		}
 		
-		else columnsIndex = columns;
-		
-		columnStartDate = columns + 1;
-		columnEndDate = columns + 3;	
 	
 		// ----------------------------------------------------------------------------------------------------------------
 					
