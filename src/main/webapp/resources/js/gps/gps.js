@@ -1,4 +1,5 @@
 let draw = $(".drawLines")
+let idGps = {}
 
 const connectGPS = async (request, debug) => {
 	return await sendMsgStomp(request, 'GPSRequest', debug, 'request')
@@ -53,6 +54,7 @@ const coordToPixel = (x, y) => {
 
 const drawPoint = item => {
 	let id = item.i || item.id;
+	let name = item.nm || idGps[id]
 	let divItem = draw.find(`#${id}`)
 	let pos = {
 		x: Number(item.d ? item.d.pos.x : item.pos.x),
@@ -67,14 +69,17 @@ const drawPoint = item => {
 			divItem.remove()
 		else {
 			let beforeLeftPos = Number(divItem.css("left").replace("px", ""))
-			if (beforeLeftPos < point.x)
+			if (beforeLeftPos > point.x)
 				defaultCss.transform += " scaleX(-1)"
+			else if (beforeLeftPos == point.x)
+				defaultCss.transform = divItem.css("transform")
 			
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png">`).css(defaultCss)
+		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
+		n.tooltip()
 	}
 }
 
@@ -107,8 +112,10 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
     $(async function () {
 		let units = await connectGPS('AllUnits')
 
-		for (const item of units.items)
+		for (const item of units.items) {
+			idGps[item.id] = item.nm
 			drawPoint(item)
+		}
 
 		consumeGPS({ callback_gps, debug });
 	});

@@ -1099,11 +1099,6 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 	margin-left: 20%;
 }
 
-/* EQUIPMENTS INFO TOOLTIPS */
-.tooltip>.tooltip-inner {
-	background-color: #007bff;
-}
-
 .tooltip.show {
 	opacity: 1;
 }
