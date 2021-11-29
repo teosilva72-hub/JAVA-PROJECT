@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
-import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -104,10 +103,7 @@ public class ExcelTemplate {
 
 		localeExcel = new LocaleUtil();		
 		localeExcel.getResourceBundle(LocaleUtil.LABELS_EXCELSHEET);
-		
-		localeSAT = new LocaleUtil();		
-		localeSAT.getResourceBundle(LocaleUtil.LABELS_SAT);
-
+				
 		// ----------------------------------------------------------------------------------------------------------------
 
 		// DEFAULT FONTS 
@@ -184,14 +180,20 @@ public class ExcelTemplate {
 			
 		String headerDates = "";
 		
-		// MINIMO 5 COLUNAS PADRÃO
-		if(columns < 5)
-			columnsIndex = 5;
+		// MINIMO 6 COLUNAS PADRÃO
+		if(columns < 6) {
+			columnsIndex = 6;
+			columnStartDate = columnsIndex + 1;
+			columnEndDate = columnsIndex + 3;	
+			
+		}		
+		else { 
+			
+			columnsIndex = columns;
+			columnStartDate = columnsIndex + 1;
+			columnEndDate = columnsIndex + 3;	
+		}
 		
-		else columnsIndex = columns;
-		
-		columnStartDate = columns + 1;
-		columnEndDate = columns + 3;	
 	
 		// ----------------------------------------------------------------------------------------------------------------
 					
@@ -1161,55 +1163,6 @@ public List<SAT> SATInfo(List<String> equipId) {
 		
 	}
 	
-	 // ----------------------------------------------------------------------------------------------------------------	
-		
-	public Integer lightColumn(List<String> columns) {
-		
-		int maxCol = 0; // INITIALIZE
-				
-		for(int c = 0; c < columns.size(); c++) {
-			
-			if(columns.get(c).equals(localeSAT.getStringKey("class_motorcycles_column")) || columns.get(c).equals(localeSAT.getStringKey("class_light_column"))
-					|| columns.get(c).equals(localeSAT.getStringKey("class_semi_trailer_column")) || columns.get(c).equals(localeSAT.getStringKey("class_trailer_column"))) 
-				maxCol = c;				
-							
-		    }
-						
-		return maxCol;
-	}
-	
-	 // ----------------------------------------------------------------------------------------------------------------	
-	
-	public Integer heavyColumn(List<String> columns) {
-		
-		int maxCol = 0;
-		
-		for(int c = 0; c < columns.size(); c++) {
-		
-		if(columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_2")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_3"))
-				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_4")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_5"))
-				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_6")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_7"))
-				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_8")) || columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_9"))
-				|| columns.get(c).equals(localeSAT.getStringKey("sat_reports_select_axles_10")))
-				
-			maxCol = c;				
-						
-	      }		
-	 		
-		return maxCol;
-	}
-	
-	 // ----------------------------------------------------------------------------------------------------------------	
-	
-	public Integer busColumns() {
-		
-		
-		
-		return 0;
-	}
-	
-	
-	
-	
-	
+	 // ----------------------------------------------------------------------------------------------------------------
+
 }

@@ -37,8 +37,13 @@
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />	
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
