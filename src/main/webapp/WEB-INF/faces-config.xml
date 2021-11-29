@@ -128,6 +128,11 @@
         	<base-name>bundle.labels.aba.labels_aba</base-name>
         	<var>abaLabels</var>
         </resource-bundle>
+
+		 <resource-bundle>
+        	<base-name>bundle.labels.pgf.labels_pgf</base-name>
+        	<var>pgfLabels</var>
+        </resource-bundle>
         
           <resource-bundle>
         	<base-name>bundle.labels.system.reports.labels_reports</base-name>
@@ -285,6 +290,7 @@
         <message-bundle>bundle.labels.wim.labels_wim</message-bundle>
         <message-bundle>bundle.labels.dai.labels_dai</message-bundle>
         <message-bundle>bundle.labels.ocr.labels_ocr</message-bundle>
+		<message-bundle>bundle.labels.pgf.labels_pgf</message-bundle>
         <message-bundle>bundle.labels.colas.labels_colas</message-bundle>
         <message-bundle>bundle.labels.aba.labels_colas</message-bundle>
         <message-bundle>bundle.labels.system.reports.labels_reports</message-bundle>
