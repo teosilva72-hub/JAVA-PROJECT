@@ -425,9 +425,9 @@ public class EquipmentsDAO {
 					dms.setMapPosY(rs.getInt(13));	
 					dms.setMessage(message);
 					dms.setMsg_status(active);
-					dms.setLongitude(rs.getDouble(16));
-					dms.setLatitude(rs.getDouble(17));
-					dms.setDirection(rs.getString(18));
+					dms.setLongitude(rs.getDouble(17));
+					dms.setLatitude(rs.getDouble(18));
+					dms.setDirection(rs.getString(19));
 
 					if (active)
 						dms.setMessageChange(message);

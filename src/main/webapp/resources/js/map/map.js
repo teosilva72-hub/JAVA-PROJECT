@@ -1157,6 +1157,7 @@ const updateLine = equip => {
 		return
 		
 	let draw = $('.drawLines');
+	let id = equip.attr("id");
 	let l = draw.find(`.equipLine.${id}`);
 	let container = draw.closest("[scroll-zoom]");
 
@@ -1165,7 +1166,6 @@ const updateLine = equip => {
 		"height": "100%"
 	})
 
-	let id = equip.attr("id");
 	let equipScale = equip.attr("scale");
 	let dimension = {
 		"width": equip.width() * equipScale,
