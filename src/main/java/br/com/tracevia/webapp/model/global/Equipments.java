@@ -26,6 +26,8 @@ public class Equipments {
 	private int linearPosY;
 	private int mapPosX;
 	private int mapPosY;
+	private double longitude;
+	private double latitude;
 	private int mapWidth;
 	private int height;	
 	private int linearWidth;
@@ -229,6 +231,26 @@ public class Equipments {
 
 	public void setMapPosY(int mapPosY) {
 		this.mapPosY = mapPosY;
+	}
+
+
+	public double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public int getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 
