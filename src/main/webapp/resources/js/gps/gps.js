@@ -59,16 +59,21 @@ const drawPoint = item => {
 		y: Number(item.d ? item.d.pos.y : item.pos.y)
 	}
 	let point = coordToPixel(pos.x, pos.y)
-	let outRange = point.x > draw.width() || point.y > draw.height() || pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, 'border-bottom': "5px solid transparent", 'border-top': '5px solid transparent', 'border-left': '5px solid red'}
+	let outRange = !(0 < point.x < draw.width()) || !(0 < point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
+	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, transform: "translate(-50%, -50%)", width: "42px", "z-index": 1}
 
 	if (divItem.length) {
 		if (outRange)
 			divItem.remove()
-		else
+		else {
+			let beforeLeftPos = Number(divItem.css("left").replace("px", ""))
+			if (beforeLeftPos < point.x)
+				defaultCss.transform += " scaleX(-1)"
+			
 			divItem.css(defaultCss)
+		}
 	} else if (!outRange) {
-		let n = $(`<div id="${id}">`).css(defaultCss)
+		let n = $(`<img id="${id}" src="/resources/images/equips/car.png">`).css(defaultCss)
 		draw.append(n)
 	}
 }

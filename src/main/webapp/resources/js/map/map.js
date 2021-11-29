@@ -1143,12 +1143,12 @@ function DirectionEquip() {
 const clearLines = () => {
 	let draw = $('.drawLines');
 	let checkedLines = $("#visiblelines");
-	draw.empty();
+	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-		updateLine(equip);
-	});
+		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			updateLine(equip);
+		});
 }
 
 const updateLine = equip => {
