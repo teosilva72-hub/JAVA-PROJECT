@@ -14,49 +14,38 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_paulista_axles_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_paulista_axles_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.eco101_traffic_density_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.eco101_traffic_density_title)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ECO101')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_paulista_axles_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_paulista_axles_title)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.eco101_traffic_density_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.eco101_traffic_density_title)}" />		
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.initiliazeSatHeader}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s',
-		satLabels.global_date_column, satLabels.global_interval_column, satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, 
-		satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column, satLabels.number_of_axles_8_column, satLabels.number_of_axles_9_column, 
-		satLabels.global_total_vehicles_column))}" />
-	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(axlNumber = 0 OR axlNumber = 1 OR axlNumber = 2, 1, 0)); SUM(axlNumber = 3); SUM(axlNumber = 4); 
-		SUM(axlNumber = 5); SUM(axlNumber = 6); SUM(axlNumber = 7); SUM(axlNumber = 8); SUM(axlNumber = 9); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-				
-		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
+		
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" />
-
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', false, true)}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|name', faixa, true)}" />	
+		
     </f:metadata>
 	
 	<!---->
@@ -86,7 +75,7 @@
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
-	
+	 		
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
@@ -104,17 +93,17 @@
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	           
-	      <!-- ALERT MESSAGE -->
+	         
+	          <!-- ALERT MESSAGE -->
 	 
-	      <ui:include src="/template/alerts/alert.xhtml" />
-             
+	          <ui:include src="/template/alerts/alert.xhtml" />
+	                   
        <!-- ============================================================================================================================= -->
            
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.via_paulista_axles_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.eco101_traffic_density_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -125,12 +114,12 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header">
-		<!-- DATATABALE JSF -->
+		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
+	
 		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
-				<!-- COLUMN -->
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+			<!-- COLUMN -->
+				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->			
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->
@@ -153,7 +142,7 @@
 	    <!-- CHART CONTAINER -->  
 	  
 	    <ui:include src="/template/chart/chart_template.xhtml" />
-	
+	 
 		
 	  <!-- ============================================================================================================================= -->
 	  
@@ -186,7 +175,7 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		 		   	 	
+		   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 
 		 </form> <!-- FORM VALIDATION END -->
