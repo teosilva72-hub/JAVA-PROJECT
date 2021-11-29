@@ -1109,19 +1109,6 @@ function DirectionEquip() {
 // }
 /* Draw Map [end] */
 
-lines = {
-	"sos1": [-1, .558], "sos2": [-1, .57], "sos3": [-1, .575], "sos4": [-1, .579], "sos5": [-1, .582], "sos6": [-1, .588], "sos7": [-1, .594], "sos8": [-1, .593], "sos9": [-1, .593], "sos10": [-1, .592], "sos11": [-1, .578], "sos12": [-1, .568], "sos13": [-1, .565], "sos14": [-1, .557], "sos15": [-1, .552], "sos16": [-1, .55], "sos17": [-1, .55], "sos18": [-1, .55], "sos19": [-1, .56], "sos20": [-1, .574], "sos21": [-1, .58], "sos22": [-1, .584], "sos23": [-1, .586], "sos24": [-1, .575], "sos25": [-1, .56], "sos26": [-1, .542], "sos27": [-1, .522], "sos28": [-1, .518], "sos29": [-1, .514], "sos30": [-1, .506], "sos31": [-1, .503], "sos32": [-1, .494], "sos33": [-1, .484], "sos34": [-1, .478], "sos35": [-1, .47], "sos36": [-1, .47], "sos37": [-1, .468], "sos38": [-1, .448], "sos39": [-1, .431], "sos40": [-1, .431], "sos41": [-1, .431],
-	"dai1": [-1, .549], "dai2": [-1, .544], "dai3": [-1, .582], "dai4": [-1, .582], "dai5": [-1, .578], "dai6": [-1, .586], "dai7": [-1, .584], "dai8": [-1, .584], "dai9": [-1, .428], "dai10": [-1, .428],
-	"cftv1": [-1, .558], "cftv2": [-1, .565], "cftv3": [-1, .582], "cftv4": [-1, .594], "cftv5": [-1, .565], "cftv6": [-1, .549], "cftv7": [-1, .58], "cftv8": [-1, .586], "cftv9": [-1, .588], "cftv10": [-1, .506], "cftv11": [-1, .496], "cftv12": [-1, .482], "cftv13": [-1, .473], "cftv14": [-1, .468], "cftv15": [-1, .431], "cftv16": [-1, .431],
-	"sv1": [-1, .552], "sv2": [-1, .575], "sv3": [-1, .565], "sv4": [-1, .473], "sv5": [-1, .431],
-	"ocr1": [-1, .563], "ocr2": [-1, .57], "ocr3": [-1, .56], "ocr4": [-1, .565], "ocr5": [-1, .543], "ocr6": [-1, .549], "ocr7": [-1, .502], "ocr8": [-1, .506], "ocr9":  [-1, .431], "ocr10":  [-1, .426],
-	"colas1": [-1, .565], "colas2": [-1, .56], "colas3": [-1, .586], "colas4": [-1, .583], "colas5": [-1, .587], "colas6": [-1, .584],
-	"dms1": [-1, .57], "dms2": [-1, .576], "dms3": [-1, .586], "dms4": [-1, .580], "dms5": [-1, .588], "dms6": [-1, .426],
-	"wim1": [-1, .562], "wim2": [-1, .568],
-	"speed1": [-1, .57], "speed2": [-1, .575], "speed3": [-1, .543], "speed4": [-1, .549], "speed5": [-1, .492], "speed6": [-1, .497],
-	"mto1": [-1, .587],
-}
-
 // const setLines = () => {
 // 	let draw = $('.drawLines');
 // 	let container = $("#zoomtext.section");
@@ -1156,12 +1143,12 @@ lines = {
 const clearLines = () => {
 	let draw = $('.drawLines');
 	let checkedLines = $("#visiblelines");
-	draw.empty();
+	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-		updateLine(equip);
-	});
+		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+			let equip = $(this)
+			updateLine(equip);
+		});
 }
 
 const updateLine = equip => {
@@ -1170,34 +1157,32 @@ const updateLine = equip => {
 		return
 		
 	let draw = $('.drawLines');
+	let id = equip.attr("id");
+	let l = draw.find(`.equipLine.${id}`);
 	let container = draw.closest("[scroll-zoom]");
 
 	draw.css({
-		"width": container.css("width"),
-		"height": container.css("height")
+		"width": "100%",
+		"height": "100%"
 	})
 
-	let id = equip.attr("id");
-	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
-	let l = draw.find(`.equipLine.${id}`);
 	let equipScale = equip.attr("scale");
 	let dimension = {
 		"width": equip.width() * equipScale,
 		"height": equip.height() * equipScale,
 	}
 	let pos = {
-		"x": Number(equip.css("left").replace("px", "")) / scale,
-		"y": Number(equip.css("top").replace("px", "")) / scale
+		longitude: Number(equip.attr("longitude")),
+		latitude: Number(equip.attr("latitude")),
+		x: Number(equip.css("left").replace("px", "")) / scale,
+		y: Number(equip.css("top").replace("px", "")) / scale
 	};
 
-	let point = {
-		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
-		"y": (lines[id] ? lines[id][1] : .5) * container.height()
-	};
+	let point = coordToPixel(pos.longitude, pos.latitude);
 
 	let difference = {
-		"x": point.x - pos.x,
-		"y": point.y - pos.y,
+		x: point.x - pos.x,
+		y: point.y - pos.y,
 	}
 	difference.absX = Math.abs(difference.x);
 	difference.absY = Math.abs(difference.y);

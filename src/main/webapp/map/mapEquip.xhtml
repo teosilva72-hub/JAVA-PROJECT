@@ -65,7 +65,9 @@
                                     timer="#{item.message.pages[4].timer}" />
                             </div>
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
-                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
+                                item-width="#{item.mapWidth}" direction="#{item.direction}"
+                                longitude="#{item.longitude}" latitude="#{item.latitude}">
 
                                 <!-- Table with DIV -->
                                 <div class="tableStyle card">		
@@ -264,6 +266,7 @@
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
                                 posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
                                 item-width="#{item.mapWidth}" direction="#{item.direction}"
+                                longitude="#{item.longitude}" latitude="#{item.latitude}"
                                 status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}"
                                 status="#{satMapsView.satStatus.get(loop.index).status}">
                                 <div id="sat#{item.equip_id}" class="table-sat card border-dark">
@@ -378,8 +381,9 @@
                         
                         
                             <!-- Card Speed -->
-							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}">
+							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark"
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}"
+                                direction="#{item.direction}" longitude="#{item.longitude}" latitude="#{item.latitude}">
                                 <a role="button" class="speed-info-bagde" data-toggle="popover" 
                                     data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
 								<div class="card-header py-0 text-center text-white">
@@ -461,7 +465,9 @@
                         
                         <c:otherwise>
                             <div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}" class="equip-box #{item.table_id}">                                       
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}"
+                                direction="#{item.direction}" class="equip-box #{item.table_id}"
+                                longitude="#{item.longitude}" latitude="#{item.latitude}">                                       
                                 
                                 <c:if test="#{item.table_id eq 'cftv'}">                                                                                               
                                     <h:graphicImage class="equip-image"

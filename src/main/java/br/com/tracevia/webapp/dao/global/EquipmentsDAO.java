@@ -90,13 +90,13 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, direction FROM "+modulo+"_equipment eq " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, direction FROM "+modulo+"_equipment eq " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -134,7 +134,9 @@ public class EquipmentsDAO {
 					equip.setMapWidth(rs.getInt(9));						
 					equip.setMapPosX(rs.getInt(10));					
 					equip.setMapPosY(rs.getInt(11));
-					equip.setDirection(rs.getString(12));
+					equip.setLongitude(rs.getDouble(12));
+					equip.setLatitude(rs.getDouble(13));
+					equip.setDirection(rs.getString(14));
 
 					lista.add(equip);
 				}				
@@ -168,13 +170,13 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, name, port, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, model, master_sip, direction FROM sos_equipment eq " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, model, master_sip, longitude, latitude, direction FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, port, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, direction FROM sos_equipment eq " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, longitude, latitude, direction FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -213,7 +215,9 @@ public class EquipmentsDAO {
 					sos.setMapPosY(rs.getInt(12));
 					sos.setModel(rs.getInt(13));
 					sos.setSip(rs.getString(14));
-					sos.setDirection(rs.getString(15));
+					sos.setLongitude(rs.getDouble(15));
+					sos.setLatitude(rs.getDouble(16));
+					sos.setDirection(rs.getString(17));
 
 					lista.add(sos);
 				}				
@@ -252,14 +256,14 @@ public class EquipmentsDAO {
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
-				"service_position, direction FROM sat_equipment eq " +
+				"service_position, longitude, latitude, direction FROM sat_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, " +
-				"service_position, direction FROM sat_equipment eq " +
+				"service_position, longitude, latitude, direction FROM sat_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -320,7 +324,9 @@ public class EquipmentsDAO {
 					sat.setMapPosX(rs.getInt(19));					
 					sat.setMapPosY(rs.getInt(20));	
 					sat.setPosicao_nivel_servico(rs.getString(21));
-					sat.setDirection(rs.getString(22));
+					sat.setLongitude(rs.getDouble(22));
+					sat.setLatitude(rs.getDouble(23));
+					sat.setDirection(rs.getString(24));
 
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 
@@ -363,7 +369,7 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
-				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, direction "
+				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, longitude, latitude, direction "
 				+ "FROM pmv_equipment eq " 
 				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
@@ -372,7 +378,7 @@ public class EquipmentsDAO {
 				+ "ORDER BY eq.equip_id ASC"; 
 
 		String sqlVW = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
-				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, direction"
+				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction"
 				+ "FROM pmv_equipment eq " 
 				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
@@ -419,7 +425,9 @@ public class EquipmentsDAO {
 					dms.setMapPosY(rs.getInt(13));	
 					dms.setMessage(message);
 					dms.setMsg_status(active);
-					dms.setDirection(rs.getString(16));
+					dms.setLongitude(rs.getDouble(17));
+					dms.setLatitude(rs.getDouble(18));
+					dms.setDirection(rs.getString(19));
 
 					if (active)
 						dms.setMessageChange(message);
