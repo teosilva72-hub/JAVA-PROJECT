@@ -660,6 +660,14 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="lat"] {
+	width: 100%;
+}
+
+[id$="long"] {
+	width: 100%;
+}
+
 [id$="model"] {
 	width: 100%;
 }
@@ -714,6 +722,14 @@ img.box-img[zoom] {
 }
 
 [id$="sipEdit"] {
+	width: 100%;
+}
+
+[id$="latEdit"] {
+	width: 100%;
+}
+
+[id$="longEdit"] {
 	width: 100%;
 }
 
