@@ -244,7 +244,7 @@ public class Equipments {
 	}
 
 
-	public int getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
