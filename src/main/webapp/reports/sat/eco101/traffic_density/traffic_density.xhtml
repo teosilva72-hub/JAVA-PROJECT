@@ -32,14 +32,13 @@
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
+				
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
