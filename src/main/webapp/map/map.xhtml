@@ -443,10 +443,10 @@
 
 		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
-			<div>
+			<div style="display:none">
 				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
+					<div class="plaque" longitude="#{plaque.longitude}"
+						latitude="#{plaque.latitude}">
 						<img width="75"
 							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 					</div>
