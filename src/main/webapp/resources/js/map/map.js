@@ -479,18 +479,18 @@ function posEquip(equip) {
 	let zoomTarget = equip.closest('[scroll-zoom]').children().first()
 	let zoomTargetImg = zoomTarget.find('img')
 	let scale = Number(zoomTarget.attr('scale'))
-	let pos = {
-		x: Number(equip.attr('posX')),
-		y: Number(equip.attr('posY'))
+	let coord = {
+		longitude: equip.attr("longitude"),
+		latitude: equip.attr("latitude")
 	}
-
-	pos.centX = pos.x / widthMax * scale
-	pos.centY = pos.y / heightMax * scale
+	let pos = coordToPixel(coord.longitude, coord.latitude)
+	pos.x += Number(equip.attr('posX'))
+	pos.y += Number(equip.attr('posY'))
 
 	//Pos X and Pos Y
 	equip.css({
-		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
+		left: pos.x * scale,
+		top: pos.y * scale
 	});
 
 	if (!equip.hasClass("plaque"))
@@ -616,7 +616,7 @@ function setPosition(posX, posY) {
 	if (scale == 1) {
 		const element = $('section.overflow')
 
-		for (let idx = 0; idx < 2; idx++) {
+		for (let idx = 0; idx < 1; idx++) {
 			zoomIn(element)
 		}
 
@@ -668,8 +668,8 @@ function dragEquip() {
 					left: Math.round(elmnt.css("left").replace("px", "") - pos1),
 					top: Math.round(elmnt.css("top").replace("px", "") - pos2)
 				}
-				pos.leftOrigin = Math.round(((pos.left - targetZoomImg.offset().left + targetZoom.offset().left) / targetZoomImg.width() * widthMax) / scale)
-				pos.topOrigin = Math.round(((pos.top - targetZoomImg.offset().top + targetZoom.offset().top) / targetZoomImg.height() * heightMax) / scale)
+				pos.leftOrigin = Math.round(pos.left / scale)
+				pos.topOrigin = Math.round(pos.top / scale)
 
 				// Set the element's new position:
 				elmnt.css({
@@ -680,10 +680,11 @@ function dragEquip() {
 				updateLine(elmnt);
 
 				// Save element position on input 
+				let initial = coordToPixel(elmnt.attr("longitude"), elmnt.attr("latitude"));
 				document.getElementById("real:equipIdPos").value = id;
 				document.getElementById("real:equipTablePos").value = type;
-				document.getElementById("real:equipPosX").value = pos.leftOrigin;
-				document.getElementById("real:equipPosY").value = pos.topOrigin;
+				document.getElementById("real:equipPosX").value = Math.round(pos.leftOrigin - initial.x);
+				document.getElementById("real:equipPosY").value = Math.round(pos.topOrigin - initial.y);
 				$('#posX').text('x: ' + parseInt(pos.left / targetZoom.width() * widthMax / scale));
 				$('#posY').text('y: ' + parseInt(pos.top / targetZoom.height() * heightMax / scale));
 			})
