@@ -477,15 +477,14 @@ function resizeEquip(container) {
 // EQUIPMENT POSITION
 function posEquip(equip) {
 	let zoomTarget = equip.closest('[scroll-zoom]').children().first()
-	let zoomTargetImg = zoomTarget.find('img')
 	let scale = Number(zoomTarget.attr('scale'))
 	let coord = {
 		longitude: equip.attr("longitude"),
 		latitude: equip.attr("latitude")
 	}
 	let pos = coordToPixel(coord.longitude, coord.latitude)
-	pos.x += Number(equip.attr('posX'))
-	pos.y += Number(equip.attr('posY'))
+	pos.x += Number(equip.attr('posX')) || 0
+	pos.y += Number(equip.attr('posY')) || 0
 
 	//Pos X and Pos Y
 	equip.css({

@@ -443,7 +443,7 @@
 
 		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
-			<div style="display:none">
+			<div>
 				<c:forEach items="#{roadView.plaque}" var="plaque">
 					<div class="plaque" longitude="#{plaque.longitude}"
 						latitude="#{plaque.latitude}">
