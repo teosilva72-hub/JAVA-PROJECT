@@ -437,5 +437,28 @@ $(function () {
   });
 
  
- 
+ // RIGHT SIDE PANEL
+
+$(function(){
+  $('.slider-arrow').click(function(){
+    if($(this).hasClass('show')){
+    $( ".slider-arrow, .panel" ).animate({
+      left: "+=300"
+      }, 700, function() {
+        // Animation complete.
+      });
+      $(this).html('&laquo;').removeClass('show').addClass('hide');
+    }
+    else {      
+    $( ".slider-arrow, .panel" ).animate({
+      left: "-=300"
+      }, 700, function() {
+        // Animation complete.
+      });
+      $(this).html('&raquo;').removeClass('hide').addClass('show');    
+    }
+  });
+});
+
+ // RIGHT SIDE PANEL [END]
  
