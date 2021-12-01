@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	
+	<f:metadata>
+
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_battery_title)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_battery_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(sosLabels.tuxpan_battery_title)}" />		
+		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(sosLabels.tuxpan_battery_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('calls')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+	
+		<!-- CALL REPORT TYPE -->
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('battery_values')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.battery_volts_column, sosLabels.battery_ampere_column))}" />
+	   
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(AVG(volt), 2) ,0); IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+				
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', false, true)}" />
+			               
+    </f:metadata>
+	
+	<!---->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+	 		
+	   <!-- DIV DE ESTRUTURA DA TABELA --> 
+	    
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	       <!----> 		
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
+             
+       <!-- ============================================================================================================================= -->
+           
+           <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
+	       <h:outputText value="#{sosLabels.tuxpan_battery_title}" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
+	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
+		
+	  <f:facet name="header"> <!-- Header -->
+	 
+	  <!-- First Level -->
+	         
+      <tr>
+        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(0)}</th>
+        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(1)}</th>
+        <th colspan="2" class="custom-table-header" >#{sosLabels.battery_master_column}</th> <!-- SUB HEADER -->      
+      </tr>
+      
+      <!-- Second Level -->
+      
+      <tr>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(2)}</th>
+        <th class="custom-table-header" >#{testerBean.columnsInUse.get(3)}</th>       
+      </tr>
+      
+     </f:facet> <!---->	
+     
+     <!---->		
+				
+		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+			<h:column>
+				<!-- COLUMN -->				
+				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+			</h:column> <!-- COLUMN END -->
+		</c:forEach> <!-- LOOP TAG END -->
+	</h:dataTable> <!-- DATATABALE JSF END -->
+	<!---->
+</h:form><!-- FORM TABLE END-->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	 
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
+	  
+	  <!-- ============================================================================================================================= -->
+		
+	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  
+	  <!-- ============================================================================================================================= -->
+	  
+	    <!-- CHART CONTAINER -->  
+	  
+	    <ui:include src="/template/chart/chart_template.xhtml" />
+	  
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	   
+	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	        
+      <!-- ============================================================================================================================= -->
+             
+         <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
+               
+          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+	   
+	  <!-- ============================================================================================================================= -->
+	   
+	     <!-- DOWNLOAD MODAL TEMPLATE: REALIZAR DOWNLOAD DE ARQUIVOS EXCEL -->
+	   
+	      <ui:include src="/template/modal/download_modal_template.xhtml" />
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+			 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

@@ -20,8 +20,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
-import org.primefaces.context.RequestContext;
-
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
@@ -59,6 +57,7 @@ public class TesterBean {
 	
 	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
 	
+	public String totalType = "standard";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -289,6 +288,10 @@ public class TesterBean {
 	// Devines	
 	public void defineFileName(String fileName) {
 		this.fileName = fileName;
+	}
+	
+	public void defineTotalType(String totalType) {
+		this.totalType = totalType;
 	}
 	
 	public void defineClassSublHeader(String classSubHeader) {
@@ -554,8 +557,8 @@ public class TesterBean {
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
-				dateStart = map.get(String.format("%s-start", search[0]));
-				dateEnd = map.get(String.format("%s-end", search[0]));
+				dateStart = map.get(String.format("%s-start", search[1]).replaceAll(" ", ""));
+				dateEnd = map.get(String.format("%s-end", search[1]).replaceAll(" ", ""));
 
 				if (search[3] != null && !dateStart.isEmpty() && !dateEnd.isEmpty()) {
 					SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -578,7 +581,7 @@ public class TesterBean {
 			for (Pair<String[], List<String[]>> search : filterSearch) {
 				String filter = "";
 				if (search.left[2].equals("multiple")) {
-					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[0]));
+					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					String newFilter = "";
 					
 					if (filterArray != null) {						
@@ -599,7 +602,9 @@ public class TesterBean {
 					}
 				}
 				else {
-					String f = map.get(String.format("%s-filter", search.left[0]));
+					String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
+					
+					System.out.println(String.format("%s-filter", search.left[1]));
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
@@ -668,7 +673,7 @@ public class TesterBean {
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
 			if(!special)										     
-		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, isSat, haveTotal, multiSheet, classSubHeader);
+		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
 			
 			else generateSpecialFile(model, specialName);
 		     
@@ -1025,5 +1030,5 @@ public class TesterBean {
 	   }
 	   
 	// --------------------------------------------------------------------------------------------	
-			 	   	
+		
 }

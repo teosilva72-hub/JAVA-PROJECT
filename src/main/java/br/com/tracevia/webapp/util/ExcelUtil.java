@@ -1117,31 +1117,7 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle standard, CellStyle header, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
-
-		int startColumn = 0;
-		int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
-		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
-		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-				    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));			
-			setCellsStyle(sheet, row, header, 0, startColumn-1, rowTotal, rowTotal); // SET FIRST CELL STYLE	
-		
-		// ----------------------------------------------------------------------------------------------------------------
+	public void totalExcelSum(Sheet sheet, Row row, CellStyle standard, List<String[]> lines, int rowTotal, int columnsLength, int startColumn, int rowIni, int rowEnd) {
 
 		// LOOP
 		for(int col = startColumn; col <= columnsLength; col++) {
@@ -1176,30 +1152,7 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelAverage(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
-
-        int startColumn = 0;
-		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
-		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER						 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
-
-
-		// ----------------------------------------------------------------------------------------------------------------
+	public void totalExcelAverage(Sheet sheet, Row row, CellStyle standard, List<String[]> lines, int columnsLength,  int startColumn, int rowTotal, int rowIni, int rowEnd) {
 
 		// LOOP
 		for(int col = startColumn; col <= columnsLength; col++) {
@@ -1210,7 +1163,7 @@ public class ExcelUtil {
 
 		}
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
+		setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
 
 	}
 
@@ -1238,29 +1191,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/CreationHelper.html 
 	 */
-	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int colNumber, int rowIni, int rowEnd) {
-
-        int startColumn = 0;
-		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
-		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
-
-		// ----------------------------------------------------------------------------------------------------------------
+	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle standard, int colNumber, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE FONT	
 		Font font = createFont(wb, FONT_ARIAL, 10, false, false, IndexedColors.BLACK);
@@ -1275,6 +1206,8 @@ public class ExcelUtil {
 		CreationHelper createHelper = wb.getCreationHelper();
 
 		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("hh:mm:ss"));
+		
+		System.out.println(colNumber);
 
 		String columnLetter = CellReference.convertNumToColString(colNumber);	// COLUMN LETTER	
 
@@ -1291,10 +1224,10 @@ public class ExcelUtil {
 		}
 
 		formula += aux + ")";
-
+		
 		setFormula(sheet, row, rowTotal, colNumber, formula);	// DEFINE FORMULA	
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE
+		setCellStyle(sheet, row, standard, rowTotal, rowTotal, colNumber, colNumber); // TOTAL STYLE
 
 	}	
 

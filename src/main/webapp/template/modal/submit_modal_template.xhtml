@@ -68,10 +68,10 @@
 								<!-- FORM GROUP DIV -->
 								<span><i class="fas fa-hdd"></i></span>
 								<!-- SPAN ICON -->
-								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
+								<span for="#{testerBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
-								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter"
+								<select name="#{testerBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" id="#{testerBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter"
 									field="#{testerBean.getLeft(filterSearch)[1]}" multiple="#{testerBean.getLeft(filterSearch)[2]}"
 									required="#{testerBean.getLeft(filterSearch)[3]}">
 									<!-- SELECT OPTIONS -->
@@ -96,7 +96,7 @@
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="error" id="#{testerBean.getLeft(filterSearch)[0]}-filter-error"></label>
+								<label for="#{testerBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="error" id="#{testerBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->
@@ -152,19 +152,19 @@
 								<!-- FORM GROUP DIV -->
 								<span><i class="far fa-calendar-alt"></i></span>
 								<!---->
-								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-start" id="#{dateSearch[0]}-start" required="#{dateSearch[2]}"
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-start" id="#{dateSearch[1].replaceAll(' ', '')}-start" required="#{dateSearch[2]}"
 									placeholder="#{reportsLabels.reports_input_date_start_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-start" class="valid-icon-hidden"></span>
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-start" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{dateSearch[0]}-start" class="error" id="#{dateSearch[0]}-start-error"></label>
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-start" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-start-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->
@@ -181,19 +181,19 @@
 								<!-- FORM GROUP DIV -->
 								<span><i class="far fa-calendar-alt"></i></span>								
 								<!---->
-								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-end" id="#{dateSearch[0]}-end" required="#{dateSearch[2]}"
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-end" id="#{dateSearch[1].replaceAll(' ', '')}-end" required="#{dateSearch[2]}"
 									placeholder="#{reportsLabels.reports_input_date_end_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-end" class="valid-icon-hidden"></span>
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-end" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{dateSearch[0]}-end" class="error" id="#{dateSearch[0]}-end-error"></label>
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-end" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-end-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->

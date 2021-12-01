@@ -10,7 +10,10 @@ import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -47,7 +50,8 @@ public class ExcelTemplate {
 	private static String FONT_ARIAL = "Arial";
 	
 	private static String NUMBER_REGEX = "\\d+";
-
+	private static String NUMBER_DECIMAL = "^[0-9]\\d*(\\.\\d+)?$";
+	
 	LocaleUtil localeExcel, localeSAT;
 
 	// DEFAULT FONTS
@@ -167,7 +171,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
-			String[] dates, String[] period, List<String> equipId, int dayIndex) {
+			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
@@ -230,7 +234,7 @@ public class ExcelTemplate {
 		
 		// HEADER DATE TEMPLATE
 		
-		if(period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR")) 	
+		if(!isMultiSheet || period[1].toUpperCase().equals("DAY") || period[1].toUpperCase().equals("MONTH") || period[1].toUpperCase().equals("YEAR")) 	
 		    headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[0]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[1];
 
 		else headerDates = localeExcel.getStringKey("excel_sheet_header_date_from")+": " + dates[dayIndex]+ "\n"+localeExcel.getStringKey("excel_sheet_header_date_to")+": " + dates[dayIndex];
@@ -295,6 +299,9 @@ public class ExcelTemplate {
 		utilSheet.setCellValue(sheet, row, 6, 2, module.equals("sat")? satInfo.get(0).getCidade() : equipsInfo.get(0).getCidade());
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 2);
 
+		// PARA REPORTS QUE NÃO USAM PERIODO
+		try {
+		
 		if(!period.equals("")) {
 
 		// PERÃ�ODO LABEL
@@ -308,6 +315,8 @@ public class ExcelTemplate {
 		utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 6, 8);
 		
 		}
+		
+		}catch(NullPointerException ex) {}
 
 		// ----------------------------------------------------------------------------------------------------------------
 
@@ -392,6 +401,50 @@ public class ExcelTemplate {
 	// TOTAL
 	// ----------------------------------------------------------------------------------------------------------------
 	// ----------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	
+	public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines) {
+		
+		        // CREATE ROW TOTAL
+				utilSheet.createRow(sheet, row, rowTotal);		 
+
+				utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
+				utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE
+								
+				int startColumn = 0;
+				int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
+				
+				String startColumnLetter = "A";
+				String endColumnLetter = "";
+
+				// ----------------------------------------------------------------------------------------------------------------
+
+				 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+				
+					for(int c = 0; c < 3; c++) {
+						 
+						if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
+							startColumn++;
+						    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
+						}					
+					}
+				 	    	
+					// MERGE START CELLS ON INIT TOTAL
+					utilSheet.mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));			
+					utilSheet.setCellsStyle(sheet, row, tableHeader, 0, startColumn-1, rowTotal, rowTotal); // SET FIRST CELL STYLE	
+				
+				// ----------------------------------------------------------------------------------------------------------------		
+					
+					return startColumn;
+				
+	      }
+	
 
 	/**
 	 * MÃ©todo para criar colunas com total para SOMA
@@ -412,14 +465,9 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
-		
-		// CREATE ROW TOTAL
-		utilSheet.createRow(sheet, row, rowTotal);		 
-
-		utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
-		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE		
-		utilSheet.totalExcelSum(sheet, row, standard, tableHeader, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, List<String[]> lines, int columnsLength, int startColumn, int rowTotal, int rowIni, int rowEnd) {
+				
+		utilSheet.totalExcelSum(sheet, row, standard, lines, rowTotal, columnsLength, startColumn, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
@@ -444,16 +492,9 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, int columnsLength, int rowTotal, int rowIni, int rowEnd) {
+	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, List<String[]> lines, int columnsLength, int startColumn, int rowTotal, int rowIni, int rowEnd) {
 
-		// CREATE ROW TOTAL
-		utilSheet.createRow(sheet, row, rowTotal);		 
-
-		utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
-		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
-		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
-
-		utilSheet.totalExcelAverage(sheet, row, standard, lines, rowTotal, columnsLength, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelAverage(sheet, row, standard, lines, rowTotal, columnsLength, startColumn,  rowIni, rowEnd); // SET CELL FORMULA			
     
 	}
     
@@ -480,17 +521,9 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalTime(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, CellStyle standard, CellStyle tableHeader, List<String[]> lines, 
-			int columnsLength, int columnNumber, int rowTotal, int rowIni, int rowEnd) {
-
-		// CREATE ROW TOTAL
-		utilSheet.createRow(sheet, row, rowTotal);		 
-
-		utilSheet.createCells(sheet, row, 0, columnsLength, rowTotal, rowTotal);   // CREATE CELLS			
-		utilSheet.setCellValue(sheet, row, rowTotal, 0, localeExcel.getStringKey("excel_sheet_table_total")); // SET FIRST CELL VALUE						
-		utilSheet.setCellStyle(sheet, row, tableHeader, rowTotal, 0); // SET FIRST CELL STYLE	
-
-		utilSheet.totalExcelDate(workbook, sheet, row, standard, lines, rowTotal, columnsLength, columnNumber, rowIni, rowEnd); // SET CELL FORMULA					
+	public void totalTime(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, CellStyle standard,  int columnNumber, int rowTotal, int rowIni, int rowEnd) {
+		
+		utilSheet.totalExcelDate(workbook, sheet, row, standard,  columnNumber, rowTotal, rowIni, rowEnd); // SET CELL FORMULA					
 
 	}
 	
@@ -511,7 +544,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
-			String startDate, String endDate, String[] period, String sheetName, String fileTitle, boolean isSat, boolean isTotal, boolean isMultiSheet, String classSubHeader) {
+			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, String classSubHeader) {
 		
 		sheet = null;		
 		row = null;
@@ -559,7 +592,7 @@ public class ExcelTemplate {
 		sheet = workbook.createSheet(sheetName);
 										
 		excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-				dates, period, equips, 0);
+				dates, period, equips, 0, isMultiSheet);
 				
 		// -----------------------------------------------------
 		
@@ -631,8 +664,23 @@ public class ExcelTemplate {
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
-		if(isTotal)
-		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL	
+		if(isTotal) {
+			
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+						
+			switch (totalType) {
+			
+			case "datetime": 
+				
+				totalSum(sheet, row, standardStyle, lines, (endCol-1), startColumn, dataEndRow, dataStartRow, dataEndRow);
+				totalTime(workbook, sheet, row, standardStyle, endCol, dataEndRow, dataStartRow, dataEndRow); break;
+					
+			case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+					
+			default:  totalSum(sheet, row, standardStyle, lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+				break;
+			}		    
+		}
 		
 		// ---------------------------------------------------------------------------------------------------
 				
@@ -739,11 +787,23 @@ public class ExcelTemplate {
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 				
-				if(isTotal)
-				    totalSum(sheet, row, standardStyle, tableHeadStyle, p.right, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL
-				
-		   }		
-		}
+				if(isTotal) {
+					
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+					
+					switch (totalType) {
+					
+					case "datetime": totalTime(workbook, sheet, row, standardStyle,  endCol, dataEndRow, dataStartRow, dataEndRow);	break;
+							
+					case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+							
+					default:  totalSum(sheet, row, standardStyle,lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+						break;
+					}
+					
+				}				   				
+		    }		
+		 }
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 						
@@ -792,7 +852,7 @@ public class ExcelTemplate {
 			sheet = workbook.createSheet(sheetNames[d]); // CREATE SHEET NAMES
 		
 			excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-				dates, period, equips, d);
+				dates, period, equips, d, isMultiSheet);
 										  	
 		// -----------------------------------------------------
 		
@@ -864,8 +924,20 @@ public class ExcelTemplate {
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
-		if(isTotal)
-		    totalSum(sheet, row, standardStyle, tableHeadStyle, lines, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL		
+		if(isTotal) {
+			
+			int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+			
+            switch (totalType) {
+			
+			case "datetime": totalTime(workbook, sheet, row, standardStyle, endCol, dataEndRow, dataStartRow, dataEndRow);	break;
+					
+			case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+					
+			default:  totalSum(sheet, row, standardStyle, lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+				break;
+			}						
+		}		   		
 		
 		// ---------------------------------------------------------------------------------------------------
 				
@@ -972,11 +1044,23 @@ public class ExcelTemplate {
 				
 				utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 				
-				if(isTotal)
-				    totalSum(sheet, row, standardStyle, tableHeadStyle, p.right, endCol, dataEndRow, dataStartRow, dataEndRow); // TOTAL
-				
-		   }		
-		}
+				if(isTotal) {
+					
+					int startColumn = createTotalRow(sheet, row, tableHeadStyle, dataEndRow, endCol, lines);
+					
+					switch (totalType) {
+					
+					case "datetime": totalTime(workbook, sheet, row, standardStyle,  endCol, dataEndRow, dataStartRow, dataEndRow);	break;
+							
+					case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+							
+					default:  totalSum(sheet, row, standardStyle, lines, endCol, dataEndRow, startColumn, dataStartRow, dataEndRow); 
+						break;
+					}
+					
+				 }				    				
+		     }		
+		 }
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------------------
 						
