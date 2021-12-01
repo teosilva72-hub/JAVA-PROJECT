@@ -1,15 +1,22 @@
 let draw = $(".drawLines")
 let idGps = {}
+let actives = []
 
 const connectGPS = async (request, debug) => {
 	return await sendMsgStomp(request, 'GPSRequest', debug, 'request')
 }
 
-const coordToPixel = (x, y) => {
-	let start = draw.attr('gps_start').replaceAll(',', '.').split(';')
-	let end = draw.attr('gps_end').replaceAll(',', '.').split(';')
-	let map = draw.prev()
-	let pad = (draw.height() - map.height()) / 2
+const coordToPixel = (x, y, name) => {
+	let d, map;
+	let pad = 0;
+	if (!name) {
+		d = draw;
+		map = draw.prev()
+		pad = (draw.height() - map.height()) / 2
+	} else
+		map = d = $(`[name=${name}]`);
+	let start = d.attr('gps_start').replaceAll(',', '.').split(';')
+	let end = d.attr('gps_end').replaceAll(',', '.').split(';')
 	let pos = {
 		s1: Number(start[0]),
 		s2: Number(start[1]),
@@ -23,12 +30,12 @@ const coordToPixel = (x, y) => {
 	let distance = {
 		longitude: pos.e1 - pos.s1,
 		latitude: pos.e2 - pos.s2,
-		x: draw.width(),
+		x: d.width() * (name ? 0.98 : 1),
 		y: pos.pe - pos.ps,
 		hypotenuse: () => Math.sqrt(Math.pow(distance.longitude, 2) + Math.pow(distance.latitude, 2)),
 		radius: () => Math.atan(distance.latitude / distance.longitude),
 		radiusOpposite: () => Math.atan(distance.longitude / distance.latitude),
-		pixel: () => Math.sqrt(Math.pow(draw.width(), 2) + Math.pow(distance.y, 2)),
+		pixel: () => Math.sqrt(Math.pow(d.width(), 2) + Math.pow(distance.y, 2)),
 		radiusPixel: () => Math.atan(distance.y / distance.x),
 	}
 	let diff = {
@@ -52,6 +59,57 @@ const coordToPixel = (x, y) => {
 	}
 }
 
+const zoomRoadPoint = name => {
+	let zoom = $(`[name=${name}]`)
+	if (zoom.css("display") == "block") {
+		zoom.css("display", "none")
+		let idx = actives.indexOf(name)
+		if (idx > -1)
+			actives.splice(name, 1)
+		return
+	}
+	let start = zoom.attr('gps_start').replaceAll(',', '.').split(';')
+	let end = zoom.attr('gps_end').replaceAll(',', '.').split(';')
+	
+	let pos = {
+		start: coordToPixel(start[0], start[1]),
+		end: coordToPixel(end[0], end[1])
+	}
+
+	zoom.css({
+		position: "relative",
+		left: pos.start.x + (pos.end.x - pos.start.x) / 2,
+		top: pos.start.y + (pos.end.y - pos.start.y) / 2,
+		transform: "translate(-42%, -82%)",
+		height: pos.start.y,
+		display: "block",
+	})
+	zoom.find("img").css("height", "100%")
+	actives.push(name)
+
+	$("#zoomRoad").append(zoom)
+}
+
+const drawPointZoom = (id, name, title, longitude, latitude) => {
+	let pos = coordToPixel(longitude, latitude, name)
+	let draw = $(`[name=${name}]`)
+	let divItem = draw.find(`#${id}`)
+	let outRange = !(0 < pos.x < draw.width()) || !(0 < pos.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
+	let defaultCss = {position: 'absolute', left: `${pos.x}px`, overflow: "hidden";, top: `${pos.y}px`, transform: "translate(-50%, -50%)", width: "30px", "z-index": 1}
+
+	if (divItem.length) {
+		if (outRange)
+			divItem.remove()
+		else {
+			divItem.css(defaultCss)
+		}
+	} else if (!outRange) {
+		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		draw.append(n)
+		n.tooltip()
+	}
+}
+
 const drawPoint = item => {
 	let id = item.i || item.id;
 	let name = item.nm || idGps[id]
@@ -63,6 +121,9 @@ const drawPoint = item => {
 	let point = coordToPixel(pos.x, pos.y)
 	let outRange = !(0 < point.x < draw.width()) || !(0 < point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
 	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, transform: "translate(-50%, -50%)", width: "42px", "z-index": 1}
+
+	for (const a of actives)
+		drawPointZoom(id, a, name, pos.x, pos.y)
 
 	if (divItem.length) {
 		if (outRange)
