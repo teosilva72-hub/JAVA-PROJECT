@@ -38,13 +38,17 @@
 					<!-- OVERFLOW -->
 
 					<!-- OVERFLOW -->
-					<section class="overflow" scroll-zoom="0.9" max-scale="12" id="content">
+					<section class="overflow" scroll-zoom="1.3" max-scale="12" id="content">
 
 						<!-- START SECTION -->
 						<div id="zoomtext" scale="1" class="section">
+
+							<ui:param name="Coord" value="#{ loginAccount.coord }" />
+
 							<!-- MAP FRONT IMAGE -->
 							<h:graphicImage class="grab-map" width="100%" 
 							value="#{loginAccount.mapUI}" />
+							<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 						</div>
 
 						<!-- Label -->
@@ -61,10 +65,10 @@
 						<!-- Plaque -->
 						<ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
-							<div>
+							<div style="display:none">
 								<c:forEach items="#{roadView.plaque}" var="plaque">
-									<div class="plaque" posX="#{plaque.map_posX}"
-										posY="#{plaque.map_posY}">
+									<div class="plaque" longitude="#{plaque.longitude}"
+										latitude="#{plaque.latitude}">
 										<img width="75"
 											src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 									</div>
@@ -101,6 +105,8 @@
 		<ui:fragment rendered="#{loginAccount.load.en_speed}">
 			<h:outputScript name="speed_event.js" library="js/speed" />
 		</ui:fragment>
+
+		<h:outputScript name="gps.js" library="js/gps" />
 
 		<h:outputScript name="mapView.js" library="js/map" />
 

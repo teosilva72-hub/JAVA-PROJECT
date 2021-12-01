@@ -193,8 +193,8 @@ public class EstradaObjectController {
 
 	public class Plaque {
 		int km;
-		int map_posX;
-		int map_posY;
+		double longitude;
+		double latitude;
 		int linear_posX;
 		int linear_posY;
 
@@ -208,20 +208,20 @@ public class EstradaObjectController {
 			this.km = km;
 		}
 
-		public int getMap_posX() {
-			return this.map_posX;
+		public double getLongitude() {
+			return this.longitude;
 		}
 
-		public void setMap_posX(int map_posX) {
-			this.map_posX = map_posX;
+		public void setLongitude(double longitude) {
+			this.longitude = longitude;
 		}
 
-		public int getMap_posY() {
-			return this.map_posY;
+		public double getLatitude() {
+			return this.latitude;
 		}
 
-		public void setMap_posY(int map_posY) {
-			this.map_posY = map_posY;
+		public void setLatitude(double latitude) {
+			this.latitude = latitude;
 		}
 
 		public int getLinear_posX() {

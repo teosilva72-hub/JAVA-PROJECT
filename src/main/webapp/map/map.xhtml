@@ -202,7 +202,7 @@
 				<div class="linesbox">
 					<div>
 						<input type="checkbox" id="visiblelines" name="visiblelines"
-							checked=""></input> <label for="visiblelines">Lines</label>
+							checked=""></input> <label for="visiblelines">#{mapLabels.map_creation_btn_lines_equips}</label>
 					</div>
 				</div>
 
@@ -440,13 +440,20 @@
 		<!-- Drag Items --> <!-- CAUSE -->
 
 		<div class="draggable" id="equipAll"></div>
+		<div class="zoomRoad" id="zoomRoad">
+			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
+
+			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
+				<img src="/resources/images/map/tuxpan/naranjos.webp" />
+			</div>
+		</div>
 
 		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
 			<div>
 				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
+					<div class="plaque" longitude="#{plaque.longitude}"
+						latitude="#{plaque.latitude}">
 						<img width="75"
 							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 					</div>

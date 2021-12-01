@@ -1150,3 +1150,28 @@ a > .notification-badge {
   transition: 0.5s;
 }
 /* CALL CENTER WIM [END] */
+
+/* PANEL RIGHT SIDE */
+
+.panel {
+width:300px;
+float:right;
+height:550px;
+background:#d9dada;
+position:relative;
+right:-300px;
+
+}
+.slider-arrow {
+padding:5px;
+width:10px;
+float:right;
+background:#d9dada;
+font:400 12px Arial, Helvetica, sans-serif;
+color:#000;
+text-decoration:none;
+position:relative;
+right:-300px;
+}
+
+/* PANEL RIGHT SIDE [END]*/

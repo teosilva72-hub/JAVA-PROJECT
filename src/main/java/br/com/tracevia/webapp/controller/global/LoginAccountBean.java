@@ -555,11 +555,26 @@ public class LoginAccountBean {
      * @since 1.0    
 	 */
 	public void coordMap() {
+		coordMap("");
+	}
+
+	/**
+	 * M�todo para obter as credenciais de um aplicativo
+	 * @author Guilherme 12/07/2021
+     * @version 1.0
+     * @since 1.0    
+	 */
+	public double[][] coordMap(String name) {
 		
 		LoginAccountDAO dao = new LoginAccountDAO();
 
-		coord[0] = dao.getCoord("start");
-		coord[1] = dao.getCoord("end");
+		name = (name.isEmpty() ? name : "-" + name);
+
+		System.out.println(name);
+		coord[0] = dao.getCoord("start" + name);
+		coord[1] = dao.getCoord("end" + name);
+
+		return coord;
 	}
 	
 	// --------------------------------------------------------------------------------------------

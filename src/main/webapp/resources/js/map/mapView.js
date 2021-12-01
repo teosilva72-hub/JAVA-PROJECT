@@ -50,6 +50,9 @@ const init = () => {
 	  
 		if(window.initSPEED)		
 			initSPEED();
+			
+		if (window.initGPS)
+			initGPS();
 	})
 }
 
@@ -218,35 +221,38 @@ function ScrollZoom(container) {
 		let zoomTarget = equip.closest('[scroll-zoom]').children().first()
 		let zoomTargetImg = zoomTarget.find('img')
 		let scale = Number(zoomTarget.attr('scale'))
-		let pos = {
-			x: Number(equip.attr('posX')),
-			y: Number(equip.attr('posY'))
+		let coord = {
+			longitude: equip.attr("longitude"),
+			latitude: equip.attr("latitude")
 		}
-
-		pos.centX = pos.x / widthMax * scale
-		pos.centY = pos.y / heightMax * scale
-
+		let pos = coordToPixel(coord.longitude, coord.latitude)
+		pos.x += Number(equip.attr('posX'))
+		pos.y += Number(equip.attr('posY'))
+	
 		//Pos X and Pos Y
 		equip.css({
-			left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-			top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
+			left: pos.x * scale,
+			top: pos.y * scale
 		});
-
+	
+		if (!equip.hasClass("plaque"))
+			updateLine(equip);
+	
 		if (equip.attr("class").includes('equip-box-sat')) {
 			let sat_status = equip.attr('status')
 			let sat_name = equip.attr('id')
 			let interval = Number(equip.attr('status-period'))
 			//TESTE		
-
+	
 			//Green Color > indica que o equipamento está conectado
 			if (sat_status > 0 && interval == 30) {
 				equip.find("[id^=satName]").css({
 					"background-color": '#00FF0D',
 					color: 'black'
 				});
-
+	
 				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
-
+	
 			}
 			//SeaGreen Color > indica que o equipamento está com perca de pacotes
 			else if (sat_status > 0 && interval == 45) {
@@ -254,7 +260,7 @@ function ScrollZoom(container) {
 					"background-color": '#00BFFF',
 					color: 'black'
 				});
-
+	
 				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 			}
 			//SeaGreen Color > indica que o equipamento está com perca de pacotes
@@ -263,7 +269,7 @@ function ScrollZoom(container) {
 					"background-color": '#FFFF00',
 					color: 'black'
 				});
-
+	
 				$(`#status${sat_name}`).css({ "color": '#00FF0D' });
 			}
 			//Red Color > indica que o equipamento está sem comunicação
@@ -272,42 +278,80 @@ function ScrollZoom(container) {
 					"background-color": '#FF0000',
 					color: 'white'
 				});
-
+	
 				$(`#status${sat_name}`).css({ "color": '#FF0000' });
 			}
 		}
-
-		if (equip.attr("class").includes('cftv') || equip.attr("class").includes('colas') || equip.attr("class").includes('dai') || equip.attr("class").includes('ocr')) {
-		
-			let tableId = equip.attr('id');
-			let statusValue = equip.find('input').attr("status");
-			let equipStatus = equip.find("span").attr("id");						
-											
-			if(statusValue == 1){
-			$('#'+equipStatus).css({
-					"background-color": '#00FF0D',
-					color: 'white'
-				});			
-
-				// status equip color
-				
-				$(`#status${tableId}`).css({ "color": '#00FF0D !important' }); // status side menu
-							
-		} else if(statusValue == 0){ 
-					$('#'+equipStatus).css({
-					"background-color": '#FF0000',
-					color: 'white'
-				}); 
-				
-				// status equip color
-				
-				$(`#status${tableId}`).css({ "color": '#FF0000 !important' }); // status side menu
-							
-			}			
-		
-		}
 	}
-	// EQUIPMENT POSITION END
+		// EQUIPMENT POSITION END
+
+		const clearLines = () => {
+			let draw = $('.drawLines');
+			let checkedLines = $("#visiblelines");
+			draw.find(".equipLine ").remove();
+			if (checkedLines.prop("checked"))
+				$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+					let equip = $(this)
+					updateLine(equip);
+				});
+		}
+		
+		const updateLine = equip => {
+			let checkedLines = $("#visiblelines");
+			if (!checkedLines.prop("checked"))
+				return
+				
+			let draw = $('.drawLines');
+			let id = equip.attr("id");
+			let l = draw.find(`.equipLine.${id}`);
+			let container = draw.closest("[scroll-zoom]");
+		
+			draw.css({
+				"width": "100%",
+				"height": "100%"
+			})
+		
+			let equipScale = equip.attr("scale");
+			let dimension = {
+				"width": equip.width() * equipScale,
+				"height": equip.height() * equipScale,
+			}
+			let pos = {
+				longitude: Number(equip.attr("longitude")),
+				latitude: Number(equip.attr("latitude")),
+				x: Number(equip.css("left").replace("px", "")) / scale,
+				y: Number(equip.css("top").replace("px", "")) / scale
+			};
+		
+			let point = coordToPixel(pos.longitude, pos.latitude);
+		
+			let difference = {
+				x: point.x - pos.x,
+				y: point.y - pos.y,
+			}
+			difference.absX = Math.abs(difference.x);
+			difference.absY = Math.abs(difference.y);
+		
+			if (difference.absX > difference.absY) {
+				let x = difference.x / difference.absX;
+				pos.x += dimension.width * .65 * x;
+			} else {
+				let y = difference.y / difference.absY;
+				pos.y += dimension.height * .85 * y;
+			}
+			pos.x += dimension.width / (dimension.width - 1);
+			// pos.y += dimension.height / (dimension.height - .1);
+		
+			if (!l.length) {
+				let line = $(`<svg class="equipLine ${id}"><polyline style="stroke:black;stroke-width:.2"></polyline></svg>`);
+				l = line;
+		
+				draw.append(l);
+			}
+		
+			l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
+		}
+		
 	
 // SCALE EQUIPS END
 
@@ -385,7 +429,7 @@ function setPosition(posX, posY) {
 		zoomIn(element);
 		setTimeout(() => {
 			zoomOut(element);
-			for (let idx = 0; idx < 2; idx++) {
+			for (let idx = 0; idx < 1; idx++) {
 			zoomIn(element)
 			element
 			.scrollLeft(posX * element[0].scrollWidth)
