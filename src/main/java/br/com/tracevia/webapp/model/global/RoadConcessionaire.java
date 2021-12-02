@@ -188,9 +188,9 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl8 = CardelPozaRica.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = CardelPozaRica.NOT_ID_CLASS_9AXLES.getClasse();
 			externalImagePath += "cardel_poza_rica.png";
-			logo = "";
+			logo = "/resources/images/home/cardelpozarica.webp";
 			linearMapUI = "/resources/images/realTimeInterface/linear/cardel_poza_rica.png";
-			mapUI = "/resources/images/map/cardel/cardel_poza_rica_light.jpg";
+			mapUI = "/resources/images/map/poza-rica/poza-rica.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
