@@ -570,7 +570,6 @@ public class LoginAccountBean {
 
 		name = (name.isEmpty() ? name : "-" + name);
 
-		System.out.println(name);
 		coord[0] = dao.getCoord("start" + name);
 		coord[1] = dao.getCoord("end" + name);
 

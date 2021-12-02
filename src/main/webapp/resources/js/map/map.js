@@ -316,6 +316,7 @@ function ScrollZoom(container) {
 	let max_scale = Number(container.attr('max-scale')) || 4
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
+	let zoomPoint = $('#zoomRoad')
 	let pos = zoom_point = { x: 0, y: 0 }
 	let scale_diff = scale_prev = 1
 
@@ -357,6 +358,7 @@ function ScrollZoom(container) {
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
+		zoomPoint.css('transform', `scale(${scale})`)
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
