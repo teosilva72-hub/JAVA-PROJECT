@@ -159,7 +159,7 @@ const drawPointZoom = (id, name, title, coord) => {
 	let radius = draw.width() / 2
 	let distance = Math.sqrt(Math.pow(pos.x - radius, 2) + Math.pow(pos.y - radius, 2))
 	let outRange = distance > radius
-	let defaultCss = {position: 'absolute', transition: '1s', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${Math.cos(pos.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
+	let defaultCss = {display: 'block', position: 'absolute', transition: '1s', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${Math.cos(pos.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
 	if (coord.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
@@ -170,7 +170,7 @@ const drawPointZoom = (id, name, title, coord) => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -188,7 +188,7 @@ const drawPoint = item => {
 	}
 	let point = coordToPixel(pos.x, pos.y, pos.deg)
 	let outRange = !(0 < point.x && point.x < draw.width()) || !(0 < point.y && point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', transition: '1s', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
+	let defaultCss = {display: 'block', position: 'absolute', transition: '1s', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
 	if (pos.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
@@ -203,7 +203,7 @@ const drawPoint = item => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
+		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -234,25 +234,29 @@ const consumeGPS = async ({ callback_gps = callback_gps_default, debug = false }
 	client.connect(rabbitmq.user, rabbitmq.pass, on_connect, on_error, '/');
 }
 
+const replyPos = () => {
+	$(`[name$=-zoomPoint]`).each((i, zoom) => {
+		zoom = $(zoom);
+		let point = $(zoom).attr('for')
+		let z = $(`[name=${$(zoom).attr('for')}]`)
+		let start = z.attr('gps_start').replaceAll(',', '.').split(';')
+		let end = z.attr('gps_end').replaceAll(',', '.').split(';')
+		posZoom[point] = {
+			start: coordToPixel(start[0], start[1]),
+			end: coordToPixel(end[0], end[1])
+		}
+		z.css({
+			height: posZoom[point].start.y * 1.245,
+			width: posZoom[point].start.y * 1.245 * 0.616608843537415,
+			display: 'none'
+		})
+	})
+}
+
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		let units = await connectGPS('AllUnits')
-		let zooms = $(`[name$=-zoomPoint]`)
-		zooms.each((i, zoom) => {
-			zoom = $(zoom);
-			let point = $(zoom).attr('for')
-			let z = $(`[name=${$(zoom).attr('for')}]`)
-			let start = z.attr('gps_start').replaceAll(',', '.').split(';')
-			let end = z.attr('gps_end').replaceAll(',', '.').split(';')
-			posZoom[point] = {
-				start: coordToPixel(start[0], start[1]),
-				end: coordToPixel(end[0], end[1])
-			}
-			z.css({
-				height: posZoom[point].start.y * 1.245,
-				width: posZoom[point].start.y * 1.245 * 0.616608843537415
-			})
-		})
+		replyPos()
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm
@@ -261,6 +265,16 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 
 		consumeGPS({ callback_gps, debug });
 		insertZoomPoint()
+
+		$(window).resize(() => {
+			replyPos()
+			insertZoomPoint()
+			$('[target=carGPS]').css('display', 'none')
+			connectGPS('AllUnits').then(response => {
+				for (const item of response.items)
+					drawPoint(item)
+			})
+		})
 	});
 }
 
