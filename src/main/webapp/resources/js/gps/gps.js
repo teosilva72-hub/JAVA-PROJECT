@@ -98,7 +98,7 @@ const fillEquips = name => {
 			item.css({
 				left: point.x,
 				top: point.y,
-				transform: `translate(-50%, -70%) scale(${item.attr('scale') / 2})`
+				transform: `translate(-50%, -70%) scale(${item.attr('scale')})`
 			})
 			zoom.append(item)
 		}
