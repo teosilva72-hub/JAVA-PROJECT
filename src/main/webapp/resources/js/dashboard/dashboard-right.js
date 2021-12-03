@@ -111,7 +111,7 @@ getCred('asterisk');
 getCred('digifort');
 
 const TestCert = async (c) => {
-  if (c.name == "null")
+  if (c.name == "null" || location.protocol == "http:")
     return
   let uri = `${c.address}:${c.port}/ws`
   try {
