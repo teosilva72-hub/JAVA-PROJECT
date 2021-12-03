@@ -33,7 +33,7 @@ const init = () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -316,6 +316,7 @@ function ScrollZoom(container) {
 	let max_scale = Number(container.attr('max-scale')) || 4
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
+	let zoomPoint = $('#zoomRoad')
 	let pos = zoom_point = { x: 0, y: 0 }
 	let scale_diff = scale_prev = 1
 
@@ -357,6 +358,7 @@ function ScrollZoom(container) {
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
+		zoomPoint.css('transform', `scale(${scale})`)
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
@@ -364,7 +366,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -425,7 +427,7 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
 	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 	let toolbox = $('.square_tool');
@@ -457,7 +459,7 @@ function resizeEquipScale(container) {
 
 //RESIZE EQUIPMENT
 function resizeEquip(container) {
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
 	let scaleA;
 
@@ -1112,7 +1114,7 @@ function DirectionEquip() {
 // const setLines = () => {
 // 	let draw = $('.drawLines');
 // 	let container = $("#zoomtext.section");
-// 	let equips = $('.equip-box, .equip-info, .equip-box-sat');
+// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 
 // 	draw.css({
 // 		"width": container.css("width"),
@@ -1145,7 +1147,7 @@ const clearLines = () => {
 	let checkedLines = $("#visiblelines");
 	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-		$('.equip-box, .equip-info, .equip-box-sat').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat').each(function () {
 			let equip = $(this)
 			updateLine(equip);
 		});

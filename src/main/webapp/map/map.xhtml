@@ -228,7 +228,7 @@
 						value="#{mapLabels.map_position_btn_save_equipment}"
 						onclick="alertOptions('#realsave');">
 						<f:ajax execute="@form" render="@none"
-							listener="#{equipsBean.definePosition}" />
+							listener="#{equipsBean.definePosition}" onevent="onEventMapFunction"/>
 					</h:commandButton>
 
 					<!--  ******************************************************************************************************* -->
@@ -442,13 +442,21 @@
 		<div class="draggable" id="equipAll"></div>
 		<div class="zoomRoad" id="zoomRoad">
 			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
+			<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
 
+			<div name="naranjos-zoomPoint" for="naranjos"></div>
 			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
 				<img src="/resources/images/map/tuxpan/naranjos.webp" />
 			</div>
+
+			<div name="right-losgil-zoomPoint" for="right-losgil"></div>
+			<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
+				<img src="/resources/images/map/tuxpan/right-losgil.webp" />
+			</div>
 		</div>
 
-		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
+		<!-- Plaque -->
+		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
 			<div>
 				<c:forEach items="#{roadView.plaque}" var="plaque">

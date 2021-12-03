@@ -545,6 +545,8 @@ public class LoginAccountBean {
 					+ cred[3]
 					+ "\", \"port\": \""
 					+ cred[4]
+					+ "\", \"ws\": \""
+					+ cred[5]
 					+ "\"}";
 	}
 
@@ -570,7 +572,6 @@ public class LoginAccountBean {
 
 		name = (name.isEmpty() ? name : "-" + name);
 
-		System.out.println(name);
 		coord[0] = dao.getCoord("start" + name);
 		coord[1] = dao.getCoord("end" + name);
 

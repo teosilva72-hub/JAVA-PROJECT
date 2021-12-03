@@ -25,18 +25,6 @@ $(async function () {
 
   toast = new bootstrap.Toast(document.getElementById('liveToast'), { delay: 7000 })
 
-  while (
-      typeof rabbitmq == "undefined" ||
-      typeof digifort == "undefined" ||
-      typeof asterisk == "undefined"
-    ) {
-    await new Promise(r => setTimeout(r, 100))
-  }
-
-  TestCert(rabbitmq);
-  TestCert(asterisk, "sip");
-  TestCert(digifort, "digi");
-
   $(".btnRunCommandSOS").click(btnSOSCommand);
 });
 
@@ -112,6 +100,8 @@ const credEvent = data => {
 
       localStorage.setItem(cred.name, JSON.stringify(cred))
 
+      TestCert(cred)
+
       break;
   }
 }
@@ -120,16 +110,16 @@ getCred('rabbitmq'); // Rabbit init
 getCred('asterisk');
 getCred('digifort');
 
-const TestCert = async (c, init) => {
-  if (c.name == "null")
+const TestCert = async (c) => {
+  if (c.name == "null" || location.protocol == "http:")
     return
   let uri = `${c.address}:${c.port}/ws`
   try {
-    let request = new WebSocket(`wss://${uri}`, init);
+    let request = new WebSocket(`wss://${uri}`, c.ws);
     while (request.readyState == 0) {
       await new Promise(r => setTimeout(r, 100))
     }
-    if (request.readyState > 1 && init != "digi") {
+    if (request.readyState > 1 && c.ws != "digi") {
       window.open(`https://${uri}`);
     }
   }
