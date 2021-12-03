@@ -504,7 +504,7 @@ function posEquip(equip) {
 		//TESTE		
 
 		//Green Color > indica que o equipamento está conectado
-		if (sat_status > 0 && interval == 30) {
+		if (interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
 				color: 'black'
@@ -514,22 +514,22 @@ function posEquip(equip) {
 
 		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 45) {
-			equip.find("[id^=satName]").css({
-				"background-color": '#00BFFF',
-				color: 'black'
-			});
-
-			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
-		}
-		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 8) {
+		else if (interval == 3) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#FFFF00',
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
+			$(`#status${sat_name}`).css({ "color": '#FFFF00' });
+		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (interval == 6) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FF7F00',
+				color: 'black'
+			});
+
+			$(`#status${sat_name}`).css({ "color": '#FF7F00' });
 		}
 		//Red Color > indica que o equipamento está sem comunicação
 		else {

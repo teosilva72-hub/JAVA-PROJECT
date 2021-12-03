@@ -18,7 +18,7 @@ import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.sat.SAT;
 
-@ManagedBean(name = "satMapsView")
+@ManagedBean(name = "satMaps")
 @ViewScoped
 public class SATBuildMaps {
 	
