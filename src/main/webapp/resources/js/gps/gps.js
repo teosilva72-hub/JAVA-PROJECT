@@ -76,7 +76,7 @@ const coordToPixel = (x, y, deg, name) => {
 }
 
 const fillEquips = name => {
-	$('.equip-box, .equip-info, .equip-box-sat, .plaque').each((idx, item) => {
+	$('.equip-box, .equip-info, .equip-box-sat').each((idx, item) => {
 		item = $(item).clone()
 		let zoom = $(`[name=${name}]`)
 		let radius = zoom.width() / 2
@@ -139,7 +139,7 @@ const zoomRoadPoint = name => {
 	let pos = posZoom[name]
 
 	zoom.css({
-		position: "relative",
+		position: "absolute",
 		left: pos.start.x + (pos.end.x - pos.start.x) / 2,
 		top: pos.start.y + (pos.end.y - pos.start.y) / 2,
 		transform: "translate(-32.5%, -75.5%)",
