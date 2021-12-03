@@ -45,7 +45,7 @@ const coordToPixel = (x, y, deg, name) => {
 		hypotenuse: () => Math.sqrt(Math.pow(diff.longitude, 2) + Math.pow(diff.latitude, 2)),
 		radius: () => Math.atan(diff.latitude / diff.longitude),
 		radiusOpposite: () => Math.atan(diff.longitude / diff.latitude),
-		radiusDiff: () => (invertX ? -(distance.radiusOpposite() - diff.radiusOpposite() - (invertY ? Math.sign(diff.radius()) * -90 : 0)) : distance.radius() - diff.radius()) + distance.radiusPixel(),
+		radiusDiff: () => (invertX ? -(distance.radiusOpposite() - diff.radiusOpposite() - (invertY ? Math.sign(diff.radius()) * 90 : 0)) : distance.radius() - diff.radius()) + distance.radiusPixel(),
 		direction: () => {
 			let d;
 			if (Math.sign(distance.longitude) >= 0)
@@ -75,6 +75,36 @@ const coordToPixel = (x, y, deg, name) => {
 	}
 }
 
+const fillEquips = name => {
+	$('.equip-box, .equip-info, .equip-box-sat, .plaque').each((idx, item) => {
+		item = $(item).clone()
+		let zoom = $(`[name=${name}]`)
+		let radius = zoom.width() / 2
+
+		let pos = {
+			longitude: item.attr('longitude'),
+			latitude: item.attr('latitude'),
+			x: item.attr('posx'),
+			y: item.attr('posy'),
+		}
+
+		let point = coordToPixel(pos.longitude, pos.latitude, undefined, name)
+		point.x += +pos.x;
+		point.y += +pos.y;
+		let distance = Math.sqrt(Math.pow(point.x - radius, 2) + Math.pow(point.y - radius, 2))
+		let outRange = distance > radius
+
+		if (!outRange) {
+			item.css({
+				left: point.x,
+				top: point.y,
+				transform: `translate(-50%, -70%) scale(${item.attr('scale') / 2})`
+			})
+			zoom.append(item)
+		}
+	})
+}
+
 const insertZoomPoint = () => {
 	let zooms = $(`[name$=-zoomPoint]`)
 	zooms.each((i, zoom) => {
@@ -102,6 +132,7 @@ const zoomRoadPoint = name => {
 	let zoom = $(`[name=${name}]`)
 	if (zoom.css("display") == "block") {
 		zoom.css("display", "none")
+		zoom.find('.equip-box, .equip-info, .equip-box-sat, .plaque').remove()
 		return
 	}
 	
@@ -117,6 +148,8 @@ const zoomRoadPoint = name => {
 		"z-index": 1
 	})
 	zoom.children().first().css("height", "100%")
+
+	fillEquips(name)
 }
 
 const drawPointZoom = (id, name, title, coord) => {
@@ -124,7 +157,7 @@ const drawPointZoom = (id, name, title, coord) => {
 	let draw = $(`[name=${name}]`)
 	let divItem = draw.find(`#${id}`)
 	let outRange = !(0 < pos.x && pos.x < draw.width()) || !(0 < pos.y && pos.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${((-Math.PI < pos.rad + 0.5 * Math.PI && pos.rad + 0.5 * Math.PI < 0) || pos.rad + 0.5 * Math.PI > Math.PI) ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
+	let defaultCss = {position: 'absolute', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${Math.cos(pos.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
 	if (coord.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
@@ -153,7 +186,7 @@ const drawPoint = item => {
 	}
 	let point = coordToPixel(pos.x, pos.y, pos.deg)
 	let outRange = !(0 < point.x && point.x < draw.width()) || !(0 < point.y && point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${((-Math.PI < point.rad + 0.5 * Math.PI && point.rad + 0.5 * Math.PI < 0) || point.rad + 0.5 * Math.PI > Math.PI) ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
+	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
 	if (pos.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
@@ -209,14 +242,14 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 			let z = $(`[name=${$(zoom).attr('for')}]`)
 			let start = z.attr('gps_start').replaceAll(',', '.').split(';')
 			let end = z.attr('gps_end').replaceAll(',', '.').split(';')
-			z.css({
-				height: 300,
-				width: 300 * 0.616608843537415
-			})
 			posZoom[point] = {
 				start: coordToPixel(start[0], start[1]),
 				end: coordToPixel(end[0], end[1])
 			}
+			z.css({
+				height: posZoom[point].start.y * 1.245,
+				width: posZoom[point].start.y * 1.245 * 0.616608843537415
+			})
 		})
 
 		for (const item of units.items) {
