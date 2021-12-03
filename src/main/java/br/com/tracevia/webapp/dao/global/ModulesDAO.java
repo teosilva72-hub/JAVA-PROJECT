@@ -78,12 +78,12 @@ public class ModulesDAO {
 
 	// Pull Credentials
 	public String[] getCred(String name) throws Exception {
-		String[] credentials = new String[5];
+		String[] credentials = new String[6];
 		String query;
 
 		try {			
 					
-			query = "SELECT name, user, pass, address, port FROM credentials WHERE name = ?";		
+			query = "SELECT name, user, pass, address, port, ws FROM credentials WHERE name = ?";		
 			
 			ps = conn.prepareStatement(query);
 			ps.setString(1, name);
@@ -100,6 +100,7 @@ public class ModulesDAO {
 				credentials[2] = rs.getString("pass");
 				credentials[3] = rs.getString("address");
 				credentials[4] = rs.getString("port");
+				credentials[5] = rs.getString("ws");
 			}
 
 		} catch (SQLException e) {

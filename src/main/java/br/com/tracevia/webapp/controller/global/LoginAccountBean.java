@@ -545,6 +545,8 @@ public class LoginAccountBean {
 					+ cred[3]
 					+ "\", \"port\": \""
 					+ cred[4]
+					+ "\", \"ws\": \""
+					+ cred[5]
 					+ "\"}";
 	}
 
