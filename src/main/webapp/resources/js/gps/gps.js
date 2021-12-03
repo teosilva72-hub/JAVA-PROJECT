@@ -156,8 +156,10 @@ const drawPointZoom = (id, name, title, coord) => {
 	let pos = coordToPixel(coord.x, coord.y, coord.deg, name)
 	let draw = $(`[name=${name}]`)
 	let divItem = draw.find(`#${id}`)
-	let outRange = !(0 < pos.x && pos.x < draw.width()) || !(0 < pos.y && pos.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${Math.cos(pos.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
+	let radius = draw.width() / 2
+	let distance = Math.sqrt(Math.pow(pos.x - radius, 2) + Math.pow(pos.y - radius, 2))
+	let outRange = distance > radius
+	let defaultCss = {position: 'absolute', transition: '1s', left: `${pos.x}px`, top: `${pos.y}px`, transform: `translate(-50%, -50%) rotate(${pos.rad}rad)${Math.cos(pos.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "30px", "z-index": 1}
 	if (coord.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
@@ -186,7 +188,7 @@ const drawPoint = item => {
 	}
 	let point = coordToPixel(pos.x, pos.y, pos.deg)
 	let outRange = !(0 < point.x && point.x < draw.width()) || !(0 < point.y && point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
-	let defaultCss = {position: 'absolute', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
+	let defaultCss = {position: 'absolute', transition: '1s', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
 	if (pos.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
 
