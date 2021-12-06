@@ -165,7 +165,7 @@ public class NotificationsBean {
 		String datetime = dta.currentDateTime();
 		
 		state = dao.updateNotificationStatus(stateId, equipId, datetime, type);	   
-		
+					
 		if(state)
 			dao.insertNotificationHistory(stateId, equipId, datetime, type);
 	  

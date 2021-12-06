@@ -504,7 +504,7 @@ function posEquip(equip) {
 		//TESTE		
 
 		//Green Color > indica que o equipamento está conectado
-		if (interval == 30) {
+		if (interval == 15 || interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
 				color: 'black'
