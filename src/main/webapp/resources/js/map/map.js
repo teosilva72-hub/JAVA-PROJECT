@@ -152,7 +152,7 @@ $(function () {
 	})
 
 	$('#fulldiv2').on('click', function () {
-		$('#frame2')[0].contentWindow.setPosition(0.37, 0.27)
+		$('#frame2')[0].contentWindow.setPosition(0.37, 0.23)
 	})
 
 	$('#fulldiv3').on('click', function () {
@@ -167,7 +167,7 @@ $(function () {
 
 	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.43)
-		$('#frame2')[0].contentWindow.setPosition(0.37, 0.27)
+		$('#frame2')[0].contentWindow.setPosition(0.37, 0.23)
 		$('#frame3')[0].contentWindow.setPosition(1, 0.04)
 
 	})
@@ -427,7 +427,7 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
+	let equips = container.find('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 	let plaque = $('.plaque');
 	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 	let toolbox = $('.square_tool');
