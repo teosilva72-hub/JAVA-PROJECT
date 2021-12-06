@@ -424,7 +424,7 @@ function barResize() {
 
 // SCALE EQUIPS
 
-//RESIZE EQUIPMENT
+//RESIZE EQUIPMENT SCALE
 function resizeEquipScale(container) {
 	let max = 0;
 	let equips = container.find('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
