@@ -310,9 +310,13 @@
                                             <span
                                                 id="spd2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span
                                                 class="km"> km/h</span>
-                                        </div>
+                                        </div>                                        
                                     </div>
-
+                                     <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{realtimeLabels.realtime_sat_last_register_title}">    
+                                       <i class="fas fa-clock " style="margin-top: 2px;"></i>                   
+                                       <span class="mb-0 d-inline-block">#{satMapsView.satListValues.get(loop.index).dataTime}</span>                            
+                                     </div> 
+                                     
                                 </div>
                                 <!-- HTML to write -->
                                                                             

@@ -328,7 +328,7 @@ public class NotificationsDAO {
 	     case 10: update = "UPDATE notifications_status SET presence_status = 1 , presence_last_status = 0 , presence_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;
 	     case 11: update = "UPDATE notifications_status SET temperature_status = 0 , temperature_last_status = 1 , temperature_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 0 "; break;
 	     case 12: update = "UPDATE notifications_status SET temperature_status = 1 , temperature_last_status = 0 , temperature_datetime = ? WHERE equip_id = ? AND equip_type = ? AND online_last_status = 1 "; break;  
-	     
+	          
 	  }
 		  
 	  try {

@@ -325,13 +325,12 @@ public class DateTimeApplication {
 
 	}
 
-
 	/**
 	 * 
 	 * @param calendar - Instancia Calendar
 	 * @param minute - minuto atual
-	 * @param currentDate - Variav�l para ser preenchida com data atual
-	 * @param currentDateSub - Variav�l para ser preenchida com data atual com um minuto e um segundo a menos
+	 * @param currentDate - Variavel para ser preenchida com data atual
+	 * @param currentDateSub - Variavel para ser preenchida com data atual com um minuto e um segundo a menos
 	 */
 	public String getCurrentDateDados30(Calendar calendar, int minute) {
 
@@ -419,7 +418,49 @@ public class DateTimeApplication {
 		return currentDateSub;
 
 	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter o intervalo de tempo para obter dados do SAT
+	 * @author Wellington 05/12/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param calendar objeto da classe abstrata Calendar para manipulação do tempo
+	 * @param minute minuto atual
+	 * @return retona uma data com intervalo de tempo
+	 */
+	public String getDataInterval15Min(Calendar calendar, int minute) {
 
+		dtFormatter = new SimpleDateFormat(DATE_TIME_FORMAT_STANDARD_DATABASE);
+
+		String currentDate = null;
+
+		//formatar os minutos para que nao ocorra inconsistencias
+		if(minute >= 0 && minute < 15) {
+
+			calendar.set(Calendar.MINUTE, 45);
+			calendar.add(Calendar.HOUR_OF_DAY, -1);
+
+		}else if(minute >= 15 && minute < 30)		
+			calendar.set(Calendar.MINUTE, 0);	   
+
+		else if(minute >= 30 && minute < 45)
+			calendar.set(Calendar.MINUTE, 15);
+
+		else if(minute >= 45 && minute <= 59)			
+			calendar.set(Calendar.MINUTE, 30);
+
+		calendar.set(Calendar.SECOND, 0);
+
+		//Data Atual
+		currentDate = dtFormatter.format(calendar.getTime());
+
+		return currentDate;
+
+	}
+	
+	// ---------------------------------------------------------------------------------------------------------------------
 
 	public Integer periodsRange(String period) {
 
