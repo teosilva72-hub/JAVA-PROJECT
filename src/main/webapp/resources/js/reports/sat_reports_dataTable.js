@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //Call Datatables jQuery plugin
      $('#vehicle-count-table').DataTable({
-        "scrollY": "50.3vh",
+        "scrollY": window.innerHeight - 220,
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -69,7 +69,7 @@ $(document).ready(function () {
 
     //Call Datatables jQuery plugin
     $('#vehicle-axle-table').DataTable({
-        "scrollY": "50.3vh",
+        "scrollY": window.innerHeight - 220,
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     //Call Datatables jQuery plugin
     $('#vehicle-speed-table').DataTable({
-        "scrollY": "50.3vh",
+        "scrollY": window.innerHeight - 220,
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -93,7 +93,7 @@ $(document).ready(function () {
 
     //Call Datatables jQuery plugin
     $('#ccr-tipo-table').DataTable({
-        "scrollY": "50.3vh",
+        "scrollY": window.innerHeight - 220,
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
