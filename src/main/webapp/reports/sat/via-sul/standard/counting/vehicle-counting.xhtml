@@ -21,20 +21,18 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_sul_vehicle_counting_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_sul_vehicle_counting_title)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sat_equipment.name|equip_id@equip', satLabels.global_total_vehicles_column))}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(siteID = $custom@equip); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
@@ -74,8 +72,6 @@
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
 	 		
 	   <!---->
 	

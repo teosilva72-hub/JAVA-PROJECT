@@ -11,7 +11,7 @@ public class NavigationBean {
 
 	private String navigation_page;
 	private String sidebar_page;
-
+		
 	public String getNavigation_page() {
 		return navigation_page;
 	}
@@ -494,4 +494,20 @@ public class NavigationBean {
 
 	}
 
+	
+	// ----------------------------------------------------------------
+	
+	// SAT REPORTS
+	
+	public String redirectToURL(String URL) {
+
+		navigation_page = URL.concat("?faces-redirect=true");		
+		
+		return navigation_page;
+	}
+	
+	
+	// ----------------------------------------------------------------
+	
+	
 }
