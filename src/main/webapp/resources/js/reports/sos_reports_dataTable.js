@@ -1,7 +1,7 @@
 $(document).ready(function () {
     //Call Datatables jQuery plugin
      $('#sos-battery-table').DataTable({
-        "scrollY": window.innerHeight - 220,
+        "scrollY": window.innerHeight - 230 - $('thead').height(),
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -11,7 +11,7 @@ $(document).ready(function () {
    
     //Call Datatables jQuery plugin
      $('#sos-call-table').DataTable({
-        "scrollY": window.innerHeight - 220,
+        "scrollY": window.innerHeight - 230 - $('thead').height(),
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -21,7 +21,7 @@ $(document).ready(function () {
      
     //Call Datatables jQuery plugin
      $('#sos-statistic-table').DataTable({
-        "scrollY": window.innerHeight - 220,
+        "scrollY": window.innerHeight - 230 - $('thead').height(),
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -32,7 +32,7 @@ $(document).ready(function () {
     //Call Datatables jQuery plugin
      $('#sos-status-table').DataTable({
         "autoWidth": true,
-        "scrollY": window.innerHeight - 220,
+        "scrollY": window.innerHeight - 230 - $('thead').height(),
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)

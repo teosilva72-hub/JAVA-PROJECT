@@ -1,7 +1,7 @@
 //Call Datatables jQuery plugin
 $(document).ready(function () {
 $('#sv-year-table').DataTable({			  	   	
-"scrollY": window.innerHeight - 220,
+"scrollY": window.innerHeight - 230 - $('thead').height(),
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo" : false,
@@ -13,7 +13,7 @@ $('.dataTables_length').removeClass('bs-select');
 //Call Datatables jQuery plugin
 $(document).ready(function () {
 $('#sv-month-table').DataTable({			  	   	
-"scrollY": window.innerHeight - 220,
+"scrollY": window.innerHeight - 230 - $('thead').height(),
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo" : false,
@@ -26,7 +26,7 @@ $('.dataTables_length').removeClass('bs-select');
 //Call Datatables jQuery plugin
 $(document).ready(function () {
 $('#sv-period-table').DataTable({			  	   	
-"scrollY": window.innerHeight - 220,
+"scrollY": window.innerHeight - 230 - $('thead').height(),
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo" : false,
@@ -49,7 +49,7 @@ $('#info').show();
 
 function drawTable(table) {
 $(table).DataTable({			  	   	
-"scrollY": window.innerHeight - 220,
+"scrollY": window.innerHeight - 230 - $('thead').height(),
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)
 "bInfo" : false,
