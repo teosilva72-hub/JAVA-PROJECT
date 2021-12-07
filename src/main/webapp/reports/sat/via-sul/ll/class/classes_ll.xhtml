@@ -23,20 +23,21 @@
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_sul_class_ll_file_name)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_sul_class_ll_title)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineClassSublHeader('light-heavy')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ll')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv_ll')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motos_column, satLabels.class_light_vehicles_column, 
 		satLabels.class_small_column, satLabels.class_long_column, satLabels.class_bus_column, satLabels.global_total_vehicles_column))}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(classe = `9`); SUM(IF(classe = `1` OR (classe = `0` AND lenght &lt;= 650)  OR classe = `2N`, 1, 0 )); 
         SUM(IF(classe = `2` OR classe = `3`, 1, 0 )); SUM(classe = `8`); SUM(classe = `2A`); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ll.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ll.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />

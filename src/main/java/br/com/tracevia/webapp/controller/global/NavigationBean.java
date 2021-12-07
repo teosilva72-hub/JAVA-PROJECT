@@ -11,19 +11,7 @@ public class NavigationBean {
 
 	private String navigation_page;
 	private String sidebar_page;
-	
-	private static String VIA_SUL_AXLES = "/sat/via-sul/standard/axle/axle.xhtml";
-	private static String VIA_SUL_CLASS = "/sat/via-sul/standard/class/class.xhtml";
-	private static String VIA_SUL_CLASS_CATEGORY = "/sat/via-sul/standard/class/class_category.xhtml";
-	private static String VIA_SUL_FLOW_COUTING = "/sat/via-sul/standard/counting/flow-counting.xhtml";
-	private static String VIA_SUL_VEHICLE_COUNTING = "/sat/via-sul/standard/counting/vehicle-counting.xhtml";
-	private static String VIA_SUL_SPEED = "/sat/via-sul/standard/speed/speed.xhtml";
-	private static String VIA_SUL_SPEED_MULTI = "/sat/via-sul/standard/speed/speed-multi-select.xhtml";
-	
-	private static String VIA_SUL_CLASS_LL = "/sat/via-sul/ll/speed/speed-ll.xhtml";
-	private static String VIA_SUL_SPEED_LL = "/sat/via-sul/ll/class/class-ll.xhtml";
-	private static String VIA_SUL_TYPES_LL = "/sat/via-sul/ll/type/type-ll.xhtml";
-	
+		
 	public String getNavigation_page() {
 		return navigation_page;
 	}
@@ -514,7 +502,7 @@ public class NavigationBean {
 	public String redirectToURL(String URL) {
 
 		navigation_page = URL.concat("?faces-redirect=true");		
-
+		
 		return navigation_page;
 	}
 	
