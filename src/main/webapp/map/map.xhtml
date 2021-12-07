@@ -2396,6 +2396,14 @@
 
 		<h:outputScript name="map.js" library="js/map" />
 
+		<form name="roadLine">
+
+			<c:forEach items="#{roadView.roadLine}" var="point">
+				<input type="hidden" value="#{''.format('%s,%s,%s', point[0], point[1], point[2])}" />
+			</c:forEach>
+
+		</form>
+
 		<c:if test="#{ SuperAdmin }">
 
 			<!-- Mudança -->
