@@ -319,7 +319,7 @@ public void CreateFields(String type) {
 			field = new String[] {localeLabel.getStringKey("sv_reports_year_month"), localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
 					localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
 				    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
-					localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+					localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_road_temperature")};					
 								 
 			// Table Objects
 			fieldObjectValues = new String[] { "month", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
@@ -329,7 +329,7 @@ public void CreateFields(String type) {
 			 jsonFields = new String[] {localeLabel.getStringKey("sv_reports_chart_haxis"), localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
 						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
 					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_road_temperature")};
 			
 			 //JSON chart title and subtitle
 			chartTitle = localeLabel.getStringKey("sv_reports_chart_title_year");	
@@ -343,7 +343,7 @@ public void CreateFields(String type) {
 		      field = new String[] {localeLabel.getStringKey("sv_reports_general_day_month"),localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
 						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
 					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_road_temperature")};					
 									 
 					
 		     // Table Objects
@@ -355,7 +355,7 @@ public void CreateFields(String type) {
 					    localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
 						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
 					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_road_temperature")};					
 									 
 								 
 		     //JSON chart title and subtitle
@@ -371,7 +371,7 @@ public void CreateFields(String type) {
 				   localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)", localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", 
 				   localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)", localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", 
 				   localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)", localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", 
-				   localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+				   localeLabel.getStringKey("sv_reports_general_road_temperature")};					
 								 								
 		    // Table Objects
 			fieldObjectValues = new String[] { "date", "dateTime", "atmPressure", "relative_humidity", "temperature", "wind_direction", "wind_speed",
@@ -382,7 +382,7 @@ public void CreateFields(String type) {
 					    localeLabel.getStringKey("sv_reports_general_atmPressure")+" (hPa)",
 						localeLabel.getStringKey("sv_reports_general_relative_humidity")+" (%)", localeLabel.getStringKey("sv_reports_general_temperature")+" (°C)",
 					    localeLabel.getStringKey("sv_reports_general_wind_speed")+" (km/h)", localeLabel.getStringKey("sv_reports_general_wind_direction")+" (°)",
-						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_ambient_temperature")};					
+						localeLabel.getStringKey("sv_reports_general_absolute_preciptation")+" (l/m²)", localeLabel.getStringKey("sv_reports_general_road_temperature")};					
 									 
 							 			
 			 //JSON chart title and subtitle
