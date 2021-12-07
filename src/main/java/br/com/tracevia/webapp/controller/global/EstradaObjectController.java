@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import br.com.tracevia.webapp.model.global.Estrada;
 public class EstradaObjectController {
 	
 	public List<Plaque> plaque;
+	public List<int[]> roadLine;
 	
 	private Estrada road_01;
 	private Estrada road_02;
@@ -106,6 +108,7 @@ public class EstradaObjectController {
 		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
 		try {
 			plaque = roadDAO.getPlaque();
+			roadLine = roadDAO.getRoadLine();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,6 +148,15 @@ public class EstradaObjectController {
 	public List<Plaque> getPlaque() {
 		return plaque;
 	}
+	
+	public List<int[]> getRoadLine() {
+		return this.roadLine;
+	}
+
+	public void setRoadLine(List<int[]> roadLine) {
+		this.roadLine = roadLine;
+	}
+
 	public EstradaObjectController() {}
 	
 	
