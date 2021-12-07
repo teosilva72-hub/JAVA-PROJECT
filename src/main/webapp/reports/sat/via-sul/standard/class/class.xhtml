@@ -23,13 +23,13 @@
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_sul_class_file_name)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_sul_class_title)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />	   	   
 	    <f:viewAction onPostback="true" action="#{testerBean.defineClassSublHeader('light-heavy')}" />
 	   	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_vbv_ccr')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
 							
 		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
@@ -45,7 +45,8 @@
         SUM(IF(classe = `9` OR classe = `9N` OR (classe=`0` AND axlNumber = 9), 1, 0 ));
 		SUM(IF(classe = `20` OR (classe=`0` AND axlNumber &gt;= 10), 1, 0 )); SUM(1)')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ccr.lane')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
