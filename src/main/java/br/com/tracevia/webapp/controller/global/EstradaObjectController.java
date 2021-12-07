@@ -195,6 +195,7 @@ public class EstradaObjectController {
 		int km;
 		double longitude;
 		double latitude;
+		int mapY;
 		int linear_posX;
 		int linear_posY;
 
@@ -222,6 +223,14 @@ public class EstradaObjectController {
 
 		public void setLatitude(double latitude) {
 			this.latitude = latitude;
+		}
+
+		public int getMapY() {
+			return this.mapY;
+		}
+
+		public void setMapY(int mapY) {
+			this.mapY = mapY;
 		}
 
 		public int getLinear_posX() {

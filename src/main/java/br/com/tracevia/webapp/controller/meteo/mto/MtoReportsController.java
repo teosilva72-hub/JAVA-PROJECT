@@ -514,7 +514,7 @@ public void CreateFields(String type) {
 			//Select specific query by type
 			query = SelectQueryType(type, models, mtoModels); 
 																			
-			//System.out.println(query); //debug
+			System.out.println(query); //debug
 
 			//EXECU��O DA QUERY
 			String[][] auxResult = dao.ExecuteQuery(query, getNumRegisters(), getFieldsNumber());

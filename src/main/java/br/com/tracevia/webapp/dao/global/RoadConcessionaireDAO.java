@@ -299,7 +299,7 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			query = "SELECT km, longitude, latitude, linear_pos_x, linear_pos_y FROM plaque_km";
+			query = "SELECT km, longitude, latitude, map_posY, linear_pos_x, linear_pos_y FROM plaque_km";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -313,8 +313,9 @@ public class RoadConcessionaireDAO {
 					plaque.setKm(rs.getInt(1));
 					plaque.setLongitude(rs.getDouble(2));
 					plaque.setLatitude(rs.getDouble(3));
-					plaque.setLinear_posX(rs.getInt(4));
-					plaque.setLinear_posY(rs.getInt(5));
+					plaque.setMapY(rs.getInt(4));
+					plaque.setLinear_posX(rs.getInt(5));
+					plaque.setLinear_posY(rs.getInt(6));
 
 					all_plaque.add(plaque);
 				}

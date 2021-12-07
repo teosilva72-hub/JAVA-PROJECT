@@ -2,7 +2,7 @@
 $(function () {
     //Call Datatables jQuery plugin
      $('#speed-records-table').DataTable({
-        "scrollY": "50.3vh",
+        "scrollY": window.innerHeight - 220,
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -12,7 +12,7 @@ $(function () {
 
     $('.dataTables_length').removeClass('bs-select');
 
-	drawTable('#generic-report-table', '50.3vh')
+	drawTable('#generic-report-table')
 });
 
 //RESET MESSAGE DISPLAY	
@@ -30,7 +30,7 @@ $('#info').show();
 function drawTable(table, scrollHeight) {
 	
 $(table).DataTable({			  	   	
-"scrollY": scrollHeight,
+"scrollY": window.innerHeight - 220,
 "scrollX": true,
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)

@@ -461,7 +461,7 @@
 			<div>
 				<c:forEach items="#{roadView.plaque}" var="plaque">
 					<div class="plaque" longitude="#{plaque.longitude}"
-						latitude="#{plaque.latitude}">
+						latitude="#{plaque.latitude}" posY="#{plaque.mapY}">
 						<img width="75"
 							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 					</div>
