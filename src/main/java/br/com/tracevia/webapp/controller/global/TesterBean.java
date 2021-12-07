@@ -224,7 +224,7 @@ public class TesterBean {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, multiple, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sómente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 
 		String extra1 = multiple ? "multiple" : "";
@@ -640,11 +640,11 @@ public class TesterBean {
 		          										
 			// -------------------------------------------------------------------------------------
 					
-			// CASO NÃO EXISTA VALOR			
+			// CASO NÃƒO EXISTA VALOR			
 			if (report.lines.isEmpty() || !hasValue) {
 				SessionUtil.executeScript("showMessage(); hideMessage();");	
 				
-				build.chartBool = true; // BOTÃO DO GRÁFICO	 
+				build.chartBool = true; // BOTÃƒO DO GRÃ�FICO	 
 							
 				if (report.lines.isEmpty()) {
 					 SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");					
@@ -672,10 +672,10 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
-			if(!special)										     
+			/*if(!special)										     
 		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
 			
-			else generateSpecialFile(model, specialName);
+			else generateSpecialFile(model, specialName);*/
 		     
 		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
@@ -829,10 +829,10 @@ public class TesterBean {
 		
 	   public void resetForm() {
 				
-				// Limpa valores da sessÃ£o
+				// Limpa valores da sessÃƒÂ£o
 				build.resetReportValues();
 				
-				// Reinicializa valores armazenados nas variÃ¡veis abaixo
+				// Reinicializa valores armazenados nas variÃƒÂ¡veis abaixo
 				build = new ReportBuild();
 				select = new ReportSelection();
 										
@@ -847,7 +847,7 @@ public class TesterBean {
 	   // -------------------------------------------------------------------------------------------------------------------------------------------------
 	  	
 			/**
-			 * MÃ©todo para carregar equipamentos disponÃ­veis para seleÃ§Ã£o
+			 * MÃƒÂ©todo para carregar equipamentos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0
@@ -874,7 +874,7 @@ public class TesterBean {
 			// --------------------------------------------------------------------------------------------		
 
 			/**
-			 * MÃ©todo para carregar perÃ­odos disponÃ­veis para seleÃ§Ã£o
+			 * MÃƒÂ©todo para carregar perÃƒÂ­odos disponÃƒÂ­veis para seleÃƒÂ§ÃƒÂ£o
 			 * @author Wellington 26/10/2021
 			 * @version 1.0
 			 * @since 1.0	

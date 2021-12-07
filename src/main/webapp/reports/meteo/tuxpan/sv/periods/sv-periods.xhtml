@@ -14,63 +14,48 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('mto_periods')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('sv_periods')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Meteorológico por periodo')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('mto')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sv')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('mto_periods')}" />		
+		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('sv_periods')}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Meteorológico por periodo')}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
 		  
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('mto_data')}"/>
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sv_data')}"/>
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA, VISIBILIDADE, TEMPERATURA DE PAVIMENTO')}" />
+		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA,  TEMPERATURA DE AMBIENTE')}" />
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(datetime_, `%d`); IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.atmospheric_pressure, NULL)) AS DECIMAL(5,1)),0);  IFNULL(ROUND(AVG(IF(eq.equip_id = `1`, st.relative_humidity, NULL)),0),0); IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.temperature, NULL)) AS DECIMAL(3,1)),0); IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.wind_speed, NULL)) AS DECIMAL(3,2)),0);  IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.wind_direction, NULL)) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.absolute_precipitation, NULL)) AS DECIMAL(6,2)),0);  IFNULL(ROUND(AVG(IF(eq.equip_id = `1`, st.visibility, NULL)),0),0); IFNULL(CAST(AVG(IF(eq.equip_id = `1`, st.road_temperature, NULL)) AS DECIMAL(3,1)),0)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = station_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(datetime_, `%d/%m/%Y`) as sd; TIME($period)@sd;IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('datetime_')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'MONTH', 'JANEIRO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2, 'MONTH', 'FEVEREIRO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(3, 'MONTH', 'MARÇO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(4, 'MONTH', 'ABRIL')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MONTH', 'MAIO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MONTH', 'JUNHO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(7, 'MONTH', 'JULHO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(8, 'MONTH', 'AGOSTO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(9, 'MONTH', 'SETEMBRO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MONTH', 'OUTUBRO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(11, 'MONTH', 'NOVEMBROO')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(12, 'MONTH', 'DEZEMBRO')}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('datetime_')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'YEAR', '2020')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2, 'YEAR', '2021')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(3, 'YEAR', '2022')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(4, 'YEAR', '2023')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'YEAR', '2024')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'YEAR', '2026')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(7,'YEAR', '2027')}" />
-		
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />	
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 				
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />  -->
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
-	
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('datetime_', 'data de pesquisa', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'outra data')}" /> -->
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id' , 'dispositivo', 'mto_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id' , 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" /> -->
 
     </f:metadata>
 	
 	<!---->
 	
-	<!-- TEMPLATE DO CABEÇALHO -->
+		<!-- TEMPLATE DO CABEÇALHO -->
 	
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
@@ -123,7 +108,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de meteorologia por mês" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatório de meteorologia por periodos" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

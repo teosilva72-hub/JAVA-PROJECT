@@ -2,7 +2,7 @@
 $(function () {
     //Call Datatables jQuery plugin
      $('#speed-records-table').DataTable({
-        "scrollY": window.innerHeight - 220,
+        "scrollY": window.innerHeight - 230 - $('thead').height(),
         "scrollX": true,
         "scrollCollapse": true,
         "paging": false, // false to disable pagination (or any other option)
@@ -30,7 +30,7 @@ $('#info').show();
 function drawTable(table, scrollHeight) {
 	
 $(table).DataTable({			  	   	
-"scrollY": window.innerHeight - 220,
+"scrollY": window.innerHeight - 230 - $('thead').height(),
 "scrollX": true,
 "scrollCollapse": true,
 "paging": false, // false to disable pagination (or any other option)

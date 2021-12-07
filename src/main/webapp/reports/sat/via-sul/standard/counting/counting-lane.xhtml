@@ -14,23 +14,20 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('mto_periods')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Meteorológico por periodo')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_sul_counting_lane_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_sul_counting_lane_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('mto')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sv')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('mto_periods')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Meteorológico por periodo')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
-		  
+			  
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('mto_data')}"/>
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA, VISIBILIDADE, TEMPERATURA DE PAVIMENTO')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}"/>
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.counting_lane_l1, satLabels.counting_lane_l2,
+		satLabels.counting_lane_l3, satLabels.counting_lane_l4, satLabels.counting_lane_l5, satLabels.counting_lane_l6, satLabels.counting_lane_l7, satLabels.counting_lane_l8, satLabels.global_total_vehicles_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(datetime_, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(atmospheric_pressure); SUM(relative_humidity); SUM(temperature);  SUM(wind_speed); SUM(wind_direction); SUM(absolute_precipitation); SUM(visibility); SUM(road_temperature)')}"/> 
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(datetime_, `%d/%m/%Y`) as sd; TIME($period)@sd;IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = station_id')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
@@ -48,15 +45,15 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('datetime_', 'data de pesquisa', false, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'outra data')}" /> -->
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id' , 'dispositivo', 'mto_equipment.equip_id|name', false, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" /> -->
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID' , reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('lane', reports_select_lanes, 'filter_lane.id_lane|name', true, true)}" /> -->
 
     </f:metadata>
 	
 	<!---->
 	
-	<!-- TEMPLATE DO CABEÇALHO -->
+		<!-- TEMPLATE DO CABEÇALHO -->
 	
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
@@ -109,7 +106,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de meteorologia por periodos" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{satLabels.via_sul_counting_lane_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

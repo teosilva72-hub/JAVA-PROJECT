@@ -338,6 +338,46 @@ public class RoadConcessionaireDAO {
 		return all_plaque;
 
 	}
+
+	public List<int[]> getRoadLine() {
+		ArrayList<int[]> line = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT id, position_x, position_y FROM map_mapping";
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst())
+				while (rs.next()) {
+
+					int[] point = new int[3];
+					point[0] = rs.getInt(1);
+					point[1] = rs.getInt(2);
+					point[2] = rs.getInt(3);
+
+					line.add(point);
+				}
+
+		} catch (SQLException sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));				
+										 						
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+
+		} finally {
+
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
+		}
+
+		return line;
+	}
 	
 	// --------------------------------------------------------------------------------------------
 

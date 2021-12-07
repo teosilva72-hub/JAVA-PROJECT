@@ -1,5 +1,6 @@
 let draw = $(".drawLines")
 let idGps = {}
+let roadPoint = []
 let posZoom = {}
 
 const connectGPS = async (request, debug) => {
@@ -76,10 +77,11 @@ const coordToPixel = (x, y, deg, name) => {
 }
 
 const fillEquips = name => {
+	let zoom = $(`[name=${name}]`)
+	let radius = zoom.width() / 2
+	zoom.children().filter(':not(img)').remove()
 	$('.equip-box, .equip-info, .equip-box-sat').each((idx, item) => {
 		item = $(item).clone()
-		let zoom = $(`[name=${name}]`)
-		let radius = zoom.width() / 2
 
 		let pos = {
 			longitude: item.attr('longitude'),
@@ -110,7 +112,6 @@ const insertZoomPoint = () => {
 	zooms.each((i, zoom) => {
 		zoom = $(zoom);
 		let point = $(zoom).attr('for')
-		let z = $(`[name=${$(zoom).attr('for')}]`)
 		let pos = posZoom[point]
 	
 		let width = Math.abs(pos.end.x - pos.start.x);
@@ -176,6 +177,42 @@ const drawPointZoom = (id, name, title, coord) => {
 	}
 }
 
+const verifRangeRoad = (point, maxRanger) => {
+	maxRanger = maxRanger || 10
+	return roadPoint.reduce((a, b, idx) => {
+		if (a == true)
+			return true
+		let map = draw.prev()
+		let pad = (draw.height() - map.height()) / 2
+		let pointA = {
+			x: a[1] / 1000 * draw.width(),
+			y: a[2] / 1000 * map.height() + pad
+		}
+		let pointB = {
+			x: b[1] / 1000 * draw.width(),
+			y: b[2] / 1000 * map.height() + pad
+		}
+		let triangle = {
+			base: Math.sqrt(Math.pow(pointA.x - pointB.x, 2) + Math.pow(pointA.y - pointB.y, 2)),
+			A: Math.sqrt(Math.pow(pointA.x - point.x, 2) + Math.pow(pointA.y - point.y, 2)),
+			B: Math.sqrt(Math.pow(pointB.x - point.x, 2) + Math.pow(pointB.y - point.y, 2)),
+			p: function() {
+				return this.base + this.A + this.B
+			},
+			area: function() {
+				let p = this.p() / 2
+				return Math.sqrt(p * (p - this.base) * (p - this.A) * (p - this.B))
+			},
+			h: function() {
+				return this.area() * 2 / this.base
+			}
+		}
+		let h = triangle.h()
+		let limit = Math.sqrt(Math.pow(h, 2) + Math.pow(triangle.base, 2))
+		return (triangle.h() < maxRanger && triangle.A < limit && triangle.B < limit) || (roadPoint.length - 1 > idx && b)
+	})
+}
+
 const drawPoint = item => {
 	let id = item.i || item.id;
 	let name = item.nm || idGps[id]
@@ -187,7 +224,7 @@ const drawPoint = item => {
 		speed: Number(item.d ? item.d.pos.s : item.pos.s),
 	}
 	let point = coordToPixel(pos.x, pos.y, pos.deg)
-	let outRange = !(0 < point.x && point.x < draw.width()) || !(0 < point.y && point.y < draw.height()) //|| pos.x < Math.min(pos.s1, pos.e1) - 0.1 || pos.x > Math.max(pos.s1, pos.e1) + 0.1 || pos.y < Math.min(pos.s2, pos.e2) - 0.1 || pos.y > Math.max(pos.s2, pos.e2) + 0.1
+	let outRange = !verifRangeRoad(point);
 	let defaultCss = {display: 'block', position: 'absolute', transition: '1s', left: `${point.x}px`, top: `${point.y}px`, transform: `translate(-50%, -50%) rotate(${point.rad}rad)${Math.cos(point.rad) < 0 ? ' scaleY(-1)' : ''}`, "transform-origin": "50% 50%", width: "42px", "z-index": 1}
 	if (pos.speed < 15)
 		defaultCss.transform = 'translate(-50%, -50%)'
@@ -256,7 +293,11 @@ const replyPos = () => {
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		let units = await connectGPS('AllUnits')
+		let road = document.forms.roadLine;
 		replyPos()
+
+		for (point of road)
+			roadPoint.push(point.value.split(','));
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm

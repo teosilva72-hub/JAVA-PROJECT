@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.tracevia.webapp.model.colas.ColasQueue;
 import br.com.tracevia.webapp.model.dai.DAI;
+import br.com.tracevia.webapp.model.dai.DAIQueue;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
@@ -52,6 +54,7 @@ public class DAIDAO {
 		return list;
 		
 	}
+		
 
 	public DAI getEquipment(String name) throws Exception {
 		DAI dai = new DAI();
