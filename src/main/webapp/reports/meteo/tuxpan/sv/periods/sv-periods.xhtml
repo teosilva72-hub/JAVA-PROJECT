@@ -20,10 +20,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sv')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('sv_periods')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Meteorológico por periodo')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
+		
 		  
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sv_data')}"/>
@@ -48,7 +45,7 @@
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('datetime_', 'data de pesquisa', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'outra data')}" /> -->
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id' , 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" /> -->
 
     </f:metadata>
