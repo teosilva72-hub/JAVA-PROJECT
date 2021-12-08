@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.model.global;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
+import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
 import br.com.tracevia.webapp.classes.Br153;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
@@ -201,6 +202,46 @@ public class RoadConcessionaire {
 			reportsLLEnabled = false;
 		}
 		
+if(roadConcessionaire.equals(RoadConcessionairesEnum.Ausn.getConcessionaire())) {
+			
+			classLight = Ausn.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = Ausn.MOTORCYCLES.getClasse();
+			classUnknown = Ausn.UNKNOWN_CLASS.getClasse();	
+			classTrailer = Ausn.TRAILER.getClasse();	
+			classSemiTrailer = Ausn.SEMI_TRAILER.getClasse();
+			classBus2Axles = Ausn.BUS_2AXLES.getClasse();	
+			classBus3Axles = Ausn.BUS_3AXLES.getClasse();
+			classTruck2Axles = Ausn.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = Ausn.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = Ausn.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = Ausn.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = Ausn.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = Ausn.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = Ausn.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = Ausn.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = Ausn.TRUCK_10AXLES.getClasse();
+			classNotIdentifiedAxl2 = Ausn.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl5 = Ausn.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl3 = Ausn.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl4 = Ausn.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = Ausn.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = Ausn.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = Ausn.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = Ausn.NOT_ID_CLASS_9AXLES.getClasse();
+			externalImagePath += "";
+			logo = "/resources/images/home/ausn.png";
+			linearMapUI = "";
+			mapUI = "/resources/images/map/poza-rica/ausn.webp";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = false;
+		}
+		 
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
 			
 			classLight = LitoralSul.LIGHT_VEHICLES.getClasse();
