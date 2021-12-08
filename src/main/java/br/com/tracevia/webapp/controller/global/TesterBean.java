@@ -604,7 +604,7 @@ public class TesterBean {
 				else {
 					String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					
-					System.out.println(String.format("%s-filter", search.left[1]));
+					//System.out.println(String.format("%s-filter", search.left[1]));
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
@@ -629,7 +629,7 @@ public class TesterBean {
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
-			 System.out.println(query);
+			// System.out.println(query);
 			  
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);
@@ -672,10 +672,10 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
-			/*if(!special)										     
+			if(!special)										     
 		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
 			
-			else generateSpecialFile(model, specialName);*/
+			else generateSpecialFile(model, specialName);
 		     
 		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    

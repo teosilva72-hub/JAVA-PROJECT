@@ -24,8 +24,8 @@ public class SATBuildMap {
 
 	private static String INTERVAL_15MIN = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 15 MINUTE) AND ? AND eq.visible = 1 ";
 	private static String INTERVAL_30MIN = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 30 MINUTE) AND ? AND eq.visible = 1 ";
-	private static String INTERVAL_03HOUR = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 3 HOUR) AND ? AND eq.visible = 1 ";
-	private static String INTERVAL_06HOUR = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 6 HOUR) AND ? AND eq.visible = 1 ";
+	private static String INTERVAL_03HOURS = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 3 HOUR) AND ? AND eq.visible = 1 ";
+	private static String INTERVAL_06HOURS = "DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 6 HOUR) AND ? AND eq.visible = 1 ";
 
 	List<SAT> satListValues, satStatus;
 
@@ -85,7 +85,7 @@ public class SATBuildMap {
 				// PREENCHE LISTA COM STATUS DOS ULTIMOS 30 MINUTOS
 				// TABELA POSSUI DELAY DE 15 MINUTOS
 
-				satListValuesAux = dao.dataInterval(INTERVAL_15MIN);
+				satListValuesAux = dao.dataInterval(equips, INTERVAL_15MIN);
 
 				// START CHEKING 15 MIN 		      
 				if(!satListValuesAux.isEmpty()) {
@@ -138,7 +138,7 @@ public class SATBuildMap {
 							     } else {
 
 									//BUSCA DADOS DAS ULTIMAS 03 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOUR);
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOURS);
 									satListObj.setStatusInterval(3);
 		
 									//SE HOUVER DADOS PREENCHE NA LISTA
@@ -152,7 +152,7 @@ public class SATBuildMap {
 
 
 										//BUSCA DADOS DAS ULTIMAS 06 HORAS
-										satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOUR);
+										satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
 										satListObj.setStatusInterval(6);
 	
 										//SE HOUVER DADOS PREENCHE NA LISTA
@@ -190,7 +190,7 @@ public class SATBuildMap {
 				} else {
 
 					// START CHEKING 30 MIN 			
-					satListValuesAux = dao.dataInterval(INTERVAL_30MIN);
+					satListValuesAux = dao.dataInterval(equips, INTERVAL_30MIN);
 
 					if(!satListValuesAux.isEmpty()) {
 
@@ -230,7 +230,7 @@ public class SATBuildMap {
 							if (pass) {
 
 								//BUSCA DADOS DAS ULTIMAS 03 HORAS
-								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOUR);
+								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOURS);
 								satListObj.setStatusInterval(3);
 
 								//SE HOUVER DADOS PREENCHE NA LISTA
@@ -244,7 +244,7 @@ public class SATBuildMap {
 
 
 									//BUSCA DADOS DAS ULTIMAS 06 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOUR);
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
 									satListObj.setStatusInterval(6);
 
 									//SE HOUVER DADOS PREENCHE NA LISTA
@@ -279,7 +279,7 @@ public class SATBuildMap {
 					} else {
 
 						// START CHEKING 03 HOUR
-						satListValuesAux = dao.dataInterval(INTERVAL_03HOUR);
+						satListValuesAux = dao.dataInterval(equips, INTERVAL_03HOURS);
 
 						if(!satListValuesAux.isEmpty()) {
 
@@ -319,7 +319,7 @@ public class SATBuildMap {
 								if (pass) {											
 
 									 //BUSCA DADOS DAS ULTIMAS 06 HORAS
-									 satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOUR);
+									 satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
 									 satListObj.setStatusInterval(6);
 
 									 //SE HOUVER DADOS PREENCHE NA LISTA
@@ -353,7 +353,7 @@ public class SATBuildMap {
 						} else {
 
 							// START CHEKING 06 HOUR 
-							satListValuesAux = dao.dataInterval(INTERVAL_06HOUR);
+							satListValuesAux = dao.dataInterval(equips, INTERVAL_06HOURS);
 
 							if(!satListValuesAux.isEmpty()) {
 

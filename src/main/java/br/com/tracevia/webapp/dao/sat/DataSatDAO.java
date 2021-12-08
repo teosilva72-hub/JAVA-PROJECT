@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.ConnectionFactory;
@@ -19,11 +20,13 @@ public class DataSatDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 		
-	public List<SAT> dataInterval(String interval) throws Exception {
+	public List<SAT> dataInterval(ListEquipments equips, String queryInterval) throws Exception {
 		
 		List<SAT> list = new ArrayList<SAT>();
 		DateTimeApplication dta = new DateTimeApplication();
 		
+		int limit = equips.getSatList().size();
+									
 		String currentDate = null;
 			
 		Calendar calendar = Calendar.getInstance();	
@@ -140,10 +143,11 @@ public class DataSatDAO {
 	    	    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE " + interval +
-	    "GROUP BY d.NOME_ESTACAO " +
-	    "ORDER BY d.DATA_HORA ASC ";
-					
+	    "WHERE " + queryInterval +
+	    "GROUP BY d.DATA_HORA, d.NOME_ESTACAO " +
+        "ORDER BY d.NOME_ESTACAO, d.DATA_HORA DESC " +
+	    "LIMIT "+limit + " ";		
+	 
 	  try {
 			
 		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -154,7 +158,7 @@ public class DataSatDAO {
 			
 			rs = ps.executeQuery();
 			
-		    //System.out.println(select);
+		  //  System.out.println(select);
 			
 			if (rs != null) {
 				while (rs.next()) {
@@ -304,7 +308,9 @@ public class DataSatDAO {
  			    
     	    "FROM "+RoadConcessionaire.tableDados15+" d " +
     	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-    	    "WHERE eq.equip_id = ? AND " + interval;
+    	    "WHERE eq.equip_id = ? AND " + interval + " "+  
+    	    "GROUP BY d.DATA_HORA " +
+            "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
     	  					
     	  try {
     			
@@ -384,4 +390,38 @@ public class DataSatDAO {
      
  // -------------------------------------------------------------------------------------------------------------------------------------------------
            
+     
+   //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
+     public Integer satEquipments() throws Exception {
+     	
+     	int qtde = 0;
+ 				
+ 	String select = "SELECT COUNT(*) 'Qtde' FROM sat_equipment WHERE visible = 1";
+ 			      	    	  					
+ 	  try {
+ 			
+ 		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+ 			
+ 			ps = conn.prepareStatement(select);									
+ 			rs = ps.executeQuery();
+ 						
+ 			if (rs != null) {
+ 				while (rs.next()) {
+ 				
+ 					qtde = rs.getInt(1);									
+ 														
+ 				}				
+ 			 }			
+
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+
+ 				
+ 		return qtde;
+ 		
+ 	}	
+     
+  // -------------------------------------------------------------------------------------------------------------------------------------------------
+     
 }
