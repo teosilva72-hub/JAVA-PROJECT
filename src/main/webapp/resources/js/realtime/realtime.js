@@ -46,7 +46,6 @@ const init = () => {
 
 					//função option
 					contextMenu(ev, type, id)
-					ev.preventDefault()
 				})
 
 			$(window).resize(function () {
@@ -1014,8 +1013,8 @@ function moreOption(){
 function contextMenu(ev, type, id){
 	let equip = $(`#${type + id}`)
 	let menu = $(`.context-menu`)
-	let scaleEquip = Number(equip.attr('scale'))
 	ev.stopPropagation()
+	ev.preventDefault()
 	menu.css({
 		left: ev.pageX,
 		top: ev.pageY,

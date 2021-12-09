@@ -47,7 +47,6 @@ const init = () => {
 
 					//função option
 					contextMenu(ev, type, id)
-					ev.preventDefault()
 				})
 				
 			$(window).resize(function () {
@@ -1194,17 +1193,17 @@ function moreOption(){
 	$('#OPmodal').modal('toggle');
 }
 
-function contextMenu(ev, type, id){
+function contextMenu(ev, type, id, all = true){
 	let equip = $(`#${type + id}`)
 	let menu = $(`.context-menu`)
-	let scaleEquip = Number(equip.attr('scale'))
 	ev.stopPropagation()
+	ev.preventDefault()
 	menu.css({
 		left: ev.pageX,
 		top: ev.pageY,
 		display: 'block'
 	})
-	menu.children().css('display', 'none').filter(`[for=${type}], [for=all]`).css('display', 'block')
+	menu.children().css('display', 'none').filter(`[for=${type}]${all ? ', [for=all]' : ''}`).css('display', 'block')
 }
 
 /* Get Canvas Position X/Y */
