@@ -389,39 +389,5 @@ public class DataSatDAO {
  	}        
      
  // -------------------------------------------------------------------------------------------------------------------------------------------------
-           
-     
-   //LISTAR UM EQUIPAMENTO POR STATUS NOS ULTIMAS 8 HORAS (DELAY DE 15 MINUTOS)
-     public Integer satEquipments() throws Exception {
-     	
-     	int qtde = 0;
- 				
- 	String select = "SELECT COUNT(*) 'Qtde' FROM sat_equipment WHERE visible = 1";
- 			      	    	  					
- 	  try {
- 			
- 		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
- 			
- 			ps = conn.prepareStatement(select);									
- 			rs = ps.executeQuery();
- 						
- 			if (rs != null) {
- 				while (rs.next()) {
- 				
- 					qtde = rs.getInt(1);									
- 														
- 				}				
- 			 }			
-
- 		} catch (SQLException e) {
- 			e.printStackTrace();
- 		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
-
- 				
- 		return qtde;
- 		
- 	}	
-     
-  // -------------------------------------------------------------------------------------------------------------------------------------------------
-     
+  
 }
