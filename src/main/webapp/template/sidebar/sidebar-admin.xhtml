@@ -18,7 +18,7 @@
 				<!-- DASHBOARD APPLICATION -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
-						action="#{navigationController.redirectToDashboard}" value=""
+						action="#{navigationController.redirectToUrl('/dashboard/dashboard.xhtml?faces-redirect=true')}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-laptop-code icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_dashboard}</span>
@@ -169,7 +169,7 @@
 						
 						<!-- VIA SUL -->
 						
-                         <ui:include src="/template/report-concessionaire/via-sul.xhtml" />
+                         <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />
                          
 						<!---->
 					</ul>
