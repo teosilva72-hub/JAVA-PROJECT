@@ -156,7 +156,7 @@ const zoomRoadPoint = name => {
 const drawPointZoom = (id, name, title, coord) => {
 	let pos = coordToPixel(coord.x, coord.y, coord.deg, name)
 	let draw = $(`[name=${name}]`)
-	let divItem = draw.find(`#${id}`)
+	let divItem = draw.find(`#carGPS${id}`)
 	let radius = draw.width() / 2
 	let distance = Math.sqrt(Math.pow(pos.x - radius, 2) + Math.pow(pos.y - radius, 2))
 	let outRange = distance > radius
@@ -171,7 +171,7 @@ const drawPointZoom = (id, name, title, coord) => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -216,7 +216,7 @@ const verifRangeRoad = (point, maxRanger) => {
 const drawPoint = item => {
 	let id = item.i || item.id;
 	let name = item.nm || idGps[id]
-	let divItem = draw.find(`#${id}`)
+	let divItem = draw.find(`#carGPS${id}`)
 	let pos = {
 		x: Number(item.d ? item.d.pos.x : item.pos.x),
 		y: Number(item.d ? item.d.pos.y : item.pos.y),
@@ -240,9 +240,12 @@ const drawPoint = item => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
+		n.contextmenu(ev => {
+			contextMenu(ev, 'carGPS', id, false)
+		})
 	}
 }
 

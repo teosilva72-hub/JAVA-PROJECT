@@ -27,10 +27,6 @@ $(function(){
 			cftvVideo(value, url)
 		}, 1000)
 	})
-	//remove option click btn right mouse
-	$(document).contextmenu(function() {
-    return false
-	});
 })
 //SEND INFO BACK END CFTV ID
 function getInfo(){
@@ -162,44 +158,7 @@ function btnPatrol(){
 	x.style.display = "none"
 	y.style.displayc = "block"
 }
-//////////////////////////////////////////
-//////////CLICK BUTTON RIGHT MOUSE/////
-var settingPtz, windowPtz, moreOptionPtz
-function rightButtonCftv(type, id){
-	//TRADUCTOR BTNS
-	var add = document.getElementById("addequip")
-	if(add.value == "Añadir"){
-		settingPtz = "Configuración"
-		windowPtz = "PTZ Ventana"
-		moreOptionPtz = "+ Opción"
-	}else if(add.value == "ADICIONAR"){
-		settingPtz = "Configuração"
-		windowPtz = "PTZ Janela"
-		moreOptionPtz = "+ Opção"
-	}else{
-		settingPtz = "Setting"
-		windowPtz = "PTZ Window"
-		moreOptionPtz = "+ Option"
-	} 
-	//OPTIONS BTN
-	if($('#cftv6').children('div').length < 2){
-		$(`#${type}${id}`).append(`
-			<div class="mouseDownCftv cftv-right-mouse" id="mouseDownPTZ${id}">
-				<button type="button"
-					class="btn btn-secondary dinamic-mouse-right" onclick="settingCftv()">${settingPtz}
-				</button>
-				<button type="button"
-					class="btn btn-dark dinamic-mouse-right window-mouse-right${id}" onclick="windowCftvRight()">${windowPtz}
-				</button>
-				<button type="button" class="btn btn-secondary dinamic-mouse-right" onclick="moreOptionCftv()">${moreOptionPtz}</button>
-			</div>
-		`);
-	}
-	//
-	$(`div#mouseDownPTZ${id}`).mouseleave(function(){
-		$(`div#mouseDownPTZ${id}`).remove()
-	})
-}
+
 //DISABLED BTN WINDOWN BOTTOM
 function windowCftvRight(){
 	getInfo()
@@ -211,10 +170,7 @@ function windowCftvRight(){
 		cftvVideo(value, url)
 	},500)
 }
-//OPTIONS > POSITION, EDITE AND DELETE EQUIP
-function moreOptionCftv(){
-	$('#OPmodal').modal('toggle');
-}
+
 //OPEN MODAL SETTING CONTROLLER
 function settingCftv(){
 	getInfo()
