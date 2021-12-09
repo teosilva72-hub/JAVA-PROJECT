@@ -672,10 +672,10 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
-			if(!special)										     
-		       model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
-			
-			else generateSpecialFile(model, specialName);
+			// if(!special)										     
+		    // 	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
+			//
+			// else generateSpecialFile(model, specialName);
 		     
 		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
