@@ -30,8 +30,7 @@ public class NavigationBean {
 
 	@PostConstruct
 	public void initialize(){
-
-		redirectToDashboard();	
+		
 		sidebarSource();
 
 	}
@@ -463,9 +462,20 @@ public class NavigationBean {
 
 		return navigation_page;
 	}
+		
+	// SAT REPORTS
 	
 	// ----------------------------------------------------------------
 	
+	public String redirectToURL(String URL) {
+
+		navigation_page = URL.concat("?faces-redirect=true");		
+		
+		return navigation_page;
+	}
+		
+	// ----------------------------------------------------------------
+		
     /* SAT REPORTS */
 
 	public String sidebarSource() {
@@ -496,18 +506,5 @@ public class NavigationBean {
 
 	
 	// ----------------------------------------------------------------
-	
-	// SAT REPORTS
-	
-	public String redirectToURL(String URL) {
-
-		navigation_page = URL.concat("?faces-redirect=true");		
 		
-		return navigation_page;
-	}
-	
-	
-	// ----------------------------------------------------------------
-	
-	
 }

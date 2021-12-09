@@ -368,19 +368,19 @@ public class EquipmentsDAO {
 
 		String query = "";
 
-		String sql = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+		String sql = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
 				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, longitude, latitude, direction "
 				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
 				+ "ORDER BY eq.equip_id ASC"; 
 
-		String sqlVW = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+		String sqlVW = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
 				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction"
 				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
