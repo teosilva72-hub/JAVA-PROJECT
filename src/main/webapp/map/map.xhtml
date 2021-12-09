@@ -475,7 +475,9 @@
 			</button>
 			<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">Window
 			</button>
-			<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">More Option</button>
+			<c:if test="#{ SuperAdmin }">
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">More Option</button>
+			</c:if>
 		</div>
 
 	</ui:define>
