@@ -1198,16 +1198,13 @@ function contextMenu(ev, type, id){
 	let equip = $(`#${type + id}`)
 	let menu = $(`.context-menu`)
 	let scaleEquip = Number(equip.attr('scale'))
+	ev.stopPropagation()
 	menu.css({
 		left: ev.pageX,
 		top: ev.pageY,
 		display: 'block'
 	})
 	menu.children().css('display', 'none').filter(`[for=${type}], [for=all]`).css('display', 'block')
-
-	$(document).on('contextmenu click', function(){
-		menu.css('display', 'none')
-	})
 }
 
 /* Get Canvas Position X/Y */
