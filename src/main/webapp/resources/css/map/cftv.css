@@ -232,18 +232,6 @@ button#dropdown-cftv-btn-icone:hover {
 	right: 15px;
 }
 
-.mouseDownCftv {
-	z-index: 1;
-	position: relative;
-	color: black;
-	bottom: 0px;
-	width: 150px;
-}
-
-.dinamic-mouse-right {
-	width: 100%;
-}
-
 #listPMV1 {
 	display: none;
 }

@@ -44,34 +44,12 @@ const init = () => {
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
-					if (ev.which == 3 && type == "cftv") {
-						var cod = document.getElementById("cftvId")
-						cod.value = id
-						//função option cftv
-						rightButtonCftv(type, id)
-						ev.preventDefault()
-					}
+
+					//função option
+					contextMenu(ev, type, id)
+					ev.preventDefault()
 				})
-			if (!equip.hasClass('plaque') && equip.attr('id').match(/[a-zA-Z]+/g)[0] != "cftv")
-				equip.dblclick(function () {
-					posReset();
-
-					id = equip.attr('id').match(/\d+/g)[0];
-					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
-					toDrag = `#${equip.attr('id')}`
-					$('#OPmodal').modal('toggle');
-					//add btn setting cftv and icon
-					if (type == "cftv") {
-						var cod = document.getElementById("cftvId")
-						cod.value = id
-						$('.cftv-modal-btn').removeClass('none')
-						getInfo()
-					} else {
-						$('.cftv-modal-btn').addClass('none')
-					}
-					////////////////////////////////////////
-				});
-
+				
 			$(window).resize(function () {
 				posEquip(equip);
 			})
@@ -359,6 +337,7 @@ function ScrollZoom(container) {
 	function update() {
 		target.css('transform', `scale(${scale})`)
 		zoomPoint.css('transform', `scale(${scale})`)
+		$(`.context-menu`).css('display', 'none')
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
@@ -573,6 +552,7 @@ function mapMove(ele) {
 	};
 
 	const mouseMoveHandler = function (e) {
+		$(`.context-menu`).css('display', 'none')
 		// O quao longe o mouse esta sendo movido
 		const dx = e.clientX - pos.x;
 		const dy = e.clientY - pos.y;
@@ -1207,6 +1187,27 @@ const updateLine = equip => {
 	}
 
 	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
+}
+
+//OPTIONS > POSITION, EDITE AND DELETE EQUIP
+function moreOption(){
+	$('#OPmodal').modal('toggle');
+}
+
+function contextMenu(ev, type, id){
+	let equip = $(`#${type + id}`)
+	let menu = $(`.context-menu`)
+	let scaleEquip = Number(equip.attr('scale'))
+	menu.css({
+		left: ev.pageX,
+		top: ev.pageY,
+		display: 'block'
+	})
+	menu.children().css('display', 'none').filter(`[for=${type}], [for=all]`).css('display', 'block')
+
+	$(document).on('contextmenu click', function(){
+		menu.css('display', 'none')
+	})
 }
 
 /* Get Canvas Position X/Y */

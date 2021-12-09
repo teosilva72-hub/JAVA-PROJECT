@@ -11,6 +11,11 @@ $(async function () {
     $('.overlay').addClass('active');
   });
 
+  $(document).on('click contextmenu', function() {
+    $(`.context-menu`).css('display', 'none')
+    return false
+	})
+
   var adjustSidebar = function () {
     $(".menu-mode > form").slimScroll({ height: window.innerHeight - 40 })
     $(".equips-div").slimScroll({ height: window.innerHeight - 40 })
