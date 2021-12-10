@@ -11,11 +11,11 @@ df = pd.DataFrame(columns={"direction","lane","channel","date","hour","incident"
 df = df[["direction","lane","channel","date","hour","incident"]]
 
 #MOVING FILES
-dest= 'C:\DAI db'
+dest= 'C:\Camaras DAI\DAI db'
 def copyfiles(files, dest):
    if os.path.isdir(dest):
       dst = os.path.join(dest, os.path.basename(files))
-   shutil.copyfile(files,dest)
+   os.replace(files,dest)
 
 #SPLIT FILES
 def allequips(files):
