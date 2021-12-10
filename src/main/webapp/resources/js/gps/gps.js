@@ -76,6 +76,10 @@ const coordToPixel = (x, y, deg, name) => {
 	}
 }
 
+const openModalGPS = () => {
+	$('#modalCarImage').modal()
+}
+
 const fillEquips = name => {
 	let zoom = $(`[name=${name}]`)
 	let radius = zoom.width() / 2
@@ -209,7 +213,7 @@ const verifRangeRoad = (point, maxRanger) => {
 		}
 		let h = triangle.h()
 		let limit = Math.sqrt(Math.pow(h, 2) + Math.pow(triangle.base, 2))
-		return (triangle.h() < maxRanger && triangle.A < limit && triangle.B < limit) || (roadPoint.length - 1 > idx && b)
+		return (h < maxRanger && triangle.A < limit && triangle.B < limit) || (roadPoint.length - 1 > idx && b)
 	})
 }
 
@@ -296,11 +300,8 @@ const replyPos = () => {
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		let units = await connectGPS('AllUnits')
-		let road = document.forms.roadLine;
 		replyPos()
-
-		for (point of road)
-			roadPoint.push(point.value.split(','));
+		insertZoomPoint()
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm
@@ -308,18 +309,29 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 		}
 
 		consumeGPS({ callback_gps, debug });
-		insertZoomPoint()
-
-		$(window).resize(() => {
-			replyPos()
-			insertZoomPoint()
-			$('[target=carGPS]').css('display', 'none')
-			connectGPS('AllUnits').then(response => {
-				for (const item of response.items)
-					drawPoint(item)
-			})
-		})
 	});
 }
+
+$(async function() {
+	$(window).resize(() => {
+		replyPos()
+		insertZoomPoint()
+		$('[target=carGPS]').css('display', 'none')
+		connectGPS('AllUnits').then(response => {
+			for (const item of response.items)
+				drawPoint(item)
+		})
+	})
+
+	let road = document.forms.roadLine;
+	while (!road) {
+		await sleep(1000)
+		
+		road = document.forms.roadLine;
+	}
+
+	for (point of road)
+		roadPoint.push(point.value.split(','));
+})
 
 window.initGPS = initGPS
