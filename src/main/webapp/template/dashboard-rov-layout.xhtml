@@ -227,7 +227,7 @@
         <!-- USER CHANGE PASSWORD -->
 				 
 				 <h:commandLink class="dropdown-item"
-						action="#{navigationController.redirectToChangePassword}" value="">
+						action="#{navigationController.redirectToURL('/reset/reset_password.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-fw fa-unlock-alt"></i>
 						<span class="text">#{dashboardLabels.dashboard_navbar_icon_user_settings_change_password}</span>
 					</h:commandLink>

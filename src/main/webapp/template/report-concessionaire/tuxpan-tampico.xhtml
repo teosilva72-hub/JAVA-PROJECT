@@ -101,11 +101,8 @@
 						<i class="fas fa-tv icon"></i> 
 						<span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
 
-						<ul class="collapse list-unstyled" id="pmvUiSubmenu">
-							<!-- PMV SUBMENU -->
-							
-							
-
+						<ul class="collapse list-unstyled" id="pmvUiSubmenu"> <!-- PMV SUBMENU -->
+														
 							<!-- ACTIVE MESSAGES -->
 
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/dms/messages/message-activate.xhtml?faces-redirect=true')}" value="">
@@ -155,14 +152,25 @@
 						<ul class="collapse list-unstyled" id="modMenu">
 						
 						<!--  REPORTS SUBMENU -->
-						
-						
+												
 						<!-- COLAS -->
 						<ui:fragment rendered="#{loginAccount.load.en_colas}">
-						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}" value="">
+						
+						<li class="nav-item">
+						 <a class="nav-link" href="#colasSubmenu" data-toggle="collapse" aria-expanded="false">	
 						<i class="fas fa-hourglass-half icon-sub"></i>
-						<span class="text-sub" style="margin-left: 1%;">#{colasLabels.title_page1}</span>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
+						<ul class="collapse list-unstyled" id="colasSubmenu">
+
+					
+							<!---->
+						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}" value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_estimated_time}</span>
 						</h:commandLink></li>
+						
+						</ul></li>
+							
 						</ui:fragment>
 						<!---->
 						
@@ -189,7 +197,7 @@
 						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
 						<ul class="collapse list-unstyled" id="daiSubmenu">
 
-						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToReportDAI}" value="">
+						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectTURL('/dai/dai.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_sub_menu_report}</span>
 						</h:commandLink></li>
@@ -210,7 +218,7 @@
 									<!-- OCR REPORT -->
 
 						<li class="nav-item ml-2">
-						<h:commandLink class="nav-link" action="#{navigationController.redirectToReportOCR}" value="">
+						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/ocr/ocr.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
 						</h:commandLink></li>
@@ -307,152 +315,16 @@
 					 </li>								
 							<!---->
 					</ui:fragment>
-						<!---->
+					<!---->
 
-						<!---->
+					<!---->
 
-						<!-- PMV REPORT ITEM -->
+					<!-- PMV REPORT ITEM -->
 					<ui:fragment rendered="#{loginAccount.load.en_pmv}">
 					</ui:fragment>
-						<!---->
+					<!---->
 
-						<!-- SAT REPORT ITEM -->
-
-					<ui:fragment rendered="#{loginAccount.load.en_sat}">
-					<li class="nav-item"><a class="nav-link" href="#satSubmenu" data-toggle="collapse" aria-expanded="false">
-					<i class="fas fa-hdd icon-sub"></i>
-					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
-
-					<ul class="collapse list-unstyled" id="satSubmenu">
-									<!-- SAT SUBMENU ITEM -->
-
-									<!-- CONTAGEM VEICULAR REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/reports/sat_vehicle_count.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count}</span>
-					</h:commandLink></li>
-									<!---->
-
-									<!---->
-
-									<!-- CONTAGEM POR FLUXO REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/reports/sat_vehicle_count_flow.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count_flow}</span>
-					</h:commandLink></li>
-									<!---->
-
-									<!---->
-
-									<!-- TIPO POR EIXOS REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/sat/reports/sat_vehicle_count_flow.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_axles}</span>
-					</h:commandLink></li>
-									<!---->
-
-									<!---->
-
-									<!-- TODAS CLASSES REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/sat/ccr_reports/ccr_all_classes.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_all_classes}</span>
-					</h:commandLink></li>
-									<!---->
-									<!---->
-
-									<!-- TIPO POR CLASSES REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/reports/sat_class_type.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
-					</h:commandLink></li>
-									<!---->
-
-									<!---->
-
-									<!-- VELOCIDADE REPORT -->
-
-					<li class="nav-item"
-					><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/reports/sat_speed.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
-					</h:commandLink></li>
-									<!---->
-									
-									<!-- VELOCIDADE MULTI SELECT REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/reports/sat_speed_multi.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed_multi_selection}</span>
-					</h:commandLink></li>
-									<!---->
-									
-					</ul></li>
-							<!---->
-
-							<!---->
-
-							<!-- REPORTS LL -->
-
-					<ui:fragment rendered="#{loginAccount.reportsLLEnabled}">
-								<!-- REPORTS LL FRAGMENT -->
-					<li class="nav-item"><a class="nav-link" href="#satLLSubmenu" data-toggle="collapse" aria-expanded="false">
-					<i class="fas fa-hdd icon-sub"></i>
-					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
-
-					<ul class="collapse list-unstyled" id="satLLSubmenu">
-										<!-- REPORTS LL SUBMENU -->
-
-										<!-- CLASSES LL -->
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/ccr_reports/ccr_classe.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-					</h:commandLink></li>
-										<!---->
-
-										<!---->
-
-										<!--TIPO LL -->
-
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sat/ccr_reports/ccr_tipo.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
-					</h:commandLink></li>
-										<!---->
-
-										<!---->
-
-										<!-- VELOCIDADE LL -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/sat/ccr_reports/ccr_velocidade.xhtml?faces-redirect=true')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-					</h:commandLink></li>
-										<!---->
-
-					</ul></li>
-								<!---->
-					</ui:fragment>
-							<!---->
-					</ui:fragment>
-						<!---->
-
-						<!-- SAT REPORT ITEM -->
-
-						<!-- SOS REPORT ITEM -->
+					<!-- SOS REPORT ITEM -->
 					<ui:fragment rendered="#{loginAccount.load.en_sos}">
 						
 					<li class="nav-item"><a class="nav-link" href="#sosSubmenu"	data-toggle="collapse" aria-expanded="false">
@@ -461,35 +333,35 @@
 
 					<ul class="collapse list-unstyled" id="sosSubmenu">
 								
-									<!-- SOS BATTERY REPORT -->
+					<!-- SOS BATTERY REPORT -->
 
 					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sos/sos_battery.xhtml?faces-redirect=true')}" value="" >
+					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sos/tuxpan/battery/battery.xhtml?faces-redirect=true')}" value="" >
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_battery}</span>
 					</h:commandLink></li>
 									<!---->
 									
-									<!-- SOS CALL REPORT -->
+					<!-- SOS CALL REPORT -->
 
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sos/sos_call.xhtml?faces-redirect=true')}" value="">
+					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sos/tuxpan/call_history/call_history.xhtml?faces-redirect=true')}" value="">
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_call}</span>
 					</h:commandLink></li>
 									<!---->
 									
-									<!-- SOS STATISTIC REPORT -->
+					<!-- SOS STATISTIC REPORT -->
 
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sos/sos_statistic.xhtml?faces-redirect=true')}" value="">
+					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sos/tuxpan/statistics/call_statistics.xhtml?faces-redirect=true')}" value="">
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_statistic}</span>
 					</h:commandLink></li>
 									<!---->
 									
-									<!-- SOS STATUS REPORT -->
+					<!-- SOS STATUS REPORT -->
 
 					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/sos/sos_status.xhtml?faces-redirect=true')}" value="">
+					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sos/tuxpan/s/status/tatus.xhtml?faces-redirect=true')}" value="">
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_status}</span>
 					</h:commandLink></li>
@@ -503,7 +375,28 @@
 
 						<!-- SPEED REPORT ITEM -->
 					<ui:fragment rendered="#{loginAccount.load.en_speed}">
-					</ui:fragment>
+								
+						<li class="nav-item"><a class="nav-link" href="#speedSubmenu" data-toggle="collapse" aria-expanded="false">
+							<i class="fas fa-hdd icon-sub"></i>
+								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_speed}</span></a>
+
+									<ul class="collapse list-unstyled" id="speedSubmenu"> <!-- SPEED SUBMENU ITEM -->
+					
+
+									<!-- VELOCIDADE REPORT -->
+
+										<li class="nav-item">
+											<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/speed/speed-records.xhtml?faces-redirect=true')}" value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_speed_records_sub_menu_report} </span>
+											</h:commandLink></li>
+											
+											<!---->
+
+									</ul>
+								</li>
+									
+					  </ui:fragment>
 						<!---->
 
 						<!-- VIDEOWALL REPORT ITEM -->
@@ -511,14 +404,14 @@
 					</ui:fragment>
 						<!---->
 
-						<!-- WIM REPORT ITEM -->
+					<!-- WIM REPORT ITEM -->
 					<ui:fragment rendered="#{loginAccount.load.en_wim}">
 					<li class="nav-item"><a class="nav-link" href="#wimUiSubmenu" data-toggle="collapse" aria-expanded="false" >
 					<i class="fas fa-truck-moving icon-sub"></i> 
 					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_wim}</span></a>
 
 					<ul class="collapse list-unstyled" id="wimUiSubmenu">
-									<!-- WIM REPORT SUBMENU ITEM -->
+					<!-- WIM REPORT SUBMENU ITEM -->
 
 					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.wimReport}" value="">
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -535,151 +428,6 @@
 
 					<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
    
-
-					<!-- SAT REPORT ITEM -->
-
-					<ui:fragment rendered="#{loginAccount.load.en_sat}">
-					<li class="nav-item"><a class="nav-link" href="#satSubmenu" data-toggle="collapse" aria-expanded="false">
-					<i class="fas fa-hdd icon-sub"></i>
-					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat}</span></a>
-
-					<ul class="collapse list-unstyled" id="satSubmenu">
-					<!-- SAT SUBMENU ITEM -->
-
-					<!-- CONTAGEM VEICULAR REPORT -->
-
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/counting/vehicle-counting.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count}</span>
-					</h:commandLink></li>
-					<!---->
-
-					<!---->
-
-					<!-- CONTAGEM POR FLUXO REPORT -->
-
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/counting/flow-counting.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count_flow}</span>
-					</h:commandLink></li>
-					<!---->
-				
-					<!---->
-				
-					<!-- CONTAGEM POR FAIXAS -->
-
-			 		<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/counting/counting-lane.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_count_lane}</span>
-					</h:commandLink></li>
-					<!---->
-	
-					<!---->
-
-					<!-- TIPO POR EIXOS REPORT -->
-
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/axle/axle.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_axles}</span>
-					</h:commandLink></li>
-					<!---->
-
-					<!---->
-
-					<!-- TODAS CLASSES REPORT -->
-
-					<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/class/class_category.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_all_classes}</span>
-					</h:commandLink></li>
-					<!---->
-					<!---->
-
-					<!-- TIPO POR CLASSES REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/class/class.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_type_classes}</span>
-					</h:commandLink></li>
-						<!---->
-
-					<!---->
-
-						<!-- VELOCIDADE REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/speed/speed.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed}</span>
-					</h:commandLink></li>
-					<!---->
-
-					<!-- VELOCIDADE MULTI SELECT REPORT -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/standard/speed/speed-multi-select.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_speed_multi_selection}</span>
-					</h:commandLink></li>
-						<!---->
-
-					</ul></li>
-						<!---->
-
-						<!---->
-
-					<!-- REPORTS LL -->
-
-					<ui:fragment rendered="#{loginAccount.reportsLLEnabled}">
-					<!-- REPORTS LL FRAGMENT -->
-					<li class="nav-item">
-					<a class="nav-link" href="#satLLSubmenu" data-toggle="collapse" aria-expanded="false">
-					<i class="fas fa-hdd icon-sub"></i>
-					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_sat_ll}</span></a>
-
-					<ul class="collapse list-unstyled" id="satLLSubmenu">
-					<!-- REPORTS LL SUBMENU -->
-
-					<!-- CLASSES LL -->
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/ll/class/class-ll.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_class}</span>
-					</h:commandLink></li>
-					<!---->
-
-					<!---->
-
-					<!--TIPO LL -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/ll/type/type-ll.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_type}</span>
-					</h:commandLink></li>
-					<!---->
-
-					<!---->
-
-					<!-- VELOCIDADE LL -->
-
-					<li class="nav-item">
-					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/sat/via-sul/ll/speed/speed-ll.xhtml')}" value="">
-					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ccr_sat_sub_menu_speed}</span>
-					</h:commandLink></li>
-					<!---->
-
-					</ul></li>
-					<!---->
-					</ui:fragment>
-					<!---->
-					</ui:fragment>
-					<!---->
-
-					<!-- SAT REPORT ITEM -->
-
    					</h:body>
 
 					</html>
