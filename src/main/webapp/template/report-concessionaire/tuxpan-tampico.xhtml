@@ -49,13 +49,11 @@
 
 		  <ui:fragment rendered="#{loginAccount.load.en_ocr}">
 			 <li class="nav-item">
-				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
+				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  
 					<i class="fas fa-camera-retro icon-sub"></i> 
-					  <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
 					                   
-						<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->
-										
-							
+							<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->					
 
 							<li class="nav-item"><h:commandLink class="nav-link"
 									action="#{navigationController.redirectToRealtimeOCR}"
