@@ -5,7 +5,6 @@ import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
-import br.com.tracevia.webapp.classes.Br153;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.LitoralSul;
 import br.com.tracevia.webapp.classes.Tracevia;
@@ -85,9 +84,17 @@ public class RoadConcessionaire {
 	public static String tableStatus;
 	public static String plaque;    
 	public static boolean mapEnabled;
-	public static boolean reportsLLEnabled;	
-			
-			
+	public static boolean reportsLLEnabled;
+	public static boolean araguaia;
+	public static boolean ausn;
+	public static boolean br153;
+	public static boolean cardel;
+	public static boolean eco101;
+	public static boolean tuxpan;
+	public static boolean viaAmericas;
+	public static boolean viaSul;
+	public static boolean viaPaulista;
+				
 	// --------------------------------------------------------------------------------------------
 		
 	// CONSTRUTOR 
@@ -200,6 +207,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			cardel = true;
 		}
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.Ausn.getConcessionaire())) {
@@ -240,6 +248,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			ausn = true;
 		}
 		 
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -319,7 +328,8 @@ public class RoadConcessionaire {
 			plaque = "tuxpan";
 			mapEnabled = true;
 			reportsLLEnabled = false;
-													
+			tuxpan = true;						
+			
 		}
        
        if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaAmericas.getConcessionaire())) {
@@ -422,6 +432,7 @@ public class RoadConcessionaire {
    			plaque = "";
    			mapEnabled = true;
    			reportsLLEnabled = false;
+   			br153 = true;
    													
    		}
        
@@ -462,6 +473,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			viaPaulista = true;
 			
 		}
 
@@ -564,6 +576,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = true;
+			viaSul = true;
 						
 		}
 
@@ -604,6 +617,7 @@ public class RoadConcessionaire {
 	      plaque = "";
 		  mapEnabled = false;
 		  reportsLLEnabled = false;
+		  viaSul = true;
 				  
          }	
               		 
