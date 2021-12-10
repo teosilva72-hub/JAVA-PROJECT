@@ -49,11 +49,13 @@
 
 		  <ui:fragment rendered="#{loginAccount.load.en_ocr}">
 			 <li class="nav-item">
-				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  
+				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
 					<i class="fas fa-camera-retro icon-sub"></i> 
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+					  <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
 					                   
-							<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->					
+						<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->
+										
+							
 
 						<li class="nav-item">
 						<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/ocr/ocr_realtime.xhtml?faces-redirect=true')}" value="">
@@ -109,18 +111,18 @@
 						</h:commandLink></li>
 							<!---->
 
-							<!-- AVAILABLE MESSAGES -->
+						<!-- AVAILABLE MESSAGES -->
 
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController. redirectToURL('/dms/messages/message-activate.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_available_messages}</span>
 						</h:commandLink></li>
-							<!---->
+						<!---->
 
 						</ul> <!----></li>
-								<!---->
+						  <!---->
 						</ui:fragment>
-							<!---->
+						<!---->
 
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 				
@@ -142,7 +144,7 @@
 						</ui:fragment>
 							<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 				
-								<!-- REPORTS MENU -->
+						<!-- REPORTS MENU -->
 						<li class="nav-item"><a href="#modMenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
 						<i class="fas fa-file-signature icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
@@ -187,7 +189,7 @@
 						<!---->
 
 						<!-- DAI  -->
-						<ui:fragment rendered="#{loginAccount.load.en_dai}">
+						<ui:fragment rendered="#{loginAccount.load.en_dai}" >
 
 						<li class="nav-item">
 						 <a class="nav-link" href="#daiSubmenu" data-toggle="collapse" aria-expanded="false">	

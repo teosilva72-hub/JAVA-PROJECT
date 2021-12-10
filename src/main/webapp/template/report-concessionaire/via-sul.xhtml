@@ -10,6 +10,40 @@
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf">
    <h:body>
+   
+   
+   					<!-- REAL TIME  -->
+
+ 						<li class="nav-item">
+ 
+    					<a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> <!-- REALTIME MENU -->	 
+    					<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
+						</a>
+
+						<ul class="collapse list-unstyled" id="realTimeSubmenu">  <!-- REALTIME SUBMENU -->
+						
+						<!-- REALTIME ITEM -->
+	
+						<li class="nav-item">
+						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/realtime/realtime.xhtml?faces-redirect=true')}" value="">
+						<i class="fas fa-map-signs icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
+						</h:commandLink>
+						</li>
+				  													
+						<!---->
+
+						</ul></li>
+				<!---->
+
+				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+   
+                   <!-- REPORTS MENU -->
+                  <li class="nav-item"><a href="#modMenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
+						<i class="fas fa-file-signature icon"></i>
+						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
+
+						<ul class="collapse list-unstyled" id="modMenu">
 
 	<!-- SAT REPORT ITEM -->
 
@@ -159,6 +193,9 @@
 		<!---->
 	</ui:fragment>
 	<!---->
+	
+	 </ul>
+   </li>
 
 	<!-- SAT REPORT ITEM -->
 

@@ -27,14 +27,24 @@
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-                 <!-- COCNESSIONAIRE MENUS -->	
+                 <!-- CONCESSIONAIRE MENU -->	
                  
-                 <!-- TUXPAN TAMPICO -->		
-						
-                <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+                 <!-- TUXPAN TAMPICO -->	
+               						
+				 <ui:fragment rendered="#{loginAccount.road.tuxpan}" >	
+                   <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+				</ui:fragment>	
 				
 				<!---->
-
+				
+				 <!-- VIA SUL -->	
+				
+				 <ui:fragment rendered="#{loginAccount.road.viaSul}" >	
+                   <ui:include src="/template/report-concessionaire/via-sul.xhtml" />                     
+				</ui:fragment>
+				
+				 <!---->	
+			
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 				<!-- USERS REGISTER INTERFACE -->

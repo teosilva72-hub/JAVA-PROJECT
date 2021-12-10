@@ -5,6 +5,7 @@ import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
+import br.com.tracevia.webapp.classes.Br153;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
 import br.com.tracevia.webapp.classes.LitoralSul;
 import br.com.tracevia.webapp.classes.Tracevia;
@@ -84,17 +85,16 @@ public class RoadConcessionaire {
 	public static String tableStatus;
 	public static String plaque;    
 	public static boolean mapEnabled;
-	public static boolean reportsLLEnabled;
-	public static boolean araguaia;
-	public static boolean ausn;
-	public static boolean br153;
-	public static boolean cardel;
-	public static boolean eco101;
-	public static boolean tuxpan;
-	public static boolean viaAmericas;
-	public static boolean viaSul;
-	public static boolean viaPaulista;
-				
+	public static boolean reportsLLEnabled;	
+	public boolean araguaia;	
+	public boolean ausn;
+	public boolean br153;	
+	public boolean cardel;	
+	public boolean tuxpan;	
+	public boolean viaAmericas;	
+	public boolean viaPaulista;	
+	public boolean viaSul;	
+			
 	// --------------------------------------------------------------------------------------------
 		
 	// CONSTRUTOR 
@@ -104,7 +104,16 @@ public class RoadConcessionaire {
 		externalImagePath = "C:\\Tracevia\\Software\\External\\Logo\\";
 		externalDefaultLogo = "C:\\Tracevia\\Software\\External\\Logo\\tracevia.jpg";
 		
-		//System.getenv("APPDATA")+			
+		//System.getenv("APPDATA")+
+		
+		araguaia = false;	
+		ausn = false;
+		br153 = false;
+		cardel = false;
+		tuxpan = false;
+		viaAmericas = false;	
+		viaPaulista = false;	
+		viaSul = false;
 		
 	}
 	
@@ -328,7 +337,7 @@ public class RoadConcessionaire {
 			plaque = "tuxpan";
 			mapEnabled = true;
 			reportsLLEnabled = false;
-			tuxpan = true;						
+			tuxpan = true;							
 			
 		}
        
@@ -370,6 +379,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = true;
 			reportsLLEnabled = false;
+			viaAmericas = true;
 													
 		}
        if(roadConcessionaire.equals(RoadConcessionairesEnum.BR153.getConcessionaire())) {
@@ -627,7 +637,40 @@ public class RoadConcessionaire {
 		 return checkRoadConcessionaire;
     
 	 }
-	
+
 	//--------------------------------------------------------------------------------------------
+	
+	public boolean isAraguaia() {
+		return araguaia;
+	}
+
+	public boolean isAusn() {
+		return ausn;
+	}
+
+	public boolean isBr153() {
+		return br153;
+	}
+
+	public boolean isCardel() {
+		return cardel;
+	}
+
+	public boolean isTuxpan() {
+		return tuxpan;
+	}
+
+	public boolean isViaAmericas() {
+		return viaAmericas;
+	}
+
+	public boolean isViaPaulista() {
+		return viaPaulista;
+	}
+
+	public boolean isViaSul() {
+		return viaSul;
+	}
+
 	
 }
