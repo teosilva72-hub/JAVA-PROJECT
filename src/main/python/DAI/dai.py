@@ -5,7 +5,6 @@ from sqlalchemy import create_engine
 from datetime import datetime
 from functools import reduce
 import os
-import shutil
 
 df = pd.DataFrame(columns={"direction","lane","channel","date","hour","incident"})
 df = df[["direction","lane","channel","date","hour","incident"]]
