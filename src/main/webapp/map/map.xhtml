@@ -2392,25 +2392,32 @@
 		<!-- ************************************************************************************* -->
 
 		
-		<div class="modal fade" id="modalCarImage" tabindex="-1" aria-labelledby="modalCarImage" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title ml-auto" id="CarImageTitle">Choice Image</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						...
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
+		<h:form prependId="false" id="selectCarType" name="selectCarType">
+			<input type="hidden" id="id_car" name="id_car" />
+			<div class="modal fade" id="modalCarImage" tabindex="-1" aria-labelledby="modalCarImage" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title ml-auto" id="CarImageTitle">Choice Image</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<c:forEach items="#{roadView.cars}" var="Cars">
+								<img value="#{Cars[0]}" saved="#{Cars[2]}" src="/resources/images/equips/#{Cars[1]}" />
+							</c:forEach>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+							<h:commandButton value="Save" styleClass="btn btn-dark">
+								<f:ajax execute="@this" listener="#{roadView.saveCarIMG}" />
+							</h:commandButton>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</h:form>
 
 	</ui:define>
 
