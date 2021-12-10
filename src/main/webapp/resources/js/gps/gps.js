@@ -313,7 +313,8 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 }
 
 $(async function() {
-	$(window).resize(() => {
+	$(window).resize(async () => {
+		await sleep(1)
 		replyPos()
 		insertZoomPoint()
 		$('[target=carGPS]').css('display', 'none')
