@@ -47,6 +47,7 @@ public class LoginAccountBean {
 	LocaleUtil locale, locale1, locale2;
 
 	LoadStartupModules load;
+	RoadConcessionaire road;
 	String mapUI, linearMapUI;
 	String plaque;
 	String logo;
@@ -142,7 +143,15 @@ public class LoginAccountBean {
 	public void setReportsLLEnabled(boolean reportsLLEnabled) {
 		this.reportsLLEnabled = reportsLLEnabled;
 	}
-	
+		
+	public RoadConcessionaire getRoad() {
+		return road;
+	}
+
+	public void setRoad(RoadConcessionaire road) {
+		this.road = road;
+	}
+
 	public double[][] getCoord() {
 		coordMap();
 		return coord;
@@ -196,15 +205,15 @@ public class LoginAccountBean {
 	 */
 	public String loginValidation() {
 		
-		load = new LoadStartupModules(); // Carregar os m�dulos
+		load = new LoadStartupModules(); // Carregar os m�dulos		
+		road = new RoadConcessionaire();
 	
 		boolean status = false, inMemory = false, isName = false;
 		
-		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();					
-		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();		
-
+		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();		
+	
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
-		isName = roadConcessionaire.defineConcessionarieValues(language.concessionaire);
+		isName = road.defineConcessionarieValues(language.concessionaire);
 		
 		try {
 		
@@ -250,7 +259,7 @@ public class LoginAccountBean {
 
 					plaque = RoadConcessionaire.plaque;
 					logo = RoadConcessionaire.logo;
-					
+															
 					// NEW CHANGES
 														
 					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))

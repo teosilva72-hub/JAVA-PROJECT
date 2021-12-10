@@ -86,7 +86,14 @@ public class RoadConcessionaire {
 	public static String plaque;    
 	public static boolean mapEnabled;
 	public static boolean reportsLLEnabled;	
-			
+	public boolean araguaia;	
+	public boolean ausn;
+	public boolean br153;	
+	public boolean cardel;	
+	public boolean tuxpan;	
+	public boolean viaAmericas;	
+	public boolean viaPaulista;	
+	public boolean viaSul;	
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -97,7 +104,16 @@ public class RoadConcessionaire {
 		externalImagePath = "C:\\Tracevia\\Software\\External\\Logo\\";
 		externalDefaultLogo = "C:\\Tracevia\\Software\\External\\Logo\\tracevia.jpg";
 		
-		//System.getenv("APPDATA")+			
+		//System.getenv("APPDATA")+
+		
+		araguaia = false;	
+		ausn = false;
+		br153 = false;
+		cardel = false;
+		tuxpan = false;
+		viaAmericas = false;	
+		viaPaulista = false;	
+		viaSul = false;
 		
 	}
 	
@@ -200,6 +216,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			cardel = true;
 		}
 		
         if(roadConcessionaire.equals(RoadConcessionairesEnum.Ausn.getConcessionaire())) {
@@ -240,6 +257,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			ausn = true;
 		}
 		 
 		if(roadConcessionaire.equals(RoadConcessionairesEnum.LitoralSul.getConcessionaire())) {
@@ -319,7 +337,8 @@ public class RoadConcessionaire {
 			plaque = "tuxpan";
 			mapEnabled = true;
 			reportsLLEnabled = false;
-													
+			tuxpan = true;							
+			
 		}
        
        if(roadConcessionaire.equals(RoadConcessionairesEnum.ViaAmericas.getConcessionaire())) {
@@ -360,6 +379,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = true;
 			reportsLLEnabled = false;
+			viaAmericas = true;
 													
 		}
        if(roadConcessionaire.equals(RoadConcessionairesEnum.BR153.getConcessionaire())) {
@@ -422,6 +442,7 @@ public class RoadConcessionaire {
    			plaque = "";
    			mapEnabled = true;
    			reportsLLEnabled = false;
+   			br153 = true;
    													
    		}
        
@@ -462,6 +483,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = false;
+			viaPaulista = true;
 			
 		}
 
@@ -564,6 +586,7 @@ public class RoadConcessionaire {
 			plaque = "";
 			mapEnabled = false;
 			reportsLLEnabled = true;
+			viaSul = true;
 						
 		}
 
@@ -604,6 +627,7 @@ public class RoadConcessionaire {
 	      plaque = "";
 		  mapEnabled = false;
 		  reportsLLEnabled = false;
+		  viaSul = true;
 				  
          }	
               		 
@@ -613,7 +637,40 @@ public class RoadConcessionaire {
 		 return checkRoadConcessionaire;
     
 	 }
-	
+
 	//--------------------------------------------------------------------------------------------
+	
+	public boolean isAraguaia() {
+		return araguaia;
+	}
+
+	public boolean isAusn() {
+		return ausn;
+	}
+
+	public boolean isBr153() {
+		return br153;
+	}
+
+	public boolean isCardel() {
+		return cardel;
+	}
+
+	public boolean isTuxpan() {
+		return tuxpan;
+	}
+
+	public boolean isViaAmericas() {
+		return viaAmericas;
+	}
+
+	public boolean isViaPaulista() {
+		return viaPaulista;
+	}
+
+	public boolean isViaSul() {
+		return viaSul;
+	}
+
 	
 }

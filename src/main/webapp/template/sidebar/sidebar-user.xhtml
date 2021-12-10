@@ -29,9 +29,25 @@
 
 				  <!-- COCNESSIONAIRE MENUS -->			
 						
-                <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+                <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />  
+                
+                <!-- CONCESSIONAIRE MENU -->	
+                 
+                 <!-- TUXPAN TAMPICO -->	
+               						
+				 <ui:fragment rendered="#{loginAccount.road.tuxpan}" >	
+                   <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+				</ui:fragment>	
 				
 				<!---->
+				
+				 <!-- VIA SUL -->	
+				
+				 <ui:fragment rendered="#{loginAccount.road.viaSul}" >	
+                   <ui:include src="/template/report-concessionaire/via-sul.xhtml" />                     
+				</ui:fragment>
+				
+				 <!---->	
 				
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
