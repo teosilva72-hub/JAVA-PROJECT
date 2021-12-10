@@ -267,7 +267,7 @@ public class NavigationBean {
 
 	public String redirectToTypeAxle() {
 
-		navigation_page = "/sat/reports/sat_axle_type.xhtml?faces-redirect=true";		
+//		navigation_page = "/sat/reports/sat_axle_type.xhtml?faces-redirect=true";		
 
 		return navigation_page;
 	}

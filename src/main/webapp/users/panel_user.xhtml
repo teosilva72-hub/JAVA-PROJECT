@@ -52,7 +52,7 @@
 
 							<h:commandButton class="btn btn-dark draw-button" id="btn-add"
 								value="#{usersLabels.user_panel_btn_select_add}"
-								action="#{userAccount.newUser}">
+								action="#{navigationController.redirectToURL('/users/register_user.xhtml?faces-redirect=true')}">
 							</h:commandButton>
 
 						</div>
@@ -136,9 +136,7 @@
 					</div>				
 			  </div>
 		  </div>
-		
-		
-
+				
 
 		<h:form id="dialog-form"> <!-- DELETE DIALOG -->			
 			<div class="modal" id="deleteModal" tabindex="-1" role="dialog"
