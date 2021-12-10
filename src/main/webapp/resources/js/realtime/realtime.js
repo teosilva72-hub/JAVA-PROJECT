@@ -37,16 +37,16 @@ const init = () => {
 
 			posEquip(equip)
 
-			if (!equip.attr('class').includes('plaque'))
-				equip.dblclick(function () {
+			if (!equip.hasClass('plaque'))
+				equip.on("contextmenu", function (ev) {
 					posReset();
-
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
 
-					$('#OPmodal').modal('toggle');
-				});
+					//função option
+					contextMenu(ev, type, id)
+				})
 
 			$(window).resize(function () {
 				posEquip(equip)
@@ -313,6 +313,7 @@ function ScrollZoom(container) {
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
+		$(`.context-menu`).css('display', 'none')
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
@@ -603,6 +604,8 @@ function mapMove(ele) {
 	};
 
 	const mouseMoveHandler = function (e) {
+		$(`.context-menu`).css('display', 'none')
+
 		// O quao longe o mouse esta sendo movido
 		const dx = e.clientX - pos.x;
 		const dy = e.clientY - pos.y;
@@ -1002,3 +1005,20 @@ $(function () {
     });
     
 /* show hidden buttons */
+
+function moreOption(){
+	$('#OPmodal').modal('toggle');
+}
+
+function contextMenu(ev, type, id){
+	let equip = $(`#${type + id}`)
+	let menu = $(`.context-menu`)
+	ev.stopPropagation()
+	ev.preventDefault()
+	menu.css({
+		left: ev.pageX,
+		top: ev.pageY,
+		display: 'block'
+	})
+	menu.children().css('display', 'none').filter(`[for=${type}], [for=all]`).css('display', 'block')
+}

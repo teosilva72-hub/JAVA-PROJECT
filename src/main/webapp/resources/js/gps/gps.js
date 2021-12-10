@@ -76,6 +76,10 @@ const coordToPixel = (x, y, deg, name) => {
 	}
 }
 
+const openModalGPS = () => {
+	$('#modalCarImage').modal()
+}
+
 const fillEquips = name => {
 	let zoom = $(`[name=${name}]`)
 	let radius = zoom.width() / 2
@@ -156,7 +160,7 @@ const zoomRoadPoint = name => {
 const drawPointZoom = (id, name, title, coord) => {
 	let pos = coordToPixel(coord.x, coord.y, coord.deg, name)
 	let draw = $(`[name=${name}]`)
-	let divItem = draw.find(`#${id}`)
+	let divItem = draw.find(`#carGPS${id}`)
 	let radius = draw.width() / 2
 	let distance = Math.sqrt(Math.pow(pos.x - radius, 2) + Math.pow(pos.y - radius, 2))
 	let outRange = distance > radius
@@ -171,7 +175,7 @@ const drawPointZoom = (id, name, title, coord) => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -209,14 +213,14 @@ const verifRangeRoad = (point, maxRanger) => {
 		}
 		let h = triangle.h()
 		let limit = Math.sqrt(Math.pow(h, 2) + Math.pow(triangle.base, 2))
-		return (triangle.h() < maxRanger && triangle.A < limit && triangle.B < limit) || (roadPoint.length - 1 > idx && b)
+		return (h < maxRanger && triangle.A < limit && triangle.B < limit) || (roadPoint.length - 1 > idx && b)
 	})
 }
 
 const drawPoint = item => {
 	let id = item.i || item.id;
 	let name = item.nm || idGps[id]
-	let divItem = draw.find(`#${id}`)
+	let divItem = draw.find(`#carGPS${id}`)
 	let pos = {
 		x: Number(item.d ? item.d.pos.x : item.pos.x),
 		y: Number(item.d ? item.d.pos.y : item.pos.y),
@@ -240,9 +244,12 @@ const drawPoint = item => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
+		n.contextmenu(ev => {
+			contextMenu(ev, 'carGPS', id, false)
+		})
 	}
 }
 
@@ -293,11 +300,8 @@ const replyPos = () => {
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		let units = await connectGPS('AllUnits')
-		let road = document.forms.roadLine;
 		replyPos()
-
-		for (point of road)
-			roadPoint.push(point.value.split(','));
+		insertZoomPoint()
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm
@@ -305,18 +309,29 @@ const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = 
 		}
 
 		consumeGPS({ callback_gps, debug });
-		insertZoomPoint()
-
-		$(window).resize(() => {
-			replyPos()
-			insertZoomPoint()
-			$('[target=carGPS]').css('display', 'none')
-			connectGPS('AllUnits').then(response => {
-				for (const item of response.items)
-					drawPoint(item)
-			})
-		})
 	});
 }
+
+$(async function() {
+	$(window).resize(() => {
+		replyPos()
+		insertZoomPoint()
+		$('[target=carGPS]').css('display', 'none')
+		connectGPS('AllUnits').then(response => {
+			for (const item of response.items)
+				drawPoint(item)
+		})
+	})
+
+	let road = document.forms.roadLine;
+	while (!road) {
+		await sleep(1000)
+		
+		road = document.forms.roadLine;
+	}
+
+	for (point of road)
+		roadPoint.push(point.value.split(','));
+})
 
 window.initGPS = initGPS

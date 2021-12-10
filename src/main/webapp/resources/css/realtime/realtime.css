@@ -163,6 +163,16 @@ body {
   cursor: -moz-grabbing;
 }
 
+.context-menu {
+	position: fixed;
+	display: none;
+	z-index: 2;
+}
+
+.dinamic-mouse-right {
+	width: 100%;
+}
+
 .plaque {
   position: absolute;
   transform: translateX(-50%) scale(0.2);
