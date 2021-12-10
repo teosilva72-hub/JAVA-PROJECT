@@ -18,7 +18,7 @@
 				<!-- DASHBOARD APPLICATION -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
-						action="#{navigationController.redirectToUrl('/dashboard/dashboard.xhtml?faces-redirect=true')}" value=""
+						action="#{navigationController.redirectToURL('/dashboard/dashboard.xhtml?faces-redirect=true')}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-laptop-code icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_dashboard}</span>
@@ -27,162 +27,30 @@
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-				<!-- REAL TIME  -->
-
-				<li class="nav-item"><a href="#realTimeSubmenu"
-					data-toggle="collapse" aria-expanded="false" class="nav-link">
-						<!-- REALTIME MENU --> <i class="fas fa-road icon"></i><span
-						class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
-				</a>
-
-					<ul class="collapse list-unstyled" id="realTimeSubmenu">
-
-						<!-- REALTIME SUBMENU -->
-
-						<!-- MAP ITEM -->
-
-						<ui:fragment rendered="#{loginAccount.mapEnabled}">
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.redirectToMap}" value="">
-									<i class="fas fa-map-marked-alt icon-sub"></i>
-									<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_gis_map}</span>
-								</h:commandLink></li>
-						</ui:fragment>
-						<!---->
-
-						<!---->
-
-						<!-- REALTIME ITEM -->
-
-						<li class="nav-item"><h:commandLink class="nav-link"
-								action="#{navigationController.redirectToRealTime}" value="">
-								<i class="fas fa-map-signs icon-sub"></i>
-								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
-							</h:commandLink></li>
-
-						<!---->
-
-						<!---->
-
-						<!-- OCR REALTIME MENU -->
-
-						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
-							<li class="nav-item"><a class="nav-link"
-								href="#ocrUiSubmenu" data-toggle="collapse"
-								aria-expanded="false"><i
-									class="fas fa-camera-retro icon-sub"></i> <span
-									class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
-
-								<ul class="collapse list-unstyled" id="ocrUiSubmenu">
-									<!-- OCR SUBMENU -->
-
-									<!-- OCR REALTIME -->
-
-									<li class="nav-item"><h:commandLink class="nav-link"
-											action="#{navigationController.redirectToRealtimeOCR}"
-											value="">
-											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime}</span>
-										</h:commandLink></li>
-									<!---->
-
-									<!-- OCR REALTIME OVERVIEW -->
-
-									<li class="nav-item"><h:commandLink
-											class=" sub-link nav-link"
-											action="#{navigationController.redirectToRealtimeDetailsOCR}"
-											value="">
-											<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-											<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_realtime_details}</span>
-										</h:commandLink></li>
-									<!---->
-
-								</ul> <!----></li>
-							<!---->
-						</ui:fragment>
-						<!---->
-
-						<!---->
-
-						<!-- WIM ITEM -->
-
-						<ui:fragment rendered="#{loginAccount.load.en_wim}">
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.wimRealtime}" value="">
-									<i class="fas fa-truck-moving icon-sub"></i>
-									<span class="text-sub">#{wimLabels.wimReal}</span>
-								</h:commandLink></li>
-						</ui:fragment>
-						<!---->
-
-						<!---->
-
-					</ul></li>
+                 <!-- CONCESSIONAIRE MENU -->	
+                 
+                 <!-- TUXPAN TAMPICO -->	
+               						
+				 <ui:fragment rendered="#{loginAccount.road.tuxpan}" >	
+                   <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />                     
+				</ui:fragment>	
+				
 				<!---->
-
-				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-				<!-- PMV MENU -->
-
-				<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-					<li class="nav-item"><a class="nav-link" href="#pmvUiSubmenu"
-						data-toggle="collapse" aria-expanded="false"><i
-							class="fas fa-tv icon"></i> <span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
-
-						<ul class="collapse list-unstyled" id="pmvUiSubmenu">
-							<!-- PMV SUBMENU -->
-
-							<!-- ACTIVE MESSAGES -->
-
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.redirectToActiveMessages}"
-									value="">
-									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-									<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_active_messages}</span>
-								</h:commandLink></li>
-							<!---->
-
-							<!-- AVAILABLE MESSAGES -->
-
-							<li class="nav-item"><h:commandLink class="nav-link"
-									action="#{navigationController.redirectToAvailableMessages}"
-									value="">
-									<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-									<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_user_interface_available_messages}</span>
-								</h:commandLink></li>
-							<!---->
-
-						</ul> <!----></li>
-					<!---->
+				
+				 <!-- VIA SUL -->	
+				
+				 <ui:fragment rendered="#{loginAccount.road.viaSul}" >	
+                   <ui:include src="/template/report-concessionaire/via-sul.xhtml" />                     
 				</ui:fragment>
-				<!---->
-
-				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-				<!-- REPORTS MENU -->
-				 <li class="nav-item"><a href="#modMenu" data-toggle="collapse"
-					  	 aria-expanded="false" class="nav-link"> <i
-							class="fas fa-file-signature icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_reports}</span></a>
-
-						<ul class="collapse list-unstyled" id="modMenu">
-						<!--  REPORTS SUBMENU -->
-						
-						<!-- VIA SUL -->
-						
-                         <ui:include src="/template/report-concessionaire/tuxpan-tampico.xhtml" />
-                         
-						<!---->
-					</ul>
-				</li>
-				<!---->
-				<!---->
-
+				
+				 <!---->	
+			
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 				<!-- USERS REGISTER INTERFACE -->
 
 				<li class="nav-item"><h:commandLink class="nav-link"
-						action="#{navigationController.redirectToPanelUsers}" value=""
+						action="#{navigationController.redirectToURL('/users/panel_user.xhtml?faces-redirect=true')}" value=""
 						data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-users-cog icon"></i>
 						<span class="text">#{dashboardLabels.dashboard_sidebar_menu_users}</span>
