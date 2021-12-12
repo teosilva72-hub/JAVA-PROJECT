@@ -94,6 +94,7 @@ public class RoadConcessionaire {
 	public boolean viaAmericas;	
 	public boolean viaPaulista;	
 	public boolean viaSul;	
+	public boolean hasNotification;
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -114,6 +115,7 @@ public class RoadConcessionaire {
 		viaAmericas = false;	
 		viaPaulista = false;	
 		viaSul = false;
+		hasNotification = false;
 		
 	}
 	
@@ -443,6 +445,7 @@ public class RoadConcessionaire {
    			mapEnabled = true;
    			reportsLLEnabled = false;
    			br153 = true;
+   			hasNotification = true;
    													
    		}
        
@@ -484,6 +487,7 @@ public class RoadConcessionaire {
 			mapEnabled = false;
 			reportsLLEnabled = false;
 			viaPaulista = true;
+			hasNotification = true;
 			
 		}
 
@@ -587,6 +591,7 @@ public class RoadConcessionaire {
 			mapEnabled = false;
 			reportsLLEnabled = true;
 			viaSul = true;
+			hasNotification = true;
 						
 		}
 
@@ -628,6 +633,7 @@ public class RoadConcessionaire {
 		  mapEnabled = false;
 		  reportsLLEnabled = false;
 		  viaSul = true;
+		  hasNotification = true;
 				  
          }	
               		 
@@ -670,6 +676,10 @@ public class RoadConcessionaire {
 
 	public boolean isViaSul() {
 		return viaSul;
+	}
+
+	public boolean isHasNotification() {
+		return hasNotification;
 	}
 
 	

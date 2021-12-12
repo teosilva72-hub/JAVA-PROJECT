@@ -1,6 +1,6 @@
 package br.com.tracevia.webapp.cfg;
 
-public enum NotificationsAlarmsEnum {
+public enum NotificationAlarm {
 	
 	FULL_BATTERY(1),
 	LOW_BATTERY(2),
@@ -16,15 +16,15 @@ public enum NotificationsAlarmsEnum {
 	HIGH_TEMPERATURE(12),
 	TRACK_CONNECTED(13),
 	TRACK_DESCONNECTED(14);
-
+	
 	private int alarm; 	 
 	 
-   NotificationsAlarmsEnum(int alarm) {
+    NotificationAlarm(int alarm) {
         this.alarm = alarm;
     }
  
     public int getAlarm() {
         return alarm;
-    }	
+    }
 
 }

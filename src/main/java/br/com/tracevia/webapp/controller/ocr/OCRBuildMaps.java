@@ -10,7 +10,7 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.cfg.NotificationsAlarmsEnum;
-import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
+import br.com.tracevia.webapp.cfg.NotificationType;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.ocr.OCRDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
@@ -60,9 +60,9 @@ public class OCRBuildMaps {
 			
 			//SE VERIFICAR QUE HÁ NOTIFICAÇÃO OFFLINE ENTÃO ATUALIZA PARA ONLINE
 			if(ocr.getStatus() == 1 && ocr.getLast_status() == 0)				
-			    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), ocr.getEquip_id(), NotificationsTypeEnum.OCR.getType());
+			    notif.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), ocr.getEquip_id(), NotificationType.OCR.getType());
 			
-			else if(ocr.getStatus() == 0 && ocr.getLast_status() == 1) notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), ocr.getEquip_id(), NotificationsTypeEnum.OCR.getType());
+			else if(ocr.getStatus() == 0 && ocr.getLast_status() == 1) notif.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), ocr.getEquip_id(), NotificationType.OCR.getType());
 			
 			} // LOOP END*/
 			

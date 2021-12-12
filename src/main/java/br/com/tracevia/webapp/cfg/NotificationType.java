@@ -1,6 +1,6 @@
 package br.com.tracevia.webapp.cfg;
 
-public enum NotificationsTypeEnum {
+public enum NotificationType {
 	
 	CFTV("CFTV"),
 	COLAS("COLAS"),
@@ -18,7 +18,7 @@ public enum NotificationsTypeEnum {
 		
 	 private String type; 	 
 	 
-    NotificationsTypeEnum(String type) {
+    NotificationType(String type) {
         this.type = type;
     }
  

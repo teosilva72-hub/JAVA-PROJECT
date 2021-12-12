@@ -59,7 +59,7 @@ public class RoadConcessionaireDAO {
 	
 	public RoadConcessionaireDAO() {
 		
-		LogUtils.createLogsFolder(classErrorPath);
+		LogUtils.createLogFolder(classErrorPath);
 		
 	}
 	
