@@ -32,10 +32,10 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.battery_volts_column, sosLabels.battery_ampere_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(AVG(volt), 2) ,0); IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(AVG(volt), 2) ,0); IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
@@ -47,7 +47,7 @@
 				
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', false, true)}" />
 			               
     </f:metadata>

@@ -629,7 +629,7 @@ public class TesterBean {
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
-			// System.out.println(query);
+			 System.out.println(query);
 			  
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);

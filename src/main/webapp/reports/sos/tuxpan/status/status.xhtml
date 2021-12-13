@@ -24,15 +24,15 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_alarms')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, 
-		 sosLabels.door_status_closed_time_column, sosLabels.door_status_avg_time_column))}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, sosLabels.door_status_closed_time_column,
+		 sosLabels.door_status_avg_time_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; equip_id; IFNULL(type_id, 0); DATE_FORMAT(start, `%H:%i:%s`); DATE_FORMAT(end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, start, end))')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(start, `%d/%m/%Y`) as sd; equip_id; type_id; DATE_FORMAT(start, `%H:%i:%s`); DATE_FORMAT(end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, start, end))')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
