@@ -9,7 +9,7 @@ import os
 df = pd.DataFrame(columns={"equip_id", "direction","lane","date","hour","incident"})
 df = df[["equip_id", "direction","lane","date","hour","incident"]]
 
-#DATABASE ACESS
+#DATABASE ACCESS
 user = "root"
 passwd = "trcvbr18"
 host = "localhost"
