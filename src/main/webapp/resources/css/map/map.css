@@ -1756,3 +1756,17 @@ span.close-x {
 		background-image: radial-gradient(transparent 0%, white 0%, transparent 1%);
 	}
 }
+
+.car-select div.select {
+	border: 2px solid transparent;
+}
+
+.car-select div.select.selected {
+	border-style: solid;
+	border-image: linear-gradient(to right, red, orange) 1;
+	border-width: 2px;
+}
+
+.car-select img {
+	max-width: 100%;
+}
