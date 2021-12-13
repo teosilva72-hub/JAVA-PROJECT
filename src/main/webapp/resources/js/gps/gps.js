@@ -314,7 +314,7 @@ const selectCar = () => {
 				carCustom[id] = car.attr('src').split('/').pop()
 
 				if (old != carCustom[id])
-					$(`[id^=carGPS${id}]`).remove()
+					$(`[id=carGPS${id}]`).remove()
 			}
 	})
 
