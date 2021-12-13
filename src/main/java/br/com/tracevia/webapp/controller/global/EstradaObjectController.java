@@ -1,7 +1,9 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -10,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.util.SessionUtil;
 import br.com.tracevia.webapp.model.global.Estrada;
 
 @ManagedBean(name="roadView")
@@ -18,6 +21,7 @@ public class EstradaObjectController {
 	
 	public List<Plaque> plaque;
 	public List<int[]> roadLine;
+	public List<String[]> cars;
 	
 	private Estrada road_01;
 	private Estrada road_02;
@@ -109,6 +113,7 @@ public class EstradaObjectController {
 		try {
 			plaque = roadDAO.getPlaque();
 			roadLine = roadDAO.getRoadLine();
+			cars = roadDAO.getCarsList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -151,6 +156,10 @@ public class EstradaObjectController {
 	
 	public List<int[]> getRoadLine() {
 		return this.roadLine;
+	}
+	
+	public List<String[]> getCars() {
+		return this.cars;
 	}
 
 	public void setRoadLine(List<int[]> roadLine) {
@@ -260,5 +269,16 @@ public class EstradaObjectController {
 		public void setLinear_posY(int linear_posY) {
 			this.linear_posY = linear_posY;
 		}
+	}
+
+	public void saveCarIMG() throws IOException {
+		Map<String, String> map = SessionUtil.getRequestParameterMap();
+		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
+
+		String id = map.get("id_car");
+		String type = map.get("type_car");
+
+		roadDAO.saveCarIMG(id, type);
+		cars = roadDAO.getCarsList();
 	}
 }

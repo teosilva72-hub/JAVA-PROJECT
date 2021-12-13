@@ -178,6 +178,10 @@
 	margin-left: 5%;
 }
 
+.modal {
+	z-index: 9999;
+}
+
 /* modal button on close hide effect */
 button.close{
    outline: none;

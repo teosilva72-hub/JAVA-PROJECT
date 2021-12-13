@@ -94,6 +94,7 @@ public class RoadConcessionaire {
 	public boolean viaAmericas;	
 	public boolean viaPaulista;	
 	public boolean viaSul;	
+	public boolean hasNotification;
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -113,6 +114,7 @@ public class RoadConcessionaire {
 		viaAmericas = false;	
 		viaPaulista = false;	
 		viaSul = false;
+		hasNotification = false;
 		
 	}
 	
@@ -247,7 +249,7 @@ public class RoadConcessionaire {
 			externalImagePath += "";
 			logo = "/resources/images/home/ausn.png";
 			linearMapUI = "";
-			mapUI = "/resources/images/map/ausn/ausn.webp";
+			mapUI = "/resources/images/map/ausn/ausn.png";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -416,7 +418,8 @@ public class RoadConcessionaire {
    			plaque = "";
    			mapEnabled = false;
    			reportsLLEnabled = false;
-   			ecoviasAraguaia = true;
+   			ecoviasAraguaia = true;   		
+   			hasNotification = true;
    													
    		}       
 		
@@ -457,6 +460,7 @@ public class RoadConcessionaire {
 			mapEnabled = false;
 			reportsLLEnabled = false;
 			viaPaulista = true;
+			hasNotification = true;
 			
 		}
 
@@ -560,6 +564,7 @@ public class RoadConcessionaire {
 			mapEnabled = false;
 			reportsLLEnabled = true;
 			viaSul = true;
+			hasNotification = true;
 						
 		}
 
@@ -601,6 +606,7 @@ public class RoadConcessionaire {
 		  mapEnabled = false;
 		  reportsLLEnabled = false;
 		  viaSul = true;
+		  hasNotification = true;
 				  
          }	
               		 
@@ -639,6 +645,10 @@ public class RoadConcessionaire {
 
 	public boolean isViaSul() {
 		return viaSul;
+	}
+
+	public boolean isHasNotification() {
+		return hasNotification;
 	}
 
 	

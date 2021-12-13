@@ -2,6 +2,7 @@ let draw = $(".drawLines")
 let idGps = {}
 let roadPoint = []
 let posZoom = {}
+let carCustom = {}
 
 const connectGPS = async (request, debug) => {
 	return await sendMsgStomp(request, 'GPSRequest', debug, 'request')
@@ -78,6 +79,7 @@ const coordToPixel = (x, y, deg, name) => {
 
 const openModalGPS = () => {
 	$('#modalCarImage').modal()
+	document.forms.selectCarType.id_car.value = id
 }
 
 const fillEquips = name => {
@@ -104,7 +106,7 @@ const fillEquips = name => {
 			item.css({
 				left: point.x,
 				top: point.y,
-				transform: `translate(-50%, -70%) scale(${item.attr('scale')})`
+				transform: `translate(-50%, -50%) scale(${item.attr('scale') * 2})`
 			})
 			zoom.append(item)
 		}
@@ -175,7 +177,7 @@ const drawPointZoom = (id, name, title, coord) => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : 'car.png'}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -244,10 +246,12 @@ const drawPoint = item => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/car.png" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : 'car.png'}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 		n.contextmenu(ev => {
+			this.id = id
+			this.type = 'carGPS'
 			contextMenu(ev, 'carGPS', id, false)
 		})
 	}
@@ -297,6 +301,54 @@ const replyPos = () => {
 	})
 }
 
+const selectCar = () => {
+	let carSelect = $('.car-select div.select')
+
+	carSelect.find('img').each((idx, elmt) => {
+		let car =  $(elmt)
+		let saved = car.attr('saved')
+
+		if (saved)
+			for (const id of saved.split(',').map(s => s.trim())) {
+				let old = carCustom[id]
+				carCustom[id] = car.attr('src').split('/').pop()
+
+				if (old != carCustom[id])
+					$(`#carGPS${id}`).remove()
+			}
+	})
+
+	carSelect.click(function() {
+		let car = $(this)
+		
+		carSelect.removeClass('selected')
+		car.addClass('selected')
+		document.forms.selectCarType.type_car.value = car.find('img').attr('value')
+	})
+}
+
+const ChangeCarEvent = data => {
+	var status = data.status;
+
+	switch (status) {
+		case "begin":
+			$('#modalCarImage').modal('hide')
+			break;
+
+		case "complete":
+			break;
+
+		case "success":
+			selectCar()
+			connectGPS('AllUnits').then(response => {
+				for (const item of response.items)
+					drawPoint(item)
+			})
+
+			break;
+	}
+}
+
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
 		let units = await connectGPS('AllUnits')
@@ -333,6 +385,8 @@ $(async function() {
 
 	for (point of road)
 		roadPoint.push(point.value.split(','));
+
+	selectCar()
 })
 
 window.initGPS = initGPS

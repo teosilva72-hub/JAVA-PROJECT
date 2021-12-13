@@ -10,7 +10,7 @@ import java.io.StringWriter;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 
 /**
- * Classe para manipulação de Logs
+ * Classe para manipulÃ§Ã£o de Logs
  * @author Wellington 05/10/2021
  * @version 1.0
  * @since 1.0
@@ -46,14 +46,14 @@ public class LogUtils {
 	
 	public LogUtils(){
 		
-		createLogsFolder(classErrorPath);		
+		createLogFolder(classErrorPath);		
 		
 	}	
 	
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo DEBUG
+	 * Mï¿½todo para gerar logs do tipo DEBUG
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
@@ -92,14 +92,14 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo ERROR
+	 * Mï¿½todo para gerar logs do tipo ERROR
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
 	 * @param fileName - nome do log criado
 	 * @param classPath - caminho completo da classe onde log foi criado
 	 * @param message - mensagem a ser exibida
-	 * @exception - rastreio da exceção lançada	
+	 * @exception - rastreio da exceï¿½ï¿½o lanï¿½ada	
 	 */
 	public static void logError(String fileName, String classPath, String message, String exception) {	
 		
@@ -135,7 +135,7 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 		
 	/**
-	 * Método para gerar logs do tipo [INFO]
+	 * Mï¿½todo para gerar logs do tipo [INFO]
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
@@ -173,14 +173,14 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo [FATAL]
+	 * Mï¿½todo para gerar logs do tipo [FATAL]
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
 	 * @param fileName - nome do log a ser criado
 	 * @param classPath - caminho completo da classe para adicionar ao log
 	 * @param message - mensagem a ser exibida	
-	 * @exception - rastreio da exceção lançada	
+	 * @exception - rastreio da exceï¿½ï¿½o lanï¿½ada	
 	 */
 	public static void logFatal(String fileName, String classPath, String message, String exception) {		
 		 
@@ -215,7 +215,7 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo [TRACE]
+	 * Mï¿½todo para gerar logs do tipo [TRACE]
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
@@ -254,7 +254,7 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo [WARN]
+	 * Mï¿½todo para gerar logs do tipo [WARN]
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
@@ -293,16 +293,16 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para gerar logs do tipo [ERROR] SQL
+	 * Mï¿½todo para gerar logs do tipo [ERROR] SQL
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
 	 * @param fileName - nome do log a ser criado
 	 * @param classPath - caminho completo da classe para adicionar ao log
-	 * @param errorCode - código do erro a ser exibida	
-	 * @param sqlState -  identifica condições de erro SQL	
+	 * @param errorCode - cï¿½digo do erro a ser exibida	
+	 * @param sqlState -  identifica condiï¿½ï¿½es de erro SQL	
 	 * @param message - mensagem a ser exibida	
-     * @exception - rastreio da exceção lançada		
+     * @exception - rastreio da exceï¿½ï¿½o lanï¿½ada		
 	 */
 	public static void logErrorSQL(String fileName, String classPath, int errorCode, String sqlState, String message, String exception) {	
 		
@@ -341,13 +341,13 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para criar uma pasta no diretório de logs
+	 * Mï¿½todo para criar uma pasta no diretï¿½rio de logs
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0
 	 * @param localPath - caminho da pasta    
 	 */
-	public static void createLogsFolder(String localPath) {
+	public static void createLogFolder(String localPath) {
 
 		String directoryName = localPath;
 
@@ -362,7 +362,7 @@ public class LogUtils {
 	// --------------------------------------------------------------------------------------------
 	
 	/**
-	 * Método para adicionar data ao aqruivo .log antes de sua criação
+	 * Mï¿½todo para adicionar data ao aqruivo .log antes de sua criaÃ§Ã£o
 	 * @author Wellington 05/10/2021
 	 * @version 1.0
 	 * @since 1.0

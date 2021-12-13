@@ -663,6 +663,17 @@ public class DateTimeApplication {
 
 		return dataFormatada;	
 	}
+		
+	//DATE FORMAT		
+		public String dateTimeFormat(String data) throws ParseException {	
+
+			SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = formato.parse(data);
+			formato.applyPattern("dd/MM/yyyy HH:mm:ss");
+			String dataFormatada = formato.format(date);
+
+			return dataFormatada;	
+		}
 
 	public String DateTimeToStringIni(String data) throws ParseException {
 
