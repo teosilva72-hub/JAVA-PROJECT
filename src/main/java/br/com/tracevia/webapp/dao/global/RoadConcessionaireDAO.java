@@ -424,7 +424,6 @@ public class RoadConcessionaireDAO {
 	public void saveCarIMG(String id, String type) {
 		try {
 
-			//String query = "UPDATE gps_custom SET type = ? WHERE (id = ?)";
 			String query = "INSERT INTO gps_custom (id, type) VALUES (?, ?)";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -437,12 +436,26 @@ public class RoadConcessionaireDAO {
 			int res = ps.executeUpdate();
 
 		} catch (SQLException sqle) {
+			try {
+				String query = "UPDATE gps_custom SET type = ? WHERE (id = ?)";
 
-			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+				ps = conn.prepareStatement(query);
+
+				ps.setString(1, type);
+				ps.setString(2, id);
+
+				int res = ps.executeUpdate();
+			} catch (SQLException sqle2) {
+
+				StringWriter errors = new StringWriter();
+				sqle.printStackTrace(new PrintWriter(errors));				
+				sqle2.printStackTrace(new PrintWriter(errors));				
+																	
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle2.getErrorCode(), sqle2.getSQLState(), sqle2.getMessage(), errors.toString());
+			}
 
 		} finally {
 

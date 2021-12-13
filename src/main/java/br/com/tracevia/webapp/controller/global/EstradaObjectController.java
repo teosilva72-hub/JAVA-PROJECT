@@ -279,5 +279,6 @@ public class EstradaObjectController {
 		String type = map.get("type_car");
 
 		roadDAO.saveCarIMG(id, type);
+		cars = roadDAO.getCarsList();
 	}
 }
