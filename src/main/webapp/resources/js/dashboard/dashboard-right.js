@@ -11,7 +11,7 @@ $(async function () {
     $('.overlay').addClass('active');
   });
 
-  $(document).on('click contextmenu', function() {
+  $(document).on('contextmenu', function() {
     $(`.context-menu`).css('display', 'none')
     return false
 	})

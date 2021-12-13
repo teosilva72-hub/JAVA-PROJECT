@@ -14,7 +14,7 @@ public enum ViaPaulistaTables {
 			   
 		public String getTable() {
 		   return table;
-		}
-
 	}
+
+}
 
