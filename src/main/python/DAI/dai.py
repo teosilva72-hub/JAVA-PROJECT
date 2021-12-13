@@ -25,6 +25,7 @@ dest= 'C:\Camaras DAI\DAI db'
 def copyfiles(files, dest):
    if os.path.isdir(dest):
       dst = os.path.join(dest, os.path.basename(files))
+      print(dst)
    os.replace(files,dest)
 
 #SPLIT FILES
