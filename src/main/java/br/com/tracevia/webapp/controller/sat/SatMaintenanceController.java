@@ -12,7 +12,6 @@ import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
-import br.com.tracevia.webapp.model.global.Notifications;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.LocaleUtil;
 

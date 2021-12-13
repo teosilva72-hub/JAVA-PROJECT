@@ -1,61 +1,33 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.dao.global.NotificationsDAO;
-import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.model.global.NotificationsAlert;
+import br.com.tracevia.webapp.model.global.NotificationsCount;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="notificationsView")
 @RequestScoped
 public class NotificationsBean {
 	
+	@ManagedProperty("#{loginAccount}")
+	private LoginAccountBean login;
+	
 	LocaleUtil locale;	
-	NotificationsTypeEnum types;
-			
-    private List<Notifications> notifications;  
-    private static List<Notifications> notificationStatus;  
-    private int notifCount;
-    
-    private int equipId;
-    private int stateId;
-    private String type;
+			    
 	private long timestamp;
 	
-	int delay;
-	int interval;
-	Timer timer;
+	NotificationsDAO dao;						
 	
-	DateTimeApplication dta;
-		
-	public List<Notifications> getNotifications() {
-		return notifications;
-	}
-
-	public void setNotifications(List<Notifications> notifications) {
-		this.notifications = notifications;
-	}	
-			
-	public static List<Notifications> getNotificationStatus() {
-		return notificationStatus;
-	}
-
-	public int getNotifCount() {
-		return notifCount;
-	}
-
-	public void setNotifCount(int notifCount) {
-		this.notifCount = notifCount;
-	}
-		
 	public long getTimestamp() {
 		setTimestamp();
 
@@ -65,111 +37,126 @@ public class NotificationsBean {
 	public void setTimestamp() {
 		this.timestamp = System.currentTimeMillis();
 	}
+	
+	public LoginAccountBean getLogin() {
+		return login;
+	}
+
+	public void setLogin(LoginAccountBean login) {
+		this.login = login;
+	}
 			
-	public int getEquipId() {
-		return equipId;
-	}
-
-	public void setEquipId(int equipId) {
-		this.equipId = equipId;
-	}
-	
-	public int getStateId() {
-		return stateId;
-	}
-
-	public void setStateId(int stateId) {
-		this.stateId = stateId;
-	}
-		
-	public String getType() {
-		return type;
-	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
-
+	       
 	@PostConstruct
 	public void initializer() {
 		
 		locale = new LocaleUtil();
-		locale.getResourceBundle(LocaleUtil.MESSAGES_NOTIFICATIONS);
-			
+		locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);
+		
 		try {
 			
-			//findNotifications();
-			//countNotifications();
-				
+			// CASO ESSA OPÇÃO ESTEJA ATIVADA
+			if(login.road.isHasNotification()) {
+			
+					notifications();
+					count();
+			
+			}
+			
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
-				
-	}
 		
-	public void findNotifications() throws Exception {
-		
-		notifications = new ArrayList<Notifications>();
-		NotificationsDAO dao = new NotificationsDAO();
-		
-		timer = new Timer();
-				
-		notifications = dao.Notifications();
-										
-		if(notifications.isEmpty()) {
-									
-		   Notifications not = new Notifications();
-			
-		   not.setEquipId(0);
-		   not.setEquipType("none");
-		   not.setDescription(locale.getStringKey("stat_equipment_notification_none_notification"));
-		   not.setViewedBgColor("dropdown-nofit-none"); 
-			
-		   notifications.add(not);
-		   				   		   				 
-		}
-				
-					
 	}
 	
-	public List<Notifications> getNotificationStatus(String type) throws Exception {
+	// ---------------------------------------------------------------------------------
+	
+	public void count()
+	{
+		NotificationsCount not = new NotificationsCount();
+		dao = new NotificationsDAO();
 		
-		notificationStatus = new ArrayList<Notifications>();
+		not = dao.notificationsCount();
+						
+		if(not.getTotal() > 0) {
+			
+			SessionUtil.executeScript("$('#badge-notif').css('display','block'); $('#badge-notif').html("+not.getTotal()+")");			 			
+						
+			   if(not.getConnection() > 0) 			   
+					SessionUtil.executeScript("$('#btn-act-connection').css('display','block'); $('#btn-act-connection').html("+not.getConnection()+")");
+			 
+		}
+	 }
+	
+	// ---------------------------------------------------------------------------------
+    
+	  
+    public void notifications() throws ParseException 
+    {
+        List<NotificationsAlert> listAux = new ArrayList<NotificationsAlert>();            
+        NotificationsAlert not = new NotificationsAlert();
+                     
+        dao = new NotificationsDAO();
+        
+        listAux = dao.notifications();            
+
+        if (!listAux.isEmpty())
+        {
+        	
+        	 SessionUtil.executeScript("$('#notification-connection').empty()");
+        	 SessionUtil.executeScript("$('#notification-list').empty()");
+        	
+            for(NotificationsAlert n : listAux) {           
+                          	
+            	 if(n.getAlarmType() == 8)                 
+                     SessionUtil.executeScript("$('#notification-connection').append(backNotification('"+n.getViewedBgColor()+"', "+n.getAlarmType()+", '"+n.getEquipType()+"', "+n.getEquipId()+",'"+n.getDateTime()+"', '"+n.getEquipName()+"', '"+n.getDescription()+"')); $('#div-connection').css('display','block')");
+            	               
+               }  // END FOR 
+            
+
+        }else {
+        	
+            not.setEquipId(0);
+            not.setAlarmType(0);
+            not.setEquipType("none");               
+            not.setDescription(locale.getStringKey("no_notifications"));
+            not.setViewedBgColor("dropdown-nofit-alert");
+            
+            SessionUtil.executeScript("$('#notification-list').append(backWithoutNotification('"+not.getViewedBgColor()+"', "+not.getAlarmType()+", '"+not.getEquipType()+"', "+not.getEquipId()+", '"+not.getDescription()+"')); $('#div-single').css('display','block')");
+   		 
+ 
+            }
+                   
+    }
+    
+	// ---------------------------------------------------------------------------------
+    
+    public void updateStatus(int statusCode, int id, String equipType, String datetime, boolean status, boolean lastStatus) throws Exception
+    {
+    	boolean state = false;
+    	
+        dao = new NotificationsDAO();
+        state = dao.updateStatus(statusCode, id, equipType, datetime, status, lastStatus);
+       
+        if(state)
+        	dao.insertNotificationHistory(id, datetime, equipType, statusCode);
+       
+    }
+    
+	// ---------------------------------------------------------------------------------
+    
+    public List<NotificationsAlert> notificationStatus(String type) throws Exception {
+		
+		List<NotificationsAlert> list = new ArrayList<NotificationsAlert>();
 		NotificationsDAO dao = new NotificationsDAO();
 						
-		return notificationStatus = dao.NotificationStatus(type);		
+		 list = dao.notificationStatus(type);		
+		 
+		 return list;
 		
 		
 	}
-	
-	
-	public void countNotifications() throws Exception {
-		
-		NotificationsDAO dao = new NotificationsDAO();
-		
-		notifCount = 0;
-				
-		notifCount = dao.notificationsCount();	
-		
-	}
-				
-	//UPDATE STATUS NOTIFICATION
-	//ON READ EQUIPMENTS
-	public void updateNotificationStatus(int stateId, int equipId, String type) throws Exception {
-			
-		DateTimeApplication dta = new DateTimeApplication();
-		NotificationsDAO dao = new NotificationsDAO();
-		
-		boolean state = false;
-		
-		String datetime = dta.currentDateTime();
-		
-		state = dao.updateNotificationStatus(stateId, equipId, datetime, type);	   
-					
-		if(state)
-			dao.insertNotificationHistory(stateId, equipId, datetime, type);
-	  
-	}
-				
-	
-}
+
+   // ---------------------------------------------------------------------------------
+    
+  }

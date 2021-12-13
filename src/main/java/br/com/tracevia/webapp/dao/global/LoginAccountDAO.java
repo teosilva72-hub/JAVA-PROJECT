@@ -49,7 +49,7 @@ public class LoginAccountDAO {
 	
 	public LoginAccountDAO(){
 		
-		LogUtils.createLogsFolder(classErrorPath);
+		LogUtils.createLogFolder(classErrorPath);
 		
 	}
 	

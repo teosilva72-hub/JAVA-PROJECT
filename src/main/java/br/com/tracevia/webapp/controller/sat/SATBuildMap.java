@@ -9,13 +9,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import br.com.tracevia.webapp.cfg.NotificationType;
 import br.com.tracevia.webapp.cfg.NotificationsAlarmsEnum;
-import br.com.tracevia.webapp.cfg.NotificationsTypeEnum;
 import br.com.tracevia.webapp.controller.global.NotificationsBean;
 import br.com.tracevia.webapp.dao.sat.DataSatDAO;
+import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ListEquipments;
-import br.com.tracevia.webapp.model.global.Notifications;
+import br.com.tracevia.webapp.model.global.NotificationsAlert;
 import br.com.tracevia.webapp.model.sat.SAT;
 
 @ManagedBean(name = "satMapsView")
@@ -31,7 +32,7 @@ public class SATBuildMap {
 
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
-
+	
 	public List<SAT> getSatListValues() {
 		return satListValues;
 	}
@@ -47,7 +48,7 @@ public class SATBuildMap {
 	public void setEquips(ListEquipments equips) {
 		this.equips = equips;
 	}
-
+	
 	@PostConstruct
 	public void initalize() {
 
@@ -63,6 +64,7 @@ public class SATBuildMap {
 
 				DataSatDAO dao = new DataSatDAO();
 				NotificationsBean not = new NotificationsBean();
+				DateTimeApplication dt = new DateTimeApplication();
 
 				boolean pass = true;
 
@@ -73,14 +75,13 @@ public class SATBuildMap {
 
 				// LISTAR AUXILIARES
 				List<SAT> satListValuesAux = new ArrayList<SAT>();				
-				List<Notifications> listStatus = new ArrayList<Notifications>();
-
+				List<NotificationsAlert> listStatus = new ArrayList<NotificationsAlert>();
 
 				///////////////////////////////
 				// SAT EQUIPMENTS
 				//////////////////////////////
 
-				listStatus = not.getNotificationStatus(NotificationsTypeEnum.SAT.getType());		
+				listStatus = not.notificationStatus(NotificationType.SAT.getType());		
 
 				// PREENCHE LISTA COM STATUS DOS ULTIMOS 30 MINUTOS
 				// TABELA POSSUI DELAY DE 15 MINUTOS
@@ -113,8 +114,8 @@ public class SATBuildMap {
 								satListValuesAux.remove(r);
 								pass = false;
 
-								if(listStatus.get(s).getStatus() == 1)
-									not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(!listStatus.get(s).isOnlineStatus())
+									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 								break;
 
@@ -132,8 +133,8 @@ public class SATBuildMap {
 							if (satListObj.getEquip_id() != 0) {
 								satListValues.add(satListObj);
 
-								if(listStatus.get(s).getStatus() == 1)
-									not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+								if(!listStatus.get(s).isOnlineStatus())
+									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 							     } else {
 
@@ -145,8 +146,8 @@ public class SATBuildMap {
 									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
 		
-										if(listStatus.get(s).getStatus() == 1)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 		
 									 } else {
 
@@ -159,9 +160,9 @@ public class SATBuildMap {
 										if (satListObj.getEquip_id() != 0) {
 											satListValues.add(satListObj);
 	
-											if(listStatus.get(s).getStatus() == 1)
-												not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
-	
+											if(!listStatus.get(s).isOnlineStatus())
+												not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+											
 										 } else {
 	
 											SAT satListObj1 = new SAT();
@@ -176,9 +177,9 @@ public class SATBuildMap {
 												
 											satListValues.add(satListObj1);
 	
-											if(listStatus.get(s).getStatus() == 0)
-												not.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
-	
+											if(listStatus.get(s).isOnlineStatus())
+												not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+
 										} // ELSE
 									} // ELSE 
 								} // ELSE 
@@ -217,8 +218,8 @@ public class SATBuildMap {
 									satListValuesAux.remove(r);
 									pass = false;
 
-									if(listStatus.get(s).getStatus() == 1)
-										not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+									if(!listStatus.get(s).isOnlineStatus())
+										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 									break;
 
@@ -237,8 +238,8 @@ public class SATBuildMap {
 								if (satListObj.getEquip_id() != 0) {
 									satListValues.add(satListObj);
 
-									if(listStatus.get(s).getStatus() == 1)
-										not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+									if(!listStatus.get(s).isOnlineStatus())
+										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 								} else {
 
@@ -251,8 +252,8 @@ public class SATBuildMap {
 									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
 
-										if(listStatus.get(s).getStatus() == 1)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 									 } else {
 
@@ -268,8 +269,8 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).getStatus() == 0)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 									} // ELSE
 								} // ELSE 					
@@ -306,8 +307,8 @@ public class SATBuildMap {
 										satListValuesAux.remove(r);
 										pass = false;
 
-										if(listStatus.get(s).getStatus() == 1)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 										break;
 
@@ -326,8 +327,8 @@ public class SATBuildMap {
 									 if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
 
-										if(listStatus.get(s).getStatus() == 1)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 									 } else {
 
@@ -343,8 +344,8 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).getStatus() == 0)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 								   } // ELSE
 							    } // ELSE 					
@@ -380,8 +381,8 @@ public class SATBuildMap {
 											satListValuesAux.remove(r);
 											pass = false;
 
-											if(listStatus.get(s).getStatus() == 1)
-												not.updateNotificationStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+											if(!listStatus.get(s).isOnlineStatus())
+												not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 											break;
 										}
@@ -404,8 +405,8 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).getStatus() == 0)
-											not.updateNotificationStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationsTypeEnum.SAT.getType());
+										if(listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 									} // PASS END
 								} // FOR END 				
@@ -415,13 +416,11 @@ public class SATBuildMap {
 						} // ELSE END	
 					} // ELSE END				 			
 				} // FIRST ELSE CONDITION  (30 MIN)
-
+								  					
 			} catch (IndexOutOfBoundsException ex) {
 
 				ex.printStackTrace();
 			}
-
-
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -433,7 +432,10 @@ public class SATBuildMap {
 	
 	// ----------------------------------------------------------------------------------------------------
 
-	public void intializeNullList(List<? extends Equipments> satList) {
+	public void intializeNullList(List<? extends Equipments> satList) throws Exception {
+		
+		DateTimeApplication dt = new DateTimeApplication();
+		NotificationsBean not = new NotificationsBean();
 
 		for (int i = 0; i < satList.size(); i++) {
             
@@ -448,6 +450,8 @@ public class SATBuildMap {
 			sat.setStatusInterval(0);
 
 			satListValues.add(sat);
+			
+			not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(i).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 		}
 	}

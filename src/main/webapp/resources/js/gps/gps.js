@@ -78,6 +78,7 @@ const coordToPixel = (x, y, deg, name) => {
 
 const openModalGPS = () => {
 	$('#modalCarImage').modal()
+	document.forms.selectCarType.id_car.value = id
 }
 
 const fillEquips = name => {
@@ -104,7 +105,7 @@ const fillEquips = name => {
 			item.css({
 				left: point.x,
 				top: point.y,
-				transform: `translate(-50%, -70%) scale(${item.attr('scale')})`
+				transform: `translate(-50%, -50%) scale(${item.attr('scale') * 2})`
 			})
 			zoom.append(item)
 		}
@@ -248,6 +249,8 @@ const drawPoint = item => {
 		draw.append(n)
 		n.tooltip()
 		n.contextmenu(ev => {
+			this.id = id
+			this.type = 'carGPS'
 			contextMenu(ev, 'carGPS', id, false)
 		})
 	}

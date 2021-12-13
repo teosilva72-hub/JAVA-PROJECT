@@ -1,7 +1,7 @@
 
 function HasNotification(item){
 
- return '<a value="#" class="dropdown-item text-font dropdown-notif-style '+item.ViewedBgColor+'" id="n'+item.AlarmType+item.EquipType.toLowerCase()+item.EquipId+'" >'+
+ return '<a value="#" class="dropdown-item text-font dropdown-notif-style '+item.ViewedBgColor+'" id="n'+item.AlarmType+item.EquipType+item.EquipId+'" >'+
 		'<div style="font-size: 10px; margin-left: 0px;">' +
         item.DateTime +
         '</div>' +
@@ -18,7 +18,29 @@ function WithoutNotification(item){
 		   item.Description +
 		   '</div>' +
 		   '</a>';	
-   }  	
+  }  
+
+
+function backNotification(bgColor, alarmType, equipType, equipId, dateTime, equipName, description){
+
+ return '<a value="#" class="dropdown-item text-font dropdown-notif-style '+bgColor+'" id="n'+alarmType+equipType.toLowerCase()+equipId+'" >'+
+		'<div style="font-size: 10px; margin-left: 0px;">' +
+        dateTime +
+        '</div>' +
+        '<div style="font-size: 12px;">' +
+        equipName+' - '+description +
+        '</div>' +
+        '</a>';	
+} 
+
+function backWithoutNotification(bgColor, alarmType, equipType, equipId, description){
+
+	return '<a value="#" class="dropdown-item text-font dropdown-notif-style '+bgColor+'" id="n'+alarmType+equipType+equipId+'" >'+
+		   '<div style="font-size: 12px;">' +
+		   description +
+		   '</div>' +
+		   '</a>';	
+  }  		
    
 
 const changeNotificationStatus = response => {
