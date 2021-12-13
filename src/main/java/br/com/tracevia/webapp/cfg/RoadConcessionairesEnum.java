@@ -2,7 +2,7 @@ package br.com.tracevia.webapp.cfg;
 
 public enum RoadConcessionairesEnum {
 	
-	BR153("BR153"),
+	EcoviasAraguaia("Ecovias Araguaia"),
 	Ausn("AUSN"),
 	BahiaNorte("Bahia Norte"),
 	CardelPozaRica("Cardel Poza Rica"),

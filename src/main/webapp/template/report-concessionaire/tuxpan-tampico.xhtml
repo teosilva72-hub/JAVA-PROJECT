@@ -19,10 +19,8 @@
     					<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
 						</a>
 
-						<ul class="collapse list-unstyled" id="realTimeSubmenu"> 
-						
-							<!-- REALTIME SUBMENU -->
-
+						<ul class="collapse list-unstyled" id="realTimeSubmenu"> 	<!-- REALTIME SUBMENU -->
+												
 						<ui:fragment rendered="#{loginAccount.mapEnabled}">
 						<li class="nav-item">
 						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/map/map.xhtml?faces-redirect=true')}" value="">
@@ -32,9 +30,9 @@
 						</li>
 						</ui:fragment>
 		
-		   						 <!---->
+		   				<!---->
 
-			  			  <!-- REALTIME ITEM -->
+			  			<!-- REALTIME ITEM -->
 	
 						<li class="nav-item">
 						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/realtime/realtime.xhtml?faces-redirect=true')}" value="">
@@ -365,7 +363,8 @@
 					<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sat_sub_menu_sos_status}</span>
 					</h:commandLink></li>
-									<!---->	
+									
+					<!---->	
 																				 
 					 </ul>
 					 </li>

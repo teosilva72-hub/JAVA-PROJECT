@@ -260,10 +260,11 @@ public class LoginAccountBean {
 					plaque = RoadConcessionaire.plaque;
 					logo = RoadConcessionaire.logo;
 															
-					// NEW CHANGES
+					// STARTS MAP
 														
 					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
-					    return "/map/map.xhtml?faces-redirect=true";
+					    
+						return "/map/map.xhtml?faces-redirect=true";
 					
 					else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
@@ -299,10 +300,11 @@ public class LoginAccountBean {
 							plaque = RoadConcessionaire.plaque;
 							logo = RoadConcessionaire.logo;
 					
-							// NEW CHANGES
+							// STARTS MAP
 							
 							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
-							    return "/map/map.xhtml?faces-redirect=true";
+							    
+								return "/map/map.xhtml?faces-redirect=true";
 							
 							else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
