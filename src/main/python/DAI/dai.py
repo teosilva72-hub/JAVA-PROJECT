@@ -32,13 +32,17 @@ def allequips(files):
 ini_folder = 'C:\Camaras DAI'
 equips = list(map(lambda x: os.path.join(ini_folder, x, 'Traffic Incident'), os.listdir(ini_folder)))
 for equip in equips:
-    dates = map(lambda x: os.path.join(equip, x), os.listdir(equip))
-    days = []
-    [days.extend(x) for x in map(lambda x: list(map(lambda y: os.path.join(x, y), os.listdir(x))), dates)]
-    files = []
-    [files.extend(x) for x in map(lambda x: list(map(lambda y: os.path.join(x, y), os.listdir(x))), days)]
-    
-    allequips(files)
+    try:
+        dates = map(lambda x: os.path.join(equip, x), os.listdir(equip))
+        days = []
+        [days.extend(x) for x in map(lambda x: list(map(lambda y: os.path.join(x, y), os.listdir(x))), dates)]
+        files = []
+        [files.extend(x) for x in map(lambda x: list(map(lambda y: os.path.join(x, y), os.listdir(x))), days)]
+        
+        allequips(files)
+    except Exception as ex:
+        with open('err.log', 'w') as log:
+            log.write(str(ex))
 
 #DATABASE ACESS
 user = "root"
@@ -52,5 +56,5 @@ engine = create_engine(f'mysql://{user}:{passwd}@{host}:{port}/{db}')
 con = engine.connect()
 
 df
-#df.to_sql(con=con, schema='tracevia_app', name='dai_history', if_exists='append', index=False)
-copyfiles(files[0], dest)
+df.to_sql(con=con, schema='tracevia_app', name='dai_history', if_exists='append', index=False)
+#copyfiles(files[0], dest)

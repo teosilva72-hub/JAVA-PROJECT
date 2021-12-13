@@ -250,7 +250,7 @@ public class RoadConcessionaire {
 			externalImagePath += "";
 			logo = "/resources/images/home/ausn.png";
 			linearMapUI = "";
-			mapUI = "/resources/images/map/ausn/ausn.webp";
+			mapUI = "/resources/images/map/ausn/ausn.png";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
