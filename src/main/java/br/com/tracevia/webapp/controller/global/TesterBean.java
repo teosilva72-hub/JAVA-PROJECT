@@ -629,7 +629,7 @@ public class TesterBean {
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
 			
-			 System.out.println(query);
+			  System.out.println(query);
 			  
 		   // Table Fields
 		    report.getReport(query, idTable, isDivision() ? division : null);
@@ -672,10 +672,10 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
-			// if(!special)										     
-		    // 	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
-			//
-			// else generateSpecialFile(model, specialName);
+			 if(!special)										     
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
+			
+			 else generateSpecialFile(model, specialName);
 		     
 		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
