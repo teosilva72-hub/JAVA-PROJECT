@@ -471,14 +471,11 @@
 		</ui:fragment> </section>
 
 		<div class="context-menu">
-			<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">Setting
-			</button>
-			<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">Window
-			</button>
-			<button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">Change Vehicle
-			</button>
+			<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.map_equipment_settings}</button>
+			<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.map_equipment_realtime_view}</button>
+			<button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.map_change_vehicle}</button>
 			<c:if test="#{ SuperAdmin }">
-				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">More Option</button>
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.map_equipment_options}</button>
 			</c:if>
 		</div>
 
