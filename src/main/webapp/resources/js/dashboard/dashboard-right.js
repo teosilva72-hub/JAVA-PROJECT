@@ -15,6 +15,9 @@ $(async function () {
     $(`.context-menu`).css('display', 'none')
     return false
 	})
+  $(document).on('click', function() {
+    $(`.context-menu`).css('display', 'none')
+	})
 
   var adjustSidebar = function () {
     $(".menu-mode > form").slimScroll({ height: window.innerHeight - 40 })
