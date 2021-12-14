@@ -21,7 +21,7 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('mto_periods')}" />		
+		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('sv_periods')}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Meteorológico por periodo')}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
 		  
@@ -32,7 +32,7 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" />
 		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA,  TEMPERATURA DE AMBIENTE')}" />
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd;IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
+		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />

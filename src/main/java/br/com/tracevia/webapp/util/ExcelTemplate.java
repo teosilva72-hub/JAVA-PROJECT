@@ -202,11 +202,11 @@ public class ExcelTemplate {
 		// ----------------------------------------------------------------------------------------------------------------
 					
 		if(!module.equals("sat")) {
-		    if(equipId.size() == 1)		
-		      equipsInfo = genericInfo(equipId, module);
+		     if(equipId.size() == 1 && !module.equals("default"))		
+		        equipsInfo = genericInfo(equipId, module);
 				
-		     else equipsInfo = defaultGenericInfo();	
-		
+		    else equipsInfo = defaultGenericInfo();			    
+		   		
 		}else {
 			
 			 if(equipId.size() == 1)		

@@ -10,95 +10,98 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
 	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
 	
-	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	<f:metadata> 
 	
-	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />	
-		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
-	
-		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_dados15')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('NOME_ESTACAO')}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sat_equipment.name|equip_id@equip', satLabels.global_total_vehicles_column))}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(NOME_ESTACAO = $custom@equip, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL)')}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_estacao')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Report') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio MTO') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('MTO') }" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('DATA_HORA')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
-		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('DATA_HORA', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
 	
-    </f:metadata>
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('MTO_data') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
 	
-	<!---->
 	
-	<!-- TEMPLATE DO CABEÇALHO -->
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, PRESSÃO ATMOSFERICA, UMIDADE RELATIVA, PRECIPITAÇÃOO ABSOLUTA, VELOCIDADE VENTO, DIREÇÃO DO VENTO , TEMPERATURA, VISIBILIDADE, TEMPERATURA ESTRADA') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); atmospheric_pressure; relative_humidity; absolute_precipitation; wind_speed; wind_direction; temperature; visibility; road_temperature') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
+	
+	<!--  <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('mto_data q ON equip_id = equip_id')}" />-->
+			<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
+
+	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date','DATA', false, true)}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('station_id','Equipamento', 'mto_equipment.equip_id|name', false, true)}" />
+
+
+	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
+	
+
+	</f:metadata> 
+	
+	
+	
+	
+     <!---->
 	
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
 	    <!-- CCS STYLE -->
 	    
-	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
-		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
-		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
-		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
-		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->	<!-- OBRIGATÓRIO -->	
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE --> <!-- OBRIGATÓRIO -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  --> <!-- OBRIGATÓRIO -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE --> <!-- CASO TENHA DATA -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
 			
 		<!---->
 		
 		<!-- JAVASCRIPT FILE -->
 
-		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
-		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> <!-- CASO TENHA DATA -->	 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS -->  <!-- CASO TENHA DATA -->			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
-		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
-		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
-	 		
+		 <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		 <h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
+	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
+	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
+	
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
 	
-	 <!---->
-	 
-	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
 	
-	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
-	 
-	  <!-- ============================================================================================================================= -->
+	
+	<ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	
+	   <!-- ============================================================================================================================= -->
 	 		
 	   <!-- DIV DE ESTRUTURA DA TABELA --> 
 	    
 	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
 	       <!----> 		
 	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
-	         
-	          <!-- ALERT MESSAGE -->
+	        
+	         <!-- ALERT MESSAGE -->
 	 
-	          <ui:include src="/template/alerts/alert.xhtml" />
-	                   
+	         <ui:include src="/template/alerts/alert.xhtml" />
+             
        <!-- ============================================================================================================================= -->
            
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{satLabels.ecovias_araguaia_vehicle_counting_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatorioooooooooo" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -109,20 +112,20 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header">
-		<!-- DATATABALE JSF -->
+		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
+	 	
 		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->
+				 <f:facet name="header">#{header}</f:facet> <!-- HEADER -->
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->
-	</h:dataTable> <!-- DATATABALE JSF END -->
+	    </h:dataTable> <!-- DATATABALE JSF END -->
 	<!---->
-</h:form><!-- FORM TABLE END-->
+    </h:form><!-- FORM TABLE END-->
 	 
-	  <!-- ============================================================================================================================= -->
+	 	  <!-- ============================================================================================================================= -->
 	 
 	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
@@ -131,13 +134,12 @@
 	  <!-- ============================================================================================================================= -->
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
-	  
+	  	  	  
 	  <!-- ============================================================================================================================= -->
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
-	 
+	    <!--  <ui:include src="/template/chart/chart_template.xhtml" /> --> <!-- OPCIONAL -->
 		
 	  <!-- ============================================================================================================================= -->
 	  
@@ -170,13 +172,14 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		   	 	
+		 			   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
 		 
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->
+		
 	
 	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
-				 
+	
 </ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

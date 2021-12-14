@@ -51,13 +51,14 @@ public class TesterBean {
 
 	public String 	fileName, fileTitle, usePeriod, sheetName = "Report";	
 	
-	public String 	module, specialName, classSubHeader = "default";	
+	public String 	specialName, classSubHeader = "default";	
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
-	public boolean 	isSat, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
+	public boolean 	isSat = false, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
 	
 	public String totalType = "standard";
+	public String 	module = "default";
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -672,7 +673,7 @@ public class TesterBean {
 		      		     
 			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
 						
-			 if(!special)										     
+			 if(!special)										
 		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
 			
 			 else generateSpecialFile(model, specialName);
@@ -941,7 +942,10 @@ public class TesterBean {
 	        
 	        jsData += gson.toJson(lines);
 	        	     	        
-	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	        
+	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	     
+	        
+	        //System.out.println(jsColumn);
+	        //System.out.println(jsData);
 	        	   	       	        
 	        if(period[1].toUpperCase().equals("DAY"))
 	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");
