@@ -79,6 +79,7 @@ public class RoadConcessionaire {
 	public static String logo;
 	public static String mapUI;
 	public static String linearMapUI;
+	public static String darkMapUI;
 	public static String tableVBV;
 	public static String tableLL;
 	public static String tableCCR;
@@ -209,6 +210,7 @@ public class RoadConcessionaire {
 			logo = "/resources/images/home/cardelpozarica.webp";
 			linearMapUI = "/resources/images/realTimeInterface/linear/cardel_poza_rica.png";
 			mapUI = "/resources/images/map/poza-rica/poza-rica.webp";
+			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -250,6 +252,7 @@ public class RoadConcessionaire {
 			logo = "/resources/images/home/ausn.png";
 			linearMapUI = "";
 			mapUI = "/resources/images/map/ausn/ausn.png";
+			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -330,6 +333,7 @@ public class RoadConcessionaire {
 			logo = "/resources/images/home/tuxpan.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.webp";
 			mapUI = "/resources/images/map/tuxpan/tuxpan.webp";
+			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -372,6 +376,7 @@ public class RoadConcessionaire {
 			logo = "";
 			linearMapUI = "";
 			mapUI = "/resources/images/map/americas/americas.webp";
+			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -413,6 +418,7 @@ public class RoadConcessionaire {
    			logo = "/resources/images/home/ecovias_araguaia.webp";
    			linearMapUI = "/resources/images/realTimeInterface/ecovias-araguaia/ecovias_araguaia_linear.webp";
    			mapUI = "/resources/images/map/ecovias-araguaia/ecovias_araguaia.webp";
+   			darkMapUI = "";
    			tableVBV = DefaultTable.tableVBV.getTable();
    			tableDados15 = DefaultTable.tableDados15.getTable();   			
    			plaque = "";
@@ -493,6 +499,7 @@ public class RoadConcessionaire {
 			externalImagePath += "viaRondon.jpg";
 			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_rondon.png";
+			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();
@@ -555,6 +562,7 @@ public class RoadConcessionaire {
 			logo = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.webp";
 			mapUI = "";
+			darkMapUI = "";
 			tableVBV = ViaSulTables.ViaSulVBV.getTable();
 			tableDados15 = ViaSulTables.ViaSulDados15.getTable();
 			tableStatus = ViaSulTables.ViaSulStatus.getTable();
