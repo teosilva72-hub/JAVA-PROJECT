@@ -671,6 +671,8 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+dms.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+dms.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+dms.getLongitude()+"');");
 
 
 		} else if(moduleId == 9) {
@@ -686,6 +688,8 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sat.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sat.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sat.getLongitude()+"');");
 
 			if(sat.getFaixa1() != null)			 
 				RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
@@ -726,6 +730,8 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
 			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sos.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sos.getLongitude()+"');");	
 		
 		} else if (moduleId == 11) {
 
@@ -740,6 +746,8 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+speed.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+speed.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+speed.getLongitude()+"');");	
 				
 		}else {		
 
@@ -753,6 +761,8 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
 		
 		}				   
 	}

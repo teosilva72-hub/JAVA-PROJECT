@@ -942,7 +942,10 @@ public class TesterBean {
 	        
 	        jsData += gson.toJson(lines);
 	        	     	        
-	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	        
+	        jsData = jsData.toString().replaceAll("\"", "").replaceAll("null", "0").replaceAll("@aspas", "'");	     
+	        
+	        //System.out.println(jsColumn);
+	        //System.out.println(jsData);
 	        	   	       	        
 	        if(period[1].toUpperCase().equals("DAY"))
 	           SessionUtil.executeScript("reDrawChart("+jsColumn+", "+jsData+", '"+title+"', '"+vAxisTitle+"', '"+ dateFormat +"', '"+imageName+"');");

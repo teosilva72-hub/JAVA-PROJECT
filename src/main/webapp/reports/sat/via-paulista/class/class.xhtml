@@ -40,7 +40,7 @@
         SUM(classe = `3`); SUM(classe = `5`); SUM(IF(classe = `2` OR classe = `2A`, 1, 0)); SUM(IF(classe = `4` OR classe = `4A` OR classe = `3N`, 1, 0 ));
 		SUM(IF(classe = `6` OR classe = `4N`, 1, 0)); SUM(IF(classe = `7` OR classe = `5N`, 1, 0 ));
 		SUM(IF(classe = `8` OR classe = `6N`, 1, 0)); SUM(IF(classe = `10` OR classe = `7N`, 1, 0 ));
-		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, NULL ));
+		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, 0));
 		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
