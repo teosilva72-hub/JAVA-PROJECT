@@ -177,7 +177,7 @@ const drawPointZoom = (id, name, title, coord) => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : 'car.png'}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : carCustom['unknown']}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${title}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 	}
@@ -246,7 +246,7 @@ const drawPoint = item => {
 			divItem.css(defaultCss)
 		}
 	} else if (!outRange) {
-		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : 'car.png'}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
+		let n = $(`<img id="carGPS${id}" src="/resources/images/equips/${carCustom[id] ? carCustom[id] : carCustom['unknown']}" target="carGPS" data-bs-toggle="tooltip" data-bs-placement="top" title="${name}">`).css(defaultCss)
 		draw.append(n)
 		n.tooltip()
 		n.contextmenu(ev => {
@@ -307,6 +307,9 @@ const selectCar = () => {
 	carSelect.find('img').each((idx, elmt) => {
 		let car =  $(elmt)
 		let saved = car.attr('saved')
+
+		if (idx == 0)
+			carCustom['unknown'] = car.attr('src').split('/').pop()
 
 		if (saved)
 			for (const id of saved.split(',').map(s => s.trim())) {

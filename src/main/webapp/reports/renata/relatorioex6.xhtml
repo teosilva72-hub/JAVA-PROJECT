@@ -13,18 +13,16 @@
 	<f:metadata> 
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Report') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio MTO') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('MTO') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Relatorio Bateria') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio Bataeria') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('Relatorio Bateria') }" />
 
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('MTO_data') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
-	
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, PRESSÃO ATMOSFERICA, UMIDADE RELATIVA, PRECIPITAÇÃOO ABSOLUTA, VELOCIDADE VENTO, DIREÇÃO DO VENTO , TEMPERATURA, VISIBILIDADE, TEMPERATURA ESTRADA') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); atmospheric_pressure; relative_humidity; absolute_precipitation; wind_speed; wind_direction; temperature; visibility; road_temperature') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('battery_values') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, ID BATERIA, TIPO DE EEQUIPAMENTO, VOLTS , AMPERE ') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y  %H:%i:%s`); battery_id; equip_type; volt; ampere') }" />
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
 	
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
@@ -33,14 +31,15 @@
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
-	
-	<!--  <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('mto_data q ON equip_id = equip_id')}" />-->
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}"  />
+
+	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
 	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
+	
 
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date','DATA', false, true)}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('station_id' ,'Equipamento', 'mto_equipment.equip_id|name', false, true)}" />
-
+	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date' , 'DATA' , false , true)}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipamento','battery_values.equip_id' , false, true)}" />
+	
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
 	
@@ -101,7 +100,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatorio" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatorio Titulo" /> <!-- REPORT NAME  -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
