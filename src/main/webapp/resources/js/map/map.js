@@ -1211,18 +1211,12 @@ function contextMenu(ev, type, id, all = true){
 	menu.children().css('display', 'none').filter(`[for=${type}]${all ? ', [for=all]' : ''}`).css('display', 'block')
 }
 
-/* Get Canvas Position X/Y */
-
-// function getPosition(e) {
-// 	// getBoundingClientRect to retrieve the position of our canvas in the doc
-// 	var rect = this.getBoundingClientRect();
-// 	// we also need to use clientX and clientY values now
-// 	var x = e.clientX - rect.left;
-// 	var y = e.clientY - rect.top;
-// 	var coord = "x=" + x + ", y=" + y;
-// 	var c = this.getContext('2d');
-// 	var p = c.getImageData(x, y, 1, 1).data;
-//   }
-
-/* Get Canvas Position X/Y [end] */
-
+function darktype(){
+	$("#darkmode").on("click", function() {
+	if($(this).prop("checked") == true) {
+		$('body, html, #content').css('background-color', '#000000')
+	} else if($(this).prop("checked") == false) {
+		$('body, html, #content').css('background-color', '#878d8d')
+	}
+});
+};
