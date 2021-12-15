@@ -336,7 +336,13 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			dms.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			dms.setLatitude(Double.parseDouble(parameterMap.get("lat")));
 
+			//For Equipment KM
+			dms.setLongitude(Double.parseDouble(parameterMap.get("long")));
+			
 			int type = (parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType")));
 
 			//DMS TYPE
@@ -404,6 +410,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sip"));
+			
+			//For Equipment latitude
+			sos.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			sos.setLongitude(Double.parseDouble(parameterMap.get("long")));
 
 			checked =  equipDAO.checkExists(sos.getEquip_id(), table);
 
@@ -461,6 +473,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment TYPE
 			sat.setEquip_type(ModulesEnum.SAT.getModule());
+			
+			//For Equipment latitude
+			sat.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			sat.setLongitude(Double.parseDouble(parameterMap.get("long")));
 
 			//For Number Lanes
 			int numLanes = (parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
@@ -539,7 +557,13 @@ public class EquipmentsBean implements Serializable {
 			speed.setEstrada(parameterMap.get("roads"));
 
 			//For Equipment KM
-			speed.setKm(parameterMap.get("km"));		 
+			speed.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			speed.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			speed.setLongitude(Double.parseDouble(parameterMap.get("long")));		 
 
 			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
 			
@@ -600,7 +624,13 @@ public class EquipmentsBean implements Serializable {
 			equip.setEstrada(parameterMap.get("roads"));
 
 			//For Equipment KM
-			equip.setKm(parameterMap.get("km"));		 
+			equip.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			equip.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			equip.setLongitude(Double.parseDouble(parameterMap.get("long")));			 
 
 			checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
@@ -867,6 +897,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment KM
 			dms.setKm(parameterMap.get("kmEdit"));
 
+			//For Equipment Latitude
+			dms.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			dms.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				dms.setMapWidth(1);			    
@@ -926,6 +962,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sipEdit"));
 
+			//For Equipment latitude
+			sos.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			sos.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				sos.setMapWidth(1);			    
@@ -970,6 +1012,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			sat.setKm(parameterMap.get("kmEdit"));
+
+			//For Equipment latitude
+			sat.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			sat.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1036,6 +1084,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			speed.setKm(parameterMap.get("kmEdit"));
+			
+			//For Equipment latitude
+			speed.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			speed.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 		
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1059,10 +1113,10 @@ public class EquipmentsBean implements Serializable {
 			String table = defineTableById(moduleId);
 
 			//For Equipment Update Date
-			dms.setUpdate_date(dta.currentTimeDBformat());
+			equip.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			dms.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			equip.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
 
 			//For Equipment ID
 			equip.setEquip_id(equipId);
@@ -1081,6 +1135,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			equip.setKm(parameterMap.get("kmEdit"));	
+			
+			//For Equipment latitude
+			equip.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			equip.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")

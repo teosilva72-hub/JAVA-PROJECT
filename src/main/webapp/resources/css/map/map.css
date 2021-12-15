@@ -1770,3 +1770,9 @@ span.close-x {
 .car-select img {
 	max-width: 100%;
 }
+
+.darkmode{
+	position: fixed;
+	left: 30%;
+	bottom: 34px;
+}
