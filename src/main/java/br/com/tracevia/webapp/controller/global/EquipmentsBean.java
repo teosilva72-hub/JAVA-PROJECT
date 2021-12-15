@@ -867,6 +867,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment KM
 			dms.setKm(parameterMap.get("kmEdit"));
 
+			//For Equipment Latitude
+			dms.setLatitude(parameterMap.get("latEdit"));
+
+			//For Equipment longitude
+			dms.setLongitude(parameterMap.get("longEdit"));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				dms.setMapWidth(1);			    
@@ -926,6 +932,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sipEdit"));
 
+			//For Equipment latitude
+			sos.setLatitude(parameterMap.get("latEdit"));
+
+			//For Equipment longitude
+			sos.setLongitude(parameterMap.get("longEdit"));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				sos.setMapWidth(1);			    
@@ -970,6 +982,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			sat.setKm(parameterMap.get("kmEdit"));
+
+			//For Equipment latitude
+			sat.setLatitude(parameterMap.get("latEdit"));
+
+			//For Equipment longitude
+			sat.setLongitude(parameterMap.get("longEdit"));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1036,6 +1054,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			speed.setKm(parameterMap.get("kmEdit"));
+			
+			//For Equipment latitude
+			speed.setLatitude(parameterMap.get("latEdit"));
+
+			//For Equipment longitude
+			speed.setLongitude(parameterMap.get("longEdit"));
 		
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1059,10 +1083,10 @@ public class EquipmentsBean implements Serializable {
 			String table = defineTableById(moduleId);
 
 			//For Equipment Update Date
-			dms.setUpdate_date(dta.currentTimeDBformat());
+			equip.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			dms.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			equip.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
 
 			//For Equipment ID
 			equip.setEquip_id(equipId);
@@ -1081,6 +1105,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			equip.setKm(parameterMap.get("kmEdit"));	
+			
+			//For Equipment latitude
+			equip.setLatitude(parameterMap.get("latEdit"));
+
+			//For Equipment longitude
+			equip.setLongitude(parameterMap.get("longEdit"));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
