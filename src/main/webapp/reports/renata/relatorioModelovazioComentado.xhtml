@@ -13,21 +13,40 @@
 	<f:metadata> 
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Report') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio MTO') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('MTO') }" />
-
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('') }" />
+	<!-- Nome do arquivo , ex: sv_perios, mto register  -->
+	
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('') }" />
+	<!-- Titulo do relatorio, Ex: Meterologia por periodo -->
+	
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('') }" />
+	<!--  Nome da concessionaria-->
+	
+	<f:viewAction onPostback="true" action="#{testerBean.defineModule('')}" />
+	<!--  Nome do Modulo-->
+		
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
+	<!-- Id da tabela, obrigatorio e não mudar nada -->
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('MTO_data') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('') }" />
+	<!-- Nome da tabela onde está o dados no banco de dados -->
 	
+	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('')}" /> 
+	<!-- Enviar o id do equipamento para excel  -->
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, PRESSÃO ATMOSFERICA, UMIDADE RELATIVA, PRECIPITAÇÃOO ABSOLUTA, VELOCIDADE VENTO, DIREÇÃO DO VENTO , TEMPERATURA, VISIBILIDADE, TEMPERATURA ESTRADA') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); atmospheric_pressure; relative_humidity; absolute_precipitation; wind_speed; wind_direction; temperature; visibility; road_temperature') }" />
+    <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('')}" />
+	<!-- caso não tenha intervalos/periodos  , se tiver intervalo não colocar -->
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('') }" />
+	<!-- Nome das colunas que vai aparecer no relatorio , separa os nomes das coluna por virgula  -->
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('') }" />
+	<!-- nome da coluna que ira pegar no banco de dados, colocar na mesma  sequencia do anterior  -->
+	
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
+	<!-- Parar criar o relatorio -->
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
@@ -35,12 +54,20 @@
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
 	
-	<!--  <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('mto_data q ON equip_id = equip_id')}" />-->
 	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" />
+	<!-- PARA REFERENCIAS DADOS CONTIDOS EM DUAS TABELAS EX.: TROCAR ID DA TABELA A PELO NOME DA TABELA B 
+		nomedatabela  On (se pnome da couna for difetrente )nomedatabel.nomedacoluna = nomedatabela -->
+		
 
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date','DATA', false, true)}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('station_id' ,'Equipamento', 'mto_equipment.equip_id|name', false, true)}" />
-
+	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch(')}" />
+	<!-- Nome da coluna que esta com data 
+ 		'comoestaonomedatanacoluna', 'comoiraaparecernorelatorio' , false= nao é multiplaescolha, true é obrigatorio -->
+ 		
+	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('')}" />
+	<!-- Aqui pode colocar os filtros :
+	'coluna para filtrar' , 'como irá aparecer para o cliente', onomedatabelaqueesta.acoluna|acolunaapareceonome , false= nao é multiplaescolha, true é obrigatorio  -->
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
 	
@@ -101,7 +128,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatorio" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatorio Titulo" /> <!-- REPORT NAME  -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

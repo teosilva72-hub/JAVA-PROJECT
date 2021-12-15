@@ -12,35 +12,41 @@
 	
 	<f:metadata> 
 	
-
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Report') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio MTO') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('MTO') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Relatorio Equipamento cftv') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Equipamento cftv') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('Equipamento cftv') }" />
 
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('MTO_data') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('cftv_equipment') }" />
 	
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, PRESSÃO ATMOSFERICA, UMIDADE RELATIVA, PRECIPITAÇÃOO ABSOLUTA, VELOCIDADE VENTO, DIREÇÃO DO VENTO , TEMPERATURA, VISIBILIDADE, TEMPERATURA ESTRADA') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); atmospheric_pressure; relative_humidity; absolute_precipitation; wind_speed; wind_direction; temperature; visibility; road_temperature') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA, EMPRESA, IP EQUIPAMENTO, NOME , KM , LONGITUDE, LATITUDE, DIREÇÃO , VISIBILIDADE ') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period , `%d/%m/%Y %H:%i:%s`); creation_username; equip_ip; name; km; longitude; latitude; direction; visible' ) }" />
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
+			
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
-	
-	<!--  <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('mto_data q ON equip_id = equip_id')}" />-->
 	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
-
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date','DATA', false, true)}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('station_id' ,'Equipamento', 'mto_equipment.equip_id|name', false, true)}" />
-
+	
+	<!-- se no relaTorio precisar de intervalo de periodo colocar esta parte,  primeira linha colocar onde esta a
+	 coluna com data , depois os intervalos e depois  no setColumnDate('0') se data e hpra for na mesma coluna , ou ('0@1')
+	  se data e hora for em colunas diferentes, ( SUBSTITUIR O 0E 1 PELO NUMERO QUE ESTA A COLUNA DATA E HORA)
+	
+		
+	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('cftv_equipment.creation_username = name')}" />
+	<!-- PARA REFERENCIAS DADOS CONTIDOS EM DUAS TABELAS EX.: TROCAR ID DA TABELA A PELO NOME DA TABELA B 
+		nomedatabela q On nome da coluna = nomedatabela on nome da coluna  'sat_equipment q ON q.equip_id = n.equip_id')}" /> -->
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('creation_date', 'Data' , false, true )}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipamento' , 'cftv_equipment.equip_id|name', false ,true)}" />
+	
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
 	
@@ -101,7 +107,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatorio" /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatorio Titulo" /> <!-- REPORT NAME  -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
