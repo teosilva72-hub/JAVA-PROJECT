@@ -1666,9 +1666,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1748,9 +1748,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1830,9 +1830,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1911,9 +1911,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());   
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());      			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());      			            			  
+				ps.setInt(9,  equip.getEquip_id());   
 
 				int res = ps.executeUpdate();
 
@@ -1995,9 +1995,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -2078,9 +2078,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());    	
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude());		            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());		            			  
+				ps.setInt(9,  equip.getEquip_id());    	
 
 				int res = ps.executeUpdate();
 
@@ -2160,9 +2160,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());    
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude()); 			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude()); 			            			  
+				ps.setInt(9,  equip.getEquip_id());    
 
 				int res = ps.executeUpdate();
 
@@ -2242,9 +2242,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());   
-				ps.setDouble(8,  equip.getLatitude());
-				ps.setDouble(9,  equip.getLongitude()); 			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude()); 			            			  
+				ps.setInt(9,  equip.getEquip_id());   
 
 				int res = ps.executeUpdate();
 
@@ -2379,9 +2379,9 @@ public class EquipmentsDAO {
 			ps.setString(13, sat.getFaixa6()); 
 			ps.setString(14, sat.getFaixa7()); 
 			ps.setString(15, sat.getFaixa8()); 	
-			ps.setInt(16, sat.getEquip_id());
-			ps.setDouble(17,  sat.getLatitude());
-			ps.setDouble(18,  sat.getLongitude()); 
+			ps.setDouble(16,  sat.getLatitude());
+			ps.setDouble(17,  sat.getLongitude()); 
+			ps.setInt(18, sat.getEquip_id());
 
 			int res = ps.executeUpdate();
 
@@ -2544,9 +2544,9 @@ public class EquipmentsDAO {
 			ps.setString(5, dms.getEstrada());
 			ps.setString(6, dms.getKm());									 
 			ps.setInt(7, dms.getMapWidth());	 
-			ps.setInt(8, dms.getEquip_id());
-			ps.setDouble(9,  dms.getLatitude());
-			ps.setDouble(10,  dms.getLongitude()); 
+			ps.setDouble(8,  dms.getLatitude());
+			ps.setDouble(9,  dms.getLongitude()); 
+			ps.setInt(10, dms.getEquip_id());
 
 
 			int res = ps.executeUpdate();
@@ -2668,9 +2668,9 @@ public class EquipmentsDAO {
 			ps.setInt(7, sos.getMapWidth());
 			ps.setInt(8, sos.getModel());
 			ps.setString(9, sos.getSip());
-			ps.setInt(10, sos.getEquip_id());
-			ps.setDouble(11,  sos.getLatitude());
-			ps.setDouble(12,  sos.getLongitude()); 
+			ps.setDouble(10,  sos.getLatitude());
+			ps.setDouble(11,  sos.getLongitude()); 
+			ps.setInt(12, sos.getEquip_id());
 
 			int res = ps.executeUpdate();
 
@@ -2792,9 +2792,9 @@ public class EquipmentsDAO {
 			ps.setString(5, speed.getEstrada());
 			ps.setString(6, speed.getKm());			
 			ps.setInt(7, speed.getMapWidth());			
-			ps.setInt(8, speed.getEquip_id());
-			ps.setDouble(9,  speed.getLatitude());
-			ps.setDouble(10,  speed.getLongitude()); 
+			ps.setDouble(8,  speed.getLatitude());
+			ps.setDouble(9,  speed.getLongitude()); 
+			ps.setInt(10, speed.getEquip_id());
 
 			int res = ps.executeUpdate();
 
