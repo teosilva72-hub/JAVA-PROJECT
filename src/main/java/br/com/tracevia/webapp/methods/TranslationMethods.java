@@ -4,7 +4,8 @@ import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class TranslationMethods {
 
-	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail, localeWim, localeDai;
+	LocaleUtil locale, localePeriod, localeSat, localeDirections, localeCalendar, localeOcc, localeEmail, localeWim, localeDai,
+	localeReports;
 
 	public TranslationMethods() {
 
@@ -31,6 +32,9 @@ public class TranslationMethods {
 
 		localeDai = new LocaleUtil();
 		localeDai.getResourceBundle(LocaleUtil.LABELS_DAI);
+		
+		localeReports = new LocaleUtil();
+		localeReports.getResourceBundle(LocaleUtil.LABELS_REPORTS);
 
 	}
 	
@@ -844,4 +848,5 @@ public class TranslationMethods {
 	    }
      
      // -------------------------------------------------------------------------------------------------------
-}
+     
+ }

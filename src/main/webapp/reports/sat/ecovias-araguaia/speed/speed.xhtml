@@ -34,7 +34,7 @@
 	
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_date_siteID')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_siteID')}" />
 	   	<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />

@@ -14,26 +14,27 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_door_status_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_door_status_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_door_status_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_door_status_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />	
+	    <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_alarms')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_alarms s')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, sosLabels.door_status_closed_time_column,
 		 sosLabels.door_status_avg_time_column))}" />
-	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(start, `%d/%m/%Y`) as sd; equip_id; type_id; DATE_FORMAT(start, `%H:%i:%s`); DATE_FORMAT(end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, start, end))')}" />
+		 		   
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(s.start, `%d/%m/%Y`) as sd; e.name; CASE WHEN type_id = 3 THEN `Top door` WHEN type_id = 2 THEN `Bottom door` ELSE ` --- ` END; DATE_FORMAT(s.start, `%H:%i:%s`); DATE_FORMAT(s.end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.start, s.end))')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+						 
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.start', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
 	

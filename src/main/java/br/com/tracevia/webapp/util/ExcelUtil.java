@@ -7,9 +7,7 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.hwpf.usermodel.BorderCode;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -45,6 +43,7 @@ public class ExcelUtil {
 	private static String NUMBER_REGEX = "\\d+";
 	private static String DOUBLE_REGEX = "\\d*\\.\\d+$";
 	private static String NUMBER_DECIMAL = "^[0-9]\\d*(\\.\\d+)?$";
+	private static String DATETIME_REGEX = "^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$";
 	
 	public static String ALL_BORDERS = "ALL";
 	public static String TOP_BORDER = "TOP";
@@ -388,7 +387,9 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 */
-	public void setFormula(Sheet sheet, Row row, int rowNumber, int cellNumber, String formula) {		
+	public void setFormula(Sheet sheet, Row row, int rowNumber, int cellNumber, String formula) {	
+		
+		System.out.println(cellNumber+" "+formula);
 
 		row = sheet.getRow(rowNumber);		
 		row.getCell(cellNumber)	
@@ -1117,19 +1118,44 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle standard, List<String[]> lines, int rowTotal, int columnsLength, int startColumn, int rowIni, int rowEnd) {
-
-		// LOOP
+	public void totalExcelSum(Sheet sheet, Row row, CellStyle standard, List<String[]> values, int rowTotal, int columnsLength, int startColumn, int rowIni, int rowEnd) {
+				
+		String columnLetter = "";
+		
+		System.out.println(rowTotal+" "+rowIni+" "+rowEnd);
+		
+		setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE	
+				
 		for(int col = startColumn; col <= columnsLength; col++) {
+			
+			columnLetter = CellReference.convertNumToColString(col); // COLUMN LETTER				
+									
+			if(values.get(0)[col].matches(NUMBER_DECIMAL))
+			    setFormula(sheet, row, rowTotal, col, "SUM("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ")");	// DEFINE FORMULA										
+            			
+			else if(values.get(0)[col].matches(DATETIME_REGEX)) {
+				
+				columnLetter = CellReference.convertNumToColString(col);	// COLUMN LETTER	
 
-			String columnLetter = CellReference.convertNumToColString(col); // COLUMN LETTER
+				// FORMULA				
+				String formula = "(";
+				String aux= "";
 
-			setFormula(sheet, row, rowTotal, col, "SUM("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ")");	// DEFINE FORMULA										
+				for(int i = rowIni; i <= rowEnd; i++) {
+					aux += ""+columnLetter+""+i+"";
 
-		}
+					if(i < rowEnd)
+						aux += "+";
+				}
 
-		setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
+				formula += aux + ")";
+				
+				setFormula(sheet, row, rowTotal, col, formula);	// DEFINE FORMULA	
 
+				setCellStyle(sheet, row, standard, rowTotal, rowTotal, col, col); // TOTAL STYLE		
+				
+			}			
+		}	
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -1154,6 +1180,8 @@ public class ExcelUtil {
 	 */
 	public void totalExcelAverage(Sheet sheet, Row row, CellStyle standard, List<String[]> lines, int columnsLength,  int startColumn, int rowTotal, int rowIni, int rowEnd) {
 
+		System.out.println(rowTotal+" "+rowIni+" "+rowEnd);
+		
 		// LOOP
 		for(int col = startColumn; col <= columnsLength; col++) {
 
