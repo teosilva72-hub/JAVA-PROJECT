@@ -336,7 +336,13 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			dms.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			dms.setLatitude(parameterMap.get("lat"));
 
+			//For Equipment KM
+			dms.setLongitude(parameterMap.get("long"));
+			
 			int type = (parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType")));
 
 			//DMS TYPE
@@ -404,6 +410,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sip"));
+			
+			//For Equipment latitude
+			sos.setLatitude(parameterMap.get("lat"));
+
+			//For Equipment KM
+			sos.setLongitude(parameterMap.get("long"));
 
 			checked =  equipDAO.checkExists(sos.getEquip_id(), table);
 
@@ -461,6 +473,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment TYPE
 			sat.setEquip_type(ModulesEnum.SAT.getModule());
+			
+			//For Equipment latitude
+			sat.setLatitude(parameterMap.get("lat"));
+
+			//For Equipment KM
+			sat.setLongitude(parameterMap.get("long"));
 
 			//For Number Lanes
 			int numLanes = (parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
@@ -539,7 +557,13 @@ public class EquipmentsBean implements Serializable {
 			speed.setEstrada(parameterMap.get("roads"));
 
 			//For Equipment KM
-			speed.setKm(parameterMap.get("km"));		 
+			speed.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			speed.setLatitude(parameterMap.get("lat"));
+
+			//For Equipment KM
+			speed.setLongitude(parameterMap.get("long"));		 
 
 			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
 			
@@ -600,7 +624,13 @@ public class EquipmentsBean implements Serializable {
 			equip.setEstrada(parameterMap.get("roads"));
 
 			//For Equipment KM
-			equip.setKm(parameterMap.get("km"));		 
+			equip.setKm(parameterMap.get("km"));
+			
+			//For Equipment latitude
+			equip.setLatitude(parameterMap.get("lat"));
+
+			//For Equipment KM
+			equip.setLongitude(parameterMap.get("long"));			 
 
 			checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
