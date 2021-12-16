@@ -25,9 +25,9 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('dai_history')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('d.device')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('ID, DATA, HORA, SENTIDO, FAIXA, INCIDENTE')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s', daiLabels.global_date_column, daiLabels.global_time_column, daiLabels.dai_lane_column, daiLabels.dai_direction_column, daiLabels.dai_event_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('id; DATE_FORMAT(date, `%d/%m/%Y`) as sd; hour; direction; lane; incident')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('id; DATE_FORMAT(date, `%d/%m/%Y`) as sd; hour; lane; direction; incident')}" />
 	
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		

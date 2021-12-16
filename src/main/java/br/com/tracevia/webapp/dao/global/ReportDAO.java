@@ -261,7 +261,7 @@ public class ReportDAO {
 	// ------------------------------------------------------------------------------------
 	
 	  private String translateValues(String value) {
-	    	
+					    	
 	    	switch (value) {
 	    	
 				case "N": return localeDirection.getStringKey("directions_north");
@@ -269,8 +269,8 @@ public class ReportDAO {
 				case "L": return localeDirection.getStringKey("directions_east");
 				case "O": return localeDirection.getStringKey("directions_west");		
 				case "Top door": return localeReport.getStringKey("reports_filter_top_door_option");		
-				case "Bottom door": return localeReport.getStringKey("reports_filter_bottom_door_option");		
-	    		    		
+				case "Bottom door": return localeReport.getStringKey("reports_filter_bottom_door_option");
+				    		    		
 	    		default: return value;
 	    	}
 	    }

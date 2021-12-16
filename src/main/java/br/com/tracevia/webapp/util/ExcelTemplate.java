@@ -267,8 +267,7 @@ public class ExcelTemplate {
 		utilSheet.createCell(sheet, row, 5, 1);
 		utilSheet.setCellValue(sheet, row, 5, 1, localeExcel.getStringKey("excel_sheet_header_equipment"));
 		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 5, 1); 	
-       		
-		
+       				
 		// NOME DO EQUIPAMENTO
 		utilSheet.createCell(sheet, row, 5, 2);		
 		utilSheet.setCellValue(sheet, row, 5, 2, module.equals("sat")? satInfo.get(0).getNome() : equipsInfo.get(0).getNome()); // null? 0 :
@@ -411,6 +410,8 @@ public class ExcelTemplate {
 	
 	public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines) {
 		
+		        System.out.println("CREATE: "+rowTotal);
+		
 		        // CREATE ROW TOTAL
 				utilSheet.createRow(sheet, row, rowTotal);		 
 
@@ -465,16 +466,16 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalSum(XSSFSheet sheet, XSSFRow row, CellStyle standard, String totalType, List<String[]> lines, int columnsLength, int startColumn, int rowTotal, int rowIni, int rowEnd) {
+	public void totalSum(XSSFWorkbook wb, XSSFSheet sheet, XSSFRow row, CellStyle standard, List<String[]> lines, String totalType, int columnsLength, int startColumn, int rowIni, int rowEnd) {
 				
-		utilSheet.totalExcelSum(sheet, row, standard, lines, rowTotal, columnsLength, startColumn, rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelSum(wb, sheet, row, standard, lines, totalType, columnsLength, startColumn, rowIni, rowEnd); // SET CELL FORMULA			
 
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * MÃ©todo para criar colunas com total MÃ‰DIA
+	 * Método para criar colunas com total MÉDIA
 	 * @author Wellington 15/10/2021
 	 * @version 1.0
 	 * @since 1.0  
@@ -492,9 +493,9 @@ public class ExcelTemplate {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, List<String[]> lines, int columnsLength, int startColumn, int rowTotal, int rowIni, int rowEnd) {
+	public void totalAverage(XSSFSheet sheet, XSSFRow row, CellStyle standard, List<String[]> lines, int columnsLength, int startColumn, int rowIni, int rowEnd) {
 
-		utilSheet.totalExcelAverage(sheet, row, standard, lines, rowTotal, columnsLength, startColumn,  rowIni, rowEnd); // SET CELL FORMULA			
+		utilSheet.totalExcelAverage(sheet, row, standard, lines, columnsLength, startColumn, rowIni, rowEnd); // SET CELL FORMULA			
     
 	}
     
@@ -656,7 +657,7 @@ public class ExcelTemplate {
 		utilSheet.setHeaderCellsValue(sheet, row, tableStartRow, columns);
 		utilSheet.setCellsStyle(sheet, row, tableHeadStyle, startCol, endCol, tableStartRow, tableStartRow);
 													
-		// CRIAR LINHAS PARA APRESENTA��O DOS DADOS
+		// CRIAR LINHAS PARA APRESENTADO DOS DADOS
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 								 		
@@ -670,9 +671,9 @@ public class ExcelTemplate {
 						
 			switch (totalType) {
 										
-			case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+			case "average": totalAverage(sheet, row, standardStyle, lines, endCol, startColumn, dataStartRow, dataEndRow); break;
 					
-			default:  totalSum(sheet, row, standardStyle, totalType, lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+			default:  totalSum(workbook, sheet, row, standardStyle, lines, totalType, endCol, startColumn, dataStartRow, dataEndRow); 
 				break;
 			}		    
 		}
@@ -788,9 +789,9 @@ public class ExcelTemplate {
 					
 					switch (totalType) {
 															
-					case "average": totalAverage(sheet, row, standardStyle,  lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+					case "average": totalAverage(sheet, row, standardStyle,  lines, endCol, startColumn, dataStartRow, dataEndRow); break;
 							
-					default:  totalSum(sheet, row, standardStyle, totalType, lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+					default:  totalSum(workbook, sheet, row, standardStyle, lines, totalType, endCol, startColumn, dataStartRow, dataEndRow); 
 						break;
 					}
 					
@@ -923,9 +924,9 @@ public class ExcelTemplate {
 			
             switch (totalType) {
 						
-			case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+			case "average": totalAverage(sheet, row, standardStyle, lines, endCol, startColumn, dataStartRow, dataEndRow); break;
 					
-			default:  totalSum(sheet, row, standardStyle, totalType, lines, endCol, startColumn, dataEndRow, dataStartRow, dataEndRow); 
+			default:  totalSum(workbook, sheet, row, standardStyle, lines, totalType, endCol, startColumn, dataStartRow, dataEndRow); 
 				break;
 			}						
 		}		   		
@@ -1041,10 +1042,10 @@ public class ExcelTemplate {
 					
 					switch (totalType) {
 											
-					case "average": totalAverage(sheet, row, standardStyle, lines, columns.size(), startColumn, dataEndRow, dataStartRow, dataEndRow); break;
+					case "average": totalAverage(sheet, row, standardStyle, lines, endCol, startColumn, dataStartRow, dataEndRow); break;
 							
-					default:  totalSum(sheet, row, standardStyle, totalType, lines, endCol, dataEndRow, startColumn, dataStartRow, dataEndRow); 
-						break;
+					default:  totalSum(workbook, sheet, row, standardStyle, lines, totalType, endCol, startColumn, dataStartRow, dataEndRow); break;
+					
 					}
 					
 				 }				    				

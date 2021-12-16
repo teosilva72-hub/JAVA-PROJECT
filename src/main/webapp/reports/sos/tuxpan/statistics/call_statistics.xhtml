@@ -21,24 +21,30 @@
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineTotalType('datetime')}" />	
-	   	
-		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
+		
+	    <!-- CALL REPORT TYPE -->
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls s')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.global_equipment_column,
-		  sosLabels.call_statistics_call_received_column, sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
-		 sosLabels.call_statistics_call_duration_column))}" />
+		 sosLabels.call_statistics_call_received_column, sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
+		 sosLabels.global_total_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(start_date, `%d/%m/%Y`) as sd; TIME($period)@sd; equip_id; IFNULL(ROUND(SUM(IF((state_id = 3 OR state_id = 5 OR state_id = 6) AND start_date &lt;&gt; `` , 1, 0)),0),0); 
-	    IFNULL(ROUND(SUM(IF((state_id = 3 OR state_id = 6) AND answered_date &lt;&gt; `` , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(state_id = 3 , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(state_id = 5 , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(state_id = 6 , 1, 0)),0),0);
-	    IFNULL(SEC_TO_TIME(ROUND(AVG(CASE WHEN answered_date &lt;&gt; `` THEN TIMESTAMPDIFF(SECOND, answered_date, end_date) END),0)), `00:00:00`)')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; TIME($period)@sd; e.name; IFNULL(ROUND(SUM(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; `` , 1, 0)),0),0); 
+	    IFNULL(ROUND(SUM(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; `` , 1, 0)),0),0);
+	    IFNULL(ROUND(SUM(IF(s.state_id = 3 , 1, 0)),0),0);
+	    IFNULL(ROUND(SUM(IF(s.state_id = 5 , 1, 0)),0),0);
+	    IFNULL(ROUND(SUM(IF(s.state_id = 6 , 1, 0)),0),0);
+	    SUM(IFNULL(ROUND(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; `` , 1, 0),0),0) + 
+ 		IFNULL(ROUND(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; `` , 1, 0),0),0) + 
+		IFNULL(ROUND(IF(s.state_id = 3 , 1, 0),0),0) +
+ 		IFNULL(ROUND(IF(s.state_id = 5 , 1, 0),0),0) +
+ 		IFNULL(ROUND(IF(s.state_id = 6 , 1, 0),0),0))')}" />
+	    
+	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+	    
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
-	    <f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('start_date')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('s.start_date')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
@@ -50,8 +56,8 @@
 				
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.start_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
 	
