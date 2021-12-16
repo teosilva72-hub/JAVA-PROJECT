@@ -48,7 +48,7 @@ public class LoginAccountBean {
 
 	LoadStartupModules load;
 	RoadConcessionaire road;
-	String mapUI, linearMapUI;
+	String mapUI, darkMapUI, linearMapUI;
 	String plaque;
 	String logo;
 	boolean mapEnabled, reportsLLEnabled;
@@ -103,7 +103,15 @@ public class LoginAccountBean {
 	public void setMapUI(String mapUI) {
 		this.mapUI = mapUI;
 	}
+	
+	public String getDarkMapUI() {
+		return darkMapUI;
+	}
 
+	public void setDarkMapUI(String darkMapUI) {
+		this.darkMapUI = darkMapUI;
+	}
+	
 	public String getPlaque() {
 		return plaque;
 	}
@@ -253,6 +261,7 @@ public class LoginAccountBean {
 								
 					// NOT IN USE
 					mapUI = RoadConcessionaire.mapUI; // Load Map
+					darkMapUI = RoadConcessionaire.darkMapUI;
 					linearMapUI = RoadConcessionaire.linearMapUI;
 					mapEnabled = RoadConcessionaire.mapEnabled;
 					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;

@@ -208,7 +208,7 @@
 				
 				<div class="darkmodebox">
 					<div>
-						<input type="checkbox" id="darkmode" name="darkmode" onclick="darktype()">
+						<input type="checkbox" id="darkmode" name="darkmode">
 							</input> <label for="darkmode">dark mode</label>
 					</div>
 				</div>
@@ -436,7 +436,7 @@
 			<ui:param name="Coord" value="#{ loginAccount.coord }" />
 
 			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
-				value="#{loginAccount.mapUI}" />
+				value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
 			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 		</div>
 
