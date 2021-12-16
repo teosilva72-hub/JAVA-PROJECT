@@ -1216,7 +1216,7 @@ function darktype(){
 	if($(this).prop("checked") == true) {
 		$('body, html, #content').css('background-color', '#000000')
 	} else if($(this).prop("checked") == false) {
-		$('body, html, #content').css('background-color', '#878d8d')
+		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
 	}
 });
 };
