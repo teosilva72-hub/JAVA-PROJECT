@@ -1211,12 +1211,30 @@ function contextMenu(ev, type, id, all = true){
 	menu.children().css('display', 'none').filter(`[for=${type}]${all ? ', [for=all]' : ''}`).css('display', 'block')
 }
 
-function darktype(){
-	$("#darkmode").on("click", function() {
-	if($(this).prop("checked") == true) {
-		$('body, html, #content').css('background-color', '#000000')
-	} else if($(this).prop("checked") == false) {
-		$('body, html, #content').css('background-color', '#878d8d')
+$("#darkmode").change(function() {
+	var val = $('#mapTuxpan')
+	if($(this).prop("checked")) {
+		$('body, html, #content').css('background-color', '#0B0D19')
+		val.attr('white', val.attr('src'))
+		val.attr('src', val.attr('dark'))
+		$('.equipLine > polyline').css({
+			stroke: 'white',
+			'stroke-width': '.2'
+		})
+		$('#zoomOut').css('color','white')
+		$('#zoomIn').css('color','white')
+		$('#divide').css('color','white')
+		$('#fullbody').css('color','white')
+	} else {
+		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
+		val.attr('src', val.attr('white'))
+		$('.equipLine > polyline').css({
+			stroke: 'black',
+			'stroke-width': '.2'
+		})
+		$('#zoomOut').css('color','black')
+		$('#zoomIn').css('color','black')
+		$('#divide').css('color','black')
+		$('#fullbody').css('color','black')
 	}
 });
-};
