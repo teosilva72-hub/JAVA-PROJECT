@@ -16,6 +16,12 @@
 	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('') }" />
 	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('') }" />
 	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('') }" />
+	
+	
+	<f:viewAction onPostback="true" action="#{testerBean.haveChart('')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineImageName('')}" />		
+	<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('')}" />		
+	<f:viewAction onPostback="true" action="#{testerBean.defineAxis('')}" />
 
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
 	
@@ -30,7 +36,7 @@
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
 	
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
