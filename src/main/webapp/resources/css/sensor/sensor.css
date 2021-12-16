@@ -1,0 +1,24 @@
+.logo-concessionaire {
+  left: 50% !important;
+  bottom: unset !important;
+  transform: translateX(-50%) !important;
+  top: 10px !important;
+  opacity: 1 !important;
+  z-index: 1030 !important;
+}
+
+#first-sens{
+  border-style: double;	
+}
+
+#second-sens{
+  border-style: double;	
+}
+
+#third-sens{
+  border-style: double;	
+}
+
+#fourth-sens{
+  border-style: double;	
+}
