@@ -1211,18 +1211,30 @@ function contextMenu(ev, type, id, all = true){
 	menu.children().css('display', 'none').filter(`[for=${type}]${all ? ', [for=all]' : ''}`).css('display', 'block')
 }
 
-/* Get Canvas Position X/Y */
-
-// function getPosition(e) {
-// 	// getBoundingClientRect to retrieve the position of our canvas in the doc
-// 	var rect = this.getBoundingClientRect();
-// 	// we also need to use clientX and clientY values now
-// 	var x = e.clientX - rect.left;
-// 	var y = e.clientY - rect.top;
-// 	var coord = "x=" + x + ", y=" + y;
-// 	var c = this.getContext('2d');
-// 	var p = c.getImageData(x, y, 1, 1).data;
-//   }
-
-/* Get Canvas Position X/Y [end] */
-
+$("#darkmode").change(function() {
+	var val = $('#mapTuxpan')
+	if($(this).prop("checked")) {
+		$('body, html, #content').css('background-color', '#0B0D19')
+		val.attr('white', val.attr('src'))
+		val.attr('src', val.attr('dark'))
+		$('.equipLine > polyline').css({
+			stroke: 'white',
+			'stroke-width': '.2'
+		})
+		$('#zoomOut').css('color','white')
+		$('#zoomIn').css('color','white')
+		$('#divide').css('color','white')
+		$('#fullbody').css('color','white')
+	} else {
+		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
+		val.attr('src', val.attr('white'))
+		$('.equipLine > polyline').css({
+			stroke: 'black',
+			'stroke-width': '.2'
+		})
+		$('#zoomOut').css('color','black')
+		$('#zoomIn').css('color','black')
+		$('#divide').css('color','black')
+		$('#fullbody').css('color','black')
+	}
+});

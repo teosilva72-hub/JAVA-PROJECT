@@ -43,7 +43,7 @@
 		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_date_siteID')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />  

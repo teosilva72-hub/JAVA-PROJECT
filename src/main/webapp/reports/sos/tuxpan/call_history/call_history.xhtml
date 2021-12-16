@@ -23,23 +23,26 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
 		
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls s')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.call_statistics_call_received_column,
 		 sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
 		 sosLabels.call_statistics_call_duration_column, sosLabels.call_statistics_call_operator_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(start_date, `%d/%m/%Y`) as sd; equip_id; IFNULL(IF((state_id = 3 OR state_id = 5 OR state_id = 6) AND start_date &lt;&gt; ``, DATE_FORMAT(start_date, `%H:%i:%s`), 0), ` --- `); 
-	    IFNULL(IF((state_id = 3 OR state_id = 6) AND answered_date &lt;&gt; ``, DATE_FORMAT(answered_date, `%H:%i:%s`), NULL), ` --- `);
-	    IFNULL(IF(state_id = 3 , DATE_FORMAT(end_date, `%H:%i:%s`), NULL), ` --- `);
-	    IFNULL(IF(state_id = 5 , DATE_FORMAT(end_date, `%H:%i:%s`), NULL), ` --- `);
-	    IFNULL(IF(state_id = 6 , DATE_FORMAT(end_date, `%H:%i:%s`), NULL), ` --- `);
-	    IF((state_id = 3 OR state_id = 6) AND answered_date &lt;&gt; ``, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, answered_date, end_date)), ` --- `);
-	    IFNULL(user, ` --- `)')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; e.name; IFNULL(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; ``, DATE_FORMAT(s.start_date, `%H:%i:%s`), 0), ` --- `); 
+	    IFNULL(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, DATE_FORMAT(s.answered_date, `%H:%i:%s`), NULL), ` --- `);
+	    IFNULL(IF(s.state_id = 3 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
+	    IFNULL(IF(s.state_id = 5 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
+	    IFNULL(IF(s.state_id = 6 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
+	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
+	    IFNULL(s.user, ` --- `)')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+		
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.start_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
 	

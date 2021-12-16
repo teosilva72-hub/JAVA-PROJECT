@@ -80,6 +80,7 @@ public class TesterBean {
 	private ReportSelection select;
 	private ReportBuild build;
 	private SatTableHeader satTab;
+	private TranslationMethods tm;
 		
 	private ReportDAO report;
 	public List<Builder> resultList;	
@@ -398,6 +399,11 @@ public class TesterBean {
 		this.satTab = satTab;
 	}
 	
+	public TranslationMethods getTm() {
+		return tm;
+	}
+	
+	
 	// Util
 
 	public String genPeriod(String[] time) {
@@ -678,7 +684,7 @@ public class TesterBean {
 			
 			 else generateSpecialFile(model, specialName);
 		     
-		    SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
+		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
 		    // ------------------------------------------------------------
 		    			

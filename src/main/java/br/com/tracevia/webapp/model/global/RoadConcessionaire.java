@@ -333,7 +333,7 @@ public class RoadConcessionaire {
 			logo = "/resources/images/home/tuxpan.png";
 			linearMapUI = "/resources/images/realTimeInterface/linear/tuxpan_tampico.webp";
 			mapUI = "/resources/images/map/tuxpan/tuxpan.webp";
-			darkMapUI = "";
+			darkMapUI = "/resources/images/map/tuxpan/tuxpan-dark.webp";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
 			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
 			tableStatus = TraceviaTables.TraceviaStatus.getTable();

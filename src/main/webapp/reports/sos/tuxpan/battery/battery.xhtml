@@ -14,8 +14,8 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_battery_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_battery_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_battery_file_name)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_battery_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
 	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
@@ -25,8 +25,8 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(sosLabels.tuxpan_battery_file_name)}" />		
 		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('calls')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
-	
+		<f:viewAction onPostback="true" action="#{testerBean.defineTotalType('average')}" />
+	    	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('battery_values')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" />
@@ -41,8 +41,8 @@
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 				
 		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />

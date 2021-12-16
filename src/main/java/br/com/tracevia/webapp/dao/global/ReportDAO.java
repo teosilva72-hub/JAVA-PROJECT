@@ -28,8 +28,15 @@ public class ReportDAO {
     public List<Pair<String, List<String[]>>> secondaryLines;
     public List<String> IDs;
     
-
+    LocaleUtil localeReport, localeDirection;
+    
     public ReportDAO(List<String> columnName) throws Exception {
+    	
+    	localeReport = new LocaleUtil();
+    	localeReport.getResourceBundle(LocaleUtil.LABELS_REPORTS);
+    	
+    	localeDirection = new LocaleUtil();
+    	localeDirection.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
         
         conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -81,8 +88,8 @@ public class ReportDAO {
                     if (!custom)
                         this.columnName.add(name);
 
-                    String value = rs.getString(idx);
-                    
+                    String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
+                                        
                     row[idx - 1] = value != null && value != "" ? value : "-";
                     if (name.equals(id) && !field.contains(value))
                         field.add(value);
@@ -231,7 +238,7 @@ public class ReportDAO {
     		case "7 axle truck": return locale.getStringKey("reports_filter_truck_7_axles_class_option");
     		case "8 axle truck": return locale.getStringKey("reports_filter_truck_8_axles_class_option");
     		case "9 axle truck": return locale.getStringKey("reports_filter_truck_9_axles_class_option");
-    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option");
+    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option");    		
     		    		
     		default: return value;
     	}
@@ -250,5 +257,24 @@ public class ReportDAO {
 	public List<String> getIDs() {
 		return IDs;
 	}	
+	
+	// ------------------------------------------------------------------------------------
+	
+	  private String translateValues(String value) {
+	    	
+	    	switch (value) {
+	    	
+				case "N": return localeDirection.getStringKey("directions_north");
+				case "S": return localeDirection.getStringKey("directions_south");
+				case "L": return localeDirection.getStringKey("directions_east");
+				case "O": return localeDirection.getStringKey("directions_west");		
+				case "Top door": return localeReport.getStringKey("reports_filter_top_door_option");		
+				case "Bottom door": return localeReport.getStringKey("reports_filter_bottom_door_option");		
+	    		    		
+	    		default: return value;
+	    	}
+	    }
+	  
+	  // ------------------------------------------------------------------------------------
 	
 }
