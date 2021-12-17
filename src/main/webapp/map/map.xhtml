@@ -169,7 +169,7 @@
 
 				</c:if>
 
-				<div class="paleta-cores">
+		<!--		<div class="paleta-cores">
 					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
 						onclick="color()" href="#paleta" role="button"
 						aria-expanded="false" aria-controls="collapseExample"><i
@@ -197,23 +197,18 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="linesbox">
 					<div>
 						<input type="checkbox" id="visiblelines" name="visiblelines"
 							checked=""></input> <label for="visiblelines">#{mapLabels.map_creation_btn_lines_equips}</label>
 					</div>
-				</div>
-				
+				</div>			
 				<div class="darkmodebox">
-					<div>
-						<input type="checkbox" id="darkmode" name="darkmode">
-							</input> <label for="darkmode">dark mode</label>
-					</div>
-				</div>
-				
-
+						<input type="checkbox" id="darkmode" name="darkmode"></input> 
+						<label for="darkmode"></label>				
+				</div>  
 			</div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
