@@ -13,63 +13,42 @@
 	<f:metadata> 
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('') }" />
-	<!-- Nome do arquivo , ex: sv_perios, mto register  -->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('') }" />
-	<!-- Titulo do relatorio, Ex: Meterologia por periodo -->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('') }" />
-	<!--  Nome da concessionaria-->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.defineModule('')}" />
-	<!--  Nome do Modulo-->
-		
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Relatorio DAI') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('DAI') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('DAI') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineModule('DAI')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
-	<!-- Id da tabela, obrigatorio e não mudar nada -->
+
+	<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineImageName('dai_periods')}" />		
+	<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Dai por periodo')}" />		
+	<f:viewAction onPostback="true" action="#{testerBean.defineAxis('lane')}" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('') }" />
-	<!-- Nome da tabela onde está o dados no banco de dados -->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('')}" /> 
-	<!-- Enviar o id do equipamento para excel  -->
-	
-    <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('')}" />
-	<!-- caso não tenha intervalos/periodos  , se tiver intervalo não colocar -->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('') }" />
-	<!-- Nome das colunas que vai aparecer no relatorio , separa os nomes das coluna por virgula  -->
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('') }" />
-	<!-- nome da coluna que ira pegar no banco de dados, colocar na mesma  sequencia do anterior  -->
-	
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('dai_history') }" />
+
+
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA/HORA,  CONDUÇÃO ERRADA, OBJETO ATIRADO, BLOQUEIO DE ESTRADA, PEDESTRE, ESTACIONAMENTO ILEGAL, MUDANÇA ILEGAL DE FAIXA, CONTRAMÃO, CONGESTIONAMENTO, TOTAL') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); SUM(if(incident = `Wrong-Way Driving`, 1, 0)); SUM(if(incident = `Thrown Object`, 1, 0)); SUM(if(incident = `Pedestrain`, 1, 0)); SUM(if(incident = `Roadblock`, 1, 0)); SUM(if(incident = `Illegal Parking`, 1, 0)); SUM(if(incident = `Illegal Lane Change`, 1, 0)); SUM(if(incident = `Driving on the Lane Line`, 1, 0)); SUM(if(incident = `Congestion`, 1, 0)); SUM(1)') }" />
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
-	<!-- Parar criar o relatorio -->
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('date')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
-	<!-- Intervalo, Periodo, 1 linha coluna onde esta a data, 2-6 linha intervalo de periodo , ultima linha ,
-	 de hora e data vai ser na mesta coluna (0) , ou colunas diferentes(0@1) / subsrituir 0 e 1 pela coluna relacionada   -->
-	<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" />
-	<!-- PARA REFERENCIAS DADOS CONTIDOS EM DUAS TABELAS EX.: TROCAR ID DA TABELA A PELO NOME DA TABELA B 
-		nomedatabela  On (se pnome da couna for difetrente )nomedatabel.nomedacoluna = nomedatabela -->
-		
+	
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
+	
 
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch(')}" />
-	<!-- Nome da coluna que esta com data 
- 		'comoestaonomedatanacoluna', 'comoiraaparecernorelatorio' , false= nao é multiplaescolha, true é obrigatorio -->
- 		
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('')}" />
-	<!-- Aqui pode colocar os filtros :
-	'coluna para filtrar' , 'como irá aparecer para o cliente', onomedatabelaqueesta.acoluna|acolunaapareceonome , false= nao é multiplaescolha, true é obrigatorio  -->
+	
+	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
+	
 
-	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
+	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('date' , 'DATA' , false , true)}" />
+
 	
 
 	</f:metadata> 
@@ -100,8 +79,8 @@
 		 <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
 		 <h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
 		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
-	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
-	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
+	     <h:outputScript library="js/plugins/google" name="google-charts-loader.js"   />  <!-- (GRÁFICOS) OPCIONAL --> 
+	 	 <h:outputScript library="js/charts" name="chart.js" /> <!-- (GRÁFICOS) OPCIONAL --> 
 	
 	   <!---->
 	
@@ -128,7 +107,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatorio Titulo" /> <!-- REPORT NAME  -->
+	       <h:outputText value="Relatorio Dai" /> <!-- REPORT NAME  -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -166,7 +145,7 @@
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <!--  <ui:include src="/template/chart/chart_template.xhtml" /> --> <!-- OPCIONAL -->
+	      <ui:include src="/template/chart/chart_template.xhtml" />  <!-- OPCIONAL -->
 		
 	  <!-- ============================================================================================================================= -->
 	  

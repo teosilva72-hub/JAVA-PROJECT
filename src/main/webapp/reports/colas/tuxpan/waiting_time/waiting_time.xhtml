@@ -30,6 +30,7 @@
 	   
 	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('c.id; DATE_FORMAT(c.update_date, `%d/%m/%Y`) as sd; DATE_FORMAT(c.update_date, `%H:%m:%s`); 
          e.name; e.direction; CASE 
+                             WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 0 OR c.local = 1 THEN ` --- `
                              WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 2 THEN ` &lt; 2 minutes`
                              WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 3 THEN ` &gt; 2 minutes`
                              END')}" />
@@ -39,7 +40,8 @@
        		
 		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('c.update_date', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('c.device', reportsLabels.reports_select_equipment, 'colas_equipment.equip_id|name', true, true)}" />
-			               
+	    <!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('c.local', 'local', 'filter_colas.id_local|name', true, true)}" />        -->
+    
     </f:metadata>
 	
 	<!---->
@@ -47,7 +49,7 @@
 	<!-- TEMPLATE DO CABEÇALHO -->
 	
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
-	
+		    	
 	    <!-- CCS STYLE -->
 	    
 	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
