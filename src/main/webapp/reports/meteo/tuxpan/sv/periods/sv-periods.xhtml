@@ -30,7 +30,8 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{testerBean.setTable('sv_data')}"/>
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA,  TEMPERATURA DE AMBIENTE')}" />
+		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', mtoLabels.global_date_column, mtoLabels.global_datetime_column, mtoLabels.meteo_atmPressure_column, mtoLabels.meteo_relative_humidity_column, mtoLabels.meteo_temperature_column, 
+		mtoLabels.meteo_wind_speed_column, mtoLabels.meteo_wind_direction_column, mtoLabels.meteo_absolute_preciptation_column, mtoLabels.meteo_ambient_temperature_column))}" />
 	
 		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
 	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />

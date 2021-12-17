@@ -83,7 +83,7 @@ public class LocaleUtil {
 		 
 	      LanguageBean language = new LanguageBean();
 		  Locale locale = language.getLocale();	
-
+		  		
 	     return locale;	   
 	 }
 	 
@@ -99,7 +99,7 @@ public class LocaleUtil {
 	  */
 	 public ResourceBundle getResourceBundle(String resource){
 		 
-		 resourceBundle = ResourceBundle.getBundle(resource + currentLocale().toString()); 
+		 resourceBundle = ResourceBundle.getBundle(resource + currentLocale().toString()); 		 
 		 
 	     return resourceBundle;	     
 	 }

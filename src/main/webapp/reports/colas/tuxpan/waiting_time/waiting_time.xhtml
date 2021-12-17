@@ -10,10 +10,9 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
 	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
 	
-	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA --> 
 	
 	<f:metadata>
-
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(colasLabels.tuxpan_estimated_time_file_name)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(colasLabels.tuxpan_estimated_time_title)}" />
 		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
@@ -29,11 +28,11 @@
 		colasLabels.colas_direction_column, colasLabels.colas_estimated_time_column))}" />
 	   
 	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('c.id; DATE_FORMAT(c.update_date, `%d/%m/%Y`) as sd; DATE_FORMAT(c.update_date, `%H:%m:%s`); 
-         e.name; e.direction; CASE 
-                             WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 0 OR c.local = 1 THEN ` --- `
-                             WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 2 THEN ` &lt; 2 minutes`
-                             WHEN (c.lane = 1 OR c.lane = 2 OR c.lane = 3) AND c.local = 3 THEN ` &gt; 2 minutes`
-                             END')}" />
+         e.name; e.direction; CASE                             
+                             WHEN (c.local != 0) AND c.lane = 1 THEN ` &lt; 1 minute`
+                             WHEN (c.local != 0) AND c.lane = 2 THEN ` &gt; 1 minute and &lt; 2 minutes`
+                             WHEN (c.local != 0) AND c.lane = 3 THEN ` &gt; 3 minutes`
+                             ELSE `0 minutes` END')}" />
 		
 		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('colas_equipment e ON e.equip_id = c.device')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
@@ -102,7 +101,7 @@
 	       <h:outputText value="#{colasLabels.tuxpan_estimated_time_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
-	 
+	   	 
 	 <!---->
 	 
 	  <!-- ============================================================================================================================= -->
@@ -115,7 +114,7 @@
 		 <c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->		
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->		
+				<f:facet id="report-table-id" name="header">#{header}</f:facet> <!-- HEADER -->		
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->

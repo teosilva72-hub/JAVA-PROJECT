@@ -397,6 +397,8 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(query);				
 			rs = ps.executeQuery();
+			
+			System.out.println(query);
 
 			if (rs != null) {
 

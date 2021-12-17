@@ -281,6 +281,10 @@ public class ReportDAO {
 	    		case "Two-way": return localeReport.getStringKey("reports_value_two-way_option");
 	    		case "Up": return localeReport.getStringKey("reports_value_up_option");
 	    		case "Down": return localeReport.getStringKey("reports_value_down_option");
+	    		case " < 1 minute": return localeReport.getStringKey("reports_value_less_than_1_minute");
+	    		case " < 1 minute and > 2 minutes": return localeReport.getStringKey("reports_value_between_1_and_2_minutes_option");
+	    		case " > 3 minutes": return localeReport.getStringKey("reports_value_greater_than_3_minutes_option");
+	    		
 				    		    		
 	    		default: return value;
 	    	}

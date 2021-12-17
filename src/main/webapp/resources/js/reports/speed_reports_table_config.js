@@ -1,5 +1,5 @@
-
 $(function () {
+
     //Call Datatables jQuery plugin
      $('#generic-report-table').DataTable({
         "scrollY": window.innerHeight - 230 - $('[id^=generic-report-table]').height(),
@@ -12,6 +12,11 @@ $(function () {
    });
 
     $('.dataTables_length').removeClass('bs-select');
+
+	setTimeout(() => {
+		if (!window.clear_table)
+			$('[id$=clear_table]').click()
+	}, 1)
 
 });
 
