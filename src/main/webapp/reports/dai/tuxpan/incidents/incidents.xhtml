@@ -23,31 +23,21 @@
 		<f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('dai_history')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setTable('dai_history d')}" />
 		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('d.device')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s', daiLabels.global_date_column, daiLabels.global_time_column, daiLabels.dai_lane_column, daiLabels.dai_direction_column, daiLabels.dai_event_column))}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', daiLabels.global_date_column, daiLabels.global_time_column, daiLabels.global_equipment_column, daiLabels.dai_lane_column, daiLabels.dai_direction_column, daiLabels.dai_event_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('id; DATE_FORMAT(date, `%d/%m/%Y`) as sd; hour; lane; direction; incident')}" />
+	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(d.date, `%d/%m/%Y`) as sd; d.hour; e.name; d.lane; d.direction; d.incident')}" />
 	
 		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		     		
+	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('dai_equipment e ON e.equip_id = d.equip_id')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />	
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('1@2')}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('d.date', 'Data', true, true)}" />
 		
-			<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('lane' , 'lane', 'dai_history.lane', false, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" /> -->
-		
-       		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('e.equip_id', reportsLabels.reports_select_equipments, 'dai_equipment.equip_id|name', true, true)}" />		 		
 	        
     </f:metadata>
 	

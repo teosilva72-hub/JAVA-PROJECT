@@ -238,8 +238,8 @@ public class ReportDAO {
     		case "7 axle truck": return locale.getStringKey("reports_filter_truck_7_axles_class_option");
     		case "8 axle truck": return locale.getStringKey("reports_filter_truck_8_axles_class_option");
     		case "9 axle truck": return locale.getStringKey("reports_filter_truck_9_axles_class_option");
-    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option");    		
-    		    		
+    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option"); 
+    		    		    		    		
     		default: return value;
     	}
     }
@@ -268,8 +268,19 @@ public class ReportDAO {
 				case "S": return localeDirection.getStringKey("directions_south");
 				case "L": return localeDirection.getStringKey("directions_east");
 				case "O": return localeDirection.getStringKey("directions_west");		
-				case "Top door": return localeReport.getStringKey("reports_filter_top_door_option");		
-				case "Bottom door": return localeReport.getStringKey("reports_filter_bottom_door_option");
+				case "Top door": return localeReport.getStringKey("reports_value_top_door_option");		
+				case "Bottom door": return localeReport.getStringKey("reports_value_bottom_door_option");
+				case "Driving on the Lane Line": return localeReport.getStringKey("reports_value_driving_lane_line_option");
+	    		case "Illegal Parking": return localeReport.getStringKey("reports_value_illegal_parking_option");
+	    		case "Wrong-Way Driving": return localeReport.getStringKey("reports_value_wrong_way_driving_option");
+	    		case "Congestion": return localeReport.getStringKey("reports_value_congestion_option");
+	    		case "Pedestrain": return localeReport.getStringKey("reports_value_pedestrain_option");
+	    		case "Thrown Object": return localeReport.getStringKey("reports_value_thrown_object_option");
+	    		case "Roadblock": return localeReport.getStringKey("reports_value_roadblock_option");
+	    		case "Illegal Lane Change": return localeReport.getStringKey("reports_value_illegal_lane_change_option");
+	    		case "Two-way": return localeReport.getStringKey("reports_value_two-way_option");
+	    		case "Up": return localeReport.getStringKey("reports_value_up_option");
+	    		case "Down": return localeReport.getStringKey("reports_value_down_option");
 				    		    		
 	    		default: return value;
 	    	}
