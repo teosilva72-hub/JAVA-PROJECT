@@ -8,17 +8,21 @@
 }
 
 #first-sens{
-  border-style: double;	
+  border-style: double;
+  width: 100%;	
 }
 
 #second-sens{
   border-style: double;	
+  width: 100%;	
 }
 
 #third-sens{
-  border-style: double;	
+  border-style: double;
+  width: 100%;		
 }
 
 #fourth-sens{
-  border-style: double;	
+  border-style: double;
+  width: 100%;		
 }
