@@ -14,27 +14,25 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_door_status_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_door_status_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />	
-	    <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_door_status_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_door_status_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />		
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_alarms s')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, sosLabels.door_status_closed_time_column,
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sos_alarms s')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, sosLabels.door_status_closed_time_column,
 		 sosLabels.door_status_avg_time_column))}" />
 		 		   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(s.start, `%d/%m/%Y`) as sd; e.name; CASE WHEN type_id = 3 THEN `Top door` WHEN type_id = 2 THEN `Bottom door` ELSE ` --- ` END; DATE_FORMAT(s.start, `%H:%i:%s`); DATE_FORMAT(s.end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.start, s.end))')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start, `%d/%m/%Y`) as sd; e.name; CASE WHEN type_id = 3 THEN `Top door` WHEN type_id = 2 THEN `Bottom door` ELSE ` --- ` END; DATE_FORMAT(s.start, `%H:%i:%s`); DATE_FORMAT(s.end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.start, s.end))')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
 						 
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.start', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('s.start', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
 	
@@ -62,7 +60,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 	
 	   <!---->
 	
@@ -100,11 +98,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
 		
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->	
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->			

@@ -35,7 +35,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<!-- <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> --><!-- CASO TENHA MULTIPLA SELEÇÃO -->
 		<!-- <h:outputScript library="js/multiselect" name="define-multiselect.js" /> --> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG (OBRIGATÓRIO) --> 			
 	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
 	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
 	
@@ -79,11 +79,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
 	 	
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				 <f:facet name="header">#{header}</f:facet> <!-- HEADER -->

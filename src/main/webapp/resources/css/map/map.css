@@ -1782,7 +1782,7 @@ span.close-x {
 }
 
 .darkmodebox label{
-	background-color: #777;
+	background-color: #777;	
 	border: 2px solid #555;
 	border-radius: 50px;
 	cursor: pointer;
@@ -1815,4 +1815,22 @@ span.close-x {
 .darkmodebox input[type=checkbox]:checked ~label::after{
 	background-color: #005480;
 	transform: translate(50px);
+}
+
+.scenary{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;	
+}
+
+img#light-icon {  
+  height: 35px;	
+  margin-top: 5px;
+  margin-right: 7px;	
+}
+
+img#dark-icon{
+ height: 30px;
+ margin-top: 7px;
+ margin-left: 7px;	
 }

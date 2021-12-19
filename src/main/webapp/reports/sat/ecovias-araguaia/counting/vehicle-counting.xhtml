@@ -14,34 +14,34 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />	
-		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineJsTableScroll('54vh')}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('tb_dados15')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('NOME_ESTACAO')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sat_equipment.name|equip_id@equip', satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sat_equipment.name|equip_id@equip', satLabels.global_total_vehicles_column))}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(NOME_ESTACAO = $custom@equip, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(NOME_ESTACAO = $custom@equip, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL)')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_data_estacao')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_estacao')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('DATA_HORA')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DATA_HORA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('DATA_HORA', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DATA_HORA', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
 	
     </f:metadata>
 	
@@ -69,7 +69,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 	 		
 	   <!---->
 	
@@ -107,11 +107,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="generic-report-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">
 		<!-- DATATABALE JSF -->
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->

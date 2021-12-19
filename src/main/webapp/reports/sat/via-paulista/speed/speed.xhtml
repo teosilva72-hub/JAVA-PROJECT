@@ -14,45 +14,43 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.via_paulista_speed_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.via_paulista_speed_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA PAULISTA')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.via_paulista_speed_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.via_paulista_speed_title)}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('vehicle')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveTotal('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_paulista_speed_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_paulista_speed_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('VIA PAULISTA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_speed_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_speed_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('', 'Sentidos', 'filter_direction.id_direction|name' , true, true)}" /> -->
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('', 'Sentidos', 'filter_direction.id_direction|name' , true, true)}" /> -->
 			               
     </f:metadata>
 	
@@ -80,7 +78,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
 	
@@ -120,11 +118,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">
 		<!-- DATATABALE JSF -->
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->

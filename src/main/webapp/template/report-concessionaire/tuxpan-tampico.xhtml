@@ -41,20 +41,18 @@
 						</h:commandLink>
 						</li>
 	
-			  				 <!---->
+			  			<!---->
 			
 						<!-- OCR REFALTIME MENU -->
 
-		  <ui:fragment rendered="#{loginAccount.load.en_ocr}">
-			 <li class="nav-item">
-				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
-					<i class="fas fa-camera-retro icon-sub"></i> 
-					  <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+					   <ui:fragment rendered="#{loginAccount.load.en_ocr}">
+					   <li class="nav-item">
+					   <a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
+					   <i class="fas fa-camera-retro icon-sub"></i> 
+					   <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
 					                   
 						<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->
-										
-							
-
+																	
 						<li class="nav-item">
 						<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/ocr/ocr_realtime.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -70,9 +68,9 @@
 						</h:commandLink></li>
 										<!---->
 	
-									</ul> <!----></li>
-								<!---->
-							</ui:fragment>
+						</ul> <!----></li>
+						<!---->
+						</ui:fragment>
 						<!--  -->
 						
 						<!-- Colas ITEM -->
@@ -83,14 +81,13 @@
 						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_realtime}</span>
 						</h:commandLink></li>
 						</ui:fragment>
-						
-						
+												
 						<!---->
 
 						</ul></li>
-				<!---->
-				
-				  
+				        
+				        <!---->
+								  
 						<!-- PMV MENU -->
 
 						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
@@ -100,7 +97,7 @@
 
 						<ul class="collapse list-unstyled" id="pmvUiSubmenu"> <!-- PMV SUBMENU -->
 														
-							<!-- ACTIVE MESSAGES -->
+						<!-- ACTIVE MESSAGES -->
 
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/dms/messages/message-activate.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -123,7 +120,7 @@
 
 	                   <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 				
-							<!-- SPEED MENU -->
+						<!-- SPEED MENU -->
 				
 						<ui:fragment rendered="#{loginAccount.load.en_speed}">
 						<li class="nav-item"><a class="nav-link" href="#speedUiSubmenu" data-toggle="collapse" aria-expanded="false">
@@ -187,7 +184,7 @@
 								   </li>						       
 						        <!---->						        
 					
-		        	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		        	    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 							
 				
 						<!-- REPORTS MENU -->

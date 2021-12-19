@@ -30,7 +30,7 @@ public class LanguageBean implements Serializable {
 
 	private final Locale ENGLISH = new Locale("en","US");
 	private final Locale SPANISH = new Locale("es", "ES");	 
- /* private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
+    /* private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
 	 private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
 	 private final Locale COLOMBIAN_SPANISH = new Locale("es", "CO");*/
 	private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");	
@@ -77,7 +77,7 @@ public class LanguageBean implements Serializable {
 					concessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
 
 				Locale.setDefault(SPANISH);							
-				locale = Locale.getDefault(); 			
+				locale = Locale.getDefault(); 	
 			
 			}
 

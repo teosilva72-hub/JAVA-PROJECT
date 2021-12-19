@@ -14,28 +14,26 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(speedLabels.tuxpan_speed_history_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(speedLabels.tuxpan_speed_history_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('speed')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(speedLabels.tuxpan_speed_history_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(speedLabels.tuxpan_speed_history_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('speed')}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />		
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('speed_registry s')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', speedLabels.speed_register_id_column, sosLabels.global_date_column, speedLabels.global_datetime_column, speedLabels.speed_speed_column, 
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('speed_registry s')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', speedLabels.speed_register_id_column, sosLabels.global_date_column, speedLabels.global_datetime_column, speedLabels.speed_speed_column, 
 		speedLabels.speed_direction_column, speedLabels.global_equipment_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('s.id_speed; DATE_FORMAT(s.save_date, `%d/%m/%Y`) as sd; DATE_FORMAT(s.save_date, `%H:%m:%s`); 
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('s.id_speed; DATE_FORMAT(s.save_date, `%d/%m/%Y`) as sd; DATE_FORMAT(s.save_date, `%H:%m:%s`); 
 	     s.speed; e.direction; e.name')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('speed_equipment e ON e.equip_id = s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('speed_equipment e ON e.equip_id = s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
        		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.save_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'speed_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('s.save_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'speed_equipment.equip_id|name', false, true)}" />
 			               
     </f:metadata>
 	
@@ -63,10 +61,8 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
-	
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
+		
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
@@ -103,11 +99,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
 					
-		 <c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		 <c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->		
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->		
@@ -130,14 +126,7 @@
 	  
 	  <!-- ============================================================================================================================= -->
 	  
-	    <!-- CHART CONTAINER -->  
-	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
-	  
-		
-	  <!-- ============================================================================================================================= -->
-	  
-	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	  <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
 	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
