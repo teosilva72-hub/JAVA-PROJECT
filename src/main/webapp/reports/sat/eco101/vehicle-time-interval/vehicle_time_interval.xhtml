@@ -18,15 +18,13 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineJsTableScroll('54vh')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.eco101_vehicle_time_interval_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />			
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('sat_vbv_ccr t1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv t1')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 1, 2))}" />
@@ -34,7 +32,7 @@
 			
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; TIMESTAMPDIFF(SECOND, t1.data, t2.data); 
 		 TIMESTAMPDIFF(SECOND, t3.data, t4.data);')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t2 ON equip_id = t1.siteID AND q.lane = t2.siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t3 ON equip_id = t1.siteID AND q.lane = t3.siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t4 ON equip_id = t1.siteID AND q.lane = t4.siteID')}" />
@@ -123,7 +121,7 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">  <!-- DATATABALE JSF -->
 		

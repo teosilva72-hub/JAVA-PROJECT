@@ -239,7 +239,15 @@ public class ReportDAO {
     		case "8 axle truck": return locale.getStringKey("reports_filter_truck_8_axles_class_option");
     		case "9 axle truck": return locale.getStringKey("reports_filter_truck_9_axles_class_option");
     		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option"); 
-    		    		    		    		
+    		case "lane 1": return locale.getStringKey("reports_filter_lane1_option"); 
+    		case "lane 2": return locale.getStringKey("reports_filter_lane2_option"); 
+    		case "lane 3": return locale.getStringKey("reports_filter_lane3_option"); 
+    		case "lane 4": return locale.getStringKey("reports_filter_lane4_option"); 
+    		case "lane 5": return locale.getStringKey("reports_filter_lane5_option"); 
+    		case "lane 6": return locale.getStringKey("reports_filter_lane6_option"); 
+    		case "lane 7": return locale.getStringKey("reports_filter_lane7_option"); 
+    		case "lane 8": return locale.getStringKey("reports_filter_lane8_option"); 
+    		
     		default: return value;
     	}
     }

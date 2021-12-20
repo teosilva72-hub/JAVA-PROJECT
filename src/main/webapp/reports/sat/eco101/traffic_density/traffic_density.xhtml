@@ -18,22 +18,21 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.eco101_traffic_density_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO101')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineJsTableScroll('54vh')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.eco101_traffic_density_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.eco101_traffic_density_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('sat_vbv_ccr')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
@@ -111,7 +110,7 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
 	

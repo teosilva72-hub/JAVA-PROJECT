@@ -373,15 +373,6 @@ public class ReportBean {
 		this.multiSheet = multiSheet;
 	}
 	
-	public void defineJsTable(String jsTable) {
-		this.jsTable = jsTable;
-		
-	}
-	
-	public void defineJsTableScroll(String jsTableScroll) {
-		this.jsTableScroll = jsTableScroll;
-		
-	}
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
