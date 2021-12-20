@@ -247,6 +247,9 @@ public class ReportDAO {
     		case "lane 6": return locale.getStringKey("reports_filter_lane6_option"); 
     		case "lane 7": return locale.getStringKey("reports_filter_lane7_option"); 
     		case "lane 8": return locale.getStringKey("reports_filter_lane8_option"); 
+    		case "max": return locale.getStringKey("reports_filter_battery_max_option");
+    		case "avg": return locale.getStringKey("reports_filter_battery_avg_option");
+    		case "min": return locale.getStringKey("reports_filter_battery_min_option");
     		
     		default: return value;
     	}
