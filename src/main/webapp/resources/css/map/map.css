@@ -6,6 +6,10 @@ body {
 	height: 100%;
 }
 
+body {
+    background-color: transparent !important;
+}
+
 /*Road Map Image for Background */
 .img>div {
 	margin: "auto";

@@ -1212,29 +1212,53 @@ function contextMenu(ev, type, id, all = true){
 }
 
 $("#darkmode").change(function() {
-	var val = $('#mapTuxpan')
+	var val = $('#mapTuxpan')		
 	if($(this).prop("checked")) {
 		$('body, html, #content').css('background-color', '#0B0D19')
 		val.attr('white', val.attr('src'))
-		val.attr('src', val.attr('dark'))
+		val.attr('src', val.attr('dark'))	
 		$('.equipLine > polyline').css({
 			stroke: 'white',
 			'stroke-width': '.2'
 		})
-		$('#zoomOut').css('color','white')
-		$('#zoomIn').css('color','white')
-		$('#divide').css('color','white')
-		$('#fullbody').css('color','white')
+		
+		$('#zoomOut').css('color','#b3b3b3')
+		$('#zoomIn').css('color','#b3b3b3')
+		$('#divide').css('color','#b3b3b3')
+		$('#fullbody').css('color','#b3b3b3')
+		$('#full').css('color','#b3b3b3')
+		$('#zoomIn1').css('color','#b3b3b3')
+		$('#zoomOut1').css('color','#b3b3b3')
+		$('#fulldiv1').css('color','#b3b3b3')
+		$('#zoomIn2').css('color','#b3b3b3')
+		$('#zoomOut2').css('color','#b3b3b3')
+		$('#fulldiv2').css('color','#b3b3b3')
+		$('#zoomIn3').css('color','#b3b3b3')
+		$('#zoomOut3').css('color','#b3b3b3')
+		$('#fulldiv3').css('color','#b3b3b3')
+
 	} else {
 		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
 		val.attr('src', val.attr('white'))
+		val2.attr('src', val2.attr('white'))
 		$('.equipLine > polyline').css({
 			stroke: 'black',
 			'stroke-width': '.2'
 		})
+		
 		$('#zoomOut').css('color','black')
 		$('#zoomIn').css('color','black')
 		$('#divide').css('color','black')
 		$('#fullbody').css('color','black')
+		$('#full').css('color','black')
+		$('#zoomIn1').css('color','black')
+		$('#zoomOut1').css('color','black')
+		$('#fulldiv1').css('color','black')
+		$('#zoomIn2').css('color','black')
+		$('#zoomOut2').css('color','black')
+		$('#fulldiv2').css('color','black')
+		$('#zoomIn3').css('color','black')
+		$('#zoomOut3').css('color','black')
+		$('#fulldiv3').css('color','black')
 	}
 });

@@ -164,6 +164,10 @@ body {
   background-color: rgb(201, 209, 207);
 }
 
+body .container-fluid{
+	background-color: transparent;
+}
+
 #content {
   background-color: rgb(201, 209, 207);
 }
