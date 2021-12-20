@@ -13,35 +13,33 @@
 	<f:metadata> 
 	<!--  ;  HORARIO,-->
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Equipamento Colas') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Relatorio Equipamento') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('Colas') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineModule('Colas')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileName('Equipamento Colas') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Relatorio Equipamento') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('Colas') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineModule('Colas')}" />
+	
+	<f:viewAction onPostback="true" action="#{reportBean.setTable('colas_equipment') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('DATA e HORARIO, IP EQUIPAMENTO, NOME EQUIPAMENTO') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s `); equip_ip ; name') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.createReport()}"/>  
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('colas_equipment') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
-
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('DATA e HORARIO, IP EQUIPAMENTO, NOME EQUIPAMENTO') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s `); equip_ip ; name') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>  
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('creation_date')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5,'MINUTE', '5 minutos')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10,'MINUTE', '10 minutos')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15,'MINUTE', '15 minutos')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(2,'HOUR', '2 horas')}" />	
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6,'HOUR', '6 horas')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY','1 Dia')}" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
-	
-	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
+	<!--<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('')}" /> -->
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('creation_date', 'DATA' , false , true)}" />
-	<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('')}" />  -->
+	<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('creation_date', 'DATA' , false , true)}" />
+	<!-- <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('')}" />  -->
 	
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
@@ -72,9 +70,9 @@
 		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS -->  <!-- CASO TENHA DATA -->			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
-		 <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		 <h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+	    <h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG (OBRIGATÓRIO) --> 			
 	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
 	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
 	
@@ -112,11 +110,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
 	 	
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				 <f:facet name="header">#{header}</f:facet> <!-- HEADER -->

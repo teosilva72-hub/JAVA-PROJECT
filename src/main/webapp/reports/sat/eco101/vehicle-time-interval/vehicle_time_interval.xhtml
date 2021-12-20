@@ -14,48 +14,48 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.eco101_vehicle_time_interval_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('ECO101')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName(satLabels.eco101_vehicle_time_interval_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />			
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.eco101_vehicle_time_interval_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECO101')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineJsTableScroll('54vh')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.eco101_vehicle_time_interval_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />			
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr t1')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sat_vbv_ccr t1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 1, 2))}" />
-		<f:viewAction onPostback="true" action="#{testerBean.initiliazeSatHeader}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 1, 2))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 			
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; TIMESTAMPDIFF(SECOND, t1.data, t2.data); 
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; TIMESTAMPDIFF(SECOND, t1.data, t2.data); 
 		 TIMESTAMPDIFF(SECOND, t3.data, t4.data);')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sat_vbv t2 ON equip_id = t1.siteID AND q.lane = t2.siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sat_vbv t3 ON equip_id = t1.siteID AND q.lane = t3.siteID')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sat_vbv t4 ON equip_id = t1.siteID AND q.lane = t4.siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t2 ON equip_id = t1.siteID AND q.lane = t2.siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t3 ON equip_id = t1.siteID AND q.lane = t3.siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t4 ON equip_id = t1.siteID AND q.lane = t4.siteID')}" />
 			
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>
 	
@@ -83,7 +83,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
 	 		
@@ -123,7 +123,7 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="generic-report-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">  <!-- DATATABALE JSF -->
 		
@@ -132,23 +132,23 @@
 		 <!-- First Level -->	 
 	         
       <tr>
-        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(0)}</th>
-        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(1)}</th>
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th>
         <th colspan="2" class="custom-table-header" >#{satLabels.time_interval_avg}</th> <!-- SUB HEADER -->
       </tr>
       
       <!-- Second Level -->
       
       <tr>
-        <th class="custom-table-header" >#{testerBean.satTab.direction1}</th>
-        <th class="custom-table-header" >#{testerBean.satTab.direction2}</th>             
+        <th class="custom-table-header" >#{reportBean.satTab.direction1}</th>
+        <th class="custom-table-header" >#{reportBean.satTab.direction2}</th>             
       </tr>
       
      </f:facet> <!---->	
      
      <!---->		
 		<!-- DATATABALE JSF -->
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>			
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->

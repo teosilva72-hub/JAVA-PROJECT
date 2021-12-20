@@ -1771,8 +1771,66 @@ span.close-x {
 	max-width: 100%;
 }
 
-.darkmode{
+.darkmodebox{
 	position: fixed;
-	left: 30%;
+	left: 50%;
 	bottom: 34px;
+}
+
+.darkmodebox input[type=checkbox]{
+	display:none;
+}
+
+.darkmodebox label{
+	background-color: #777;	
+	border: 2px solid #555;
+	border-radius: 50px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	transition: all ease-in-out 0.3s;
+	width: 100px;
+	height: 50px;
+}
+
+.darkmodebox label::after {
+	background-color: #555;
+	border-radius: 50%;
+	content: ' ';
+	cursor: pointer;
+	display: inline-block;
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	transition: all ease-in-out 0.3s;
+	width: 42px;
+	height: 42px;
+}
+
+.darkmodebox input[type=checkbox]:checked ~ label{
+	background-color: #00a0fc;
+	border-color: #006dc9;
+}
+
+.darkmodebox input[type=checkbox]:checked ~label::after{
+	background-color: #005480;
+	transform: translate(50px);
+}
+
+.scenary{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;	
+}
+
+img#light-icon {  
+  height: 35px;	
+  margin-top: 5px;
+  margin-right: 7px;	
+}
+
+img#dark-icon{
+ height: 30px;
+ margin-top: 7px;
+ margin-left: 7px;	
 }

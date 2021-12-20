@@ -12,12 +12,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import com.google.gson.Gson;
@@ -35,15 +37,15 @@ import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.util.ExcelTemplate;
 import br.com.tracevia.webapp.util.SessionUtil;
 
-@ManagedBean(name="testerBean")
+@ManagedBean(name="reportBean")
 @RequestScoped
-public class TesterBean {
+public class ReportBean {
 
 	public String table;
 	public String idTable;
 	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters;
-	
+		
 	private final String dateFormat = "dd/MM/yyyy";
 	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
 	
@@ -89,7 +91,18 @@ public class TesterBean {
 			
 	public String[] equipNames;
 	
+	@ManagedProperty("#{language}")
+	private LanguageBean language;
+	
 	// Get
+	
+	public LanguageBean getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(LanguageBean language) {
+		this.language = language;
+	}
 		
 	public ReportSelection getSelect() {
 		return select;
@@ -136,8 +149,10 @@ public class TesterBean {
 	public void setSelect(ReportSelection select) {
 		this.select = select;
 	}
-	
+		
 	public void setColumnsName(String columns) {
+						
+	  //System.out.println(columns);
 		
 		for (String col : columns.split(",")) {
 			if (col.contains("$foreach")) {
@@ -154,14 +169,16 @@ public class TesterBean {
 						setColumns(field[0]);
 						args.add(field[1]);
 					}
+					
 					listArgs.put(alias[1], args);
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
-				setColumns(col);
+				setColumns(col);				
 			}
-		}
+		}			
 	}
 	
 	public void setColumns(String col) {
@@ -183,9 +200,9 @@ public class TesterBean {
 		
 		List<String> cols = new ArrayList<>();
 		for (String col : columns) {
-			cols.add(columnsName.get(Integer.parseInt(col)));
+			cols.add(columnsName.get(Integer.parseInt(col)));			
 		}
-		columnsInUse = cols;
+		columnsInUse = cols;				
 	}
 
 	public void setSearchParameters(String parameter) {
@@ -448,25 +465,26 @@ public class TesterBean {
 		// --------------------------------------------------------------------------------------------		
 		
 		// CONSTRUTOR 
-	
+		
 	@PostConstruct
 	public void initialize() {
 		
-		// Instantiate Objects - build and select class		
-
+		// Instantiate Objects - build and select class	
+						
 		select = new ReportSelection();
 		build = new ReportBuild();
-		
-	
+			
 		// ---------------------------------------------------------------------------
 	        	
     	  // Disabled Buttons
     	  build.clearBool = true;
     	  build.excelBool = true;
-    	  build.chartBool = true;	
+    	  build.chartBool = true;
     	      	
-	 }	
-	
+    	  // UPDATE VIEW LOCALE INTO REPORTS
+    	  language.updateViewLocale(Locale.getDefault()); 
+    	      	
+	 }		
 	
 	public void initiliazeSatHeader() {
 				
@@ -500,14 +518,13 @@ public class TesterBean {
 				parameters.add(column);
 		}
 
-		searchParameters = parameters;
-		 
+		searchParameters = parameters;					
 	}
 
 	// CAMPOS
 	
 	public void createFields() throws Exception {
-		
+						
 		int count = 0;
 		boolean setPeriod = false;
 		
@@ -654,7 +671,7 @@ public class TesterBean {
 				build.chartBool = true; // BOTÃƒO DO GRÃ�FICO	 
 							
 				if (report.lines.isEmpty()) {
-					 SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");					
+					 SessionUtil.executeScript("drawTable()");					
 					 return;
 				}				
 			}
@@ -675,10 +692,12 @@ public class TesterBean {
 				}
 			 }
 			
+			// -------------------------------------------------------------------------------------
+						  
+			SessionUtil.executeScript("drawTable()");
+			
 			// -------------------------------------------------------------------------------------	
-		      		     
-			SessionUtil.executeScript("drawTable('#"+jsTable+"', '"+jsTableScroll+"');");
-						
+				      		     						
 			 if(!special)										
 		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
 			
@@ -696,7 +715,7 @@ public class TesterBean {
 	      	 
 		 	    	build.chartBool = false;
 	      		    createChartData(build.chartBool, period, data.left, data.right, report.IDs);
-	      	    }     			
+	      	    } 
 			
 	        }
 			
@@ -848,6 +867,8 @@ public class TesterBean {
 				build.chartBool = true;		
 				
 				initiliazeSatHeader(); // ONLY HEADER 
+				
+				SessionUtil.executeScript("window.clear_table = true");
 																		
 			}	
 	 		

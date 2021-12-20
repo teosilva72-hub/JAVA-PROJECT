@@ -13,29 +13,22 @@
 	<f:metadata> 
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('SOS Calls') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Sos Call') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('sos_calls') }" />
-
-	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileName('SOS Calls') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Sos Call') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('sos_calls') }" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
-   <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />
-
+	<f:viewAction onPostback="true" action="#{reportBean.setTable('sos_calls') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
+		
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('Hora atendimento, Hora inicio, Hora Final, Operador, Status Ligação') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(answered_date, `%d/%m/%Y %H:%i:%s`); DATE_FORMAT(start_date, `%d/%m/%Y %H:%i:%s`); DATE_FORMAT(end_date, `%d/%m/%Y %H:%i:%s`); user; state_id') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.createReport()}"/>
+		
+	<!--<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('')}" /> -->
 	
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('Hora atendimento, Hora inicio, Hora Final, Operador, Status Ligação') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(answered_date, `%d/%m/%Y %H:%i:%s`); DATE_FORMAT(start_date, `%d/%m/%Y %H:%i:%s`); DATE_FORMAT(end_date, `%d/%m/%Y %H:%i:%s`); user; state_id') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
-	
-
-	
-	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
-	
-
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date','DATA', false, true)}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id','Equipamento', 'sos_calls.equip_id' , false, true)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('start_date','DATA', false, true)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id','Equipamento', 'sos_calls.equip_id' , false, true)}" />
 	
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
@@ -66,9 +59,9 @@
 		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS -->  <!-- CASO TENHA DATA -->			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
-		 <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		 <h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG (OBRIGATÓRIO) --> 			
 	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
 	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
 	
@@ -106,11 +99,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
 	 	
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				 <f:facet name="header">#{header}</f:facet> <!-- HEADER -->

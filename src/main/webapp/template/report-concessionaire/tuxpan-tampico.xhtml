@@ -41,20 +41,18 @@
 						</h:commandLink>
 						</li>
 	
-			  				 <!---->
+			  			<!---->
 			
 						<!-- OCR REFALTIME MENU -->
 
-		  <ui:fragment rendered="#{loginAccount.load.en_ocr}">
-			 <li class="nav-item">
-				<a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
-					<i class="fas fa-camera-retro icon-sub"></i> 
-					  <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
+					   <ui:fragment rendered="#{loginAccount.load.en_ocr}">
+					   <li class="nav-item">
+					   <a class="nav-link" href="#ocrUiSubmenu" data-toggle="collapse" aria-expanded="false">  <!-- OCR SUBMENU -->
+					   <i class="fas fa-camera-retro icon-sub"></i> 
+					   <span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_ocr_interface}</span></a>
 					                   
 						<ul class="collapse list-unstyled" id="ocrUiSubmenu"> <!-- OCR REALTIME -->
-										
-							
-
+																	
 						<li class="nav-item">
 						<h:commandLink class="nav-link"	action="#{navigationController.redirectToURL('/ocr/ocr_realtime.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -70,9 +68,9 @@
 						</h:commandLink></li>
 										<!---->
 	
-									</ul> <!----></li>
-								<!---->
-							</ui:fragment>
+						</ul> <!----></li>
+						<!---->
+						</ui:fragment>
 						<!--  -->
 						
 						<!-- Colas ITEM -->
@@ -83,16 +81,14 @@
 						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_realtime}</span>
 						</h:commandLink></li>
 						</ui:fragment>
-						
-						
+												
 						<!---->
 
 						</ul></li>
-				<!---->
-
-				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-								<!-- PMV MENU -->
+				        
+				        <!---->
+								  
+						<!-- PMV MENU -->
 
 						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
 						<li class="nav-item"><a class="nav-link" href="#pmvUiSubmenu" data-toggle="collapse" aria-expanded="false">
@@ -101,7 +97,7 @@
 
 						<ul class="collapse list-unstyled" id="pmvUiSubmenu"> <!-- PMV SUBMENU -->
 														
-							<!-- ACTIVE MESSAGES -->
+						<!-- ACTIVE MESSAGES -->
 
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/dms/messages/message-activate.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
@@ -122,9 +118,9 @@
 						</ui:fragment>
 						<!---->
 
-	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	                   <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 				
-							<!-- SPEED MENU -->
+						<!-- SPEED MENU -->
 				
 						<ui:fragment rendered="#{loginAccount.load.en_speed}">
 						<li class="nav-item"><a class="nav-link" href="#speedUiSubmenu" data-toggle="collapse" aria-expanded="false">
@@ -140,7 +136,56 @@
 						</ul> <!----></li>
 							
 						</ui:fragment>
-							<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+														
+					<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+				    
+				    <!-- DETAILED REPORT -->
+				    				   		
+							<li class="nav-item"><a class="nav-link" href="#detailUiSubmenu" data-toggle="collapse" aria-expanded="false">
+								<i class="fas fa-info-circle icon"></i>
+									<span class="text">#{dashboardLabels.dashboard_detailed_report_menu}</span></a>
+
+										<ul class="collapse list-unstyled" id="detailUiSubmenu"> <!-- PMV SUBMENU -->
+														
+											<!-- COLAS DETAIL -->
+
+											<li class="nav-item">
+											  <h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/detailed-reports/tuxpan/colas/colas-detail.xhtml?faces-redirect=true')}" value="">
+												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_colas_detail_submenu}</span>
+											  </h:commandLink>
+										    </li>
+							           
+							            <!---->
+
+						               <!-- DAI DETAIL -->
+
+										<li class="nav-item">
+											<h:commandLink class="nav-link" action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/dai/dai-detail.xhtml?faces-redirect=true')}" value="">
+											 <i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_detail_submenu}</span>
+											</h:commandLink>
+										</li>
+										
+										<!---->
+										
+										 <!-- OCR DETAIL -->
+										
+										<li class="nav-item">
+											<h:commandLink class="nav-link" action="#{navigationController. redirectToURL('/reports/detailed-reports/tuxpan/ocr/ocr-detail.xhtml?faces-redirect=true')}" value="">
+											 <i class="fas fa-arrow-circle-right icon-sub-item"></i>
+												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_detail_submenu}</span>
+											</h:commandLink>
+										</li>
+										
+										<!---->
+										
+									 </ul> 
+								   </li>						       
+						        <!---->						        
+					
+		        	    <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+							
 				
 						<!-- REPORTS MENU -->
 						<li class="nav-item"><a href="#modMenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> 
@@ -159,9 +204,8 @@
 						<i class="fas fa-hourglass-half icon-sub"></i>
 						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
 						<ul class="collapse list-unstyled" id="colasSubmenu">
-
 					
-							<!---->
+						<!---->
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_colas_estimated_time}</span>
@@ -195,9 +239,9 @@
 						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_dai}</span></a>
 						<ul class="collapse list-unstyled" id="daiSubmenu">
 
-						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectTURL('/dai/dai.xhtml?faces-redirect=true')}" value="">
+						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/dai/tuxpan/incidents/incidents.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_dai_sub_menu_report}</span>
+						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_sub_menu_dai_incidents}</span>
 						</h:commandLink></li>
 
 						</ul></li>
@@ -208,22 +252,8 @@
 						<!---->
 
 						<ui:fragment rendered="#{loginAccount.load.en_ocr}">
-						<li class="nav-item"><a class="nav-link" href="#ocrSubmenu" data-toggle="collapse" aria-expanded="false">	
-						<i class="fas fa-camera-retro icon-sub"></i>
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_ocr}</span></a>
-						<ul class="collapse list-unstyled" id="ocrSubmenu">
-
-									<!-- OCR REPORT -->
-
-						<li class="nav-item ml-2">
-						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/ocr/ocr.xhtml?faces-redirect=true')}" value="">
-						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_ocr_sub_menu_report}</span>
-						</h:commandLink></li>
-									<!---->
-						
-						</ul></li>
-						</ui:fragment>
+					
+     					</ui:fragment>
 						<!---->
 
 						<!---->

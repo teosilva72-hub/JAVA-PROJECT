@@ -14,41 +14,41 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(satLabels.eco101_vehicle_length_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(satLabels.eco101_vehicle_length_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('VIA SUL')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sat')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.isSat('true')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.initiliazeSatHeader}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.eco101_vehicle_length_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.eco101_vehicle_length_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('VIA SUL')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineJsTable('generic-report-table')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineJsTableScroll('54vh')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sat_vbv_ccr s')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sat_vbv_ccr s')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_column, satLabels.vehicle_length_0_5_m, 
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.global_equipment_column, satLabels.vehicle_length_0_5_m, 
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m, satLabels.vehicle_length_0_5_m, 
 		satLabels.vehicle_length_5_10_m, satLabels.vehicle_length_10_15_m, satLabels.vehicle_length_15_20_m, satLabels.vehicle_length_20_m))}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`));')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setUseIndex('idx_siteID_data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('data')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions f ON f.equip_id = siteID AND f.lane = s.lane')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 
     </f:metadata>
 	
@@ -76,7 +76,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
 	 		
@@ -116,7 +116,7 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="generic-report-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
 		
@@ -125,31 +125,31 @@
 	  <!-- First Level -->	 
 	         
       <tr>
-        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(0)}</th>
-        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(1)}</th> 
-        <th rowspan="2" class="custom-table-header" >#{testerBean.columnsInUse.get(2)}</th>    
-        <th colspan="5" class="custom-table-header" >#{testerBean.satTab.direction1}</th>
-        <th colspan="5" class="custom-table-header" >#{testerBean.satTab.direction2}</th>             
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th> 
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>    
+        <th colspan="5" class="custom-table-header" >#{reportBean.satTab.direction1}</th>
+        <th colspan="5" class="custom-table-header" >#{reportBean.satTab.direction2}</th>             
       </tr>
       
       <!-- Second Level -->	
       
        <tr>       
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(3)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(4)}</th>    
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(5)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(6)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(7)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(8)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(9)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(10)}</th>
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(11)}</th>     
-        <th class="custom-table-header" >#{testerBean.columnsInUse.get(12)}</th>     
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(3)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(4)}</th>    
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(5)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(6)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(7)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(9)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(10)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(11)}</th>     
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(12)}</th>     
        </tr>
       
      </f:facet> <!---->	
      
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>			
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->

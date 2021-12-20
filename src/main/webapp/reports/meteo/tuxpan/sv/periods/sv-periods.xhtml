@@ -14,45 +14,42 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{testerBean.defineFileName('sv_periods')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Meteorológico por periodo')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sv')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineImageName('sv_periods')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('Meteorológico por periodo')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineFileName('sv_periods')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Meteorológico por periodo')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sv')}" />	    
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName('sv_periods')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Meteorológico por periodo')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis('station')}" />
 		  
 		
 		  
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sv_data')}"/>
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('station_id')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{testerBean.setColumnsName('DATA, INTERVALO, PRESSÃO ATMOSFERICA , UMIDADE RELATIVA, TEMPERATURA , VELOCIDADE DO VENTO, DIREÇÃO DO VENTO, PRECIPTAÇÃO ABSOLUTA,  TEMPERATURA DE AMBIENTE')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sv_data')}"/>
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('station_id')}" />
+		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', mtoLabels.global_date_column, mtoLabels.global_datetime_column, mtoLabels.meteo_atmPressure_column, mtoLabels.meteo_relative_humidity_column, mtoLabels.meteo_temperature_column, 
+		mtoLabels.meteo_wind_speed_column, mtoLabels.meteo_wind_direction_column, mtoLabels.meteo_absolute_preciptation_column, mtoLabels.meteo_ambient_temperature_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
-	    <f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
+	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('save_date')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />	
-		<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('save_date')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 				
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDivision('filter_directions, direction, direction')}" />  -->
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+	
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('save_date', 'data de pesquisa', false, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setDateSearch('data', 'outra data')}" /> -->
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('station_id', 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
-		<!-- <f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" /> -->
-
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'data de pesquisa', false, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('station_id', 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
+	
     </f:metadata>
 	
 	<!---->
@@ -79,7 +76,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
 	 	<h:outputScript library="js/charts" name="chart.js" />
 	
@@ -119,11 +116,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">
 		<!-- DATATABALE JSF -->
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->

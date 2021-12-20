@@ -14,35 +14,33 @@
 	
 	<f:metadata>
 
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileName(sosLabels.tuxpan_call_history_file_name)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle(sosLabels.tuxpan_call_history_title)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos')}" />
-	    <f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('54vh')}" />		
-		<f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('false')}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_call_history_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_call_history_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />		
 		
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls s')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setIdTable('s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.call_statistics_call_received_column,
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sos_calls s')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.call_statistics_call_received_column,
 		 sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
 		 sosLabels.call_statistics_call_duration_column, sosLabels.call_statistics_call_operator_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; e.name; IFNULL(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; ``, DATE_FORMAT(s.start_date, `%H:%i:%s`), 0), ` --- `); 
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; e.name; IFNULL(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; ``, DATE_FORMAT(s.start_date, `%H:%i:%s`), 0), ` --- `); 
 	    IFNULL(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, DATE_FORMAT(s.answered_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 3 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 5 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 6 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
 	    IFNULL(s.user, ` --- `)')}" />
-		<f:viewAction onPostback="true" action="#{testerBean.createReport()}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
-		<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
 		
 				
-		<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('s.start_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('s.start_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
 			               
     </f:metadata>
 	
@@ -70,7 +68,7 @@
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
 		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS --> 
+	    <h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 	
 	   <!---->
 	
@@ -108,11 +106,11 @@
 	  <!-- ============================================================================================================================= -->
 	 
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
-	<h:dataTable id="generic-report-table" value="#{testerBean.report.lines}" var="line" autocomplete="off"
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
 		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
 		
-		<c:forEach items="#{testerBean.columnsInUse}" var="header" varStatus="loop">
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
 				<!-- COLUMN -->		
 				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->					

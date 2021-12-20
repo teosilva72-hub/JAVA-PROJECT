@@ -488,7 +488,7 @@ public class OccurrencesDAO {
 				"INNER JOIN occ_details dt2 ON d.state_occurrence = dt2.detail_id";	
 
 		ArrayList<OccurrencesData> listarOcc = new ArrayList<OccurrencesData>();
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			TranslationMethods occTranslation = new TranslationMethods();
 			conn = ConnectionFactory.connectToTraceviaApp();

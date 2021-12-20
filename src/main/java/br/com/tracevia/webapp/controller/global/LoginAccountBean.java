@@ -192,6 +192,7 @@ public class LoginAccountBean {
 	public void initialize() {
 
 		user = new UserAccount();
+		
 		locale = new LocaleUtil();
 		locale.getResourceBundle(LocaleUtil.MESSAGES_LOGIN);
 
