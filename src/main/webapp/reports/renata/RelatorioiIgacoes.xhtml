@@ -13,47 +13,36 @@
 	<f:metadata> 
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineModule('')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileName('Ligaçoes') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineFileTitle('Ligaçoes') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineSheetName('Quantidade Ligaçoes') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.defineModule('sos call')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTableScroll('51vh')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.haveChart('')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.defineImageName('')}" />		
-	<f:viewAction onPostback="true" action="#{testerBean.defineChartTitle('')}" />		
-	<f:viewAction onPostback="true" action="#{testerBean.defineAxis('station')}" />
-
+	
 	<f:viewAction onPostback="true" action="#{testerBean.defineJsTable('generic-report-table') }" />
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setTable('') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setIdTable('')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
-   <f:viewAction onPostback="true" action="#{testerBean.defineMultiSheet('')}" />
-
+	<f:viewAction onPostback="true" action="#{testerBean.setTable('sos_calls') }" />
 	
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('') }" />
-	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setColumnsName('Data, Hora, ligaçoes Atendida, Ligacoes nao atendida, Total de Ligacoes') }" />
+	<f:viewAction onPostback="true" action="#{testerBean.setSearchParameters('DATE_FORMAT(start_date,`%d/%m/%Y`) as sd; TIME ($period) @sd;  SUM(if(state_id = 3, 1, 0)); SUM(if(state_id = 5, 1, 0)); Sum(1)')}" />
 	<f:viewAction onPostback="true" action="#{testerBean.createReport()}"/>
 	
 	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('creation_date')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(5,'MINUTE', '5 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(10,'MINUTE', '10 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(15,'MINUTE', '15 minutos')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(2,'HOUR', '2 horas')}" />	
-	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(6,'HOUR', '6 horas')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriodColumn('start_date')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1,'MINUTE', '1 minutos')}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1,'HOUR', '1 horas')}" />	
 	<f:viewAction onPostback="true" action="#{testerBean.setPeriod(1, 'DAY','1 Dia')}" />
-	
-	<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0')}" />
+		
+		<f:viewAction onPostback="true" action="#{testerBean.setColumnDate('0@1')}" />
+
 	
 
 	
 	<!--<f:viewAction onPostback="true" action="#{testerBean.setInnerJoin('')}" /> -->
 	
 
-	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch(')}" />
-	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('')}" />
-	
+	<f:viewAction onPostback="true" action="#{testerBean.setDateSearch('start_date', 'Data', false, true)}" />
+	<f:viewAction onPostback="true" action="#{testerBean.setFilterSearch('equip_id', 'Equipamento', true, true)}" />
 
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
 	
