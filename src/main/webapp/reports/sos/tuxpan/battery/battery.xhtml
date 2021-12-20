@@ -31,7 +31,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.sos_report_battery_min_volts_column, sosLabels.sos_report_battery_max_volts_column, sosLabels.sos_report_battery_avg_volts_column,
 		 sosLabels.sos_report_battery_min_ampere_column, sosLabels.sos_report_battery_max_ampere_column, sosLabels.sos_report_battery_avg_ampere_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(AVG(volt), 2) ,0) ; IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(min(volt), 2) ,0);  IFNULL(ROUND(max(volt), 2) ,0); IFNULL(ROUND(AVG(volt), 2) ,0); IFNULL(ROUND(min(ampere), 2) ,0) ;  IFNULL(ROUND(max(ampere),2),0); IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('save_date')}" />
