@@ -311,7 +311,7 @@
 						from="lpr">#{mapLabels.map_size_select_ocr}</button>
 				</ui:fragment>
 
-				<ui:fragment rendered="#{loginAccount.load.en_mto}">
+				<ui:fragment rendered="#{loginAccount.load.en_meteo}">
 					<button class="dropdown-item dprbtn" data-toggle="modal"
 						data-target="#sizeeqps" data-backdrop="false" id="dropmto"
 						from="mto">#{mapLabels.map_size_select_mto}</button>
@@ -546,11 +546,11 @@
 								</div>
 							</div>
 
-							<!-- ***** EQUIPMENTS OPTIONS ***** -->
+					<!-- ***** EQUIPMENTS OPTIONS ***** -->
 
-							<!--  ******************************************************************************************************* -->
+					<!--  ******************************************************************************************************* -->
 
-							<!-- EQUIPMENT ID -->
+					<!-- EQUIPMENT ID -->
 
 							<div class="form-row">
 								<!-- ROW -->
@@ -607,6 +607,37 @@
 							<!---->
 
 							<!-- DMS TYPE -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- METEO TYPE -->
+
+							<div class="form-row meteoHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT DIV -->
+									<span><i class="fas fa-th-list"></i></span>
+									<!-- SPAN ICON -->
+									<span for="meteoType" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="meteoType" id="meteoType" size="1">
+										<option value="">#{mapLabels.map_creation_select_meteo_type}</option>
+										<ui:repeat var="tp" value="#{equipsBean.meteoType}"
+											varStatus="tpStatus">
+											<option value="#{tp.value}">#{tp.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- METEO TYPE -->
 
 							<!--  ******************************************************************************************************* -->
 
@@ -770,6 +801,36 @@
 							<!-- ***** CITY ***** -->
 
 							<!--  ******************************************************************************************************* -->
+
+	                      	<!-- DIRECTION -->
+
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="direction" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="direction" id="direction" size="1">
+										<option value="">#{mapLabels.map_creation_select_direction}</option>
+										<ui:repeat var="dir" value="#{equipsBean.dir}"
+											varStatus="dirStatus">
+											<option value="#{dir.value}">#{dir.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="direction" class="error" id="direction-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!--  ******************************************************************************************************* -->
+
 
 							<!-- ***** ROAD ***** -->
 							<div class="form-row">
@@ -1537,20 +1598,19 @@
 									<!-- SPAN VALIDATION -->
 
 									<input type="hidden" value="map" id="interface"
-										name="interface" /> <select name="equips-edit"
-										id="equips-edit" size="1" disabled="true">
-										<option value="">#{mapLabels.map_creation_select_mto_type}</option>
-										<ui:repeat var="eqp" value="#{equipsBean.module}"
-											varStatus="eqpStatus">
-											<option value="#{eqp.value}">#{eqp.label}</option>
-										</ui:repeat>
-									</select>
+										name="interface" /> <select name="equips-edit" id="equips-edit" size="1" disabled="true">
+										  <option value="">#{mapLabels.map_creation_select_mto_type}</option>
+										    <ui:repeat var="eqp" value="#{equipsBean.module}"
+											   varStatus="eqpStatus">
+											   <option value="#{eqp.value}">#{eqp.label}</option>
+										    </ui:repeat>
+									  </select>
 									<!-- SELECT -->
 								</div>
+								
 								<!---->
 
 								<!-- EQUIPMENTS OPTIONS -->
-
 
 								<!--  ******************************************************************************************************* -->
 
@@ -1604,7 +1664,38 @@
 							<!-- DMS TYPE -->
 
 							<!--  ******************************************************************************************************* -->
+                            
+                            <!-- METEO TYPE -->
 
+							<div class="form-row meteoHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT DIV -->
+									<span><i class="fas fa-th-list"></i></span>
+									<!-- SPAN ICON -->
+									<span for="dmsType" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="meteoType-edit" id="meteoType-edit" size="1">
+										<option value="">#{mapLabels.map_creation_select_meteo_type}</option>
+										<ui:repeat var="tp" value="#{equipsBean.meteoType}"
+											varStatus="tpStatus">
+											<option value="#{tp.value}">#{tp.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- METEO TYPE -->
+
+							<!--  ******************************************************************************************************* -->
+                         
 							<!-- IP ADDRESS -->
 
 							<div class="form-row ipAddressShow-edit">

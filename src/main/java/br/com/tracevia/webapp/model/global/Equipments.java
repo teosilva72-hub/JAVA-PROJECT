@@ -361,7 +361,7 @@ public class Equipments {
 		return lista;
 	}
 
-	//BUILD GENERIC EQUIPMENTS
+	// BUILD GENERIC EQUIPMENTS
 	public List<SOS> listSosEquipments(int permission) throws Exception {
 
 		List<SOS> lista = new ArrayList<>();	

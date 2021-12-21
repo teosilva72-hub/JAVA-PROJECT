@@ -658,7 +658,7 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
-[id$="mtoType"] {
+[id$="meteoType"] {
 	width: 100%;
 }
 
@@ -710,12 +710,16 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="direction"] {
+	width: 100%;
+}
+
 /* EDIT */
 [id$="equips-edit"] {
 	width: 100%;
 }
 
-[id$="mtoType-edit"] {
+[id$="meteoType-edit"] {
 	width: 100%;
 }
 
@@ -773,6 +777,10 @@ img.box-img[zoom] {
 
 [id$="cancelPos"] {
 	margin-left: 14px;
+}
+
+[id$="direction-edit"] {
+	width: 100%;
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -1085,11 +1093,11 @@ button#dropdwnsizebtn:hover{
 	margin-left: 4px !important;
 }
 
-.dmsHidden {
+.dmsHidden, .meteoHidden {
 	display: none;
 }
 
-.dmsHidden-edit {
+.dmsHidden-edit, .meteoHidden-edit {
 	display: none;
 }
 

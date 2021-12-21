@@ -7,13 +7,12 @@ public enum ModulesEnum {
 	COMMS("COMMS"),
 	DAI("DAI"),
 	OCR("OCR"),
-	MTO("MTO"),
+	METEO("METEO"),
 	OCC("OCC"),
 	PMV("PMV"),
 	SAT("SAT"),
 	SOS("SOS"),
 	SPEED("SPEED"),
-	SV("SV"),
 	VIDEOWALL("VIDEOWALL"),
 	WIM("WIM");
 		
