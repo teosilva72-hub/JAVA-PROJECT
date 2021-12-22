@@ -16,13 +16,13 @@ public class DMS extends Equipments {
 	public DMS(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
-			boolean visible, int leds, int dms_type, String dmsType_name, String dms_ip, Messages message,
-			Messages messageChange, boolean stat, boolean msg_status) {
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus,
+			boolean notificacao, int port, boolean visible, int leds, int dms_type, String dmsType_name, String dms_ip,
+			Messages message, Messages messageChange, boolean stat, boolean msg_status) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
-				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, visible);
+				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, port, visible);
 		
 		this.leds = leds;
 		this.dms_type = dms_type;
@@ -101,8 +101,7 @@ public class DMS extends Equipments {
 	public void setMsg_status(boolean msg_status) {
 		this.msg_status = msg_status;
 	}
-	
 
 
-	
+		
 }

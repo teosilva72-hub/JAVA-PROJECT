@@ -772,8 +772,27 @@ public class EquipmentsBean implements Serializable {
 		speed = new Speed();
 
 		int moduleId = getModuleByName(equipTable);
+		
+	    if(moduleId == 6){	
+			
+			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-		if(moduleId == 8) {
+			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
+			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
+			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
+		
+		
+		}
+
+	    else if(moduleId == 8) {
 
 			dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
@@ -788,6 +807,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+dms.getLatitude()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+dms.getLongitude()+"');");
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+dms.getDirection()+"');");
 
 
 		} else if(moduleId == 9) {
@@ -805,6 +825,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
 			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sat.getLatitude()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sat.getLongitude()+"');");
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sat.getDirection()+"');");
 
 			if(sat.getFaixa1() != null)			 
 				RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
@@ -847,6 +868,7 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sos.getLatitude()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sos.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sos.getDirection()+"');");
 		
 		} else if (moduleId == 11) {
 
@@ -863,21 +885,25 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+speed.getLatitude()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+speed.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+speed.getDirection()+"');");
 				
-		}else {		
+		} else {		
 
 			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
 			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
 			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#configId-edit').val('"+equip.getEquip_id()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#port-edit').val('"+equip.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");					
 			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
 		
 		}				   
 	}

@@ -1825,6 +1825,7 @@
 							<!--  ******************************************************************************************************* -->
 
 							<!-- ***** CITY ***** -->
+							
 							<div class="form-row">
 								<!-- ROW -->
 								<div class="form-group col-md-12 select-field">
@@ -1852,6 +1853,36 @@
 
 							<!-- ***** CITY ***** -->
 
+							<!--  ******************************************************************************************************* -->
+							
+						    <!-- DIRECTION -->
+
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="direction-edit" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="direction-edit" id="direction-edit" size="1">
+										<option value="">#{mapLabels.map_creation_select_direction}</option>
+										<ui:repeat var="dir" value="#{equipsBean.dir}"
+											varStatus="dirStatus">
+											<option value="#{dir.value}">#{dir.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="direction-edit" class="error" id="direction-edit-error"></label>
+								</div>
+								<!---->
+							</div>
+							
+							<!---->
+						
 							<!--  ******************************************************************************************************* -->
 
 							<!-- ***** ROAD ***** -->
@@ -2008,9 +2039,6 @@
 
 							<!--  ******************************************************************************************************* -->
 							
-
-							<!--  ******************************************************************************************************* -->
-
 							<!-- ***** MODEL ***** -->
 							<div class="form-row sosInputs-edit" style="display: none;">
 								<!-- ROW -->
