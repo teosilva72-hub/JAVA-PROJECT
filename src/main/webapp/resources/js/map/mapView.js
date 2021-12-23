@@ -455,10 +455,12 @@ function reloadAfterCancelPos(){
 /**/
 function showGenericName(){
 
-	if(scale > 1.3)
-	  $('.equip-header').css('opacity', 1);
+    if(scale > 1.3)
+	   $('.equip-header').css('opacity', 1);
 	  
-	  else  $('.equip-header').css('opacity', 0);
+	else  $('.equip-header').css('opacity', 0);
 	  
-	}
+}
+
+
 	

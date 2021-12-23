@@ -905,6 +905,7 @@ $(function () {
 				$('.dmsHidden').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
+				$('.meteoHidden').hide();
 				$('.ipAddressShow').show();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 				$("#lanes").change(
@@ -963,9 +964,19 @@ $(function () {
 						}
 					});
 
-			} else if (selectVAL == 8) {
+			} else if (selectVAL == 6) {
 
-				$('.dmsHidden').show(); // DIV DMS TYPE				
+				$('.meteoHidden').show(); // DIV DMS TYPE		
+				$('.dmsHidden').hide(); // DIV DMS TYPE				
+				$('.satInputs').hide();
+				$('.sosInputs').hide();
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();
+
+			}else if (selectVAL == 8) {
+
+				$('.dmsHidden').show(); // DIV DMS TYPE	
+				$('.meteoHidden').hide(); // DIV DMS TYPE					
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
@@ -974,6 +985,7 @@ $(function () {
 			} else if (selectVAL == 10) {
 
 				$('.sosInputs').show();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
@@ -982,6 +994,7 @@ $(function () {
 			} else if (selectVAL == 11) {
 
 				$('.speedHidden').show();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.sosInputs').hide();
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();
@@ -990,6 +1003,7 @@ $(function () {
 			} else {
 
 				$('.dmsHidden').hide();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
@@ -1212,29 +1226,71 @@ function contextMenu(ev, type, id, all = true){
 }
 
 $("#darkmode").change(function() {
-	var val = $('#mapTuxpan')
+	
+	let val = $('#mapTuxpan')	
+	let frame1 = $($("#frame1")[0].contentWindow.document).find("#zoomtext img")
+	let frame2 = $($("#frame2")[0].contentWindow.document).find("#zoomtext img")
+	let frame3 = $($("#frame3")[0].contentWindow.document).find("#zoomtext img")	
+	
 	if($(this).prop("checked")) {
 		$('body, html, #content').css('background-color', '#0B0D19')
-		val.attr('white', val.attr('src'))
-		val.attr('src', val.attr('dark'))
+		 
+	      val.attr('light', val.attr('src'))
+          frame1.attr('light', val.attr('src'))
+          frame2.attr('light', val.attr('src'))
+          frame3.attr('light', val.attr('src'))
+
+		  val.attr('src', val.attr('dark'))	
+          frame1.attr('src', frame1.attr('dark'))
+          frame2.attr('src', frame2.attr('dark'))
+          frame3.attr('src', frame3.attr('dark'))      
+		 
 		$('.equipLine > polyline').css({
 			stroke: 'white',
 			'stroke-width': '.2'
 		})
-		$('#zoomOut').css('color','white')
-		$('#zoomIn').css('color','white')
-		$('#divide').css('color','white')
-		$('#fullbody').css('color','white')
+		
+		$('#zoomOut').css('color','#b3b3b3')
+		$('#zoomIn').css('color','#b3b3b3')
+		$('#divide').css('color','#b3b3b3')
+		$('#fullbody').css('color','#b3b3b3')
+		$('#full').css('color','#b3b3b3')
+		$('#zoomIn1').css('color','#b3b3b3')
+		$('#zoomOut1').css('color','#b3b3b3')
+		$('#fulldiv1').css('color','#b3b3b3')
+		$('#zoomIn2').css('color','#b3b3b3')
+		$('#zoomOut2').css('color','#b3b3b3')
+		$('#fulldiv2').css('color','#b3b3b3')
+		$('#zoomIn3').css('color','#b3b3b3')
+		$('#zoomOut3').css('color','#b3b3b3')
+		$('#fulldiv3').css('color','#b3b3b3')
+
 	} else {
 		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
-		val.attr('src', val.attr('white'))
+		  val.attr('src', val.attr('light'))
+		 
+	      frame1.attr('src', frame1.attr('light'))
+          frame2.attr('src', frame2.attr('light'))
+          frame3.attr('src', frame3.attr('light'))  
+
 		$('.equipLine > polyline').css({
 			stroke: 'black',
 			'stroke-width': '.2'
 		})
+		
 		$('#zoomOut').css('color','black')
 		$('#zoomIn').css('color','black')
 		$('#divide').css('color','black')
 		$('#fullbody').css('color','black')
+		$('#full').css('color','black')
+		$('#zoomIn1').css('color','black')
+		$('#zoomOut1').css('color','black')
+		$('#fulldiv1').css('color','black')
+		$('#zoomIn2').css('color','black')
+		$('#zoomOut2').css('color','black')
+		$('#fulldiv2').css('color','black')
+		$('#zoomIn3').css('color','black')
+		$('#zoomOut3').css('color','black')
+		$('#fulldiv3').css('color','black')
 	}
 });

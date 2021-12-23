@@ -272,66 +272,63 @@
 
 
 
-									<!--  MTO REPORT SUBMENU  -->
+						<!--  METEO REPORT SUBMENU  -->
 
-						<ui:fragment rendered="#{loginAccount.load.en_mto}">
+						<ui:fragment rendered="#{loginAccount.load.en_meteo}">
 
-						<li class="nav-item"><a class="nav-link" href="#mtoSubmenu" data-toggle="collapse" aria-expanded="false">
+						<li class="nav-item"><a class="nav-link" href="#meteoSubmenu" data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-cloud icon-sub-item"></i> 
 						<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_mto}</span></a>
 
-						<ul class="collapse list-unstyled" id="mtoSubmenu">
-												<!--  MTO REPORT SUBMENU ITEM -->
+						<ul class="collapse list-unstyled" id="meteoSubmenu">
+						
+						<!--  MTO REPORT SUBMENU ITEM -->
 
-
-												<!-- MTO PERIOD -->
+						<!-- METEO PERIOD -->
 
 						<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/meteo/tuxpan/mto/periods/mto-periods.xhtml')}"												value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item-2"></i>
 						<span class="text-sub-item-2">#{dashboardLabels.dashboard_sidebar_mto_sub_menu_period}</span>
 						</h:commandLink></li>
-												<!---->
+												
+						<!---->
 
 				 		</ul></li>
-										<!---->
+										
+					<!---->
 
-						</ui:fragment>
-	
-									<!--  MTO REPORT SUBMENU  -->
-
-									<!---->
-
-									<!--  SV REPORT SUBMENU  -->
-
-					<ui:fragment rendered="#{loginAccount.load.en_sv}">
 					<li class="nav-item"><a class="nav-link" href="#vsSubmenu" data-toggle="collapse" aria-expanded="false"><i class="fas fa-sun icon-sub-item"></i>
 					<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_module_sv}</span></a>
 
 					<ul class="collapse list-unstyled" id="vsSubmenu">
-											<!--  SV REPORT SUBMENU ITEM  -->
+				    <!--  SV REPORT SUBMENU ITEM  -->
 
 				
 
-												<!-- SV PERIOD -->
+					<!-- SV PERIOD -->
 
 					<li class="nav-item">
 					<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/meteo/tuxpan/sv/periods/sv-periods.xhtml')}" value="">
 					<i class="fas fa-arrow-circle-right icon-sub-item-2"></i>
 					<span class="text-sub-item-2">#{dashboardLabels.dashboard_sidebar_sv_sub_menu_period}</span>
 					</h:commandLink></li>
-												<!---->
+												
+					<!---->
+					
 				     </ul></li>
-										<!---->
+										
+					<!---->
 
 					 </ui:fragment>
-									<!--  SV REPORT SUBMENU  -->
+									
+					<!--  SV REPORT SUBMENU  -->
 
 					 </ul> <!---->
 					 </li>
 							<!---->
 					 </ui:fragment>
-						<!---->
-
+						
+					 <!---->
 
 					  <!-- OCC REPORT MENU -->
 					 <ui:fragment rendered="#{loginAccount.load.en_occ}">

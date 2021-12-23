@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.print.DocFlavor.STRING;
 
 import com.google.gson.Gson;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
@@ -67,6 +68,7 @@ public class ReportBean {
 	private String periodColumn;
 	private List<String[]> period = new ArrayList<>();
 	private String extraGroup = "";
+	private List<String> extraSelect;
 	private String columnDate;
 	private String innerJoin;
 	private String useIndex;
@@ -376,6 +378,10 @@ public class ReportBean {
 	public void defineCaseSensitive() {
 		this.caseSensitive = true;
 	}
+	
+	public void addExtraSelect(String extraSelect) {
+		this.extraSelect = Arrays.asList(extraSelect.split(";"));
+	}
 
 	// Check
 		
@@ -491,7 +497,8 @@ public class ReportBean {
 		 // Table Fields
 		report = new ReportDAO(columnsName);
 		List<String> parameters = new ArrayList<>();
-		
+		List<String> select = new ArrayList<>();
+
 		for (String column : searchParameters) {
 			if (column.contains("$custom")) {
 				Pattern pattern = Pattern.compile("^\\w+");
@@ -507,6 +514,26 @@ public class ReportBean {
 					}
 			} else
 				parameters.add(column);
+		}
+		if (extraSelect != null) {
+			for (String column : extraSelect) {
+				if (column.contains("$custom")) {
+					Pattern pattern = Pattern.compile("^\\w+");
+					Matcher alias = pattern.matcher(column.split("@")[1]);
+					if (alias.find())
+						if (listArgs.containsKey(alias.group(0))) {
+							List<String> values = listArgs.get(alias.group(0));
+							for (String arg : values) {
+								String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
+		
+								select.add(String.format("%s", columns_replace));
+							}
+						}
+				} else
+					select.add(column);
+			}
+
+			extraSelect = select;
 		}
 
 		searchParameters = parameters;					
@@ -643,6 +670,10 @@ public class ReportBean {
 
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
+
+			if (extraSelect != null) {
+				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
+			}
 			
 			  System.out.println(query);
 			  

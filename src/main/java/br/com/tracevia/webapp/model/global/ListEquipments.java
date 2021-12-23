@@ -14,9 +14,8 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.meteo_.METEO;
 import br.com.tracevia.webapp.model.ocr.OCR;
-import br.com.tracevia.webapp.model.meteo.mto.MTO;
-import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
@@ -34,7 +33,7 @@ public class ListEquipments {
 	List<? extends Equipments> commsList; 
 	List<? extends Equipments> dmsList; 
 	List<? extends Equipments> daiList; 
-	List<? extends Equipments> mtoList; 
+	List<? extends Equipments> meteoList; 
 	List<? extends Equipments> ocrList; 
 	List<? extends Equipments> satList; 
 	List<? extends Equipments> speedList; 
@@ -84,8 +83,8 @@ public class ListEquipments {
 		return daiList;
 	}
 
-	public List<? extends Equipments> getMtoList() {
-		return mtoList;
+	public List<? extends Equipments> getMeteoList() {
+		return meteoList;
 	}
 
 	public List<? extends Equipments> getOcrList() {
@@ -198,8 +197,7 @@ public class ListEquipments {
 				DAI dai = new DAI();
 				DMS dms = new DMS();
 				OCR ocr =  new OCR();
-				MTO mto =  new MTO();
-				SV sv = new SV();
+				METEO meteo =  new METEO();		
 				SAT sat = new SAT();
 				SOS sos = new SOS();
 				Speed speed =  new Speed();			
@@ -251,20 +249,13 @@ public class ListEquipments {
 					
 					}
 					
-					if(load.isEn_mto()) {
+					if(load.isEn_meteo()) {
 						
-					mtoList = mto.listEquipments("mto", permission_id);	
-					equips.add(new listEquips("mto", load.isEn_mto(), load.isEn_meteo(), mtoList, load.getVoltage_mto()));
+					meteoList = meteo.listEquipments("meteo", permission_id);	
+					equips.add(new listEquips("meteo", load.isEn_meteo(), load.isEn_meteo(), meteoList, load.getVoltage_meteo()));
 								
 					}
-					
-					if(load.isEn_sv()) {
-						
-					svList = sv.listEquipments("sv", permission_id);	
-					equips.add(new listEquips("sv", load.isEn_sv(), load.isEn_meteo(), svList, load.getVoltage_sv()));
-											
-					}
-					
+														
 					if(load.isEn_sat()) {
 						
 					satList = sat.listSatEquipments(permission_id);	
@@ -328,7 +319,7 @@ public class ListEquipments {
 		if (inputType.equals("ocr"))
 			type = localeLabel.getStringKey("dashboard_sidebar_layers_ocr");
 		
-		if (inputType.equals("mto"))
+		if (inputType.equals("meteo"))
 			type = localeLabel.getStringKey("dashboard_sidebar_layers_mto");
 		
 		if (inputType.equals("sat"))
@@ -339,10 +330,7 @@ public class ListEquipments {
 		
 		if (inputType.equals("speed"))
 			type = localeLabel.getStringKey("dashboard_sidebar_layers_speed");
-		
-		if (inputType.equals("sv"))
-			type = localeLabel.getStringKey("dashboard_sidebar_layers_sv");
-		
+					
 		if (inputType.equals("wim"))
 			type = localeLabel.getStringKey("dashboard_sidebar_layers_wim");
 

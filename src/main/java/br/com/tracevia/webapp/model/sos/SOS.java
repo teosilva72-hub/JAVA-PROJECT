@@ -9,20 +9,20 @@ public class SOS extends Equipments {
 	private int port;
 	private int model;
 
-	public SOS(int equip_id, String table_id, String equip_type, String equip_ip, int port, String creation_date,
+	public SOS(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
-			int height, int linearWidth, int dlgPosX, int dlgPosY,  int model, String master_sip, String direction, int status, int lastStatus, boolean notificacao,
-			boolean visible) {
+			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus,
+			boolean notificacao, int port, boolean visible, int sos_comms, String sip, int port2, int model) {
 		
-		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username, nome,
-				estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth, dlgPosX, dlgPosY, 
-				direction, status, lastStatus, notificacao, visible);
+		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
+				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
+				dlgPosX, dlgPosY, direction, status, lastStatus, notificacao, port, visible);
 		
-		this.sip = master_sip;
-		this.port = port;
+		this.sos_comms = sos_comms;
+		this.sip = sip;
+		port = port2;
 		this.model = model;
-		
 	}
 
 	public SOS() {		

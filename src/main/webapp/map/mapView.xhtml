@@ -43,12 +43,14 @@
 						<!-- START SECTION -->
 						<div id="zoomtext" scale="1" class="section">
 
-							<ui:param name="Coord" value="#{ loginAccount.coord }" />
+							<ui:param name="Coord" value="#{loginAccount.coord}" />	
+											
 
 							<!-- MAP FRONT IMAGE -->
-							<h:graphicImage class="grab-map" width="100%" 
-							value="#{loginAccount.mapUI}" />
+							<h:graphicImage class="grab-map" width="100%"
+							value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
 							<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
+											
 						</div>
 
 						<!-- Label -->
