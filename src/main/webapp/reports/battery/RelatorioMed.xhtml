@@ -27,23 +27,29 @@
 	    	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('battery_values')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.sos_report_battery_min_volts_column, sosLabels.sos_report_battery_max_volts_column, sosLabels.sos_report_battery_avg_volts_column,
-		 sosLabels.sos_report_battery_min_ampere_column, sosLabels.sos_report_battery_max_ampere_column, sosLabels.sos_report_battery_avg_ampere_column))}" />
-	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(ROUND(min(volt), 2) ,0);  IFNULL(ROUND(max(volt), 2) ,0); IFNULL(ROUND(AVG(volt), 2) ,0); IFNULL(ROUND(min(ampere), 2) ,0) ;  IFNULL(ROUND(max(ampere),2),0); IFNULL(ROUND(AVG(ampere), 2) ,0)')}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s ,%s, %s', satLabels.global_date_column, satLabels.global_interval_column, 'SOS1', 'SOS2', 'SO3', 'SOS4', 'SOS5','SOS6','SOS7','SOS8','SOS9','SOS10','SOS11','SOS12','SOS13','SOS14','SOS15', sosLabels.sos_report_column_total))}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0)); IFNULL(IF(equip_id = 2, ROUND(AVG(volt),2),concat(0)),concat(0)); IFNULL(IF(equip_id = 3, ROUND(AVG(volt),2),concat(0)),concat(0)); IFNULL(IF(equip_id = 4, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 5, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 6, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 7, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 8, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 9, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 10, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 11, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 12 ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 13, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 14, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 15, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0));IFNULL(IF(equip_id = 1, ROUND(AVG(volt),2),concat(0)),concat(0)); SUM(1)')}" /> 
+	  <!--  IFNULL(ROUND(min(volt), 2) ,0)  SUM(siteID = $custom@equip) -->
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('save_date')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		
+		<!--  <f:viewAction onPostback="true" action="#{testerBean.setExtraGroup('equip_id')}" /> -->
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true
-		, true)}" />
-		   		               
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_type', reportsLabels.reports_select_equipment, 'battery_values.equip_type', false , true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true , false)}" />  
+		
+	
+		
+	
+	
+	 
     </f:metadata>
 	
 	<!---->
@@ -101,7 +107,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{sosLabels.tuxpan_battery_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="RELATÓRIO MEDIA VOLTS POR EQUIPAMENTO  " /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

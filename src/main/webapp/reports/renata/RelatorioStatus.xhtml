@@ -12,32 +12,33 @@
 	
 	<f:metadata> 
 	
-	<f:viewAction onPostback="true" action="#{reportBean.defineFileName('Relatorio Disponibilidade ') }" />
-	<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Disponibilidade ') }" />
-	<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('Dispponibilidade') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileName('Status') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Status') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('Status') }" />
+		
+	<f:viewAction onPostback="true" action="#{reportBean.haveChart('Status Equipamento')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineImageName('Status Equipamento')}" />		
+	<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Status Equipamento')}" />		
+	<f:viewAction onPostback="true" action="#{reportBean.defineAxis('Status Equipamento')}" />
 	
 	
 	<f:viewAction onPostback="true" action="#{reportBean.setTable('notifications_history') }" />
-	
-	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('Data, Equipamento, Status')}" />
-	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period , `%d/%m/%Y %H:%i:%s`); equip_id  ; name_state')}" />
-	<f:viewAction onPostback="true" action="#{reportBean.createReport()}"/>
-	
-	<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('datetime_')}" /> <!-- CAMPO DE PESQUISA DA DATA (OPCIONAL) -->
-	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
-	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s', 'DATA', 'ID', 'EQUIPAMENTO', 'ONLINE', 'OFFLINE'))}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); equip_id; equip_type; ifnull(sum(state_id=7) /count(*)*100,0)  AS DECIMAL(5,2)); ifnull(sum(state_id=8) / count(*)*100,0) AS DECIMAL(5,2))')}" />	
+	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('datetime_')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 	
 	<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0')}" />
-	                                	
-	<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('notifications_alarms alarms on state_id = alarms.id')}" /> 
-	<!-- <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_equipment equipaments on equip_id = equipaments.equip_id')}" />  -->
-> 
+		
+	<!--<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('')}" /> -->
 	
-	
-	<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('datetime_', 'DATA' , false, true)}" />
-	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('id', 'Equipamentos' , 'notifications_history.equip_id', true ,true)}" />
-	
-
+	<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('datetime_', 'Data', true , true )}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', 'Equipamento' , true , true)}" />
 	
 	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
 	
