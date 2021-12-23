@@ -666,6 +666,10 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="configId"] {
+	width: 100%;
+}
+
 [id$="dmsType"] {
 	width: 100%;
 }
@@ -724,6 +728,10 @@ img.box-img[zoom] {
 }
 
 [id$="equipId-edit"] {
+	width: 100%;
+}
+
+[id$="configId-edit"] {
 	width: 100%;
 }
 
@@ -1098,6 +1106,10 @@ button#dropdwnsizebtn:hover{
 }
 
 .dmsHidden-edit, .meteoHidden-edit {
+	display: none;
+}
+
+.portInput, .portInput-edit{
 	display: none;
 }
 

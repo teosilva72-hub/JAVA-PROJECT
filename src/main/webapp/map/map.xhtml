@@ -579,6 +579,34 @@
 
 							<!--  ******************************************************************************************************* -->
 
+                           <!-- CONFIG ID -->
+
+							<div class="form-row meteoHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field" >
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-cogs"></i></span>
+									<!-- SPAN ICON -->
+									<span for="configId" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<input type="text" autocomplete="off" name="configId"
+										id="configId"
+										placeholder="#{mapLabels.map_creation_input_config_id}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+									<label for="configId" class="error" id="configId-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- CONFIG ID -->
+
+							<!--  ******************************************************************************************************* -->
+
 							<!-- DMS TYPE -->
 
 							<div class="form-row dmsHidden">
@@ -647,7 +675,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-network-wired"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="equipIp"
 										id="equipIp"
@@ -720,7 +748,7 @@
 
 							<!-- PORT -->
 
-							<div class="form-row sosInputs" style="display: none;">
+							<div class="form-row portInput">
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
@@ -808,7 +836,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 select-field">
 									<!-- SELECT -->
-									<span><i class="fas fa-city"></i></span>
+									<span><i class="fas fa-directions"></i></span>
 									<!-- SPAN ICON -->
 									<span for="direction" class="valid-icon-hidden"></span>
 									<!-- SPAN VALIDATION -->
@@ -1633,6 +1661,34 @@
 
 							<!--  ******************************************************************************************************* -->
 
+                            <!-- CONFIG ID -->
+
+							<div class="form-row meteoHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 input-field" >
+									<!-- INPUT DIV -->
+									<span><i class="fas fa-cogs"></i></span>
+									<!-- SPAN ICON -->
+									<span for="configId-edit" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<input type="text" autocomplete="off" name="configId-edit"
+										id="configId-edit" disabled="true"
+										placeholder="#{mapLabels.map_creation_input_config_id}" />
+									<!-- INPUT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+									<label for="configId" class="error" id="configId-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- CONFIG ID -->
+							
+						   <!--  ******************************************************************************************************* -->
+							
 							<!-- DMS TYPE -->
 
 							<div class="form-row dmsHidden-edit">
@@ -1669,13 +1725,13 @@
 
 							<div class="form-row meteoHidden-edit">
 								<!-- ROW -->
-								<div class="form-group col-md-12 select-field">
+								<div class="form-group col-md-12 select-field" >
 									<!-- SELECT DIV -->
 									<span><i class="fas fa-th-list"></i></span>
 									<!-- SPAN ICON -->
-									<span for="dmsType" class="valid-icon-hidden"></span>
+									<span for="meteoType-edit" class="valid-icon-hidden"></span>
 									<!-- SPAN VALIDATION -->
-									<select name="meteoType-edit" id="meteoType-edit" size="1">
+									<select name="meteoType-edit" id="meteoType-edit" size="1" >
 										<option value="">#{mapLabels.map_creation_select_meteo_type}</option>
 										<ui:repeat var="tp" value="#{equipsBean.meteoType}"
 											varStatus="tpStatus">
@@ -1702,7 +1758,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
-									<span><i class="fas fa-signature"></i></span>
+									<span><i class="fas fa-network-wired"></i></span>
 									<!-- SPAN ICON -->
 									<input type="text" autocomplete="off" name="equipIp-edit"
 										id="equipIp-edit"
@@ -1773,7 +1829,7 @@
 
 							<!-- PORT -->
 
-							<div class="form-row sosInputs-edit" style="display: none;">
+							<div class="form-row portInput-edit" >
 								<!-- ROW -->
 								<div class="form-group col-md-12 input-field ">
 									<!-- INPUT DIV -->
@@ -1861,7 +1917,7 @@
 								<!-- ROW -->
 								<div class="form-group col-md-12 select-field">
 									<!-- SELECT -->
-									<span><i class="fas fa-city"></i></span>
+									<span><i class="fas fa-directions"></i></span>
 									<!-- SPAN ICON -->
 									<span for="direction-edit" class="valid-icon-hidden"></span>
 									<!-- SPAN VALIDATION -->

@@ -156,8 +156,9 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
 				$('.dmsHidden-edit').hide();
-				$('.sosInputs-edit').hide();
+				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
+				$('.meteoHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
 				$("#lanes-edit").change(
 					function () {
@@ -215,36 +216,49 @@ $(function () {
 							$('#direction8-edit').show();
 						}
 					});
-			} else if (selectVAL == 8) {
+			}  else if (selectVAL == 6) {
+
+				$('.meteoHidden-edit').show(); // METEO DMS TYPE	
+				$('.portInput-edit').show();	
+				$('.dmsHidden-edit').hide(); 				
+				$('.satInputs-edit').hide();				
+				$('.speedHidden-edit').hide();
+				$('.ipAddressShow-edit').show();
+
+			}else if (selectVAL == 8) {
 
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE				
 				$('.satInputs-edit').hide();
-				$('.sosInputs-edit').hide();
+				$('.portInput-edit').hide();
+				$('.meteoHidden-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
 
 			} else if (selectVAL == 10) {
 
-				$('.sosInputs-edit').show();
+				$('.portInput-edit').show();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
+				$('.meteoHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
 
 			} else if (selectVAL == 11) {
 
-				$('.sosInputs-edit').hide();
+				$('.portInput-edit').hide();
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').show();
+				$('.meteoHidden-edit').hide();
 				$('.ipAddressShow-edit').hide();
 
 			} else {
 
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
-				$('.sosInputs-edit').hide();
+				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
+				$('.meteoHidden-edit').hide();
 				$('.ipAddressShow-edit').show();
 			}
 
@@ -903,7 +917,7 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
-				$('.sosInputs').hide();
+				$('.portInput').hide();
 				$('.speedHidden').hide();
 				$('.meteoHidden').hide();
 				$('.ipAddressShow').show();
@@ -966,10 +980,10 @@ $(function () {
 
 			} else if (selectVAL == 6) {
 
-				$('.meteoHidden').show(); // DIV DMS TYPE		
-				$('.dmsHidden').hide(); // DIV DMS TYPE				
-				$('.satInputs').hide();
-				$('.sosInputs').hide();
+				$('.meteoHidden').show(); // METEO DMS TYPE	
+				$('.portInput').show();	
+				$('.dmsHidden').hide(); 				
+				$('.satInputs').hide();				
 				$('.speedHidden').hide();
 				$('.ipAddressShow').show();
 
@@ -978,13 +992,13 @@ $(function () {
 				$('.dmsHidden').show(); // DIV DMS TYPE	
 				$('.meteoHidden').hide(); // DIV DMS TYPE					
 				$('.satInputs').hide();
-				$('.sosInputs').hide();
+				$('.portInput').hide();
 				$('.speedHidden').hide();
 				$('.ipAddressShow').show();
 
 			} else if (selectVAL == 10) {
 
-				$('.sosInputs').show();
+				$('.portInput').show();
 				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
@@ -995,7 +1009,7 @@ $(function () {
 
 				$('.speedHidden').show();
 				$('.meteoHidden').hide(); // DIV DMS TYPE		
-				$('.sosInputs').hide();
+				$('.portInput').hide();
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();
 				$('.ipAddressShow').hide();
@@ -1005,7 +1019,7 @@ $(function () {
 				$('.dmsHidden').hide();
 				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
-				$('.sosInputs').hide();
+				$('.portInput').hide();
 				$('.speedHidden').hide();
 				$('.ipAddressShow').show();
 			}

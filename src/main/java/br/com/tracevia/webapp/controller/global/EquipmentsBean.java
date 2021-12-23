@@ -616,6 +616,9 @@ public class EquipmentsBean implements Serializable {
 		//For Equipment ID
 		meteo.setEquip_id(equipId);
 		
+		//For Equipment CONFIG ID
+		meteo.setConfig_id(Integer.parseInt(parameterMap.get("configId")));
+		
 		//For Equipment CreationDate
 		meteo.setCreation_date(dta.currentTimeDBformat());
 		
@@ -646,7 +649,10 @@ public class EquipmentsBean implements Serializable {
 		meteo.setLatitude(Double.parseDouble(parameterMap.get("lat")));
 		
 		//For Equipment KM
-		meteo.setLongitude(Double.parseDouble(parameterMap.get("long")));			 
+		meteo.setLongitude(Double.parseDouble(parameterMap.get("long")));	
+		
+		//For Equipment Port
+		meteo.setPort(Integer.parseInt(parameterMap.get("equipPort")));
 		
 		checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 		
@@ -770,24 +776,28 @@ public class EquipmentsBean implements Serializable {
 		dms = new DMS();
 		sos = new SOS();
 		speed = new Speed();
+		METEO meteo = new METEO();
 
 		int moduleId = getModuleByName(equipTable);
 		
 	    if(moduleId == 6){	
 			
-			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
+			meteo = dao.EquipMeteoSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
+			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+meteo.getEquip_id()+"');");
+			RequestContext.getCurrentInstance().execute("$('#configId-edit').val('"+meteo.getConfig_id()+"');");
+			RequestContext.getCurrentInstance().execute("$('#meteoType-edit').val('"+meteo.getEquip_type()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+meteo.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+meteo.getEquip_ip()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipPort-edit').val('"+meteo.getPort()+"');");
+			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+meteo.getCidade()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+meteo.getEstrada()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+meteo.getKm()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+meteo.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+meteo.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+meteo.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+meteo.getDirection()+"');");
 		
 		
 		}
@@ -968,6 +978,7 @@ public class EquipmentsBean implements Serializable {
 		SAT sat = new SAT();
 		SOS sos = new SOS();
 		Speed speed = new Speed();
+		METEO meteo = new METEO();
 		Equipments equip = new Equipments();
 
 		int equipId = getEquipId();		 
@@ -978,8 +989,66 @@ public class EquipmentsBean implements Serializable {
 
 		//CHECK MODULES	
 		int moduleId = getModuleByName(equipTable);
+				
+		if(moduleId != 0 && moduleId == 6) {
+						
+			//EQUIP TABLE BY MODULE
+			String table = defineTableById(moduleId);
+			
+			//For Equipment ID
+			meteo.setEquip_id(equipId);			
+						
+			//For Equipment CreationDate
+			meteo.setCreation_date(dta.currentTimeDBformat());
+			
+			//For Equipment CreationUsername		
+			meteo.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+					
+			meteo.setEquip_type(parameterMap.get("meteoType-edit"));
+			
+			//For Equipment Name
+			meteo.setNome(parameterMap.get("equipNameEdit"));
+			
+			//EQUIP IP
+			meteo.setEquip_ip(parameterMap.get("equipIp-edit"));
+			
+			//For Equipment City
+			meteo.setCidade(parameterMap.get("citiesEdit"));
+			
+			//For Equipment Road
+			meteo.setEstrada(parameterMap.get("roadsEdit"));
+			
+			//For Equipment KM
+			meteo.setKm(parameterMap.get("kmEdit"));
+			
+			//For Equipment Direction
+			meteo.setDirection(parameterMap.get("direction-edit"));
+					
+			//For Equipment latitude
+			meteo.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+			
+			//For Equipment KM
+			meteo.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));	
+			
+			//For Equipment Port
+			meteo.setPort(Integer.parseInt(parameterMap.get("equipPort-edit")));
+			
+			//For Equipment Map Width / Linear Width			    			    
+			if(parameterMap.get("width-edit") == "0")
+				meteo.setMapWidth(1);			    
 
-		if(moduleId != 0 && moduleId == 8) {		
+			else meteo.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
+			
+			update = dao.EquipMETEOUpdateMap(meteo, table, interfaceView, login.getLogin().getPermission_id());
+		
+			if(update) {
+				request.execute("alertOptions('#equip-update');");
+				request.execute("updated = '" + equipTable + equipId + "';");
+			} else {				
+				request.execute("alertOptions('#equip-update-error');");
+			}
+			
+		} else if(moduleId != 0 && moduleId == 8) {		
 
 			//Table definition
 			String table = defineTableById(moduleId);
