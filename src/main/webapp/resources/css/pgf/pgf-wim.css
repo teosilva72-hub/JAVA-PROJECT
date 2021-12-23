@@ -1,0 +1,38 @@
+.card-body-division {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    background: linear-gradient(0deg, rgb(53, 53, 53) 50%, rgb(79, 79, 79) 50%);
+	flex-direction: column;
+}
+
+.card-body-division .division {
+	display: flex;
+	flex-wrap: wrap;
+	flex: 0 0 50%;
+	width: 100%;
+}
+
+.card-body-division .division .card-body {
+	height: fit-content;
+}
+
+.card-body-division .division .col-division {
+	flex: 0 0 24%;
+	width: 24%;
+}
+
+.pgf1 {
+	max-height: 100px;
+}
+
+.pgftires {
+	border: none;
+	height: 30px;
+}
+
+.card-header.card-l {
+	writing-mode: vertical-lr;
+    transform: scale(-1);
+}
+

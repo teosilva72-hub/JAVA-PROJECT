@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	
+	<f:metadata>
+
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_door_status_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_door_status_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />		
+	
+		<!-- CALL REPORT TYPE -->
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('sos_alarms s')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('s.equip_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_equipment_column, sosLabels.door_status_door_column, sosLabels.door_status_opened_time_column, sosLabels.door_status_closed_time_column,
+		 sosLabels.door_status_avg_time_column))}" />
+		 		   
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start, `%d/%m/%Y`) as sd; e.name; CASE WHEN type_id = 3 THEN `Top door` WHEN type_id = 2 THEN `Bottom door` ELSE ` --- ` END; DATE_FORMAT(s.start, `%H:%i:%s`); DATE_FORMAT(s.end, `%H:%i:%s`); SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.start, s.end))')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+				
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
+						 
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('s.start', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('s.equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true, true)}" />
+			               
+    </f:metadata>
+	
+	<!---->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+	 		
+	   <!-- DIV DE ESTRUTURA DA TABELA --> 
+	    
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	       <!----> 		
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
+             
+       <!-- ============================================================================================================================= -->
+           
+           <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
+	       <h:outputText value="#{sosLabels.tuxpan_door_status_title}" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
+		
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
+			<h:column>
+				<!-- COLUMN -->	
+				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->			
+				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+			</h:column> <!-- COLUMN END -->
+		</c:forEach> <!-- LOOP TAG END -->
+	</h:dataTable> <!-- DATATABALE JSF END -->
+	<!---->
+</h:form><!-- FORM TABLE END-->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	 
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
+	  
+	  <!-- ============================================================================================================================= -->
+		
+	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  
+	  <!-- ============================================================================================================================= -->
+	  		  
+	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	   
+	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	        
+      <!-- ============================================================================================================================= -->
+             
+         <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
+               
+          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+	   
+	  <!-- ============================================================================================================================= -->
+	   
+	     <!-- DOWNLOAD MODAL TEMPLATE: REALIZAR DOWNLOAD DE ARQUIVOS EXCEL -->
+	   
+	      <ui:include src="/template/modal/download_modal_template.xhtml" />
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+			 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

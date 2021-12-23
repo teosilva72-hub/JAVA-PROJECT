@@ -154,16 +154,22 @@ body
 }
 
 html {
-  min-height: 100%;
+	background-color: rgb(201, 209, 207);
+  	min-height: 100%;
 }
 body {
   margin: 0 0 0; /* bottom = footer height */
   height: 100%;
   overflow: hidden;
+  background-color: rgb(201, 209, 207);
+}
+
+body .container-fluid{
+	background-color: transparent;
 }
 
 #content {
-  margin-top: 10px;
+  background-color: rgb(201, 209, 207);
 }
 
 .main {
@@ -250,6 +256,14 @@ footer {
 }
 
 #home-icon:hover, #navbarDropdown2:hover{
+	color: #ec6271 !important;
+}
+
+#phone-icon, #navbarDropdown2{
+  color: #FFFFFF !important;
+}
+
+#phone-icon:hover, #navbarDropdown2:hover{
 	color: #ec6271 !important;
 }
 
@@ -1129,3 +1143,41 @@ a > .notification-badge {
 
 
 /* NOTIFICATIONS */
+
+/* CALL CENTER WIM */
+
+#call-toten {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  width: 8em;
+  z-index: 1;
+  margin-top: -2.5em;
+  transition: 0.5s;
+}
+/* CALL CENTER WIM [END] */
+
+/* PANEL RIGHT SIDE */
+
+.panel {
+width:300px;
+float:right;
+height:550px;
+background:#d9dada;
+position:relative;
+right:-300px;
+
+}
+.slider-arrow {
+padding:5px;
+width:10px;
+float:right;
+background:#d9dada;
+font:400 12px Arial, Helvetica, sans-serif;
+color:#000;
+text-decoration:none;
+position:relative;
+right:-300px;
+}
+
+/* PANEL RIGHT SIDE [END]*/

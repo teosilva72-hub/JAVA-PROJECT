@@ -6,6 +6,10 @@ body {
 	height: 100%;
 }
 
+body {
+    background-color: transparent !important;
+}
+
 /*Road Map Image for Background */
 .img>div {
 	margin: "auto";
@@ -65,9 +69,31 @@ body {
 	border: none;
 }
 
+.context-menu {
+	position: fixed;
+	display: none;
+	z-index: 2;
+}
+
+.dinamic-mouse-right {
+	width: 100%;
+}
+
 #zoomtext {
 	transform: scale(1);
 	position: relative;
+}
+
+.zoomRoad {
+	position: absolute;
+	transform-origin: 0 0;
+	top: 0;
+}
+
+[name$=-zoomPoint] {
+	animation: gradient 1s ease infinite;
+	border-radius: 100%;
+	opacity: 45%;
 }
 
 .section {
@@ -632,7 +658,7 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
-[id$="mtoType"] {
+[id$="meteoType"] {
 	width: 100%;
 }
 
@@ -660,6 +686,14 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="lat"] {
+	width: 100%;
+}
+
+[id$="long"] {
+	width: 100%;
+}
+
 [id$="model"] {
 	width: 100%;
 }
@@ -676,12 +710,16 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="direction"] {
+	width: 100%;
+}
+
 /* EDIT */
 [id$="equips-edit"] {
 	width: 100%;
 }
 
-[id$="mtoType-edit"] {
+[id$="meteoType-edit"] {
 	width: 100%;
 }
 
@@ -717,6 +755,14 @@ img.box-img[zoom] {
 	width: 100%;
 }
 
+[id$="latEdit"] {
+	width: 100%;
+}
+
+[id$="longEdit"] {
+	width: 100%;
+}
+
 [id$="modelEdit"] {
 	width: 100%;
 }
@@ -731,6 +777,10 @@ img.box-img[zoom] {
 
 [id$="cancelPos"] {
 	margin-left: 14px;
+}
+
+[id$="direction-edit"] {
+	width: 100%;
 }
 
 /* Figura que representa qual item do dropdown est� selecionado - Menu esquerdo */
@@ -964,7 +1014,6 @@ button#dropdwnsizebtn:hover{
 
 #editmodal {
 	z-index: 10030;
-	margin-top: -2.5%;
 }
 
 .btn-all-equip {
@@ -1044,11 +1093,11 @@ button#dropdwnsizebtn:hover{
 	margin-left: 4px !important;
 }
 
-.dmsHidden {
+.dmsHidden, .meteoHidden {
 	display: none;
 }
 
-.dmsHidden-edit {
+.dmsHidden-edit, .meteoHidden-edit {
 	display: none;
 }
 
@@ -1081,11 +1130,6 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 /* DELETE MODAL MESSAGE POS*/
 .delete-message {
 	margin-left: 20%;
-}
-
-/* EQUIPMENTS INFO TOOLTIPS */
-.tooltip>.tooltip-inner {
-	background-color: #007bff;
 }
 
 .tooltip.show {
@@ -1411,10 +1455,394 @@ span.close-x {
 /* Draw Lines */
 
 .drawLines {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 .linesbox{
 	position: fixed;
 	left: 60%;
 	bottom: 34px;
+}
+
+@keyframes gradient {
+	0% {
+		background-image: radial-gradient(transparent 50%, white 75%, transparent 100%);
+	}
+	1% {
+		background-image: radial-gradient(transparent 49%, white 74%, transparent 99%);
+	}
+	2% {
+		background-image: radial-gradient(transparent 48%, white 73%, transparent 98%);
+	}
+	3% {
+		background-image: radial-gradient(transparent 47%, white 72%, transparent 97%);
+	}
+	4% {
+		background-image: radial-gradient(transparent 46%, white 71%, transparent 96%);
+	}
+	5% {
+		background-image: radial-gradient(transparent 45%, white 70%, transparent 95%);
+	}
+	6% {
+		background-image: radial-gradient(transparent 44%, white 69%, transparent 94%);
+	}
+	7% {
+		background-image: radial-gradient(transparent 43%, white 68%, transparent 93%);
+	}
+	8% {
+		background-image: radial-gradient(transparent 42%, white 67%, transparent 92%);
+	}
+	9% {
+		background-image: radial-gradient(transparent 41%, white 66%, transparent 91%);
+	}
+	10% {
+		background-image: radial-gradient(transparent 40%, white 65%, transparent 90%);
+	}
+	11% {
+		background-image: radial-gradient(transparent 39%, white 64%, transparent 89%);
+	}
+	12% {
+		background-image: radial-gradient(transparent 38%, white 63%, transparent 88%);
+	}
+	13% {
+		background-image: radial-gradient(transparent 37%, white 62%, transparent 87%);
+	}
+	14% {
+		background-image: radial-gradient(transparent 36%, white 61%, transparent 86%);
+	}
+	15% {
+		background-image: radial-gradient(transparent 35%, white 60%, transparent 85%);
+	}
+	16% {
+		background-image: radial-gradient(transparent 34%, white 59%, transparent 84%);
+	}
+	17% {
+		background-image: radial-gradient(transparent 33%, white 58%, transparent 83%);
+	}
+	18% {
+		background-image: radial-gradient(transparent 32%, white 57%, transparent 82%);
+	}
+	19% {
+		background-image: radial-gradient(transparent 31%, white 56%, transparent 81%);
+	}
+	20% {
+		background-image: radial-gradient(transparent 30%, white 55%, transparent 80%);
+	}
+	21% {
+		background-image: radial-gradient(transparent 29%, white 54%, transparent 79%);
+	}
+	22% {
+		background-image: radial-gradient(transparent 28%, white 53%, transparent 78%);
+	}
+	23% {
+		background-image: radial-gradient(transparent 27%, white 52%, transparent 77%);
+	}
+	24% {
+		background-image: radial-gradient(transparent 26%, white 51%, transparent 76%);
+	}
+	25% {
+		background-image: radial-gradient(transparent 25%, white 50%, transparent 75%);
+	}
+	26% {
+		background-image: radial-gradient(transparent 24%, white 49%, transparent 74%);
+	}
+	27% {
+		background-image: radial-gradient(transparent 23%, white 48%, transparent 73%);
+	}
+	28% {
+		background-image: radial-gradient(transparent 22%, white 47%, transparent 72%);
+	}
+	29% {
+		background-image: radial-gradient(transparent 21%, white 46%, transparent 71%);
+	}
+	30% {
+		background-image: radial-gradient(transparent 20%, white 45%, transparent 70%);
+	}
+	31% {
+		background-image: radial-gradient(transparent 19%, white 44%, transparent 69%);
+	}
+	32% {
+		background-image: radial-gradient(transparent 18%, white 43%, transparent 68%);
+	}
+	33% {
+		background-image: radial-gradient(transparent 17%, white 42%, transparent 67%);
+	}
+	34% {
+		background-image: radial-gradient(transparent 16%, white 41%, transparent 66%);
+	}
+	35% {
+		background-image: radial-gradient(transparent 15%, white 40%, transparent 65%);
+	}
+	36% {
+		background-image: radial-gradient(transparent 14%, white 39%, transparent 64%);
+	}
+	37% {
+		background-image: radial-gradient(transparent 13%, white 38%, transparent 63%);
+	}
+	38% {
+		background-image: radial-gradient(transparent 12%, white 37%, transparent 62%);
+	}
+	39% {
+		background-image: radial-gradient(transparent 11%, white 36%, transparent 61%);
+	}
+	40% {
+		background-image: radial-gradient(transparent 10%, white 35%, transparent 60%);
+	}
+	41% {
+		background-image: radial-gradient(transparent 9%, white 34%, transparent 59%);
+	}
+	42% {
+		background-image: radial-gradient(transparent 8%, white 33%, transparent 58%);
+	}
+	43% {
+		background-image: radial-gradient(transparent 7%, white 32%, transparent 57%);
+	}
+	44% {
+		background-image: radial-gradient(transparent 6%, white 31%, transparent 56%);
+	}
+	45% {
+		background-image: radial-gradient(transparent 5%, white 30%, transparent 55%);
+	}
+	46% {
+		background-image: radial-gradient(transparent 4%, white 29%, transparent 54%);
+	}
+	47% {
+		background-image: radial-gradient(transparent 3%, white 28%, transparent 53%);
+	}
+	48% {
+		background-image: radial-gradient(transparent 2%, white 27%, transparent 52%);
+	}
+	49% {
+		background-image: radial-gradient(transparent 1%, white 26%, transparent 51%);
+	}
+	50% {
+		background-image: radial-gradient(transparent 0%, white 25%, transparent 50%);
+	}
+	51% {
+		background-image: radial-gradient(transparent 0%, white 24%, transparent 49%);
+	}
+	52% {
+		background-image: radial-gradient(transparent 0%, white 23%, transparent 48%);
+	}
+	53% {
+		background-image: radial-gradient(transparent 0%, white 22%, transparent 47%);
+	}
+	54% {
+		background-image: radial-gradient(transparent 0%, white 21%, transparent 46%);
+	}
+	55% {
+		background-image: radial-gradient(transparent 0%, white 20%, transparent 45%);
+	}
+	56% {
+		background-image: radial-gradient(transparent 0%, white 19%, transparent 44%);
+	}
+	57% {
+		background-image: radial-gradient(transparent 0%, white 18%, transparent 43%);
+	}
+	58% {
+		background-image: radial-gradient(transparent 0%, white 17%, transparent 42%);
+	}
+	59% {
+		background-image: radial-gradient(transparent 0%, white 16%, transparent 41%);
+	}
+	60% {
+		background-image: radial-gradient(transparent 0%, white 15%, transparent 40%);
+	}
+	61% {
+		background-image: radial-gradient(transparent 0%, white 14%, transparent 39%);
+	}
+	62% {
+		background-image: radial-gradient(transparent 0%, white 13%, transparent 38%);
+	}
+	63% {
+		background-image: radial-gradient(transparent 0%, white 12%, transparent 37%);
+	}
+	64% {
+		background-image: radial-gradient(transparent 0%, white 11%, transparent 36%);
+	}
+	65% {
+		background-image: radial-gradient(transparent 0%, white 10%, transparent 35%);
+	}
+	66% {
+		background-image: radial-gradient(transparent 0%, white 9%, transparent 34%);
+	}
+	67% {
+		background-image: radial-gradient(transparent 0%, white 8%, transparent 33%);
+	}
+	68% {
+		background-image: radial-gradient(transparent 0%, white 7%, transparent 32%);
+	}
+	69% {
+		background-image: radial-gradient(transparent 0%, white 6%, transparent 31%);
+	}
+	70% {
+		background-image: radial-gradient(transparent 0%, white 5%, transparent 30%);
+	}
+	71% {
+		background-image: radial-gradient(transparent 0%, white 4%, transparent 29%);
+	}
+	72% {
+		background-image: radial-gradient(transparent 0%, white 3%, transparent 28%);
+	}
+	73% {
+		background-image: radial-gradient(transparent 0%, white 2%, transparent 27%);
+	}
+	74% {
+		background-image: radial-gradient(transparent 0%, white 1%, transparent 26%);
+	}
+	75% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 25%);
+	}
+	76% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 24%);
+	}
+	77% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 23%);
+	}
+	78% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 22%);
+	}
+	79% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 21%);
+	}
+	80% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 20%);
+	}
+	81% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 19%);
+	}
+	82% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 18%);
+	}
+	83% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 17%);
+	}
+	84% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 16%);
+	}
+	85% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 15%);
+	}
+	86% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 14%);
+	}
+	87% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 13%);
+	}
+	88% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 12%);
+	}
+	89% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 11%);
+	}
+	90% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 10%);
+	}
+	91% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 9%);
+	}
+	92% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 8%);
+	}
+	93% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 7%);
+	}
+	94% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 6%);
+	}
+	95% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 5%);
+	}
+	96% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 4%);
+	}
+	97% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 3%);
+	}
+	98% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 2%);
+	}
+	99% {
+		background-image: radial-gradient(transparent 0%, white 0%, transparent 1%);
+	}
+}
+
+.car-select div.select {
+	border: 2px solid transparent;
+}
+
+.car-select div.select.selected {
+	border-style: solid;
+	border-image: linear-gradient(to right, red, orange) 1;
+	border-width: 2px;
+}
+
+.car-select img {
+	max-width: 100%;
+}
+
+.darkmodebox{
+	position: fixed;
+	left: 50%;
+	bottom: 34px;
+}
+
+.darkmodebox input[type=checkbox]{
+	display:none;
+}
+
+.darkmodebox label{
+	background-color: #777;	
+	border: 2px solid #555;
+	border-radius: 50px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	transition: all ease-in-out 0.3s;
+	width: 100px;
+	height: 50px;
+}
+
+.darkmodebox label::after {
+	background-color: #555;
+	border-radius: 50%;
+	content: ' ';
+	cursor: pointer;
+	display: inline-block;
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	transition: all ease-in-out 0.3s;
+	width: 42px;
+	height: 42px;
+}
+
+.darkmodebox input[type=checkbox]:checked ~ label{
+	background-color: #00a0fc;
+	border-color: #006dc9;
+}
+
+.darkmodebox input[type=checkbox]:checked ~label::after{
+	background-color: #005480;
+	transform: translate(50px);
+}
+
+.scenary{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;	
+}
+
+img#light-icon {  
+  height: 35px;	
+  margin-top: 5px;
+  margin-right: 7px;	
+}
+
+img#dark-icon{
+ height: 30px;
+ margin-top: 7px;
+ margin-left: 7px;	
 }

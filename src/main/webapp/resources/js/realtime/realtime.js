@@ -37,16 +37,16 @@ const init = () => {
 
 			posEquip(equip)
 
-			if (!equip.attr('class').includes('plaque'))
-				equip.dblclick(function () {
+			if (!equip.hasClass('plaque'))
+				equip.on("contextmenu", function (ev) {
 					posReset();
-
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
 
-					$('#OPmodal').modal('toggle');
-				});
+					//função option
+					contextMenu(ev, type, id)
+				})
 
 			$(window).resize(function () {
 				posEquip(equip)
@@ -313,6 +313,7 @@ function ScrollZoom(container) {
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
+		$(`.context-menu`).css('display', 'none')
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - container.height() / 2)
@@ -450,7 +451,7 @@ function posEquip(equip) {
 		let spd2 = Number(equip.find('#spd2').text())
 
 		//Green Color > indica que o equipamento está conectado
-		if (sat_status > 0 && interval == 30) {
+		if (interval == 15 || interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
 				color: 'black'
@@ -461,22 +462,22 @@ function posEquip(equip) {
 		}
 
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 45) {
-			equip.find("[id^=satName]").css({
-				"background-color": '#00BFFF',
-				color: 'black'
-			});
-
-			$(`#status${sat_name}`).css({"color": '#00FF0D'});	
-		}
-		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 8) {
+		else if (interval == 3) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#FFFF00',
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({"color": '#00FF0D'});		
+			$(`#status${sat_name}`).css({"color": '#FFFF00'});	
+		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (interval == 6) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FF7F00',
+				color: 'black'
+			});
+
+			$(`#status${sat_name}`).css({"color": '#FF7F00'});		
 			
 		}
 		//Red Color > indica que o equipamento está sem comunicação
@@ -603,6 +604,8 @@ function mapMove(ele) {
 	};
 
 	const mouseMoveHandler = function (e) {
+		$(`.context-menu`).css('display', 'none')
+
 		// O quao longe o mouse esta sendo movido
 		const dx = e.clientX - pos.x;
 		const dy = e.clientY - pos.y;
@@ -1002,3 +1005,20 @@ $(function () {
     });
     
 /* show hidden buttons */
+
+function moreOption(){
+	$('#OPmodal').modal('toggle');
+}
+
+function contextMenu(ev, type, id){
+	let equip = $(`#${type + id}`)
+	let menu = $(`.context-menu`)
+	ev.stopPropagation()
+	ev.preventDefault()
+	menu.css({
+		left: ev.pageX,
+		top: ev.pageY,
+		display: 'block'
+	})
+	menu.children().css('display', 'none').filter(`[for=${type}], [for=all]`).css('display', 'block')
+}

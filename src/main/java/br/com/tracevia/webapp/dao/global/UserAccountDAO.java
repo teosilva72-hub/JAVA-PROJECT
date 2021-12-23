@@ -58,7 +58,7 @@ public class UserAccountDAO {
 
 	public UserAccountDAO() throws Exception {
 
-		LogUtils.createLogsFolder(classErrorPath);
+		LogUtils.createLogFolder(classErrorPath);
 		
 	}
 	

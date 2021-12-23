@@ -77,9 +77,7 @@
             </div>
           </div>
         </div>
-
       </nav>
-
     </div>
 
     <div class="navbar navbar-expand-lg navbar-dark bg-mattBlackDark fixed-top">
@@ -133,8 +131,8 @@
         </div>
 
         <div class="col-3 collapse navbar-collapse ms-auto ml-auto justify-content-end" id="navbarSupportedContent">
-
-          <ul class="navbar-nav header-menu">
+        
+          <ul class="navbar-nav header-menu">	
             <li class="nav-item dropdown">
               <a class="nav-link p-0" href="/dashboard/dashboard.xhtml" id="navbarHome"
                 title="#{dashboardLabels.dashboard_navbar_icon_home_title}">
@@ -200,7 +198,7 @@
               
              <div id="notif-dropdown" class="dropdown-menu dropdown-menu-right dropdown-notif" aria-labelledby="navbarDropdown2">
                 <div class="square square-notify-background" id="square-notif"></div>
-                                        
+                                                                       
               </div> 
             </li>
           </ul>
@@ -229,7 +227,7 @@
         <!-- USER CHANGE PASSWORD -->
 				 
 				 <h:commandLink class="dropdown-item"
-						action="#{navigationController.redirectToChangePassword}" value="">
+						action="#{navigationController.redirectToURL('/reset/reset_password.xhtml?faces-redirect=true')}" value="">
 						<i class="fas fa-fw fa-unlock-alt"></i>
 						<span class="text">#{dashboardLabels.dashboard_navbar_icon_user_settings_change_password}</span>
 					</h:commandLink>
@@ -450,6 +448,13 @@
       <div class="overlay"></div>
 
     </div> <!-- End Wrapper -->
+    
+    <!-- CALL PANEL -->
+     <!--   <div class="panel">
+ 	 </div>
+ 	 <a href="javascript:void(0);" class="slider-arrow show">&raquo;</a> -->
+    
+     <!-- CALL PANEL [END]-->
 
     <img src="#{loginAccount.logo}" href="#" height="55" class="position-absolute rounded logo-concessionaire" />
 
@@ -470,7 +475,8 @@
 
       </div>
     </ui:insert>
-
+	
+	
     <ui:fragment rendered="#{loginAccount.load.en_sos}">
     
      <c:if test="#{Phone}">
@@ -499,7 +505,6 @@
     
     </c:if>
   </ui:fragment>
-
     <ui:insert name="modal-content"></ui:insert>
 
     <!-- TOAST -->
@@ -660,14 +665,14 @@
 
     <form name="notifyForm"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		      
-    <input type="hidden" name="batteryTitle" value="#{notificationLabels.notifications_status_battery}" />	<!-- BATTERY ITEM TITLE -->
-    <input type="hidden" name="connectionTitle" value="#{notificationLabels.notifications_status_connection}" />	<!-- CONNECTION ITEM TITLE -->		 	
-    <input type="hidden" name="doorTitle" value="#{notificationLabels.notifications_status_door}" /> <!-- DOOR ITEM TITLE -->
-    <input type="hidden" name="energyTitle" value="#{notificationLabels.notifications_status_power}" /> <!-- POWER ITEM TITLE -->
-    <input type="hidden" name="eventTitle" value="#{notificationLabels.notifications_status_events}" /> <!-- EVENTS ITEM TITLE -->
-    <input type="hidden" name="presenceTitle" value="#{notificationLabels.notifications_status_presence}" /> <!-- PRESENCE ITEM TITLE -->
-    <input type="hidden" name="temperatureTitle" value="#{notificationLabels.notifications_status_temperature}" /> <!-- TEMPERATURE ITEM TITLE -->
-    <input type="hidden" name="notificationNotFound" value="#{notificationLabels.notifications_status_without_notifications}" /> <!-- WITHOUT NOTIFICATIONS MESSAGE -->
+    <input type="hidden" name="batteryTitle" value="#{notificationLabels.notification_status_battery}" />	<!-- BATTERY ITEM TITLE -->
+    <input type="hidden" name="connectionTitle" value="#{notificationLabels.notification_status_connection}" />	<!-- CONNECTION ITEM TITLE -->		 	
+    <input type="hidden" name="doorTitle" value="#{notificationLabels.notification_status_door}" /> <!-- DOOR ITEM TITLE -->
+    <input type="hidden" name="energyTitle" value="#{notificationLabels.notification_status_power}" /> <!-- POWER ITEM TITLE -->
+    <input type="hidden" name="eventTitle" value="#{notificationLabels.notification_status_events}" /> <!-- EVENTS ITEM TITLE -->
+    <input type="hidden" name="presenceTitle" value="#{notificationLabels.notification_status_presence}" /> <!-- PRESENCE ITEM TITLE -->
+    <input type="hidden" name="temperatureTitle" value="#{notificationLabels.notification_status_temperature}" /> <!-- TEMPERATURE ITEM TITLE -->
+    <input type="hidden" name="notificationNotFound" value="#{notificationLabels.notification_status_without_notifications}" /> <!-- WITHOUT NOTIFICATIONS MESSAGE -->
     
     </form> <!----> 
 

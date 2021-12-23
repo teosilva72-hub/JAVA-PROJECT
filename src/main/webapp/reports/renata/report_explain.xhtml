@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	
+	<f:metadata>
+	
+	    <!-- INFORMAÇÔES  -->
+
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.via_sul_class_file_name)}" /> <!--  FILE NAME (OBRIGATÓRIO) -->
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.via_sul_class_title)}" /> <!-- FILE TITLE (OBRIGATÓRIO) -->
+		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('VIA SUL')}" /> <!-- FOLHA SIMPLES - NOME DA CONCESSIONÁRIA (OBRIGATÓRIO) -->
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" /> <!-- MÓDULO A SER UTILIZADO - LETRA MINÚSCULA (OBRIGATÓRIO) --> 
+	    		
+		<!-- GRÁFICO --> <!-- OPCIONAL -->
+		
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" /> <!-- 'POSSUI GRÁFICO == true' (default false) SE NÃO HOUVER GRÁFICOS NÃO PRECISA ADICIONAR -->
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_sul_class_file_name)}" /> <!-- FILE NAME (SE HOUVER GRÁFICO É OBRIGATÓRIO) -->
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_sul_class_title)}" /> <!-- TITLE ((SE HOUVER GRÁFICO ÉOBRIGATÓRIO)-->		
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" /> <!-- VERTICAL AXLE - INFORMAÇÃO DOS DADOS A ESQUERDA ((SE HOUVER GRÁFICO É OBRIGATÓRIO) -->
+		
+		<!-- EXCEL -->
+		
+		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" /> <!-- SE POSSUI TOTAL NA SAIDA DO EXCEL (SOMAR TODOS CAMPOS) (OPCIONAL) -->
+	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />	<!-- MOSTRAR NUMERO DE FAIXAS EM CASO DE SAT (OPCIONAL)-->
+	    
+	    <!-- FORMATAÇÃO RELATÓRIO DE CLASSE EM CASO DE SUB HEADER LEVES / PESADOS -->   	   
+	    
+	    <f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" /> <!-- OPCIONAL  -->
+	   	
+		<!-- CALL REPORT TYPE -->
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv_ccr')}" /> <!-- TABELA A SER UTILIZADA (OBRIGATÓRIO)-->
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
+							
+		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
+		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_motorcycles_column, satLabels.class_light_column, satLabels.class_semi_trailer_column, satLabels.class_trailer_column,
+		satLabels.number_of_axles_2_column, satLabels.number_of_axles_3_column, satLabels.number_of_axles_4_column, satLabels.number_of_axles_5_column, satLabels.number_of_axles_6_column, satLabels.number_of_axles_7_column,
+		satLabels.number_of_axles_8_column, satLabels.number_of_axles_9_column, satLabels.number_of_axles_10_column, satLabels.global_total_vehicles_column))}" /> <!-- CAMPOS DA TABELA (OBRIGATÓRIO) -->
+		
+		<!-- TRADUçÂO - "#{reportBean.setColumnsName(''.format('%s, %s', exampleLabel.data , exampleLabel.speed))}" -->
+		<!-- SEM TRADUçÂO - "#{reportBean.setColumnsName('DATE, SPEED')}" -->
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(classe = `10`); SUM(IF(classe = `1` OR (classe = `0` AND axlNumber &lt; 10) OR classe = `2N`, 1, 0 )); 
+        SUM(classe = `11`); SUM(classe = `12`); SUM(IF(classe = `2` OR classe = `13` OR classe = `18` OR classe = `19`, 1, 0 ));
+        SUM(IF(classe = `3` OR classe = `14` OR classe = `3N`, 1, 0)); SUM(IF(classe = `4` OR classe = `15` OR classe = `4N`, 1, 0 )); 
+        SUM(IF(classe = `5` OR classe = `16` OR  classe = `5N`, 1, 0 )); SUM(IF(classe = `6` OR classe = `17` OR classe = `6N`, 1, 0));
+        SUM(IF(classe = `7` OR classe = `7N`, 1, 0 ));  SUM(IF(classe = `8` OR classe = `8N`, 1, 0 )); 
+        SUM(IF(classe = `9` OR classe = `9N` OR (classe=`0` AND axlNumber = 9), 1, 0 ));
+		SUM(IF(classe = `20` OR (classe=`0` AND axlNumber &gt;= 10), 1, 0 )); SUM(1)')}" /> <!-- VALORES PARA OS CAMPOS DA TABELA (MESMO NUMERO DAS COLUNAS) (OBRIGATÓRIO) -->
+		
+		<!-- "#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; SUM(speed &gt; 30) )}" --> 
+		
+		<!-- INNER JOIN -->
+		<!-- PARA REFERENCIAS DADOS CONTIDOS EM DUAS TABELAS EX.: TROCAR ID DA TABELA A PELO NOME DA TABELA B (OPCIONAL) -->		
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv_ccr.lane')}" />
+				
+		<!--  INDEX - SERVE PARA OTIMIZAR BUSCAS NO BANCO DE DADOS (OPCIONAL) -->
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" /> <!-- CASO EXISTA UTILIZAR -->
+		
+		<!--  MÉTODO PARA CRAIR RELATÓRIOS - (OBRIGATÓRIO) -->		
+		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" /> 
+		
+		<!-- PERIODOS -->
+		
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" /> <!-- CAMPO DE PESQUISA DA DATA (OPCIONAL) -->
+		
+		<!-- ATRIBUTOS: PERIODO (NUMBER), TYPE, TRADUçÂO  -->
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(15, 'MINUTE', periodsLabels.period_15_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(30, 'MINUTE', periodsLabels.period_30_minutes)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'HOUR', periodsLabels.period_1_hour)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+		
+		<!-- FILTRO DE DIREçÔES (EXCEL) = QUANDO TENHO UM RELATÓRIO QUE QUERO EXIBIR DADOS EM TODOS SENTIDOS (OPCIONAL) -->
+		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
+		
+		<!-- EXISTE PROCESSAMENTO DE DADOS -->
+		<!-- #{reportBean.setColumnDate('0@1')}"  = 0@1 column date @ column period (OPCIONAL) -->
+		<!-- #{reportBean.setColumnDate('0')}"  = 0 column date -->
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
+		
+		<!-- FILTROS (OPCIONAL) -->
+		
+		
+		<!-- ESTRUTURA DATE SEARRCH (column, label, multiple,  mandatory) (OBRIGATÓRIO) -->
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" /> <!-- DATA -->
+		
+		<!-- ESTRUTURA DATE SEARRCH (column, label, list 'id/name' from DB table, multiple,  mandatory) (OPCIONAL) -->
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" /> <!-- EQUIPS -->
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	 <!-- CLASS -->
+
+    </f:metadata>
+	
+	<!---->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG (OBRIGATÓRIO) --> 		
+	    <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
+	
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+	 		
+	   <!-- DIV DE ESTRUTURA DA TABELA --> 
+	    
+	    <div class="table-container">   <!-- TABLE CONTAINER DIV CONTENT --> 		
+	       <!----> 		
+	        <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->	 
+	        
+	         <!-- ALERT MESSAGE -->
+	 
+	         <ui:include src="/template/alerts/alert.xhtml" />
+             
+       <!-- ============================================================================================================================= -->
+           
+           <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
+	       <h:outputText value="#{satLabels.via_sul_class_title}" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	 <!---->
+	 
+	  <!-- ============================================================================================================================= -->
+	 
+		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
+	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
+		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
+		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
+	 
+	  <f:facet name="header"> <!-- Header -->
+	 
+	  <!-- First Level -->
+	         
+      <tr>
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th>
+        <th colspan="4" class="custom-table-header" >#{satLabels.class_light_vehicles_column}</th> <!-- SUB HEADER -->
+        <th colspan="9" class="custom-table-header" >#{satLabels.class_heavy_vehicles_column}</th> <!-- SUB HEADER -->        
+        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(15)}</th> 
+      </tr>
+      
+      <!-- Second Level -->
+      
+      <tr>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(3)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(4)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(5)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(6)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(7)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(9)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(10)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(11)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(12)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(13)}</th>
+        <th class="custom-table-header" >#{reportBean.columnsInUse.get(14)}</th>
+      </tr>
+      
+     </f:facet> <!---->	
+     
+     <!---->		
+	
+		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
+			<h:column>
+				<!-- COLUMN -->
+				<!-- <f:facet name="header">#{header}</f:facet> --> <!-- HEADER -->
+				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
+			</h:column> <!-- COLUMN END -->
+		</c:forEach> <!-- LOOP TAG END -->
+	    </h:dataTable> <!-- DATATABALE JSF END -->
+	<!---->
+    </h:form><!-- FORM TABLE END-->
+	 
+	 	  <!-- ============================================================================================================================= -->
+	 
+	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
+	 
+	      <ui:include src="/template/action-reports/buttons_template.xhtml" />
+	  
+	  <!-- ============================================================================================================================= -->
+		
+	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
+	  	  	  
+	  <!-- ============================================================================================================================= -->
+	  
+	    <!-- CHART CONTAINER -->  
+	  
+	    <ui:include src="/template/chart/chart_template.xhtml" /> <!-- OPCIONAL -->
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
+	   
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	        
+      <!-- ============================================================================================================================= -->
+             
+         <!-- CLEAR MODAL TEMPLATE: LIMPAR DADOS DA TABELA -->
+               
+          <ui:include src="/template/modal/clear_modal_template.xhtml" />
+	   
+	  <!-- ============================================================================================================================= -->
+	   
+	     <!-- DOWNLOAD MODAL TEMPLATE: REALIZAR DOWNLOAD DE ARQUIVOS EXCEL -->
+	   
+	      <ui:include src="/template/modal/download_modal_template.xhtml" />
+		    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 			   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
+		 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

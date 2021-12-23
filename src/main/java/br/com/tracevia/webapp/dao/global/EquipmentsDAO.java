@@ -20,6 +20,7 @@ import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.meteo.mto.MTO;
 import br.com.tracevia.webapp.model.meteo.sv.SV;
+import br.com.tracevia.webapp.model.meteo_.METEO;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
@@ -90,13 +91,13 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, direction FROM "+modulo+"_equipment eq " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, direction FROM "+modulo+"_equipment eq " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction FROM "+modulo+"_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -114,6 +115,8 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(query);					
 			rs = ps.executeQuery();
+			
+			System.out.println(query);
 
 			if (rs != null) {
 
@@ -134,7 +137,9 @@ public class EquipmentsDAO {
 					equip.setMapWidth(rs.getInt(9));						
 					equip.setMapPosX(rs.getInt(10));					
 					equip.setMapPosY(rs.getInt(11));
-					equip.setDirection(rs.getString(12));
+					equip.setLongitude(rs.getDouble(12));
+					equip.setLatitude(rs.getDouble(13));
+					equip.setDirection(rs.getString(14));
 
 					lista.add(equip);
 				}				
@@ -168,13 +173,13 @@ public class EquipmentsDAO {
 		String query = "";
 
 		String sql = "SELECT equip_id, name, port, c.city_name, r.road_name, km, linear_width, " +
-				"linear_posX, linear_posY, map_width, map_posX, map_posY, model, master_sip, direction FROM sos_equipment eq " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, model, master_sip, longitude, latitude, direction FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, port, c.city_name, r.road_name, km, vw_linear_width, " +
-				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, direction FROM sos_equipment eq " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, longitude, latitude, direction FROM sos_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
@@ -213,7 +218,9 @@ public class EquipmentsDAO {
 					sos.setMapPosY(rs.getInt(12));
 					sos.setModel(rs.getInt(13));
 					sos.setSip(rs.getString(14));
-					sos.setDirection(rs.getString(15));
+					sos.setLongitude(rs.getDouble(15));
+					sos.setLatitude(rs.getDouble(16));
+					sos.setDirection(rs.getString(17));
 
 					lista.add(sos);
 				}				
@@ -252,18 +259,17 @@ public class EquipmentsDAO {
 
 		String sql = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, " +
-				"service_position, direction FROM sat_equipment eq " +
+				"service_position, longitude, latitude, direction FROM sat_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
 
 		String sqlVW = "SELECT equip_id, name, c.city_name, r.road_name, km, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, " +
 				"dir_lane5, dir_lane6, dir_lane7, dir_lane8, vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, " +
-				"service_position, direction FROM sat_equipment eq " +
+				"service_position, longitude, latitude, direction FROM sat_equipment eq " +
 				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
 				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
 				"WHERE visible = 1 ";
-
 
 		try {
 
@@ -320,7 +326,9 @@ public class EquipmentsDAO {
 					sat.setMapPosX(rs.getInt(19));					
 					sat.setMapPosY(rs.getInt(20));	
 					sat.setPosicao_nivel_servico(rs.getString(21));
-					sat.setDirection(rs.getString(22));
+					sat.setLongitude(rs.getDouble(22));
+					sat.setLatitude(rs.getDouble(23));
+					sat.setDirection(rs.getString(24));
 
 					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
 
@@ -362,19 +370,19 @@ public class EquipmentsDAO {
 
 		String query = "";
 
-		String sql = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
-				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, direction "
+		String sql = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, longitude, latitude, direction "
 				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
 				+ "ORDER BY eq.equip_id ASC"; 
 
-		String sqlVW = "SELECT equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
-				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, direction"
+		String sqlVW = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction"
 				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.id_equip = eq.equip_id " 
+				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
@@ -391,6 +399,8 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(query);				
 			rs = ps.executeQuery();
+			
+			//System.out.println(query);
 
 			if (rs != null) {
 
@@ -419,7 +429,9 @@ public class EquipmentsDAO {
 					dms.setMapPosY(rs.getInt(13));	
 					dms.setMessage(message);
 					dms.setMsg_status(active);
-					dms.setDirection(rs.getString(16));
+					dms.setLongitude(rs.getDouble(17));
+					dms.setLatitude(rs.getDouble(18));
+					dms.setDirection(rs.getString(19));
 
 					if (active)
 						dms.setMessageChange(message);
@@ -1107,8 +1119,8 @@ public class EquipmentsDAO {
 			String query = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, number_lanes, equip_ip, name, city, road, km, "
 					+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, visible) "
-					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible) "
+					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			// NOTIFICATION STATUS TABLE INSERT QUERY
 			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
@@ -1149,7 +1161,10 @@ public class EquipmentsDAO {
 			ps.setInt(27, 75); // VIDEO WALL Map Width
 			ps.setInt(28, 50); // VIDEO WALL Map posX
 			ps.setInt(29, 50); // VIDEO WALL Map posY
-			ps.setBoolean(30, true);
+			ps.setDouble(30, equip.getLatitude()); // LATITUDE
+			ps.setDouble(31, equip.getLongitude()); // LONGITUDE
+			ps.setString(32, equip.getDirection()); // DIREÇÂO	
+			ps.setBoolean(33, true);
 
 			int success = ps.executeUpdate();
 
@@ -1235,7 +1250,7 @@ public class EquipmentsDAO {
 			// DMS EQUIPMENT TABLE INSERT QUERY
 			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, driver, visible) "
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, driver, latitude, longitude, direction, visible) "
 					+ "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			// DMS ACTIVE MESSAGES TABLE INSERT QUERY
@@ -1271,7 +1286,10 @@ public class EquipmentsDAO {
 			ps.setInt(19, 50); // VIDEO WALL Map posX
 			ps.setInt(20, 50); // VIDEO WALL Map posY
 			ps.setInt(21,  equip.getDms_type()); //driver
-			ps.setBoolean(22, true);
+			ps.setDouble(22, equip.getLatitude()); // LATITUDE
+			ps.setDouble(23, equip.getLongitude()); // LONGITUDE
+			ps.setString(24, equip.getDirection()); // DIREÇÂO	
+			ps.setBoolean(25, true);
 
 			int success = ps.executeUpdate();
 
@@ -1340,7 +1358,7 @@ public class EquipmentsDAO {
 		// GENERIC TABLE INSERT QUERY
 		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, equip_ip, port, name, city, road, km, "
 				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, visible)"
+				+ "vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, latitude, longitude, direction, visible)"
 				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		// NOTIFICATION STATUS TABLE INSERT QUERY
@@ -1377,7 +1395,10 @@ public class EquipmentsDAO {
 			ps.setInt(21, 50); // VIDEO WALL Map posY
 			ps.setInt(22, equip.getModel());
 			ps.setString(23, equip.getSip());
-			ps.setBoolean(24, true);
+			ps.setDouble(24, equip.getLatitude()); // LATITUDE
+			ps.setDouble(25, equip.getLongitude()); // LONGITUDE
+			ps.setString(26, equip.getDirection()); // DIREÇÂO		
+			ps.setBoolean(27, true);
 
 			int success = ps.executeUpdate();
 
@@ -1424,15 +1445,13 @@ public class EquipmentsDAO {
 
 	public boolean EquipRegisterSpeedMap(Speed equip, String table) throws Exception {
 
-		System.out.println("HERE");
-
 		boolean status = false;     
 
 		// GENERIC TABLE INSERT QUERY
 		String query = "INSERT INTO speed_equipment (equip_id, creation_date, creation_username, equip_ip_indicator, equip_ip_radar, name, city, road, km, "
 				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
+				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		// NOTIFICATION STATUS TABLE INSERT QUERY
 		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
@@ -1465,8 +1484,11 @@ public class EquipmentsDAO {
 			ps.setInt(18, 50); // Map posY
 			ps.setInt(19, 20); // VIDEO WALL Map Width
 			ps.setInt(20, 50); // VIDEO WALL Map posX
-			ps.setInt(21, 50); // VIDEO WALL Map posY			
-			ps.setBoolean(22, true);
+			ps.setInt(21, 50); // VIDEO WALL Map posY		
+			ps.setDouble(22, equip.getLatitude()); // LATITUDE
+			ps.setDouble(23, equip.getLongitude()); // LONGITUDE
+			ps.setString(24, equip.getDirection()); // DIREÇÂO	
+			ps.setBoolean(25, true);
 
 			int success = ps.executeUpdate();
 
@@ -1516,6 +1538,96 @@ public class EquipmentsDAO {
 
 	// --------------------------------------------------------------------------------------------------------------
 
+		/**
+		 * M�todo para salvar um equipamento gen�rico
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0
+		 * @param equip - Objeto do tipo gen�rico
+		 * @param table - Table id	 
+		 * @return boolean - Verdairo ou falso
+		 * @throws Exception
+		 */
+
+		public boolean EquipRegisterMeteoMap(METEO equip, String table) throws Exception {
+
+			boolean status = false;     
+
+			// GENERIC TABLE INSERT QUERY
+			String query = "INSERT INTO meteo_equipment (id, equip_id, creation_date, creation_username, equip_type, equip_ip, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
+					+ " values  (null,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			// NOTIFICATION STATUS TABLE INSERT QUERY
+			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
+					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
+
+			try {
+
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+				// GENERIC ADD			
+				ps = conn.prepareStatement(query);
+
+				ps.setInt(1, equip.getEquip_id());
+				ps.setString(2, equip.getCreation_date());
+				ps.setString(3, equip.getCreation_username());	
+				ps.setString(4, equip.getEquip_type());
+				ps.setString(5, equip.getEquip_ip());			
+				ps.setString(6, equip.getNome());
+				ps.setString(7, equip.getCidade());
+				ps.setString(8, equip.getEstrada());
+				ps.setString(9, equip.getKm());	
+				ps.setInt(10, 30); // Linear Width
+				ps.setInt(11, 30); // Linear posX
+				ps.setInt(12, 500); // Linear posY
+				ps.setInt(13, 30); // VIDEO WALL Linear Width
+				ps.setInt(14, 30); // VIDEO WALL Linear posX
+				ps.setInt(15, 500); // VIDEO WALL Linear posY
+				ps.setInt(16, 20); // Map Width
+				ps.setInt(17, 50); // Map posX
+				ps.setInt(18, 50); // Map posY
+				ps.setInt(19, 20); // VIDEO WALL Map Width
+				ps.setInt(20, 50); // VIDEO WALL Map posX
+				ps.setInt(21, 50); // VIDEO WALL Map posY			
+				ps.setDouble(22, equip.getLatitude()); // LATITUDE
+				ps.setDouble(23, equip.getLongitude()); // LONGITUDE
+				ps.setString(24, equip.getDirection()); // DIREÇÂO	
+				ps.setBoolean(25, true);
+
+				int success = ps.executeUpdate();
+
+				if(success > 0) {    
+
+					// NOTIFICATION ADD		
+					ps = conn.prepareStatement(queryNotification);
+
+					ps.setInt(1, equip.getEquip_id()); 		
+					ps.setString(2, equip.getEquip_type());
+					ps.setString(3, equip.getEquip_ip());
+					ps.setString(4, "I "+equip.getNome());
+					ps.setString(5, equip.getKm());
+
+					int successNotif = ps.executeUpdate();
+				
+						if(successNotif > 0)
+							status = true;  							 						
+
+				    }  	
+
+			} catch (SQLException sqle) {
+				throw new Exception("Erro ao inserir dados " + sqle);
+
+			} finally {
+				ConnectionFactory.closeConnection(conn, ps);
+			}
+
+			return status;	
+		}
+
+		// --------------------------------------------------------------------------------------------------------------
+
 	public boolean EquipRegisterMap(Equipments equip, String table) throws Exception {
 
 		boolean status = false;     
@@ -1523,13 +1635,13 @@ public class EquipmentsDAO {
 		// GENERIC TABLE INSERT QUERY
 		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
 				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
+				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		// NOTIFICATION STATUS TABLE INSERT QUERY
 		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
 				+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
+			
 		try {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -1557,7 +1669,10 @@ public class EquipmentsDAO {
 			ps.setInt(18, 20); // VIDEO WALL Map Width
 			ps.setInt(19, 50); // VIDEO WALL Map posX
 			ps.setInt(20, 50); // VIDEO WALL Map posY
-			ps.setBoolean(21, true);
+			ps.setDouble(21, equip.getLatitude()); // LATITUDE
+			ps.setDouble(22, equip.getLongitude()); // LONGITUDE
+			ps.setString(23, equip.getDirection()); // DIREÇÂO	
+			ps.setBoolean(24, true);
 
 			int success = ps.executeUpdate();
 
@@ -1575,8 +1690,8 @@ public class EquipmentsDAO {
 				int successNotif = ps.executeUpdate();
 
 				if(successNotif > 0)            			
-					status = true;	                				         
-
+					status = true;	  
+				
 			}  	
 
 		} catch (SQLException sqle) {
@@ -1623,15 +1738,15 @@ public class EquipmentsDAO {
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+				String queryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String queryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				String queryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+				String VWqueryCftvLinear = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String VWqueryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				String VWqueryCftvMap = "UPDATE cftv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -1658,7 +1773,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1702,15 +1819,15 @@ public class EquipmentsDAO {
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+				String queryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String queryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				String queryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+				String VWqueryColasLinear = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String VWqueryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				String VWqueryColasMap = "UPDATE colas_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -1738,7 +1855,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1782,15 +1901,15 @@ public class EquipmentsDAO {
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+				String queryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String queryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				String queryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+				String VWqueryCOMMSLinear = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String VWqueryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				String VWqueryCOMMSMap = "UPDATE comms_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -1818,7 +1937,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -1861,15 +1982,15 @@ public class EquipmentsDAO {
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+				String queryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
-				String queryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
+				String queryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ?";
+				String VWqueryDAILinear = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
-				String VWqueryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ?";
+				String VWqueryDAIMap = "UPDATE dai_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -1897,7 +2018,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());         			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());      			            			  
+				ps.setInt(9,  equip.getEquip_id());   
 
 				int res = ps.executeUpdate();
 
@@ -1942,15 +2065,15 @@ public class EquipmentsDAO {
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ?";
+				String queryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
-				String queryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ?";
+				String queryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ?";
+				String VWqueryOCRLinear = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
-				String VWqueryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ?";
+				String VWqueryOCRMap = "UPDATE ocr_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ?";
 
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -1979,7 +2102,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());
+				ps.setInt(9,  equip.getEquip_id());
 
 				int res = ps.executeUpdate();
 
@@ -2019,20 +2144,20 @@ public class EquipmentsDAO {
 
 			// --------------------------------------------------------------------------------------------------------------
 
-			if(table.equals("mto")) { // MTO 
+			if(table.equals("meteo")) {
 
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryMTOLinear = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+				String queryMTOLinear = "UPDATE meteo_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? AND equip_type = ?";
 
-				String queryMTOMap = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				String queryMTOMap = "UPDATE meteo_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? AND equip_type = ?";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryMTOLinear = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+				String VWqueryMTOLinear = "UPDATE meteo_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? AND equip_type = ?";
 
-				String VWqueryMTOMap = "UPDATE mto_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				String VWqueryMTOMap = "UPDATE meteo_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? AND equip_type = ?";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -2060,7 +2185,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());    			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude());		            			  
+				ps.setInt(9,  equip.getEquip_id());    	
 
 				int res = ps.executeUpdate();
 
@@ -2069,7 +2196,7 @@ public class EquipmentsDAO {
 					ps = conn.prepareStatement(notificationSafety);
 
 					ps.setInt(1, equip.getEquip_id());	
-					ps.setString(2, ModulesEnum.MTO.getModule());
+					ps.setString(2, ModulesEnum.METEO.getModule());
 
 					rs = ps.executeQuery();
 
@@ -2099,100 +2226,20 @@ public class EquipmentsDAO {
 
 			// --------------------------------------------------------------------------------------------------------------
 
-			if(table.equals("sv")) { // SV 
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				String querySVLinear = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
-
-				String querySVMap = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWquerySVLinear = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
-
-				String VWquerySVMap = "UPDATE sv_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = querySVLinear;
-					queryMap = querySVMap;			
-
-				}else { 
-
-					queryLinear = VWquerySVLinear;
-					queryMap = VWquerySVMap;		
-
-				}				
-
-				if(updateView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else  ps = conn.prepareStatement(queryMap);
-
-				ps.setString(1,  equip.getNome());
-				ps.setString(2,  equip.getEquip_ip());
-				ps.setString(3,  equip.getCidade());
-				ps.setString(4,  equip.getEstrada());
-				ps.setString(5,  equip.getKm());
-				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());     			            			  
-
-				int res = ps.executeUpdate();
-
-				if (res > 0) {
-
-					ps = conn.prepareStatement(notificationSafety);
-
-					ps.setInt(1, equip.getEquip_id());	
-					ps.setString(2, ModulesEnum.SV.getModule());
-
-					rs = ps.executeQuery();
-
-					if(rs.isBeforeFirst()) {
-						while(rs.next()) {
-
-							id = rs.getInt(1);	
-
-						}
-					}
-
-					ps = conn.prepareStatement(notifications);
-
-					ps.setString(1, equip.getEquip_ip());
-					ps.setString(2, equip.getNome()); 
-					ps.setString(3, equip.getKm());						
-					ps.setInt(4, id);							
-
-					int res2 = ps.executeUpdate();
-
-					if(res2 > 0)
-						updated = true;						 
-
-				}          	  
-
-			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
 			if(table.equals("wim")) { // WIM
 
 				String queryLinear = "";
 				String queryMap = "";
 
-				String queryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ? WHERE equip_id = ? ";
+				String queryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String queryWIMMap= "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ? WHERE equip_id = ? ";
+				String queryWIMMap= "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ? WHERE equip_id = ? ";
+				String VWqueryWIMLinear = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
-				String VWqueryWIMMap = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ? WHERE equip_id = ? ";
+				String VWqueryWIMMap = "UPDATE wim_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -2220,7 +2267,9 @@ public class EquipmentsDAO {
 				ps.setString(4,  equip.getEstrada());
 				ps.setString(5,  equip.getKm());
 				ps.setInt(6,     equip.getMapWidth());            
-				ps.setInt(7,  equip.getEquip_id());    			            			  
+				ps.setDouble(7,  equip.getLatitude());
+				ps.setDouble(8,  equip.getLongitude()); 			            			  
+				ps.setInt(9,  equip.getEquip_id());   
 
 				int res = ps.executeUpdate();
 
@@ -2296,21 +2345,21 @@ public class EquipmentsDAO {
 		String notifications = "UPDATE notifications_status SET equip_ip = ?, equip_name = ?,  equip_km = ? WHERE notifications_id = ? ";
 
 		String querySATLinear = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, linear_width = ?, number_lanes = ?, " 
-				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		String querySATMap = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, map_width = ?, number_lanes = ?, " 
-				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
 		String VWquerySATLinear = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, number_lanes = ?, " 
-				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		String VWquerySATMap = "UPDATE sat_equipment SET name = ?, equip_ip = ?, city = ?, road = ?, km = ?, vw_map_width = ?, number_lanes = ?, " 
-				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? " 
+				+ "dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 		
 
@@ -2355,7 +2404,9 @@ public class EquipmentsDAO {
 			ps.setString(13, sat.getFaixa6()); 
 			ps.setString(14, sat.getFaixa7()); 
 			ps.setString(15, sat.getFaixa8()); 	
-			ps.setInt(16, sat.getEquip_id());
+			ps.setDouble(16,  sat.getLatitude());
+			ps.setDouble(17,  sat.getLongitude()); 
+			ps.setInt(18, sat.getEquip_id());
 
 			int res = ps.executeUpdate();
 
@@ -2475,18 +2526,18 @@ public class EquipmentsDAO {
 
 		String notificationSafety = "SELECT notifications_id FROM notifications_status WHERE equip_id = ? and equip_type = ?";
 
-		String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ? " 
+		String queryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ? " 
+		String queryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWqueryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_linear_width = ? " 
+		String VWqueryDMSLinear = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String VWqueryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_map_width = ? " 
+		String VWqueryDMSMap = "UPDATE pmv_equipment SET ip_equip = ?, driver = ?, name = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		try {
@@ -2518,7 +2569,10 @@ public class EquipmentsDAO {
 			ps.setString(5, dms.getEstrada());
 			ps.setString(6, dms.getKm());									 
 			ps.setInt(7, dms.getMapWidth());	 
-			ps.setInt(8, dms.getEquip_id());
+			ps.setDouble(8,  dms.getLatitude());
+			ps.setDouble(9,  dms.getLongitude()); 
+			ps.setInt(10, dms.getEquip_id());
+
 
 			int res = ps.executeUpdate();
 
@@ -2594,18 +2648,18 @@ public class EquipmentsDAO {
 
 		String notifications = "UPDATE notifications_status SET equip_ip = ?, equip_name = ?,  equip_km = ? WHERE notifications_id = ? ";
 
-		String querySOSLinear = "UPDATE sos_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ?, model = ?, master_sip = ? " 
+		String querySOSLinear = "UPDATE sos_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, linear_width = ?, model = ?, master_sip = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String querySOSMap = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, map_width = ?, model = ?, master_sip = ? " 
+		String querySOSMap = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, map_width = ?, model = ?, master_sip = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWquerySOSLinear = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, model = ?, master_sip = ? " 
+		String VWquerySOSLinear = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, model = ?, master_sip = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String VWquerySOSMap = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, vw_map_width = ?, model = ?, master_sip = ? " 
+		String VWquerySOSMap = "UPDATE pmv_equipment SET ip_equip = ?, port = ?, name = ?, city = ?, road = ?, km = ?, vw_map_width = ?, model = ?, master_sip = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		try {
@@ -2639,7 +2693,9 @@ public class EquipmentsDAO {
 			ps.setInt(7, sos.getMapWidth());
 			ps.setInt(8, sos.getModel());
 			ps.setString(9, sos.getSip());
-			ps.setInt(10, sos.getEquip_id());
+			ps.setDouble(10,  sos.getLatitude());
+			ps.setDouble(11,  sos.getLongitude()); 
+			ps.setInt(12, sos.getEquip_id());
 
 			int res = ps.executeUpdate();
 
@@ -2716,18 +2772,18 @@ public class EquipmentsDAO {
 		String notificationSafety = "SELECT notifications_id FROM notifications_status WHERE equip_id = ? and equip_type = ?";
 
 
-		String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, linear_width = ? " 
+		String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, map_width = ? " 
+		String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_linear_width = ? " 
+		String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? " 
 				+ " WHERE equip_id = ? ";
 
-		String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_map_width = ?  " 
+		String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ?  " 
 				+ " WHERE equip_id = ? ";
 
 		// ----------------------------------------------------------------------------------------------------------------------------------------------
@@ -2761,7 +2817,9 @@ public class EquipmentsDAO {
 			ps.setString(5, speed.getEstrada());
 			ps.setString(6, speed.getKm());			
 			ps.setInt(7, speed.getMapWidth());			
-			ps.setInt(8, speed.getEquip_id());
+			ps.setDouble(8,  speed.getLatitude());
+			ps.setDouble(9,  speed.getLongitude()); 
+			ps.setInt(10, speed.getEquip_id());
 
 			int res = ps.executeUpdate();
 
@@ -2874,15 +2932,15 @@ public class EquipmentsDAO {
 
 				CFTV cftv = new CFTV();
 
-				String queryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM cftv_equipment WHERE equip_id = ? ";
+				String queryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
 
-				String queryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM cftv_equipment WHERE equip_id = ? ";
+				String queryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM cftv_equipment WHERE equip_id = ? ";
+				String VWqueryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
 
-				String VWqueryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM cftv_equipment WHERE equip_id = ? ";
+				String VWqueryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -2917,6 +2975,8 @@ public class EquipmentsDAO {
 						cftv.setEstrada(rs.getString(5));
 						cftv.setKm(rs.getString(6));
 						cftv.setMapWidth(rs.getInt(7));
+						cftv.setLatitude(rs.getDouble(8));
+						cftv.setLongitude(rs.getDouble(9));
 
 					}
 				}
@@ -2934,15 +2994,15 @@ public class EquipmentsDAO {
 
 				Colas colas = new Colas();
 
-				String queryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM colas_equipment WHERE equip_id = ? ";
+				String queryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
 
-				String queryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM colas_equipment WHERE equip_id = ? ";
+				String queryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM colas_equipment WHERE equip_id = ? ";
+				String VWqueryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
 
-				String VWqueryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM colas_equipment WHERE equip_id = ? ";
+				String VWqueryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -2977,6 +3037,8 @@ public class EquipmentsDAO {
 						colas.setEstrada(rs.getString(5));
 						colas.setKm(rs.getString(6));
 						colas.setMapWidth(rs.getInt(7));
+						colas.setLatitude(rs.getDouble(8));
+						colas.setLongitude(rs.getDouble(9));
 
 					}
 				}
@@ -2994,15 +3056,15 @@ public class EquipmentsDAO {
 
 				COMMS comms = new COMMS();
 
-				String queryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM comms_equipment WHERE equip_id = ? ";
+				String queryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
 
-				String queryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM comms_equipment WHERE equip_id = ? ";
+				String queryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM comms_equipment WHERE equip_id = ? ";
+				String VWqueryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
 
-				String VWqueryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM comms_equipment WHERE equip_id = ? ";
+				String VWqueryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3036,7 +3098,9 @@ public class EquipmentsDAO {
 						comms.setCidade(rs.getString(4));
 						comms.setEstrada(rs.getString(5));
 						comms.setKm(rs.getString(6));
-						comms.setMapWidth(rs.getInt(7));  			         			            			  
+						comms.setMapWidth(rs.getInt(7));  	
+						comms.setLatitude(rs.getDouble(8));
+						comms.setLongitude(rs.getDouble(9));		         			            			  
 
 					}
 				}
@@ -3054,15 +3118,15 @@ public class EquipmentsDAO {
 
 				DAI dai = new DAI();
 
-				String queryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM dai_equipment WHERE equip_id = ? ";
+				String queryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
 
-				String queryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM dai_equipment WHERE equip_id = ? ";
+				String queryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM dai_equipment WHERE equip_id = ? ";
+				String VWqueryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
 
-				String VWqueryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM dai_equipment WHERE equip_id = ? ";
+				String VWqueryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3096,7 +3160,9 @@ public class EquipmentsDAO {
 						dai.setCidade(rs.getString(4));
 						dai.setEstrada(rs.getString(5));
 						dai.setKm(rs.getString(6));
-						dai.setMapWidth(rs.getInt(7));
+						dai.setMapWidth(rs.getInt(7));	
+						dai.setLatitude(rs.getDouble(8));
+						dai.setLongitude(rs.getDouble(9));
 
 					}
 				}
@@ -3114,15 +3180,15 @@ public class EquipmentsDAO {
 
 				OCR ocr = new OCR();
 
-				String queryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM ocr_equipment WHERE equip_id = ? ";
+				String queryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
 
-				String queryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM ocr_equipment WHERE equip_id = ? ";
+				String queryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM ocr_equipment WHERE equip_id = ? ";
+				String VWqueryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
 
-				String VWqueryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM ocr_equipment WHERE equip_id = ? ";
+				String VWqueryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3156,7 +3222,9 @@ public class EquipmentsDAO {
 						ocr.setCidade(rs.getString(4));
 						ocr.setEstrada(rs.getString(5));
 						ocr.setKm(rs.getString(6));
-						ocr.setMapWidth(rs.getInt(7)); 			        			            			  
+						ocr.setMapWidth(rs.getInt(7)); 	
+						ocr.setLatitude(rs.getDouble(8));
+						ocr.setLongitude(rs.getDouble(9));		        			            			  
 
 					}
 				}
@@ -3174,15 +3242,15 @@ public class EquipmentsDAO {
 
 				MTO mto = new MTO();
 
-				String queryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM mto_equipment WHERE equip_id = ? ";
+				String queryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
 
-				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM mto_equipment WHERE equip_id = ? ";
+				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM mto_equipment WHERE equip_id = ? ";
+				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
 
-				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM mto_equipment WHERE equip_id = ? ";
+				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3216,7 +3284,9 @@ public class EquipmentsDAO {
 						mto.setCidade(rs.getString(4));
 						mto.setEstrada(rs.getString(5));
 						mto.setKm(rs.getString(6));
-						mto.setMapWidth(rs.getInt(7));  		      			            			  
+						mto.setMapWidth(rs.getInt(7));	
+						mto.setLatitude(rs.getDouble(8));
+						mto.setLongitude(rs.getDouble(9));
 
 					}
 				}
@@ -3234,15 +3304,15 @@ public class EquipmentsDAO {
 
 				SOS sos = new SOS();
 
-				String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+				String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
 
-				String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+				String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWquerySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_linear_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+				String VWquerySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_linear_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
 
-				String VWquerySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_map_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+				String VWquerySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_map_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
 
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
@@ -3281,6 +3351,8 @@ public class EquipmentsDAO {
 						sos.setMapWidth(rs.getInt(8));
 						sos.setModel(rs.getInt(9));
 						sos.setSip(rs.getString(10)); 
+						sos.setLatitude(rs.getDouble(11));
+						sos.setLongitude(rs.getDouble(12));
 
 					}
 				}
@@ -3298,15 +3370,15 @@ public class EquipmentsDAO {
 
 				SV sv = new SV();
 
-				String querySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM sv_equipment WHERE equip_id = ? ";
+				String querySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
 
-				String querySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM sv_equipment WHERE equip_id = ? ";
+				String querySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWquerySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM sv_equipment WHERE equip_id = ? ";
+				String VWquerySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
 
-				String VWquerySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM sv_equipment WHERE equip_id = ? ";
+				String VWquerySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3340,7 +3412,9 @@ public class EquipmentsDAO {
 						sv.setCidade(rs.getString(4));
 						sv.setEstrada(rs.getString(5));
 						sv.setKm(rs.getString(6));
-						sv.setMapWidth(rs.getInt(7));  		      			            			  
+						sv.setMapWidth(rs.getInt(7)); 
+						sv.setLatitude(rs.getDouble(8));
+						sv.setLongitude(rs.getDouble(9)); 		      			            			  
 
 					}
 				}
@@ -3357,15 +3431,15 @@ public class EquipmentsDAO {
 
 				WIM wim = new WIM();
 
-				String queryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width FROM wim_equipment WHERE equip_id = ? ";
+				String queryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
 
-				String queryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width FROM wim_equipment WHERE equip_id = ? ";
+				String queryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
 
 				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-				String VWqueryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width FROM wim_equipment WHERE equip_id = ? ";
+				String VWqueryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
 
-				String VWqueryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width FROM wim_equipment WHERE equip_id = ? ";
+				String VWqueryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
 
 				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3399,7 +3473,9 @@ public class EquipmentsDAO {
 						wim.setCidade(rs.getString(4));
 						wim.setEstrada(rs.getString(5));
 						wim.setKm(rs.getString(6));
-						wim.setMapWidth(rs.getInt(7));  			             			            			  
+						wim.setMapWidth(rs.getInt(7));  
+						wim.setLatitude(rs.getDouble(8));
+						wim.setLongitude(rs.getDouble(9)); 			             			            			  
 
 					}
 				}
@@ -3446,21 +3522,21 @@ public class EquipmentsDAO {
 
 		String querySATLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, number_lanes, " 
 				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ " FROM sat_equipment WHERE equip_id = ? ";
+				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
 
 		String querySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, map_width, number_lanes, " 
 				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ " FROM sat_equipment WHERE equip_id = ? ";
+				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
 		String VWquerySATLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, number_lanes, " 
 				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ " FROM sat_equipment WHERE equip_id = ? ";
+				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
 
 		String VWquerySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, vw_map_width, number_lanes, " 
 				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ " FROM sat_equipment WHERE equip_id = ? ";
+				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
 
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3495,8 +3571,7 @@ public class EquipmentsDAO {
 				sat.setEstrada(rs.getString(5));
 				sat.setKm(rs.getString(6));
 				sat.setMapWidth(rs.getInt(7));
-				sat.setNumFaixas(rs.getInt(8));
-
+				sat.setNumFaixas(rs.getInt(8));			
 				defineDirectionNumber(sat, 1, rs.getString(9));
 				defineDirectionNumber(sat, 2, rs.getString(10));
 				defineDirectionNumber(sat, 3, rs.getString(11));
@@ -3504,11 +3579,13 @@ public class EquipmentsDAO {
 				defineDirectionNumber(sat, 5, rs.getString(13));
 				defineDirectionNumber(sat, 6, rs.getString(14));
 				defineDirectionNumber(sat, 7, rs.getString(15));
-				defineDirectionNumber(sat, 8, rs.getString(16));	  			  
-
-
-			}
-		}
+				defineDirectionNumber(sat, 8, rs.getString(16));								
+				sat.setLatitude(rs.getDouble(17));
+				sat.setLongitude(rs.getDouble(18)); 
+				sat.setDirection(rs.getString(19)); 
+									
+			 }
+		 }
 
 		return sat;            	  
 	}
@@ -3534,15 +3611,15 @@ public class EquipmentsDAO {
 
 		DMS dms = new DMS();
 
-		String queryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, linear_width, driver FROM pmv_equipment WHERE equip_id = ? ";
+		String queryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, linear_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";
 
-		String queryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	
+		String queryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, map_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";	
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWqueryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_linear_width, driver FROM pmv_equipment WHERE equip_id = ? ";
+		String VWqueryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_linear_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";
 
-		String VWqueryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_map_width, driver FROM pmv_equipment WHERE equip_id = ? ";	
+		String VWqueryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_map_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";	
 
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3578,6 +3655,9 @@ public class EquipmentsDAO {
 				dms.setKm(rs.getString(6));
 				dms.setMapWidth(rs.getInt(7));
 				dms.setDms_type(rs.getInt(8));    
+				dms.setLatitude(rs.getDouble(9));
+				dms.setLongitude(rs.getDouble(10)); 
+				dms.setDirection(rs.getString(11)); 
 
 			}
 		}
@@ -3593,15 +3673,15 @@ public class EquipmentsDAO {
 
 		SOS sos = new SOS();
 
-		String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip  FROM sos_equipment WHERE equip_id = ? ";
+		String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip , latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";
 
-		String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip  FROM sos_equipment WHERE equip_id = ? ";	
+		String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip , latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";	
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWquerySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_linear_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+		String VWquerySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_linear_width, model, master_sip, latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";
 
-		String VWquerySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_map_width, model, master_sip FROM sos_equipment WHERE equip_id = ? ";	
+		String VWquerySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_map_width, model, master_sip, latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";	
 
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3638,7 +3718,10 @@ public class EquipmentsDAO {
 				sos.setKm(rs.getString(7));
 				sos.setMapWidth(rs.getInt(8)); 
 				sos.setModel(rs.getInt(9));
-				sos.setSip(rs.getString(10));   
+				sos.setSip(rs.getString(10));    
+				sos.setLatitude(rs.getDouble(11));
+				sos.setLongitude(rs.getDouble(12)); 
+				sos.setDirection(rs.getString(13)); 
 
 			}
 		}
@@ -3656,15 +3739,15 @@ public class EquipmentsDAO {
 
 		Speed speed = new Speed();
 
-		String querySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, linear_width FROM speed_equipment WHERE equip_id = ? ";
+		String querySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, linear_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";
 
-		String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, map_width FROM speed_equipment WHERE equip_id = ? ";	
+		String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, map_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";	
 
 		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
 
-		String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_linear_width FROM speed_equipment WHERE equip_id = ? ";
+		String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_linear_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";
 
-		String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_map_width FROM speed_equipment WHERE equip_id = ? ";	
+		String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_map_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";	
 
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -3700,7 +3783,9 @@ public class EquipmentsDAO {
 				speed.setEstrada(rs.getString(6));
 				speed.setKm(rs.getString(7));
 				speed.setMapWidth(rs.getInt(8)); 
-
+				speed.setLatitude(rs.getDouble(9));
+				speed.setLongitude(rs.getDouble(10)); 
+				speed.setDirection(rs.getString(11)); 
 
 			}
 		}
@@ -3711,6 +3796,72 @@ public class EquipmentsDAO {
 
 	// --------------------------------------------------------------------------------------------------------------
 
+		public METEO EquipMeteoSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
+
+			String queryLinear = "";
+			String queryMap = "";
+
+			METEO meteo = new METEO();
+
+			String querySpeedLinear = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";
+
+			String querySpeedMap = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";	
+
+			// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
+
+			String VWquerySpeedLinear = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, vw_linear_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";
+
+			String VWquerySpeedMap = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, vw_map_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";	
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			//VIDEO WALL SWITCH
+			if(permission != 9) {
+
+				queryLinear = querySpeedLinear;
+				queryMap = querySpeedMap;			
+
+			}else { 
+
+				queryLinear = VWquerySpeedLinear;
+				queryMap = VWquerySpeedMap;		
+
+			}			
+
+			if(interfaceView.equals("linear"))
+				ps = conn.prepareStatement(queryLinear);
+
+			else  ps = conn.prepareStatement(queryMap);
+
+			ps.setInt(1,  id);
+			rs = ps.executeQuery();
+
+			if(rs != null) {
+				while(rs.next()){
+
+					meteo.setEquip_id(rs.getInt(1));					
+					meteo.setConfig_id(rs.getInt(2));
+					meteo.setEquip_type(rs.getString(3));
+					meteo.setEquip_ip(rs.getString(4));		
+					meteo.setPort(rs.getInt(5));		
+					meteo.setNome(rs.getString(6));	  			  
+					meteo.setCidade(rs.getString(7));
+					meteo.setEstrada(rs.getString(8));
+					meteo.setKm(rs.getString(9));
+					meteo.setMapWidth(rs.getInt(10)); 
+					meteo.setLatitude(rs.getDouble(11));
+					meteo.setLongitude(rs.getDouble(12)); 
+					meteo.setDirection(rs.getString(13));
+
+
+				}
+			}
+
+			return meteo;            	  
+
+		}
+
+		// --------------------------------------------------------------------------------------------------------------
 
 
 	/**
@@ -3878,7 +4029,7 @@ public class EquipmentsDAO {
 
 			// --------------------------------------------------------------------------------------------------------------
 
-			if(table.equals("mto")) { // MTO
+			if(table.equals("meteo")) { // MTO
 
 				String queryMTO = "DELETE FROM mto_equipment WHERE equip_id = ?";
 				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
@@ -3895,7 +4046,7 @@ public class EquipmentsDAO {
 					//DELETE NOTIFICATION
 					ps = conn.prepareStatement(queryNotification);
 					ps.setInt(1,  id);
-					ps.setString(2, ModulesEnum.MTO.getModule());
+					ps.setString(2, ModulesEnum.METEO.getModule());
 
 					int rs2 =  ps.executeUpdate();
 
@@ -4048,37 +4199,7 @@ public class EquipmentsDAO {
 			} 
 
 			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("sv")) { // SV
-
-				String querySV = "DELETE FROM sv_equipment WHERE equip_id = ?";
-				String queryNotification = "DELETE FROM notifications_status WHERE equip_id = ? AND equip_type = ? ";
-
-				//DELETE TABLE EQUIP
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-				ps = conn.prepareStatement(querySV);
-				ps.setInt(1,  id);
-
-				int rs =  ps.executeUpdate();
-
-				if(rs > 0) {
-
-					//DELETE NOTIFICATION
-					ps = conn.prepareStatement(queryNotification);
-					ps.setInt(1,  id);
-					ps.setString(2, ModulesEnum.SV.getModule());
-
-					int rs2 =  ps.executeUpdate();
-
-					if(rs2 > 0)
-						deleted = true;
-
-				}
-
-			}  
-
-			// --------------------------------------------------------------------------------------------------------------
-
+		
 			if(table.equals("wim")) { // WIM
 
 				String queryWIM= "DELETE FROM wim_equipment WHERE equip_id = ?";
@@ -5077,12 +5198,11 @@ public class EquipmentsDAO {
 		case"comms": module = ModulesEnum.COMMS.getModule(); ; break;
 		case "dai": module = ModulesEnum.DAI.getModule(); ; break;
 		case "ocr": module = ModulesEnum.OCR.getModule(); ; break;
-		case "mto": module = ModulesEnum.MTO.getModule(); ; break;
+		case "mto": module = ModulesEnum.METEO.getModule(); ; break;
 		case "dms": module = ModulesEnum.PMV.getModule(); ; break;
 		case "sat": module = ModulesEnum.SAT.getModule(); ; break;
 		case "sos": module = ModulesEnum.SOS.getModule(); ; break;
-		case "speed": module = ModulesEnum.SPEED.getModule(); ; break;
-		case "sv": module = ModulesEnum.SV.getModule(); ; break;
+		case "speed": module = ModulesEnum.SPEED.getModule(); ; break;		
 		case "wim": module = ModulesEnum.WIM.getModule(); ; break;
 
 		}
@@ -5653,37 +5773,6 @@ public class EquipmentsDAO {
 		}
 
 		return count;	
-	}
-
-	public double[] getCoord(String name) {
-		double[] coord = new double[2];
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// CHECK
-			String select = "SELECT latitude, longitude FROM map_coordinate WHERE name = ?";
-
-			ps = conn.prepareStatement(select);
-
-			ps.setString(1, name);
-			rs = ps.executeQuery();
-
-			if(rs.isBeforeFirst()) {
-				rs.next();
-
-				coord[0] = rs.getDouble("latitude");
-				coord[1] = rs.getDouble("longitude");
-		    }
-
-		}catch (SQLException sqle) {
-			System.out.println("Erro ao buscar dados " + sqle);        		    
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
-		
-		return coord;
 	}
 
 	//--------------------------------------------------------------------------------------------------------------

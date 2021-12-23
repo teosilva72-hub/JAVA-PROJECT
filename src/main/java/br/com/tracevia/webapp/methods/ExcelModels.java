@@ -1837,7 +1837,7 @@ public class ExcelModels {
 			spreadSheet.createCell(sheet, row, 6, 1, localeExcel.getStringKey("excel_report_consultation_city"));
 			spreadSheet.createCell(sheet, row, 6, 2, city );
 			spreadSheet.createCell(sheet, row, 6, 7, localeExcel.getStringKey("excel_report_consultation_direction"));
-			spreadSheet.createCell(sheet, row, 6, 8, localeDirections.getStringKey("directions_all") );
+			spreadSheet.createCell(sheet, row, 6, 8, "todos" );
 
 			spreadSheet.setStyle(sheet, row, 6,  boldCenterStyle, 1);
 			spreadSheet.setStyle(sheet, row, 6,  boldCenterStyle, 7);

@@ -28,8 +28,15 @@ public class ReportDAO {
     public List<Pair<String, List<String[]>>> secondaryLines;
     public List<String> IDs;
     
-
+    LocaleUtil localeReport, localeDirection;
+    
     public ReportDAO(List<String> columnName) throws Exception {
+    	
+    	localeReport = new LocaleUtil();
+    	localeReport.getResourceBundle(LocaleUtil.LABELS_REPORTS);
+    	
+    	localeDirection = new LocaleUtil();
+    	localeDirection.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
         
         conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -81,8 +88,8 @@ public class ReportDAO {
                     if (!custom)
                         this.columnName.add(name);
 
-                    String value = rs.getString(idx);
-                    
+                    String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
+                                        
                     row[idx - 1] = value != null && value != "" ? value : "-";
                     if (name.equals(id) && !field.contains(value))
                         field.add(value);
@@ -231,8 +238,19 @@ public class ReportDAO {
     		case "7 axle truck": return locale.getStringKey("reports_filter_truck_7_axles_class_option");
     		case "8 axle truck": return locale.getStringKey("reports_filter_truck_8_axles_class_option");
     		case "9 axle truck": return locale.getStringKey("reports_filter_truck_9_axles_class_option");
-    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option");
-    		    		
+    		case "10 axle truck": return locale.getStringKey("reports_filter_truck_10_axles_class_option"); 
+    		case "lane 1": return locale.getStringKey("reports_filter_lane1_option"); 
+    		case "lane 2": return locale.getStringKey("reports_filter_lane2_option"); 
+    		case "lane 3": return locale.getStringKey("reports_filter_lane3_option"); 
+    		case "lane 4": return locale.getStringKey("reports_filter_lane4_option"); 
+    		case "lane 5": return locale.getStringKey("reports_filter_lane5_option"); 
+    		case "lane 6": return locale.getStringKey("reports_filter_lane6_option"); 
+    		case "lane 7": return locale.getStringKey("reports_filter_lane7_option"); 
+    		case "lane 8": return locale.getStringKey("reports_filter_lane8_option"); 
+    		case "max": return locale.getStringKey("reports_filter_battery_max_option");
+    		case "avg": return locale.getStringKey("reports_filter_battery_avg_option");
+    		case "min": return locale.getStringKey("reports_filter_battery_min_option");
+    		
     		default: return value;
     	}
     }
@@ -250,5 +268,39 @@ public class ReportDAO {
 	public List<String> getIDs() {
 		return IDs;
 	}	
+	
+	// ------------------------------------------------------------------------------------
+	
+	  private String translateValues(String value) {
+		  					    	
+	    	switch (value) {
+	    	
+				case "N": return localeDirection.getStringKey("directions_north");
+				case "S": return localeDirection.getStringKey("directions_south");
+				case "L": return localeDirection.getStringKey("directions_east");
+				case "O": return localeDirection.getStringKey("directions_west");		
+				case "Top door": return localeReport.getStringKey("reports_value_top_door_option");		
+				case "Bottom door": return localeReport.getStringKey("reports_value_bottom_door_option");
+				case "Driving on the Lane Line": return localeReport.getStringKey("reports_value_driving_lane_line_option");
+	    		case "Illegal Parking": return localeReport.getStringKey("reports_value_illegal_parking_option");
+	    		case "Wrong-Way Driving": return localeReport.getStringKey("reports_value_wrong_way_driving_option");
+	    		case "Congestion": return localeReport.getStringKey("reports_value_congestion_option");
+	    		case "Pedestrain": return localeReport.getStringKey("reports_value_pedestrain_option");
+	    		case "Thrown Object": return localeReport.getStringKey("reports_value_thrown_object_option");
+	    		case "Roadblock": return localeReport.getStringKey("reports_value_roadblock_option");
+	    		case "Illegal Lane Change": return localeReport.getStringKey("reports_value_illegal_lane_change_option");
+	    		case "Two-way": return localeReport.getStringKey("reports_value_two-way_option");
+	    		case "Up": return localeReport.getStringKey("reports_value_up_option");
+	    		case "Down": return localeReport.getStringKey("reports_value_down_option");
+	    		case " 0 minute": return localeReport.getStringKey("reports_value_zero_minute_option");
+	    		case " < 1 minute": return localeReport.getStringKey("reports_value_less_than_1_minute");
+	    		case " > 1 minute and < 2 minutes": return localeReport.getStringKey("reports_value_between_1_and_2_minutes_option");
+	    		case " > 3 minutes": return localeReport.getStringKey("reports_value_greater_than_3_minutes_option");
+	    						    		    		
+	    		default: return value;
+	    	}
+	    }
+	  
+	  // ------------------------------------------------------------------------------------
 	
 }

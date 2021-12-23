@@ -1,6 +1,9 @@
 package br.com.tracevia.webapp.controller.global;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -9,6 +12,7 @@ import javax.faces.bean.ViewScoped;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.util.SessionUtil;
 import br.com.tracevia.webapp.model.global.Estrada;
 
 @ManagedBean(name="roadView")
@@ -16,6 +20,8 @@ import br.com.tracevia.webapp.model.global.Estrada;
 public class EstradaObjectController {
 	
 	public List<Plaque> plaque;
+	public List<int[]> roadLine;
+	public List<String[]> cars;
 	
 	private Estrada road_01;
 	private Estrada road_02;
@@ -106,6 +112,8 @@ public class EstradaObjectController {
 		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
 		try {
 			plaque = roadDAO.getPlaque();
+			roadLine = roadDAO.getRoadLine();
+			cars = roadDAO.getCarsList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,6 +153,19 @@ public class EstradaObjectController {
 	public List<Plaque> getPlaque() {
 		return plaque;
 	}
+	
+	public List<int[]> getRoadLine() {
+		return this.roadLine;
+	}
+	
+	public List<String[]> getCars() {
+		return this.cars;
+	}
+
+	public void setRoadLine(List<int[]> roadLine) {
+		this.roadLine = roadLine;
+	}
+
 	public EstradaObjectController() {}
 	
 	
@@ -193,8 +214,9 @@ public class EstradaObjectController {
 
 	public class Plaque {
 		int km;
-		int map_posX;
-		int map_posY;
+		double longitude;
+		double latitude;
+		int mapY;
 		int linear_posX;
 		int linear_posY;
 
@@ -208,20 +230,28 @@ public class EstradaObjectController {
 			this.km = km;
 		}
 
-		public int getMap_posX() {
-			return this.map_posX;
+		public double getLongitude() {
+			return this.longitude;
 		}
 
-		public void setMap_posX(int map_posX) {
-			this.map_posX = map_posX;
+		public void setLongitude(double longitude) {
+			this.longitude = longitude;
 		}
 
-		public int getMap_posY() {
-			return this.map_posY;
+		public double getLatitude() {
+			return this.latitude;
 		}
 
-		public void setMap_posY(int map_posY) {
-			this.map_posY = map_posY;
+		public void setLatitude(double latitude) {
+			this.latitude = latitude;
+		}
+
+		public int getMapY() {
+			return this.mapY;
+		}
+
+		public void setMapY(int mapY) {
+			this.mapY = mapY;
 		}
 
 		public int getLinear_posX() {
@@ -239,5 +269,16 @@ public class EstradaObjectController {
 		public void setLinear_posY(int linear_posY) {
 			this.linear_posY = linear_posY;
 		}
+	}
+
+	public void saveCarIMG() throws IOException {
+		Map<String, String> map = SessionUtil.getRequestParameterMap();
+		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
+
+		String id = map.get("id_car");
+		String type = map.get("type_car");
+
+		roadDAO.saveCarIMG(id, type);
+		cars = roadDAO.getCarsList();
 	}
 }

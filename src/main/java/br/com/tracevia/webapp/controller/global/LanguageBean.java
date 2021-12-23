@@ -10,6 +10,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
+import org.apache.poi.hssf.record.PrintHeadersRecord;
+
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
@@ -28,7 +30,7 @@ public class LanguageBean implements Serializable {
 
 	private final Locale ENGLISH = new Locale("en","US");
 	private final Locale SPANISH = new Locale("es", "ES");	 
- /* private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
+    /* private final Locale ARGENTINE_SPANISH = new Locale("es", "AR");
 	 private final Locale MEXICAN_SPANISH = new Locale("es", "MX");
 	 private final Locale COLOMBIAN_SPANISH = new Locale("es", "CO");*/
 	private final Locale PORTUGUESE_BRAZILIAN = new Locale("pt", "BR");	
@@ -74,29 +76,33 @@ public class LanguageBean implements Serializable {
 			if(concessionaire.equals(RoadConcessionairesEnum.CardelPozaRica.getConcessionaire()) ||
 					concessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire())) {
 
-				Locale.setDefault(SPANISH);
-				locale = Locale.getDefault(); 					
+				Locale.setDefault(SPANISH);							
+				locale = Locale.getDefault(); 	
+			
 			}
 
 			else {
 
 				Locale.setDefault(PORTUGUESE_BRAZILIAN);
-				locale = Locale.getDefault(); 
-			}
+				locale = Locale.getDefault();
+			}					
 
-		} catch (Exception ex) { /* DO NOTHING */ } 	
+		} catch (Exception ex) { /* DO NOTHING */ 
+			
+	       ex.printStackTrace();
+		} 	
 
 	}
 
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para alterar o idioma do sistema (Inglês Americano)
+	 * Mï¿½todo para alterar o idioma do sistema (Inglï¿½s Americano)
 	 * @author Wellington 12/05/2020
 	 * version 1.1
 	 * @since 1.0
 	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
-	 * @param event - evento originado lançado na interface do sistema
+	 * @param event - evento originado lanï¿½ado na interface do sistema
 	 */
 	public void English(ActionEvent event) {
 
@@ -109,12 +115,12 @@ public class LanguageBean implements Serializable {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para alterar o idioma do sistema (Espanhol)
+	 * Mï¿½todo para alterar o idioma do sistema (Espanhol)
 	 * @author Wellington 12/05/2020
 	 * version 1.1
 	 * @since 1.0
 	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
-	 * @param event - evento originado lançado na interface do sistema
+	 * @param event - evento originado lanï¿½ado na interface do sistema
 	 */
 	public void Spanish(ActionEvent event) {
 
@@ -127,12 +133,12 @@ public class LanguageBean implements Serializable {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para alterar o idioma do sistema (Português do Brasil)
+	 * Mï¿½todo para alterar o idioma do sistema (Portuguï¿½s do Brasil)
 	 * @author Wellington 12/05/2020
 	 * version 1.1
 	 * @since 1.0
 	 * @see https://javaee.github.io/javaee-spec/javadocs/javax/faces/event/ActionEvent.html
-	 * @param event - evento originado lançado na interface do sistema
+	 * @param event - evento originado lanï¿½ado na interface do sistema
 	 */
 	public void Portuguese(ActionEvent event) {
 
@@ -145,14 +151,14 @@ public class LanguageBean implements Serializable {
 	// --------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para alterar o idioma nas interfaces do sistema
+	 * Mï¿½todo para alterar o idioma nas interfaces do sistema
 	 * @author Wellington 12/05/2020
 	 * version 1.1
 	 * @since 1.0
 	 * @see https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html
-	 * @param locale - representa uma cultura especifíca, politíca ou geográfica
+	 * @param locale - representa uma cultura especifï¿½ca, politï¿½ca ou geogrï¿½fica
 	 */
-	private void updateViewLocale(Locale locale) {
+	void updateViewLocale(Locale locale) {
 		FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
 
 	}

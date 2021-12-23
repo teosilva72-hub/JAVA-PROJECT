@@ -24,6 +24,7 @@ import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.model.meteo_.METEO;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
@@ -37,7 +38,7 @@ public class EquipmentsBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, mtoType;
+	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, meteoType;
 
 	RoadConcessionaireDAO concessionaireDao;
 
@@ -122,12 +123,12 @@ public class EquipmentsBean implements Serializable {
 		this.dmsType = dmsType;
 	}
 
-	public List<SelectItem> getMtoType() {
-		return mtoType;
+	public List<SelectItem> getMeteoType() {
+		return meteoType;
 	}
 
-	public void setMtoType(List<SelectItem> mtoType) {
-		this.mtoType = mtoType;
+	public void setMeteoType(List<SelectItem> meteoType) {
+		this.meteoType = meteoType;
 	}
 
 	public int getEquipId() {
@@ -214,7 +215,7 @@ public class EquipmentsBean implements Serializable {
 		lanes = new  ArrayList<SelectItem>();
 		dir = new ArrayList<SelectItem>();
 		dmsType = new ArrayList<SelectItem>();
-		mtoType = new ArrayList<SelectItem>();
+		meteoType = new ArrayList<SelectItem>();
 
 		try {
 
@@ -233,17 +234,17 @@ public class EquipmentsBean implements Serializable {
 				lanes.add(s);				
 			}
 
-			dir.add(new SelectItem(1, localeDirection.getStringKey("directions_north")));   
-			dir.add(new SelectItem(2, localeDirection.getStringKey("directions_south")));   
-			dir.add(new SelectItem(3, localeDirection.getStringKey("directions_east")));   
-			dir.add(new SelectItem(4, localeDirection.getStringKey("directions_west")));   
+			dir.add(new SelectItem("N", localeDirection.getStringKey("directions_north")));   
+			dir.add(new SelectItem("S", localeDirection.getStringKey("directions_south")));   
+			dir.add(new SelectItem("L", localeDirection.getStringKey("directions_east")));   
+			dir.add(new SelectItem("O", localeDirection.getStringKey("directions_west")));   
 
 			dmsType.add(new SelectItem(1, localeMap.getStringKey("map_dms_type_1")));   
 			dmsType.add(new SelectItem(2, localeMap.getStringKey("map_dms_type_2")));   
 			dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3"))); 
 
-			mtoType.add(new SelectItem("WS", "WS")); 
-			mtoType.add(new SelectItem("RS", "RS")); 
+			meteoType.add(new SelectItem("MTO", localeMap.getStringKey("map_meteo_weather_station"))); 
+			meteoType.add(new SelectItem("SV", localeMap.getStringKey("map_meteo_various_sensors"))); 
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -291,8 +292,10 @@ public class EquipmentsBean implements Serializable {
 		
 		//FOR Speed
 		Speed speed = new Speed();
+		
+		// METEO
+		METEO meteo = new METEO();
 			
-
 		//CHECK MODULES	
 		int moduleID = (parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips")));
 
@@ -336,7 +339,16 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			dms.setKm(parameterMap.get("km"));
+			
+			//For Equipment Direction
+			dms.setDirection(parameterMap.get("direction"));
+			
+			//For Equipment latitude
+			dms.setLatitude(Double.parseDouble(parameterMap.get("lat")));
 
+			//For Equipment KM
+			dms.setLongitude(Double.parseDouble(parameterMap.get("long")));
+			
 			int type = (parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType")));
 
 			//DMS TYPE
@@ -398,12 +410,21 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			sos.setKm(parameterMap.get("km"));
+			
+			//For Equipment Direction
+			sos.setDirection(parameterMap.get("direction"));
 
 			//For Equipment Model
 			sos.setModel(Integer.parseInt(parameterMap.get("model")));
 
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sip"));
+			
+			//For Equipment latitude
+			sos.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			sos.setLongitude(Double.parseDouble(parameterMap.get("long")));
 
 			checked =  equipDAO.checkExists(sos.getEquip_id(), table);
 
@@ -458,9 +479,18 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			sat.setKm(parameterMap.get("km"));
+			
+			//For Equipment Direction
+			sat.setDirection(parameterMap.get("direction"));
 
 			//For Equipment TYPE
 			sat.setEquip_type(ModulesEnum.SAT.getModule());
+			
+			//For Equipment latitude
+			sat.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			sat.setLongitude(Double.parseDouble(parameterMap.get("long")));
 
 			//For Number Lanes
 			int numLanes = (parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
@@ -506,7 +536,7 @@ public class EquipmentsBean implements Serializable {
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 		//SPEED CHECKING
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		if((moduleID != 0 &&  moduleID == 11) && (equipId != 0)) {
+		else if((moduleID != 0 &&  moduleID == 11) && (equipId != 0)) {
 
 			//EQUIP TABLE BY MODULE
 			String table = defineTableById(moduleID);
@@ -539,7 +569,16 @@ public class EquipmentsBean implements Serializable {
 			speed.setEstrada(parameterMap.get("roads"));
 
 			//For Equipment KM
-			speed.setKm(parameterMap.get("km"));		 
+			speed.setKm(parameterMap.get("km"));
+			
+			//For Equipment Direction
+			speed.setDirection(parameterMap.get("direction"));
+			
+			//For Equipment latitude
+			speed.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+
+			//For Equipment KM
+			speed.setLongitude(Double.parseDouble(parameterMap.get("long")));		 
 
 			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
 			
@@ -564,8 +603,73 @@ public class EquipmentsBean implements Serializable {
 			speed = new Speed(); // RESET
 
 		} // END METHOD
-
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
+		// METEO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		else if(moduleID != 0 && moduleID == 6) {
+		
+		//EQUIP TABLE BY MODULE
+		String table = defineTableById(moduleID);
+		
+		//For Equipment ID
+		meteo.setEquip_id(equipId);
+		
+		//For Equipment CreationDate
+		meteo.setCreation_date(dta.currentTimeDBformat());
+		
+		//For Equipment CreationUsername		
+		meteo.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 				
+		meteo.setEquip_type(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType"));
+		
+		//For Equipment Name
+		meteo.setNome(parameterMap.get("equipName"));
+		
+		//EQUIP IP
+		meteo.setEquip_ip(parameterMap.get("equipIp"));
+		
+		//For Equipment City
+		meteo.setCidade(parameterMap.get("cities"));
+		
+		//For Equipment Road
+		meteo.setEstrada(parameterMap.get("roads"));
+		
+		//For Equipment KM
+		meteo.setKm(parameterMap.get("km"));
+		
+		//For Equipment Direction
+		meteo.setDirection(parameterMap.get("direction"));
+				
+		//For Equipment latitude
+		meteo.setLatitude(Double.parseDouble(parameterMap.get("lat")));
+		
+		//For Equipment KM
+		meteo.setLongitude(Double.parseDouble(parameterMap.get("long")));			 
+		
+		checked =  equipDAO.checkExists(equip.getEquip_id(), table);
+		
+		if(checked)
+		request.execute("alertOptions('#equip-save-error');");
+		
+		else {
+		
+		checked = equipDAO.EquipRegisterMeteoMap(meteo, table);
+		
+		if(checked) {
+		request.execute("alertOptions('#equip-save');");
+		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+		}
+		
+		else  request.execute("alertOptions('#equip-save-error');");
+		
+		}  //VALIDATION
+		
+		meteo = new METEO(); // RESET
+		
+		} // END METHOD
+							
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
 		//GENERIC CHECKING
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -584,8 +688,10 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment CreationUsername		
 			equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
 
-			//Equip Type
-			equip.setEquip_type(defineEquipType(table));
+			if(moduleID != 6)						
+			equip.setEquip_type(defineEquipType(table)); //Equip Types
+			
+			else equip.setEquip_type(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType"));
 
 			//For Equipment Name
 			equip.setNome(parameterMap.get("equipName"));
@@ -598,10 +704,19 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment Road
 			equip.setEstrada(parameterMap.get("roads"));
+		
+			//For Equipment KM
+			equip.setKm(parameterMap.get("km"));
+			
+			//For Equipment Direction
+			equip.setDirection(parameterMap.get("direction"));
+			
+			//For Equipment latitude
+			equip.setLatitude(Double.parseDouble(parameterMap.get("lat")));
 
 			//For Equipment KM
-			equip.setKm(parameterMap.get("km"));		 
-
+			equip.setLongitude(Double.parseDouble(parameterMap.get("long")));		
+			
 			checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
 			if(checked)
@@ -657,8 +772,27 @@ public class EquipmentsBean implements Serializable {
 		speed = new Speed();
 
 		int moduleId = getModuleByName(equipTable);
+		
+	    if(moduleId == 6){	
+			
+			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-		if(moduleId == 8) {
+			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
+			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
+			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
+		
+		
+		}
+
+	    else if(moduleId == 8) {
 
 			dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
@@ -671,6 +805,9 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+dms.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+dms.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+dms.getLongitude()+"');");
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+dms.getDirection()+"');");
 
 
 		} else if(moduleId == 9) {
@@ -686,6 +823,9 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sat.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sat.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sat.getLongitude()+"');");
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sat.getDirection()+"');");
 
 			if(sat.getFaixa1() != null)			 
 				RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
@@ -726,6 +866,9 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
 			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sos.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sos.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sos.getDirection()+"');");
 		
 		} else if (moduleId == 11) {
 
@@ -740,19 +883,27 @@ public class EquipmentsBean implements Serializable {
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+speed.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+speed.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+speed.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+speed.getDirection()+"');");
 				
-		}else {		
+		} else {		
 
 			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
 			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
 			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#configId-edit').val('"+equip.getEquip_id()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#port-edit').val('"+equip.getMapWidth()+"');");
 			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
+			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");					
 			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
 			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
+			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
 		
 		}				   
 	}
@@ -857,6 +1008,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment KM
 			dms.setKm(parameterMap.get("kmEdit"));
 
+			//For Equipment Latitude
+			dms.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			dms.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				dms.setMapWidth(1);			    
@@ -916,6 +1073,12 @@ public class EquipmentsBean implements Serializable {
 			//For Equipment SIP
 			sos.setSip(parameterMap.get("sipEdit"));
 
+			//For Equipment latitude
+			sos.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			sos.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
 				sos.setMapWidth(1);			    
@@ -960,6 +1123,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			sat.setKm(parameterMap.get("kmEdit"));
+
+			//For Equipment latitude
+			sat.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			sat.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1026,6 +1195,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			speed.setKm(parameterMap.get("kmEdit"));
+			
+			//For Equipment latitude
+			speed.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			speed.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 		
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1049,10 +1224,10 @@ public class EquipmentsBean implements Serializable {
 			String table = defineTableById(moduleId);
 
 			//For Equipment Update Date
-			dms.setUpdate_date(dta.currentTimeDBformat());
+			equip.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			dms.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			equip.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
 
 			//For Equipment ID
 			equip.setEquip_id(equipId);
@@ -1071,6 +1246,12 @@ public class EquipmentsBean implements Serializable {
 
 			//For Equipment KM
 			equip.setKm(parameterMap.get("kmEdit"));	
+			
+			//For Equipment latitude
+			equip.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+
+			//For Equipment longitude
+			equip.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
 
 			//For Equipment Map Width / Linear Width			    			    
 			if(parameterMap.get("width-edit") == "0")
@@ -1217,13 +1398,13 @@ public class EquipmentsBean implements Serializable {
 		case 3: table="comms"  ; break;
 		case 4: table="dai"    ; break;
 		case 5: table="ocr"    ; break;
-		case 6: table="mto"    ; break;
+		case 6: table="meteo"    ; break;
 		case 8: table="pmv"    ; break;	
 		case 9: table="sat"    ; break;
 		case 10: table="sos"    ; break;
 		case 11: table="speed"  ; break;
-		case 12: table="sv"    ; break;
-		case 14: table="wim"    ; break;
+		case 12: table="wim"    ; break;
+		
 		}
 
 		return table;
@@ -1287,13 +1468,12 @@ public class EquipmentsBean implements Serializable {
 		case "comms": moduleId = 3 ; break;
 		case "dai": moduleId = 4 ; break;
 		case "ocr": moduleId = 5 ; break;
-		case "mto": moduleId = 6 ; break;
+		case "meteo": moduleId = 6 ; break;
 		case "dms": moduleId = 8 ; break;  	
 		case "sat": moduleId = 9 ; break;
 		case "sos": moduleId = 10  ; break;
-		case "speed": moduleId = 11 ; break;
-		case "sv": moduleId = 12 ; break;
-		case "wim" : moduleId = 14 ; break;
+		case "speed": moduleId = 11 ; break;	
+		case "wim" : moduleId = 12 ; break;
 		}
 
 		return moduleId;
@@ -1432,20 +1612,19 @@ public class EquipmentsBean implements Serializable {
 
 		String type = null;
 
-		switch(table) {
-
-		case "cftv": type = ModulesEnum.CFTV.getModule() ; break;
-		case "colas": type = ModulesEnum.COLAS.getModule(); ; break;
-		case"comms": type = ModulesEnum.COMMS.getModule(); ; break;
-		case "dai": type = ModulesEnum.DAI.getModule(); ; break;
-		case "mto": type = ModulesEnum.MTO.getModule(); ; break;
-		case "ocr": type = ModulesEnum.OCR.getModule(); ; break;
-		case "sos": type = ModulesEnum.SOS.getModule(); ; break;
-		case "speed": type = ModulesEnum.SPEED.getModule(); ; break;
-		case "sv": type = ModulesEnum.SV.getModule(); ; break;
-		case "wim": type = ModulesEnum.WIM.getModule(); ; break;
-
-		}
+			switch(table) {
+	
+				case "cftv": type = ModulesEnum.CFTV.getModule(); break;
+				case "colas": type = ModulesEnum.COLAS.getModule(); break;
+				case"comms": type = ModulesEnum.COMMS.getModule(); break;
+				case "dai": type = ModulesEnum.DAI.getModule(); break;
+				case "meteo": type = ModulesEnum.METEO.getModule(); break;
+				case "ocr": type = ModulesEnum.OCR.getModule(); break;
+				case "sos": type = ModulesEnum.SOS.getModule(); break;
+				case "speed": type = ModulesEnum.SPEED.getModule(); break;
+				case "wim": type = ModulesEnum.WIM.getModule(); break;
+	
+			}
 
 		return type;
 	}

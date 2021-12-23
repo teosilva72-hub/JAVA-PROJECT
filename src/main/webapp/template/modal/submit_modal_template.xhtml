@@ -48,7 +48,7 @@
 							<span><i class="fas fa-hdd"></i></span> <span
 									class="valid-icon-hidden"></span> <select name="allColumns"
 									id="allColumns" field="Column" multiple="multiple">
-								<c:forEach var="column" items="#{testerBean.columnsInUse}"
+								<c:forEach var="column" items="#{reportBean.columnsInUse}"
 									varStatus="loop">
 									<option value="#{loop.index}">#{column}</option>
 								</c:forEach>
@@ -61,28 +61,28 @@
 
 					<!-- FILTER FIEDS -->
 
-					<c:forEach var="filterSearch"  items="${testerBean.filterSearch}">
+					<c:forEach var="filterSearch"  items="${reportBean.filterSearch}">
 						<div class="col-12">
 							<!-- FORM ROW DIV -->
 							<div class="form-group col-sm-12 checkbox-field">
 								<!-- FORM GROUP DIV -->
 								<span><i class="fas fa-hdd"></i></span>
 								<!-- SPAN ICON -->
-								<span for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="valid-icon-hidden"></span>
+								<span for="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
-								<select name="#{testerBean.getLeft(filterSearch)[0]}-filter" id="#{testerBean.getLeft(filterSearch)[0]}-filter"
-									field="#{testerBean.getLeft(filterSearch)[1]}" multiple="#{testerBean.getLeft(filterSearch)[2]}"
-									required="#{testerBean.getLeft(filterSearch)[3]}">
+								<select name="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" id="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter"
+									field="#{reportBean.getLeft(filterSearch)[1]}" multiple="#{reportBean.getLeft(filterSearch)[2]}"
+									required="#{reportBean.getLeft(filterSearch)[3]}">
 									<!-- SELECT OPTIONS -->
 									<!---->
-									<c:if test="#{testerBean.getLeft(filterSearch)[2] ne 'multiple'}">
+									<c:if test="#{reportBean.getLeft(filterSearch)[2] ne 'multiple'}">
 										<option value="">
-											#{testerBean.getLeft(filterSearch)[1]}
+											#{reportBean.getLeft(filterSearch)[1]}
 										</option>
 									</c:if>
 									<!---->
-									<ui:repeat var="filter" value="#{testerBean.getRight(filterSearch)}">
+									<ui:repeat var="filter" value="#{reportBean.getRight(filterSearch)}">
 										<!-- LOOP -->
 										<!---->
 										<option value="#{filter[0]}">#{filter[1]}</option>
@@ -96,7 +96,7 @@
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{testerBean.getLeft(filterSearch)[0]}-filter" class="error" id="#{testerBean.getLeft(filterSearch)[0]}-filter-error"></label>
+								<label for="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter" class="error" id="#{reportBean.getLeft(filterSearch)[1].replaceAll(' ', '')}-filter-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->
@@ -108,7 +108,7 @@
 
 					<!-- PERIOD FIEDS -->
 
-					<c:if test="#{testerBean.hasPeriod()}">
+					<c:if test="#{reportBean.hasPeriod()}">
 						<div class="col-12">
 							<!-- FORM ROW DIV -->
 							<div class="form-group col-sm-12 checkbox-field">
@@ -118,7 +118,7 @@
 								<select name="date-period" id="date-period" required="required">
 									<option value="">#{reportsLabels.reports_select_period}</option>
 									<!-- SELECT OPTIONS -->
-									<ui:repeat var="period" value="#{testerBean.getPeriod()}" varStatus="status">
+									<ui:repeat var="period" value="#{reportBean.getPeriod()}" varStatus="status">
 										<!-- LOOP -->
 										<!---->
 										<option value="#{period[0]},#{period[1]},#{period[2]}">#{period[2]}</option>
@@ -145,26 +145,26 @@
 
 					<!-- START DATE -->
 
-					<c:forEach var="dateSearch"  items="${testerBean.dateSearch}">
+					<c:forEach var="dateSearch"  items="${reportBean.dateSearch}">
 						<div class="col-6">
 							<!-- FORM ROW DIV -->
 							<div class="form-group input-field">
 								<!-- FORM GROUP DIV -->
 								<span><i class="far fa-calendar-alt"></i></span>
 								<!---->
-								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-start" id="#{dateSearch[0]}-start" required="#{dateSearch[2]}"
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-start" id="#{dateSearch[1].replaceAll(' ', '')}-start" required="#{dateSearch[2]}"
 									placeholder="#{reportsLabels.reports_input_date_start_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-start" class="valid-icon-hidden"></span>
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-start" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{dateSearch[0]}-start" class="error" id="#{dateSearch[0]}-start-error"></label>
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-start" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-start-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->
@@ -181,19 +181,19 @@
 								<!-- FORM GROUP DIV -->
 								<span><i class="far fa-calendar-alt"></i></span>								
 								<!---->
-								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[0]}-end" id="#{dateSearch[0]}-end" required="#{dateSearch[2]}"
+								<input type="text" class="datepicker date" autocomplete="off" name="#{dateSearch[1].replaceAll(' ', '')}-end" id="#{dateSearch[1].replaceAll(' ', '')}-end" required="#{dateSearch[2]}"
 									placeholder="#{reportsLabels.reports_input_date_end_placeholder}" />
 								<!-- INPUT -->
 								<!---->
 								<!-- SPAN ICON -->
-								<span for="#{dateSearch[0]}-end" class="valid-icon-hidden"></span>
+								<span for="#{dateSearch[1].replaceAll(' ', '')}-end" class="valid-icon-hidden"></span>
 								<!-- SPAN VALIDATION ICON -->
 								<!---->
 							</div>
 							<!-- FORM GROUP DIV END -->
 							<div class="error-label">
 								<!-- ERROR LABEL DIV -->
-								<label for="#{dateSearch[0]}-end" class="error" id="#{dateSearch[0]}-end-error"></label>
+								<label for="#{dateSearch[1].replaceAll(' ', '')}-end" class="error" id="#{dateSearch[1].replaceAll(' ', '')}-end-error"></label>
 								<!-- ERROR LABEL -->
 							</div>
 							<!-- ERROR LABEL DIV END -->
@@ -228,7 +228,7 @@
 
 					<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
 						id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-						<f:ajax execute="@form" render="form-table form-btns" listener="#{testerBean.createFields}"
+						<f:ajax execute="@form" render="form-table form-btns" listener="#{reportBean.createFields}"
 							onevent="onEventFunction" />
 					</h:commandButton>
 					<!-- SUBMIT HIDDEN BUTTON -->
@@ -236,7 +236,7 @@
 					<!---->
 
 					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
-						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" onclick="setTimeout(() => $('[multiple]').multiselect('selectAll', false).multiselect('updateButtonText'), 100)" >
+						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
 					</h:commandButton><!-- BUTTON RESET -->
 
 					<!---->

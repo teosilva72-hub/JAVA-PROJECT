@@ -12,9 +12,12 @@
 	</ui:define>
 
 	<ui:define name="head">
+		<!-- CSS -->
 		<h:outputStylesheet library="css/pgf" name="pgf-conf.css" />
-		<h:outputStylesheet library="css/pgf" name="pgf-sat.css" />
-		<h:outputStylesheet library="css/sat" name="layoutSAT.css" />
+		<h:outputStylesheet library="css/pgf" name="pgf-wim.css" />
+		
+		<!-- Script -->
+		<h:outputScript library="js/pgf/" name="pgf-wim.js" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -27,8 +30,7 @@
 
 	<ui:define name="default-content">
 		<div class="row wim-jumbotron">
-
-			<div class="jumbotron col-3 PGFdark bg-dark px-3">
+			<div class="jumbotron col-3 PGFdark bg-dark px-3 collapse" id="collapseInfo">
 				<div class='row'>
 					<div class='col-12 p-1'>
 						<div class="pgf-card shadow rounded p-2 bg-body">
@@ -41,14 +43,15 @@
 							</div>
 						</div>
 					</div>
-	
 				</div>
 			</div>
 
 			<div class="container col pt-3 h-100">
 				<div class="card bg-dark h-100 flex-row">
 					<div class="card-header text-white card-l text-center d-flex px-0">
-						<span class="my-auto">SP255 Sul</span><span class="my-auto">SP255 Norte</span>
+						<span class="my-auto">SP255 #{pgfLabels.pgf_wim_input_south}</span>
+						<button class="text-white bg-secondary" id="btncollapse" data-toggle="collapse" onclick="clickCollapse();" href="#collapseInfo">&lt;</button>
+						<span class="my-auto">SP255 #{pgfLabels.pgf_wim_input_north}</span>
 					</div>
 					<div class="card-body p-0">
 						<div class="card-body-division">
@@ -62,11 +65,11 @@
 											<table id="message-table" class="table table-sm table-striped table-hover table-dark custom-table m-0">
 												<thead class="custom-table-header">
 													<tr>
-														<th>Velocidade</th>
-														<th>Altura</th>
-														<th>Largura</th>
-														<th>Comprimento</th>
-														<th>Total</th>
+														<th>#{pgfLabels.pgf_wim_input_speed}</th>
+														<th>#{pgfLabels.pgf_wim_input_height}</th>
+														<th>#{pgfLabels.pgf_wim_input_width}</th>
+														<th>#{pgfLabels.pgf_wim_input_length}</th>
+														<th>#{pgfLabels.pgf_wim_input_total}</th>
 													</tr>
 												</thead>
 												<tbody class="custom-table-odd-row odd">
@@ -96,7 +99,7 @@
 										<p class="text-shadow">KM 182+183</p>
 										<div class="card bg-success">
 											<div class="card-body p-0">
-												liberado
+												#{pgfLabels.pgf_wim_input_released}
 											</div>
 										</div>
 									</div>
@@ -106,9 +109,9 @@
 											<table id="message-table" class="table table-sm small table-striped table-hover table-dark custom-table m-0">
 												<thead class="custom-table-header">
 													<tr>
-														<th>Eixo 1</th>
-														<th>Eixo 2</th>
-														<th>Eixo 3</th>
+														<th>Eixo 1 - L:6 ton</th>
+														<th>Eixo 2 - L:14 ton</th>
+														<th>Eixo 3 - L:17 ton</th>
 													</tr>
 												</thead>
 												<tbody class="custom-table-odd-row odd">
@@ -140,11 +143,11 @@
 											<table id="message-table" class="table table-sm table-striped table-hover table-dark custom-table m-0">
 												<thead class="custom-table-header">
 													<tr>
-														<th>Velocidade</th>
-														<th>Altura</th>
-														<th>Largura</th>
-														<th>Comprimento</th>
-														<th>Total</th>
+														<th>#{pgfLabels.pgf_wim_input_speed}</th>
+														<th>#{pgfLabels.pgf_wim_input_height}</th>
+														<th>#{pgfLabels.pgf_wim_input_width}</th>
+														<th>#{pgfLabels.pgf_wim_input_lenght}</th>
+														<th>#{pgfLabels.pgf_wim_input_total}</th>
 													</tr>
 												</thead>
 												<tbody class="custom-table-odd-row odd">
@@ -174,7 +177,7 @@
 										<p class="text-shadow">KM 182-650</p>
 										<div class="card bg-success">
 											<div class="card-body p-0">
-												liberado
+												#{pgfLabels.pgf_wim_input_released}
 											</div>
 										</div>
 									</div>
@@ -184,15 +187,15 @@
 											<table id="message-table" class="table table-sm small table-striped table-hover table-dark custom-table m-0">
 												<thead class="custom-table-header">
 													<tr>
-														<th>Eixo 1</th>
-														<th>Eixo 2</th>
-														<th>Eixo 3</th>
-														<th>Eixo 4</th>
-														<th>Eixo 5</th>
-														<th>Eixo 6</th>
-														<th>Eixo 7</th>
-														<th>Eixo 8</th>
-														<th>Eixo 9</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 1</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 2</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 3</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 4</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 5</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 6</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 7</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 8</th>
+														<th>#{pgfLabels.pgf_wim_input_axis} 9</th>
 													</tr>
 												</thead>
 												<tbody class="custom-table-odd-row odd">

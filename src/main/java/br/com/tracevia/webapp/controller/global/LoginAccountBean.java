@@ -42,10 +42,13 @@ public class LoginAccountBean {
 	private UserAccount login;
 	private String credentials;    
 
+	public double[][] coord = new double[2][3];    
+
 	LocaleUtil locale, locale1, locale2;
 
 	LoadStartupModules load;
-	String mapUI, linearMapUI;
+	RoadConcessionaire road;
+	String mapUI, darkMapUI, linearMapUI;
 	String plaque;
 	String logo;
 	boolean mapEnabled, reportsLLEnabled;
@@ -100,7 +103,15 @@ public class LoginAccountBean {
 	public void setMapUI(String mapUI) {
 		this.mapUI = mapUI;
 	}
+	
+	public String getDarkMapUI() {
+		return darkMapUI;
+	}
 
+	public void setDarkMapUI(String darkMapUI) {
+		this.darkMapUI = darkMapUI;
+	}
+	
 	public String getPlaque() {
 		return plaque;
 	}
@@ -140,7 +151,19 @@ public class LoginAccountBean {
 	public void setReportsLLEnabled(boolean reportsLLEnabled) {
 		this.reportsLLEnabled = reportsLLEnabled;
 	}
-	
+		
+	public RoadConcessionaire getRoad() {
+		return road;
+	}
+
+	public void setRoad(RoadConcessionaire road) {
+		this.road = road;
+	}
+
+	public double[][] getCoord() {
+		coordMap();
+		return coord;
+	}
 	    // --------------------------------------------------------------------------------------------
 	
 		// CLASS PATH
@@ -169,6 +192,7 @@ public class LoginAccountBean {
 	public void initialize() {
 
 		user = new UserAccount();
+		
 		locale = new LocaleUtil();
 		locale.getResourceBundle(LocaleUtil.MESSAGES_LOGIN);
 
@@ -176,8 +200,7 @@ public class LoginAccountBean {
 		locale1.getResourceBundle(LocaleUtil.MESSAGES_EMAIL);
 
 		locale2 = new LocaleUtil();
-		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);	
-				
+		locale2.getResourceBundle(LocaleUtil.MESSAGES_REQUIRED);		
 	}
 	
 	// --------------------------------------------------------------------------------------------
@@ -191,15 +214,15 @@ public class LoginAccountBean {
 	 */
 	public String loginValidation() {
 		
-		load = new LoadStartupModules(); // Carregar os m�dulos
+		load = new LoadStartupModules(); // Carregar os m�dulos		
+		road = new RoadConcessionaire();
 	
 		boolean status = false, inMemory = false, isName = false;
 		
-		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();					
-		RoadConcessionaire roadConcessionaire = new RoadConcessionaire();		
-
+		InMemoryAuthentication memoryAuth = new InMemoryAuthentication();		
+	
 		// IF SUCCESS ON AUTH GET SERVER INFORMATION	
-		isName = roadConcessionaire.defineConcessionarieValues(language.concessionaire);
+		isName = road.defineConcessionarieValues(language.concessionaire);
 		
 		try {
 		
@@ -239,17 +262,20 @@ public class LoginAccountBean {
 								
 					// NOT IN USE
 					mapUI = RoadConcessionaire.mapUI; // Load Map
+					darkMapUI = RoadConcessionaire.darkMapUI;
 					linearMapUI = RoadConcessionaire.linearMapUI;
 					mapEnabled = RoadConcessionaire.mapEnabled;
 					reportsLLEnabled = RoadConcessionaire.reportsLLEnabled;
 
 					plaque = RoadConcessionaire.plaque;
 					logo = RoadConcessionaire.logo;
-					
-					// NEW CHANGES
+															
+					// STARTS MAP
 														
-					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
-					    return "/map/map.xhtml?faces-redirect=true";
+					if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
+						  RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+					    
+						return "/map/map.xhtml?faces-redirect=true";
 					
 					else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
@@ -285,10 +311,12 @@ public class LoginAccountBean {
 							plaque = RoadConcessionaire.plaque;
 							logo = RoadConcessionaire.logo;
 					
-							// NEW CHANGES
+							// STARTS MAP
 							
-							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()))
-							    return "/map/map.xhtml?faces-redirect=true";
+							if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.Tuxpan.getConcessionaire()) ||
+									RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.EcoviasAraguaia.getConcessionaire()))
+							    
+								return "/map/map.xhtml?faces-redirect=true";
 							
 							else return "/dashboard/dashboard.xhtml?faces-redirect=true";
 
@@ -540,7 +568,37 @@ public class LoginAccountBean {
 					+ cred[3]
 					+ "\", \"port\": \""
 					+ cred[4]
+					+ "\", \"ws\": \""
+					+ cred[5]
 					+ "\"}";
+	}
+
+	/**
+	 * M�todo para obter as credenciais de um aplicativo
+	 * @author Guilherme 12/07/2021
+     * @version 1.0
+     * @since 1.0    
+	 */
+	public void coordMap() {
+		coordMap("");
+	}
+
+	/**
+	 * M�todo para obter as credenciais de um aplicativo
+	 * @author Guilherme 12/07/2021
+     * @version 1.0
+     * @since 1.0    
+	 */
+	public double[][] coordMap(String name) {
+		
+		LoginAccountDAO dao = new LoginAccountDAO();
+
+		name = (name.isEmpty() ? name : "-" + name);
+
+		coord[0] = dao.getCoord("start" + name);
+		coord[1] = dao.getCoord("end" + name);
+
+		return coord;
 	}
 	
 	// --------------------------------------------------------------------------------------------

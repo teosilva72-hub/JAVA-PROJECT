@@ -26,6 +26,8 @@ public class Equipments {
 	private int linearPosY;
 	private int mapPosX;
 	private int mapPosY;
+	private double longitude;
+	private double latitude;
 	private int mapWidth;
 	private int height;	
 	private int linearWidth;
@@ -36,12 +38,13 @@ public class Equipments {
 	private int lastStatus;
 	private boolean notificacao;
 	private boolean visible;
+	private int port;
 
 	public Equipments(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
 			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus, boolean notificacao,
-			boolean visible) {
+		    int port, boolean visible) {
 		
 		this.equip_id = equip_id;
 		this.table_id = table_id;
@@ -68,6 +71,7 @@ public class Equipments {
 		this.status = status;
 		this.lastStatus = lastStatus;
 		this.notificacao = notificacao;
+		this.port = port;
 		this.visible = visible;
 	}
 
@@ -232,6 +236,26 @@ public class Equipments {
 	}
 
 
+	public double getLongitude() {
+		return longitude;
+	}
+
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+
 	public int getMapWidth() {
 		return mapWidth;
 	}
@@ -313,21 +337,25 @@ public class Equipments {
 		return notificacao;
 	}
 
-
 	public void setNotificacao(boolean notificacao) {
 		this.notificacao = notificacao;
 	}
+	
+	public int getPort() {
+		return port;
+	}
 
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	public boolean isVisible() {
 		return visible;
 	}
 
-
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
-
 
 	//BUILD GENERIC EQUIPMENTS
 	public List<Equipments> listEquipments(String modulo, int permission) throws Exception {
@@ -339,7 +367,7 @@ public class Equipments {
 		return lista;
 	}
 
-	//BUILD GENERIC EQUIPMENTS
+	// BUILD GENERIC EQUIPMENTS
 	public List<SOS> listSosEquipments(int permission) throws Exception {
 
 		List<SOS> lista = new ArrayList<>();	

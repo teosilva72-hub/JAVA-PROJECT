@@ -3,10 +3,6 @@
  * General styles
  */
 
-body, html{    
- 	background-color:  #FFFFFF; 	
-}
-
 body{
 	overflow-y: hidden;
 }

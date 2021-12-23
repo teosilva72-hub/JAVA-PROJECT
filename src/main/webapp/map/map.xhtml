@@ -169,7 +169,7 @@
 
 				</c:if>
 
-				<div class="paleta-cores">
+		<!--		<div class="paleta-cores">
 					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
 						onclick="color()" href="#paleta" role="button"
 						aria-expanded="false" aria-controls="collapseExample"><i
@@ -197,16 +197,28 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div> -->
 
 				<div class="linesbox">
 					<div>
 						<input type="checkbox" id="visiblelines" name="visiblelines"
-							checked=""></input> <label for="visiblelines">Lines</label>
+							checked=""></input> <label for="visiblelines">#{mapLabels.map_creation_btn_lines_equips}</label>
 					</div>
-				</div>
-
-			</div>
+				</div>			
+				<div class="darkmodebox">
+					<input type="checkbox" id="darkmode" name="darkmode"></input> 
+					   <label for="darkmode">
+					      <div class="scenary">
+						   <div class="moon">
+			                 <img id="dark-icon" src="/resources/images/dark-light/moon.webp" />						
+						  </div>
+						    <div class="sun">
+						       <img id="light-icon" src="/resources/images/dark-light/sun.webp" />		
+						    </div>						
+						  </div>							
+						</label>		
+				   </div>  
+			    </div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
 
@@ -228,7 +240,7 @@
 						value="#{mapLabels.map_position_btn_save_equipment}"
 						onclick="alertOptions('#realsave');">
 						<f:ajax execute="@form" render="@none"
-							listener="#{equipsBean.definePosition}" />
+							listener="#{equipsBean.definePosition}" onevent="onEventMapFunction"/>
 					</h:commandButton>
 
 					<!--  ******************************************************************************************************* -->
@@ -299,7 +311,7 @@
 						from="lpr">#{mapLabels.map_size_select_ocr}</button>
 				</ui:fragment>
 
-				<ui:fragment rendered="#{loginAccount.load.en_mto}">
+				<ui:fragment rendered="#{loginAccount.load.en_meteo}">
 					<button class="dropdown-item dprbtn" data-toggle="modal"
 						data-target="#sizeeqps" data-backdrop="false" id="dropmto"
 						from="mto">#{mapLabels.map_size_select_mto}</button>
@@ -425,9 +437,11 @@
 
 			<!-- MAP FRONT IMAGE -->
 
-			<div class="drawLines grab-map"></div>
+			<ui:param name="Coord" value="#{ loginAccount.coord }" />
+
 			<h:graphicImage class="grab-map" width="100%" id="mapTuxpan"
-				value="#{loginAccount.mapUI}" />
+				value="#{loginAccount.mapUI}" p:dark="#{loginAccount.darkMapUI}" />
+			<div class="drawLines grab-map" gps_start="#{''.format('%f;%f;%f', Coord[0][0], Coord[0][1], Coord[0][2])}" gps_end="#{''.format('%f;%f;%f', Coord[1][0], Coord[1][1], Coord[1][2])}"></div>
 		</div>
 
 		<!-- Label -->
@@ -438,13 +452,28 @@
 		<!-- Drag Items --> <!-- CAUSE -->
 
 		<div class="draggable" id="equipAll"></div>
+		<div class="zoomRoad" id="zoomRoad">
+			<ui:param name="Naranjos" value="#{ loginAccount.coordMap('naranjos') }" />
+			<ui:param name="RightLosgil" value="#{ loginAccount.coordMap('right-losgil') }" />
 
-		<!-- Plaque --> <ui:fragment rendered="#{loginAccount.plaque ne ''}">
+			<div name="naranjos-zoomPoint" for="naranjos"></div>
+			<div name="naranjos" style="display: none" gps_start="#{''.format('%f;%f;%f', Naranjos[0][0], Naranjos[0][1], Naranjos[0][2])}" gps_end="#{''.format('%f;%f;%f', Naranjos[1][0], Naranjos[1][1], Naranjos[1][2])}">
+				<img src="/resources/images/map/tuxpan/naranjos.webp" />
+			</div>
+
+			<div name="right-losgil-zoomPoint" for="right-losgil"></div>
+			<div name="right-losgil" style="display: none" gps_start="#{''.format('%f;%f;%f', RightLosgil[0][0], RightLosgil[0][1], RightLosgil[0][2])}" gps_end="#{''.format('%f;%f;%f', RightLosgil[1][0], RightLosgil[1][1], RightLosgil[1][2])}">
+				<img src="/resources/images/map/tuxpan/right-losgil.webp" />
+			</div>
+		</div>
+
+		<!-- Plaque -->
+		<ui:fragment rendered="#{loginAccount.plaque ne ''}">
 
 			<div>
 				<c:forEach items="#{roadView.plaque}" var="plaque">
-					<div class="plaque" posX="#{plaque.map_posX}"
-						posY="#{plaque.map_posY}">
+					<div class="plaque" longitude="#{plaque.longitude}"
+						latitude="#{plaque.latitude}" posY="#{plaque.mapY}">
 						<img width="75"
 							src="/resources/images/plaques/#{loginAccount.plaque}/#{plaque.km}km.webp" />
 					</div>
@@ -452,6 +481,15 @@
 			</div>
 
 		</ui:fragment> </section>
+
+		<div class="context-menu">
+			<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.map_equipment_settings}</button>
+			<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.map_equipment_realtime_view}</button>
+			<button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.map_change_vehicle}</button>
+			<c:if test="#{ SuperAdmin }">
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.map_equipment_options}</button>
+			</c:if>
+		</div>
 
 	</ui:define>
 
@@ -508,11 +546,11 @@
 								</div>
 							</div>
 
-							<!-- ***** EQUIPMENTS OPTIONS ***** -->
+					<!-- ***** EQUIPMENTS OPTIONS ***** -->
 
-							<!--  ******************************************************************************************************* -->
+					<!--  ******************************************************************************************************* -->
 
-							<!-- EQUIPMENT ID -->
+					<!-- EQUIPMENT ID -->
 
 							<div class="form-row">
 								<!-- ROW -->
@@ -569,6 +607,37 @@
 							<!---->
 
 							<!-- DMS TYPE -->
+
+							<!--  ******************************************************************************************************* -->
+
+							<!-- METEO TYPE -->
+
+							<div class="form-row meteoHidden">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT DIV -->
+									<span><i class="fas fa-th-list"></i></span>
+									<!-- SPAN ICON -->
+									<span for="meteoType" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="meteoType" id="meteoType" size="1">
+										<option value="">#{mapLabels.map_creation_select_meteo_type}</option>
+										<ui:repeat var="tp" value="#{equipsBean.meteoType}"
+											varStatus="tpStatus">
+											<option value="#{tp.value}">#{tp.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- METEO TYPE -->
 
 							<!--  ******************************************************************************************************* -->
 
@@ -733,6 +802,36 @@
 
 							<!--  ******************************************************************************************************* -->
 
+	                      	<!-- DIRECTION -->
+
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="direction" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="direction" id="direction" size="1">
+										<option value="">#{mapLabels.map_creation_select_direction}</option>
+										<ui:repeat var="dir" value="#{equipsBean.dir}"
+											varStatus="dirStatus">
+											<option value="#{dir.value}">#{dir.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="direction" class="error" id="direction-error"></label>
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!--  ******************************************************************************************************* -->
+
+
 							<!-- ***** ROAD ***** -->
 							<div class="form-row">
 								<div class="col-md-6">
@@ -789,6 +888,62 @@
 							</div>
 							<!---->
 							<!-- ***** KM ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							<!-- ***** LATITUDE ***** -->
+
+							<div class="form-row">
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-globe-americas"></i></span>
+										<!-- SPAN ICON -->
+										<span for="lat" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="lat" id="lat"
+											class="lat" placeholder="#{mapLabels.map_creation_input_lat}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="lat" class="error" id="lat-error"></label>
+									</div>
+									<!---->
+								</div>
+								
+							<!---->
+							
+							<!-- ***** LATITUDE ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							<!-- ***** LONGITUDE ***** -->
+
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-globe-europe"></i></span>
+										<!-- SPAN ICON -->
+										<span for="long" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="long" id="long"
+											class="long" placeholder="#{mapLabels.map_creation_input_long}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="long" class="error" id="long-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+							</div>
+							<!---->
+							
+							<!-- ***** LONGITUDE ***** -->
 
 							<!--  ******************************************************************************************************* -->
 
@@ -1181,7 +1336,7 @@
 											<f:passThroughAttribute name="data-target" value="#editmodal" />
 											<f:ajax execute="@form"
 												render="edit-equip-form:equipId  edit-equip-form:equipName edit-equip-form:cities
-											 edit-equip-form:roads edit-equip-form:km edit-equip-form:width" />
+											 edit-equip-form:roads edit-equip-form:km edit-equip-form:width edit-equip-form:long edit-equip-form:lat" />
 										</h:commandButton>
 
 										<!---->
@@ -1443,20 +1598,19 @@
 									<!-- SPAN VALIDATION -->
 
 									<input type="hidden" value="map" id="interface"
-										name="interface" /> <select name="equips-edit"
-										id="equips-edit" size="1" disabled="true">
-										<option value="">#{mapLabels.map_creation_select_mto_type}</option>
-										<ui:repeat var="eqp" value="#{equipsBean.module}"
-											varStatus="eqpStatus">
-											<option value="#{eqp.value}">#{eqp.label}</option>
-										</ui:repeat>
-									</select>
+										name="interface" /> <select name="equips-edit" id="equips-edit" size="1" disabled="true">
+										  <option value="">#{mapLabels.map_creation_select_mto_type}</option>
+										    <ui:repeat var="eqp" value="#{equipsBean.module}"
+											   varStatus="eqpStatus">
+											   <option value="#{eqp.value}">#{eqp.label}</option>
+										    </ui:repeat>
+									  </select>
 									<!-- SELECT -->
 								</div>
+								
 								<!---->
 
 								<!-- EQUIPMENTS OPTIONS -->
-
 
 								<!--  ******************************************************************************************************* -->
 
@@ -1510,7 +1664,38 @@
 							<!-- DMS TYPE -->
 
 							<!--  ******************************************************************************************************* -->
+                            
+                            <!-- METEO TYPE -->
 
+							<div class="form-row meteoHidden-edit">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT DIV -->
+									<span><i class="fas fa-th-list"></i></span>
+									<!-- SPAN ICON -->
+									<span for="dmsType" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="meteoType-edit" id="meteoType-edit" size="1">
+										<option value="">#{mapLabels.map_creation_select_meteo_type}</option>
+										<ui:repeat var="tp" value="#{equipsBean.meteoType}"
+											varStatus="tpStatus">
+											<option value="#{tp.value}">#{tp.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<!-- ERROR DIV -->
+								</div>
+								<!---->
+							</div>
+							<!---->
+
+							<!-- METEO TYPE -->
+
+							<!--  ******************************************************************************************************* -->
+                         
 							<!-- IP ADDRESS -->
 
 							<div class="form-row ipAddressShow-edit">
@@ -1640,6 +1825,7 @@
 							<!--  ******************************************************************************************************* -->
 
 							<!-- ***** CITY ***** -->
+							
 							<div class="form-row">
 								<!-- ROW -->
 								<div class="form-group col-md-12 select-field">
@@ -1667,6 +1853,36 @@
 
 							<!-- ***** CITY ***** -->
 
+							<!--  ******************************************************************************************************* -->
+							
+						    <!-- DIRECTION -->
+
+							<div class="form-row">
+								<!-- ROW -->
+								<div class="form-group col-md-12 select-field">
+									<!-- SELECT -->
+									<span><i class="fas fa-city"></i></span>
+									<!-- SPAN ICON -->
+									<span for="direction-edit" class="valid-icon-hidden"></span>
+									<!-- SPAN VALIDATION -->
+									<select name="direction-edit" id="direction-edit" size="1">
+										<option value="">#{mapLabels.map_creation_select_direction}</option>
+										<ui:repeat var="dir" value="#{equipsBean.dir}"
+											varStatus="dirStatus">
+											<option value="#{dir.value}">#{dir.label}</option>
+										</ui:repeat>
+									</select>
+									<!-- SELECT -->
+								</div>
+								<!---->
+								<div class="error-label">
+									<label for="direction-edit" class="error" id="direction-edit-error"></label>
+								</div>
+								<!---->
+							</div>
+							
+							<!---->
+						
 							<!--  ******************************************************************************************************* -->
 
 							<!-- ***** ROAD ***** -->
@@ -1764,9 +1980,65 @@
 							<!---->
 
 							<!-- ***** KM ***** -->
-
+							
 							<!--  ******************************************************************************************************* -->
 
+							
+							<!-- ***** LATITUDE ***** -->
+							 <div class="form-row">
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-globe-americas"></i></span>
+										<!-- SPAN ICON -->
+										<span for="latEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="latEdit" id="latEdit"
+											class="latEdit" placeholder="#{mapLabels.map_creation_input_lat}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="latEdit" class="error" id="latEdit-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+							<!---->
+							
+							<!-- ***** LATITUDE ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
+							<!-- ***** LONGITUDE ***** -->
+
+								<div class="col-md-6">
+									<!-- ROW -->
+									<div class="form-group input-field-half">
+										<!-- ROW -->
+										<span><i class="fas fa-globe-europe"></i></span>
+										<!-- SPAN ICON -->
+										<span for="longEdit" class="valid-icon-hidden"></span>
+										<!-- SPAN VALIDATION -->
+										<input type="text" autocomplete="off" name="longEdit" id="longEdit"
+											class="longEdit" placeholder="#{mapLabels.map_creation_input_long}" />
+										<!-- INPUT -->
+									</div>
+									<!---->
+									<div class="error-label">
+										<label for="long" class="error" id="long-error"></label>
+									</div>
+									<!---->
+								</div>
+								<!---->
+							</div>
+							<!---->
+							
+							<!-- ***** LONGITUDE ***** -->
+
+							<!--  ******************************************************************************************************* -->
+							
 							<!-- ***** MODEL ***** -->
 							<div class="form-row sosInputs-edit" style="display: none;">
 								<!-- ROW -->
@@ -2238,10 +2510,45 @@
 			<!---->
 		</div>
 		<!---->
-
+		
 		<!-- ************************************************************************************* -->
 		<!-- ************************************* SIZE ****************************************** -->
 		<!-- ************************************************************************************* -->
+
+		
+		<h:form prependId="false" id="selectCarType" name="selectCarType">
+			<input type="hidden" id="id_car" name="id_car" />
+			<input type="hidden" id="type_car" name="type_car" />
+			<div class="modal fade" id="modalCarImage" tabindex="-1" aria-labelledby="modalCarImage" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title ml-auto" id="CarImageTitle">Chooce the Car</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="car-select row">
+								<c:forEach items="#{roadView.cars}" var="Cars">
+									<div class="col-4 d-flex">
+										<div class="select m-auto p-2">
+											<img value="#{Cars[0]}" saved="#{Cars[2]}" src="/resources/images/equips/#{Cars[1]}" />
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+							<h:commandButton value="Save" styleClass="btn btn-dark">
+								<f:ajax execute="@this" render="@form" listener="#{roadView.saveCarIMG}" onevent="ChangeCarEvent" />
+							</h:commandButton>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
 
 	</ui:define>
 
@@ -2259,6 +2566,14 @@
 		<h:outputScript name="gps.js" library="js/gps" />
 
 		<h:outputScript name="map.js" library="js/map" />
+
+		<form name="roadLine">
+
+			<c:forEach items="#{roadView.roadLine}" var="point">
+				<input type="hidden" value="#{''.format('%s,%s,%s', point[0], point[1], point[2])}" />
+			</c:forEach>
+
+		</form>
 
 		<c:if test="#{ SuperAdmin }">
 

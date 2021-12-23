@@ -120,8 +120,6 @@ body {
   margin-left: 10%;
 }
 
-
-
 /* **********************  MAP CONTENT ***********************************/
 
 .overflow {
@@ -163,6 +161,16 @@ body {
   cursor: grabbing;
   cursor: -webkit-grabbing;
   cursor: -moz-grabbing;
+}
+
+.context-menu {
+	position: fixed;
+	display: none;
+	z-index: 2;
+}
+
+.dinamic-mouse-right {
+	width: 100%;
 }
 
 .plaque {

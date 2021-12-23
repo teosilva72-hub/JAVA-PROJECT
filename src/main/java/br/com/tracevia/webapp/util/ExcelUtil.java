@@ -7,9 +7,7 @@ import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.hwpf.usermodel.BorderCode;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
@@ -45,6 +43,7 @@ public class ExcelUtil {
 	private static String NUMBER_REGEX = "\\d+";
 	private static String DOUBLE_REGEX = "\\d*\\.\\d+$";
 	private static String NUMBER_DECIMAL = "^[0-9]\\d*(\\.\\d+)?$";
+	private static String DATETIME_REGEX = "^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$";
 	
 	public static String ALL_BORDERS = "ALL";
 	public static String TOP_BORDER = "TOP";
@@ -199,7 +198,8 @@ public class ExcelUtil {
 	public void createCell(Sheet sheet, Row row, int rowNumber, int cellNumber) {		
 
 		row = sheet.getRow(rowNumber);		
-		row.createCell(cellNumber);				
+		row.createCell(cellNumber);	
+
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -245,9 +245,9 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 */
 	public void setCellValue(Sheet sheet, Row row, int rowNumber, int cellNumber, String value) {		
-
+		
 		row = sheet.getRow(rowNumber);			
-		row.getCell(cellNumber)
+		row.getCell(cellNumber)	
 		.setCellValue(value);		
 
 	}	
@@ -387,7 +387,9 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Sheet.html
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 */
-	public void setFormula(Sheet sheet, Row row, int rowNumber, int cellNumber, String formula) {		
+	public void setFormula(Sheet sheet, Row row, int rowNumber, int cellNumber, String formula) {	
+		
+		System.out.println(cellNumber+" "+formula);
 
 		row = sheet.getRow(rowNumber);		
 		row.getCell(cellNumber)	
@@ -1015,7 +1017,7 @@ public class ExcelUtil {
 		CellStyle style = createCellStyle(workbook);
 		setStyleHorizontalAlignment(style, horizontal);
 		setStyleVerticalAlignment(style, vertical);
-		setWrapText(style, true);
+		setWrapText(style, wrapText);
 		setFont(style, font);
 		setCellBackgroundColor(style, backgroundColor, pattern);
 		borderTemplate(borderTemplate, style, borderStyle);
@@ -1116,42 +1118,71 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelSum(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
-
-		int startColumn = 0;
-		int total = rowTotal + 1; // SOMA -SE + 1 NESSE CASO (REGRA DO MERGE) 
+	public void totalExcelSum(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle standard, List<String[]> values, String totalType, int columnsLength, int startColumn, int rowIni, int rowEnd) {
+				
+		String columnLetter = "";				
+				
+		int sum = rowIni - rowEnd;
 		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+			if(sum == 1)
+				rowEnd -= 1;
 		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-				    endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(total)+":"+endColumnLetter+""+(total));  				     	
+	    rowIni += 1;	    
+	    
+	    setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowEnd, rowEnd); // TOTAL STYLE	
+	    
+	    // ----------------------------------------------------------------------------------
+	    
+		// CREATE STYLE
+		/*CellStyle cellStyle = createCellStyle(wb);
+	    	    
+	    if(totalType.equals("timeSum")) {
+	    	
+	    	// CREATE FONT	
+			Font font = createFont(wb, FONT_ARIAL, 10, false, false, IndexedColors.BLACK);
+	
+			// SET STYLE
+			cellStyle = createCellStyle(wb, font, HorizontalAlignment.CENTER, IndexedColors.WHITE, FillPatternType.SOLID_FOREGROUND, ALL_BORDERS, BorderStyle.THIN);
+		
+			// HELPER							
+			CreationHelper createHelper = wb.getCreationHelper();
 
-		// ----------------------------------------------------------------------------------------------------------------
-
-		// LOOP
+			cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("hh:mm:ss"));
+	    		    	
+	    }*/
+	    
+	    // ----------------------------------------------------------------------------------
+				    	    
 		for(int col = startColumn; col <= columnsLength; col++) {
+			
+			columnLetter = CellReference.convertNumToColString(col); // COLUMN LETTER				
+									
+			//if(values.get(0)[col].matches(NUMBER_DECIMAL))
+			    setFormula(sheet, row, rowEnd, col, "SUM("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ")");	// DEFINE FORMULA										
+            			
+			/*else if(values.get(0)[col].matches(DATETIME_REGEX)) {
+				
+				columnLetter = CellReference.convertNumToColString(col);	// COLUMN LETTER	
 
-			String columnLetter = CellReference.convertNumToColString(col); // COLUMN LETTER
+				// FORMULA				
+				String formula = "(";
+				String aux= "";
 
-			setFormula(sheet, row, rowTotal, col, "SUM("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ")");	// DEFINE FORMULA										
+				for(int i = rowIni; i <= rowEnd; i++) {
+					aux += ""+columnLetter+""+i+"";
 
-		}
+					if(i < rowEnd)
+						aux += "+";
+				}
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
+				formula += aux + ")";
+				
+				setFormula(sheet, row, rowEnd, col, formula);	// DEFINE FORMULA	
 
+				setCellStyle(sheet, row, cellStyle, rowEnd, rowEnd, col, col); // TOTAL STYLE		
+				
+			}*/		
+		}	
 	}
 
 	// ----------------------------------------------------------------------------------------------------------------
@@ -1174,41 +1205,25 @@ public class ExcelUtil {
 	 * @see http://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/CellStyle.html
 	 * 
 	 */
-	public void totalExcelAverage(Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int rowIni, int rowEnd) {
-
-        int startColumn = 0;
+	public void totalExcelAverage(Sheet sheet, Row row, CellStyle standard, List<String[]> lines, int columnsLength,  int startColumn, int rowIni, int rowEnd) {
 		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
+		int sum = rowIni - rowEnd;
 		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER						 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
-
-
-		// ----------------------------------------------------------------------------------------------------------------
-
+			if(sum == 1)
+				rowEnd -= 1;
+			
+		rowIni += 1;
+							
 		// LOOP
 		for(int col = startColumn; col <= columnsLength; col++) {
 
 			String columnLetter = CellReference.convertNumToColString(col); // COLUMN LETTER
 
-			setFormula(sheet, row, rowTotal, col, "ROUND(AVERAGEIF("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ", \">0\"), 2)");	// DEFINE FORMULA										
+			setFormula(sheet, row, rowEnd, col, "ROUND(AVERAGEIF("+columnLetter+""+ (rowIni) + ":"+columnLetter+"" + (rowEnd) + ", \">0\"), 2)");	// DEFINE FORMULA										
 
 		}
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE		
+		setCellsStyle(sheet, row, standard, startColumn, columnsLength, rowEnd, rowEnd); // TOTAL STYLE		
 
 	}
 
@@ -1236,29 +1251,7 @@ public class ExcelUtil {
 	 * @see https://poi.apache.org/apidocs/dev/org/apache/poi/ss/usermodel/Row.html 
 	 * @see https://poi.apache.org/apidocs/4.0/org/apache/poi/ss/usermodel/CreationHelper.html 
 	 */
-	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle style, List<String[]> lines, int rowTotal, int columnsLength, int colNumber, int rowIni, int rowEnd) {
-
-        int startColumn = 0;
-		
-		String startColumnLetter = "A";
-		String endColumnLetter = "";
-
-		// ----------------------------------------------------------------------------------------------------------------
-
-		 // VERFICA SE AS # PRIMEIRAS COLUNAS SÃO STRINGS	
-		
-			for(int c = 0; c < 3; c++) {
-				 
-				if(!lines.get(0)[c].matches(NUMBER_DECIMAL)) {
-					startColumn++;
-					endColumnLetter = CellReference.convertNumToColString((startColumn - 1)); // END COLUMN LETTER					 
-				}					
-			}
-		 	    	
-			// MERGE START CELLS ON INIT TOTAL
-			mergeCells(sheet, startColumnLetter+""+(rowTotal)+":"+endColumnLetter+""+(rowTotal));  				     	
-
-		// ----------------------------------------------------------------------------------------------------------------
+	public void totalExcelDate(XSSFWorkbook wb, Sheet sheet, Row row, CellStyle standard, int colNumber, int rowTotal, int rowIni, int rowEnd) {
 
 		// CREATE FONT	
 		Font font = createFont(wb, FONT_ARIAL, 10, false, false, IndexedColors.BLACK);
@@ -1273,6 +1266,8 @@ public class ExcelUtil {
 		CreationHelper createHelper = wb.getCreationHelper();
 
 		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("hh:mm:ss"));
+		
+		System.out.println(colNumber);
 
 		String columnLetter = CellReference.convertNumToColString(colNumber);	// COLUMN LETTER	
 
@@ -1289,10 +1284,10 @@ public class ExcelUtil {
 		}
 
 		formula += aux + ")";
-
+		
 		setFormula(sheet, row, rowTotal, colNumber, formula);	// DEFINE FORMULA	
 
-		setCellsStyle(sheet, row, style, startColumn, columnsLength, rowTotal, rowTotal); // TOTAL STYLE
+		setCellStyle(sheet, row, standard, rowTotal, rowTotal, colNumber, colNumber); // TOTAL STYLE
 
 	}	
 

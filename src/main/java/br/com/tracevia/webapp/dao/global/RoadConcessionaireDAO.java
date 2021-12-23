@@ -59,7 +59,7 @@ public class RoadConcessionaireDAO {
 	
 	public RoadConcessionaireDAO() {
 		
-		LogUtils.createLogsFolder(classErrorPath);
+		LogUtils.createLogFolder(classErrorPath);
 		
 	}
 	
@@ -299,7 +299,7 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			query = "SELECT km, map_pos_x, map_pos_y, linear_pos_x, linear_pos_y FROM plaque_km";
+			query = "SELECT km, longitude, latitude, map_posY, linear_pos_x, linear_pos_y FROM plaque_km";
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
@@ -311,10 +311,11 @@ public class RoadConcessionaireDAO {
 
 					Plaque plaque = new EstradaObjectController().new Plaque();
 					plaque.setKm(rs.getInt(1));
-					plaque.setMap_posX(rs.getInt(2));
-					plaque.setMap_posY(rs.getInt(3));
-					plaque.setLinear_posX(rs.getInt(4));
-					plaque.setLinear_posY(rs.getInt(5));
+					plaque.setLongitude(rs.getDouble(2));
+					plaque.setLatitude(rs.getDouble(3));
+					plaque.setMapY(rs.getInt(4));
+					plaque.setLinear_posX(rs.getInt(5));
+					plaque.setLinear_posY(rs.getInt(6));
 
 					all_plaque.add(plaque);
 				}
@@ -337,7 +338,129 @@ public class RoadConcessionaireDAO {
 		return all_plaque;
 
 	}
+
+	public List<int[]> getRoadLine() {
+		ArrayList<int[]> line = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT id, position_x, position_y FROM map_mapping";
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst())
+				while (rs.next()) {
+
+					int[] point = new int[3];
+					point[0] = rs.getInt(1);
+					point[1] = rs.getInt(2);
+					point[2] = rs.getInt(3);
+
+					line.add(point);
+				}
+
+		} catch (SQLException sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));				
+										 						
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+
+		} finally {
+
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
+		}
+
+		return line;
+	}
 	
 	// --------------------------------------------------------------------------------------------
 
+	public List<String[]> getCarsList() {
+		ArrayList<String[]> cars = new ArrayList<>();
+
+		try {
+
+			String query = "SELECT v.id, file, GROUP_CONCAT(IF(v.id = type, c.id, NULL)) FROM gps_vehicle v INNER JOIN gps_custom c GROUP BY v.id";
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			if (rs.isBeforeFirst())
+				while (rs.next()) {
+
+					String[] car = new String[3];
+					car[0] = rs.getString(1);
+					car[1] = rs.getString(2);
+					car[2] = rs.getString(3);
+
+					cars.add(car);
+				}
+
+		} catch (SQLException sqle) {
+
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));				
+										 						
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+
+		} finally {
+
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
+		}
+
+		return cars;
+	}
+
+	public void saveCarIMG(String id, String type) {
+		try {
+
+			String query = "INSERT INTO gps_custom (id, type) VALUES (?, ?)";
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);
+
+			ps.setString(1, id);
+			ps.setString(2, type);
+
+			int res = ps.executeUpdate();
+
+		} catch (SQLException sqle) {
+			try {
+				String query = "UPDATE gps_custom SET type = ? WHERE (id = ?)";
+
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+				ps = conn.prepareStatement(query);
+
+				ps.setString(1, type);
+				ps.setString(2, id);
+
+				int res = ps.executeUpdate();
+			} catch (SQLException sqle2) {
+
+				StringWriter errors = new StringWriter();
+				sqle.printStackTrace(new PrintWriter(errors));				
+				sqle2.printStackTrace(new PrintWriter(errors));				
+																	
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle2.getErrorCode(), sqle2.getSQLState(), sqle2.getMessage(), errors.toString());
+			}
+
+		} finally {
+
+			ConnectionFactory.closeConnection(conn, ps, rs);
+
+		}
+	}
 }

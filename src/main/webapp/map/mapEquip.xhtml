@@ -65,7 +65,9 @@
                                     timer="#{item.message.pages[4].timer}" />
                             </div>
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-info #{item.table_id}"
-                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
+                                item-width="#{item.mapWidth}" direction="#{item.direction}"
+                                longitude="#{item.longitude}" latitude="#{item.latitude}">
 
                                 <!-- Table with DIV -->
                                 <div class="tableStyle card">		
@@ -264,8 +266,8 @@
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
                                 posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
                                 item-width="#{item.mapWidth}" direction="#{item.direction}"
-                                status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}"
-                                status="#{satMapsView.satStatus.get(loop.index).status}">
+                                longitude="#{item.longitude}" latitude="#{item.latitude}"
+                                status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}">
                                 <div id="sat#{item.equip_id}" class="table-sat card border-dark">
                                     <div id="satName#{item.equip_id}"
                                         class="satName card-header p-0 border-dark">
@@ -273,10 +275,9 @@
                                             <p class="mb-0">#{item.nome} - #{item.km}</p>
                                         </div>																																 
                         
-                                 <a role="button" class="sat-info-bagde" data-toggle="popover" 
-                                 data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
-                        
-                                 </div>
+                                 <a role="button" class="sat-info-bagde" data-toggle="popover" data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
+                                  </div>
+                                  
                                     <div class="row text-center card-body p-0 mx-0">
                                         <div class="col-5 padding-sat border-right border-bottom border-dark on-mouse-hover"
                                             data-toggle="tooltip" data-placement="left"
@@ -308,9 +309,13 @@
                                             <span
                                                 id="spd2">#{satMapsView.satListValues.get(loop.index).velocidadeS2}</span><span
                                                 class="km"> km/h</span>
-                                        </div>
-                                    </div>
-
+                                        </div>                                        
+                                    
+                                       <div class="col-12 padding-sat border-top border-dark on-mouse-hover" data-toggle="tooltip" data-placement="bottom" title="#{realtimeLabels.realtime_sat_last_register_title}">    
+                                        <i class="fas fa-clock " style="margin-top: 2px;"></i>                   
+                                        <span class="mb-0 d-inline-block" style="font-size: 10px;">#{satMapsView.satListValues.get(loop.index).dataTime}</span>
+                                      </div>
+                                   </div>                                       
                                 </div>
                                 <!-- HTML to write -->
                                                                             
@@ -378,8 +383,9 @@
                         
                         
                             <!-- Card Speed -->
-							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}">
+							<div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark"
+                                posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}"
+                                direction="#{item.direction}" longitude="#{item.longitude}" latitude="#{item.latitude}">
                                 <a role="button" class="speed-info-bagde" data-toggle="popover" 
                                     data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
 								<div class="card-header py-0 text-center text-white">
@@ -461,7 +467,9 @@
                         
                         <c:otherwise>
                             <div id="#{item.table_id}#{item.equip_id}" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}" class="equip-box #{item.table_id}">                                       
+                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" item-km="#{item.km}"
+                                direction="#{item.direction}" class="equip-box #{item.table_id}"
+                                longitude="#{item.longitude}" latitude="#{item.latitude}">                                       
                                 
                                 <c:if test="#{item.table_id eq 'cftv'}">                                                                                               
                                     <h:graphicImage class="equip-image"
@@ -486,14 +494,10 @@
                                         value="/resources/images/equips/ocr.png" />  
                                                                               
                                 </c:if>
-                                <c:if test="#{item.table_id eq 'mto'}">
+                                <c:if test="#{item.table_id eq 'meteo'}">
                                     <h:graphicImage class="equip-imagePOST"
                                         value="/resources/images/equips/metereologico.png" />
-                                </c:if>   
-                                 <c:if test="#{item.table_id eq 'sv'}">
-                                    <h:graphicImage class="equip-imagePOST"
-                                        value="/resources/images/equips/metereologico.png" />
-                                </c:if>
+                                </c:if>                                   
                                 <c:if test="#{item.table_id eq 'sos'}">
                                     <h:graphicImage class="equip-image"
                                         value="/resources/images/equips/sos.png" />

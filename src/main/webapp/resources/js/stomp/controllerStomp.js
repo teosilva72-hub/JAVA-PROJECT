@@ -11,7 +11,7 @@ const getStomp = async () => {
 	return Stomp.over(ws);
 }
 
-const sendMsgStomp = async function(request, to, debug) {	
+const sendMsgStomp = async function(request, to, debug, tag) {	
 	let client = await getStomp();
 	let response = null;
 	
@@ -21,7 +21,7 @@ const sendMsgStomp = async function(request, to, debug) {
 	}
 	
 	var on_connect = function() {
-		client.send(`/amq/queue/${to}`, {"reply-to": `/temp-queue/${to}`, durable: false}, `"${request}"`)
+		client.send(`/amq/queue/${to}`, {"reply-to": `/temp-queue/${to}`, durable: false}, tag ? `{"${tag}": "${request}"}` : `"${request}"`)
 	};
 
 	let on_error = async function() {

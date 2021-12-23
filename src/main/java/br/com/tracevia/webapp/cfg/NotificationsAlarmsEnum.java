@@ -19,7 +19,7 @@ public enum NotificationsAlarmsEnum {
 
 	private int alarm; 	 
 	 
-    NotificationsAlarmsEnum(int alarm) {
+   NotificationsAlarmsEnum(int alarm) {
         this.alarm = alarm;
     }
  

@@ -33,7 +33,7 @@ const init = () => {
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 
-		$('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			posEquip(equip)
@@ -44,41 +44,17 @@ const init = () => {
 					id = equip.attr('id').match(/\d+/g)[0];
 					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
 					toDrag = `#${equip.attr('id')}`
-					if (ev.which == 3 && type == "cftv") {
-						var cod = document.getElementById("cftvId")
-						cod.value = id
-						//função option cftv
-						rightButtonCftv(type, id)
-						ev.preventDefault()
-					}
+
+					//função option
+					contextMenu(ev, type, id)
 				})
-			if (!equip.hasClass('plaque') && equip.attr('id').match(/[a-zA-Z]+/g)[0] != "cftv")
-				equip.dblclick(function () {
-					posReset();
-
-					id = equip.attr('id').match(/\d+/g)[0];
-					type = equip.attr('id').match(/[a-zA-Z]+/g)[0];
-					toDrag = `#${equip.attr('id')}`
-					$('#OPmodal').modal('toggle');
-					//add btn setting cftv and icon
-					if (type == "cftv") {
-						var cod = document.getElementById("cftvId")
-						cod.value = id
-						$('.cftv-modal-btn').removeClass('none')
-						getInfo()
-					} else {
-						$('.cftv-modal-btn').addClass('none')
-					}
-					////////////////////////////////////////
-				});
-
+				
 			$(window).resize(function () {
 				posEquip(equip);
 			})
 		})
 
 		borderEquip(updated);
-
 		setInfoEquip();
 		setEquipToolTip();
 		showGenericName();
@@ -95,6 +71,9 @@ const init = () => {
 
 		if (window.initSPEED)
 			initSPEED();
+
+		if (window.initGPS)
+			initGPS();
 	})
 }
 
@@ -149,11 +128,11 @@ $(function () {
 	})
 
 	$('#fulldiv2').on('click', function () {
-		$('#frame2')[0].contentWindow.setPosition(0.41, 0.40)
+		$('#frame2')[0].contentWindow.setPosition(0.37, 0.27)
 	})
 
 	$('#fulldiv3').on('click', function () {
-		$('#frame3')[0].contentWindow.setPosition(1, 0.19)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.05)
 	})
 
 
@@ -164,8 +143,8 @@ $(function () {
 
 	$('#divide').on('click', () => {
 		$('#frame1')[0].contentWindow.setPosition(0, 0.43)
-		$('#frame2')[0].contentWindow.setPosition(0.41, 0.40)
-		$('#frame3')[0].contentWindow.setPosition(1, 0.19)
+		$('#frame2')[0].contentWindow.setPosition(0.37, 0.27)
+		$('#frame3')[0].contentWindow.setPosition(1, 0.04)
 
 	})
 
@@ -313,6 +292,7 @@ function ScrollZoom(container) {
 	let max_scale = Number(container.attr('max-scale')) || 4
 	let factor = Number(container.attr('scroll-zoom')) || .5
 	let target = container.children().first()
+	let zoomPoint = $('#zoomRoad')
 	let pos = zoom_point = { x: 0, y: 0 }
 	let scale_diff = scale_prev = 1
 
@@ -354,6 +334,8 @@ function ScrollZoom(container) {
 
 	function update() {
 		target.css('transform', `scale(${scale})`)
+		zoomPoint.css('transform', `scale(${scale})`)
+		$(`.context-menu`).css('display', 'none')
 
 		container
 			.scrollTop(pos.y * container[0].scrollHeight - zoom_point.y / scale_prev)
@@ -361,7 +343,7 @@ function ScrollZoom(container) {
 
 		showGenericName();
 
-		container.find('.equip-box, .equip-info, .equip-box-sat, .plaque').each(function () {
+		container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat, .plaque').each(function () {
 			let equip = $(this)
 
 			equip.css(
@@ -422,7 +404,7 @@ function barResize() {
 //RESIZE EQUIPMENT
 function resizeEquipScale(container) {
 	let max = 0;
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
 	let allEquip = $('#equipAll .equip-box, #equipAll .equip-info, #equipAll .equip-box-sat');
 	let toolbox = $('.square_tool');
@@ -454,7 +436,7 @@ function resizeEquipScale(container) {
 
 //RESIZE EQUIPMENT
 function resizeEquip(container) {
-	let equips = container.find('.equip-box, .equip-info, .equip-box-sat');
+	let equips = container.find('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 	let plaque = $('.plaque');
 	let scaleA;
 
@@ -474,58 +456,62 @@ function resizeEquip(container) {
 // EQUIPMENT POSITION
 function posEquip(equip) {
 	let zoomTarget = equip.closest('[scroll-zoom]').children().first()
-	let zoomTargetImg = zoomTarget.find('img')
 	let scale = Number(zoomTarget.attr('scale'))
-	let pos = {
-		x: Number(equip.attr('posX')),
-		y: Number(equip.attr('posY'))
+	let coord = {
+		longitude: equip.attr("longitude"),
+		latitude: equip.attr("latitude")
 	}
-
-	pos.centX = pos.x / widthMax * scale
-	pos.centY = pos.y / heightMax * scale
+	let pos = coordToPixel(coord.longitude, coord.latitude)
+	pos.x += Number(equip.attr('posX')) || 0
+	pos.y += Number(equip.attr('posY')) || 0
 
 	//Pos X and Pos Y
 	equip.css({
-		left: pos.centX * zoomTarget.width() + zoomTargetImg.offset().left - zoomTarget.offset().left,
-		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
+		left: pos.x * scale,
+		top: pos.y * scale
 	});
 
 	if (!equip.hasClass("plaque"))
 		updateLine(equip);
 
 	if (equip.attr("class").includes('equip-box-sat')) {
-		let sat_status = equip.attr('status')
-		let sat_name = equip.attr('id')
-		let interval = Number(equip.attr('status-period'))
-		//TESTE		
+			let sat_status = equip.attr('status')
+			let sat_name = equip.attr('id')
+			let interval = Number(equip.attr('status-period'))
+			let fluxo1 = equip.find('[id^=img1FluxoTab]')
+			let fluxo2 = fluxo1.next()
+			let spd1 = Number(equip.find('#spd1').text())
+			let spd2 = Number(equip.find('#spd2').text())
 
 		//Green Color > indica que o equipamento está conectado
-		if (sat_status > 0 && interval == 30) {
+		if (interval == 15 || interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
+			$(`#status${sat_name}`).css({"color": '#00FF0D'});	
 
 		}
-		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 45) {
-			equip.find("[id^=satName]").css({
-				"background-color": '#00BFFF',
-				color: 'black'
-			});
 
-			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
-		}
 		//SeaGreen Color > indica que o equipamento está com perca de pacotes
-		else if (sat_status > 0 && interval == 8) {
+		else if (interval == 3) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#FFFF00',
 				color: 'black'
 			});
 
-			$(`#status${sat_name}`).css({ "color": '#00FF0D' });
+			$(`#status${sat_name}`).css({"color": '#FFFF00'});	
+		}
+		//SeaGreen Color > indica que o equipamento está com perca de pacotes
+		else if (interval == 6) {
+			equip.find("[id^=satName]").css({
+				"background-color": '#FF7F00',
+				color: 'black'
+			});
+
+			$(`#status${sat_name}`).css({"color": '#FF7F00'});		
+			
 		}
 		//Red Color > indica que o equipamento está sem comunicação
 		else {
@@ -534,7 +520,8 @@ function posEquip(equip) {
 				color: 'white'
 			});
 
-			$(`#status${sat_name}`).css({ "color": '#FF0000' });
+			$(`#status${sat_name}`).css({"color": '#FF0000'});	
+			
 		}
 	}
 }
@@ -569,6 +556,7 @@ function mapMove(ele) {
 	};
 
 	const mouseMoveHandler = function (e) {
+		$(`.context-menu`).css('display', 'none')
 		// O quao longe o mouse esta sendo movido
 		const dx = e.clientX - pos.x;
 		const dy = e.clientY - pos.y;
@@ -613,7 +601,7 @@ function setPosition(posX, posY) {
 	if (scale == 1) {
 		const element = $('section.overflow')
 
-		for (let idx = 0; idx < 2; idx++) {
+		for (let idx = 0; idx < 1; idx++) {
 			zoomIn(element)
 		}
 
@@ -665,8 +653,8 @@ function dragEquip() {
 					left: Math.round(elmnt.css("left").replace("px", "") - pos1),
 					top: Math.round(elmnt.css("top").replace("px", "") - pos2)
 				}
-				pos.leftOrigin = Math.round(((pos.left - targetZoomImg.offset().left + targetZoom.offset().left) / targetZoomImg.width() * widthMax) / scale)
-				pos.topOrigin = Math.round(((pos.top - targetZoomImg.offset().top + targetZoom.offset().top) / targetZoomImg.height() * heightMax) / scale)
+				pos.leftOrigin = Math.round(pos.left / scale)
+				pos.topOrigin = Math.round(pos.top / scale)
 
 				// Set the element's new position:
 				elmnt.css({
@@ -677,10 +665,11 @@ function dragEquip() {
 				updateLine(elmnt);
 
 				// Save element position on input 
+				let initial = coordToPixel(elmnt.attr("longitude"), elmnt.attr("latitude"));
 				document.getElementById("real:equipIdPos").value = id;
 				document.getElementById("real:equipTablePos").value = type;
-				document.getElementById("real:equipPosX").value = pos.leftOrigin;
-				document.getElementById("real:equipPosY").value = pos.topOrigin;
+				document.getElementById("real:equipPosX").value = Math.round(pos.leftOrigin - initial.x);
+				document.getElementById("real:equipPosY").value = Math.round(pos.topOrigin - initial.y);
 				$('#posX').text('x: ' + parseInt(pos.left / targetZoom.width() * widthMax / scale));
 				$('#posY').text('y: ' + parseInt(pos.top / targetZoom.height() * heightMax / scale));
 			})
@@ -916,6 +905,7 @@ $(function () {
 				$('.dmsHidden').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
+				$('.meteoHidden').hide();
 				$('.ipAddressShow').show();
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 				$("#lanes").change(
@@ -974,9 +964,19 @@ $(function () {
 						}
 					});
 
-			} else if (selectVAL == 8) {
+			} else if (selectVAL == 6) {
 
-				$('.dmsHidden').show(); // DIV DMS TYPE				
+				$('.meteoHidden').show(); // DIV DMS TYPE		
+				$('.dmsHidden').hide(); // DIV DMS TYPE				
+				$('.satInputs').hide();
+				$('.sosInputs').hide();
+				$('.speedHidden').hide();
+				$('.ipAddressShow').show();
+
+			}else if (selectVAL == 8) {
+
+				$('.dmsHidden').show(); // DIV DMS TYPE	
+				$('.meteoHidden').hide(); // DIV DMS TYPE					
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
@@ -985,6 +985,7 @@ $(function () {
 			} else if (selectVAL == 10) {
 
 				$('.sosInputs').show();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
@@ -993,6 +994,7 @@ $(function () {
 			} else if (selectVAL == 11) {
 
 				$('.speedHidden').show();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.sosInputs').hide();
 				$('.dmsHidden').hide();
 				$('.satInputs').hide();
@@ -1001,6 +1003,7 @@ $(function () {
 			} else {
 
 				$('.dmsHidden').hide();
+				$('.meteoHidden').hide(); // DIV DMS TYPE		
 				$('.satInputs').hide();
 				$('.sosInputs').hide();
 				$('.speedHidden').hide();
@@ -1106,23 +1109,10 @@ function DirectionEquip() {
 // }
 /* Draw Map [end] */
 
-lines = {
-	"sos1": [-1, .558], "sos2": [-1, .57], "sos3": [-1, .575], "sos4": [-1, .579], "sos5": [-1, .582], "sos6": [-1, .588], "sos7": [-1, .594], "sos8": [-1, .593], "sos9": [-1, .593], "sos10": [-1, .592], "sos11": [-1, .578], "sos12": [-1, .568], "sos13": [-1, .565], "sos14": [-1, .557], "sos15": [-1, .552], "sos16": [-1, .55], "sos17": [-1, .55], "sos18": [-1, .55], "sos19": [-1, .56], "sos20": [-1, .574], "sos21": [-1, .58], "sos22": [-1, .584], "sos23": [-1, .586], "sos24": [-1, .575], "sos25": [-1, .56], "sos26": [-1, .542], "sos27": [-1, .522], "sos28": [-1, .518], "sos29": [-1, .514], "sos30": [-1, .506], "sos31": [-1, .503], "sos32": [-1, .494], "sos33": [-1, .484], "sos34": [-1, .478], "sos35": [-1, .47], "sos36": [-1, .47], "sos37": [-1, .468], "sos38": [-1, .448], "sos39": [-1, .431], "sos40": [-1, .431], "sos41": [-1, .431],
-	"dai1": [-1, .549], "dai2": [-1, .544], "dai3": [-1, .582], "dai4": [-1, .582], "dai5": [-1, .578], "dai6": [-1, .586], "dai7": [-1, .584], "dai8": [-1, .584], "dai9": [-1, .428], "dai10": [-1, .428],
-	"cftv1": [-1, .558], "cftv2": [-1, .565], "cftv3": [-1, .582], "cftv4": [-1, .594], "cftv5": [-1, .565], "cftv6": [-1, .549], "cftv7": [-1, .58], "cftv8": [-1, .586], "cftv9": [-1, .588], "cftv10": [-1, .506], "cftv11": [-1, .496], "cftv12": [-1, .482], "cftv13": [-1, .473], "cftv14": [-1, .468], "cftv15": [-1, .431], "cftv16": [-1, .431],
-	"sv1": [-1, .552], "sv2": [-1, .575], "sv3": [-1, .565], "sv4": [-1, .473], "sv5": [-1, .431],
-	"ocr1": [-1, .563], "ocr2": [-1, .57], "ocr3": [-1, .56], "ocr4": [-1, .565], "ocr5": [-1, .543], "ocr6": [-1, .549], "ocr7": [-1, .502], "ocr8": [-1, .506], "ocr9":  [-1, .431], "ocr10":  [-1, .426],
-	"colas1": [-1, .565], "colas2": [-1, .56], "colas3": [-1, .586], "colas4": [-1, .583], "colas5": [-1, .587], "colas6": [-1, .584],
-	"dms1": [-1, .57], "dms2": [-1, .576], "dms3": [-1, .586], "dms4": [-1, .580], "dms5": [-1, .588], "dms6": [-1, .426],
-	"wim1": [-1, .562], "wim2": [-1, .568],
-	"speed1": [-1, .57], "speed2": [-1, .575], "speed3": [-1, .543], "speed4": [-1, .549], "speed5": [-1, .492], "speed6": [-1, .497],
-	"mto1": [-1, .587],
-}
-
 // const setLines = () => {
 // 	let draw = $('.drawLines');
 // 	let container = $("#zoomtext.section");
-// 	let equips = $('.equip-box, .equip-info, .equip-box-sat');
+// 	let equips = $('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat');
 
 // 	draw.css({
 // 		"width": container.css("width"),
@@ -1153,12 +1143,12 @@ lines = {
 const clearLines = () => {
 	let draw = $('.drawLines');
 	let checkedLines = $("#visiblelines");
-	draw.empty();
+	draw.find(".equipLine ").remove();
 	if (checkedLines.prop("checked"))
-	$('.equip-box, .equip-info, .equip-box-sat').each(function () {
-		let equip = $(this)
-		updateLine(equip);
-	});
+		$('.draggable .equip-box, .draggable .equip-info, .draggable .equip-box-sat').each(function () {
+			let equip = $(this)
+			updateLine(equip);
+		});
 }
 
 const updateLine = equip => {
@@ -1167,34 +1157,32 @@ const updateLine = equip => {
 		return
 		
 	let draw = $('.drawLines');
+	let id = equip.attr("id");
+	let l = draw.find(`.equipLine.${id}`);
 	let container = draw.closest("[scroll-zoom]");
 
 	draw.css({
-		"width": container.css("width"),
-		"height": container.css("height")
+		"width": "100%",
+		"height": "100%"
 	})
 
-	let id = equip.attr("id");
-	let km = Number(equip.attr("item-km").replace("+", ".")) / 102;
-	let l = draw.find(`.equipLine.${id}`);
 	let equipScale = equip.attr("scale");
 	let dimension = {
 		"width": equip.width() * equipScale,
 		"height": equip.height() * equipScale,
 	}
 	let pos = {
-		"x": Number(equip.css("left").replace("px", "")) / scale,
-		"y": Number(equip.css("top").replace("px", "")) / scale
+		longitude: Number(equip.attr("longitude")),
+		latitude: Number(equip.attr("latitude")),
+		x: Number(equip.css("left").replace("px", "")) / scale,
+		y: Number(equip.css("top").replace("px", "")) / scale
 	};
 
-	let point = {
-		"x": (lines[id] ? lines[id][0] != -1 ? lines[id][0] : km : km) * container.width(),
-		"y": (lines[id] ? lines[id][1] : .5) * container.height()
-	};
+	let point = coordToPixel(pos.longitude, pos.latitude);
 
 	let difference = {
-		"x": point.x - pos.x,
-		"y": point.y - pos.y,
+		x: point.x - pos.x,
+		y: point.y - pos.y,
 	}
 	difference.absX = Math.abs(difference.x);
 	difference.absY = Math.abs(difference.y);
@@ -1219,18 +1207,90 @@ const updateLine = equip => {
 	l.find("polyline").attr("points", `${point.x},${point.y} ${pos.x},${pos.y}`);
 }
 
-/* Get Canvas Position X/Y */
+//OPTIONS > POSITION, EDITE AND DELETE EQUIP
+function moreOption(){
+	$('#OPmodal').modal('toggle');
+}
 
-// function getPosition(e) {
-// 	// getBoundingClientRect to retrieve the position of our canvas in the doc
-// 	var rect = this.getBoundingClientRect();
-// 	// we also need to use clientX and clientY values now
-// 	var x = e.clientX - rect.left;
-// 	var y = e.clientY - rect.top;
-// 	var coord = "x=" + x + ", y=" + y;
-// 	var c = this.getContext('2d');
-// 	var p = c.getImageData(x, y, 1, 1).data;
-//   }
+function contextMenu(ev, type, id, all = true){
+	let equip = $(`#${type + id}`)
+	let menu = $(`.context-menu`)
+	ev.stopPropagation()
+	ev.preventDefault()
+	menu.css({
+		left: ev.pageX,
+		top: ev.pageY,
+		display: 'block'
+	})
+	menu.children().css('display', 'none').filter(`[for=${type}]${all ? ', [for=all]' : ''}`).css('display', 'block')
+}
 
-/* Get Canvas Position X/Y [end] */
+$("#darkmode").change(function() {
+	
+	let val = $('#mapTuxpan')	
+	let frame1 = $($("#frame1")[0].contentWindow.document).find("#zoomtext img")
+	let frame2 = $($("#frame2")[0].contentWindow.document).find("#zoomtext img")
+	let frame3 = $($("#frame3")[0].contentWindow.document).find("#zoomtext img")	
+	
+	if($(this).prop("checked")) {
+		$('body, html, #content').css('background-color', '#0B0D19')
+		 
+	      val.attr('light', val.attr('src'))
+          frame1.attr('light', val.attr('src'))
+          frame2.attr('light', val.attr('src'))
+          frame3.attr('light', val.attr('src'))
 
+		  val.attr('src', val.attr('dark'))	
+          frame1.attr('src', frame1.attr('dark'))
+          frame2.attr('src', frame2.attr('dark'))
+          frame3.attr('src', frame3.attr('dark'))      
+		 
+		$('.equipLine > polyline').css({
+			stroke: 'white',
+			'stroke-width': '.2'
+		})
+		
+		$('#zoomOut').css('color','#b3b3b3')
+		$('#zoomIn').css('color','#b3b3b3')
+		$('#divide').css('color','#b3b3b3')
+		$('#fullbody').css('color','#b3b3b3')
+		$('#full').css('color','#b3b3b3')
+		$('#zoomIn1').css('color','#b3b3b3')
+		$('#zoomOut1').css('color','#b3b3b3')
+		$('#fulldiv1').css('color','#b3b3b3')
+		$('#zoomIn2').css('color','#b3b3b3')
+		$('#zoomOut2').css('color','#b3b3b3')
+		$('#fulldiv2').css('color','#b3b3b3')
+		$('#zoomIn3').css('color','#b3b3b3')
+		$('#zoomOut3').css('color','#b3b3b3')
+		$('#fulldiv3').css('color','#b3b3b3')
+
+	} else {
+		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
+		  val.attr('src', val.attr('light'))
+		 
+	      frame1.attr('src', frame1.attr('light'))
+          frame2.attr('src', frame2.attr('light'))
+          frame3.attr('src', frame3.attr('light'))  
+
+		$('.equipLine > polyline').css({
+			stroke: 'black',
+			'stroke-width': '.2'
+		})
+		
+		$('#zoomOut').css('color','black')
+		$('#zoomIn').css('color','black')
+		$('#divide').css('color','black')
+		$('#fullbody').css('color','black')
+		$('#full').css('color','black')
+		$('#zoomIn1').css('color','black')
+		$('#zoomOut1').css('color','black')
+		$('#fulldiv1').css('color','black')
+		$('#zoomIn2').css('color','black')
+		$('#zoomOut2').css('color','black')
+		$('#fulldiv2').css('color','black')
+		$('#zoomIn3').css('color','black')
+		$('#zoomOut3').css('color','black')
+		$('#fulldiv3').css('color','black')
+	}
+});
