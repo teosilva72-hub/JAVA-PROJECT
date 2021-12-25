@@ -24,7 +24,7 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_app?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver n�o encontrado: "+cfe.getMessage());
@@ -51,7 +51,7 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection2 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_core?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver n�o encontrado: "+cfe.getMessage());
@@ -77,7 +77,7 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection3 = DriverManager.getConnection("jdbc:mysql://localhost:3306/tracevia_its?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver n�o encontrado: "+cfe.getMessage());
@@ -103,7 +103,7 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection4 = DriverManager.getConnection("jdbc:mysql://localhost:3306/trcv_sat?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver n�o encontrado: "+cfe.getMessage());
@@ -129,7 +129,7 @@ public class ConnectionFactory {
 				
 			  Class.forName("com.mysql.cj.jdbc.Driver");
 				connection5 = DriverManager.getConnection("jdbc:mysql://localhost:3306/test_wim?useTimezone=true&serverTimezone=UTC"
-						+ "&autoReconnect=true&useSSL=false", "root", "well123"); 
+						+ "&autoReconnect=true&useSSL=false", "root", "trcvbr18"); 
 							
 		}catch(ClassNotFoundException cfe) {
 			System.out.println("Driver n�o encontrado: "+cfe.getMessage());
