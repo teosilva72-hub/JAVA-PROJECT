@@ -159,7 +159,7 @@ $(function () {
 				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
 				$('.meteoHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.sosInputs-edit').hide(); 				
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -220,46 +220,46 @@ $(function () {
 
 				$('.meteoHidden-edit').show(); // METEO DMS TYPE	
 				$('.portInput-edit').show();	
-				$('.dmsHidden-edit').hide(); 				
+				$('.dmsHidden-edit').hide(); 
+				$('.sosInputs-edit').hide(); 					
 				$('.satInputs-edit').hide();				
-				$('.speedHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.speedHidden-edit').hide();			
 
 			}else if (selectVAL == 8) {
 
 				$('.dmsHidden-edit').show(); // DIV DMS TYPE				
 				$('.satInputs-edit').hide();
 				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide(); 	
 				$('.meteoHidden-edit').hide();
-				$('.speedHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.speedHidden-edit').hide();			
 
 			} else if (selectVAL == 10) {
 
 				$('.portInput-edit').show();
-				$('.dmsHidden-edit').hide();
+				$('.sosInputs-edit').show(); 	
+				$('.dmsHidden-edit').hide();				
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.meteoHidden-edit').hide();			
 
 			} else if (selectVAL == 11) {
 
 				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide(); 	
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').show();
 				$('.meteoHidden-edit').hide();
-				$('.ipAddressShow-edit').hide();
-
+			
 			} else {
 
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
 				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide();	
 				$('.speedHidden-edit').hide();
-				$('.meteoHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.meteoHidden-edit').hide();			
 			}
 
 		}, 100)
@@ -749,10 +749,11 @@ function showBtns() {
 	document.getElementById("topButtons").style.display = "block";
 }
 
-function alertOptions(a) {
-	$(a).css("display", "block");
+function alertOptions(id, message) {
+	$(id).css("display", "block");
+	$(id +' .textAlert').html(message)
 	setTimeout(function () {
-		$(a).fadeOut('fast');
+		$(id).fadeOut('fast');
 	}, 2000);
 	hiddenPosition();
 }
@@ -917,10 +918,10 @@ $(function () {
 			if (selectVAL == 9) {
 				$('.satInputs').show(); // DIV FAIXAS 1	
 				$('.dmsHidden').hide();
+				$('.sosInputs').hide(); 	
 				$('.portInput').hide();
 				$('.speedHidden').hide();
-				$('.meteoHidden').hide();
-				$('.ipAddressShow').show();
+				$('.meteoHidden').hide();			
 				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
 				$("#lanes").change(
 					function () {
@@ -984,44 +985,44 @@ $(function () {
 				$('.portInput').show();	
 				$('.dmsHidden').hide(); 				
 				$('.satInputs').hide();				
-				$('.speedHidden').hide();
-				$('.ipAddressShow').show();
+				$('.speedHidden').hide();			
+				$('.sosInputs').hide(); 	
 
 			}else if (selectVAL == 8) {
 
 				$('.dmsHidden').show(); // DIV DMS TYPE	
-				$('.meteoHidden').hide(); // DIV DMS TYPE					
+				$('.sosInputs').hide(); 	
+				$('.meteoHidden').hide(); // DIV DMS TYPE								
 				$('.satInputs').hide();
 				$('.portInput').hide();
 				$('.speedHidden').hide();
-				$('.ipAddressShow').show();
-
+			
 			} else if (selectVAL == 10) {
 
 				$('.portInput').show();
-				$('.meteoHidden').hide(); // DIV DMS TYPE		
+				$('.sosInputs').show(); 	
+				$('.meteoHidden').hide();	
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
 				$('.speedHidden').hide();
-				$('.ipAddressShow').show();
-
+		
 			} else if (selectVAL == 11) {
 
 				$('.speedHidden').show();
-				$('.meteoHidden').hide(); // DIV DMS TYPE		
+				$('.meteoHidden').hide(); // DIV DMS TYPE	
+				$('.sosInputs').hide(); 		
 				$('.portInput').hide();
 				$('.dmsHidden').hide();
-				$('.satInputs').hide();
-				$('.ipAddressShow').hide();
+				$('.satInputs').hide();			
 
 			} else {
 
 				$('.dmsHidden').hide();
-				$('.meteoHidden').hide(); // DIV DMS TYPE		
+				$('.meteoHidden').hide(); // DIV DMS TYPE	
+				$('.sosInputs').hide(); 		
 				$('.satInputs').hide();
 				$('.portInput').hide();
-				$('.speedHidden').hide();
-				$('.ipAddressShow').show();
+				$('.speedHidden').hide();			
 			}
 
 		}, 100)

@@ -1045,12 +1045,15 @@ button#dropdwnsizebtn:hover{
 	margin-top: 0%;
 }
 
+input#width {
+    padding-left: 40px;
+}
+
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */
-#realsave, #realcancel, #equip-save, #equip-save-error, #equip-update,
-	#equip-update-error, #equip-delete, #equip-delete-error {
-	height: 23px;
+#info, #success, #error, #warn {
+	height: 25px;
 }
 
 .textAlert {
@@ -1113,6 +1116,10 @@ button#dropdwnsizebtn:hover{
 	display: none;
 }
 
+.sosInput, .sosInput-edit{
+	display: none;
+}
+
 .speedHidden {
 	display: none;
 }
@@ -1121,14 +1128,9 @@ button#dropdwnsizebtn:hover{
 	display: none;
 }
 
-.ipAddressShow {
-	display: block;
+.satInputs, .satInputs-edit {
+	display: none;
 }
-
-.ipAddressShow-edit {
-	display: block;
-}
-
 
 /* Disabled bubttons on edit modal */
 input#equipId-edit:disabled, input#dmsType-edit:disabled {

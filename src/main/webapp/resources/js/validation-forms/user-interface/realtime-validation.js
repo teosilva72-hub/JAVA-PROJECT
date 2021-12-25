@@ -24,8 +24,9 @@ $(function () {
 	resetFieldOnModalClose('#modaladd', 'equips');
 	resetFieldOnModalClose('#modaladd', 'equipId');
 	resetFieldOnModalClose('#modaladd', 'dmsType ');
+	resetFieldOnModalClose('#modaladd', 'meteoType ');
 	resetFieldOnModalClose('#modaladd', 'equipIp');
-    resetFieldOnModalClose('#modaladd', 'speed-equipIp');
+	resetFieldOnModalClose('#modaladd', 'indicator-equipIp');
     resetFieldOnModalClose('#modaladd', 'radar-equipIp');
     resetFieldOnModalClose('#modaladd', 'equipPort');
     resetFieldOnModalClose('#modaladd', 'model');
@@ -35,6 +36,9 @@ $(function () {
 	resetFieldOnModalClose('#modaladd', 'cities');
 	resetFieldOnModalClose('#modaladd', 'km');
 	resetFieldOnModalClose('#modaladd', 'lanes');
+	resetFieldOnModalClose('#modaladd', 'lat');
+	resetFieldOnModalClose('#modaladd', 'long');
+	resetFieldOnModalClose('#modaladd', 'direction');
 	resetFieldOnModalClose('#modaladd', 'direction1');
 	resetFieldOnModalClose('#modaladd', 'direction2');
 	resetFieldOnModalClose('#modaladd', 'direction3');
@@ -65,9 +69,11 @@ $(function () {
     //Dismiss modal function
     $("#modaladd").on("hidden.bs.modal", function() {
     	$('.satInputs').hide();	
-        $('.dmsHidden').hide();		
-        $('.sosInputs').hide();
+        $('.dmsHidden').hide();	
+	    $('.meteoHidden').hide();			
+		$('.portInput').hide();	    
         $('.speedHidden').hide();
+        $('.sosInput').hide(); 	
         $('.ipAddressShow').show();		
 				  
       });
@@ -76,8 +82,10 @@ $(function () {
     $(".reset-btn").on("click", function() {	    		    
     	$('.satInputs').hide();	
         $('.dmsHidden').hide();	
-        $('.sosInputs').hide();
+     	$('.meteoHidden').hide();			
+		$('.portInput').hide();
         $('.speedHidden').hide();
+		$('.sosInput').hide(); 	
         $('.ipAddressShow').show();	  
         $('#modaladd').modal('hide');
 			    
@@ -99,9 +107,10 @@ $(function () {
 		resetFieldOnModalClose('#editmodal', 'equips-edit');
 		resetFieldOnModalClose('#editmodal', 'equipId-edit');
 		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
+		resetFieldOnModalClose('#editmodal', 'meteoType-edit');		
 		resetFieldOnModalClose('#editmodal', 'equipIp-edit');
-		resetFieldOnModalClose('#editmodal', 'speed-equipIp-edit');
-		resetFieldOnModalClose('#editmodal', 'radar-equipIp-edit');
+		resetFieldOnModalClose('#editmodal', 'indicator-equipIp-edit');
+        resetFieldOnModalClose('#editmodal', 'radar-equipIp-edit');
 		resetFieldOnModalClose('#editmodal', 'equipPort-edit');
 		resetFieldOnModalClose('#editmodal', 'modelEdit');
 		resetFieldOnModalClose('#editmodal', 'sipEdit');
@@ -110,6 +119,9 @@ $(function () {
 		resetFieldOnModalClose('#editmodal', 'citiesEdit');
 		resetFieldOnModalClose('#editmodal', 'kmEdit');
 		resetFieldOnModalClose('#editmodal', 'lanes-edit');
+		resetFieldOnModalClose('#editmodal', 'latEdit');
+	    resetFieldOnModalClose('#editmodal', 'longEdit');
+        resetFieldOnModalClose('#editmodal', 'direction-edit');
 		resetFieldOnModalClose('#editmodal', 'direction1-edit');
 		resetFieldOnModalClose('#editmodal', 'direction2-edit');
 		resetFieldOnModalClose('#editmodal', 'direction3-edit');
@@ -138,9 +150,12 @@ $(function () {
 	    //Dismiss modal function
 	    $("#editmodal").on("hidden.bs.modal", function() {
 	    	$('.satInputs-edit').hide();	
-            $('.dmsHidden-edit').hide();       
+            $('.dmsHidden-edit').hide();  
+           $('.meteoHidden-edit').hide();    	  
+	        $('.portInput-edit').hide();             
 	        $('.satInputs-edit').hide();	
 	        $('.speedHidden-edit').hide();
+			$('.sosInput-edit').hide(); 	
 	        $('.ipAddressShow-edit').show();
 							  
 	      });
@@ -148,7 +163,10 @@ $(function () {
 	    //reset form function
 	    $(".reset-btn-edit").on("click", function() {	    		    
 			$('.satInputs-edit').hide();
-			$('.dmsHidden-edit').hide();    	
+			$('.dmsHidden-edit').hide();  
+			$('.meteoHidden-edit').hide();    	  
+	        $('.portInput-edit').hide();  
+			$('.sosInput-edit').hide();         	
 			$('.speedHidden-edit').hide();
 			$('.ipAddressShow-edit').show();
 			$('#editmodal').modal('hide');		  

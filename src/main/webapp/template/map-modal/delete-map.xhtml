@@ -1,0 +1,73 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:jsf="http://xmlns.jcp.org/jsf" >
+    
+   <h:body> 
+       
+ 		 	<div class="modal fade" id="deletemodal" role="dialog"> <!-- MODAL DELETE -->				
+					<div class="modal-dialog"> <!-- MODAL DIALOG -->					
+						<h:form class="modal-content" id="delete-equip-form"> <!-- MODAL CONTENT -->						
+							<div class="modal-content">	<!-- MODAL CONTENT -->						
+									
+									<div class="modal-header text-center"> <!-- MODAL HEADER -->								
+										<h4 class="modal-title w-100 font-weight-bold">#{mapLabels.$label_map_delete_modal_title}</h4>								
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>	
+														
+				 				<!---->	
+			
+					<div class="modal-body"> <!-- MODAL BODY -->
+						<div class="row"> <!-- ROW -->									
+							<div class="col-12"> <!-- COLS -->										
+								<span class="delete-message text-dark">#{mapLabels.$message_map_option_modal_delete_message}</span> <!-- MESSAGE SPAN -->	 
+								<span id="del-equip-name" class="text-danger font-weight-bold"></span> 
+								<span class="text-dark font-weight-bold"> ? </span> 									
+							</div>						
+						</div>						
+					</div>
+					
+					<!---->
+					
+					<div class="modal-footer"><!-- MODAL FOOTER -->								
+						<div class="form-row"><!-- ROW -->
+
+							<!-- INPUT HIDDEN VALUES -->
+							<h:inputHidden id="equipDel" value="#{equipsBean.equipId}" />
+							<h:inputHidden id="tableDel" value="#{equipsBean.equipTable}" />
+
+							<!-- DELETE BUTTON  -->
+							<h:commandButton value="#{mapLabels.$label_map_option_modal_btn_yes_equipment}"
+								id="btn-form-delete-yes" class="btn btn-dark form-modal-draw-button"
+								p:data-toggle="modal" p:data-target="#deletemodal" onclick="deleteParameters();">
+								<f:ajax execute="@form" render=":sumIdCftv" listener="#{equipsBean.DeleteEquipment}" />
+							</h:commandButton>
+									
+							<!---->
+
+							<!-- CANCEL BUTTON -->
+							<h:commandButton value="#{mapLabels.$label_map_option_modal_btn_no_equipment}"
+								id="btn-form-delete-no" immediate="true" data-dismiss="modal"
+								class="btn btn-dark form-modal-draw-button cancel"
+								onclick="$('#deletemodal').modal('hide');">
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->
+							
+						</div> <!---->								
+					 </div><!---->							
+				  </div> <!---->						
+			  </h:form> <!---->
+		   </div> <!---->				
+	    </div> <!---->
+	  
+	  <!---->
+  
+   </h:body>    
+</html>

@@ -14,8 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import br.com.tracevia.webapp.cfg.ModulesEnum;
@@ -29,8 +27,7 @@ import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.util.LocaleUtil;
-
-import org.primefaces.context.RequestContext;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="equipsBean")
 @RequestScoped
@@ -50,7 +47,7 @@ public class EquipmentsBean implements Serializable {
 	Speed speed;
 
 	private int equipId;
-	private String equipTable, equipDel, cftvController;
+	private String equipTable, equipDel;
 	private int positionX, positionY, id;
 	private boolean checked;	
 
@@ -239,12 +236,12 @@ public class EquipmentsBean implements Serializable {
 			dir.add(new SelectItem("L", localeDirection.getStringKey("directions_east")));   
 			dir.add(new SelectItem("O", localeDirection.getStringKey("directions_west")));   
 
-			dmsType.add(new SelectItem(1, localeMap.getStringKey("map_dms_type_1")));   
-			dmsType.add(new SelectItem(2, localeMap.getStringKey("map_dms_type_2")));   
-			dmsType.add(new SelectItem(3, localeMap.getStringKey("map_dms_type_3"))); 
+			dmsType.add(new SelectItem(1, localeMap.getStringKey("$label_map_dms_type_1")));   
+			dmsType.add(new SelectItem(2, localeMap.getStringKey("$label_map_dms_type_2")));   
+			dmsType.add(new SelectItem(3, localeMap.getStringKey("$label_map_dms_type_3"))); 
 
-			meteoType.add(new SelectItem("MTO", localeMap.getStringKey("map_meteo_weather_station"))); 
-			meteoType.add(new SelectItem("SV", localeMap.getStringKey("map_meteo_various_sensors"))); 
+			meteoType.add(new SelectItem("MTO", localeMap.getStringKey("$label_map_meteo_weather_station"))); 
+			meteoType.add(new SelectItem("SV", localeMap.getStringKey("$label_map_meteo_various_sensors"))); 
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -264,14 +261,10 @@ public class EquipmentsBean implements Serializable {
 	 */
 
 	public void createEquipment() throws Exception {
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-		RequestContext request = RequestContext.getCurrentInstance();
-
+	
 		DateTimeApplication dta = new DateTimeApplication();
 
-		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 
 		checked = false;
 
@@ -314,7 +307,7 @@ public class EquipmentsBean implements Serializable {
 			dms.setCreation_date(dta.currentTimeDBformat());
 
 			//For Equipment CreationUsername		
-			dms.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			dms.setCreation_username((String) SessionUtil.getParam("user")); 
 
 			//DMS ID
 			dms.setEquip_id(equipId);
@@ -357,19 +350,18 @@ public class EquipmentsBean implements Serializable {
 			checked =  equipDAO.checkExists(dms.getEquip_id(), table);
 
 			if(checked)
-				request.execute("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#equip-save-error');");
 
 			else {
 
 				checked = equipDAO.EquipDMSRegisterMap(dms, table);
 
 				if(checked) {
-					request.execute("alertOptions('#equip-save');");
-					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 				}
 
-				else 
-					request.execute("alertOptions('#equip-save-error');");
+				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
 			}
 
@@ -388,7 +380,7 @@ public class EquipmentsBean implements Serializable {
 			sos.setCreation_date(dta.currentTimeDBformat());
 
 			//For Equipment CreationUsername		
-			sos.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			sos.setCreation_username((String) SessionUtil.getParam("user"));
 
 			//SOS ID
 			sos.setEquip_id(equipId);
@@ -429,19 +421,18 @@ public class EquipmentsBean implements Serializable {
 			checked =  equipDAO.checkExists(sos.getEquip_id(), table);
 
 			if(checked)
-				request.execute("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#equip-save-error');");
 
 			else {
 
 				checked = equipDAO.EquipSOSMap(sos, table);
 
 				if(checked) {
-					request.execute("alertOptions('#equip-save');");
-					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 				}
 
-				else 
-					request.execute("alertOptions('#equip-save-error');");
+				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
 			}
 
@@ -460,7 +451,7 @@ public class EquipmentsBean implements Serializable {
 			sat.setCreation_date(dta.currentTimeDBformat());
 
 			//For Equipment CreationUsername		
-			sat.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));
+			sat.setCreation_username((String) SessionUtil.getParam("user"));
 
 			//SAT ID
 			sat.setEquip_id(equipId);
@@ -514,19 +505,18 @@ public class EquipmentsBean implements Serializable {
 			checked =  equipDAO.checkExists(sat.getEquip_id(), table);
 
 			if(checked)
-				request.execute("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#equip-save-error');");
 
 			else {
 
 				checked = equipDAO.EquipSATRegisterMap(sat, table);
 
 				if(checked) {
-					request.execute("alertOptions('#equip-save');");
-					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
-
+					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 				}
 
-				else  request.execute("alertOptions('#equip-save-error');");
+				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
 			}
 
@@ -548,7 +538,7 @@ public class EquipmentsBean implements Serializable {
 			speed.setCreation_date(dta.currentTimeDBformat());
 
 			//For Equipment CreationUsername		
-			speed.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+			speed.setCreation_username((String) SessionUtil.getParam("user")); 
 
 			//Equip Type
 			speed.setEquip_type(defineEquipType(table));
@@ -585,18 +575,18 @@ public class EquipmentsBean implements Serializable {
 			//System.out.println(checked);
 
 			if(checked)
-				request.execute("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#equip-save-error');");
 
 			else {
 
 				checked = equipDAO.EquipRegisterSpeedMap(speed, table);
 
 				if(checked) {
-					request.execute("alertOptions('#equip-save');");
-					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 				}
 
-				else  request.execute("alertOptions('#equip-save-error');");
+				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
 			}  //VALIDATION
 			
@@ -623,7 +613,7 @@ public class EquipmentsBean implements Serializable {
 		meteo.setCreation_date(dta.currentTimeDBformat());
 		
 		//For Equipment CreationUsername		
-		meteo.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+		meteo.setCreation_username((String) SessionUtil.getParam("user")); 
 				
 		meteo.setEquip_type(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType"));
 		
@@ -657,20 +647,20 @@ public class EquipmentsBean implements Serializable {
 		checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 		
 		if(checked)
-		request.execute("alertOptions('#equip-save-error');");
+		SessionUtil.executeScript("alertOptions('#equip-save-error');");
 		
 		else {
 		
 		checked = equipDAO.EquipRegisterMeteoMap(meteo, table);
 		
 		if(checked) {
-		request.execute("alertOptions('#equip-save');");
-		request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+			SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 		}
-		
-		else  request.execute("alertOptions('#equip-save-error');");
-		
-		}  //VALIDATION
+
+		else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
+
+		}  // VALIDATION
 		
 		meteo = new METEO(); // RESET
 		
@@ -692,7 +682,7 @@ public class EquipmentsBean implements Serializable {
 			equip.setCreation_date(dta.currentTimeDBformat());
 
 			//For Equipment CreationUsername		
-			equip.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+			equip.setCreation_username((String) SessionUtil.getParam("user")); 
 
 			if(moduleID != 6)						
 			equip.setEquip_type(defineEquipType(table)); //Equip Types
@@ -726,18 +716,18 @@ public class EquipmentsBean implements Serializable {
 			checked =  equipDAO.checkExists(equip.getEquip_id(), table);
 
 			if(checked)
-				request.execute("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#equip-save-error');");
 
 			else {
 
 				checked = equipDAO.EquipRegisterMap(equip, table);
 
 				if(checked) {
-					request.execute("alertOptions('#equip-save');");
-					request.execute("updated = '" + table + parameterMap.get("equipId") + "';");
+					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
+					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
 				}
 
-				else  request.execute("alertOptions('#equip-save-error');");
+				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
 			}  //VALIDATION
 
@@ -760,10 +750,7 @@ public class EquipmentsBean implements Serializable {
 
 	public void SearchEquipment() throws Exception {
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-
-		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 
 		//INTERFACES
 		String interfaceView = parameterMap.get("interface-search");		   		
@@ -784,20 +771,20 @@ public class EquipmentsBean implements Serializable {
 			
 			meteo = dao.EquipMeteoSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+meteo.getEquip_id()+"');");
-			RequestContext.getCurrentInstance().execute("$('#configId-edit').val('"+meteo.getConfig_id()+"');");
-			RequestContext.getCurrentInstance().execute("$('#meteoType-edit').val('"+meteo.getEquip_type()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+meteo.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+meteo.getEquip_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipPort-edit').val('"+meteo.getPort()+"');");
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+meteo.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+meteo.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+meteo.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+meteo.getMapWidth()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+meteo.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+meteo.getLongitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+meteo.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
+			SessionUtil.executeScript("$('#equipId-edit').val('"+meteo.getEquip_id()+"');");
+			SessionUtil.executeScript("$('#configId-edit').val('"+meteo.getConfig_id()+"');");
+			SessionUtil.executeScript("$('#meteoType-edit').val('"+meteo.getEquip_type()+"');");
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+meteo.getNome()+"');");	
+			SessionUtil.executeScript("$('#equipIp-edit').val('"+meteo.getEquip_ip()+"');");
+			SessionUtil.executeScript("$('#equipPort-edit').val('"+meteo.getPort()+"');");
+			SessionUtil.executeScript("$('#citiesEdit').val('"+meteo.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+meteo.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+meteo.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+meteo.getMapWidth()+"');");	
+			SessionUtil.executeScript("$('#latEdit').val('"+meteo.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+meteo.getLongitude()+"');");	
+			SessionUtil.executeScript("$('#direction-edit').val('"+meteo.getDirection()+"');");
 		
 		
 		}
@@ -806,114 +793,114 @@ public class EquipmentsBean implements Serializable {
 
 			dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+dms.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#dmsType-edit').val('"+dms.getDms_type()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+dms.getDms_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+dms.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+dms.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+dms.getMapWidth()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+dms.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+dms.getLongitude()+"');");
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+dms.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
+			SessionUtil.executeScript("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+dms.getNome()+"');");	
+			SessionUtil.executeScript("$('#dmsType-edit').val('"+dms.getDms_type()+"');");
+			SessionUtil.executeScript("$('#equipIp-edit').val('"+dms.getDms_ip()+"');");
+			SessionUtil.executeScript("$('#citiesEdit').val('"+dms.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+dms.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+dms.getMapWidth()+"');");	
+			SessionUtil.executeScript("$('#latEdit').val('"+dms.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+dms.getLongitude()+"');");
+			SessionUtil.executeScript("$('#direction-edit').val('"+dms.getDirection()+"');");
 
 
 		} else if(moduleId == 9) {
 
 			sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sat.getNome()+"');");		
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+sat.getEquip_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+sat.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+sat.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sat.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sat.getMapWidth()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sat.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sat.getLongitude()+"');");
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sat.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
+			SessionUtil.executeScript("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+sat.getNome()+"');");		
+			SessionUtil.executeScript("$('#equipIp-edit').val('"+sat.getEquip_ip()+"');");
+			SessionUtil.executeScript("$('#citiesEdit').val('"+sat.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+sat.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+sat.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+sat.getMapWidth()+"');");	
+			SessionUtil.executeScript("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
+			SessionUtil.executeScript("$('#latEdit').val('"+sat.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+sat.getLongitude()+"');");
+			SessionUtil.executeScript("$('#direction-edit').val('"+sat.getDirection()+"');");
 
 			if(sat.getFaixa1() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
+				SessionUtil.executeScript("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
 
 			if(sat.getFaixa2() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction2-edit').show(); $('#direction2-edit').val('"+sat.getFaixa2()+"');");	
+				SessionUtil.executeScript("$('#direction2-edit').show(); $('#direction2-edit').val('"+sat.getFaixa2()+"');");	
 
 			if(sat.getFaixa3() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction3-edit').show(); $('#direction3-edit').val('"+sat.getFaixa3()+"');");	
+				SessionUtil.executeScript("$('#direction3-edit').show(); $('#direction3-edit').val('"+sat.getFaixa3()+"');");	
 
 			if(sat.getFaixa4() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction4-edit').show(); $('#direction4-edit').val('"+sat.getFaixa4()+"');");	
+				SessionUtil.executeScript("$('#direction4-edit').show(); $('#direction4-edit').val('"+sat.getFaixa4()+"');");	
 
 			if(sat.getFaixa5() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction5-edit').show(); $('#direction5-edit').val('"+sat.getFaixa5()+"');");	
+				SessionUtil.executeScript("$('#direction5-edit').show(); $('#direction5-edit').val('"+sat.getFaixa5()+"');");	
 
 			if(sat.getFaixa6() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction6-edit').show(); $('#direction6-edit').val('"+sat.getFaixa6()+"');");	
+				SessionUtil.executeScript("$('#direction6-edit').show(); $('#direction6-edit').val('"+sat.getFaixa6()+"');");	
 
 			if(sat.getFaixa7() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction7-edit').show(); $('#direction7-edit').val('"+sat.getFaixa7()+"');");	
+				SessionUtil.executeScript("$('#direction7-edit').show(); $('#direction7-edit').val('"+sat.getFaixa7()+"');");	
 
 			if(sat.getFaixa8() != null)			 
-				RequestContext.getCurrentInstance().execute("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
+				SessionUtil.executeScript("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
 
 		} else if (moduleId == 10) {
 
 			sos = dao.EquipSOSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+sos.getEquip_id()+"');");			
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+sos.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+sos.getEquip_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipPort-edit').val('"+sos.getPort()+"');");
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+sos.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+sos.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+sos.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+sos.getMapWidth()+"');");
-			RequestContext.getCurrentInstance().execute("$('#modelEdit').val('"+sos.getModel()+"');");
-			RequestContext.getCurrentInstance().execute("$('#sipEdit').val('"+sos.getSip()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+sos.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+sos.getLongitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+sos.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
+			SessionUtil.executeScript("$('#equipId-edit').val('"+sos.getEquip_id()+"');");			
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+sos.getNome()+"');");	
+			SessionUtil.executeScript("$('#equipIp-edit').val('"+sos.getEquip_ip()+"');");
+			SessionUtil.executeScript("$('#equipPort-edit').val('"+sos.getPort()+"');");
+			SessionUtil.executeScript("$('#citiesEdit').val('"+sos.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+sos.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+sos.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+sos.getMapWidth()+"');");
+			SessionUtil.executeScript("$('#modelEdit').val('"+sos.getModel()+"');");
+			SessionUtil.executeScript("$('#sipEdit').val('"+sos.getSip()+"');");	
+			SessionUtil.executeScript("$('#latEdit').val('"+sos.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+sos.getLongitude()+"');");	
+			SessionUtil.executeScript("$('#direction-edit').val('"+sos.getDirection()+"');");
 		
 		} else if (moduleId == 11) {
 
 			speed = dao.EquipSpeedSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+moduleId+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+speed.getEquip_id()+"');");			
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+speed.getNome()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#indicator-equipIp-edit').val('"+speed.getEquip_ip_indicator()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#radar-equipIp-edit').val('"+speed.getEquip_ip_radar()+"');");		
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+speed.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+speed.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+speed.getMapWidth()+"');");
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+speed.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+speed.getLongitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+speed.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
+			SessionUtil.executeScript("$('#equipId-edit').val('"+speed.getEquip_id()+"');");			
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+speed.getNome()+"');");	
+			SessionUtil.executeScript("$('#indicator-equipIp-edit').val('"+speed.getEquip_ip_indicator()+"');");	
+			SessionUtil.executeScript("$('#radar-equipIp-edit').val('"+speed.getEquip_ip_radar()+"');");		
+			SessionUtil.executeScript("$('#citiesEdit').val('"+speed.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+speed.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+speed.getMapWidth()+"');");
+			SessionUtil.executeScript("$('#latEdit').val('"+speed.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+speed.getLongitude()+"');");	
+			SessionUtil.executeScript("$('#direction-edit').val('"+speed.getDirection()+"');");
 				
 		} else {		
 
 			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-			RequestContext.getCurrentInstance().execute("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
-			RequestContext.getCurrentInstance().execute("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#configId-edit').val('"+equip.getEquip_id()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#port-edit').val('"+equip.getMapWidth()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
-			RequestContext.getCurrentInstance().execute("$('#equipNameEdit').val('"+equip.getNome()+"');");					
-			RequestContext.getCurrentInstance().execute("$('#citiesEdit').val('"+equip.getCidade()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#kmEdit').val('"+equip.getKm()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#width-edit').val('"+equip.getMapWidth()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#latEdit').val('"+equip.getLatitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#longEdit').val('"+equip.getLongitude()+"');");	
-			RequestContext.getCurrentInstance().execute("$('#direction-edit').val('"+equip.getDirection()+"');");
+			SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
+			SessionUtil.executeScript("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
+			SessionUtil.executeScript("$('#configId-edit').val('"+equip.getEquip_id()+"');");	
+			SessionUtil.executeScript("$('#port-edit').val('"+equip.getMapWidth()+"');");
+			SessionUtil.executeScript("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
+			SessionUtil.executeScript("$('#equipNameEdit').val('"+equip.getNome()+"');");					
+			SessionUtil.executeScript("$('#citiesEdit').val('"+equip.getCidade()+"');");	
+			SessionUtil.executeScript("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
+			SessionUtil.executeScript("$('#kmEdit').val('"+equip.getKm()+"');");	
+			SessionUtil.executeScript("$('#width-edit').val('"+equip.getMapWidth()+"');");	
+			SessionUtil.executeScript("$('#latEdit').val('"+equip.getLatitude()+"');");	
+			SessionUtil.executeScript("$('#longEdit').val('"+equip.getLongitude()+"');");	
+			SessionUtil.executeScript("$('#direction-edit').val('"+equip.getDirection()+"');");
 		
 		}				   
 	}
@@ -945,7 +932,7 @@ public class EquipmentsBean implements Serializable {
 
 		String equipName = dao.equipmentName(equipId, equipTable);
 
-		RequestContext.getCurrentInstance().execute("$('#del-equip-name').html('"+equipName+"');");				 	 
+		SessionUtil.executeScript("$('#del-equip-name').html('"+equipName+"');");				 	 
 
 	}
 
@@ -961,14 +948,10 @@ public class EquipmentsBean implements Serializable {
 	 */
 
 	public void UpdateEquipment() throws Exception {
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-		RequestContext request = RequestContext.getCurrentInstance();
-
+		
 		DateTimeApplication dta = new DateTimeApplication();
 
-		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 
 		boolean update = false;
 
@@ -1002,7 +985,7 @@ public class EquipmentsBean implements Serializable {
 			meteo.setCreation_date(dta.currentTimeDBformat());
 			
 			//For Equipment CreationUsername		
-			meteo.setCreation_username( (String) facesContext.getExternalContext().getSessionMap().get("user")); 
+			meteo.setCreation_username((String) SessionUtil.getParam("user")); 
 					
 			meteo.setEquip_type(parameterMap.get("meteoType-edit"));
 			
@@ -1042,10 +1025,10 @@ public class EquipmentsBean implements Serializable {
 			update = dao.EquipMETEOUpdateMap(meteo, table, interfaceView, login.getLogin().getPermission_id());
 		
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
-			} else {				
-				request.execute("alertOptions('#equip-update-error');");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
+			} else {
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 			}
 			
 		} else if(moduleId != 0 && moduleId == 8) {		
@@ -1057,7 +1040,7 @@ public class EquipmentsBean implements Serializable {
 			dms.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			dms.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));			
+			dms.setUpdate_username((String) SessionUtil.getParam("user"));			
 
 			//DMS ID
 			dms.setEquip_id(equipId);
@@ -1098,10 +1081,10 @@ public class EquipmentsBean implements Serializable {
 			update = dao.EquipDMSUpdateMap(dms, table, interfaceView, login.getLogin().getPermission_id());
 
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alertOptions('#equip-update-error');");
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 			}
 
 		} else if(moduleId != 0 && moduleId == 10) {		
@@ -1113,7 +1096,7 @@ public class EquipmentsBean implements Serializable {
 			sos.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			sos.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));			
+			sos.setUpdate_username((String) SessionUtil.getParam("user"));			
 
 			//SOS ID
 			sos.setEquip_id(equipId);
@@ -1155,13 +1138,13 @@ public class EquipmentsBean implements Serializable {
 			else sos.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 
 			update = dao.EquipSOSUpdateMap(sos, table, interfaceView, login.getLogin().getPermission_id());
-
+			
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alertOptions('#equip-update-error');");
-			}    
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
+			}
 
 
 		} else if(moduleId != 0 && moduleId == 9) {
@@ -1173,7 +1156,7 @@ public class EquipmentsBean implements Serializable {
 			sat.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			sat.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			sat.setUpdate_username((String) SessionUtil.getParam("user"));		
 
 			//SAT ID
 			sat.setEquip_id(equipId);
@@ -1226,10 +1209,10 @@ public class EquipmentsBean implements Serializable {
 			update = dao.EquipSATUpdateMap(sat, table, interfaceView, login.getLogin().getPermission_id());
 
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alertOptions('#equip-update-error');");
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 			}
 
 
@@ -1242,7 +1225,7 @@ public class EquipmentsBean implements Serializable {
 			speed.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			speed.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));			
+			speed.setUpdate_username((String) SessionUtil.getParam("user"));			
 
 			//Speed ID
 			speed.setEquip_id(equipId);
@@ -1280,12 +1263,11 @@ public class EquipmentsBean implements Serializable {
 			update = dao.EquipSpeedUpdateMap(speed, table, interfaceView, login.getLogin().getPermission_id());
 
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alertOptions('#equip-update-error');");
-			}    
-
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
+			}
 
 		}else if((moduleId != 0 && (moduleId != 8 && moduleId != 9 && moduleId != 10 && moduleId != 11))) {
 
@@ -1296,7 +1278,7 @@ public class EquipmentsBean implements Serializable {
 			equip.setUpdate_date(dta.currentTimeDBformat());
 
 			//For Equipment Update Username		
-			equip.setUpdate_username( (String) facesContext.getExternalContext().getSessionMap().get("user"));		
+			equip.setUpdate_username((String) SessionUtil.getParam("user"));		
 
 			//For Equipment ID
 			equip.setEquip_id(equipId);
@@ -1332,10 +1314,10 @@ public class EquipmentsBean implements Serializable {
 			update = dao.EquipUpdateMap(equip, table, interfaceView, login.getLogin().getPermission_id());
 
 			if(update) {
-				request.execute("alertOptions('#equip-update');");
-				request.execute("updated = '" + equipTable + equipId + "';");
+				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 			} else {
-				request.execute("alertOptions('#equip-update-error');");
+				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
 			}
 
 		}				
@@ -1358,19 +1340,18 @@ public class EquipmentsBean implements Serializable {
 
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();	
-		RequestContext request = RequestContext.getCurrentInstance();
-
+	
 		EquipmentsDAO dao = new EquipmentsDAO();		
 
 		delete = dao.EquipDeleteMap(equipId, equipTable);
 
-		request.execute("init();");
+		SessionUtil.executeScript("init();");
 
 		if(delete) {
-			request.execute("alertOptions('#equip-delete');");
-			request.execute("updated = '" + equipTable + equipId + "';");
+			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_deleted_equipment")+"');");
+			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
 		} else {
-			request.execute("alertOptions('#equip-delete-error');");
+			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_deleting_equipment")+"');");
 		}
 
 	}
@@ -1390,10 +1371,7 @@ public class EquipmentsBean implements Serializable {
 
 		boolean position = false;
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-		ExternalContext externalContext = facesContext.getExternalContext();
-
-		Map<String, String> parameterMap = (Map<String, String>) externalContext.getRequestParameterMap();
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 
 		//INTERFACES
 		String interfaceView = parameterMap.get("positionView");		
@@ -1411,6 +1389,13 @@ public class EquipmentsBean implements Serializable {
 		EquipmentsDAO dao = new EquipmentsDAO();		
 
 		position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView, login.getLogin().getPermission_id());
+		
+		if(position) {
+			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_position_success")+"');");
+			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
+		} else {
+			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_position_cancel")+"');");
+		}
 
 	}
 
@@ -1428,11 +1413,8 @@ public class EquipmentsBean implements Serializable {
 
 	public void setAll(String map) throws Exception {
 
-		FacesContext context = FacesContext.getCurrentInstance();
-		RequestContext request = RequestContext.getCurrentInstance();
-
 		EquipmentsDAO dao = new EquipmentsDAO();
-		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		Map<String, String> params = SessionUtil.getRequestParameterMap();
 
 		String w = params.get("width-edit");
 
@@ -1441,7 +1423,7 @@ public class EquipmentsBean implements Serializable {
 
 		dao.setWidthMap(module.equals("dms") ? "pmv" : module , map, width);
 
-		request.execute("alertToast('all equipment updated!');");
+		SessionUtil.executeScript("alertToast('"+localeMap.getStringKey("$message_map_option_all_equipment_width_updated")+"');");
 	}
 
 	//--------------------------------------------------------------------------------------------------------------

@@ -184,7 +184,7 @@ function updateTotalId(){
 	$('#btnCftvSumTotal').click()
 }
 //HIDDEN INPUT ID ADD EQUIPAMENT CFTV
-function cftvInput(){
+/*function cftvInput(){
 	var x = document.getElementById("equips")
 	var currentId = document.getElementById("equipId")
 		var icon = document.querySelector(".fa-ideal")
@@ -205,4 +205,4 @@ function cftvInput(){
 			$('#equipId').val('')
 		}
 	})
-}
+}*/
