@@ -23,9 +23,7 @@ import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo_.METEO;
 import br.com.tracevia.webapp.model.sat.SAT;
-import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
@@ -62,8 +60,6 @@ public class EquipmentsBean implements Serializable {
 
 	@ManagedProperty("#{loginAccount}")
 	private LoginAccountBean login;
-
-	private SOS sos;
 
 	public LoginAccountBean getLogin() {
 		return login;
@@ -272,7 +268,7 @@ public class EquipmentsBean implements Serializable {
 				
 		// ------------------------------------------------------------------------------------------------------
 
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARAMETRÔS EXTERNOS		 			
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 			
 		
 		dataSource.setModuleID(parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips"))); // GET MODULE ID
 	
@@ -296,6 +292,8 @@ public class EquipmentsBean implements Serializable {
 			dataSource.setEquipType(defineEquipType(dataSource.getTable())); // TYPE
 										
 		dataSource.setKm(parameterMap.get("km")); // KM
+		
+		//dataSource.setWidth(parameterMap.get("width")); // DIRECTION
 				
 		dataSource.setDirection(parameterMap.get("direction")); // DIRECTION	
 		
@@ -510,384 +508,122 @@ public class EquipmentsBean implements Serializable {
 	 * @return void
 	 * @throws Exception
 	 */
-
-	public void UpdateEquipment() throws Exception {
+	public void updateEquipment() throws Exception {
 		
-		DateTimeApplication dta = new DateTimeApplication();
-
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
-
-		boolean update = false;
-
-		EquipmentsDAO dao = new EquipmentsDAO();
-
-		DMS dms = new DMS();
-		SAT sat = new SAT();
-		SOS sos = new SOS();
-		Speed speed = new Speed();
-		METEO meteo = new METEO();
-		Equipments equip = new Equipments();
-
+		DateTimeApplication dta = new DateTimeApplication(); // DATETIME APPLICATION OBJ			
+		EquipmentsDAO dao = new EquipmentsDAO(); // EQUIPMENT DAO
+		
+		checked = false; // VARIÁVEL PARA VERFICAR OPERAÇÕES AO SALVAR NOVO EQUIPAMENTO	
+		
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();
-
-		//INTERFACES
-		String interfaceView = parameterMap.get("interface");		   		
-
-		//CHECK MODULES	
-		int moduleId = getModuleByName(equipTable);
+			
+		EquipmentDataSource dataSource = new EquipmentDataSource();
 				
-		if(moduleId != 0 && moduleId == 6) {
-						
-			//EQUIP TABLE BY MODULE
-			String table = defineTableById(moduleId);
-			
-			//For Equipment ID
-			meteo.setEquip_id(equipId);			
-						
-			//For Equipment CreationDate
-			meteo.setCreation_date(dta.currentTimeDBformat());
-			
-			//For Equipment CreationUsername		
-			meteo.setCreation_username((String) SessionUtil.getParam("user")); 
-					
-			meteo.setEquip_type(parameterMap.get("meteoType-edit"));
-			
-			//For Equipment Name
-			meteo.setNome(parameterMap.get("equipNameEdit"));
-			
-			//EQUIP IP
-			meteo.setEquip_ip(parameterMap.get("equipIp-edit"));
-			
-			//For Equipment City
-			meteo.setCidade(parameterMap.get("citiesEdit"));
-			
-			//For Equipment Road
-			meteo.setEstrada(parameterMap.get("roadsEdit"));
-			
-			//For Equipment KM
-			meteo.setKm(parameterMap.get("kmEdit"));
-			
-			//For Equipment Direction
-			meteo.setDirection(parameterMap.get("direction-edit"));
-					
-			//For Equipment latitude
-			meteo.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
-			
-			//For Equipment KM
-			meteo.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));	
-			
-			//For Equipment Port
-			meteo.setPort(Integer.parseInt(parameterMap.get("equipPort-edit")));
-			
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				meteo.setMapWidth(1);			    
-
-			else meteo.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-			
-			update = dao.EquipMETEOUpdateMap(meteo, table, interfaceView, login.getLogin().getPermission_id());
+		// ------------------------------------------------------------------------------------------------------
 		
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-			
-		} else if(moduleId != 0 && moduleId == 8) {		
-
-			//Table definition
-			String table = defineTableById(moduleId);
-
-			//For Equipment Update Date
-			dms.setUpdate_date(dta.currentTimeDBformat());
-
-			//For Equipment Update Username		
-			dms.setUpdate_username((String) SessionUtil.getParam("user"));			
-
-			//DMS ID
-			dms.setEquip_id(equipId);
-
-			//For Equipment Name
-			dms.setNome(parameterMap.get("equipNameEdit"));
-
-			//For Equipment IP
-			dms.setDms_ip(parameterMap.get("equipIp-edit"));
-
-			//For Equipment City
-			dms.setCidade(parameterMap.get("citiesEdit"));
-
-			//For Equipment Road
-			dms.setEstrada(parameterMap.get("roadsEdit"));
-
-			//For Equipment KM
-			dms.setKm(parameterMap.get("kmEdit"));
-
-			//For Equipment Latitude
-			dms.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
-
-			//For Equipment longitude
-			dms.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
-
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				dms.setMapWidth(1);			    
-
-			else dms.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-
-			//DMS Type
-			int type = (parameterMap.get("dmsType-edit") == null ? 1 : Integer.parseInt(parameterMap.get("dmsType-edit")));
-
-			//DMS TYPE
-			defineDMStype(dms, type);
-
-			update = dao.EquipDMSUpdateMap(dms, table, interfaceView, login.getLogin().getPermission_id());
-
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-
-		} else if(moduleId != 0 && moduleId == 10) {		
-
-			//Table definition
-			String table = defineTableById(moduleId);
-
-			//For Equipment Update Date
-			sos.setUpdate_date(dta.currentTimeDBformat());
-
-			//For Equipment Update Username		
-			sos.setUpdate_username((String) SessionUtil.getParam("user"));			
-
-			//SOS ID
-			sos.setEquip_id(equipId);
-
-			//For Equipment Name
-			sos.setNome(parameterMap.get("equipNameEdit"));
-
-			//For Equipment IP
-			sos.setEquip_ip(parameterMap.get("equipIp-edit"));
-
-			//For Equipment Port
-			sos.setPort(Integer.parseInt(parameterMap.get("equipPort-edit")));
-
-			//For Equipment City
-			sos.setCidade(parameterMap.get("citiesEdit"));
-
-			//For Equipment Road
-			sos.setEstrada(parameterMap.get("roadsEdit"));
-
-			//For Equipment KM
-			sos.setKm(parameterMap.get("kmEdit"));
-
-			//For Equipment Model
-			sos.setModel(Integer.parseInt(parameterMap.get("modelEdit")));
-
-			//For Equipment SIP
-			sos.setSip(parameterMap.get("sipEdit"));
-
-			//For Equipment latitude
-			sos.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
-
-			//For Equipment longitude
-			sos.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
-
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				sos.setMapWidth(1);			    
-
-			else sos.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-
-			update = dao.EquipSOSUpdateMap(sos, table, interfaceView, login.getLogin().getPermission_id());
-			
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-
-
-		} else if(moduleId != 0 && moduleId == 9) {
-
-			// Table definition
-			String table = defineTableById(moduleId);
-
-			//For Equipment Update Date
-			sat.setUpdate_date(dta.currentTimeDBformat());
-
-			//For Equipment Update Username		
-			sat.setUpdate_username((String) SessionUtil.getParam("user"));		
-
-			//SAT ID
-			sat.setEquip_id(equipId);
-
-			//For Equipment Name
-			sat.setNome(parameterMap.get("equipNameEdit"));
-
-			//For Equipment IP
-			sat.setEquip_ip(parameterMap.get("equipIp-edit"));
-
-			//For Equipment City
-			sat.setCidade(parameterMap.get("citiesEdit"));
-
-			//For Equipment Road
-			sat.setEstrada(parameterMap.get("roadsEdit"));
-
-			//For Equipment KM
-			sat.setKm(parameterMap.get("kmEdit"));
-
-			//For Equipment latitude
-			sat.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
-
-			//For Equipment longitude
-			sat.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
-
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				sat.setMapWidth(1);	    
-
-			else sat.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-
-			//For Number Lanes
-			int numLanes = (parameterMap.get("lanes-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes-edit")));
-
-			if(numLanes > 0)
-				sat.setNumFaixas(numLanes);
-
-			else sat.setNumFaixas(2);
-
-			// SET LANES DEFINITION
-			defineDirection(sat, 1, parameterMap.get("direction1-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")));
-			defineDirection(sat, 2, parameterMap.get("direction2-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")));
-			defineDirection(sat, 3, parameterMap.get("direction3-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")));
-			defineDirection(sat, 4, parameterMap.get("direction4-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4-edit")));
-			defineDirection(sat, 5, parameterMap.get("direction5-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5-edit")));
-			defineDirection(sat, 6, parameterMap.get("direction6-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6-edit")));
-			defineDirection(sat, 7, parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")));
-			defineDirection(sat, 8, parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")));
-
-			update = dao.EquipSATUpdateMap(sat, table, interfaceView, login.getLogin().getPermission_id());
-
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-
-
-		} else if(moduleId != 0 && moduleId == 11) {		
-
-			//Table definition
-			String table = defineTableById(moduleId);
-
-			//For Equipment Update Date
-			speed.setUpdate_date(dta.currentTimeDBformat());
-
-			//For Equipment Update Username		
-			speed.setUpdate_username((String) SessionUtil.getParam("user"));			
-
-			//Speed ID
-			speed.setEquip_id(equipId);
-
-			//For Equipment Name
-			speed.setNome(parameterMap.get("equipNameEdit"));
-
-			//For Equipment IP
-			speed.setEquip_ip_indicator(parameterMap.get("indicator-equipIp-edit"));
-			
-			//For Equipment IP
-			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp-edit"));
-			
-			//For Equipment City
-			speed.setCidade(parameterMap.get("citiesEdit"));
-
-			//For Equipment Road
-			speed.setEstrada(parameterMap.get("roadsEdit"));
-
-			//For Equipment KM
-			speed.setKm(parameterMap.get("kmEdit"));
-			
-			//For Equipment latitude
-			speed.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
-
-			//For Equipment longitude
-			speed.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+       Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 	
+       
+        //INTERFACES
+     	String interfaceView = parameterMap.get("interface");	
 		
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				speed.setMapWidth(1);			    
-
-			else speed.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-
-			//update = dao.EquipSpeedUpdateMap(speed, table, interfaceView, login.getLogin().getPermission_id());
-
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-
-		}else if((moduleId != 0 && (moduleId != 8 && moduleId != 9 && moduleId != 10 && moduleId != 11))) {
-
-			// Table definition
-			String table = defineTableById(moduleId);
-
-			//For Equipment Update Date
-			equip.setUpdate_date(dta.currentTimeDBformat());
-
-			//For Equipment Update Username		
-			equip.setUpdate_username((String) SessionUtil.getParam("user"));		
-
-			//For Equipment ID
-			equip.setEquip_id(equipId);
-
-			//For Equipment Name
-			equip.setNome(parameterMap.get("equipNameEdit"));
-
-			//For Equipment IP
-			equip.setEquip_ip(parameterMap.get("equipIp-edit"));
-
-			//For Equipment City
-			equip.setCidade(parameterMap.get("citiesEdit"));
-
-			//For Equipment Road
-			equip.setEstrada(parameterMap.get("roadsEdit"));
-
-			//For Equipment KM
-			equip.setKm(parameterMap.get("kmEdit"));	
+		dataSource.setModuleID(getModuleByName(equipTable)); // GET MODULE ID
+	
+		dataSource.setEquipId(equipId); // GET EQUIP ID
+				
+		dataSource.setTable(defineTableById(dataSource.getModuleID())); // GET TABLE MODULE BY MODULE ID
+				
+		dataSource.setDatetime(dta.currentTimeDBformat()); // CREATION DATE
+		
+		dataSource.setUsername((String) SessionUtil.getParam("user"));  // CREATION USERNAME	
 			
-			//For Equipment latitude
-			equip.setLatitude(Double.parseDouble(parameterMap.get("latEdit")));
+		dataSource.setEquipName(parameterMap.get("equipNameEdit")); // NAME
+	
+		dataSource.setIpAddress(parameterMap.get("equipIp-edit")); 	// IP Address
+						
+		dataSource.setCity(parameterMap.get("citiesEdit")); 	// CITY
+		
+		dataSource.setRoad(parameterMap.get("roadsEdit")); // ROAD
+		
+		if(!dataSource.getTable().equals("meteo"))
+			dataSource.setEquipType(defineEquipType(dataSource.getTable())); // TYPE
+										
+		dataSource.setKm(parameterMap.get("kmEdit")); // KM
+		
+		if(parameterMap.get("width-edit") == "0")
+			dataSource.setWidth(1);	
+		
+		else dataSource.setWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
+				
+		dataSource.setDirection(parameterMap.get("direction-edit")); // DIRECTION	
+		
+		dataSource.setLatitude(parameterMap.get("latEdit") == "" ? 0 : Double.parseDouble(parameterMap.get("latEdit"))); // LATITUDE
 
-			//For Equipment longitude
-			equip.setLongitude(Double.parseDouble(parameterMap.get("longEdit")));
+		dataSource.setLongitude(parameterMap.get("longEdit") == "" ? 0 : Double.parseDouble(parameterMap.get("longEdit"))); // LONGITUDE
+		
+		// ----------------------------------------------------------------------------------------------------------------------
+							
+		// SOS 
+		
+		if(dataSource.getTable().equals("sos")) {
+			dataSource.setPort(parameterMap.get("equipPort-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort-edit"))); // PORT 
+			dataSource.setModel(parameterMap.get("modelEdit") == "" ? 0 : Integer.parseInt(parameterMap.get("modelEdit"))); // SOS MODEL
+			dataSource.setSip(parameterMap.get("sipEdit")); // SOS SIP			
+		}
+	
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		// SPEED 
+		
+		if(dataSource.getTable().equals("speed")) {			
+			dataSource.setIpAddressIndicator(parameterMap.get("indicator-equipIp-edit")); // IP INDICATOR			
+			dataSource.setIpAddressRadar(parameterMap.get("radar-equipIp-edit")); 	// IP RADAR 		
+		}
+		
+		// METEO
+		
+		if(dataSource.getTable().equals("meteo")) {		
+			dataSource.setPort(parameterMap.get("equipPort-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort-edit"))); 	// PORT 		
+			dataSource.setEquipType(parameterMap.get("meteoType-edit") == "" ? "MTO" : parameterMap.get("meteoType-edit")); // METEO TYPE			
+		}
+		 							
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		// SAT 
+		
+		if(dataSource.getTable().equals("sat")) {	
+			
+			dataSource.setNumLanes(parameterMap.get("lanes-edit") == "" ? 2 : Integer.parseInt(parameterMap.get("lanes-edit"))); // NUMBER LANES
+		
+			// LANE VALUE
+		
+			dataSource.setLane1(satDirection(parameterMap.get("direction1-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")), 1));
+			dataSource.setLane2(satDirection(parameterMap.get("direction2-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")), 2));
+			dataSource.setLane3(satDirection(parameterMap.get("direction3-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")), 3));
+			dataSource.setLane4(satDirection(parameterMap.get("direction4-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4-edit")), 4));
+			dataSource.setLane5(satDirection(parameterMap.get("direction5-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5-edit")), 5));
+			dataSource.setLane6(satDirection(parameterMap.get("direction6-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6-edit")), 6));
+			dataSource.setLane7(satDirection(parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")), 7));
+			dataSource.setLane8(satDirection(parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")), 8));
 
-			//For Equipment Map Width / Linear Width			    			    
-			if(parameterMap.get("width-edit") == "0")
-				equip.setMapWidth(1);			    
-
-			else equip.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
-
-			//MENSAGEM UPDATED
-			update = dao.EquipUpdateMap(equip, table, interfaceView, login.getLogin().getPermission_id());
-
-			if(update) {
-				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-				SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
-			} else {
-				SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
-			}
-
-		}				
+		}
+		
+		// -----------------------------------------------------------------------------------------------------------------
+				
+		  checked = dao.updateEquipment(dataSource, interfaceView, login.getLogin().getPermission_id());
+		
+		if(checked) {
+			
+			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
+			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
+			
+		} else {
+			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
+		}
+		
 	}
-
-	//--------------------------------------------------------------------------------------------------------------
+	
+	//--------------------------------------------------------------------------------------------------------------	
 
 	/**
 	 * Método para deleção de equipamentos
@@ -898,16 +634,17 @@ public class EquipmentsBean implements Serializable {
 	 * @throws Exception
 	 */
 	
-	public void DeleteEquipment() throws Exception {
+	public void deleteEquipment() throws Exception {
 
 		boolean delete = false;
 
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();	
+		String equipType = defineEquipType(equipTable);
 	
 		EquipmentsDAO dao = new EquipmentsDAO();		
 
-		delete = dao.EquipDeleteMap(equipId, equipTable);
+		delete = dao.deleteEquipment(equipId, equipType, equipTable);
 
 		SessionUtil.executeScript("init();");
 
@@ -952,13 +689,16 @@ public class EquipmentsBean implements Serializable {
 
 		EquipmentsDAO dao = new EquipmentsDAO();		
 
-		position = dao.EquipPositionMap(equipId, equipTable, posX, posY, interfaceView, login.getLogin().getPermission_id());
-		
+		position = dao.positionEquipment(equipId, equipTable, posX, posY, interfaceView, login.getLogin().getPermission_id());
+						
 		if(position) {
+			
 			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_position_success")+"');");
 			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
+		
 		} else {
-			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_position_cancel")+"');");
+			
+			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_positioning")+"');");
 		}
 
 	}
@@ -1097,124 +837,6 @@ public class EquipmentsBean implements Serializable {
 	//--------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Método para definir direções
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param sat - Objeto do tipo SAT
-	 * @param numberLane - Número de linhas
-	 * @param dir - Direção
-	 * @return void   	
-	 */
-
-	public void defineDirection(SAT sat, int numberLane, int dir){
-
-		switch(dir) {
-
-		case 0: 
-
-			switch (numberLane) { 
-
-			case 1: sat.setFaixa1("N"); break;
-			case 2: sat.setFaixa2("S"); break;
-			case 3: sat.setFaixa3(null); break;
-			case 4: sat.setFaixa4(null); break;
-			case 5: sat.setFaixa5(null); break;
-			case 6: sat.setFaixa6(null); break;
-			case 7: sat.setFaixa7(null); break;
-			case 8: sat.setFaixa8(null); break;
-
-			}; break;
-
-		case 1: 
-
-			switch (numberLane) { 
-
-			case 1: sat.setFaixa1("N"); break;
-			case 2: sat.setFaixa2("N"); break;
-			case 3: sat.setFaixa3("N"); break;
-			case 4: sat.setFaixa4("N"); break;
-			case 5: sat.setFaixa5("N"); break;
-			case 6: sat.setFaixa6("N"); break;
-			case 7: sat.setFaixa7("N"); break;
-			case 8: sat.setFaixa8("N"); break;
-
-			}; break;
-
-		case 2: 
-
-			switch (numberLane) { 
-
-			case 1: sat.setFaixa1("S"); break;
-			case 2: sat.setFaixa2("S"); break;
-			case 3: sat.setFaixa3("S"); break;
-			case 4: sat.setFaixa4("S"); break;
-			case 5: sat.setFaixa5("S"); break;
-			case 6: sat.setFaixa6("S"); break;
-			case 7: sat.setFaixa7("S"); break;
-			case 8: sat.setFaixa8("S"); break;
-
-			}; break;	
-
-		case 3: 	
-
-			switch (numberLane) { 
-
-			case 1: sat.setFaixa1("L"); break;
-			case 2: sat.setFaixa2("L"); break;
-			case 3: sat.setFaixa3("L"); break;
-			case 4: sat.setFaixa4("L"); break;
-			case 5: sat.setFaixa5("L"); break;
-			case 6: sat.setFaixa6("L"); break;
-			case 7: sat.setFaixa7("L"); break;
-			case 8: sat.setFaixa8("L"); break;
-
-			}; break;
-
-
-		case 4: 
-
-			switch (numberLane) { 
-
-			case 1: sat.setFaixa1("O"); break;
-			case 2: sat.setFaixa2("O"); break;
-			case 3: sat.setFaixa3("O"); break;
-			case 4: sat.setFaixa4("O"); break;
-			case 5: sat.setFaixa5("O"); break;
-			case 6: sat.setFaixa6("O"); break;
-			case 7: sat.setFaixa7("O"); break;
-			case 8: sat.setFaixa8("O"); break;
-
-			}; break;				 	
-		}
-	}
-
-	//--------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * Método para obter o tipo do PMV
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param dms - Objeto do tipo DMS
-	 * @param type - Tipo do PMV
-	 * @return void   
-	 */
-
-	public void defineDMStype(DMS dms, int type){
-
-		switch (type) {     		
-
-		case 1: dms.setDms_type(1); break;
-		case 2: dms.setDms_type(2); break;
-		case 3: dms.setDms_type(3); break;					
-
-		}
-	}
-
-	//--------------------------------------------------------------------------------------------------------------
-
-	/**
 	 * Método para obter tipo do equipamento
 	 * @author Wellington
 	 * @version 1.0
@@ -1246,244 +868,7 @@ public class EquipmentsBean implements Serializable {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
-	// GENERIC
-	//--------------------------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------------------------
-	
-	/**
-	 * Método para obter informações de um equipamento do tipo GENÉRICO
-	 * @author Wellington 20/10/2021
-	 * @version 1.0
-	 * @since 1.0   	
-	 * @param module - módulo do equipamento
-	 * @param id - ID do equipamento
-	 * @return matriz com informações dos equipamentos
-	 */
-	public String[] genericInfo(String module, String id) {
-		
-		EquipmentsDAO dao = new EquipmentsDAO();
-	
-		String[] info = new String[4];
-		
-		try {
-			info = dao.genericInfo(module, id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		return info;
-				
-	}
-	
-	//--------------------------------------------------------------------------------------------------------------
-	
-	/**
-	 * Método para obter informações de vários equipamentos do tipo GENERIC
-	 * @author Wellington 20/10/2021
-	 * @version 1.0
-	 * @since 1.0   	
-	 * @param module - módulo do equipamento
-	 * @param id - matriz com ID dos equipamentos
-	 * @return matriz com informações dos equipamentos
-	 */
-    public String[][] multiGenericInfo(String module, String[] id) {
-		
-		EquipmentsDAO dao = new EquipmentsDAO();
-		
-		// INFO TWO-DIMENSIONAL ARRAY 
-		String[][] info = new String[id.length][4];	
-		
-		try {
-			
-			info = dao.multiGenericInfo(id, module);
-			
-		} catch (Exception e) {			
-			e.printStackTrace();
-		}
-				
-		return info;
-				
-	}
-	
-	//--------------------------------------------------------------------------------------------------------------
-	//--------------------------------------------------------------------------------------------------------------
-	// SAT
-	//--------------------------------------------------------------------------------------------------------------
-    /**
-	 * Método para obter informações de um equipamento do tipo SAT
-	 * @author Wellington 20/10/2021
-	 * @version 1.0
-	 * @since 1.0 
-	 * @param id - ID do equipamento
-	 * @return matriz com informações dos equipamentos
-	 */
-     public String[] satInfo(String id) {
-		
-		EquipmentsDAO dao = new EquipmentsDAO();
-		
-		String[] info = new String[5];
-		
-		try {
-			info = dao.satInfo(id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		return info;
-				
-	}
-	
-	//--------------------------------------------------------------------------------------------------------------
-     
-     /**
- 	 * Método para obter informações de vários equipamentos do tipo SAT
- 	 * @author Wellington 20/10/2021
- 	 * @version 1.0
- 	 * @since 1.0	
- 	 * @param id - matriz com ID dos equipamentos
- 	 * @return matriz com informações dos equipamentos
- 	 */
-     public String[][] multiSatInfo(String[] id) {
- 		
- 		EquipmentsDAO dao = new EquipmentsDAO();
- 		
- 		// INFO TWO-DIMENSIONAL ARRAY 
-		String[][] info = new String[id.length][4];		
- 		
- 		try {
- 			
- 			info = dao.multiSatInfo(id);
- 			
- 		} catch (Exception e) {			
- 			e.printStackTrace();
- 		}
- 				
- 		return info;
- 				
- 	}
- 	
- 	//--------------------------------------------------------------------------------------------------------------
- 	//--------------------------------------------------------------------------------------------------------------
- 	// SOS
- 	//--------------------------------------------------------------------------------------------------------------
-     
-     /**
- 	 * Método para obter informações de um equipamento do tipo SOS
- 	 * @author Wellington 20/10/2021
- 	 * @version 1.0
- 	 * @since 1.0
- 	 * @param id - ID do equipamento
- 	 * @return matriz com informações dos equipamentos
- 	 */
-     public String[] sosInfo(String id) {
- 		
-		EquipmentsDAO dao = new EquipmentsDAO();
-		
-		String[] info = new String[4];
-		
-		try {
-			info = dao.sosInfo(id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		return info;
-				
-	}
-	
-	//--------------------------------------------------------------------------------------------------------------
-     
-     /**
-  	 * Método para obter informações de vários equipamentos do tipo SOS
-  	 * @author Wellington 20/10/2021
-  	 * @version 1.0
-  	 * @since 1.0	
-  	 * @param id - matriz com ID dos equipamentos
-  	 * @return matriz com informações dos equipamentos
-  	 */
-     public String[][] multiSosInfo(String[] id) {
- 		
- 		EquipmentsDAO dao = new EquipmentsDAO();
- 	  
- 		// INFO TWO-DIMENSIONAL ARRAY 
- 		String[][] info = new String[id.length][3];		
- 		
- 		try {
- 			
- 			info = dao.multiSosInfo(id);
- 			
- 		} catch (Exception e) {			
- 			e.printStackTrace();
- 		}
- 				
- 		return info;
- 				
- 	}
- 	
- 	//--------------------------------------------------------------------------------------------------------------
- 	//--------------------------------------------------------------------------------------------------------------
- 	// DMS
- 	//--------------------------------------------------------------------------------------------------------------
-         
-     /**
- 	 * Método para obter informações de um equipamento do tipo DMS
- 	 * @author Wellington 20/10/2021
- 	 * @version 1.0
- 	 * @since 1.0
- 	 * @param id - ID do equipamento
- 	 * @return matriz com informações dos equipamentos
- 	 */
-     public String[] dmsInfo(String id) {
-    	 
-    	String[] info = new String[4];
- 		
-		EquipmentsDAO dao = new EquipmentsDAO();
-		
-		try {
-			info = dao.dmsInfo(id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		return info;
-				
-	}
-	
-	//--------------------------------------------------------------------------------------------------------------
-     
-     /**
-  	 * Método para obter informações de vários equipamentos do tipo DMS
-  	 * @author Wellington 20/10/2021
-  	 * @version 1.0
-  	 * @since 1.0	
-  	 * @param id - matriz com ID dos equipamentos
-  	 * @return matriz com informações dos equipamentos
-  	 */
-     public String[][] multiDmsInfo(String[] id) {
-  		
-  		EquipmentsDAO dao = new EquipmentsDAO();
-  		
-  	    // INFO TWO-DIMENSIONAL ARRAY 
-  	 	String[][] info = new String[id.length][3];	
-  		
-  		try {
-  			
-  			info = dao.multiDmsInfo(id);
-  			
-  		} catch (Exception e) {			
-  			e.printStackTrace();
-  		}
-  				
-  		return info;
-  				
-  	}
-  	
-  	//--------------------------------------------------------------------------------------------------------------
-     		
+	            		
 	   public SAT satHeaderInformation(String id) {
 		   
 		   SAT sat = new SAT();

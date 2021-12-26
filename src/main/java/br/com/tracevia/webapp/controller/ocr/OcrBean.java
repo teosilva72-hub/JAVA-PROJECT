@@ -98,7 +98,7 @@ public class OcrBean{
 		
 		try {
 			
-			listOcr = equipDAO.EquipmentSelectOptions("ocr");
+			listOcr = equipDAO.equipmentSelectOptions("ocr");
 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();

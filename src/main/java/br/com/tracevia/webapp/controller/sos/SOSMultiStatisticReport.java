@@ -271,7 +271,7 @@ public class SOSMultiStatisticReport {
 		try {
 
 			EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSOS = dao.EquipmentSelectOptions("sos");
+			listSOS = dao.equipmentSelectOptions("sos");
 
 			sosReport.equipments = new String[listSOS.size()];
 
@@ -831,7 +831,7 @@ public class SOSMultiStatisticReport {
         List<SOS> sosInfo = new ArrayList<SOS>();
         
         // INFORMATION LIST
-        sosInfo = dao.listSOStoXLS(sosReport.getEquipments());			
+     //   sosInfo = dao.listSOStoXLS(sosReport.getEquipments());			
 		
 		//Define fileName
 		fileName = localeLabel.getStringKey("sos_excel_file_name_statistic")+tm.periodName(sosReport.getPeriod()); // File Name

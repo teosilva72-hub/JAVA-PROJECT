@@ -34,7 +34,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import br.com.tracevia.webapp.dao.wim.WIMDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.global.ColumnModel;
-import br.com.tracevia.webapp.model.meteo.mto.MtoReports.Builder;
+import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.model.wim.WimData;
 
 @ManagedBean(name="wimReport")

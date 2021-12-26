@@ -210,7 +210,7 @@
 
 				EquipmentsDAO dao = new EquipmentsDAO();	
 				
-				listSOS = dao.EquipmentSelectOptions(module);
+				listSOS = dao.equipmentSelectOptions(module);
 
 				sosReport.equipments = new String[listSOS.size()];
 									
@@ -528,7 +528,7 @@
 				
 				
 				// Get equipment values from DB			
-				info = dao.GenericInfo(module, sosReport.getEquipment());
+				//info = dao.GenericInfo(module, sosReport.getEquipment());
 				
 				//Define fileName
 				String fileName = localeLabel.getStringKey("sos_excel_file_name_alarms"); // File Name

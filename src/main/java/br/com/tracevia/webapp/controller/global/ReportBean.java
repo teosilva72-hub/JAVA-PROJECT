@@ -908,7 +908,7 @@ public class ReportBean {
 				try {
 
 					EquipmentsDAO dao = new EquipmentsDAO();		 
-					listEquips = dao.EquipmentSelectOptions(module);
+					listEquips = dao.equipmentSelectOptions(module);
 
 					build.equipments = build.selectEquips(listEquips);
 
@@ -967,7 +967,7 @@ public class ReportBean {
 			 
 			try {
 				
-				equipName =  dao.EquipmentName(module, ids.get(0));				
+				equipName =  dao.equipmentName(module, ids.get(0));				
 				title =  chartTitle+ " - " + period[2] + " ("+equipName+")"; 
 				
 			} catch (Exception e) {

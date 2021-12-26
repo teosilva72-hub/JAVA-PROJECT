@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
-import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
+import br.com.tracevia.webapp.model.meteo.MtoPanel;
+import br.com.tracevia.webapp.model.meteo.SvPanel;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class MeteoDAO {

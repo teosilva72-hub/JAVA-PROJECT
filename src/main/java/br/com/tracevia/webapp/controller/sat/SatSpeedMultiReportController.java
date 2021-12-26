@@ -287,7 +287,7 @@ public class SatSpeedMultiReportController {
 		try {
 
 			EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSats = dao.EquipmentSelectOptions("sat");
+			listSats = dao.equipmentSelectOptions("sat");
 
 			satReport.equipments = new String[listSats.size()];
 
@@ -846,9 +846,9 @@ public class SatSpeedMultiReportController {
 
 		equipDAO  = new EquipmentsDAO();
 
-		String dir1 = equipDAO.firstDirection(equipId);  
+		//String dir1 = equipDAO.firstDirection(equipId);  
 
-		popDirections(dir1);			
+		//popDirections(dir1);			
 
 		//UpdateDirs
 		RequestContext.getCurrentInstance().execute("updateDirections('#{satLabels.sat_reports_select_directions}');");
@@ -949,7 +949,7 @@ public class SatSpeedMultiReportController {
         List<SAT> satInfo = new ArrayList<SAT>();
         
         // INFORMATION LIST
-        satInfo = dao.listSATtoXLS(satReport.getEquipments());
+       // satInfo = dao.listSATtoXLS(satReport.getEquipments());
 				
 		//Define name
 		fileName = localeLabel.getStringKey("excel_report_speed_file")+tm.periodName(satReport.getPeriod());

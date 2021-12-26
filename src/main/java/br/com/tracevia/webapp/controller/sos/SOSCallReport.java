@@ -210,7 +210,7 @@ public class SOSCallReport {
 
 			EquipmentsDAO dao = new EquipmentsDAO();	
 			
-			listSOS = dao.EquipmentSelectOptions(module);
+			listSOS = dao.equipmentSelectOptions(module);
 
 			sosReport.equipments = new String[listSOS.size()];
 								
@@ -529,7 +529,7 @@ public class SOSCallReport {
 			String equip = "", road = "", km = "", lanes = "", city = "";  //Equipment Info
 			
 			// Get equipment values from DB			
-			info = dao.GenericInfo(module, sosReport.getEquipment());
+		//	info = dao.GenericInfo(module, sosReport.getEquipment());
 			
 			// Define fileName
 			String fileName = localeLabel.getStringKey("sos_excel_file_name_call"); // File Name

@@ -131,7 +131,7 @@ public class SpeedReportsBean implements Serializable {
         try {
         	
         	EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSpeed = dao.EquipmentSelectOptions("speed");
+			listSpeed = dao.equipmentSelectOptions("speed");
         	
         	// EQUIPMENTS
         	 build.equipments = build.selectEquips(listSpeed);
@@ -604,7 +604,7 @@ public class SpeedReportsBean implements Serializable {
 				
 				case "1":
 						
-					info = dao.multiGenericInfo(select.equipments, MODULE);	
+					//info = "speed";//dao.multiGenericInfo(select.equipments, MODULE);	
 					
 					build.fileName = "";								 
 					

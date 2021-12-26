@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.model.meteo.sv;
+package br.com.tracevia.webapp.model.meteo;
 
 public class SvPanel {
 	

@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.model.meteo_;
+package br.com.tracevia.webapp.model.meteo;
 
 import br.com.tracevia.webapp.model.global.Equipments;
 

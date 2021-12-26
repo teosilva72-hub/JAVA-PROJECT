@@ -93,7 +93,7 @@ public class SatTableHeader {
 		   
 		 if(module.equals("sat")) {				  
 			  
-			sat =  eqp.satHeaderInformation(equip_id.get(0));
+		//	sat =  eqp.satHeaderInformation(equip_id.get(0));
 				 
 		   equipDescription = sat.getNome().concat(" "+sat.getKm()).concat(" "+sat.getEstrada());
 		   direction1 = sat.getSentido1();

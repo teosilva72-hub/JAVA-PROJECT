@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.meteo.sv;
+package br.com.tracevia.webapp.controller.meteo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import javax.faces.model.SelectItem;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.sv.SV;
-import br.com.tracevia.webapp.model.meteo.sv.SvPanel;
+import br.com.tracevia.webapp.model.meteo.METEO;
+import br.com.tracevia.webapp.model.meteo.SvPanel;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
@@ -72,12 +72,12 @@ public class SvPanelController {
 		panel = new SvPanel();
 		equipments = new ArrayList<SelectItem>();	
 								
-		List<? extends Equipments> listVS = new ArrayList<SV>();  
+		List<? extends Equipments> listVS = new ArrayList<METEO>();  
 					
 		try {
 			
 			 dao = new EquipmentsDAO();		 
-			 listVS = dao.EquipmentSelectOptions("sv");
+			 listVS = dao.equipmentSelectOptions("sv");
 			 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();

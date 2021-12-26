@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.meteo.mto;
+package br.com.tracevia.webapp.controller.meteo;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -9,7 +9,7 @@ import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="mtoMapsView")
 @ViewScoped
-public class MTOBuildMaps {
+public class METEOBuildMaps {
 	
 	  @ManagedProperty("#{listEquips}")
 		private ListEquipments equips;

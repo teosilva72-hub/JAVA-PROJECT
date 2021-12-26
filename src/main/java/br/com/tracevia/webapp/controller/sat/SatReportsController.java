@@ -322,7 +322,7 @@ public class SatReportsController {
 		try {
 
 			EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSats = dao.EquipmentSelectOptions("sat");
+			listSats = dao.equipmentSelectOptions("sat");
 
 			satReport.equipments = new String[listSats.size()];
 
@@ -1481,8 +1481,8 @@ public class SatReportsController {
 
 		case "1": query = BuildMainQuery(models, satModels.CountVehiclesMainQuery(satReport.equipments), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); break;
 		case "2": query = BuildMainQueryType2(models, satModels.CountVehiclesDirectionMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); break;
-		case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
-		case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
+		//case "3": equipDAO = new EquipmentsDAO(); lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); query = BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); break;
+		//case "4": equipDAO = new EquipmentsDAO(); lanesEquips = equipDAO.EquipmentSelectLanesNumber("sat", satReport.equipments); query = BuildMainQuery(models, satModels.PeriodFlowMainQuery(satReport.equipments, satReport.getPeriod(), lanesEquips)); break;
 		case "5": query = BuildMainQueryType3(models, satModels.WeighingMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
 		case "6": query = BuildMainQueryType2(models, satModels.ClassTypeCCRMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break; //MUDANA CCR
 		case "7": query = BuildMainQueryType2(models, satModels.AxleTypeMainQuery(satReport.getEquipment()), QueriesReportsModels.USE_INDEX_IDX_SITEID_DATA); ; break;
@@ -1989,9 +1989,9 @@ public class SatReportsController {
 
 		equipDAO  = new EquipmentsDAO();
 
-		String dir1 = equipDAO.firstDirection(equipId);  
+		//String dir1 = equipDAO.firstDirection(equipId);  
 
-		popDirections(dir1);			
+		//popDirections(dir1);			
 
 		//UpdateDirs
 		RequestContext.getCurrentInstance().execute("updateDirections('#{satLabels.sat_reports_select_directions}');");
@@ -2204,7 +2204,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-				info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values    	        
+				//info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values    	        
 			
 			//Equipment Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm();  
@@ -2246,7 +2246,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+		//	info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipment Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2337,7 +2337,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+		//	info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipment info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2372,7 +2372,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+			//info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipments Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2415,7 +2415,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+			//info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipments Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2457,7 +2457,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+		//	info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipment Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2495,7 +2495,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+			//info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipments Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2539,7 +2539,7 @@ public class SatReportsController {
 			
 			// get equipment values from DB 
 			if(!satReport.getEquipment().equals(""))
-			  info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+			 // info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 			//Equipments Info
 			equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2580,7 +2580,7 @@ public class SatReportsController {
 					
 					// get equipment values from DB 
 					if(!satReport.getEquipment().equals(""))
-					info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+				//	info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 					//Equipments Info
 					equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2621,7 +2621,7 @@ public class SatReportsController {
 					
 					// get equipment values from DB 
 					if(!satReport.getEquipment().equals(""))
-					info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
+				//	info = dao.SATreportInfo(satReport.getEquipment()); // fill equipemnt DB values
 
 					//Equipments Info
 					equip = info.getNome(); road = info.getEstrada(); km = info.getKm(); 
@@ -2714,7 +2714,7 @@ public class SatReportsController {
 
 			EquipmentsDAO dao = new EquipmentsDAO();
 
-			String siteName = dao.EquipmentName("sat", siteID);
+			String siteName = dao.equipmentName("sat", siteID);
 
 			externalContext.setResponseContentType("text/plain");
 			externalContext.setResponseHeader("Content-Disposition",

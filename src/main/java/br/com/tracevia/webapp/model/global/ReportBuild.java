@@ -172,7 +172,7 @@ public class ReportBuild {
 
 		EquipmentsDAO dao = new EquipmentsDAO();
 
-		String siteName = dao.EquipmentName("sat", siteID);
+		String siteName = dao.equipmentName("sat", siteID);
 
 		SessionUtil.getExternalContext().setResponseContentType("text/plain");
 		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition",

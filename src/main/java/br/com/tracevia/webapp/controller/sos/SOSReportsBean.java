@@ -302,7 +302,7 @@ public class SOSReportsBean {
 
 			EquipmentsDAO dao = new EquipmentsDAO();	
 			
-			listSOS = dao.EquipmentSelectOptions(module);
+			listSOS = dao.equipmentSelectOptions(module);
 
 			sosReport.equipments = new String[listSOS.size()];
 								
@@ -913,7 +913,7 @@ public class SOSReportsBean {
 				String equip = "", road = "", km = "", lanes = "", city = "";  //Equipment Info
 				
 				// Get equipment values from DB			
-				info = dao.GenericInfo(module, sosReport.getEquipment());
+				//info = dao.GenericInfo(module, sosReport.getEquipment());
 				
 				String[] mergedCells = new String[] {"A1:B4", "C1:H4", "I1:J4"}; // Merge cells
 				

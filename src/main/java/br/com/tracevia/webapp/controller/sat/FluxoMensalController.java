@@ -253,7 +253,7 @@ public class FluxoMensalController {
 		try {
 
 			EquipmentsDAO dao = new EquipmentsDAO();		 
-			listSats = dao.EquipmentSelectOptions("sat");
+			listSats = dao.equipmentSelectOptions("sat");
 
 		} catch (Exception e1) {			
 			e1.printStackTrace();
@@ -615,7 +615,7 @@ public class FluxoMensalController {
 				
 			 equipDAO = new EquipmentsDAO(); 
 			 
-			 lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); 
+			// lanes = equipDAO.EquipmentSelectLanesNumber("sat", satReport.getEquipment()); 
 			 		
 			return  BuildMainQuery(models, satModels.MonthlyFlowMainQuery(satReport.getEquipment(), lanes)); 
 

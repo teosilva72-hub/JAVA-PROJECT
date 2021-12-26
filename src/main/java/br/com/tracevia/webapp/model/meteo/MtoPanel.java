@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.model.meteo.mto;
+package br.com.tracevia.webapp.model.meteo;
 
 public class MtoPanel {
 	

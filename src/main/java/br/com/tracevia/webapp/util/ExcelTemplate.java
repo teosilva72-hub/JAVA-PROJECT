@@ -1167,7 +1167,7 @@ public class ExcelTemplate {
 		try {
 						 			 
 			 for(int s = 0; s < equipId.size(); s++)	        	
-			    info = dao.EquipReportInfo(equipId.get(s), module);
+			    info = dao.equipReportInfo(equipId.get(s), module);
 			 								
 			} catch (Exception e) {			
 				e.printStackTrace();

@@ -189,8 +189,7 @@
 
 					<h:commandButton id="savePos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
-						value="#{mapLabels.$label_map_option_btn_save_position_equipment}"
-						onclick="alertOptions('#realsave');">
+						value="#{mapLabels.$label_map_option_btn_save_position_equipment}">
 						<f:ajax execute="@form" render="@none"
 							listener="#{equipsBean.definePosition}" onevent="onEventMapFunction"/>
 					</h:commandButton>
@@ -200,7 +199,7 @@
 					<h:commandButton id="cancelPos" style="display:none;"
 						class="btn btn-dark form-modal-draw-button"
 						value="#{mapLabels.$label_map_option_btn_cancel_position_equipment}"
-						onclick="alertOptions('#realcancel');"
+						onclick="alertOptions('#error', '${mapLabels.$message_map_alert_position_cancel}');"
 						title="Cancel Change Position">
 						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
 					</h:commandButton>

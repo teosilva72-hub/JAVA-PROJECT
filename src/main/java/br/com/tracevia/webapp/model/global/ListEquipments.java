@@ -14,7 +14,7 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
-import br.com.tracevia.webapp.model.meteo_.METEO;
+import br.com.tracevia.webapp.model.meteo.METEO;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;

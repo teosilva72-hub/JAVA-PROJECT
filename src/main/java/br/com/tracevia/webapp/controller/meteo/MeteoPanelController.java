@@ -1,4 +1,4 @@
-package br.com.tracevia.webapp.controller.meteo.mto;
+package br.com.tracevia.webapp.controller.meteo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,14 +13,14 @@ import org.primefaces.context.RequestContext;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.mto.MTO;
-import br.com.tracevia.webapp.model.meteo.mto.MtoPanel;
+import br.com.tracevia.webapp.model.meteo.MtoPanel;
+import br.com.tracevia.webapp.model.meteo.METEO;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="mtoPanelBean")
 @RequestScoped
-public class MtoPanelController {
+public class MeteoPanelController {
 	
 	private MtoPanel panel;
 	private List<SelectItem> equipments;
@@ -81,12 +81,12 @@ public class MtoPanelController {
 		panel = new MtoPanel();
 		equipments = new ArrayList<SelectItem>();		
 				
-		List<? extends Equipments> listMto = new ArrayList<MTO>();  
+		List<? extends Equipments> listMto = new ArrayList<METEO>();  
 					
 		try {
 			
 			 dao = new EquipmentsDAO();		 
-			 listMto = dao.EquipmentSelectOptions("mto");
+			 listMto = dao.equipmentSelectOptions("mto");
 			 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();
