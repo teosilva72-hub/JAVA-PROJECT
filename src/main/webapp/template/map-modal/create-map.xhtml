@@ -61,7 +61,7 @@
 					<div class="form-group col-md-12 input-field" > <!-- INPUT DIV -->					
 						<span><i class="fas fa-cogs"></i></span> <!-- SPAN ICON -->
 						<span for="configId" class="valid-icon-hidden"></span>	<!-- SPAN VALIDATION -->
-						<input type="text" autocomplete="off" name="configId" id="configId" disabled="true"
+						<input type="text" autocomplete="off" name="configId" id="configId"
 						placeholder="#{mapLabels.$label_map_option_input_config_id}" /> <!-- INPUT -->						
 					</div> <!---->					
 					<div class="error-label"> 	<!-- ERROR DIV -->					
@@ -291,7 +291,7 @@
 		
 		<!---->	
 				
-		<div class="form-row sosInputs"> <!-- ROW -->
+		<div class="form-row"> <!-- ROW -->
 		
 			<!-- MODEL -->
 		
@@ -539,7 +539,7 @@
 
             <!-- HIDDEN ADD -->
 			<h:commandButton p:data-toggle="modal" p:data-target="#modaladd"  id="btn-form-send" style="display: none;" >			
-				<f:ajax execute="@all" render="@none" listener="#{equipsBean.createEquipment}" onevent="onEventMapFunction" />
+				<f:ajax execute="@all" render="@none" listener="#{equipsBean.saveEquipment}" onevent="onEventMapFunction" />
 			</h:commandButton>
 
             <!-- CANCEL -->

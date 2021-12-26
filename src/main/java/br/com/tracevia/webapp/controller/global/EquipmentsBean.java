@@ -21,6 +21,7 @@ import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.global.RoadConcessionaireDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.meteo_.METEO;
 import br.com.tracevia.webapp.model.sat.SAT;
@@ -250,660 +251,223 @@ public class EquipmentsBean implements Serializable {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
-
+	
 	/**
-	 * Método para criar equipamentos
-	 * @author Wellington
+	 * Método para salvar novos equipamentos na base de dados
+	 * de acordo com seu respectivo módulo
+	 * @author Wellington 25/12/2021
 	 * @version 1.0
-	 * @since Release 1.0	
-	 * @return void
+	 * @since 1.0
 	 * @throws Exception
 	 */
-
-	public void createEquipment() throws Exception {
 	
-		DateTimeApplication dta = new DateTimeApplication();
-
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
-
-		checked = false;
-
-		//FOR GENERICS
-		Equipments equip = new Equipments(); 	 
-
-		//EQUIPDAO
-		EquipmentsDAO equipDAO = new EquipmentsDAO();
-
-		//FOR SOS
-		SOS sos = new SOS();	
-
-		//FOR SAT
-		SAT sat = new SAT();
-
-		//FOR PMV
-		DMS dms = new DMS();
+	public void saveEquipment() throws Exception {
+				
+		DateTimeApplication dta = new DateTimeApplication(); // DATETIME APPLICATION OBJ			
+		EquipmentsDAO equipDAO = new EquipmentsDAO(); // EQUIPMENT DAO
 		
-		//FOR Speed
-		Speed speed = new Speed();
+		checked = false; // VARIÁVEL PARA VERFICAR OPERAÇÕES AO SALVAR NOVO EQUIPAMENTO	
+		
+		EquipmentDataSource dataSource = new EquipmentDataSource();
+				
+		// ------------------------------------------------------------------------------------------------------
+
+		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARAMETRÔS EXTERNOS		 			
+		
+		dataSource.setModuleID(parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips"))); // GET MODULE ID
+	
+		dataSource.setEquipId(parameterMap.get("equipId") == null ? 0 : Integer.parseInt(parameterMap.get("equipId"))); 	// GET EQUIP ID
+				
+		dataSource.setTable(defineTableById(dataSource.getModuleID())); // GET TABLE MODULE BY MODULE ID
+				
+		dataSource.setDatetime(dta.currentTimeDBformat()); // CREATION DATE
+		
+		dataSource.setUsername((String) SessionUtil.getParam("user"));  // CREATION USERNAME	
+			
+		dataSource.setEquipName(parameterMap.get("equipName")); // NAME
+	
+		dataSource.setIpAddress(parameterMap.get("equipIp")); 	// IP Address
+						
+		dataSource.setCity(parameterMap.get("cities")); 	// CITY
+		
+		dataSource.setRoad(parameterMap.get("roads")); // ROAD
+		
+		if(!dataSource.getTable().equals("meteo"))
+			dataSource.setEquipType(defineEquipType(dataSource.getTable())); // TYPE
+										
+		dataSource.setKm(parameterMap.get("km")); // KM
+				
+		dataSource.setDirection(parameterMap.get("direction")); // DIRECTION	
+		
+		dataSource.setLatitude(parameterMap.get("lat") == "" ? 0 : Double.parseDouble(parameterMap.get("lat"))); // LATITUDE
+
+		dataSource.setLongitude(parameterMap.get("long") == "" ? 0 : Double.parseDouble(parameterMap.get("long"))); // LONGITUDE
+		
+		// ----------------------------------------------------------------------------------------------------------------------
+				
+		// DMS
+		
+		if(dataSource.getTable().equals("pmv"))
+			dataSource.setDmsDriver(parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType"))); // DMS DRIVER
+				
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		// SOS 
+		
+		if(dataSource.getTable().equals("sos")) {
+			dataSource.setPort(parameterMap.get("equipPort") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort"))); // PORT 
+			dataSource.setModel(parameterMap.get("model") == "" ? 0 : Integer.parseInt(parameterMap.get("model"))); // SOS MODEL
+			dataSource.setSip(parameterMap.get("sip")); // SOS SIP			
+		}
+	
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		// SPEED 
+		
+		if(dataSource.getTable().equals("speed")) {			
+			dataSource.setIpAddressIndicator(parameterMap.get("indicator-equipIp")); // IP INDICATOR			
+			dataSource.setIpAddressRadar(parameterMap.get("radar-equipIp")); 	// IP RADAR 		
+		}
 		
 		// METEO
-		METEO meteo = new METEO();
-			
-		//CHECK MODULES	
-		int moduleID = (parameterMap.get("equips") == "" ? 0 : Integer.parseInt(parameterMap.get("equips")));
-
-		//EQUIP ID
-		int equipId = (parameterMap.get("equipId") == "" ? 0 : Integer.parseInt(parameterMap.get("equipId")));
-	
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		//DMS CHECKING
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		if((moduleID != 0 && moduleID == 8) && (equipId != 0)) {
-
-			String table = defineTableById(moduleID);
-
-			//For Equipment CreationDate
-			dms.setCreation_date(dta.currentTimeDBformat());
-
-			//For Equipment CreationUsername		
-			dms.setCreation_username((String) SessionUtil.getParam("user")); 
-
-			//DMS ID
-			dms.setEquip_id(equipId);
-
-			//For Equipment Name
-			dms.setNome(parameterMap.get("equipName"));
-
-			//For Equipment IP
-			dms.setDms_ip(parameterMap.get("equipIp"));
-
-			//For Equipment Type
-			dms.setDms_type(parameterMap.get("dmsType") == "" ? 1 :Integer.parseInt(parameterMap.get("dmsType")));
-
-			//For Equipment City
-			dms.setCidade(parameterMap.get("cities"));
-
-			//For Equipment Road
-			dms.setEstrada(parameterMap.get("roads"));
-
-			//For Equipment TYPE
-			dms.setEquip_type(ModulesEnum.PMV.getModule());
-
-			//For Equipment KM
-			dms.setKm(parameterMap.get("km"));
-			
-			//For Equipment Direction
-			dms.setDirection(parameterMap.get("direction"));
-			
-			//For Equipment latitude
-			dms.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-
-			//For Equipment KM
-			dms.setLongitude(Double.parseDouble(parameterMap.get("long")));
-			
-			int type = (parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType")));
-
-			//DMS TYPE
-			defineDMStype(dms, type);
-
-			checked =  equipDAO.checkExists(dms.getEquip_id(), table);
-
-			if(checked)
-				SessionUtil.executeScript("alertOptions('#equip-save-error');");
-
-			else {
-
-				checked = equipDAO.EquipDMSRegisterMap(dms, table);
-
-				if(checked) {
-					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
-				}
-
-				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
-
-			}
-
-			dms = new DMS(); // RESET
+		
+		if(dataSource.getTable().equals("meteo")) {		
+			dataSource.setPort(parameterMap.get("equipPort") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort"))); 	// PORT 
+			dataSource.setConfigId(parameterMap.get("configId") == "" ? 0 : Integer.parseInt(parameterMap.get("configId"))); // METEO CONFIG ID
+			dataSource.setEquipType(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType")); // METEO TYPE			
 		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		//SOS CHECKING
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		if((moduleID != 0 && moduleID == 10) && (equipId != 0)) {
-
-			String table = defineTableById(moduleID);
-
-			//For Equipment CreationDate
-			sos.setCreation_date(dta.currentTimeDBformat());
-
-			//For Equipment CreationUsername		
-			sos.setCreation_username((String) SessionUtil.getParam("user"));
-
-			//SOS ID
-			sos.setEquip_id(equipId);
-
-			//For Equipment Name
-			sos.setNome(parameterMap.get("equipName"));
-
-			//For Equipment IP
-			sos.setEquip_ip(parameterMap.get("equipIp"));
-
-			//For Equipment Port
-			sos.setPort(Integer.parseInt(parameterMap.get("equipPort")));
-
-			//For Equipment City
-			sos.setCidade(parameterMap.get("cities"));
-
-			//For Equipment Road
-			sos.setEstrada(parameterMap.get("roads"));
-
-			//For Equipment KM
-			sos.setKm(parameterMap.get("km"));
+		 							
+		// ----------------------------------------------------------------------------------------------------------------------
+		
+		// SAT 
+		
+		if(dataSource.getTable().equals("sat")) {	
 			
-			//For Equipment Direction
-			sos.setDirection(parameterMap.get("direction"));
+			dataSource.setNumLanes(parameterMap.get("lanes") == "" ? 2 : Integer.parseInt(parameterMap.get("lanes"))); // NUMBER LANES
+		
+			// LANE VALUE
+		
+			dataSource.setLane1(satDirection(parameterMap.get("direction1") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1")), 1));
+			dataSource.setLane2(satDirection(parameterMap.get("direction2") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2")), 2));
+			dataSource.setLane3(satDirection(parameterMap.get("direction3") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3")), 3));
+			dataSource.setLane4(satDirection(parameterMap.get("direction4") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4")), 4));
+			dataSource.setLane5(satDirection(parameterMap.get("direction5") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5")), 5));
+			dataSource.setLane6(satDirection(parameterMap.get("direction6") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6")), 6));
+			dataSource.setLane7(satDirection(parameterMap.get("direction7") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7")), 7));
+			dataSource.setLane8(satDirection(parameterMap.get("direction8") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8")), 8));
 
-			//For Equipment Model
-			sos.setModel(Integer.parseInt(parameterMap.get("model")));
-
-			//For Equipment SIP
-			sos.setSip(parameterMap.get("sip"));
-			
-			//For Equipment latitude
-			sos.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-
-			//For Equipment KM
-			sos.setLongitude(Double.parseDouble(parameterMap.get("long")));
-
-			checked =  equipDAO.checkExists(sos.getEquip_id(), table);
-
-			if(checked)
-				SessionUtil.executeScript("alertOptions('#equip-save-error');");
-
-			else {
-
-				checked = equipDAO.EquipSOSMap(sos, table);
-
-				if(checked) {
-					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
-				}
-
-				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
-
-			}
-
-			sos = new SOS(); // RESET
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		//SAT CHECKING
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		if((moduleID != 0 && moduleID == 9) && (equipId != 0)) {
-
-			String table = defineTableById(moduleID);
-
-			//For Equipment CreationDate
-			sat.setCreation_date(dta.currentTimeDBformat());
-
-			//For Equipment CreationUsername		
-			sat.setCreation_username((String) SessionUtil.getParam("user"));
-
-			//SAT ID
-			sat.setEquip_id(equipId);
-
-			//For Equipment Name
-			sat.setNome(parameterMap.get("equipName"));
-
-			//EQUIP IP
-			sat.setEquip_ip(parameterMap.get("equipIp"));
-
-			//For Equipment City
-			sat.setCidade(parameterMap.get("cities"));
-
-			//For Equipment Road
-			sat.setEstrada(parameterMap.get("roads"));
-
-			//For Equipment KM
-			sat.setKm(parameterMap.get("km"));
-			
-			//For Equipment Direction
-			sat.setDirection(parameterMap.get("direction"));
-
-			//For Equipment TYPE
-			sat.setEquip_type(ModulesEnum.SAT.getModule());
-			
-			//For Equipment latitude
-			sat.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-
-			//For Equipment KM
-			sat.setLongitude(Double.parseDouble(parameterMap.get("long")));
-
-			//For Number Lanes
-			int numLanes = (parameterMap.get("lanes") == "" ? 0 : Integer.parseInt(parameterMap.get("lanes")));
-
-			if(numLanes > 0)
-				sat.setNumFaixas(numLanes);
-
-			else sat.setNumFaixas(2);
-
-			//SET LANES DEFINITION
-			defineDirection(sat, 1, parameterMap.get("direction1") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1")));
-			defineDirection(sat, 2, parameterMap.get("direction2") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2")));
-			defineDirection(sat, 3, parameterMap.get("direction3") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3")));
-			defineDirection(sat, 4, parameterMap.get("direction4") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4")));
-			defineDirection(sat, 5, parameterMap.get("direction5") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5")));
-			defineDirection(sat, 6, parameterMap.get("direction6") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6")));
-			defineDirection(sat, 7, parameterMap.get("direction7") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7")));
-			defineDirection(sat, 8, parameterMap.get("direction8") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8")));
-
-
-			checked =  equipDAO.checkExists(sat.getEquip_id(), table);
-
-			if(checked)
-				SessionUtil.executeScript("alertOptions('#equip-save-error');");
-
-			else {
-
-				checked = equipDAO.EquipSATRegisterMap(sat, table);
-
-				if(checked) {
-					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
-				}
-
-				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
-
-			}
-
-			sat = new SAT(); // RESET
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		//SPEED CHECKING
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		else if((moduleID != 0 &&  moduleID == 11) && (equipId != 0)) {
-
-			//EQUIP TABLE BY MODULE
-			String table = defineTableById(moduleID);
-
-			//For Equipment ID
-			speed.setEquip_id(equipId);
-
-			//For Equipment CreationDate
-			speed.setCreation_date(dta.currentTimeDBformat());
-
-			//For Equipment CreationUsername		
-			speed.setCreation_username((String) SessionUtil.getParam("user")); 
-
-			//Equip Type
-			speed.setEquip_type(defineEquipType(table));
-
-			//For Equipment Name
-			speed.setNome(parameterMap.get("equipName"));
-
-			//EQUIP IP
-			speed.setEquip_ip_indicator(parameterMap.get("indicator-equipIp"));
-			
-			//EQUIP IP
-			speed.setEquip_ip_radar(parameterMap.get("radar-equipIp"));
-
-			//For Equipment City
-			speed.setCidade(parameterMap.get("cities"));
-
-			//For Equipment Road
-			speed.setEstrada(parameterMap.get("roads"));
-
-			//For Equipment KM
-			speed.setKm(parameterMap.get("km"));
-			
-			//For Equipment Direction
-			speed.setDirection(parameterMap.get("direction"));
-			
-			//For Equipment latitude
-			speed.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-
-			//For Equipment KM
-			speed.setLongitude(Double.parseDouble(parameterMap.get("long")));		 
-
-			checked =  equipDAO.checkExists(speed.getEquip_id(), table);
-			
-			//System.out.println(checked);
-
-			if(checked)
-				SessionUtil.executeScript("alertOptions('#equip-save-error');");
-
-			else {
-
-				checked = equipDAO.EquipRegisterSpeedMap(speed, table);
-
-				if(checked) {
-					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
-				}
-
-				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
-
-			}  //VALIDATION
-			
-			speed = new Speed(); // RESET
-
-		} // END METHOD
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		// METEO
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		else if(moduleID != 0 && moduleID == 6) {
-		
-		//EQUIP TABLE BY MODULE
-		String table = defineTableById(moduleID);
-		
-		//For Equipment ID
-		meteo.setEquip_id(equipId);
-		
-		//For Equipment CONFIG ID
-		meteo.setConfig_id(Integer.parseInt(parameterMap.get("configId")));
-		
-		//For Equipment CreationDate
-		meteo.setCreation_date(dta.currentTimeDBformat());
-		
-		//For Equipment CreationUsername		
-		meteo.setCreation_username((String) SessionUtil.getParam("user")); 
+		// -----------------------------------------------------------------------------------------------------------------
 				
-		meteo.setEquip_type(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType"));
-		
-		//For Equipment Name
-		meteo.setNome(parameterMap.get("equipName"));
-		
-		//EQUIP IP
-		meteo.setEquip_ip(parameterMap.get("equipIp"));
-		
-		//For Equipment City
-		meteo.setCidade(parameterMap.get("cities"));
-		
-		//For Equipment Road
-		meteo.setEstrada(parameterMap.get("roads"));
-		
-		//For Equipment KM
-		meteo.setKm(parameterMap.get("km"));
-		
-		//For Equipment Direction
-		meteo.setDirection(parameterMap.get("direction"));
-				
-		//For Equipment latitude
-		meteo.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-		
-		//For Equipment KM
-		meteo.setLongitude(Double.parseDouble(parameterMap.get("long")));	
-		
-		//For Equipment Port
-		meteo.setPort(Integer.parseInt(parameterMap.get("equipPort")));
-		
-		checked =  equipDAO.checkExists(equip.getEquip_id(), table);
-		
-		if(checked)
-		SessionUtil.executeScript("alertOptions('#equip-save-error');");
-		
-		else {
-		
-		checked = equipDAO.EquipRegisterMeteoMap(meteo, table);
-		
-		if(checked) {
-			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-			SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
-		}
-
-		else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
-
-		}  // VALIDATION
-		
-		meteo = new METEO(); // RESET
-		
-		} // END METHOD
-							
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////	 
-		//GENERIC CHECKING
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-		else if((moduleID != 0 && (moduleID != 9 && moduleID != 8 && moduleID != 10 && moduleID != 11)) && (equipId != 0)) {
-
-			//EQUIP TABLE BY MODULE
-			String table = defineTableById(moduleID);
-
-			//For Equipment ID
-			equip.setEquip_id(equipId);
-
-			//For Equipment CreationDate
-			equip.setCreation_date(dta.currentTimeDBformat());
-
-			//For Equipment CreationUsername		
-			equip.setCreation_username((String) SessionUtil.getParam("user")); 
-
-			if(moduleID != 6)						
-			equip.setEquip_type(defineEquipType(table)); //Equip Types
-			
-			else equip.setEquip_type(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType"));
-
-			//For Equipment Name
-			equip.setNome(parameterMap.get("equipName"));
-
-			//EQUIP IP
-			equip.setEquip_ip(parameterMap.get("equipIp"));
-
-			//For Equipment City
-			equip.setCidade(parameterMap.get("cities"));
-
-			//For Equipment Road
-			equip.setEstrada(parameterMap.get("roads"));
-		
-			//For Equipment KM
-			equip.setKm(parameterMap.get("km"));
-			
-			//For Equipment Direction
-			equip.setDirection(parameterMap.get("direction"));
-			
-			//For Equipment latitude
-			equip.setLatitude(Double.parseDouble(parameterMap.get("lat")));
-
-			//For Equipment KM
-			equip.setLongitude(Double.parseDouble(parameterMap.get("long")));		
-			
-			checked =  equipDAO.checkExists(equip.getEquip_id(), table);
+		checked =  equipDAO.checkExists(dataSource.getEquipId(), dataSource.getTable()); // CHECK IF ID ALREADY EXISTS
 
 			if(checked)
-				SessionUtil.executeScript("alertOptions('#equip-save-error');");
+				SessionUtil.executeScript("alertOptions('#warn', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment_exists")+"');");
 
 			else {
 
-				checked = equipDAO.EquipRegisterMap(equip, table);
-
+				checked = equipDAO.saveEquipment(dataSource);
+					
 				if(checked) {
 					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
-					SessionUtil.executeScript("updated = '" + table + parameterMap.get("equipId") + "';");
+					SessionUtil.executeScript("updated = '" + dataSource.getTable() + parameterMap.get("equipId") + "';");
 				}
 
 				else SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_saving_equipment")+"');");
 
-			}  //VALIDATION
-
-		} // END METHOD
-
-		equip = new Equipments(); // RESET
-
+			}		
 	}
-
-	//--------------------------------------------------------------------------------------------------------------
+		
+   //--------------------------------------------------------------------------------------------------------------
 
 	/**
 	 * Método para pesquisar equipamentos
-	 * @author Wellington
+	 * @author Wellington 25/12/2021
 	 * @version 1.0
-	 * @since Release 1.0	
-	 * @return void
+	 * @since Release 1.0		
 	 * @throws Exception
 	 */
 
-	public void SearchEquipment() throws Exception {
+	public void searchEquipment() throws Exception {
 
 		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
-
-		//INTERFACES
-		String interfaceView = parameterMap.get("interface-search");		   		
+		
+		String interfaceView = parameterMap.get("interface-search"); // MAP INTERFACES		   		
 
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();
+		
 		EquipmentsDAO dao = new EquipmentsDAO();
-		equip = new Equipments();
-		sat = new SAT();
-		dms = new DMS();
-		sos = new SOS();
-		speed = new Speed();
-		METEO meteo = new METEO();
-
-		int moduleId = getModuleByName(equipTable);
-		
-	    if(moduleId == 6){	
+	    EquipmentDataSource dataSource = new EquipmentDataSource();
 			
-			meteo = dao.EquipMeteoSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
+		dataSource = dao.searchEquipament(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
 
-			SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
-			SessionUtil.executeScript("$('#equipId-edit').val('"+meteo.getEquip_id()+"');");
-			SessionUtil.executeScript("$('#configId-edit').val('"+meteo.getConfig_id()+"');");
-			SessionUtil.executeScript("$('#meteoType-edit').val('"+meteo.getEquip_type()+"');");
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+meteo.getNome()+"');");	
-			SessionUtil.executeScript("$('#equipIp-edit').val('"+meteo.getEquip_ip()+"');");
-			SessionUtil.executeScript("$('#equipPort-edit').val('"+meteo.getPort()+"');");
-			SessionUtil.executeScript("$('#citiesEdit').val('"+meteo.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+meteo.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+meteo.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+meteo.getMapWidth()+"');");	
-			SessionUtil.executeScript("$('#latEdit').val('"+meteo.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+meteo.getLongitude()+"');");	
-			SessionUtil.executeScript("$('#direction-edit').val('"+meteo.getDirection()+"');");
-		
-		
-		}
-
-	    else if(moduleId == 8) {
-
-			dms = dao.EquipDMSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
-
-			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
-			SessionUtil.executeScript("$('#equipId-edit').val('"+dms.getEquip_id()+"');");	
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+dms.getNome()+"');");	
-			SessionUtil.executeScript("$('#dmsType-edit').val('"+dms.getDms_type()+"');");
-			SessionUtil.executeScript("$('#equipIp-edit').val('"+dms.getDms_ip()+"');");
-			SessionUtil.executeScript("$('#citiesEdit').val('"+dms.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+dms.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+dms.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+dms.getMapWidth()+"');");	
-			SessionUtil.executeScript("$('#latEdit').val('"+dms.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+dms.getLongitude()+"');");
-			SessionUtil.executeScript("$('#direction-edit').val('"+dms.getDirection()+"');");
-
-
-		} else if(moduleId == 9) {
-
-			sat = dao.EquipSatSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
-
-			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
-			SessionUtil.executeScript("$('#equipId-edit').val('"+sat.getEquip_id()+"');");	
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+sat.getNome()+"');");		
-			SessionUtil.executeScript("$('#equipIp-edit').val('"+sat.getEquip_ip()+"');");
-			SessionUtil.executeScript("$('#citiesEdit').val('"+sat.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+sat.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+sat.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+sat.getMapWidth()+"');");	
-			SessionUtil.executeScript("$('#lanes-edit').val('"+sat.getNumFaixas()+"');");
-			SessionUtil.executeScript("$('#latEdit').val('"+sat.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+sat.getLongitude()+"');");
-			SessionUtil.executeScript("$('#direction-edit').val('"+sat.getDirection()+"');");
-
-			if(sat.getFaixa1() != null)			 
-				SessionUtil.executeScript("$('#direction1-edit').show(); $('#direction1-edit').val('"+sat.getFaixa1()+"');");	
-
-			if(sat.getFaixa2() != null)			 
-				SessionUtil.executeScript("$('#direction2-edit').show(); $('#direction2-edit').val('"+sat.getFaixa2()+"');");	
-
-			if(sat.getFaixa3() != null)			 
-				SessionUtil.executeScript("$('#direction3-edit').show(); $('#direction3-edit').val('"+sat.getFaixa3()+"');");	
-
-			if(sat.getFaixa4() != null)			 
-				SessionUtil.executeScript("$('#direction4-edit').show(); $('#direction4-edit').val('"+sat.getFaixa4()+"');");	
-
-			if(sat.getFaixa5() != null)			 
-				SessionUtil.executeScript("$('#direction5-edit').show(); $('#direction5-edit').val('"+sat.getFaixa5()+"');");	
-
-			if(sat.getFaixa6() != null)			 
-				SessionUtil.executeScript("$('#direction6-edit').show(); $('#direction6-edit').val('"+sat.getFaixa6()+"');");	
-
-			if(sat.getFaixa7() != null)			 
-				SessionUtil.executeScript("$('#direction7-edit').show(); $('#direction7-edit').val('"+sat.getFaixa7()+"');");	
-
-			if(sat.getFaixa8() != null)			 
-				SessionUtil.executeScript("$('#direction8-edit').show(); $('#direction8-edit').val('"+sat.getFaixa8()+"');");				
-
-		} else if (moduleId == 10) {
-
-			sos = dao.EquipSOSSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
-
-			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
-			SessionUtil.executeScript("$('#equipId-edit').val('"+sos.getEquip_id()+"');");			
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+sos.getNome()+"');");	
-			SessionUtil.executeScript("$('#equipIp-edit').val('"+sos.getEquip_ip()+"');");
-			SessionUtil.executeScript("$('#equipPort-edit').val('"+sos.getPort()+"');");
-			SessionUtil.executeScript("$('#citiesEdit').val('"+sos.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+sos.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+sos.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+sos.getMapWidth()+"');");
-			SessionUtil.executeScript("$('#modelEdit').val('"+sos.getModel()+"');");
-			SessionUtil.executeScript("$('#sipEdit').val('"+sos.getSip()+"');");	
-			SessionUtil.executeScript("$('#latEdit').val('"+sos.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+sos.getLongitude()+"');");	
-			SessionUtil.executeScript("$('#direction-edit').val('"+sos.getDirection()+"');");
-		
-		} else if (moduleId == 11) {
-
-			speed = dao.EquipSpeedSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id());
-
-			SessionUtil.executeScript("$('#equips-edit').val('"+moduleId+"');");
-			SessionUtil.executeScript("$('#equipId-edit').val('"+speed.getEquip_id()+"');");			
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+speed.getNome()+"');");	
-			SessionUtil.executeScript("$('#indicator-equipIp-edit').val('"+speed.getEquip_ip_indicator()+"');");	
-			SessionUtil.executeScript("$('#radar-equipIp-edit').val('"+speed.getEquip_ip_radar()+"');");		
-			SessionUtil.executeScript("$('#citiesEdit').val('"+speed.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+speed.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+speed.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+speed.getMapWidth()+"');");
-			SessionUtil.executeScript("$('#latEdit').val('"+speed.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+speed.getLongitude()+"');");	
-			SessionUtil.executeScript("$('#direction-edit').val('"+speed.getDirection()+"');");
+				SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				
+				SessionUtil.executeScript("$('#equipId-edit').val('"+dataSource.getEquipId()+"');");
+				SessionUtil.executeScript("$('#equipIp-edit').val('"+dataSource.getIpAddress()+"');");
+				SessionUtil.executeScript("$('#equipNameEdit').val('"+dataSource.getEquipName()+"');");	
+				SessionUtil.executeScript("$('#citiesEdit').val('"+dataSource.getCity()+"');");
+				SessionUtil.executeScript("$('#roadsEdit').val('"+dataSource.getRoad()+"');");
+				SessionUtil.executeScript("$('#kmEdit').val('"+dataSource.getKm()+"');");	
+				SessionUtil.executeScript("$('#width-edit').val('"+dataSource.getWidth()+"');");			
+				SessionUtil.executeScript("$('#latEdit').val('"+dataSource.getLatitude()+"');");	
+				SessionUtil.executeScript("$('#longEdit').val('"+dataSource.getLongitude()+"');");
+				SessionUtil.executeScript("$('#direction-edit').val('"+dataSource.getDirection()+"');");
 				
-		} else {		
+			 if(equipTable.equals("meteo")) {
+				 
+				 SessionUtil.executeScript("$('#configId-edit').val('"+dataSource.getConfigId()+"');");
+				 SessionUtil.executeScript("$('#meteoType-edit').val('"+ dataSource.getEquipType()+"');");
+				 SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");							   
+			 }
+			 
+			 else if(equipTable.equals("pmv")) 
+				 SessionUtil.executeScript("$('#dmsType-edit').val('"+dataSource.getDmsDriver()+"');");
+			
+			 else if(equipTable.equals("sat")) {
+				
+				 SessionUtil.executeScript("$('#lanes-edit').val('"+dataSource.getNumLanes()+"');");
+				
+					if(dataSource.getLane1() != null)			 
+						SessionUtil.executeScript("$('#direction1-edit').show(); $('#direction1-edit').val('"+dataSource.getLane1()+"');");	
 
-			equip = dao.EquipSearchMap(equipId, equipTable, interfaceView, login.getLogin().getPermission_id()); 
+					if(dataSource.getLane2() != null)			 
+						SessionUtil.executeScript("$('#direction2-edit').show(); $('#direction2-edit').val('"+dataSource.getLane2()+"');");	
 
-			SessionUtil.executeScript("$('#equips-edit').val('"+getModuleByName(equipTable)+"');");				 
-			SessionUtil.executeScript("$('#equipId-edit').val('"+equip.getEquip_id()+"');");	
-			SessionUtil.executeScript("$('#configId-edit').val('"+equip.getEquip_id()+"');");	
-			SessionUtil.executeScript("$('#port-edit').val('"+equip.getMapWidth()+"');");
-			SessionUtil.executeScript("$('#equipIp-edit').val('"+equip.getEquip_ip()+"');");
-			SessionUtil.executeScript("$('#equipNameEdit').val('"+equip.getNome()+"');");					
-			SessionUtil.executeScript("$('#citiesEdit').val('"+equip.getCidade()+"');");	
-			SessionUtil.executeScript("$('#roadsEdit').val('"+equip.getEstrada()+"');");	
-			SessionUtil.executeScript("$('#kmEdit').val('"+equip.getKm()+"');");	
-			SessionUtil.executeScript("$('#width-edit').val('"+equip.getMapWidth()+"');");	
-			SessionUtil.executeScript("$('#latEdit').val('"+equip.getLatitude()+"');");	
-			SessionUtil.executeScript("$('#longEdit').val('"+equip.getLongitude()+"');");	
-			SessionUtil.executeScript("$('#direction-edit').val('"+equip.getDirection()+"');");
-		
-		}				   
-	}
+					if(dataSource.getLane3()!= null)			 
+						SessionUtil.executeScript("$('#direction3-edit').show(); $('#direction3-edit').val('"+dataSource.getLane3()+"');");	
+
+					if(dataSource.getLane4() != null)			 
+						SessionUtil.executeScript("$('#direction4-edit').show(); $('#direction4-edit').val('"+dataSource.getLane4()+"');");	
+
+					if(dataSource.getLane5() != null)			 
+						SessionUtil.executeScript("$('#direction5-edit').show(); $('#direction5-edit').val('"+dataSource.getLane5()+"');");	
+
+					if(dataSource.getLane6() != null)			 
+						SessionUtil.executeScript("$('#direction6-edit').show(); $('#direction6-edit').val('"+dataSource.getLane6()+"');");	
+
+					if(dataSource.getLane7() != null)			 
+						SessionUtil.executeScript("$('#direction7-edit').show(); $('#direction7-edit').val('"+dataSource.getLane7()+"');");	
+
+					if(dataSource.getLane8() != null)			 
+						SessionUtil.executeScript("$('#direction8-edit').show(); $('#direction8-edit').val('"+dataSource.getLane8()+"');");		
+																		 
+			 }
+			 
+			 else if(equipTable.equals("sos")) {
+				      SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");	
+					  SessionUtil.executeScript("$('#modelEdit').val('"+dataSource.getModel()+"');");
+					  SessionUtil.executeScript("$('#sipEdit').val('"+dataSource.getSip()+"');");
+			
+			 }
+			 
+			 else if(equipTable.equals("speed")) {
+				 	  SessionUtil.executeScript("$('#indicator-equipIp-edit').val('"+ dataSource.getIpAddressIndicator()+"');");	
+					  SessionUtil.executeScript("$('#radar-equipIp-edit').val('"+dataSource.getIpAddressRadar()+"');");		
+			
+			 }		
+	    }
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -1260,7 +824,7 @@ public class EquipmentsBean implements Serializable {
 
 			else speed.setMapWidth(parameterMap.get("width-edit") == "" ? 1 : Integer.parseInt(parameterMap.get("width-edit")));
 
-			update = dao.EquipSpeedUpdateMap(speed, table, interfaceView, login.getLogin().getPermission_id());
+			//update = dao.EquipSpeedUpdateMap(speed, table, interfaceView, login.getLogin().getPermission_id());
 
 			if(update) {
 				SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
@@ -1668,9 +1232,10 @@ public class EquipmentsBean implements Serializable {
 				case "cftv": type = ModulesEnum.CFTV.getModule(); break;
 				case "colas": type = ModulesEnum.COLAS.getModule(); break;
 				case"comms": type = ModulesEnum.COMMS.getModule(); break;
-				case "dai": type = ModulesEnum.DAI.getModule(); break;
-				case "meteo": type = ModulesEnum.METEO.getModule(); break;
+				case "dai": type = ModulesEnum.DAI.getModule(); break;				
 				case "ocr": type = ModulesEnum.OCR.getModule(); break;
+				case "dms": type = ModulesEnum.PMV.getModule(); break;
+				case "sat": type = ModulesEnum.SAT.getModule(); break;
 				case "sos": type = ModulesEnum.SOS.getModule(); break;
 				case "speed": type = ModulesEnum.SPEED.getModule(); break;
 				case "wim": type = ModulesEnum.WIM.getModule(); break;
@@ -1936,8 +1501,107 @@ public class EquipmentsBean implements Serializable {
 		   return sat;
 		   		   
 	   }
-	   
-	// --------------------------------------------------------------------------------------------		
+	   	   
+		//--------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Método para definir direções
+		 * @author Wellington
+		 * @version 1.0
+		 * @since Release 1.0
+		 * @param sat - Objeto do tipo SAT
+		 * @param numberLane - Número de linhas
+		 * @param dir - Direção
+		 * @return void   	
+		 */
+
+		public String satDirection(int dir, int numberLane){
+			
+			String lane = "";
+
+			switch(dir) {
+
+			case 0: 
+
+				switch (numberLane) { 
+
+					case 1: lane = "N"; break;
+					case 2: lane = "S"; break;
+					case 3: lane = null; break;
+					case 4: lane = null; break;
+					case 5: lane = null; break;
+					case 6: lane = null; break;
+					case 7: lane = null; break;
+					case 8: lane = null; break;
+
+				}; break;
+
+			case 1: 
+
+				switch (numberLane) { 
+
+					case 1: lane = "N"; break;
+					case 2: lane = "N"; break;
+					case 3: lane = "N"; break;
+					case 4: lane = "N"; break;
+					case 5: lane = "N"; break;
+					case 6: lane = "N"; break;
+					case 7: lane = "N"; break;
+					case 8: lane = "N"; break;
+
+				}; break;
+
+			case 2: 
+
+				switch (numberLane) { 
+	
+					case 1: lane = "S"; break;
+					case 2: lane = "S"; break;
+					case 3: lane = "S"; break;
+					case 4: lane = "S"; break;
+					case 5: lane = "S"; break;
+					case 6: lane = "S"; break;
+					case 7: lane = "S"; break;
+					case 8: lane = "S"; break;
+				
+				}; break;	
+
+			case 3: 	
+
+				switch (numberLane) { 
+	
+					case 1: lane = "L"; break;
+					case 2: lane = "L"; break;
+					case 3: lane = "L"; break;
+					case 4: lane = "L"; break;
+					case 5: lane = "L"; break;
+					case 6: lane = "L"; break;
+					case 7: lane = "L"; break;
+					case 8: lane = "L"; break;
+				
+				}; break;
+
+
+			case 4: 
+
+				switch (numberLane) { 
+
+					case 1: lane = "O"; break;
+					case 2: lane = "O"; break;
+					case 3: lane = "O"; break;
+					case 4: lane = "O"; break;
+					case 5: lane = "O"; break;
+					case 6: lane = "O"; break;
+					case 7: lane = "O"; break;
+					case 8: lane = "O"; break;
+				
+				}; break;				 	
+			}
+			
+			return lane;
+		}
+
+	//--------------------------------------------------------------------------------------------------------------
 	   
        
 }

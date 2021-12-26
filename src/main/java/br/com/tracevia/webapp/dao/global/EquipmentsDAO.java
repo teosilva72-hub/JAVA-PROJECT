@@ -10,22 +10,15 @@ import java.util.List;
 import br.com.tracevia.webapp.cfg.ModulesEnum;
 import br.com.tracevia.webapp.dao.dms.MessagesDAO;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.cftv.CFTV;
-import br.com.tracevia.webapp.model.colas.Colas;
-import br.com.tracevia.webapp.model.comms.COMMS;
-import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
+import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.model.meteo.mto.MTO;
-import br.com.tracevia.webapp.model.meteo.sv.SV;
 import br.com.tracevia.webapp.model.meteo_.METEO;
-import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.model.speed.Speed;
-import br.com.tracevia.webapp.model.wim.WIM;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class EquipmentsDAO {
@@ -1091,619 +1084,7 @@ public class EquipmentsDAO {
 		return dir;
 
 	}		
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para salvar um equipamento do tipo SAT 
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param equip - Objeto do tipo SAT
-	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso ap�s opera��o
-	 * @throws Exception
-	 */
-
-	public boolean EquipSATRegisterMap(SAT equip, String table) throws Exception {
-
-		boolean status = false; 
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// SAT EQUIPMENT TABLE INSERT QUERY
-			String query = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, number_lanes, equip_ip, name, city, road, km, "
-					+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8, "
-					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible) "
-					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			// NOTIFICATION STATUS TABLE INSERT QUERY
-			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-			
-			// SAT EQUIPMENT TABLE INSERT QUERY
-			String queryDirections = "INSERT INTO filter_directions(id, equip_id, lane, direction) VALUES (null,?,?,?)";
-
-			// SAT ADD	
-			ps = conn.prepareStatement(query);
-
-			ps.setInt(1, equip.getEquip_id());
-			ps.setString(2, equip.getCreation_date());
-			ps.setString(3, equip.getCreation_username());
-			ps.setInt(4, equip.getNumFaixas());
-			ps.setString(5, equip.getEquip_ip());
-			ps.setString(6, equip.getNome());
-			ps.setString(7, equip.getCidade());
-			ps.setString(8, equip.getEstrada());
-			ps.setString(9, equip.getKm());
-			ps.setString(10, equip.getFaixa1());	
-			ps.setString(11, equip.getFaixa2());	
-			ps.setString(12, equip.getFaixa3());	
-			ps.setString(13, equip.getFaixa4());	
-			ps.setString(14, equip.getFaixa5());	
-			ps.setString(15, equip.getFaixa6());	
-			ps.setString(16, equip.getFaixa7());	
-			ps.setString(17, equip.getFaixa8());	          			    			
-			ps.setInt(18, 100); // Linear Width
-			ps.setInt(19, 37); // Linear posX
-			ps.setInt(20, 107); // Linear posY
-			ps.setInt(21, 100); // VIDEO WALL Linear Width
-			ps.setInt(22, 37); // VIDEO WALL Linear posX
-			ps.setInt(23, 107); // VIDEO WALL Linear posY
-			ps.setInt(24, 75); // Map Width
-			ps.setInt(25, 50); // Map posX
-			ps.setInt(26, 50); // Map posY
-			ps.setInt(27, 75); // VIDEO WALL Map Width
-			ps.setInt(28, 50); // VIDEO WALL Map posX
-			ps.setInt(29, 50); // VIDEO WALL Map posY
-			ps.setDouble(30, equip.getLatitude()); // LATITUDE
-			ps.setDouble(31, equip.getLongitude()); // LONGITUDE
-			ps.setString(32, equip.getDirection()); // DIREÇÂO	
-			ps.setBoolean(33, true);
-
-			int success = ps.executeUpdate();
-
-			if(success > 0) { 
-				
-				int successDir = 0;
-				
-			  for(int ln = 1; ln <= equip.getNumFaixas(); ln++) {
-				
-				// NOTIFICATION ADD		
-				ps = conn.prepareStatement(queryDirections);
-		
-				ps.setInt(1, equip.getEquip_id()); 			
-				ps.setInt(2, ln);
-								
-				switch(ln) {
-				
-				case 1: ps.setString(3, equip.getFaixa1()); break;
-				case 2: ps.setString(3, equip.getFaixa2()); break;
-				case 3: ps.setString(3, equip.getFaixa3()); break;
-				case 4: ps.setString(3, equip.getFaixa4()); break;
-				case 5: ps.setString(3, equip.getFaixa5()); break;
-				case 6: ps.setString(3, equip.getFaixa6()); break;
-				case 7: ps.setString(3, equip.getFaixa7()); break;
-				case 8: ps.setString(3, equip.getFaixa8()); break;
-				
-				}
-				
-				successDir = ps.executeUpdate();
-				
-			}		
-				if(successDir > 0) {
-					
-					// NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
-
-					ps.setInt(1, equip.getEquip_id()); 			
-					ps.setString(2, equip.getEquip_type());
-					ps.setString(3, equip.getEquip_ip());
-					ps.setString(4, equip.getNome());
-					ps.setString(5, equip.getKm());
-
-					int successNotif = ps.executeUpdate();
-					
-					if(successNotif > 0)
-						status = true;	
-
-				}
-				   				
-			}             			
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);        		    
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
-		}
-
-		return status;	
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para salvar um equipamento do tipo PMV
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param equip - Objeto do tipo PMV
-	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso ap�s opera��o
-	 * @throws Exception
-	 */
-
-	public boolean EquipDMSRegisterMap(DMS equip, String table) throws Exception {
-
-		boolean status = false; 
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// DMS EQUIPMENT TABLE INSERT QUERY
-			String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
-					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, driver, latitude, longitude, direction, visible) "
-					+ "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			// DMS ACTIVE MESSAGES TABLE INSERT QUERY
-			String queryActive = "INSERT INTO "+table+"_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
-					+ "values (?,?,?,?,?,?)";
-
-			// NOTIFICATION STATUS TABLE INSERT QUERY
-			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
-
-			//DMS ADD		
-			ps = conn.prepareStatement(query);
-
-			ps.setInt(1, equip.getEquip_id());
-			ps.setString(2, equip.getCreation_date());
-			ps.setString(3, equip.getCreation_username());      
-			ps.setString(4, equip.getDms_ip());   
-			ps.setString(5, equip.getNome());
-			ps.setString(6, equip.getCidade());
-			ps.setString(7, equip.getEstrada());
-			ps.setString(8, equip.getKm());       			
-			ps.setInt(9,  150); // Linear Width
-			ps.setInt(10, 100); // Linear posX
-			ps.setInt(11, 100); // Linear posY
-			ps.setInt(12,  150); // VIDEO WALL Linear Width
-			ps.setInt(13, 100); // VIDEO WALL Linear posX
-			ps.setInt(14, 100); // VIDEO WALL Linear posY
-			ps.setInt(15, 15); // Map Width
-			ps.setInt(16, 50); // Map posX
-			ps.setInt(17, 50); // Map posY
-			ps.setInt(18, 15); // VIDEO WALL Map Width
-			ps.setInt(19, 50); // VIDEO WALL Map posX
-			ps.setInt(20, 50); // VIDEO WALL Map posY
-			ps.setInt(21,  equip.getDms_type()); //driver
-			ps.setDouble(22, equip.getLatitude()); // LATITUDE
-			ps.setDouble(23, equip.getLongitude()); // LONGITUDE
-			ps.setString(24, equip.getDirection()); // DIREÇÂO	
-			ps.setBoolean(25, true);
-
-			int success = ps.executeUpdate();
-
-			if(success > 0) {
-
-				//ACTIVE MESSAGES ADD
-				ps = conn.prepareStatement(queryActive);
-
-				ps.setInt(1, equip.getEquip_id());
-				ps.setInt(2, 0);            			
-				ps.setString(3, equip.getCreation_username());    
-				ps.setString(4, equip.getCreation_date());
-				ps.setInt(5, 0);   
-				ps.setInt(6, 1);
-
-				int success2 = ps.executeUpdate();
-
-				if(success2 > 0) {    
-
-					//NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
-
-					ps.setInt(1, equip.getEquip_id()); 			
-					ps.setString(2, equip.getEquip_type());
-					ps.setString(3, equip.getDms_ip());
-					ps.setString(4, equip.getNome());
-					ps.setString(5, equip.getKm());
-
-					int successNotif = ps.executeUpdate();
-
-					if(successNotif > 0)		
-						status = true;	                				         
-
-				}     				 	
-			}            				  	
-
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);        		    
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
-		}
-
-		return status;	
-	}
-
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para salvar um equipamento gen�rico
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param equip - Objeto do tipo gen�rico
-	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso
-	 * @throws Exception
-	 */
-
-	public boolean EquipSOSMap(SOS equip, String table) throws Exception {
-
-		boolean status = false;     
-
-		// GENERIC TABLE INSERT QUERY
-		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, equip_ip, port, name, city, road, km, "
-				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, model, master_sip, latitude, longitude, direction, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-		// NOTIFICATION STATUS TABLE INSERT QUERY
-		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-				+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// GENERIC ADD			
-			ps = conn.prepareStatement(query);
-
-			ps.setInt(1, equip.getEquip_id());
-			ps.setString(2, equip.getCreation_date());
-			ps.setString(3, equip.getCreation_username());
-			ps.setString(4, equip.getEquip_ip());
-			ps.setInt(5, equip.getPort());
-			ps.setString(6, equip.getNome());
-			ps.setString(7, equip.getCidade());
-			ps.setString(8, equip.getEstrada());
-			ps.setString(9, equip.getKm());	
-			ps.setInt(10, 30); // Linear Width
-			ps.setInt(11, 30); // Linear posX
-			ps.setInt(12, 500); // Linear posY
-			ps.setInt(13, 30); // VIDEO WALL Linear Width
-			ps.setInt(14, 30); // VIDEO WALL Linear posX
-			ps.setInt(15, 500); // VIDEO WALL Linear posY
-			ps.setInt(16, 20); // Map Width
-			ps.setInt(17, 50); // Map posX
-			ps.setInt(18, 50); // Map posY
-			ps.setInt(19, 20); // VIDEO WALL Map Width
-			ps.setInt(20, 50); // VIDEO WALL Map posX
-			ps.setInt(21, 50); // VIDEO WALL Map posY
-			ps.setInt(22, equip.getModel());
-			ps.setString(23, equip.getSip());
-			ps.setDouble(24, equip.getLatitude()); // LATITUDE
-			ps.setDouble(25, equip.getLongitude()); // LONGITUDE
-			ps.setString(26, equip.getDirection()); // DIREÇÂO		
-			ps.setBoolean(27, true);
-
-			int success = ps.executeUpdate();
-
-			if(success > 0) {    
-
-				//NOTIFICATION ADD		
-				ps = conn.prepareStatement(queryNotification);
-
-				ps.setInt(1, equip.getEquip_id()); 			
-				ps.setString(2, equip.getEquip_type());
-				ps.setString(3, equip.getEquip_ip());
-				ps.setString(4, equip.getNome());
-				ps.setString(5, equip.getKm());
-
-				int successNotif = ps.executeUpdate();
-
-				if(successNotif > 0)    			
-					status = true;	                				         
-
-			}  	
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
-		}
-
-		return status;	
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para salvar um equipamento gen�rico
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param equip - Objeto do tipo gen�rico
-	 * @param table - Table id	 
-	 * @return boolean - Verdairo ou falso
-	 * @throws Exception
-	 */
-
-	public boolean EquipRegisterSpeedMap(Speed equip, String table) throws Exception {
-
-		boolean status = false;     
-
-		// GENERIC TABLE INSERT QUERY
-		String query = "INSERT INTO speed_equipment (equip_id, creation_date, creation_username, equip_ip_indicator, equip_ip_radar, name, city, road, km, "
-				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-		// NOTIFICATION STATUS TABLE INSERT QUERY
-		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-				+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// GENERIC ADD			
-			ps = conn.prepareStatement(query);
-
-			ps.setInt(1, equip.getEquip_id());
-			ps.setString(2, equip.getCreation_date());
-			ps.setString(3, equip.getCreation_username());
-			ps.setString(4, equip.getEquip_ip_indicator());
-			ps.setString(5, equip.getEquip_ip_radar());			
-			ps.setString(6, equip.getNome());
-			ps.setString(7, equip.getCidade());
-			ps.setString(8, equip.getEstrada());
-			ps.setString(9, equip.getKm());	
-			ps.setInt(10, 30); // Linear Width
-			ps.setInt(11, 30); // Linear posX
-			ps.setInt(12, 500); // Linear posY
-			ps.setInt(13, 30); // VIDEO WALL Linear Width
-			ps.setInt(14, 30); // VIDEO WALL Linear posX
-			ps.setInt(15, 500); // VIDEO WALL Linear posY
-			ps.setInt(16, 20); // Map Width
-			ps.setInt(17, 50); // Map posX
-			ps.setInt(18, 50); // Map posY
-			ps.setInt(19, 20); // VIDEO WALL Map Width
-			ps.setInt(20, 50); // VIDEO WALL Map posX
-			ps.setInt(21, 50); // VIDEO WALL Map posY		
-			ps.setDouble(22, equip.getLatitude()); // LATITUDE
-			ps.setDouble(23, equip.getLongitude()); // LONGITUDE
-			ps.setString(24, equip.getDirection()); // DIREÇÂO	
-			ps.setBoolean(25, true);
-
-			int success = ps.executeUpdate();
-
-			if(success > 0) {    
-
-				// NOTIFICATION ADD		
-				ps = conn.prepareStatement(queryNotification);
-
-				ps.setInt(1, equip.getEquip_id()); 		
-				ps.setString(2, equip.getEquip_type()+" I");
-				ps.setString(3, equip.getEquip_ip_indicator());
-				ps.setString(4, "I "+equip.getNome());
-				ps.setString(5, equip.getKm());
-
-				int successNotif = ps.executeUpdate();
-
-				if(successNotif > 0) { 
-
-					// NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
-
-					ps.setInt(1, equip.getEquip_id()); 		
-					ps.setString(2, equip.getEquip_type()+" I");
-					ps.setString(3, equip.getEquip_ip_indicator());
-					ps.setString(4, "I "+equip.getNome());
-					ps.setString(5, equip.getKm());
-
-					int successNotif1 = ps.executeUpdate();
-
-					if(successNotif1 > 0)
-						status = true;  								 						
-
-				}
-
-			}  	
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
-		}
-
-		return status;	
-	}
-
-
-	// --------------------------------------------------------------------------------------------------------------
-
-		/**
-		 * M�todo para salvar um equipamento gen�rico
-		 * @author Wellington
-		 * @version 1.0
-		 * @since Release 1.0
-		 * @param equip - Objeto do tipo gen�rico
-		 * @param table - Table id	 
-		 * @return boolean - Verdairo ou falso
-		 * @throws Exception
-		 */
-
-		public boolean EquipRegisterMeteoMap(METEO equip, String table) throws Exception {
-
-			boolean status = false;     
-
-			// GENERIC TABLE INSERT QUERY
-			String query = "INSERT INTO meteo_equipment (equip_id, config_id, creation_date, creation_username, equip_type, equip_ip, port, name, city, road, km, "
-					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
-					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			// NOTIFICATION STATUS TABLE INSERT QUERY
-			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-
-			try {
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				// GENERIC ADD			
-				ps = conn.prepareStatement(query);
-
-				ps.setInt(1, equip.getEquip_id());
-				ps.setInt(2, equip.getConfig_id());
-				ps.setString(3, equip.getCreation_date());
-				ps.setString(4, equip.getCreation_username());	
-				ps.setString(5, equip.getEquip_type());
-				ps.setString(6, equip.getEquip_ip());		
-				ps.setInt(7, equip.getPort());	
-				ps.setString(8, equip.getNome());
-				ps.setString(9, equip.getCidade());
-				ps.setString(10, equip.getEstrada());
-				ps.setString(11, equip.getKm());	
-				ps.setInt(12, 30); // Linear Width
-				ps.setInt(13, 30); // Linear posX
-				ps.setInt(14, 500); // Linear posY
-				ps.setInt(15, 30); // VIDEO WALL Linear Width
-				ps.setInt(16, 30); // VIDEO WALL Linear posX
-				ps.setInt(17, 500); // VIDEO WALL Linear posY
-				ps.setInt(18, 20); // Map Width
-				ps.setInt(19, 50); // Map posX
-				ps.setInt(20, 50); // Map posY
-				ps.setInt(21, 20); // VIDEO WALL Map Width
-				ps.setInt(22, 50); // VIDEO WALL Map posX
-				ps.setInt(23, 50); // VIDEO WALL Map posY			
-				ps.setDouble(24, equip.getLatitude()); // LATITUDE
-				ps.setDouble(25, equip.getLongitude()); // LONGITUDE
-				ps.setString(26, equip.getDirection()); // DIREÇÂO	
-				ps.setBoolean(27, true);
-
-				int success = ps.executeUpdate();
-
-				if(success > 0) {    
-
-					// NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
-
-					ps.setInt(1, equip.getEquip_id()); 		
-					ps.setString(2, equip.getEquip_type());
-					ps.setString(3, equip.getEquip_ip());
-					ps.setString(4, equip.getNome());
-					ps.setString(5, equip.getKm());
-
-					int successNotif = ps.executeUpdate();
-				
-						if(successNotif > 0)
-							status = true;  							 						
-
-				    }  	
-
-			} catch (SQLException sqle) {
-				throw new Exception("Erro ao inserir dados " + sqle);
-
-			} finally {
-				ConnectionFactory.closeConnection(conn, ps);
-			}
-
-			return status;	
-		}
-
-		// --------------------------------------------------------------------------------------------------------------
-
-	public boolean EquipRegisterMap(Equipments equip, String table) throws Exception {
-
-		boolean status = false;     
-
-		// GENERIC TABLE INSERT QUERY
-		String query = "INSERT INTO "+table+"_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
-				+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-				+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible)"
-				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-
-		// NOTIFICATION STATUS TABLE INSERT QUERY
-		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
-				+ "VALUES (null, ?, ?, ?, ?, ?)"; 
-			
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			// GENERIC ADD			
-			ps = conn.prepareStatement(query);
-
-			ps.setInt(1, equip.getEquip_id());
-			ps.setString(2, equip.getCreation_date());
-			ps.setString(3, equip.getCreation_username());
-			ps.setString(4, equip.getEquip_ip());
-			ps.setString(5, equip.getNome());
-			ps.setString(6, equip.getCidade());
-			ps.setString(7, equip.getEstrada());
-			ps.setString(8, equip.getKm());	
-			ps.setInt(9, 30); // Linear Width
-			ps.setInt(10, 30); // Linear posX
-			ps.setInt(11, 500); // Linear posY
-			ps.setInt(12, 30); // VIDEO WALL Linear Width
-			ps.setInt(13, 30); // VIDEO WALL Linear posX
-			ps.setInt(14, 500); // VIDEO WALL Linear posY
-			ps.setInt(15, 20); // Map Width
-			ps.setInt(16, 50); // Map posX
-			ps.setInt(17, 50); // Map posY
-			ps.setInt(18, 20); // VIDEO WALL Map Width
-			ps.setInt(19, 50); // VIDEO WALL Map posX
-			ps.setInt(20, 50); // VIDEO WALL Map posY
-			ps.setDouble(21, equip.getLatitude()); // LATITUDE
-			ps.setDouble(22, equip.getLongitude()); // LONGITUDE
-			ps.setString(23, equip.getDirection()); // DIREÇÂO	
-			ps.setBoolean(24, true);
-
-			int success = ps.executeUpdate();
-
-			if(success > 0) {    
-
-				//NOTIFICATION ADD		
-				ps = conn.prepareStatement(queryNotification);
-
-				ps.setInt(1, equip.getEquip_id()); 		
-				ps.setString(2, equip.getEquip_type());
-				ps.setString(3, equip.getEquip_ip());
-				ps.setString(4, equip.getNome());
-				ps.setString(5, equip.getKm());
-
-				int successNotif = ps.executeUpdate();
-
-				if(successNotif > 0)            			
-					status = true;	  
-				
-			}  	
-
-		} catch (SQLException sqle) {
-			throw new Exception("Erro ao inserir dados " + sqle);
-
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
-		}
-
-		return status;	
-	}
-
+	
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
@@ -2823,156 +2204,6 @@ public class EquipmentsDAO {
 
 	// --------------------------------------------------------------------------------------------------------------
 
-	/**
-	 * M�todo para atualizar um equipamento do tipo SAT
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param sat - Objeto do tipo SAT
-	 * @param table - Table id	
-	 * @param view - Mapa a ser atualizado 
-	 * @return boolean - Verdairo ou falso
-	 * @throws Exception
-	 */
-
-	public boolean EquipSpeedUpdateMap(Speed speed, String table, String updateView, int permission) throws Exception {    
-
-		boolean updated = false;
-		int id = 0;
-
-		String queryLinear = "";
-		String queryMap = "";
-
-		String notifications = "UPDATE notifications_status SET equip_ip = ?, equip_name = ?,  equip_km = ? WHERE notifications_id = ? ";
-
-
-		String notificationSafety = "SELECT notifications_id FROM notifications_status WHERE equip_id = ? and equip_type = ?";
-
-
-		String querySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, linear_width = ?, latitude = ?, longitude = ? " 
-				+ " WHERE equip_id = ? ";
-
-		String querySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, map_width = ?, latitude = ?, longitude = ? " 
-				+ " WHERE equip_id = ? ";
-
-		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-		String VWquerySpeedLinear = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_linear_width = ?, latitude = ?, longitude = ? " 
-				+ " WHERE equip_id = ? ";
-
-		String VWquerySpeedMap = "UPDATE speed_equipment SET name = ?, equip_ip_indicator = ?, equip_ip_radar = ?, city = ?, road = ?, km = ?, vw_map_width = ?, latitude = ?, longitude = ?  " 
-				+ " WHERE equip_id = ? ";
-
-		// ----------------------------------------------------------------------------------------------------------------------------------------------
-
-		try {
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			//VIDEO WALL SWITCH
-			if(permission != 9) {
-
-				queryLinear = querySpeedLinear;
-				queryMap = querySpeedMap;			
-
-			}else { 
-
-				queryLinear = VWquerySpeedLinear;
-				queryMap = VWquerySpeedMap;		
-
-			}				
-
-			if(updateView.equals("linear"))
-				ps = conn.prepareStatement(queryLinear);
-
-			else ps = conn.prepareStatement(queryMap);
-
-			ps.setString(1, speed.getNome()); 
-			ps.setString(2, speed.getEquip_ip_indicator());
-			ps.setString(3, speed.getEquip_ip_radar());
-			ps.setString(4, speed.getCidade());
-			ps.setString(5, speed.getEstrada());
-			ps.setString(6, speed.getKm());			
-			ps.setInt(7, speed.getMapWidth());			
-			ps.setDouble(8,  speed.getLatitude());
-			ps.setDouble(9,  speed.getLongitude()); 
-			ps.setInt(10, speed.getEquip_id());
-
-			int res = ps.executeUpdate();
-
-			if (res > 0) {
-
-				ps = conn.prepareStatement(notificationSafety);
-
-				ps.setInt(1, speed.getEquip_id());	
-				ps.setString(2, ModulesEnum.SPEED.getModule()+" I");
-
-				rs = ps.executeQuery();
-
-				if(rs.isBeforeFirst()) {
-					while(rs.next()) {
-
-						id = rs.getInt(1);	
-
-					}
-				}
-
-				ps = conn.prepareStatement(notifications);
-
-				ps.setString(1, speed.getEquip_ip_indicator());
-				ps.setString(2, "I "+speed.getNome()); 
-				ps.setString(3, speed.getKm());						
-				ps.setInt(4, id);						
-
-				int res2 = ps.executeUpdate();
-
-				if(res2 > 0) {
-
-					ps = conn.prepareStatement(notificationSafety);
-
-					ps.setInt(1, speed.getEquip_id());	
-					ps.setString(2, ModulesEnum.SPEED.getModule()+" R");
-
-					rs = ps.executeQuery();
-
-					if(rs.isBeforeFirst()) {
-						while(rs.next()) {
-
-							id = rs.getInt(1);	
-
-						}
-					}
-
-					ps = conn.prepareStatement(notifications);
-
-					ps.setString(1, speed.getEquip_ip_indicator());
-					ps.setString(2, "I "+speed.getNome()); 
-					ps.setString(3, speed.getKm());						
-					ps.setInt(4, id);	
-
-					int res3 = ps.executeUpdate();
-
-					if(res3 > 0)
-						updated = true; 										
-				}				
-			}
-
-		}catch(SQLException sqle) {
-
-			sqle.printStackTrace();
-		}
-		finally { //Close Connection
-
-			ConnectionFactory.closeConnection(conn, ps, rs);
-
-		}
-
-		return updated;			    
-
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
 	public Equipments cftvCam(int id) throws Exception {
 		String script = "SELECT name, equip_ip, km FROM cftv_equipment WHERE equip_id= "+id+"";
 		Equipments data = new Equipments();
@@ -2998,946 +2229,8 @@ public class EquipmentsDAO {
 
 		return data;
 	}
-	public Equipments EquipSearchMap(int id, String table, String interfacesView, int permission) throws Exception {    
-
-		try {
-
-			if(table.equals("cftv")) { // CFTV 
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				CFTV cftv = new CFTV();
-
-				String queryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
-
-				String queryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryCftvLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
-
-				String VWqueryCftvMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM cftv_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryCftvLinear;
-					queryMap = queryCftvMap;			
-
-				}else { 
-
-					queryLinear = VWqueryCftvLinear;
-					queryMap = VWqueryCftvMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						cftv.setEquip_id(rs.getInt(1));  			 			  
-						cftv.setEquip_ip(rs.getString(2));  			  
-						cftv.setNome(rs.getString(3));
-						cftv.setCidade(rs.getString(4));
-						cftv.setEstrada(rs.getString(5));
-						cftv.setKm(rs.getString(6));
-						cftv.setMapWidth(rs.getInt(7));
-						cftv.setLatitude(rs.getDouble(8));
-						cftv.setLongitude(rs.getDouble(9));
-
-					}
-				}
-
-				return cftv;            	  
-
-			}  
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("colas")) { // COLAS
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				Colas colas = new Colas();
-
-				String queryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
-
-				String queryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryColasLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
-
-				String VWqueryColasMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM colas_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryColasLinear;
-					queryMap = queryColasMap;			
-
-				}else { 
-
-					queryLinear = VWqueryColasLinear;
-					queryMap = VWqueryColasMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else   ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						colas.setEquip_id(rs.getInt(1));
-						colas.setEquip_ip(rs.getString(2));  	
-						colas.setNome(rs.getString(3));
-						colas.setCidade(rs.getString(4));
-						colas.setEstrada(rs.getString(5));
-						colas.setKm(rs.getString(6));
-						colas.setMapWidth(rs.getInt(7));
-						colas.setLatitude(rs.getDouble(8));
-						colas.setLongitude(rs.getDouble(9));
-
-					}
-				}
-
-				return colas;            	  
-
-			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("comms")) { // COMMS
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				COMMS comms = new COMMS();
-
-				String queryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
-
-				String queryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryCOMMSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
-
-				String VWqueryCOMMSMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM comms_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryCOMMSLinear;
-					queryMap = queryCOMMSMap;			
-
-				}else { 
-
-					queryLinear = VWqueryCOMMSLinear;
-					queryMap = VWqueryCOMMSMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else  ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						comms.setEquip_id(rs.getInt(1));
-						comms.setEquip_ip(rs.getString(2));  	
-						comms.setNome(rs.getString(3));
-						comms.setCidade(rs.getString(4));
-						comms.setEstrada(rs.getString(5));
-						comms.setKm(rs.getString(6));
-						comms.setMapWidth(rs.getInt(7));  	
-						comms.setLatitude(rs.getDouble(8));
-						comms.setLongitude(rs.getDouble(9));		         			            			  
-
-					}
-				}
-
-				return comms;            	  
-
-			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("dai")) { // DAI
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				DAI dai = new DAI();
-
-				String queryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
-
-				String queryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryDAILinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
-
-				String VWqueryDAIMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM dai_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryDAILinear;
-					queryMap = queryDAIMap;			
-
-				}else { 
-
-					queryLinear = VWqueryDAILinear;
-					queryMap = VWqueryDAIMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						dai.setEquip_id(rs.getInt(1));
-						dai.setEquip_ip(rs.getString(2));  	
-						dai.setNome(rs.getString(3));
-						dai.setCidade(rs.getString(4));
-						dai.setEstrada(rs.getString(5));
-						dai.setKm(rs.getString(6));
-						dai.setMapWidth(rs.getInt(7));	
-						dai.setLatitude(rs.getDouble(8));
-						dai.setLongitude(rs.getDouble(9));
-
-					}
-				}
-
-				return dai;            	  
-
-			}  
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("ocr")) { // OCR
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				OCR ocr = new OCR();
-
-				String queryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
-
-				String queryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryOCRLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
-
-				String VWqueryOCRMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM ocr_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryOCRLinear;
-					queryMap = queryOCRMap;			
-
-				}else { 
-
-					queryLinear = VWqueryOCRLinear;
-					queryMap = VWqueryOCRMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						ocr.setEquip_id(rs.getInt(1));
-						ocr.setEquip_ip(rs.getString(2));  	
-						ocr.setNome(rs.getString(3));
-						ocr.setCidade(rs.getString(4));
-						ocr.setEstrada(rs.getString(5));
-						ocr.setKm(rs.getString(6));
-						ocr.setMapWidth(rs.getInt(7)); 	
-						ocr.setLatitude(rs.getDouble(8));
-						ocr.setLongitude(rs.getDouble(9));		        			            			  
-
-					}
-				}
-
-				return ocr;            	  
-
-			}  
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("mto")) { // MTO
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				MTO mto = new MTO();
-
-				String queryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
-
-				String queryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryMTOLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
-
-				String VWqueryMTOMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM mto_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryMTOLinear;
-					queryMap = queryMTOMap;			
-
-				}else { 
-
-					queryLinear = VWqueryMTOLinear;
-					queryMap = VWqueryMTOMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						mto.setEquip_id(rs.getInt(1));
-						mto.setEquip_ip(rs.getString(2));  					
-						mto.setNome(rs.getString(3));
-						mto.setCidade(rs.getString(4));
-						mto.setEstrada(rs.getString(5));
-						mto.setKm(rs.getString(6));
-						mto.setMapWidth(rs.getInt(7));	
-						mto.setLatitude(rs.getDouble(8));
-						mto.setLongitude(rs.getDouble(9));
-
-					}
-				}
-
-				return mto;            	  
-
-			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("sos")) { // SOS
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				SOS sos = new SOS();
-
-				String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
-
-				String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWquerySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_linear_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
-
-				String VWquerySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, vw_map_width, model, master_sip, latitude, longitude FROM sos_equipment WHERE equip_id = ? ";
-
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = querySOSLinear;
-					queryMap = querySOSMap;			
-
-				}else { 
-
-					queryLinear = VWquerySOSLinear;
-					queryMap = VWquerySOSMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						sos.setEquip_id(rs.getInt(1));
-						sos.setEquip_ip(rs.getString(2));
-						sos.setPort(rs.getInt(3));
-						sos.setNome(rs.getString(4));
-						sos.setCidade(rs.getString(5));
-						sos.setEstrada(rs.getString(6));
-						sos.setKm(rs.getString(7));
-						sos.setMapWidth(rs.getInt(8));
-						sos.setModel(rs.getInt(9));
-						sos.setSip(rs.getString(10)); 
-						sos.setLatitude(rs.getDouble(11));
-						sos.setLongitude(rs.getDouble(12));
-
-					}
-				}
-
-				return sos;            	  
-
-			} 
-
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("sv")) { // SV
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				SV sv = new SV();
-
-				String querySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
-
-				String querySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWquerySVLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
-
-				String VWquerySVMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM sv_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = querySVLinear;
-					queryMap = querySVMap;			
-
-				}else { 
-
-					queryLinear = VWquerySVLinear;
-					queryMap = VWquerySVMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						sv.setEquip_id(rs.getInt(1));
-						sv.setEquip_ip(rs.getString(2));  	
-						sv.setNome(rs.getString(3));
-						sv.setCidade(rs.getString(4));
-						sv.setEstrada(rs.getString(5));
-						sv.setKm(rs.getString(6));
-						sv.setMapWidth(rs.getInt(7)); 
-						sv.setLatitude(rs.getDouble(8));
-						sv.setLongitude(rs.getDouble(9)); 		      			            			  
-
-					}
-				}
-
-				return sv;            	  
-
-			}  			
-			// --------------------------------------------------------------------------------------------------------------
-
-			if(table.equals("wim")) { // WIM
-
-				String queryLinear = "";
-				String queryMap = "";
-
-				WIM wim = new WIM();
-
-				String queryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
-
-				String queryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, map_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
-
-				// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-				String VWqueryWIMLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
-
-				String VWqueryWIMMap = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_map_width, latitude, longitude FROM wim_equipment WHERE equip_id = ? ";
-
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-				//VIDEO WALL SWITCH
-				if(permission != 9) {
-
-					queryLinear = queryWIMLinear;
-					queryMap = queryWIMMap;			
-
-				}else { 
-
-					queryLinear = VWqueryWIMLinear;
-					queryMap = VWqueryWIMMap;		
-
-				}			
-
-				if(interfacesView.equals("linear"))
-					ps = conn.prepareStatement(queryLinear);
-
-				else ps = conn.prepareStatement(queryMap);
-
-				ps.setInt(1,  id);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()){
-
-						wim.setEquip_id(rs.getInt(1));
-						wim.setEquip_ip(rs.getString(2));  	
-						wim.setNome(rs.getString(3));
-						wim.setCidade(rs.getString(4));
-						wim.setEstrada(rs.getString(5));
-						wim.setKm(rs.getString(6));
-						wim.setMapWidth(rs.getInt(7));  
-						wim.setLatitude(rs.getDouble(8));
-						wim.setLongitude(rs.getDouble(9)); 			             			            			  
-
-					}
-				}
-
-				return wim;            	  
-
-			}  
-
-		}catch(SQLException sqle) {
-
-			sqle.printStackTrace();
-		}
-		finally { //Close Connection
-
-			ConnectionFactory.closeConnection(conn, ps, rs);
-
-		}
-
-		return null;
-
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para localizar dados de um equipamento SAT
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param id - Equipamento ID
-	 * @param table - Table id	
-	 * @param interfacesview - Mapa a ser atualizado 
-	 * @return SAT - Objeto do com informa��es de um SAT
-	 * @throws Exception
-	 */
-
-	public SAT EquipSatSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
-
-		String queryLinear = "";
-		String queryMap = "";
-
-
-		SAT sat = new SAT();
-
-		String querySATLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, linear_width, number_lanes, " 
-				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
-
-		String querySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, map_width, number_lanes, " 
-				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
-
-		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-		String VWquerySATLinear = "SELECT equip_id, IFNULL(equip_ip, ''), name, city, road, km, vw_linear_width, number_lanes, " 
-				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
-
-		String VWquerySATMap = "SELECT equip_id, IFNULL(equip_ip, ''),  name, city, road, km, vw_map_width, number_lanes, " 
-				+ "dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 " 
-				+ ", latitude, longitude, direction FROM sat_equipment WHERE equip_id = ? ";
-
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-		//VIDEO WALL SWITCH
-		if(permission != 9) {
-
-			queryLinear = querySATLinear;
-			queryMap = querySATMap;			
-
-		}else { 
-
-			queryLinear = VWquerySATLinear;
-			queryMap = VWquerySATMap;		
-
-		}			
-
-		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(queryLinear);
-
-		else  ps = conn.prepareStatement(queryMap);
-
-		ps.setInt(1,  id);
-		rs = ps.executeQuery();
-
-		if(rs != null) {
-			while(rs.next()){
-
-				sat.setEquip_id(rs.getInt(1));
-				sat.setEquip_ip(rs.getString(2));  
-				sat.setNome(rs.getString(3));
-				sat.setCidade(rs.getString(4));
-				sat.setEstrada(rs.getString(5));
-				sat.setKm(rs.getString(6));
-				sat.setMapWidth(rs.getInt(7));
-				sat.setNumFaixas(rs.getInt(8));			
-				defineDirectionNumber(sat, 1, rs.getString(9));
-				defineDirectionNumber(sat, 2, rs.getString(10));
-				defineDirectionNumber(sat, 3, rs.getString(11));
-				defineDirectionNumber(sat, 4, rs.getString(12));
-				defineDirectionNumber(sat, 5, rs.getString(13));
-				defineDirectionNumber(sat, 6, rs.getString(14));
-				defineDirectionNumber(sat, 7, rs.getString(15));
-				defineDirectionNumber(sat, 8, rs.getString(16));								
-				sat.setLatitude(rs.getDouble(17));
-				sat.setLongitude(rs.getDouble(18)); 
-				sat.setDirection(rs.getString(19)); 
-									
-			 }
-		 }
-
-		return sat;            	  
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para localizar dados de um equipamento PMV
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0
-	 * @param id - Equipamento ID
-	 * @param table - Table id	
-	 * @param interfacesview - Mapa a ser atualizado 
-	 * @return DMS - Objeto com informa��es de um PMV
-	 * @throws Exception
-	 */
-
-	public DMS EquipDMSSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
-
-		String queryLinear = "";
-		String queryMap = "";
-
-		DMS dms = new DMS();
-
-		String queryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, linear_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";
-
-		String queryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, map_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";	
-
-		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-		String VWqueryDMSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_linear_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";
-
-		String VWqueryDMSMap = "SELECT equip_id, IFNULL(ip_equip, ''), name, city, road, km, vw_map_width, driver, latitude, longitude, direction FROM pmv_equipment WHERE equip_id = ? ";	
-
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-		//VIDEO WALL SWITCH
-		if(permission != 9) {
-
-			queryLinear = queryDMSLinear;
-			queryMap = queryDMSMap;			
-
-		}else { 
-
-			queryLinear = VWqueryDMSLinear;
-			queryMap = VWqueryDMSMap;		
-
-		}			
-
-		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(queryLinear);
-
-		else  ps = conn.prepareStatement(queryMap);
-
-		ps.setInt(1,  id);
-		rs = ps.executeQuery();
-
-		if(rs != null) {
-			while(rs.next()){
-
-				dms.setEquip_id(rs.getInt(1));
-				dms.setDms_ip(rs.getString(2));
-				dms.setNome(rs.getString(3));	  			  
-				dms.setCidade(rs.getString(4));
-				dms.setEstrada(rs.getString(5));
-				dms.setKm(rs.getString(6));
-				dms.setMapWidth(rs.getInt(7));
-				dms.setDms_type(rs.getInt(8));    
-				dms.setLatitude(rs.getDouble(9));
-				dms.setLongitude(rs.getDouble(10)); 
-				dms.setDirection(rs.getString(11)); 
-
-			}
-		}
-
-		return dms;            	  
-
-	}
-
-	public SOS EquipSOSSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
-
-		String queryLinear = "";
-		String queryMap = "";
-
-		SOS sos = new SOS();
-
-		String querySOSLinear = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, model, master_sip , latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";
-
-		String querySOSMap = "SELECT equip_id, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, model, master_sip , latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";	
-
-		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-		String VWquerySOSLinear = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_linear_width, model, master_sip, latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";
-
-		String VWquerySOSMap = "SELECT equip_id, IFNULL(ip_equip, ''), port, name, city, road, km, vw_map_width, model, master_sip, latitude, longitude, direction FROM sos_equipment WHERE equip_id = ? ";	
-
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-		//VIDEO WALL SWITCH
-		if(permission != 9) {
-
-			queryLinear = querySOSLinear;
-			queryMap = querySOSMap;			
-
-		}else { 
-
-			queryLinear = VWquerySOSLinear;
-			queryMap = VWquerySOSMap;		
-
-		}			
-
-		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(queryLinear);
-
-		else  ps = conn.prepareStatement(queryMap);
-
-		ps.setInt(1,  id);
-		rs = ps.executeQuery();
-
-		if(rs != null) {
-			while(rs.next()){
-
-				sos.setEquip_id(rs.getInt(1));
-				sos.setEquip_ip(rs.getString(2));
-				sos.setPort(rs.getInt(3));
-				sos.setNome(rs.getString(4));	  			  
-				sos.setCidade(rs.getString(5));
-				sos.setEstrada(rs.getString(6));
-				sos.setKm(rs.getString(7));
-				sos.setMapWidth(rs.getInt(8)); 
-				sos.setModel(rs.getInt(9));
-				sos.setSip(rs.getString(10));    
-				sos.setLatitude(rs.getDouble(11));
-				sos.setLongitude(rs.getDouble(12)); 
-				sos.setDirection(rs.getString(13)); 
-
-			}
-		}
-
-		return sos;            	  
-
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-	public Speed EquipSpeedSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
-
-		String queryLinear = "";
-		String queryMap = "";
-
-		Speed speed = new Speed();
-
-		String querySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, linear_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";
-
-		String querySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, map_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";	
-
-		// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-		String VWquerySpeedLinear = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_linear_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";
-
-		String VWquerySpeedMap = "SELECT equip_id, IFNULL(equip_ip_indicator, ''), IFNULL(equip_ip_radar, ''), name, city, road, km, vw_map_width, latitude, longitude, direction FROM speed_equipment WHERE equip_id = ? ";	
-
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-		//VIDEO WALL SWITCH
-		if(permission != 9) {
-
-			queryLinear = querySpeedLinear;
-			queryMap = querySpeedMap;			
-
-		}else { 
-
-			queryLinear = VWquerySpeedLinear;
-			queryMap = VWquerySpeedMap;		
-
-		}			
-
-		if(interfaceView.equals("linear"))
-			ps = conn.prepareStatement(queryLinear);
-
-		else  ps = conn.prepareStatement(queryMap);
-
-		ps.setInt(1,  id);
-		rs = ps.executeQuery();
-
-		if(rs != null) {
-			while(rs.next()){
-
-				speed.setEquip_id(rs.getInt(1));
-				speed.setEquip_ip_indicator(rs.getString(2));
-				speed.setEquip_ip_radar(rs.getString(3));		
-				speed.setNome(rs.getString(4));	  			  
-				speed.setCidade(rs.getString(5));
-				speed.setEstrada(rs.getString(6));
-				speed.setKm(rs.getString(7));
-				speed.setMapWidth(rs.getInt(8)); 
-				speed.setLatitude(rs.getDouble(9));
-				speed.setLongitude(rs.getDouble(10)); 
-				speed.setDirection(rs.getString(11)); 
-
-			}
-		}
-
-		return speed;            	  
-
-	}
-
-	// --------------------------------------------------------------------------------------------------------------
-
-		public METEO EquipMeteoSearchMap(int id, String table, String interfaceView, int permission) throws Exception { 
-
-			String queryLinear = "";
-			String queryMap = "";
-
-			METEO meteo = new METEO();
-
-			String querySpeedLinear = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, linear_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";
-
-			String querySpeedMap = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, map_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";	
-
-			// VIDEO WALL CFG -----------------------------------------------------------------------------------------------------------------------------------------
-
-			String VWquerySpeedLinear = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, vw_linear_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";
-
-			String VWquerySpeedMap = "SELECT equip_id, config_id, equip_type, IFNULL(equip_ip, ''), port, name, city, road, km, vw_map_width, latitude, longitude, direction FROM meteo_equipment WHERE equip_id = ? ";	
-
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			//VIDEO WALL SWITCH
-			if(permission != 9) {
-
-				queryLinear = querySpeedLinear;
-				queryMap = querySpeedMap;			
-
-			}else { 
-
-				queryLinear = VWquerySpeedLinear;
-				queryMap = VWquerySpeedMap;		
-
-			}			
-
-			if(interfaceView.equals("linear"))
-				ps = conn.prepareStatement(queryLinear);
-
-			else  ps = conn.prepareStatement(queryMap);
-
-			ps.setInt(1,  id);
-			rs = ps.executeQuery();
-
-			if(rs != null) {
-				while(rs.next()){
-
-					meteo.setEquip_id(rs.getInt(1));					
-					meteo.setConfig_id(rs.getInt(2));
-					meteo.setEquip_type(rs.getString(3));
-					meteo.setEquip_ip(rs.getString(4));		
-					meteo.setPort(rs.getInt(5));		
-					meteo.setNome(rs.getString(6));	  			  
-					meteo.setCidade(rs.getString(7));
-					meteo.setEstrada(rs.getString(8));
-					meteo.setKm(rs.getString(9));
-					meteo.setMapWidth(rs.getInt(10)); 
-					meteo.setLatitude(rs.getDouble(11));
-					meteo.setLongitude(rs.getDouble(12)); 
-					meteo.setDirection(rs.getString(13));
-
-
-				}
-			}
-
-			return meteo;            	  
-
-		}
-
+	
+	
 		// --------------------------------------------------------------------------------------------------------------
 
 
@@ -5182,110 +3475,7 @@ public class EquipmentsDAO {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
-
-	/**
-	 * M�todo para definir tipo de faixas em um determinado equipamento SAT
-	 * @author Wellington
-	 * @version 1.0
-	 * @since Release 1.0	
-	 * @param sat - Obejto do tipo SAT
-	 * @param numberLanes - N�mero de faixas
-	 * @param dir - Dire��o
-	 * @return void
-	 */
-
-	public void defineDirectionNumber(SAT sat, int numberLane, String dir){
-
-		try {
-
-			switch(dir) {
-
-			case "":  
-
-				switch (numberLane) { 
-
-				case 1: sat.setFaixa1(""); break;
-				case 2: sat.setFaixa2(""); break;
-				case 3: sat.setFaixa3(""); break;
-				case 4: sat.setFaixa4(""); break;
-				case 5: sat.setFaixa5(""); break;
-				case 6: sat.setFaixa6(""); break;
-				case 7: sat.setFaixa7(""); break;
-				case 8: sat.setFaixa8(""); break;
-
-				}; break;
-
-			case "N": 
-
-				switch (numberLane) { 
-
-				case 1: sat.setFaixa1("1"); break;
-				case 2: sat.setFaixa2("1"); break;
-				case 3: sat.setFaixa3("1"); break;
-				case 4: sat.setFaixa4("1"); break;
-				case 5: sat.setFaixa5("1"); break;
-				case 6: sat.setFaixa6("1"); break;
-				case 7: sat.setFaixa7("1"); break;
-				case 8: sat.setFaixa8("1"); break;
-
-				}; break;
-
-			case "S": 
-
-				switch (numberLane) { 
-
-				case 1: sat.setFaixa1("2"); break;
-				case 2: sat.setFaixa2("2"); break;
-				case 3: sat.setFaixa3("2"); break;
-				case 4: sat.setFaixa4("2"); break;
-				case 5: sat.setFaixa5("2"); break;
-				case 6: sat.setFaixa6("2"); break;
-				case 7: sat.setFaixa7("2"); break;
-				case 8: sat.setFaixa8("2"); break;
-
-				}; break;	
-
-			case "L": 	
-
-				switch (numberLane) { 
-
-				case 1: sat.setFaixa1("3"); break;
-				case 2: sat.setFaixa2("3"); break;
-				case 3: sat.setFaixa3("3"); break;
-				case 4: sat.setFaixa4("3"); break;
-				case 5: sat.setFaixa5("3"); break;
-				case 6: sat.setFaixa6("3"); break;
-				case 7: sat.setFaixa7("3"); break;
-				case 8: sat.setFaixa8("3"); break;
-
-				}; break;
-
-
-			case "O": 
-
-				switch (numberLane) { 
-
-				case 1: sat.setFaixa1("4"); break;
-				case 2: sat.setFaixa2("4"); break;
-				case 3: sat.setFaixa3("4"); break;
-				case 4: sat.setFaixa4("4"); break;
-				case 5: sat.setFaixa5("4"); break;
-				case 6: sat.setFaixa6("4"); break;
-				case 7: sat.setFaixa7("4"); break;
-				case 8: sat.setFaixa8("4"); break;
-
-				}; break;
-
-			} //SWITCH END
-
-		}catch (NullPointerException e) {
-			// TODO: handle exception
-		}
-
-	} 
-
-	//--------------------------------------------------------------------------------------------------------------
-
+	
 	/**
 	 * M�todo para obter um m�dulo pelo tipo
 	 * @author Wellington
@@ -5884,38 +4074,378 @@ public class EquipmentsDAO {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
+
+	/**
+	 * Método para salvar um novo equipamento na base de dados
+	 * @author Wellington 25/12/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param dataSource objeto para manipular dados dos equipamentos
+	 * @return verdadeiro caso tenha salvo dados do equipamento
+	 * @throws Exception
+	 */
+	public boolean saveEquipment(EquipmentDataSource dataSource) throws Exception {
+
+		boolean status = false;  
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			// DMS INSERT QUERY
+			String insertDMS = "INSERT INTO pmv_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, driver) "
+					+ "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			// SAT INSERT QUERY
+			String insertSAT = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "					
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, "
+					+ "number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8) "
+					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			// SOS INSERT QUERY
+			String insertSOS = "INSERT INTO sos_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+					+ "vw_map_width, vw_map_posX, vw_map_posY,  latitude, longitude, direction, visible, port, model, master_sip) "
+					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			// SPEED INSERT QUERY
+			String insertSpeed = "INSERT INTO speed_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip_indicator, equip_ip_radar) "
+					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			// METEO INSERT QUERY
+			String insertMeteo = "INSERT INTO meteo_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, config_id, equip_type, port) "
+					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			// GENERIC INSERT QUERY		
+			String insertDevices = "INSERT INTO "+dataSource.getTable()+"_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible) "
+					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+			
+			// NOTIFICATION STATUS TABLE INSERT QUERY
+			String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "        							
+					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
+						
+			// DMS ACTIVE MESSAGES TABLE INSERT QUERY
+			String insertActiveMessage = "INSERT INTO pmv_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
+					+ "values (?,?,?,?,?,?)";
+			
+			// SAT EQUIPMENT TABLE INSERT QUERY
+			String insertFilterDirections = "INSERT INTO filter_directions(id, equip_id, lane, direction) VALUES (null,?,?,?)";
+
+			// -------------------------------------------------------------------------------------------------------------------------------------------------------
+					
+			String insert = "";
+			
+				switch (dataSource.getTable()) {
+				
+				case "meteo": insert = insertMeteo; break;
+				case "pmv": insert = insertDMS; break;
+				case "sat": insert = insertSAT; break;
+				case "sos": insert = insertSOS; break;
+				case "speed": insert = insertSpeed; break;				
+
+				default: insert = insertDevices; break;
+				
+				}
+			
+			
+			// -------------------------------------------------------------------------------------------------------------------------------------------------------
+			
+			ps = conn.prepareStatement(insert);
+
+				ps.setInt(1, dataSource.getEquipId());
+				ps.setString(2, dataSource.getDatetime());
+				ps.setString(3, dataSource.getUsername());      
+				ps.setString(4, dataSource.getIpAddress());   
+				ps.setString(5, dataSource.getEquipName());
+				ps.setString(6, dataSource.getCity());
+				ps.setString(7, dataSource.getRoad());
+				ps.setString(8, dataSource.getKm());       			
+				ps.setInt(9,  150); // Linear Width
+				ps.setInt(10, 100); // Linear posX
+				ps.setInt(11, 100); // Linear posY
+				ps.setInt(12,  150); // VIDEO WALL Linear Width
+				ps.setInt(13, 100); // VIDEO WALL Linear posX
+				ps.setInt(14, 100); // VIDEO WALL Linear posY
+				ps.setInt(15, 15); // Map Width
+				ps.setInt(16, 50); // Map posX
+				ps.setInt(17, 50); // Map posY
+				ps.setInt(18, 15); // VIDEO WALL Map Width
+				ps.setInt(19, 50); // VIDEO WALL Map posX
+				ps.setInt(20, 50); // VIDEO WALL Map posY			
+				ps.setDouble(21, dataSource.getLatitude()); // LATITUDE
+				ps.setDouble(22, dataSource.getLongitude()); // LONGITUDE
+				ps.setString(23, dataSource.getDirection()); // DIREÇÂO	
+				ps.setBoolean(24, true);
+				
+				if(dataSource.getTable().equals("pmv"))
+					ps.setInt(25, dataSource.getDmsDriver());
+				
+				else if(dataSource.getTable().equals("sat")) {
+					
+					ps.setInt(25, dataSource.getNumLanes());
+					ps.setString(26, dataSource.getLane1());
+					ps.setString(27, dataSource.getLane2());
+					ps.setString(28, dataSource.getLane3());
+					ps.setString(29, dataSource.getLane4());
+					ps.setString(30, dataSource.getLane5());
+					ps.setString(31, dataSource.getLane6());
+					ps.setString(32, dataSource.getLane7());
+					ps.setString(33, dataSource.getLane8());					
+				}
+				
+				else if(dataSource.getTable().equals("sos")) {
+					
+					ps.setInt(25, dataSource.getPort());
+					ps.setInt(26, dataSource.getModel());
+					ps.setString(27, dataSource.getSip());
+				}
+				
+				else if(dataSource.getTable().equals("speed")) {
+					
+					ps.setString(25, dataSource.getIpAddressIndicator());
+					ps.setString(26, dataSource.getIpAddressRadar());					
+				}
+				
+				else if(dataSource.getTable().equals("meteo")) {
+					
+					ps.setInt(25, dataSource.getConfigId());
+					ps.setString(26, dataSource.getEquipType());
+					ps.setInt(27, dataSource.getPort());			
+					
+				}
+
+			int success = ps.executeUpdate();
+
+				if(success > 0) {
+					
+					// NOTIFICATION ADD		
+					ps = conn.prepareStatement(queryNotification);
+					
+					ps.setInt(1, dataSource.getEquipId());					
+				    ps.setString(2, dataSource.getEquipType());
+					ps.setString(3, dataSource.getIpAddress());
+					ps.setString(4, dataSource.getEquipName());
+					ps.setString(5, dataSource.getKm());
+					
+					int successNotif = ps.executeUpdate();
+					
+					if(successNotif > 0) {
+						
+					   if(!dataSource.getTable().equals("pmv") && !dataSource.getTable().equals("sat"))
+						     status = true;
+					   
+					   else {						   
 		
+						if(dataSource.getTable().equals("pmv")) {
+							   
+							ps = conn.prepareStatement(insertActiveMessage);
+			
+								ps.setInt(1, dataSource.getEquipId());
+								ps.setInt(2, 0);            			
+								ps.setString(3, dataSource.getUsername());    
+								ps.setString(4, dataSource.getDatetime());
+								ps.setInt(5, 0);   
+								ps.setInt(6, 1);								
+							   
+						}
+						
+						else if(dataSource.getTable().equals("sat")) {
+												
+							for(int ln = 1; ln <= dataSource.getNumLanes(); ln++) {								
+									
+							ps = conn.prepareStatement(insertFilterDirections);
+						
+								ps.setInt(1, dataSource.getEquipId()); 			
+								ps.setInt(2, ln);
+												
+								switch(ln) {
+								
+								case 1: ps.setString(3, dataSource.getLane1()); break;
+								case 2: ps.setString(3, dataSource.getLane2()); break;
+								case 3: ps.setString(3, dataSource.getLane3()); break;
+								case 4: ps.setString(3, dataSource.getLane4()); break;
+								case 5: ps.setString(3, dataSource.getLane5()); break;
+								case 6: ps.setString(3, dataSource.getLane6()); break;
+								case 7: ps.setString(3, dataSource.getLane7()); break;
+								case 8: ps.setString(3, dataSource.getLane8()); break;
+								
+								}										
+							}							  														
+						}
+						
+						 int success2 = ps.executeUpdate();
+						    
+						    if(success2 > 0)
+						    	status = true;						
+					}					   
+				}
+			}         		  	
 
-	//	public Equipments FollowEquip(String type, String equip_id) throws Exception {
+		} catch (SQLException sqle) {
+			throw new Exception("Erro ao inserir dados " + sqle);        		    
 
-	//		Equipments eq = new Equipments();
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps);
+		}
 
-	//		try {
+		return status;	
+	}
+	
+	//--------------------------------------------------------------------------------------------------------------
 
-	//			//GET CONNECTION			
-	//			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+	/**
+	 * Método para obter dados de um equipamento da base de dados
+	 * @author Wellington 25/12/2021
+	 * @version 1.0
+	 * @since 1.0
+	 * @param id id do equipamento
+	 * @param table módulo do equipamento
+	 * @param interfaceView intercade utilizada
+	 * @param permission permissão do usuário (verificar se possui acesso ao video wall)
+	 * @return um objeto do tipo dataSource com informações do equipamento
+	 * @throws Exception
+	 */
+	public EquipmentDataSource searchEquipament(int id, String table, String interfaceView, int permission) throws Exception { 
 
-	//			String sql = "SELECT st.direction FROM "+type+"_equipment st "
-	//			+ "WHERE st.equip_id = '"+ equip_id +"' AND st.visible = 1";
+		String widthOption = "";
+		String select = "";
+				
+		String linearWidth = "linear_width";
+		String mapWidth = "map_width";
+		String videoWallLinearWidth = "vw_linear_width";
+		String videoWallMapWidth = "vw_map_width";
+				
+		EquipmentDataSource dataSource = new EquipmentDataSource();
+		
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+		// SWITCH CONDITION
+		
+		if(permission != 9) {
+			
+			if(interfaceView.equals("linear"))
+				widthOption = linearWidth;
+			
+			else widthOption = mapWidth;		
+			
+		}else { 
+			
+			if(interfaceView.equals("linear"))
+				widthOption = videoWallLinearWidth;
+			
+			else widthOption = videoWallMapWidth;
+			
+		}	
+		
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+				
+		// QUERIES
+				
+		String selectCftv = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM cftv_equipment WHERE equip_id = ? ";	
+		String selectColas = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM colas_equipment WHERE equip_id = ? ";
+		String selectDai = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM dai_equipment WHERE equip_id = ? ";
+		String selectMeteo = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction, config_id, equip_type, port FROM meteo_equipment WHERE equip_id = ? ";		
+		String selectOcr = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM ocr_equipment WHERE equip_id = ? ";
+		String selectPmv = "SELECT equip_id, ip_equip, name, city, road, km, "+widthOption+", latitude, longitude, direction, driver FROM pmv_equipment WHERE equip_id = ? ";
+		String selectSat = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", " +		
+		"latitude, longitude, direction, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 FROM sat_equipment WHERE equip_id = ? ";		
+		String selectSos = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction, port, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
+		String selectSpeed = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip_indicator, equip_ip_radar FROM speed_equipment WHERE equip_id = ? ";
+		String selectWim = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM wim_equipment WHERE equip_id = ? "; 
+				
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+				
+		switch (table) {
+		
+			case "cftv": select = selectCftv; break;
+			case "colas": select = selectColas; break;			
+			case "dai": select = selectDai; break;
+			case "meteo": select = selectMeteo; break;
+			case "ocr": select = selectOcr; break;			
+			case "pmv": select = selectPmv; break;  	
+			case "sat": select = selectSat; break;
+			case "sos": select = selectSos; break;
+			case "speed": select = selectSpeed; break;	
+			case "wim" : select = selectWim; break;
+			
+		}
+		
+		// -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+		
+		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		ps = conn.prepareStatement(select);
 
+		ps.setInt(1,  id);
+		
+		rs = ps.executeQuery();
+		
+		//System.out.println("SEL: "+select);
 
-	//			ps = conn.prepareStatement(sql);
-	//			rs = ps.executeQuery();
+		if(rs.isBeforeFirst()) {
+			while(rs.next()){
 
-	//			if (rs != null) {
-	//				while (rs.next()) {
+				dataSource.setEquipId(rs.getInt(1));	
+				dataSource.setIpAddress(rs.getString(2));
+				dataSource.setEquipName(rs.getString(3));
+				dataSource.setCity(rs.getString(4));
+				dataSource.setRoad(rs.getString(5));
+				dataSource.setKm(rs.getString(6));
+				dataSource.setWidth(rs.getInt(7)); 
+				dataSource.setLatitude(rs.getDouble(8));
+				dataSource.setLongitude(rs.getDouble(9));
+				dataSource.setDirection(rs.getString(10));
+				
+			 if(table.equals("meteo")) {
+			   
+				 dataSource.setConfigId(rs.getInt(11));
+				 dataSource.setEquipType(rs.getString(12));
+				 dataSource.setPort(rs.getInt(13));
+			   
+			 }
+			 
+			 else if(table.equals("pmv")) 
+				 dataSource.setDmsDriver(rs.getInt(11));
+			
+			 else if(table.equals("sat")) {
+				 dataSource.setNumLanes(rs.getInt(11));
+				 dataSource.setLane1(rs.getString(12));
+				 dataSource.setLane2(rs.getString(13));
+				 dataSource.setLane3(rs.getString(14));
+				 dataSource.setLane4(rs.getString(15));
+				 dataSource.setLane5(rs.getString(16));
+				 dataSource.setLane6(rs.getString(17));
+				 dataSource.setLane7(rs.getString(18));
+				 dataSource.setLane8(rs.getString(19));
+									 
+			 }
+			 
+			 else if(table.equals("sos")) {
+				 dataSource.setPort(rs.getInt(11));
+				 dataSource.setModel(rs.getInt(12));
+				 dataSource.setSip(rs.getString(13));
+			 }
+			 
+			 else if(table.equals("speed")) {
+				 dataSource.setIpAddressIndicator(rs.getString(11));
+				 dataSource.setIpAddressRadar(rs.getString(12));
+			 }
+		  }
+	   }
 
-	//					eq.setDestino(rs.getString(1));
+		return dataSource;            	  
 
-	//				}
-	//			}
+	}
 
-	//		} catch (SQLException sqle) {
-	//			sqle.printStackTrace();
-	//		}finally {ConnectionFactory.closeConnection(conn, ps);}
-
-	//		return eq;
-	//	}	
-
+	// --------------------------------------------------------------------------------------------------------------
 
 } 
