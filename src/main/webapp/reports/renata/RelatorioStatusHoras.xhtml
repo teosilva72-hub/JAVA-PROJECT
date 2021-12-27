@@ -21,17 +21,16 @@
 	<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Status Equipamento')}" />		
 	<f:viewAction onPostback="true" action="#{reportBean.defineAxis('Status Equipamento')}" />
 	
-	
 	<f:viewAction onPostback="true" action="#{reportBean.setTable('notifications_history') }" />
 	<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
 
 	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s', 'DATA', 'ID', 'EQUIPAMENTO', 'ONLINE', 'OFFLINE'))}" />
-	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); equip_id; equip_type; ifnull(sum(state_id=7) /count(*)*100,0)  AS DECIMAL(5,2)); ifnull(sum(state_id=8) / count(*)*100,0) AS DECIMAL(5,2))')}" />	
-	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); equip_id; equip_type; ifnull(state_id(sum()/count(*)*100, 2), 0), `%`); CONCAT(ifnull(ROUND(sum(state_id=8)/count(*)*100, 2), 0), `%`)')}" />	
+	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" /> <!--(ROUND AS DECIMAL(5,2))-->
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('datetime_')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('datetime_')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 	
 	<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0')}" />
 		

@@ -10,89 +10,75 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
 	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
 	
-	<!-- TAG METADATA: PARA CARREGAR CAMPOS DA TABELA NO PROCESSAMENTO DA PÁGINA -->
+	<f:metadata> 
 	
-	<f:metadata>
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileName('Status') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Status') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('Status') }" />
+		
+	<f:viewAction onPostback="true" action="#{reportBean.haveChart('Status Equipamento')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.defineImageName('Status Equipamento')}" />		
+	<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Status Equipamento')}" />		
+	<f:viewAction onPostback="true" action="#{reportBean.defineAxis('Status Equipamento')}" />
+	
+	<f:viewAction onPostback="true" action="#{reportBean.setTable('notifications_history') }" />
+	<f:viewAction onPostback="true" action="#{reportBean.setIdTable('equip_id')}" /> <!-- ENVIA O ID DO EQUIPAMENTO PRO EXCEL (QUANDO NÃO HOUVER MULTIPLA SELEÇÃO) (OPCIONAL) -->
 
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_battery_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_battery_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />	  
-		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(sosLabels.tuxpan_battery_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.chart_h_axis_unit_measure)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineTotalType('average')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
-		
-		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('battery_values')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s', 'DATA', 'ID', 'EQUIPAMENTO', 'ONLINE', 'OFFLINE'))}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT($period, `%d/%m/%Y %H:%i:%s`); equip_id; equip_type; CONCAT(ifnull(ROUND(sum(state_id=7)/count(*)*100, 2), 0), `%`); CONCAT(ifnull(ROUND(sum(state_id=8)/count(*)*100, 2), 0), `%`)')}" />	
+	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" /> <!--(ROUND AS DECIMAL(5,2))-->
 
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sos_equipment.name|equip_id@equip'))}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd;  IFNULL(IF(equip_id = $custom@equip, ROUND(AVG(volt),2),concat(0)),concat(0)) as v$custom@equip')}" /> 
-	    <f:viewAction onPostback="true" action="#{reportBean.addExtraSelect('sd; $period; MAX(v$custom@equip)')}" /> 
-		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('datetime_')}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
+	
+	<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0')}" />
 		
+	<!--<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('')}" /> -->
+	
+	<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('datetime_', 'Data', true , true )}" />
+	<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', 'Equipamento' , true , true)}" />
+	
+	<!-- CONFIGURAÇÕES PARA ENVIAR AO BACKEND -->
+	
+
+	</f:metadata> 
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('save_date')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('equip_id')}" />
-				
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'Data', true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_type', reportsLabels.reports_select_equipment, 'battery_values.equip_type', false , true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true , false)}" />  
-	.
-	
-	
-	
-	
-	 
-    </f:metadata>
-	
-	<!---->
-	
-	<!-- TEMPLATE DO CABEÇALHO -->
+     <!---->
 	
 	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
 	
 	    <!-- CCS STYLE -->
 	    
-	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
-		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
-		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
-		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE -->
-		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->	<!-- OBRIGATÓRIO -->	
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE --> <!-- OBRIGATÓRIO -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  --> <!-- OBRIGATÓRIO -->		
+		<h:outputStylesheet library="css/datepicker" name="datepicker.css" /> <!-- DATEPICKER STYLE --> <!-- CASO TENHA DATA -->
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
 			
 		<!---->
 		
 		<!-- JAVASCRIPT FILE -->
 
-		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> 
-		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS --> 			
+		<h:outputScript library="js/datepicker" name="locales-datepicker.js" /> <!-- DATEPICKER LOCALE DEFINITIONS JS --> <!-- CASO TENHA DATA -->	 
+		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS -->  <!-- CASO TENHA DATA -->			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
-		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
-		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
-		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
-		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
-	 	<h:outputScript library="js/charts" name="chart.js" />
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG (OBRIGATÓRIO) --> 			
+	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
+	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
 	
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
 	
-	 <!---->
-	 
-	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
 	
-	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
-	 
-	  <!-- ============================================================================================================================= -->
+	
+	<ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	
+	   <!-- ============================================================================================================================= -->
 	 		
 	   <!-- DIV DE ESTRUTURA DA TABELA --> 
 	    
@@ -109,7 +95,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="RELATÓRIO MEDIA VOLTS POR EQUIPAMENTO  " /> <!-- NAME LABEL -->
+	       <h:outputText value="Relatorio Titulo" /> <!-- REPORT NAME  -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
@@ -120,20 +106,20 @@
 		<!-- TABELA PARA APRESENTAÇÃO DOS DADOS -->
 	<h:dataTable id="data-table" value="#{reportBean.report.lines}" var="line" autocomplete="off"
 		styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0"
-		width="100%" headerClass="custom-table-header">	<!-- DATATABALE JSF -->
-				
+		width="100%" headerClass="custom-table-header"> <!-- DATATABALE JSF -->
+	 	
 		<c:forEach items="#{reportBean.columnsInUse}" var="header" varStatus="loop">
 			<h:column>
-				<!-- COLUMN -->	
-				<f:facet name="header">#{header}</f:facet> <!-- HEADER -->						
+				<!-- COLUMN -->
+				 <f:facet name="header">#{header}</f:facet> <!-- HEADER -->
 				<h:outputText value="#{line[loop.index]}" /> <!-- VALUE -->
 			</h:column> <!-- COLUMN END -->
 		</c:forEach> <!-- LOOP TAG END -->
-	</h:dataTable> <!-- DATATABALE JSF END -->
+	    </h:dataTable> <!-- DATATABALE JSF END -->
 	<!---->
-</h:form><!-- FORM TABLE END-->
+    </h:form><!-- FORM TABLE END-->
 	 
-	  <!-- ============================================================================================================================= -->
+	 	  <!-- ============================================================================================================================= -->
 	 
 	    <!-- ACTION BUTTONS TEMPLATE: BOTÕES DE ENVIO DE FORMULÁRIO, LIMPEZA DE TABELA E VISUALIZAÇÃO DE GRÁFICOS -->
 	 
@@ -142,19 +128,18 @@
 	  <!-- ============================================================================================================================= -->
 		
 	  </div><!-- TABLE CONTAINER DIV CONTENT END -->   
-	  
+	  	  	  
 	  <!-- ============================================================================================================================= -->
 	  
 	    <!-- CHART CONTAINER -->  
 	  
-	    <ui:include src="/template/chart/chart_template.xhtml" />
-	  
+	    <!--  <ui:include src="/template/chart/chart_template.xhtml" /> --> <!-- OPCIONAL -->
 		
 	  <!-- ============================================================================================================================= -->
 	  
 	     <!-- SUBMIT MODAL TEMPLATE: REALIZAR O PREENCHIMENTO DO FORMULÁRIO -->
 	   
-	     <ui:include src="/template/modal/submit_modal_template.xhtml" />
+	      <ui:include src="/template/modal/submit_modal_template.xhtml" />
 	        
       <!-- ============================================================================================================================= -->
              
@@ -181,13 +166,14 @@
 	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
 		 	 	 	
 		 <form name="validation"> <!-- FORM VALIDATION  -->
-		 		   	 	
+		 			   	 	
 		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->
-			 
+		 
 		 </form> <!-- FORM VALIDATION END -->
 		 
 	  <!-- ============================================================================================================================= -->
+		
 	
 	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
-				 
+	
 </ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->
