@@ -235,10 +235,10 @@ public class ListEquipments {
 					
 					}
 					
-					if(load.isEn_pmv()) {
+					if(load.isEn_dms()) {
 						
 					dmsList = dms.listDMSEquipments(permission_id);	
-					equips.add(new listEquips("dms", load.isEn_pmv(), dmsList, load.getVoltage_pmv()));
+					equips.add(new listEquips("dms", load.isEn_dms(), dmsList, load.getVoltage_dms()));
 					
 					}
 					

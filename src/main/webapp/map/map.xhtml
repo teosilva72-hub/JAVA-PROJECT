@@ -39,7 +39,7 @@
 	<ui:param name="permission" value="#{ userAccount.userPermision() }" />
 	<ui:param name="SuperAdmin"
 		value="#{ permission == 1 || permission == 6 }" />
-	<ui:param name="DMS" value="#{ loginAccount.load.en_pmv }" />
+	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
 	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
@@ -268,7 +268,7 @@
 						from="mto">#{mapLabels.$label_map_size_select_mto}</button>
 				</ui:fragment>
 
-				<ui:fragment rendered="#{loginAccount.load.en_pmv}">
+				<ui:fragment rendered="#{loginAccount.load.en_dms}">
 					<button class="dropdown-item dprbtn" data-toggle="modal"
 						data-target="#sizeeqps" data-backdrop="false" id="droppmv"
 						from="dms">#{mapLabels.$label_map_size_select_dms}</button>

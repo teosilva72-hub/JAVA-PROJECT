@@ -88,14 +88,14 @@
 				        
 				        <!---->
 								  
-						<!-- PMV MENU -->
+						<!-- DMS MENU -->
 
-						<ui:fragment rendered="#{loginAccount.load.en_pmv}">
-						<li class="nav-item"><a class="nav-link" href="#pmvUiSubmenu" data-toggle="collapse" aria-expanded="false">
+						<ui:fragment rendered="#{loginAccount.load.en_dms}">
+						<li class="nav-item"><a class="nav-link" href="#dmsUiSubmenu" data-toggle="collapse" aria-expanded="false">
 						<i class="fas fa-tv icon"></i> 
-						<span class="text">#{dashboardLabels.dashboard_sidebar_module_pmv}</span></a>
+						<span class="text">#{dashboardLabels.dashboard_sidebar_module_dms}</span></a>
 
-						<ul class="collapse list-unstyled" id="pmvUiSubmenu"> <!-- PMV SUBMENU -->
+						<ul class="collapse list-unstyled" id="dmsUiSubmenu"> <!-- DMS SUBMENU -->
 														
 						<!-- ACTIVE MESSAGES -->
 
@@ -145,7 +145,7 @@
 								<i class="fas fa-info-circle icon"></i>
 									<span class="text">#{dashboardLabels.dashboard_detailed_report_menu}</span></a>
 
-										<ul class="collapse list-unstyled" id="detailUiSubmenu"> <!-- PMV SUBMENU -->
+										<ul class="collapse list-unstyled" id="detailUiSubmenu"> 
 														
 											<!-- COLAS DETAIL -->
 
@@ -344,8 +344,8 @@
 
 					<!---->
 
-					<!-- PMV REPORT ITEM -->
-					<ui:fragment rendered="#{loginAccount.load.en_pmv}">
+					<!-- DMS REPORT ITEM -->
+					<ui:fragment rendered="#{loginAccount.load.en_dms}">
 					</ui:fragment>
 					<!---->
 

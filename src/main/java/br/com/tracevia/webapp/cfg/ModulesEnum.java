@@ -9,7 +9,7 @@ public enum ModulesEnum {
 	OCR("OCR"),
 	METEO("METEO"),
 	OCC("OCC"),
-	PMV("PMV"),
+	DMS("DMS"),
 	SAT("SAT"),
 	SOS("SOS"),
 	SPEED("SPEED"),

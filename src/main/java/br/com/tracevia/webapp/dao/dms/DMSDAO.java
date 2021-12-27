@@ -18,13 +18,13 @@ public class DMSDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-	/* Quantidade de PMVs reigstrados na base de dados */
+	/* Quantidade de dmss reigstrados na base de dados */
 
 	public Integer amountDMS() throws Exception {
 
 		int count = 0;
 
-		String sql = "SELECT COUNT(*) AS dmsCount FROM tracevia_app.pmv_equipment";
+		String sql = "SELECT COUNT(*) AS dmsCount FROM dms_equipment";
 
 		try {
 
@@ -50,13 +50,13 @@ public class DMSDAO {
 		return count;
 	}
 
-	/* IDS dos PMVs reigstrados na base de dados */
+	/* IDS dos dmss reigstrados na base de dados */
 
 	public ArrayList<DMS> idsDMS() throws Exception {
 
 		ArrayList<DMS> lista = new ArrayList<DMS>();
 
-		String sql = "SELECT pmv.equip_id, ip_equip, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM pmv_equipment pmv INNER JOIN pmv_messages_active act WHERE act.equip_id = pmv.equip_id AND visible = 1 ORDER BY pmv.equip_id ASC";
+		String sql = "SELECT dms.equip_id, equip_ip, name, km, linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, driver, active FROM dms_equipment dms INNER JOIN dms_messages_active act WHERE act.equip_id = dms.equip_id AND visible = 1 ORDER BY dms.equip_id ASC";
 
 		try {
 
@@ -77,7 +77,7 @@ public class DMSDAO {
 
 					dms.setTable_id("dms");
 					dms.setEquip_id(rs.getInt("equip_id"));
-					dms.setDms_ip(rs.getString("ip_equip"));
+					dms.setDms_ip(rs.getString("equip_ip"));
 					dms.setNome(rs.getString("name"));
 					dms.setKm(rs.getString("km"));
 					dms.setLinearWidth(rs.getInt("linear_width"));
@@ -109,8 +109,8 @@ public class DMSDAO {
 	public boolean changeActivateMessage(int idDMS, int idMSG) throws Exception {
 		boolean success = false;
 
-		String sql1 = "SELECT id_message FROM pmv_messages_active WHERE id_equip = ?;";
-		String sql2 = "UPDATE pmv_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
+		String sql1 = "SELECT id_message FROM dms_messages_active WHERE id_equip = ?;";
+		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
 
 		try {
 
@@ -154,8 +154,8 @@ public class DMSDAO {
 	public boolean reloadActivateMessage(int idDMS) throws Exception {
 		boolean success = false;
 
-		String sql1 = "SELECT id_message FROM pmv_messages_active WHERE id_equip = ?;";
-		String sql2 = "UPDATE pmv_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
+		String sql1 = "SELECT id_message FROM dms_messages_active WHERE id_equip = ?;";
+		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
 
 		try {
 
@@ -194,7 +194,7 @@ public class DMSDAO {
 	public boolean reloadActivateMessageWith(int id) throws Exception {
 		boolean success = false;
 		
-		String sql = "UPDATE pmv_messages_active SET id_modify = ?, active = ? WHERE (id_message = ?);";
+		String sql = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (id_message = ?);";
 		
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);

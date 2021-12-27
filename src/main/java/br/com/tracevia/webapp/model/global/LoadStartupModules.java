@@ -9,9 +9,9 @@ import br.com.tracevia.webapp.dao.global.ModulesDAO;
 
 public class LoadStartupModules {  
 	
-	private List<Modules> modules;
-	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_occ, en_pmv, en_sat, en_sos, en_speed, en_videowall, en_wim;
-	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_ocr, voltage_meteo, voltage_pmv, voltage_sat, 
+	private List<Modules> modules; 
+	private boolean en_cftv, en_colas, en_comms, en_dai, en_ocr, en_meteo, en_occ, en_dms, en_sat, en_sos, en_speed, en_videowall, en_wim;
+	private double voltage_cftv, voltage_colas, voltage_comms, voltage_dai, voltage_ocr, voltage_meteo, voltage_dms, voltage_sat, 
 	voltage_sos, voltage_speed, voltage_videowall, voltage_wim;
 	
 	public List<Modules> getModules() {
@@ -21,7 +21,6 @@ public class LoadStartupModules {
 	public void setModules(List<Modules> modules) {
 		this.modules = modules;
 	}
-
 
 	public boolean isEn_cftv() {
 		return en_cftv;
@@ -79,12 +78,12 @@ public class LoadStartupModules {
 		this.en_occ = en_occ;
 	}
 
-	public boolean isEn_pmv() {
-		return en_pmv;
+	public boolean isEn_dms() {
+		return en_dms;
 	}
 
-	public void setEn_pmv(boolean en_pmv) {
-		this.en_pmv = en_pmv;
+	public void setEn_dms(boolean en_dms) {
+		this.en_dms = en_dms;
 	}
 
 	public boolean isEn_sat() {
@@ -175,12 +174,12 @@ public class LoadStartupModules {
 		this.voltage_meteo = voltage_meteo;
 	}
 
-	public double getVoltage_pmv() {
-		return voltage_pmv;
+	public double getVoltage_dms() {
+		return voltage_dms;
 	}
 
-	public void setVoltage_pmv(double voltage_pmv) {
-		this.voltage_pmv = voltage_pmv;
+	public void setVoltage_dms(double voltage_dms) {
+		this.voltage_dms = voltage_dms;
 	}
 
 	public double getVoltage_sat() {
@@ -241,7 +240,7 @@ public class LoadStartupModules {
 			en_ocr = false;
 			en_meteo = false;
 			en_occ = false;
-			en_pmv = false;			
+			en_dms = false;			
 			en_sat = false;
 			en_sos = false;
 			en_speed = false;			
@@ -310,9 +309,9 @@ public class LoadStartupModules {
 		    }else if(mod.getModule().equals(ModulesEnum.OCC.getModule()) && mod.isEnabled())				
 			    en_occ = mod.isEnabled();	   
 								
-		    else if(mod.getModule().equals(ModulesEnum.PMV.getModule()) && mod.isEnabled()) {				
-				en_pmv = mod.isEnabled();
-			    voltage_pmv = mod.getBattery_voltage();			   
+		    else if(mod.getModule().equals(ModulesEnum.DMS.getModule()) && mod.isEnabled()) {				
+				en_dms = mod.isEnabled();
+			    voltage_dms = mod.getBattery_voltage();			   
 		  
 		   }else if(mod.getModule().equals(ModulesEnum.SAT.getModule()) && mod.isEnabled())	{		
 				en_sat = mod.isEnabled();

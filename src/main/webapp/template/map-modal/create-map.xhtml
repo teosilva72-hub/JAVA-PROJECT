@@ -77,7 +77,7 @@
 				   <div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
 					  <span><i class="fas fa-th-list"></i></span> <!-- SPAN ICON -->
 						<span for="dmsType" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-	  					 <select name="dmsType" id="dmsType" size="1" disabled="true">
+	  					 <select name="dmsType" id="dmsType" size="1" >
 							<option value="">#{mapLabels.$label_map_option_select_dms_type}</option>
 							<ui:repeat var="tp" value="#{equipsBean.dmsType}" varStatus="tpStatus">
 								<option value="#{tp.value}">#{tp.label}</option>

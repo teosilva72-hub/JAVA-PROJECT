@@ -344,7 +344,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * M�todo para listar equipamentos do tipo PMV
+	 * M�todo para listar equipamentos do tipo DMS
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0	
@@ -359,19 +359,19 @@ public class EquipmentsDAO {
 
 		String query = "";
 
-		String sql = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+		String sql = "SELECT eq.equip_id, equip_ip, driver, name, c.city_name, r.road_name, km, "
 				+ "linear_width, linear_posX, linear_posY, map_width, map_posX, map_posY, id_message, id_modify, active, longitude, latitude, direction "
-				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
+				+ "FROM dms_equipment eq " 
+				+ "INNER JOIN dms_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
 				+ "ORDER BY eq.equip_id ASC"; 
 
-		String sqlVW = "SELECT eq.equip_id, ip_equip, driver, name, c.city_name, r.road_name, km, "
+		String sqlVW = "SELECT eq.equip_id, equip_ip, driver, name, c.city_name, r.road_name, km, "
 				+ "vw_linear_width, vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, id_message, id_modify, active, longitude, latitude, direction"
-				+ "FROM pmv_equipment eq " 
-				+ "INNER JOIN pmv_messages_active act ON act.equip_id = eq.equip_id " 
+				+ "FROM dms_equipment eq " 
+				+ "INNER JOIN dms_messages_active act ON act.equip_id = eq.equip_id " 
 				+ "INNER JOIN concessionaire_cities c ON c.city_id = eq.city " 
 				+ "INNER JOIN concessionaire_roads r ON r.road_id = eq.road "								 
 				+ "WHERE visible = 1 "
@@ -405,7 +405,7 @@ public class EquipmentsDAO {
 					dms.setTable_id("dms");
 					dms.setDms_ip(rs.getString(2));
 					dms.setDms_type(rs.getInt(3));
-					dms.setEquip_type(ModulesEnum.PMV.getModule());
+					dms.setEquip_type(ModulesEnum.DMS.getModule());
 					dms.setNome(rs.getString(4));
 					dms.setCidade(rs.getString(5));
 					dms.setEstrada(rs.getString(6));
@@ -712,15 +712,15 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * M�todo para obter informa��o de um equipamentos espec�fico
+	 * Método para obter informa��o de um equipamentos especifico
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0 
-	 * @return ArrayList - Lista do tipo PMV
+	 * @return ArrayList - Lista do tipo DMS
 	 * @throws Exception
 	 */	
 
-	public ArrayList<Equipments> listPMVSites() throws Exception{
+	public ArrayList<Equipments> listDMSSites() throws Exception{
 
 		ArrayList<Equipments> lista = new ArrayList<Equipments>();         
 
@@ -730,7 +730,7 @@ public class EquipmentsDAO {
 
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);			
 
-			sql = "SELECT equip_id, name FROM pmv_equipment WHERE visible = 1 ORDER BY name ASC";		
+			sql = "SELECT equip_id, name FROM dms_equipment WHERE visible = 1 ORDER BY name ASC";		
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
@@ -898,7 +898,7 @@ public class EquipmentsDAO {
 		case "dai": module = ModulesEnum.DAI.getModule(); ; break;
 		case "ocr": module = ModulesEnum.OCR.getModule(); ; break;
 		case "mto": module = ModulesEnum.METEO.getModule(); ; break;
-		case "dms": module = ModulesEnum.PMV.getModule(); ; break;
+		case "dms": module = ModulesEnum.DMS.getModule(); ; break;
 		case "sat": module = ModulesEnum.SAT.getModule(); ; break;
 		case "sos": module = ModulesEnum.SOS.getModule(); ; break;
 		case "speed": module = ModulesEnum.SPEED.getModule(); ; break;		
@@ -929,23 +929,23 @@ public class EquipmentsDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			// DMS INSERT QUERY
-			String insertDMS = "INSERT INTO pmv_equipment (equip_id, creation_date, creation_username, ip_equip, name, city, road, km, "
+			String insertDMS = "INSERT INTO dms_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, driver) "
-					+ "values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip, driver) "
+					+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			// SAT INSERT QUERY
-			String insertSAT = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "					
+			String insertSAT = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, name, city, road, km, "					
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
-					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, "
+					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip, "
 					+ "number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8) "
 					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			// SOS INSERT QUERY
-			String insertSOS = "INSERT INTO sos_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+			String insertSOS = "INSERT INTO sos_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-					+ "vw_map_width, vw_map_posX, vw_map_posY,  latitude, longitude, direction, visible, port, model, master_sip) "
-					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "vw_map_width, vw_map_posX, vw_map_posY,  latitude, longitude, direction, visible, equip_ip, port, model, master_sip) "
+					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			// SPEED INSERT QUERY
 			String insertSpeed = "INSERT INTO speed_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
@@ -954,15 +954,15 @@ public class EquipmentsDAO {
 					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			// METEO INSERT QUERY
-			String insertMeteo = "INSERT INTO meteo_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+			String insertMeteo = "INSERT INTO meteo_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, config_id, equip_type, port) "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip, config_id, equip_type, port) "
 					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			// GENERIC INSERT QUERY		
-			String insertDevices = "INSERT INTO "+dataSource.getTable()+"_equipment (equip_id, creation_date, creation_username, equip_ip, name, city, road, km, "
+			String insertDevices = "INSERT INTO "+dataSource.getTable()+"_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
-					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible) "
+					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip) "
 					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			
@@ -971,7 +971,7 @@ public class EquipmentsDAO {
 					+ "VALUES (null, ?, ?, ?, ?, ?)"; 
 						
 			// DMS ACTIVE MESSAGES TABLE INSERT QUERY
-			String insertActiveMessage = "INSERT INTO pmv_messages_active (id_equip, id_message, activation_username, date_time_message, id_modify, active) "
+			String insertActiveMessage = "INSERT INTO dms_messages_active (equip_id, id_message, activation_username, date_time_message, id_modify, active) "
 					+ "values (?,?,?,?,?,?)";
 			
 			// SAT EQUIPMENT TABLE INSERT QUERY
@@ -984,7 +984,7 @@ public class EquipmentsDAO {
 				switch (dataSource.getTable()) {
 				
 				case "meteo": insert = insertMeteo; break;
-				case "pmv": insert = insertDMS; break;
+				case "dms": insert = insertDMS; break;
 				case "sat": insert = insertSAT; break;
 				case "sos": insert = insertSOS; break;
 				case "speed": insert = insertSpeed; break;				
@@ -1000,30 +1000,32 @@ public class EquipmentsDAO {
 
 				ps.setInt(1, dataSource.getEquipId());
 				ps.setString(2, dataSource.getDatetime());
-				ps.setString(3, dataSource.getUsername());      
-				ps.setString(4, dataSource.getIpAddress());   
-				ps.setString(5, dataSource.getEquipName());
-				ps.setString(6, dataSource.getCity());
-				ps.setString(7, dataSource.getRoad());
-				ps.setString(8, dataSource.getKm());       			
-				ps.setInt(9,  150); // Linear Width
-				ps.setInt(10, 100); // Linear posX
-				ps.setInt(11, 100); // Linear posY
-				ps.setInt(12,  150); // VIDEO WALL Linear Width
-				ps.setInt(13, 100); // VIDEO WALL Linear posX
-				ps.setInt(14, 100); // VIDEO WALL Linear posY
-				ps.setInt(15, 15); // Map Width
-				ps.setInt(16, 50); // Map posX
-				ps.setInt(17, 50); // Map posY
-				ps.setInt(18, 15); // VIDEO WALL Map Width
-				ps.setInt(19, 50); // VIDEO WALL Map posX
-				ps.setInt(20, 50); // VIDEO WALL Map posY			
-				ps.setDouble(21, dataSource.getLatitude()); // LATITUDE
-				ps.setDouble(22, dataSource.getLongitude()); // LONGITUDE
-				ps.setString(23, dataSource.getDirection()); // DIREÇÂO	
-				ps.setBoolean(24, true);
+				ps.setString(3, dataSource.getUsername()); 		
+				ps.setString(4, dataSource.getEquipName());
+				ps.setString(5, dataSource.getCity());
+				ps.setString(6, dataSource.getRoad());
+				ps.setString(7, dataSource.getKm());       			
+				ps.setInt(8,  150); // Linear Width
+				ps.setInt(9, 100); // Linear posX
+				ps.setInt(10, 100); // Linear posY
+				ps.setInt(11,  150); // VIDEO WALL Linear Width
+				ps.setInt(12, 100); // VIDEO WALL Linear posX
+				ps.setInt(13, 100); // VIDEO WALL Linear posY
+				ps.setInt(14, 30); // Map Width
+				ps.setInt(15, 50); // Map posX
+				ps.setInt(16, 50); // Map posY
+				ps.setInt(17, 30); // VIDEO WALL Map Width
+				ps.setInt(18, 50); // VIDEO WALL Map posX
+				ps.setInt(19, 50); // VIDEO WALL Map posY			
+				ps.setDouble(20, dataSource.getLatitude()); // LATITUDE
+				ps.setDouble(21, dataSource.getLongitude()); // LONGITUDE
+				ps.setString(22, dataSource.getDirection()); // DIREÇÂO	
+				ps.setBoolean(23, true);
 				
-				if(dataSource.getTable().equals("pmv"))
+				if(!dataSource.getTable().equals("speed"))
+					ps.setString(24, dataSource.getIpAddress());   
+				
+				if(dataSource.getTable().equals("dms"))
 					ps.setInt(25, dataSource.getDmsDriver());
 				
 				else if(dataSource.getTable().equals("sat")) {
@@ -1046,10 +1048,9 @@ public class EquipmentsDAO {
 					ps.setString(27, dataSource.getSip());
 				}
 				
-				else if(dataSource.getTable().equals("speed")) {
-					
-					ps.setString(25, dataSource.getIpAddressIndicator());
-					ps.setString(26, dataSource.getIpAddressRadar());					
+				else if(dataSource.getTable().equals("speed")) {					
+					ps.setString(24, dataSource.getIpAddressIndicator());
+					ps.setString(25, dataSource.getIpAddressRadar());					
 				}
 				
 				else if(dataSource.getTable().equals("meteo")) {
@@ -1064,25 +1065,53 @@ public class EquipmentsDAO {
 
 				if(success > 0) {
 					
+					int successNotif = 0;
+					
 					// NOTIFICATION ADD		
 					ps = conn.prepareStatement(queryNotification);
 					
-					ps.setInt(1, dataSource.getEquipId());					
-				    ps.setString(2, dataSource.getEquipType());
-					ps.setString(3, dataSource.getIpAddress());
-					ps.setString(4, dataSource.getEquipName());
-					ps.setString(5, dataSource.getKm());
+					if(!dataSource.getTable().equals("speed")) {
 					
-					int successNotif = ps.executeUpdate();
+						ps.setInt(1, dataSource.getEquipId());					
+					    ps.setString(2, dataSource.getEquipType());
+						ps.setString(3, dataSource.getIpAddress());
+						ps.setString(4, dataSource.getEquipName());
+						ps.setString(5, dataSource.getKm());
+						
+						successNotif = ps.executeUpdate();
 					
+					}
+					
+					else {
+						
+						ps.setInt(1, dataSource.getEquipId()); 		
+						ps.setString(2, dataSource.getEquipType());
+						ps.setString(3, dataSource.getIpAddressIndicator());
+						ps.setString(4, "I "+dataSource.getEquipName());
+						ps.setString(5, dataSource.getKm());
+
+						successNotif = ps.executeUpdate();
+						
+						if(successNotif > 0) {
+							
+							ps.setInt(1, dataSource.getEquipId()); 		
+							ps.setString(2, dataSource.getEquipType());
+							ps.setString(3, dataSource.getIpAddressRadar());
+							ps.setString(4, "R "+dataSource.getEquipName());
+							ps.setString(5, dataSource.getKm());
+
+						    successNotif = ps.executeUpdate();
+						}						
+					}	
+											
 					if(successNotif > 0) {
 						
-					   if(!dataSource.getTable().equals("pmv") && !dataSource.getTable().equals("sat"))
+					   if(!dataSource.getTable().equals("dms") && !dataSource.getTable().equals("sat"))
 						     status = true;
 					   
 					   else {						   
 		
-						if(dataSource.getTable().equals("pmv")) {
+						if(dataSource.getTable().equals("dms")) {
 							   
 							ps = conn.prepareStatement(insertActiveMessage);
 			
@@ -1192,7 +1221,7 @@ public class EquipmentsDAO {
 		String selectDai = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM dai_equipment WHERE equip_id = ? ";
 		String selectMeteo = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction, config_id, equip_type, port FROM meteo_equipment WHERE equip_id = ? ";		
 		String selectOcr = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction FROM ocr_equipment WHERE equip_id = ? ";
-		String selectPmv = "SELECT equip_id, ip_equip, name, city, road, km, "+widthOption+", latitude, longitude, direction, driver FROM pmv_equipment WHERE equip_id = ? ";
+		String selectdms = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction, driver FROM dms_equipment WHERE equip_id = ? ";
 		String selectSat = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", " +		
 		"latitude, longitude, direction, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 FROM sat_equipment WHERE equip_id = ? ";		
 		String selectSos = "SELECT equip_id, equip_ip, name, city, road, km, "+widthOption+", latitude, longitude, direction, port, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
@@ -1208,7 +1237,7 @@ public class EquipmentsDAO {
 			case "dai": select = selectDai; break;
 			case "meteo": select = selectMeteo; break;
 			case "ocr": select = selectOcr; break;			
-			case "dms": select = selectPmv; break;  	
+			case "dms": select = selectdms; break;  	
 			case "sat": select = selectSat; break;
 			case "sos": select = selectSos; break;
 			case "speed": select = selectSpeed; break;	
@@ -1272,8 +1301,8 @@ public class EquipmentsDAO {
 			 }
 			 
 			 else if(table.equals("speed")) {
-				 dataSource.setIpAddressIndicator(rs.getString(11));
-				 dataSource.setIpAddressRadar(rs.getString(12));
+				 dataSource.setIpAddressIndicator(rs.getString(10));
+				 dataSource.setIpAddressRadar(rs.getString(11));
 			 }
 		  }
 	   }
@@ -1298,7 +1327,7 @@ public class EquipmentsDAO {
 	 * @throws Exception
 	 */	
 	public boolean positionEquipment(int id, String table, int posX, int posY, String positionView, int permission)throws Exception { 
-		
+			
 		boolean positioned = false;
 		
 		String posXOption = "";
@@ -1351,9 +1380,9 @@ public class EquipmentsDAO {
 		String updateCftv = "UPDATE cftv_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
 		String updateColas = "UPDATE colas_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
 		String updateDai = "UPDATE dai_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
+		String updateDms = "UPDATE dms_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
 		String updateMeteo = "UPDATE meteo_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
-		String updateOcr = "UPDATE ocr_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
-		String updatePmv = "UPDATE pmv_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
+		String updateOcr = "UPDATE ocr_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";	
 		String updateSat = "UPDATE sat_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
 		String updateSos = "UPDATE sos_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
 		String updateSpeed = "UPDATE speed_equipment SET "+posXOption+" = ?, "+posYOption+" = ? WHERE equip_id = ? ";
@@ -1368,7 +1397,7 @@ public class EquipmentsDAO {
 			case "dai": update = updateDai; break;
 			case "meteo": update = updateMeteo; break;
 			case "ocr": update = updateOcr; break;			
-			case "dms": update = updatePmv; break;  	
+			case "dms": update = updateDms; break;  	
 			case "sat": update = updateSat; break;
 			case "sos": update = updateSos; break;
 			case "speed": update = updateSpeed; break;	
@@ -1455,9 +1484,9 @@ public class EquipmentsDAO {
 		String updateCftvLinear = "UPDATE cftv_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
 		String updateColasLinear = "UPDATE colas_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
 		String updateDaiLinear = "UPDATE dai_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
+		String updateDmsLinear = "UPDATE dms_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
 		String updateMeteoLinear = "UPDATE meteo_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, port = ? WHERE equip_id = ? ";
-		String updateOcrLinear = "UPDATE ocr_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
-		String updatePmvLinear = "UPDATE pmv_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, ip_equip = ? WHERE equip_id = ? ";
+		String updateOcrLinear = "UPDATE ocr_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";		
 		String updateSatLinear = "UPDATE sat_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, " +
 		"number_lanes = ?, dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? WHERE equip_id = ? ";	
 		String updateSosLinear = "UPDATE sos_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, port = ?, model = ?, master_sip = ? WHERE equip_id = ? ";
@@ -1471,9 +1500,9 @@ public class EquipmentsDAO {
 		String updateCftvMap = "UPDATE cftv_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";	
 		String updateColasMap = "UPDATE colas_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";	
 		String updateDaiMap = "UPDATE dai_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";	
+		String updateDmsMap = "UPDATE dms_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";	
 		String updateMeteoMap = "UPDATE meteo_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ?, port = ? WHERE equip_id = ? ";	
-		String updateOcrMap = "UPDATE ocr_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";	
-		String updatePmvMap = "UPDATE pmv_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, ip_equip = ? WHERE equip_id = ? ";	
+		String updateOcrMap = "UPDATE ocr_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ? WHERE equip_id = ? ";		
 		String updateSatMap = "UPDATE sat_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ?, " +
 		"number_lanes = ?, dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? WHERE equip_id = ? ";	
 		String updateSosMap = "UPDATE sos_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, latitude = ?, longitude = ?, equip_ip = ?, port = ?, model = ?, master_sip = ?  WHERE equip_id = ? ";	
@@ -1523,9 +1552,9 @@ public class EquipmentsDAO {
 				case "dms": 
 	
 					if(updateView.equals("linear"))
-					    update = updatePmvLinear;
+					    update = updateDmsLinear;
 					
-					else update = updatePmvMap; break;
+					else update = updateDmsMap; break;
 	
 				case "sat": 
 	
@@ -1668,14 +1697,20 @@ public class EquipmentsDAO {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		
+		// METEO TYPE ONLY
+		
+		String selectMeteoType = "SELECT equip_type FROM meteo_equipment WHERE equip_id = ?";
+		
+		// -----------------------------------------------------------------------------------------------------------------------------------------
+		
 		// QUERIES
 		
 		String deleteCftv = "DELETE FROM cftv_equipment WHERE equip_id = ? ";
 		String deleteColas = "DELETE FROM colas_equipment WHERE equip_id = ? ";
 		String deleteDai = "DELETE FROM dai_equipment WHERE equip_id = ? ";
+		String deleteDms = "DELETE FROM dms_equipment WHERE equip_id = ? ";
 		String deleteMeteo = "DELETE FROM meteo_equipment WHERE equip_id = ? ";
-		String deleteOcr = "DELETE FROM ocr_equipment WHERE equip_id = ? ";
-		String deletePmv = "DELETE FROM pmv_equipment WHERE equip_id = ? ";
+		String deleteOcr = "DELETE FROM ocr_equipment WHERE equip_id = ? ";		
 		String deleteSat = "DELETE FROM sat_equipment WHERE equip_id = ? ";
 		String deleteSos = "DELETE FROM sos_equipment WHERE equip_id = ? ";
 		String deleteSpeed = "DELETE FROM speed_equipment WHERE equip_id = ? ";
@@ -1690,7 +1725,7 @@ public class EquipmentsDAO {
 			case "dai": delete = deleteDai; break;
 			case "meteo": delete = deleteMeteo; break;
 			case "ocr": delete = deleteOcr; break;			
-			case "dms": delete = deletePmv; break;  	
+			case "dms": delete = deleteDms; break;  	
 			case "sat": delete = deleteSat; break;
 			case "sos": delete = deleteSos; break;
 			case "speed": delete = deleteSpeed; break;	
@@ -1701,26 +1736,47 @@ public class EquipmentsDAO {
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-		ps = conn.prepareStatement(delete);  
-		ps.setInt(1,  id);
-
-		int rsp =  ps.executeUpdate();
-
-		if(rsp > 0) {
+		
+		if(table.equals("meteo")) { // GET METEO EQUIP TYPE
 			
-			// DELETE NOTIFICATION
-			ps = conn.prepareStatement(notificationId);
+			// SELECT METEO TYPE
+			ps = conn.prepareStatement(selectMeteoType);
 			ps.setInt(1,  id);
-			ps.setString(2, equipType);
-
+		
 			rs = ps.executeQuery();
-			
+						
 				if(rs.isBeforeFirst()) {
 					while(rs.next()) {
 
-						id = rs.getInt(1);	
+						equipType = rs.getString(1);	
 					}
-				}
+				}			
+		    }	
+		
+		 // ------------------------------------------------
+		
+			ps = conn.prepareStatement(delete);  
+			ps.setInt(1,  id);
+
+			int rsp =  ps.executeUpdate();
+
+			if(rsp > 0) {	
+				
+				if(!table.equals("speed")) {
+						
+					// DELETE NOTIFICATION
+					ps = conn.prepareStatement(notificationId);
+					ps.setInt(1,  id);
+					ps.setString(2, equipType);
+
+					rs = ps.executeQuery();
+					
+						if(rs.isBeforeFirst()) {
+							while(rs.next()) {
+
+								id = rs.getInt(1);	
+							}
+						}
 
 					//DELETE NOTIFICATION
 					ps = conn.prepareStatement(deleteNotification);
@@ -1729,9 +1785,41 @@ public class EquipmentsDAO {
 					int rs2 =  ps.executeUpdate();
 		
 					if(rs2 > 0) 
-						deleted = true;
+						deleted = true;		
+					
+				} else {
+					
+					int rs3 = 0;
+					int idAux = 0;
+					
+					for(int i = 0; i < 2; i++) {
+					
+					// DELETE NOTIFICATION
+					ps = conn.prepareStatement(notificationId);
+					ps.setInt(1,  id);
+					ps.setString(2, equipType);
 
-				}	  	
+					rs = ps.executeQuery();
+					
+						if(rs.isBeforeFirst()) {
+							while(rs.next()) {
+
+								idAux = rs.getInt(1);	
+							}
+						}						
+					
+					// DELETE NOTIFICATION
+					ps = conn.prepareStatement(deleteNotification);
+					ps.setInt(1,  idAux);
+							
+					 rs3 =  ps.executeUpdate();
+							
+					if(rs3 > 0) 
+						deleted = true;	
+					
+					}				
+				}			
+			}
 		
 		return deleted;
 		

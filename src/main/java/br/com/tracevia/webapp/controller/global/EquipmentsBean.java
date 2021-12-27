@@ -228,10 +228,10 @@ public class EquipmentsBean implements Serializable {
 				lanes.add(s);				
 			}
 
-			dir.add(new SelectItem("N", localeDirection.getStringKey("directions_north")));   
-			dir.add(new SelectItem("S", localeDirection.getStringKey("directions_south")));   
-			dir.add(new SelectItem("L", localeDirection.getStringKey("directions_east")));   
-			dir.add(new SelectItem("O", localeDirection.getStringKey("directions_west")));   
+			dir.add(new SelectItem(1, localeDirection.getStringKey("directions_north")));   
+			dir.add(new SelectItem(2, localeDirection.getStringKey("directions_south")));   
+			dir.add(new SelectItem(3, localeDirection.getStringKey("directions_east")));   
+			dir.add(new SelectItem(4, localeDirection.getStringKey("directions_west")));   
 
 			dmsType.add(new SelectItem(1, localeMap.getStringKey("$label_map_dms_type_1")));   
 			dmsType.add(new SelectItem(2, localeMap.getStringKey("$label_map_dms_type_2")));   
@@ -305,7 +305,7 @@ public class EquipmentsBean implements Serializable {
 				
 		// DMS
 		
-		if(dataSource.getTable().equals("pmv"))
+		if(dataSource.getTable().equals("dms"))
 			dataSource.setDmsDriver(parameterMap.get("dmsType") == "" ? 1 : Integer.parseInt(parameterMap.get("dmsType"))); // DMS DRIVER
 				
 		// ----------------------------------------------------------------------------------------------------------------------
@@ -420,7 +420,7 @@ public class EquipmentsBean implements Serializable {
 				 SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");							   
 			 }
 			 
-			 else if(equipTable.equals("pmv")) 
+			 else if(equipTable.equals("dms")) 
 				 SessionUtil.executeScript("$('#dmsType-edit').val('"+dataSource.getDmsDriver()+"');");
 			
 			 else if(equipTable.equals("sat")) {
@@ -487,7 +487,7 @@ public class EquipmentsBean implements Serializable {
 
 		//CHANGE
 		if(getEquipTable().equals("dms"))
-			equipTable = "pmv";
+			equipTable = "dms";
 
 		else equipTable = getEquipTable();
 		//CHANGE
@@ -725,7 +725,7 @@ public class EquipmentsBean implements Serializable {
 		String module = getEquipTable();
 		int width = w == "" ? 100 : Integer.parseInt(w);
 
-		dao.setWidthMap(module.equals("dms") ? "pmv" : module , map, width);
+		dao.setWidthMap(module.equals("dms") ? "dms" : module , map, width);
 
 		SessionUtil.executeScript("alertToast('"+localeMap.getStringKey("$message_map_option_all_equipment_width_updated")+"');");
 	}
@@ -754,7 +754,7 @@ public class EquipmentsBean implements Serializable {
 		case 4: table="dai"    ; break;
 		case 5: table="ocr"    ; break;
 		case 6: table="meteo"    ; break;
-		case 8: table="pmv"    ; break;	
+		case 8: table="dms"    ; break;	
 		case 9: table="sat"    ; break;
 		case 10: table="sos"    ; break;
 		case 11: table="speed"  ; break;
@@ -789,7 +789,7 @@ public class EquipmentsBean implements Serializable {
 		case "dai": table="dai"      ; break;
 		case "ocr": table="ocr"      ; break;
 		case "mto": table="mto"      ; break;
-		case "dms": table="pmv"      ; break;	
+		case "dms": table="dms"      ; break;	
 		case "sat": table="sat"      ; break;
 		case "sos": table="sos"       ; break;
 		case "speed": table="speed"   ; break;
@@ -856,7 +856,7 @@ public class EquipmentsBean implements Serializable {
 				case"comms": type = ModulesEnum.COMMS.getModule(); break;
 				case "dai": type = ModulesEnum.DAI.getModule(); break;				
 				case "ocr": type = ModulesEnum.OCR.getModule(); break;
-				case "dms": type = ModulesEnum.PMV.getModule(); break;
+				case "dms": type = ModulesEnum.DMS.getModule(); break;
 				case "sat": type = ModulesEnum.SAT.getModule(); break;
 				case "sos": type = ModulesEnum.SOS.getModule(); break;
 				case "speed": type = ModulesEnum.SPEED.getModule(); break;

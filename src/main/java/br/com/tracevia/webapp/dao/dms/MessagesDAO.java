@@ -41,7 +41,7 @@ public class MessagesDAO {
 						+ "page2_image, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_1, page4_2, page4_3, timer4, "
-						+ "page5_image, page5_1, page5_2, page5_3, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 1 ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
@@ -73,7 +73,7 @@ public class MessagesDAO {
 				ps = conn.prepareStatement("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, timer1, page2_image, page2_1, page2_2, timer2, "
 						+ "page3_image, page3_1, page3_2, timer3, page4_image, page4_1, page4_2, timer4, "
-						+ "page5_image, page5_1, page5_2, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_1, page5_2, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 2 ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
@@ -108,7 +108,7 @@ public class MessagesDAO {
 						+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
-						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 3 ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
@@ -178,7 +178,7 @@ public class MessagesDAO {
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			String sql = "INSERT INTO pmv_messages_available "
+			String sql = "INSERT INTO dms_messages_available "
 					+ "(id_message, creation_date, creation_username, update_date, update_username, type, name, driver, "
 					+ "page1_image, page1_image2, page1_1, page1_2, page1_3, timer1, "
 					+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
@@ -253,7 +253,7 @@ public class MessagesDAO {
 		try {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
-			String sql = "UPDATE pmv_messages_available SET update_date = ?, update_username = ?, type = ?, name = ?, "
+			String sql = "UPDATE dms_messages_available SET update_date = ?, update_username = ?, type = ?, name = ?, "
 					+ "page1_image = ?, page1_image2 = ?, page1_1 = ?, page1_2 = ?, page1_3 = ?, timer1 = ?, "
 					+ "page2_image = ?, page2_image2 = ?, page2_1 = ?, page2_2 = ?, page2_3 = ?, timer2 = ?, "
 					+ "page3_image = ?, page3_image2 = ?, page3_1 = ?, page3_2 = ?, page3_3 = ?, timer3 = ?, "
@@ -311,7 +311,7 @@ public class MessagesDAO {
 			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
 			ps = conn.prepareStatement(
-					"UPDATE pmv_messages_available SET update_date = ?, update_username = ?, avaliable = 0 WHERE (id_message = ?);");
+					"UPDATE dms_messages_available SET update_date = ?, update_username = ?, avaliable = 0 WHERE (id_message = ?);");
 			ps.setString(1, dt_creation);
 			ps.setString(2, user);
 			ps.setInt(3, msgID);
@@ -346,7 +346,7 @@ public class MessagesDAO {
 						+ "page2_image, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_1, page4_2, page4_3, timer4, "
-						+ "page5_image, page5_1, page5_2, page5_3, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 1 AND id_message = " + id + " ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
@@ -375,7 +375,7 @@ public class MessagesDAO {
 				ps = conn.prepareStatement("SELECT id_message, type, name, "
 						+ "page1_image, page1_1, page1_2, timer1, page2_image, page2_1, page2_2, timer2, "
 						+ "page3_image, page3_1, page3_2, timer3, page4_image, page4_1, page4_2, timer4, "
-						+ "page5_image, page5_1, page5_2, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_1, page5_2, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 2 AND id_message = " + id + " ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
@@ -407,7 +407,7 @@ public class MessagesDAO {
 						+ "page2_image, page2_image2, page2_1, page2_2, page2_3, timer2, "
 						+ "page3_image, page3_image2, page3_1, page3_2, page3_3, timer3, "
 						+ "page4_image, page4_image2, page4_1, page4_2, page4_3, timer4, "
-						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from pmv_messages_available WHERE avaliable <> 0 "
+						+ "page5_image, page5_image2, page5_1, page5_2, page5_3, timer5 from dms_messages_available WHERE avaliable <> 0 "
 						+ "AND driver = 3 AND id_message = " + id + " ORDER BY id_message ASC");
 				rs = ps.executeQuery();
 
