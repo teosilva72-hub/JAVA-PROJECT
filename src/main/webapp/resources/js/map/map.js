@@ -251,6 +251,7 @@ $(function () {
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').show();
 				$('.meteoHidden-edit').hide();
+				$('.ipAddress-edit').hide();	
 			
 			} else {
 
@@ -1013,7 +1014,8 @@ $(function () {
 				$('.sosInputs').hide(); 		
 				$('.portInput').hide();
 				$('.dmsHidden').hide();
-				$('.satInputs').hide();			
+				$('.satInputs').hide();		
+				$('.ipAddress').hide();	
 
 			} else {
 
@@ -1022,7 +1024,7 @@ $(function () {
 				$('.sosInputs').hide(); 		
 				$('.satInputs').hide();
 				$('.portInput').hide();
-				$('.speedHidden').hide();			
+				$('.speedHidden').hide();							
 			}
 
 		}, 100)

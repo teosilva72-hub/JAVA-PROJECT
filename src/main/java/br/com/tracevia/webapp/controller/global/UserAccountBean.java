@@ -218,8 +218,7 @@ public class UserAccountBean implements Serializable {
 				  ex.printStackTrace(new PrintWriter(errors));	
 
 				  LogUtils.logError(LogUtils.fileDateTimeFormatter(registerExceptionLog),  classLocation, ex.getMessage(), errors.toString());
-			
-								
+											
 				  SessionUtil.executeScript("hideInfoMessage();");
 				  SessionUtil.executeScript("showErrorMessage();");	
 				  SessionUtil.executeScript("hideErrorMessage();");	

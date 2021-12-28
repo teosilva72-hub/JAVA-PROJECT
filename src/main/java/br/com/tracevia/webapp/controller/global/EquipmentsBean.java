@@ -35,11 +35,13 @@ public class EquipmentsBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, meteoType;
+	
+	private String imgControle = "";
 
 	RoadConcessionaireDAO concessionaireDao;
 
 	LocaleUtil localeDirection, localeMap;
-
+		
 	Equipments equip;
 	SAT sat;
 	DMS dms;
@@ -73,58 +75,30 @@ public class EquipmentsBean implements Serializable {
 		return cities;
 	}
 
-	public void setCities(List<SelectItem> cities) {
-		this.cities = cities;
-	}
-
 	public List<SelectItem> getRoads() {
 		return roads;
 	}
-
-	public void setRoads(List<SelectItem> roads) {
-		this.roads = roads;
-	}
-
+	
 	public List<SelectItem> getModule() {
 		return module;
-	}
-
-	public void setModule(List<SelectItem> module) {
-		this.module = module;
 	}
 
 	public List<SelectItem> getLanes() {
 		return lanes;
 	}
 
-	public void setLanes(List<SelectItem> lanes) {
-		this.lanes = lanes;
-	}
-
 	public List<SelectItem> getDir() {
 		return dir;
-	}
-
-	public void setDir(List<SelectItem> dir) {
-		this.dir = dir;
 	}
 
 	public List<SelectItem> getDmsType() {
 		return dmsType;
 	}
 
-	public void setDmsType(List<SelectItem> dmsType) {
-		this.dmsType = dmsType;
-	}
-
 	public List<SelectItem> getMeteoType() {
 		return meteoType;
 	}
-
-	public void setMeteoType(List<SelectItem> meteoType) {
-		this.meteoType = meteoType;
-	}
-
+	
 	public int getEquipId() {
 		return equipId;
 	}
@@ -180,8 +154,7 @@ public class EquipmentsBean implements Serializable {
 	public void setChecked(boolean checked) {
 		this.checked = checked;
 	}
-	private String imgControle = "";
-
+		
 	public String getImgControle() {
 		try {
 
@@ -207,7 +180,7 @@ public class EquipmentsBean implements Serializable {
 		roads = new  ArrayList<SelectItem>();
 		module = new  ArrayList<SelectItem>();
 		lanes = new  ArrayList<SelectItem>();
-		dir = new ArrayList<SelectItem>();
+		dir = new ArrayList<SelectItem>();		
 		dmsType = new ArrayList<SelectItem>();
 		meteoType = new ArrayList<SelectItem>();
 
@@ -228,11 +201,11 @@ public class EquipmentsBean implements Serializable {
 				lanes.add(s);				
 			}
 
-			dir.add(new SelectItem(1, localeDirection.getStringKey("directions_north")));   
-			dir.add(new SelectItem(2, localeDirection.getStringKey("directions_south")));   
-			dir.add(new SelectItem(3, localeDirection.getStringKey("directions_east")));   
-			dir.add(new SelectItem(4, localeDirection.getStringKey("directions_west")));   
-
+			dir.add(new SelectItem("N", localeDirection.getStringKey("directions_north")));   
+			dir.add(new SelectItem("S", localeDirection.getStringKey("directions_south")));   
+			dir.add(new SelectItem("L", localeDirection.getStringKey("directions_east")));   
+			dir.add(new SelectItem("O", localeDirection.getStringKey("directions_west")));   
+					
 			dmsType.add(new SelectItem(1, localeMap.getStringKey("$label_map_dms_type_1")));   
 			dmsType.add(new SelectItem(2, localeMap.getStringKey("$label_map_dms_type_2")));   
 			dmsType.add(new SelectItem(3, localeMap.getStringKey("$label_map_dms_type_3"))); 
@@ -345,14 +318,14 @@ public class EquipmentsBean implements Serializable {
 		
 			// LANE VALUE
 		
-			dataSource.setLane1(satDirection(parameterMap.get("direction1") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1")), 1));
-			dataSource.setLane2(satDirection(parameterMap.get("direction2") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2")), 2));
-			dataSource.setLane3(satDirection(parameterMap.get("direction3") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3")), 3));
-			dataSource.setLane4(satDirection(parameterMap.get("direction4") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4")), 4));
-			dataSource.setLane5(satDirection(parameterMap.get("direction5") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5")), 5));
-			dataSource.setLane6(satDirection(parameterMap.get("direction6") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6")), 6));
-			dataSource.setLane7(satDirection(parameterMap.get("direction7") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7")), 7));
-			dataSource.setLane8(satDirection(parameterMap.get("direction8") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8")), 8));
+			dataSource.setLane1(parameterMap.get("direction1") == "" ? "N" : parameterMap.get("direction1"));
+			dataSource.setLane2(parameterMap.get("direction2") == "" ? "S" : parameterMap.get("direction2"));
+			dataSource.setLane3(parameterMap.get("direction3") == "" ? null : parameterMap.get("direction3"));
+			dataSource.setLane4(parameterMap.get("direction4") == "" ? null : parameterMap.get("direction4"));
+			dataSource.setLane5(parameterMap.get("direction5") == "" ? null : parameterMap.get("direction5"));
+			dataSource.setLane6(parameterMap.get("direction6") == "" ? null : parameterMap.get("direction6"));
+			dataSource.setLane7(parameterMap.get("direction7") == "" ? null : parameterMap.get("direction7"));
+			dataSource.setLane8(parameterMap.get("direction8") == "" ? null : parameterMap.get("direction8"));
 
 		}
 		
@@ -413,11 +386,10 @@ public class EquipmentsBean implements Serializable {
 				SessionUtil.executeScript("$('#longEdit').val('"+dataSource.getLongitude()+"');");
 				SessionUtil.executeScript("$('#direction-edit').val('"+dataSource.getDirection()+"');");
 				
-			 if(equipTable.equals("meteo")) {
-				 
-				 SessionUtil.executeScript("$('#configId-edit').val('"+dataSource.getConfigId()+"');");
-				 SessionUtil.executeScript("$('#meteoType-edit').val('"+ dataSource.getEquipType()+"');");
-				 SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");							   
+				if(equipTable.equals("meteo")) {				 
+					SessionUtil.executeScript("$('#configId-edit').val('"+dataSource.getConfigId()+"');");
+					SessionUtil.executeScript("$('#meteoType-edit').val('"+ dataSource.getEquipType()+"');");
+					SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");							   
 			 }
 			 
 			 else if(equipTable.equals("dms")) 
@@ -426,30 +398,29 @@ public class EquipmentsBean implements Serializable {
 			 else if(equipTable.equals("sat")) {
 				
 				 SessionUtil.executeScript("$('#lanes-edit').val('"+dataSource.getNumLanes()+"');");
-				
-					if(dataSource.getLane1() != null)			 
-						SessionUtil.executeScript("$('#direction1-edit').show(); $('#direction1-edit').val('"+dataSource.getLane1()+"');");	
-
-					if(dataSource.getLane2() != null)			 
-						SessionUtil.executeScript("$('#direction2-edit').show(); $('#direction2-edit').val('"+dataSource.getLane2()+"');");	
-
-					if(dataSource.getLane3()!= null)			 
+				 				
+					if(dataSource.getNumLanes() >= 2) {			 
+						SessionUtil.executeScript("$('#direction1-edit').show(); $('#direction1-edit').val('"+dataSource.getLane1()+"');");									 
+						SessionUtil.executeScript("$('#direction2-edit').show(); $('#direction2-edit').val('"+dataSource.getLane2()+"');");						
+					}
+					
+					if(dataSource.getNumLanes() >= 3)			 
 						SessionUtil.executeScript("$('#direction3-edit').show(); $('#direction3-edit').val('"+dataSource.getLane3()+"');");	
 
-					if(dataSource.getLane4() != null)			 
+					if(dataSource.getNumLanes() >= 4)			 
 						SessionUtil.executeScript("$('#direction4-edit').show(); $('#direction4-edit').val('"+dataSource.getLane4()+"');");	
 
-					if(dataSource.getLane5() != null)			 
-						SessionUtil.executeScript("$('#direction5-edit').show(); $('#direction5-edit').val('"+dataSource.getLane5()+"');");	
+					if(dataSource.getNumLanes() >= 5)			 
+						SessionUtil.executeScript("$('#direction5-edit').show(); $('#direction5-edit').val('"+dataSource.getLane5() == null ? "" : dataSource.getLane5()+"');");	
 
-					if(dataSource.getLane6() != null)			 
-						SessionUtil.executeScript("$('#direction6-edit').show(); $('#direction6-edit').val('"+dataSource.getLane6()+"');");	
+					if(dataSource.getNumLanes() >= 6)			 
+						SessionUtil.executeScript("$('#direction6-edit').show(); $('#direction6-edit').val('"+dataSource.getLane6() == null ? "" : dataSource.getLane6()+"');");	
 
-					if(dataSource.getLane7() != null)			 
-						SessionUtil.executeScript("$('#direction7-edit').show(); $('#direction7-edit').val('"+dataSource.getLane7()+"');");	
+					if(dataSource.getNumLanes() >= 7)			 
+						SessionUtil.executeScript("$('#direction7-edit').show(); $('#direction7-edit').val('"+dataSource.getLane7() == null ? "" : dataSource.getLane7()+"');");	
 
-					if(dataSource.getLane8() != null)			 
-						SessionUtil.executeScript("$('#direction8-edit').show(); $('#direction8-edit').val('"+dataSource.getLane8()+"');");		
+					if(dataSource.getNumLanes() == 8)			 
+						SessionUtil.executeScript("$('#direction8-edit').show(); $('#direction8-edit').val('"+dataSource.getLane8() == null ? "" : dataSource.getLane8()+"');");		
 																		 
 			 }
 			 
@@ -596,15 +567,15 @@ public class EquipmentsBean implements Serializable {
 			dataSource.setNumLanes(parameterMap.get("lanes-edit") == "" ? 2 : Integer.parseInt(parameterMap.get("lanes-edit"))); // NUMBER LANES
 		
 			// LANE VALUE
-		
-			dataSource.setLane1(satDirection(parameterMap.get("direction1-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction1-edit")), 1));
-			dataSource.setLane2(satDirection(parameterMap.get("direction2-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction2-edit")), 2));
-			dataSource.setLane3(satDirection(parameterMap.get("direction3-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction3-edit")), 3));
-			dataSource.setLane4(satDirection(parameterMap.get("direction4-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction4-edit")), 4));
-			dataSource.setLane5(satDirection(parameterMap.get("direction5-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction5-edit")), 5));
-			dataSource.setLane6(satDirection(parameterMap.get("direction6-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction6-edit")), 6));
-			dataSource.setLane7(satDirection(parameterMap.get("direction7-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction7-edit")), 7));
-			dataSource.setLane8(satDirection(parameterMap.get("direction8-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("direction8-edit")), 8));
+			
+			dataSource.setLane1(parameterMap.get("direction1-edit") == "" ? "N" : parameterMap.get("direction1-edit"));
+			dataSource.setLane2(parameterMap.get("direction2-edit") == "" ? "S" : parameterMap.get("direction2-edit"));
+			dataSource.setLane3(parameterMap.get("direction3-edit") == "" ? null : parameterMap.get("direction3-edit"));
+			dataSource.setLane4(parameterMap.get("direction4-edit") == "" ? null : parameterMap.get("direction4-edit"));
+			dataSource.setLane5(parameterMap.get("direction5-edit") == "" ? null : parameterMap.get("direction5-edit"));
+			dataSource.setLane6(parameterMap.get("direction6-edit") == "" ? null : parameterMap.get("direction6-edit"));
+			dataSource.setLane7(parameterMap.get("direction7-edit") == "" ? null : parameterMap.get("direction7-edit"));
+			dataSource.setLane8(parameterMap.get("direction8-edit") == "" ? null : parameterMap.get("direction8-edit"));
 
 		}
 		
@@ -888,105 +859,5 @@ public class EquipmentsBean implements Serializable {
 	   }
 	   	   
 		//--------------------------------------------------------------------------------------------------------------
-
-		/**
-		 * Método para definir direções
-		 * @author Wellington
-		 * @version 1.0
-		 * @since Release 1.0
-		 * @param sat - Objeto do tipo SAT
-		 * @param numberLane - Número de linhas
-		 * @param dir - Direção
-		 * @return void   	
-		 */
-
-		public String satDirection(int dir, int numberLane){
-			
-			String lane = "";
-
-			switch(dir) {
-
-			case 0: 
-
-				switch (numberLane) { 
-
-					case 1: lane = "N"; break;
-					case 2: lane = "S"; break;
-					case 3: lane = null; break;
-					case 4: lane = null; break;
-					case 5: lane = null; break;
-					case 6: lane = null; break;
-					case 7: lane = null; break;
-					case 8: lane = null; break;
-
-				}; break;
-
-			case 1: 
-
-				switch (numberLane) { 
-
-					case 1: lane = "N"; break;
-					case 2: lane = "N"; break;
-					case 3: lane = "N"; break;
-					case 4: lane = "N"; break;
-					case 5: lane = "N"; break;
-					case 6: lane = "N"; break;
-					case 7: lane = "N"; break;
-					case 8: lane = "N"; break;
-
-				}; break;
-
-			case 2: 
-
-				switch (numberLane) { 
-	
-					case 1: lane = "S"; break;
-					case 2: lane = "S"; break;
-					case 3: lane = "S"; break;
-					case 4: lane = "S"; break;
-					case 5: lane = "S"; break;
-					case 6: lane = "S"; break;
-					case 7: lane = "S"; break;
-					case 8: lane = "S"; break;
-				
-				}; break;	
-
-			case 3: 	
-
-				switch (numberLane) { 
-	
-					case 1: lane = "L"; break;
-					case 2: lane = "L"; break;
-					case 3: lane = "L"; break;
-					case 4: lane = "L"; break;
-					case 5: lane = "L"; break;
-					case 6: lane = "L"; break;
-					case 7: lane = "L"; break;
-					case 8: lane = "L"; break;
-				
-				}; break;
-
-
-			case 4: 
-
-				switch (numberLane) { 
-
-					case 1: lane = "O"; break;
-					case 2: lane = "O"; break;
-					case 3: lane = "O"; break;
-					case 4: lane = "O"; break;
-					case 5: lane = "O"; break;
-					case 6: lane = "O"; break;
-					case 7: lane = "O"; break;
-					case 8: lane = "O"; break;
-				
-				}; break;				 	
-			}
-			
-			return lane;
-		}
-
-	//--------------------------------------------------------------------------------------------------------------
-	   
-       
+	       
 }

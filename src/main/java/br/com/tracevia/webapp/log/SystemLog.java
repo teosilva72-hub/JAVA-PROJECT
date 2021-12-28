@@ -379,7 +379,7 @@ public class SystemLog {
 
 		DateTimeApplication dta = new DateTimeApplication();	
 
-		localPath += dta.currentDateToFile()+".log";		
+		localPath += "_"+dta.currentDateToFile()+".log";		
 
 		return localPath;
 
