@@ -46,7 +46,7 @@
 	<ui:define name="main-content">
 		<c:if test="#{ SuperAdmin || VideoWall }">
 					
-			<!-- ======================== ALERTS ======================== -->
+		 <!-- ======================== ALERTS ======================== -->
 			
 			<ui:include src="/template/alerts/alerts.xhtml" />  
 		
@@ -102,6 +102,7 @@
 							</div>
 						</div>
 					</div>
+					
 					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
 					<h:commandButton style="display:none;" id="btnCftvSumTotal">
 						<f:ajax execute="@form" render=":sumIdCftv"
@@ -206,10 +207,6 @@
 				</h:form>
 
 				<!--  ******************************************************************************************************* -->
-
-				<!-- 	<button class="btn btn-success" data-html="true" data-toggle="popover" 
-											data-trigger="focus"
-											 data-popover-content="#hi">Teste</button> -->
 
 			</c:if>
 
@@ -450,7 +447,7 @@
 	<ui:define name="modal-content">
 		<c:if test="#{ SuperAdmin }">
 
-	        <!-- ======================== CREATE ======================== -->
+        <!-- ======================== CREATE ======================== -->
 		
         	<ui:include src="/template/map-modal/create-map.xhtml" />  
 
@@ -463,19 +460,21 @@
 		<!-- ======================== OPTIONS ======================== -->
 
 			<ui:include src="/template/map-modal/options-map.xhtml" />
-
-			<!---->
-						
+			
+		<!---->
+		
 		<!-- ======================== EDIT ======================== -->
 		
-        	<ui:include src="/template/map-modal/edit-map.xhtml" />  
-			
+       		<ui:include src="/template/map-modal/edit-map.xhtml" />  
+       		
+       	<!---->
+									
 		</c:if>
 		
 		<!---->
 
 		<c:if test="#{ SuperAdmin }">
-			
+					
 		<!-- ======================== DELETE ======================== -->
 		
        		 <ui:include src="/template/map-modal/delete-map.xhtml" />  				

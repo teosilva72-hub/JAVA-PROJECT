@@ -25,6 +25,7 @@ public class EquipmentDataSource {
 	private String km;			
 	private String direction;
 	private String sip;
+	private String serviceFlow;
 	private String lane1;
 	private String lane2;
 	private String lane3;
@@ -37,7 +38,7 @@ public class EquipmentDataSource {
 	public EquipmentDataSource(int moduleID, int equipId, int configId, int dmsDriver, int port, int model, int numLanes, int width,
 			double latitude, double longitude, String table, String datetime, String username, String equipName,
 			String ipAddress, String ipAddressIndicator, String ipAddressRadar, String city, String road,
-			String equipType, String km, String direction, String sip, String lane1, String lane2, String lane3,
+			String equipType, String km, String direction, String sip, String serviceFlow, String lane1, String lane2, String lane3,
 			String lane4, String lane5, String lane6, String lane7, String lane8) {
 			
 		this.moduleID = moduleID;
@@ -63,6 +64,7 @@ public class EquipmentDataSource {
 		this.km = km;
 		this.direction = direction;
 		this.sip = sip;
+		this.serviceFlow = serviceFlow;
 		this.lane1 = lane1;
 		this.lane2 = lane2;
 		this.lane3 = lane3;
@@ -296,7 +298,14 @@ public class EquipmentDataSource {
 	public void setSip(String sip) {
 		this.sip = sip;
 	}
+	
+	public String getServiceFlow() {
+		return serviceFlow;
+	}
 
+	public void setServiceFlow(String serviceFlow) {
+		this.serviceFlow = serviceFlow;
+	}
 
 	public String getLane1() {
 		return lane1;

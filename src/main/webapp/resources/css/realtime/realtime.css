@@ -103,21 +103,14 @@ body {
   outline: none;
 }
 
-/* ADD EQUIP BUTTON */
 #addequip {
-  margin-left: 150px;
-  margin-top: 5px;
-  width: auto;
+    position: relative;
+    left: 149px;
+    top: 5px;
 }
 
-/* CANCEL POS BUTTON */
 #cancelPos {
-  margin-left: 15px;
-}
-
-/* CANCEL POS BUTTON */
-#real\:savePos {
-  margin-left: 10%;
+	margin-left: 15px;
 }
 
 /* **********************  MAP CONTENT ***********************************/
@@ -291,11 +284,15 @@ body {
 	width: 100%;
 }
 
-[id$="mtoType"] {
+[id$="meteoType"] {
 	width: 100%;
 }
 
 [id$="equipId"] {
+	width: 100%;
+}
+
+[id$="configId"] {
 	width: 100%;
 }
 
@@ -319,6 +316,14 @@ body {
 	width: 100%;
 }
 
+[id$="lat"] {
+	width: 100%;
+}
+
+[id$="long"] {
+	width: 100%;
+}
+
 [id$="model"] {
 	width: 100%;
 }
@@ -335,16 +340,24 @@ body {
 	width: 100%;
 }
 
+[id$="direction"] {
+	width: 100%;
+}
+
 /* EDIT */
 [id$="equips-edit"] {
 	width: 100%;
 }
 
-[id$="mtoType-edit"] {
+[id$="meteoType-edit"] {
 	width: 100%;
 }
 
 [id$="equipId-edit"] {
+	width: 100%;
+}
+
+[id$="configId-edit"] {
 	width: 100%;
 }
 
@@ -376,6 +389,14 @@ body {
 	width: 100%;
 }
 
+[id$="latEdit"] {
+	width: 100%;
+}
+
+[id$="longEdit"] {
+	width: 100%;
+}
+
 [id$="modelEdit"] {
 	width: 100%;
 }
@@ -389,8 +410,13 @@ body {
 }
 
 [id$="cancelPos"] {
-    margin-left: 14px;
+	margin-left: 14px;
 }
+
+[id$="direction-edit"] {
+	width: 100%;
+}
+
 
 /* LABEL SHOW POS */
 #labelPos {
@@ -399,56 +425,58 @@ body {
   bottom: 50px;
 }
 
-/* ALL MODALS */
+/* MODAL SIZE EQUIP END */
 
+/* ALL MODALS */
 #modaladd {
-z-index: 10030;
-margin-top: 0%;
+	z-index: 10030;
+	margin-top: 0%;
 }
 
 #OPmodal {
-z-index: 10030;
-}
-
-.btn-all-equip{
-  width: 70px;
-  padding-left: 10px !important;
+	z-index: 10030;
 }
 
 #editmodal {
-z-index: 10030;
-margin-top: -2.5%;
+	z-index: 10030;
+}
+
+.btn-all-equip {
+	width: 70px;
+	padding-left: 10px !important;
 }
 
 #deletemodal {
-z-index: 10030;
+	z-index: 10030;
 }
 
 .addbox {
-  margin-top: 0%;
+	margin-top: 0%;
 }
 
 #bodyeqp {
-margin-top: 0%;
+	margin-top: 0%;
 }
 
 #bodyadd {
-margin-top: 0%;
+	margin-top: 0%;
+}
+
+input#width {
+    padding-left: 40px;
 }
 
 /* ALL MODALS END*/
 
 /* ALERTS STYLE */
-
-#realsave, #realcancel, #equip-save, #equip-save-error, 
-#equip-update, #equip-update-error, #equip-delete, #equip-delete-error {
-height: 23px;
+#info, #success, #error, #warn {
+	height: 25px;
 }
 
-.textAlert{
-margin-top: -12px;
-font: 12pt;
-text-align: center;
+.textAlert {
+	margin-top: -12px;
+	font: 12pt;
+	text-align: center;
 }
 
 /* ALERTS STYLE END*/
@@ -463,31 +491,59 @@ text-align: center;
 	margin-left: 4px;
 }
 /* CHECKBOXS END */
-
-#modaladd{
-	margin-top: -25px;
+/* PMV */
+.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+	margin-left: 1px !important;
 }
 
-.dmsHidden {
-  display: none;  
-}
-  
-.dmsHidden-edit {
-  display: none;
+.driver3.equip-info .second-img, .driver3 .equip-info .second-img {
+	margin-right: 37px !important;
 }
 
-.mtoHidden {
-  display: none;
+.driver3.equip-info .msg-pos, .driver3 .equip-info .msg-pos {
+	right: 51px !important;
 }
 
-.mtoHidden-edit {
-  display: none;
+.padding-pmv {
+	margin-left: 4px !important;
+}
+
+.dmsHidden, .meteoHidden {
+	display: none;
+}
+
+.dmsHidden-edit, .meteoHidden-edit {
+	display: none;
+}
+
+.portInput, .portInput-edit{
+	display: none;
+}
+
+.sosInputs, .sosInputs-edit{
+	display: none;
+}
+
+.speedHidden {
+	display: none;
+}
+
+.speedHidden-edit {
+	display: none;
+}
+
+.satInputs, .satInputs-edit {
+	display: none;
+}
+
+.ipAddress, .ipAddress-edit{
+	display: block;
 }
 
 /* Disabled bubttons on edit modal */
 input#equipId-edit:disabled, input#dmsType-edit:disabled {
-opacity: 0.7;
- }
+	opacity: 0.7;
+}
 
 /* MODAL CANCEL DELETE */
 .cancel{	

@@ -346,16 +346,7 @@ public class EquipmentsDAO {
 					sat.setPosicao_nivel_servico(rs.getString(21));
 					sat.setLongitude(rs.getDouble(22));
 					sat.setLatitude(rs.getDouble(23));
-					sat.setDirection(rs.getString(24));
-
-					//equip.setLinearHeight((int) (equip.getLinearWidth()*0.232)); //
-
-					/*if(dms.getPosicao().equals("horizontal")) {
-						dms.setHorizontal(true);
-					}else {
-						dms.setHorizontal(false);
-					}						
-					 */
+					sat.setDirection(rs.getString(24));					
 
 					lista.add(sat);
 				}				
@@ -1018,8 +1009,8 @@ public class EquipmentsDAO {
 			String insertSAT = "INSERT INTO sat_equipment (equip_id, creation_date, creation_username, name, city, road, km, "					
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, "
 					+ "map_width, map_posX, map_posY, vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip, "
-					+ "number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8) "
-					+ "values  ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ "service_position, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8) "
+					+ "values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
 			// SOS INSERT QUERY
 			String insertSOS = "INSERT INTO sos_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
@@ -1112,16 +1103,16 @@ public class EquipmentsDAO {
 					ps.setInt(25, dataSource.getDmsDriver());
 				
 				else if(dataSource.getTable().equals("sat")) {
-					
-					ps.setInt(25, dataSource.getNumLanes());
-					ps.setString(26, dataSource.getLane1());
-					ps.setString(27, dataSource.getLane2());
-					ps.setString(28, dataSource.getLane3());
-					ps.setString(29, dataSource.getLane4());
-					ps.setString(30, dataSource.getLane5());
-					ps.setString(31, dataSource.getLane6());
-					ps.setString(32, dataSource.getLane7());
-					ps.setString(33, dataSource.getLane8());					
+					ps.setString(25, dataSource.getServiceFlow());
+					ps.setInt(26, dataSource.getNumLanes()); 
+					ps.setString(27, dataSource.getLane1());
+					ps.setString(28, dataSource.getLane2());
+					ps.setString(29, dataSource.getLane3());
+					ps.setString(30, dataSource.getLane4());
+					ps.setString(31, dataSource.getLane5());
+					ps.setString(32, dataSource.getLane6());
+					ps.setString(33, dataSource.getLane7());
+					ps.setString(34, dataSource.getLane8());					
 				}
 				
 				else if(dataSource.getTable().equals("sos")) {
@@ -1310,7 +1301,7 @@ public class EquipmentsDAO {
 		String selectOcr = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip FROM ocr_equipment WHERE equip_id = ? ";
 		String selectdms = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip, driver FROM dms_equipment WHERE equip_id = ? ";
 		String selectSat = "SELECT equip_id, name, city, road, km, "+widthOption+", " +		
-		"latitude, longitude, direction, equip_ip, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 FROM sat_equipment WHERE equip_id = ? ";		
+		"latitude, longitude, direction, equip_ip, service_position, number_lanes, dir_lane1, dir_lane2, dir_lane3, dir_lane4, dir_lane5, dir_lane6, dir_lane7, dir_lane8 FROM sat_equipment WHERE equip_id = ? ";		
 		String selectSos = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip, port, model, master_sip FROM sos_equipment WHERE equip_id = ? ";
 		String selectSpeed = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip_indicator, equip_ip_radar FROM speed_equipment WHERE equip_id = ? ";
 		String selectWim = "SELECT equip_id, name, city, road, km, "+widthOption+", latitude, longitude, direction, equip_ip FROM wim_equipment WHERE equip_id = ? "; 
@@ -1371,17 +1362,18 @@ public class EquipmentsDAO {
 				 dataSource.setDmsDriver(rs.getInt(11));
 			 }
 			
-			 else if(table.equals("sat")) {
+			 else if(table.equals("sat")) {		
 				 dataSource.setIpAddress(rs.getString(10));
-				 dataSource.setNumLanes(rs.getInt(11));
-				 dataSource.setLane1(rs.getString(12));
-				 dataSource.setLane2(rs.getString(13));
-				 dataSource.setLane3(rs.getString(14)  == null ? "" : rs.getString(14));
-				 dataSource.setLane4(rs.getString(15)  == null ? "" : rs.getString(15));
-				 dataSource.setLane5(rs.getString(16)  == null ? "" : rs.getString(16));
-				 dataSource.setLane6(rs.getString(17)  == null ? "" : rs.getString(17));
-				 dataSource.setLane7(rs.getString(18)  == null ? "" : rs.getString(18));
-				 dataSource.setLane8(rs.getString(19)  == null ? "" : rs.getString(19));
+				 dataSource.setServiceFlow(rs.getString(11));
+				 dataSource.setNumLanes(rs.getInt(12));
+				 dataSource.setLane1(rs.getString(13));
+				 dataSource.setLane2(rs.getString(14));
+				 dataSource.setLane3(rs.getString(15)  == null ? "" : rs.getString(15));
+				 dataSource.setLane4(rs.getString(16)  == null ? "" : rs.getString(16));
+				 dataSource.setLane5(rs.getString(17)  == null ? "" : rs.getString(17));
+				 dataSource.setLane6(rs.getString(18)  == null ? "" : rs.getString(18));
+				 dataSource.setLane7(rs.getString(19)  == null ? "" : rs.getString(19));
+				 dataSource.setLane8(rs.getString(20)  == null ? "" : rs.getString(20));
 				 									 
 			 }
 			 
@@ -1603,7 +1595,7 @@ public class EquipmentsDAO {
 		String updateMeteoLinear = "UPDATE meteo_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, port = ? WHERE equip_id = ? ";
 		String updateOcrLinear = "UPDATE ocr_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";		
 		String updateSatLinear = "UPDATE sat_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, " +
-		"number_lanes = ?, dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? WHERE equip_id = ? ";	
+		"service_position = ?, number_lanes = ?, dir_lane1 = ?, dir_lane2 = ?, dir_lane3 = ?, dir_lane4 = ?, dir_lane5 = ?, dir_lane6 = ?, dir_lane7 = ?, dir_lane8 = ? WHERE equip_id = ? ";	
 		String updateSosLinear = "UPDATE sos_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ?, port = ?, model = ?, master_sip = ? WHERE equip_id = ? ";
 		String updateSpeedLinear = "UPDATE speed_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip_indicator = ?, equip_ip_radar = ? WHERE equip_id = ? ";
 		String updateWimLinear = "UPDATE wim_equipment SET name = ?, city = ?, direction = ?, road = ?, km = ?, "+widthOption+" = ?, equip_ip = ? WHERE equip_id = ? ";
@@ -1738,17 +1730,18 @@ public class EquipmentsDAO {
 					}
 					
 					else if(dataSource.getTable().equals("sat")) {
-						ps.setString(7, dataSource.getIpAddress());	
-						ps.setInt(8, dataSource.getNumLanes());	
-						ps.setString(9, dataSource.getLane1());
-						ps.setString(10, dataSource.getLane2());
-						ps.setString(11, dataSource.getLane3());
-						ps.setString(12, dataSource.getLane4());
-						ps.setString(13, dataSource.getLane5());
-						ps.setString(14, dataSource.getLane6());
-						ps.setString(15, dataSource.getLane7());
-						ps.setString(16, dataSource.getLane8());
-						ps.setInt(17,  dataSource.getEquipId());		
+						ps.setString(7, dataSource.getIpAddress());
+						ps.setString(8, dataSource.getServiceFlow());
+						ps.setInt(9, dataSource.getNumLanes());	
+						ps.setString(10, dataSource.getLane1());
+						ps.setString(11, dataSource.getLane2());
+						ps.setString(12, dataSource.getLane3());
+						ps.setString(13, dataSource.getLane4());
+						ps.setString(14, dataSource.getLane5());
+						ps.setString(15, dataSource.getLane6());
+						ps.setString(16, dataSource.getLane7());
+						ps.setString(17, dataSource.getLane8());
+						ps.setInt(18,  dataSource.getEquipId());		
 					}
 					
 					else {

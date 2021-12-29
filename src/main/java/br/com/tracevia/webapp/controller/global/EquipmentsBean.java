@@ -34,7 +34,7 @@ public class EquipmentsBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private List<SelectItem> cities, roads, module, lanes, dir, dmsType, meteoType;
+	private List<SelectItem> cities, roads, module, lanes, dir, serviceLevel, dmsType, meteoType;
 	
 	private String imgControle = "";
 
@@ -98,7 +98,11 @@ public class EquipmentsBean implements Serializable {
 	public List<SelectItem> getMeteoType() {
 		return meteoType;
 	}
-	
+		
+	public List<SelectItem> getServiceLevel() {
+		return serviceLevel;
+	}
+
 	public int getEquipId() {
 		return equipId;
 	}
@@ -183,7 +187,8 @@ public class EquipmentsBean implements Serializable {
 		dir = new ArrayList<SelectItem>();		
 		dmsType = new ArrayList<SelectItem>();
 		meteoType = new ArrayList<SelectItem>();
-
+		serviceLevel = new ArrayList<SelectItem>();
+		
 		try {
 
 			concessionaireDao = new RoadConcessionaireDAO();
@@ -212,6 +217,9 @@ public class EquipmentsBean implements Serializable {
 
 			meteoType.add(new SelectItem("MTO", localeMap.getStringKey("$label_map_meteo_weather_station"))); 
 			meteoType.add(new SelectItem("SV", localeMap.getStringKey("$label_map_meteo_various_sensors"))); 
+			
+			serviceLevel.add(new SelectItem("horizontal", "Horizontal")); 
+			serviceLevel.add(new SelectItem("vertical", "Vertical")); 
 
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -314,6 +322,8 @@ public class EquipmentsBean implements Serializable {
 		
 		if(dataSource.getTable().equals("sat")) {	
 			
+			dataSource.setServiceFlow(parameterMap.get("service") == "" ? "horizontal" : parameterMap.get("service")); // SERVICE FLOW
+			
 			dataSource.setNumLanes(parameterMap.get("lanes") == "" ? 2 : Integer.parseInt(parameterMap.get("lanes"))); // NUMBER LANES
 		
 			// LANE VALUE
@@ -396,6 +406,8 @@ public class EquipmentsBean implements Serializable {
 				 SessionUtil.executeScript("$('#dmsType-edit').val('"+dataSource.getDmsDriver()+"');");
 			
 			 else if(equipTable.equals("sat")) {
+				 
+				 SessionUtil.executeScript("$('#service-edit').val('"+dataSource.getServiceFlow()+"');"); // SERVICE FLOW
 				
 				 SessionUtil.executeScript("$('#lanes-edit').val('"+dataSource.getNumLanes()+"');");
 				 				
@@ -563,6 +575,8 @@ public class EquipmentsBean implements Serializable {
 		// SAT 
 		
 		if(dataSource.getTable().equals("sat")) {	
+									
+			dataSource.setServiceFlow(parameterMap.get("service-edit") == "" ? "horizontal" : parameterMap.get("service-edit")); // SERVICE FLOW
 			
 			dataSource.setNumLanes(parameterMap.get("lanes-edit") == "" ? 2 : Integer.parseInt(parameterMap.get("lanes-edit"))); // NUMBER LANES
 		

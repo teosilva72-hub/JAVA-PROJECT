@@ -218,7 +218,7 @@ $(function () {
 					});
 			}  else if (selectVAL == 6) {
 
-				$('.meteoHidden-edit').show(); // METEO DMS TYPE	
+				$('.meteoHidden-edit').css('display', 'flex');  // METEO DMS TYPE	
 				$('.portInput-edit').show();	
 				$('.dmsHidden-edit').hide(); 
 				$('.sosInputs-edit').hide(); 					
@@ -237,7 +237,7 @@ $(function () {
 			} else if (selectVAL == 10) {
 
 				$('.portInput-edit').show();
-				$('.sosInputs-edit').show(); 	
+				$('.sosInputs-edit').css('display', 'flex'); 		
 				$('.dmsHidden-edit').hide();				
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
@@ -249,7 +249,7 @@ $(function () {
 				$('.sosInputs-edit').hide(); 	
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
-				$('.speedHidden-edit').show();
+				$('.speedHidden-edit').css('display', 'flex'); 
 				$('.meteoHidden-edit').hide();
 				$('.ipAddress-edit').hide();	
 			
@@ -982,7 +982,7 @@ $(function () {
 
 			} else if (selectVAL == 6) {
 
-				$('.meteoHidden').show(); // METEO DMS TYPE	
+				$('.meteoHidden').css('display', 'flex');  // METEO DMS TYPE	
 				$('.portInput').show();	
 				$('.dmsHidden').hide(); 				
 				$('.satInputs').hide();				
@@ -1001,7 +1001,7 @@ $(function () {
 			} else if (selectVAL == 10) {
 
 				$('.portInput').show();
-				$('.sosInputs').show(); 	
+				$('.sosInputs').css('display', 'flex'); 	
 				$('.meteoHidden').hide();	
 				$('.satInputs').hide();
 				$('.mtoHidden').hide();
@@ -1009,7 +1009,7 @@ $(function () {
 		
 			} else if (selectVAL == 11) {
 
-				$('.speedHidden').show();
+				$('.speedHidden').css('display', 'flex'); 
 				$('.meteoHidden').hide(); // DIV DMS TYPE	
 				$('.sosInputs').hide(); 		
 				$('.portInput').hide();
