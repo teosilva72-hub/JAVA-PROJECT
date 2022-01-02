@@ -16,7 +16,7 @@
                     
                         <c:choose>
                         <c:when test="#{item.table_id eq 'dms'}">
-                            <div id="listPMV#{item.equip_id}" type="#{item.message.tipo}"
+                            <div id="listDMS#{item.equip_id}" type="#{item.message.tipo}"
                                 name="#{item.nome}" driver="#{item.message.driver}">																
                                 <input type="hidden" name="page1"
                                     imageId="#{item.message.pages[0].id_image}"
@@ -74,13 +74,13 @@
                                         <div class="text-center dmsTab#{item.equip_id}">													
                                         <a role="button" class="dms-info-bagde" data-toggle="popover" 
                                          data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>													
-                                            <span class="namePMV">#{item.nome}</span>
-                                            <span class="kmPMV">#{item.km}</span>
+                                            <span class="nameDMS">#{item.nome}</span>
+                                            <span class="kmDMS">#{item.km}</span>
                                         </div>
                                     </div>
                                     <div class="row text-center card-body p-0">
-                                        <div id="child-img" class="col-2 padding-pmv">
-                                            <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                        <div id="child-img" class="col-2 padding-dms">
+                                            <img src="/resources/images/pictures/#{dmsMessage.image}"
                                                 class="picture-box primary" id-img="0" />
                                         </div>
                                         <div id="child-msg" class="col-auto msg-pos">
@@ -203,7 +203,7 @@
                                         </div>
 
                                         <div id="child-img" class="col-2 second-img ml-auto">
-                                            <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                            <img src="/resources/images/pictures/#{dmsMessage.image}"
                                                 class="picture-box secondary" id-img="0" />
                                         </div>
                                         
@@ -263,7 +263,7 @@
                         
                     <c:when test="#{item.table_id eq 'sat'}">                                       
                             
-                    <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" >
+                    <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat text-dark" posX="#{item.linearPosX}" posY="#{item.linearPosY}" item-width="#{item.linearWidth}" service="#{item.posicao_nivel_servico}" status-period="#{satMapsView.satListValues.get(loop.index).statusInterval}" >
                     <div id="sat#{item.equip_id}" class="table-sat card border-dark">
                         <div id="satName#{item.equip_id}" class="satName card-header p-0 border-dark">									
                             <div id="satTab#{item.equip_id}" class="text-center">
@@ -299,7 +299,7 @@
                         </div>
 
                     </div>
-                    <div id="fluxos">
+                    <div id="fluxo#{item.equip_id}" class="fluxo">
 
                         <div id="img1FluxoTab#{item.equip_id}" class="on-mouse-hover fluxo-1-margin" data-toggle="tooltip" data-placement="top" title="#{item.sentido1}" ></div>								
                 
@@ -354,8 +354,8 @@
                             <c:when test="#{item.table_id eq 'speed'}">
 
                                 <!-- Card Speed -->
-                                <div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.mapPosX}"
-                                posY="#{item.mapPosY}" item-width="#{item.mapWidth}" direction="#{item.direction}">
+                                <div id="#{item.table_id}#{item.equip_id}" class="equip-box #{item.table_id} card speed-card border border-dark" posX="#{item.linearPosX}"
+                                posY="#{item.linearPosY}" item-width="#{item.linearWidth}" direction="#{item.direction}">
                                 
                                 <div class="card-header py-0 text-center text-white">
                                     <p>#{item.nome}</p>

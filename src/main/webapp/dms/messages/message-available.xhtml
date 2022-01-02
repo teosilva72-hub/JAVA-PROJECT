@@ -12,8 +12,8 @@
 	</ui:define>
 
 	<ui:define name="head">
-		<h:outputStylesheet library="css/pmv/available" name="message-available.css" />
-		<h:outputStylesheet library="css/pmv" name="layoutPMV.css" />
+		<h:outputStylesheet library="css/dms/available" name="message-available.css" />
+		<h:outputStylesheet library="css/dms" name="layoutDMS.css" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -26,15 +26,15 @@
 			<div class="row flex-row-reverse">
 				<!-- MESSAGE CONTENT BOX -->
 				<div class="boardDetails shadow col-4">
-					<!--  PMV BOARD -->
-					<div class="pmv-board card border-dark">
-						<div class="card-header pmv">
+					<!--  DMS BOARD -->
+					<div class="dms-board card border-dark">
+						<div class="card-header dms">
 							<h5 class="message-title-div ">#{dmsLabels.dms_available_messages_preview_title}</h5>
 						</div>
 
 						<!-- PAGINATORS -->
 						<div class="card-body position-relative responsive">
-							<div id="page-pmv">
+							<div id="page-dms">
 
 								<div id="#{item.table_id}#{item.equip_id}" class="equip-info mt-3">
 
@@ -48,8 +48,8 @@
 											</div>
 										</div>
 										<div class="row text-center card-body p-0">
-											<div id="child-img" class="col-2 padding-pmv">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
+											<div id="child-img" class="col-2 padding-dms">
+												<img src="/resources/images/pictures/#{dmsMessage.image}"
 													class="picture-box primary" id-img="0" />
 											</div>
 											<div id="child-msg" class="col-auto msg-pos">
@@ -171,7 +171,7 @@
 												</div>
 											</div>
 											<div id="child-img" class="col-2 second-img ms-auto">
-												<img src="/resources/images/pictures/#{pmvMessage.image}"
+												<img src="/resources/images/pictures/#{dmsMessage.image}"
 													class="picture-box secondary" id-img="0" />
 											</div>
 										</div>
@@ -180,7 +180,7 @@
 								</div>
 							</div>
 
-							<div class="edit-pmv-page">
+							<div class="edit-dms-page">
 								<!-- TIMERS -->
 								<div class="row">
 									<c:forEach begin="1" end="5" var="idx">
@@ -213,7 +213,7 @@
 								<!-- id input -->
 								<div class="col-3" id="list-images">
 									<div class="listbox" id="picture-id">
-										<c:forEach items="#{pmvMessage.pictures}" var="p">
+										<c:forEach items="#{dmsMessage.pictures}" var="p">
 											<div>
 												<img src="/resources/images/pictures/#{p.image}" width="60" height="60"
 													id-img="#{p.id}" />
@@ -243,7 +243,7 @@
 													<select name="tipo" id="type-input" class="form-control selectType">
 														<option value="" disabled="disabled" selected="selected">#{dmsLabels.dms_modal_tab_type}
 														</option>
-														<c:forEach items="#{pmvMessage.type}" var="opt">
+														<c:forEach items="#{dmsMessage.type}" var="opt">
 															<option value="#{opt.value}">#{opt.label}</option>
 														</c:forEach>
 													</select>
@@ -348,7 +348,7 @@
 								<div id="col">
 									<h:commandButton id="btnCr3" class="btn btn-dark confBtn" style="display: none;"
 										value="#{dmsLabels.dms_available_messages_btn_save}">
-										<f:ajax listener="#{pmvMessage.changeAvailableMessage}" execute="@form" />
+										<f:ajax listener="#{dmsMessage.changeAvailableMessage}" execute="@form" />
 									</h:commandButton>
 								</div>
 							</h:form>
@@ -415,7 +415,7 @@
 
 							<h:commandButton id="confirmDelete" value="#{dmsLabels.user_delete_modal_btn_yes}"
 								styleClass="btn btn-dark" pt:data-bs-dismiss="modal">
-								<f:ajax listener="#{pmvMessage.removeAvailableMessage}" execute="@form" event="click">
+								<f:ajax listener="#{dmsMessage.removeAvailableMessage}" execute="@form" event="click">
 								</f:ajax>
 							</h:commandButton>
 							<button type="button" class="btn btn-dark"

@@ -2,7 +2,7 @@ package br.com.tracevia.webapp.model.meteo;
 
 import br.com.tracevia.webapp.model.global.Equipments;
 
-public class METEO extends Equipments{
+public class Meteo extends Equipments{
 				
 	private String dateTime;
 	private String date;
@@ -21,7 +21,7 @@ public class METEO extends Equipments{
 	private int volts_line;	
 	private int config_id;
 		
-	public METEO(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
+	public Meteo(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
 			String cidade, String km, int linearPosX, int linearPosY, int mapPosX, int mapPosY, int mapWidth,
 			int height, int linearWidth, int dlgPosX, int dlgPosY, String direction, int status, int lastStatus,
@@ -52,7 +52,7 @@ public class METEO extends Equipments{
 		this.config_id = config_id;
 	}
 
-	public METEO() {}
+	public Meteo() {}
 
 	public String getDateTime() {
 		return dateTime;

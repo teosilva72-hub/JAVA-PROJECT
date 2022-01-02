@@ -70,7 +70,7 @@ const init = () => {
 	})
 }
 
-const onEventRealtimeFunction = data => {
+const onEventMapFunction = data => {
 	var status = data.status;
 
 	switch (status) {
@@ -132,10 +132,11 @@ $(function () {
 			var selectVAL = equipsSEL.options[equipsSEL.selectedIndex].value;
 			if (selectVAL == 9) {
 				$('.satInputs-edit').show(); // DIV FAIXAS 1	
-				$('.dmsHidden-edit').hide();			
-				$('.sosInputs-edit').hide();
+				$('.dmsHidden-edit').hide();
+				$('.portInput-edit').hide();
 				$('.speedHidden-edit').hide();
-				$('.ipAddressShow-edit').show();
+				$('.meteoHidden-edit').hide();
+				$('.sosInputs-edit').hide(); 				
 				$("#lanes-edit").change(
 					function () {
 						var satLanes = document.getElementById("lanes-edit");
@@ -192,37 +193,51 @@ $(function () {
 							$('#direction8-edit').show();
 						}
 					});
-			} else if (selectVAL == 8) {
+			}  else if (selectVAL == 6) {
 
-				$('.dmsHidden-edit').show(); // DIV DMS TYPE	
-                $('.satInputs-edit').hide();
-                $('.sosInputs-edit').hide();
-                $('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();						
+				$('.meteoHidden-edit').css('display', 'flex');  // METEO DMS TYPE	
+				$('.portInput-edit').show();	
+				$('.dmsHidden-edit').hide(); 
+				$('.sosInputs-edit').hide(); 					
+				$('.satInputs-edit').hide();				
+				$('.speedHidden-edit').hide();			
 
-			}else if (selectVAL == 10) {
-				
-				$('.sosInputs-edit').show();			
-				$('.dmsHidden-edit').hide();
+			}else if (selectVAL == 8) {
+
+				$('.dmsHidden-edit').show(); // DIV DMS TYPE				
+				$('.satInputs-edit').hide();
+				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide(); 	
+				$('.meteoHidden-edit').hide();
+				$('.speedHidden-edit').hide();			
+
+			} else if (selectVAL == 10) {
+
+				$('.portInput-edit').show();
+				$('.sosInputs-edit').css('display', 'flex'); 		
+				$('.dmsHidden-edit').hide();				
 				$('.satInputs-edit').hide();
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.meteoHidden-edit').hide();			
 
 			} else if (selectVAL == 11) {
-				
-				$('.sosInputs-edit').hide();			
+
+				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide(); 	
 				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
-				$('.speedHidden-edit').show();
-                $('.ipAddressShow-edit').hide();
-
+				$('.speedHidden-edit').css('display', 'flex'); 
+				$('.meteoHidden-edit').hide();
+				$('.ipAddress-edit').hide();	
+			
 			} else {
 
-				$('.dmsHidden-edit').hide();			
+				$('.dmsHidden-edit').hide();
 				$('.satInputs-edit').hide();
-				$('.sosInputs-edit').hide();
+				$('.portInput-edit').hide();
+				$('.sosInputs-edit').hide();	
 				$('.speedHidden-edit').hide();
-                $('.ipAddressShow-edit').show();
+				$('.meteoHidden-edit').hide();			
 			}
 
 		}, 100)
@@ -441,16 +456,27 @@ function posEquip(equip) {
 		top: pos.centY * zoomTargetImg.height() + zoomTargetImg.offset().top - zoomTarget.offset().top
 	});
 
-	if (equip.attr("class").includes('equip-box-sat')) {
-		let sat_status = equip.attr('status')
+	if (equip.attr("class").includes('equip-box-sat')) {		
 		let sat_name = equip.attr('id')
 		let interval = Number(equip.attr('status-period'))
 		let fluxo1 = equip.find('[id^=img1FluxoTab]')
 		let fluxo2 = fluxo1.next()
 		let spd1 = Number(equip.find('#spd1').text())
 		let spd2 = Number(equip.find('#spd2').text())
-
+		let lanePosition = equip.attr('service')
+		let fluxoId = equip.find('[id^=fluxo]') 
+		
+		// -------------------------------------------------------------
+	
+	    // Change Fluxo Class
+						
+		if(lanePosition == 'vertical')			
+			$(fluxoId).removeClass('fluxo').addClass('fluxo-vertical')
+			
+		// -------------------------------------------------------------
+				
 		//Green Color > indica que o equipamento está conectado
+		
 		if (interval == 15 || interval == 30) {
 			equip.find("[id^=satName]").css({
 				"background-color": '#00FF0D',
@@ -782,12 +808,11 @@ function hideEditDirections() {
 	$('#direction8-edit').hide();
 }
 
-function alertOptions(a) {
-	$('.map-options').css('display', 'none');
-	$(a).css("display", "block");
+function alertOptions(id, message) {
+	$(id).css("display", "block");
+	$(id +' .textAlert').html(message)
 	setTimeout(function () {
-		$(a).fadeOut('fast');
-		$('.map-options').css('display', 'block');
+		$(id).fadeOut('fast');
 	}, 2000);
 	hiddenPosition();
 }
@@ -868,109 +893,123 @@ $('[id$="zoomOut"]').click(function () {
 
 //SAT LANES INPUTS
 $(function () {
-$('[id$="equips"]').click(function btnSave() {
-	setTimeout(() => {
-	var equipsSEL = document.getElementById("equips");
-	var selectVAL = equipsSEL.options[equips.selectedIndex].value;
-	if (selectVAL == 9) {
-		$('.satInputs').show(); // DIV FAIXAS 1	
-		$('.dmsHidden').hide();
-		$('.sosInputs').hide();
-		$('.speedHidden').hide();
-		$('.ipAddressShow').show();		
-		$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
-		$("#lanes").change(
-			function () {
-				var satLanes = document.getElementById("lanes");
-				var selectSAT = satLanes.value;
-				if (selectSAT == 2) {
-					$('#direction3').hide();
-					$('#direction4').hide();
-					$('#direction5').hide();
-					$('#direction6').hide();
-					$('#direction7').hide();
-					$('#direction8').hide();
-				} else if (selectSAT == 3) {
-					$('#direction3').show();
-					$('#direction4').hide();
-					$('#direction5').hide();
-					$('#direction6').hide();
-					$('#direction7').hide();
-					$('#direction8').hide();
-				} else if (selectSAT == 4) {
-					$('#direction3').show();
-					$('#direction4').show();
-					$('#direction5').hide();
-					$('#direction6').hide();
-					$('#direction7').hide();
-					$('#direction8').hide();
-				} else if (selectSAT == 5) {
-					$('#direction3').show();
-					$('#direction4').show();
-					$('#direction5').show();
-					$('#direction6').hide();
-					$('#direction7').hide();
-					$('#direction8').hide();
-				} else if (selectSAT == 6) {
-					$('#direction3').show();
-					$('#direction4').show();
-					$('#direction5').show();
-					$('#direction6').show();
-					$('#direction7').hide();
-					$('#direction8').hide();
-				} else if (selectSAT == 7) {
-					$('#direction3').show();
-					$('#direction4').show();
-					$('#direction5').show();
-					$('#direction6').show();
-					$('#direction7').show();
-					$('#direction8').hide();
-				} else if (selectSAT == 8) {
-					$('#direction3').show();
-					$('#direction4').show();
-					$('#direction5').show();
-					$('#direction6').show();
-					$('#direction7').show();
-					$('#direction8').show();
-				}
-			});
+	$('[id$="equips"]').click(function btnSave() {
+		setTimeout(() => {
+			var equipsSEL = document.getElementById("equips");
+			var selectVAL = equipsSEL.options[equips.selectedIndex].value;
+			if (selectVAL == 9) {
+				$('.satInputs').show(); // DIV FAIXAS 1	
+				$('.dmsHidden').hide();
+				$('.sosInputs').hide(); 	
+				$('.portInput').hide();
+				$('.speedHidden').hide();
+				$('.meteoHidden').hide();			
+				$('#id-type').addClass('col-md-12').removeClass('col-md-6').find('.valid-icon-visible').css('margin-left', '')
+				$("#lanes").change(
+					function () {
+						var satLanes = document.getElementById("lanes");
+						var selectSAT = satLanes.value;
+						if (selectSAT == 2) {
+							$('#direction3').hide();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 3) {
+							$('#direction3').show();
+							$('#direction4').hide();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 4) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').hide();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 5) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').hide();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 6) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').hide();
+							$('#direction8').hide();
+						} else if (selectSAT == 7) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').hide();
+						} else if (selectSAT == 8) {
+							$('#direction3').show();
+							$('#direction4').show();
+							$('#direction5').show();
+							$('#direction6').show();
+							$('#direction7').show();
+							$('#direction8').show();
+						}
+					});
 
-		} else if (selectVAL == 8) {
+			} else if (selectVAL == 6) {
 
-			$('.dmsHidden').show(); // DIV DMS TYPE	
-			$('.satInputs').hide();
-			$('.sosInputs').hide();
-			$('.speedHidden').hide();
-			$('.ipAddressShow').show();
+				$('.meteoHidden').css('display', 'flex');  // METEO DMS TYPE	
+				$('.portInput').show();	
+				$('.dmsHidden').hide(); 				
+				$('.satInputs').hide();				
+				$('.speedHidden').hide();			
+				$('.sosInputs').hide(); 	
 
-		} else if (selectVAL == 10) {
+			}else if (selectVAL == 8) {
 
-			$('.sosInputs').show();	 // DIV SOS TYPE
-			$('.dmsHidden').show(); 				
-			$('.satInputs').hide();		
-			$('.speedHidden').hide();
-			$('.ipAddressShow').show();
-
-		} else if (selectVAL == 11) {
-
-			$('.speedHidden').show();
-			$('.sosInputs').hide();
-			$('.dmsHidden').hide();
-			$('.satInputs').hide();				
-			$('.ipAddressShow').hide();
+				$('.dmsHidden').show(); // DIV DMS TYPE	
+				$('.sosInputs').hide(); 	
+				$('.meteoHidden').hide(); // DIV DMS TYPE								
+				$('.satInputs').hide();
+				$('.portInput').hide();
+				$('.speedHidden').hide();
 			
-		} else {
+			} else if (selectVAL == 10) {
 
-			$('.dmsHidden').hide();			
-			$('.satInputs').hide();
-			$('.sosInputs').hide();
-			$('.speedHidden').hide();
-			$('.ipAddressShow').show();	
+				$('.portInput').show();
+				$('.sosInputs').css('display', 'flex'); 	
+				$('.meteoHidden').hide();	
+				$('.satInputs').hide();
+				$('.mtoHidden').hide();
+				$('.speedHidden').hide();
+		
+			} else if (selectVAL == 11) {
 
-		}
-									
-   }, 100)
-});
+				$('.speedHidden').css('display', 'flex'); 
+				$('.meteoHidden').hide(); // DIV DMS TYPE	
+				$('.sosInputs').hide(); 		
+				$('.portInput').hide();
+				$('.dmsHidden').hide();
+				$('.satInputs').hide();		
+				$('.ipAddress').hide();	
+
+			} else {
+
+				$('.dmsHidden').hide();
+				$('.meteoHidden').hide(); // DIV DMS TYPE	
+				$('.sosInputs').hide(); 		
+				$('.satInputs').hide();
+				$('.portInput').hide();
+				$('.speedHidden').hide();							
+			}
+
+		}, 100)
+	});
 });
 
 // MODAL EQUIPMENT SIZE

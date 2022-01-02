@@ -11,6 +11,12 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<f:viewAction onPostback="true" action="#{equipsBean.defineInterfaceView('map')}" />  
+	
+	</f:metadata>
 
 	<ui:define name="head">
 
@@ -19,7 +25,7 @@
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
+		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
 		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="cftv.css" library="css/map" />
 		<h:outputStylesheet name="map.css" library="css/map" />
@@ -44,6 +50,7 @@
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
 	<ui:define name="main-content">
+	
 		<c:if test="#{ SuperAdmin || VideoWall }">
 					
 		 <!-- ======================== ALERTS ======================== -->
@@ -82,6 +89,7 @@
 				
 				<!-- CFTV LIST EQUIPS TOP PAGE -->
 				
+			 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
 				<h:form prependId="false" id="sumIdCftv">
 					<div class="dropdown cftv-dropdown">
 						<button class="btn btn-dark dropdown-toggle" type="button"
@@ -109,6 +117,8 @@
 							listener="#{CftvCam.totalId}" />
 					</h:commandButton>
 				</h:form>
+			</ui:fragment>
+				
 				<!--  -->
 				<c:if test="#{ SuperAdmin }">
 
@@ -184,8 +194,7 @@
 					<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 					<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 					<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
-					<input type="hidden" id="positionView" name="positionView" value="map" />
-
+				
 					<!--  ******************************************************************************************************* -->
 
 					<h:commandButton id="savePos" style="display:none;"
@@ -267,7 +276,7 @@
 
 				<ui:fragment rendered="#{loginAccount.load.en_dms}">
 					<button class="dropdown-item dprbtn" data-toggle="modal"
-						data-target="#sizeeqps" data-backdrop="false" id="droppmv"
+						data-target="#sizeeqps" data-backdrop="false" id="dropdms"
 						from="dms">#{mapLabels.$label_map_size_select_dms}</button>
 				</ui:fragment>
 
@@ -464,7 +473,7 @@
 		<!---->
 		
 		<!-- ======================== EDIT ======================== -->
-		
+			
        		<ui:include src="/template/map-modal/edit-map.xhtml" />  
        		
        	<!---->
@@ -497,8 +506,9 @@
 		
 		<!-- ======================== CFTV SETTINGS ======================== -->
 		
+		<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
 			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
-		
+		</ui:fragment>
 		<!---->
 			
 	</ui:define>
@@ -521,9 +531,11 @@
 		<!---->
 		
 		<h:outputScript name="gps.js" library="js/gps" />
-		<h:outputScript name="map.js" library="js/map" />		
-		<h:outputScript library="js/map/" name="mapCftcv.js" />
+		<h:outputScript name="map.js" library="js/map" />
 		
+		<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >		
+			<h:outputScript library="js/map/" name="mapCftcv.js" />
+		</ui:fragment>
 		<!---->
 
 		<form name="roadLine">

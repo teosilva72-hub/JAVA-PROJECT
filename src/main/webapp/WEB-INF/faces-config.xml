@@ -35,15 +35,10 @@
         </resource-bundle>  
         
         <resource-bundle>
-          <base-name>bundle.labels.meteo.mto.labels_mto</base-name>           
-          <var>mtoLabels</var>        
+          <base-name>bundle.labels.meteo.labels_meteo</base-name>           
+          <var>meteoLabels</var>        
         </resource-bundle> 
-               
-         <resource-bundle>
-          <base-name>bundle.labels.meteo.sv.labels_sv</base-name>           
-          <var>svLabels</var>        
-        </resource-bundle> 
-        
+             
         <resource-bundle>
           <base-name>bundle.labels.sat.labels_sat</base-name>           
           <var>satLabels</var>        
@@ -242,17 +237,7 @@
           <base-name>bundle.messages.system.realtime.messages_realtime</base-name>           
           <var>realtimeMessages</var>        
         </resource-bundle>
-        
-         <resource-bundle>
-          <base-name>bundle.messages.meteo.mto.messages_mto</base-name>           
-          <var>mtoMessages</var>        
-        </resource-bundle>
-       
-         <resource-bundle>
-          <base-name>bundle.messages.meteo.sv.messages_sv</base-name>           
-          <var>svMessages</var>        
-        </resource-bundle>
-        
+              
          <resource-bundle>
           <base-name>bundle.messages.sat.messages_sat</base-name>           
           <var>satMessages</var>        
@@ -272,8 +257,7 @@
         <message-bundle>bundle.labels.dashboard.labels_dashboard</message-bundle>
         <message-bundle>bundle.labels.login.labels_login</message-bundle>        
 		<message-bundle>bundle.labels.pmv.labels_pmv</message-bundle> 
-		<message-bundle>bundle.labels.meteo.mto.labels_mto</message-bundle>		
-		<message-bundle>bundle.labels.meteo.sv.labels_sv</message-bundle>
+		<message-bundle>bundle.labels.meteo.labels_meteo</message-bundle>		
 		<message-bundle>bundle.labels.sat.labels_sat</message-bundle>
 		<message-bundle>bundle.labels.system.calendar.labels_calendar</message-bundle>
 		<message-bundle>bundle.labels.system.directions.labels_directions</message-bundle>	
@@ -315,9 +299,7 @@
 		<message-bundle>bundle.messages.users.messages_users</message-bundle>
 		<message-bundle>bundle.messages.occ.messages_occ</message-bundle>
 		<message-bundle>bundle.messages.system.maps.messages_maps</message-bundle>	
-		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>		
-		<message-bundle>bundle.messages.meteo.mto.messages_mto</message-bundle>	
-		<message-bundle>bundle.messages.meteo.sv.messages_sv</message-bundle>			
+		<message-bundle>bundle.messages.system.realtime.messages_realtime</message-bundle>	
         <message-bundle>bundle.labels.system.reports.messages_reports</message-bundle>
                  
  </application> 

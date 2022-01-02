@@ -389,7 +389,7 @@ public class ExcelUtil {
 	 */
 	public void setFormula(Sheet sheet, Row row, int rowNumber, int cellNumber, String formula) {	
 		
-		System.out.println(cellNumber+" "+formula);
+	//	System.out.println(cellNumber+" "+formula);
 
 		row = sheet.getRow(rowNumber);		
 		row.getCell(cellNumber)	
@@ -1267,7 +1267,7 @@ public class ExcelUtil {
 
 		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("hh:mm:ss"));
 		
-		System.out.println(colNumber);
+		//System.out.println(colNumber);
 
 		String columnLetter = CellReference.convertNumToColString(colNumber);	// COLUMN LETTER	
 

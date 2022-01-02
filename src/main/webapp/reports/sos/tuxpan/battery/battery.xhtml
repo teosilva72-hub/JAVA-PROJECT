@@ -21,7 +21,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(sosLabels.tuxpan_battery_file_name)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.chart_h_axis_unit_measure)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.$label_chart_vertical_axis_unit_measure)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineTotalType('average')}" />
 	    	
@@ -40,7 +40,7 @@
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true
 		, true)}" />
 		   		               

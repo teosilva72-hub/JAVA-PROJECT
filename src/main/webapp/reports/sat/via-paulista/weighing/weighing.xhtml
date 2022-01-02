@@ -48,7 +48,7 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
 

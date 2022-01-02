@@ -616,7 +616,7 @@ public class TranslationMethods {
 	}  
 
 
-	//USED FOR METEO
+	//USED FOR Meteo
 	public String monthComparison(int selectedMes) {
 
 		String selectMonth = "";				

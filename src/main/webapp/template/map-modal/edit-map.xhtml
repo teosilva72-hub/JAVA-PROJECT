@@ -29,19 +29,17 @@
 				 <div class="col-md-6"> <!-- COL -->				
 					<div class="form-group select-field-half"><!-- SELECT DIV -->
 						<span><i class="fas fa-hdd"></i></span>	<!-- SPAN ICON -->
-						   <span for="equips-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-							  <input type="hidden" value="map" id="interface" name="interface" /> 
-								<select name="equips-edit" id="equips-edit" size="1" disabled="true">
+						   <span for="equips-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->							   
+								<select name="equips-edit" id="equips-edit" size="1" disabled="disabled">
 						  		  <option value="">#{mapLabels.$label_map_option_select_type_equipments}</option>
 					    		    <ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 	  			 					  <option value="#{eqp.value}">#{eqp.label}</option>
 		       		 			   </ui:repeat>
-						  		</select><!-- SELECT -->
-				  		     <div class="error-label"> <!-- ERROR DIV -->									
-							   <label for="equips" class="error" id="equips-error"></label>
-						    </div> <!---->									
-						</div>
-					  </div>
+						  		</select><!-- SELECT -->				  		    									
+							</div>
+						<div class="error-label"> <!-- ERROR DIV -->					
+						</div> <!---->
+				    </div>
 								
 					<!---->
 
@@ -51,11 +49,10 @@
 					<div class="form-group input-field-half" id="contentEquipId"> <!-- INPUT DIV -->						
 						<span><i class="fab fa-ideal"></i></span> <!-- SPAN ICON -->						
 							<span for="equipId-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-					 			<input type="text" autocomplete="off" disabled="true" name="equipId-edit" id="equipId-edit"
+					 			<input type="text" autocomplete="off" disabled="disabled" name="equipId-edit" id="equipId-edit"
 							placeholder="#{mapLabels.$label_map_option_input_equip_id}" /> 	<!-- INPUT -->								
 					</div>	<!---->	
-					<div class="error-label"> <!-- ERROR DIV -->									
-						<label for="equipId" class="error" id="equipId-error"></label>
+					<div class="error-label"> <!-- ERROR DIV -->						
 					</div> <!---->						
 					<!---->
 				</div> 
@@ -112,7 +109,7 @@
 					<div class="form-group input-field-half" > <!-- INPUT DIV -->					
 						<span><i class="fas fa-cogs"></i></span> <!-- SPAN ICON -->
 						<span for="configId-edit" class="valid-icon-hidden"></span>	<!-- SPAN VALIDATION -->
-						<input type="text" autocomplete="off" name="configId-edit" id="configId-edit" disabled="true"
+						<input type="text" autocomplete="off" name="configId-edit" id="configId-edit" disabled="disabled"
 						placeholder="#{mapLabels.$label_map_option_input_config_id}" /> <!-- INPUT -->						
 					</div> <!---->					
 					<div class="error-label"> 	<!-- ERROR DIV -->					
@@ -128,12 +125,12 @@
 					<div class="form-group select-field-half" > <!-- SELECT DIV -->
 						<span><i class="fas fa-th-list"></i></span>	<!-- SPAN ICON -->
 						<span for="meteoType-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->									
-						  <select name="meteoType-edit" id="meteoType-edit" size="1" >
+						  <select name="meteoType-edit" id="meteoType-edit" size="1" disabled="disabled" >
 							<option value="">#{mapLabels.$label_map_option_select_meteo_type}</option>
 							 <ui:repeat var="tp" value="#{equipsBean.meteoType}" varStatus="tpStatus">
-								<option value="#{tp.value}">#{tp.label}</option>
+								<option value="#{tp.value}">#{tp.label}</option>						       
 							</ui:repeat>
-						 </select> <!-- SELECT -->
+						 </select> <!-- SELECT -->					
 					</div> <!---->								
 					<div class="error-label"> <!-- ERROR DIV -->									
 					</div> <!---->								
@@ -149,7 +146,7 @@
 				   <div class="form-group col-md-12 select-field"> <!-- SELECT DIV -->
 					  <span><i class="fas fa-th-list"></i></span> <!-- SPAN ICON -->
 						<span for="dmsType-edit" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-	  					 <select name="dmsType-edit" id="dmsType-edit" size="1" disabled="true">
+	  					 <select name="dmsType-edit" id="dmsType-edit" size="1" disabled="disabled">
 							<option value="">#{mapLabels.$label_map_option_select_dms_type}</option>
 							<ui:repeat var="tp" value="#{equipsBean.dmsType}" varStatus="tpStatus">
 								<option value="#{tp.value}">#{tp.label}</option>
@@ -350,11 +347,12 @@
 		  <!---->			
 		</div>
 				
-		<!---->			
+		<!---->		
 		
-		<ui:fragment rendered="#{loginAccount.mapEnabled}" >
-											 
- 		<div class="form-row"> <!-- ROW -->
+		<!-- LATITUDE AND LONGITUDE -->	
+		
+		<div class="map-show" >				
+ 			<div class="form-row"> <!-- ROW -->
  		
 			<!-- LATITUDE -->
 			
@@ -386,13 +384,14 @@
 				</div> <!---->									
 	   		</div>						
 		</div>	<!---->
-							
-		</ui:fragment>				
+		   <!---->				
+		</div>				
 		
 		<!---->		
 		
-		<!-- SERVICE LEVEL DIRECTION -->
+	<!-- SERVICE LEVEL DIRECTION -->
 
+	  <div class="realtime-show" >
 		<div class="form-row satInputs-edit" > <!-- ROW -->								
 			<div class="form-group col-md-12 select-field">	<!-- SELECT DIV -->
 				<span><i class="fas fa-random"></i></span> <!-- SPAN ICON -->
@@ -405,6 +404,8 @@
 			</div> <!---->								
 			<div class="error-label"><!-- ERROR-LABEL -->									
 			</div><!---->								
+		</div>
+		  <!---->	
 		</div>
 							
 		<!---->				
@@ -583,7 +584,7 @@
 	
 				<h:inputHidden id="equipId1" value="#{equipsBean.equipId}" /> <!-- EQUIP ID -->
 				<h:inputHidden id="equipTable1" value="#{equipsBean.equipTable}" /> <!-- TABLE -->
-	
+							
 				 <!-- EDIT -->
 				 
 				<button id="btn-form-confirm-edit"

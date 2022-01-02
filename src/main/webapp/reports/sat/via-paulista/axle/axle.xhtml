@@ -21,7 +21,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.via_paulista_axles_file_name)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.via_paulista_axles_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
@@ -51,7 +51,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('axlNumber', reportsLabels.reports_select_axles, 'filter_axles.id_axles|name' , true, true)}" />
 

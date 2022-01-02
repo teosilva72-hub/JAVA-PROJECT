@@ -13,10 +13,10 @@ let changedPMV = {};
 async function main() {
 	await init();
 
-	const allPMV = $('#allPMV')
+	const allPMV = $('#allDMS')
 	const checksListAll = $('#checkListAll');
-	const inputDriver = $('[name=typePMV]');
-	const pagePMV = $('#page-pmv');
+	const inputDriver = $('[name=typeDMS]');
+	const pagePMV = $('#page-dms');
 	const selectType = $("#selectionType");
 	const apply = $('#btn-apply');
 	const reset = $('#btn-reset');
@@ -124,7 +124,7 @@ async function main() {
 			listSelectPMV.push(pmv);
 		}
 
-		$('[id^=listPMV], [id^=listChangePMV], [id^=listSelectPMV]').each(function () {
+		$('[id^=listDMS], [id^=listChangeDMS], [id^=listSelectDMS]').each(function () {
 			let data = $(this);
 			let driver;
 
@@ -169,9 +169,9 @@ async function main() {
 						);
 				})
 
-				if (data.attr('id').startsWith("listPMV"))
+				if (data.attr('id').startsWith("listDMS"))
 					listPMV.push(pmv);
-				else if (data.attr('id').startsWith("listChangePMV")) {
+				else if (data.attr('id').startsWith("listChangeDMS")) {
 					data.next().find('input').val(listChangePMV.length)
 					listChangePMV.push(pmv);
 					timeChangePMV.push(0);

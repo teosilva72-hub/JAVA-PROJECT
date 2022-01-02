@@ -109,9 +109,6 @@ body {
     top: 5px;
 }
 
-#cancelPos {
-	margin-left: 15px;
-}
 
 /* **********************  MAP CONTENT ***********************************/
 
@@ -430,15 +427,17 @@ body {
 /* ALL MODALS */
 #modaladd {
 	z-index: 10030;
-	margin-top: 0%;
+	margin-top: 1%;
 }
 
 #OPmodal {
 	z-index: 10030;
+	margin-top: 1%;
 }
 
 #editmodal {
 	z-index: 10030;
+	margin-top: 1%;
 }
 
 .btn-all-equip {
@@ -448,6 +447,7 @@ body {
 
 #deletemodal {
 	z-index: 10030;
+	margin-top: 1%;
 }
 
 .addbox {
@@ -491,8 +491,8 @@ input#width {
 	margin-left: 4px;
 }
 /* CHECKBOXS END */
-/* PMV */
-.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+/* DMS */
+.driver3.equip-info .padding-dms, .driver3 .equip-info .padding-dms {
 	margin-left: 1px !important;
 }
 
@@ -504,7 +504,7 @@ input#width {
 	right: 51px !important;
 }
 
-.padding-pmv {
+.padding-dms {
 	margin-left: 4px !important;
 }
 
@@ -541,8 +541,10 @@ input#width {
 }
 
 /* Disabled bubttons on edit modal */
-input#equipId-edit:disabled, input#dmsType-edit:disabled {
+input#equipId-edit:disabled, select#dmsType-edit:disabled, select#equips-edit:disabled, 
+input#configId-edit:disabled, select#meteoType-edit:disabled {	
 	opacity: 0.7;
+	background-color: #E8E8E8;
 }
 
 /* MODAL CANCEL DELETE */
@@ -568,7 +570,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
 
 /* **********************  DMS ***********************************/
 
-.driver3.equip-info .padding-pmv, .driver3 .equip-info .padding-pmv {
+.driver3.equip-info .padding-dms, .driver3 .equip-info .padding-dms {
   margin-left: 1px !important;
 }
 
@@ -580,7 +582,7 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
   right: 51px !important;
 }
 
-.padding-pmv {
+.padding-dms {
   margin-left: 4px !important;
 }
 
@@ -685,3 +687,32 @@ input#equipId-edit:disabled, input#dmsType-edit:disabled {
     top: 77px;
     z-index: 1;
 }
+
+/* ---------------------------------------------------- */
+
+/**
+ * Estilo que para mostrar  itens pertinentes ao realtime
+ *
+ * @author Wellington
+ * @date 29/12/2021
+ * @version 1.0
+ * @since 1.0
+*/
+
+.realtime-show{display: block;}
+
+/* ---------------------------------------------------- */
+
+/**
+ * Estilo que para esconder itens pertinentes ao mapa
+ *
+ * @author Wellington
+ * @date 29/12/2021
+ * @version 1.0
+ * @since 1.0
+*/
+
+.map-show{ display: none;}
+
+/* ---------------------------------------------------- */
+

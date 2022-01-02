@@ -12,15 +12,15 @@
 	
 	<f:metadata>	
 
-	<f:viewParam id="act1" name="equip" value="#{mtoPanelBean.station}" /> 
+	<f:viewParam id="act1" name="equip" value="#{meteoPanelBean.station}" /> 
 		          
     </f:metadata>
 	
 	<ui:define name="head" >
 	<title>#{abaLabels.mto_panel}</title>
-	<h:outputStylesheet name="mto_panel.css" library="css/mto" />
+	<h:outputStylesheet name="panel.css" library="css/meteo" />
 	<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
-	<h:outputScript library="js/validation-forms/panel" name="mto-panel-validation.js" />
+	<h:outputScript library="js/validation-forms/panel" name="meteo-panel-validation.js" />
 	
 	</ui:define>
 	
@@ -28,7 +28,7 @@
 	 	
 		<!-- INFO MESSAGE DIV -->		
 		<div id="info" class="alert alert-primary" role="alert" style="display: none;"> <!-- ALERT -->
-			<b>#{mtoMessages.mto_message_records_not_found_title}</b> : #{mtoMessages.mto_message_records_not_found}
+			<b>#{meteoLabels.$message_meteo_records_not_found_title}</b> : #{meteoLabels.$message_meteo_records_not_found}
 		 </div> <!---->
 		 
 	 	 <!-- Inicio da estrutura do conteudo -->
@@ -44,8 +44,8 @@
 									<span for="equip"
 										class="valid-icon-hidden"></span> 							    					    
 									<select name="equip" id="equip">	
-									  <option value="" >#{mtoLabels.mto_reports_select_station}</option>																	      
-										<ui:repeat var="eqp"  value="#{mtoPanelBean.equipments}"  varStatus="eqpStatus" >
+									  <option value="" >#{reportsLabels.reports_select_equipment}</option>																	      
+										<ui:repeat var="eqp"  value="#{meteoPanelBean.equipments}"  varStatus="eqpStatus" >
 											<option value="#{eqp.value}" > #{eqp.label} </option>	                                  
 		                                </ui:repeat> 
 		                            </select>										    							   														
@@ -55,15 +55,15 @@
 							<!-- Final barra de pesquisa -->
 							<!-- Botão barra de pesquisa -->
 							<div class="col-2">	     
-								<h:commandButton id="btn-search-tab" class="btn btn-dark btnConf" value="#{mtoLabels.mto_reports_btn_search}"
-								action="#{mtoPanelBean.GetPanelInformation}" />	
+								<h:commandButton id="btn-search-tab" class="btn btn-dark btnConf" value="#{reportsLabels.reports_btn_search}"
+								action="#{meteoPanelBean.GetPanelInformation}" />	
 								    		
 							</div>
 						<!-- Final do botão barra de pesquisa -->
 						<!-- Inicio da barra de informação -->
 						<div class="col-sm">	     
-							<div class="alert alert-dark" role="alert">
-							 	<h:outputLabel id="stat" class="stationName" value="#{mtoPanelBean.station_name}" />
+							<div class="alert name-alert" role="alert">
+							 	<h:outputLabel id="stat" class="stationName" value="#{meteoPanelBean.stationName}" />
 							</div>
 						</div>
 						<!-- Final barra de informação -->
@@ -77,8 +77,8 @@
 				    		<!-- Inicio do card 1 -->
 				     		<div class="card presAtm">
 								<div class="card-body">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_atmPressure}" />
-									<h1 id="pressure">#{mtoPanelBean.panel.atmPressure} hPa</h1>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_atmPressure}" />
+									<h1 id="pressure">#{meteoPanelBean.panel.atmosphericPressure} hPa</h1>
 								</div>
 							</div>
 							<!-- Final do card 1 -->
@@ -88,8 +88,8 @@
 				     		<div class="card">
 								<div class="card-body temperatura">
 									<div>
-										<h:outputLabel value="#{mtoLabels.mto_panel_station_temperature}" />
-										<h1>#{mtoPanelBean.panel.temperature}°C</h1>
+										<h:outputLabel value="#{meteoLabels.$label_meteo_panel_temperature}" />
+										<h1>#{meteoPanelBean.panel.temperature}°C</h1>
 									
 									</div>
 								</div>
@@ -100,8 +100,8 @@
 				      		<!-- Inicio do card 3 -->
 				     		<div class="card">
 								<div class="card-body taxaPrecip">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_absolute_preciptation}" />
-									<h1>#{mtoPanelBean.panel.absolute_preciptation} L/m2</h1>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_absolute_preciptation}" />
+									<h1>#{meteoPanelBean.panel.absolutePreciptation} L/m2</h1>
 								</div>
 							</div>
 							<!-- Final do card 3 -->
@@ -114,8 +114,8 @@
 				     		 <!-- Inicio do card 4 -->
 				     		<div class="card">
 								<div class="card-body umidade">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_relative_humidity}" />
-									<h1>#{mtoPanelBean.panel.relative_humidity}%</h1>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_relative_humidity}" />
+									<h1>#{meteoPanelBean.panel.relativeHumidity}%</h1>
 								</div>
 							</div>
 							<!-- Final do card 4 -->
@@ -124,10 +124,10 @@
 				     		 <!-- Inicio do card 5 -->
 				     		<div class="card bussolaMaxHei py-1">
 								<div class="card-body textBuss bussola">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_direction}" />								
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_direction}" />								
 										<div class="direction-wind">
 											<h:graphicImage class="ponteiro" url="/resources/images/estacao/setaBussola.png" 
-											 style="transform: rotate(#{mtoPanelBean.panel.wind_speed}deg);"/>
+											 style="transform: rotate(#{meteoPanelBean.panel.windSpeed}deg);"/>
 										</div>
 									
 								</div>
@@ -139,8 +139,8 @@
 				     		<div class="card">
 								<div class="card-body velocVento">
 									<div class="">
-										<h:outputLabel value="#{mtoLabels.mto_panel_station_wind_speed}" />
-										<h1>#{mtoPanelBean.panel.wind_speed} km/h</h1>
+										<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_speed}" />
+										<h1>#{meteoPanelBean.panel.windSpeed} km/h</h1>
 									</div>
 									
 								</div>
@@ -156,8 +156,8 @@
 				     		<div class="card">
 								<div class="card-body road-temperature">
 									<div>
-									 <h:outputLabel value="#{mtoLabels.mto_panel_station_road_temperature}" />
-										<h1>#{mtoPanelBean.panel.road_temperature}°C</h1>
+									 <h:outputLabel value="#{meteoLabels.$label_meteo_panel_road_temperature}" />
+										<h1>#{meteoPanelBean.panel.roadTemperature}°C</h1>
 									</div>
 								</div>
 							</div>
@@ -166,10 +166,10 @@
 				    	
 				    	<div class="col-sm col-lg col-xl">
 				     		 <!-- Inicio do card 9 -->
-				     		<div class="card visibilidade maxHeight">
+				     		<div class="card visibility maxHeight">
 								<div class="card-body">
-									<h:outputLabel value="#{mtoLabels.mto_panel_station_visibility}" />
-									<h1>#{mtoPanelBean.panel.visibility}</h1>
+									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_visibility}" />
+									<h1>#{meteoPanelBean.panel.visibility}</h1>
 								</div>
 							</div>
 							<!-- Final do card 9 -->
@@ -179,12 +179,12 @@
 				     		<div class="card energia">
 								<div class="card-body">
 									<div class=" ">												
-										<h5 class=""><h:outputLabel value="#{mtoLabels.mto_panel_station_status} : " />
+										<h5 class=""><h:outputLabel value="#{meteoLabels.$label_meteo_panel_status} : " />
 											<label id="status" ></label> <!-- JSF LABEL NOT WORK HERE -->
-											<h:inputHidden id="hidden" value="#{mtoPanelBean.panel.status}" />
+											<h:inputHidden id="hidden" value="#{meteoPanelBean.panel.status}" />
 						 				</h5>						 				
-										<h5 class="status-volts">#{mtoLabels.mto_panel_station_line_volts} : #{mtoPanelBean.panel.line_volts}</h5>
-										<h5 class="status-battery">#{mtoLabels.mto_panel_station_battery} : #{mtoPanelBean.panel.battery}</h5>
+										<h5 class="status-volts">#{meteoLabels.$label_meteo_panel_line_volts} : #{meteoPanelBean.panel.lineVolts}</h5>
+										<h5 class="status-battery">#{meteoLabels.$label_meteo_panel_battery} : #{meteoPanelBean.panel.battery}</h5>
 								
 									</div>
 								</div>
@@ -206,7 +206,7 @@
 		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
 		 	
 			<input type="hidden" name="requiredEquipmentMsg" value="#{requiredMessages.required_mto_reports_select_equipments}" /> <!-- EQUIPMENT REQUIRED MESSAGE -->
-		    <input type="hidden" name="panelStatus" value="#{svPanelBean.panel.status}" /> <!-- EQUIPMENT STATUS -->
+		    <input type="hidden" name="panelStatus" value="#{meteoPanelBean.panel.status}" /> <!-- EQUIPMENT STATUS -->
 		    
 		</form> <!----> 	 	
 						

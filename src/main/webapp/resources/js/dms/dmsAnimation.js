@@ -55,9 +55,9 @@ const consumeDMS = async ({ callback = callback_dms, debug } = {}) => {
 
 async function initPMV() {
 	await init();
-	const animationPMV = (img1, img2, message, pmv) => {
+	const animationPMV = (img1, img2, message, dms) => {
 		let at = 300
-		let driver = pmv.type_page()
+		let driver = dms.type_page()
 		let reload = window.reloadPMV;
 
 		const startAnimation = () => {
@@ -65,7 +65,7 @@ async function initPMV() {
 				return;
 			}
 
-			let page = pmv.next();
+			let page = dms.next();
 			let image1 = [page.image(0), page.image_id(0)]
 			let image2 = [page.image(1), page.image_id(1)]
 
@@ -90,7 +90,7 @@ async function initPMV() {
 				})
 			})
 
-			if (pmv.len() > 1)
+			if (dms.len() > 1)
 				setTimeout(() => {
 					startAnimation();
 				}, page.timer() * 1000);
@@ -100,23 +100,23 @@ async function initPMV() {
 	}
 
 	const initAnimation = () => {
-		listPMV.forEach(pmv => {
-			const tablePMV = $(`#dms${pmv.id()}`);
+		listPMV.forEach(dms => {
+			const tablePMV = $(`#dms${dms.id()}`);
 
-			tablePMV.addClass(`driver${pmv.type_page()}`)
+			tablePMV.addClass(`driver${dms.type_page()}`)
 
 			const img1 = tablePMV.find('.picture-box.primary')
 			const img2 = tablePMV.find('.picture-box.secondary')
 			const message = tablePMV.find('#message')
 
-			animationPMV(img1, img2, message, pmv)
+			animationPMV(img1, img2, message, dms)
 		});
 	}
 
 	const collectPMV = () => {
 		listPMV = [];
 
-		$('[id^=listPMV]').each(function () {
+		$('[id^=listDMS]').each(function () {
 			let data = $(this);
 			let driver;
 
@@ -143,13 +143,13 @@ async function initPMV() {
 			}
 
 			if (driver) {
-				let pmv = PMV.new(Number(data.attr('id').match(/\d+/g)[0]) || 0, data.attr('type') || "", data.attr('name') || "", driver);
+				let dms = PMV.new(Number(data.attr('id').match(/\d+/g)[0]) || 0, data.attr('type') || "", data.attr('name') || "", driver);
 
 				data.children().each(function () {
 					let page = $(this);
 					let timer = Number(page.attr('timer')) || 0
 					if (timer)
-						pmv.add_page(
+						dms.add_page(
 							Number(page.attr('imageId')) || 0,
 							Number(page.attr('imageId2')) || 0,
 							`/resources/images/pictures/${page.attr('image')}` || "",
@@ -161,7 +161,7 @@ async function initPMV() {
 						);
 				})
 
-				listPMV.push(pmv);
+				listPMV.push(dms);
 
 			}
 			data.remove()

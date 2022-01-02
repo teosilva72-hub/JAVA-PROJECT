@@ -20,7 +20,8 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.eco101_vehicle_time_interval_title)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />			
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.eco101_vehicle_time_interval_file_name)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />		
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
@@ -51,7 +52,7 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_classes.id_classes|name', true, true)}" />	
 

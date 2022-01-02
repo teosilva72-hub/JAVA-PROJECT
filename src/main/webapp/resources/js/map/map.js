@@ -767,7 +767,7 @@ function hiddenPosition() {
 }
 
 //VARS
-var id, type, toDrag;
+var id, type, toDrag, meteo;
 
 function sendToBean() {
 

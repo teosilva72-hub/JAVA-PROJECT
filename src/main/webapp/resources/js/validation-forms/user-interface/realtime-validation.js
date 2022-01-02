@@ -23,18 +23,20 @@ $(function () {
     //Reset Fields on close modal
 	resetFieldOnModalClose('#modaladd', 'equips');
 	resetFieldOnModalClose('#modaladd', 'equipId');
-	resetFieldOnModalClose('#modaladd', 'dmsType ');
-	resetFieldOnModalClose('#modaladd', 'meteoType ');
+	resetFieldOnModalClose('#modaladd', 'dmsType');	
+	resetFieldOnModalClose('#modaladd', 'configId');
+	resetFieldOnModalClose('#modaladd', 'meteoType');
 	resetFieldOnModalClose('#modaladd', 'equipIp');
 	resetFieldOnModalClose('#modaladd', 'indicator-equipIp');
     resetFieldOnModalClose('#modaladd', 'radar-equipIp');
     resetFieldOnModalClose('#modaladd', 'equipPort');
     resetFieldOnModalClose('#modaladd', 'model');
     resetFieldOnModalClose('#modaladd', 'sip');
-	resetFieldOnModalClose('#modaladd', 'equipName ');
+	resetFieldOnModalClose('#modaladd', 'equipName');
 	resetFieldOnModalClose('#modaladd', 'roads');
 	resetFieldOnModalClose('#modaladd', 'cities');
 	resetFieldOnModalClose('#modaladd', 'km');
+	resetFieldOnModalClose('#modaladd', 'service');
 	resetFieldOnModalClose('#modaladd', 'lanes');
 	resetFieldOnModalClose('#modaladd', 'lat');
 	resetFieldOnModalClose('#modaladd', 'long');
@@ -73,8 +75,7 @@ $(function () {
 	    $('.meteoHidden').hide();			
 		$('.portInput').hide();	    
         $('.speedHidden').hide();
-        $('.sosInput').hide(); 	
-        $('.ipAddressShow').show();		
+        $('.sosInput').hide(); 	     
 				  
       });
     
@@ -85,8 +86,7 @@ $(function () {
      	$('.meteoHidden').hide();			
 		$('.portInput').hide();
         $('.speedHidden').hide();
-		$('.sosInput').hide(); 	
-        $('.ipAddressShow').show();	  
+		$('.sosInput').hide(); 	     
         $('#modaladd').modal('hide');
 			    
       }); 	 
@@ -107,6 +107,7 @@ $(function () {
 		resetFieldOnModalClose('#editmodal', 'equips-edit');
 		resetFieldOnModalClose('#editmodal', 'equipId-edit');
 		resetFieldOnModalClose('#editmodal', 'dmsType-edit');
+		resetFieldOnModalClose('#modaladd', 'configId-edit');
 		resetFieldOnModalClose('#editmodal', 'meteoType-edit');		
 		resetFieldOnModalClose('#editmodal', 'equipIp-edit');
 		resetFieldOnModalClose('#editmodal', 'indicator-equipIp-edit');
@@ -118,6 +119,7 @@ $(function () {
 		resetFieldOnModalClose('#editmodal', 'roadsEdit');
 		resetFieldOnModalClose('#editmodal', 'citiesEdit');
 		resetFieldOnModalClose('#editmodal', 'kmEdit');
+		resetFieldOnModalClose('#modaladd', 'service-edit');
 		resetFieldOnModalClose('#editmodal', 'lanes-edit');
 		resetFieldOnModalClose('#editmodal', 'latEdit');
 	    resetFieldOnModalClose('#editmodal', 'longEdit');
@@ -130,7 +132,7 @@ $(function () {
 		resetFieldOnModalClose('#editmodal', 'direction6-edit');
 		resetFieldOnModalClose('#editmodal', 'direction7-edit');
 		resetFieldOnModalClose('#editmodal', 'direction8-edit');
-		 //Reset Fields on close modal
+		//Reset Fields on close modal
 						
 		//Remove validation icons
 	    //click reset button action	
@@ -155,8 +157,7 @@ $(function () {
 	        $('.portInput-edit').hide();             
 	        $('.satInputs-edit').hide();	
 	        $('.speedHidden-edit').hide();
-			$('.sosInput-edit').hide(); 	
-	        $('.ipAddressShow-edit').show();
+			$('.sosInput-edit').hide(); 		     
 							  
 	      });
 	    
@@ -167,8 +168,7 @@ $(function () {
 			$('.meteoHidden-edit').hide();    	  
 	        $('.portInput-edit').hide();  
 			$('.sosInput-edit').hide();         	
-			$('.speedHidden-edit').hide();
-			$('.ipAddressShow-edit').show();
+			$('.speedHidden-edit').hide();		
 			$('#editmodal').modal('hide');		  
 		     
 	      }); 	     

@@ -14,22 +14,20 @@
 	
 	<f:metadata>
 
-	    <f:viewAction onPostback="true" action="#{reportBean.defineFileName('sv_periods')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle('Meteorológico por periodo')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.defineFileName(meteoLabels.tuxpan_sv_periods_file_name)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(meteoLabels.tuxpan_sv_periods_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sv')}" />	    
+		<f:viewAction onPostback="true" action="#{reportBean.defineModule('meteo')}" />	    
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineImageName('sv_periods')}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle('Meteorológico por periodo')}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis('station')}" />
-		  
-		
-		  
+		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(meteoLabels.tuxpan_sv_periods_file_name)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(meteoLabels.tuxpan_sv_periods_title)}" />		
+	    <f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.$label_chart_vertical_axis_station)}" />
+		  				  
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('sv_data')}"/>
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('station_id')}" />
-		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', mtoLabels.global_date_column, mtoLabels.global_datetime_column, mtoLabels.meteo_atmPressure_column, mtoLabels.meteo_relative_humidity_column, mtoLabels.meteo_temperature_column, 
-		mtoLabels.meteo_wind_speed_column, mtoLabels.meteo_wind_direction_column, mtoLabels.meteo_absolute_preciptation_column, mtoLabels.meteo_ambient_temperature_column))}" />
+		<f:viewAction onPostback="true" escape="false" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', meteoLabels.$label_global_date_column, meteoLabels.$label_global_datetime_column, meteoLabels.$label_meteo_atmPressure_column, meteoLabels.$label_meteo_relative_humidity_column, meteoLabels.$label_meteo_temperature_column, 
+		meteoLabels.$label_meteo_wind_speed_column, meteoLabels.$label_meteo_wind_direction_column, meteoLabels.$label_meteo_absolute_preciptation_column, meteoLabels.$label_meteo_ambient_temperature_column))}" />
 	
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(CAST(AVG(atmospheric_pressure) AS DECIMAL(5,1)),0);   IFNULL(ROUND(AVG(relative_humidity),0),0); IFNULL(CAST(AVG(temperature) AS DECIMAL(4,1)),0);  IFNULL(CAST(AVG(wind_speed) AS DECIMAL(3,2)),0); IFNULL(CAST(AVG(wind_direction) AS DECIMAL(5,2)),0); IFNULL(CAST(AVG(absolute_precipitation) AS DECIMAL(6,2)),0); IFNULL(CAST(AVG(ambient_temperature) AS DECIMAL(4,1)),0)')}" /> 
 	    <f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
@@ -47,8 +45,8 @@
 	
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'data de pesquisa', false, true)}" />	
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('station_id', 'dispositivo', 'sv_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', reportsLabels.reports_select_date, false, true)}" />	
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('station_id', reportsLabels.reports_select_equipment, 'meteo_equipment.equip_id|name', false, true)}" />
 	
     </f:metadata>
 	
@@ -107,7 +105,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="Relatório de meteorologia por periodos" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{meteoLabels.tuxpan_sv_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 

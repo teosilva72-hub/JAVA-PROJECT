@@ -12,8 +12,8 @@ input[type="number"]::-webkit-inner-spin-button {
   display: none;
 } */
 
-/*DIV PMV BOARD*/
-.pmv-board {
+/*DIV DMS BOARD*/
+.dms-board {
   border: none;
   margin-top: 1.5%;
 }
@@ -171,7 +171,7 @@ select {
   z-index: 999;
 }
 
-.edit-pmv-page {
+.edit-dms-page {
   position: absolute;
   top: 125px;
   display: none;
@@ -179,11 +179,11 @@ select {
   transform: translateX(-50%);
 }
 
-.edit-pmv-page.active {
+.edit-dms-page.active {
   display: block;
 }
 
-.edit-pmv-page > div {
+.edit-dms-page > div {
   min-width: 300px;
 }
 

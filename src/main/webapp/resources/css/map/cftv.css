@@ -189,6 +189,11 @@
 	top: 2px;
 }
 
+.cftv-dropdown-realtime {
+	left: 280px;
+	top: -33.5px;
+}
+
 .cftv-dropdown>button {
 	height: 40px;
 }

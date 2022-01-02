@@ -18,6 +18,7 @@ import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 import br.com.tracevia.webapp.util.ConnectionFactory;
@@ -46,7 +47,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * Atualizar tamanho do equipamento
+	 * Método para atualizar tamanho do equipamento
 	 * @author 
 	 * @version 1.0
 	 * @since Release 1.0
@@ -75,7 +76,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_set_width")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_set_width"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -87,7 +88,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 
 	/**
-	 * M�todo para listar equipamentos por m�dulo
+	 * Método para listar equipamentos por módulo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
@@ -159,13 +160,96 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_build_generic")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_build_generic"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
+		return lista;
+	}
+
+	// --------------------------------------------------------------------------------------------------------------
+	/**
+	 * M�todo para listar equipamentos por módulo
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param permission nível de permissão
+	 * @return ArrayList - Lista de equipamentos do tipo METEO
+	 */
+
+	public ArrayList<Meteo> buildMeteoEquipmentsInterface(int permission) {
+
+		ArrayList<Meteo> lista = new ArrayList<>();
+
+		String query = "";
+
+		String sql = "SELECT equip_id, name, equip_type, c.city_name, r.road_name, km, linear_width, " +
+				"linear_posX, linear_posY, map_width, map_posX, map_posY, longitude, latitude, direction FROM meteo_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+
+		String sqlVW = "SELECT equip_id, name, equip_type, c.city_name, r.road_name, km, vw_linear_width, " +
+				"vw_linear_posX, vw_linear_posY, vw_map_width, vw_map_posX, vw_map_posY, longitude, latitude, direction FROM meteo_equipment eq " +
+				"INNER JOIN concessionaire_cities c ON c.city_id = eq.city " +
+				"INNER JOIN concessionaire_roads r ON r.road_id = eq.road " +
+				"WHERE visible = 1 ";
+
+
+			if(permission != 9)
+				query = sql;
+
+			else query = sqlVW;
+
+			try {
+				
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(query);					
+			rs = ps.executeQuery();
+		
+			if (rs != null) {
+
+				while (rs.next()) {
+
+					Meteo meteo = new Meteo();
+
+					meteo.setEquip_id(rs.getInt(1));
+					meteo.setTable_id("meteo");
+					meteo.setNome(rs.getString(2));
+					meteo.setEquip_type(rs.getString(3));		
+					meteo.setCidade(rs.getString(4));
+					meteo.setEstrada(rs.getString(5));
+					meteo.setKm(rs.getString(6));
+					meteo.setLinearWidth(rs.getInt(7));						
+					meteo.setLinearPosX(rs.getInt(8));
+					meteo.setLinearPosY(rs.getInt(9));
+					meteo.setMapWidth(rs.getInt(10));						
+					meteo.setMapPosX(rs.getInt(11));					
+					meteo.setMapPosY(rs.getInt(12));			
+					meteo.setLongitude(rs.getDouble(13));
+					meteo.setLatitude(rs.getDouble(14));
+					meteo.setDirection(rs.getString(15));
+
+					lista.add(meteo);
+				}				
+			}
+
+		}catch (SQLException sqle) {
+				
+				StringWriter errors = new StringWriter();
+				sqle.printStackTrace(new PrintWriter(errors));
+				
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_meteo"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				
+		} finally {
+				
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+			
 		return lista;
 	}
 
@@ -245,7 +329,7 @@ public class EquipmentsDAO {
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_build_sos")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_sos"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 				
 		} finally {
 				
@@ -357,14 +441,14 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_build_sat")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_build_sat"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 						
 		} catch (Exception ex) {
 		
 			StringWriter errors = new StringWriter();
 			ex.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logError(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_parsing_direction")), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
+			SystemLog.logError(errorFolder.concat("error_parsing_direction"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -434,7 +518,7 @@ public class EquipmentsDAO {
 					boolean active = rs.getBoolean("active");
 					Messages message = msg.mensagensDisponivelById(rs.getInt("driver"), rs.getInt("id_message"));
 
-					dms.setEquip_id(rs.getInt(1));	
+					dms.setEquip_id(rs.getInt(1));
 					dms.setTable_id("dms");
 					dms.setDms_ip(rs.getString(2));
 					dms.setDms_type(rs.getInt(3));
@@ -469,14 +553,14 @@ public class EquipmentsDAO {
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_build_dms")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 				
 			}catch (Exception ex) {
 				
 				StringWriter errors = new StringWriter();
 				ex.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logError(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_define_message")), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
+				SystemLog.logError(errorFolder.concat("error_define_message"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
 				
 			} finally {
 				
@@ -628,7 +712,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_equip_report_info")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_equip_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -697,7 +781,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_sat_report_info")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -757,7 +841,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_sat_header")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_header"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -806,7 +890,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_list_dms")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_list_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -843,7 +927,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_cftv_cam")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_cftv_cam"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -890,7 +974,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_checking_id")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_checking_id"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -940,7 +1024,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_get_equip_name")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_get_equip_name"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -994,7 +1078,7 @@ public class EquipmentsDAO {
 	 * @param dataSource objeto para manipular dados dos equipamentos
 	 * @return verdadeiro caso tenha salvo dados do equipamento	
 	 */
-	public boolean saveEquipment(EquipmentDataSource dataSource){
+	public boolean saveEquipment(EquipmentDataSource dataSource, String interfaceView){
 
 		boolean status = false;  
 
@@ -1024,7 +1108,7 @@ public class EquipmentsDAO {
 					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip_indicator, equip_ip_radar) "
 					+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			
-			// METEO INSERT QUERY
+			// Meteo INSERT QUERY
 			String insertMeteo = "INSERT INTO meteo_equipment (equip_id, creation_date, creation_username, name, city, road, km, "
 					+ "linear_width, linear_posX, linear_posY, vw_linear_width, vw_linear_posX, vw_linear_posY, map_width, map_posX, map_posY, "
 					+ "vw_map_width, vw_map_posX, vw_map_posY, latitude, longitude, direction, visible, equip_ip, config_id, equip_type, port) "
@@ -1052,7 +1136,12 @@ public class EquipmentsDAO {
 					
 			String insert = "";
 			
-				switch (dataSource.getTable()) {
+			int linearWidth = 0, linearPosx = 0, linearPosY = 0;
+			int mapWidth = 0, mapPosX = 0, mapPosY = 0;
+			
+			// -------------------------------------------------------------------------------------------------------------------------------------------------------
+			
+			    switch (dataSource.getTable()) {
 				
 				case "meteo": insert = insertMeteo; break;
 				case "dms": insert = insertDMS; break;
@@ -1063,14 +1152,56 @@ public class EquipmentsDAO {
 				default: insert = insertDevices; break;
 				
 				}
-			
-			
+						
 			// -------------------------------------------------------------------------------------------------------------------------------------------------------
 			
 			try {
+				
+			if(interfaceView.equals("linear")) {  // LINEAR INTERFACE
+								
+				if(dataSource.getTable().equals("sat")) {
 					
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			ps = conn.prepareStatement(insert);
+					linearWidth = 90; 
+					linearPosx = 36;
+					linearPosY = 486;
+				}
+				
+				else if(dataSource.getTable().equals("dms")) {
+					
+					linearWidth = 90;
+					linearPosx = 40;
+					linearPosY = 421;
+					
+				}else if(dataSource.getTable().equals("speed")) {
+					
+					linearWidth = 30;
+					linearPosx = 35;
+					linearPosY = 485;
+					
+				}else {
+					
+					linearWidth = 45;
+					linearPosx = 35;
+					linearPosY = 485;			
+				}
+			
+			}else {   // MAP INTERFACE
+																				
+				if(dataSource.getTable().equals("dms") || dataSource.getTable().equals("sat"))
+						mapWidth = 60;
+									
+				else if(dataSource.getTable().equals("speed") || dataSource.getTable().equals("meteo")) 
+						mapWidth = 20;					
+					
+				else 	mapWidth = 15;
+				
+				
+			}
+			
+			// -------------------------------------------------------------------------------------------------------------------------------------------------------
+					
+			 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			 ps = conn.prepareStatement(insert);
 
 				ps.setInt(1, dataSource.getEquipId());
 				ps.setString(2, dataSource.getDatetime());
@@ -1079,18 +1210,18 @@ public class EquipmentsDAO {
 				ps.setString(5, dataSource.getCity());
 				ps.setString(6, dataSource.getRoad());
 				ps.setString(7, dataSource.getKm());       			
-				ps.setInt(8,  150); // Linear Width
-				ps.setInt(9, 100); // Linear posX
-				ps.setInt(10, 100); // Linear posY
-				ps.setInt(11,  150); // VIDEO WALL Linear Width
-				ps.setInt(12, 100); // VIDEO WALL Linear posX
-				ps.setInt(13, 100); // VIDEO WALL Linear posY
-				ps.setInt(14, 30); // Map Width
-				ps.setInt(15, 50); // Map posX
-				ps.setInt(16, 50); // Map posY
-				ps.setInt(17, 30); // VIDEO WALL Map Width
-				ps.setInt(18, 50); // VIDEO WALL Map posX
-				ps.setInt(19, 50); // VIDEO WALL Map posY			
+				ps.setInt(8,  linearWidth); // Linear Width
+				ps.setInt(9,  linearPosx); // Linear posX
+				ps.setInt(10, linearPosY); // Linear posY				
+				ps.setInt(11,  linearWidth); // VIDEO WALL Linear Width				
+				ps.setInt(12, linearPosx); // VIDEO WALL Linear posX
+				ps.setInt(13, linearPosY); // VIDEO WALL Linear posY
+				ps.setInt(14, mapWidth); // Map Width
+				ps.setInt(15, mapPosX); // Map posX
+				ps.setInt(16, mapPosY); // Map posY
+				ps.setInt(17, mapWidth); // VIDEO WALL Map Width
+				ps.setInt(18, mapPosX); // VIDEO WALL Map posX
+				ps.setInt(19, mapPosY); // VIDEO WALL Map posY			
 				ps.setDouble(20, dataSource.getLatitude()); // LATITUDE
 				ps.setDouble(21, dataSource.getLongitude()); // LONGITUDE
 				ps.setString(22, dataSource.getDirection()); // DIREÇÂO	
@@ -1235,7 +1366,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_saving")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_saving"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -1396,7 +1527,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 		
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("search_error")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("search_error"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 		
 		} finally {
 		
@@ -1416,8 +1547,8 @@ public class EquipmentsDAO {
 	 * @since Release 1.0
 	 * @param id - Equipamento ID
 	 * @param table - Table id	
-	 * @param posX - Posi��o eixo X
-	 * @param posY - Posi�a� eixo Y
+	 * @param posX - Posição eixo X
+	 * @param posY - Posição eixo Y
 	 * @param positionView - Interface a posicinar
 	 * @return boolean- Verdadeiro ou falso	
 	 */	
@@ -1521,7 +1652,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_positioning")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_positioning"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -1694,11 +1825,12 @@ public class EquipmentsDAO {
 		   }		
 		
 		// -----------------------------------------------------------------------------------------------------------------------------------------
+							
 		try {
 			
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		ps = conn.prepareStatement(update);
-								
+										
 				ps.setString(1, dataSource.getEquipName());		
 				ps.setString(2, dataSource.getCity());
 				ps.setString(3,  dataSource.getDirection());
@@ -1897,7 +2029,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_updating")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_updating"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
@@ -1935,7 +2067,7 @@ public class EquipmentsDAO {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------------
 		
-		// METEO TYPE ONLY
+		// Meteo TYPE ONLY
 		
 		String selectMeteoType = "SELECT equip_type FROM meteo_equipment WHERE equip_id = ?";
 		
@@ -1977,9 +2109,9 @@ public class EquipmentsDAO {
 		
 		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		
-		if(table.equals("meteo")) { // GET METEO EQUIP TYPE
+		if(table.equals("meteo")) { // GET Meteo EQUIP TYPE
 			
-			// SELECT METEO TYPE
+			// SELECT Meteo TYPE
 			ps = conn.prepareStatement(selectMeteoType);
 			ps.setInt(1,  id);
 		
@@ -2088,7 +2220,7 @@ public class EquipmentsDAO {
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(SystemLog.fileDateTimeFormatter(errorFolder.concat("error_deleting")), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_deleting"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			

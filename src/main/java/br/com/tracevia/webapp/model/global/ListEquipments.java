@@ -14,7 +14,7 @@ import br.com.tracevia.webapp.model.colas.Colas;
 import br.com.tracevia.webapp.model.comms.COMMS;
 import br.com.tracevia.webapp.model.dai.DAI;
 import br.com.tracevia.webapp.model.dms.DMS;
-import br.com.tracevia.webapp.model.meteo.METEO;
+import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.ocr.OCR;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
@@ -197,7 +197,7 @@ public class ListEquipments {
 				DAI dai = new DAI();
 				DMS dms = new DMS();
 				OCR ocr =  new OCR();
-				METEO meteo =  new METEO();		
+				Meteo meteo =  new Meteo();		
 				SAT sat = new SAT();
 				SOS sos = new SOS();
 				Speed speed =  new Speed();			
@@ -251,7 +251,7 @@ public class ListEquipments {
 					
 					if(load.isEn_meteo()) {
 						
-					meteoList = meteo.listEquipments("meteo", permission_id);	
+					meteoList = meteo.listMeteoEquipments(permission_id);	
 					equips.add(new listEquips("meteo", load.isEn_meteo(), load.isEn_meteo(), meteoList, load.getVoltage_meteo()));
 								
 					}

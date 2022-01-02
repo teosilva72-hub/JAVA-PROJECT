@@ -21,7 +21,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(satLabels.ecovias_araguaia_speed_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_speed_title)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.chart_vertical_axi_label_veh)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
@@ -44,7 +44,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
 			               
     </f:metadata>

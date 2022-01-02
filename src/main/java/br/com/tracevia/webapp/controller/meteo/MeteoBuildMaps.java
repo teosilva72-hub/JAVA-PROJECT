@@ -9,7 +9,7 @@ import br.com.tracevia.webapp.model.global.ListEquipments;
 
 @ManagedBean(name="mtoMapsView")
 @ViewScoped
-public class METEOBuildMaps {
+public class MeteoBuildMaps {
 	
 	  @ManagedProperty("#{listEquips}")
 		private ListEquipments equips;

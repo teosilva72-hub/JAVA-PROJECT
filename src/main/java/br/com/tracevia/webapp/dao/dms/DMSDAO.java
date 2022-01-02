@@ -109,8 +109,8 @@ public class DMSDAO {
 	public boolean changeActivateMessage(int idDMS, int idMSG) throws Exception {
 		boolean success = false;
 
-		String sql1 = "SELECT id_message FROM dms_messages_active WHERE id_equip = ?;";
-		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
+		String sql1 = "SELECT id_message FROM dms_messages_active WHERE equip_id = ?;";
+		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (equip_id = ?);";
 
 		try {
 
@@ -154,8 +154,8 @@ public class DMSDAO {
 	public boolean reloadActivateMessage(int idDMS) throws Exception {
 		boolean success = false;
 
-		String sql1 = "SELECT id_message FROM dms_messages_active WHERE id_equip = ?;";
-		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (id_equip = ?);";
+		String sql1 = "SELECT id_message FROM dms_messages_active WHERE equip_id = ?;";
+		String sql2 = "UPDATE dms_messages_active SET id_modify = ?, active = ? WHERE (equip_id = ?);";
 
 		try {
 

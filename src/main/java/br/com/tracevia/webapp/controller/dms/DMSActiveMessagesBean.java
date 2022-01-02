@@ -22,9 +22,9 @@ import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.Estrada;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
-@ManagedBean(name = "interfaces")
+@ManagedBean(name = "dmsActiveMessage")
 @ViewScoped
-public class InterfacesBean implements Serializable {
+public class DMSActiveMessagesBean implements Serializable {
 
 	/**
 	 * 

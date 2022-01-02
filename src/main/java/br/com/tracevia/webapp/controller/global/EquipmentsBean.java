@@ -51,6 +51,8 @@ public class EquipmentsBean implements Serializable {
 	private String equipTable, equipDel;
 	private int positionX, positionY, id;
 	private boolean checked;	
+	
+	String interfaceView;
 
 	public int getid() {
 		return id;
@@ -125,6 +127,11 @@ public class EquipmentsBean implements Serializable {
 
 	public void setEquipDel(String equipDel) {
 		this.equipDel = equipDel;
+	}
+	
+	
+	public void defineInterfaceView(String interfaceView) {
+		this.interfaceView = interfaceView;
 	}
 
 	public int getPositionX() {
@@ -273,9 +280,7 @@ public class EquipmentsBean implements Serializable {
 			dataSource.setEquipType(defineEquipType(dataSource.getTable())); // TYPE
 										
 		dataSource.setKm(parameterMap.get("km")); // KM
-		
-		//dataSource.setWidth(parameterMap.get("width")); // DIRECTION
-				
+								
 		dataSource.setDirection(parameterMap.get("direction")); // DIRECTION	
 		
 		dataSource.setLatitude(parameterMap.get("lat") == "" ? 0 : Double.parseDouble(parameterMap.get("lat"))); // LATITUDE
@@ -308,12 +313,12 @@ public class EquipmentsBean implements Serializable {
 			dataSource.setIpAddressRadar(parameterMap.get("radar-equipIp")); 	// IP RADAR 		
 		}
 		
-		// METEO
+		// Meteo
 		
 		if(dataSource.getTable().equals("meteo")) {		
 			dataSource.setPort(parameterMap.get("equipPort") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort"))); 	// PORT 
-			dataSource.setConfigId(parameterMap.get("configId") == "" ? 0 : Integer.parseInt(parameterMap.get("configId"))); // METEO CONFIG ID
-			dataSource.setEquipType(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType")); // METEO TYPE			
+			dataSource.setConfigId(parameterMap.get("configId") == "" ? 0 : Integer.parseInt(parameterMap.get("configId"))); // Meteo CONFIG ID
+			dataSource.setEquipType(parameterMap.get("meteoType") == "" ? "MTO" : parameterMap.get("meteoType")); // Meteo TYPE			
 		}
 		 							
 		// ----------------------------------------------------------------------------------------------------------------------
@@ -348,7 +353,7 @@ public class EquipmentsBean implements Serializable {
 
 			else {
 
-				checked = equipDAO.saveEquipment(dataSource);
+				checked = equipDAO.saveEquipment(dataSource, interfaceView);
 					
 				if(checked) {
 					SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_saved_equipment")+"');");
@@ -371,11 +376,7 @@ public class EquipmentsBean implements Serializable {
 	 */
 
 	public void searchEquipment() throws Exception {
-
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
-		
-		String interfaceView = parameterMap.get("interface-search"); // MAP INTERFACES		   		
-
+			
 		int equipId = getEquipId();		 
 		String equipTable = getEquipTable();
 		
@@ -398,8 +399,10 @@ public class EquipmentsBean implements Serializable {
 				
 				if(equipTable.equals("meteo")) {				 
 					SessionUtil.executeScript("$('#configId-edit').val('"+dataSource.getConfigId()+"');");
-					SessionUtil.executeScript("$('#meteoType-edit').val('"+ dataSource.getEquipType()+"');");
-					SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");							   
+					SessionUtil.executeScript("$('#meteoType-edit').val('"+dataSource.getEquipType()+"');");
+					SessionUtil.executeScript("$('#equipPort-edit').val('"+dataSource.getPort()+"');");		
+					
+				    SessionUtil.getExternalContext().getSessionMap().put("meteoType", dataSource.getEquipType()); 
 			 }
 			 
 			 else if(equipTable.equals("dms")) 
@@ -505,11 +508,8 @@ public class EquipmentsBean implements Serializable {
 				
 		// ------------------------------------------------------------------------------------------------------
 		
-       Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 	
-       
-        //INTERFACES
-     	String interfaceView = parameterMap.get("interface");	
-		
+        Map<String, String> parameterMap = SessionUtil.getRequestParameterMap(); // OBTER PARÂMETROS EXTERNOS		 	
+               		
 		dataSource.setModuleID(getModuleByName(equipTable)); // GET MODULE ID
 	
 		dataSource.setEquipId(equipId); // GET EQUIP ID
@@ -563,11 +563,12 @@ public class EquipmentsBean implements Serializable {
 			dataSource.setIpAddressRadar(parameterMap.get("radar-equipIp-edit")); 	// IP RADAR 		
 		}
 		
-		// METEO
+		// Meteo
 		
 		if(dataSource.getTable().equals("meteo")) {		
 			dataSource.setPort(parameterMap.get("equipPort-edit") == "" ? 0 : Integer.parseInt(parameterMap.get("equipPort-edit"))); 	// PORT 		
-			dataSource.setEquipType(parameterMap.get("meteoType-edit") == "" ? "MTO" : parameterMap.get("meteoType-edit")); // METEO TYPE			
+			dataSource.setEquipType((String) SessionUtil.getExternalContext().getSessionMap().get("meteoType"));	
+					
 		}
 		 							
 		// ----------------------------------------------------------------------------------------------------------------------
@@ -600,7 +601,8 @@ public class EquipmentsBean implements Serializable {
 		if(checked) {
 			
 			SessionUtil.executeScript("alertOptions('#success', '"+localeMap.getStringKey("$message_map_alert_updated_equipment")+"');");
-			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");
+			SessionUtil.executeScript("updated = '" + equipTable + equipId + "';");			
+			SessionUtil.remove("meteoType");
 			
 		} else {
 			SessionUtil.executeScript("alertOptions('#error', '"+localeMap.getStringKey("$message_map_alert_error_updating_equipment")+"');");
@@ -656,22 +658,12 @@ public class EquipmentsBean implements Serializable {
 	public void definePosition() throws Exception {
 
 		boolean position = false;
-
-		Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
-
-		//INTERFACES
-		String interfaceView = parameterMap.get("positionView");		
-
+		
 		int equipId = getEquipId();		
 		int posX = getPositionX(); // MAP / LINEAR
 		int posY = getPositionY(); // MAP / LINEAR 
 		String equipTable = getEquipTable();
-
-		// System.out.println("EQUIP: "+equipId);
-		////System.out.println("TABLE: "+equipTable);
-		/// System.out.println("X: "+posX);
-		// System.out.println("Y: "+posY);
-
+				
 		EquipmentsDAO dao = new EquipmentsDAO();		
 
 		position = dao.positionEquipment(equipId, equipTable, posX, posY, interfaceView, login.getLogin().getPermission_id());
@@ -853,7 +845,15 @@ public class EquipmentsBean implements Serializable {
 	}
 
 	//--------------------------------------------------------------------------------------------------------------
-	            		
+	       
+	/**
+	 * Método para obter informações de um cabeçalho para o SAT
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0   	
+	 * @param id ID do equipamento   	
+	 * @return objeto do SAT com informações para o cabeçalho
+	 */	
 	   public SAT satHeaderInformation(String id) {
 		   
 		   SAT sat = new SAT();
@@ -872,6 +872,6 @@ public class EquipmentsBean implements Serializable {
 		   		   
 	   }
 	   	   
-		//--------------------------------------------------------------------------------------------------------------
-	       
+	//--------------------------------------------------------------------------------------------------------------
+	   	 
 }

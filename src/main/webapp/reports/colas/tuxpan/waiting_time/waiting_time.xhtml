@@ -35,7 +35,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('colas_equipment e ON e.equip_id = c.device')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
        		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('c.update_date', 'Data', true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('c.update_date', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('c.device', reportsLabels.reports_select_equipment, 'colas_equipment.equip_id|name', true, true)}" />
 	  
 	</f:metadata>

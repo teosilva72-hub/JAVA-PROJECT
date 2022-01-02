@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.model.dms.DMS;
+import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
 
@@ -396,6 +397,16 @@ public class Equipments {
 
 		return lista;
 	}
+    
+   // BUILD METEO EQUIPMENTS
+ 	public List<Meteo> listMeteoEquipments(int permission) throws Exception {
+
+ 		List<Meteo> lista = new ArrayList<>();	
+ 		EquipmentsDAO dao = new EquipmentsDAO();			
+ 		lista.addAll(dao.buildMeteoEquipmentsInterface(permission));	
+
+ 		return lista;
+ 	}
 
 
 }

@@ -35,11 +35,11 @@
 										<ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 											<option value="#{eqp.value}">#{eqp.label}</option>
 								       </ui:repeat>
-						          </select> <!-- SELECT -->
-					       <div class="error-label"> <!-- ERROR DIV -->									
-							<label for="equips" class="error" id="equips-error"></label>
-						</div> <!---->
-					</div>
+						          </select> <!-- SELECT -->					     
+					         </div>
+		           		<div class="error-label"> <!-- ERROR DIV -->									
+						   <label for="equips" class="error" id="equips-error"></label>
+					</div> <!---->
 				</div>
 							
 				<!---->
@@ -321,10 +321,11 @@
 		  <!---->			
 		</div>
 				
-		<!---->			
+	  <!---->		
 		
-		<ui:fragment rendered="#{loginAccount.mapEnabled}" >
-											 
+	<!-- LATITUDE AND LONGITUDE -->	
+		
+	 <div class="map-show" >											 
  		<div class="form-row"> <!-- ROW -->
  		
 			<!-- LATITUDE -->
@@ -357,13 +358,13 @@
 				</div> <!---->									
 	   		</div>						
 		</div>	<!---->
-							
-		</ui:fragment>				
-		
+		   <!---->				
+		</div>
 		<!---->						
 
 		<!-- SERVICE LEVEL DIRECTION -->
 
+       <div class="realtime-show" >
 		<div class="form-row satInputs" > <!-- ROW -->								
 			<div class="form-group col-md-12 select-field">	<!-- SELECT DIV -->
 				<span><i class="fas fa-random"></i></span> <!-- SPAN ICON -->
@@ -376,6 +377,7 @@
 			</div> <!---->								
 			<div class="error-label"><!-- ERROR-LABEL -->									
 			</div><!---->								
+		</div>
 		</div>
 							
 		<!---->

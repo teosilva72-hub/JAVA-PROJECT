@@ -7,7 +7,7 @@
     xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui">
 
     <f:view locale="#{language.locale}">
-        <h:dataTable id="message-table" value="#{pmvMessage.messages_enumeration_d3}" var="msg"
+        <h:dataTable id="message-table" value="#{dmsMessage.messages_enumeration_d3}" var="msg"
             styleClass="table table-sm table-striped table-hover table-dark custom-table" cellspacing="0" width="100%"
             headerClass="custom-table-header" rowClasses="custom-table-odd-row, custom-table-even-row"
             columnClasses="idColumn, typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
@@ -19,7 +19,7 @@
                 <f:facet name="header">
                     #{dmsLabels.dms_available_messages_table_col_type}
                 </f:facet>
-                <h:outputText value="#{(pmvMessage.translateType(msg.value.tipo))}" />
+                <h:outputText value="#{(dmsMessage.translateType(msg.value.tipo))}" />
             </h:column>
             <h:column>
                 <f:facet name="header">
@@ -27,7 +27,7 @@
                 </f:facet>
                 <h:outputText value="#{msg.value.nome}" class="tablePageName" />
             </h:column>
-            <c:forEach items="#{pmvMessage.messages_d3.get(msg.key).pages}" var="page" varStatus="index">
+            <c:forEach items="#{dmsMessage.messages_d3.get(msg.key).pages}" var="page" varStatus="index">
                 <h:column pt:class="pageTable#{index.index + 1}" pt:timer="#{page.timer}">
                     <f:facet rendered="#{index.first}" name="header">
                         #{dmsLabels.dms_available_messages_table_col_image}

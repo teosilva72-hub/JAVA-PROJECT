@@ -12,8 +12,8 @@
 	</ui:define>
 
 	<ui:define name="head">
-		<h:outputStylesheet library="css/pmv/activate" name="message-activate.css" />
-		<h:outputStylesheet library="css/pmv" name="layoutPMV.css" />
+		<h:outputStylesheet library="css/dms/activate" name="message-activate.css" />
+		<h:outputStylesheet library="css/dms" name="layoutDMS.css" />
 	</ui:define>
 
 	<ui:define name="default-jquery">
@@ -37,7 +37,7 @@
 							<h:form>
 								<input type="hidden" name="dmsChanges" id="dmsChanges" />
 								<h:commandButton value="#{dmsLabels.dms_available_messages_btn_send}" type="button" class="btn btn-light" id="btn-save">
-									<f:ajax execute="@form" listener="#{interfaces.activateMessage}" />
+									<f:ajax execute="@form" listener="#{dmsActiveMessage.activateMessage}" />
 								</h:commandButton>
 							</h:form>
 						</div>
@@ -60,21 +60,21 @@
 										</div>
 										<!-- FINAL DO CHECK BOX TOPO -->
 									</div>
-									<div class="col typePMV">
+									<div class="col typeDMS">
 										<div class="form-check form-check-inline me-1">
-											<input class="form-check-input" type="radio" name="typePMV" id="typePMV1"
+											<input class="form-check-input" type="radio" name="typeDMS" id="typeDMS1"
 												value="driver1" checked="checked" />
-											<label class="form-check-label" for="typePMV1">T1</label>
+											<label class="form-check-label" for="typeDMS1">T1</label>
 										</div>
 										<div class="form-check form-check-inline me-1">
-											<input class="form-check-input" type="radio" name="typePMV" id="typePMV2"
+											<input class="form-check-input" type="radio" name="typeDMS" id="typeDMS2"
 												value="driver2" />
-											<label class="form-check-label" for="typePMV2">T2</label>
+											<label class="form-check-label" for="typeDMS2">T2</label>
 										</div>
 										<div class="form-check form-check-inline me-1">
-											<input class="form-check-input" type="radio" name="typePMV" id="typePMV3"
+											<input class="form-check-input" type="radio" name="typeDMS" id="typeDMS3"
 												value="driver3" />
-											<label class="form-check-label" for="typePMV3">T3</label>
+											<label class="form-check-label" for="typeDMS3">T3</label>
 										</div>
 									</div>
 								</div>
@@ -83,7 +83,7 @@
 									<div id="mt-2">
 										<select id="selectionType" class="form-select" aria-label="select type">
 											<option value="All" selected="selected">#{dmsLabels.dms_active_messages_all}</option>
-											<c:forEach items="#{pmvMessage.type}" var="opt">
+											<c:forEach items="#{dmsMessage.type}" var="opt">
 												<option value="#{opt.value}">#{opt.label}</option>
 											</c:forEach>
 										</select>
@@ -92,7 +92,7 @@
 								<!-- FINAL SELECT OPTION -->
 							</div>
 							<div class="card-body">
-								<div id="page-pmv">
+								<div id="page-dms">
 
 									<div id="#{item.table_id}#{item.equip_id}" class="equip-info my-2" scale="1.5">
 
@@ -104,8 +104,8 @@
 												</div>
 											</div>
 											<div class="row text-center card-body p-0">
-												<div id="child-img" class="col-2 padding-pmv">
-													<img src="/resources/images/pictures/#{pmvMessage.image}"
+												<div id="child-img" class="col-2 padding-dms">
+													<img src="/resources/images/pictures/#{dmsMessage.image}"
 														class="picture-box primary" id-img="0" />
 												</div>
 												<div id="child-msg" class="col-auto msg-pos">
@@ -241,8 +241,8 @@
 										aria-label="select message">
 										<option value="0" selected="selected" style="display: none;">#{dmsLabels.dms_active_dafault}</option>
 									</select>
-									<c:forEach items="#{pmvMessage.messages}" var="opt" varStatus="status">
-										<div id="listSelectPMV#{opt.id_message}" idMessage="#{opt.id_message}"
+									<c:forEach items="#{dmsMessage.messages}" var="opt" varStatus="status">
+										<div id="listSelectDMS#{opt.id_message}" idMessage="#{opt.id_message}"
 											type="#{opt.tipo}" name="#{opt.nome}" driver="#{opt.driver}">
 											<input type="hidden" name="page1" imageId="#{opt.pages[0].id_image}"
 												image="#{opt.pages[0].image}" imageId2="#{opt.pages[0].id_image2}"
@@ -272,7 +272,7 @@
 										</div>
 										<option value="#{status.index + 1}" type="#{opt.tipo}"
 											driver="driver#{opt.driver}">#{opt.nome} -
-											#{pmvMessage.translateType(opt.tipo)}</option>
+											#{dmsMessage.translateType(opt.tipo)}</option>
 									</c:forEach>
 								</div>
 								<!-- INICIO DOS BOTÔES -->
@@ -293,7 +293,7 @@
 				</div>
 				<!-- FINAL DA TABELA SELECAO -->
 				<!-- INICIO DA TABELA ESTADO ATUAL -->
-				<div id="allPMV" class="row col">
+				<div id="allDMS" class="row col">
 				</div>
 				<!-- FINAL DA TABELA NOVO ESTADO -->
 			</div>

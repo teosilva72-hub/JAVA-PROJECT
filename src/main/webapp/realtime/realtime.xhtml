@@ -5,6 +5,12 @@
 	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite" xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf" template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<f:viewAction onPostback="true"  action="#{equipsBean.defineInterfaceView('linear')}" />  
+	
+	</f:metadata>
 
 	<ui:define name="head">
 		<title>#{abaLabels.map_linear}</title>
@@ -12,9 +18,10 @@
         <h:outputStylesheet name="form-style.css" library="css/forms" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-		<h:outputStylesheet name="layoutPMV.css" library="css/pmv" />
+		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
 		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
 		<h:outputStylesheet name="realtime.css" library="css/realtime" />
+		<h:outputStylesheet name="cftv.css" library="css/map" />
 	    <h:outputStylesheet library="css/validation" name="validation-style.css" />
 
 		<!-- Script -->
@@ -29,24 +36,20 @@
 	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
 	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
+	
+	<input type="hidden" value="linear" id="interface" name="interface" />
 
 	<ui:define name="main-content">
 		
-	<!--  ******************************************************************************************************* -->
-
-		<!-- ALERTS POSITION -->
-		
-		<div class="messages">
-
-			<c:if test="#{ SuperAdmin || VideoWall }">
-							
-			<!-- ======================== ALERTS ======================== -->
+		<c:if test="#{ SuperAdmin || VideoWall }">
+					
+		 <!-- ======================== ALERTS ======================== -->
 			
 			<ui:include src="/template/alerts/alerts.xhtml" />  
-
-			</c:if>
-       
-       </div>    
+		
+		</c:if>
+		
+		<!---->
 		
 		<!-- WEB ZOOM -->
 		<div class="map-options">
@@ -71,6 +74,39 @@
 
 				</c:if>
 
+			
+			<!-- CFTV LIST EQUIPS TOP PAGE -->
+			 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
+				<h:form prependId="false" id="sumIdCftv">
+					<div class="dropdown cftv-dropdown-realtime">
+						<button class="btn btn-dark dropdown-toggle" type="button"
+							id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false">
+							PTZ <i class="far fa-window-restore"></i>
+						</button>
+						<div class="dropdown-menu drop-down-ptz"
+							aria-labelledby="dropdownMenu2">
+							<div class="row">
+								<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+									<div class="col-md-6 col-dropdown-cftv">
+										<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+											type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+											#{ptz}</button>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+					
+					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+					<h:commandButton style="display:none;" id="btnCftvSumTotal">
+						<f:ajax execute="@form" render=":sumIdCftv"
+							listener="#{CftvCam.totalId}" />
+					</h:commandButton>
+				</h:form>
+				<!--  -->
+			</ui:fragment>
+			
 			</div>
 
 			<c:if test="#{ SuperAdmin || VideoWall }">
@@ -83,8 +119,7 @@
 					<h:inputHidden id="equipTablePos" value="#{equipsBean.equipTable}" />
 					<h:inputHidden id="equipPosX" value="#{equipsBean.positionX}" />
 					<h:inputHidden id="equipPosY" value="#{equipsBean.positionY}" />
-					<input type="hidden" id="positionView" name="positionView" value="linear" />
-					
+										
 				 <!--  ******************************************************************************************************* -->
 					
 					<h:commandButton id="savePos" style="display:none;"
@@ -95,11 +130,12 @@
 					
 				 <!--  ******************************************************************************************************* -->
 	
-					<h:commandButton id="cancelPos" style="display:none;" class="btn btn-dark form-modal-draw-button"
-						value="#{mapLabels.$label_map_option_btn_cancel_position_equipment}" 
+					<h:commandButton id="cancelPos" style="display:none;"
+						class="btn btn-dark form-modal-draw-button"
+						value="#{mapLabels.$label_map_option_btn_cancel_position_equipment}"
 						onclick="alertOptions('#error', '${mapLabels.$message_map_alert_position_cancel}');"
 						title="Cancel Change Position">
-						<f:ajax render="#realcancel" onevent="onEventRealtimeFunction" />
+						<f:ajax render="#realcancel" onevent="onEventMapFunction" />
 					</h:commandButton>
 				</h:form>
 				
@@ -154,7 +190,7 @@
 	<ui:define name="modal-content"> <!-- MODAL CONTENT UI -->
 		
 		<c:if test="#{ SuperAdmin }">
-
+		
 		 <!-- ======================== CREATE ======================== -->
 		
        		<ui:include src="/template/map-modal/create-map.xhtml" />  
@@ -194,6 +230,13 @@
         	<ui:include src="/template/map-modal/size-map.xhtml" />  
         	
         <!---->
+        
+        <!-- ======================== CFTV SETTINGS ======================== -->
+		
+		 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
+			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
+		</ui:fragment>
+		<!---->
 	
 	</ui:define>	
 
@@ -205,8 +248,12 @@
 		<c:if test="#{ SPEED }">
 			<h:outputScript name="speed_event.js" library="js/speed" />
 		</c:if>
-
+				
 		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
+		
+		 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
+			<h:outputScript library="js/map/" name="mapCftcv.js" />
+		</ui:fragment>
 			
 		<c:if test="#{ SuperAdmin }">
 
@@ -227,8 +274,10 @@
 				<input type="hidden" name="requiredRoadsMsg" value="#{requiredMessages.required_user_interface_roads}" /> <!-- ROADS REQUIRED MESSAGE -->
 				<input type="hidden" name="requiredKmMsg" value="#{requiredMessages.required_user_interface_km}" /> <!-- KM REQUIRED MESSAGE -->
 				
-			</form> <!----> 	 	
 			
+				
+			</form> <!----> 
+								
 		</c:if>
 
 	</ui:define>

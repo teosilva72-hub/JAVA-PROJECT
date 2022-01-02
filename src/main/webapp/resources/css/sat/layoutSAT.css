@@ -65,14 +65,24 @@
 
 /*REAL TIME SAT*/
 
-#fluxos {
+.fluxo {
   margin-top: 0px !important;
   margin-left: 0px;
   opacity: 0.8;
   border: 1px solid transparent;
 }
 
-#fluxos div {
+.fluxo-vertical{
+  position: absolute;
+  width: 91%;
+  margin-top: -47px !important;
+  margin-left: -68px;
+  opacity: 0.8;
+  border: 1px solid transparent;   
+  transform: rotate(90deg);
+}
+
+.fluxo div, .fluxo-vertical div {
   height: 9px;
 }
 

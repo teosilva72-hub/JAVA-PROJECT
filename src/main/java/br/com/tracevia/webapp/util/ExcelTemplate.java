@@ -410,8 +410,7 @@ public class ExcelTemplate {
 	
 	public Integer createTotalRow(XSSFSheet sheet, XSSFRow row, CellStyle tableHeader, int rowTotal, int columnsLength, List<String[]> lines) {
 		
-		        System.out.println("CREATE: "+rowTotal);
-		
+		       		
 		        // CREATE ROW TOTAL
 				utilSheet.createRow(sheet, row, rowTotal);		 
 

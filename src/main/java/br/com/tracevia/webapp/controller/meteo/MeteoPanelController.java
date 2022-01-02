@@ -5,33 +5,56 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.model.SelectItem;
-
-import org.primefaces.context.RequestContext;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.meteo.MeteoDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.meteo.MtoPanel;
-import br.com.tracevia.webapp.model.meteo.METEO;
-import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.model.global.ListEquipments;
+import br.com.tracevia.webapp.model.meteo.MeteoPanel;
 import br.com.tracevia.webapp.util.SessionUtil;
 
-@ManagedBean(name="mtoPanelBean")
+@ManagedBean(name="meteoPanelBean")
 @RequestScoped
 public class MeteoPanelController {
 	
-	private MtoPanel panel;
+	private MeteoPanel panel;
 	private List<SelectItem> equipments;
-	
-	LocaleUtil localeLabel, localeCalendar, localeMto;
-		
-	EquipmentsDAO dao;
-	MeteoDAO mtoDao;	
-	
-	private String station, station_name, type;
 			
+	EquipmentsDAO dao;
+	MeteoDAO meteoDAO;	
+	
+	private String station, stationName, type;
+		
+	@ManagedProperty("#{listEquips}")
+	private ListEquipments listEquips;
+	
+	public ListEquipments getListEquips() {
+		return listEquips;
+	}
+
+	public void setListEquips(ListEquipments listEquips) {
+		this.listEquips = listEquips;
+	}
+
+	public EquipmentsDAO getDao() {
+		return dao;
+	}
+
+	public void setDao(EquipmentsDAO dao) {
+		this.dao = dao;
+	}
+
+	public MeteoDAO getMeteoDAO() {
+		return meteoDAO;
+	}
+
+	public void setMeteoDAO(MeteoDAO meteoDAO) {
+		this.meteoDAO = meteoDAO;
+	}
+		
 	public String getStation() {
 		return station;
 	}
@@ -40,19 +63,19 @@ public class MeteoPanelController {
 		this.station = station;
 	}
 	
-	public String getStation_name() {
-		return station_name;
+	public String getStationName() {
+		return stationName;
 	}
 
-	public void setStation_name(String station_name) {
-		this.station_name = station_name;
+	public void setStationName(String stationName) {
+		this.stationName = stationName;
 	}
 
-	public MtoPanel getPanel() {
+	public MeteoPanel getPanel() {
 		return panel;
 	}
-	
-	public void setPanel(MtoPanel panel) {
+
+	public void setPanel(MeteoPanel panel) {
 		this.panel = panel;
 	}
 
@@ -70,63 +93,56 @@ public class MeteoPanelController {
 		
 	@PostConstruct
 	public void initialize() {
-		
-		localeLabel = new LocaleUtil();	
-		localeLabel.getResourceBundle(LocaleUtil.LABELS_MTO);
-		
-		localeMto = new LocaleUtil();	
-		localeMto.getResourceBundle(LocaleUtil.MESSAGES_MTO);
-		
+								
 		/* EQUIPMENTS SELECTION */
-		panel = new MtoPanel();
+		
+		panel = new MeteoPanel();
 		equipments = new ArrayList<SelectItem>();		
-				
-		List<? extends Equipments> listMto = new ArrayList<METEO>();  
 					
 		try {
-			
-			 dao = new EquipmentsDAO();		 
-			 listMto = dao.equipmentSelectOptions("mto");
-			 			
+					 			
 		} catch (Exception e1) {			
 			e1.printStackTrace();
 		}
 				
-		if(!listMto.isEmpty()) {
+		if(!listEquips.getMeteoList().isEmpty()) {
 		
-		for (Equipments e : listMto) {
-			SelectItem s = new SelectItem();
-			s.setValue(e.getEquip_id());
-			s.setLabel(e.getNome());
-			equipments.add(s);		
-		}
+			for (Equipments e : listEquips.getMeteoList()) {
+					SelectItem s = new SelectItem();
+						s.setValue(e.getEquip_id());
+						s.setLabel(e.getNome());
 					
-		//Initialize with first register
-		station = String.valueOf(listMto.get(0).getEquip_id());
+						equipments.add(s);		
+			}
+						
+				// INITIALIZE FIRT VALUE
+				
+				station = String.valueOf(listEquips.getMeteoList().get(0).getEquip_id());				
+				stationName = listEquips.getMeteoList().get(0).getNome();					
+				type = listEquips.getMeteoList().get(0).getEquip_type();
+				
+			 
+				InitializePanelValues();  //Initialize Panel Values
 		
-		station_name = listMto.get(0).getNome();		
-	 
-		InitializePanelValues();  //Initialize Panel Values
-		
-	}  else { station_name = "Default"; initPanelZero(panel); }
+	}  else { stationName = "Default"; initPanelZero(panel); }
 		
 	}
+	
+	// -----------------------------------------------------
 	
 	//Inicializar Painel
 	public void InitializePanelValues(){
 		
 		try {			
 					
-			mtoDao = new MeteoDAO();
-			panel = new MtoPanel();
-			
-			type = mtoDao.MtoPanelType(station);
-					
-			panel = mtoDao.MtoPanelInformation(station);
+			meteoDAO = new MeteoDAO();
+			panel = new MeteoPanel();
+							
+			panel = meteoDAO.MeteoPanel(station, type);
 														
 			if(panel == null) {
 				
-			   panel = new MtoPanel(); // Inst�ncia o objeto novamente.
+			   panel = new MeteoPanel(); // Inst�ncia o objeto novamente.
 			   initPanelZero(panel);
 			  		  
 			 }		
@@ -138,6 +154,8 @@ public class MeteoPanelController {
 		}		
 	}	
 	
+	// -----------------------------------------------------
+	
 	//Information to Update
 	public void GetPanelInformation(){
 		
@@ -145,28 +163,32 @@ public class MeteoPanelController {
 											
 			if(station != null) {
 										
-			mtoDao = new MeteoDAO();	
+			meteoDAO = new MeteoDAO();	
 		
-			panel = new MtoPanel();		
+			panel = new MeteoPanel();		
+					
+			if(!type.equals("MTO")) {
+				SessionUtil.executeScript("$('#card-road-temp').css('display', 'none')");
+				SessionUtil.executeScript("$('#visibility').css('display', 'none')");			  
+			}
+			
+			else {
+				
+				SessionUtil.executeScript("$('#card-road-temp').css('display', 'block')");
+				SessionUtil.executeScript("$('#visibility').css('display', 'block')");
+			}
+			
+			panel = meteoDAO. MeteoPanel(station, type);	
 						
-			type = mtoDao.MtoPanelType(station);
-			
-			if(!type.equals("RS"))
-			  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'none')");
-			
-			else  RequestContext.getCurrentInstance().execute("$('#card-road-temp').css('display', 'block')");
-			
-			panel = mtoDao.MtoPanelInformation(station);	
-						
-			//Nome do Equipamento
+			// EQUIP NAME
 			for(SelectItem s : equipments) {							
 				if(station.equals(String.valueOf(s.getValue())))			
-					station_name = s.getLabel();				
+					stationName = s.getLabel();				
 			}
 						
 			if(panel == null) {
 				
-				panel = new MtoPanel();	// Inst�ncia o objeto novamente.
+				panel = new MeteoPanel();	// Inst�ncia o objeto novamente.
 				initPanelZero(panel);				
 				
 				SessionUtil.executeScript("showInfoMessage();");
@@ -183,21 +205,25 @@ public class MeteoPanelController {
 		}		
 	}	
 	
-	//PREENCHER CASO N�O HAJA VALORES
-	public void initPanelZero(MtoPanel panel) {
+	// -----------------------------------------------------
+	
+	// PREENCHER CASO NÃO HAJA VALORES
+	public void initPanelZero(MeteoPanel panel) {
 				
-		panel.setAtmPressure(0);
-		panel.setRelative_humidity(0);
-		panel.setAbsolute_preciptation(0);
-		panel.setWind_speed(0);
-		panel.setWind_direction(0);  
+		panel.setAtmosphericPressure(0);
+		panel.setRelativeHumidity(0);
+		panel.setAbsolutePreciptation(0);
+		panel.setWindSpeed(0);
+		panel.setWindDirection(0);  
 		panel.setTemperature(0);
 		panel.setVisibility(0);
 		panel.setStatus(0);
 		panel.setBattery(0);
-		panel.setLine_volts(0);		
-		panel.setRoad_temperature(0);
+		panel.setLineVolts(0);		
+		panel.setRoadTemperature(0);
 		
 	}
+	
+	// -----------------------------------------------------
 
 }

@@ -19,17 +19,17 @@ async function main() {
 	const btnSend = $("[id$=btnCr3]");
 	const disableTable = $('#disableTable');
 	const editField = $('.edit-field');
-	const editPMV = $('.edit-pmv-page');
+	const editPMV = $('.edit-dms-page');
 	const timerCheck = $('input[id^=timerCheck]:not(#timerCheck1)');
 	const timerCheckAll = $('input[id^=timerCheck]');
-	const pre_vi = $(`#page-pmv .equip-info`);
+	const pre_vi = $(`#page-dms .equip-info`);
 	const equipInfo = $('.equip-info');
 	const picture = equipInfo.find(`.picture-box`);
 	const table = $("#tabelaReal");
 	const timerPage = $('[id^=timerPage]');
 	const listImage = $('#list-images');
 	const selectDriver = $('#selectDriver');
-	const pmvBoard = $('.pmv-board');
+	const pmvBoard = $('.dms-board');
 
 	// implementation 'loopNext' in jquery
 	$.fn.loopNext = function (selector) {

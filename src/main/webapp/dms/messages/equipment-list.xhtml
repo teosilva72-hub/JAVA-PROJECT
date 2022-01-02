@@ -10,8 +10,8 @@
         <div class="col-md atual">
             <div class="text-center" id="one">
                 <span class="label-header-content">#{dmsLabels.dms_active_messages_label_current_state}</span>
-                <c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-                    <div id="listPMV#{item.equip_id}" idMessage="#{item.message.id_message}" type="#{item.message.tipo}"
+                <c:forEach items="#{dmsActiveMessage.dmsList}" var="item" varStatus="loop">
+                    <div id="listDMS#{item.equip_id}" idMessage="#{item.message.id_message}" type="#{item.message.tipo}"
                         name="#{item.nome}" driver="#{item.message.driver}">
                         <input type="hidden" name="page1" imageId="#{item.message.pages[0].id_image}"
                             image="#{item.message.pages[0].image}" imageId2="#{item.message.pages[0].id_image2}"
@@ -51,13 +51,13 @@
                             <div class="tableStyle card">
                                 <div class="dms-name card-header py-0">
                                     <div class="text-center dmsTab#{item.equip_id}">
-                                        <span class="namePMV">#{item.nome}</span>
-                                        <span class="kmPMV">#{item.km}</span>
+                                        <span class="nameDMS">#{item.nome}</span>
+                                        <span class="kmDMS">#{item.km}</span>
                                     </div>
                                 </div>
                                 <div class="row text-center card-body p-0">
-                                    <div id="child-img" class="col-2 padding-pmv">
-                                        <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                    <div id="child-img" class="col-2 padding-dms">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
                                             class="picture-box primary" id-img="0" />
                                     </div>
                                     <div id="child-msg" class="col-auto msg-pos">
@@ -179,7 +179,7 @@
                                         </div>
                                     </div>
                                     <div id="child-img" class="col-2 second-img ms-auto">
-                                        <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
                                             class="picture-box secondary" id-img="0" />
                                     </div>
                                 </div>
@@ -195,8 +195,8 @@
         <div class="col-md">
             <div class="text-center" id="two">
                 <span class="label-header-content">#{dmsLabels.dms_active_messages_label_new_state}</span>
-                <c:forEach items="#{interfaces.dmsList}" var="item" varStatus="loop">
-                    <div id="listChangePMV#{item.equip_id}" idMessage="#{item.messageChange.id_message}"
+                <c:forEach items="#{dmsActiveMessage.dmsList}" var="item" varStatus="loop">
+                    <div id="listChangeDMS#{item.equip_id}" idMessage="#{item.messageChange.id_message}"
                         type="#{item.messageChange.tipo}" name="#{item.nome}" driver="#{item.messageChange.driver}"
                         status="#{item.msg_status}">
                         <input type="hidden" name="page1" imageId="#{item.messageChange.pages[0].id_image}"
@@ -238,13 +238,13 @@
                             <div class="tableStyle card">
                                 <div class="dms-name card-header py-0">
                                     <div class="text-center dmsTab#{item.equip_id}">
-                                        <span class="namePMV">#{item.nome}</span>
-                                        <span class="kmPMV">#{item.km}</span>
+                                        <span class="nameDMS">#{item.nome}</span>
+                                        <span class="kmDMS">#{item.km}</span>
                                     </div>
                                 </div>
                                 <div class="row text-center card-body p-0">
-                                    <div id="child-img" class="col-2 padding-pmv">
-                                        <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                    <div id="child-img" class="col-2 padding-dms">
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
                                             class="picture-box primary" id-img="0" />
                                     </div>
                                     <div id="child-msg" class="col-auto msg-pos">
@@ -366,7 +366,7 @@
                                         </div>
                                     </div>
                                     <div id="child-img" class="col-2 second-img ms-auto">
-                                        <img src="/resources/images/pictures/#{pmvMessage.image}"
+                                        <img src="/resources/images/pictures/#{dmsMessage.image}"
                                             class="picture-box secondary" id-img="0" />
                                     </div>
                                 </div>
