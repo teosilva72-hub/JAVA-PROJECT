@@ -1,129 +1,120 @@
-/***********************************************************/
-/****************** VBV REPORT CONTAINER ******************/
-/*********************************************************/
+/**
+* Tracevia App
+*
+* Layout do navbar component
+*
+* Esta folha de estilo é destinada ao uso
+* no relatório do VBV
+*
+* @project Tracevia App
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0 
+* @since 1.0 
+* @package resources/css/reports/vbv_report
+*/
 
-.vbv-container {
-	width: 100%;
-	height: 180px;
-	border: 1px solid transparent;
-	margin-top: 5%;
+/* --------------------------------------------- */
+
+/**
+* Estilo para aplicar um margin-top de 15vh
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.top-15-vh{
+	margin-top: 15vh;
 }
 
-.vbv-title {
-	font-weight: bold;
-	font-size: 28px;
-	margin-left: 16%;
-	margin-top: 1%;
-	color: #212121;
-}
+/* --------------------------------------------- */
 
-.left{
- margin-left: 10% !important;
-}
-
-.form-row{
-	width: 25%;
+/**
+* Estilo para definir um padding de 15 pixels
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.padding-15{	
 	padding: 15px;
 }
 
-.report-title{
-	font-weight: bold;
-	font-size: 36px;
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir margin left  no botão de envio do formulário
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.submit-btn {
+	margin-left: 17%;	
 }
 
+/* --------------------------------------------- */
 
-/* custom style for types (input, select) */
-.select-field select{
-	height: 40px;
-	border: 1px solid #343a40;
-	border-radius: 25px;
-	outline: none;
-	background: white;
-	padding-left: 45px;	
-	width:100%;
-}
-
-/* style for span to be inside fields */
-.select-field span {
-	position: absolute;
-	top: 7px;
-	margin-left: 10px;
-	padding-left: 4px;
-	color: #292525;
-	width: 25px;	
-	border: 1px solid transparent;	
-}
-
-/* Remove icon from periods select */
- .select-field select {
-  /* for Firefox */
-  -moz-appearance: none;
-  /* for Chrome */
-  -webkit-appearance: none;
-  /* for IE */
-  appearance: none;
-}
-
-
-.vbv-footer {
-	width: 100%;
-	float: left;
-	border: 1px solid transparent;
-	margin-top: 1%;
-	border-top: 1px solid #E6E6FA;
-	height: 50px;
-}
-
-.submit-btn, .reset-btn {
-	margin-top: 5px;
-}
-
- .submit-btn {
-	margin-left: 170px;	
-}
-
-.reset-btn{
-	margin-left: 1%;
-}
-
-/* modal-footers button hover style */
-.form-draw-button:hover {
-	background: #FF3030;
-	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
-	-moz-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
-	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
-	-webkit-box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
-}
-
-
-/*****************************************************/
-/****************** FORM CONTAINER ******************/
-/*****************************************************/
-
- .txt.disabled,
- .txt[disabled],
+/**
+* Estilo para definir estilo quando botão txt estiver desabilitado
+* aplica-se ao icon (fontawesome)
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt.disabled,
+.txt[disabled],
 .disabled > .fa-file-alt,
 [disabled] > .fa-file-alt
  {
   opacity: 0.5;
-  /*optional*/ cursor: not-allowed;
-  /*optional*/ pointer-events: none;
+  cursor: not-allowed; /*optional*/
+  pointer-events: none; /*optional*/
   display: none;
  }
+ 
+/* --------------------------------------------- */
 
-/* Excel image icon initial config */
-.txt{
-	margin-left: 50%;
-	margin-top: 3px;	  
-}
+/**
+* Estilo para definir um margin left de 50%
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.txt{margin-left: 50%;}
 
-/* Excel image icon enabled */
+/* --------------------------------------------- */
+
+/**
+* Estilo quando icone está habilitado
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
 .txt:not([disabled]){
-	color: #343a40;	
+	color: #343a40;
 	display: block;
 }
 
-/* Excel image icon hover enabled config */
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir efeito hover quando passar pelo botão.
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
 .txt:not([disabled]):hover {
 	cursor: pointer;
 	-webkit-transform: scale(1.1);
@@ -136,61 +127,16 @@
 	box-shadow: 0px 9px 10px -2px rgba(0, 0, 0, 0.55);
 }
 
-/* modal dialog configuration */
-.modal-dialog {	
-	margin-top: 0px;	
-	bottom: 0;
-	left: 0;	
-	margin: auto;
-	border: 4px solid #212121;
-	margin-top: 88px;
-	border-radius: 5px;
-	-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-	
+/* --------------------------------------------- */
+
+/**
+* Estilo para corrigir posicionamento do label.
+*
+* @author Wellington
+* @date 03/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.error-label {
+	margin-top: 5px !important;
 }
-
-/* form modal title settings */
-.modal-title {
-	color: black;
-	margin-left: 5%;
-}
-
-/* modal button on close hide effect */
-button.close{
-   outline: none;
-}
-
-/* form modal content style*/
-.modal-content {
-	background: #FFFFFF;
-}
-
-/* Alert Modal */
-.confirmation-modal{
-  margin-top: 200px !important;
-} 
-
-/* Extension Span */
-.extension{
-	color: green;
-	font-weight: 600;
-}
-
-/* modal title conf */
-.modal-alert-title{
-  color: #212121;	
-  font-size: 22px;
-  font-weight: 600;
-}
-
-/* modal message conf */
-.modal-alert-msg{
- color: #212121;
- font-size: 18px;
- font-weight: 300;
-}
-
-/* Alert Modal */
-

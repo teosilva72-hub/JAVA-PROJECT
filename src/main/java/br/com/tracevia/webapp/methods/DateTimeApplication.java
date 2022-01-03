@@ -2160,5 +2160,18 @@ public class DateTimeApplication {
 	 }
 	 
    // ------------------------------------------------------------------------------------------------------
+	 
+	 public String createDate(int day, int month, int year) throws ParseException {
+		   
+		   String newDate = year+"-"+month+"-"+day;
+		   
+		   SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = format.parse(newDate);	   
+			String createdDate = format.format(date);
+			
+			return createdDate;		   
+	}
+	 
+	// ------------------------------------------------------------------------------------------------------
 	
 }

@@ -26,13 +26,15 @@ public class NotificationsDAO {
 	private ResultSet rs;
 	
 	LocaleUtil locale;
+	
+	private final String errorFolder = SystemLog.ERROR.concat("notifications\\");
 			
 	public NotificationsDAO() {
 		
 		locale = new LocaleUtil();
 		locale.getResourceBundle(LocaleUtil.LABELS_NOTIFICATIONS);
 		
-		SystemLog.createLogFolder(SystemLog.ERROR.concat("notifications\\"));
+		SystemLog.createLogFolder(errorFolder);
 		
 	}
 	
@@ -82,7 +84,7 @@ public class NotificationsDAO {
 	            StringWriter errors = new StringWriter();
 	 			sqle.printStackTrace(new PrintWriter(errors));	
 
-	 			SystemLog.logErrorSQL("notifications_dao", NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+	 			SystemLog.logErrorSQL(errorFolder.concat("notifications_dao"), NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 	
 	         }
 	         finally
@@ -181,7 +183,7 @@ public class NotificationsDAO {
 			            StringWriter errors = new StringWriter();
 			 			sqle.printStackTrace(new PrintWriter(errors));	
 	
-			 			SystemLog.logErrorSQL("notifications_dao", NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			 			SystemLog.logErrorSQL(errorFolder.concat("notifications_dao"), NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 			
 			         }
 			         finally
@@ -256,7 +258,7 @@ public class NotificationsDAO {
             StringWriter errors = new StringWriter();
  			sqle.printStackTrace(new PrintWriter(errors));	
 
- 			SystemLog.logErrorSQL("notifications_dao", NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+ 			SystemLog.logErrorSQL(errorFolder.concat("notifications_dao"), NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 
          }
          finally
@@ -311,7 +313,7 @@ public class NotificationsDAO {
             StringWriter errors = new StringWriter();
  			sqle.printStackTrace(new PrintWriter(errors));	
 
- 			SystemLog.logErrorSQL("notifications_dao", NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+ 			SystemLog.logErrorSQL(errorFolder.concat("notifications_dao"), NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 
          }
          finally
@@ -358,7 +360,7 @@ public class NotificationsDAO {
   			            StringWriter errors = new StringWriter();
   			 			sqle.printStackTrace(new PrintWriter(errors));	
 
-  			 			SystemLog.logErrorSQL("notifications_dao", NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+  			 			SystemLog.logErrorSQL(errorFolder.concat("notifications_dao"), NotificationsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
 
   			         }
   			         finally

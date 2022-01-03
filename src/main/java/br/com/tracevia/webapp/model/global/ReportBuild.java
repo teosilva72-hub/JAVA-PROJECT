@@ -75,6 +75,7 @@ public class ReportBuild {
 	public boolean clearBool;
 	public boolean excelBool;
 	public boolean chartBool;
+	public boolean textBool;
 
 	// Query
 	public String query;
@@ -124,7 +125,6 @@ public class ReportBuild {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
-
 	/**
 	 * Método para realizar o download de um arquivo formato .xls
 	 * @author Wellington
@@ -159,28 +159,19 @@ public class ReportBuild {
 	 * @since version 1.0
 	 * @return - vazio
 	 */
-	public void downloadTextFile() throws Exception {
+	public void downloadTextFile(String siteName, String month, String year, byte[] bytes) throws Exception {
 
 		TranslationMethods tm = new TranslationMethods();
-
-		//Get Site information
-		String siteID = (String) SessionUtil.getParam("selectedEquip");
-		String month = (String) String.valueOf(SessionUtil.getParam("selectedMonth"));
-		String year = (String) String.valueOf(SessionUtil.getParam("selectedYear"));    
-
-		byte[] bytes = (byte[]) SessionUtil.getParam("bytes");
-
-		EquipmentsDAO dao = new EquipmentsDAO();
-
-		String siteName = dao.equipmentName("sat", siteID);
-
+		
 		SessionUtil.getExternalContext().setResponseContentType("text/plain");
 		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition",
 				"attachment; filename=\"VBV_"+siteName+"_"+tm.MonthAbbreviation(month)+"_"+tm.YearAbbreviation(year)+".txt\"");
 
 		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream();
+		
+		byte[] byteArray = bytes;
 
-		responseOutputStream.write(bytes);
+		responseOutputStream.write(byteArray);
 		responseOutputStream.flush();
 		responseOutputStream.close();
 
@@ -495,7 +486,7 @@ public class ReportBuild {
 
 		List<SelectItem> items = new ArrayList<SelectItem>(); 
 
-		for(int year = 2016; year < 2027; year++)   
+		for(int year = 2018; year < 2028; year++)   
 			items.add(new SelectItem(year, String.valueOf(year)));  
 
 		return items;
@@ -552,7 +543,12 @@ public class ReportBuild {
 
 	public boolean isChartBool() {
 		return chartBool;
+	}
+
+	public boolean isTextBool() {
+		return textBool;
 	}	
+
 
 
 	// ----------------------------------------------------------------------------------------------------------------------	           

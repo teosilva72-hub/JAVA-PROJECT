@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 	
+	template="/template/dashboard-rov-layout.xhtml"> <!-- MAIN TEMPLATE STRUCTURE END -->
+	
+	<!-- TEMPLATE DO CABEÇALHO -->
+	
+	<ui:define name="head" >  <!-- HEAD TEMPLATE COMPONENT --> 
+	
+	    <!-- CCS STYLE -->
+	    	  
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="vbv-report.css" />
+			
+		<!---->
+		
+		<!-- JAVASCRIPT FILE -->
+		
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
+	    <h:outputScript library="js/validation-forms/reports/sat" name="vbv-validation.js" />
+	    <h:outputScript library="js/alert" name="alerts.js" />
+				
+	   <!---->
+	
+	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
+	
+	 <!---->
+	 
+	 <!-- TEMPLATE DO CONTEÚDO PRINCIPAL  -->
+	
+	 <ui:define name="main-content" >   <!-- MAIN CONTENT TEMPLATE COMPONENT --> 
+	 
+	  <!-- ============================================================================================================================= -->
+			        
+         <!-- ALERT MESSAGE -->
+	 
+         <ui:include src="/template/alerts/alerts.xhtml" />
+             
+       <!-- ============================================================================================================================= -->
+           
+         <!-- NOME DO RELATÓRIO -->   
+        
+	    <div class="text-dark text-center font-weight-bold w-25 mt-3" > <!-- REPORT NAME DIV --> 
+	       <h:outputText class="h4 " value="#{satLabels.via_paulista_vehicle_by_vehicle_title}" /> <!-- NAME LABEL -->
+	       <hr></hr> <!-- HORIZONTAL LINE -->
+	    </div> <!-- REPORT NAME DIV END -->
+	 
+	    <!----> 
+         
+     	<!-- FORM -->
+
+		<h:form name="vbv-form" id="vbv-form">
+		
+		    <!-- PERIOD  -->
+		    
+			<h:inputHidden value="month" id="period" name="period" />
+			
+			<!---->
+				
+			<div class="container top-15-vh">						
+			
+				<div class="row justify-content-center">
+				
+				   <!-- EQUIPMENT -->
+				
+					<div class="form-row padding-15 w-25">
+						<div class="col-sm-12 select-field">
+							<span><i class="fas fa-hdd"></i></span> 
+							<span for="equip" class="valid-icon-hidden"></span> 
+							<select name="equip" id="equip"	size="1">
+								<option value="">#{reportsLabels.reports_select_equipment}</option>		
+									<ui:repeat var="eqp" value="#{vbvReportBean.equipments}" varStatus="eqpStatus">
+										<option value="#{eqp.value}">#{eqp.label}</option>
+									</ui:repeat>					
+							</select>
+						</div>
+						<div class="error-label">
+							<label for="equip" class="error" id="equip-error"></label>
+						</div>
+					</div>
+					
+					<!---->
+							
+					<!-- MONTHS -->
+	
+                    <div class="form-row padding-15 w-25">
+						<div class="col-sm-12 select-field ">
+							<span><i class="fas fa-calendar-alt"></i></span> 
+							<span for="month" class="valid-icon-hidden"></span> 
+							<select name="month" id="month"	size="1">
+								<option value="">#{reportsLabels.reports_select_month}</option>		
+									<ui:repeat var="mth" value="#{vbvReportBean.months}" varStatus="monthStatus">
+										<option value="#{mth.value}">#{mth.label}</option>
+									</ui:repeat>						
+							</select>
+						</div>
+						<div class="error-label">
+							<label for="month" class="error" id="month-error"></label>
+						</div>
+					</div>
+					
+					<!---->
+	
+				  <!-- YEARS -->
+	
+              	 <div class="form-row padding-15 w-25">
+					<div class="col-sm-12 select-field">
+						<span><i class="fas fa-calendar"></i></span> 
+						<span for="year" class="valid-icon-hidden"></span> 
+						  <select name="year" id="year" size="1">
+							 <option value="">#{reportsLabels.reports_select_year}</option>	
+							 	<ui:repeat var="year" value="#{vbvReportBean.years}" varStatus="yearStatus">
+									<option value="#{year.value}">#{year.label}</option>
+								</ui:repeat>							
+						  </select>
+					</div>
+					<div class="error-label">
+						<label for="year" class="error" id="year-error"></label>
+					</div>
+				 </div>
+				
+				<!---->
+								
+			</div>
+			
+			<!---->
+
+			<!-- FOOTER BUTTONS -->
+			
+			<div class="row">
+	
+				<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
+					id="btn-send" action="#{vbvReportBean.getTextFile}"
+					class="btn btn-dark form-draw-button submit-btn" /> <!-- SEND -->
+
+                <!---->
+								
+				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
+					id="btn-reset" immediate="true" type="reset"
+					class="btn btn-dark form-draw-button ml-2 reset-btn" />	<!-- RESET -->				
+			
+			</div>
+
+			<!---->
+									
+			<!-- BUTTON TXT -->
+							
+		   	<div class="row justify-content-center" >
+		       <div class="col-sm-12">
+			 	   <h:commandButton  value="" class="fas fa-file-alt fa-2x txt" data-toggle="tooltip" disabled="#{vbvReportBean.build.textBool}"
+					  data-placement="bottom" title="#{reportsLabels.reports_btn_txt}" widgetVar="fileWgt">
+					  <f:passThroughAttribute name="data-toggle" value="modal" />
+					  <f:passThroughAttribute name="data-target" value="#modalDownload" />
+					  <f:ajax execute="@form" render="@none" />
+	  			  </h:commandButton>
+	   			</div>
+		   	</div>
+
+			<!---->
+		
+			<!-- MODAL DOWNLOAD -->		
+				
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+					<div class="modal-dialog confirmation-modal">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h5>
+							</div>
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{reportsLabels.reports_modal_alert_download_file_message} <span
+								class="extension">#{reportsLabels.reports_modal_alert_extension_txt}</span> ?
+							</p>
+						</div>
+						
+						<!---->
+						
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{reportsLabels.reports_modal_alert_btn_yes}"								
+								class="btn btn-dark form-draw-button" />
+								
+							<!---->
+							
+							<h:commandButton
+								value="#{reportsLabels.reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->
+							
+						</div>
+					 </div>
+				  </div>
+			  </div>
+			  
+			  <!---->
+							
+		</div>
+				
+		</h:form><!-- FORM TABLE END-->
+		
+		<!-- FORM -->	    
+	        				    
+	  <!-- ============================================================================================================================= -->	    
+		    		
+		<!-- LOADING MESSAGE: MENSAGEM DE CARREGAMENTO (ATIVADA ENQUANTO AS INFORMAÇÕES SÃO PROCESSADAS) -->
+							
+		<div id="loading"> 
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  <!-- ============================================================================================================================= -->
+	  
+	   <!-- VALIDATION ATTRIBUTES: VÁRIAVEIS DE ATRIBUIÇÃO QUE SERÃO ENVIADAS A UM ARQUIVO EXTERNO JS PARAR USO DE VALIDAÇÃO -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION  -->
+		 		   	 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->			  
+	     <input type="hidden" name="requiredEquipmentMsg" value="#{requiredMessages.required_sat_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENTS MESSAGE -->
+		 <input type="hidden" name="requiredMonthMsg" value="#{requiredMessages.required_sat_reports_select_months}" />
+		 <input type="hidden" name="requiredYearMsg" value="#{requiredMessages.required_sat_reports_select_years}" /> <!-- REQUIRED PERIODS MESSAGE -->
+			 
+		 </form> <!-- FORM VALIDATION END -->
+		 
+	  <!-- ============================================================================================================================= -->
+	
+	</ui:define>  <!-- MAIN CONTENT TEMPLATE COMPONENT END -->	
+				 
+</ui:composition> 	 <!-- MAIN TEMPLATE STRUCTURE END -->

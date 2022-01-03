@@ -25,8 +25,7 @@ import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class EquipmentsDAO {
 
-	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
+	private Connection conn;	
 	private PreparedStatement ps;
 	private ResultSet rs;	
 	
@@ -171,8 +170,9 @@ public class EquipmentsDAO {
 	}
 
 	// --------------------------------------------------------------------------------------------------------------
+	
 	/**
-	 * M�todo para listar equipamentos por módulo
+	 * Método para listar equipamentos por módulo
 	 * @author Wellington
 	 * @version 1.0
 	 * @since Release 1.0
