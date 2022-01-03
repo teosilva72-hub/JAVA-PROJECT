@@ -123,7 +123,7 @@ const TestCert = async (c) => {
     return
   let uri = `${c.address}:${c.port}/ws`
   try {
-    let request = new WebSocket(`wss://${uri}`, c.ws);
+    let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
     while (request.readyState == 0) {
       await new Promise(r => setTimeout(r, 100))
     }
