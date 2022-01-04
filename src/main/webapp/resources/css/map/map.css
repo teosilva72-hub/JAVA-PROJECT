@@ -90,6 +90,15 @@ body {
 	top: 0;
 }
 
+.background-zoomPoint {
+	width: 225.53px;
+    height: 225.53px;
+    position: absolute;
+    z-index: -1;
+    background-color: rgb(201, 209, 207);
+    border-radius: 100%;
+}
+
 [name$=-zoomPoint] {
 	animation: gradient 1s ease infinite;
 	border-radius: 100%;

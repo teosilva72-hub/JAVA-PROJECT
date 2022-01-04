@@ -481,6 +481,7 @@ public class EquipmentsBean implements Serializable {
 		String equipName = dao.equipmentName(equipId, equipTable);
 
 		SessionUtil.executeScript("$('#del-equip-name').html('"+equipName+"');");				 	 
+		SessionUtil.executeScript("clearLines();");				 	 
 
 	}
 
