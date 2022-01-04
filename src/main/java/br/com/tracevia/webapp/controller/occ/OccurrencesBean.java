@@ -1,7 +1,6 @@
 package br.com.tracevia.webapp.controller.occ;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,7 +47,6 @@ import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;

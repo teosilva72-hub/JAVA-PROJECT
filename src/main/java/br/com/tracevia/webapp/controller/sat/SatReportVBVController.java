@@ -203,11 +203,13 @@ public class SatReportVBVController {
 							writer.close();
 							
 							build.textBool = false;
-							
-							 SessionUtil.getExternalContext().getSessionMap().put("equip_", equip); 	
+																													
+							 SessionUtil.getExternalContext().getSessionMap().put("equip_", list.get(0).getName()); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("month_", month); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("year_", year); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("bytes", byteWriter.toByteArray()); 	
+							 
+							 SessionUtil.executeScript("alertOptions('#success', '"+locale.getStringKey("$message_reports_record_found")+"');");
 							
 							//long end = System.currentTimeMillis();
 							//System.out.println("Tempo de gravação: " + (end - begin));

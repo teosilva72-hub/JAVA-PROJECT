@@ -48,12 +48,27 @@
            
          <!-- NOME DO RELATÓRIO -->   
         
-	    <div class="text-dark text-center font-weight-bold w-25 mt-3" > <!-- REPORT NAME DIV --> 
-	       <h:outputText class="h4 " value="#{satLabels.via_paulista_vehicle_by_vehicle_title}" /> <!-- NAME LABEL -->
-	       <hr></hr> <!-- HORIZONTAL LINE -->
-	    </div> <!-- REPORT NAME DIV END -->
-	 
-	    <!----> 
+        <div class="row">
+		    <div class="float-left text-dark text-center font-weight-bold w-25 mt-3" > <!-- REPORT NAME DIV --> 
+		       <h:outputText class="h4 " value="#{satLabels.via_paulista_vehicle_by_vehicle_title}" /> <!-- NAME LABEL -->
+		       <hr></hr> <!-- HORIZONTAL LINE -->
+		    </div> <!-- REPORT NAME DIV END -->
+		 
+		    <!----> 
+		    
+		    <!-- INFO -->
+	   	    					
+		       <div class="mr-5 ml-auto">
+			 	   <h:commandButton  value="" class="fas fa-info-circle fa-2x mt-2 info-design" data-toggle="tooltip" 
+					  data-placement="bottom" title="#{reportsLabels.reports_btn_info}" widgetVar="fileWgt">
+					  <f:passThroughAttribute name="data-toggle" value="modal" />
+					  <f:passThroughAttribute name="data-target" value="#modalInfo" />
+					  <f:ajax execute="@form" render="@none" />
+	  			  </h:commandButton>
+	   		 </div>
+	   	</div>
+	   	
+	   	<!---->
          		
 		    <!-- PERIOD  -->
 		    
@@ -140,7 +155,7 @@
 				<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
 					id="btn-send" action="#{vbvReportBean.getTextFile}"
 					class="btn btn-dark form-draw-button submit-btn" /> <!-- SEND -->
-
+				
                 <!---->
 								
 				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
@@ -155,7 +170,7 @@
 							
 		   	<div class="row justify-content-center" >
 		       <div class="col-sm-12">
-			 	   <h:commandButton  value="" class="fas fa-file-alt fa-2x txt" data-toggle="tooltip" disabled="#{vbvReportBean.build.textBool}"
+			 	   <h:commandButton id="btnText" value="" class="fas fa-file-alt fa-2x txt" data-toggle="tooltip" disabled="#{vbvReportBean.build.textBool}"
 					  data-placement="bottom" title="#{reportsLabels.reports_btn_txt}" widgetVar="fileWgt">
 					  <f:passThroughAttribute name="data-toggle" value="modal" />
 					  <f:passThroughAttribute name="data-target" value="#modalDownload" />
@@ -165,8 +180,7 @@
 		   	</div>
 
 			<!---->
-			
-							
+										
 		</h:form><!-- FORM TABLE END-->
 		
 		<!---->	    
@@ -179,9 +193,13 @@
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
 					<div class="modal-dialog confirmation-modal">
 						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title modal-alert-title" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h5>
+							<div class="modal-header text-center">
+								<h4 class="modal-title w-100 font-weight-bold" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h4>
+								<button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
 							</div>
+							
 						<div class="modal-body">
 							<p class="modal-alert-msg">
 								#{reportsLabels.reports_modal_alert_download_file_message} <span
@@ -212,9 +230,304 @@
 				  </div>
 			  </div>
 			  
-			  <!---->			  
-		</h:form><!-- FILE FORM -->	
+			 </h:form> <!-- FILE FORM -->	
+			  
+			  <!---->	
+			  
+			  <div class="modal fade" id="modalInfo" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+					<div class="modal-dialog infoModal-conf">
+						<div class="modal-content">
+							<div class="modal-header text-center">
+								<h5 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{satLabels.$label_vbv_info_modal_title}</h5>
+								<button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							
+						<div class="modal-body">
+						
+						   <div class="row">
+							  <div class="col-sm-4">
+													
+								<div class="row"> <!-- SITE ID -->
+								   <div class="col text-dark text-center">
+					   				 <p> <strong>SiteID</strong>								  
+								       #{satLabels.$label_vbv_info_siteID}</p>
+								   </div>					
+								</div>
 								
+								<!---->
+								
+								<div class="row"> <!-- SEQUENCE ID -->
+								   <div class="col text-dark text-center">
+					   				  <p> <strong>SeqG</strong>								   
+								        #{satLabels.$label_vbv_info_seqG}</p>
+								   </div>					
+								</div>
+								
+								<!---->
+								
+								<div class="row"> <!-- SEQUENCE NUMBER -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>SeqN</strong>								
+								       #{satLabels.$label_vbv_info_seqN}</p>
+								   </div>					
+								</div>
+								
+								<!---->
+								
+								<div class="row"> <!-- DATETIME  -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Data</strong>
+								       #{satLabels.$label_vbv_info_dateTime}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- CLASS NAME -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Classe</strong>								  
+								       #{satLabels.$label_vbv_info_className}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- AXLE NUMBER -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>AxlNumber</strong>								  
+								       #{satLabels.$label_vbv_info_axlNumber}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+															
+								<div class="row"> <!-- AXLE 1 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl1W</strong>								   
+								       #{satLabels.$label_vbv_info_axl1W}</p>
+								   </div>					
+								</div>
+								
+								<!---->								
+															
+								<div class="row"> <!-- AXLE 2 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl2W</strong>								   
+								       #{satLabels.$label_vbv_info_axl2W}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+																							
+								<div class="row"> <!-- AXLE 3 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl3W</strong>
+								       #{satLabels.$label_vbv_info_axl3W}</p>
+								   </div>					
+								</div>
+								
+								<!---->																					
+								
+							</div> <!-- COL -->
+							
+							<div class="col-sm-4">
+							
+								<div class="row"> <!-- AXLE 4 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl4W</strong>								  
+								       #{satLabels.$label_vbv_info_axl4W}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+																						
+								<div class="row"> <!-- AXLE 5 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl5W</strong>								  
+								       #{satLabels.$label_vbv_info_axl5W}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+															
+								<div class="row"> <!-- AXLE 6 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl6W</strong>								   
+								      #{satLabels.$label_vbv_info_axl6W}</p>
+								   </div>					
+								</div>
+								
+								<!---->								
+															
+								<div class="row"> <!-- AXLE 7 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl7W</strong>								
+								       #{satLabels.$label_vbv_info_axl7W}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+																						
+								<div class="row"> <!-- AXLE 8 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl8W</strong>
+								       #{satLabels.$label_vbv_info_axl8W}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+																						
+								<div class="row"> <!-- AXLE 9 WEIGHT -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl9W</strong>								   
+								       #{satLabels.$label_vbv_info_axl9W}</p>
+								   </div>					
+								</div>
+								
+																	
+								<div class="row"> <!-- AXLE 2 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl2D</strong>								  
+								       #{satLabels.$label_vbv_info_axl2D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+																							
+								<div class="row"> <!-- AXLE 3 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl3D</strong>								   
+								      #{satLabels.$label_vbv_info_axl3D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+											
+								<div class="row"> <!-- AXLE 4 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl4D</strong>
+								       #{satLabels.$label_vbv_info_axl4D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+															
+						  </div>
+						  
+						  <!---->
+						  
+						  <div class="col-sm-4">
+						  
+						 		<div class="row"> <!-- AXLE 5 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl5D</strong>								   
+								       #{satLabels.$label_vbv_info_axl5D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- AXLE 6 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl6D</strong>								   
+								       #{satLabels.$label_vbv_info_axl6D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- AXLE 7 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl7D</strong>  								
+								       #{satLabels.$label_vbv_info_axl7D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- AXLE 8 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl8D</strong>								   									
+								       #{satLabels.$label_vbv_info_axl8D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- AXLE 9 DISTANCE -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Axl9D</strong>								  
+								       #{satLabels.$label_vbv_info_axl9D}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+															
+								<div class="row"> <!-- GROSS -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Gross</strong>								   
+								       #{satLabels.$label_vbv_info_gross}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row flex-nowrap"> <!-- TEMPERATURE -->
+								   <div class="col-12 text-dark text-center">
+					   				 <p><strong>Temperature</strong>
+					   				  #{satLabels.$label_vbv_info_temperature}</p>								    
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- SPEED -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Speed</strong>								  
+								       #{satLabels.$label_vbv_info_speed}</p>
+								   </div>					
+								</div>
+								
+								<!---->	
+								
+								<div class="row"> <!-- NUMBER LANES -->
+								   <div class="col text-dark text-center">
+					   				 <p><strong>Lane</strong>								  
+								       #{satLabels.$label_vbv_info_lane}</p>
+								   </div>					
+								</div>
+							
+							<!---->	
+						  
+						  </div>
+						  
+						  <!---->
+				
+					   </div><!-- ROW -->
+														
+					</div> <!-- BODY -->
+						
+					<!---->
+						
+						<div class="modal-footer">
+														
+							<h:commandButton
+								value="#{reportsLabels.reports_modal_alert_btn_exit}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+																					
+						</div>
+					 </div>
+				  </div>
+			  </div>
+			  
+			  <!---->
+			  													
 	</div><!---->
 	        				    
 	  <!-- ============================================================================================================================= -->	    
