@@ -357,9 +357,9 @@ const ChangeCarEvent = data => {
 
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
-		let units = await connectGPS('AllUnits')
 		replyPos()
 		insertZoomPoint()
+		let units = await connectGPS('AllUnits')
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm
