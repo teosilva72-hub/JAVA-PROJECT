@@ -652,8 +652,6 @@ function dragEquip() {
 			.on("mousemove", function (e) {
 				e.preventDefault();
 
-				console.log(elmnt);
-
 				// Calculate the new cursor position:
 				pos1 = pos3 - e.clientX;
 				pos2 = pos4 - e.clientY;
@@ -1283,7 +1281,7 @@ $("#darkmode").change(function() {
 		$('#fulldiv3').css('color','#b3b3b3')
 
 	} else {
-		$('body, html, #content').css('background-color', 'rgb(201, 209, 207)')
+		$('body, html, #content, .background-zoomPoint').css('background-color', 'rgb(201, 209, 207)')
 		  val.attr('src', val.attr('light'))
 		 
 	      frame1.attr('src', frame1.attr('light'))

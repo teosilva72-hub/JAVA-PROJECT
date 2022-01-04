@@ -85,7 +85,7 @@ const openModalGPS = () => {
 const fillEquips = name => {
 	let zoom = $(`[name=${name}]`)
 	let radius = zoom.width() / 2
-	zoom.children().filter(':not(img)').remove()
+	zoom.children().filter(':not(img, .background-zoomPoint)').remove()
 	$('.equip-box, .equip-info, .equip-box-sat').each((idx, item) => {
 		item = $(item).clone()
 
@@ -145,7 +145,7 @@ const zoomRoadPoint = name => {
 	
 	let pos = posZoom[name]
 
-	zoom.css({
+	let width = zoom.css({
 		position: "absolute",
 		left: pos.start.x + (pos.end.x - pos.start.x) / 2,
 		top: pos.start.y + (pos.end.y - pos.start.y) / 2,
@@ -153,8 +153,11 @@ const zoomRoadPoint = name => {
 		display: "block",
 		overflow: "hidden",
 		"z-index": 1
+	}).children().eq(1).css("height", "100%").css(`width`)
+	zoom.children().first().css({
+		height: width,
+		width: width
 	})
-	zoom.children().first().css("height", "100%")
 
 	fillEquips(name)
 }
@@ -354,9 +357,9 @@ const ChangeCarEvent = data => {
 
 const initGPS = async ({ callback_gps = callback_gps_default, debug = false } = {}) => {
     $(async function () {
-		let units = await connectGPS('AllUnits')
 		replyPos()
 		insertZoomPoint()
+		let units = await connectGPS('AllUnits')
 
 		for (const item of units.items) {
 			idGps[item.id] = item.nm

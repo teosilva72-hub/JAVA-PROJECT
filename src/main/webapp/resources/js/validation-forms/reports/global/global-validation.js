@@ -60,7 +60,7 @@ $(function () {
           }
         }
 
-        let check = date.toLocaleDateString() == value && timestamp < Date.now() && range && maxRange
+        let check = date.toLocaleDateString().startsWith(value) && timestamp < Date.now() && range && maxRange
 
         return this.optional(element) || check;
     };
