@@ -27,12 +27,12 @@
 		 sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
 		 sosLabels.call_statistics_call_duration_column, sosLabels.call_statistics_call_operator_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; e.name; IFNULL(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; ``, DATE_FORMAT(s.start_date, `%H:%i:%s`), 0), ` --- `); 
-	    IFNULL(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, DATE_FORMAT(s.answered_date, `%H:%i:%s`), NULL), ` --- `);
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y %H:%i:%s`) as sd; e.name; IFNULL(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date is not null, DATE_FORMAT(s.start_date, `%H:%i:%s`), null), ` --- `); 
+	    IFNULL(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date is not null, DATE_FORMAT(s.answered_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 3 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 5 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 6 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
-	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; ``, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
+	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; null, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
 	    IFNULL(s.user, ` --- `)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		

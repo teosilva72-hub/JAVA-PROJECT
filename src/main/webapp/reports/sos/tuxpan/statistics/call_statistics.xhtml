@@ -23,20 +23,14 @@
 	    <!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('sos_calls s')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('s.equip_id')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column, sosLabels.global_equipment_column,
-		 sosLabels.call_statistics_call_received_column, sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column,
-		 sosLabels.global_total_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s', sosLabels.global_date_column, sosLabels.global_datetime_column,
+		 sosLabels.call_statistics_call_received_column, sosLabels.call_statistics_call_answered_column, sosLabels.call_statistics_call_ended_column, sosLabels.call_statistics_call_missed_column, sosLabels.call_statistics_call_error_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; TIME($period)@sd; e.name; IFNULL(ROUND(SUM(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; `` , 1, 0)),0),0); 
-	    IFNULL(ROUND(SUM(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; `` , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(s.state_id = 3 , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(s.state_id = 5 , 1, 0)),0),0);
-	    IFNULL(ROUND(SUM(IF(s.state_id = 6 , 1, 0)),0),0);
-	    SUM(IFNULL(ROUND(IF((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date &lt;&gt; `` , 1, 0),0),0) + 
- 		IFNULL(ROUND(IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; `` , 1, 0),0),0) + 
-		IFNULL(ROUND(IF(s.state_id = 3 , 1, 0),0),0) +
- 		IFNULL(ROUND(IF(s.state_id = 5 , 1, 0),0),0) +
- 		IFNULL(ROUND(IF(s.state_id = 6 , 1, 0),0),0))')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(s.start_date, `%d/%m/%Y`) as sd; TIME($period)@sd; IFNULL(SUM((s.state_id = 3 OR s.state_id = 5 OR s.state_id = 6) AND s.start_date is not null),0); 
+	    IFNULL(SUM((s.state_id = 3 OR s.state_id = 6) AND s.answered_date is not null),0);
+	    IFNULL(SUM(s.state_id = 3),0);
+	    IFNULL(SUM(s.state_id = 5) ,0);
+	    IFNULL(SUM(s.state_id = 6) ,0)')}" />
 	    
 	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
 	    
@@ -134,19 +128,17 @@
 	      <tr>
 	        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(0)}</th>
 	        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(1)}</th>
-	        <th rowspan="2" class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>
 	        <th colspan="6" class="custom-table-header" >#{sosLabels.call_statistics_numbers_calls_master_column}</th> <!-- SUB HEADER -->      
 	      </tr>
 	      
 	      <!-- Second Level -->
 	      
 	      <tr>	      
+	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(2)}</th>     
 	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(3)}</th>  
 	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(4)}</th> 
 	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(5)}</th> 
 	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(6)}</th> 
-	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(7)}</th> 
-	        <th class="custom-table-header" >#{reportBean.columnsInUse.get(8)}</th>      
 	      </tr>
 	      
 	     </f:facet> <!---->	

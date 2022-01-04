@@ -673,25 +673,6 @@ async function initPhone() {
             }
         },
 
-        requestSecondaryAudio : async () => {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const audioDevices = devices.filter(device => device.kind === 'audiooutput');
-
-            let msg = "Selecione um dispositivo como um segundo audio\n\n0: Nenhum\n";
-
-            for (device in audioDevices)
-                msg += `${Number(device) + 1}: ${audioDevices[device].label}\n`
-
-                
-            try {
-                let response = Number(prompt(msg))
-                if (response)
-                    localStorage.setItem('deviceOutput', audioDevices[response - 1].label)
-                else
-                    localStorage.setItem('deviceOutput', "unselected")
-            } catch {}
-        },
-
         ping : async (sip, secs) => {
 			await sleep(secs * 1000);
 			let pong = await connectSOS(`Ping;${sip}`);
@@ -774,9 +755,6 @@ async function initPhone() {
         ctxSip.setStatus("Ready");
 
         ctxSip.hasSecondaryAudio = localStorage.getItem("deviceOutput");
-
-        if (!ctxSip.hasSecondaryAudio)
-            ctxSip.requestSecondaryAudio()
 
         // Get the userMedia and cache the stream
         if (SIP.WebRTC.isSupported()) {
