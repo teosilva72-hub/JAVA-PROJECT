@@ -154,7 +154,7 @@ const zoomRoadPoint = name => {
 		overflow: "hidden",
 		"z-index": 1
 	})
-	zoom.children().first().css("height", "100%")
+	zoom.children().eq(1).css("height", "100%")
 
 	fillEquips(name)
 }

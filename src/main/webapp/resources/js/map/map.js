@@ -1248,7 +1248,7 @@ $("#darkmode").change(function() {
 	let frame3 = $($("#frame3")[0].contentWindow.document).find("#zoomtext img")	
 	
 	if($(this).prop("checked")) {
-		$('body, html, #content, .background-zoomPoint').css('background-color', '#0B0D19')
+		$('body, html, #content').css('background-color', '#0B0D19')
 		 
 	      val.attr('light', val.attr('src'))
           frame1.attr('light', val.attr('src'))
