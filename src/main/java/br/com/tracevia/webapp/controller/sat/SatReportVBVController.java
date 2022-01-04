@@ -142,7 +142,7 @@ public class SatReportVBVController {
 				 String month = parameterMap.get("month"); // MONTH				
 				 String year = parameterMap.get("year"); // YEAR
 				 
-				 System.out.println(equip);
+				 //System.out.println(equip);
 				 
 				 int yr = Integer.parseInt(year);
 				 int mth = Integer.parseInt(month);
@@ -237,6 +237,19 @@ public class SatReportVBVController {
 		
 		}		
 	 
-	 // -----------------------------------------------------------------------------------------------------------------------------------------------------     
+	 // -----------------------------------------------------------------------------------------------------------------------------------------------------   
+	 
+	 public void resetForm() {
+		 
+		 SessionUtil.getExternalContext().getSessionMap().remove("equip_"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("month_"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("year_"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("bytes"); 	
+		 
+		 build = new ReportBuild();
+		 
+	 }
+	 
+	 // -----------------------------------------------------------------------------------------------------------------------------------------------------  
 		
   }

@@ -66,9 +66,9 @@ public class VehicleByVehicleDAO {
 			ps.setString(1, startDate);
 			ps.setString(2, endDate);
 			ps.setString(3, equipId);
-			
-			rs = ps.executeQuery();
 							
+			rs = ps.executeQuery();
+									
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 

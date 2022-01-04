@@ -54,18 +54,18 @@
 	    </div> <!-- REPORT NAME DIV END -->
 	 
 	    <!----> 
-         
-     	<!-- FORM -->
-
-		<h:form name="vbv-form" id="vbv-form">
-		
+         		
 		    <!-- PERIOD  -->
 		    
 			<h:inputHidden value="month" id="period" name="period" />
 			
 			<!---->
 				
-			<div class="container top-15-vh">						
+			<div class="container top-15-vh">		
+			
+			 <!-- FORM -->
+
+		      <h:form name="vbv-form" id="vbv-form">				
 			
 				<div class="row justify-content-center">
 				
@@ -144,7 +144,7 @@
                 <!---->
 								
 				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
-					id="btn-reset" immediate="true" type="reset"
+					id="btn-reset" immediate="true" type="reset" action="#{vbvReportBean.resetForm}"
 					class="btn btn-dark form-draw-button ml-2 reset-btn" />	<!-- RESET -->				
 			
 			</div>
@@ -165,8 +165,15 @@
 		   	</div>
 
 			<!---->
+			
+							
+		</h:form><!-- FORM TABLE END-->
 		
-			<!-- MODAL DOWNLOAD -->		
+		<!---->	    
+		
+		 <!-- MODAL DOWNLOAD -->	
+							
+		  <h:form id="form-file"> <!-- FILE FORM --> 
 				
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
@@ -187,7 +194,7 @@
 						<div class="modal-footer">
 							<h:commandButton p:onclose="download"
 								value="#{reportsLabels.reports_modal_alert_btn_yes}"								
-								class="btn btn-dark form-draw-button" />
+								class="btn btn-dark form-draw-button" action="#{vbvReportBean.downloadFile}" />
 								
 							<!---->
 							
@@ -205,13 +212,10 @@
 				  </div>
 			  </div>
 			  
-			  <!---->
-							
-		</div>
-				
-		</h:form><!-- FORM TABLE END-->
-		
-		<!-- FORM -->	    
+			  <!---->			  
+		</h:form><!-- FILE FORM -->	
+								
+	</div><!---->
 	        				    
 	  <!-- ============================================================================================================================= -->	    
 		    		
