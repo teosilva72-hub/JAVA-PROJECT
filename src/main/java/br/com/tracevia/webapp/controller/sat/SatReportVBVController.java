@@ -3,7 +3,6 @@ package br.com.tracevia.webapp.controller.sat;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -46,6 +45,8 @@ public class SatReportVBVController {
 	
 	LocaleUtil locale;
 	
+	String equip, month, name, year; // FIELDS
+		
 	// --------------------------------------------------------------------------------------------------------------
 	
 	private final String errorFolder = SystemLog.ERROR.concat("vbv-bean\\");
@@ -90,7 +91,39 @@ public class SatReportVBVController {
 	public void setBuild(ReportBuild build) {
 		this.build = build;
 	}
+	
+	public String getEquip() {
+		return equip;
+	}
 
+	public void setEquip(String equip) {
+		this.equip = equip;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
 	@PostConstruct
 	public void initializer() {
 		
@@ -127,6 +160,8 @@ public class SatReportVBVController {
 	// -----------------------------------------------------------------------------------------------------------------------------------------------------     
 		
 	 public void getTextFile() {
+		 
+		 TranslationMethods tm = new TranslationMethods(); // Translation Methods
 		 		 
 		 try {
 			 
@@ -138,12 +173,10 @@ public class SatReportVBVController {
 			 			 
 				 Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
 				
-				 String equip = parameterMap.get("equip"); // EQUIP	 
-				 String month = parameterMap.get("month"); // MONTH				
-				 String year = parameterMap.get("year"); // YEAR
-				 
-				 //System.out.println(equip);
-				 
+				 equip = parameterMap.get("equip"); // EQUIP	 
+				 month = parameterMap.get("month"); // MONTH				
+				 year = parameterMap.get("year"); // YEAR
+								 
 				 int yr = Integer.parseInt(year);
 				 int mth = Integer.parseInt(month);
 				 
@@ -203,14 +236,18 @@ public class SatReportVBVController {
 							writer.close();
 							
 							build.textBool = false;
+							
+							// SEND TO FRONT END							
+							 name = list.get(0).getName();
+							 month = tm.monthComparison(Integer.parseInt(month));
+							 
+							 SessionUtil.executeScript("$('#label').removeClass('d-none')"); // SHOW LABEL
 																													
-							 SessionUtil.getExternalContext().getSessionMap().put("equip_", list.get(0).getName()); 	
+							 SessionUtil.getExternalContext().getSessionMap().put("name_", name); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("month_", month); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("year_", year); 	
 							 SessionUtil.getExternalContext().getSessionMap().put("bytes", byteWriter.toByteArray()); 	
-							 
-							 SessionUtil.executeScript("alertOptions('#success', '"+locale.getStringKey("$message_reports_record_found")+"');");
-							
+													
 							//long end = System.currentTimeMillis();
 							//System.out.println("Tempo de gravação: " + (end - begin));
 														
@@ -230,12 +267,12 @@ public class SatReportVBVController {
 	
 	 public void downloadFile() throws Exception {
 		 		 	
-		 	String siteName = (String) SessionUtil.getExternalContext().getSessionMap().get("equip_");
+		 	String name = (String) SessionUtil.getExternalContext().getSessionMap().get("name_");
 		 	String month = (String) SessionUtil.getExternalContext().getSessionMap().get("month_");
-		 	String year = (String) SessionUtil.getExternalContext().getSessionMap().get("year_");
+		    String year = (String) SessionUtil.getExternalContext().getSessionMap().get("year_");
 		 	byte[] bytes = (byte[]) SessionUtil.getExternalContext().getSessionMap().get("bytes");
 		 
-		    build.downloadTextFile(siteName, month, year, bytes);
+		    build.downloadTextFile(name, month, year, bytes);
 		
 		}		
 	 
@@ -243,13 +280,23 @@ public class SatReportVBVController {
 	 
 	 public void resetForm() {
 		 
-		 SessionUtil.getExternalContext().getSessionMap().remove("equip_"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("name_"); 	
 		 SessionUtil.getExternalContext().getSessionMap().remove("month_"); 	
-		 SessionUtil.getExternalContext().getSessionMap().remove("year_"); 	
-		 SessionUtil.getExternalContext().getSessionMap().remove("bytes"); 	
+		 SessionUtil.getExternalContext().getSessionMap().remove("year_");
+		 SessionUtil.getExternalContext().getSessionMap().remove("bytes");
 		 
-		 build = new ReportBuild();
+		// build = new ReportBuild();
+		 byteWriter = new ByteArrayOutputStream();
+		 writer = null;
 		 
+		 equip = null;
+		 name = null;
+		 month = null;
+		 year = null;
+		 		 
+		 build.textBool = true;
+		 		 
+		 SessionUtil.executeScript("$('#label').addClass('d-none')");
 	 }
 	 
 	 // -----------------------------------------------------------------------------------------------------------------------------------------------------  

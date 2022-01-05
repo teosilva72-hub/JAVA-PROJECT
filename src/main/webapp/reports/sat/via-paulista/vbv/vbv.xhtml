@@ -26,8 +26,8 @@
 		
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 	    <h:outputScript library="js/validation-forms/reports/sat" name="vbv-validation.js" />
-	    <h:outputScript library="js/alert" name="alerts.js" />
-				
+	    <h:outputScript library="js/alert" name="alerts.js" />	  	   
+	  	    				
 	   <!---->
 	
 	</ui:define> <!-- HEAD TEMPLATE COMPONENT - END --> 
@@ -69,18 +69,16 @@
 	   	</div>
 	   	
 	   	<!---->
-         		
-		    <!-- PERIOD  -->
-		    
-			<h:inputHidden value="month" id="period" name="period" />
+	   	
+	   	<label id="label" class="text-dark d-none"><strong>#{vbvReportBean.name}</strong> #{vbvReportBean.month} #{vbvReportBean.year}</label>	<!-- EQUIP INFORMATION LABEL -->
+	   	
+	   	<!---->
+	   						
+			<div class="container top-15-vh"> <!-- CONTAINER DIV -->	
 			
-			<!---->
-				
-			<div class="container top-15-vh">		
-			
-			 <!-- FORM -->
+			 <!-- FORM --> 		
 
-		      <h:form name="vbv-form" id="vbv-form">				
+		      <h:form name="vbv-form" id="vbv-form">		          
 			
 				<div class="row justify-content-center">
 				
@@ -157,11 +155,12 @@
 					class="btn btn-dark form-draw-button submit-btn" /> <!-- SEND -->
 				
                 <!---->
-								
-				<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
-					id="btn-reset" immediate="true" type="reset" action="#{vbvReportBean.resetForm}"
-					class="btn btn-dark form-draw-button ml-2 reset-btn" />	<!-- RESET -->				
-			
+						
+				<h:commandButton value="Reset" action="#{vbvReportBean.resetForm}" immediate="true"
+					id="btn-reset" class="btn btn-dark form-draw-button ml-2 reset-btn">
+                   	  <f:ajax render="btnText" resetValues="true"/> <!-- RESET -->	
+                </h:commandButton>		
+						
 			</div>
 
 			<!---->
@@ -180,19 +179,17 @@
 		   	</div>
 
 			<!---->
-										
+			
 		</h:form><!-- FORM TABLE END-->
 		
-		<!---->	    
+		<!---->
 		
-		 <!-- MODAL DOWNLOAD -->	
-							
-		  <h:form id="form-file"> <!-- FILE FORM --> 
-				
+		 <!-- MODAL DOWNLOAD -->
+								
 			<div class="modal fade" id="modalDownload" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">
 					<div class="modal-dialog confirmation-modal">
-						<div class="modal-content">
+						<h:form class="modal-content">
 							<div class="modal-header text-center">
 								<h4 class="modal-title w-100 font-weight-bold" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h4>
 								<button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
@@ -211,7 +208,7 @@
 						
 						<div class="modal-footer">
 							<h:commandButton p:onclose="download"
-								value="#{reportsLabels.reports_modal_alert_btn_yes}"								
+								value="#{reportsLabels.reports_modal_alert_btn_yes}"							
 								class="btn btn-dark form-draw-button" action="#{vbvReportBean.downloadFile}" />
 								
 							<!---->
@@ -226,13 +223,11 @@
 							<!---->
 							
 						</div>
-					 </div>
+					 </h:form>
 				  </div>
 			  </div>
-			  
-			 </h:form> <!-- FILE FORM -->	
-			  
-			  <!---->	
+						  
+			  <!---->
 			  
 			  <div class="modal fade" id="modalInfo" tabindex="-1"
 				aria-labelledby="downloadModalLabel" aria-hidden="true">

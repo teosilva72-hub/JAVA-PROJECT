@@ -174,7 +174,6 @@
 
 /* --------------------------------------------- */
 
-
 /**
 * Estilo para definir a largura da modal de informações.
 *
@@ -185,5 +184,19 @@
 */
 .infoModal-conf { 
 	max-width: 75vw;
-
 }
+
+/**
+* Estilo para definir um espaço a esquerda 
+* para o label de descrição do relatório.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+*/
+label#label{
+	margin-left: 8%;	
+}
+	
+/* --------------------------------------------- */

@@ -68,11 +68,11 @@ public class VehicleByVehicleDAO {
 			ps.setString(2, endDate);
 			ps.setString(3, equipId);
 			
-			System.out.println(startDate+"\n"+endDate+"\n"+equipId);
+			//System.out.println(startDate+"\n"+endDate+"\n"+equipId);
 							
 			rs = ps.executeQuery();
 			
-			System.out.println(query);
+			//System.out.println(query);
 									
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
