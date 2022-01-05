@@ -69,6 +69,7 @@ body{
 	
 .presAtm{
 	color: white;
+	background-size: cover;
 	background: url('/resources/images/estacao/presAtv.gif') 0 0 no-repeat;
 }
 .select-field select:focus
@@ -96,11 +97,12 @@ body{
 }
 .temperatura{
 	background: url('/resources/images/estacao/sol.gif') 0 0 no-repeat;
-
+	background-size: cover;
 	color: white;
 }
 .umidade{
 	background: url('/resources/images/estacao/gota.gif') 0 0 no-repeat;
+	background-size: cover;
 	color: white;
 }
 
@@ -124,23 +126,25 @@ body{
 
 .velocVento{
 	background: url('/resources/images/estacao/velcVento.gif') 0 0 no-repeat;
+	background-size: cover;
 	color: black;
 }
 .taxaPrecip{
 	background: url('/resources/images/estacao/atmosfera.gif') 0 0 no-repeat;
+	background-size: cover;
 	color: white;
 }
 .visibility{
 	width:100%;
 	background: url('/resources/images/estacao/visibilidade.gif') 0 0 no-repeat;
+	background-size: cover;
 	color: white;
-    background-size: cover;
 }
 .energia{
     width:100%;
 	background: url('/resources/images/estacao/energia.gif') 0 0 no-repeat;
-	color: white;
 	background-size: cover;
+	color: white;
 }
 
 /* custom style for types (input, select) */
@@ -262,3 +266,10 @@ body{
 }
 
 
+.panel-card {
+	display: none;
+}
+
+.panel-card.on {
+	display: block;
+}

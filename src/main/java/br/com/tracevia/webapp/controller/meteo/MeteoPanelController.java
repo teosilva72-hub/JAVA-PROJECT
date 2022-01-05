@@ -109,7 +109,7 @@ public class MeteoPanelController {
 		
 			for (Equipments e : listEquips.getMeteoList()) {
 					SelectItem s = new SelectItem();
-						s.setValue(e.getEquip_id());
+						s.setValue(String.format("%s%s", e.getTable_id(), e.getEquip_id()));
 						s.setLabel(e.getNome());
 					
 						equipments.add(s);		

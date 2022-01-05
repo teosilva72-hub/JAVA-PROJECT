@@ -74,6 +74,9 @@ const init = () => {
 
 		if (window.initGPS)
 			initGPS();
+
+		if (window.initMeteo)
+			initMeteo();
 	})
 }
 
