@@ -65,8 +65,10 @@ const initMeteo = async ({ callback_meteo = callback_meteo_default, debug = fals
 
 $(() => {
     $('.select-field.meteo select').change(function (e) {
-        $('.panel-card.custom').attr('for', $(this).val())
-        $('.stationName.meteo').text($(this).text())
+        let target = e.target
+        $('.panel-card.custom').attr('for', target.value)
+        $('.stationName.meteo').text(target.options[target.selectedIndex].innerText)
+        set_values()
     }).trigger('change')
 })
 
