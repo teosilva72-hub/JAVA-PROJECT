@@ -130,7 +130,7 @@
 /* --------------------------------------------- */
 
 /**
-* Estilo para corrigir posicionamento do label.
+* Estilo para corrigir posicionamento do error label.
 *
 * @author Wellington
 * @date 03/01/2022
@@ -140,3 +140,63 @@
 .error-label {
 	margin-top: 5px !important;
 }
+
+/* --------------------------------------------- */
+
+/**
+* Estilo que define uma cor para o botão de informações.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+* @colorDef custom blue
+*/
+.info-design {
+	color: #006cac;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo que muda a cor do botão de informações 
+* ao passar com mouse por cima do mesmo.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+* @colorDef DodgerBlue
+*/
+.info-design:hover{
+	color: #1E90FF;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para definir a largura da modal de informações.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.infoModal-conf { 
+	max-width: 75vw;
+}
+
+/**
+* Estilo para definir um espaço a esquerda 
+* para o label de descrição do relatório.
+*
+* @author Wellington
+* @date 04/01/2022
+* @version 1.0
+* @since 1.0
+*/
+label#label{
+	margin-left: 8%;	
+}
+	
+/* --------------------------------------------- */
