@@ -16,9 +16,8 @@ const set_values = () => {
     let panel = $('.panel-card').removeClass('on')
     for (const [k, v] of Object.entries(lastUpgrade)) {
         let equip = panel.filter(`[for=${k}]`);
-        for (const [k2, v2] of Object.entries(v)) {
+        for (const [k2, v2] of Object.entries(v))
             equip.filter(`.${k2}`).addClass('on').find('card-value').text(v2)
-        }
     }
 }
 
@@ -63,5 +62,11 @@ const initMeteo = async ({ callback_meteo = callback_meteo_default, debug = fals
 		consumeMeteo({ callback_meteo, debug });
 	});
 }
+
+$(() => {
+    $('.select-field-meteo #equip option').change(function (e) {
+        $('.panel-card.custom').attr('for', $(this).val())
+    }).trigger('change')
+})
 
 window.initMeteo = initMeteo

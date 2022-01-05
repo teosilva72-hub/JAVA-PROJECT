@@ -39,12 +39,11 @@
 					<div class="row line">
 						<!-- Inicio barra de pesquisa -->
 							<div class="col-sm">
-								<div class="select-field">																
+								<div class="select-field-meteo">																
 									<span><i class="fas fa-hdd"></i></span>	
 									<span for="equip"
 										class="valid-icon-hidden"></span> 							    					    
-									<select name="equip" id="equip">	
-									  <option value="" >#{reportsLabels.reports_select_equipment}</option>																	      
+									<select name="equip" id="equip">																	      
 										<ui:repeat var="eqp"  value="#{meteoPanelBean.equipments}"  varStatus="eqpStatus" >
 											<option value="#{eqp.value}">#{eqp.label}</option>	                                  
 		                                </ui:repeat> 
@@ -69,7 +68,7 @@
 				<div class="cardContainer">	
 		  			<!-- Inicio da primeira grid-->
 					<div class="row line">
-				    	<div class="col panel-card">
+				    	<div class="col panel-card custom">
 				    		<!-- Inicio do card 1 -->
 				     		<div class="card">
 								<div class="card-body presAtm">
@@ -79,7 +78,7 @@
 							</div>
 							<!-- Final do card 1 -->
 				    	</div>
-				    	<div class="col panel-card Temperature">
+				    	<div class="col panel-card custom Temperature">
 				     		 <!-- Inicio do card 2-->
 				     		<div class="card">
 								<div class="card-body temperatura">
@@ -92,7 +91,7 @@
 							</div>
 							<!-- Final do card 2-->
 				    	</div>
-				    	<div class="col panel-card PrecipitationAbsolute">
+				    	<div class="col panel-card custom PrecipitationAbsolute">
 				      		<!-- Inicio do card 3 -->
 				     		<div class="card">
 								<div class="card-body taxaPrecip">
@@ -102,7 +101,7 @@
 							</div>
 							<!-- Final do card 3 -->
 				    	</div>
-				    	<div class="col panel-card RelativeHumidity">
+				    	<div class="col panel-card custom RelativeHumidity">
 				     		 <!-- Inicio do card 4 -->
 				     		<div class="card">
 								<div class="card-body umidade">
@@ -112,7 +111,7 @@
 							</div>
 							<!-- Final do card 4 -->
 				    	</div>
-				    	<div class="col panel-card WindSpeed">
+				    	<div class="col panel-card custom WindSpeed">
 				     		 <!-- Inicio do card 5 -->
 				     		<div class="card bussolaMaxHei py-1">
 								<div class="card-body textBuss bussola">
@@ -126,7 +125,7 @@
 							</div>
 							<!-- Final do card 5 -->
 				    	</div>
-				    	<div class="col panel-card WindSpeed">
+				    	<div class="col panel-card custom WindSpeed">
 				      		<!-- Inicio do card 6 -->
 				     		<div class="card">
 								<div class="card-body velocVento">
@@ -139,7 +138,7 @@
 							</div>
 							<!-- Final do card 6 -->
 				    	</div>				    		
-				    	<div id="card-road-temp" class="col panel-card RoadTemperature" >
+				    	<div id="card-road-temp" class="col panel-card custom RoadTemperature" >
 				     		 <!-- Inicio do card 8 -->
 				     		<div class="card">
 								<div class="card-body road-temperature">
@@ -152,7 +151,7 @@
 							<!-- Final do card 8 -->
 				    	</div>
 				    	
-				    	<div class="col panel-card Visibility">
+				    	<div class="col panel-card custom Visibility">
 				     		 <!-- Inicio do card 9 -->
 				     		<div class="card visibility maxHeight">
 								<div class="card-body">
@@ -162,7 +161,7 @@
 							</div>
 							<!-- Final do card 9 -->
 				    	</div>
-				    	<div class="col panel-card">
+				    	<div class="col panel-card custom">
 				      		<!-- Inicio do card 10 -->
 				     		<div class="card energia">
 								<div class="card-body">
