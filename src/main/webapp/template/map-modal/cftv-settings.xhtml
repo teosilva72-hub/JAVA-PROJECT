@@ -137,7 +137,7 @@
 			
 			<h:form prependId="false" id="id-cftv">
 				<h:commandButton id="send-cftv-id" style="display:none">
-					<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" listener="#{CftvCam.searchCftv}" />
+					<f:ajax execute="@form" render=":id-cftv :img-cftv-cam" listener="#{CftvCam.searchCftv}" onevent="cftvEventCert" />
 				</h:commandButton>
 					<h:inputHidden value="#{CftvCam.id}" id="cftvId"></h:inputHidden>
 			</h:form>
