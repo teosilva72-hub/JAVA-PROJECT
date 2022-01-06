@@ -132,7 +132,7 @@ const TestCert = async (c) => {
       if (request.readyState > 1) {
         window.open(`https://${uri}`);
       }
-    }
+    } 
   } catch (e) {
     window.open(`https://${uri}`);
   }
