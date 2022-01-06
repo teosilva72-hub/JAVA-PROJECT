@@ -119,9 +119,9 @@ body{
 	top: -10px;	
 }
 
-.ponteiro{
+.card-ponteiro{
 	width: 120px;
-	
+	transition: all 1s;
 }
 
 .velocVento{

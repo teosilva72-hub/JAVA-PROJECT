@@ -80,7 +80,7 @@ const callback_image = response => {
 	let toast = notify.find(".toast:last")
 	let img = toast.find("img")
 
-    img.attr("src", `data:image/jpg;base64, ${response.body}`).filter(".searchDai").click(alert_click)
+    img.attr("src", `data:image/jpg;base64, ${response.body}`).filter(".searchDai")// .click(alert_click)
 
 	toast.find(".toast-header").on("mousedown", move_dai)
 	toast.find(".close").click(() => { toast.remove() })
