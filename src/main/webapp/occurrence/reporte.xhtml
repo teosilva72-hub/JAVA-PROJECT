@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/template/dashboard-rov-layout.xhtml">
+	<!-- MAIN TEMPLATE STRUCTURE END -->
+
+
+
+	<ui:define name="head">
+		<!-- HEAD TEMPLATE COMPONENT --> 
+	
+	
+	</ui:define>
+
+	<!---->
+
+	<ui:define name="main-content">
+		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
+
+
+
+
+			<form>
+				<!-- Alert evento -->
+				<div class="alert alert-dark confAlert" role="alert">
+					<h5 class="text-center confTextAlert">Evento</h5>
+				</div>
+			</form>
+		
+				<!-- tipo occ -->
+	
+			<form>
+
+				<div class="form-group row">
+					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PLAZA DE COBRO:</em> 
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">FOLIOSEQUENCIAL:</em> 
+						 <h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+						 <em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">REPORTE:</em> 
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+				</div>
+			</form>
+			<form>
+
+			<div class="form-group row">
+				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PSINIESTRE: </em>
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P FECHA: </em> 
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P HORA: </em> 
+					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+						
+				</div>
+
+			</form>
+			<form>
+				<div class="form-group row">
+					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">DIRECCIÓN Y/O TRAYECTORIAE:</em> 
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO DE REGISTRO:</em>
+					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO INICIAL:</em> 
+						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+				</div>
+			</form>
+			<form>
+				<div class="form-group row">
+					<label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
+						FINAL:</label> <input type="text" id="colFormLabelSm" /> <label
+						for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
+						INICIAL:</label> <input type="text" id="colFormLabelSm" /> <label
+						for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">POLIZA
+						POR AFECTAR:</label> <input type="text" id="colFormLabelSm" />
+				</div>
+			</form>
+
+			<form>
+
+				<div class="form-group row">
+					<label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">HORA DE
+						REGISTRO A CABINA:</label> <input type="text" id="colFormLabelSm" /> <label
+						for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">HORA DE
+						ARRIBO DE AJUSTADOR </label> <input type="text" id="colFormLabelSm" /> <label
+						for="">VEHICULOS INVOLUCRADOS :</label> <input type="text" id="" />
+				</div>
+			</form>
+			<form>
+				<div class="form-group row">
+					<label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">MARCA:</label> <input
+						type="text" id="colFormLabelSm" /> <label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">TIPO :</label> <input
+						type="text" id="colFormLabelSm" /> <label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">MODELO:</label>
+					<input type="text" id="colFormLabelSm" />
+
+				</div>
+
+			</form>
+			<form>
+				<div class="form-group row">
+					<label for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">COLOR :</label>
+					<input type="text" id="colFormLabelSm" /> <label
+						for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">PLACA/ESTADO:</label>
+					<input type="text" id="colFormLabelSm" /> <label
+						for="colFormLabelSm"
+						class="col-sm-2 col-form-label col-form-label-sm">TELEFÓNO
+						:</label> <input type="text" id="colFormLabelSm" />
+
+				</div>
+			</form>
+
+
+	</ui:define>
+	<!-- MAIN CONTENT TEMPLATE COMPONENT END -->
+
+</ui:composition>
+<!-- MAIN TEMPLATE STRUCTURE END -->
