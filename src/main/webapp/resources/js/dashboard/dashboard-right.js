@@ -121,17 +121,19 @@ getCred('digifort');
 const TestCert = async (c) => {
   if (c.name == "null" || location.protocol == "http:")
     return
-  let uri = `${c.address}:${c.port}/ws`
+  let uri = ''
   try {
-    let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
-    while (request.readyState == 0) {
-      await new Promise(r => setTimeout(r, 100))
+    if (c.ws != "http") {
+      uri = `${c.address}:${c.port}/ws`
+      let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
+      while (request.readyState == 0) {
+        await new Promise(r => setTimeout(r, 100))
+      }
+      if (request.readyState > 1) {
+        window.open(`https://${uri}`);
+      }
     }
-    if (request.readyState > 1 && c.ws != "digi") {
-      window.open(`https://${uri}`);
-    }
-  }
-  catch {
+  } catch (e) {
     window.open(`https://${uri}`);
   }
 }
