@@ -14,7 +14,7 @@
 
                 <c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
                     <c:choose>
-                        <c:when test="#{item.table_id eq 'dms'}">					              
+                        <c:when test="#{loadItem.module eq 'dms'}">					              
                             <div id="listDMS#{item.equip_id}" type="#{item.message.tipo}"
                                 name="#{item.nome}" driver="#{item.message.driver}">	
          														
@@ -261,7 +261,7 @@
                                
                         </c:when>										
                                                             
-                        <c:when test="#{item.table_id eq 'sat'}">
+                        <c:when test="#{loadItem.module eq 'sat'}">
                         
                             <div id="#{item.table_id}#{item.equip_id}" class="equip-box-sat sat text-dark"
                                 posX="#{item.mapPosX}" posY="#{item.mapPosY}" item-km="#{item.km}"
@@ -379,7 +379,7 @@
 
                         </c:when>
 						
-                        <c:when test="#{item.table_id eq 'speed'}">
+                        <c:when test="#{loadItem.module eq 'speed'}">
                         
                         
                             <!-- Card Speed -->
@@ -465,7 +465,7 @@
 
                         </c:when>
                         
-                        <c:when test="#{item.table_id eq 'meteo'}">
+                        <c:when test="#{loadItem.module eq 'meteo'}">
                             <div class="card bg-dark panel-meteo-card">
                                 <div class="card-header text-center">MTO01</div>
                                 <div class="card-body text-black-50">
@@ -475,13 +475,13 @@
                                                 <path d="M9.5 12.5a1.5 1.5 0 1 1-2-1.415V6.5a.5.5 0 0 1 1 0v4.585a1.5 1.5 0 0 1 1 1.415z"/>
                                                 <path d="M5.5 2.5a2.5 2.5 0 0 1 5 0v7.55a3.5 3.5 0 1 1-5 0V2.5zM8 1a1.5 1.5 0 0 0-1.5 1.5v7.987l-.167.15a2.5 2.5 0 1 0 3.333 0l-.166-.15V2.5A1.5 1.5 0 0 0 8 1z"/>
                                             </svg>
-                                            <input disabled="disabled" type="text" class="form-control form-control-sm form-control-plaintext text-center" value="0.00">
+                                            <input disabled="disabled" type="text" class="form-control form-control-sm form-control-plaintext text-center" value="0.00" />
                                         </div>
                                         <div class="card d-flex px-0" data-toggle="tooltip" data-placement="right" title="Absolute Air Pressure">
                                             <svg width="16" height="16" fill="currentColor" class="my-auto ml-1" viewBox="0 0 16 16">
                                                 <path d="M4 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm2 2a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM13.405 4.027a5.001 5.001 0 0 0-9.499-1.004A3.5 3.5 0 1 0 3.5 10H13a3 3 0 0 0 .405-5.973zM8.5 1a4 4 0 0 1 3.976 3.555.5.5 0 0 0 .5.445H13a2 2 0 0 1 0 4H3.5a2.5 2.5 0 1 1 .605-4.926.5.5 0 0 0 .596-.329A4.002 4.002 0 0 1 8.5 1z"/>
                                             </svg>
-                                            <input disabled="disabled" type="text" class="form-control form-control-sm form-control-plaintext text-center" value="0.00">
+                                            <input disabled="disabled" type="text" class="form-control form-control-sm form-control-plaintext text-center" value="0.00" />
                                         </div>
                                     </div>
                                 </div>
