@@ -4,7 +4,6 @@ var ctxSip;
 
 async function initPhone() {
 
-
     if (typeof(user) === 'undefined') {
         user = JSON.parse(localStorage.getItem('SIPCreds'));
     }
@@ -366,13 +365,13 @@ async function initPhone() {
          */
         logGen : async function() {
             ctxSip.logClear();
-            let calls = await connectSOS("GetAllActiveCalls");
+            let history = connectSOS("GetHistoryCalls;0");
+            let calls = connectSOS("GetAllActiveCalls");
             let equips = await connectSOS("GetAllEquipments");
-            let history = await connectSOS("GetHistoryCalls;0");
             let ringtone = false;
             let gen = {}
             
-            for (const call of history.concat(calls)) {
+            for (const call of (await history).concat(await calls)) {
                 const equip = equips.find(e => e.EquipmentID == call.EquipmentID);
                 let id = `${ call.SessionID }id${ call.equip ? call.equip.EquipmentID : equip.EquipmentID }`;
                 let uri = `${ call.Sip ? call.Sip : equip.Sip }@${ call.equip ? call.equip.EquipmentIP : equip.EquipmentIP }`;
@@ -702,8 +701,9 @@ async function initPhone() {
         }
     };
 
-
-
+    ctxSip.logGen().then(() => {
+        ctxSip.logShow();
+    });
 
     // Throw an error if the browser can't hack it.
     if (!ctxSip.hasWebRTC()) {
@@ -768,8 +768,7 @@ async function initPhone() {
     });
 
     ctxSip.phone.on('unregistered', function(e) {
-        // ctxSip.setError(true, 'Registration Error.', 'An Error occurred registering your phone. Check your settings.');
-        ctxSip.setStatus("Error: Registration Failed");
+        localStorage.removeItem('CallBoxStatus');
     });
 
     ctxSip.phone.on('invite', function (incomingSession) {
@@ -972,7 +971,7 @@ async function initPhone() {
         }
         return false;
     });
-
+    
     $('#sldVolumeRemote').change(function () {
         let vol = $(this).val();
         
@@ -992,12 +991,6 @@ async function initPhone() {
 
         ctxSip.setMicroFrame(vol)
     })
-
-    // Hide the spalsh after 3 secs.
-    await ctxSip.logGen();
-    setTimeout(function() {
-        ctxSip.logShow();
-    }, 3000);
 
     // receiver rabbitmq
     consumeSOS({
