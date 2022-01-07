@@ -25,8 +25,15 @@
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
 		<h:outputStylesheet name="layoutGENERIC.css" library="css/generic" />
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />
-		<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
-		<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
+		<c:if test="#{ DMS }">
+			<h:outputStylesheet name="layoutDMS.css" library="css/dms" />
+		</c:if>
+		<c:if test="#{ SPEED }">
+			<h:outputStylesheet name="layoutSPEED.css" library="css/speed" />
+		</c:if>
+		<c:if test="#{ METEO }">
+			<h:outputStylesheet name="layoutMETEO.css" library="css/meteo" />
+		</c:if>
 		<h:outputStylesheet name="cftv.css" library="css/map" />
 		<h:outputStylesheet name="map.css" library="css/map" />
 		<h:outputStylesheet library="css/validation"

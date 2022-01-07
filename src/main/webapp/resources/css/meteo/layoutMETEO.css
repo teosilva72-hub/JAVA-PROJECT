@@ -1,4 +1,5 @@
 .card.panel-meteo-card {
+    position: absolute;
     width: 10em;
 }
 
