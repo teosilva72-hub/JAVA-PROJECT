@@ -15,8 +15,7 @@
 		<!-- HEAD TEMPLATE COMPONENT -->
 
 		<h:outputStylesheet name="form-style.css" library="css/forms" />
-		<h:outputStylesheet library="css/validation"
-			name="validation-style.css" />
+		<h:outputStylesheet library="css/validation" name="validation-style.css" />
 
 	</ui:define>
 
@@ -24,103 +23,91 @@
 
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
-
-
-		<div class="ml-auto mr-auto mb-0 col-md-6 ">
-
-
-			<h:form id="form">
+	<div class="ml-auto mr-auto mb-0 col-md-6 ">
+		<h:form id="form">
 				<!-- Alert evento -->
+			<h5 class="row justify-content-center text-dark">#{supportLabels.$label_support_title}</h5>
 
-				<h5 class="row justify-content-center text-dark">Suporte</h5>
-
-
-				<div class="form-row border border-dark">
-					<div class="col-12 input-field ">
-						<label for="name"></label> <input type="text"
-							class="form-control text-center " id="name" name="name"
-							placeholder="Nome do Usuario" />
+				<div class="col-12 input-field mt-3">
+					<label for="name" class="display-revert"></label> 
+					<input type="text" class="form-control text-center " id="name"
+					name="name" placeholder="#{supportLabels.$label_support_place_holder_name}"/>
 					</div>
-					<div class="error-label">
-						<label for="name" class="error" id="name-error">error</label>
-					</div>
-					<div class="col-12 input-field  ">
-						<label for="email"></label> <input type="email"
-							class="form-control  text-center" id="email"
-							placeholder="Endereço de email" />
-					</div>
-					<div class="error-label">
+				<div class="error-label">
+					<label for="name" class="error display-revert" id="name-error">error</label>
+				</div>
+						
+				<div class="col-12 input-field  mt-3  ">
+					<label for="email"  class="display-revert"></label> 
+					<input type="email" class="form-control text-center " id="email"
+					placeholder='#{supportLabels.$label_support_place_holder_email}'/>
+				</div>
+				<div class="error-label">
 						<label for="email" class="error" id="email-error">error</label>
 					</div>
-				  <div class="col-12">
+					
+				  <div class="col-12 mt-3 ">
 					<div class="select-field">
-						<label for="concessionaria"></label> <select
-							class="form-control text-center" id="concessionaria1">
-							<option>Concessonária</option>
+						<label for="concessionaria"  class="display-revert"></label> 
+						<select class="form-control text-center display reverse" id="concessionaria1">
+							<option>#{supportLabels.$label_support_place_holder_road_concessionaire}</option>
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
 							<option>5</option>
 								</select>
-					</div>				
+						</div>		
+					 </div>		
 					<div class="error-label">
 						<label for="concessionaria" class="error" id="concessionaria-error">erro</label>
 					</div>
-				</div>
 				
 				<!---->
 				
-				 <div class="col-12">
+				 <div class="col-12 mt-3 ">
 					 <div class="select-field  ">
-						<label for="categoria"></label> <select
-							class="form-control text-center" id="categoria">
-							<option>Categoria</option>
+						<label for="categoria"  class="display-revert"></label>
+						 <select class="form-control text-center" id="categoria">
+							<option>#{supportLabels.$label_support_place_holder_category}</option>
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
 							<option>4</option>
 							<option>5</option>
-						</select>
-				    </div>
-					<div class="error-label">
-						<label for="categoria" class="error" id="categoria-error">error</label>
-					</div>
-				 </div>
+							</select>
+			    		</div>
+			    	</div>
+				<div class="error-label">
+					<label for="categoria" class="error" id="categoria-error">error</label>
+				</div>
+			
 				 
 				 <!---->
 			 
-				<div class=" col-12 input-field">
-					<label for="assunto"></label> <input type="text"
-						class="form-control text-center" id="assunto"
-						placeholder="Assunto" />
-			</div>
-					<div class="error-label">
-						<label for="assunto" class="error" id="assunto-error">error</label>
-					</div>
-				<div class=" col-12 input-field">
-					<label for="mensagem"></label>
-					<textarea class="form-control text-center"
-						id="mensagem" rows="3" placeholder="Mensagem"></textarea>
-			
-					</div>
-					<div class="error-label">
-						<label for="mensagem" class="error" id="mensagem-error">error</label>
-					</div>
+				<div class=" col-12 input-field mt-3 ">
+					<label for="assunto"  class="display-revert"></label> 
+						<input type="text" class="form-control text-center" id="assunto" placeholder='#{supportLabels.$label_support_place_holder_theme}'/>
 				</div>
+				<div class="error-label">
+					<label for="assunto" class="error" id="assunto-error">error</label>
+				</div>
+					
+				<div class=" col-12 input-field mt-3" >
+					<label for="mensagem" class="display-revert"></label>
+					<textarea class="form-control text-center" id="mensagem" rows="3" placeholder='#{supportLabels.$label_support_place_holder_message}'/>
+				</div>
+				<div class="error-label">
+					<label for="mensagem" class="error" id="mensagem-error">error</label>
+				</div>
+		
+				<div class="row d-flex justify-content-center mt-3 ">
 				
-				<div class="row d-flex justify-content-center mb-0">
-
-					<h:commandButton value="#{reportsLabels.reports_form_btn_send}"
+					<h:commandButton value='#{reportsLabels.reports_form_btn_send}'
 						id="btn-send" class="btn btn-dark form-draw-button submit-btn" />
-					<!-- SEND -->
-
-					<!---->
-
-					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}"
-						immediate="true" id="btn-reset"
-						class="btn btn-dark form-draw-button ml-2 reset-btn ">
-						<f:ajax render="@form" resetValues="true" />
+					<h:commandButton value='#{reportsLabels.reports_form_btn_reset}'
+						immediate="true" id="btn-reset" class="btn btn-dark form-draw-button ml-2 reset-btn ">
+					<f:ajax render="@form" resetValues="true" />
 						<!-- RESET -->
 					</h:commandButton>
 
