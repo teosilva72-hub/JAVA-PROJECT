@@ -1,0 +1,63 @@
+.card.panel-meteo-card {
+    width: 10em;
+}
+
+.card.panel-meteo-card .card-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.card.panel-meteo-card .card-body {
+    padding: 0 0.2em;
+    background-color: #5d5d5d;
+}
+
+.card.panel-meteo-card .card-body .panel-card {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    border: 1px solid rgb(0,0,0);
+    border-radius: .25rem;
+    background: white;
+    margin-top: .1em;
+    margin-bottom: .1em;
+    width: 100%;
+    overflow: hidden;
+}
+
+.card.panel-meteo-card .card-body .panel-card > div {
+    min-width: 50%;
+    flex: 1 0 50%;
+    flex-direction: row;
+    border-radius: 0%;
+}
+
+.card.panel-meteo-card .card-body .panel-card .col {
+    flex: 0 0 50%;
+}
+
+.card.panel-meteo-card .card-body label {
+    word-wrap: break-word;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 0;
+    margin-top: .1em;
+}
+
+.card.panel-meteo-card .card-body .form-control {
+    background-color: transparent;
+    font-size: small;
+    font-weight: bold;
+    padding: 0;
+}
+
+.card.panel-meteo-card .card-footer {
+    background-color: #da0909;
+    padding: 0.2em;
+}
+
+.card.panel-meteo-card .card-footer.on {
+    background-color: #00FF00;
+}
