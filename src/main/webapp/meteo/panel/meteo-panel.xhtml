@@ -62,7 +62,7 @@
 			<div class="cardContainer">
 				<!-- Inicio da primeira grid-->
 				<div class="row line">
-					<div class="col-4 panel-card custom">
+					<div class="col-4 panel-card custom AbsoluteAirPressure">
 						<!-- Inicio do card 1 -->
 						<div class="card">
 							<div class="card-body presAtm">
@@ -105,14 +105,14 @@
 						</div>
 						<!-- Final do card 4 -->
 					</div>
-					<div class="col-4 panel-card custom WindSpeed">
+					<div class="col-4 panel-card custom deg WindDirection">
 						<!-- Inicio do card 5 -->
 						<div class="card bussolaMaxHei py-1">
 							<div class="card-body textBuss bussola">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_direction}" />
 								<div class="direction-wind">
-									<h:graphicImage class="ponteiro" url="/resources/images/estacao/setaBussola.png"
-										style="transform: rotate(#{meteoPanelBean.panel.windSpeed}deg);" />
+									<h:graphicImage class="card-ponteiro" url="/resources/images/estacao/setaBussola.png"
+										style="transform: rotate(0deg);" />
 								</div>
 	
 							</div>
