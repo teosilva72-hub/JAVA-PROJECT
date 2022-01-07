@@ -466,7 +466,10 @@
                         </c:when>
                         
                         <c:when test="#{item.table_id eq 'meteo'}">
-                            <div class="card bg-dark panel-meteo-card">
+                            <div id="#{item.table_id}#{item.equip_id}" class="equip-box card bg-dark panel-meteo-card" posX="#{item.mapPosX}" posY="#{item.mapPosY}"
+                                item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}" longitude="#{item.longitude}" latitude="#{item.latitude}">
+                                <a role="button" class="meteo-info-bagde" data-toggle="popover" 
+                                    data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
                                 <div class="card-header text-center">MTO01</div>
                                 <div class="card-body text-black-50">
                                     <div class="panel-card">
