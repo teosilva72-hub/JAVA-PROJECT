@@ -1,6 +1,6 @@
 .card.panel-meteo-card {
     position: absolute;
-    width: 10em;
+    width: 10em !important;
 }
 
 .card.panel-meteo-card .card-header {
