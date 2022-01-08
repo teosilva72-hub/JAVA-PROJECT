@@ -174,6 +174,13 @@
           <var>notificationLabels</var>        
         </resource-bundle>
         
+                               
+        <resource-bundle>
+          <base-name>bundle.labels.system.support.labels_support</base-name>           
+          <var>supportLabels</var>        
+        </resource-bundle>
+    
+        
      <!-- ********************************** -->
         
         <!-- MESSAGES  -->
@@ -247,6 +254,8 @@
           <base-name>bundle.messages.system.reports.messages_reports</base-name>           
           <var>reportsMessages</var>        
         </resource-bundle>
+        
+        
                       				                     
         <!-- ********************************** -->
            
@@ -286,7 +295,8 @@
         <message-bundle>bundle.labels.phone.labels_phone</message-bundle>
         <message-bundle>bundle.labels.speed.labels_speed</message-bundle>
         <message-bundle>bundle.labels.system.notifications.labels_notifications</message-bundle>        
-                    
+        <message-bundle>bundle.labels.system.support.labels_support</message-bundle>
+             
         <!-- CONFIG MESSAGES -->
         
         <message-bundle>bundle.messages.dashboard.messages_dashboard</message-bundle>

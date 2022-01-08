@@ -119,9 +119,9 @@ body{
 	top: -10px;	
 }
 
-.ponteiro{
+.card-ponteiro{
 	width: 120px;
-	
+	transition: all 1s;
 }
 
 .velocVento{
@@ -266,10 +266,10 @@ body{
 }
 
 
-.panel-card {
+.panel-meteo-card {
 	display: none;
 }
 
-.panel-card.on {
+.panel-meteo-card.on {
 	display: block;
 }

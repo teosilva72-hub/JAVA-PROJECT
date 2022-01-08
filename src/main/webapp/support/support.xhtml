@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/template/dashboard-rov-layout.xhtml">
+	<!-- MAIN TEMPLATE STRUCTURE END -->
+
+	<ui:define name="head">
+		<!-- HEAD TEMPLATE COMPONENT -->
+
+		<h:outputStylesheet name="form-style.css" library="css/forms" />
+		<h:outputStylesheet library="css/validation" name="validation-style.css" />
+
+	</ui:define>
+
+	<!---->
+
+	<ui:define name="main-content">
+		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
+	<div class="ml-auto mr-auto mb-0 col-md-6 ">
+		<h:form id="form">
+				<!-- Alert evento -->
+			<h5 class="row justify-content-center text-dark">#{supportLabels.$label_support_title}</h5>
+
+				<div class="col-12 input-field mt-3">
+					<label for="name" class="display-revert"></label> 
+					<input type="text" class="form-control text-center " id="name"
+					name="name" placeholder="#{supportLabels.$label_support_place_holder_name}"/>
+					</div>
+				<div class="error-label">
+					<label for="name" class="error display-revert" id="name-error">error</label>
+				</div>
+						
+				<div class="col-12 input-field  mt-3  ">
+					<label for="email"  class="display-revert"></label> 
+					<input type="email" class="form-control text-center " id="email"
+					placeholder='#{supportLabels.$label_support_place_holder_email}'/>
+				</div>
+				<div class="error-label">
+						<label for="email" class="error" id="email-error">error</label>
+					</div>
+					
+				  <div class="col-12 mt-3 ">
+					<div class="select-field">
+						<label for="concessionaria"  class="display-revert"></label> 
+						<select class="form-control text-center display reverse" id="concessionaria1">
+							<option>#{supportLabels.$label_support_place_holder_road_concessionaire}</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+								</select>
+						</div>		
+					 </div>		
+					<div class="error-label">
+						<label for="concessionaria" class="error" id="concessionaria-error">erro</label>
+					</div>
+				
+				<!---->
+				
+				 <div class="col-12 mt-3 ">
+					 <div class="select-field  ">
+						<label for="categoria"  class="display-revert"></label>
+						 <select class="form-control text-center" id="categoria">
+							<option>#{supportLabels.$label_support_place_holder_category}</option>
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							</select>
+			    		</div>
+			    	</div>
+				<div class="error-label">
+					<label for="categoria" class="error" id="categoria-error">error</label>
+				</div>
+			
+				 
+				 <!---->
+			 
+				<div class=" col-12 input-field mt-3 ">
+					<label for="assunto"  class="display-revert"></label> 
+						<input type="text" class="form-control text-center" id="assunto" placeholder='#{supportLabels.$label_support_place_holder_theme}'/>
+				</div>
+				<div class="error-label">
+					<label for="assunto" class="error" id="assunto-error">error</label>
+				</div>
+					
+				<div class=" col-12 input-field mt-3" >
+					<label for="mensagem" class="display-revert"></label>
+					<textarea class="form-control text-center" id="mensagem" rows="3" placeholder='#{supportLabels.$label_support_place_holder_message}'/>
+				</div>
+				<div class="error-label">
+					<label for="mensagem" class="error" id="mensagem-error">error</label>
+				</div>
+		
+				<div class="row d-flex justify-content-center mt-3 ">
+				
+					<h:commandButton value='#{reportsLabels.reports_form_btn_send}'
+						id="btn-send" class="btn btn-dark form-draw-button submit-btn" />
+					<h:commandButton value='#{reportsLabels.reports_form_btn_reset}'
+						immediate="true" id="btn-reset" class="btn btn-dark form-draw-button ml-2 reset-btn ">
+					<f:ajax render="@form" resetValues="true" />
+						<!-- RESET -->
+					</h:commandButton>
+
+				</div>
+
+
+			</h:form>
+			<!-- MAIN CONTENT TEMPLATE COMPONENT END -->
+
+
+		</div>
+
+	</ui:define>
+</ui:composition>

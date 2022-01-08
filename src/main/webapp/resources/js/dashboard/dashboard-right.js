@@ -1,4 +1,4 @@
-let phoneWindow;
+let phoneWindow = {};
 
 (() => {
   if (location.protocol != "https:" && location.hostname != "localhost")
@@ -48,20 +48,6 @@ $('#dismiss, .overlay').on('click', function () {
   $('.overlay').removeClass('active');
 });
 // OVERLAY SIDE BAR END
-
-var url = '/phone/phone.html',
-  features = 'menubar=no,location=no,resizable=no,scrollbars=no,status=no,addressbar=no,width=320,height=480';
-
-$('#navCall').on('click', function (event) {
-  event.preventDefault();
-  // This is set when the phone is open and removed on close
-  if (!localStorage.getItem('ctxPhone')) {
-    window.open(url, 'ctxPhone', features);
-    return false;
-  } else {
-    window.alert('Telefone já esta aberto.');
-  }
-});
 
 const showStatesCallbox = action => {
   let client = $("#sipClient .sipStatus")
@@ -121,17 +107,19 @@ getCred('digifort');
 const TestCert = async (c) => {
   if (c.name == "null" || location.protocol == "http:")
     return
-  let uri = `${c.address}:${c.port}/ws`
+  let uri = ''
   try {
-    let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
-    while (request.readyState == 0) {
-      await new Promise(r => setTimeout(r, 100))
-    }
-    if (request.readyState > 1 && c.ws != "digi") {
-      window.open(`https://${uri}`);
-    }
-  }
-  catch {
+    if (c.ws != "http") {
+      uri = `${c.address}:${c.port}/ws`
+      let request = new WebSocket(`wss://${uri}`, c.ws != 'null' ? c.ws : undefined);
+      while (request.readyState == 0) {
+        await new Promise(r => setTimeout(r, 100))
+      }
+      if (request.readyState > 1) {
+        window.open(`https://${uri}`);
+      }
+    } 
+  } catch (e) {
     window.open(`https://${uri}`);
   }
 }
@@ -143,7 +131,10 @@ $('.sipStatus').on('click', function (event) {
   event.preventDefault();
   // This is set when the phone is open and removed on close
   // if (!localStorage.getItem('ctxPhone')) {
-    phoneWindow = window.open(url, 'ctxPhone', features);
+    if (phoneWindow.opener)
+      phoneWindow.focus()
+    else
+      phoneWindow = window.open(url, 'ctxPhone', features);
     return false;
   // } else {
   //   window.alert('Phone already open.');

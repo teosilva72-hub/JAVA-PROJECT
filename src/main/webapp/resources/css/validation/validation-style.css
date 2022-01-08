@@ -24,9 +24,9 @@
 .error-label {
 	border: 1px solid transparent;
 	font-size: 12px;
-    margin-top: -14px;
-    margin-left: 20px;
-    margin-bottom: 4px;
+    margin-top: -4px;
+    margin-left: 33px;
+    position: absolute;
 }
 
 /* invalid class style */
@@ -77,4 +77,8 @@
 
 label#direction1-error, label#direction2-error {
     margin-top: 15px;
+ 
 } 
+.display-revert{
+   display : revert;
+}

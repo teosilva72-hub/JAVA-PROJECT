@@ -1,0 +1,89 @@
+.card.panel-meteo-card {
+    position: absolute;
+    width: 10em !important;
+}
+
+.card.panel-meteo-card .card-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.card.panel-meteo-card .card-body {
+    padding: 0 0.2em;
+    background-color: #5d5d5d;
+}
+
+.card.panel-meteo-card .card-body .panel-meteo {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    border: 1px solid rgb(0,0,0);
+    border-radius: .25rem;
+    background: white;
+    margin-top: .1em;
+    margin-bottom: .1em;
+    width: 100%;
+    overflow: hidden;
+}
+
+.card.panel-meteo-card .card-body .panel-card {
+    display: none;
+    min-width: 50%;
+    flex: 1 0 50%;
+}
+
+.card.panel-meteo-card .card-body .panel-card.on {
+    display: block;
+}
+
+.card.panel-meteo-card .card-body .panel-card > .card {
+    border-radius: 0%;
+    flex-direction: row;
+}
+
+.card.panel-meteo-card .card-body .form-control {
+    background-color: transparent;
+    font-size: .7em;
+    font-weight: bold;
+    padding: 0;
+}
+
+.card.panel-meteo-card .card-footer {
+    background-color: red;
+    padding: 0.2em;
+}
+
+.card.panel-meteo-card .card-footer.on {
+    background-color: green;
+}
+
+.meteo-info-bagde {
+    position: absolute;
+    top: -4px;
+    margin-left: -8px;
+    background-color: #1e90ff;
+    color: #ffffff !important;
+    text-align: center;
+    line-height: 22px;
+    min-width: 22px;
+    display: block;
+    border-radius: 50%;
+    float: left;
+    cursor: pointer;
+    z-index: 3;
+    text-indent: 0px;
+    text-decoration: none;
+    font-size: 18px;
+    border: 1px solid black;
+  }
+  
+  .meteo-info-bagde:hover {
+    text-decoration: none;
+    background: #ffc107;
+    color: #555;
+  }
+  
+  .meteo-info-bagde:focus {
+    background: #000080;
+    outline: none;
+  }

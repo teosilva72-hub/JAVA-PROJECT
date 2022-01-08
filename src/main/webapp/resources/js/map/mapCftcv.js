@@ -14,14 +14,35 @@ const cftvEvent = data => {
 			break;
 	}
 }
+// cert
+const cftvEventCert = data => {
+	var status = data.status;
+	switch (status) {
+		case "begin":
+			break;
+		case "complete":
+			break;
+		case "success":
+			cftvCert()
+
+			break;
+	}
+}
+const cftvCert = () => {
+	uri = document.getElementById("url-img").value
+	var testCert = new Image()
+	testCert.onerror = () => {
+		window.open(uri);
+	}
+	testCert.src = uri
+}
 // DROPDOWN CFTV TOP MAP
 $(function(){
 	$(".d-cftv-value").click(function() {
 	    var value = $(this).val();
 		var id = $(this).attr('id');
 		$(`#${id}`).prop('disabled', true);
-		var cod = document.getElementById("cftvId")
-		cod.value = value
+		window.id = value
 		getInfo()
 		setTimeout(() => {
 			cftvVideo(value, url)
@@ -30,6 +51,7 @@ $(function(){
 })
 //SEND INFO BACK END CFTV ID
 function getInfo(){
+	document.getElementById("cftvId").value = id
 	$("#send-cftv-id").click();
 }
 //OPEN WINDOW BOTTOM CFTV
@@ -60,6 +82,8 @@ function cftvVideo(id, url){
 			//animate: true,
 			//helper: "ui-resizable-helper"
     	})
+
+	cftvCert()
 }
 //DISABLED OPTION WINDOWN TOP
 function disabledListCftv(id){

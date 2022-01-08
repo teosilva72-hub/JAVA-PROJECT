@@ -147,7 +147,7 @@ public class MeteoPanelController {
 			  		  
 			 }		
 			
-			SessionUtil.executeScript("checkMtoStatus();");	
+			//SessionUtil.executeScript("checkMtoStatus();");	
 			
 		} catch (Exception e) {			
 			e.printStackTrace();
@@ -196,7 +196,7 @@ public class MeteoPanelController {
 	
 			}
 			
-			SessionUtil.executeScript("checkMtoStatus();");			
+			//SessionUtil.executeScript("checkMtoStatus();");			
 		  								
 			}
 			

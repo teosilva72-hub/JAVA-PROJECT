@@ -15,9 +15,14 @@ const treat_values = response => {
 const set_values = () => {
     let panel = $('.panel-card').removeClass('on')
     for (const [k, v] of Object.entries(lastUpgrade)) {
-        let equip = panel.filter(`[for=${k}]`);
-        for (const [k2, v2] of Object.entries(v))
-            equip.filter(`.${k2}`).addClass('on').find('card-value').text(v2)
+        let equip = panel.filter(`#${k}, [for=${k}]`);
+        for (const [k2, v2] of Object.entries(v)) {
+            let card = equip.filter(`.${k2}`).addClass('on')
+            if (card.hasClass('deg'))
+                card.find('.card-ponteiro').css('transform', `rotate(${v2}deg)`)
+            else
+                card.find('.card-value').text(v2)
+        }
     }
 }
 
@@ -25,7 +30,7 @@ const callback_meteo_default = response => {
 	if (response.body)
     	response = JSON.parse(response.body);
     
-    for (r in response)
+    for (let r of response)
         treat_values(r)
     
     set_values()
