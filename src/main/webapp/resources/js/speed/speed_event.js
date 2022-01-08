@@ -23,6 +23,33 @@ const refresh_speed = response => {
 
     speed.find(".speed-limit .speed-number").text(limit);
     speed.find(".speed-speedy .speed-number").text(registry);
+
+	if (response.Online)
+		speed.find('.speed-speedy, .speed-limit').addClass('active')
+}
+
+const change_status = status => {
+    let speed = $(`#speed${status.Id}`);
+	let plate;
+
+	switch (status.Type) {
+		case 3:
+			plate = speed.find('.speed-speedy, .speed-limit')
+			break;
+		case 1:
+			plate = speed.find('.speed-limit')
+			break;
+		case 2:
+			plate = speed.find('.speed-speedy')
+			break;
+		default:
+			return;
+	}
+
+	if (status.Status)
+		plate.addClass('active')
+	else
+		plate.removeClass('active')
 }
 
 const callback_speed_default = response => {
@@ -32,11 +59,19 @@ const callback_speed_default = response => {
     refresh_speed(response);
 }
 
-const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
+const callback_status_default = response => {
+	if (response.body)
+    	response = JSON.parse(response.body);
+    
+		change_status(response);
+}
+
+const consumeSPEED = async ({ callback_speed = callback_speed_default, callback_status = callback_status_default, debug = false } = {}) => {
 	var client = await getStomp();
 
 	var on_connect = function() {
 		client.subscribe(`/exchange/speed_notify/speed_notify`, callback_speed)
+		client.subscribe(`/exchange/speed_status/speed_status`, callback_status)
 	};
 
 	var on_error = async function() {
@@ -54,7 +89,7 @@ const consumeSPEED = async ({ callback_speed = callback_speed_default, debug = f
 
 const initSPEED = async ({ callback_speed = callback_speed_default, debug = false } = {}) => {
     $(async function () {
-		let tooltip = $('.speed-card [data-bs-toggle=tooltip]').tooltip()
+		$('.speed-card [data-bs-toggle=tooltip]').tooltip()
         let last_status = await connectSPEED("LastStatus");
 
         for (let status of last_status)
