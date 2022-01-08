@@ -30,7 +30,7 @@ const callback_meteo_default = response => {
 	if (response.body)
     	response = JSON.parse(response.body);
     
-    for (let r in response)
+    for (let r of response)
         treat_values(r)
     
     set_values()
