@@ -13,7 +13,7 @@ const treat_values = response => {
 }
 
 const set_values = () => {
-    let panel = $('.panel-meteo-card').removeClass('on')
+    let panel = $('.panel-card').removeClass('on')
     for (const [k, v] of Object.entries(lastUpgrade)) {
         let equip = panel.filter(`[for=${k}]`);
         for (const [k2, v2] of Object.entries(v)) {

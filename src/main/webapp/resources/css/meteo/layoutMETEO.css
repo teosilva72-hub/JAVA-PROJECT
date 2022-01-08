@@ -13,7 +13,7 @@
     background-color: #5d5d5d;
 }
 
-.card.panel-meteo-card .card-body .panel-card {
+.card.panel-meteo-card .card-body .panel-meteo {
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -26,25 +26,19 @@
     overflow: hidden;
 }
 
-.card.panel-meteo-card .card-body .panel-card > div {
+.card.panel-meteo-card .card-body .panel-card {
+    display: none;
     min-width: 50%;
     flex: 1 0 50%;
-    flex-direction: row;
+}
+
+.card.panel-meteo-card .card-body .panel-card.on {
+    display: block;
+}
+
+.card.panel-meteo-card .card-body .panel-card > .card {
     border-radius: 0%;
-}
-
-.card.panel-meteo-card .card-body .panel-card .col {
-    flex: 0 0 50%;
-}
-
-.card.panel-meteo-card .card-body label {
-    word-wrap: break-word;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    width: 100%;
-    margin-bottom: 0;
-    margin-top: .1em;
+    flex-direction: row;
 }
 
 .card.panel-meteo-card .card-body .form-control {
@@ -55,10 +49,10 @@
 }
 
 .card.panel-meteo-card .card-footer {
-    background-color: #da0909;
+    background-color: red;
     padding: 0.2em;
 }
 
 .card.panel-meteo-card .card-footer.on {
-    background-color: #00FF00;
+    background-color: green;
 }
