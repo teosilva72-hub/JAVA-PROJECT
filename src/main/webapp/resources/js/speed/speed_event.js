@@ -24,23 +24,34 @@ const refresh_speed = response => {
     speed.find(".speed-limit .speed-number").text(limit);
     speed.find(".speed-speedy .speed-number").text(registry);
 
-	if (response.Online)
+	if (response.Online) {
 		speed.find('.speed-speedy, .speed-limit').addClass('active')
+		$(`#statussos${response.Id}`).css('color', '#00FF00')
+	}
 }
 
 const change_status = status => {
     let speed = $(`#speed${status.Id}`);
+	let sidebar =$(`#statusspeed${status.Id}`);
 	let plate;
 
 	switch (status.Type) {
 		case 3:
 			plate = speed.find('.speed-speedy, .speed-limit')
+			sidebar.css('color', status.Status ? '#00FF00' : '#FF0000'). attr({
+				status1: status.Status,
+				status2: status.Status,
+			})
 			break;
 		case 1:
 			plate = speed.find('.speed-limit')
+			sidebar.css('color', sidebar.attr('status2') == `${status.Status}` ? status.Status ? '#00FF00' : '#FF0000' : '#FF7F00')
+				.attr('status1', status.Status)
 			break;
 		case 2:
 			plate = speed.find('.speed-speedy')
+			sidebar.css('color', sidebar.attr('status1') == `${status.Status}` ? status.Status ? '#00FF00' : '#FF0000' : '#FF7F00')
+				.attr('status2', status.Status)
 			break;
 		default:
 			return;

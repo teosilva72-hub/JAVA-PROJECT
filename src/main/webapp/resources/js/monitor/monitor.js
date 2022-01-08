@@ -131,44 +131,37 @@ const changeNotificationStatus = response => {
 				 
  }
  
- const changeGenericStates = response => {
+const changeGenericStates = response => {
+	if(['SOS', 'PMV', 'SPEED I', 'SPEED R'].includes(response.EquipType))
+		return
+
+	//Tipo equipamento
+	let type = response.EquipType
+
+	let name = `${type}${response.Id}`
+	let status = response.Status
+	let equip = $(`#${name.toLowerCase()}`)
+	let sidebar = $(`#status${name.toLowerCase()}`)
+	
+	switch (status) {
+		case 1:
+
+			status = 'active'
+			sidebar.css("color", "#00FF00")
+			break
+
+		default:
+
+			status = ''
+			sidebar.css("color", "#FF0000")
+			break
+			
+	}
  
-	 //Tipo equipamento
-	 let type = response.EquipType
+	   
+	equip.find(`.equip-status`).attr("class", `equip-status ${status}`.trim())
  
-	 //Separação em caso do SPEED
-	 if(type == "SPEED I" || type == "SPEED R")
-		 type = "SPEED"
- 
-	 let name = `${type}${response.Id}`
-	 let status = response.Status
-	 let equip = $(`#${name.toLowerCase()}`)
-	 let sidebar = $(`#status${name.toLowerCase()}`)
-	 
-	 switch (status) {
-		 case 1:
- 
-			 status = 'active'
-			 sidebar.css("color", "#00FF00")
-			 break
- 
-		 default:
- 
-			 status = ''
-			 sidebar.css("color", "#FF0000")
-			 break
-			 
-	 }
- 
-	 if(response.EquipType == "SPEED I")	     
-		  equip.find(`.equip-status-indicator`).attr("class", `card-body p-1 speed-limit equip-status-indicator ${status}`.trim())
-	 
-	 else if(response.EquipType == "SPEED R") equip.find(`.equip-status`).attr("class", `card-body p-1 speed-speedy equip-status ${status}`.trim())
-			  
-	 else if(response.EquipType != "PMV" && response.EquipType != "SOS")   
-			   equip.find(`.equip-status`).attr("class", `equip-status ${status}`.trim())
- 
-    }
+}
  
    const listNotifications = response => {	
 				  
