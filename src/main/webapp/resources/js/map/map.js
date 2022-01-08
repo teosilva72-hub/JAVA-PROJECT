@@ -1210,7 +1210,7 @@ const updateLine = equip => {
 		pos.x += dimension.width * .65 * x;
 	} else {
 		let y = difference.y / difference.absY;
-		pos.y += dimension.height * .85 * y;
+		pos.y += dimension.height * (.85 - (1 + y) / 5) * y;
 	}
 	pos.x += dimension.width / (dimension.width - 1);
 	// pos.y += dimension.height / (dimension.height - .1);
