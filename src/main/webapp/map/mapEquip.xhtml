@@ -468,9 +468,9 @@
                         <c:when test="#{loadItem.module eq 'meteo'}">
                             <a role="button" class="meteo-info-bagde" data-toggle="popover" 
                                 data-popover-content="#pop#{item.table_id}#{item.equip_id}">i</a>
-                            <div id="#{item.table_id}#{item.equip_id}" class="equip-box card bg-dark panel-meteo-card" posX="#{item.mapPosX}" posY="#{item.mapPosY}"
+                            <div id="#{loadItem.module}#{item.equip_id}" class="equip-box card bg-dark panel-meteo-card" posX="#{item.mapPosX}" posY="#{item.mapPosY}"
                                 item-width="#{item.mapWidth}" item-km="#{item.km}" direction="#{item.direction}" longitude="#{item.longitude}" latitude="#{item.latitude}">
-                                <div class="card-header text-center">MTO01</div>
+                                <div class="card-header text-center text-white">#{item.nome}</div>
                                 <div class="card-body text-black-50">
                                     <div class="panel-card">
                                         <div class="card d-flex px-0" data-toggle="tooltip" data-placement="right" title="Temperature">
