@@ -1,263 +1,464 @@
 package br.com.tracevia.webapp.dao.sat;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-import br.com.sat.controller.LoginMB;
-import br.com.sat.methods.ClassName;
-import br.com.sat.model.Classes;
-import br.com.sat.model.FluxoVeiculos;
-import br.com.sat.util.ConnectionFactory;
+import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
+import br.com.tracevia.webapp.log.SystemLog;
+import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.sat.FluxoVeiculos;
+import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class FluxoVeiculosDAO {
 
 	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
 	private PreparedStatement ps;
 	private ResultSet rs;
-	String sentido1, sentido2;
-	ClassName name;
-	Classes cs;
+	
+	String direction1, direction2; 
+		
+	// --------------------------------------------------------------------------------------------------------------
+		
+	// LOGS FOLDER
+	
+	private final String errorFolder = SystemLog.ERROR.concat("monthly-flow-dao\\");
+	
+	// --------------------------------------------------------------------------------------------------------------
 
 	public FluxoVeiculosDAO() throws Exception {
 
-		try {
-			this.conn = ConnectionFactory.getConnection();
-		} catch (Exception e) {
-			throw new Exception("erro: \n" + e.getMessage());
-		}
+		SystemLog.createLogFolder(errorFolder);
+		
 	}	
 	
-	/** M�todo para retorno de uma lista de objetos do tipo FluxoVeiculos com dados referentes ao fluxo mensal de ve�culos
-	 * @author Wellington da Silva - data de cria��o: 01/03/2019 10:06 - atualizado em 02/09/2019 16:50	 
-	 * @param ano - ano
-	 * @param mes - mes	
-	 * @param daysInMonth - total de dias em um m�s	
-	 * @param equipamento - Equipamento selecionado
-	 * @param faixas - N�mero de faixas
-	 * @param param - Objeto da classe LoginMB
-	 * @parama faixa1 - Primeira faixa do equipamento 
-	 * @return ArrayList<FluxoVeiculos> lista - lista de objetos do tipo FluxoVeiculos */	
+	// --------------------------------------------------------------------------------------------------------------
+	
+	/** Método para obter dados para construir o relatório do fluxo mensal
+	 * @author Wellington da Silva criado em 01/03/2019 10:06 - atualizado em 06/01/2022 18:00	 
+	 * @version 1.2
+	 * @since 1.0 
+	 * @param startDate data de inicio
+	 * @param endDate data de término	
+	 * @param equipId id do equipamento
+	 * @param numberLanes número de linhas do equipamento
+	 * @param laneDir1 primeira faixa do equipamento 
+	 * @return lista de objetos do tipo FluxoVeiculos
+	 *  
+	 */	
 
-	public ArrayList<FluxoVeiculos> totalVehicles(String dataInicio, String dataFim, String equipamento, int faixas, LoginMB param, String faixa1)
-			throws Exception{		
+	public List<FluxoVeiculos> getVehicles(String startDate, String endDate, String equipId, String laneDir1) throws Exception {		
 
-		ArrayList<FluxoVeiculos> lista = new ArrayList<FluxoVeiculos>();
-		name = new ClassName();
-		cs = new Classes();	
-
-		int equip = Integer.parseInt(equipamento);
-
+		List<FluxoVeiculos> lista = new ArrayList<FluxoVeiculos>();
+		
 		try {
+		
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+											
+			setDirections(laneDir1); // DEFINE DIRECTIONS FIRST
 
-			//cs = name.getClassName(param.getVarName());		
+			String select = " "; // initialize variable						
 
-			conn = ConnectionFactory.getConnection();
-			cs = name.getClassName(param.getVarName());
-			
-			 ordenaSentido(faixa1); // Ordenar sentidos das faixas		
-
-			String sql = " "; // inicializar vari�vel							
-
-			sql = "SELECT date_format(data, '%Y-%m-%d') as data, "
-					+ "date_format((sec_to_time(time_to_sec(data)- time_to_sec(data)%(15*60))),'%H:%i') as intervals, ";
+			select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') AS date, " +
+			"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data)- TIME_TO_SEC(v.data)%(15*60))),'%H:%i') AS intervals, " +
+					
+				 "CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+															
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+									"END " +
+								
+					"WHEN eq.number_lanes = 4 THEN " + 			    			
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+																
+					"WHEN eq.number_lanes = 5 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+									"END " +
+								
+					"WHEN eq.number_lanes = 6 THEN " +			 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+											
+					"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3 OR v.lane = 4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+									"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3 OR v.lane=4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +   
+								"ELSE 0 END 'AUTO_S1', " +
+								
+				"CASE " +
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+															
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+									"END " +
+								
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+															
+					"WHEN eq.number_lanes = 5 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+									"END " +	
+								
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+													
+					"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3 OR v.lane = 4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+									"END " +
+											
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3 OR v.lane=4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								 "ELSE 0 END 'MOTO_S1', " +
+				
+				"CASE " +
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+														
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " + 
+								
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+																
+					"WHEN eq.number_lanes = 5 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " +	
+								
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+														
+					"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3 OR v.lane = 4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " +  
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=1 OR v.lane=2 OR v.lane=3 OR v.lane=4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " +   
+								"ELSE 0 END 'COM_S1', " +
+				"CASE " + 				   
+					"WHEN eq.number_lanes = 2 THEN " + 							
+					"IFNULL(ROUND(SUM(IF((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"'), 1, NULL)),0),0) " + 
 						
-			if(faixas == 2) {
-				
-                 /*CONTAGEM*/			
-				
-				//Sentido 1
-				sql+= "IFNULL(ROUND(COUNT(IF(((tb_vbv.lane = 1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS1', " +
-				"IFNULL(ROUND(COUNT(IF((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"'), 1, NULL)),0),0) 'TOTALS1', " +			
-				
-				//Sentido 2
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2) AND (tb_equipamentos.faixa2 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.lane=2 AND tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2) AND (tb_equipamentos.faixa2 = '"+sentido2+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2) AND (tb_equipamentos.faixa2 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS2', " +
-				"IFNULL(ROUND(COUNT(IF((tb_vbv.lane=2) AND (tb_equipamentos.faixa2 = '"+sentido2+"'), 1, NULL)),0),0) 'TOTALS2', ";
-				
-                /*M�DIA*/
-				
-				//Sentido 1
-				sql+= "IFNULL(ROUND(AVG(IF((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"'), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS1', " +
-
-				//Sentido 2
-				"IFNULL(ROUND(AVG(IF((tb_vbv.lane=2) AND (tb_equipamentos.faixa2 = '"+sentido2+"'), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS2' ";
-				 
-			  }
-			
-			if(faixas == 3) {
-				
-                /*CONTAGEM*/			
-				
-				//Sentido 1
-				sql+= "IFNULL(ROUND(COUNT(IF(((tb_vbv.lane = 1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS1', " +
-				"IFNULL(ROUND(COUNT(IF((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"'), 1, NULL)),0),0) 'TOTALS1', " +			
-				
-				//Sentido 2
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa2 = '"+sentido2+"' OR tb_equipamentos.faixa3 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.lane=2 AND tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa2 = '"+sentido2+"' OR tb_equipamentos.faixa3 = '"+sentido2+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa2 = '"+sentido2+"' OR tb_equipamentos.faixa3 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS2', " +
-				"IFNULL(ROUND(COUNT(IF((tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa2 = '"+sentido2+"' OR tb_equipamentos.faixa3 = '"+sentido2+"'), 1, NULL)),0),0) 'TOTALS2', ";
-				
-               /*M�DIA*/
-				
-				//Sentido 1
-				sql+= "IFNULL(ROUND(AVG(IF((tb_vbv.lane=1) AND (tb_equipamentos.faixa1 = '"+sentido1+"'), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS1', " +
-
-				//Sentido 2
-				"IFNULL(ROUND(AVG(IF((tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa2 = '"+sentido2+"' OR tb_equipamentos.faixa3 = '"+sentido2+"'), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS2' ";
-				 
-			  }
-
-   
-			if(faixas == 4) {
-
-                 /*CONTAGEM*/			
-				
-				//Sentido 1		
-				sql+=" IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"')), 1, NULL)),0),0) 'TOTALS1', " +
-               
-                //Sentido 2								
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa3 = '"+sentido2+"' OR tb_equipamentos.faixa4 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa3 = '"+sentido2+"' OR tb_equipamentos.faixa4 = '"+sentido2+"') AND (tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " + 
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa3 = '"+sentido2+"' OR tb_equipamentos.faixa4 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa3 = '"+sentido2+"' OR tb_equipamentos.faixa4 = '"+sentido2+"')), 1, NULL)),0),0) 'TOTALS2', ";
-				
-               /*VELOCIDADE M�DIA*/
-
-				//Sentido 1		
-				sql+= "IFNULL(ROUND(AVG(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"')), tb_vbv.speed , NULL)),0),0) 'AVG TOTALS1', " +
-
-				//Sentido 2			
-				"IFNULL(ROUND(AVG(IF(((tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa3 = '"+sentido2+"' OR tb_equipamentos.faixa4 = '"+sentido2+"') ), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS2' ";
-				
-			}
-			
-			if(faixas == 6) {
-
-                /*CONTAGEM*/			
-				
-				//Sentido 1		
-				sql+=" IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3) AND tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3) AND tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3) AND tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"')), 1, NULL)),0),0) 'TOTALS1', " +
-              
-               //Sentido 2								
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=4 OR tb_vbv.lane=5 OR tb_vbv.lane=6) AND tb_equipamentos.faixa4 = '"+sentido2+"' OR tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=4 OR tb_vbv.lane=5 OR tb_vbv.lane=6) AND tb_equipamentos.faixa4 = '"+sentido2+"' OR tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"') AND (tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " + 
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=4 OR tb_vbv.lane=5 OR tb_vbv.lane=6) AND tb_equipamentos.faixa4 = '"+sentido2+"' OR tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=4 OR tb_vbv.lane=5 OR tb_vbv.lane=6) AND tb_equipamentos.faixa4 = '"+sentido2+"' OR tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"')), 1, NULL)),0),0) 'TOTALS2', ";
-				
-              /*VELOCIDADE M�DIA*/
-
-				//Sentido 1		
-				sql+= "IFNULL(ROUND(AVG(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"')), tb_vbv.speed , NULL)),0),0) 'AVG TOTALS1', " +
-
-				//Sentido 2			
-				"IFNULL(ROUND(AVG(IF(((tb_vbv.lane=4 OR tb_vbv.lane=5 OR tb_vbv.lane=6) AND (tb_equipamentos.faixa4 = '"+sentido2+"' OR tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"') ), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS2' ";
-				
-			}	
-			
-			if(faixas == 8) {
-
-                /*CONTAGEM*/			
-				
-				//Sentido 1		
-				sql+=" IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"' OR tb_equipamentos.faixa4 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"' OR tb_equipamentos.faixa4 = '"+sentido1+"') AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"' OR tb_equipamentos.faixa4 = '"+sentido1+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS1', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"' OR tb_equipamentos.faixa4 = '"+sentido1+"')), 1, NULL)),0),0) 'TOTALS1', " +
-              
-               //Sentido 2								
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=5 OR tb_vbv.lane=6 OR tb_vbv.lane=7 OR tb_vbv.lane=8) AND (tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"' OR tb_equipamentos.faixa7 = '"+sentido2+"' OR tb_equipamentos.faixa8 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassRideCar()+"' OR (tb_vbv.classe='"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10) OR tb_vbv.classe = '"+cs.getClassNotIdentifiedAxl2()+"')), 1, NULL )),0),0) 'AUTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=5 OR tb_vbv.lane=6 OR tb_vbv.lane=7 OR tb_vbv.lane=8) AND (tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"' OR tb_equipamentos.faixa7 = '"+sentido2+"' OR tb_equipamentos.faixa8 = '"+sentido2+"') AND (tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_vbv.classe <> '"+cs.getClassRideCar()+"' AND tb_vbv.classe <> '"+cs.getClassNotIdentifiedAxl2()+"' AND tb_vbv.classe <> '"+cs.getClassMotorcycle()+"' AND (tb_vbv.classe <> '"+cs.getUnknowClass()+"' AND tb_vbv.axlNumber < 10))), 1, NULL )),0),0) 'COM2', " + 
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=5 OR tb_vbv.lane=6 OR tb_vbv.lane=7 OR tb_vbv.lane=8) AND (tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"' OR tb_equipamentos.faixa7 = '"+sentido2+"' OR tb_equipamentos.faixa8 = '"+sentido2+"') AND (tb_vbv.classe = '"+cs.getClassMotorcycle()+"')), 1, NULL )),0),0) 'MOTOS2', " +
-				"IFNULL(ROUND(COUNT(IF(((tb_vbv.lane=5 OR tb_vbv.lane=6 OR tb_vbv.lane=7 OR tb_vbv.lane=8) AND (tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"' OR tb_equipamentos.faixa7 = '"+sentido2+"' OR tb_equipamentos.faixa8 = '"+sentido2+"')), 1, NULL)),0),0) 'TOTALS2', ";
-				
-              /*VELOCIDADE M�DIA*/
-
-				//Sentido 1		
-				sql+= "IFNULL(ROUND(AVG(IF(((tb_vbv.lane=1 OR tb_vbv.lane=2 OR tb_vbv.lane=3 OR tb_vbv.lane=4) AND (tb_equipamentos.faixa1 = '"+sentido1+"' OR tb_equipamentos.faixa2 = '"+sentido1+"' OR tb_equipamentos.faixa3 = '"+sentido1+"' OR tb_equipamentos.faixa4 = '"+sentido1+"')), tb_vbv.speed , NULL)),0),0) 'AVG TOTALS1', " +
-
-				//Sentido 2			
-				"IFNULL(ROUND(AVG(IF(((tb_vbv.lane=5 OR tb_vbv.lane=6 OR tb_vbv.lane=7 OR tb_vbv.lane=8) AND (tb_equipamentos.faixa5 = '"+sentido2+"' OR tb_equipamentos.faixa6 = '"+sentido2+"' OR tb_equipamentos.faixa7 = '"+sentido2+"' OR tb_equipamentos.faixa8 = '"+sentido2+"')), tb_vbv.speed, NULL)),0),0) 'AVG TOTALS2' ";
-				
-			}	
-			
-			
-			sql += "FROM tb_vbv " + 
-					"INNER JOIN tb_equipamentos ON tb_vbv.siteID = tb_equipamentos.siteID " + 
-					"WHERE data BETWEEN '"+dataInicio+"' AND '"+dataFim+"' AND tb_vbv.siteID = '"+equip+"' "; 										
-
-
-			sql += "GROUP BY DATE(data), intervals " +  
-					"ORDER BY DATE(data) ASC ";
-
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-			
-			if (rs != null) {
-				while (rs.next()) {
-
-					FluxoVeiculos f = new FluxoVeiculos();														
-
-					f.setData(rs.getString("data"));	
-					f.setIntervalos(rs.getString("intervals"));
-					f.setMotos1(rs.getInt("MOTOS1"));
-					f.setAutos1(rs.getInt("AUTOS1"));
-					f.setComs1(rs.getInt("COM1"));
-					f.setTotalCS1(rs.getInt("TOTALS1"));
-					f.setMotos2(rs.getInt("MOTOS2"));
-					f.setAutos2(rs.getInt("AUTOS2"));
-					f.setComs2(rs.getInt("COM2"));	
-					f.setTotalCS2(rs.getInt("TOTALS2"));
-					f.setTotalVMediaS1(rs.getInt("AVG TOTALS1"));				
-					f.setTotalVMediaS2(rs.getInt("AVG TOTALS2"));
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2) THEN " + 			
+							"IFNULL(ROUND(SUM(IF((v.lane = 1 OR v.lane = 2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), 1, NULL)),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"'), 1, NULL)),0),0) " + 
+									"END " +
+						
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+						"IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"') AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), 1, NULL)),0),0) " + 
+													
+					"WHEN eq.number_lanes = 5 THEN " + 
+					"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN " + 
+						"IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), 1, NULL )),0),0) " + 
+							"ELSE IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), 1, NULL )),0),0) " + 
+								"END " +	
+							
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+						"IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2 OR v.lane=3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), 1, NULL )),0),0) " +  
+													
+					"WHEN eq.number_lanes = 7 THEN " + 
+					"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN " + 
+						"IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2 OR v.lane = 3 OR v.lane = 4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"'), 1, NULL )),0),0) " + 
+							"ELSE IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), 1, NULL )),0),0) " + 
+								"END " + 
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+						"IFNULL(ROUND(SUM(IF((v.lane=1 OR v.lane=2 OR v.lane=3 OR v.lane=4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"'), 1, NULL )),0),0) " + 
+						 "ELSE 0 END 'TOTAL_S1', " +
+						 
+				 "CASE " +			
+					"WHEN eq.number_lanes = 2 THEN " + 							
+					"IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+					
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane1 = eq.dir_lane2) THEN " + 			
+							"IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 1 OR v.lane = 2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+								"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 1) AND (eq.dir_lane1 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+									"END " +
+						
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+												
+					"WHEN eq.number_lanes = 5 THEN " + 
+					"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3) THEN " + 
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+							"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+								"END " +	
+							
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2 OR v.lane=3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), v.speed, NULL),0)),0),0) " +  
+												
+					"WHEN eq.number_lanes = 7 THEN " + 
+					"CASE WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4) THEN " + 
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2 OR v.lane = 3 OR v.lane = 4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+							"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2 OR v.lane = 3) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+								"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=1 OR v.lane=2 OR v.lane=3 OR v.lane=4) AND (eq.dir_lane1 = '"+direction1+"' OR eq.dir_lane2 = '"+direction1+"' OR eq.dir_lane3 = '"+direction1+"' OR eq.dir_lane4 = '"+direction1+"'), v.speed, NULL),0)),0),0) " + 
+							"ELSE 0 END 'SPEED_S1', " +										
+						
+				"CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+										
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane2 = eq.dir_lane3) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=2 OR v.lane=3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 3) AND (eq.dir_lane3 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+									"END " + 
+								
+					"WHEN eq.number_lanes = 4 THEN " + 			    			
+							"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+																
+					"WHEN eq.number_lanes = 5 THEN " + 
+							"CASE WHEN (eq.dir_lane3 = eq.dir_lane4 AND eq.dir_lane1 = eq.dir_lane5) THEN " + 
+								"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4 OR v.lane = 5) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+									"ELSE IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+										"END " + 	
 									
-					lista.add(f);							    
-				}							
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane=6) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+														
+					"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane4 = eq.dir_lane5 AND eq.dir_lane4 = eq.dir_lane6 AND eq.dir_lane4 = eq.dir_lane7) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane = 6 OR v.lane = 7) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane = 7) AND (eq.dir_lane5= '"+direction2+"' OR eq.dir_lane2 OR '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " +  
+									"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane=7 OR v.lane=8) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"' OR eq.dir_lane8 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classLight+"' OR v.classe = '"+RoadConcessionaire.classUnknown+"' OR v.classe = '"+RoadConcessionaire.classNotIdentifiedAxl2+"' OR ((v.classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross < 3501) OR (v.classe = '"+RoadConcessionaire.classTrailer+"' AND gross < 3501 )))), 1, NULL )),0),0) " + 
+								"ELSE 0 END 'AUTO_S2', " +
+									
+				"CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane2 = eq.dir_lane3) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=2 OR v.lane=3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 3) AND (eq.dir_lane3 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+									"END " +
+								
+					"WHEN eq.number_lanes = 4 THEN " + 			    			
+							"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+																
+					"WHEN eq.number_lanes = 5 THEN " + 
+							"CASE WHEN (eq.dir_lane3 = eq.dir_lane4 AND eq.dir_lane1 = eq.dir_lane5) THEN " + 
+								"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4 OR v.lane = 5) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+									"ELSE IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+										"END " +	
+									
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane=6) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+														
+						"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane4 = eq.dir_lane5 AND eq.dir_lane4 = eq.dir_lane6 AND eq.dir_lane4 = eq.dir_lane7) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane = 6 OR v.lane = 7) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane = 7) AND (eq.dir_lane5= '"+direction2+"' OR eq.dir_lane2 OR '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " +
+									"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane=7 OR v.lane=8) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"' OR eq.dir_lane8 = '"+direction2+"') AND (v.classe = '"+RoadConcessionaire.classMotorcycle+"')), 1, NULL )),0),0) " + 
+								"ELSE 0 END 'MOTO_S2', " +
+										
+				 "CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+							"IFNULL(ROUND(SUM(IF(((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+						
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane2 = eq.dir_lane3) THEN " + 			
+							"IFNULL(ROUND(SUM(IF(((v.lane=2 OR v.lane=3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane = 3) AND (eq.dir_lane3 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " +
+							
+					"WHEN eq.number_lanes = 4 THEN " + 			    			
+						"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+														
+					"WHEN eq.number_lanes = 5 THEN " + 
+						"CASE WHEN (eq.dir_lane3 = eq.dir_lane4 AND eq.dir_lane1 = eq.dir_lane5) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=3 OR v.lane=4 OR v.lane = 5) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " +	
+								
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane=6) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+														
+					"WHEN eq.number_lanes = 7 THEN " + 
+						"CASE WHEN (eq.dir_lane4 = eq.dir_lane5 AND eq.dir_lane4 = eq.dir_lane6 AND eq.dir_lane4 = eq.dir_lane7) THEN " + 
+							"IFNULL(ROUND(SUM(IF(((v.lane=4 OR v.lane=5 OR v.lane = 6 OR v.lane = 7) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane = 7) AND (eq.dir_lane5= '"+direction2+"' OR eq.dir_lane2 OR '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " + 
+									"END " +
+				
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+							"IFNULL(ROUND(SUM(IF(((v.lane=5 OR v.lane=6 OR v.lane=7 OR v.lane=8) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"' OR eq.dir_lane8 = '"+direction2+"') AND ((v.classe <> '"+RoadConcessionaire.classLight+"' AND v.classe <> '"+RoadConcessionaire.classUnknown+"' AND v.classe <> '"+RoadConcessionaire.classNotIdentifiedAxl2+"' AND v.classe <> '"+RoadConcessionaire.classMotorcycle+"' AND v.classe <> '"+RoadConcessionaire.classSemiTrailer+"' AND v.classe <> '"+RoadConcessionaire.classTrailer+"') OR (classe = '"+RoadConcessionaire.classSemiTrailer+"' AND gross > 3500) OR (classe = '"+RoadConcessionaire.classTrailer+"' AND gross > 3500))), 1, NULL )),0),0) " +  
+								"ELSE 0 END 'COM_S2', " +
+								   
+				 "CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+					"IFNULL(ROUND(SUM(IF((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"'), 1, NULL)),0),0) " + 
+										
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane2 = eq.dir_lane3) THEN " + 			
+							"IFNULL(ROUND(SUM(IF((v.lane = 2 OR v.lane = 3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"'), 1, NULL)),0),0) " + 
+								"ELSE IFNULL(ROUND(SUM(IF((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"'), 1, NULL)),0),0) " + 
+									"END " +
+						
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+						"IFNULL(ROUND(SUM(IF((v.lane=2 OR v.lane=3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"'), 1, NULL )),0),0) " + 
+													
+					"WHEN eq.number_lanes = 5 THEN " + 
+					"CASE WHEN (eq.dir_lane4 = eq.dir_lane4 AND eq.dir_lane3 = eq.dir_lane5) THEN " + 
+						"IFNULL(ROUND(SUM(IF((v.lane=3 OR v.lane=4 OR v.lane = 5) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"'), 1, NULL )),0),0) " + 
+							"ELSE IFNULL(ROUND(SUM(IF((v.lane=4 OR v.lane=5) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"'), 1, NULL )),0),0) " + 
+								"END " +	
+							
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+						"IFNULL(ROUND(SUM(IF((v.lane=4 OR v.lane=5 OR v.lane=6) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"'), 1, NULL )),0),0) " + 
+													
+					"WHEN eq.number_lanes = 7 THEN " + 
+					"CASE WHEN (eq.dir_lane4 = eq.dir_lane5 AND eq.dir_lane4 = eq.dir_lane6 AND eq.dir_lane4 = eq.dir_lane7) THEN " + 
+						"IFNULL(ROUND(SUM(IF((v.lane=4 OR v.lane=5 OR v.lane = 6 OR v.lane = 7) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"'), 1, NULL )),0),0) " + 
+							"ELSE IFNULL(ROUND(SUM(IF((v.lane=5 OR v.lane=6 OR v.lane = 7) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"'), 1, NULL )),0),0) " + 
+								"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+						"IFNULL(ROUND(SUM(IF((v.lane=5 OR v.lane=6 OR v.lane=7 OR v.lane=8) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"' OR eq.dir_lane8 = '"+direction2+"'), 1, NULL )),0),0) " + 
+						 "ELSE 0 END 'TOTAL_S2', " +
+							
+				"CASE " + 
+					"WHEN eq.number_lanes = 2 THEN " + 							
+					"IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+						
+					"WHEN eq.number_lanes = 3 THEN " + 
+						"CASE WHEN (eq.dir_lane2 = eq.dir_lane3) THEN " + 			
+							"IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 2 OR v.lane = 3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+								"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane = 2) AND (eq.dir_lane2 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+								"END "+
+						
+					"WHEN eq.number_lanes = 4 THEN " + 			    		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=2 OR v.lane=3) AND (eq.dir_lane2 = '"+direction2+"' OR eq.dir_lane3 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+													
+					"WHEN eq.number_lanes = 5 THEN " + 
+					"CASE WHEN (eq.dir_lane4 = eq.dir_lane4 AND eq.dir_lane3 = eq.dir_lane5) THEN " + 
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=3 OR v.lane=4 OR v.lane = 5) AND (eq.dir_lane3 = '"+direction2+"' OR eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+							"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane=4 OR v.lane=5) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+								"END " +
+							
+					"WHEN eq.number_lanes = 6 THEN " + 					 		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=4 OR v.lane=5 OR v.lane=6) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"'), v.speed, NULL),0)),0),0) " +  
+													
+					"WHEN eq.number_lanes = 7 THEN " + 
+					"CASE WHEN (eq.dir_lane4 = eq.dir_lane5 AND eq.dir_lane4 = eq.dir_lane6 AND eq.dir_lane4 = eq.dir_lane7) THEN " + 
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=4 OR v.lane=5 OR v.lane = 6 OR v.lane = 7) AND (eq.dir_lane4 = '"+direction2+"' OR eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+							"ELSE IFNULL(ROUND(AVG(NULLIF(IF((v.lane=5 OR v.lane=6 OR v.lane = 7) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+								"END " +
+					
+					"WHEN eq.number_lanes = 8 THEN " + 					 		
+						"IFNULL(ROUND(AVG(NULLIF(IF((v.lane=5 OR v.lane=6 OR v.lane=7 OR v.lane=8) AND (eq.dir_lane5 = '"+direction2+"' OR eq.dir_lane6 = '"+direction2+"' OR eq.dir_lane7 = '"+direction2+"' OR eq.dir_lane8 = '"+direction2+"'), v.speed, NULL),0)),0),0) " + 
+						 "ELSE 0 END 'SPEED_S2' " + 				 		 					 													
+		 								
+			 			"FROM tb_vbv v " +
+						"INNER JOIN sat_equipment eq ON eq.equip_id = v.siteID " + 
+						"WHERE v.data BETWEEN ? AND ? AND v.siteID = ? " +
+						"GROUP BY DATE(v.data), intervals " +
+						"ORDER BY DATE(v.data) ASC";
+
+						ps = conn.prepareStatement(select);
+						ps.setString(1, startDate);
+						ps.setString(2, endDate);
+						ps.setString(3, equipId);
+																	
+						rs = ps.executeQuery();
+											
+						if (rs.isBeforeFirst()) {
+							while (rs.next()) {
+			
+								FluxoVeiculos veh = new FluxoVeiculos();														
+			
+								veh.setDate(rs.getString("date"));	
+								veh.setInterval(rs.getString("intervals"));
+								veh.setMoto1(rs.getInt("MOTO_S1"));
+								veh.setAuto1(rs.getInt("AUTO_S1"));
+								veh.setCom1(rs.getInt("COM_S1"));
+								veh.setTotal1(rs.getInt("TOTAL_S1"));
+								veh.setSpeed1(rs.getInt("SPEED_S1"));				
+								veh.setMoto2(rs.getInt("MOTO_S2"));
+								veh.setAuto2(rs.getInt("AUTO_S2"));
+								veh.setCom2(rs.getInt("COM_S2"));	
+								veh.setTotal2(rs.getInt("TOTAL_S2"));
+								veh.setSpeed2(rs.getInt("SPEED_S2"));
+												
+								lista.add(veh);							    
+							}							
+						}
+				
+					} catch (SQLException sqle) {
+						
+						StringWriter errors = new StringWriter();
+						sqle.printStackTrace(new PrintWriter(errors));
+						
+						SystemLog.logErrorSQL(errorFolder.concat("error_get_vehicle"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+												
+					}finally {
+						
+						ConnectionFactory.closeConnection(conn, ps);
+					
+					}
+				
+					return lista;
 			}
 	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps);}
-
-		return lista;
+	// --------------------------------------------------------------------------------------------------------------
+	
+	/** Método para ordenar os sentidos de um equipamento
+	 * @author Wellington da Silva criado em 01/03/2019 10:06 - atualizado em 06/01/2022 18:00	
+	 * @version 1.2
+	 * @since 1.0 
+	 * @param lane1 primeira faixa do equipamento
+	 *  
+	 */	
+	
+	public void setDirections(String lane1) {
+		
+		switch(lane1) {
+		
+		case "N": direction1 = "N"; direction2 = "S"; break;
+		case "S": direction1 = "S"; direction2 = "N"; break;
+		case "L": direction1 = "L"; direction2 = "O"; break;
+		case "O": direction1 = "O"; direction2 = "L"; break;
+		
+		
+		}
 	}
-			
-	public void ordenaSentido(String faixa1) {
-		
-		if(faixa1.equals("N")) {			
-			sentido1 = "N";
-			sentido2 = "S";
-		}
-		
-		if(faixa1.equals("S")) {
-			sentido1 = "S";
-			sentido2 = "N";
-		}
-		
-		if(faixa1.equals("L")) {
-			sentido1 = "L";
-			sentido2 = "O";
-		}
-		
-		if(faixa1.equals("O")) {
-			sentido1 = "O";
-			sentido2 = "L";
-		}	
-	}	
-
+	
+   // --------------------------------------------------------------------------------------------------------------
 }

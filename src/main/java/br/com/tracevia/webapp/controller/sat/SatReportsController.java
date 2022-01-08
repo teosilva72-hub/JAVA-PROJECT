@@ -518,9 +518,9 @@ public class SatReportsController {
 
 			// Table fields
 			fields = new String[] {localeLabel.getStringKey("sat_reports_general_date"), localeLabel.getStringKey("sat_reports_general_datetime"), 
-					localeLabel.getStringKey("sat_reports_monthly_flow_lightVehicles"), localeLabel.getStringKey("sat_reports_monthly_flow_commercials"), localeLabel.getStringKey("sat_reports_monthly_flow_motoVehicles"),
+					localeLabel.getStringKey("sat_reports_monthly_flow_lightVehicles"), localeLabel.getStringKey("sat_reports_monthly_flow_commercials"), localeLabel.getStringKey("$label_monthly_flow_commercial_vehicles"),
 					localeLabel.getStringKey("sat_reports_monthly_flow_lightVehicles"), localeLabel.getStringKey("sat_reports_monthly_flow_motoVehicles"),
-					localeLabel.getStringKey("sat_reports_monthly_flow_commercials"), localeLabel.getStringKey("sat_reports_monthly_flow_dir1"), localeLabel.getStringKey("sat_reports_monthly_flow_dir2")};
+					localeLabel.getStringKey("$label_monthly_flow_commercial_vehicles"), localeLabel.getStringKey("sat_reports_monthly_flow_dir1"), localeLabel.getStringKey("sat_reports_monthly_flow_dir2")};
 
 			// Table Objects
 			fieldObjectValues = new String[] { "date", "dateTime", "lightDir1", "heavyDir1", "motoDir1", "lightDir2", "heavyDir2", "motoDir2", "speedValue1", "speedValue2"};

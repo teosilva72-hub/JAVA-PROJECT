@@ -261,10 +261,8 @@ public class SatReportVBVController {
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}		 	 
-	 }
-	 
-   // -----------------------------------------------------------------------------------------------------------------------------------------------------     
-	
+	 }	 
+  
 	 public void downloadFile() throws Exception {
 		 		 	
 		 	String name = (String) SessionUtil.getExternalContext().getSessionMap().get("name_");

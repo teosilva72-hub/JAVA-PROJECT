@@ -27,7 +27,7 @@ public class ReportBuild {
 	public List<SelectItem> vehiclesCCR;  
 	public List<SelectItem> vehicles;  
 	public List<Columns> columns;  
-
+	
 	// Date Format 
 	public final String dateFormat = "dd/MM/yyyy";
 	public final String datetimeFormat = "dd/MM/yyyy HH:mm";
@@ -125,6 +125,27 @@ public class ReportBuild {
 
 	// ----------------------------------------------------------------------------------------------------------------------
 
+	/**
+	 * Método para desenhar as colunas de uma tabela (Sobrecarga)
+	 * @author Wellington
+	 * @version 1.0
+	 * @since version 1.0
+	 * @param field - Array contendo os nomes de cada campo
+	 * @return - vazio
+	 */
+
+	public List<ColumnModel> drawTable(String[] field, String[] objectValue) {
+		
+		List<ColumnModel> columnsModel = new ArrayList<ColumnModel>();
+
+		for(int i = 0; i < field.length; i++)
+			columnsModel.add(new ColumnModel(field[i], objectValue[i]));	
+		
+		return columnsModel;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------
+	
 	/**
 	 * Método para realizar o download de um arquivo formato .xls
 	 * @author Wellington

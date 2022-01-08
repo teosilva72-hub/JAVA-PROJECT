@@ -10,9 +10,12 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
+
 import br.com.tracevia.webapp.model.global.Equipments;
+import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class DateTimeApplication {
 
@@ -793,6 +796,80 @@ public class DateTimeApplication {
 		//dia++; // Incrementar o dia at� limite do intervalo entre dias	
 
 	}
+	
+	// ---------------------------------------------------------------------------------------
+	
+	// Preencher dias - Proporcional ao intervalo de tempo
+	public String[] preencherDataPorPeriodo(String dtInicio,  int tamanho, int range) {
+
+		String da, mth; // Formatar apresenta��o
+
+		int inc = 0;
+		int day = 1;
+		
+		String[] data = new String[tamanho];
+
+		// dia, m�s e ano da dataInicial
+
+		String anoIni = dtInicio.substring(0, 4);
+		String mesIni = dtInicio.substring(5, 7);
+		String diaIni = dtInicio.substring(8, 10);
+
+		// dia inicial - convers�o para inteiro
+		int dayIni = Integer.parseInt(diaIni);
+
+		// mes inicial - convers�o para inteiro
+		int mthIni = Integer.parseInt(mesIni);
+
+		// ano inicial - convers�o para inteiro
+		int yearIni = Integer.parseInt(anoIni);
+
+		int dia = dayIni; // inicializar vari�vel do dia
+		int mes = mthIni; // inicializar vari�vel do m�s
+		int ano = yearIni; // inicializar vari�vel do ano
+
+		// Quantos dias possui o respectivo m�s
+		YearMonth yearMonthObject = YearMonth.of(ano, mes);
+		int daysInMonth = yearMonthObject.lengthOfMonth();
+
+		for (int i = 0; i < tamanho; i++) {
+
+			// Caso o dia seja maior que total de dias no m�s
+			if (dia > daysInMonth) {
+				dia = 1; // reseta o dia
+				mes++; // incrementa o m�s
+
+				if (mes > 12) {
+					mes = 1;
+					ano++;
+				} // caso for verdade - reseta o m�s e incrementa o ano
+			
+			}
+
+			// Formata apresenta��o da String
+			if (dia <= 9)
+				da = "0";
+			else
+				da = "";
+			if (mes < 10)
+				mth = "0";
+			else
+				mth = "";
+
+			data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
+			
+			if(i == (day * (range - 1) + inc)) {					
+				dia++;	
+				day++;		
+				inc++;
+			}
+		}
+		
+		return data;
+
+	}
+
+	 // ----------------------------------------------------------------------------------------
 
 
 	/////////////////////////////////
@@ -1157,8 +1234,56 @@ public class DateTimeApplication {
 		}
 
 	}	
+	
+	// ------------------------------------------------------------------------------------
+	
+	//15 MINUTOS
+	public String[] intervalo15Minutos(int tamanho) {
+			
+		int i, ini, fim, hora;
+		
+		String[] intervalos = new String[tamanho];	
+		
+		ini = 0;
+		fim = 15;
+		hora = 0;
 
+		for (i = 0; i < tamanho; i++) {
 
+			if (fim == 60)
+				fim = 59;
+
+			if (ini > 45 && fim > 60) {
+				ini = 0;
+				fim = 15;
+				hora++;
+			}
+
+			if (hora == 24)
+				hora = 0;
+
+			if ((ini == 0) && (hora < 10))
+				intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
+
+			else if ((ini != 0) && (hora < 10))
+				intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
+
+			else if (ini == 0)
+				intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
+
+			else
+				intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
+
+			ini += 15;
+			fim += 15;
+
+		}
+		
+		return intervalos;
+
+	}	
+
+	// ------------------------------------------------------------------------------------
 
 	//30 MINUTOS
 	public void intervalo30Min(String[][] matriz, int col, int lin) {
@@ -2093,12 +2218,8 @@ public class DateTimeApplication {
 		}
 
 	}
-
-
-	/* ************************************************************************************************************* */
-
+	
 	// ---------------------------------------------------------------------------------------------------------------
-
 
 	// NUEVO	
 
@@ -2173,5 +2294,115 @@ public class DateTimeApplication {
 	}
 	 
 	// ------------------------------------------------------------------------------------------------------
+	 
+	 public String[] preencherHora(int tamanho) {
+		
+			String horaInicio = " ";
+			String horaFim = " ";
+			
+			int hr = 0;
+				
+			String[] hora = new String[tamanho];
+
+			for (int h = 0; h < tamanho; h++) {	
+								
+				if (hr == 24)
+					  hr = 0;
+
+					if (hr < 10)
+						horaInicio = "0" + String.valueOf(hr);
+					else
+						horaInicio = String.valueOf(hr);
+					horaInicio += ":00";
 	
+					if (hr < 10)
+						horaFim = "0" + String.valueOf(hr);
+					else
+						horaFim = String.valueOf(hr);
+					horaFim += ":59";	     			     	
+		     	
+			     	hora[h] = horaInicio + " - " + horaFim;	
+			     			     	
+			     	hr++;
+				     
+			  }
+								
+			return hora;
+		}
+	 		
+	// ------------------------------------------------------------------------------------------------------
+		
+	 /**
+	  * Obter o dia da semana a partir de uma data
+	  * @author Wellington 07/01/2022
+	  * @version 1.0
+	  * @since 1.0
+	  * @param day dia de uma data
+	  * @param month mês de uma data
+	  * @param year ano de uma data
+	  * @return o dia da semana (String)
+	  * 
+	  */
+	 
+	 public String dayOfWeek(int day, int month, int year) {
+		 
+		LocaleUtil locale = new LocaleUtil();
+		locale.getResourceBundle(LocaleUtil.LABELS_CALENDAR);
+		 		 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		 
+		Date date;
+		int day_week = 0;
+		String dayWeek = "";
+	
+		GregorianCalendar gc = new GregorianCalendar();
+	
+			// Formatar apresenta��o da Data
+			if (day < 10 && month < 10)
+					dayWeek = "0"+ day +"/0"+ month +"/" + year;
+	
+			if (day < 10 && month >= 10)
+					dayWeek = "0"+ day +"/"+ month +"/" + year;		
+	
+			if (day >= 10 && month < 10)
+					dayWeek = day + "/0" + month + "/" + year;
+	
+			if(day > 9 && month > 9)
+					dayWeek = day + "/" + month + "/" + year;
+	
+				try {
+					
+					date = sdf.parse(dayWeek);
+					
+					gc.setTime(date);
+					
+					day_week = gc.get(GregorianCalendar.DAY_OF_WEEK);
+					
+				} catch (ParseException e) {
+					
+					e.printStackTrace();
+				}
+	
+			switch (day_week) {
+	
+				case 1:	dayWeek = locale.getStringKey("sunday"); break;
+				
+				case 2: dayWeek = locale.getStringKey("monday"); break;
+				
+				case 3:	dayWeek = locale.getStringKey("tuesday"); break;
+				
+				case 4:	dayWeek = locale.getStringKey("wednesday"); break;
+				
+				case 5:	dayWeek = locale.getStringKey("thursday"); break;
+				
+				case 6:	dayWeek = locale.getStringKey("friday"); break;
+					
+				case 7:	dayWeek = locale.getStringKey("saturday"); break;
+			
+			}
+			
+			return dayWeek;
+	  }
+	 
+	// ------------------------------------------------------------------------------------------------------
 }
