@@ -88,43 +88,36 @@
 }
 
 .equip-imageSPD {
-  margin-top: -17%;
   width: 100%;
   border: none;
 }
 
 .equip-imagePOST {
   vertical-align: top;
-  margin-top: -20%;
   width: 100%;
   border: none;
 }
 
 .equip-imageDAI {
   vertical-align: top;
-  margin-top: -20%;
   width: 100%;
   border: none;
 }
 
 .equip-imageOCR {
   vertical-align: top;
-  margin-top: -20%;
   width: 100%;
   border: none;
 }
 
 .equip-imageCOLAS {
   vertical-align: top;
-  margin-top: -30%;
-  margin-bottom: 15%;
   width: 100%;
   border: none;
 }
 
 .equip-imageCOMMS {
   vertical-align: top;
-  margin-top: -40%;
   width: 100%;
   border: none;
 }

@@ -56,3 +56,34 @@
 .card.panel-meteo-card .card-footer.on {
     background-color: green;
 }
+
+.meteo-info-bagde {
+    position: absolute;
+    top: -4px;
+    margin-left: -8px;
+    background-color: #1e90ff;
+    color: #ffffff !important;
+    text-align: center;
+    line-height: 22px;
+    min-width: 22px;
+    display: block;
+    border-radius: 50%;
+    float: left;
+    cursor: pointer;
+    z-index: 3;
+    text-indent: 0px;
+    text-decoration: none;
+    font-size: 18px;
+    border: 1px solid black;
+  }
+  
+  .meteo-info-bagde:hover {
+    text-decoration: none;
+    background: #ffc107;
+    color: #555;
+  }
+  
+  .meteo-info-bagde:focus {
+    background: #000080;
+    outline: none;
+  }
