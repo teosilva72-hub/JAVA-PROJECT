@@ -43,7 +43,7 @@
 
 .card.panel-meteo-card .card-body .form-control {
     background-color: transparent;
-    font-size: small;
+    font-size: .7em;
     font-weight: bold;
     padding: 0;
 }
