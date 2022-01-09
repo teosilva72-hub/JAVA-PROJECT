@@ -45,7 +45,7 @@
                           
 	<!-- REPORTS LABEL INFORMATION --> 
 	 <div class="text-dark text-center font-weight-bold report-title" >
-	 <h:outputText value="#{satLabels.sat_reports_name_month_flow}" />
+	 <h:outputText value="#{satLabels.via_paulista_monthly_flow_title}" />
 	 <hr></hr>
 	 </div>
 	 
@@ -100,7 +100,7 @@
 			<div id="btn-search" class="text-center"> 
 				<h:commandButton id="btn-tab-search"
 					class="btn btn-dark draw-button fas fa-search fa-3x" value=""
-					data-toggle="tooltip" data-placement="bottom" title="#{satLabels.sat_reports_btn_search}">
+					data-toggle="tooltip" data-placement="bottom" title="#{reportsLabels.reports_btn_search}">
 					<f:passThroughAttribute name="data-toggle" value="modal" />
 					<f:passThroughAttribute name="data-target"
 						value="#modalReportOptions" />
@@ -116,7 +116,7 @@
 				<h:commandButton id="btn-tab-reset"
 					class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
 					value="" data-toggle="tooltip" data-placement="bottom"
-					disabled="#{fluxoMensal.build.clearBool}" title="#{satLabels.sat_reports_btn_clean}">
+					disabled="#{fluxoMensal.build.clearBool}" title="#{reportsLabels.reports_btn_clean}">
 					<f:passThroughAttribute name="data-toggle" value="modal" />
 					<f:passThroughAttribute name="data-target" value="#modalClear" />
 					<f:ajax execute="@form" render="@none" />
@@ -130,7 +130,7 @@
 			<div id="btn-excel"> 
 		       <h:commandButton id="excel-act" value="" disabled="#{fluxoMensal.build.excelBool}"
 			      class="fas fa-file-excel fa-2x" data-toggle="tooltip"
-			      data-placement="bottom" title="#{satLabels.sat_reports_btn_excel}" action="#{fluxoMensal.download}" widgetVar="excelWgt">
+			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" action="#{fluxoMensal.download}" widgetVar="excelWgt">
 			  	  <f:passThroughAttribute name="data-toggle" value="modal" />
 			  	  <f:passThroughAttribute name="data-target" value="#modalDownload" />
 			  	  <f:ajax execute="@form" render="@none" />
@@ -155,7 +155,7 @@
 				<h:form class="modal-content" name="report-form"
 					id="report-form">
 					<div class="modal-header text-center">
-						<h4 class="modal-title w-100 font-weight-bold">#{satLabels.sat_reports_modal_title}</h4>
+						<h4 class="modal-title w-100 font-weight-bold">#{reportsLabels.reports_modal_title}</h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							  <span aria-hidden="true">&times;</span>
 						   </button>
@@ -347,7 +347,7 @@
     	<!-- ============================================================================================================================= -->	
 						
 		<div id="loading"> <!-- LOADING MESSAGE -->
-			<span>#{satLabels.sat_reports_loading_message}...</span>
+			<span>#{reportsLabels.reports_loading_message}...</span>
 		</div>
 		
 	  	<!-- ============================================================================================================================= -->	

@@ -52,7 +52,7 @@ public class FluxoVeiculosDAO {
 	 *  
 	 */	
 
-	public List<FluxoVeiculos> getVehicles(String startDate, String endDate, String equipId, String laneDir1) throws Exception {		
+	public List<FluxoVeiculos> getVehicles(String startDate, String endDate, String equipId, String laneDir1) {		
 
 		List<FluxoVeiculos> lista = new ArrayList<FluxoVeiculos>();
 		
