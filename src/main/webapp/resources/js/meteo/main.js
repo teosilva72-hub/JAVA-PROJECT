@@ -7,15 +7,24 @@ const connectMeteo = async (request, debug) => {
 const treat_values = response => {
     let type = response.type
     let id = response.id
+    let status = response.status
+    let meteo = $(`#meteo${id} .status`)
+
     delete response.type
     delete response.id
+    delete response.status
     lastUpgrade[type + id] = response
+
+    if (status)
+        meteo.addClass('on')
+    else
+        meteo.removeClass('on')
 }
 
 const set_values = () => {
     let panel = $('.panel-card').removeClass('on')
     for (const [k, v] of Object.entries(lastUpgrade)) {
-        let equip = panel.filter(`#${k}, [for=${k}]`);
+        let equip = panel.filter(`[for=${k}]`);
         for (const [k2, v2] of Object.entries(v)) {
             let card = equip.filter(`.${k2}`).addClass('on')
             if (card.hasClass('deg'))
