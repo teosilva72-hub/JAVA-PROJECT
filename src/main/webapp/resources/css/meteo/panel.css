@@ -276,7 +276,12 @@ body{
 .panel-card .card-value {
 	background-color: transparent;
 	border: none;
+	color: white;
 	width: 100%;
+}
+
+.panel-card .card-value.text-black {
+	color: black;
 }
 
 .panel-card .card-notation {
