@@ -35,21 +35,21 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.primefaces.context.RequestContext;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.joda.time.DateTime;
 
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.sat.FluxoPeriodoDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.methods.DateMethods;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
+import br.com.tracevia.webapp.methods.ExcelModels;
 import br.com.tracevia.webapp.model.global.ColumnModel;
 import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.global.ReportBuild;
 import br.com.tracevia.webapp.model.sat.FluxoPeriodo;
-import br.com.tracevia.webapp.model.sat.FluxoVeiculos;
-import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sat.FluxoPeriodo.Builder;
+import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
@@ -123,6 +123,8 @@ public class FluxoPeriodoBean {
 		FluxoPeriodo per;
 		FluxoPeriodoDAO dao;		
 		DateMethods dtm;
+		
+		EquipmentsDAO equipDao;
 
 		String[] dataHora, siteNames, dataIntervalo, data_excel, hora_excel, data_cabecalho,
 		diasx, excel_hora, satNames, sentido1, sentido2, sentidoExcel1, sentidoExcel2, nomeSats;
@@ -308,11 +310,21 @@ public class FluxoPeriodoBean {
 			  
 			  SessionUtil.executeScript("$('#modalInfo').modal('show');");
 			  
-			  Map<String, String[]> multiParameterMap = SessionUtil.getRequestParameterValuesMap();
-				
-			  equips = multiParameterMap.get("equips"); // EQUIP	 
+			  DateTimeApplication dta = new DateTimeApplication();
 			  
-			  EquipmentsDAO dao = new EquipmentsDAO();
+			  equipDao = new EquipmentsDAO();
+			  
+			  Map<String, String[]> multiParameterMap = SessionUtil.getRequestParameterValuesMap();
+			  Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
+			   
+			  equips = multiParameterMap.get("equips"); // EQUIP	 
+			  period = parameterMap.get("periods"); // PERIOD
+			  month = parameterMap.get("month"); // MONTH	
+			  year = parameterMap.get("year"); // YEAR
+									  
+			  String fileName = localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+periodName(period)+"_"+monthABR+""+yearABR;
+			  SessionUtil.setParam("current", dta.currentTime());
+			  SessionUtil.setParam("fileName", fileName);   
 			  
 			 /* FacesContext context = FacesContext.getCurrentInstance();
 			    boolean validationFailed = context.isValidationFailed();
@@ -321,9 +333,7 @@ public class FluxoPeriodoBean {
 			    	RequestContext.getCurrentInstance().execute("PF('poll').start()");
 			    }*/
 			  
-		    sat = new SAT();		
-			sat = dao.headerInfoSAT(equips[fill]);	
-			  
+		    			  
 			// System.out.println("--- Initializing ---");
 			 //System.out.println("Hello World");	 
 					 
@@ -360,9 +370,12 @@ public class FluxoPeriodoBean {
 			 
 			 DateMethods dtm = new DateMethods();
 			 
-			// instaciarProcessaDados(dtm);	 
+			 instaciarProcessaDados(dtm);	 
 			 
-			 for(indice=0; indice < equips.length; indice++) {
+			 for(indice=0; indice < equips.length; indice++) {				 
+										
+					sat = new SAT();		
+					sat = equipDao.headerInfoSAT(equips[indice]);	
 				 
 				 flag=3;
 				 mess(flag);			 		 
@@ -373,7 +386,7 @@ public class FluxoPeriodoBean {
 				 mess(flag);			 
 				// System.out.println("Flag "+flag);
 					
-				 //processaDados(indice, Integer.parseInt(equips[indice]), dtm);
+				 processaDados(indice, Integer.parseInt(equips[indice]), dtm, sat);
 				 			
 				 if(indice == (equips.length-1)) {
 				 
@@ -393,8 +406,7 @@ public class FluxoPeriodoBean {
 			    mess(flag);				  
 				//System.out.println("Flag "+flag);
 			 		   		   
-			   //Popular tabela
-			    //populateTable();		   
+			  //  populateTable(); // POP DATATABLE
 			    
 			    flag=6;		   
 			    mess(flag);		    
@@ -403,11 +415,14 @@ public class FluxoPeriodoBean {
 				flag=7;
 				mess(flag);
 				//System.out.println("Flag "+flag);		
-				
+								
 				build.closeBool = false; // ALLOW CLOSE MODAL
+				build.excelBool = false;
 				
-				updateButton();
-								        
+				updateCloseButton(); 
+				//updateDatable();		
+				updateExcelButton();  
+																        
 		    }
 		  
 		  
@@ -463,11 +478,9 @@ public class FluxoPeriodoBean {
 
 				int hr = 0, minuto = 0, interResp = 0, ultimo_equipamento = 0;
 				
-				try {
+				try {					
 					
-					
-					/*
-					 * workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
+					workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
 					propertyTemplate = new PropertyTemplate();
 					sheetName = new String[equips.length]; 
 				
@@ -486,7 +499,7 @@ public class FluxoPeriodoBean {
 
 						//createExcelSheet(sheet, propertyTemplate);	
 					}		
-					*/	
+					
 				
 					//System.out.println("-----------------");
 					//System.out.println("Folha(s) criada(s) ...");
@@ -496,7 +509,7 @@ public class FluxoPeriodoBean {
 					//mess(flag);
 					//updateForm();
 
-				/* for(fill = 0; fill < equips.length; fill++) {	
+				 for(fill = 0; fill < equips.length; fill++) {	
 
 						System.out.println("-----------------");
 					    System.out.println("Entrando no Loop ...");
@@ -639,11 +652,11 @@ public class FluxoPeriodoBean {
 
 						// System.out.println("Preenchendo dados na Folha "+sheetName[fill]+" ...");
 
-						//preencherDadosExcel(workbook,  propertyTemplate, fill, sheetName[fill], tam);
+						preencherDadosExcel(workbook,  propertyTemplate, fill, sheetName[fill], tam);
 
 						flag = 5;				
 						//mess(flag);
-					}		*/				
+					}				
 
 					//Fora do Laço!!!
 					/*for(int i=0; i < tamanho; i++) {
@@ -664,18 +677,8 @@ public class FluxoPeriodoBean {
 					//	System.out.println("------------------");
 					//	System.out.println("Arquivo do Excel Criado com Sucesso!");
 					//	System.out.println("------------------");		
-
-					 
-				
-					
-					 
-					 displayMessage += "\nHello World";
-					 
-					 updateForm();
-					 
-					  
-						 
-					 
+		   
+				 
 		 	} catch (Exception ex) {
 				ex.printStackTrace();
 				
@@ -1377,9 +1380,33 @@ public class FluxoPeriodoBean {
 			 * @return void */
 
 			public void resetForm() throws Exception {
-
+											
+			// ---------------------------------------------------------------------------------
 				
-			}	
+				//FIELDS EXTERNOS ARMAZENADOS NA REQUISIO
+				build.fields = (String[]) SessionUtil.getParam("fields");
+				build.fieldObjectValues =  (String[]) SessionUtil.getParam("fieldsObject");
+						
+				// AFTER REDRAW TABLE
+				columns = build.drawTable(build.fields, build.fieldObjectValues);
+						
+			// ---------------------------------------------------------------------------------
+							
+				sat = new SAT();
+				
+				build.excelBool = true;
+				build.clearBool = true;
+				
+				// REMOVE FIELDS FROM SESSION
+				
+				SessionUtil.remove("workbook");
+				SessionUtil.remove("current");
+				SessionUtil.remove("fileName");		
+						
+			}
+			
+			// ---------------------------------------------------------------------------------
+				
 								
 
 			/* Métodos para criar o Excel */			
@@ -1475,8 +1502,8 @@ public class FluxoPeriodoBean {
 				rowDescription3.createCell(2).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_day"));
 				rowDescription3.createCell(3).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_hour"));
 
-				rowDescription3.createCell(6).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_flow ="));
-				rowDescription3.createCell(10).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_flow ="));
+				rowDescription3.createCell(6).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_flow"));
+				rowDescription3.createCell(10).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_flow"));
 
 				rowDescription3.createCell(15).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_speed_avg"));
 				rowDescription3.createCell(19).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_speed_avg"));
@@ -1552,11 +1579,11 @@ public class FluxoPeriodoBean {
 				rowDescription4.createCell(6).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_auto"));
 				rowDescription4.createCell(7).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_com"));
 				rowDescription4.createCell(8).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_moto"));
-				rowDescription4.createCell(9).setCellValue(localeSheet.getStringKey("tab_total"));
+				rowDescription4.createCell(9).setCellValue(localeSheet.getStringKey("$label_excel_sheet_monthly_flow_total_tab"));
 				rowDescription4.createCell(10).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_auto"));
 				rowDescription4.createCell(11).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_com"));
 				rowDescription4.createCell(12).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_moto"));
-				rowDescription4.createCell(13).setCellValue(localeSheet.getStringKey("tab_total"));
+				rowDescription4.createCell(13).setCellValue(localeSheet.getStringKey("$label_excel_sheet_monthly_flow_total_tab"));
 
 				rowDescription4.createCell(15).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_auto"));
 				rowDescription4.createCell(16).setCellValue(localeSheet.getStringKey("$label_excel_sheet_period_flow_com"));
@@ -1742,36 +1769,31 @@ public class FluxoPeriodoBean {
 
 				}		        
 			}	
+			
+			 /**M�todo para realizar o download do aqruivo Excel
+		     * @return void - retorno vazio
+		     * @throws IOException 
+		     */
+		    
+			public void download() {
 
-			public void downloadExcelPeriodo() throws IOException {
-
-				//System.out.println("Gerando arquivo para Donwload ... ");
+				ExcelModels model = new ExcelModels();
 				
-				FacesContext facesContext = FacesContext.getCurrentInstance();
-				ExternalContext externalContext = facesContext.getExternalContext();
-				externalContext.setResponseContentType("application/vnd.ms-excel");
-				externalContext.setResponseHeader("Content-Disposition",
-						"attachment; filename=\""+localeSat.getStringKey("via_paulista_flow_per_period_file_name")+"_"+periodName(period)+"_"+monthABR+""+yearABR+".xlsx\"");
+				XSSFWorkbook workbook = (XSSFWorkbook) SessionUtil.getParam("workbook");
+				String currentDate = (String) SessionUtil.getParam("current");
+				String fileName = (String) SessionUtil.getParam("fileName");
 
-				OutputStream responseOutputStream = externalContext.getResponseOutputStream();             
+				String name = fileName+"_"+currentDate;
 
-				workbook.write(responseOutputStream);
-				facesContext.responseComplete();   
-				workbook.close();
-				workbook.dispose();
+				try {
 
-				//OutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				//workbook.write(byteArrayOutputStream);
+					model.download(workbook, name);
 
-				//excel_size = byteArrayOutputStream.size();
+				} catch (IOException e) {			
+					e.printStackTrace();
+				}
 
-				//workbook.write(externalContext.getResponseOutputStream());
-				//facesContext.responseComplete();
-
-				//System.out.println("Download Realizado com Sucesso!");
-
-			}
-
+			}   	            
 
 			public void createStyle() {			
 
@@ -2035,6 +2057,9 @@ public class FluxoPeriodoBean {
 				
 				initializeSentidoExcel(equip);  
 								
+				sat = new SAT();		
+				sat = equipDao.headerInfoSAT(equips[sheetIndex]);	
+								
 				sheetName[sheetIndex] = sat.getNome();								
 				sheet = workbook.createSheet(sheetName[sheetIndex]); // Criar nova folha para o arquivo	
 				rowDados = new SXSSFRow(sheet);
@@ -2060,9 +2085,15 @@ public class FluxoPeriodoBean {
 			    
 			}
 			
-			public void updateButton() {
+			public void updateCloseButton() {
 				
 				SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:dismiss-modal");
+				
+			}
+			
+			public void updateExcelButton() {
+				
+				SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-table:excel-act");
 				
 			}
 			
@@ -2144,10 +2175,10 @@ public class FluxoPeriodoBean {
 		        
 			}
 		   
-			public void processaDados(int sheetIndex, int equip, DateMethods dtm) throws Exception {	
+			public void processaDados(int sheetIndex, int equip, DateMethods dtm, SAT sat) throws Exception {	
 															
-				try {		  
-
+				try {						
+				
 					 //System.out.println("-----------------");
 					  //System.out.println("Entrando no Loop ...");
 
@@ -2167,34 +2198,13 @@ public class FluxoPeriodoBean {
 									
 						data = dtm.preencherDataFluxoPeriodo(startDate, endDate, tamanho, tam);								
 						days = dtm.preencherDias(tamanho, tam);	
-						
-						if(period.equals("05 minutes"))	{			
-							intervalo = dtm.intervalo05Minutos(tamanho);	
-							interInicio = dtm.intervaloFluxo05Inicio(tamanho);	
-						    interFim = dtm.intervaloFluxo05Fim(tamanho);	
-						   separador = dtm.intervaloSeparador(tamanho);
-						}
-						
-						if(period.equals("06 minutes"))	{			
-						   intervalo = dtm.intervalo06Minutos(tamanho);	
-						   interInicio = dtm.intervaloFluxo06Inicio(tamanho);	
-						   interFim = dtm.intervaloFluxo06Fim(tamanho);	
-						   separador = dtm.intervaloSeparador(tamanho);
-						}
-						
+																	
 						if(period.equals("15 minutes")) {		
 						   intervalo = dtm.intervalo15Minutos(tamanho);
 						   interInicio = dtm.intervalo15Inicio(tamanho);	
 						   interFim = dtm.intervalo15Fim(tamanho);	
 						   separador = dtm.intervaloSeparador(tamanho);
 				        }
-						
-						if(period.equals("06 hours")) {		
-							   intervalo = dtm.intervalo06Horas(tamanho);
-							   interInicio = dtm.intervalo06HoraInicio(tamanho);	
-							   interFim = dtm.intervalo06HoraFim(tamanho);	
-							   separador = dtm.intervaloSeparador(tamanho);
-					        }
 						
 						if(period.equals("01 hour")) {	
 							intervalo = dtm.preencherHoraContagem(tamanho);
@@ -2215,12 +2225,16 @@ public class FluxoPeriodoBean {
 						equipamentoHeader(index, incEquip, tamanho, sat.getNome(), sat.getKm(), sat.getEstrada(), sat.getFaixa1()); //Preenche nome do equipamento na tabela 
 					
 						sentidoHeader(index, tamanho, sat.getFaixa1()); // Preencher sentido na DataTable
+						
+						System.out.println(sat.getNome());
 												
-						//lista = dao.queryVeiculosPeriodo(dataInicio, endDate, period, equip, getNumFaixas(), getFaixa1(), loginBean);				
+						lista = dao.getVehicles(startDate, endDate, equips[fill], period, sat);				
 
 						if(!lista.isEmpty()) {
 
 							for(FluxoPeriodo pe : lista) {
+								
+								System.out.println(pe.getDate());
 
 								date = pe.getDate();
 								interval = pe.getInterval();	
@@ -2362,6 +2376,10 @@ public class FluxoPeriodoBean {
 						
 						//System.out.println("Preenchendo dados na Folha "+sheetName[indice]+" ...");
 						preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);
+						
+						  
+						//Define Values in session map !important	
+					 	SessionUtil.setParam("workbook", workbook);
 						 
 					//System.out.println("------------------");
 					//System.out.println("Processando Arquivo ...");
@@ -2467,14 +2485,18 @@ public class FluxoPeriodoBean {
 						per = new FluxoPeriodo();
 						dao = new FluxoPeriodoDAO();				
 					
-						mes = dtm.selectedMonth(month); 
-						ano = Integer.parseInt(year);
+						//mes = dtm.selectedMonth(month);
+						int mth = Integer.parseInt(month);
+						int yr = Integer.parseInt(year);
+						
+						System.out.println(year);
+						System.out.println(month);
 						
 						monthABR = dtm.abrevMes(month); 
 						yearABR = dtm.abrevAno(year); 
 
-						YearMonth yearMonthObject = YearMonth.of(ano, mes);
-						daysInMonth = yearMonthObject.lengthOfMonth();				
+						YearMonth yearMonthObject = YearMonth.of(yr, mth);
+						daysInMonth = yearMonthObject.lengthOfMonth();			
 
 						int diaInicial = 1;
 						
