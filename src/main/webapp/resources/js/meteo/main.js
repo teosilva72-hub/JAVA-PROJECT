@@ -7,21 +7,34 @@ const connectMeteo = async (request, debug) => {
 const treat_values = response => {
     let type = response.type
     let id = response.id
+    let status = response.status
+    let meteo = $(`#meteo${id} .status`)
+    let sidebar = $(`#status${type}${id}`)
+
     delete response.type
     delete response.id
+    delete response.status
     lastUpgrade[type + id] = response
+
+    if (status) {
+        meteo.addClass('on')
+        sidebar.css('color', '#00FF00')
+    } else {
+        meteo.removeClass('on')
+        sidebar.css('color', '#ff000d')
+    }
 }
 
 const set_values = () => {
     let panel = $('.panel-card').removeClass('on')
     for (const [k, v] of Object.entries(lastUpgrade)) {
-        let equip = panel.filter(`#${k}, [for=${k}]`);
+        let equip = panel.filter(`[for=${k}]`);
         for (const [k2, v2] of Object.entries(v)) {
             let card = equip.filter(`.${k2}`).addClass('on')
             if (card.hasClass('deg'))
                 card.find('.card-ponteiro').css('transform', `rotate(${v2}deg)`)
             else
-                card.find('.card-value').text(v2)
+                card.find('.card-value').val(v2)
         }
     }
 }
@@ -66,6 +79,27 @@ const initMeteo = async ({ callback_meteo = callback_meteo_default, debug = fals
         set_values()
 		consumeMeteo({ callback_meteo, debug });
 	});
+
+    $('[data-toggle=tooltipMETEO]').each(function () {
+        $(this).tooltip({
+            offset: function (a, b) {
+                let e = $(b)
+                let p = e.closest('.panel-meteo')
+                let s = e.closest('.panel-meteo-card').attr('scale') * scale
+                let d
+                if (a.arrow) {
+                    d = -(e.offset().left - p.offset().left)
+                } else {
+                    d = (window.screen.availWidth - e.offset().left - e.width() * s)
+                      - (window.screen.availWidth - p.offset().left - p.width() * s)
+                }
+    
+                a.popper.left += d
+    
+                return a
+            }
+        })
+    })
 }
 
 $(() => {

@@ -303,7 +303,117 @@ public class FluxoPeriodoBean {
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------------------------------------------- 
+	
+		  public void processInformations() throws Exception {
+			  
+			  SessionUtil.executeScript("$('#modalInfo').modal('show');");
+			  
+			  Map<String, String[]> multiParameterMap = SessionUtil.getRequestParameterValuesMap();
 				
+			  equips = multiParameterMap.get("equips"); // EQUIP	 
+			  
+			  EquipmentsDAO dao = new EquipmentsDAO();
+			  
+			 /* FacesContext context = FacesContext.getCurrentInstance();
+			    boolean validationFailed = context.isValidationFailed();
+			    if(!validationFailed) {
+			    	RequestContext.getCurrentInstance().execute("PF('statusDialog').hide()");
+			    	RequestContext.getCurrentInstance().execute("PF('poll').start()");
+			    }*/
+			  
+		    sat = new SAT();		
+			sat = dao.headerInfoSAT(equips[fill]);	
+			  
+			// System.out.println("--- Initializing ---");
+			 //System.out.println("Hello World");	 
+					 
+			 workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
+			 propertyTemplate = new PropertyTemplate();
+			 sheetName = new String[equips.length];		 
+			 			
+			 flag=0;
+			 mess(flag);		
+			 //System.out.println("Flag "+flag);
+			 		
+			 flag = 1;
+			 mess(flag);	
+			// System.out.println("Flag "+flag);
+		     	     
+		     flag=6;
+			 mess(flag);		
+			 //System.out.println("Flag "+flag);
+			 
+			 //System.out.println("Qtde Equipamentos: "+equips.length);	 
+		     
+			 for(indice=0; indice < equips.length; indice++) 	 
+				   createSheets(indice, Integer.parseInt(equips[indice])); 	
+			 
+			 System.out.println("WK");
+				   		       		
+	         flag = 2;
+		     mess(flag);	   
+		     //System.out.println("Flag "+flag);
+		     
+		     flag=6;
+			 mess(flag);		
+			 //System.out.println("Flag "+flag); 
+			 
+			 DateMethods dtm = new DateMethods();
+			 
+			// instaciarProcessaDados(dtm);	 
+			 
+			 for(indice=0; indice < equips.length; indice++) {
+				 
+				 flag=3;
+				 mess(flag);			 		 
+				 //System.out.println("Flag "+flag);				
+				// pausa(3000);
+				 
+				 flag=6;
+				 mess(flag);			 
+				// System.out.println("Flag "+flag);
+					
+				 //processaDados(indice, Integer.parseInt(equips[indice]), dtm);
+				 			
+				 if(indice == (equips.length-1)) {
+				 
+			     flag = 4;
+				 mess(flag);
+				// System.out.println("Flag "+flag);
+				 
+				 flag=6;
+				 mess(flag);			 
+				// System.out.println("Flag "+flag);
+				 
+				 }
+				
+			 }
+			 
+			    flag = 5;
+			    mess(flag);				  
+				//System.out.println("Flag "+flag);
+			 		   		   
+			   //Popular tabela
+			    //populateTable();		   
+			    
+			    flag=6;		   
+			    mess(flag);		    
+				//System.out.println("Flag "+flag);
+				
+				flag=7;
+				mess(flag);
+				//System.out.println("Flag "+flag);		
+				
+				build.closeBool = false; // ALLOW CLOSE MODAL
+				
+				updateButton();
+								        
+		    }
+		  
+		  
+		// -------------------------------------------------------------------------------------------------------------
+		
+		
 		 public void getReport() throws Exception {
 	 		 
 				DateTimeApplication dta = new DateTimeApplication();
@@ -557,7 +667,7 @@ public class FluxoPeriodoBean {
 
 					 
 				
-					 SessionUtil.executeScript("$('#modalInfo').modal('show');");
+					
 					 
 					 displayMessage += "\nHello World";
 					 
@@ -575,8 +685,8 @@ public class FluxoPeriodoBean {
 		 }
 		 
 	  // ----------------------------------------------------------------------------------------------------------------------------------------------------- 
-			
-			@SuppressWarnings("deprecation")
+							 
+		 @SuppressWarnings("deprecation")
 			public void preencherDadosExcel(SXSSFWorkbook workbook, PropertyTemplate propertyTemplate, int indice, String sheetName, int tam) throws IOException {    	 
 
 				SXSSFSheet sheet = null;
@@ -1933,100 +2043,11 @@ public class FluxoPeriodoBean {
 				createExcelSheet(sheet, propertyTemplate, sheetIndex);
 				
 			}
-
-			  public void processaInformacoes() throws Exception {
-				  
-				 /* FacesContext context = FacesContext.getCurrentInstance();
-				    boolean validationFailed = context.isValidationFailed();
-				    if(!validationFailed) {
-				    	RequestContext.getCurrentInstance().execute("PF('statusDialog').hide()");
-				    	RequestContext.getCurrentInstance().execute("PF('poll').start()");
-				    }*/
-				  
-				// System.out.println("--- Initializing ---");
-				 //System.out.println("Hello World");	 
-						 
-				 workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
-				 propertyTemplate = new PropertyTemplate();
-				 sheetName = new String[equips.length];		 
-				 			
-				 flag=0;
-				 mess(flag);		
-				 //System.out.println("Flag "+flag);
-				 		
-				 flag = 1;
-				 mess(flag);	
-				// System.out.println("Flag "+flag);
-			     	     
-			     flag=6;
-				 mess(flag);		
-				 //System.out.println("Flag "+flag);
-				 
-				 //System.out.println("Qtde Equipamentos: "+equips.length);	 
-			     
-				 for(indice=0; indice < equips.length; indice++) 	 
-					   createSheets(indice, Integer.parseInt(equips[indice])); 	
-					   		       		
-		         flag = 2;
-			     mess(flag);	   
-			     //System.out.println("Flag "+flag);
-			     
-			     flag=6;
-				 mess(flag);		
-				 //System.out.println("Flag "+flag); 
-				 
-				 DateMethods dtm = new DateMethods();
-				 
-				 instaciarProcessaDados(dtm);	 
-				 
-				 for(indice=0; indice < equips.length; indice++) {
-					 
-					 flag=3;
-					 mess(flag);			 		 
-					 //System.out.println("Flag "+flag);				
-					 pausa(3000);
-					 
-					 flag=6;
-					 mess(flag);			 
-					// System.out.println("Flag "+flag);
-						
-					 processaDados(indice, Integer.parseInt(equips[indice]), dtm);
-					 			
-					 if(indice == (equips.length-1)) {
-					 
-				     flag = 4;
-					 mess(flag);
-					// System.out.println("Flag "+flag);
-					 
-					 flag=6;
-					 mess(flag);			 
-					// System.out.println("Flag "+flag);
-					 
-					 }
-					
-				 }
-				 
-				    flag = 5;
-				    mess(flag);				  
-					//System.out.println("Flag "+flag);
-				 		   		   
-				   //Popular tabela
-				    populateTable();		   
-				    
-				    flag=6;		   
-				    mess(flag);		    
-					//System.out.println("Flag "+flag);
-					
-					flag=7;
-					mess(flag);
-					//System.out.println("Flag "+flag);			
-									        
-			    }
 			
+	// -------------------------------------------------------------------------------------------------------------
 
-			/* Métodos para criar o Excel - END */	
+	    /* Métodos para criar o Excel - END */	
 				
-
 			public void updateForm() {
 				
 				/*RequestContext.getCurrentInstance().update("idformdialog:displayImage1");
@@ -2035,9 +2056,16 @@ public class FluxoPeriodoBean {
 				RequestContext.getCurrentInstance().update("idformdialog:displayMessage2");
 				RequestContext.getCurrentInstance().update("idformdialog:display");	*/
 				
-				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("form-info:display");
+				SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:display");
 			    
 			}
+			
+			public void updateButton() {
+				
+				SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:dismiss-modal");
+				
+			}
+			
 			
 		    public void updateDatable() {				
 				FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("form-table:data-table");		
@@ -2058,7 +2086,7 @@ public class FluxoPeriodoBean {
 				stop = false;
 				
 				if(flag == 0) 	
-					pausa(3000);	  			
+					//pausa(3000);	  			
 							
 				if(flag == 1) {
 					if(equips.length > 1)    
@@ -2068,7 +2096,7 @@ public class FluxoPeriodoBean {
 					else displayMessage += localeSat.getStringKey("$label_period_flow_message_begin")
 						      + "\n"+localeSat.getStringKey("$label_period_flow_message_create_sheet");
 					updateForm();
-				    pausa(3000);
+				    //pausa(3000);
 				}
 		        				
 				if(flag == 2) {
@@ -2076,7 +2104,7 @@ public class FluxoPeriodoBean {
 					 displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheets");		
 					 else displayMessage +="\n"+localeSat.getStringKey("$label_period_flow_message_created_sheet");
 					updateForm();
-				    pausa(3000);
+				   // pausa(3000);
 				}
 				
 			   if(flag == 3) 		{		   
@@ -2088,8 +2116,8 @@ public class FluxoPeriodoBean {
 		        if(flag == 4) {
 		        	
 		        	if(equips.length > 1)        	
-		        	    displayMessage += "\n"+localeSat.getStringKey("message_end_process_sheets");        	
-		        	  else displayMessage += "\n"+localeSat.getStringKey("message_end_process_sheet");
+		        	    displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end_process_sheets");        	
+		        	  else displayMessage += "\n"+localeSat.getStringKey("$label_period_flow_message_end_process_sheet");
 		        	
 		        	updateForm();         	
 		        }
@@ -2107,8 +2135,8 @@ public class FluxoPeriodoBean {
 		        
 		        if(flag == 7) stop = true;        
 		        
-		        if(stop)      	
-		        	RequestContext.getCurrentInstance().execute("PF('poll').stop();");        	  
+		        //if(stop)      	
+		        //	RequestContext.getCurrentInstance().execute("PF('poll').stop();");        	  
 		        	        
 		        //else System.out.println("step by step");
 		        
