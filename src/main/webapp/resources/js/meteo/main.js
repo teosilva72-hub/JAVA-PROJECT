@@ -9,16 +9,20 @@ const treat_values = response => {
     let id = response.id
     let status = response.status
     let meteo = $(`#meteo${id} .status`)
+    let sidebar = $(`#status${type}${id}`)
 
     delete response.type
     delete response.id
     delete response.status
     lastUpgrade[type + id] = response
 
-    if (status)
+    if (status) {
         meteo.addClass('on')
-    else
+        sidebar.css('color', '#00FF00')
+    } else {
         meteo.removeClass('on')
+        sidebar.css('color', '#ff000d')
+    }
 }
 
 const set_values = () => {
