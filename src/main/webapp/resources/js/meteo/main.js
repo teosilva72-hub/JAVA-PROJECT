@@ -79,15 +79,6 @@ const initMeteo = async ({ callback_meteo = callback_meteo_default, debug = fals
         set_values()
 		consumeMeteo({ callback_meteo, debug });
 	});
-}
-
-$(() => {
-    $('.select-field.meteo select').change(function (e) {
-        let target = e.target
-        $('.panel-card.custom').attr('for', target.value)
-        $('.stationName.meteo').text(target.options[target.selectedIndex].innerText)
-        set_values()
-    }).trigger('change')
 
     $('[data-toggle=tooltipMETEO]').each(function () {
         $(this).tooltip({
@@ -109,6 +100,15 @@ $(() => {
             }
         })
     })
+}
+
+$(() => {
+    $('.select-field.meteo select').change(function (e) {
+        let target = e.target
+        $('.panel-card.custom').attr('for', target.value)
+        $('.stationName.meteo').text(target.options[target.selectedIndex].innerText)
+        set_values()
+    }).trigger('change')
 })
 
 window.initMeteo = initMeteo
