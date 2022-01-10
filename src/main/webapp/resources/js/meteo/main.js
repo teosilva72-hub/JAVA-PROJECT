@@ -88,6 +88,27 @@ $(() => {
         $('.stationName.meteo').text(target.options[target.selectedIndex].innerText)
         set_values()
     }).trigger('change')
+
+    $('[data-toggle=tooltipMETEO]').each(function () {
+        $(this).tooltip({
+            offset: function (a, b) {
+                let e = $(b)
+                let p = e.closest('.panel-meteo')
+                let s = e.closest('.panel-meteo-card').attr('scale') * scale
+                let d
+                if (a.arrow) {
+                    d = -(e.offset().left - p.offset().left)
+                } else {
+                    d = (window.screen.availWidth - e.offset().left - e.width() * s)
+                      - (window.screen.availWidth - p.offset().left - p.width() * s)
+                }
+    
+                a.popper.left += d
+    
+                return a
+            }
+        })
+    })
 })
 
 window.initMeteo = initMeteo
