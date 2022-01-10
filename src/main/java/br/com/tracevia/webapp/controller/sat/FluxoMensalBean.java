@@ -80,8 +80,7 @@ public class FluxoMensalBean {
 	private List<SelectItem> equipments;
 	private List<SelectItem> months;
 	private List<SelectItem> years;
-	private List<ColumnModel> columns;  
-		
+	private List<ColumnModel> columns; 		
 	private List<Builder> resultList;	
 
 	private String direction1, direction2, directionAbr1, directionAbr2, firstLane;
@@ -117,20 +116,9 @@ public class FluxoMensalBean {
 	
 	int fssi_value = 100, fa_value = 0;
 		
-	@ManagedProperty("#{loginAccount}")
-	private LoginAccountBean login;
-	
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments listEquips;
-	
-	public LoginAccountBean getLogin() {
-		return login;
-	}
-	
-	public void setLogin(LoginAccountBean login) {
-		this.login = login;
-	}
-	
+			
 	public ListEquipments getListEquips() {
 		return listEquips;
 	}

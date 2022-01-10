@@ -261,7 +261,7 @@
 						
 							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
 								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-								<f:ajax execute="@form" render="form-table form-btns" listener="#{fluxoPeriodo.getReport}" onevent="onEventFunction" />
+								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.getReport}" />
 							</h:commandButton>
 							
 					        <!---->
@@ -355,6 +355,46 @@
 							
 							<h:commandButton
 								value="#{reportsLabels.reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->
+							
+						</div>
+					 </h:form>
+				  </div>
+			  </div>
+										
+			<!---->
+
+    	<!-- ============================================================================================================================= -->	    				
+					
+		 <!-- MODAL INFORMATION -->
+								
+			<div class="modal fade" id="modalInfo" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" id="form-info">
+							<div class="modal-header text-center">
+								<h4 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{reportsLabels.reports_modal_alert_process_data_title}</h4>								
+							</div>
+							
+						<div class="modal-body">
+														               
+				             <h:panelGrid id="panel" columns="1" width="100%"> 			         				                        
+				             	<h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%" rows= "15" cols="50" readonly="true" /> 
+				             </h:panelGrid>
+														
+						</div>
+						
+						<!---->
+						
+						<div class="modal-footer">
+														
+							<h:commandButton
+								value="#{reportsLabels.reports_modal_alert_btn_no}" disabled="#{fluxoPeriodo.build.closeBool}"
 								class="btn btn-dark form-draw-button">
 								<f:passThroughAttribute name="data-dismiss" value="modal" />
 								<f:ajax execute="@form" render="@none" />

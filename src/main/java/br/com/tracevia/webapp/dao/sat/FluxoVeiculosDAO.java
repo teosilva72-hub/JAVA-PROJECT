@@ -54,11 +54,7 @@ public class FluxoVeiculosDAO {
 
 	public List<FluxoVeiculos> getVehicles(String startDate, String endDate, String equipId, String laneDir1) {		
 
-		List<FluxoVeiculos> lista = new ArrayList<FluxoVeiculos>();
-		
-		try {
-		
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		List<FluxoVeiculos> lista = new ArrayList<FluxoVeiculos>();		
 											
 			setDirections(laneDir1); // DEFINE DIRECTIONS FIRST
 
@@ -391,36 +387,40 @@ public class FluxoVeiculosDAO {
 						"WHERE v.data BETWEEN ? AND ? AND v.siteID = ? " +
 						"GROUP BY DATE(v.data), intervals " +
 						"ORDER BY DATE(v.data) ASC";
-
+			
+					try {
+				
+						conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			
 						ps = conn.prepareStatement(select);
 						ps.setString(1, startDate);
 						ps.setString(2, endDate);
 						ps.setString(3, equipId);
 																	
 						rs = ps.executeQuery();
-											
-						if (rs.isBeforeFirst()) {
-							while (rs.next()) {
-			
-								FluxoVeiculos veh = new FluxoVeiculos();														
-			
-								veh.setDate(rs.getString("date"));	
-								veh.setInterval(rs.getString("intervals"));
-								veh.setMoto1(rs.getInt("MOTO_S1"));
-								veh.setAuto1(rs.getInt("AUTO_S1"));
-								veh.setCom1(rs.getInt("COM_S1"));
-								veh.setTotal1(rs.getInt("TOTAL_S1"));
-								veh.setSpeed1(rs.getInt("SPEED_S1"));				
-								veh.setMoto2(rs.getInt("MOTO_S2"));
-								veh.setAuto2(rs.getInt("AUTO_S2"));
-								veh.setCom2(rs.getInt("COM_S2"));	
-								veh.setTotal2(rs.getInt("TOTAL_S2"));
-								veh.setSpeed2(rs.getInt("SPEED_S2"));
 												
-								lista.add(veh);							    
-							}							
-						}
+							if (rs.isBeforeFirst()) {
+								while (rs.next()) {
 				
+									FluxoVeiculos veh = new FluxoVeiculos();														
+				
+									veh.setDate(rs.getString("date"));	
+									veh.setInterval(rs.getString("intervals"));
+									veh.setMoto1(rs.getInt("MOTO_S1"));
+									veh.setAuto1(rs.getInt("AUTO_S1"));
+									veh.setCom1(rs.getInt("COM_S1"));
+									veh.setTotal1(rs.getInt("TOTAL_S1"));
+									veh.setSpeed1(rs.getInt("SPEED_S1"));				
+									veh.setMoto2(rs.getInt("MOTO_S2"));
+									veh.setAuto2(rs.getInt("AUTO_S2"));
+									veh.setCom2(rs.getInt("COM_S2"));	
+									veh.setTotal2(rs.getInt("TOTAL_S2"));
+									veh.setSpeed2(rs.getInt("SPEED_S2"));
+													
+									lista.add(veh);							    
+								}							
+							}
+					
 					} catch (SQLException sqle) {
 						
 						StringWriter errors = new StringWriter();

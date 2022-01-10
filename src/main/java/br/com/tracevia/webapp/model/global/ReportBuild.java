@@ -76,6 +76,7 @@ public class ReportBuild {
 	public boolean excelBool;
 	public boolean chartBool;
 	public boolean textBool;
+	public boolean closeBool;
 
 	// Query
 	public String query;
@@ -289,7 +290,28 @@ public class ReportBuild {
 		items.add(new SelectItem("30 minutes", localeLabelSelectItems.getStringKey("select_item_periods_thirty_minutes")));  
 		items.add(new SelectItem("01 hour", localeLabelSelectItems.getStringKey("select_item_periods_one_hour")));
 		items.add(new SelectItem("06 hours", localeLabelSelectItems.getStringKey("select_item_periods_six_hours")));
-		items.add(new SelectItem("24 hours", localeLabelSelectItems.getStringKey("select_item_periods_twenty_four_hours")));
+		items.add(new SelectItem("24 hours", localeLabelSelectItems.getStringKey("select_item_periods_day")));
+
+		return items;
+	}
+
+	// ----------------------------------------------------------------------------------------------------------------------  
+	
+	/**
+	 * Método para popular uma lista com simples períodos para seleção
+	 * @author Wellington
+	 * @version 1.0 
+	 * @since version 1.0 		 
+	 * @return - Uma lista com as opções dos períodos
+	 * @throws Exception
+	 */
+	public List<SelectItem> selectBasicPeriods() throws Exception{
+
+		List<SelectItem> items = new ArrayList<SelectItem>(); 
+		
+		items.add(new SelectItem("15 minutes", localeLabelSelectItems.getStringKey("select_item_periods_fifteen_minutes")));		
+		items.add(new SelectItem("01 hour", localeLabelSelectItems.getStringKey("select_item_periods_one_hour")));	
+		items.add(new SelectItem("24 hours", localeLabelSelectItems.getStringKey("select_item_periods_day")));
 
 		return items;
 	}
@@ -568,6 +590,10 @@ public class ReportBuild {
 
 	public boolean isTextBool() {
 		return textBool;
+	}	
+	
+	public boolean isCloseBool() {
+		return closeBool;
 	}	
 
 
