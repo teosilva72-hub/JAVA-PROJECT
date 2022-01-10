@@ -132,7 +132,7 @@ const changeNotificationStatus = response => {
  }
  
 const changeGenericStates = response => {
-	if(['SOS', 'PMV', 'SPEED I', 'SPEED R'].includes(response.EquipType))
+	if(['SOS', 'PMV', 'SPEED I', 'SPEED R', 'MTO', 'SV'].includes(response.EquipType))
 		return
 
 	//Tipo equipamento
