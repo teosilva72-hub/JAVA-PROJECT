@@ -49,12 +49,12 @@
 }
 
 .card.panel-meteo-card .card-footer {
-    background-color: red;
+    background-color: #da0909;
     padding: 0.2em;
 }
 
 .card.panel-meteo-card .card-footer.on {
-    background-color: green;
+    background-color: #00FF00;
 }
 
 .meteo-info-bagde {
