@@ -68,7 +68,7 @@ body{
 }
 	
 .presAtm{
-	color: white;
+	color: white !important;
 	background-size: cover;
 	background: url('/resources/images/estacao/presAtv.gif') 0 0 no-repeat;
 }
@@ -98,12 +98,12 @@ body{
 .temperatura{
 	background: url('/resources/images/estacao/sol.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: white;
+	color: white !important;
 }
 .umidade{
 	background: url('/resources/images/estacao/gota.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: white;
+	color: white !important;
 }
 
 
@@ -127,24 +127,24 @@ body{
 .velocVento{
 	background: url('/resources/images/estacao/velcVento.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: black;
+	color: black !important;
 }
 .taxaPrecip{
 	background: url('/resources/images/estacao/atmosfera.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: white;
+	color: white !important;
 }
 .visibility{
 	width:100%;
 	background: url('/resources/images/estacao/visibilidade.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: white;
+	color: white !important;
 }
 .energia{
     width:100%;
 	background: url('/resources/images/estacao/energia.gif') 0 0 no-repeat;
 	background-size: cover;
-	color: white;
+	color: white !important;
 }
 
 /* custom style for types (input, select) */
@@ -230,28 +230,36 @@ body{
 .temperatura-rsv{
 	width:100%;
 	background: url('/resources/images/estacao/sol.gif') 0 0 no-repeat;
-	color: white;
+	color: white !important;
 	background-size: cover;
 }
 
 .energia-rsv{
 	width:100%;
 	background: url('/resources/images/estacao/energia.gif') 0 0 no-repeat;
-	color: white;
+	color: white !important;
 	background-size: cover;
 }
 
 .visibilidade-rsv{
 	width:100%;
 	background: url('/resources/images/estacao/visibilidade.gif') 0 0 no-repeat;
-	color: white;
+	color: white !important;
     background-size: cover;
 }
 
 .road-temperature{
 	width:100%;
 	background: url('/resources/images/estacao/road_temperature.gif') 0 0 no-repeat;
-	color: white;
+	color: white !important;
+    background-size: cover;
+    z-index: 5;
+}
+
+.waterfilm{
+	width:100%;
+	background: url('/resources/images/estacao/waterfilm.gif') 0 0 no-repeat;
+	color: white !important;
     background-size: cover;
     z-index: 5;
 }
@@ -270,6 +278,10 @@ body{
 	border: none;
 	color: white;
 	width: 100%;
+}
+
+.panel-card .card-value.text-black {
+	color: black;
 }
 
 .panel-card .card-notation {

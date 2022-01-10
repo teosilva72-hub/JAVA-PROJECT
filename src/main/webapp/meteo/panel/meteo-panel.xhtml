@@ -90,7 +90,7 @@
 						<div class="card">
 							<div class="card-body taxaPrecip">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_absolute_preciptation}" />
-								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> L/m2</span></h1>
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> L/m²</span></h1>
 							</div>
 						</div>
 						<!-- Final do card 3 -->
@@ -125,7 +125,7 @@
 							<div class="card-body velocVento">
 								<div class="">
 									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_speed}" />
-									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> km/h</span></h1>
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value text-black"></input><span class="card-notation"> km/h</span></h1>
 								</div>
 	
 							</div>
@@ -155,8 +155,19 @@
 						</div>
 						<!-- Final do card 9 -->
 					</div>
-					<div class="col-4 panel-card custom">
+
+					<div class="col-4 panel-card custom WaterFilmHeight">
 						<!-- Inicio do card 10 -->
+						<div class="card waterfilm maxHeight">
+							<div class="card-body">
+								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_waterfilm}" />
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> mil</span></h1>
+							</div>
+						</div>
+						<!-- Final do card 10 -->
+					</div>
+					<div class="col-4 panel-card custom">
+						<!-- Inicio do card 11 -->
 						<div class="card energia">
 							<div class="card-body">
 								<div class=" ">
@@ -173,7 +184,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- Final do card 10 -->
+						<!-- Final do card 11 -->
 					</div>
 				</div>
 				<!-- Final da terceira grid -->
