@@ -35,6 +35,7 @@ import br.com.tracevia.webapp.model.global.ReportSelection;
 import br.com.tracevia.webapp.model.sat.SatTableHeader;
 import br.com.tracevia.webapp.model.speed.SpeedReport.Builder;
 import br.com.tracevia.webapp.util.ExcelTemplate;
+import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="reportBean")
@@ -48,6 +49,8 @@ public class ReportBean {
 		
 	private final String dateFormat = "dd/MM/yyyy";
 	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
+	
+	LocaleUtil locale;
 	
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -469,6 +472,9 @@ public class ReportBean {
 						
 		select = new ReportSelection();
 		build = new ReportBuild();
+		
+		locale = new LocaleUtil();
+		locale.getResourceBundle(LocaleUtil.LABELS_REPORTS);
 			
 		// ---------------------------------------------------------------------------
 	        	
@@ -687,7 +693,7 @@ public class ReportBean {
 					
 			// CASO NÃƒO EXISTA VALOR			
 			if (report.lines.isEmpty() || !hasValue) {
-				SessionUtil.executeScript("showMessage(); hideMessage();");	
+				SessionUtil.executeScript("alertOptions('#info', '"+locale.getStringKey("$message_reports_record_not_found")+"');");
 				
 				build.chartBool = true; // BOTÃƒO DO GRÃ�FICO	 
 							

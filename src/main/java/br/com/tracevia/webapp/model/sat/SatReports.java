@@ -2,7 +2,7 @@ package br.com.tracevia.webapp.model.sat;
 
 public class SatReports {
 	
-	//Builder Pattern
+	// Builder Pattern
 	public static class Builder{
 		
 		private String date;
