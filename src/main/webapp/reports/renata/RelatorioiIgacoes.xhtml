@@ -72,9 +72,10 @@
 		<h:outputScript library="js/datepicker" name="datepicker.js" /> <!-- DATEPICKER JS -->  <!-- CASO TENHA DATA -->			
 		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />	<!-- VALIDATION MODEL JS --> 
 		<h:outputScript library="js/validation-forms/reports/global" name="global-validation.js" /> <!-- SAT VALIDATION JS --> 
-		 <h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		 <h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
-		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 		
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" /> <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" />  <!-- CASO TENHA MULTIPLA SELEÇÃO -->
+		<h:outputScript library="js/reports" name="speed_reports_table_config.js"  /> <!-- REPORT DATATABLE report JS (OBRIGATÓRIO) --> 
+		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->		
 	   <!--   <h:outputScript library="js/plugins/google" name="google-charts-loader.js"  /> -->   <!-- (GRÁFICOS) OPCIONAL --> 
 	 	<!-- <h:outputScript library="js/charts" name="chart.js" /> --> <!-- (GRÁFICOS) OPCIONAL --> 
 	
@@ -96,7 +97,7 @@
 	        
 	         <!-- ALERT MESSAGE -->
 	 
-	         <ui:include src="/template/alerts/alert.xhtml" />
+	         <ui:include src="/template/alerts/alerts.xhtml" />
              
        <!-- ============================================================================================================================= -->
            

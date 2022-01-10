@@ -261,7 +261,7 @@
 						
 							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
 								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.getReport}" />
+								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.processInformations}" />
 							</h:commandButton>
 							
 					        <!---->
@@ -384,7 +384,7 @@
 						<div class="modal-body">
 														               
 				             <h:panelGrid id="panel" columns="1" width="100%"> 			         				                        
-				             	<h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%" rows= "15" cols="50" readonly="true" /> 
+				             	<h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50" readonly="true" /> 
 				             </h:panelGrid>
 														
 						</div>
@@ -393,7 +393,7 @@
 						
 						<div class="modal-footer">
 														
-							<h:commandButton
+							<h:commandButton id="dismiss-modal"
 								value="#{reportsLabels.reports_modal_alert_btn_no}" disabled="#{fluxoPeriodo.build.closeBool}"
 								class="btn btn-dark form-draw-button">
 								<f:passThroughAttribute name="data-dismiss" value="modal" />
