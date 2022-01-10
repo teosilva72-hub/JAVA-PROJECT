@@ -262,7 +262,7 @@ function removeValidationIcon(btn, elem) {
 		$('span[for=' + elem + ']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
 
 		//Then Reset Field 	     
-		resetFieldValue('#' + elem);
+		//resetFieldValue('#' + elem);
 	});
 }
 
@@ -283,7 +283,7 @@ function removeValidationIcon(btn, elem) {
  * @returns {void}
 **/
 
-function removeValidationMultiselectIcon(btn, elem, defaultMessage, array) {
+function removeValidationMultiselectIcon(btn, elem) {
 
 	$('.' + btn).click(function () {
 
@@ -291,7 +291,7 @@ function removeValidationMultiselectIcon(btn, elem, defaultMessage, array) {
 		$('span[for=' + elem + ']').removeClass('valid-icon-visible').addClass('valid-icon-hidden');
 
 		//Reset Multiselect Field 	     
-		resetMultiselectValues('#' + elem, defaultMessage, array);
+		//resetMultiselectValues('#' + elem, defaultMessage, array);
 	});
 }
 

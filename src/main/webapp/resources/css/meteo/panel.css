@@ -266,10 +266,10 @@ body{
 }
 
 
-.panel-card {
+.panel-meteo-card {
 	display: none;
 }
 
-.panel-card.on {
+.panel-meteo-card.on {
 	display: block;
 }
