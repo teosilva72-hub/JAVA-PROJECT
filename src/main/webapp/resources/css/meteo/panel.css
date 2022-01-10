@@ -265,11 +265,21 @@ body{
 	margin-left: 2%;	
 }
 
+.panel-card .card-value {
+	background-color: transparent;
+	border: none;
+	color: white;
+	width: 100%;
+}
 
-.panel-meteo-card {
+.panel-card .card-notation {
+	width: auto;
+}
+
+.panel-card {
 	display: none;
 }
 
-.panel-meteo-card.on {
+.panel-card.on {
 	display: block;
 }

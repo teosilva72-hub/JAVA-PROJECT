@@ -21,7 +21,7 @@ const set_values = () => {
             if (card.hasClass('deg'))
                 card.find('.card-ponteiro').css('transform', `rotate(${v2}deg)`)
             else
-                card.find('.card-value').text(v2)
+                card.find('.card-value').val(v2)
         }
     }
 }

@@ -303,7 +303,7 @@ public class DaiBean {
 	}
 
 	public List<Path> getAllFolders(String date) {
-		String folder = "C:\\Camaras DAI\\";
+		String folder = "C:\\Cameras\\DAI\\";
 		List<Path> allPath = new ArrayList<>();
 		String[] allEquip = listFolder(folder);
 		if (allEquip != null)

@@ -67,7 +67,7 @@
 						<div class="card">
 							<div class="card-body presAtm">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_atmPressure}" />
-								<h1 id="pressure"><span class="card-value">0</span> hPa</h1>
+								<h1 id="pressure" class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> hPa</span></h1>
 							</div>
 						</div>
 						<!-- Final do card 1 -->
@@ -78,7 +78,7 @@
 							<div class="card-body temperatura">
 								<div>
 									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_temperature}" />
-									<h1><span class="card-value">0</span> °C</h1>
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> °C</span></h1>
 	
 								</div>
 							</div>
@@ -90,7 +90,7 @@
 						<div class="card">
 							<div class="card-body taxaPrecip">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_absolute_preciptation}" />
-								<h1><span class="card-value">0</span> L/m2</h1>
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> L/m2</span></h1>
 							</div>
 						</div>
 						<!-- Final do card 3 -->
@@ -100,7 +100,7 @@
 						<div class="card">
 							<div class="card-body umidade">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_relative_humidity}" />
-								<h1><span class="card-value">0</span> %</h1>
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> %</span></h1>
 							</div>
 						</div>
 						<!-- Final do card 4 -->
@@ -125,7 +125,7 @@
 							<div class="card-body velocVento">
 								<div class="">
 									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_wind_speed}" />
-									<h1><span class="card-value">0</span> km/h</h1>
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> km/h</span></h1>
 								</div>
 	
 							</div>
@@ -138,7 +138,7 @@
 							<div class="card-body road-temperature">
 								<div>
 									<h:outputLabel value="#{meteoLabels.$label_meteo_panel_road_temperature}" />
-									<h1><span class="card-value">0</span> °C</h1>
+									<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> °C</span></h1>
 								</div>
 							</div>
 						</div>
@@ -150,7 +150,7 @@
 						<div class="card visibility maxHeight">
 							<div class="card-body">
 								<h:outputLabel value="#{meteoLabels.$label_meteo_panel_visibility}" />
-								<h1><span class="card-value">0</span> </h1>
+								<h1 class="d-flex"><input disabled="disabled" readonly="readonly" class="card-value"></input><span class="card-notation"> m</span></h1>
 							</div>
 						</div>
 						<!-- Final do card 9 -->
