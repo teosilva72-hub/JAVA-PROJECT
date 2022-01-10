@@ -808,7 +808,7 @@ public class EquipmentsDAO {
 		
 		SAT sat = new SAT();
 		
-		String sql = "SELECT st.name, st.km, r.road_name, dir_lane1 "					
+		String sql = "SELECT st.name, st.km, r.road_name, st.number_lanes, st.dir_lane1, st.dir_lane2, st.dir_lane3, st.dir_lane4, st.dir_lane5, st.dir_lane6, st.dir_lane7, st.dir_lane8  "					
 				+"FROM sat_equipment st "						
 				+"INNER JOIN concessionaire_roads r ON r.road_id = st.road "
 				+"WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
@@ -819,19 +819,26 @@ public class EquipmentsDAO {
 
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
-			//System.out.println(sql);
-		
+				
 			if (rs.isBeforeFirst()) {
 				while (rs.next()) {
 										
 					sat.setNome(rs.getString(1));	
 					sat.setKm(rs.getString(2));
 					sat.setEstrada(rs.getString(3));
-				    sat.setSentido1(tm.directionTab(rs.getString(4)));
-				    sat.setSentido2(tm.oppositeDirectionTab(rs.getString(4)));
-				    sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(4)));
-				    sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(4)));
+					sat.setNumFaixas(rs.getInt(4));
+					sat.setFaixa1(rs.getString(5));
+					sat.setFaixa2(rs.getString(6));
+					sat.setFaixa3(rs.getString(7));
+					sat.setFaixa4(rs.getString(8));
+					sat.setFaixa5(rs.getString(9));
+					sat.setFaixa6(rs.getString(10));
+					sat.setFaixa7(rs.getString(11));
+					sat.setFaixa8(rs.getString(12));
+				    sat.setSentido1(tm.directionTab(rs.getString(5)));
+				    sat.setSentido2(tm.oppositeDirectionTab(rs.getString(5)));
+				    sat.setSentido1Abbr(tm.directionAbbreviation(rs.getString(5)));
+				    sat.setSentido2Abbr(tm.oppositeDirectionAbbreviation(rs.getString(5)));
 					
 				}
 			}
@@ -2231,6 +2238,56 @@ public class EquipmentsDAO {
 		
 	}
 	
+	
+	// --------------------------------------------------------------------------------------------------------------
+	
+	/**
+	 * Método para obter informação de faixas para um SAT
+	 * @author Wellington
+	 * @version 1.0
+	 * @since Release 1.0
+	 * @param equip_id id do equipamento	 
+	 * @return Equipments - Objeto com informações do tipo Equipments
+	 */
+
+	public String[] numberLanesAndFisrtDirection(String equip_id) {
+					
+		String sql = "SELECT number_lanes, dir_lane1 FROM sat_equipment WHERE equip_id = ? AND visible = 1";
+		
+		String[] info = new String[2];
+		
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, equip_id);
+			
+			rs = ps.executeQuery();
+			
+			//System.out.println(sql);
+		
+			if (rs.isBeforeFirst()) {
+				while (rs.next()) {
+												
+					info[0] = rs.getString(1);
+					info[1] = rs.getString(2);				  				  					
+				}
+			}
+
+		}catch (SQLException sqle) {
+			
+			StringWriter errors = new StringWriter();
+			sqle.printStackTrace(new PrintWriter(errors));
+			
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			
+		} finally {
+			
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+		return info;
+	}	
 	
 	// --------------------------------------------------------------------------------------------------------------
 

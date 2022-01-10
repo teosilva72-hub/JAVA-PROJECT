@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="/template/dashboard-rov-layout.xhtml">
+	
+	<f:metadata>
+	
+	<!-- Create Table Header -->
+	<f:viewAction action="#{fluxoPeriodo.createFields}" />  
+		          
+    </f:metadata>
+    	
+	<ui:define name="head" >
+	
+	     <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
+		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
+		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
+			
+		<h:outputScript library="bootstrap/js" name="bootstrap-multiselect.js" />
+		<h:outputScript library="js/multiselect" name="define-multiselect.js" /> 
+		<h:outputScript library="js/validation-forms/models" name="validation-models.js" />
+		<h:outputScript library="js/validation-forms/reports/sat" name="sat-period-flow-validation.js" />
+		<h:outputScript library="js/reports" name="table-config.js" /> <!-- DATA TABLE CONFIG --> 
+		<h:outputScript library="js/alert" name="alerts.js" />	 <!-- ALERT MESSAGES -->
+		
+	</ui:define>
+	
+	 <ui:define name="main-content" > <!-- MAIN CONTENT TEMPLATE --> 
+	
+	<!-- ============================================================================================================================= -->
+		  	
+	  <div class="table-container">   <!-- TABLE DIV CONTENT --> 		
+	     <h:form id="form-table" prependId="false"> <!-- FORM TABLE -->
+	  		        
+        <!-- ALERT MESSAGE -->
+	 
+         <ui:include src="/template/alerts/alerts.xhtml" />
+             
+    <!-- ============================================================================================================================= -->
+                          
+	<!-- REPORTS LABEL INFORMATION --> 
+	 <div class="text-dark text-center font-weight-bold report-title" >
+	 <h:outputText value="#{satLabels.via_paulista_flow_per_period_title}" />
+	 <hr></hr>
+	 </div>
+	 
+	 <!-- TABLE -->
+	 
+	 <h:dataTable id="data-table" value="#{fluxoPeriodo.resultList}" var="periodFlow" autocomplete="off"				               
+     styleClass="table table-striped table-bordered table-dark custom-table text-center" cellspacing="0" width="100%" 
+     headerClass="custom-table-header">	
+               
+     <f:facet name="header">          
+	      <tr>
+	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(0).field}</th>
+	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(1).field}</th>
+	        <th rowspan="2" class="custom-table-header" >#{fluxoPeriodo.columns.get(2).field}</th>
+	        <th colspan="6" class="custom-table-header" >#{satLabels.$labels_period_flow_info_direction1}</th> <!-- SUB HEADER -->
+	        <th colspan="6" class="custom-table-header" >#{satLabels.$labels_period_flow_info_direction2}</th> <!-- SUB HEADER -->
+	      </tr>
+      
+	      <tr>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(3).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(4).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(5).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(6).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(7).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(8).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(9).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(10).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(11).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(12).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(13).field}</th>
+	        <th class="custom-table-header" >#{fluxoPeriodo.columns.get(14).field}</th>
+	      </tr>
+      
+    </f:facet>
+    
+     <c:forEach items="#{fluxoPeriodo.columns}" var="header" varStatus="loop">
+            <h:column>              
+              <h:outputText value="#{periodFlow[header.value]}" />
+            </h:column> 
+     </c:forEach>   
+  	 	
+    </h:dataTable> <!---->					
+	  </h:form> <!---->
+    
+        <!---->
+			
+	<!-- ============================================================================================================================= -->
+			
+	<!-- BUTTONS -->
+	
+	<h:form id="form-btns"> <!-- BUTTONS FORM -->		 			
+		<div id="buttons"> <!-- BUTTONS DIV CONTENT -->	
+		
+		<!-- SEARCH BUTTON DIV -->
+				
+			<div id="btn-search" class="text-center"> 
+				<h:commandButton id="btn-tab-search"
+					class="btn btn-dark draw-button fas fa-search fa-3x" value=""
+					data-toggle="tooltip" data-placement="bottom" title="#{reportsLabels.reports_btn_search}">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target"
+						value="#modalReportOptions" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+			</div> <!---->
+					
+	<!-- ============================================================================================================================= -->
+					
+		<!-- RESET BUTTON DIV -->
+			
+			<div id="btn-reset"> 
+				<h:commandButton id="btn-tab-reset"
+					class="btn btn-dark draw-button fas fa-redo-alt fa-3x disable-fontawesome"
+					value="" data-toggle="tooltip" data-placement="bottom"
+					disabled="#{fluxoPeriodo.build.clearBool}" title="#{reportsLabels.reports_btn_clean}">
+					<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalClear" />
+					<f:ajax execute="@form" render="@none" />
+				</h:commandButton>
+			</div> 
+			
+	<!-- ============================================================================================================================= -->
+					
+		 <!-- EXCEL BUTTON DIV -->			
+					
+			<div id="btn-excel"> 
+		       <h:commandButton id="excel-act" value="" disabled="#{fluxoPeriodo.build.excelBool}"
+			      class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" action="#{fluxoPeriodo.download}" widgetVar="excelWgt">
+			  	  <f:passThroughAttribute name="data-toggle" value="modal" />
+			  	  <f:passThroughAttribute name="data-target" value="#modalDownload" />
+			  	  <f:ajax execute="@form" render="@none" />
+		       </h:commandButton>
+		  </div> 
+		  
+		  <!---->
+							
+		</div> <!---->			
+    </h:form> <!---->
+   </div> <!---->
+		
+	<!-- ============================================================================================================================= -->	
+		  
+      <!--  MODALS -->					
+			   		
+		<!-- MODAL SUBMIT -->
+
+		<div class="modal fade" id="modalReportOptions" tabindex="-1"
+			role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<h:form class="modal-content" name="report-form"
+					id="report-form">
+					<div class="modal-header text-center">
+						<h4 class="modal-title w-100 font-weight-bold">#{reportsLabels.reports_modal_title}</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							  <span aria-hidden="true">&times;</span>
+						   </button>
+				       </div>
+					<div class="modal-body">
+						<br />
+
+						<!-- EQUIPMENTS OPTIONS -->
+
+						<div class="form-row">
+							<div class="form-group col-sm-12 checkbox-field">
+								<span><i class="fas fa-hdd"></i></span> 
+								  <span for="equips" class="valid-icon-hidden"></span> 
+								    <select name="equips" id="equips" multiple="multiple" >								
+										 <ui:repeat var="eqp" value="#{fluxoPeriodo.equipments}" varStatus="eqpStatus">
+											<option value="#{eqp.value}">#{eqp.label}</option>
+										</ui:repeat>
+									</select>
+							  </div>
+							  <div class="error-label">
+									<label for="equips" class="error" id="equips-error"></label>
+								</div>
+						  </div>
+						  
+						  <!---->
+						
+							<!-- PERIOD OPTIONS -->
+
+							<div class="form-row">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-clock"></i></span> 
+									<span for="periods" class="valid-icon-hidden"></span> 
+										<select name="periods" id="periods" size="1" >
+											<option value="">#{reportsLabels.reports_select_period}</option>
+												<ui:repeat var="per" value="#{fluxoPeriodo.periods}" varStatus="perStatus">
+													<option value="#{per.value}">#{per.label}</option>
+												</ui:repeat>
+										</select>
+									</div>
+								<div class="error-label">
+									<label for="periods" class="error" id="periods-error"></label>
+								</div>
+							</div>
+							
+							<!---->
+							
+							<!-- MONTH OPTIONS -->
+
+							<div class="form-row">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar"></i></span> <span for="month"
+										class="valid-icon-hidden"></span> 
+										<select name="month" id="month" size="1">
+											<option value="">#{reportsLabels.reports_select_month}</option>
+												<ui:repeat var="mth" value="#{fluxoPeriodo.months}" varStatus="mthStatus">
+													<option value="#{mth.value}">#{mth.label}</option>
+												</ui:repeat>
+										</select>
+									</div>
+								<div class="error-label">
+									<label for="month" class="error" id="month-error"></label>
+								</div>
+							</div>
+							
+							<!---->
+														
+							<!-- YEARS OPTIONS -->
+
+							<div class="form-row">
+								<div class="form-group col-sm-12 select-field">
+									<span><i class="fas fa-calendar-alt"></i></span>
+									 <span for="year" class="valid-icon-hidden"></span> 
+									 	<select name="year" id="year" size="1">
+											<option value="">#{reportsLabels.reports_select_year}</option>
+												<ui:repeat var="yr" value="#{fluxoPeriodo.years}" varStatus="yrStatus">
+													<option value="#{yr.value}">#{yr.label}</option>
+												</ui:repeat>
+									 </select>
+								</div>
+								<div class="error-label">
+									<label for="year" class="error" id="year-error"></label>
+								</div>
+							</div>	
+							
+						  <!---->					
+													 
+						</div><!---->
+						
+						 <!---->				
+
+						<div class="modal-footer"> <!-- MODAL BUTTONS -->
+							
+							<button type="button" id="btn-form-confirm"
+								class="btn btn-dark form-modal-draw-button" onclick="verif('#report-form', '[id$=btn-form-send]')">#{satLabels.sat_reports_form_btn_send}
+							</button>
+						
+							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
+								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
+								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.getReport}" />
+							</h:commandButton>
+							
+					        <!---->
+
+							<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
+								immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
+							</h:commandButton><!-- BUTTON RESET -->
+							
+							<!---->
+									
+				     </div> <!---->
+				     
+				     <!---->
+				     
+				  </h:form> <!---->
+				</div> <!----> 
+			</div> <!---->	
+				
+		<!-- ============================================================================================================================= -->	
+								
+	    <!-- MODAL CLEAR -->
+        
+        <div class="modal fade" id="modalClear" tabindex="-1"
+			aria-labelledby="clearModalLabel" aria-hidden="true"> <!-- MODAL COMPONENT DIV -->		
+			  <div class="modal-dialog confirmation-modal"> <!-- MODAL DIALOG DIV -->		
+				<h:form class="modal-content" name="form-clear" id="form-clear" > <!-- MODAL FORM -->		
+					<div class="modal-header"> <!-- MODAL HEADER DIV -->			
+					    <h5 class="modal-title modal-alert-title" id="clearModalLabel">#{reportsLabels.reports_modal_alert_clear_title}</h5> <!-- MODAL TITLE -->					
+					</div> <!-- MODAL HEADER DIV END -->					
+					<div class="modal-body"> <!-- MODAL BODY DIV -->				
+					   <p class="modal-alert-msg">#{reportsLabels.reports_modal_alert_clear_table}</p>				
+					</div> <!-- MODAL BODY DIV END -->											
+					<div class="modal-footer"> <!-- MODAL FOOTER DIV -->
+									    
+					    <!-- RESET BUTTON -->
+						<h:commandButton
+							id="clear_table"
+							value="#{reportsLabels.reports_modal_alert_btn_yes}"
+							action="#{fluxoPeriodo.resetForm}"
+							class="btn btn-dark form-draw-button" /> <!-- YES CONFIRM -->
+							
+						<!---->
+								
+						<!-- CLOSE MODAL BUTTON -->	
+						<h:commandButton
+							value="#{reportsLabels.reports_modal_alert_btn_no}"
+							class="btn btn-dark form-draw-button"> <!-- NO CONFIRM -->
+							<f:passThroughAttribute name="data-dismiss" value="modal" /> 
+							<f:ajax execute="@form" render="@none" />
+						</h:commandButton> <!-- NO CONFIRM END -->
+						
+					<!---->					
+					
+				 </div> <!-- MODAL FOOTER DIV END -->
+			   </h:form> <!-- MODAL FORM END --> 
+		     </div> <!-- MODAL DIALOG DIV END -->
+	     </div> <!-- MODAL COMPONENT DIV -->
+	     
+	     <!---->
+				
+		<!-- ============================================================================================================================= -->						
+					
+		 <!-- MODAL DOWNLOAD -->
+								
+			<div class="modal fade" id="modalDownload" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true">
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content">
+							<div class="modal-header text-center">
+								<h4 class="modal-title w-100 font-weight-bold" id="donwloadModalLabel">#{reportsLabels.reports_modal_alert_download_title}</h4>
+								<button type="button" id="close-btn" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							
+						<div class="modal-body">
+							<p class="modal-alert-msg">
+								#{reportsLabels.reports_modal_alert_download_file_message} <span
+								class="extension">#{reportsLabels.reports_modal_alert_extension_xlsx}</span> ?
+							</p>
+						</div>
+						
+						<!---->
+						
+						<div class="modal-footer">
+							<h:commandButton p:onclose="download"
+								value="#{reportsLabels.reports_modal_alert_btn_yes}"							
+								class="btn btn-dark form-draw-button" action="#{fluxoPeriodo.download}" />
+								
+							<!---->
+							
+							<h:commandButton
+								value="#{reportsLabels.reports_modal_alert_btn_no}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->
+							
+						</div>
+					 </h:form>
+				  </div>
+			  </div>
+										
+			<!---->
+
+    	<!-- ============================================================================================================================= -->	    				
+					
+		 <!-- MODAL INFORMATION -->
+								
+			<div class="modal fade" id="modalInfo" tabindex="-1"
+				aria-labelledby="downloadModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+					<div class="modal-dialog confirmation-modal">
+						<h:form class="modal-content" id="form-info">
+							<div class="modal-header text-center">
+								<h4 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{reportsLabels.reports_modal_alert_process_data_title}</h4>								
+							</div>
+							
+						<div class="modal-body">
+														               
+				             <h:panelGrid id="panel" columns="1" width="100%"> 			         				                        
+				             	<h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%" rows= "15" cols="50" readonly="true" /> 
+				             </h:panelGrid>
+														
+						</div>
+						
+						<!---->
+						
+						<div class="modal-footer">
+														
+							<h:commandButton
+								value="#{reportsLabels.reports_modal_alert_btn_no}" disabled="#{fluxoPeriodo.build.closeBool}"
+								class="btn btn-dark form-draw-button">
+								<f:passThroughAttribute name="data-dismiss" value="modal" />
+								<f:ajax execute="@form" render="@none" />
+							</h:commandButton>
+							
+							<!---->
+							
+						</div>
+					 </h:form>
+				  </div>
+			  </div>
+										
+			<!---->
+
+    	<!-- ============================================================================================================================= -->	
+						
+		<div id="loading"> <!-- LOADING MESSAGE -->
+			<span>#{reportsLabels.reports_loading_message}...</span>
+		</div>
+		
+	  	<!-- ============================================================================================================================= -->	
+		
+		 <!-- EXTERNAL SCRIPT ELEMENTS -->	 	
+		 	 	 	
+		 <form name="validation"> <!-- FORM VALIDATION ATTRIBUTES - SEND INFORMATION TO AN EXTERNAL FILE JS -->
+		 			 		 	
+		 <input type="hidden" name="language" value="#{language.locale}" /> <!-- LOCALE LANGUAGE ATTRIBUTE -->		
+		 <input type="hidden" name="equipmentSelectMsg" value="#{reportsLabels.reports_select_equipments}" />	<!-- SELECT EQUIPMENT LABEL MESSAGE -->	 	
+		 <input type="hidden" name="requiredEquipmentsMsg" value="#{requiredMessages.required_reports_select_equipments}" /> <!-- REQUIRED EQUIPMENT MESSAGE -->	
+		 <input type="hidden" name="requiredPeriodMsg" value="#{requiredMessages.required_reports_select_periods}" /> <!-- REQUIRED PERIODS MESSAGE -->			
+		 <input type="hidden" name="requiredMonthMsg" value="#{requiredMessages.required_reports_select_months}" /> <!-- REQUIRED MONTH MESSAGE -->	
+		 <input type="hidden" name="requiredYearMsg" value="#{requiredMessages.required_reports_select_years}" /> <!-- REQUIRED YEAR MESSAGE -->
+		 
+		 </form> <!----> 	 	
+			   	
+	 </ui:define>
+</ui:composition>	
