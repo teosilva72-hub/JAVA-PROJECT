@@ -48,7 +48,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('date',reportsLabels.reports_select_date, false, true)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'meteo_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'meteo_equipment.equip_id|name', 'equip_type = `MTO`', false, true)}" />
 		
     </f:metadata>
 	
