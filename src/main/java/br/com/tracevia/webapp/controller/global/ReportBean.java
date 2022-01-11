@@ -682,7 +682,7 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
+				query += String.format(" GROUP BY %s%s ORDER BY %s, %1$s ASC", group, extraGroup, idTable);
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
