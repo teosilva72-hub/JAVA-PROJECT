@@ -11,12 +11,44 @@
 	template="/template/dashboard-rov-layout.xhtml">
 	<!-- MAIN TEMPLATE STRUCTURE END -->
 
-
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
+		<title>#{abaLabels.occurrences}</title>
+		<!-- Style -->
+		<h:outputStylesheet library="css/datatables/custom"
+			name="table-style.css" />
+	
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+
+	
+
+
 		<!-- HEAD TEMPLATE COMPONENT --> 
+	.ScrollStyle{
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+	function setTopo() {
+				$(window).scrollTop(0);
+			}
 	
 	
+	.container{
+	width: 100vw 
+	height:vh
+	}
+	
+		.linha{
+
+	heigth="2px"
+	}
+	
+	
+	 .scroll{
+  overflow-y: auto;
+}
 	</ui:define>
 
 	<!---->
@@ -24,75 +56,238 @@
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
 
+<div class="container scroll">
 
 
 
-			<form>
-				<!-- Alert evento -->
-				<div class="alert alert-dark confAlert" role="alert">
-					<h5 class="text-center confTextAlert">Evento</h5>
-				</div>
-			</form>
+
+<form >
+<div class= "col-md-12">
+    <span class="input-group-addon col-md-12 form-control text-center" id="basic-addon1">MOTIVO DEL ACCIDENTE</span></div>
+    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">A</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>
+    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">B</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">C</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">D</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">E</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>    <div class="input-group form-row col-md-12 text-center">
+   <span class="input-group-addon col-md-1 form-control text-center" id="basic-addon1">F</span>
+  <span class="input-group-addon col-md-2 form-control  text-center" id="basic-addon1">SEMOVIENTE</span>
+  <input type="text" class="form-control"  aria-describedby="basic-addon1"/>
+</div>
+    </form>
+    <div class="container">
+
+
+</div>
 		
-				<!-- tipo occ -->
-	
-			<form>
-<div class="form-group row" ></div>
-				<div class="form-group row">
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PLAZA DE COBRO:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">FOLIOSEQUENCIAL:</em> 
-						 <h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						 <em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">REPORTE:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-				</div>
-			</form>
-			<form>
+			<form id="formExemplo" data-toggle="validator" role="form">
+<div class="form-row col-md-12">
+  <div class="form-group col-md-6 text-center">
+    <label for="textNome" class="control-label text-cente">VEHÍCULO</label>
+    <input id="textNome" class="form-control"  type="text"/>
+     <input id="textNome" class="form-control"  type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+  
 
-			<div class="form-group row">
-				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PSINIESTRE: </em>
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P FECHA: </em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P HORA: </em> 
-					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						
-				</div>
+  
+  <div class="form-group col-md-6 text-center">
+    <label for="inputConfirm" class="control-label text-center">NUMERO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    </div> 
 
-			</form>
-			<form>
-				<div class="form-group row">
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">DIRECCIÓN Y/O TRAYECTORIAE:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO DE REGISTRO:</em>
-					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO INICIAL:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-				</div>
-			</form>
-			<form>
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
-						FINAL:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
-						INICIAL:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">POLIZA
-						POR AFECTAR:</label> <input type="text" id="colFormLabelSm" />
-				</div>
-			</form>
+ 	</form>
+ 	<form>
+ <div class="form-row col-md-12">
+ 
+ 
+  <div class="form-group col-md-1 text-center">
+    <label for="inputConfirm" class="control-label text-center">NUMERO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">MARCA </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+  <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">TIPO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+  <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">MODELO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div> 
+   <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">COLOR</label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    <div class="form-group col-md-1 text-center">
+    <label for="textNome" class="control-label text-center">PLACA</label>
+    <input id="textNome" class="form-control"  type="text"/>
+     <input id="textNome" class="form-control"  type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    <div class="form-group col-md-1 text-center ">
+    <label for="textNome" class="control-label">TEL</label>
+    <input id="textNome" class="form-control"  type="text"/>
+     <input id="textNome" class="form-control"  type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+  
 
-			<form>
+  </div>
+ </form>
+ 
+ <form>
+ <div class="form-row col-md-12">
+ 
+ 
+  <div class="form-group col-md-3 text-center">
+    <label for="inputConfirm" class="control-label text-center">NUMERO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    <div class="form-group col-md-3 text-center">
+    <label for="inputConfirm" class="control-label text-center">NOME DO CONDUTOR </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+  <div class="form-group col-md-3 text-center">
+    <label for="inputConfirm" class="control-label text-center">EDAD </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+  <div class="form-group col-md-3 text-center">
+    <label for="inputConfirm" class="control-label text-center">CONDICIONES DE SALLUD </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>   </div>  </form>
+  
+  	<form>
+ <div class="form-row col-md-12">
+ 
+ 
+  <div class="form-group col-md-1 text-center">
+    <label for="inputConfirm" class="control-label text-center">NUMERO </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>
+    <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">NOME DEL CONDUTOR </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+  <div class="form-group col-md-2 text-center">
+    <label for="inputConfirm" class="control-label text-center">EDAD </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>  
+   <div class="form-group col-md-3 text-center">
+    <label for="inputConfirm" class="control-label text-center">CONDICIONES DE SALLUD </label>
+    <input type="password" class="form-control" id="inputConfirm" />
+     <input id="textNome" class="form-control" type="text"/>
+      <input id="textNome" class="form-control"  type="text"/>
+  </div>   </div>  </form>
+  
+  
+  
+  
+			    <div>
+        <label for="nome" class="col-sm-3 col-form-label col-form-label-sm linha">PLAZA DE COBRO:</label>
+        <input type="text" id="nome" />
+    </div>
+    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm linha"> FOLIO SEQUENCIAL:</label>
+        <input type="text" id="email" />
+    </div>
+    			    <div>
+        <label for="nome" class="col-sm-3 col-form-label col-form-label-sm">REPORTE:</label>
+        <input type="text" id="nome" />
+    </div>
+    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm ">SINIESTRE:</label>
+        <input type="text" id="email" />
+    </div>
+        <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">FECHA:</label>
+        <input type="text" id="email" />
+    </div>    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">HORA:</label>
+        <input type="text" id="email" />
+    </div>    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">DIRECCIÓN Y/O TRAYECTORIAE:</label>
+        <input type="text" id="email" />
+    </div>    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">KILOMETRO DE REGISTRO</label>
+        <input type="text" id="email" />
+    </div>    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">KILOMETRO INICIAL::</label>
+        <input type="text" id="email" />
+    </div>    <div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">KILOMETRO FINAL:</label>
+        <input type="text" id="email" />
+    </div>
+	<div>
+        <label for="email" class="col-sm-3 col-form-label col-form-label-sm">POLIZAPOR AFECTAR:</label>
+        <input type="text" id="email" />
+    </div>
+    <div>
+      <label for="email" class="col-sm-3 col-form-label col-form-label-sm">HORA DE REGISTRO A CABINA:</label>
+        <input type="text" id="email" />
+    </div>  
+    <div> <label for="email" class="col-sm-3 col-form-label col-form-label-sm">HORA DE ARRIBO DE AJUSTADOR </label>
+        <input type="text" id="email" />
+    </div>
 
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">HORA DE REGISTRO A CABINA:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">HORA DE ARRIBO DE AJUSTADOR </label> <input type="text" id="colFormLabelSm" /> <label
-						for="">VEHICULOS INVOLUCRADOS :</label> <input type="text" id="" />
-				</div>
+
+<form>
+	<div class="form-row">
+	<div class="form-group col-md-6">
+    <label for="staticEmail" class="col-sm-2 col-form-label">TIPO DE VEICULO</label>
+  	<input type="text" id="staticEmail"/>
+    </div> 
+    <div class="form-group col-md-6">
+    <label for="staticEmail" class="col-sm-2 col-form-label">NUMERO DE VEICULO</label>
+  	  <input type="text" id="email" />
+  	  </div>
+  	 </div>
+  
 			</form>
 			<form>
 				<div class="form-group row">
@@ -120,11 +315,10 @@
 						:</label> <input type="text" id="colFormLabelSm" />
 
 				</div>
+				
 			</form>
 
+		</div>
 
-	</ui:define>
-	<!-- MAIN CONTENT TEMPLATE COMPONENT END -->
-
-</ui:composition>
-<!-- MAIN TEMPLATE STRUCTURE END -->
+		</ui:define>
+	</ui:composition>

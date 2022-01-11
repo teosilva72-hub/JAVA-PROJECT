@@ -363,7 +363,7 @@
 		<!-- Final da animação -->
 		<div class="row">
 			<!-- Inicio do lado direito -->
-			<div class="col-md-3 col-sm-2 colDireita">
+			<div class="col-md-4 col-sm-5 colDireita">
 				<!-- Inicio da lista -->
 				<div class="tabela-occ">
 					<!-- Tabela listar -->
@@ -371,7 +371,7 @@
 						<h:dataTable id="occurrence-table" var="data" disabled="true"
 							value="#{occurrencesBean.occurrences}"
 							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
-							cellspacing="0" width="50%" headerClass="custom-table-header"
+							cellspacing="0" width="50%"  headerClass="custom-table-header"
 							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 
 							<h:column>
@@ -389,7 +389,7 @@
 								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
 								<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
 							</h:column>
-
+							
 							<h:column>
 								<f:facet class="barraTable" name="header">#{occLabels.occ_list_table_status}</f:facet>
 								<h:outputText value="#{data.state_occurrences}"
@@ -487,11 +487,11 @@
 											</p>
 										</div>
 										<div class="col-md-12">
-											<span class="msfPdf">#{occLabels.msgPdf}</span>
+										<span class="msfPdf">#{occLabels.msgPdf}</span>
 											<h:inputText value="#{occurrencesBean.userPdf}" id="userPdf"
 												class="form-control inputDesign lll"
-												pt:placeholder="#{occLabels.nome_operador}"></h:inputText>
-											<br></br> <span id="msgErrorPdf" style="color: red;">#{occLabels.campo_obrigatorio}</span>
+												pt:placeholder="#{occLabels.nome_operador}"></h:inputText><br></br>
+												<span id="msgErrorPdf" style="color:red;">#{occLabels.campo_obrigatorio}</span>
 										</div>
 									</div>
 
@@ -521,7 +521,7 @@
 			</div>
 			<!-- Final do lado direito -->
 			<!-- Inicio do lado esquerdo -->
-			<div class="col-md-9 col-sm-12 colEsquerda">
+			<div class="col-md-8 col-sm-7 colEsquerda">
 				<h:form prependId="false" enctype="multipart/form-data"
 					id="form-cadastro">
 
@@ -676,7 +676,16 @@
 											disabled="#{occurrencesBean.edit}"
 											value="#{occLabels.btn_editar}" onclick="bloquerTable(); "
 											action="#{occurrencesBean.btnEdit}">
-
+											<!-- <f:ajax 
+											execute="@form"
+												render=":alterar :reset :new :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial :unityDamage 
+											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
+											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
+											    	:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoHoraFinal :acaoEndMinute :danoDescr2 :actionDescr3 :actionDescr4
+											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
+											    	:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :edit :myFile :acaoStatus :acaoData :acaoDataFinal
+											    	:trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd :descrDescr1 :descriptionBtn1 :descriptionBtn2
+											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :btnUpdate :myFile2" /> -->
 										</h:commandButton>
 										<!-- Botão editar -->
 										<h:commandButton id="alterar" class="btn btnConf"
@@ -752,7 +761,7 @@
 											data-toggle="tooltip" data-placement="bottom"
 											title="#{occLabels.msg_btn_form1}">#{occLabels.occ_titulo_formulario1}</button>
 										<!-- Botão form 2 -->
-
+								
 									</div>
 								</div>
 							</div>
@@ -761,6 +770,15 @@
 
 					<!-- Inicio da primeira tabela -->
 					<div id="tab1" name="tab1">
+
+						<!-- Alert evento -->
+						<div class="alert alert-dark confAlert" role="alert">
+							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_evento}</h5>
+						</div>
+						
+						
+						
+						<div id="tab1" name="tab1">
 
 						<!-- Alert evento -->
 						<div class="alert alert-dark confAlert" role="alert">
@@ -802,7 +820,7 @@
 									<f:selectItems value="#{occurrencesBean.estados}" />
 								</h:inputText>
 							</div>
-							<div class="form-group col-md-2">
+								<div class="form-group col-md-2">
 								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
 								<h:inputText value="#{occurrencesBean.data.start_date}"
 									pt:placeholder="--/--/----"
@@ -812,7 +830,7 @@
 								<span style="display: none;" class="errorInputs"
 									id="errorEvent1">#{occLabels.occ_error_input}</span>
 							</div>
-							<div class="form-group col-md-2">
+										<div class="form-group col-md-2">
 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_start}</em>
 								<h:inputText class="form-control inputDesign"
 									disabled="#{occurrencesBean.fields}"
@@ -825,170 +843,519 @@
 									id="errorEvent2">#{occLabels.occ_error_input}</span>
 							</div>
 							<div class="form-group col-md-2"></div>
-
-
-
+							
+							
+					
 
 						</div>
-						<div class="form-row"></div>
-
-
-
-
-						<!-- FInal alert -->
-
 						<div class="form-row">
+							<div class="form-group col-md-2">
+								<em for="inputEmail4">PLAZA DE COBRO</em>
+								<h:inputText class="form-control inputDesign" abled="true"
+									id="occNumber" name="occNumber" value="" />
 
-							<div class="form-group col-md-3">
-								<em for="inputCity">DIRECCION Y/O TRAYECTORIA</em>
-								<h:inputHidden value="#{occurrencesBean.data.local_state}"
-									id="eventoEstado" name="eventoEstado"
-									class="form-control inputDesign"
-									abled="#{occurrencesBean.fields}" />
-								<h:inputText value="#{occurrencesBean.data.local_state}"
-									id="eventoEstado1" name="eventoEstado1"
-									class="form-control inputDesign" abled="true" />
-								<span style="display: none;" class="errorInputs"
-									id="eventoState"> #{occLabels.occ_error_input}</span>
 							</div>
 
+							<div class="form-group col-md-2">
+								<em for="inputPassword4">FOLIO SEQUENCIAL</em>
+								<h:inputText class="form-control inputDesign" abled="true"
+									id="tipoEvento" name="tipoEvento" value="" />
+							</div>
+							<div class="form-group col-md-2">
+								<em for="inputPassword4">REPORTE</em>
+								<h:inputText class="form-control inputDesign"
+									abled="#{occurrencesBean.fields}"
+									value="#{occurrencesBean.data.origin}" id="origemEvento"
+									name="origemEvento">
+									<f:selectItem itemLabel="select" itemValue="" />
+									<f:selectItems value="#{occurrencesBean.origens}" />
+								</h:inputText>
+							</div>
+							<!-- situacao occ -->
+							<div class="form-group col-md-2">
+								<em for="inputPassword4">SINISTRO</em>
+								<h:inputText class="form-control inputDesign"
+									abled="#{occurrencesBean.fields}"
+									value="#{occurrencesBean.data.state_occurrences}"
+									id="situacaoEvento" name="situacaoEvento">
+									<f:selectItem itemLabel="select" itemValue="" />
+									<f:selectItems value="#{occurrencesBean.estados}" />
+								</h:inputText>
+							</div>
+								<div class="form-group col-md-2">
+								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em>
+								<h:inputText value="#{occurrencesBean.data.start_date}"
+									pt:placeholder="--/--/----"
+									disabled="#{occurrencesBean.fields}"
+									class="form-control inputDesign datepickerStart"
+									id="dataInicial" name="dataInicial" />
+								<span style="display: none;" class="errorInputs"
+									id="errorEvent1">#{occLabels.occ_error_input}</span>
+							</div>
+										<div class="form-group col-md-2">
+								<em for="inputAddress2">#{occLabels.occ_register_table_hour_start}</em>
+								<h:inputText class="form-control inputDesign"
+									disabled="#{occurrencesBean.fields}"
+									value="#{occurrencesBean.data.start_hour}" id="horaInicial"
+									name="horaInicial">
+									<f:selectItem itemLabel="select" itemValue="" />
+									<f:selectItems value="#{occurrencesBean.horas}" />
+								</h:inputText>
+								<span style="display: none;" class="errorInputs"
+									id="errorEvent2">#{occLabels.occ_error_input}</span>
+							</div>
+							<div class="form-group col-md-2"></div>
+							
+							
+					
+
+						</div>
+
+
+				
+							
+						</div>
+
+
+							<!-- final AM/PM -->
+							<!-- data final -->
+							
+							<!-- final AM/PM -->
+						</div>
+							<div class="alert alert-dark confAlert" role="alert">
+							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_evento_local}</h5>
+						</div>
+						<!-- FInal alert -->
+						<div class="form-row">
 							<!-- KM -->
 							<div class="form-group col-md-2">
-								<em for="inputAddress">KM DE REGISTRO</em>
+								<em for="inputAddress">#{occLabels.occ_register_table_km}</em>
 								<h:inputText value="#{occurrencesBean.data.kilometer}"
 									disabled="#{occurrencesBean.fields}"
 									class="form-control inputDesign" pt:placeholder="0+020"
 									id="eventoKm" name="eventoKm" />
 							</div>
 							<!-- RODOVIA -->
-
-							<div class="form-group col-md-2">
-
-								<em for="inputAddress2">KM INICIAL</em>
-								<h:inputText value="#{occurrencesBean.data.highway}"
+							<div class="form-group col-md-5">
+								<em for="inputAddress2">#{occLabels.occ_register_rodovia}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.highway}"
 									id="eventoRodovia" name="eventoRodovia"
 									class="form-control inputDesign"
-									abled="#{occurrencesBean.fields}">
+									disabled="#{occurrencesBean.fields}">
 									<f:selectItem itemLabel="select" itemValue="" />
 									<f:selectItems value="#{occurrencesBean.rodovias}" />
-								</h:inputText>
+								</h:selectOneMenu>
 							</div>
-
-
-							<div class="form-group col-md-2">
-								<em for="inputAddress2">KM FINAL</em>
-								<h:inputText value="#{occurrencesBean.data.direction}"
+							<!-- ESTADO -->
+							<div class="form-group col-md-5">
+								<em for="inputCity">#{occLabels.occ_register_Estado}</em>
+								<h:inputHidden value="#{occurrencesBean.data.local_state}"
+									id="eventoEstado" name="eventoEstado"
+									class="form-control inputDesign"
+									disabled="#{occurrencesBean.fields}" />
+								<h:inputText value="#{occurrencesBean.data.local_state}"
+									id="eventoEstado1" name="eventoEstado1"
+									class="form-control inputDesign" disabled="true" />
+								<span style="display: none;" class="errorInputs"
+									id="eventoState"> #{occLabels.occ_error_input}</span>
+							</div>
+							<!-- SENTIDO -->
+							<div class="form-group col-md-3">
+								<em for="inputAddress2">#{occLabels.occ_register_sentido}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.direction}"
 									id="eventoSentido" name="eventoSentido"
 									class="form-control inputDesign"
-									abled="#{occurrencesBean.fields}">
+									disabled="#{occurrencesBean.fields}">
 									<f:selectItem itemLabel="select" itemValue="" />
 									<f:selectItems value="#{occurrencesBean.sentidos}" />
-								</h:inputText>
+								</h:selectOneMenu>
 							</div>
 							<!-- FAIXA -->
-							<div class="form-group col-md-2">
-								<em for="inputAddress2">PÓLIZA POR AFECTAR</em>
+							<div class="form-group col-md-4">
+								<em for="inputAddress2">#{occLabels.occ_register_faixa}</em>
 								<h:selectOneMenu value="#{occurrencesBean.data.lane}"
 									id="eventoFaixa" name="eventoFaixa"
 									class="form-control inputDesign"
-									abled="#{occurrencesBean.fields}">
+									disabled="#{occurrencesBean.fields}">
 									<f:selectItem itemLabel="select" itemValue="" />
 									<f:selectItems value="#{occurrencesBean.faixas}" />
 								</h:selectOneMenu>
-				
-
-
-						</div>
+							</div>
+							<!-- OBSERVACAO -->
+							<div class="form-group col-md-5">
+								<em for="inputAddress">#{occLabels.occ_register_outros_eventos}</em>
+								<h:inputText value="#{occurrencesBean.data.others}"
+									id="outrosEventos" name="outrosEventos" pt:placeholder="..."
+									class="form-control inputDesign"
+									abled="#{occurrencesBean.fields}" />
+							</div>
 						</div>
 						
-
+						<!-- Alert causa provavel -->
 						<div class="alert alert-dark confAlert" role="alert">
-							<h5 class="text-center confTextAlert">VEHÍCULOS INVOLUCRADOS</h5>
+							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_causa_provavel}</h5>
 						</div>
+						<!-- FInal alert -->
+						<div class="form-row">
+							<!-- causa -->
+							<div class="form-group col-md-12">
+								<em for="inputAddress">#{occLabels.occ_register_table_cause}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.cause}"
+									abled="#{occurrencesBean.fields}"
+									class="form-control inputDesign" id="causaProvavel"
+									name="causaProvavel">
+									<f:selectItem itemLabel="select" itemValue="" />
+									<f:selectItems value="#{occurrencesBean.causa_provaveis}" />
+								</h:selectOneMenu>
+							</div>
+							<!-- Inicio descricao principal e descricao interna -->
+							<div class="btn-group btn-group-sm" role="group"
+								aria-label="Basic example">
 
-					<div class="form-row ">
-							<div class="form-group col-md-1">
-								<em for="inputEmail4">N°</em>
-								<h:inputText value="#{occurrencesBean.data.involved_type}"
+								<h:commandButton type="button" id="causeProvavel1" class="btn"
+									style="background-color: blue; border: 0;"
+									value="#{occLabels.occ_descript_action1}"
+									onclick="hiddenActionDescription9();"
+									abled="#{occurrencesBean.fields}" />
+								<h:commandButton type="button" id="causeProvavel2"
+									class="btn btn-primary"
+									value="#{occLabels.occ_descript_action2}"
+									onclick="hiddenActionDescription10();"
+									abled="#{occurrencesBean.fields}" />
+							</div>
+							<!-- textarea descricao principal -->
+							<div class="form-group col-md-12" id="descriptionCause1">
+								<em for="inputAddress2">#{occLabels.occ_descript_action1}</em>
+								<h:inputTextarea
+									value="#{occurrencesBean.data.cause_description}"
+									id="descricaoCausa" name="descricaoCausa"
+									class="form-control textareaDesign"
+									pt:placeholder="#{occLabels.occ_descript_action1}"
+									disabled="#{occurrencesBean.fields}" />
+							</div>
+							<!-- textarea descricao interna -->
+							<div class="form-group col-md-12" id="descriptionCause2"
+								style="display: none;">
+								<em for="inputAddress2">#{occLabels.occ_descript_action2}</em>
+								<h:inputTextarea value="#{occurrencesBean.data.causeDescrInter}"
+									id="descricaoCausa2" name="descricaoCausa2"
+									class="form-control textareaDesign"
+									pt:placeholder="#{occLabels.occ_descript_action2}"
+									disabled="#{occurrencesBean.fields}" />
+							</div>
+							<!-- Inicio descricao principal e descricao interna -->
+						</div>
+						<!-- Inicio do alert Evento Local -->
+					
+<!-- 						ALert Detalhes -->
+<!-- 						<div class="alert alert-dark confAlert" role="alert"> -->
+<!-- 							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_detalhes}</h5> -->
+<!-- 						</div> -->
+<!-- 						FInal alert detalhes -->
+<!-- 						<div class="form-row"> -->
+<!-- 							CODICAO LOCAL -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputCity">#{occLabels.occ_register_cond_local}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.local_condition}" -->
+<!-- 									id="condLocal" name="condLocal" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									abled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.condicao_locais}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							CODICAO TRAFEGO -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputAddress2">#{occLabels.occ_register_cond_trafego}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.traffic}" -->
+<!-- 									id="condTrafego" name="condTrafego" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									abled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.condicao_de_trafegos}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							CARACTERISTICAS -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputCity">#{occLabels.occ_register_caracteristica}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.characteristic}" -->
+<!-- 									id="detalCaract" name="detalCaract" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									abled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems -->
+<!-- 										value="#{occurrencesBean.caracteristica_da_secoes}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+						
+										<!-- ALert Envolvidos -->
+						
+						<div class="alert alert-dark confAlert " role="alert">
+							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_envolvidos}</h5>
+						</div>
+						
+						<!-- FInal alert Envolvidos -->
+						<div class="form-row">
+							<!-- TIPO -->
+							<div class="form-group col-md-12">
+							
+								<em for="inputEmail4">#{occLabels.occ_register_table_type}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.involved_type}"
 									abled="#{occurrencesBean.fields}"
 									class="form-control inputDesign" id="envolvTipo"
 									name="envolvTipo">
 									<f:selectItem itemLabel="select" itemValue="" />
+									<!-- falta alterar parametro -->
 									<f:selectItems value="#{occurrencesBean.involvedType}" />
-								</h:inputText>
+								</h:selectOneMenu>
 							</div>
+											<!-- INICIO TEXTAREA PRINCIPAL E INTERNA -->
+							<div class="btn-group btn-group-sm" role="group"
+								aria-label="Basic example">
 
-							<div class="form-group col-md-2">
-								<em for="inputEmail4">MARCA</em>
-								<h:inputText value="#{occurrencesBean.data.damageUnity}"
-									name="unityDamage" id="unityDamage"
-									abled="#{occurrencesBean.fields}"
-									class="form-control inputDesign">
-								
-								</h:inputText>
+								<h:commandButton type="button" id="involvedBtn1" class="btn"
+									style="background-color: blue; border: 0;"
+									value="#{occLabels.occ_descript_action1}"
+									onclick="hiddenActionDescription7();"
+									disabled="#{occurrencesBean.fields}" />
+								<h:commandButton type="button" id="involvedBtn2"
+									class="btn btn-primary"
+									value="#{occLabels.occ_descript_action2}"
+									onclick="hiddenActionDescription8();"
+									disabled="#{occurrencesBean.fields}" />
 							</div>
+							<div class="form-group col-md-12" id="involvedDescription1">
+								<em for="inputAddress">#{occLabels.occ_descript_action1}</em>
+								<h:inputTextarea class="form-control textareaDesign"
+									id="envolvDescr" disabled="#{occurrencesBean.fields}"
+									name="envolvDescr"
+									pt:placeholder="#{occLabels.occ_descript_action1}"
+									value="#{occurrencesBean.data.involved_description}" rows="4" />
+							</div>
+							<div class="form-group col-md-12" id="involvedDescription2"
+								style="display: none;">
+								<em for="inputAddress">#{occLabels.occ_descript_action2}</em>
+								<h:inputTextarea class="form-control textareaDesign"
+									id="envolvDescr2" disabled="#{occurrencesBean.fields}"
+									name="envolvDescr2"
+									pt:placeholder="#{occLabels.occ_descript_action2}"
+									value="#{occurrencesBean.data.involvedInter}" rows="4" />
+							</div>
+							</div> 
+							<div class="alert alert-dark confAlert col-md-12" role="alert">
+							<h5 class="text-center confTextAlert">#{occLabels.occ_titulo_danos}</h5>
+						</div>
 							
-							<div class="form-group col-md-1">
-								<em for="inputEmail4">TIPO</em>
-								<h:inputText
+						
+						<!-- FInal alert Danos -->
+						<div class="form-row">
+							<!-- TIPO DANO -->
+							<div class="form-group col-md-3">
+								<em for="inputEmail4">#{occLabels.occ_register_tipo_dano}</em>
+								<h:selectOneMenu
 									value="#{occurrencesBean.data.damage_type_damage}"
 									name="danoTipo" id="danoTipo"
 									abled="#{occurrencesBean.fields}"
 									class="form-control inputDesign">
-							
-								</h:inputText>
+									<f:selectItem itemLabel="select" itemValue="" />
+									<!-- falta alterar parametro -->
+									<f:selectItems value="#{occurrencesBean.damageType}" />
+								</h:selectOneMenu>
 							</div>
 							<!-- GRAVIDADE DANO -->
-							<div class="form-group col-md-1">
-								<em for="inputEmail4">MODELO</em>
-								<h:inputText value="#{occurrencesBean.data.damage_gravity}"
+							<div class="form-group col-md-3">
+								<em for="inputEmail4">#{occLabels.occ_register_gravidade}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.damage_gravity}"
 									name="danoUnidade" id="danoGravidade"
 									abled="#{occurrencesBean.fields}"
 									class="form-control inputDesign">
-							
-								</h:inputText>
+									<f:selectItem itemLabel="select" itemValue="" />
+									<!-- falta alterar parametro -->
+									<f:selectItems value="#{occurrencesBean.damage_gravity}" />
+								</h:selectOneMenu>
+							</div>
+							<!-- UNIDADE  -->
+							<div class="form-group col-md-3">
+								<em for="inputEmail4">#{occLabels.occ_damage_unity}</em>
+								<h:selectOneMenu value="#{occurrencesBean.data.damageUnity}"
+									name="unityDamage" id="unityDamage"
+									abled="#{occurrencesBean.fields}"
+									class="form-control inputDesign">
+									<f:selectItem itemLabel="select" itemValue="" />
+									<!-- falta alterar parametro -->
+									<f:selectItems value="#{occurrencesBean.damageUnity}" />
+								</h:selectOneMenu>
 							</div>
 							<!-- QUANTIDADE -->
-							<div class="form-group col-md-1">
-								<em for="inputAddress">COR</em>
+							<div class="form-group col-md-3">
+								<em for="inputAddress">#{occLabels.occ_damage_amount}</em>
 								<h:inputText value="#{occurrencesBean.data.damage_amount}"
-									id="damageAmount" name="damageAmount" class="form-control inputDesign" />
-									
+									id="damageAmount" name="damageAmount"
+									pt:placeholder="#{occLabels.occ_damage_amount}"
+									class="form-control inputDesign"
+									disabled="#{occurrencesBean.fields}" />
 							</div>
-							
-						
 							<hr></hr>
 							<!-- INICIO DESCRICAO PRINCIPAL E INTERNA -->
 							<div class="btn-group btn-group-sm" role="group"
 								aria-label="Basic example">
 
-
-								
+								<h:commandButton type="button" id="actionDescr3" class="btn"
+									style="background-color: blue; border: 0;"
+									value="#{occLabels.occ_descript_action1}"
+									onclick="hiddenActionDescription3();"
+									disabled="#{occurrencesBean.fields}" />
+								<h:commandButton type="button" id="actionDescr4"
+									class="btn btn-primary"
+									value="#{occLabels.occ_descript_action2}"
+									onclick="hiddenActionDescription4();"
+									disabled="#{occurrencesBean.fields}" />
+							</div>
 							<div class="form-group col-md-12" id="damageBtn1">
-								
+								<em for="inputAddress">#{occLabels.occ_descript_action1}</em>
 								<h:inputTextarea class="form-control textareaDesign"
 									disabled="#{occurrencesBean.fields}"
 									pt:placeholder="#{occLabels.occ_descript_action1}"
 									value="#{occurrencesBean.data.demage_description}" rows="4"
 									name="danoDescr" id="danoDescr" />
 							</div>
-							
-
-
-</div>
-
-						</div>
-						
-
-
-
-						<div class="form-row">
-
+							<div class="form-group col-md-12" id="damageBtn2"
+								style="display: none;">
+								<em for="inputAddress">#{occLabels.occ_descript_action2}</em>
+								<h:inputTextarea class="form-control textareaDesign"
+									disabled="#{occurrencesBean.fields}"
+									pt:placeholder="#{occLabels.occ_descript_action2}"
+									value="#{occurrencesBean.data.damageDescriptionInternal}"
+									rows="4" name="danoDescr2" id="danoDescr2" />
+							</div>
+							<!-- FINAL DESCRICAO PRINCIPAL E INTERNA -->
 					
-							<div class="alert alert-dark confAlert text-center" role="alert">
+
+<!-- 						ALert Ações -->
+<!-- 						<div class="alert alert-dark confAlert col-md-12" role="alert"> -->
+<!-- 							<h5 class="text-center confTextAlert">#{occLabels.occ_acoes_acoes}</h5> -->
+<!-- 						</div> -->
+<!-- 						<div class="form-row"> -->
+<!-- 							ACAO TIPO -->
+<!-- 							<div class="form-group col-md-6"> -->
+<!-- 								<em for="inputEmail4">#{occLabels.occ_register_table_type}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.action_type}" -->
+<!-- 									name="acaoTipo" id="acaoTipo" -->
+<!-- 									abled="#{occurrencesBean.fields}" -->
+<!-- 									class="form-control inputDesign"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									falta alterar parametro -->
+<!-- 									<f:selectItems value="#{occurrencesBean.actions}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							ACAO STATUS -->
+<!-- 							<div class="form-group col-md-6"> -->
+<!-- 								<em for="inputEmail4">#{occLabels.occ_register_table_action_state}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.statusAction}" -->
+<!-- 									name="acaoStatus" id="acaoStatus" -->
+<!-- 									abled="#{occurrencesBean.fields}" -->
+<!-- 									class="form-control inputDesign"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									falta alterar parametro -->
+<!-- 									<f:selectItems value="#{occurrencesBean.actionState}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							DATA INICIAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_register_table_dt_start}</em> -->
+<!-- 								<h:inputText value="#{occurrencesBean.data.actionStartData}" -->
+<!-- 								 -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- 									class="form-control inputDesign datepicker" id="acaoData" -->
+<!-- 									name="acaoData" /> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction1">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							HORA INICIAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputEmail4">#{occLabels.occ_register_table_hour_start}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.actionStartHour}" -->
+<!-- 									name="acaoInicio" id="acaoInicio" -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- 									class="form-control inputDesign"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									falta alterar parametro -->
+<!-- 									<f:selectItems value="#{occurrencesBean.horas}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction2">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							MINUTO INICIAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputEmail4">#{occLabels.occ_register_table_minute_start}</em> -->
+<!-- 								<h:selectOneMenu -->
+<!-- 									value="#{occurrencesBean.data.actionStartMinute}" -->
+<!-- 									name="acaoDuracao" id="acaoDuracao" -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- 									class="form-control inputDesign"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									falta alterar parametro -->
+<!-- 									<f:selectItems value="#{occurrencesBean.minutos}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction3">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-3"> -->
+<!-- 								<em for="inputCity">am/pm</em> -->
+<!-- 								<h:selectOneMenu class="form-control inputDesign" -->
+<!-- 									value="#{occurrencesBean.data.typeHour5}" -->
+<!-- 									disabled="#{occurrencesBean.fields}" id="typeHour5" -->
+<!-- 									name="typeHour5"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue=""></f:selectItem> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.typeHour1}" /> -->
+<!-- 								</h:selectOneMenu> -->
+
+<!-- 							</div> -->
+<!-- 							INTERFERENCIA FAIZA -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_register_interf_faixa}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.interference}" -->
+<!-- 									id="interFaixa" name="interFaixa" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems -->
+<!-- 										value="#{occurrencesBean.interferencia_da_faixas}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							SINALICAO -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputAddress2">#{occLabels.occ_register_sinalizacao}</em> -->
+<!-- 								<h:selectOneMenu value="#{occurrencesBean.data.signaling}" -->
+<!-- 									id="sinalizacao" name="sinalizacao" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.sinalizacoes}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+<!-- 							SITUACAO CONDUTOR -->
+<!-- 							<div class="form-group col-md-4"> -->
+<!-- 								<em for="inputCity">#{occLabels.occ_register_situacao_condutor}</em> -->
+<!-- 								<h:selectOneMenu -->
+<!-- 									value="#{occurrencesBean.data.conductor_condition}" -->
+<!-- 									id="situacCond" name="situacCond" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.estado_condutores}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 							</div> -->
+					
+				</div> 
+						<div>
+							<!-- ALert Anexos -->
+							<div class="alert alert-dark confAlert" role="alert">
 								<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
 							</div>
-							
+							<!-- FInal alert Anexos -->
+
+							<!-- input file save -->
 							<div id="uploadFile1" class="form-row" style="display: none;">
 								<div class="form-group col-md-12 field" align="left">
 									<h:inputFile id="myFile" value="#{occurrencesBean.file}"
@@ -996,9 +1363,8 @@
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 									<br></br>
 									<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
-								</div>
-
-							
+						 			</div>
+								<!-- BTN UPLOAD FILE -->
 								<div class="col-md-12">
 									<h:commandButton class="btn btnConf" id="btnUpload"
 										value="#{occLabels.occ_uploadFile}"
@@ -1008,6 +1374,67 @@
 								</div>
 							</div>
 
+					<!-- Final da primeira tabela -->
+					<!-- Inicio da segunda tabela -->
+<!-- 					<div id="tab2"> -->
+
+<!-- 						ALert Descrição -->
+<!-- 						<div class="alert alert-dark confAlert" role="alert"> -->
+<!-- 							<h5 class="text-center confTextAlert">#{occLabels.occ_register_descricao}</h5> -->
+<!-- 						</div> -->
+
+<!-- 						FInal alert descrição -->
+<!-- 						<div class="form-row"> -->
+<!-- 							TITULO DA DESCRICAO -->
+<!-- 							<div class="form-group col-md-12"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_titulo_descricao}</em> -->
+<!-- 								<h:inputText value="#{occurrencesBean.data.description_title}" -->
+<!-- 									id="tituloDescr" name="tituloDescr" onclick="validatorJs();" -->
+<!-- 									pt:placeholder="#{occLabels.occ_descriptionTitle}" -->
+<!-- 									class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+<!-- 							</div> -->
+<!-- 							INICIO TEXTAREA PRINCIPAL E INTERNA -->
+<!-- 							<div class="btn-group btn-group-sm" role="group" -->
+<!-- 								aria-label="Basic example"> -->
+
+<!-- 								<h:commandButton type="button" id="descriptionBtn1" class="btn" -->
+<!-- 									style="background-color: blue; border: 0;" -->
+<!-- 									value="#{occLabels.occ_descript_action1}" -->
+<!-- 									onclick="hiddenActionDescription5();" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+<!-- 								<h:commandButton type="button" id="descriptionBtn2" -->
+<!-- 									class="btn btn-primary" -->
+<!-- 									value="#{occLabels.occ_descript_action2}" -->
+<!-- 									onclick="hiddenActionDescription6();" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+<!-- 							</div> -->
+<!-- 							<div class="form-group col-md-12" id="description1"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_descript_action1}</em> -->
+<!-- 								<h:inputTextarea class="form-control textareaDesign" -->
+<!-- 									value="#{occurrencesBean.data.description_text}" -->
+<!-- 									pt:placeholder="#{occLabels.occ_descript_action1}" rows="4" -->
+<!-- 									id="descrDescr" name="descrDescr" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+<!-- 							</div> -->
+<!-- 							<div class="form-group col-md-12" id="description2" -->
+<!-- 								style="display: none;"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_descript_action2}</em> -->
+<!-- 								<h:inputTextarea class="form-control textareaDesign" -->
+<!-- 									value="#{occurrencesBean.data.descriptionInter}" -->
+<!-- 									pt:placeholder="#{occLabels.occ_descript_action2}" rows="4" -->
+<!-- 									id="descrDescr1" name="descrDescr1" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+<!-- 							</div> -->
+<!-- 							FINAL TEXTAREA PRINCIPAL E INTERNA -->
+<!-- 						</div> -->
+			
+			
+							<!-- FINAL TEXTAREA PRINCIPAL E INTERNA -->
+<!-- 						</div> -->
+						<!-- Inicio do add File -->
+				
+							<!-- End input file save -->
 
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
@@ -1028,7 +1455,22 @@
 										disabled="#{occurrencesBean.fields}" />
 								</div>
 							</div>
+							<!-- End input file alterar -->
 
+							<!-- alert img-->
+							<!-- <a href="#" class="linkImg"><div class="alert alert-dark confAlert" id="imagem" role="alert">
+								<h5 class="text-center confTextAlert linkImg">Imagem</h5>
+							</div></a> -->
+							<!-- Edição imagem -->
+							<!--   <div>
+								<c:forEach  items="#{occurrencesBean.listarFile}" var="img" style="display: none;"
+									varStatus="loop">
+									
+										<h:graphicImage id="getPathImg" class="imageFile"
+											value="#{occurrencesBean.getImageUpload(img)}"></h:graphicImage>
+								</c:forEach>
+							</div> -->
+							<!-- final edição imagem -->
 							<!-- file total -->
 							<div class="alert alert-dark confAlert" id="fileTotal"
 								role="alert">
@@ -1044,8 +1486,11 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
-
-													>
+													<!-- image file -->
+													<!--<div class="col-md-2">
+														 <h:graphicImage id="getPathImg" class="imageFile"
+															value="#{occurrencesBean.getImageUpload(item)}"></h:graphicImage>
+													</div> -->
 													<!-- name file -->
 													<div class="col-md-8 text-center">
 														<span>#{occLabels.occ_name_file} </span>
@@ -1190,8 +1635,99 @@
 					</div>
 					<!-- final da segunta tabela -->
 					<!-- Inicio da Terceira tabela -->
-					<div id="tab3"></div>
+					<div id="tab3">
+						
+						<!-- ALert Danos -->
+						
+							<!-- final AM/PM -->
+<!-- 							DATA FINAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_register_table_dt_end}</em> -->
+<!-- 								<h:inputText value="#{occurrencesBean.data.actionEndData}" -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- -->
+<!-- 									class="form-control inputDesign datepicker" id="acaoDataFinal" -->
+<!-- 									name="acaoDataFinal" /> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction4">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							HORA FINAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputAddress2">#{occLabels.occ_register_table_hour_end}</em> -->
+<!-- 								<h:selectOneMenu class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- 									value="#{occurrencesBean.data.actionEndHour}" -->
+<!-- 									id="acaoHoraFinal" name="acaoHoraFinal"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.horas}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction5">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							MINUTO FINAL -->
+<!-- 							<div class="form-group col-md-3"> -->
+<!-- 								<em for="inputCity">#{occLabels.occ_register_table_minute_end}</em> -->
+<!-- 								<h:selectOneMenu class="form-control inputDesign" -->
+<!-- 									disabled="#{occurrencesBean.fields}" -->
+<!-- 									value="#{occurrencesBean.data.actionEndMinute}" -->
+<!-- 									id="acaoEndMinute" name="acaoEndMinute"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue="" /> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.minutos}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 								<span style="display: none;" class="errorInputs" -->
+<!-- 									id="errorAction6">#{occLabels.occ_error_input}</span> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-md-3"> -->
+<!-- 								<em for="inputCity">am/pm</em> -->
+<!-- 								<h:selectOneMenu class="form-control inputDesign" -->
+<!-- 									value="#{occurrencesBean.data.typeHour6}" -->
+<!-- 									disabled="#{occurrencesBean.fields}" id="typeHour6" -->
+<!-- 									name="typeHour6"> -->
+<!-- 									<f:selectItem itemLabel="select" itemValue=""></f:selectItem> -->
+<!-- 									<f:selectItems value="#{occurrencesBean.typeHour1}" /> -->
+<!-- 								</h:selectOneMenu> -->
 
+<!-- 							</div> -->
+							<!-- final AM/PM -->
+							<hr></hr>
+<!-- 							ACAO DESCRICAO PRINCIPAL E INTERNA -->
+<!-- 							<div class="btn-group btn-group-sm" role="group" -->
+<!-- 								aria-label="Basic example"> -->
+
+<!-- 								<h:commandButton type="button" id="actionDescr1" class="btn" -->
+<!-- 									style="background-color: blue; border: 0;" -->
+<!-- 									value="#{occLabels.occ_descript_action1}" -->
+<!-- 									onclick="hiddenActionDescription2();" -->
+<!-- 									abled="#{occurrencesBean.fields}" /> -->
+<!-- 								<h:commandButton type="button" id="actionDescr2" -->
+<!-- 									class="btn btn-primary" -->
+<!-- 									value="#{occLabels.occ_descript_action2}" -->
+<!-- 									onclick="hiddenActionDescription1();" -->
+<!-- 									disabled="#{occurrencesBean.fields}" /> -->
+
+<!-- 							</div> -->
+<!-- 							<div class="form-group col-md-12" id="acaoDescr1"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_descript_action1}</em> -->
+<!-- 								<h:inputTextarea disabled="#{occurrencesBean.fields}" -->
+<!-- 									name="acaoDescr" id="acaoDescr" -->
+<!-- 									class="form-control textareaDesign" -->
+<!-- 									value="#{occurrencesBean.data.action_description}" rows="4" -->
+<!-- 									pt:placeholder="#{occLabels.occ_descript_action1}" /> -->
+<!-- 							</div> -->
+<!-- 							<div class="form-group col-md-12" style="display: none;" -->
+<!-- 								id="acaoDescrOtro1"> -->
+<!-- 								<em for="inputAddress">#{occLabels.occ_descript_action2}</em> -->
+<!-- 								<h:inputTextarea disabled="#{occurrencesBean.fields}" -->
+<!-- 									name="acaoDescrOtro" id="acaoDescrOtro" -->
+<!-- 									class="form-control textareaDesign" -->
+<!-- 									value="#{occurrencesBean.data.actionInter}" rows="4" -->
+<!-- 									pt:placeholder="#{occLabels.occ_descript_action2}" /> -->
+<!-- 							</div> -->
+							<!-- FINAL ACAO DESCRICAO PRINCIPAL E INTERNA -->
+						</div>
+						<!-- FInal alert Ações -->
+					
+					<!-- FInal da terceira tabela -->
 
 
 				</h:form>
