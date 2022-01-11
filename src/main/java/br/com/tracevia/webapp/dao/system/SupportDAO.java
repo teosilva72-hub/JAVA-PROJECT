@@ -14,10 +14,11 @@ public class SupportDAO {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	 
-	public List<Support> Status() throws Exception {
+	/*public List<Support> Status() throws Exception {
 			
 				List<Support> list = new ArrayList<Support>();		
 								
-				String select = "SELECT name, email, FROM connection_monitor WHERE equip_type = 'SPEED' ";
+				String select = "SELECT name, email, FROM connection_monitor WHERE equip_type = 'SPEED' ";*/
 				
 		
+}

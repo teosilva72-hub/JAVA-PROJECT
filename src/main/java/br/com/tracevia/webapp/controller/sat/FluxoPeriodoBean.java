@@ -1,7 +1,6 @@
 package br.com.tracevia.webapp.controller.sat;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.ParseException;
@@ -15,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -35,8 +33,6 @@ import org.apache.poi.ss.util.PropertyTemplate;
 import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.joda.time.DateTime;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.sat.FluxoPeriodoDAO;
@@ -144,9 +140,9 @@ public class FluxoPeriodoBean {
 		motoVDSP2, totalVDSP2, speedAVG2;
 
 		Cell numbers, dates, horaInicio, horaSeparator, horaFim, autoS1, comS1,	motoS1,	totalS1, autoS2, comS2,	motoS2,	totalS2, autoVMS1,
-		comVMS1, motoVMS1, totalVMS1, autoVMS2,	comVMS2, motoVMS2, totalVMS2, speed50thAutoS1, speed50thComS1, speed50thMotoS1,
-		speed50thTotalS1, speed50thAutoS2, speed50thComS2, speed50thMotoS2, speed50thTotalS2, speed85thAutoS1,	speed85thComS1, speed85thMotoS1, speed85thTotalS1,
-		speed85thAutoS2, speed85thComS2, speed85thMotoS2,	speed85thTotalS2,	autoVMAXS1,	comVMAXS1,	motoVMAXS1,	totalVMAXS1, autoVMAXS2,
+		comVMS1, motoVMS1, totalVMS1, autoVMS2,	comVMS2, motoVMS2, totalVMS2, autoV50S1, comV50S1, motoV50S1,
+		totalV50S1, autoV50S2, comV50S2, motoV50S2, totalV50S2, autoV85S1,	comV85S1, motoV85S1, totalV85S1,
+		autoV85S2, comV85S2, motoV85S2,	totalV85S2,	autoVMAXS1,	comVMAXS1,	motoVMAXS1,	totalVMAXS1, autoVMAXS2,
 		comVMAXS2, motoVMAXS2, totalVMAXS2, autoVMINS1, comVMINS1, motoVMINS1, totalVMINS1,	autoVMINS2,	comVMINS2,
 		motoVMINS2,	totalVMINS2, autoVDSPS1, comVDSPS1,	motoVDSPS1,	totalVDSPS1, autoVDSPS2, comVDSPS2,	motoVDSPS2,
 		totalVDSPS2;
@@ -308,11 +304,15 @@ public class FluxoPeriodoBean {
 	
 		  public void processInformations() throws Exception {
 			  
-			  SessionUtil.executeScript("$('#modalInfo').modal('show');");
+			//  SessionUtil.executeScript("$('#modalInfo').modal('show');");
 			  
 			  DateTimeApplication dta = new DateTimeApplication();
 			  
 			  equipDao = new EquipmentsDAO();
+			  
+			  //FIELDS EXTERNOS ARMAZENADOS NA REQUISIO
+			  build.fields = (String[]) SessionUtil.getParam("fields");
+			  build.fieldObjectValues =  (String[]) SessionUtil.getParam("fieldsObject");
 			  
 			  Map<String, String[]> multiParameterMap = SessionUtil.getRequestParameterValuesMap();
 			  Map<String, String> parameterMap = SessionUtil.getRequestParameterMap();
@@ -340,6 +340,9 @@ public class FluxoPeriodoBean {
 			 workbook = new SXSSFWorkbook(-1); //Criar Pasta do Excel	
 			 propertyTemplate = new PropertyTemplate();
 			 sheetName = new String[equips.length];		 
+			 
+			//Define Values in session map !important	
+			 SessionUtil.setParam("workbook", workbook);
 			 			
 			 flag=0;
 			 mess(flag);		
@@ -357,9 +360,7 @@ public class FluxoPeriodoBean {
 		     
 			 for(indice=0; indice < equips.length; indice++) 	 
 				   createSheets(indice, Integer.parseInt(equips[indice])); 	
-			 
-			 System.out.println("WK");
-				   		       		
+							   		       		
 	         flag = 2;
 		     mess(flag);	   
 		     //System.out.println("Flag "+flag);
@@ -376,7 +377,7 @@ public class FluxoPeriodoBean {
 										
 					sat = new SAT();		
 					sat = equipDao.headerInfoSAT(equips[indice]);	
-				 
+																							 
 				 flag=3;
 				 mess(flag);			 		 
 				 //System.out.println("Flag "+flag);				
@@ -406,7 +407,7 @@ public class FluxoPeriodoBean {
 			    mess(flag);				  
 				//System.out.println("Flag "+flag);
 			 		   		   
-			  //  populateTable(); // POP DATATABLE
+			    populateTable(); // POP DATATABLE
 			    
 			    flag=6;		   
 			    mess(flag);		    
@@ -420,8 +421,12 @@ public class FluxoPeriodoBean {
 				build.excelBool = false;
 				
 				updateCloseButton(); 
-				//updateDatable();		
-				updateExcelButton();  
+								
+				// REDRAW TABLE
+				columns = build.drawTable(build.fields, build.fieldObjectValues);
+				
+				//UPDATE TABLE JQUERY ON RELOAD PAGE
+				SessionUtil.executeScript("drawTable()");		
 																        
 		    }
 		  
@@ -528,7 +533,7 @@ public class FluxoPeriodoBean {
 						speedMinAutoS1, speedMinComS1, speedMinMotoS1, speedMinTotalS1, speedMinAutoS2, speedMinComS2, speedMinMotoS2, speedMinTotalS2, speedStdAutoS1,						
 						speedStdComS1, speedStdMotoS1, speedStdTotalS1, speedStdAutoS2, speedStdComS2, speedStdMotoS2, speedStdTotalS2;	
 
-						//data = dtm.preencherDataFluxoPeriodo(dataInicio, endDate, tamanho);
+						//data = dtm.preencherDataFluxoPeriodo(startDate, endDate, tamanho);
 						intervalo = dtm.intervaloHora(tamanho);	
 						interInicio = dtm.intervalo15Inicio(tamanho);	
 						interFim = dtm.intervalo15Fim(tamanho);	
@@ -803,71 +808,71 @@ public class FluxoPeriodoBean {
 				
 					//Velocidade Mediana 50%			
 
-					speed50thAutoS1 = row.createCell((short) 24);
-					speed50thAutoS1.setCellStyle(style1);
-					speed50thAutoS1.setCellValue(autoV501[idx]);
+					autoV50S1 = row.createCell((short) 24);
+					autoV50S1.setCellStyle(style1);
+					autoV50S1.setCellValue(autoV501[idx]);
 
-					speed50thComS1 = row.createCell((short) 25);
-					speed50thComS1.setCellStyle(style1);	
-					speed50thComS1.setCellValue(comV501[idx]);
+					comV50S1 = row.createCell((short) 25);
+					comV50S1.setCellStyle(style1);	
+					comV50S1.setCellValue(comV501[idx]);
 
-					speed50thMotoS1 = row.createCell((short) 26);	
-					speed50thMotoS1.setCellStyle(style1);
-					speed50thMotoS1.setCellValue(motoV501[idx]);
+					motoV50S1 = row.createCell((short) 26);	
+					motoV50S1.setCellStyle(style1);
+					motoV50S1.setCellValue(motoV501[idx]);
 
-					speed50thTotalS1= row.createCell((short) 27);	
-					speed50thTotalS1.setCellStyle(style1);
-					speed50thTotalS1.setCellValue(totalV501[idx]);	
+					totalV50S1= row.createCell((short) 27);	
+					totalV50S1.setCellStyle(style1);
+					totalV50S1.setCellValue(totalV501[idx]);	
 
-					speed50thAutoS2 = row.createCell((short) 28);	
-					speed50thAutoS2.setCellStyle(style1);
-					speed50thAutoS2.setCellValue(autoV502[idx]);
+					autoV50S2 = row.createCell((short) 28);	
+					autoV50S2.setCellStyle(style1);
+					autoV50S2.setCellValue(autoV502[idx]);
 
-					speed50thComS2 = row.createCell((short) 29);
-					speed50thComS2.setCellStyle(style1);
-					speed50thComS2.setCellValue(comV502[idx]);	
+					comV50S2 = row.createCell((short) 29);
+					comV50S2.setCellStyle(style1);
+					comV50S2.setCellValue(comV502[idx]);	
 
-					speed50thMotoS2 = row.createCell((short) 30);
-					speed50thMotoS2.setCellStyle(style1);
-					speed50thMotoS2.setCellValue(motoV502[idx]);
+					motoV50S2 = row.createCell((short) 30);
+					motoV50S2.setCellStyle(style1);
+					motoV50S2.setCellValue(motoV502[idx]);
 
-					speed50thTotalS2 = row.createCell((short) 31);	
-					speed50thTotalS2.setCellStyle(style1);
-					speed50thTotalS2.setCellValue(totalV502[idx]);	
+					totalV50S2 = row.createCell((short) 31);	
+					totalV50S2.setCellStyle(style1);
+					totalV50S2.setCellValue(totalV502[idx]);	
 				
 					// Velocidade V85			
 
-					speed85thAutoS1 = row.createCell((short) 33);
-					speed85thAutoS1.setCellStyle(style1);	
-					speed85thAutoS1.setCellValue(autoV851[idx]);	
+					autoV85S1 = row.createCell((short) 33);
+					autoV85S1.setCellStyle(style1);	
+					autoV85S1.setCellValue(autoV851[idx]);	
 
-					speed85thComS1 = row.createCell((short) 34);	
-					speed85thComS1.setCellStyle(style1);
-					speed85thComS1.setCellValue(comV851[idx]);	
+					comV85S1 = row.createCell((short) 34);	
+					comV85S1.setCellStyle(style1);
+					comV85S1.setCellValue(comV851[idx]);	
 
-					speed85thMotoS1 = row.createCell((short) 35);
-					speed85thMotoS1.setCellStyle(style1);	
-					speed85thMotoS1.setCellValue(motoV851[idx]);		
+					motoV85S1 = row.createCell((short) 35);
+					motoV85S1.setCellStyle(style1);	
+					motoV85S1.setCellValue(motoV851[idx]);		
 
-					speed85thTotalS1 = row.createCell((short) 36);	
-					speed85thTotalS1.setCellStyle(style1);
-					speed85thTotalS1.setCellValue(totalV851[idx]);
+					totalV85S1 = row.createCell((short) 36);	
+					totalV85S1.setCellStyle(style1);
+					totalV85S1.setCellValue(totalV851[idx]);
 
-					speed85thAutoS2 = row.createCell((short) 37);	
-					speed85thAutoS2.setCellStyle(style1);
-					speed85thAutoS2.setCellValue(autoV852[idx]);	
+					autoV85S2 = row.createCell((short) 37);	
+					autoV85S2.setCellStyle(style1);
+					autoV85S2.setCellValue(autoV852[idx]);	
 
-					speed85thComS2 = row.createCell((short) 38);
-					speed85thComS2.setCellStyle(style1);
-					speed85thComS2.setCellValue(comV852[idx]);
+					comV85S2 = row.createCell((short) 38);
+					comV85S2.setCellStyle(style1);
+					comV85S2.setCellValue(comV852[idx]);
 
-					speed85thMotoS2 = row.createCell((short) 39);
-					speed85thMotoS2.setCellStyle(style1);	
-					speed85thMotoS2.setCellValue(motoV852[idx]);
+					motoV85S2 = row.createCell((short) 39);
+					motoV85S2.setCellStyle(style1);	
+					motoV85S2.setCellValue(motoV852[idx]);
 
-					speed85thTotalS2 = row.createCell((short) 40);	
-					speed85thTotalS2.setCellStyle(style1);
-					speed85thTotalS2.setCellValue(totalV852[idx]);
+					totalV85S2 = row.createCell((short) 40);	
+					totalV85S2.setCellStyle(style1);
+					totalV85S2.setCellValue(totalV852[idx]);
 				
 					//Velocidade Máxima						
 
@@ -980,6 +985,7 @@ public class FluxoPeriodoBean {
 				// System.out.println("Preenchimento de dados finalizado!");
 
 			}	
+
 
 			private void initVariables(int tamanho) {
 
@@ -1352,6 +1358,8 @@ public class FluxoPeriodoBean {
 
 				    autoVDSP1[pos] += speedStdAutoS1;	comVDSP1[pos] += speedStdComS1; motoVDSP1[pos] += speedStdMotoS1; totalVDSP1[pos] += speedStdTotalS1;
 				    autoVDSP2[pos] += speedStdAutoS2;	comVDSP2[pos] += speedStdComS2; motoVDSP2[pos] += speedStdMotoS2; totalVDSP2[pos] += speedStdTotalS2;
+				    
+				    System.out.println(auto1[pos]);
 			
 					
 			   }						
@@ -1670,7 +1678,7 @@ public class FluxoPeriodoBean {
 			public void createRows(SXSSFWorkbook workbook, SXSSFSheet sheet, PropertyTemplate propertyTemplate) {    	 
 
 				int rowIndex; // Variáveis para criar o excel	
-				int rowMax = ((daysInMonth * 96) + 5); // trabalhar aqui  
+				int rowMax = ((daysInMonth * periodRange) + 5); // trabalhar aqui  
 					
 				for(rowIndex = 5; rowIndex < rowMax; rowIndex++) {
 
@@ -1709,27 +1717,27 @@ public class FluxoPeriodoBean {
 
 					//Velocidade 50%
 
-					speed50thAutoS1 = row.createCell((short) 24); speed50thAutoS1.setCellStyle(style1);					
-					speed50thComS1 = row.createCell((short) 25); speed50thComS1.setCellStyle(style1);				
-					speed50thMotoS1 = row.createCell((short) 26);speed50thMotoS1.setCellStyle(style1);					
-					speed50thTotalS1 = row.createCell((short) 27);	speed50thTotalS1.setCellStyle(style1);							
+					autoV50S1 = row.createCell((short) 24); autoV50S1.setCellStyle(style1);					
+					comV50S1 = row.createCell((short) 25); comV50S1.setCellStyle(style1);				
+					motoV50S1 = row.createCell((short) 26);motoV50S1.setCellStyle(style1);					
+					totalV50S1 = row.createCell((short) 27);	totalV50S1.setCellStyle(style1);							
 
-					speed50thAutoS2 = row.createCell((short) 28); speed50thAutoS2.setCellStyle(style1);					
-					speed50thComS2 = row.createCell((short) 29); speed50thComS2.setCellStyle(style1);				
-					speed50thMotoS2 = row.createCell((short) 30); speed50thMotoS2.setCellStyle(style1);				
-					speed50thTotalS2 = row.createCell((short) 31); speed50thTotalS2.setCellStyle(style1);	
+					autoV50S2 = row.createCell((short) 28); autoV50S2.setCellStyle(style1);					
+					comV50S2 = row.createCell((short) 29); comV50S2.setCellStyle(style1);				
+					motoV50S2 = row.createCell((short) 30); motoV50S2.setCellStyle(style1);				
+					totalV50S2 = row.createCell((short) 31); totalV50S2.setCellStyle(style1);	
 
 					//Velocidade 85%
 
-					speed85thAutoS1 = row.createCell((short) 33); speed85thAutoS1.setCellStyle(style1);				
-					speed85thComS1 = row.createCell((short) 34);	speed85thComS1.setCellStyle(style1);					
-					speed85thMotoS1 = row.createCell((short) 35); speed85thMotoS1.setCellStyle(style1);			
-					speed85thTotalS1 = row.createCell((short) 36); speed85thTotalS1.setCellStyle(style1);					
+					autoV85S1 = row.createCell((short) 33); autoV85S1.setCellStyle(style1);				
+					comV85S1 = row.createCell((short) 34);	comV85S1.setCellStyle(style1);					
+					motoV85S1 = row.createCell((short) 35); motoV85S1.setCellStyle(style1);			
+					totalV85S1 = row.createCell((short) 36); totalV85S1.setCellStyle(style1);					
 
-					speed85thAutoS2 = row.createCell((short) 37); speed85thAutoS2.setCellStyle(style1);			
-					speed85thComS2 = row.createCell((short) 38);	speed85thComS2.setCellStyle(style1);				
-					speed85thMotoS2 = row.createCell((short) 39); speed85thMotoS2.setCellStyle(style1);			
-					speed85thTotalS2 = row.createCell((short) 40); speed85thTotalS2.setCellStyle(style1);
+					autoV85S2 = row.createCell((short) 37); autoV85S2.setCellStyle(style1);			
+					comV85S2 = row.createCell((short) 38);	comV85S2.setCellStyle(style1);				
+					motoV85S2 = row.createCell((short) 39); motoV85S2.setCellStyle(style1);			
+					totalV85S2 = row.createCell((short) 40); totalV85S2.setCellStyle(style1);
 
 					//Velocidade Máxima					
 
@@ -1769,6 +1777,7 @@ public class FluxoPeriodoBean {
 
 				}		        
 			}	
+
 			
 			 /**M�todo para realizar o download do aqruivo Excel
 		     * @return void - retorno vazio
@@ -1779,7 +1788,7 @@ public class FluxoPeriodoBean {
 
 				ExcelModels model = new ExcelModels();
 				
-				XSSFWorkbook workbook = (XSSFWorkbook) SessionUtil.getParam("workbook");
+				SXSSFWorkbook workbook = (SXSSFWorkbook) SessionUtil.getParam("workbook");
 				String currentDate = (String) SessionUtil.getParam("current");
 				String fileName = (String) SessionUtil.getParam("fileName");
 
@@ -2059,7 +2068,7 @@ public class FluxoPeriodoBean {
 								
 				sat = new SAT();		
 				sat = equipDao.headerInfoSAT(equips[sheetIndex]);	
-								
+															
 				sheetName[sheetIndex] = sat.getNome();								
 				sheet = workbook.createSheet(sheetName[sheetIndex]); // Criar nova folha para o arquivo	
 				rowDados = new SXSSFRow(sheet);
@@ -2117,7 +2126,7 @@ public class FluxoPeriodoBean {
 				stop = false;
 				
 				if(flag == 0) 	
-					//pausa(3000);	  			
+					pausa(3000);	  			
 							
 				if(flag == 1) {
 					if(equips.length > 1)    
@@ -2127,7 +2136,7 @@ public class FluxoPeriodoBean {
 					else displayMessage += localeSat.getStringKey("$label_period_flow_message_begin")
 						      + "\n"+localeSat.getStringKey("$label_period_flow_message_create_sheet");
 					updateForm();
-				    //pausa(3000);
+				    pausa(3000);
 				}
 		        				
 				if(flag == 2) {
@@ -2225,11 +2234,9 @@ public class FluxoPeriodoBean {
 						equipamentoHeader(index, incEquip, tamanho, sat.getNome(), sat.getKm(), sat.getEstrada(), sat.getFaixa1()); //Preenche nome do equipamento na tabela 
 					
 						sentidoHeader(index, tamanho, sat.getFaixa1()); // Preencher sentido na DataTable
+																		
+						lista = dao.getVehicles(startDate, endDate, equips[fill], period, sat);		
 						
-						System.out.println(sat.getNome());
-												
-						lista = dao.getVehicles(startDate, endDate, equips[fill], period, sat);				
-
 						if(!lista.isEmpty()) {
 
 							for(FluxoPeriodo pe : lista) {
@@ -2239,14 +2246,14 @@ public class FluxoPeriodoBean {
 								date = pe.getDate();
 								interval = pe.getInterval();	
 								
-								autoSumS1 = pe.getSpeedAutoS1();
-								comSumS1 = pe.getSpeedComS1();
-								motoSumS1 = pe.getSpeedMotoS1();
-								totalSumS1 = pe.getSpeedTotalS1();
-								autoSumS2 = pe.getSpeedAutoS2();
-								comSumS2 = pe.getSpeedComS2();
-								motoSumS2 = pe.getSpeedMotoS2();
-								totalSumS2 = pe.getSpeedTotalS2();
+								autoSumS1 = pe.getAutoS1();
+								comSumS1 = pe.getComS1();
+								motoSumS1 = pe.getMotoS1();
+								totalSumS1 = pe.getTotalS1();
+								autoSumS2 = pe.getAutoS2();
+								comSumS2 = pe.getComS2();
+								motoSumS2 = pe.getMotoS2();
+								totalSumS2 = pe.getTotalS2();
 
 								speedAutoS1 = pe.getSpeedAutoS1();
 								speedComS1 = pe.getSpeedComS1();
@@ -2376,11 +2383,7 @@ public class FluxoPeriodoBean {
 						
 						//System.out.println("Preenchendo dados na Folha "+sheetName[indice]+" ...");
 						preencherDadosExcel(workbook, propertyTemplate, sheetIndex, sheetName[sheetIndex], tam);
-						
-						  
-						//Define Values in session map !important	
-					 	SessionUtil.setParam("workbook", workbook);
-						 
+												  
 					//System.out.println("------------------");
 					//System.out.println("Processando Arquivo ...");
 					//System.out.println("------------------");
@@ -2402,10 +2405,10 @@ public class FluxoPeriodoBean {
 			public void populateTable() throws Exception {
 				
 				resultList = new ArrayList<Builder>();
-								
+																
 				for(int i=0; i < tamanho; i++) {
 					
-					resultList.add(new FluxoPeriodo.Builder().equip(nomeSats[i]).time(intervalo[i])
+					resultList.add(new FluxoPeriodo.Builder().equip(nomeSats[i]).date(data[i]).time(intervalo[i])
 											.direction1(sentido1[i])
 											.lightS1(auto1[i])
 											.commS1(com1[i])
@@ -2417,8 +2420,12 @@ public class FluxoPeriodoBean {
 											.totalS2(total2[i])
 											.speedS2(totalVM2[i]));		
 																																
-				               }				
-			               }
+				               }	
+				
+				//for(int i=0; i < tamanho; i++)
+						//	System.out.println(auto1[i]+" "+sentido1[i]);
+			       }
+			
 			
 			 public void pausa(int milissegundos) {
 			        try {	            
@@ -2489,8 +2496,8 @@ public class FluxoPeriodoBean {
 						int mth = Integer.parseInt(month);
 						int yr = Integer.parseInt(year);
 						
-						System.out.println(year);
-						System.out.println(month);
+						//System.out.println(year);
+						//System.out.println(month);
 						
 						monthABR = dtm.abrevMes(month); 
 						yearABR = dtm.abrevAno(year); 
@@ -2500,8 +2507,8 @@ public class FluxoPeriodoBean {
 
 						int diaInicial = 1;
 						
-						startDate = dtm.createData(diaInicial, mes, ano);
-						endDate = dtm.createData(daysInMonth, mes, ano);
+						startDate = dtm.createData(diaInicial, mth, yr);
+						endDate = dtm.createData(daysInMonth, mth, yr);
 									
 						tam = tamanhoPorPeriodo(period);
 						
@@ -2533,10 +2540,7 @@ public class FluxoPeriodoBean {
 			    	 	    	 
 			    	 for(int i=indice; i < tamanho; i+=increment)  		 
 			    		 nomeSats[i] = sat+", KM"+km+", "+road;
-			 	    }  
-			     
-			     
-			     
+			 	    }  			     		     
 			     
 			     public void sentidoHeader(int indice, int tamanho, String faixa1) {
 		          

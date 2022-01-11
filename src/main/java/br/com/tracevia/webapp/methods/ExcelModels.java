@@ -27,6 +27,7 @@ import org.apache.poi.ss.usermodel.charts.LineChartData;
 import org.apache.poi.ss.usermodel.charts.LineChartSeries;
 import org.apache.poi.ss.usermodel.charts.ValueAxis;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -3403,6 +3404,13 @@ public class ExcelModels {
 	}
 
 	public void download(XSSFWorkbook workbook, String fileName) throws IOException {
+
+		spreadSheet.donwloadExcelFile(workbook, fileName); //Download Method
+
+	}
+	
+	
+	public void download(SXSSFWorkbook workbook, String fileName) throws IOException {
 
 		spreadSheet.donwloadExcelFile(workbook, fileName); //Download Method
 

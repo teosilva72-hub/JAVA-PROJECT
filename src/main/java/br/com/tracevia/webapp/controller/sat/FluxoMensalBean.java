@@ -50,7 +50,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTMarker;
 
-import br.com.tracevia.webapp.controller.global.LoginAccountBean;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.dao.sat.FluxoVeiculosDAO;
 import br.com.tracevia.webapp.log.SystemLog;
