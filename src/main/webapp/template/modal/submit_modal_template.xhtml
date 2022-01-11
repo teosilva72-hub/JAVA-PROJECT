@@ -217,6 +217,11 @@
 				<!---->
 				<div class="modal-footer">
 					<!-- MODAL FOOTER DIV -->
+
+					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
+						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
+					</h:commandButton><!-- BUTTON RESET -->
+
 					<!---->
 					<button type="button" id="btn-form-confirm" class="btn btn-dark form-modal-draw-button"
 						onclick="verif('#report-form', '[id$=btn-form-send]')">
@@ -232,12 +237,6 @@
 							onevent="onEventFunction" />
 					</h:commandButton>
 					<!-- SUBMIT HIDDEN BUTTON -->
-
-					<!---->
-
-					<h:commandButton value="#{reportsLabels.reports_form_btn_reset}" id="btn-form-reset"
-						immediate="true" type="reset" class="btn btn-dark form-modal-draw-button reset-btn" >
-					</h:commandButton><!-- BUTTON RESET -->
 
 					<!---->
 				</div>
