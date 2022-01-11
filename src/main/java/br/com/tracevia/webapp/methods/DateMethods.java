@@ -2267,6 +2267,8 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					
 					//Abrevia��o do M�s
 					public String translateMinutes(String minutes) {
+						
+						System.out.println(minutes);
 
 						LanguageBean language = new LanguageBean();	
 						Locale locale = language.getLocale(); 

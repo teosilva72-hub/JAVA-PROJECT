@@ -135,7 +135,7 @@
 		 <!-- EXCEL BUTTON DIV -->			
 					
 			<div id="btn-excel"> 
-		       <h:commandButton id="excel-act" value="" disabled="#{fluxoPeriodo.build.excelBool}"
+		       <h:commandButton id="excel-act" value="" disabled="false"
 			      class="fas fa-file-excel fa-2x" data-toggle="tooltip"
 			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" action="#{fluxoPeriodo.download}" widgetVar="excelWgt">
 			  	  <f:passThroughAttribute name="data-toggle" value="modal" />
@@ -260,8 +260,8 @@
 							</button>
 						
 							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
-								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions">
-								<f:ajax execute="@form" render="@none" listener="#{fluxoPeriodo.processInformations}" />
+								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions" onclick="isValidSubmit()" >
+								<f:ajax execute="@form" render="form-table form-btns" listener="#{fluxoPeriodo.processInformations}" />
 							</h:commandButton>
 							
 					        <!---->

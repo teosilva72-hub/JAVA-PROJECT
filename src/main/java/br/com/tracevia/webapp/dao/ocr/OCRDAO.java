@@ -22,7 +22,7 @@ public class OCRDAO{
 	
 	public OCRDAO() {
 		
-		ftpFolder = "C:\\Cameras\\OCR\\NormalType\\";
+		ftpFolder = "C:\\Cameras\\OCR_Types\\";
 		
 		noImageFolder = "C:\\Tracevia\\Software\\External\\Unknown\\";
 				
