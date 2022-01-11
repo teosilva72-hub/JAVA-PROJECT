@@ -273,7 +273,7 @@ public class ReportBean {
 	}
 	
 	public void setTable(String table) {
-		this.table = table;
+		this.table = table.trim();
 	}
 	
 	public void setIdTable(String idTable) {
@@ -682,7 +682,7 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %s%s ORDER BY %s, %1$s ASC", group, extraGroup, idTable);
+				query += String.format(" GROUP BY %s%s ORDER BY %s, %1$s ASC", group, extraGroup, table.contains(" ") ? table.split(" ")[1] : table, idTable);
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
