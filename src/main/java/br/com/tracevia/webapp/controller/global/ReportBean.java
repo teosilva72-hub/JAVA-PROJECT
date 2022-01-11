@@ -232,22 +232,30 @@ public class ReportBean {
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, false);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, false);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), multiple, mandatory);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, mandatory);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, false, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", false, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, where, false, false);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, multiple, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 
 		String extra1 = multiple ? "multiple" : "";
@@ -256,9 +264,9 @@ public class ReportBean {
 		if (report != null)
 			try {
 				if (tableName[1].contains("|"))
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"))));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"), where)));
 				else
-					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1])));
+					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1], where)));
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

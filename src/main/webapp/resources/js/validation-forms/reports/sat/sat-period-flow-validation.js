@@ -54,3 +54,29 @@ var validation = document.forms.validation;
     resetFormValidation("#report-form", "reset-btn");
 
 });
+
+// ---------------------------------------------------------------------
+
+/** Show info modal after validation 
+ *  
+ * @author Wellington da Silva : 2022-01-10
+ * @summary Method to Show info modal if form submit is valid
+ * @since version 1.0
+ * @version 1.1 
+ * @description Show info modal if is a valid form submit
+ * @copyright Tracevia S/A 2022 
+ * @returns {void}
+**/
+
+function isValidSubmit(){
+	
+	valid = $("#report-form").validate();
+	
+	if(valid)
+		$('#modalInfo').modal('show');	
+		
+		console.log(valid)
+	
+}
+
+// ---------------------------------------------------------------------

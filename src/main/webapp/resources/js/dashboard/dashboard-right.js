@@ -20,7 +20,7 @@ $(async function () {
 	})
 
   var adjustSidebar = function () {
-    $(".menu-mode > form").slimScroll({ height: window.innerHeight - 40 })
+    $(".menu-mode > form").slimScroll({ height: window.innerHeight - $('.navbar.fixed-top').height() - $('.page-footer').height() - $('.company-info').height() - 20 })
     $(".equips-div").slimScroll({ height: window.innerHeight - 40 })
       .css('height', window.innerHeight - 200)
 

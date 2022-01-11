@@ -384,14 +384,11 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		ExternalContext externalContext = facesContext.getExternalContext();
 		externalContext.setResponseContentType("application/vnd.ms-excel");
 		externalContext.setResponseHeader("Content-Disposition","attachment; filename=\""+fileName+".xlsx\"");
-
-		workbook.write(externalContext.getResponseOutputStream());
-		facesContext.responseComplete();
 		
 		OutputStream responseOutputStream = externalContext.getResponseOutputStream();     
 		
-		workbook.write(responseOutputStream);
-		facesContext.responseComplete();   
+		workbook.write(responseOutputStream);	
+		facesContext.responseComplete();   		
 		//workbook.close();
 	   
 		
@@ -408,6 +405,7 @@ public void addStyleVerticalAlignment(Workbook workbook, CellStyle style, Vertic
 		OutputStream responseOutputStream = externalContext.getResponseOutputStream();             
 
 		workbook.write(responseOutputStream);
+						
 		facesContext.responseComplete();   
 		//workbook.close();
 	   // workbook.dispose();
