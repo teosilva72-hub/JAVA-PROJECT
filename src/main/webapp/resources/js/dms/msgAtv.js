@@ -361,4 +361,6 @@ async function main() {
 	})
 }
 
+window.clearPMV = clearPMV
+
 main();
