@@ -169,7 +169,7 @@ public class DMSDAO {
 			ps.setString(1, (String) SessionUtil.getParam("user"));
 			ps.setInt(2, idDMS);
 
-			ps.executeQuery();
+			ps.executeUpdate();
 
 			ps = conn.prepareStatement(sql_select);
 
@@ -275,11 +275,9 @@ public class DMSDAO {
 
 			rs = ps.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (rs.isBeforeFirst())
+				while (rs.next())
 					save_history(rs.getInt(1), id);
-				}
-			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
