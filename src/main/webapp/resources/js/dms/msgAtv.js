@@ -10,6 +10,10 @@ let toast;
 
 let changedPMV = {};
 
+const clearPMV = () => {
+	changedPMV = {}
+}
+
 async function main() {
 	await init();
 
@@ -244,10 +248,6 @@ async function main() {
 		});
 
 		dmsChanges.val(JSON.stringify(changedPMV));
-	}
-
-	const clearPMV = () => {
-		changedPMV = []
 	}
 
 	const load = () => {
