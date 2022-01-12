@@ -28,7 +28,7 @@
 		
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('battery_values')}" />
-
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('battery_id')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sos_equipment.name|equip_id@equip'))}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd;  IFNULL(IF(equip_id = $custom@equip, ROUND(min(volt),2),concat(0)),concat(0)) as v$custom@equip')}" /> 
 	    <f:viewAction onPostback="true" action="#{reportBean.addExtraSelect('sd; $period; MAX(v$custom@equip)')}" /> 

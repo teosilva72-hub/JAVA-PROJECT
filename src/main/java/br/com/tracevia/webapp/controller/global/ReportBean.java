@@ -251,6 +251,10 @@ public class ReportBean {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, false);
 	}
 
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, mandatory);
+	}
+
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple) {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, false);
 	}
