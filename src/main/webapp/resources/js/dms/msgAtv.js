@@ -246,6 +246,10 @@ async function main() {
 		dmsChanges.val(JSON.stringify(changedPMV));
 	}
 
+	const clearPMV = () => {
+		changedPMV = []
+	}
+
 	const load = () => {
 		allPMV.load('/dms/messages/equipment-list.xhtml', () => {
 			collectPMV();
