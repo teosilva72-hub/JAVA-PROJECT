@@ -251,6 +251,10 @@ public class ReportBean {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, false);
 	}
 
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, mandatory);
+	}
+
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple) {
 		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, false);
 	}
@@ -273,7 +277,7 @@ public class ReportBean {
 	}
 	
 	public void setTable(String table) {
-		this.table = table;
+		this.table = table.trim();
 	}
 	
 	public void setIdTable(String idTable) {
@@ -682,7 +686,7 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %1$s%2$s ORDER BY %1$s ASC", group, extraGroup);
+				query += String.format(" GROUP BY %s%s ORDER BY %s.%s, %1$s ASC", group, extraGroup, table.contains(" ") ? table.split(" ")[1] : table, idTable);
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);

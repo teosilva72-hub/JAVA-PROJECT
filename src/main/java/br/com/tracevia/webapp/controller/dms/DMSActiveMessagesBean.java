@@ -278,6 +278,7 @@ public class DMSActiveMessagesBean implements Serializable {
 					count++;
 			}
 
+		request.execute("clearPMV();");
 		if (count > 0)
 			request.execute("returnAlert('Change action successfully carried out with " + count + " changes!');");
 		else if (dms == null || dms.size() == 0)
