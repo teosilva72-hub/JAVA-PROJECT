@@ -197,7 +197,7 @@ public class DMSDAO {
 				ps.setString(7, page4);
 				ps.setString(8, page5);
 				
-				ps.executeQuery();
+				ps.executeUpdate();
 			}
 
 		} catch (SQLException e) {
