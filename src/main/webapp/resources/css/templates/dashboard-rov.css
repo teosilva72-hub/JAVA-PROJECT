@@ -44,7 +44,7 @@ body,
 
 #ocrUiSubmenu, #daiSubmenu, #ocrSubmenu, #meteoSubmenu, 
 #occSubmenu, #satSubmenu, #satLLSubmenu, #wimUiSubmenu, 
-#mtoUiSubmenu, #svUiSubmenu{
+#mtoUiSubmenu, #svUiSubmenu, .moduleSubMenu{
 	
 	 background-color: #111 !important;
 }

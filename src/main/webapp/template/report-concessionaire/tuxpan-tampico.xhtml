@@ -210,14 +210,14 @@
 							<!--  REPORTS SUBMENU -->
 
 								<!-- Battery -->
-								<ui:fragment rendered="#{loginAccount.load.en_sos} || #{loginAccount.load.en_dms}">
+								<ui:fragment rendered="#{loginAccount.load.en_sos || loginAccount.load.en_dms}">
 								
 									<li class="nav-item">
 										<a class="nav-link" href="#batterySubmenu" data-toggle="collapse" aria-expanded="false">	
 											<i class="fas fa-hourglass-half icon-sub"></i>
 											<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_battery}</span>
 										</a>
-										<ul class="collapse list-unstyled" id="colasSubmenu">
+										<ul class="collapse list-unstyled moduleSubMenu" id="batterySubmenu">
 								
 											<!---->
 											<li class="nav-item">
@@ -251,7 +251,7 @@
 								 <a class="nav-link" href="#colasSubmenu" data-toggle="collapse" aria-expanded="false">	
 								<i class="fas fa-hourglass-half icon-sub"></i>
 								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
-								<ul class="collapse list-unstyled" id="colasSubmenu">
+								<ul class="collapse list-unstyled moduleSubMenu" id="colasSubmenu">
 							
 								<!---->
 								<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}" value="">
