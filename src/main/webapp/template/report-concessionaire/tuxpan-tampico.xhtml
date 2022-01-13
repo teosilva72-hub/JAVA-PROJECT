@@ -208,7 +208,42 @@
 							<ul class="collapse list-unstyled" id="modMenu">
 						
 							<!--  REPORTS SUBMENU -->
-													
+
+								<!-- Battery -->
+								<ui:fragment rendered="#{loginAccount.load.en_sos} || #{loginAccount.load.en_dms}">
+								
+									<li class="nav-item">
+										<a class="nav-link" href="#batterySubmenu" data-toggle="collapse" aria-expanded="false">	
+											<i class="fas fa-hourglass-half icon-sub"></i>
+											<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_battery}</span>
+										</a>
+										<ul class="collapse list-unstyled" id="colasSubmenu">
+								
+											<!---->
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMin.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min}</span>
+												</h:commandLink>
+											</li>
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMax.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_max}</span>
+												</h:commandLink>
+											</li>
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMinMax.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min_max}</span>
+												</h:commandLink>
+											</li>
+									
+										</ul>
+									</li>
+										
+								</ui:fragment>
+
 								<!-- COLAS -->
 								<ui:fragment rendered="#{loginAccount.load.en_colas}">
 								

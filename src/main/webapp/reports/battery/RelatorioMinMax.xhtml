@@ -24,34 +24,23 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.chart_h_axis_unit_measure)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineTotalType('average')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet('false')}" />
-		
+	    	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('battery_values')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('battery_id')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sos_equipment.name|equip_id@equip'))}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd;  IFNULL(IF(equip_id = $custom@equip, ROUND(AVG(volt),2),concat(0)),concat(0)) as v$custom@equip')}" /> 
-	    <f:viewAction onPostback="true" action="#{reportBean.addExtraSelect('sd; $period; MAX(v$custom@equip)')}" /> 
+
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('DATA, HORAS, ID, Tipo de equipamento, VOLTS MIN, VOLTS MED')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; equip_id; equip_type; IFNULL(ROUND(min(volt), 2) ,0);  IFNULL(ROUND(MAX(volt), 2) ,0) ')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
-		
-		
+
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('save_date')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1,'HOUR', periodsLabels.period_1_hour)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
-		
-		<f:viewAction onPostback="true" action="#{reportBean.setExtraGroup('equip_id')}" />
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_type', reportsLabels.reports_select_equipment, 'battery_values.equip_type', false , true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', true , false)}" />  
-	.
-	
-	
-	
-	
-	 
+		   		               
     </f:metadata>
 	
 	<!---->
@@ -110,7 +99,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="RELATÓRIO MEDIA VOLTS POR EQUIPAMENTO  " /> <!-- NAME LABEL -->
+	       <h:outputText value="#{sosLabels.tuxpan_battery_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
