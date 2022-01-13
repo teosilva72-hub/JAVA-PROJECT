@@ -41,7 +41,7 @@ body {
   height: 21.89em;
   background-color: #fff !important;
   background-clip: border-box !important;
-  font-size: 14px;
+  font-size: .875em;
   color: black;
 }
 
@@ -107,7 +107,7 @@ body {
 
 .speed-card .speed-plate {
   height: 3.6em;
-  width: 7em;
+  width: 6.452em;
   border: 0.4em solid black;
   line-height: 3em;
 }
