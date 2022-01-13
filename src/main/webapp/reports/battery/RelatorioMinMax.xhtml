@@ -15,20 +15,20 @@
 	<f:metadata>
 
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_battery_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_battery_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_battery_min_max_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />	  
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(sosLabels.tuxpan_battery_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_min_max_title)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.chart_h_axis_unit_measure)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineTotalType('average')}" />
 	    	
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('battery_values')}" />
-
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('DATA, HORAS, ID, Tipo de equipamento, VOLTS MIN, VOLTS MED')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('battery_id')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName('DATA, HORAS, ID, Tipo de equipamento, VOLTS MIN, VOLTS MAXI')}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(save_date, `%d/%m/%Y`) as sd; TIME($period)@sd; equip_id; equip_type; IFNULL(ROUND(min(volt), 2) ,0);  IFNULL(ROUND(MAX(volt), 2) ,0) ')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
