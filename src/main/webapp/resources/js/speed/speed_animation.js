@@ -49,7 +49,7 @@ const resizeEquipSpeed = () => {
     let content = $('.contentPage')
     let size = Math.max(content.height() / 47.3, 10)
 
-    content.css('font-size', size < 14 ? size : '')
+    content.css('font-size', size < 16 ? size : '')
 }
 
 $(() => {
