@@ -40,6 +40,7 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('save_date', 'Data', true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_type', reportsLabels.reports_select_equipment, 'battery_values.equip_type', false , true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('equip_id', reportsLabels.reports_select_equipment, 'sos_equipment.equip_id|name', false , true)}" />  
 		   		               
     </f:metadata>
 	
