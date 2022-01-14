@@ -165,7 +165,7 @@ em {
 }
 
 .btnConf{
-	background-color: black;
+	background-color: #212121;
 	color: white;
 	margin-top: 5px;
 	border-radius: 0px;
@@ -577,6 +577,7 @@ cursor: pointer;
 	
 }
 }
+
 
 
 
