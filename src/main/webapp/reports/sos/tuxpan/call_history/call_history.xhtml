@@ -32,8 +32,11 @@
 	    IFNULL(IF(s.state_id = 3 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 5 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
 	    IFNULL(IF(s.state_id = 6 , DATE_FORMAT(s.end_date, `%H:%i:%s`), NULL), ` --- `);
-	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date &lt;&gt; null, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
+	    IF((s.state_id = 3 OR s.state_id = 6) AND s.answered_date is not null, SEC_TO_TIME(TIMESTAMPDIFF(SECOND, s.answered_date, s.end_date)), ` --- `);
 	    IFNULL(s.user, ` --- `)')}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setOrderDate('s.start_date')}" />
+
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sos_equipment e ON e.equip_id = s.equip_id')}" />
