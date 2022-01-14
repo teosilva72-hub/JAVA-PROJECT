@@ -58,6 +58,17 @@ public class DateTimeApplication {
 
 		return dtime;
 	}
+	
+	public String createData(int dia, int mes, int ano) throws ParseException {
+		   
+		   String data = ano+"-"+mes+"-"+dia;
+		   
+		   SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = formato.parse(data);	   
+			String dataCriada = formato.format(date);
+			
+			return dataCriada;		   
+	}
 
 	/*Limitar Dias em buscas*/
 	public boolean limitSearch(String startDate, String endDate, int limitDays) throws ParseException {
@@ -84,6 +95,7 @@ public class DateTimeApplication {
 
 		return (dtFinal.getTime() - dtInicial.getTime() + 3600000L) / 86400000L;
 	}
+	
 
 	//FORMAT A STRING DATE
 	public String StringDBDateFormat(String data) throws ParseException {	
@@ -2235,11 +2247,11 @@ public class DateTimeApplication {
 
 		if (date1.after(date2)) {
 			isAfter = true;
-			System.out.println("DATE  1 is AFTER DATE 2");
+			//System.out.println("DATE  1 is AFTER DATE 2");
 
 		}
 
-		System.out.println(isAfter);
+		//System.out.println(isAfter);
 
 		return isAfter;
 
@@ -2321,8 +2333,7 @@ public class DateTimeApplication {
 						horaFim = String.valueOf(hr);
 					horaFim += ":59";	     			     	
 		     	
-			     	hora[h] = horaInicio + " - " + horaFim;	
-			     			     	
+			     	hora[h] = horaInicio + " - " + horaFim;				     			     	
 			     	hr++;
 				     
 			  }
@@ -2405,4 +2416,806 @@ public class DateTimeApplication {
 	  }
 	 
 	// ------------------------------------------------------------------------------------------------------
+	 
+		//Abrevia��o do M�s
+		public String abrevMes(String selectedMes) {
+
+			String selectMonth = "";				
+									
+			if (selectedMes.equals("January"))
+				selectMonth = "jan";
+			if (selectedMes.equals("February"))
+				selectMonth = "feb";
+			if (selectedMes.equals("March"))
+				selectMonth = "mar";
+			if (selectedMes.equals("April"))
+				selectMonth = "apr";
+			if (selectedMes.equals("May"))
+				selectMonth = "may";
+			if (selectedMes.equals("June"))
+				selectMonth = "jun";
+			if (selectedMes.equals("July"))
+				selectMonth = "jul";
+			if (selectedMes.equals("August"))
+				selectMonth = "aug";
+			if (selectedMes.equals("September"))
+				selectMonth = "sep";
+			if (selectedMes.equals("October"))
+				selectMonth = "oct";
+			if (selectedMes.equals("November"))
+				selectMonth = "nov";
+			if (selectedMes.equals("December"))
+				selectMonth = "dec";						
+			
+			return selectMonth;
+		}
+		
+		// ------------------------------------------------------------------------------------------------------
+		
+		//Abrevia��o do Ano 
+		public String abrevAno(String ano) {		
+			return ano.substring(2,4);	
+		}
+		
+		// ------------------------------------------------------------------------------------------------------
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public String[] preencherDataFluxoPeriodo(String dtInicio, String dtFim, int tamanho, int periodo) {
+
+			String da, mth; // Formatar apresenta��o
+			
+			String[] data = new String[tamanho];
+			
+			// dia, m�s e ano da dataInicial
+
+			String anoIni = dtInicio.substring(0, 4);
+			String mesIni = dtInicio.substring(5, 7);
+			String diaIni = dtInicio.substring(8, 10);
+
+			// dia inicial - convers�o para inteiro
+			int dayIni = Integer.parseInt(diaIni);
+
+			// mes inicial - convers�o para inteiro
+			int mthIni = Integer.parseInt(mesIni);
+
+			// ano inicial - convers�o para inteiro
+			int yearIni = Integer.parseInt(anoIni);
+
+			int dia = dayIni; // inicializar vari�vel do dia
+			int mes = mthIni; // inicializar vari�vel do m�s
+			int ano = yearIni; // inicializar vari�vel do ano
+
+			// Quantos dias possui o respectivo m�s
+			YearMonth yearMonthObject = YearMonth.of(ano, mes);
+			int daysInMonth = yearMonthObject.lengthOfMonth();
+
+			// Novo Objeto - auxiliar
+			//YearMonth yearMonthNew;
+
+			// Preencher o n�mero de posi��es proporcional ao intervalo de 15 minutos (4
+			// intervalos por hora x 24 horas)
+			for (int i = 0; i < tamanho; i += periodo) {
+
+				// Caso o dia seja maior que total de dias no m�s
+				if (dia > daysInMonth)
+					dia = 1; 
+			
+				// Formata apresenta��o da String
+				if (dia <= 9)
+					da = "0";
+				else
+					da = "";
+				if (mes < 10)
+					mth = "0";
+				else
+					mth = "";
+
+				data[i] = da + dia + "/" + mth + mes + "/" + ano; // Preenche os dados
+				dia++; // Incrementar o dia at� limite do intervalo entre dias							
+			}
+			
+			return data;
+		}
+		
+		// -----------------------------------------------------------------------------------------------
+		
+		// Preencher dias - Proporcional ao intervalo de tempo
+		public String[] preencherDias(int tamanho, int periodo) {
+								
+			String[] dias = new String[tamanho];
+
+			int days = 1;
+			
+			for (int i = 0; i < tamanho; i += periodo) {				
+				dias[i] = String.valueOf(days);
+				days++; 							
+			}
+			
+			return dias;
+		}
+		
+		// -----------------------------------------------------------------------------------------------
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloHora(int tamanho) {
+
+			int i, ini, fim, hora;
+									
+			String[] intervalos = new String[tamanho];	
+
+			ini = 0;
+			fim = 15;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+
+				if (ini > 45 && fim > 60) {
+					ini = 0;
+					fim = 15;
+					hora++;
+				}
+
+				if (hora == 24)
+					hora = 0;
+
+				if ((ini == 0) && (hora < 10))
+					intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
+
+				else if ((ini != 0) && (hora < 10))
+					intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
+
+				else if (ini == 0)
+					intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
+
+				else
+					intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
+
+				ini += 15;
+				fim += 15;
+
+			}
+			
+			return intervalos;
+		}				
+		
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervalo15Inicio(int tamanho) { 
+
+			int i, ini, hora;
+									
+			String[] intervaloInicio = new String[tamanho];	
+
+			ini = 0;						
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (ini > 45) {
+					ini = 0;							
+					hora++;
+				}
+
+				if (hora == 24)
+					hora = 0;
+
+				if ((ini == 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;
+
+				else if ((ini != 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":" + ini;
+
+				else if (ini == 0)
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+
+				else
+					intervaloInicio[i] = "" + hora + ":" + ini;
+				
+				ini += 15;							
+			}
+			
+			return intervaloInicio;
+		}	
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervalo15Fim(int tamanho) {
+
+			int i, fim, hora;
+									
+			String[] intervaloFim = new String[tamanho];	
+
+			fim = 15;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+
+				if (fim > 60) {								
+					fim = 15;
+					hora++;
+				}
+
+				if (hora == 24)
+					hora = 0;
+
+				if ((fim == 0) && (hora < 10))
+					intervaloFim[i] = "0" + hora +":"+fim;
+
+				else if ((fim != 0) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+
+				else if (fim == 0)
+					intervaloFim[i] = "" + hora +":"+fim;
+
+				else
+					intervaloFim[i] = "" + hora + ":" + fim; 
+
+				fim += 15;
+
+			}
+			
+			return intervaloFim;
+		}
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxo05Inicio(int tamanho) {
+
+			int i, ini, hora;
+									
+			String[] intervaloInicio = new String[tamanho];	
+
+			ini = 0;						
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (ini > 59) {
+					ini = 0;	
+					hora++;
+				}
+				
+				if (hora == 24)
+					hora = 0;
+				
+				if ((ini == 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;	
+				
+				else if ((ini == 0) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+				
+				else if ((ini == 5) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;
+				
+				else if ((ini == 5) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+										
+				else if ((ini != 0 && ini !=5) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":" + ini;
+				
+				else if((ini != 0 && ini !=5) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":" + ini;							
+																
+				ini += 5;													
+			}
+			
+			return intervaloInicio;
+		}	
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxo05Fim(int tamanho) {
+
+			int i, fim, hora;
+									
+			String[] intervaloFim = new String[tamanho];	
+
+			fim = 5;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+				
+				if(fim == 60) fim = 59;
+																		
+				else if (fim > 60) {
+					fim = 5;								
+					hora++;
+				}
+				
+				if (hora == 24)
+					hora = 0;
+
+				if ((fim == 5) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":0" + fim;							
+
+				else if ((fim == 5) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":0" + fim;						
+			
+				else if ((fim !=5) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":" + fim;
+				
+				else if((fim !=5) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+				
+				else if ((fim != 0 && fim !=5) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":" + fim;
+				
+				else if((fim != 0 && fim !=5) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+				
+				fim += 5;							
+			}
+			
+			return intervaloFim;
+		}
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxo06Inicio(int tamanho) {
+
+			int i, ini, hora;
+									
+			String[] intervaloInicio = new String[tamanho];	
+
+			ini = 0;						
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (ini > 59) {
+					ini = 0;	
+					hora++;
+				}
+				
+				if (hora == 24)
+					hora = 0;
+				
+				if ((ini == 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;	
+				
+				else if ((ini == 0) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+				
+				else if ((ini == 6) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;
+				
+				else if ((ini == 6) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+										
+				else if ((ini != 0 && ini !=6) && (hora > 9))
+					intervaloInicio[i] = "" + hora + ":" + ini;
+				
+				else if((ini != 0 && ini !=6) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":" + ini;							
+																
+				ini += 6;													
+			}
+			
+			return intervaloInicio;
+		}	
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxo06Fim(int tamanho) {
+
+			int i, fim, hora;
+									
+			String[] intervaloFim = new String[tamanho];	
+
+			fim = 6;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+				
+				if(fim == 60) fim = 59;
+																		
+				else if (fim > 60) {
+					fim = 6;								
+					hora++;
+				}
+										
+				if (hora == 24)
+					hora = 0;
+
+				if ((fim == 0) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":0" + fim;							
+
+				else if ((fim == 0) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":0" + fim;
+				
+				else if ((fim == 6) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":0" + fim;
+				
+				else if ((fim == 6) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":0" + fim;
+										
+				else if ((fim != 0 && fim !=6) && (hora > 9))
+					intervaloFim[i] = "" + hora + ":" + fim;
+				
+				else if((fim != 0 && fim !=6) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+				
+				fim += 6;							
+			}
+			
+			return intervaloFim;
+		}
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxoHoraInicio(int tamanho) {
+
+			int i, ini, fim, hora;
+									
+			String[] intervaloInicio = new String[tamanho];	
+
+			ini = 0;
+			fim = 0;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+				
+				if (hora == 24)
+					hora = 0;
+
+				if ((ini == 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;
+
+				else if ((ini != 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":" + ini;
+
+				else if (ini == 0)
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+
+				else
+					intervaloInicio[i] = "" + hora + ":" + ini;
+										
+				hora++;
+			}
+			
+			return intervaloInicio;
+		}	
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloFluxoHoraFim(int tamanho) {
+
+			int i, fim, hora;
+									
+			String[] intervaloFim = new String[tamanho];	
+
+			fim = 59;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {															
+				
+				if (hora == 24)
+					hora = 0;
+
+				if ((hora == 0) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+
+				else if ((hora != 0) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+
+				else if (hora == 0)
+					intervaloFim[i] = "" + hora + ":" + fim;
+
+				else
+					intervaloFim[i] = "" + hora + ":" + fim;
+																	
+				hora++;
+			}
+			
+			return intervaloFim;
+		}	
+		
+		
+		
+		
+		public String[] intervalo06Horas(int tamanho) {
+
+			int k = 0, j=5;
+			String horaInicio = " ";
+			String horaFim = " ";
+				
+			String[] hora = new String[tamanho];
+
+			for (int i = 0; i < tamanho; i++) {		
+				
+				if (k == 24) k = 0;
+				if (j == 29) j = 5;
+
+				if (k < 10)
+					horaInicio = "0" + String.valueOf(k);
+				else
+					horaInicio = String.valueOf(k);
+				horaInicio += ":00";
+
+				if (j < 10)
+					horaFim = "0" + String.valueOf(j);
+				else
+					horaFim = String.valueOf(j);
+				horaFim += ":59";
+
+		     	hora[i] = horaInicio + " - " + horaFim;
+			    k+=6;
+			    j+=6;
+			   
+			}
+								
+			return hora;
+		}
+
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervalo06HoraInicio(int tamanho) {
+
+			int i, ini, fim, hora;
+									
+			String[] intervaloInicio = new String[tamanho];	
+
+			ini = 0;
+			fim = 0;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+				
+				if (hora == 24)
+					hora = 0;
+
+				if ((ini == 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":0" + ini;
+
+				else if ((ini != 0) && (hora < 10))
+					intervaloInicio[i] = "0" + hora + ":" + ini;
+
+				else if (ini == 0)
+					intervaloInicio[i] = "" + hora + ":0" + ini;
+
+				else
+					intervaloInicio[i] = "" + hora + ":" + ini;
+										
+				hora+=6;
+			}
+			
+			return intervaloInicio;
+		}	
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervalo06HoraFim(int tamanho) {
+
+			int i, fim, hora;
+									
+			String[] intervaloFim = new String[tamanho];	
+
+			fim = 59;
+			hora = 5;
+
+			for (i = 0; i < tamanho; i++) {															
+				
+				if (hora == 29)
+					hora = 5;
+
+				if ((hora == 5) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+
+				else if ((hora != 5) && (hora < 10))
+					intervaloFim[i] = "0" + hora + ":" + fim;
+
+				else if (hora == 5)
+					intervaloFim[i] = "" + hora + ":" + fim;
+
+				else
+					intervaloFim[i] = "" + hora + ":" + fim;
+																	
+				hora+=6;
+			}
+			
+			return intervaloFim;
+		}
+		
+						
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloSeparador(int tamanho) {
+														
+			String[] intervaloSeparador = new String[tamanho];				
+
+			for (int i = 0; i < tamanho; i++) 						
+				 intervaloSeparador[i] = "-";						
+			
+			return intervaloSeparador;
+		}
+		
+		// Criar o intervalo em minutos entre as horas
+		public String[] intervaloSeparador24Horas(int tamanho) { 
+														
+			String[] intervaloSeparadorDias = new String[tamanho];				
+
+			for (int i = 0; i < tamanho; i++) 						
+				 intervaloSeparadorDias[i] = " ---- ";						
+			
+			return intervaloSeparadorDias;
+		}
+					
+		
+		//Criar o intervalo de 5 minutos
+		public String[] intervalo05Minutos(int tamanho) {
+
+			int i, ini, fim, hora;
+									
+			String[] intervalos = new String[tamanho];	
+
+			ini = 0;
+			fim = 5;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+
+				if (ini > 55 && fim > 60) {
+					ini = 0;
+					fim = 5;
+					hora++;
+				}
+
+				if (hora == 24)
+					 hora = 0;
+							
+				if ((ini == 0) && (fim == 5) && (hora < 10))
+					intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
+				
+				else if ((ini == 0) && (fim == 5) && (hora > 9))
+					intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
+				
+				else if ((ini == 5) && (hora < 10))
+					intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
+				
+				else if ((ini == 5) && (hora > 9))
+					intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
+										
+				else if ((ini != 0 && ini !=5) && (hora > 9))
+					intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
+				
+				else if((ini != 0 && ini !=5) && (hora < 10))
+					intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
+				
+				ini += 5;
+				fim += 5;
+
+			}
+			
+			return intervalos;
+		}
+		
+		
+		//Criar o intervalo de 6 minutos
+		public String[] intervalo06Minutos(int tamanho) {
+
+			int i, ini, fim, hora;
+									
+			String[] intervalos = new String[tamanho];	
+
+			ini = 0;
+			fim = 6;
+			hora = 0;
+
+			for (i = 0; i < tamanho; i++) {
+
+				if (fim == 60)
+					fim = 59;
+
+				if (ini > 54 && fim > 60) {
+					ini = 0;
+					fim = 6;
+					hora++;
+				}
+
+				if (hora == 24)
+					 hora = 0;
+							
+				if ((ini == 0) && (fim == 6) && (hora < 10))
+					intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
+				
+				else if ((ini == 0) && (fim == 6) && (hora > 9))
+					intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
+				
+				else if ((ini == 6) && (hora < 10))
+					intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
+				
+				else if ((ini == 6) && (hora > 9))
+					intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
+										
+				else if ((ini != 0 && ini !=6) && (hora > 9))
+					intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
+				
+				else if((ini != 0 && ini !=6) && (hora < 10))
+					intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
+				
+				ini += 6;
+				fim += 6;
+
+			}
+			
+			return intervalos;
+		}
+		
+		//Criar o intervalo de 24 horas
+		public String[] intervalo24Horas(int tamanho) { 
+
+			int i;
+			
+			String[] intervalos = new String[tamanho];	
+
+			for (i = 0; i < tamanho; i++) 						
+				intervalos[i] = " ----- ";
+			
+			return intervalos;
+		}	
+		
+		
+		public int horaIndex(int hora) {
+
+			int index = 0;
+
+			if (hora == 0)
+					index = 0;
+			if (hora == 1)
+					index = 1;
+			if (hora == 2)
+					index = 2;
+			if (hora == 3)
+					index = 3;
+			if (hora == 4)
+					index = 4;
+			if (hora == 5)
+					index = 20;
+			if (hora == 6)
+					index = 24;
+			if (hora == 7)
+					index = 28;
+			if (hora == 8)
+					index = 32;
+			if (hora == 9)
+					index = 36;
+			if (hora == 10)
+					index = 40;
+			if (hora == 11)
+					index = 44;
+			if (hora == 12)
+					index = 48;
+			if (hora == 13)
+					index = 52;
+			if (hora == 14)
+					index = 56;
+			if (hora == 15)
+					index = 60;
+			if (hora == 16)
+					index = 64;
+			if (hora == 17)
+					index = 68;
+			if (hora == 18)
+					index = 72;
+			if (hora == 19)
+					index = 76;
+			if (hora == 20)
+					index = 80;
+			if (hora == 21)
+					index = 84;
+			if (hora == 22)
+					index = 88;
+			if (hora == 23)
+					index = 92;
+
+			return index;
+		}
+		
+		
 }

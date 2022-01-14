@@ -31,7 +31,7 @@ import br.com.tracevia.webapp.util.SessionUtil;
 
 @ManagedBean(name="vbvReportBean")
 @RequestScoped
-public class SatReportVBVController {
+public class SatReportVBVBean {
 	
 	private List<SelectItem> equipments;
 	private List<SelectItem> months;

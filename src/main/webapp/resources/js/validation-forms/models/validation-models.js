@@ -394,7 +394,7 @@ function resetFieldMultiselectOnModalClose(modalId, elem, defaultMessage, array)
 **/
 
 function resetFormValidation(formId, btn) {
-	//Reset Form validation
+	// Reset Form validation
 
 	$('.' + btn).click(function () {
 

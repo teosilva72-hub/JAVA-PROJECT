@@ -63,14 +63,14 @@ public class FluxoPeriodoDAO {
 							
 		if(period.equals("15 minutes"))			
 			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', " + 					
-					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(15*60))),'%H:%i') 'INTERVALS', ";
+					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(15*60))),'%H:%i') 'INTERVALS', v.siteID 'ID', ";
 				
 		if(period.equals("01 hour"))			
 			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', " + 					
-					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(60*60))),'%H') 'INTERVALS', ";
+					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(60*60))),'%H') 'INTERVALS', v.siteID 'ID', ";
 				
 		if(period.equals("24 hours"))			
-			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', CONCAT('', ' ---- ') 'INTERVALS', ";			
+			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', CONCAT('', ' ---- ') 'INTERVALS', v.siteID 'ID', ";			
 				
 		// -------------------------------------------------------------------------------------------------------------------------------------
 							
@@ -969,12 +969,12 @@ public class FluxoPeriodoDAO {
 			ps.setString(1, startDate);
 		    ps.setString(2, endDate);
 		    ps.setString(3, equipId);
-		    
-		    System.out.println(startDate+" "+endDate+" "+equipId);
+		  		    
+		   // System.out.println("DT: "+startDate+" DT: "+endDate+" EQ: "+equipId);
 														
 			rs = ps.executeQuery();
 			
-			System.out.println(select);
+			//System.out.println(select);
 			
 				if (rs.isBeforeFirst()) {
 					while (rs.next()) {
@@ -983,7 +983,7 @@ public class FluxoPeriodoDAO {
 																	
 							pe.setDate(rs.getString("DATE"));							
 							pe.setInterval(rs.getString("INTERVALS"));
-							
+														
 							pe.setAutoS1(rs.getInt("SUM_AUTO_S1"));
 							pe.setComS1(rs.getInt("SUM_COM_S1"));
 							pe.setMotoS1(rs.getInt("SUM_MOTO_S1"));

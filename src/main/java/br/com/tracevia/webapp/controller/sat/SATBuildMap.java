@@ -33,6 +33,14 @@ public class SATBuildMap {
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
 	
+	public ListEquipments getEquips() {
+		return equips;
+	}
+	
+	public void setEquips(ListEquipments equips) {
+		this.equips = equips;
+	}
+	
 	public List<SAT> getSatListValues() {
 		return satListValues;
 	}
@@ -41,13 +49,6 @@ public class SATBuildMap {
 		return satStatus;
 	}
 
-	public ListEquipments getEquips() {
-		return equips;
-	}
-
-	public void setEquips(ListEquipments equips) {
-		this.equips = equips;
-	}
 	
 	@PostConstruct
 	public void initalize() {
@@ -131,7 +132,7 @@ public class SATBuildMap {
 
 							//SE HOUVER DADOS PREENCHE NA LISTA
 							if (satListObj.getEquip_id() != 0) {
-								satListValues.add(satListObj);
+									satListValues.add(satListObj);
 
 								if(!listStatus.get(s).isOnlineStatus())
 									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);

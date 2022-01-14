@@ -8,6 +8,7 @@
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
 	xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
 	<f:metadata>
@@ -19,7 +20,7 @@
     	
 	<ui:define name="head" >
 	
-	     <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
+	    <h:outputStylesheet library="css/datatables/custom" name="table-style.css" /> <!-- CUSTOM TABLE STYLE  -->		
 		<h:outputStylesheet library="css/reports" name="reports_template.css" /> <!-- REPORTS TEMPLATE STYLE -->
 		<h:outputStylesheet library="css/forms" name="form-style.css" /> <!-- FORMS STYLES STYLE  -->		
 		<h:outputStylesheet library="bootstrap/css"	name="bootstrap-multiselect.css" />
@@ -30,7 +31,7 @@
 		<h:outputScript library="js/validation-forms/reports/sat" name="sat-period-flow-validation.js" />
 		<h:outputScript library="js/reports" name="table-config.js" /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/alert" name="alerts.js" />	 <!-- ALERT MESSAGES -->
-		
+						
 	</ui:define>
 	
 	 <ui:define name="main-content" > <!-- MAIN CONTENT TEMPLATE --> 
@@ -135,9 +136,9 @@
 		 <!-- EXCEL BUTTON DIV -->			
 					
 			<div id="btn-excel"> 
-		       <h:commandButton id="excel-act" value="" disabled="false"
+		       <h:commandButton id="excel-act" value="" disabled="#{fluxoPeriodo.build.excelBool}"
 			      class="fas fa-file-excel fa-2x" data-toggle="tooltip"
-			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" action="#{fluxoPeriodo.download}" widgetVar="excelWgt">
+			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" widgetVar="excelWgt">
 			  	  <f:passThroughAttribute name="data-toggle" value="modal" />
 			  	  <f:passThroughAttribute name="data-target" value="#modalDownload" />
 			  	  <f:ajax execute="@form" render="@none" />
@@ -260,8 +261,8 @@
 							</button>
 						
 							<h:commandButton value="#{reportsLabels.reports_form_btn_send}" style="display: none"
-								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions" onclick="isValidSubmit()" >
-								<f:ajax execute="@form" render="form-table form-btns" listener="#{fluxoPeriodo.processInformations}" />
+								id="btn-form-send" p:data-toggle="modal" p:data-target="#modalReportOptions" onclick="isValidSubmit();" >
+								<f:ajax execute="@form" render="form-table form-btns form-info" listener="#{fluxoPeriodo.processInformations}" />
 							</h:commandButton>
 							
 					        <!---->
@@ -349,8 +350,10 @@
 						<div class="modal-footer">
 							<h:commandButton p:onclose="download"
 								value="#{reportsLabels.reports_modal_alert_btn_yes}"							
-								class="btn btn-dark form-draw-button" action="#{fluxoPeriodo.download}" />
-								
+								class="btn btn-dark form-draw-button" action="#{fluxoPeriodo.downloadFile}" >
+								<f:ajax execute="@form" render="form-btns:excel-act" />
+							</h:commandButton>	
+							
 							<!---->
 							
 							<h:commandButton
@@ -362,7 +365,7 @@
 							
 							<!---->
 							
-						</div>
+						</div>											
 					 </h:form>
 				  </div>
 			  </div>
@@ -372,21 +375,19 @@
     	<!-- ============================================================================================================================= -->	    				
 					
 		 <!-- MODAL INFORMATION -->
-								
+		 
 			<div class="modal fade" id="modalInfo" tabindex="-1"
-				aria-labelledby="downloadModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+				aria-labelledby="infoModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 					<div class="modal-dialog confirmation-modal">
 						<h:form class="modal-content" id="form-info">
 							<div class="modal-header text-center">
 								<h4 class="modal-title w-100 font-weight-bold" id="infoModalLabel">#{reportsLabels.reports_modal_alert_process_data_title}</h4>								
 							</div>
 							
-						<div class="modal-body">
-														               
-				             <h:panelGrid id="panel" columns="1" width="100%"> 			         				                        
-				             	<h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50" readonly="true" /> 
-				             </h:panelGrid>
-														
+						<div class="modal-body">														               
+				             			         				                        
+				             <h:inputTextarea id="display" value="#{fluxoPeriodo.displayMessage}" style="width: 100%; outline: 0;" rows= "15" cols="50" readonly="true" /> 
+				             									  					             				          														
 						</div>
 						
 						<!---->
@@ -403,6 +404,9 @@
 							<!---->
 							
 						</div>
+						
+						  <pf:poll autoStart="false" widgetVar="poll" interval="3" listener="#{fluxoPeriodo.message(fluxoPeriodo.step)}" update="display" async="true"  />  						  					
+																	
 					 </h:form>
 				  </div>
 			  </div>
