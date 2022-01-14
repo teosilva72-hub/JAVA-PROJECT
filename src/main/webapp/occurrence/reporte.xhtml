@@ -28,28 +28,28 @@
 		<div class="container col-md-12" style="width: auto; height: 500px">
  
 	
-									<div class="btn-group col-md-5  mb-3" role="group" aria-label="Basic example">
+									<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
 
 										<!-- Botão alterar -->
-										<h:commandButton id="edit" class="btn btnConf " disabled="#{occurrencesBean.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrencesBean.btnEdit}">
+										<h:commandButton id="edit" class="btn btnConf menu " disabled="#{occurrencesBean.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrencesBean.btnEdit}">
 									
 										</h:commandButton>
 										<!-- Botão editar -->
-										<h:commandButton id="alterar" class="btn btnConf " style="display: none;" disabled="#{occurrencesBean.alterar}" value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
+										<h:commandButton id="alterar" class=" btnConf menu " style="display: none;" disabled="#{occurrencesBean.alterar}" value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target" value="#modalEditar" />
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 
 										<!-- Botão Salvar -->
-										<h:commandButton id="save" class="btn btnConf" disabled="#{occurrencesBean.save}" value="#{occLabels.btn_salvar}">
+										<h:commandButton id="save" class=" btnConf menu" disabled="#{occurrencesBean.save}" value="#{occLabels.btn_salvar}">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target" value="#modalSalvar" />
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 
 										<!-- Botão Novo -->
-										<h:commandButton class="btn btnConf" id="new" disabled="#{occurrencesBean.new_}" action="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
+										<h:commandButton class=" btnConf menu" id="new" disabled="#{occurrencesBean.new_}" action="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
 											<f:ajax execute="@form"
 												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
 											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado1 eventoEstado :eventoSentido :eventoFaixa :outrosEventos
@@ -167,14 +167,14 @@
 			<form id="formExemplo" data-toggle="validator" role="form">
 				<div class="form-row col-md-12 mt-2">
 					<div class="form-group col-md-6 text-center">
-						<label for="textNome" class="control-label text-cente fonttext ">VEHÍCULO</label>
+						<label for="textNome" class="control-label text-cente fonttext ">#{occLabels.$label_occ_vehicle_type}</label>
 							<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 
 					<div class="form-group col-md-6 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">QUANTIDADE </label>
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_quantity}</label>
 							 <input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
 						 			<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 								 		<input id="textNome" class="form-control inputDesign mb-1" type="text" />
@@ -185,49 +185,49 @@
 			<form>
 				<div class="form-row col-md-12">
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">NUMERO </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">MARCA </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_brand}  </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" />
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">TIPO </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_type} </label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">MODELO </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_model}</label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" />
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">COLOR</label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_color}</label> 
 							<input type="password" class="form-control inputDesign mb1 " id="inputConfirm" />
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-1 text-center">
-						<label for="textNome" class="control-label text-center fonttext">PLACA</label>
+						<label for="textNome" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_plate}</label>
 							<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-1 text-center ">
-						<label for="textNome" class="control-label fonttext">TEL</label> 
+						<label for="textNome" class="control-label fonttext">#{occLabels.$label_occ_vehicle_telefone}</label> 
 							<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 						 			<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
@@ -240,28 +240,28 @@
 
 
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">NUMERO </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-4 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext ">NOME DO CONDUTOR </label>
+						<label for="inputConfirm" class="control-label text-center fonttext ">#{occLabels.$label_occ_driver_name}  </label>
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-3 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">EDAD </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_age}  </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" />
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-4 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">CONDICIONES DE SALLUD </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_health_conditions}  </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
@@ -271,43 +271,43 @@
 
 			<form>
 				<div class="form-group col-md-12 text-center">
-					<label for="inputConfirm" class="control-label text-center fonttext">MOTIVO DEL ACCIDENT </label>
+					<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_accident_reason} </label>
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">A</span>
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">SEMOVIENTE</span>
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">#{occLabels.$label_occ_accident_reason}</span>
 						 <input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center  mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">B</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">TB. DE CONSERVACÍON</span>
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">#{occLabels.$label_occ_conservation_works}</span>
 						 <input type="text"	class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				
 				<div class="input-group form-row col-md-12 text-center  mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">C</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 " id="basic-addon1">LLUVIA GRANIZO</span> 
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 " id="basic-addon1">#{occLabels.$label_occ_rain}</span> 
 							<input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">D</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">NEBLINA</span> 
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">#{occLabels.$label_occ_fog}</span> 
 							<input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">E</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">VANDALISMO</span>
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">#{occLabels.$label_occ_vadalism}</span>
 							 <input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign " id="basic-addon1">F</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign " id="basic-addon1">OTRO</span> 
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign " id="basic-addon1">#{occLabels.$label_occ_other}</span> 
 							<input type="text" class="form-control inputDesign " aria-describedby="basic-addon1" />
 				</div>
 			</form>
@@ -315,7 +315,7 @@
 			<form>
 			<div class="btn-group btn-group-sm mb-3 " role="group" aria-label="Basic example"> </div>
 				<div class="form-group col-md-12 mb-7" id="damageBtn1">
-					<em for="inputAddress">Observaçoes</em>
+					<em for="inputAddress">#{occLabels.$label_occ_observation}</em>
 						<h:inputTextarea class="form-control textareaDesign mb-7"  rows="8" name="danoDescr" id="danoDescr" />
 				</div>
 	      	 </form>
@@ -330,7 +330,7 @@
 							<!-- input file save -->
 						<div id="uploadFile1" class="form-row" style="display: none;">
 							<div class="form-group col-md-12 field" align="left">
-								<h:inputFile id="myFile" value="#{occurrencesBean.file}" multiple="true" disabled="#{occurrencesBean.fields}" />
+								<h:inputFile id="myFile" value="#{occurrencesBean.file}" multiple="true"  />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 										<br></br>
 										<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
