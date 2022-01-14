@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.sat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -53,6 +54,10 @@ public void initializer() {
 	try {						
 	
 		BuildMaintenance();
+		
+	/*	for (Maintenance status : satStatus) {			
+			System.out.println(Arrays.toString(status.getStatusZero()[0]));
+		}*/
 		
 	} catch (Exception e) {			
 		e.printStackTrace();

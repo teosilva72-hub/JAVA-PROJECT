@@ -82,6 +82,8 @@ public class MaintenanceDAO {
 				
 			try {
 				
+				System.out.println(currentDate);
+				
 				  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 					
 					ps = conn.prepareStatement(select);			
@@ -89,6 +91,8 @@ public class MaintenanceDAO {
 					ps.setString(2, currentDate);
 					
 					rs = ps.executeQuery();
+					
+					System.out.println(select);
 													
 					if (rs.isBeforeFirst()) {
 							while (rs.next()) {
@@ -206,7 +210,7 @@ public class MaintenanceDAO {
 			String select = "SELECT DATE_FORMAT(d.DATA_HORA,\"%Y-%m-%d\") AS data, " +
 					"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(d.DATA_HORA)- TIME_TO_SEC(d.DATA_HORA)%(15*60))),\"%H:%i\") AS intervals, d.NOME_ESTACAO 'siteId', " +
 					"d.NOME_FAIXA 'faixa', (d.VOLUME_TOTAL) 'volume' " +
-					"FROM sat_dados_15 d " +
+					"FROM tb_dados15 d " +
 					"INNER JOIN sat_equipment eq on eq.equip_id = d.NOME_ESTACAO " +
 					"WHERE d.DATA_HORA BETWEEN DATE_SUB( ?, INTERVAL 24 HOUR) AND ? AND eq.visible = 1 " +
 					"GROUP BY data, intervals, siteId, faixa " +

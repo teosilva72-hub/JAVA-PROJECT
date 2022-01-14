@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.model.global;
 import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.cfg.tables.DefaultTable;
 import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
+import br.com.tracevia.webapp.cfg.tables.ViaPaulistaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
 import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
@@ -457,15 +458,11 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl9 = ViaPaulista.NOT_ID_CLASS_9AXLES.getClasse();			
 			externalImagePath += "viapaulista.png";
 			logo = "";
-			tableVBV = TraceviaTables.TraceviaVBV.getTable();
-			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
-			tableStatus = TraceviaTables.TraceviaStatus.getTable();
-			tableLL = TraceviaTables.TraceviaLL.getTable();
-			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			tableVBV = ViaPaulistaTables.ViaPaulistaVBV.getTable();
+			tableDados15 = ViaPaulistaTables.ViaPaulistaDados15.getTable();
+			tableStatus = ViaPaulistaTables.ViaPaulistaStatus.getTable();
 			plaque = "";
 			linearMapUI = "/resources/images/realTimeInterface/linear/via_paulista.png";
-			mapEnabled = false;
-			reportsLLEnabled = false;
 			viaPaulista = true;
 			hasNotification = true;
 			
