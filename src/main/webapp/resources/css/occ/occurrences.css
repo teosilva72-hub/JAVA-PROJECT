@@ -27,11 +27,11 @@ html, body{
     display: none;
 }
 .confAlert{
-	height: 25px;
+	height: 30px;
 	background-color: black;
 }
 .confTextAlert{
-	margin-top: -7px;
+	margin-top: 0px;
 	color: white;
 	font-size: 10pt;
 	text-align: center;
@@ -96,6 +96,10 @@ html, body{
 		 font-style: italic;
 	   box-sizing: border-box;
     font-size: 9pt;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-flow: nowrap;
+    white-space: nowrap;
 }
 
 user agent stylesheet
@@ -164,6 +168,18 @@ em {
 	background-color: black;
 	color: white;
 	margin-top: 5px;
+	border-radius: 0px;
+	transition: 0.3s;
+	font-weight: bold;
+	-webkit-box-shadow: 0px 9px -10px 0px rgba(0,0,0,0.55);
+	border: solid #1C86EE 1px;
+	
+}
+
+.btned{
+	background-color: black;
+	color: white;
+	margin-top: 5px;
 	border-radius: 15px;
 	transition: 0.3s;
 	font-weight: bold;
@@ -171,6 +187,7 @@ em {
 	border: solid #1C86EE 1px;
 	
 }
+/**
 /**/
 .btnConf:hover{
 
@@ -184,7 +201,7 @@ em {
 .btnConf:disabled
 {
  color: #fff;
- background-color: red;
+ background-color: gray;
  border-color: #6c757d;
 }
 
@@ -512,7 +529,7 @@ cursor: pointer;
 .formulario{
 	
    display: inline-block;
-  width: 120px; /* width a ajustar */
+ /* width a ajustar */
   text-align: right;
   padding-right: 10px;
 }
@@ -525,6 +542,31 @@ cursor: pointer;
   padding-right: 10px;
 }
 }
+.inputDesignArq{
+	height: 32px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: white;
+	-webkit-box-shadow: 1px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.55);
+     box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.55);
+	display: inline-block;
 }
+.inputDesign2{
+	height: 32px;
+	font-size: 9pt;
+	border: solid 1px #767676;
+	border-radius: 25px;
+	background: black;
+	-webkit-box-shadow: 1px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.55);
+     box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.55);
+	display: inline-block;
+	
+}
+}
+
+
 
 	
