@@ -25,55 +25,31 @@
 	<!---->
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
-	<div class="container col-md-12" style="width: auto; height: 500px">
+		<div class="container col-md-12" style="width: auto; height: 500px">
  
-		
 	
-									<div class="btn-group confBtnSubmit mb-3" role="group"
-										aria-label="Basic example">
+									<div class="btn-group col-md-5  mb-3" role="group" aria-label="Basic example">
 
 										<!-- Botão alterar -->
-										<h:commandButton id="edit" class="btn btnConf"
-											disabled="#{occurrencesBean.edit}"
-											value="#{occLabels.btn_editar}" onclick="bloquerTable(); "
-											action="#{occurrencesBean.btnEdit}">
-											<!-- <f:ajax 
-											execute="@form"
-												render=":alterar :reset :new :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial :unityDamage 
-											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado :eventoSentido :eventoFaixa :outrosEventos
-											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
-											    	:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoHoraFinal :acaoEndMinute :danoDescr2 :actionDescr3 :actionDescr4
-											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
-											    	:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :edit :myFile :acaoStatus :acaoData :acaoDataFinal
-											    	:trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd :descrDescr1 :descriptionBtn1 :descriptionBtn2
-											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :btnUpdate :myFile2" /> -->
+										<h:commandButton id="edit" class="btn btnConf " disabled="#{occurrencesBean.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrencesBean.btnEdit}">
+									
 										</h:commandButton>
 										<!-- Botão editar -->
-										<h:commandButton id="alterar" class="btn btnConf"
-											style="display: none;" disabled="#{occurrencesBean.alterar}"
-											value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
+										<h:commandButton id="alterar" class="btn btnConf " style="display: none;" disabled="#{occurrencesBean.alterar}" value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target"
-												value="#modalEditar" />
+											<f:passThroughAttribute name="data-target" value="#modalEditar" />
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 
 										<!-- Botão Salvar -->
-										<h:commandButton id="save" class="btn btnConf"
-											disabled="#{occurrencesBean.save}"
-											value="#{occLabels.btn_salvar}">
+										<h:commandButton id="save" class="btn btnConf" disabled="#{occurrencesBean.save}" value="#{occLabels.btn_salvar}">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target"
-												value="#modalSalvar" />
+											<f:passThroughAttribute name="data-target" value="#modalSalvar" />
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 
 										<!-- Botão Novo -->
-										<h:commandButton class="btn btnConf" id="new"
-											disabled="#{occurrencesBean.new_}"
-											action="#{occurrencesBean.btnEnable}"
-											value="#{occLabels.btn_novo}"
-											onclick="bloquerTable(); fileTotalHidden()">
+										<h:commandButton class="btn btnConf" id="new" disabled="#{occurrencesBean.new_}" action="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
 											<f:ajax execute="@form"
 												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
 											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado1 eventoEstado :eventoSentido :eventoFaixa :outrosEventos
@@ -87,12 +63,9 @@
 										</h:commandButton>
 
 										<!-- Botão Anular -->
-										<h:commandButton id="reset" class="btn btnConf"
-											disabled="#{occurrencesBean.reset}"
-											value="#{occLabels.btn_anular}">
+										<h:commandButton id="reset" class="btn btnConf" disabled="#{occurrencesBean.reset}" value="#{occLabels.btn_anular}">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
-											<f:passThroughAttribute name="data-target"
-												value="#modalAnular" />
+											<f:passThroughAttribute name="data-target" value="#modalAnular" />
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 									</div>
@@ -195,17 +168,16 @@
 				<div class="form-row col-md-12 mt-2">
 					<div class="form-group col-md-6 text-center">
 						<label for="textNome" class="control-label text-cente fonttext ">VEHÍCULO</label>
-						<input id="textNome" class="form-control inputDesign mb-1"
-							type="text" /> <input id="textNome"
-							class="form-control inputDesign mb-1" type="text" /> <input
-							id="textNome" class="form-control inputDesign mb-1" type="text" />
+							<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 
 					<div class="form-group col-md-6 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">QUANTIDADE </label>
-						 <input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
-						 <input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-						 <input id="textNome" class="form-control inputDesign mb-1" type="text" />
+							 <input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
+						 			<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+								 		<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 				</div>
 			</form>
@@ -215,50 +187,50 @@
 					<div class="form-group col-md-1 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">NUMERO </label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">MARCA </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" />
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-							<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">TIPO </label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" /> 
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">MODELO </label> 
 							<input type="password" class="form-control inputDesign mb-1" id="inputConfirm" />
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-							<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-2 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">COLOR</label> 
 							<input type="password" class="form-control inputDesign mb1 " id="inputConfirm" />
-							<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-1 text-center">
 						<label for="textNome" class="control-label text-center fonttext">PLACA</label>
 							<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-							<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 					
 					<div class="form-group col-md-1 text-center ">
 						<label for="textNome" class="control-label fonttext">TEL</label> 
 							<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-							<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-						 	<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
+						 			<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 				</div>
 			</form>
@@ -269,30 +241,30 @@
 
 					<div class="form-group col-md-1 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">NUMERO </label> 
-						<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-4 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext ">NOME DO CONDUTOR </label>
-						 <input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
-						 <input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-						 <input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-3 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">EDAD </label> 
-						<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" />
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" />
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 					
 					<div class="form-group col-md-4 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">CONDICIONES DE SALLUD </label> 
-						<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-						<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+							<input type="password" class="form-control inputDesign mb-1 " id="inputConfirm" /> 
+								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
+									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
 					</div>
 				</div>
 			</form>
@@ -304,39 +276,39 @@
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">A</span>
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">SEMOVIENTE</span>
-					 <input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">SEMOVIENTE</span>
+						 <input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center  mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">B</span> 
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">TB. DE CONSERVACÍON</span>
-					 <input type="text"	class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">TB. DE CONSERVACÍON</span>
+						 <input type="text"	class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				
 				<div class="input-group form-row col-md-12 text-center  mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">C</span> 
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 " id="basic-addon1">LLUVIA GRANIZO</span> 
-					<input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 " id="basic-addon1">LLUVIA GRANIZO</span> 
+							<input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">D</span> 
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">NEBLINA</span> 
-					<input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">NEBLINA</span> 
+							<input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">E</span> 
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">VANDALISMO</span>
-					 <input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="basic-addon1">VANDALISMO</span>
+							 <input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1" />
 				</div>
 				
 				<div class="input-group form-row col-md-12 text-center mb-2">
 					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign " id="basic-addon1">F</span> 
-					<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign " id="basic-addon1">OTRO</span> 
-					<input type="text" class="form-control inputDesign " aria-describedby="basic-addon1" />
+						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign " id="basic-addon1">OTRO</span> 
+							<input type="text" class="form-control inputDesign " aria-describedby="basic-addon1" />
 				</div>
 			</form>
 			
@@ -350,58 +322,50 @@
 	      	 
 	      	 <div class="from-row ">
 							<!-- ALert Anexos -->
-							<div class="alert alert-dark confAlert col-3 inputDesign2" role="alert">
-								<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
-							</div>
+					<div class="alert alert-dark confAlert col-3 inputDesign2" role="alert">
+						<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
+					</div>
 							<!-- FInal alert Anexos -->
 
 							<!-- input file save -->
-							<div id="uploadFile1" class="form-row" style="display: none;">
-								<div class="form-group col-md-12 field" align="left">
-									<h:inputFile id="myFile" value="#{occurrencesBean.file}" multiple="true" disabled="#{occurrencesBean.fields}" />
+						<div id="uploadFile1" class="form-row" style="display: none;">
+							<div class="form-group col-md-12 field" align="left">
+								<h:inputFile id="myFile" value="#{occurrencesBean.file}" multiple="true" disabled="#{occurrencesBean.fields}" />
 									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
-									<br></br>
-									<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
-						 			</div>
+										<br></br>
+										<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
+						 	</div>
 								<!-- BTN UPLOAD FILE -->
-								<div class="col-md-12">
-									<h:commandButton class="btn btnConf" id="btnUpload" value="#{occLabels.occ_uploadFile}" action="#{occurrencesBean.uploadFile}" disabled="#{occurrencesBean.fields}" onclick="validatorFile();" />
-								</div>
+							<div class="col-md-12">
+								<h:commandButton class="btn btnConf" id="btnUpload" value="#{occLabels.occ_uploadFile}" action="#{occurrencesBean.uploadFile}" disabled="#{occurrencesBean.fields}" onclick="validatorFile();" />
 							</div>
+						</div>
 
 			
 
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
 								<div class="form-group col-md-9 field" align="left">
-									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2"
-										multiple="true" disabled="#{occurrencesBean.fields}" />
-									<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
-									<br></br>
-									<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
+									<h:inputFile value="#{occurrencesBean.file2}" id="myFile2" multiple="true" disabled="#{occurrencesBean.fields}" />
+										<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
+											<br></br>
+												<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
 
 								</div>
 								<!-- BTN UPDATE FILE -->
 								<div class="col-md-3">
-									<h:commandButton class="btn btnConf" id="btnUpdate"
-										onclick="validatorFile2();"
-										value="#{occLabels.occ_uploadFile}"
-										action="#{occurrencesBean.updateFile}"
-										disabled="#{occurrencesBean.fields}" />
+									<h:commandButton class="btn btnConf" id="btnUpdate" onclick="validatorFile2();" value="#{occLabels.occ_uploadFile}" action="#{occurrencesBean.updateFile}" disabled="#{occurrencesBean.fields}" />
 								</div>
 							</div>
 							
-							<div class="alert alert-dark confAlert col-3 inputDesign2" id="fileTotal"
-								role="alert">
-								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
-									(#{occurrencesBean.total})</h5>
+							<div class="alert alert-dark confAlert col-3 inputDesign2" id="fileTotal" role="alert">
+								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files} (#{occurrencesBean.total})</h5>
 							</div>
 
 							<div class="listarFiles" id="listFiles">
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
-									<c:forEach items="#{occurrencesBean.listarFile}" var="item"
-										id="listandoFile" varStatus="loop">
+									<c:forEach items="#{occurrencesBean.listarFile}" var="item" id="listandoFile" varStatus="loop">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
@@ -410,46 +374,33 @@
 													<!-- name file -->
 													<div class="col-md-8 text-center">
 														<span>#{occLabels.occ_name_file} </span>
-														<p class="text-center">#{item}</p>
+															<p class="text-center">#{item}</p>
 													</div>
-
 													<!-- btn delete -->
 													<div class="col-md-2">
-
 														<span>#{occLabels.occ_delete}</span>
-
-														<div class="dropdown">
-
-															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-toggle="dropdown"
-																aria-expanded="false">
-
+															<div class="dropdown">
+																<button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
 																<i class="far fa-trash-alt"></i>
-
-															</button>
-
-															<ul class="dropdown-menu"
-																aria-labelledby="dropdownMenuButton">
-																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-
-																<li><h:commandLink
-																		action="#{occurrencesBean.deleteFile(item)}"
-																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
-															</ul>
+																</button>
+																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																		<li>
+																			<a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																		<li>
+																			<h:commandLink action="#{occurrencesBean.deleteFile(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+																	</ul>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<hr></hr>
-									</c:forEach>
-								</div>
+											<hr></hr>
+										</c:forEach>
+									</div>
 								<!-- List file update -->
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
-									<c:forEach id="listUpdate"
-										items="#{occurrencesBean.listUpdate}" var="item"
-										varStatus="loop">
+									<c:forEach id="listUpdate" items="#{occurrencesBean.listUpdate}" var="item" varStatus="loop">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
@@ -463,53 +414,39 @@
 													<!-- btn delete -->
 													<div class="col-md-1" id="updateDeleteIcon">
 														<span>#{occLabels.occ_delete}</span>
-														<div class="dropdown">
-															<button class=" dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-toggle="dropdown"
-																aria-expanded="false">
-																<i class="far fa-trash-alt"></i>
-															</button>
-															<ul class="dropdown-menu"
-																aria-labelledby="dropdownMenuButton">
-																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																<li><h:commandLink
-																		disabled="#{occurrencesBean.fields}"
-																		action="#{occurrencesBean.deleteFileUpdate(item)}"
-																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
-															</ul>
-														</div>
+															<div class="dropdown">
+																<button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+																	<i class="far fa-trash-alt"></i>
+																</button>
+																<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																	<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																	<li><h:commandLink disabled="#{occurrencesBean.fields}" action="#{occurrencesBean.deleteFileUpdate(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+																</ul>
+															</div>
 													</div>
 													<!-- download -->
 													<div class="col-md-1">
 														<span>#{occLabels.occ_download}</span>
-														<div class="dropdown">
-															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-toggle="dropdown"
-																aria-expanded="false">
-																<i class="fas fa-cloud-download-alt iconFile"
-																	data-toggle="tooltip" data-bs-placement="right"
-																	title="Download"></i>
-															</button>
-															<ul class="dropdown-menu"
-																aria-labelledby="dropdownMenuButton">
-																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																<li><h:commandLink class="dropdown-item"
-																		action="#{occurrencesBean.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-															</ul>
+															<div class="dropdown">
+																<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+																	<i class="fas fa-cloud-download-alt iconFile" data-toggle="tooltip" data-bs-placement="right" title="Download"></i>
+																</button>
+																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																		<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+																	</ul>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<hr></hr>
-									</c:forEach>
-								</div>
+											<hr></hr>
+										</c:forEach>
+									</div>
 								<!-- List files click table -->
-								<div class="col-md-12" id="listUpdateFileT"
-									style="display: none;">
+								<div class="col-md-12" id="listUpdateFileT" style="display: none;">
 									<!-- Array arquivos na pasta -->
-									<c:forEach items="#{occurrencesBean.tableFile}" var="item"
-										varStatus="loop">
+									<c:forEach items="#{occurrencesBean.tableFile}" var="item" varStatus="loop">
 										<div class="row">
 											<div class="col-md-12">
 												<div class="row">
@@ -521,32 +458,27 @@
 													<!-- download -->
 													<div class="col-md-1">
 														<span>#{occLabels.occ_download}</span>
-														<div class="dropdown">
-															<button class="dropdown-toggle" type="button"
-																id="dropdownMenuButton" data-toggle="dropdown"
-																aria-expanded="false">
-																<i class="fas fa-cloud-download-alt iconFile"
-																	data-toggle="tooltip" data-bs-placement="right"
-																	title="Download"></i>
-															</button>
-															<ul class="dropdown-menu"
-																aria-labelledby="dropdownMenuButton">
-																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																<li><h:commandLink class="dropdown-item"
-																		action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-															</ul>
+															<div class="dropdown">
+																<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+																	<i class="fas fa-cloud-download-alt iconFile" data-toggle="tooltip" data-bs-placement="right" title="Download"></i>
+																</button>
+																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																			<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+																	</ul>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
-											</div>
-										</div>
-										<hr></hr>
-									</c:forEach>
+											<hr></hr>
+										</c:forEach>
+									</div>
 								</div>
-							</div>
 							<!-- FInal alert -->
 						</div>
-	 </div>	 </div>
+					 </div>	
+	 			 </div>
 
    </ui:define>
 </ui:composition>

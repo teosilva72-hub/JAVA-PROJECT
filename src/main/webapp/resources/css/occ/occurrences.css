@@ -31,9 +31,9 @@ html, body{
 	background-color: black;
 }
 .confTextAlert{
-	margin-top: 0px;
+
 	color: white;
-	font-size: 10pt;
+	font-size: 8pt;
 	text-align: center;
 }
 .conteudo{
@@ -95,7 +95,7 @@ html, body{
 	text-align: center;
 		 font-style: italic;
 	   box-sizing: border-box;
-    font-size: 9pt;
+    font-size: 11pt;
     overflow: hidden;
     text-overflow: ellipsis;
     flex-flow: nowrap;
@@ -566,6 +566,18 @@ cursor: pointer;
 	
 }
 }
+.inputDesign3{
+	
+	border: solid 1px #767676;
+	border-radius: 25px;
+	-webkit-box-shadow: 1px  rgba(0,0,0,0.55);
+    -moz-box-shadow: 0px 2px 5px -2px rgba(0,0,0,0.55);
+     box-shadow: 0px 2px 5px 2px rgba(0,0,0,0.55);
+	display: inline-block;
+	
+}
+}
+
 
 
 
