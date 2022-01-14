@@ -10,6 +10,10 @@ let toast;
 
 let changedPMV = {};
 
+const clearPMV = () => {
+	changedPMV = {}
+}
+
 async function main() {
 	await init();
 
@@ -356,5 +360,7 @@ async function main() {
 		consumeDMS({ callback: callback_dms });
 	})
 }
+
+window.clearPMV = clearPMV
 
 main();

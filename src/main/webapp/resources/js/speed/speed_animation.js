@@ -45,4 +45,15 @@ const speed_animation = response => {
     refresh_speed(response)
 }
 
+const resizeEquipSpeed = () => {
+    let content = $('.contentPage')
+    let size = Math.max(content.height() / 47.3, 10)
+
+    content.css('font-size', size < 16 ? size : '')
+}
+
+$(() => {
+    $(window).resize(resizeEquipSpeed).trigger('resize')
+})
+
 initSPEED({ callback_speed: speed_animation })

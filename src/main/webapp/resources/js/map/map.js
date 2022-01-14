@@ -30,6 +30,7 @@ setTimeout(() => {
 ////////////////////////////////////////////////////////////////
 const init = () => {
 	$('#equipAll').load('/map/mapEquip.xhtml', () => {
+		$('[role=tooltip]').tooltip('hide')
 		resizeEquipScale($('[scroll-zoom]'))
 		resizeEquip($('[scroll-zoom]'))
 

@@ -170,17 +170,6 @@
 									<span class="text">#{dashboardLabels.dashboard_detailed_report_menu}</span></a>
 
 										<ul class="collapse list-unstyled" id="detailUiSubmenu"> 
-														
-											<!-- COLAS DETAIL -->
-
-											<li class="nav-item">
-											  <h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/detailed-reports/tuxpan/colas/colas-detail.xhtml?faces-redirect=true')}" value="">
-												<i class="fas fa-arrow-circle-right icon-sub-item"></i>
-												<span class="text-sub-item">#{dashboardLabels.dashboard_sidebar_colas_detail_submenu}</span>
-											  </h:commandLink>
-										    </li>
-							           
-							            <!---->
 
 						               <!-- DAI DETAIL -->
 
@@ -219,7 +208,47 @@
 							<ul class="collapse list-unstyled" id="modMenu">
 						
 							<!--  REPORTS SUBMENU -->
-													
+
+								<!-- Battery -->
+								<ui:fragment rendered="#{loginAccount.load.en_sos || loginAccount.load.en_dms}">
+								
+									<li class="nav-item">
+										<a class="nav-link" href="#batterySubmenu" data-toggle="collapse" aria-expanded="false">	
+											<svg width="16" height="16" fill="currentColor" class="bi bi-battery-charging icon-sub" viewBox="0 0 16 16">
+												<path d="M9.585 2.568a.5.5 0 0 1 .226.58L8.677 6.832h1.99a.5.5 0 0 1 .364.843l-5.334 5.667a.5.5 0 0 1-.842-.49L5.99 9.167H4a.5.5 0 0 1-.364-.843l5.333-5.667a.5.5 0 0 1 .616-.09z"/>
+												<path d="M2 4h4.332l-.94 1H2a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2.38l-.308 1H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>
+												<path d="M2 6h2.45L2.908 7.639A1.5 1.5 0 0 0 3.313 10H2V6zm8.595-2-.308 1H12a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H9.276l-.942 1H12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.405z"/>
+												<path d="M12 10h-1.783l1.542-1.639c.097-.103.178-.218.241-.34V10zm0-3.354V6h-.646a1.5 1.5 0 0 1 .646.646zM16 8a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z"/>
+											</svg>
+											<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_battery}</span>
+										</a>
+										<ul class="collapse list-unstyled moduleSubMenu" id="batterySubmenu">
+								
+											<!---->
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMin.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min}</span>
+												</h:commandLink>
+											</li>
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMax.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_max}</span>
+												</h:commandLink>
+											</li>
+											<li class="nav-item">
+												<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/battery/RelatorioMinMax.xhtml')}" value="">
+													<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+													<span class="text-sub" style="margin-left: 1%;">#{dashboardLabels.dashboard_sidebar_sub_menu_battery_min_max}</span>
+												</h:commandLink>
+											</li>
+									
+										</ul>
+									</li>
+										
+								</ui:fragment>
+
 								<!-- COLAS -->
 								<ui:fragment rendered="#{loginAccount.load.en_colas}">
 								
@@ -227,7 +256,7 @@
 								 <a class="nav-link" href="#colasSubmenu" data-toggle="collapse" aria-expanded="false">	
 								<i class="fas fa-hourglass-half icon-sub"></i>
 								<span class="text-sub">#{dashboardLabels.dashboard_sidebar_module_colas}</span></a>
-								<ul class="collapse list-unstyled" id="colasSubmenu">
+								<ul class="collapse list-unstyled moduleSubMenu" id="colasSubmenu">
 							
 								<!---->
 								<li class="nav-item"><h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/reports/colas/tuxpan/waiting_time/waiting_time.xhtml')}" value="">

@@ -11,12 +11,21 @@
 	template="/template/dashboard-rov-layout.xhtml">
 	<!-- MAIN TEMPLATE STRUCTURE END -->
 
-
+	<ui:define name="loading"></ui:define>
 
 	<ui:define name="head">
-		<!-- HEAD TEMPLATE COMPONENT --> 
-	
-	
+
+		<!-- Style -->
+
+		<h:outputStylesheet library="css/occ" name="occurrences.css" />
+
+
+		<h:outputStylesheet library="css/forms" name="form-style.css" />
+
+
+
+		<!-- HEAD TEMPLATE COMPONENT -->
+
 	</ui:define>
 
 	<!---->
@@ -26,105 +35,313 @@
 
 
 
+		<div class="container col-md-12" style="width: auto; height: 500px">
 
-			<form>
-				<!-- Alert evento -->
-				<div class="alert alert-dark confAlert" role="alert">
-					<h5 class="text-center confTextAlert">Evento</h5>
-				</div>
-			</form>
-		
-				<!-- tipo occ -->
-	
-			<form>
-<div class="form-group row" ></div>
-				<div class="form-group row">
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PLAZA DE COBRO:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">FOLIOSEQUENCIAL:</em> 
-						 <h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						 <em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">REPORTE:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-				</div>
-			</form>
-			<form>
 
-			<div class="form-group row">
-				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PSINIESTRE: </em>
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-				<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P FECHA: </em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">P HORA: </em> 
-					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						
+
+
+
+			<div class="container justify-content  col-md-12"></div>
+
+			<div class="alert alert-dark confAlert mt-0 col-md-12" role="alert">
+				<h5 class="text-center confTextAlert ">#{occLabels.occ_titulo_evento}</h5>
+			</div>
+			<div class="form-row col-md-12 ">
+				<div class="form-group col-md-6 text-center">
+					<label for="date" class=" fonttext mr-3 ">FECHA</label> <input
+						type="date" id="date"
+						class="inputDesign form-control col-md-5 text-center ml-3 mr-3"
+						placeholder ="mm/dd/yyyy" />
 				</div>
 
-			</form>
-			<form>
-				<div class="form-group row">
-					<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">DIRECCIÓN Y/O TRAYECTORIAE:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO DE REGISTRO:</em>
-					<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
-						<em for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO INICIAL:</em> 
-						<h:inputText class=" col-sm-2 form-control inputDesign" disabled="false" /> 
+				<div class="form-group col-md-6 text-center">
+					<label for="nome" class=" fonttext  ">HORA</label> <input
+						type="time" id="nome"
+						class="inputDesign form-control text-center col-md-3 ml-3 mr-3" />
+
+
+				</div>
+			</div>
+			<form id="formExemplo" data-toggle="validator" role="form" class="formulario">
+				<div class="form-row col-md-12  mt-2">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ">PLAZA DE COBRO</label> <input
+							type="text" id="nome"
+							class=" inputDesign form-control   col-md-7 " />
+					</div>
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ">FOLIO SEQUENCIAL</label> <input
+							type="text" id="nome"
+							class="inputDesign  form-control   col-md-6 " />
+					</div>
+				</div>
+				<div class="form-row col-md-12 ">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext formulario">   REPORTE </label> <input
+							type="text" id="nome"
+							class="inputDesign form-control   col-md-8 " />
+					</div>
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext formulario">   SINIESTRE    </label> <input
+							type="text" id="nome"
+							class="inputDesign form-control  col-md-7 " />
+					</div>
+				</div>
+
+
+				<div class="form-row col-md-12 ">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext  ">DIRECCIÓN Y/O
+							TRAYECTORIAE</label> <input type="text" id="nome"
+							class="inputDesign  form-control  col-md-5 mb-1" />
+					</div>
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext  ">KILOMETRO DE
+							REGISTRO</label> <input type="text" id="nome"
+							class="inputDesign  form-control col-md-5 mb-1" />
+					</div>
+				</div>
+				<div class="form-row col-md-12 ">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ml-2 mr-2 ">KILOMETRO
+							INICIAL</label> <input type="text" id="nome"
+							class="inputDesign form-control  col-md-6 mb-1" />
+					</div>
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ml-2 mr-2 ">KILOMETRO
+							FINAL</label> <input type="text" id="nome"
+							class="inputDesign  form-control  col-md-6 mb-1" />
+					</div>
+				</div>
+				<div class="form-row col-md-12">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ml-2 mr-2 ">POLIZAPOR
+							AFECTAR</label> <input type="text" id="nome"
+							class="inputDesign form-control col-md-6 mb-1" />
+					</div>
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ml-2 mr-2 ">HORA DE
+							REGISTRO </label> <input type="text" id="nome"
+							class="inputDesign form-control col-md-6 mb-1" />
+					</div>
+				</div>
+				<div class="form-row col-md-12">
+					<div class="form-group col-md-6 text-center">
+						<label for="nome" class=" fonttext ml-2 mr-2 ">HORA DE
+							ARRIBO DE AJUSTADOR </label> <input type="text" id="nome"
+							class="inputDesign form-control  col-md-5 mb-1" />
+					</div>
 				</div>
 			</form>
+
+			<form id="formExemplo" data-toggle="validator" role="form">
+				<div class="form-row col-md-12 mt-2">
+					<div class="form-group col-md-6 text-center">
+						<label for="textNome" class="control-label text-cente fonttext ">VEHÍCULO</label>
+						<input id="textNome" class="form-control inputDesign mb-1"
+							type="text" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+
+
+
+					<div class="form-group col-md-6 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">QUANTIDADE </label> <input
+							type="password" class="form-control inputDesign mb-1"
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+				</div>
+
+			</form>
 			<form>
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
-						FINAL:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">KILOMETRO
-						INICIAL:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">POLIZA
-						POR AFECTAR:</label> <input type="text" id="colFormLabelSm" />
+				<div class="form-row col-md-12">
+
+
+					<div class="form-group col-md-1 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">NUMERO </label> <input
+							type="password" class="form-control inputDesign mb-1"
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+					<div class="form-group col-md-2 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">MARCA </label> <input
+							type="password" class="form-control inputDesign mb-1 "
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+					</div>
+					<div class="form-group col-md-2 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">TIPO </label> <input
+							type="password" class="form-control inputDesign mb-1"
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+					<div class="form-group col-md-2 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">MODELO </label> <input
+							type="password" class="form-control inputDesign mb-1"
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1" type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+					</div>
+					<div class="form-group col-md-2 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">COLOR</label> <input
+							type="password" class="form-control inputDesign mb1 "
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1 " type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+					<div class="form-group col-md-1 text-center">
+						<label for="textNome" class="control-label text-center fonttext">PLACA</label>
+						<input id="textNome" class="form-control inputDesign mb-1 "
+							type="text" /> <input id="textNome"
+							class="form-control inputDesign mb-1 " type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1" type="text" />
+					</div>
+					<div class="form-group col-md-1 text-center ">
+						<label for="textNome" class="control-label fonttext">TEL</label> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+						<input id="textNome" class="form-control inputDesign mb-1"
+							type="text" /> <input id="textNome"
+							class="form-control inputDesign mb-1 " type="text" />
+					</div>
+
+
 				</div>
 			</form>
 
 			<form>
+				<div class="form-row col-md-12">
 
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">HORA DE REGISTRO A CABINA:</label> <input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">HORA DE ARRIBO DE AJUSTADOR </label> <input type="text" id="colFormLabelSm" /> <label
-						for="">VEHICULOS INVOLUCRADOS :</label> <input type="text" id="" />
+
+					<div class="form-group col-md-1 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">NUMERO </label> <input
+							type="password" class="form-control inputDesign mb-1 "
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1 " type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+					</div>
+					<div class="form-group col-md-4 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext ">NOME DO
+							CONDUTOR </label> <input type="password"
+							class="form-control inputDesign mb-1 " id="inputConfirm" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+						<input id="textNome" class="form-control inputDesign mb-1 "
+							type="text" />
+					</div>
+					<div class="form-group col-md-3 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">EDAD </label> <input
+							type="password" class="form-control inputDesign mb-1 "
+							id="inputConfirm" /> <input id="textNome"
+							class="form-control inputDesign mb-1 " type="text" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+					</div>
+					<div class="form-group col-md-4 text-center">
+						<label for="inputConfirm"
+							class="control-label text-center fonttext">CONDICIONES DE
+							SALLUD </label> <input type="password"
+							class="form-control inputDesign mb-1 " id="inputConfirm" /> <input
+							id="textNome" class="form-control inputDesign mb-1 " type="text" />
+						<input id="textNome" class="form-control inputDesign mb-1 "
+							type="text" />
+					</div>
 				</div>
 			</form>
+
+
+
 			<form>
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">MARCA:</label> <input
-						type="text" id="colFormLabelSm" /> <label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">TIPO :</label> <input
-						type="text" id="colFormLabelSm" /> <label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">MODELO:</label>
-					<input type="text" id="colFormLabelSm" />
-
+				<div class="form-group col-md-12 text-center">
+					<label for="inputConfirm"
+						class="control-label text-center fonttext">MOTIVO DEL
+						ACCIDENT </label>
 				</div>
-
-			</form>
-			<form>
-				<div class="form-group row">
-					<label for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">COLOR :</label>
-					<input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">PLACA/ESTADO:</label>
-					<input type="text" id="colFormLabelSm" /> <label
-						for="colFormLabelSm"
-						class="col-sm-2 col-form-label col-form-label-sm">TELEFÓNO
-						:</label> <input type="text" id="colFormLabelSm" />
-
+				<div class="input-group form-row col-md-12 text-center mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+						id="basic-addon1">A</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+						id="basic-addon1">SEMOVIENTE</span> <input type="text"
+						class="form-control inputDesign mb-1 "
+						aria-describedby="basic-addon1" />
+				</div>
+				<div class="input-group form-row col-md-12 text-center  mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+						id="basic-addon1">B</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+						id="basic-addon1">TB. DE CONSERVACÍON</span> <input type="text"
+						class="form-control inputDesign mb-1 "
+						aria-describedby="basic-addon1" />
+				</div>
+				<div class="input-group form-row col-md-12 text-center  mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 "
+						id="basic-addon1">C</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 "
+						id="basic-addon1">LLUVIA GRANIZO</span> <input type="text"
+						class="form-control inputDesign mb-1"
+						aria-describedby="basic-addon1" />
+				</div>
+				<div class="input-group form-row col-md-12 text-center mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 "
+						id="basic-addon1">D</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+						id="basic-addon1">NEBLINA</span> <input type="text"
+						class="form-control inputDesign mb-1 "
+						aria-describedby="basic-addon1" />
+				</div>
+				<div class="input-group form-row col-md-12 text-center mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+						id="basic-addon1">E</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+						id="basic-addon1">VANDALISMO</span> <input type="text"
+						class="form-control inputDesign mb-1"
+						aria-describedby="basic-addon1" />
+				</div>
+				<div class="input-group form-row col-md-12 text-center mb-2">
+					<span
+						class="input-group-addon col-md-1 form-control text-center fonttext inputDesign "
+						id="basic-addon1">F</span> <span
+						class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign "
+						id="basic-addon1">OTRO</span> <input type="text"
+						class="form-control inputDesign " aria-describedby="basic-addon1" />
 				</div>
 			</form>
+
+			<div class="btn-group btn-group-sm mb-3 " role="group"
+				aria-label="Basic example"></div>
+			<div class="form-group col-md-12 mb-7" id="damageBtn1">
+				<em for="inputAddress">Observaçoes</em>
+				<h:inputTextarea class="form-control textareaDesign mb-7"
+					disabled="#{occurrencesBean.fields}"
+					placeholder="#{occLabels.occ_descript_action1}"
+					value="#{occurrencesBean.data.demage_description}" rows="8"
+					name="danoDescr" id="danoDescr" />
+			</div>
+			<div class="form-group col-md-12 text-center mb-5 mt-3">
+				<label for="inputConfirm" class="control-label text-center fonttext">
+				</label>
+			</div>
+		</div>
+
+
 
 
 	</ui:define>
-	<!-- MAIN CONTENT TEMPLATE COMPONENT END -->
-
 </ui:composition>
-<!-- MAIN TEMPLATE STRUCTURE END -->

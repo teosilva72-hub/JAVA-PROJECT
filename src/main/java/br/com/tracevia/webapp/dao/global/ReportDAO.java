@@ -145,10 +145,18 @@ public class ReportDAO {
     }
 
     public List<String[]> getOtherElementTable(String table, String column) throws SQLException {
-        return getOtherElementTable(table, new String[]{ column, column });
+        return getOtherElementTable(table, new String[]{ column, column }, "");
+    }
+
+    public List<String[]> getOtherElementTable(String table, String column, String where) throws SQLException {
+        return getOtherElementTable(table, new String[]{ column, column }, where);
+    }
+
+    public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
+        return getOtherElementTable(table, column, "");
     }
     
-    public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
+    public List<String[]> getOtherElementTable(String table, String[] column, String where) throws SQLException {
     	
     	LocaleUtil locale = new LocaleUtil();
     	locale.getResourceBundle(LocaleUtil.LABELS_REPORTS);
@@ -163,7 +171,7 @@ public class ReportDAO {
         }
 
         int tempSize = fieldsTemp.size();
-        String query = String.format("SELECT DISTINCT %s FROM %s GROUP BY %1$s", select.substring(2), table);
+        String query = String.format("SELECT DISTINCT %s FROM %s%s GROUP BY %1$s", select.substring(2), table, where.isEmpty() ? "" : String.format(" WHERE %s", where));
 
         ps = conn.prepareStatement(query);
         rs = ps.executeQuery();

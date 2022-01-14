@@ -33,7 +33,13 @@ const set_values = () => {
             let card = equip.filter(`.${k2}`).addClass('on')
             if (card.hasClass('deg'))
                 card.find('.card-ponteiro').css('transform', `rotate(${v2}deg)`)
-            else
+            else if (card.hasClass('wr'))  {
+                let tip = card.find('[data-toggle=tooltipMETEO]')
+                let d = tip.attr(`d${Math.round(v2 / 45) % 8}`).split('/');
+                let v = tip.attr(`name`);
+                card.find('.card-value').val(d[1])
+                tip.attr('data-original-title', `${v}: ${d[0]}`)
+            } else
                 card.find('.card-value').val(v2)
         }
     }
