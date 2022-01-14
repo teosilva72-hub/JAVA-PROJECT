@@ -15,12 +15,12 @@
 	<f:metadata>
 
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(sosLabels.tuxpan_battery_file_name)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_battery_title)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(sosLabels.tuxpan_battery_min_max_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('TUXPAN')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sos')}" />	  
 		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineImageName(sosLabels.tuxpan_battery_file_name)}" />		
-		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(sosLabels.tuxpan_battery_min_max_title)}" />		
 		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartLabels.$label_chart_vertical_axis_unit_measure)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineTotalType('average')}" />
@@ -101,7 +101,7 @@
            <!-- NOME DO RELATÓRIO -->   
         
 	    <div class="text-dark text-center font-weight-bold report-title" > <!-- REPORT NAME DIV --> 
-	       <h:outputText value="#{sosLabels.tuxpan_battery_title}" /> <!-- NAME LABEL -->
+	       <h:outputText value="#{sosLabels.tuxpan_battery_min_max_title}" /> <!-- NAME LABEL -->
 	       <hr></hr> <!-- HORIZONTAL LINE -->
 	    </div> <!-- REPORT NAME DIV END -->
 	 
