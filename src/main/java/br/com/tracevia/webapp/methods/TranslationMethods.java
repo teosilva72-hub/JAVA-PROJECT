@@ -586,7 +586,7 @@ public class TranslationMethods {
 	}
 
 	//AbreviaÃ§Ã£o do Ano 
-	public String YearAbbreviation(String ano) {		
+	public String yearAbbreviation(String ano) {		
 		return ano.substring(2,4);	
 	}
 

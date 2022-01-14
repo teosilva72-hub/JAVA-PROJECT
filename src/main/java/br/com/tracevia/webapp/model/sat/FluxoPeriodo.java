@@ -7,6 +7,7 @@ public class FluxoPeriodo {
 	private String interval;
 	private String direction1;
 	private String direction2;
+	private int equipId;	
 	private int autoS1;	
 	private int comS1;
 	private int motoS1;
@@ -64,7 +65,7 @@ public class FluxoPeriodo {
 	private int speedStdMotoS2;
 	private int speedStdTotalS2;
 	
-	public FluxoPeriodo(String equip, String date, String interval, String direction1, String direction2, int autoS1,
+	public FluxoPeriodo(String equip, String date, String interval, String direction1, String direction2, int equipId, int autoS1,
 			int comS1, int motoS1, int totalS1, int autoS2, int comS2, int motoS2, int totalS2, int speedAutoS1,
 			int speedComS1, int speedMotoS1, int speedTotalS1, int speedAutoS2, int speedComS2, int speedMotoS2,
 			int speedTotalS2, int speed50thAutoS1, int speed50thComS1, int speed50thMotoS1, int speed50thTotalS1,
@@ -82,6 +83,7 @@ public class FluxoPeriodo {
 		this.interval = interval;
 		this.direction1 = direction1;
 		this.direction2 = direction2;
+		this.equipId = equipId;
 		this.autoS1 = autoS1;
 		this.comS1 = comS1;
 		this.motoS1 = motoS1;
@@ -181,6 +183,14 @@ public class FluxoPeriodo {
 
 	public void setDirection2(String direction2) {
 		this.direction2 = direction2;
+	}
+	
+	public int getEquipId() {
+		return equipId;
+	}
+
+	public void setEquipId(int equipId) {
+		this.equipId = equipId;
 	}
 
 	public int getAutoS1() {

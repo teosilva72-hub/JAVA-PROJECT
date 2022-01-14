@@ -26,7 +26,6 @@ setTimeout(() => {
 
 // *********************************************************** //
 
-
 const init = () => {
 	$('#equipAll').load('/realtime/realtimeEquip.xhtml', () => {
 		resizeEquipScale($('[scroll-zoom]'))

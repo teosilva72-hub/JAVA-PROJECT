@@ -243,8 +243,7 @@ public class FluxoMensalBean {
 		// GUARDAR VALORES NA SESSION
 		SessionUtil.setParam("fields", build.fields);	//Fields
 		SessionUtil.setParam("fieldsObject", build.fieldObjectValues); //Objects
-		
-		
+				
 	}
 	
 	// ----------------------------------------------------------------------------------------------------------------------------------------------------- 
@@ -820,7 +819,7 @@ public class FluxoMensalBean {
  		TranslationMethods tm = new TranslationMethods();
  		DateTimeApplication dta = new DateTimeApplication();
  		 		
- 		String fileName = sat.getNome()+"_"+tm.MonthAbbreviation(month)+"_"+tm.YearAbbreviation(year);
+ 		String fileName = sat.getNome()+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year);
  		
  		//Define Values in session map !important	
  		SessionUtil.setParam("workbook", workbook);

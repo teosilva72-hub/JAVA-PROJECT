@@ -15,7 +15,7 @@ body, html {
 	height: 100%;
 }/*sat size*/
 .number {
-	width: 4%;
+	width: 3.97%;
 	font-size: 8pt;
 	text-align: center;
 	background: black;
@@ -37,7 +37,7 @@ body, html {
 	width: 102.5%;
 }/*linha das horas*/
 .row-l{
-	margin-left: 0px;
+	margin-left: 2px;
 }/*linha principal dos minutos*/
 .l{
 	border: solid black 1px;
@@ -86,15 +86,16 @@ body, html {
 	color: white;
 }/*icone bateria*/
 .btn-sat{
-	background-color: #009f00;
-	color: white;
-	font-weight: 999;
-}/*status sat online*/
-.btn-sat.off{
 	background-color: #ff0000;
 	color: white;
 	font-weight: 999;
 }/*status sat offline*/
+.btn-sat.on{
+	background-color: #009f00;
+	color: white;
+	font-weight: 999;
+}
+/*status sat online*/
 .btn-Info{
 	width: 1%;
 }/*btn info*/
@@ -102,6 +103,7 @@ body, html {
 	margin-left: -4px;
 	width: 18px;
 	height: 18px;
+	color: white;
 }/*icone btn info*/
 
 /*----------------------------*/

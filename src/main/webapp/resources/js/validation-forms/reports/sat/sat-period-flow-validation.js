@@ -72,11 +72,14 @@ function isValidSubmit(){
 	
 	valid = $("#report-form").validate();
 	
-	if(valid)
-		$('#modalInfo').modal('show');	
+	if(valid){
 		
-		console.log(valid)
-	
+		$('#modalInfo').modal('show');	
+		PF('poll').start();
+		console.log("executou");
+	}
+			
 }
 
 // ---------------------------------------------------------------------
+

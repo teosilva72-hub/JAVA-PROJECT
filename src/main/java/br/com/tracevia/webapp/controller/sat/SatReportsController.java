@@ -2718,7 +2718,7 @@ public class SatReportsController {
 
 			externalContext.setResponseContentType("text/plain");
 			externalContext.setResponseHeader("Content-Disposition",
-					"attachment; filename=\"VBV_"+siteName+"_"+tm.MonthAbbreviation(month)+"_"+tm.YearAbbreviation(year)+".txt\"");
+					"attachment; filename=\"VBV_"+siteName+"_"+tm.MonthAbbreviation(month)+"_"+tm.yearAbbreviation(year)+".txt\"");
 
 			OutputStream responseOutputStream = externalContext.getResponseOutputStream();
 

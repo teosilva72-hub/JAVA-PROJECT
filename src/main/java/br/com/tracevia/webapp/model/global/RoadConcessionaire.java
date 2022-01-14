@@ -463,6 +463,7 @@ public class RoadConcessionaire {
 			tableLL = TraceviaTables.TraceviaLL.getTable();
 			tableCCR = TraceviaTables.TraceviaCCR.getTable();
 			plaque = "";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_paulista.png";
 			mapEnabled = false;
 			reportsLLEnabled = false;
 			viaPaulista = true;

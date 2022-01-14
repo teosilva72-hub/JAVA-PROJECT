@@ -842,53 +842,53 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					int index = 0;
 
 					if (hora == 0)
-						index = 0;
+							index = 0;
 					if (hora == 1)
-						index = 4;
+							index = 4;
 					if (hora == 2)
-						index = 8;
+							index = 8;
 					if (hora == 3)
-						index = 12;
+							index = 12;
 					if (hora == 4)
-						index = 16;
+							index = 16;
 					if (hora == 5)
-						index = 20;
+							index = 20;
 					if (hora == 6)
-						index = 24;
+							index = 24;
 					if (hora == 7)
-						index = 28;
+							index = 28;
 					if (hora == 8)
-						index = 32;
+							index = 32;
 					if (hora == 9)
-						index = 36;
+							index = 36;
 					if (hora == 10)
-						index = 40;
+							index = 40;
 					if (hora == 11)
-						index = 44;
+							index = 44;
 					if (hora == 12)
-						index = 48;
+							index = 48;
 					if (hora == 13)
-						index = 52;
+							index = 52;
 					if (hora == 14)
-						index = 56;
+							index = 56;
 					if (hora == 15)
-						index = 60;
+							index = 60;
 					if (hora == 16)
-						index = 64;
+							index = 64;
 					if (hora == 17)
-						index = 68;
+							index = 68;
 					if (hora == 18)
-						index = 72;
+							index = 72;
 					if (hora == 19)
-						index = 76;
+							index = 76;
 					if (hora == 20)
-						index = 80;
+							index = 80;
 					if (hora == 21)
-						index = 84;
+							index = 84;
 					if (hora == 22)
-						index = 88;
+							index = 88;
 					if (hora == 23)
-						index = 92;
+							index = 92;
 
 					return index;
 				}
@@ -1828,166 +1828,7 @@ public String createData(int dia, int mes, int ano) throws ParseException {
 					}
 					
 					
-					//Criar o intervalo de 15 minutos
-					public String[] intervalo15Minutos(int tamanho) {
-
-						int i, ini, fim, hora;
-												
-						intervalos = new String[tamanho];	
-
-						ini = 0;
-						fim = 15;
-						hora = 0;
-
-						for (i = 0; i < tamanho; i++) {
-
-							if (fim == 60)
-								fim = 59;
-
-							if (ini > 45 && fim > 60) {
-								ini = 0;
-								fim = 15;
-								hora++;
-							}
-
-							if (hora == 24)
-								hora = 0;
-
-							if ((ini == 0) && (hora < 10))
-								intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":" + fim;
-
-							else if ((ini != 0) && (hora < 10))
-								intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":" + fim;
-
-							else if (ini == 0)
-								intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":" + fim;
-
-							else
-								intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":" + fim;
-
-							ini += 15;
-							fim += 15;
-
-						}
-						
-						return intervalos;
-					}				
 					
-					//Criar o intervalo de 5 minutos
-					public String[] intervalo05Minutos(int tamanho) {
-
-						int i, ini, fim, hora;
-												
-						intervalos = new String[tamanho];	
-
-						ini = 0;
-						fim = 5;
-						hora = 0;
-
-						for (i = 0; i < tamanho; i++) {
-
-							if (fim == 60)
-								fim = 59;
-
-							if (ini > 55 && fim > 60) {
-								ini = 0;
-								fim = 5;
-								hora++;
-							}
-
-							if (hora == 24)
-								 hora = 0;
-										
-							if ((ini == 0) && (fim == 5) && (hora < 10))
-								intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
-							
-							else if ((ini == 0) && (fim == 5) && (hora > 9))
-								intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
-							
-							else if ((ini == 5) && (hora < 10))
-								intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
-							
-							else if ((ini == 5) && (hora > 9))
-								intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
-													
-							else if ((ini != 0 && ini !=5) && (hora > 9))
-								intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
-							
-							else if((ini != 0 && ini !=5) && (hora < 10))
-								intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
-							
-							ini += 5;
-							fim += 5;
-
-						}
-						
-						return intervalos;
-					}
-					
-					
-					//Criar o intervalo de 6 minutos
-					public String[] intervalo06Minutos(int tamanho) {
-
-						int i, ini, fim, hora;
-												
-						intervalos = new String[tamanho];	
-
-						ini = 0;
-						fim = 6;
-						hora = 0;
-
-						for (i = 0; i < tamanho; i++) {
-
-							if (fim == 60)
-								fim = 59;
-
-							if (ini > 54 && fim > 60) {
-								ini = 0;
-								fim = 6;
-								hora++;
-							}
-
-							if (hora == 24)
-								 hora = 0;
-										
-							if ((ini == 0) && (fim == 6) && (hora < 10))
-								intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":0"+ fim;	
-							
-							else if ((ini == 0) && (fim == 6) && (hora > 9))
-								intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":0"+ fim;	
-							
-							else if ((ini == 6) && (hora < 10))
-								intervalos[i] = "0" + hora + ":0" + ini + " - 0" + hora + ":"+ fim;
-							
-							else if ((ini == 6) && (hora > 9))
-								intervalos[i] = "" + hora + ":0" + ini + " - " + hora + ":"+ fim;
-													
-							else if ((ini != 0 && ini !=6) && (hora > 9))
-								intervalos[i] = "" + hora + ":" + ini + " - " + hora + ":"+ fim;
-							
-							else if((ini != 0 && ini !=6) && (hora < 10))
-								intervalos[i] = "0" + hora + ":" + ini + " - 0" + hora + ":"+ fim;	
-							
-							ini += 6;
-							fim += 6;
-
-						}
-						
-						return intervalos;
-					}
-					
-					//Criar o intervalo de 24 horas
-					public String[] intervalo24Horas(int tamanho) { 
-
-						int i;
-						
-						intervalos = new String[tamanho];	
-
-						for (i = 0; i < tamanho; i++) 						
-							intervalos[i] = " ----- ";
-						
-						return intervalos;
-					}	
 					
 					
 					
