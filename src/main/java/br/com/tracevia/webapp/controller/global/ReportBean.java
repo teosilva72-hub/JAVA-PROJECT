@@ -74,6 +74,7 @@ public class ReportBean {
 	private String columnDate;
 	private String innerJoin;
 	private String useIndex;
+	private String orderDate;
 	private String[] division;
 
 	private ExcelTemplate model;
@@ -298,6 +299,10 @@ public class ReportBean {
 	
 	public void setUseIndex(String useIndex) {
 		this.useIndex = useIndex;
+	}
+	
+	public void setOrderDate(String orderDate) {
+		this.orderDate = orderDate;
 	}
 	
 	public void setColumnDate(String columnDate) {
@@ -574,6 +579,7 @@ public class ReportBean {
 		List<String> idSearch = new ArrayList<>();		
 				
 		String group = "$period";
+		String order = "";
 		Date[] dateProcess = null;
 		String[] period = null;
 		setColumnsInUse(columns);
@@ -594,10 +600,13 @@ public class ReportBean {
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
-					if (period[1].toUpperCase().equals("DAY"))
+					if (period[1].toUpperCase().equals("DAY")) {
 						group = alias[1];
-					else
+						order = String.format("str_to_date('%s', '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1]);
+					} else {
 						group = String.format("%s, %s", alias[1], group);
+						order = String.format("str_to_date('%s %s', '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
+					}
 				} else
 					query += String.format("%s as %s, ", column, group);
 					
@@ -686,7 +695,9 @@ public class ReportBean {
 			}
 
 			if (setPeriod && hasPeriod())
-				query += String.format(" GROUP BY %s%s ORDER BY %s.%s, %1$s ASC", group, extraGroup, table.contains(" ") ? table.split(" ")[1] : table, idTable);
+				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
+			else if (orderDate != null)
+				query += String.format(" ORDER BY %s ASC", orderDate);
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
