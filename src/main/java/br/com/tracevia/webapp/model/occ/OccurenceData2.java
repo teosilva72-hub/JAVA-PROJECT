@@ -1,6 +1,6 @@
 package br.com.tracevia.webapp.model.occ;
 
-public class Occurence2 {
+public class OccurenceData2 {
 	
 	private String data;
 	private String	hora;
@@ -30,6 +30,11 @@ public class Occurence2 {
 	private String saude;
 	private String motivo;
 	private String observacao;
+	private String localFiles;
+	private String state_occurrences;
+	private Boolean editTable;
+	private String nameUser;
+	
 	/**
 	 * @param data
 	 * @param hora
@@ -61,11 +66,11 @@ public class Occurence2 {
 	 * @param observacao
 	 */
 
-	public Occurence2(String data, String hora, String pedagio, String folio, String report, String sinistro,
+	public OccurenceData2(String data, String hora, String pedagio, String folio, String report, String sinistro,
 			String direcao, String kmregistro, String kminicial, String kmfinal, String hrReg, String hrchega,
 			String politica, String tipo_veic, String quantidade, String numveiculo, String marca, String tipo,
 			String modelo, String cor, String placa, String telefone, String numcond, String nome, int idade,
-			String saude, String motivo, String observacao) {
+			String saude, String motivo, String observacao,String state_occurrences) {
 		
 		this.data = data;
 		this.hora = hora;
@@ -97,7 +102,7 @@ public class Occurence2 {
 		this.observacao = observacao;
 	}
 	
-	public Occurence2() {}
+	public OccurenceData2() {}
 	
 	public String getData() {
 		return data;
@@ -267,7 +272,42 @@ public class Occurence2 {
 	public void setObservacao(String observacao) {
 		this.observacao = observacao;
 	}
-	
+
+	public String getLocalFiles() {
+		// TODO Auto-generated method stub
+		return localFiles;
+	}
+	public void setLocalFiles(String localFiles) {
+		this.localFiles = localFiles;
+	}
+
+	public String getState_occurrences() {
+		// TODO Auto-generated method stub
+		return state_occurrences;
+		}
+	public void setState_occurrences(String state_occurrences) {
+		this.state_occurrences = state_occurrences;
+	}
+
+
+	public Boolean getEditTable() {
+		// TODO Auto-generated method stub
+		return editTable;
+		
+	}
+	public void setEditTable(Boolean editTable) {
+		this.editTable = editTable;
+	}
+
+	public String getNameUser() {
+		// TODO Auto-generated method stub
+		return nameUser;
+	}
+
+	public void setNameUser(String nameUser) {
+		this.nameUser = nameUser;
+	}
+
 	
 
 	
