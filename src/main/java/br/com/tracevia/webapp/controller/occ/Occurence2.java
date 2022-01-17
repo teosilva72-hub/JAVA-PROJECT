@@ -63,7 +63,7 @@ public class Occurence2 {
 		private UserAccountBean userId;
 		private OccurrencesDetails details;
 
-		OccurrenceDAO2 dao;
+	//	OccurrenceDAO2 dao;
 		LocaleUtil occLabel, occMessages;
 
 		private boolean save, edit, new_, reset, fields, enableBtn,
@@ -2157,4 +2157,3 @@ public class Occurence2 {
 
 	}
 
-}

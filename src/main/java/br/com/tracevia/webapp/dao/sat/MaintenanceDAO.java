@@ -47,7 +47,7 @@ public class MaintenanceDAO {
 		 *  
 		 */	
 		
-		public List<Maintenance> getDadosOn(String[] hours){
+		public List<Maintenance> getDadosOn(String[] hours, String[] days){
 
 			List<Maintenance> lista = new ArrayList<Maintenance>();
 			
@@ -59,13 +59,14 @@ public class MaintenanceDAO {
 			int minute = calendar.get(Calendar.MINUTE);
 			
 			// Obter datas formatadas para os dados
-			currentDate = dta.getDataInterval15Min(calendar, minute);
+			currentDate = dta.getCurrentDateDados15(calendar, minute);
 					
 			int[][] stateZero = new int[1][24];
 			int[][] stateFifteen = new int[1][24];
 			int[][] stateThirty = new int[1][24];
 			int[][] stateFortyFive = new int[1][24];
 						
+			int day = 0;
 			int hour = 0;
 			int min = 0;
 			int hourIndex = 0;
@@ -76,7 +77,7 @@ public class MaintenanceDAO {
 					    "SUM(d.ONLINE_STATUS) 'Status', eq.number_lanes 'lanes' " +
 					    "FROM tb_status d " +
 						"INNER JOIN sat_equipment eq on eq.equip_id = d.EQ_ID " +
-						"WHERE d.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL 24 HOUR) AND ? AND eq.visible = 1 " +
+						"WHERE d.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL '23:59' HOUR_MINUTE) AND ? AND eq.visible = 1 " +
 						"GROUP BY data, intervals, siteId " +
 						"ORDER BY data ASC";
 				
@@ -104,14 +105,16 @@ public class MaintenanceDAO {
 						dados.setSiteId(rs.getInt(3));					
 						dados.setNumberLanes(rs.getInt(5));	
 																							
+						day = Integer.parseInt(dados.getData().substring(8, 10));
 						hour = Integer.parseInt(dados.getHora().substring(0, 2));
-						min =  Integer.parseInt(dados.getHora().substring(3, 5));																											
-						
-						 for(int h = 0; h < 24; h++) {
+						min =  Integer.parseInt(dados.getHora().substring(3, 5));
+																		
+						  for(int h = 0; h < 24; h++) {
 						     
-							 if(Integer.parseInt(hours[h]) == hour)
-						         hourIndex = h;
-						}
+							 if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
+						         hourIndex = h;	
+							
+						 }		
 											
 						if(rs.getInt(4) >= 8) {
 							
@@ -184,7 +187,7 @@ public class MaintenanceDAO {
 		 * @return lista de objetos do tipo Maintenance contendo status dos dados por faixa
 		 *  
 		 */	
-		public ArrayList<Maintenance> getDados15(String[] hours) {
+		public ArrayList<Maintenance> getDados15(String[] hours, String[] days) {
 
 			ArrayList<Maintenance> lista = new ArrayList<Maintenance>();
 			
@@ -196,13 +199,14 @@ public class MaintenanceDAO {
 			int minute = calendar.get(Calendar.MINUTE);
 			
 			// Obter datas formatadas para os dados
-			currentDate = dta.getDataInterval15Min(calendar, minute);	
+			currentDate = dta.getCurrentDateDados15(calendar, minute);	
 			
 			int[][] laneZero = new int[8][24];
 			int[][] laneFifteen = new int[8][24];
 			int[][] laneThirty = new int[8][24];
 			int[][] laneFortyFive = new int[8][24];
 			
+			int day = 0;
 			int hour = 0;
 			int min = 0;
 			int hourIndex = 0;
@@ -212,7 +216,7 @@ public class MaintenanceDAO {
 					"d.NOME_FAIXA 'faixa', (d.VOLUME_TOTAL) 'volume' " +
 					"FROM tb_dados15 d " +
 					"INNER JOIN sat_equipment eq on eq.equip_id = d.NOME_ESTACAO " +
-					"WHERE d.DATA_HORA BETWEEN DATE_SUB( ?, INTERVAL 24 HOUR) AND ? AND eq.visible = 1 " +
+					"WHERE d.DATA_HORA BETWEEN DATE_SUB( ?, INTERVAL '23:59' HOUR_MINUTE) AND ? AND eq.visible = 1 " +
 					"GROUP BY data, intervals, siteId, faixa " +
 					"ORDER BY data ASC";
 			
@@ -241,12 +245,13 @@ public class MaintenanceDAO {
 																		
 						// PROCESSAR DADOS PARA FRONT END
 						
+						day = Integer.parseInt(dados.getData().substring(8, 10));
 						hour = Integer.parseInt(dados.getHora().substring(0, 2));
-						min =  Integer.parseInt(dados.getHora().substring(3, 5));	
-												
+						min =  Integer.parseInt(dados.getHora().substring(3, 5));
+																		
 						  for(int h = 0; h < 24; h++) {
 						     
-							 if(Integer.parseInt(hours[h]) == hour)
+							 if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
 						         hourIndex = h;	
 							
 						 }			
