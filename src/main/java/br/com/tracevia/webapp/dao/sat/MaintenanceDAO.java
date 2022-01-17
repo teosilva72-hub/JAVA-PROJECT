@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -39,7 +40,7 @@ public class MaintenanceDAO {
 		
 		// --------------------------------------------------------------------------------------------------------------
 		
-		/** MÃ©todo para obter status dos equipamentos (SAT)
+		/** Método para obter status dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
@@ -50,6 +51,8 @@ public class MaintenanceDAO {
 		public List<Maintenance> getDadosOn(String[] hours, String[] days){
 
 			List<Maintenance> lista = new ArrayList<Maintenance>();
+			HashMap<Integer, Maintenance> map = new HashMap<>();
+			Maintenance dados;
 			
 			DateTimeApplication dta = new DateTimeApplication();
 													
@@ -61,10 +64,10 @@ public class MaintenanceDAO {
 			// Obter datas formatadas para os dados
 			currentDate = dta.getCurrentDateDados15(calendar, minute);
 					
-			int[][] stateZero = new int[1][24];
-			int[][] stateFifteen = new int[1][24];
-			int[][] stateThirty = new int[1][24];
-			int[][] stateFortyFive = new int[1][24];
+			int[] stateZero = new int[24];
+			int[] stateFifteen = new int[24];
+			int[] stateThirty = new int[24];
+			int[] stateFortyFive = new int[24];
 						
 			int day = 0;
 			int hour = 0;
@@ -85,83 +88,79 @@ public class MaintenanceDAO {
 				
 				System.out.println(currentDate);
 				
-				  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-					
-					ps = conn.prepareStatement(select);			
-					ps.setString(1, currentDate);		
-					ps.setString(2, currentDate);
-					
-					rs = ps.executeQuery();
-					
-					System.out.println(select);
-													
-					if (rs.isBeforeFirst()) {
-							while (rs.next()) {
-						
-						Maintenance dados = new Maintenance();
-											
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(select);			
+				ps.setString(1, currentDate);		
+				ps.setString(2, currentDate);
+				
+				rs = ps.executeQuery();
+
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						int id = rs.getInt(3);
+
+						if (map.containsKey(id)) {
+							dados = map.get(id);
+
+							stateZero = dados.getStatusZero();
+							stateFifteen = dados.getStatusFifteen();
+							stateThirty = dados.getStatusThirty();
+							stateFortyFive = dados.getStatusFortyFive();
+						} else {
+							dados = new Maintenance();
+						}
 						dados.setData(rs.getString(1));
 						dados.setHora(rs.getString(2));
 						dados.setSiteId(rs.getInt(3));					
 						dados.setNumberLanes(rs.getInt(5));	
-																							
+
 						day = Integer.parseInt(dados.getData().substring(8, 10));
 						hour = Integer.parseInt(dados.getHora().substring(0, 2));
 						min =  Integer.parseInt(dados.getHora().substring(3, 5));
-																		
-						  for(int h = 0; h < 24; h++) {
-						     
-							 if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
-						         hourIndex = h;	
-							
-						 }		
-											
+																	
+						for(int h = 0; h < 24; h++)
+							if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
+								hourIndex = h;
+										
 						if(rs.getInt(4) >= 8) {
-							
-							dados.setStatus(1);	
-							
 							if(min == 0) {
-								stateZero[0][hourIndex] = 1;
+								stateZero[hourIndex] = 1;
 													
 							}if(min == 15) {							
-								 stateFifteen[0][hourIndex] = 1;							
+								stateFifteen[hourIndex] = 1;							
 							
 							}if(min == 30) {								
-								 stateThirty[0][hourIndex] = 1;	
+								stateThirty[hourIndex] = 1;	
 															
 							}if(min == 45) {								
-								 stateFortyFive[0][hourIndex] = 1;	
+								stateFortyFive[hourIndex] = 1;	
 							}
-						}
-							
-						else {
-							
-								dados.setStatus(0);	
-							
+						} else {
 							if(min == 0) {
-									stateZero[0][hourIndex] = 0;
+								stateZero[hourIndex] = 0;
 														
 							}if(min == 15) {								
-									stateFifteen[0][hourIndex] = 0;
+								stateFifteen[hourIndex] = 0;
 									
 							
 							}if(min == 30) {								
-									stateThirty[0][hourIndex] = 0;									
+								stateThirty[hourIndex] = 0;									
 							
 							}if(min == 45) {								
-									stateFortyFive[0][hourIndex] = 0;	
+								stateFortyFive[hourIndex] = 0;	
 							}															
 						}
 							
-						   dados.setStatusZero(stateZero);
-						   dados.setStatusFifteen(stateFifteen);
-						   dados.setStatusThirty(stateThirty);
-						   dados.setStatusFortyFive(stateFortyFive);		
-																	
-					   lista.add(dados);
-					   
+						dados.setStatusZero(stateZero.clone());
+						dados.setStatusFifteen(stateFifteen.clone());
+						dados.setStatusThirty(stateThirty.clone());
+						dados.setStatusFortyFive(stateFortyFive.clone());
+
+						map.put(id, dados);
 					}		
-				 }
+					lista.addAll(map.values());
+				}
 
 			} catch (SQLException sqle) {
 				
@@ -180,7 +179,7 @@ public class MaintenanceDAO {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		/** MÃ©todo para obter status dos dados por faixa dos equipamentos (SAT)
+		/** Método para obter status dos dados por faixa dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
