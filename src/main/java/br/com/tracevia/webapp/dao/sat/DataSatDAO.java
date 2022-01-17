@@ -145,7 +145,7 @@ public class DataSatDAO {
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE " + queryInterval +
 	    "GROUP BY d.DATA_HORA, d.NOME_ESTACAO " +
-        "ORDER BY d.NOME_ESTACAO, d.DATA_HORA DESC " +
+        "ORDER BY d.NOME_ESTACAO, d.DATA_HORA ASC " +
 	    "LIMIT "+limit + " ";		
 	 
 	  try {
@@ -310,7 +310,7 @@ public class DataSatDAO {
     	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
     	    "WHERE eq.equip_id = ? AND " + interval + " "+  
     	    "GROUP BY d.DATA_HORA " +
-            "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
+            "ORDER BY d.DATA_HORA ASC LIMIT 1 ";
     	  					
     	  try {
     			
@@ -356,7 +356,7 @@ public class DataSatDAO {
  	    "FROM "+RoadConcessionaire.tableDados15+" d " +
  	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
  	    "WHERE eq.equip_id = ? AND eq.visible = 1 " +
- 	    "ORDER BY d.NOME_ESTACAO DESC LIMIT 1";
+ 	    "ORDER BY d.NOME_ESTACAO ASC LIMIT 1";
  		
  		String  satLastRegister = "";
  	  					

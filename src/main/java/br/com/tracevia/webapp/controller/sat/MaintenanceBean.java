@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.sat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +19,9 @@ import br.com.tracevia.webapp.model.sat.Maintenance;
 public class MaintenanceBean{
 
 private int hora;
+private int dia;
 private String[] hours;
+private String[] days;
 
 List<Maintenance> satListLanes, satStatus;
 
@@ -40,6 +43,14 @@ public void setHours(String[] hours) {
 	this.hours = hours;
 }
 
+public String[] getDays() {
+	return days;
+}
+
+public void setDays(String[] days) {
+	this.days = days;
+}
+
 public List<Maintenance> getSatListLanes() {
 	return satListLanes;
 }
@@ -54,6 +65,10 @@ public void initializer() {
 	
 		BuildMaintenance();
 		
+		/*for (Maintenance status : satListLanes) {			
+			System.out.println(Arrays.toString(status.getLaneZero()[0]));
+		}*/
+		
 	} catch (Exception e) {			
 		e.printStackTrace();
 	}
@@ -63,20 +78,35 @@ public void initializer() {
 
 	public void hours() throws Exception{
 		
-		hora =  LocalDateTime.now().getHour();
+		Calendar calendar = Calendar.getInstance();				
+		calendar.add(Calendar.HOUR_OF_DAY, -23);
 		
-		int hour = (hora + 1); 
+		hora = calendar.get(Calendar.HOUR_OF_DAY);
+		dia = calendar.get(Calendar.DATE);
+					
+		int hour = hora; 
+		int day = dia;
 		
 		hours = new String[24];
+		days = new String[24];
 		 
 			for(int h = 0; h < 24; h++){
-				 if(hour > 23)
-				 	  hour = 0;
-				 	if(hour < 10)
-				 		hours[h] ="0" + hour;
-				 	else hours[h] = String.valueOf(hour);
-				 	hour++;
-			 }
+				 
+					if(hour > 23) {
+					 	  hour = 0;
+					      day++;
+					 }
+				       
+			 	if(hour < 10)
+			 		hours[h] ="0" + hour;				 	    
+			 	else hours[h] = String.valueOf(hour);
+			 	
+			 	days[h] = String.valueOf(day);
+			 	
+			 	System.out.println(hour);
+			 	
+			 	hour++;
+		  }
 	} 
 	
 // ----------------------------------------------------------------
@@ -97,18 +127,18 @@ public void initializer() {
 		int[][] thirtyMinStatus = new int[0][24];
 		int[][] forty_fiveMinStatus = new int[0][24];
 		
-		int[][] zeroMinLanes = new int[0][24];
-		int[][] fifteenMinLanes = new int[0][24];
-		int[][] thirtyMinLanes = new int[0][24];
-		int[][] forty_fiveMinLanes = new int[0][24];
+		int[][] zeroMinLanes = new int[8][24];
+		int[][] fifteenMinLanes = new int[8][24];
+		int[][] thirtyMinLanes = new int[8][24];
+		int[][] forty_fiveMinLanes = new int[8][24];
 		
 		try {			
 		
 			hours(); // DEFINE HOURS
 						
-			satListStatusAux = dao.getDadosOn(hours);  // SET LIST STATS AUX 
+			satListStatusAux = dao.getDadosOn(hours, days);  // SET LIST STATS AUX 
 			
-			satListLanesAux = dao.getDados15(hours);  // SET LIST LANES AUX
+			satListLanesAux = dao.getDados15(hours, days);  // SET LIST LANES AUX
 							
 			
 		if(!satListStatusAux.isEmpty()) {
@@ -134,7 +164,7 @@ public void initializer() {
 							
 							satStatus.add(mainList);
 							
-							if(satListStatusAux.size() != 0 && satListStatusAux.size() != 1) // EVITAR BUG
+							if(satListStatusAux.size() > 1) // EVITAR BUG
 								satListStatusAux.remove(r);						
 					}
 					
@@ -178,13 +208,17 @@ public void initializer() {
 							mainList.setLaneThirty(satListLanesAux.get(r).getLaneThirty());
 							mainList.setLaneFortyFive(satListLanesAux.get(r).getLaneFortyFive());	
 							
+							System.out.println(equips.getSatList().get(s).getEquip_id());
+							
 							satListLanes.add(mainList);
 							
-							if(satListLanesAux.size() != 0 && satListLanesAux.size() != 1) // EVITAR BUG
+							if(satListLanesAux.size() > 1) // EVITAR BUG
 							    satListLanesAux.remove(r);						
 					}
 					
 					else {
+						
+						System.out.println("ZERO: "+equips.getSatList().get(s).getEquip_id());
 											
 						mainList.setData("");
 						mainList.setHora("");
@@ -248,10 +282,10 @@ public void initializer() {
 		//	DateTimeApplication dt = new DateTimeApplication();
 		//	NotificationsBean not = new NotificationsBean();
 			
-			int[][] zeroMinLanes = new int[0][24];
-			int[][] fifteenMinLanes = new int[0][24];
-			int[][] thirtyMinLanes = new int[0][24];
-			int[][] forty_fiveMinLanes = new int[0][24];
+			int[][] zeroMinLanes = new int[8][24];
+			int[][] fifteenMinLanes = new int[8][24];
+			int[][] thirtyMinLanes = new int[8][24];
+			int[][] forty_fiveMinLanes = new int[8][24];
 			
 
 			for (int i = 0; i < satList.size(); i++) {
