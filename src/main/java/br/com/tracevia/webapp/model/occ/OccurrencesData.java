@@ -180,7 +180,8 @@ public class OccurrencesData {
 		this.typeHour6 = typeHour6;
 		this.lastDateHour = lastDateHour;
 		this.lastUser = lastUser;
-	
+
+		
 	}
 
 	
