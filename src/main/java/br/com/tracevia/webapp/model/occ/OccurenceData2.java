@@ -2,38 +2,38 @@ package br.com.tracevia.webapp.model.occ;
 
 public class OccurenceData2 {
 	
-	private String data;
-	private String	hora;
-	private String pedagio;
-	private String folio;
-	private String report;
-	private String sinistro;
-	private String direcao;
-	private String	kmregistro;
-	private String kminicial ;
-	private String	kmfinal ;
-	private String hrReg ;
-	private String	hrchega;
-	private String politica;
-	private String tipo_veic;
-	private String quantidade;
-	private String	numveiculo;
-	private String marca;
-	private String tipo;
-	private String modelo;
-	private String cor ;
-	private String placa;
-	private String telefone;
-	private String numcond;
-	private String nome ;
-	private int idade;
-	private String saude;
-	private String motivo;
-	private String observacao;
-	private String localFiles;
-	private String state_occurrences;
-	private Boolean editTable;
-	private String nameUser;
+public String data;
+public String	hora;
+public String pedagio;
+public String folio;
+public String report;
+public String sinistro;
+public String direcao;
+public String	kmregistro;
+public String kminicial ;
+public String	kmfinal ;
+public String hrReg ;
+public String	hrchega;
+public String politica;
+public String tipo_veic;
+public String quantidade;
+public String	numveiculo;
+public String marca;
+public String tipo;
+public String modelo;
+public String cor ;
+public String placa;
+public String telefone;
+public String numcond;
+public String nome ;
+public int idade;
+public String saude;
+public String motivo;
+public String observacao;
+public String localFiles;
+public String state_occurrences;
+public Boolean editTable;
+public String nameUser;
 	
 	/**
 	 * @param data
@@ -308,8 +308,6 @@ public class OccurenceData2 {
 		this.nameUser = nameUser;
 	}
 
-	public  OccurenceData2 getData1() {
-		return data;
 
 	
 	
