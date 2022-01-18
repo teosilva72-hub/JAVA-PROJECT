@@ -10,14 +10,8 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	
-	<f:metadata>
-	
-	<!-- Create Table Header -->
-	<f:viewAction action="#{maintenanceSatView.BuildMaintenance}" />  
-		          
-    </f:metadata>
-	
+
+
 	<ui:define name="head">
 	
 		<!-- TITLE -->
@@ -25,10 +19,7 @@
 					
 		<!-- CSS -->			
 		<h:outputStylesheet library="css/sat" name="style.css" />		
-		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />	
-		
-		<!-- SCRIPT -->	
-		<h:outputScript library="js/maintenance" name="maintenance.js"  />		
+		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />		
 						
 	</ui:define>
 	
@@ -69,7 +60,7 @@
 		</div>
 				
 		<!-- PAGE -->
-		<div class="row confRow" id="page">
+		<div class="container-fluid row" id="page">
 				
 			<!-- FOR EACH -->
 			<c:forEach items="#{maintenanceSatView.equips.satList}" var="item" varStatus="loop" ><!-- EQUIP LIST -->	
@@ -117,7 +108,7 @@
 														
 					<div class="contendo">
 						<!-- inicio do contendo -->
-						<div class="row row-number">
+						<div class="d-flex">
 							<!--  inicio da linha das horas -->
 							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
 							<!-- horas-->
@@ -172,14 +163,11 @@
 					
 						
 						<!-- final da linha das horas -->
-						<div class="row row-l">
+						<div class="d-flex">
 							<c:forEach var="value" begin="0" end="23"> 							
 								<div class="l" col="#{maintenanceSatView.hours[value]}">
-								
-								<h1>#{maintenanceSatView.satStatus.get(loop.index).statusZero[0][value]}</h1>
-								
 									<!-- inicio da sat -->							
-									<div class="row row-ll" row="0">
+									<div class="d-flex" row="0">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceStatus.statusZero[value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -191,7 +179,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- inicio da sat -->								 
-									<div class="row row-ll" row="1">
+									<div class="d-flex" row="1">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[0][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -203,7 +191,7 @@
 										<!-- intervalo de tempo -->
 									</div>									
 									<!-- row 1 -->
-									<div class="row row-ll" row="2">
+									<div class="d-flex" row="2">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[1][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -215,7 +203,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 2 -->
-									<div class="row row-ll" row="3">
+									<div class="d-flex" row="3">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[2][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -227,7 +215,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row3 -->
-									<div class="row row-ll" row="4">
+									<div class="d-flex" row="4">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[3][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -239,7 +227,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- 4 -->
-									<div class="row row-ll" row="5">
+									<div class="d-flex" row="5">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[4][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -251,7 +239,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 5 -->
-									<div class="row row-ll" row="6">
+									<div class="d-flex" row="6">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[5][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -263,7 +251,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 6 -->
-									<div class="row row-ll" row="7">
+									<div class="d-flex" row="7">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[6][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -275,7 +263,7 @@
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 7 -->
-									<div class="row row-ll" row="8">
+									<div class="d-flex" row="8">
 										<!-- row 1 -->
 										<div class="ll #{MaintenanceLanes.laneZero[7][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
@@ -291,7 +279,7 @@
 							</c:forEach>
 						</div>
 						
-						<div class="row row-number">
+						<div class="d-flex">
 							<!-- horas parte inferior do sat -->
 							<div class="number" id="h0">#{maintenanceSatView.hours[0]}</div>
 							<!-- horas-->
