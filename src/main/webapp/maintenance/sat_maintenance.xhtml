@@ -77,9 +77,11 @@
 			<!--<c:forEach var="sat" begin="1" end="6">	--> 	
 						
 			<!-- EQUIP STRUCTURE -->
-			
-				<div class="col-6 sat-def" id="#{item.table_id}#{item.equip_id}" lanes="#{maintenanceSatView.satStatus.get(loop.index).numberLanes}" 
-					status ="#{maintenanceSatView.satStatus.get(loop.index).status}" >
+				<ui:param name="MaintenanceStatus" value="#{ maintenanceSatView.satStatus.get(loop.index) }" />
+				<ui:param name="MaintenanceLanes" value="#{ maintenanceSatView.satListLanes.get(loop.index) }" />
+
+				<div class="col-6 sat-def" id="#{item.table_id}#{item.equip_id}" lanes="#{MaintenanceStatus.numberLanes}" 
+					status ="#{MaintenanceStatus.isOnline()}" >
 				
 				<!-- <div class="col-6" id="sat#{sat}"> -->
 				
@@ -179,109 +181,109 @@
 									<!-- inicio da sat -->							
 									<div class="row row-ll" row="0">
 										<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satStatus.get(loop.index).statusZero[0][value] == 1 ? 'online' : ''}" id="zero-stat-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<div class="ll #{MaintenanceStatus.statusZero[value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satStatus.get(loop.index).statusFifteen[0][value] == 1 ? 'online' : ''}" id="fifteen-stat-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceStatus.statusFifteen[value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satStatus.get(loop.index).statusThirty[0][value] == 1 ? 'online' : ''}" id="thirty-stat-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceStatus.statusThirty[value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satStatus.get(loop.index).statusFortyFive[0][value] == 1 ? 'online' : ''}" id="forty-five-stat-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceStatus.statusFortyFive[value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- inicio da sat -->								 
 									<div class="row row-ll" row="1">
 										<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[0][value] == 1 ? 'online' : ''}" id="zero-lan1-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<div class="ll #{MaintenanceLanes.laneZero[0][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[0][value] == 1 ? 'online' : ''}" id="fifteen-lan1-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[0][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[0][value] == 1 ? 'online' : ''}" id="thirty-lan1-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[0][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[0][value] == 1 ? 'online' : ''}" id="forty-five-lan1-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[0][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>									
 									<!-- row 1 -->
 									<div class="row row-ll" row="2">
 										<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[1][value] == 1 ? 'online' : ''}" id="zero-lan2-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<div class="ll #{MaintenanceLanes.laneZero[1][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[1][value] == 1 ? 'online' : ''}" id="fifteen-lan2-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[1][value] == 1 ? 'online' : ''}"></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[1][value] == 1 ? 'online' : ''}" id="thirty-lan2-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[1][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[1][value] == 1 ? 'online' : ''}" id="forty-five-lan2-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[1][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 2 -->
 									<div class="row row-ll" row="3">
-											<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[2][value] == 1 ? 'online' : ''}" id="zero-lan3-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[2][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[2][value] == 1 ? 'online' : ''}" id="fifteen-lan3-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[2][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[2][value] == 1 ? 'online' : ''}" id="thirty-lan3-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[2][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[2][value] == 1 ? 'online' : ''}" id="forty-five-lan3-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[2][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row3 -->
 									<div class="row row-ll" row="4">
-											<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[3][value] == 1 ? 'online' : ''}" id="zero-lan4-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[3][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[3][value] == 1 ? 'online' : ''}" id="fifteen-lan4-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[3][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[3][value] == 1 ? 'online' : ''}" id="thirty-lan4-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[3][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[3][value] == 1 ? 'online' : ''}" id="forty-five-lan4-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[3][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- 4 -->
 									<div class="row row-ll" row="5">
-											<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[4][value] == 1 ? 'online' : ''}" id="zero-lan5-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[4][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[4][value] == 1 ? 'online' : ''}" id="fifteen-lan5-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[4][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[4][value] == 1 ? 'online' : ''}" id="thirty-lan5-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[4][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[4][value] == 1 ? 'online' : ''}" id="forty-five-lan5-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[4][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 5 -->
 									<div class="row row-ll" row="6">
-											<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[5][value] == 1 ? 'online' : ''}" id="zero-lan6-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[5][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[5][value] == 1 ? 'online' : ''}" id="fifteen-lan6-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[5][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[5][value] == 1 ? 'online' : ''}" id="thirty-lan6-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[5][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[5][value] == 1 ? 'online' : ''}" id="forty-five-lan6-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[5][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 6 -->
 									<div class="row row-ll" row="7">
 										<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[6][value] == 1 ? 'online' : ''}" id="zero-lan7-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<div class="ll #{MaintenanceLanes.laneZero[6][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[6][value] == 1 ? 'online' : ''}" id="fifteen-lan7-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[6][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[6][value] == 1 ? 'online' : ''}" id="thirty-lan7-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[6][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[6][value] == 1 ? 'online' : ''}" id="forty-five-lan7-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[6][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 7 -->
 									<div class="row row-ll" row="8">
-											<!-- row 1 -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneZero[7][value] == 1 ? 'online' : ''}" id="zero-lan8-#{item.table_id}#{item.equip_id}h#{value}$1" ></div>
+										<!-- row 1 -->
+										<div class="ll #{MaintenanceLanes.laneZero[7][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFifteen[7][value] == 1 ? 'online' : ''}" id="fifteen-lan8-#{item.table_id}#{item.equip_id}h#{value}$2" ></div>
+										<div class="ll #{MaintenanceLanes.laneFifteen[7][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneThirty[7][value] == 1 ? 'online' : ''}" id="thirty-lan8-#{item.table_id}#{item.equip_id}h#{value}$3" ></div>
+										<div class="ll #{MaintenanceLanes.laneThirty[7][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
-										<div class="ll #{maintenanceSatView.satListLanes.get(loop.index).laneFortyFive[7][value] == 1 ? 'online' : ''}" id="forty-five-lan8-#{item.table_id}#{item.equip_id}h#{value}$4" ></div>
+										<div class="ll #{MaintenanceLanes.laneFortyFive[7][value] == 1 ? 'online' : ''}" ></div>
 										<!-- intervalo de tempo -->
 									</div>
 									<!-- row 8 -->													

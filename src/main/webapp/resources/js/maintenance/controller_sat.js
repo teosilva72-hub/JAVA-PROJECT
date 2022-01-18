@@ -91,7 +91,7 @@ $(function () {
 		
 		quantFaixas((i+1), parseInt(self.attr('lanes'))); 
 		
-		if(self.attr('status') == '1')		
+		if(self.attr('status') == 'true')		
 			self.find('.btn-sat').addClass('on');
 			
 			else self.find('.btn-sat').removeClass('on');
