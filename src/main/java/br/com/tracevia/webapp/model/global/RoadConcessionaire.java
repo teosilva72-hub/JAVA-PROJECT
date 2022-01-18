@@ -462,7 +462,7 @@ public class RoadConcessionaire {
 			tableDados15 = ViaPaulistaTables.ViaPaulistaDados15.getTable();
 			tableStatus = ViaPaulistaTables.ViaPaulistaStatus.getTable();
 			plaque = "";
-			linearMapUI = "/resources/images/realTimeInterface/linear/via_paulista.png";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_paulista.webp";
 			viaPaulista = true;
 			hasNotification = true;
 			

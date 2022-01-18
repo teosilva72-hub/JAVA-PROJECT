@@ -11,14 +11,24 @@
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
 	
+	<f:metadata>
+	
+	<!-- Create Table Header -->
+	<f:viewAction action="#{maintenanceSatView.BuildMaintenance}" />  
+		          
+    </f:metadata>
+	
 	<ui:define name="head">
 	
 		<!-- TITLE -->
 		<title>#{abaLabels.sat_board}</title>
 					
-		<!-- SCRIPT -->			
+		<!-- CSS -->			
 		<h:outputStylesheet library="css/sat" name="style.css" />		
 		<h:outputStylesheet name="layoutSAT.css" library="css/sat" />	
+		
+		<!-- SCRIPT -->	
+		<h:outputScript library="js/maintenance" name="maintenance.js"  />		
 						
 	</ui:define>
 	
@@ -159,10 +169,15 @@
 							<!-- horas -->
 						</div>
 						
+					
+						
 						<!-- final da linha das horas -->
 						<div class="row row-l">
 							<c:forEach var="value" begin="0" end="23"> 							
 								<div class="l" col="#{maintenanceSatView.hours[value]}">
+								
+								<h1>#{maintenanceSatView.satStatus.get(loop.index).statusZero[0][value]}</h1>
+								
 									<!-- inicio da sat -->							
 									<div class="row row-ll" row="0">
 										<!-- row 1 -->

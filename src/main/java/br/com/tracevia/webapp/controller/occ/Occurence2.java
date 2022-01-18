@@ -747,7 +747,15 @@ public String getLogo() {
 		}
 		//zerando as variaveis
 		listarFile = null;
+		
+	}catch (Exception ex) {
+		// TODO: handle exception
+		ex.printStackTrace();
 	}
+		
+}
+	
+		
 	//método novo
 	public void btnEnable() throws Exception {
 

@@ -413,6 +413,38 @@ function resetFormValidation(formId, btn) {
 
 /* ******************************************************************************************************** */
 
+/** Reset form validation
+ *  
+ * @author Wellington da Silva : 2021-05-07
+ * @summary Function used to reset form validation
+ * @since version 1.0
+ * @version 1.1 
+ * @description Reset validation form
+ * @copyright Tracevia S/A 2021
+ * @param {string} formId form id to reset validation
+ * @param {string} btn btn class to do action on click
+ * @returns {void}
+**/
+
+function resetSpecialFormValidation(formId, btn) {
+	// Reset Form validation
+
+	$('.' + btn).click(function () {
+
+		var validator = $(formId).validate();
+		validator.resetForm();
+		   
+    
+		$(".input-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".select-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+		$(".checkbox-field .valid-icon-visible").removeClass("valid-icon-visible").addClass('valid-icon-hidden');
+				
+	})
+}
+
+/* ******************************************************************************************************** */
+
+
 /** Clean form on modal close
  *  
  * @author Wellington da Silva : 2021-11-13

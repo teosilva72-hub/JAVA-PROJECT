@@ -54,7 +54,7 @@ $(function () {
 	cleanValidationOnModalClose("#report-form", '#modalReportOptions');
 
 	//Reset validation form on reset click button       
-	resetFormValidation("#report-form", "reset-btn");
+	resetSpecialFormValidation("#report-form", "reset-btn");
 
 
 });
