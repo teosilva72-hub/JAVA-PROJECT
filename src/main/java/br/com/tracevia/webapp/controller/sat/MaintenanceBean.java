@@ -111,8 +111,7 @@ public void initializer() {
 	
 // ----------------------------------------------------------------
 	
-	public void BuildMaintenance() {
-												
+	public void BuildMaintenance() {					
 		satListLanes= new ArrayList<Maintenance>();
 		satStatus = new ArrayList<Maintenance>();
 		
@@ -121,11 +120,14 @@ public void initializer() {
 		List<Maintenance> satListLanesAux = new ArrayList<Maintenance>();	
 		
 		MaintenanceDAO dao = new MaintenanceDAO();
+		Maintenance mainList;
+
+		int index;
 					
-		int[][] zeroMinStatus = new int[0][24];
-		int[][] fifteenMinStatus = new int[0][24];
-		int[][] thirtyMinStatus = new int[0][24];
-		int[][] forty_fiveMinStatus = new int[0][24];
+		int[] zeroMinStatus = new int[24];
+		int[] fifteenMinStatus = new int[24];
+		int[] thirtyMinStatus = new int[24];
+		int[] forty_fiveMinStatus = new int[24];
 		
 		int[][] zeroMinLanes = new int[8][24];
 		int[][] fifteenMinLanes = new int[8][24];
@@ -133,109 +135,76 @@ public void initializer() {
 		int[][] forty_fiveMinLanes = new int[8][24];
 		
 		try {			
-		
 			hours(); // DEFINE HOURS
 						
 			satListStatusAux = dao.getDadosOn(hours, days);  // SET LIST STATS AUX 
-			
 			satListLanesAux = dao.getDados15(hours, days);  // SET LIST LANES AUX
-							
 			
-		if(!satListStatusAux.isEmpty()) {
-			
-			for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
-				
-				for (int r = 0; r < satListStatusAux.size(); r++) {
+			if(!satListStatusAux.isEmpty()) {
+				for (Equipments sat : equips.getSatList()) {
+					index = satListStatusAux.size() - 1;
 					
-					Maintenance mainList = new Maintenance();
+					mainList = new Maintenance();
 
-					 // COMPARA IDS ENTRE AS LISTAS
-					if (satListStatusAux.get(r).getSiteId() == equips.getSatList().get(s).getEquip_id()) {
-						
-							mainList.setData(satListStatusAux.get(r).getData());
-							mainList.setHora(satListStatusAux.get(r).getHora());
-							mainList.setSiteId(satListStatusAux.get(r).getSiteId());
-							mainList.setStatus(satListStatusAux.get(r).getStatus());				
-							mainList.setNumberLanes(satListStatusAux.get(r).getNumberLanes());
-							mainList.setStatusZero(satListStatusAux.get(r).getStatusZero());
-							mainList.setStatusFifteen(satListStatusAux.get(r).getStatusFifteen());
-							mainList.setStatusThirty(satListStatusAux.get(r).getStatusThirty());
-							mainList.setStatusFortyFive(satListStatusAux.get(r).getStatusFortyFive());	
-							
-							satStatus.add(mainList);
-							
-							if(satListStatusAux.size() > 1) // EVITAR BUG
-								satListStatusAux.remove(r);						
-					}
-					
-					else {
-						
-						mainList.setData("");
-						mainList.setHora("");
-						mainList.setSiteId(equips.getSatList().get(s).getEquip_id());
-						mainList.setStatus(0);
-						mainList.setNumberLanes(2);
-						mainList.setStatusZero(zeroMinStatus);
-						mainList.setStatusFifteen(fifteenMinStatus);
-						mainList.setStatusThirty(thirtyMinStatus);
-						mainList.setStatusFortyFive(forty_fiveMinStatus);	
-						
-						satStatus.add(mainList);
-						
-					}			
-				}			
-		     }
-			
-		 }else intializeStatusNullList(equips.getSatList());
-		
-		
-		if(!satListLanesAux.isEmpty()) {
-			
-			for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
-				
-				for (int r = 0; r < satListLanesAux.size(); r++) {
-					
-					Maintenance mainList = new Maintenance();
+					mainList.setData("");
+					mainList.setHora("");
+					mainList.setSiteId(sat.getEquip_id());
+					mainList.setStatus(0);
+					mainList.setNumberLanes(2);
+					mainList.setStatusZero(zeroMinStatus);
+					mainList.setStatusFifteen(fifteenMinStatus);
+					mainList.setStatusThirty(thirtyMinStatus);
+					mainList.setStatusFortyFive(forty_fiveMinStatus);
 
-					 // COMPARA IDS ENTRE AS LISTAS
-					if (satListLanesAux.get(r).getSiteId() == equips.getSatList().get(s).getEquip_id()) {
-											
-							mainList.setData(satListLanesAux.get(r).getData());
-							mainList.setHora(satListLanesAux.get(r).getHora());
-							mainList.setSiteId(satListLanesAux.get(r).getSiteId());						
-							mainList.setLaneZero(satListLanesAux.get(r).getLaneZero());
-							mainList.setLaneFifteen(satListLanesAux.get(r).getLaneFifteen());
-							mainList.setLaneThirty(satListLanesAux.get(r).getLaneThirty());
-							mainList.setLaneFortyFive(satListLanesAux.get(r).getLaneFortyFive());	
+					for (; index >= 0; index--) { // FOR START
+						Maintenance status = satListStatusAux.get(index);
+
+						// COMPARA IDS ENTRE AS LISTAS
+						if (status.getSiteId() == sat.getEquip_id()) {
+							mainList = status;
 							
-							System.out.println(equips.getSatList().get(s).getEquip_id());
-							
-							satListLanes.add(mainList);
-							
-							if(satListLanesAux.size() > 1) // EVITAR BUG
-							    satListLanesAux.remove(r);						
-					}
-					
-					else {
-						
-						System.out.println("ZERO: "+equips.getSatList().get(s).getEquip_id());
-											
-						mainList.setData("");
-						mainList.setHora("");
-						mainList.setSiteId(equips.getSatList().get(s).getEquip_id());					
-						mainList.setLaneZero(zeroMinLanes);
-						mainList.setLaneFifteen(fifteenMinLanes);
-						mainList.setLaneThirty(thirtyMinLanes);
-						mainList.setLaneFortyFive(forty_fiveMinLanes);	
-						
-						satListLanes.add(mainList);
-						
-					}			
-				}			
-		     }
+							if(index >= 0) // EVITAR BUG
+								satListStatusAux.remove(index);
+							break;
+						}			
+					}	
+
+					satStatus.add(mainList);
+				}
+			} else
+				intializeStatusNullList(equips.getSatList());
 			
-		 }else intializeLanesNullList(equips.getSatList());
-													
+			if(!satListLanesAux.isEmpty()) {
+				for (Equipments sat : equips.getSatList()) {
+					index = satListLanesAux.size() - 1;
+
+					mainList = new Maintenance();
+
+					mainList.setData("");
+					mainList.setHora("");
+					mainList.setSiteId(sat.getEquip_id());					
+					mainList.setLaneZero(zeroMinLanes);
+					mainList.setLaneFifteen(fifteenMinLanes);
+					mainList.setLaneThirty(thirtyMinLanes);
+					mainList.setLaneFortyFive(forty_fiveMinLanes);
+					
+					for (; index >= 0; index--) { // FOR START
+						Maintenance lanes = satListLanesAux.get(index);
+
+						// COMPARA IDS ENTRE AS LISTAS
+						if (lanes.getSiteId() == sat.getEquip_id()) {
+							mainList = lanes;
+							
+							if(index >= 0) // EVITAR BUG
+								satListLanesAux.remove(index);			
+							break;			
+						}		
+					}
+
+					satListLanes.add(mainList);
+				}
+			} else
+				intializeLanesNullList(equips.getSatList());										
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,10 +218,10 @@ public void initializer() {
 		//DateTimeApplication dt = new DateTimeApplication();
 		//NotificationsBean not = new NotificationsBean();
 		
-		int[][] zeroMinStatus = new int[0][24];
-		int[][] fifteenMinStatus = new int[0][24];
-		int[][] thirtyMinStatus = new int[0][24];
-		int[][] forty_fiveMinStatus = new int[0][24];
+		int[] zeroMinStatus = new int[24];
+		int[] fifteenMinStatus = new int[24];
+		int[] thirtyMinStatus = new int[24];
+		int[] forty_fiveMinStatus = new int[24];
 		
 
 		for (int i = 0; i < satList.size(); i++) {

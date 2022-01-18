@@ -13,14 +13,12 @@
 	padding-left: 45px;	
 	cursor: pointer;
 }
+
 .input-field textArea{
 	height: auto;
 	border: 1px solid #343a40;
 	border-radius: 25px;
-
-
 }
-
 
 /* custom style for multiselect checkbox */
 .checkbox-field button {
@@ -103,12 +101,12 @@
 
 /* hidden icon fontawesome for validation (inside elements) */
 .valid-icon-hidden{ 
-    display: reverse;  
+    display: none;  
 }
 
 /* visible icon fontawesome for validation (inside elements) */
 .valid-icon-visible{  
- display: reverse;
+ display: block;
 }
 
 /* error label class */

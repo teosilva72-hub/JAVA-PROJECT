@@ -12,10 +12,9 @@ body, html {
 }/*global btn do sat*/
 .contendo {
 	width: 100%;
-	height: 100%;
 }/*sat size*/
 .number {
-	width: 3.97%;
+	width: 100%;
 	font-size: 8pt;
 	text-align: center;
 	background: black;
@@ -41,14 +40,14 @@ body, html {
 }/*linha principal dos minutos*/
 .l{
 	border: solid black 1px;
-	width: 4%;
+	width: 100%;
 	height: 100%;
 }/*coluna dos minutos*/
 .row-ll{
 	margin-left: 0px;
 }/*contento 0 15 30 e 45 min*/
 .ll{
-	width: 17%;
+	width: 100%;
 	background: red;
 	height: 8px;
 	border: solid black 1px;

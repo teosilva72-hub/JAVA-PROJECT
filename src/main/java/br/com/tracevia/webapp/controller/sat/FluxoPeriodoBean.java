@@ -71,7 +71,7 @@ public class FluxoPeriodoBean implements Serializable {
 			private List<FluxoPeriodo> lista;
 						
 			private ReportBuild build;
-			
+					
 			LocaleUtil localeSat, localeDir, localeReports, localeSheet, localeCalendar;
 				
 					
@@ -565,7 +565,7 @@ public class FluxoPeriodoBean implements Serializable {
 	public void setEquip_anterior(int equip_anterior) {
 		this.equip_anterior = equip_anterior;
 	}
-
+		
 	@PostConstruct
 	public void init() {			
 		
@@ -1450,20 +1450,13 @@ public class FluxoPeriodoBean implements Serializable {
 		SessionUtil.getExternalContext().setResponseContentType("application/vnd.ms-excel");
 		SessionUtil.getExternalContext().setResponseHeader("Content-Disposition",
 				"attachment; filename=\""+fileName+".xlsx\"");
-
-		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream(); 
-		
-		//ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		//workbook.write(byteArrayOutputStream);
-
+	
+		OutputStream responseOutputStream = SessionUtil.getExternalContext().getResponseOutputStream(); 								
 		workbook.write(responseOutputStream);
-		workbook.close();
-		workbook.dispose();
-		
-		SessionUtil.getFacesContext().responseComplete(); 
-		
+						
 		build.excelBool = true;
-		
+			
+		SessionUtil.getFacesContext().responseComplete(); 
 	}
 		
 	// ---------------------------------------------------------------------------------
@@ -2111,8 +2104,8 @@ public class FluxoPeriodoBean implements Serializable {
 		
 		SessionUtil.getFacesContext().getPartialViewContext().getRenderIds().add("form-info:dismiss-modal");
 		
-	}				
-
+	}		
+	
 	public void message(int step) { 
 		
 	    // System.out.println("step by step");
@@ -2510,7 +2503,7 @@ public class FluxoPeriodoBean implements Serializable {
 	    		 sentidoExcel2[sheetIndex] = localeDir.getStringKey("directions_tab_east")+"/"+localeDir.getStringKey("directions_tab_south");    		 
 	    	 }	    	 
 	      }  
-     	    
 	     
+	 	     
 	     
   }

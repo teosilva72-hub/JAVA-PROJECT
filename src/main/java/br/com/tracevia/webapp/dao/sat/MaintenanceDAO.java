@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
@@ -39,7 +40,7 @@ public class MaintenanceDAO {
 		
 		// --------------------------------------------------------------------------------------------------------------
 		
-		/** MÃ©todo para obter status dos equipamentos (SAT)
+		/** Método para obter status dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
@@ -50,6 +51,8 @@ public class MaintenanceDAO {
 		public List<Maintenance> getDadosOn(String[] hours, String[] days){
 
 			List<Maintenance> lista = new ArrayList<Maintenance>();
+			HashMap<Integer, Maintenance> map = new HashMap<>();
+			Maintenance dados;
 			
 			DateTimeApplication dta = new DateTimeApplication();
 													
@@ -61,10 +64,10 @@ public class MaintenanceDAO {
 			// Obter datas formatadas para os dados
 			currentDate = dta.getCurrentDateDados15(calendar, minute);
 					
-			int[][] stateZero = new int[1][24];
-			int[][] stateFifteen = new int[1][24];
-			int[][] stateThirty = new int[1][24];
-			int[][] stateFortyFive = new int[1][24];
+			int[] stateZero = new int[24];
+			int[] stateFifteen = new int[24];
+			int[] stateThirty = new int[24];
+			int[] stateFortyFive = new int[24];
 						
 			int day = 0;
 			int hour = 0;
@@ -85,83 +88,64 @@ public class MaintenanceDAO {
 				
 				System.out.println(currentDate);
 				
-				  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-					
-					ps = conn.prepareStatement(select);			
-					ps.setString(1, currentDate);		
-					ps.setString(2, currentDate);
-					
-					rs = ps.executeQuery();
-					
-					System.out.println(select);
-													
-					if (rs.isBeforeFirst()) {
-							while (rs.next()) {
-						
-						Maintenance dados = new Maintenance();
-											
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				
+				ps = conn.prepareStatement(select);			
+				ps.setString(1, currentDate);		
+				ps.setString(2, currentDate);
+				
+				rs = ps.executeQuery();
+
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						int id = rs.getInt(3);
+
+						if (map.containsKey(id)) {
+							dados = map.get(id);
+
+							stateZero = dados.getStatusZero();
+							stateFifteen = dados.getStatusFifteen();
+							stateThirty = dados.getStatusThirty();
+							stateFortyFive = dados.getStatusFortyFive();
+						} else
+							dados = new Maintenance();
+
 						dados.setData(rs.getString(1));
 						dados.setHora(rs.getString(2));
 						dados.setSiteId(rs.getInt(3));					
 						dados.setNumberLanes(rs.getInt(5));	
-																							
+
 						day = Integer.parseInt(dados.getData().substring(8, 10));
 						hour = Integer.parseInt(dados.getHora().substring(0, 2));
 						min =  Integer.parseInt(dados.getHora().substring(3, 5));
-																		
-						  for(int h = 0; h < 24; h++) {
-						     
-							 if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
-						         hourIndex = h;	
-							
-						 }		
-											
-						if(rs.getInt(4) >= 8) {
-							
-							dados.setStatus(1);	
-							
-							if(min == 0) {
-								stateZero[0][hourIndex] = 1;
-													
-							}if(min == 15) {							
-								 stateFifteen[0][hourIndex] = 1;							
-							
-							}if(min == 30) {								
-								 stateThirty[0][hourIndex] = 1;	
-															
-							}if(min == 45) {								
-								 stateFortyFive[0][hourIndex] = 1;	
-							}
-						}
-							
-						else {
-							
-								dados.setStatus(0);	
-							
-							if(min == 0) {
-									stateZero[0][hourIndex] = 0;
-														
-							}if(min == 15) {								
-									stateFifteen[0][hourIndex] = 0;
-									
-							
-							}if(min == 30) {								
-									stateThirty[0][hourIndex] = 0;									
-							
-							}if(min == 45) {								
-									stateFortyFive[0][hourIndex] = 0;	
-							}															
-						}
-							
-						   dados.setStatusZero(stateZero);
-						   dados.setStatusFifteen(stateFifteen);
-						   dados.setStatusThirty(stateThirty);
-						   dados.setStatusFortyFive(stateFortyFive);		
 																	
-					   lista.add(dados);
-					   
+						for(int h = 0; h < 24; h++)
+							if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
+								hourIndex = h;
+
+						int status = rs.getInt(4) >= 8 ? 1 : 0;
+										
+						if(min == 0)
+							stateZero[hourIndex] = status;
+												
+						if(min == 15)
+							stateFifteen[hourIndex] = status;							
+						
+						if(min == 30)
+							stateThirty[hourIndex] = status;	
+														
+						if(min == 45)
+							stateFortyFive[hourIndex] = status;
+							
+						dados.setStatusZero(stateZero.clone());
+						dados.setStatusFifteen(stateFifteen.clone());
+						dados.setStatusThirty(stateThirty.clone());
+						dados.setStatusFortyFive(stateFortyFive.clone());
+
+						map.put(id, dados);
 					}		
-				 }
+					lista.addAll(map.values());
+				}
 
 			} catch (SQLException sqle) {
 				
@@ -180,7 +164,7 @@ public class MaintenanceDAO {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		/** MÃ©todo para obter status dos dados por faixa dos equipamentos (SAT)
+		/** Método para obter status dos dados por faixa dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
@@ -190,6 +174,8 @@ public class MaintenanceDAO {
 		public ArrayList<Maintenance> getDados15(String[] hours, String[] days) {
 
 			ArrayList<Maintenance> lista = new ArrayList<Maintenance>();
+			HashMap<Integer, Maintenance> map = new HashMap<>();
+			Maintenance dados;
 			
 			DateTimeApplication dta = new DateTimeApplication();
 			
@@ -201,10 +187,10 @@ public class MaintenanceDAO {
 			// Obter datas formatadas para os dados
 			currentDate = dta.getCurrentDateDados15(calendar, minute);	
 			
-			int[][] laneZero = new int[8][24];
-			int[][] laneFifteen = new int[8][24];
-			int[][] laneThirty = new int[8][24];
-			int[][] laneFortyFive = new int[8][24];
+			int[][] laneZero;
+			int[][] laneFifteen;
+			int[][] laneThirty;
+			int[][] laneFortyFive;
 			
 			int day = 0;
 			int hour = 0;
@@ -222,20 +208,33 @@ public class MaintenanceDAO {
 			
 			try {
 				
-				  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 					
-					ps = conn.prepareStatement(select);			
-					ps.setString(1, currentDate);		
-					ps.setString(2, currentDate);
-					
-					rs = ps.executeQuery();
-					
-					//System.out.println(select);
+				ps = conn.prepareStatement(select);			
+				ps.setString(1, currentDate);		
+				ps.setString(2, currentDate);
+				
+				rs = ps.executeQuery();
 																		
-					if (rs.isBeforeFirst()) {
-						   while (rs.next()) {
-						
-						Maintenance dados = new Maintenance();
+				if (rs.isBeforeFirst()) {
+					while (rs.next()) {
+						int id = rs.getInt(3);
+
+						if (map.containsKey(id)) {
+							dados = map.get(id);
+
+							laneZero = dados.getLaneZero();
+							laneFifteen = dados.getLaneFifteen();
+							laneThirty = dados.getLaneThirty();
+							laneFortyFive = dados.getLaneFortyFive();
+						} else {
+							dados = new Maintenance();
+
+							laneZero = new int[8][24];
+							laneFifteen = new int[8][24];
+							laneThirty = new int[8][24];
+							laneFortyFive = new int[8][24];
+						}
 						
 						dados.setData(rs.getString(1));
 						dados.setHora(rs.getString(2));
@@ -248,332 +247,45 @@ public class MaintenanceDAO {
 						day = Integer.parseInt(dados.getData().substring(8, 10));
 						hour = Integer.parseInt(dados.getHora().substring(0, 2));
 						min =  Integer.parseInt(dados.getHora().substring(3, 5));
-																		
-						  for(int h = 0; h < 24; h++) {
-						     
-							 if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
-						         hourIndex = h;	
-							
-						 }			
-						  
-						//  System.out.println(min+" "+hourIndex);
-											
-						switch(dados.getLane()) {
-																			
-							case 1: 
-																
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[0][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[0][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[0][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[0][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[0][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[0][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[0][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[0][hourIndex] = 0;	
-																										
-								   }
-								
-							break;	
-							
-							// -------------------------------------
-							
-							case 2: 
-															
-								if(dados.getVolume() > 0) {
-																											
-									if(min == 0) 									
-										laneZero[1][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[1][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[1][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[1][hourIndex] = 1;	
-									 																																
-								}else {
-									
-									  if(min == 0) 
-										   laneZero[1][hourIndex] = 0;
-																
-									  if(min == 15)								
-										   laneFifteen[1][hourIndex] = 0;											
-									
-									  if(min == 30)								
-										   laneThirty[1][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-										   laneFortyFive[1][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-																	
-							case 3: 
-								
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[2][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[2][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[2][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[2][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[2][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[2][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[2][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[2][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-							
-							case 4: 
 	
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[3][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[3][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[3][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[3][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[3][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[3][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[3][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[3][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-							
-							case 5: 
-								
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[4][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[4][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[4][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[4][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[4][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[4][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[4][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[4][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-							
-							case 6: 
-								
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[5][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[5][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[5][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[5][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[5][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[5][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[5][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[5][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-							
-							case 7: 
-								
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[6][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[6][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[6][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[6][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[6][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[6][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[6][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[6][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-							
-							// -------------------------------------
-							
-							case 8: 
-								
-								if(dados.getVolume() > 0) {
-									
-									if(min == 0) 									
-										laneZero[7][hourIndex] = 1;
-										
-									 if(min == 15) 							
-										 laneFifteen[7][hourIndex] = 1;							
-									
-									 if(min == 30) 								
-										 laneThirty[7][hourIndex] = 1;	
-																	
-									 if(min == 45) 								
-										 laneFortyFive[7][hourIndex] = 1;																
-																									
-								}else {
-									
-									  if(min == 0) 
-											laneZero[7][hourIndex] = 0;
-																
-									  if(min == 15)								
-											laneFifteen[7][hourIndex] = 0;											
-									
-									  if(min == 30)								
-											laneThirty[7][hourIndex] = 0;									
-									
-									  if(min == 45) 								
-											laneFortyFive[7][hourIndex] = 0;	
-																										
-								   }
-								
-							break;
-																			
-						}
-						
-						   dados.setLaneZero(laneZero);
-						   dados.setLaneFifteen(laneFifteen);
-						   dados.setLaneThirty(laneThirty);
-						   dados.setLaneFortyFive(laneFortyFive);				
+						for(int h = 0; h < 24; h++)
+							if(Integer.parseInt(hours[h]) == hour && Integer.parseInt(days[h]) == day)
+								hourIndex = h;
 
-						lista.add(dados);
-						
-					}	
+						int laneIdx = dados.getLane() -1;
+						int status = dados.getVolume() > 0 ? 1 : 0;
+
+						if(min == 0) 									
+							laneZero[laneIdx][hourIndex] = status;
+							
+						if(min == 15) 							
+							laneFifteen[laneIdx][hourIndex] = status;							
+					
+						if(min == 30) 								
+							laneThirty[laneIdx][hourIndex] = status;	
+													
+						if(min == 45) 								
+							laneFortyFive[laneIdx][hourIndex] = status;
+
+						dados.setLaneZero(laneZero.clone());
+						dados.setLaneFifteen(laneFifteen.clone());
+						dados.setLaneThirty(laneThirty.clone());
+						dados.setLaneFortyFive(laneFortyFive.clone());	
+
+						map.put(id, dados);
+					}
+
+					lista.addAll(map.values());
 				}
-
 			} catch (SQLException sqle) {
-				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
 				SystemLog.logErrorSQL(errorFolder.concat("error_get_data"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-					
-				
 			} finally {
-				
 				ConnectionFactory.closeConnection(conn, ps, rs);
-				
 			}
 
 			return lista;
 		}
-	
-		 // -------------------------------------------------------------------------------------------------------------------------------------------------
 	}

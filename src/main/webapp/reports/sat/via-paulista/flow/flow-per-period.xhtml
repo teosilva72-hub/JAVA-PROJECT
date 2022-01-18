@@ -137,7 +137,7 @@
 					
 			<div id="btn-excel"> 
 		       <h:commandButton id="excel-act" value="" disabled="#{fluxoPeriodo.build.excelBool}"
-			      class="fas fa-file-excel fa-2x" data-toggle="tooltip"
+			      class="fas fa-file-excel fa-2x" data-toggle="tooltip" 
 			      data-placement="bottom" title="#{reportsLabels.reports_btn_excel}" widgetVar="excelWgt">
 			  	  <f:passThroughAttribute name="data-toggle" value="modal" />
 			  	  <f:passThroughAttribute name="data-target" value="#modalDownload" />
@@ -350,8 +350,7 @@
 						<div class="modal-footer">
 							<h:commandButton p:onclose="download"
 								value="#{reportsLabels.reports_modal_alert_btn_yes}"							
-								class="btn btn-dark form-draw-button" action="#{fluxoPeriodo.downloadFile}" >
-								<f:ajax execute="@form" render="form-btns:excel-act" />
+								class="btn btn-dark form-draw-button" action="#{fluxoPeriodo.downloadFile}" onclick="$(this).addClass('ui-state-disabled')" >														
 							</h:commandButton>	
 							
 							<!---->

@@ -42,7 +42,7 @@ var validation = document.forms.validation;
 
     //Reset validation form
     //click reset button action
-    resetFormValidation("#vbv-form", "reset-btn");
+    resetSpecialFormValidation("#vbv-form", "reset-btn");
 
    // Preventing form resubmission
 	window.history.replaceState('','',window.location.href)
