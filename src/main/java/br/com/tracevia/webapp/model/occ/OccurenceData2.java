@@ -5,7 +5,7 @@ public class OccurenceData2 {
 	private String data;
 	private String	hora;
 	private String pedagio;
-	private String	folio;
+	private String folio;
 	private String report;
 	private String sinistro;
 	private String direcao;
@@ -308,7 +308,8 @@ public class OccurenceData2 {
 		this.nameUser = nameUser;
 	}
 
-	
+	public  OccurenceData2 getData1() {
+		return data;
 
 	
 	

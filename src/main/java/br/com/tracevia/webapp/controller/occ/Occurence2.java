@@ -49,11 +49,10 @@ import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 
-@ManagedBean(name="occurrencesBean")
+@ManagedBean(name="occurrence2")
 @ViewScoped
 public class Occurence2 {
 
@@ -447,7 +446,8 @@ public String getLogo() {
 
 		OccurencesDao2 dao = new OccurencesDao2();
 		occNumber = dao.cadastroOcorrencia(data);
-		//CREATE LOCAL PATH
+		
+				//CREATE LOCAL PATH
 		localPath = localPath(occNumber);
 
 		//if id is non-null
@@ -747,7 +747,15 @@ public String getLogo() {
 		}
 		//zerando as variaveis
 		listarFile = null;
+		
+	}catch (Exception ex) {
+		// TODO: handle exception
+		ex.printStackTrace();
 	}
+		
+}
+	
+		
 	//método novo
 	public void btnEnable() throws Exception {
 

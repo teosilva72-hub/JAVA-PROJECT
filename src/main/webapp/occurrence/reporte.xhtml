@@ -25,13 +25,73 @@
 	<!---->
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
-		<div class="container col-md-12" style="width: auto; height: 500px">
- 
-	
+
+			<!-- Inicio do lado direito -->
+			<div class="col-md-12 col-sm-12 colDireita">
+				<!-- Inicio da lista -->
+				<div class="tabela-occ">
+					<!-- Tabela listar -->
+					<div id="tabelaReal">
+						<h:dataTable id="occurrence-table" var="data" disabled="true"
+							value="#{occurrencesBean.occurrences}"
+							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
+							cellspacing="0" width="50%"  headerClass="custom-table-header"
+							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+
+							<h:column>
+								<f:facet name="header" class="text-center">ID</f:facet>
+								<h:outputText value="#{data.data_number}"
+									style=" font-size: 12px; " />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Tipo</f:facet>
+								<h:outputText value="#{data.type}" style="  font-size: 12px;" />
+							</h:column>
+
+							<h:column>
+								<f:facet name="header">Periodo</f:facet>
+								<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
+							</h:column>
+							
+							<h:column>
+								<f:facet class="barraTable" name="header">Causa</f:facet>
+								<h:outputText value="#{data.state_occurrences}"
+									style="font-size: 12px;" />
+							</h:column>
+							<!--<h:column>
+										<f:facet class="barraTable hidden" name="header">#{occLabels.occ_list_table_file}</f:facet>
+										<img><i class="fas fa-check fa-2x iconeListYes"></i></img>
+										<img><i class="fas fa-times fa-2x iconeListNot"></i></img>
+									</h:column>-->
+
+						</h:dataTable>
+					</div></div>
+					<!-- final da table -->
+	<!-- Botão para acionar modal -->
+<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
+Nova Ocorrencia
+</button>
+
+<!-- Modal -->
+  <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
+  <div class="modal-dialog modal-xl ">
+ <div class="modal-content fundo">
+      <div class="modal-header ">
+        <h5 class="modal-title ml-auto ">#{occLabels.occ_title_pdf}</h5>
+        <button type="button" class="close " data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="form-group col-md-11 text-center">	
+       
+    
+						
 									<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
 
 										<!-- Botão alterar -->
-										<h:commandButton id="edit" class="btn btnConf menu " disabled="#{occurrencesBean.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrencesBean.btnEdit}">
+										<h:commandButton id="edit" class="btn btnConf menu " disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrence2.atualizarOcorrencia}">
 									
 										</h:commandButton>
 										<!-- Botão editar -->
@@ -42,7 +102,7 @@
 										</h:commandButton>
 
 										<!-- Botão Salvar -->
-										<h:commandButton id="save" class=" btnConf menu" disabled="#{occurrencesBean.save}" value="#{occLabels.btn_salvar}">
+										<h:commandButton id="save" class=" btnConf menu" disabled="#{occurrencesBean2.save}" value="#{occLabels.btn_salvar}" action="#{occurrence2.cadastroOcorrencia}">
 											<f:passThroughAttribute name="data-toggle" value="modal" />
 											<f:passThroughAttribute name="data-target" value="#modalSalvar" />
 											<f:ajax execute="@form" render="@none" />
@@ -69,17 +129,17 @@
 											<f:ajax execute="@form" render="@none" />
 										</h:commandButton>
 									</div>
-						<div class="form-group col-md-12 text-center">	
+								
 			
 			<div class="form-row col-md-12 ">
 				<div class="form-group col-md-6 text-center">
 					<label for="date" class=" fonttext mr-3 ">#{occLabels.$label_occ_reports_date}</label> 
-					<input type="date" id="date" class="inputDesign form-control col-md-4 text-center ml-3 mr-3" placeholder ="mm/dd/yyyy" />
+					<h:inputText value="#{occurrence2.data.date}" type="date" id="date" class="inputDesign form-control col-md-4 text-center ml-3 mr-3" placeholder ="mm/dd/yyyy" />
 				</div>
 
 				<div class="form-group col-md-6 text-center">
 					<label for="nome" class=" fonttext  ">#{occLabels.$label_occ_reports_hour}</label>
-					 <input type="time" id="nome" class="inputDesign form-control text-center col-md-3 ml-3 mr-3" /></div>
+					<h:inputText value="#{occurrence2.data.hora}" type="time" id="nome" class="inputDesign form-control text-center col-md-3 ml-3 mr-3" /></div>
 				</div>
 			
 			<form id="formExemplo" data-toggle="validator" role="form" class="formulario container">
@@ -101,14 +161,14 @@
 					<div class="form-group col-6 text-center row">
 						<label for="nome" class=" fonttext col-form-label"> #{occLabels.$label_occ_reports_report} </label>
 							<div class="col-9 ml-auto">
-								<input type="text" id="nome" class="inputDesign  form-control" />
+							<h:inputText value="#{occurrence2.data.report}"  type="text" id="nome" class="inputDesign  form-control" />
 							</div>
 					</div>
 					
 					<div class="form-group col-6 text-center row">
 						<label for="nome" class="col-form-label fonttext">  #{occLabels.$label_occ_reports_sinistro}   </label>
 							<div class="col-9 ml-auto">
-								<input type="text" id="nome" class="inputDesign form-control" />
+							<h:inputText value="#{occurrence2.data.sinistro}"type="text" id="nome" class="inputDesign form-control" />
 						</div>
 					</div>
 					
@@ -325,6 +385,8 @@
 					<div class="alert alert-dark confAlert col-3 inputDesign2" role="alert">
 						<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
 					</div>
+					
+	
 							<!-- FInal alert Anexos -->
 
 							<!-- input file save -->
@@ -341,7 +403,6 @@
 							</div>
 						</div>
 
-			
 
 							<!-- input file alterar -->
 							<div class="form-row" id="listDateFile" style="display: none;">
@@ -352,6 +413,10 @@
 												<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
 
 								</div>
+								
+	
+								
+	
 								<!-- BTN UPDATE FILE -->
 								<div class="col-md-3">
 									<h:commandButton class="btn btnConf" id="btnUpdate" onclick="validatorFile2();" value="#{occLabels.occ_uploadFile}" action="#{occurrencesBean.updateFile}" disabled="#{occurrencesBean.fields}" />
@@ -361,12 +426,14 @@
 							<div class="alert alert-dark confAlert col-3 inputDesign2" id="fileTotal" role="alert">
 								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files} (#{occurrencesBean.total})</h5>
 							</div>
+							
+							
 
 							<div class="listarFiles" id="listFiles">
 								<div class="col-md-12">
 									<!-- Array arquivos na pasta -->
 									<c:forEach items="#{occurrencesBean.listarFile}" var="item" id="listandoFile" varStatus="loop">
-										<div class="row">
+									
 											<div class="col-md-12">
 												<div class="row">
 													<!-- image file -->
@@ -376,6 +443,8 @@
 														<span>#{occLabels.occ_name_file} </span>
 															<p class="text-center">#{item}</p>
 													</div>
+													
+													
 													<!-- btn delete -->
 													<div class="col-md-2">
 														<span>#{occLabels.occ_delete}</span>
@@ -389,6 +458,9 @@
 																		<li>
 																			<h:commandLink action="#{occurrencesBean.deleteFile(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
 																	</ul>
+																	
+																														    <div class="modal-footer">
+      
 															</div>
 														</div>
 													</div>
@@ -465,6 +537,8 @@
 																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
 																			<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+														 
+      													
 																	</ul>
 																</div>
 															</div>
@@ -479,6 +553,12 @@
 						</div>
 					 </div>	
 	 			 </div>
+   </div>
+      </div>
+    
+  
+    </div>
+  </div>
 
    </ui:define>
 </ui:composition>

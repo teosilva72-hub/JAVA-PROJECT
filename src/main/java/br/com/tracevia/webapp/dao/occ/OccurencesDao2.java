@@ -68,8 +68,8 @@ public class OccurencesDao2 {
 				ps.setString(26, data.getMotivo());
 				ps.setString(26, data.getObservacao());
 				
-				int res = ps.executeUpdate();
-				
+			int res = ps.executeUpdate();
+			
 				//se a vari�vel for maior do que 0, acessamos a essa fun��o
 				if(res > 0) {
 					
@@ -256,8 +256,11 @@ public class OccurencesDao2 {
 
 			return status;
 		}
+		
 		public OccurenceData2 submitPdf(int PdfGet) throws Exception {
 			TranslationMethods trad = new TranslationMethods();
+			
+			OccurenceData2 occ = new OccurenceData2();
 
 			//script onde pegamos os valores dos atributos
 			String pdf = "SELECT  dt.value_, dt1.value_, dt2.value_, dt3.value_, dt4.value_, dt5.value_, dt6.value_, dt7.value_, dt8.value_, dt9.value_, dt10.value_, " + 
@@ -295,6 +298,9 @@ public class OccurencesDao2 {
 
 				if(rs != null) {
 					while(rs.next()) {
+						
+						
+						
 						occ.setData(rs.getString(1));
 						occ.setHora(rs.getString(2));
 						occ.setPedagio(rs.getString(3));

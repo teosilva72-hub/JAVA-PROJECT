@@ -212,6 +212,20 @@ em {
   background-color: black;
   border: solid black 1px;
 }
+
+	.btnConf2{
+		font-size: 12pt;
+		 color: #fff;    
+  		background-color: black;
+		  border: solid black 1px;
+}
+	
+	
+.fundo{
+		background-color: rgb(201, 209, 207) !important ; 
+}	
+	
+
 /**/
 #add-campo{
 	position: relative;
