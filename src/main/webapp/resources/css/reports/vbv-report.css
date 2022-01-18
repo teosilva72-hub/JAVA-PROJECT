@@ -200,3 +200,46 @@ label#label{
 }
 	
 /* --------------------------------------------- */
+
+/**
+* Estilo para definir um espaço a esquerda 
+* para o label de descrição do relatório.
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.error-label{	
+	margin-top: 3px !important; 	
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para esconder iconde de validação
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.valid-icon-hidden{ 
+  display: none !important;
+}
+
+/* --------------------------------------------- */
+
+/**
+* Estilo para mostrar icone de validação
+*
+* @author Wellington
+* @date 17/01/2022
+* @version 1.0
+* @since 1.0
+*/
+.valid-icon-visible{  
+  display: block !important;  
+}
+
+/* --------------------------------------------- */
