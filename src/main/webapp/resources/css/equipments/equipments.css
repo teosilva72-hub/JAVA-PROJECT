@@ -1,0 +1,13 @@
+.logo-concessionaire {
+  left: 50% !important;
+  bottom: unset !important;
+  transform: translateX(-50%) !important;
+  top: 10px !important;
+  opacity: 1 !important;
+  z-index: 1030 !important;
+}
+
+.equip-box{
+  border-style: double;
+  width: 100%;	
+}
