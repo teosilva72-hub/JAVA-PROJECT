@@ -28,7 +28,7 @@ public class OccurencesDao2 {
 			String occ_number = null;
 			
 			//script BD
-			String query = "INSERT INTO occ_data2( data, hora, pedagio, folio, report, sinistro, direcao, "
+			String query = "INSERT INTO occ_data2(date, hora, pedagio, folio, report, sinistro, direcao, "
 					+ "kmregistro, kminicial, kmfinal, horaregistro, horachega, politica, "
 					+ " tipoveic, quantidade, numero, marca, tipo_veic, modelo, color, placa, telefone, nome, "
 					+ "idade, saude, motivo,observacao "
@@ -40,7 +40,7 @@ public class OccurencesDao2 {
 				ps = conn.prepareStatement(query);
 				
 				//passando valores para os atributos BD
-				ps.setString(1, data.getData());
+				ps.setString(1, data.getDate());
 				ps.setString(2, data.getHora());
 				ps.setString(3, data.getPedagio());
 				ps.setString(4, data.getFolio());
@@ -63,7 +63,7 @@ public class OccurencesDao2 {
 				ps.setString(21, data.getPlaca());
 				ps.setString(22, data.getTelefone());
 				ps.setString(23, data.getNome());
-				ps.setInt(24, data.getIdade());
+				ps.setString(24, data.getIdade());
 				ps.setString(25, data.getSaude());
 				ps.setString(26, data.getMotivo());
 				ps.setString(26, data.getObservacao());
@@ -215,7 +215,7 @@ public class OccurencesDao2 {
 				conn = ConnectionFactory.connectToTraceviaApp();
 				ps = conn.prepareStatement(query);
 				
-				ps.setString(1, data.getData());
+				ps.setString(1, data.getDate());
 				ps.setString(2, data.getHora());
 				ps.setString(3, data.getPedagio());
 				ps.setString(4, data.getFolio());
@@ -238,7 +238,7 @@ public class OccurencesDao2 {
 				ps.setString(21, data.getPlaca());
 				ps.setString(22, data.getTelefone());
 				ps.setString(23, data.getNome());
-				ps.setInt(24, data.getIdade());
+				ps.setString(24, data.getIdade());
 				ps.setString(25, data.getSaude());
 				ps.setString(26, data.getMotivo());
 				ps.setString(26, data.getObservacao());
@@ -301,7 +301,7 @@ public class OccurencesDao2 {
 						
 						
 						
-						occ.setData(rs.getString(1));
+						occ.setDate(rs.getString(1));
 						occ.setHora(rs.getString(2));
 						occ.setPedagio(rs.getString(3));
 						occ.setFolio(rs.getString(4));
@@ -324,7 +324,7 @@ public class OccurencesDao2 {
 						occ.setPlaca(rs.getString(21));
 						occ.setTelefone(rs.getString(22));
 						occ.setNome(rs.getString(23));
-						occ.setIdade(rs.getInt(24));
+						occ.setIdade(rs.getString(24));
 						occ.setSaude(rs.getString(25));
 						occ.setMotivo(rs.getString(26));
 						occ.setObservacao(rs.getString(27));
@@ -453,7 +453,7 @@ public class OccurencesDao2 {
 				if(rs != null) {
 					while(rs.next()) {
 						//atributos onde as informa��es est�o armazenadas
-						occ.setData(rs.getString(1));
+						occ.setDate(rs.getString(1));
 						occ.setHora(rs.getString(2));
 						occ.setPedagio(rs.getString(3));
 						occ.setFolio(rs.getString(4));
@@ -476,7 +476,7 @@ public class OccurencesDao2 {
 						occ.setPlaca(rs.getString(21));
 						occ.setTelefone(rs.getString(22));
 						occ.setNome(rs.getString(23));
-						occ.setIdade(rs.getInt(24));
+						occ.setIdade(rs.getString(24));
 						occ.setSaude(rs.getString(25));
 						occ.setMotivo(rs.getString(26));
 						occ.setObservacao(rs.getString(27));
