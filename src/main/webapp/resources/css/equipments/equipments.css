@@ -51,11 +51,3 @@
 .text-shadow {
 	text-shadow: 2px 2px 1px black;
 }
-
-.btnpgf{
-	writing-mode: vertical-lr;
-	text-orientation: upright;
-	overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: x-small;
-} 

@@ -11,16 +11,24 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-
+	
+	<f:view locale="#{language.locale}">
+	
+	<c:forEach items="#{listEquips.equips}" var="loadItem">
+	
 	<ui:define name="head">
 	
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<h:outputStylesheet name="equipments.css" library="css/equipments" />
 
 	</ui:define>
+	
+		<ui:fragment rendered="#{loadItem.value}">
 
 	<ui:define name="main-content">
 	
+	<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
+		<c:choose>
 	<div class="row eqp-jumbotron md-2">
 			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
 			   <div class="text-center text-white">CFTV</div>
@@ -31,15 +39,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -60,15 +66,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -89,15 +93,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -118,15 +120,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -147,15 +147,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -176,15 +174,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -205,15 +201,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -234,15 +228,13 @@
 								<c:forEach begin="1" end="10" var="eqp-form">
 									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 										<div class="row">
-											<div class="my-auto">
+											<div class="col my-auto">
 												<div class="row text-center me-0 disabled">
 													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
 													</label>
 													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
 													</label>
 													<div class="card col bg-success">
-														<div class="card-body p-0">
-														</div>
 													</div>
 												</div>
 											</div>
@@ -255,10 +247,14 @@
 				</div>
 			</div>
 		</div>
-	
+		</c:choose>
+		</c:forEach>
 	</ui:define>
 
 	<ui:define name="jscript">
 
 	</ui:define>
+	</ui:fragment>
+	</c:forEach>
+	</f:view>
 </ui:composition>
