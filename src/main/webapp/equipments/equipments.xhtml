@@ -11,250 +11,57 @@
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:pf="http://primefaces.org/ui"
 	template="/template/dashboard-rov-layout.xhtml">
-	
-	<f:view locale="#{language.locale}">
-	
-	<c:forEach items="#{listEquips.equips}" var="loadItem">
-	
-	<ui:define name="head">
-	
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<h:outputStylesheet name="equipments.css" library="css/equipments" />
 
-	</ui:define>
-	
-		<ui:fragment rendered="#{loadItem.value}">
+		<ui:define name="head">
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<h:outputStylesheet name="equipments.css" library="css/equipments" />
 
-	<ui:define name="main-content">
-	
-	<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">
-		<c:choose>
-	<div class="row eqp-jumbotron md-2">
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white">CFTV</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white">COLAS</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white">DAI</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white"> OCR </div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white">MTO</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white"> PMV</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white"> SOS</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="jumbotron col-3 eqp-dark bg-dark px-3">
-			   <div class="text-center text-white"> SPEED</div>
-				<div class='row'>
-					<div class='col-12 p-1'>
-						<div class="eqp-card shadow rounded p-2 bg-body">
-							<div class="card card-scroll">
-								<c:forEach begin="1" end="10" var="eqp-form">
-									<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
-										<div class="row">
-											<div class="col my-auto">
-												<div class="row text-center me-0 disabled">
-													<label class="form-label list-eqp p-0 col-3 mx-auto"> ABC1234
-													</label>
-													<label class="form-label list-eqp p-0 col-4 mx-auto"> 11/11/2021 16:26
-													</label>
-													<div class="card col bg-success">
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		</c:choose>
-		</c:forEach>
-	</ui:define>
+		</ui:define>
 
-	<ui:define name="jscript">
+		<ui:define name="main-content">
+			<div class="row eqp-jumbotron">
+			<c:forEach items="#{listEquips.equips}" var="loadItem">
+				<ui:fragment rendered="#{loadItem.value}">
+							<div class="jumbotron col-3 eqp-dark bg-dark">
+								<div class='row'>
+									<div class='col-12 p-1'>
+										<div class="eqp-card shadow rounded p-2 bg-body">
+											<div class="card card-scroll card-scrollable">
+											<c:forEach end="9" items="#{loadItem.list}" var="item" varStatus="loop">	
+													<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
+														<div class="row">
+															<div class="col my-auto">
+																<div class="row text-center me-0 disabled">
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.equip_id}
+																	</label>
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.nome}
+																	</label>
+																	<label
+																		class="form-label list-eqp p-0 col-3 mx-auto">
+																		#{item.km}
+																	</label>
+																	<div class="card col bg-success">
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</c:forEach>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+				</ui:fragment>
+			</c:forEach>
+		 </div>
+		</ui:define>
 
-	</ui:define>
-	</ui:fragment>
-	</c:forEach>
-	</f:view>
+		<ui:define name="jscript">
+
+		</ui:define>
 </ui:composition>

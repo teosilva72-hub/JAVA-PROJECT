@@ -17,12 +17,16 @@
 
 .eqp-dark {
   padding-top: 1rem;
-  margin-top: 10px;
-  height: 52%;
+  height: 50%;
 }
 
 .card-scroll {
 	overflow: auto;
+    height: 100%;
+}
+
+.card-scrollable {
+	overflow-y: auto;
     height: 100%;
 }
 
