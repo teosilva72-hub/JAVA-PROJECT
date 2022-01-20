@@ -2,22 +2,22 @@ package br.com.tracevia.webapp.model.occ;
 
 public class OccurenceData2 {
 	
-public String data;
-public String	hora;
+public String date;
+public String hora;
 public String pedagio;
 public String folio;
 public String report;
 public String sinistro;
 public String direcao;
-public String	kmregistro;
+public String kmregistro;
 public String kminicial ;
-public String	kmfinal ;
+public String kmfinal ;
 public String hrReg ;
-public String	hrchega;
+public String hrchega;
 public String politica;
 public String tipo_veic;
 public String quantidade;
-public String	numveiculo;
+public String numveiculo;
 public String marca;
 public String tipo;
 public String modelo;
@@ -26,7 +26,7 @@ public String placa;
 public String telefone;
 public String numcond;
 public String nome ;
-public int idade;
+public String idade;
 public String saude;
 public String motivo;
 public String observacao;
@@ -34,7 +34,7 @@ public String localFiles;
 public String state_occurrences;
 public Boolean editTable;
 public String nameUser;
-	
+public String lastDateHour;
 	/**
 	 * @param data
 	 * @param hora
@@ -66,13 +66,13 @@ public String nameUser;
 	 * @param observacao
 	 */
 
-	public OccurenceData2(String data, String hora, String pedagio, String folio, String report, String sinistro,
+	public OccurenceData2(String date, String hora, String pedagio, String folio, String report, String sinistro,
 			String direcao, String kmregistro, String kminicial, String kmfinal, String hrReg, String hrchega,
 			String politica, String tipo_veic, String quantidade, String numveiculo, String marca, String tipo,
-			String modelo, String cor, String placa, String telefone, String numcond, String nome, int idade,
+			String modelo, String cor, String placa, String telefone, String numcond, String nome, String idade,
 			String saude, String motivo, String observacao,String state_occurrences) {
 		
-		this.data = data;
+		this.date = date;
 		this.hora = hora;
 		this.pedagio = pedagio;
 		this.folio = folio;
@@ -102,13 +102,18 @@ public String nameUser;
 		this.observacao = observacao;
 	}
 	
+	public OccurenceData2(String date) {
+		super();
+	
+	}
+
 	public OccurenceData2() {}
 	
-	public String getData() {
-		return data;
+	public String getDate() {
+		return date;
 	}
-	public void setData(String data) {
-		this.data = data;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getHora() {
 		return hora;
@@ -248,10 +253,10 @@ public String nameUser;
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public int getIdade() {
+	public String getIdade() {
 		return idade;
 	}
-	public void setIdade(int idade) {
+	public void setIdade(String idade) {
 		this.idade = idade;
 	}
 	public String getSaude() {
@@ -307,7 +312,14 @@ public String nameUser;
 	public void setNameUser(String nameUser) {
 		this.nameUser = nameUser;
 	}
+	
+	public String getLastDateHour() {
+		return lastDateHour;
+	}
 
+	public void setLastDateHour(String lastDateHour) {
+		this.lastDateHour = lastDateHour;
+	}
 
 	
 	

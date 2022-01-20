@@ -46,21 +46,24 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
+import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
+import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
+import br.com.tracevia.webapp.util.SessionUtil;
 
 
-@ManagedBean(name="occurrence2")
+@ManagedBean(name="Occurence2")
 @ViewScoped
 public class Occurence2 {
 
 private OccurenceData2  data;
 private OccurenceData2 getPdf;
-private  OccurencesDao2 listaOcc;
 private UserAccountBean userId;
-
+private OccurrencesDetails details;
 
 OccurencesDao2 dao;
 LocaleUtil occLabel, occMessages;
@@ -102,8 +105,6 @@ public String getLogo() {
 	private int rowkey;
 	private boolean selectedRow;
 	private List<OccurenceData2> occurrences;
-
-
 
 	
 
@@ -234,13 +235,17 @@ public String getLogo() {
 	public void setData( OccurenceData2 data) {
 		this.data = data;
 	}
-	
+	public OccurrencesDetails getDetails() {
+		return details;
+	}
+	public void setDetails(OccurrencesDetails details) {
+		this.details = details;
+		}
 	
 	public List<OccurenceData2> getOccurrences() {
 		return occurrences;
 	}
 	
-
 	public String getAbsoluteImage() {
 		return absoluteImage;
 	}
@@ -349,8 +354,8 @@ public String getLogo() {
 	}
 	public void setMessage_modal(String message_modal) {
 		this.message_modal = message_modal;
-	
 	}
+
 	public int getValue() {
 		return value;
 	}
@@ -391,6 +396,8 @@ public String getLogo() {
 		this.listarFile = listarFile;
 	}
 
+
+
 	@PostConstruct
 	public void initialize() {	
 
@@ -400,7 +407,7 @@ public String getLogo() {
 		try {
 
 			OccurencesDao2 dao = new OccurencesDao2();
-		
+			data = new  OccurenceData2();
 		
 			
 
@@ -416,7 +423,14 @@ public String getLogo() {
 			//Preencher Lista
 			occurrences = dao.listarOcorrencias();
 
-	
+			//initialize btns
+			edit = true;
+			save = true;
+			reset = true;
+			new_ = false;
+			fields = true;
+			table = true;
+			pdf = true;
 				//paths
 			mainPath = "C:\\Occurrences\\";			
 			downloadPath = "file:///C:/Occurrences/";
@@ -444,6 +458,66 @@ public String getLogo() {
 	public void cadastroOcorrencia() throws Exception {
 		boolean sucess = false;
 
+	
+
+		String date = (String) SessionUtil.getParam("data");
+		String hora = (String) SessionUtil.getParam("hora");
+		String pedagio= (String) SessionUtil.getParam("toll");
+		String folio = (String) SessionUtil.getParam("folio");
+		String report = (String) SessionUtil.getParam("report");
+		String sinistro = (String) SessionUtil.getParam("sinistro");
+		String direcao = (String) SessionUtil.getParam("direction");
+		String kmregistro= (String) SessionUtil.getParam("kmregistro");
+		String kminicial = (String) SessionUtil.getParam("kminicio");
+		String kmfinal = (String) SessionUtil.getParam("kmfinal");
+		String hrReg = (String) SessionUtil.getParam("horareg");
+		String politica = (String) SessionUtil.getParam("polotica");
+		String tipo_veic = (String) SessionUtil.getParam("tipoveic");
+		String quantidade = (String) SessionUtil.getParam("quantidade");
+		String numveicul = (String) SessionUtil.getParam("numeroveic");
+		String marca = (String) SessionUtil.getParam("marca");
+		String tipo= (String) SessionUtil.getParam("tipo");
+		String modelo = (String) SessionUtil.getParam("modelo");
+		String cor = (String) SessionUtil.getParam("cor");
+		String placa = (String) SessionUtil.getParam("placa");
+		String telefone = (String) SessionUtil.getParam("telefone");
+		String numcond= (String) SessionUtil.getParam("numeropessoa");
+		String nome = (String) SessionUtil.getParam("nome");
+		String idade = (String) SessionUtil.getParam("idade");
+		String saude = (String) SessionUtil.getParam("saude");
+		String motivo = (String) SessionUtil.getParam("motivo");
+		String observacao= (String) SessionUtil.getParam("dateStart");
+		
+		System.out.println("teste");
+
+		data.setDate(date);
+		data.setHora(hora);
+		data.setPedagio(pedagio);
+		data.setFolio(folio);
+		data.setReport(report);
+		data.setSinistro(sinistro);
+		data.setDirecao(direcao);
+		data.setKmregistro(kmregistro);
+		data.setKminicial(kminicial);
+		data.setKmfinal(kmfinal);
+		data.setHrReg(hrReg);
+		data.setPolitica(politica);
+		data.setTipo_veic(tipo_veic);
+		data.setQuantidade(quantidade);
+		data.setNumveiculo(numveicul);
+		data.setMarca(marca);
+		data.setTipo(tipo);
+		data.setModelo(modelo);
+		data.setCor(cor);
+		data.setPlaca(placa);
+		data.setTelefone(telefone);
+		data.setNumcond(numcond);
+		data.setNome(nome);
+		data.setIdade(idade);
+		data.setSaude(saude);
+		data.setMotivo(motivo);
+		data.setObservacao(observacao);
+			
 		OccurencesDao2 dao = new OccurencesDao2();
 		occNumber = dao.cadastroOcorrencia(data);
 		
@@ -568,7 +642,15 @@ public String getLogo() {
 
 		data = new OccurenceData2();
 
-	
+		//btn
+				save = true;
+				alterar = true;
+				reset = true;
+				new_ = false;
+				fields = true;
+				edit = true;
+				table = true;
+				pdf = true;
 
 		//zerando os valores das variaves (listUpdate e total)
 		listUpdate = null;
@@ -617,6 +699,18 @@ public String getLogo() {
 			String x = data.getState_occurrences();
 
 			//transformando em int
+			situation = Integer.parseInt(x);
+			System.out.println(data.getLastDateHour());
+
+			Date parsedDate = dateFormat.parse(data.getLastDateHour());
+			timestamp = new java.sql.Timestamp(parsedDate.getTime());
+			timestamp2 = new java.sql.Timestamp(b.getTime());
+			System.out.println(timestamp +" <");
+			System.out.println(timestamp2 + "<<");
+			System.out.println((timestamp.after(timestamp2)+" antes"));
+			System.out.println((timestamp.before(timestamp2)+" depois"));
+			System.out.println(data.getEditTable()+" editTable");
+		}catch(Exception ex){
 	
 
 	
@@ -715,12 +809,29 @@ public String getLogo() {
 					new_ = false;
 					reset = true;
 					fields = true; 
+					edit = true;
+					table = true;
+
 
 					//execute js
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
 					RequestContext.getCurrentInstance().execute("fileTotal()");
 					
-					
+					//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6
+					//tem permissão para acessar a condição
+				}else if(nivelUser == 1 || nivelUser == 6) {
+
+					//btn
+					save = true;
+					alterar = true;
+					edit = false;
+					new_ = false;
+					reset = true;
+					fields = true; 
+
+					//execute js
+					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
+					RequestContext.getCurrentInstance().execute("fileTotal()");
 				}
 
 			}
@@ -742,23 +853,12 @@ public String getLogo() {
 			RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 			RequestContext.getCurrentInstance().execute("listingFileBtn()");
 			RequestContext.getCurrentInstance().execute("listingFile()");
-
-
 		}
 		//zerando as variaveis
-		listarFile = null;
-		
-	}catch (Exception ex) {
-		// TODO: handle exception
-		ex.printStackTrace();
-	}
-		
-}
+		listarFile = null;}}
 	
-		
 	//método novo
 	public void btnEnable() throws Exception {
-
 		//executando as funções javascript
 		RequestContext.getCurrentInstance().execute("inputs()");
 		RequestContext.getCurrentInstance().execute("disableEdit()");
@@ -1566,13 +1666,150 @@ public String getLogo() {
 			ct.addElement(p);
 			ct.go();
 			document.add(new Paragraph(evento+"\n"+"\n"));
-			document.add(new Paragraph(trad.occLabels("occ")+": "+data.getSinistro()+"        "
-				     + trad.occLabels("Situacao")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
+			document.add(new Paragraph(trad.occLabels("occ")+": "+data.getSinistro()+" "
+					+ trad.occLabels("Tipo")+(": ")+ trad.occurrencesTranslator(getPdf.getMotivo())+"         "
+					+ trad.occLabels("Situacao")+(": ")+ trad.occurrencesTranslator(getPdf.getState_occurrences())+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n "
 					));
-
+			//data e hora inicial
+			/*Rectangle dateHourStart = new Rectangle(577, 615, 10, 680); // you can resize rectangle 
+			dateHourStart.enableBorderSide(1);
+			dateHourStart.enableBorderSide(2);
+			dateHourStart.enableBorderSide(4);
+			dateHourStart.enableBorderSide(8);
+			dateHourStart.setBorderColor(BaseColor.BLACK);
+			dateHourStart.setBorderWidth(1);
+			document.add(dateHourStart);*/
 		
+			//causa prov�vel e descri��o principal e interna.
+			/*Rectangle causePr= new Rectangle(577, 310, 10, 610); // you can resize rectangle 
+			causePr.enableBorderSide(1);
+			causePr.enableBorderSide(2);
+			causePr.enableBorderSide(4);
+			causePr.enableBorderSide(8);
+			causePr.setBorderColor(BaseColor.BLACK);
+			causePr.setBorderWidth(1);
+			document.add(causePr);*/
+			document.add(new Paragraph(causeProbable+"\n"+"\n"));
+			document.add(new Paragraph(trad.occLabels("Causa")+": "+trad.occurrencesTranslator(getPdf.getMotivo())+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+data.getObservacao()+"\n"
+					+"_____________________________________________________________________________"
+					+"\n\n"));
+
+			//Evento Local
+			/*Rectangle eventL= new Rectangle(577, 90, 10, 300); // you can resize rectangle 
+			eventL.enableBorderSide(1);
+			eventL.enableBorderSide(2);
+			eventL.enableBorderSide(4);
+			eventL.enableBorderSide(8);
+			eventL.setBorderColor(BaseColor.BLACK);
+			eventL.setBorderWidth(1);
+			document.add(eventL);*/
+			document.add(new Paragraph(eventoLocal+"\n"+"\n"));
+
+			document.add(new Paragraph(trad.occLabels("Sentido")+": "+getPdf.getDirecao()+"                         "
+		
+					+"\n\n"));
+			//Detalhes
+			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
+			details.enableBorderSide(1);
+			details.enableBorderSide(2);
+			details.enableBorderSide(4);
+			details.enableBorderSide(8);
+			details.setBorderColor(BaseColor.BLACK);
+			details.setBorderWidth(1);
+			document.add(details);*/
+			document.add(new Paragraph(detalhes+"\n"+"\n"));
+		
+
+			//final da primeira p�gina
+
+			document.newPage();//inicio da segunda p�gina
+			Rectangle rowPage1 = new Rectangle(577, 40, 10, 820); //linha da pagina 
+			rowPage1.setBorderColor(BaseColor.BLACK);
+			rowPage1.setBorderWidth(2);
+			rowPage1.setBorder(Rectangle.BOX);
+			document.add(rowPage1);
+			ColumnText ct1 = new ColumnText(writer.getDirectContent());
+			ct1.setSimpleColumn(700,0,200,30);
+			Paragraph p1 = new Paragraph();
+			p1.add("                              "+"Pag 2");//paragrafo Evento
+			ct1.addElement(p1);
+			ct1.go();
+			/*Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
+			descriptions.enableBorderSide(1);
+			descriptions.enableBorderSide(2);
+			descriptions.enableBorderSide(4);
+			descriptions.enableBorderSide(8);
+			descriptions.setBorderColor(BaseColor.BLACK);
+			descriptions.setBorderWidth(1);
+			document.add(descriptions);*/
+	
+
+			//Envolvidos
+			/*Rectangle envolvido = new Rectangle(577, 670, 10, 810); // you can resize rectangle 
+			envolvido.enableBorderSide(1);
+			envolvido.enableBorderSide(2);
+			envolvido.enableBorderSide(4);
+			envolvido.enableBorderSide(8);
+			envolvido.setBorderColor(BaseColor.BLACK);
+			envolvido.setBorderWidth(1);
+			document.add(envolvido);*/
+			document.add(new Paragraph(envolvidos+"\n"+"\n"));
+			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getNome()+"\n\n"));
+			document.add(new Paragraph(trad.occLabels("description")+": "+ data.getSaude()+"\n"
+					+"_____________________________________________________________________________"
+					+"\n\n"));
+
+			//Tr�nsito
+			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
+			track1.enableBorderSide(1);
+			track1.enableBorderSide(2);
+			track1.enableBorderSide(4);
+			track1.enableBorderSide(8);
+			track1.setBorderColor(BaseColor.BLACK);
+			track1.setBorderWidth(1);
+			document.add(track1);*/
+
+			document.newPage();//inicio da terceira p�gina
+
+			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
+			rowPage2.setBorderColor(BaseColor.BLACK);
+			rowPage2.setBorderWidth(2);
+			rowPage2.setBorder(Rectangle.BOX);
+			document.add(rowPage2);
+
+			ColumnText ct2 = new ColumnText(writer.getDirectContent());
+			ct2.setSimpleColumn(700,0,200,30);
+			Paragraph p2 = new Paragraph();
+			p2.add("                              "+"Pag 3");//paragrafo Evento
+			ct2.addElement(p2);
+			ct2.go();
+
+			//Danos
+			/*Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
+			damage1.enableBorderSide(1);
+			damage1.enableBorderSide(2);
+			damage1.enableBorderSide(4);
+			damage1.enableBorderSide(8);
+			damage1.setBorderColor(BaseColor.BLACK);
+			damage1.setBorderWidth(1);
+			document.add(damage1);*/
+			document.add(new Paragraph(danos+"\n"+"\n"));
+			document.add(new Paragraph(""));
+
+			//a�tion
+			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
+			action1.enableBorderSide(1);
+			action1.enableBorderSide(2);
+			action1.enableBorderSide(4);
+			action1.enableBorderSide(8);
+			action1.setBorderColor(BaseColor.BLACK);
+			action1.setBorderWidth(1);
+			document.add(action1);*/
+			document.add(new Paragraph(action+"\n"+"\n"));
+
 
 
 			//causa prov�vel e descri��o principal e interna.
@@ -1590,82 +1827,112 @@ public String getLogo() {
 					+ trad.occLabels("obs")+": "+data.getObservacao()+"\n"
 					+"_____________________________________________________________________________"
 					+"\n\n"));
+			//Evento Local
+			/*Rectangle eventL= new Rectangle(577, 90, 10, 300); // you can resize rectangle 
+			eventL.enableBorderSide(1);
+			eventL.enableBorderSide(2);
+			eventL.enableBorderSide(4);
+			eventL.enableBorderSide(8);
+			eventL.setBorderColor(BaseColor.BLACK);
+			eventL.setBorderWidth(1);
+			document.add(eventL);*/
 		
-//		
-//			//final da primeira p�gina
-//
-//			document.newPage();//inicio da segunda p�gina
-//			Rectangle rowPage1 = new Rectangle(577, 40, 10, 820); //linha da pagina 
-//			rowPage1.setBorderColor(BaseColor.BLACK);
-//			rowPage1.setBorderWidth(2);
-//			rowPage1.setBorder(Rectangle.BOX);
-//			document.add(rowPage1);
-//			ColumnText ct1 = new ColumnText(writer.getDirectContent());
-//			ct1.setSimpleColumn(700,0,200,30);
-//			Paragraph p1 = new Paragraph();
-//			p1.add("                              "+"Pag 2");//paragrafo Evento
-//			ct1.addElement(p1);
-//			ct1.go();
-//		
-//			document.add(new Paragraph(description+"\n"+"\n"));
-//			document.add(new Paragraph(trad.occLabels("Titulo Descricao")+": "+ data.getDescription_title()+"\n\n"));
-//			document.add(new Paragraph(trad.occLabels("description")+": "+data.getDescription_text()+"\n"
-//					+"_____________________________________________________________________________"
-//					+"\n\n"));
-//
-//	
-//			document.add(new Paragraph(envolvidos+"\n"+"\n"));
-//			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getInvolved_type()+"\n\n"));
-//			document.add(new Paragraph(trad.occLabels("description")+": "+ data.getInvolved_description()+"\n"
-//					+"_____________________________________________________________________________"
-//					+"\n\n"));
-//
-//
-//			document.add(new Paragraph(track+"\n"+"\n"));
-//			document.add(new Paragraph(trad.occLabels("Inicial")+": " + data.getTrackStartDate()+ "             "+trad.occLabels("Inicial")+": " + data.getTrackStartHour() + ":" + data.getTrackStartMinute()+"  "
-//					+data.getTypeHour3()+ "             "+ trad.occLabels("Final")+": " + data.getTrackEndDate() + "             "+ trad.occLabels("Final")+": " + data.getTrackEndHour() + ":"+data.getTrackEndMinute()+"  "+data.getTypeHour4() + "\n\n"));
-//			document.add(new Paragraph());
-//			document.add(new Paragraph(trad.occLabels("Extensao(KM)")+": "+data.getTraffic_extension()+"            "
-//					+trad.occLabels("Pista Interrompida")+": "+ getPdf.getTraffic_stopped()+"\n\n"));
-//			document.newPage();//inicio da terceira p�gina
-//
-//			Rectangle rowPage2 = new Rectangle(577, 40, 10, 820); //linha da pagina 
-//			rowPage2.setBorderColor(BaseColor.BLACK);
-//			rowPage2.setBorderWidth(2);
-//			rowPage2.setBorder(Rectangle.BOX);
-//			document.add(rowPage2);
-//
-//			ColumnText ct2 = new ColumnText(writer.getDirectContent());
-//			ct2.setSimpleColumn(700,0,200,30);
-//			Paragraph p2 = new Paragraph();
-//			p2.add("                              "+"Pag 3");//paragrafo Evento
-//			ct2.addElement(p2);
-//			ct2.go();
-//
-//		
-//			document.add(new Paragraph(danos+"\n"+"\n"));
-//			document.add(new Paragraph(""));
-//			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getDamage_type_damage()+"     "
-//					+trad.occLabels("Gravidade")+": "+ getPdf.getDamage_gravity()+"     "
-//					+trad.occLabels("Unidade")+": "+getPdf.getDamageUnity()
-//					+"     "+trad.occLabels("Quantidade")+": "+data.getDamage_amount()+ "\n\n"));
-//			document.add(new Paragraph(trad.occLabels("description")+": "+data.getDemage_description()+"\n"
-//					+"_____________________________________________________________________________"
-//					+"\n\n"));
-//		
-//			document.add(new Paragraph(action+"\n"+"\n"));
-//
-//			document.add(new Paragraph(trad.occLabels("Tipo")+": "+getPdf.getAction_type()+"             "
-//					+trad.occLabels("Situacao")+": "+getPdf.getStatusAction()+"\n\n"));
-//			document.add(new Paragraph(trad.occLabels("Inicial")+": "+data.getActionStartData()
-//			+"     "+trad.occLabels("Inicial")+": "+data.getActionStartHour()
-//			+":"+data.getActionStartMinute()+"  "+data.getTypeHour5()
-//			+"             "+trad.occLabels("Final")+": "+data.getActionEndData()
-//			+"             "+trad.occLabels("Final")+": "+data.getActionEndHour()
-//			+":"+data.getActionEndMinute()+"  "+data.getTypeHour6()+"\n\n"));
-//			document.add(new Paragraph(trad.occLabels("description")+": "+data.getAction_description()+"\n"
-//					+"_____________________________________________________________________________\n"));
-//			//darken date and time
+			/*	Rectangle details= new Rectangle(577, 255, 10, 355); // you can resize rectangle 
+			details.enableBorderSide(1);
+			details.enableBorderSide(2);
+			details.enableBorderSide(4);
+			details.enableBorderSide(8);
+			details.setBorderColor(BaseColor.BLACK);
+			details.setBorderWidth(1);
+			document.add(details);*/
+			document.add(new Paragraph(detalhes+"\n"+"\n"));
+
+
+			//final da primeira p�gina
+
+			document.newPage();//inicio da segunda p�gina
+			Rectangle rowPage11 = new Rectangle(577, 40, 10, 820); //linha da pagina 
+			rowPage11.setBorderColor(BaseColor.BLACK);
+			rowPage11.setBorderWidth(2);
+			rowPage11.setBorder(Rectangle.BOX);
+			document.add(rowPage11);
+			ColumnText ct11 = new ColumnText(writer.getDirectContent());
+			ct11.setSimpleColumn(700,0,200,30);
+			Paragraph p11 = new Paragraph();
+			p11.add("                              "+"Pag 2");//paragrafo Evento
+			ct11.addElement(p11);
+			ct11.go();
+			/*Rectangle descriptions= new Rectangle(577, 110, 10, 250); // you can resize rectangle 
+			descriptions.enableBorderSide(1);
+			descriptions.enableBorderSide(2);
+			descriptions.enableBorderSide(4);
+			descriptions.enableBorderSide(8);
+			descriptions.setBorderColor(BaseColor.BLACK);
+			descriptions.setBorderWidth(1);
+			document.add(descriptions);*/
+		
+
+			//Envolvidos
+			/*Rectangle envolvido = new Rectangle(577, 670, 10, 810); // you can resize rectangle 
+			envolvido.enableBorderSide(1);
+			envolvido.enableBorderSide(2);
+			envolvido.enableBorderSide(4);
+			envolvido.enableBorderSide(8);
+			envolvido.setBorderColor(BaseColor.BLACK);
+			envolvido.setBorderWidth(1);
+			document.add(envolvido);*/
+		
+
+			//Tr�nsito
+			/*Rectangle track1 = new Rectangle(577, 560, 10, 665); // you can resize rectangle 
+			track1.enableBorderSide(1);
+			track1.enableBorderSide(2);
+			track1.enableBorderSide(4);
+			track1.enableBorderSide(8);
+			track1.setBorderColor(BaseColor.BLACK);
+			track1.setBorderWidth(1);
+			document.add(track1);*/
+			document.add(new Paragraph(track+"\n"+"\n"));
+
+			document.add(new Paragraph());
+
+
+			Rectangle rowPage21 = new Rectangle(577, 40, 10, 820); //linha da pagina 
+			rowPage21.setBorderColor(BaseColor.BLACK);
+			rowPage21.setBorderWidth(2);
+			rowPage21.setBorder(Rectangle.BOX);
+			document.add(rowPage21);
+
+			ColumnText ct21 = new ColumnText(writer.getDirectContent());
+			ct21.setSimpleColumn(700,0,200,30);
+			Paragraph p21 = new Paragraph();
+			p21.add("                              "+"Pag 3");//paragrafo Evento
+			ct21.addElement(p21);
+			ct21.go();
+
+			//Danos
+			/*Rectangle damage1 = new Rectangle(577, 420, 10, 555); // you can resize rectangle 
+			damage1.enableBorderSide(1);
+			damage1.enableBorderSide(2);
+			damage1.enableBorderSide(4);
+			damage1.enableBorderSide(8);
+			damage1.setBorderColor(BaseColor.BLACK);
+			damage1.setBorderWidth(1);
+			document.add(damage1);*/
+			document.add(new Paragraph(danos+"\n"+"\n"));
+			document.add(new Paragraph(""));
+
+
+			/*Rectangle action1 = new Rectangle(577, 225, 10, 415); // you can resize rectangle 
+			action1.enableBorderSide(1);
+			action1.enableBorderSide(2);
+			action1.enableBorderSide(4);
+			action1.enableBorderSide(8);
+			action1.setBorderColor(BaseColor.BLACK);
+			action1.setBorderWidth(1);
+			document.add(action1);*/
+//darken date and time
+		
 			int day1 = LocalDateTime.now().getDayOfMonth();
 			int year1 = LocalDateTime.now().getYear();
 			int month1 = LocalDateTime.now().getMonthValue();

@@ -165,7 +165,7 @@ em {
 }
 
 .btnConf{
-	background-color: #212121;
+	background-color: #343a40;;
 	color: white;
 	margin-top: 5px;
 	border-radius: 0px;
@@ -201,7 +201,7 @@ em {
 .btnConf:disabled
 {
  color: #fff;
- background-color: gray;
+background-color: #343a40;;
  border-color: #6c757d;
 }
 
@@ -209,15 +209,17 @@ em {
 .btnConf:enabled:hover
 {
   color: #fff;    
-  background-color: black;
+background-color: #343a40;;
   border: solid black 1px;
 }
 
 	.btnConf2{
 		font-size: 12pt;
 		 color: #fff;    
-  		background-color: black;
+  		background-color: #343a40;;
 		  border: solid black 1px;
+		 border: solid 1px #767676;
+	border-radius: 25px; 
 }
 	
 	
