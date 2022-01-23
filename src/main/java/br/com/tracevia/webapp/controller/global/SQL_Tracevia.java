@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.controller.global;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -27,7 +28,7 @@ public class SQL_Tracevia {
 	
 	private SQL_Interface inner = Native.load("C:\\t\\sql_service.dll", SQL_Interface.class);
 
-    private class MapResult implements Iterable<RowResult> {
+	public class MapResult implements Iterable<RowResult> {
         private JsonArray result;
 
         MapResult(JsonElement json) throws IOException {
@@ -43,7 +44,7 @@ public class SQL_Tracevia {
 		}
     }
     
-    private class IteratorRow implements Iterator<RowResult> {
+    public class IteratorRow implements Iterator<RowResult> {
         private Iterator<JsonElement> iterator;
         private JsonObject next;
 
@@ -72,17 +73,59 @@ public class SQL_Tracevia {
 		}
     }
     
-    private class RowResult {
+    public class RowResult {
         private JsonObject current;
+        private String[] keys;
 
         RowResult(JsonObject current) {
+        	int size = current.size();
+        	Object[] set = current.keySet().toArray();
+        	
+        	this.keys = new String[size];
+        	for (int i = 0; i < size; i++)
+        		keys[i] = (String) set[i];
         	this.current = current;
         }
 
-		public String getString(String string) {
+        public String getString(int integer) throws Exception {
+        	return current.get(keys[integer - 1]).getAsString();
+        }
+        
+		public String getString(String string) throws Exception {
 			return current.get(string).getAsString();
 		}
-
+		
+		public int getInt(int integer) throws Exception {
+			return current.get(keys[integer - 1]).getAsInt();
+		}
+		
+		public int getInt(String string) throws Exception {
+			return current.get(string).getAsInt();
+		}
+		
+		public boolean getBoolean(int integer) throws Exception {
+			return current.get(keys[integer - 1]).getAsBoolean();
+		}
+		
+		public boolean getBoolean(String string) throws Exception {
+			return current.get(string).getAsBoolean();
+		}
+		
+		public double getDouble(int integer) throws Exception {
+			return current.get(keys[integer - 1]).getAsDouble();
+		}
+		
+		public double getDouble(String string) throws Exception {
+			return current.get(string).getAsDouble();
+		}
+		
+		public float getFloat(int integer) throws Exception {
+			return current.get(keys[integer - 1]).getAsFloat();
+		}
+		
+		public float getFloat(String string) throws Exception {
+			return current.get(string).getAsFloat();
+		}
     }
 	
 	public boolean start(int conn) {
@@ -100,18 +143,19 @@ public class SQL_Tracevia {
 		return ptr != null ? new MapResult(result) : null;
 	}
 	
-	public void main() throws IOException {
+	public void main() throws Exception {
 		SQL_Tracevia service = new SQL_Tracevia();
         
         boolean connected = service.start(0);
-        String teste = "SELECT * FROM speed_equipment";
+        String teste = "SELECT name, creation_date, equip_id FROM speed_equipment";
         service.prepare(teste);
         MapResult response = service.execute();
         
         System.out.println("Connected: " + connected);
         for (RowResult result : response) {
-    		String value = result.getString("name");
-    		System.out.println("Response: " + value);
+        	int equipId = result.getInt(3);
+    		String value = result.getString(1);
+    		System.out.println("Response: " + equipId + " - " + value);
         }
     }
 }
