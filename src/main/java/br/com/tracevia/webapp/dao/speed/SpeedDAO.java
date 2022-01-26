@@ -72,7 +72,7 @@ public class SpeedDAO {
 
 		   MapResult result = conn.execute();
 
-		   if (rs != null) {
+		   if (result != null) {
 			   for (RowResult rs : result) {
 
 				   Speed speed = new Speed();

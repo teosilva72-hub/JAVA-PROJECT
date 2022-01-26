@@ -3,10 +3,14 @@ package br.com.tracevia.webapp.model.global;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.faces.context.FacesContext;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -29,7 +33,10 @@ public class SQL_Tracevia {
 	private SQL_Interface inner;
 
 	public SQL_Tracevia() {
-		inner = Native.load("\\resources\\dll\\sql_service.dll", SQL_Interface.class);
+		String current = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
+		Path path = Paths.get(current, "resources", "dll", "sql_service.dll");
+		
+		inner = Native.load(path.toString(), SQL_Interface.class);
 	}
 	
 	public class MapJsonResult implements Iterable<RowJsonResult> {
