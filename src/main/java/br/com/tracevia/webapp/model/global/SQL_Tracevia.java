@@ -26,8 +26,12 @@ public class SQL_Tracevia {
 	    Pointer execute();
 	}
 	
-	private SQL_Interface inner = Native.load("C:\\t\\sql_service.dll", SQL_Interface.class);
+	private SQL_Interface inner;
 
+	public SQL_Tracevia() {
+		inner = Native.load("\\resources\\dll\\sql_service.dll", SQL_Interface.class);
+	}
+	
 	public class MapJsonResult implements Iterable<RowJsonResult> {
         private JsonArray result;
 
@@ -176,7 +180,7 @@ public class SQL_Tracevia {
     public class MapResult implements Iterable<RowResult> {
         private RowResult[] result;
 
-        MapResult(RowResult[] result) throws IOException {
+        private MapResult(RowResult[] result) throws IOException {
         	this.result = result;
         }
 
@@ -211,7 +215,7 @@ public class SQL_Tracevia {
         private Row[] cols;
         private HashMap<String, Integer> map;
 
-        RowResult(Pointer current, int size) {
+        private RowResult(Pointer current, int size) {
         	Row[] rows = new Row[size];
         	HashMap<String, Integer> map = new HashMap<String, Integer>();
         	Pointer[] ptr = current.getPointerArray(0, size);

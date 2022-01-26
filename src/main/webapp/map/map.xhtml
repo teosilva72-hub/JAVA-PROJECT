@@ -54,6 +54,7 @@
 		value="#{ permission == 1 || permission == 6 }" />
 	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
 	<ui:param name="METEO" value="#{ loginAccount.load.en_meteo }" />
+	<ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
 	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
 
@@ -90,53 +91,55 @@
 					data-trigger="hover">
 					<span><i class="fas fa-minus-square fa-2x"></i></span>
 				</button>
-				
-				<!-- CFTV OPTION DROPDOWN EQUIPMENT BTN CLICK RIGHT MOUSE -->
 
-				<!---->
-				
-				<!-- CFTV LIST EQUIPS TOP PAGE -->
-				
-			 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
-				<h:form prependId="false" id="sumIdCftv">
-					<div class="dropdown cftv-dropdown">
-						<button class="btn btn-dark dropdown-toggle" type="button"
-							id="dropdown-cftv-btn-icone" data-toggle="dropdown"
-							aria-haspopup="true" aria-expanded="false">
-							PTZ <i class="far fa-window-restore"></i>
-						</button>
-						<div class="dropdown-menu drop-down-ptz"
-							aria-labelledby="dropdownMenu2">
-							<div class="row">
-								<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
-									<div class="col-md-6 col-dropdown-cftv">
-										<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
-											type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
-											#{ptz}</button>
-									</div>
-								</c:forEach>
-							</div>
-						</div>
-					</div>
+				<div class="d-flex options-menu pt-1">
+					<!-- CFTV OPTION DROPDOWN EQUIPMENT BTN CLICK RIGHT MOUSE -->
+	
+					<!---->
 					
-					<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
-					<h:commandButton style="display:none;" id="btnCftvSumTotal">
-						<f:ajax execute="@form" render=":sumIdCftv"
-							listener="#{CftvCam.totalId}" />
-					</h:commandButton>
-				</h:form>
-			</ui:fragment>
-				
-				<!--  -->
-				<c:if test="#{ SuperAdmin }">
-
-					<input id="addequip" type="button"
-						class="btn btn-dark form-modal-draw-button"
-						onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();cftvInput();"
-						title="Add Equipment" data-toggle="modal" data-target="#modaladd"
-						value="#{mapLabels.$label_map_option_btn_add_equipment}"> </input>
-
-				</c:if>
+					<!-- CFTV LIST EQUIPS TOP PAGE -->
+						
+					<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
+						<h:form prependId="false" id="sumIdCftv">
+							<div class="dropdown cftv-dropdown ml-3">
+								<button class="btn btn-dark dropdown-toggle" type="button"
+									id="dropdown-cftv-btn-icone" data-toggle="dropdown"
+									aria-haspopup="true" aria-expanded="false">
+									PTZ <i class="far fa-window-restore"></i>
+								</button>
+								<div class="dropdown-menu drop-down-ptz"
+									aria-labelledby="dropdownMenu2">
+									<div class="row">
+										<c:forEach begin="1" end="#{CftvCam.idTotal}" var="ptz">
+											<div class="col-md-6 col-dropdown-cftv">
+												<button class="dropdown-item d-cftv#{ptz} d-cftv-value"
+													type="button" value="#{ptz}" id="ptz-window#{ptz}">PTZ
+													#{ptz}</button>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
+							</div>
+							
+							<h:inputHidden value="#{CftvCam.idTotal}" id="totalIdCftv" />
+							<h:commandButton style="display:none;" id="btnCftvSumTotal">
+								<f:ajax execute="@form" render=":sumIdCftv"
+									listener="#{CftvCam.totalId}" />
+							</h:commandButton>
+						</h:form>
+					</ui:fragment>
+						
+					<!--  -->
+					<c:if test="#{ SuperAdmin }">
+	
+						<input id="addequip" type="button"
+							class="btn btn-dark form-modal-draw-button"
+							onclick="$('#direction3').hide(); $('#direction4').hide(); $('#direction5').hide(); $('#direction6').hide(); $('#direction7').hide(); $('#direction8').hide();cftvInput();"
+							title="Add Equipment" data-toggle="modal" data-target="#modaladd"
+							value="#{mapLabels.$label_map_option_btn_add_equipment}"> </input>
+	
+					</c:if>
+				</div>
 
 		<!--		<div class="paleta-cores">
 					<a class="btn btn-dark paletaBtn" data-toggle="collapse"
@@ -451,8 +454,10 @@
 		</ui:fragment> </section>
 
 		<div class="context-menu">
-			<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}</button>
-			<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
+			<c:if test="#{ CFTV }">
+				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}</button>
+				<button type="button" class="btn btn-dark dinamic-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}</button>
+			</c:if>
 			<button type="button" class="btn btn-dark dinamic-mouse-right" for="carGPS" onclick="openModalGPS()">#{mapLabels.$label_map_change_vehicle}</button>
 			<c:if test="#{ SuperAdmin }">
 				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()">#{mapLabels.$label_map_equipment_options}</button>

@@ -364,12 +364,6 @@ table {
 	outline: none;
 }
 
-#addequip {
-    position: relative;
-    left: 149px;
-    bottom: 38px;
-}
-
 /* MAP OPTIONS DIV */
 .map-full-option {
 	float: right;
@@ -554,9 +548,9 @@ img.box-img[zoom] {
 	text-align: center;
 }
 
-.dropdown {
-	position: relative;
-	display: inline-block;
+.options-menu {
+	margin-left: 160px;
+    flex-direction: row-reverse;
 }
 
 .dropdown-content {
