@@ -66,17 +66,20 @@
 /*REAL TIME SAT*/
 
 .fluxo {
-  margin-top: 0px !important;
-  margin-left: 0px;
+  top: 65px !important;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
   opacity: 0.8;
   border: 1px solid transparent;
 }
 
 .fluxo-vertical{
   position: absolute;
-  width: 91%;
-  margin-top: -47px !important;
-  margin-left: -68px;
+  overflow: hidden;
+  width: 90%;
+  top: 10px !important;
+  left: -70px;
   opacity: 0.8;
   border: 1px solid transparent;   
   transform: rotate(90deg);
@@ -86,12 +89,8 @@
   height: 9px;
 }
 
-.fluxo-1-margin {
-  margin: 3px;
-}
-
 .fluxo-2-margin {
-  margin: 4px;
+  padding-bottom: 12px;
 }
 
 .padding-sat .km {
