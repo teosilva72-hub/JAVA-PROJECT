@@ -99,7 +99,7 @@
 					
 					<!-- CFTV LIST EQUIPS TOP PAGE -->
 						
-					<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
+					<ui:fragment  rendered="#{ CFTV }" >	
 						<h:form prependId="false" id="sumIdCftv">
 							<div class="dropdown cftv-dropdown ml-3">
 								<button class="btn btn-dark dropdown-toggle" type="button"
@@ -249,7 +249,7 @@
 					data-target="#sizeeqps" data-backdrop="false" id="dropall"
 					from="draggable">#{mapLabels.$label_map_size_select_all}</button>
 
-				<ui:fragment rendered="#{loginAccount.load.en_cftv}">
+				<ui:fragment rendered="#{ CFTV }">
 					<button class="dropdown-item dprbtn" data-toggle="modal"
 						data-target="#sizeeqps" data-backdrop="false" id="dropcftv"
 						from="cftv">#{mapLabels.$label_map_size_select_cftv}</button>
@@ -521,7 +521,7 @@
 		
 		<!-- ======================== CFTV SETTINGS ======================== -->
 		
-		<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
+		<ui:fragment  rendered="#{ CFTV }" >
 			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
 		</ui:fragment>
 		<!---->
@@ -554,7 +554,7 @@
 		<h:outputScript name="gps.js" library="js/gps" />
 		<h:outputScript name="map.js" library="js/map" />
 		
-		<ui:fragment  rendered="#{loginAccount.load.en_cftv}" >		
+		<ui:fragment  rendered="#{ CFTV }" >		
 			<h:outputScript library="js/map/" name="mapCftcv.js" />
 		</ui:fragment>
 		<!---->
