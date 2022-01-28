@@ -2,10 +2,6 @@ package br.com.tracevia.webapp.dao.global;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,17 +13,16 @@ import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
 import br.com.tracevia.webapp.model.global.EquipmentDataSource;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia.RowResult;
 import br.com.tracevia.webapp.model.meteo.Meteo;
 import br.com.tracevia.webapp.model.sat.SAT;
 import br.com.tracevia.webapp.model.sos.SOS;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class EquipmentsDAO {
 
-	private Connection conn;	
-	private PreparedStatement ps;
-	private ResultSet rs;	
+	private SQL_Tracevia conn = new SQL_Tracevia();
 	
 	// --------------------------------------------------------------------------------------------------------------
 	
@@ -38,6 +33,7 @@ public class EquipmentsDAO {
 	// --------------------------------------------------------------------------------------------------------------
 	
 	public EquipmentsDAO() {
+		conn.start(1);
 		
 		SystemLog.createLogFolder(errorFolder);
 		
@@ -61,25 +57,19 @@ public class EquipmentsDAO {
 		String sql = "UPDATE " + modulo + "_equipment SET " + view + "_width = ? WHERE equip_id > 0;";
 
 		try {
+			conn.prepare(sql);
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.setInt(1, width);
 
-			ps = conn.prepareStatement(sql);
+			conn.executeUpdate();
 
-			ps.setInt(1, width);
-
-			ps.executeUpdate();
-
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_set_width"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_set_width"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps);
 		}
 	}
 
@@ -119,17 +109,15 @@ public class EquipmentsDAO {
 			else query = sqlVW;
 
 			try {
-				
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 			
-			ps = conn.prepareStatement(query);					
-			rs = ps.executeQuery();
+			conn.prepare(query);					
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println(query);
 
-			if (rs != null) {
-
-				while (rs.next()) {
+			if (result != null) {
+				
+				for (RowResult rs : result) {
 
 					Equipments equip = new Equipments();
 
@@ -154,16 +142,13 @@ public class EquipmentsDAO {
 				}				
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_build_generic"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_build_generic"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return lista;
@@ -205,15 +190,12 @@ public class EquipmentsDAO {
 			else query = sqlVW;
 
 			try {
-				
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(query);					
-			rs = ps.executeQuery();
+			conn.prepare(query);					
+			MapResult result = conn.executeQuery();
 		
-			if (rs != null) {
+			if (result != null) {
 
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					Meteo meteo = new Meteo();
 
@@ -238,16 +220,13 @@ public class EquipmentsDAO {
 				}				
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_build_meteo"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_meteo"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 				
-		} finally {
-				
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 			
 		return lista;
@@ -289,14 +268,12 @@ public class EquipmentsDAO {
 
 			try {
 				
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.prepare(query);					
+			MapResult result = conn.executeQuery();
 
-			ps = conn.prepareStatement(query);					
-			rs = ps.executeQuery();
+			if (result != null) {
 
-			if (rs != null) {
-
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					SOS sos = new SOS();
 
@@ -324,16 +301,13 @@ public class EquipmentsDAO {
 				}				
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_build_sos"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_sos"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 				
-		} finally {
-				
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 			
 		return lista;
@@ -380,14 +354,12 @@ public class EquipmentsDAO {
 
 			try {
 				
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.prepare(query);									
+			MapResult result = conn.executeQuery();
 
-			ps = conn.prepareStatement(query);									
-			rs = ps.executeQuery();
+			if (result != null) {
 
-			if (rs != null) {
-
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					SAT sat = new SAT();
 
@@ -436,24 +408,22 @@ public class EquipmentsDAO {
 				}				
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_build_sat"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_build_sat"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 						
-		} catch (Exception ex) {
-		
-			StringWriter errors = new StringWriter();
-			ex.printStackTrace(new PrintWriter(errors));
-			
-			SystemLog.logError(errorFolder.concat("error_parsing_direction"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
-			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
+		// catch (Exception ex) {
+		
+		// 	StringWriter errors = new StringWriter();
+		// 	ex.printStackTrace(new PrintWriter(errors));
+			
+		// 	SystemLog.logError(errorFolder.concat("error_parsing_direction"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
+			
+		// }
 
 		return lista;
 	}
@@ -501,16 +471,14 @@ public class EquipmentsDAO {
 
 			try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(query);				
-			rs = ps.executeQuery();
+			conn.prepare(query);				
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println(query);
 
-			if (rs != null) {
+			if (result != null) {
 
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					DMS dms = new DMS();
 					MessagesDAO msg = new MessagesDAO();
@@ -548,24 +516,22 @@ public class EquipmentsDAO {
 				}				
 			}
 
-			}catch (SQLException sqle) {
+			}catch (Exception sqle) {
 				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_build_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_build_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 				
-			}catch (Exception ex) {
-				
-				StringWriter errors = new StringWriter();
-				ex.printStackTrace(new PrintWriter(errors));
-				
-				SystemLog.logError(errorFolder.concat("error_define_message"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
-				
-			} finally {
-				
-				ConnectionFactory.closeConnection(conn, ps, rs);
 			}
+			// catch (Exception ex) {
+				
+			// 	StringWriter errors = new StringWriter();
+			// 	ex.printStackTrace(new PrintWriter(errors));
+				
+			// 	SystemLog.logError(errorFolder.concat("error_define_message"), EquipmentsDAO.class.getCanonicalName(), ex.getMessage(), errors.toString());
+				
+			// }
 
 		return lista;
 	}
@@ -590,16 +556,14 @@ public class EquipmentsDAO {
 		try {
 
 			// GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 
 			//System.out.println(sql);
 
-			if (rs != null) {
+			if (result != null) {
 
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					Equipments equip = new Equipments();
 
@@ -611,10 +575,8 @@ public class EquipmentsDAO {
 				}				
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return lista;
@@ -641,24 +603,20 @@ public class EquipmentsDAO {
 		try {
 
 			//GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			if (result != null) {
 
-			if (rs != null) {
-
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					name = rs.getString(1);
 
 				}				
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return name;
@@ -682,19 +640,17 @@ public class EquipmentsDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
 			String sql = "SELECT st.name, c.city_name, r.road_name, st.km "
 					+ "FROM "+module+"_equipment st "
 					+ "INNER JOIN concessionaire_cities c ON c.city_id = st.city "
 					+ "INNER JOIN concessionaire_roads r ON r.road_id = st.road "
 					+ " WHERE st.equip_id = '"+ equip_id + "' AND st.visible = 1";
 
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 						
-			if (rs != null) {
-				while (rs.next()) {
+			if (result != null) {
+				for (RowResult rs : result) {
 					
 					Equipments eq = new Equipments();
 
@@ -707,16 +663,13 @@ public class EquipmentsDAO {
 				}
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_equip_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_equip_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return list;
@@ -753,15 +706,13 @@ public class EquipmentsDAO {
 		
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 			
 			// System.out.println(sql);
 						
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result != null) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -776,16 +727,13 @@ public class EquipmentsDAO {
 				}
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_sat_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_report_info"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 		return list;
 	}	
@@ -815,13 +763,11 @@ public class EquipmentsDAO {
 		
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 				
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result != null) {
+				for (RowResult rs : result) {
 										
 					sat.setNome(rs.getString(1));	
 					sat.setKm(rs.getString(2));
@@ -843,16 +789,13 @@ public class EquipmentsDAO {
 				}
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_sat_header"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_header"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 		return sat;
 	}	
@@ -873,15 +816,12 @@ public class EquipmentsDAO {
 
 		String sql = "SELECT equip_id, name FROM dms_equipment WHERE visible = 1 ORDER BY name ASC";	
 
-		try {			
+		try {
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);			
-
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
-
-			if (rs != null) {
-				while (rs.next()) {			
+			if (result != null) {
+				for (RowResult rs : result) {			
 
 					Equipments eq = new Equipments();
 
@@ -892,16 +832,13 @@ public class EquipmentsDAO {
 				}
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_list_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_list_dms"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 		return lista;
 
@@ -916,29 +853,24 @@ public class EquipmentsDAO {
 		Equipments data = new Equipments();
 		
 		try {
-			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			ps = conn.prepareStatement(script);
-			rs = ps.executeQuery();
+			conn.prepare(script);
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result != null) {
+				for (RowResult rs : result) {
 					data.setNome(rs.getString(1));
 					data.setEquip_ip(rs.getString(2));
 					data.setKm(rs.getString(3));
 				}				
 			}
 		
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_cftv_cam"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_cftv_cam"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return data;
@@ -966,26 +898,21 @@ public class EquipmentsDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.prepare(select);
+			conn.setInt(1, id);
 
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, id);
+			MapResult result = conn.executeQuery();
 
-			rs = ps.executeQuery();
-
-			if(rs.isBeforeFirst())
+			if(result != null)
 				checked = true;
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_checking_id"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_checking_id"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return checked;	
@@ -1013,29 +940,24 @@ public class EquipmentsDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.prepare(select);
+			conn.setInt(1, id);
 
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, id);
+			MapResult result = conn.executeQuery();
 
-			rs = ps.executeQuery();
-
-			if(rs.isBeforeFirst())
-				while(rs.next()) {
+			if(result != null)
+				for (RowResult rs : result) {
 
 					name = rs.getString(1);              											
 				} 
 			
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_get_equip_name"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_get_equip_name"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return name;	
@@ -1207,112 +1129,111 @@ public class EquipmentsDAO {
 			
 			// -------------------------------------------------------------------------------------------------------------------------------------------------------
 					
-			 conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			 ps = conn.prepareStatement(insert);
+			 conn.prepare(insert);
 
-				ps.setInt(1, dataSource.getEquipId());
-				ps.setString(2, dataSource.getDatetime());
-				ps.setString(3, dataSource.getUsername()); 		
-				ps.setString(4, dataSource.getEquipName());
-				ps.setString(5, dataSource.getCity());
-				ps.setString(6, dataSource.getRoad());
-				ps.setString(7, dataSource.getKm());       			
-				ps.setInt(8,  linearWidth); // Linear Width
-				ps.setInt(9,  linearPosx); // Linear posX
-				ps.setInt(10, linearPosY); // Linear posY				
-				ps.setInt(11,  linearWidth); // VIDEO WALL Linear Width				
-				ps.setInt(12, linearPosx); // VIDEO WALL Linear posX
-				ps.setInt(13, linearPosY); // VIDEO WALL Linear posY
-				ps.setInt(14, mapWidth); // Map Width
-				ps.setInt(15, mapPosX); // Map posX
-				ps.setInt(16, mapPosY); // Map posY
-				ps.setInt(17, mapWidth); // VIDEO WALL Map Width
-				ps.setInt(18, mapPosX); // VIDEO WALL Map posX
-				ps.setInt(19, mapPosY); // VIDEO WALL Map posY			
-				ps.setDouble(20, dataSource.getLatitude()); // LATITUDE
-				ps.setDouble(21, dataSource.getLongitude()); // LONGITUDE
-				ps.setString(22, dataSource.getDirection()); // DIREÇÂO	
-				ps.setBoolean(23, true);
+				conn.setInt(1, dataSource.getEquipId());
+				conn.setString(2, dataSource.getDatetime());
+				conn.setString(3, dataSource.getUsername()); 		
+				conn.setString(4, dataSource.getEquipName());
+				conn.setString(5, dataSource.getCity());
+				conn.setString(6, dataSource.getRoad());
+				conn.setString(7, dataSource.getKm());       			
+				conn.setInt(8,  linearWidth); // Linear Width
+				conn.setInt(9,  linearPosx); // Linear posX
+				conn.setInt(10, linearPosY); // Linear posY				
+				conn.setInt(11,  linearWidth); // VIDEO WALL Linear Width				
+				conn.setInt(12, linearPosx); // VIDEO WALL Linear posX
+				conn.setInt(13, linearPosY); // VIDEO WALL Linear posY
+				conn.setInt(14, mapWidth); // Map Width
+				conn.setInt(15, mapPosX); // Map posX
+				conn.setInt(16, mapPosY); // Map posY
+				conn.setInt(17, mapWidth); // VIDEO WALL Map Width
+				conn.setInt(18, mapPosX); // VIDEO WALL Map posX
+				conn.setInt(19, mapPosY); // VIDEO WALL Map posY			
+				conn.setDouble(20, dataSource.getLatitude()); // LATITUDE
+				conn.setDouble(21, dataSource.getLongitude()); // LONGITUDE
+				conn.setString(22, dataSource.getDirection()); // DIREÇÂO	
+				conn.setBoolean(23, true);
 				
 				if(!dataSource.getTable().equals("speed"))
-					ps.setString(24, dataSource.getIpAddress());   
+					conn.setString(24, dataSource.getIpAddress());   
 				
 				if(dataSource.getTable().equals("dms"))
-					ps.setInt(25, dataSource.getDmsDriver());
+					conn.setInt(25, dataSource.getDmsDriver());
 				
 				else if(dataSource.getTable().equals("sat")) {
-					ps.setString(25, dataSource.getServiceFlow());
-					ps.setInt(26, dataSource.getNumLanes()); 
-					ps.setString(27, dataSource.getLane1());
-					ps.setString(28, dataSource.getLane2());
-					ps.setString(29, dataSource.getLane3());
-					ps.setString(30, dataSource.getLane4());
-					ps.setString(31, dataSource.getLane5());
-					ps.setString(32, dataSource.getLane6());
-					ps.setString(33, dataSource.getLane7());
-					ps.setString(34, dataSource.getLane8());					
+					conn.setString(25, dataSource.getServiceFlow());
+					conn.setInt(26, dataSource.getNumLanes()); 
+					conn.setString(27, dataSource.getLane1());
+					conn.setString(28, dataSource.getLane2());
+					conn.setString(29, dataSource.getLane3());
+					conn.setString(30, dataSource.getLane4());
+					conn.setString(31, dataSource.getLane5());
+					conn.setString(32, dataSource.getLane6());
+					conn.setString(33, dataSource.getLane7());
+					conn.setString(34, dataSource.getLane8());					
 				}
 				
 				else if(dataSource.getTable().equals("sos")) {
 					
-					ps.setInt(25, dataSource.getPort());
-					ps.setInt(26, dataSource.getModel());
-					ps.setString(27, dataSource.getSip());
+					conn.setInt(25, dataSource.getPort());
+					conn.setInt(26, dataSource.getModel());
+					conn.setString(27, dataSource.getSip());
 				}
 				
 				else if(dataSource.getTable().equals("speed")) {					
-					ps.setString(24, dataSource.getIpAddressIndicator());
-					ps.setString(25, dataSource.getIpAddressRadar());					
+					conn.setString(24, dataSource.getIpAddressIndicator());
+					conn.setString(25, dataSource.getIpAddressRadar());					
 				}
 				
 				else if(dataSource.getTable().equals("meteo")) {
 					
-					ps.setInt(25, dataSource.getConfigId());
-					ps.setString(26, dataSource.getEquipType());
-					ps.setInt(27, dataSource.getPort());			
+					conn.setInt(25, dataSource.getConfigId());
+					conn.setString(26, dataSource.getEquipType());
+					conn.setInt(27, dataSource.getPort());			
 					
 				}
 
-			int success = ps.executeUpdate();
+			long success = conn.executeUpdate();
 
 				if(success > 0) {
 					
-					int successNotif = 0;
+					long successNotif = 0;
 					
 					// NOTIFICATION ADD		
-					ps = conn.prepareStatement(queryNotification);
+					conn.prepare(queryNotification);
 					
 					if(!dataSource.getTable().equals("speed")) {
 					
-						ps.setInt(1, dataSource.getEquipId());					
-					    ps.setString(2, dataSource.getEquipType());
-						ps.setString(3, dataSource.getIpAddress());
-						ps.setString(4, dataSource.getEquipName());
-						ps.setString(5, dataSource.getKm());
+						conn.setInt(1, dataSource.getEquipId());					
+					    conn.setString(2, dataSource.getEquipType());
+						conn.setString(3, dataSource.getIpAddress());
+						conn.setString(4, dataSource.getEquipName());
+						conn.setString(5, dataSource.getKm());
 						
-						successNotif = ps.executeUpdate();
+						successNotif = conn.executeUpdate();
 					
 					}
 					
 					else {
 						
-						ps.setInt(1, dataSource.getEquipId()); 		
-						ps.setString(2, dataSource.getEquipType()+" I");
-						ps.setString(3, dataSource.getIpAddressIndicator());
-						ps.setString(4, dataSource.getEquipName());
-						ps.setString(5, dataSource.getKm());
+						conn.setInt(1, dataSource.getEquipId()); 		
+						conn.setString(2, dataSource.getEquipType()+" I");
+						conn.setString(3, dataSource.getIpAddressIndicator());
+						conn.setString(4, dataSource.getEquipName());
+						conn.setString(5, dataSource.getKm());
 
-						successNotif = ps.executeUpdate();
+						successNotif = conn.executeUpdate();
 						
 						if(successNotif > 0) {
 							
-							ps.setInt(1, dataSource.getEquipId()); 		
-							ps.setString(2, dataSource.getEquipType()+" R");
-							ps.setString(3, dataSource.getIpAddressRadar());
-							ps.setString(4, dataSource.getEquipName());
-							ps.setString(5, dataSource.getKm());
+							conn.setInt(1, dataSource.getEquipId()); 		
+							conn.setString(2, dataSource.getEquipType()+" R");
+							conn.setString(3, dataSource.getIpAddressRadar());
+							conn.setString(4, dataSource.getEquipName());
+							conn.setString(5, dataSource.getKm());
 
-						    successNotif = ps.executeUpdate();
+						    successNotif = conn.executeUpdate();
 						}						
 					}	
 											
@@ -1325,14 +1246,14 @@ public class EquipmentsDAO {
 		
 						if(dataSource.getTable().equals("dms")) {
 							   
-							ps = conn.prepareStatement(insertActiveMessage);
+							conn.prepare(insertActiveMessage);
 			
-								ps.setInt(1, dataSource.getEquipId());
-								ps.setInt(2, 0);            			
-								ps.setString(3, dataSource.getUsername());    
-								ps.setString(4, dataSource.getDatetime());
-								ps.setInt(5, 0);   
-								ps.setInt(6, 1);								
+								conn.setInt(1, dataSource.getEquipId());
+								conn.setInt(2, 0);            			
+								conn.setString(3, dataSource.getUsername());    
+								conn.setString(4, dataSource.getDatetime());
+								conn.setInt(5, 0);   
+								conn.setInt(6, 1);								
 							   
 						}
 						
@@ -1340,27 +1261,27 @@ public class EquipmentsDAO {
 												
 							for(int ln = 1; ln <= dataSource.getNumLanes(); ln++) {								
 									
-							ps = conn.prepareStatement(insertFilterDirections);
+							conn.prepare(insertFilterDirections);
 						
-								ps.setInt(1, dataSource.getEquipId()); 			
-								ps.setInt(2, ln);
+								conn.setInt(1, dataSource.getEquipId()); 			
+								conn.setInt(2, ln);
 												
 								switch(ln) {
 								
-								case 1: ps.setString(3, dataSource.getLane1()); break;
-								case 2: ps.setString(3, dataSource.getLane2()); break;
-								case 3: ps.setString(3, dataSource.getLane3()); break;
-								case 4: ps.setString(3, dataSource.getLane4()); break;
-								case 5: ps.setString(3, dataSource.getLane5()); break;
-								case 6: ps.setString(3, dataSource.getLane6()); break;
-								case 7: ps.setString(3, dataSource.getLane7()); break;
-								case 8: ps.setString(3, dataSource.getLane8()); break;
+								case 1: conn.setString(3, dataSource.getLane1()); break;
+								case 2: conn.setString(3, dataSource.getLane2()); break;
+								case 3: conn.setString(3, dataSource.getLane3()); break;
+								case 4: conn.setString(3, dataSource.getLane4()); break;
+								case 5: conn.setString(3, dataSource.getLane5()); break;
+								case 6: conn.setString(3, dataSource.getLane6()); break;
+								case 7: conn.setString(3, dataSource.getLane7()); break;
+								case 8: conn.setString(3, dataSource.getLane8()); break;
 								
 								}										
 							}							  														
 						}
 						
-						 int success2 = ps.executeUpdate();
+						 long success2 = conn.executeUpdate();
 						    
 						    if(success2 > 0)
 						    	status = true;						
@@ -1368,16 +1289,13 @@ public class EquipmentsDAO {
 				}
 			}         		  	
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_saving"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_saving"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps);
 		}
 
 		return status;	
@@ -1465,17 +1383,16 @@ public class EquipmentsDAO {
 		
 		try {
 			
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-		ps = conn.prepareStatement(select);
+		conn.prepare(select);
 
-		ps.setInt(1,  id);
+		conn.setInt(1,  id);
 		
-		rs = ps.executeQuery();
+		MapResult result = conn.executeQuery();
 		
 		//System.out.println("SEL: "+select);
 	
-		if(rs.isBeforeFirst()) {
-			while(rs.next()){
+		if(result != null) {
+			for (RowResult rs : result){
 
 				dataSource.setEquipId(rs.getInt(1));				
 				dataSource.setEquipName(rs.getString(2));
@@ -1529,16 +1446,13 @@ public class EquipmentsDAO {
 		  }
 	   }
 		
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 		
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 		
-			SystemLog.logErrorSQL(errorFolder.concat("search_error"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("search_error"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 		
-		} finally {
-		
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
 		return dataSource;            	  
@@ -1642,28 +1556,24 @@ public class EquipmentsDAO {
 		
 		try {
 					
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-		ps = conn.prepareStatement(update);
+		conn.prepare(update);
 		
-		ps.setInt(1,  posX);
-		ps.setInt(2,  posY);
-		ps.setInt(3,  id);
+		conn.setInt(1,  posX);
+		conn.setInt(2,  posY);
+		conn.setInt(3,  id);
 		
-		int rs =  ps.executeUpdate();
+		long rs =  conn.executeUpdate();
 
 		if(rs > 0)
 			positioned = true;
 		
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_positioning"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_positioning"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps);
 		}
 				
 		return positioned;
@@ -1835,138 +1745,137 @@ public class EquipmentsDAO {
 							
 		try {
 			
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-		ps = conn.prepareStatement(update);
+		conn.prepare(update);
 										
-				ps.setString(1, dataSource.getEquipName());		
-				ps.setString(2, dataSource.getCity());
-				ps.setString(3,  dataSource.getDirection());
-				ps.setString(4, dataSource.getRoad());
-				ps.setString(5, dataSource.getKm());
-				ps.setInt(6, dataSource.getWidth());
+				conn.setString(1, dataSource.getEquipName());		
+				conn.setString(2, dataSource.getCity());
+				conn.setString(3,  dataSource.getDirection());
+				conn.setString(4, dataSource.getRoad());
+				conn.setString(5, dataSource.getKm());
+				conn.setInt(6, dataSource.getWidth());
 									
 			if(updateView.equals("linear"))	{									
 												
 					if(dataSource.getTable().equals("meteo")) {
-						ps.setString(7, dataSource.getIpAddress());	
-						ps.setInt(8, dataSource.getPort());							
-						ps.setInt(9,  dataSource.getEquipId());
+						conn.setString(7, dataSource.getIpAddress());	
+						conn.setInt(8, dataSource.getPort());							
+						conn.setInt(9,  dataSource.getEquipId());
 					}
 				
 					else if(dataSource.getTable().equals("speed")) {
-						ps.setString(7, dataSource.getIpAddressIndicator());				
-					    ps.setString(8, dataSource.getIpAddressRadar());
-					    ps.setInt(9, dataSource.getEquipId());
+						conn.setString(7, dataSource.getIpAddressIndicator());				
+					    conn.setString(8, dataSource.getIpAddressRadar());
+					    conn.setInt(9, dataSource.getEquipId());
 					}
 				
 					else if(dataSource.getTable().equals("sos")){
-						ps.setString(7, dataSource.getIpAddress());	
-						ps.setInt(8, dataSource.getPort());	
-						ps.setInt(9, dataSource.getModel());	
-						ps.setString(10, dataSource.getSip());
-						ps.setInt(11,  dataSource.getEquipId());			
+						conn.setString(7, dataSource.getIpAddress());	
+						conn.setInt(8, dataSource.getPort());	
+						conn.setInt(9, dataSource.getModel());	
+						conn.setString(10, dataSource.getSip());
+						conn.setInt(11,  dataSource.getEquipId());			
 						
 					}
 					
 					else if(dataSource.getTable().equals("sat")) {
-						ps.setString(7, dataSource.getIpAddress());
-						ps.setString(8, dataSource.getServiceFlow());
-						ps.setInt(9, dataSource.getNumLanes());	
-						ps.setString(10, dataSource.getLane1());
-						ps.setString(11, dataSource.getLane2());
-						ps.setString(12, dataSource.getLane3());
-						ps.setString(13, dataSource.getLane4());
-						ps.setString(14, dataSource.getLane5());
-						ps.setString(15, dataSource.getLane6());
-						ps.setString(16, dataSource.getLane7());
-						ps.setString(17, dataSource.getLane8());
-						ps.setInt(18,  dataSource.getEquipId());		
+						conn.setString(7, dataSource.getIpAddress());
+						conn.setString(8, dataSource.getServiceFlow());
+						conn.setInt(9, dataSource.getNumLanes());	
+						conn.setString(10, dataSource.getLane1());
+						conn.setString(11, dataSource.getLane2());
+						conn.setString(12, dataSource.getLane3());
+						conn.setString(13, dataSource.getLane4());
+						conn.setString(14, dataSource.getLane5());
+						conn.setString(15, dataSource.getLane6());
+						conn.setString(16, dataSource.getLane7());
+						conn.setString(17, dataSource.getLane8());
+						conn.setInt(18,  dataSource.getEquipId());		
 					}
 					
 					else {
 						
-						ps.setString(7, dataSource.getIpAddress());						       
-						ps.setInt(8,  dataSource.getEquipId());
+						conn.setString(7, dataSource.getIpAddress());						       
+						conn.setInt(8,  dataSource.getEquipId());
 						
 					}
 			
 			}else {
 				
-						ps.setDouble(7,  dataSource.getLatitude());
-						ps.setDouble(8,  dataSource.getLongitude());
+						conn.setDouble(7,  dataSource.getLatitude());
+						conn.setDouble(8,  dataSource.getLongitude());
 																		
 					if(dataSource.getTable().equals("meteo")) {
-						ps.setString(9, dataSource.getIpAddress());	
-						ps.setInt(10, dataSource.getPort());							
-						ps.setInt(11,  dataSource.getEquipId());
+						conn.setString(9, dataSource.getIpAddress());	
+						conn.setInt(10, dataSource.getPort());							
+						conn.setInt(11,  dataSource.getEquipId());
 					}
 				
 					else if(dataSource.getTable().equals("speed")) {
-						ps.setString(9, dataSource.getIpAddressIndicator());				
-					    ps.setString(10, dataSource.getIpAddressRadar());
-					    ps.setInt(11, dataSource.getEquipId());
+						conn.setString(9, dataSource.getIpAddressIndicator());				
+					    conn.setString(10, dataSource.getIpAddressRadar());
+					    conn.setInt(11, dataSource.getEquipId());
 					}
 				
 					else if(dataSource.getTable().equals("sos")){
-						ps.setString(9, dataSource.getIpAddress());	
-						ps.setInt(10, dataSource.getPort());	
-						ps.setInt(11, dataSource.getModel());	
-						ps.setString(12, dataSource.getSip());
-						ps.setInt(13,  dataSource.getEquipId());			
+						conn.setString(9, dataSource.getIpAddress());	
+						conn.setInt(10, dataSource.getPort());	
+						conn.setInt(11, dataSource.getModel());	
+						conn.setString(12, dataSource.getSip());
+						conn.setInt(13,  dataSource.getEquipId());			
 						
 					}
 					
 					else if(dataSource.getTable().equals("sat")) {
-						ps.setString(9, dataSource.getIpAddress());	
-						ps.setInt(10, dataSource.getNumLanes());	
-						ps.setString(11, dataSource.getLane1());
-						ps.setString(12, dataSource.getLane2());
-						ps.setString(13, dataSource.getLane3());
-						ps.setString(14, dataSource.getLane4());
-						ps.setString(15, dataSource.getLane5());
-						ps.setString(16, dataSource.getLane6());
-						ps.setString(17, dataSource.getLane7());
-						ps.setString(18, dataSource.getLane8());
-						ps.setInt(19, dataSource.getEquipId());		
+						conn.setString(9, dataSource.getIpAddress());	
+						conn.setInt(10, dataSource.getNumLanes());	
+						conn.setString(11, dataSource.getLane1());
+						conn.setString(12, dataSource.getLane2());
+						conn.setString(13, dataSource.getLane3());
+						conn.setString(14, dataSource.getLane4());
+						conn.setString(15, dataSource.getLane5());
+						conn.setString(16, dataSource.getLane6());
+						conn.setString(17, dataSource.getLane7());
+						conn.setString(18, dataSource.getLane8());
+						conn.setInt(19, dataSource.getEquipId());		
 					}	
 					
 					else {									
 							  
-						ps.setString(9, dataSource.getIpAddress());						       
-						ps.setInt(10,  dataSource.getEquipId());					    
+						conn.setString(9, dataSource.getIpAddress());						       
+						conn.setInt(10,  dataSource.getEquipId());					    
 						       
 					}					
 			   }
 			
-		int res = ps.executeUpdate();
+		long res = conn.executeUpdate();
 
 		if (res > 0) {
 			
 			if(!dataSource.getTable().equals("speed")) {
 
-				ps = conn.prepareStatement(notificationId);
+				conn.prepare(notificationId);
 	
-				ps.setInt(1, dataSource.getEquipId());	
-				ps.setString(2, dataSource.getEquipType());
+				conn.setInt(1, dataSource.getEquipId());	
+				conn.setString(2, dataSource.getEquipType());
 	
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 	
-					if(rs.isBeforeFirst()) {
-						while(rs.next()) {
+					if(result != null) {
+						for (RowResult rs : result) {
 		
 							id = rs.getInt(1);	
 		
 						}
 					}
 	
-				ps = conn.prepareStatement(updateNotifications);
+				conn.prepare(updateNotifications);
 	
-				ps.setString(1, dataSource.getIpAddress());
-				ps.setString(2, dataSource.getEquipName()); 
-				ps.setString(3, dataSource.getKm());						
-				ps.setInt(4, id);	
+				conn.setString(1, dataSource.getIpAddress());
+				conn.setString(2, dataSource.getEquipName()); 
+				conn.setString(3, dataSource.getKm());						
+				conn.setInt(4, id);	
 	
-				int res2 = ps.executeUpdate();
+				long res2 = conn.executeUpdate();
 	
 				if(res2 > 0)
 					updated = true;	
@@ -1975,55 +1884,55 @@ public class EquipmentsDAO {
 				
 				// UPDATE INDICATOR REGISTER
 				
-				ps = conn.prepareStatement(notificationId);
+				conn.prepare(notificationId);
 				
-				ps.setInt(1, dataSource.getEquipId());	
-				ps.setString(2, dataSource.getEquipType()+" I");
+				conn.setInt(1, dataSource.getEquipId());	
+				conn.setString(2, dataSource.getEquipType()+" I");
 	
-					rs = ps.executeQuery();
+					MapResult result = conn.executeQuery();
 		
-						if(rs.isBeforeFirst()) {
-							while(rs.next()) {
+						if(result != null) {
+							for (RowResult rs : result) {
 			
 								id = rs.getInt(1);				
 							}
 						}
 						
-				ps = conn.prepareStatement(updateNotifications);
+				conn.prepare(updateNotifications);
 				
-				ps.setString(1, dataSource.getIpAddressIndicator());
-				ps.setString(2, dataSource.getEquipName()); 
-				ps.setString(3, dataSource.getKm());						
-				ps.setInt(4, id);	
+				conn.setString(1, dataSource.getIpAddressIndicator());
+				conn.setString(2, dataSource.getEquipName()); 
+				conn.setString(3, dataSource.getKm());						
+				conn.setInt(4, id);	
 	
-				int res2 = ps.executeUpdate();
+				long res2 = conn.executeUpdate();
 	
 				if(res2 > 0) {
 					
 					// UPDATE RADAR REGISTER
 					
-					ps = conn.prepareStatement(notificationId);
+					conn.prepare(notificationId);
 					
-					ps.setInt(1, dataSource.getEquipId());	
-					ps.setString(2, dataSource.getEquipType()+" R");
+					conn.setInt(1, dataSource.getEquipId());	
+					conn.setString(2, dataSource.getEquipType()+" R");
 		
-						rs = ps.executeQuery();
+						result = conn.executeQuery();
 			
-							if(rs.isBeforeFirst()) {
-								while(rs.next()) {
+							if(result != null) {
+								for (RowResult rs : result) {
 				
 									id = rs.getInt(1);				
 								}
 							}
 					
-					ps = conn.prepareStatement(updateNotifications);
+					conn.prepare(updateNotifications);
 					
-					ps.setString(1, dataSource.getIpAddressRadar());
-					ps.setString(2, dataSource.getEquipName()); 
-					ps.setString(3, dataSource.getKm());						
-					ps.setInt(4, id);	
+					conn.setString(1, dataSource.getIpAddressRadar());
+					conn.setString(2, dataSource.getEquipName()); 
+					conn.setString(3, dataSource.getKm());						
+					conn.setInt(4, id);	
 					
-					int res3 = ps.executeUpdate();
+					long res3 = conn.executeUpdate();
 					
 					if(res3 > 0)
 						updated = true;						
@@ -2031,16 +1940,13 @@ public class EquipmentsDAO {
 			}
 		}
 		
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_updating"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_updating"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 		
 		return updated;
@@ -2114,18 +2020,17 @@ public class EquipmentsDAO {
 	
 		try {
 		
-		conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		
 		if(table.equals("meteo")) { // GET Meteo EQUIP TYPE
 			
 			// SELECT Meteo TYPE
-			ps = conn.prepareStatement(selectMeteoType);
-			ps.setInt(1,  id);
+			conn.prepare(selectMeteoType);
+			conn.setInt(1,  id);
 		
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 						
-				if(rs.isBeforeFirst()) {
-					while(rs.next()) {
+				if(result != null) {
+					for (RowResult rs : result) {
 
 						equipType = rs.getString(1);	
 					}
@@ -2134,34 +2039,34 @@ public class EquipmentsDAO {
 		
 		 // ------------------------------------------------
 		
-			ps = conn.prepareStatement(delete);  
-			ps.setInt(1,  id);
+			conn.prepare(delete);  
+			conn.setInt(1,  id);
 
-			int rsp =  ps.executeUpdate();
+			long rsp =  conn.executeUpdate();
 
 			if(rsp > 0) {	
 				
 				if(!table.equals("speed")) {
 						
 					// DELETE NOTIFICATION
-					ps = conn.prepareStatement(notificationId);
-					ps.setInt(1,  id);
-					ps.setString(2, equipType);
+					conn.prepare(notificationId);
+					conn.setInt(1,  id);
+					conn.setString(2, equipType);
 
-					rs = ps.executeQuery();
+					MapResult result = conn.executeQuery();
 					
-						if(rs.isBeforeFirst()) {
-							while(rs.next()) {
+						if(result != null) {
+							for (RowResult rs : result) {
 
 								id = rs.getInt(1);	
 							}
 						}
 
 					//DELETE NOTIFICATION
-					ps = conn.prepareStatement(deleteNotification);
-					ps.setInt(1,  id);
+					conn.prepare(deleteNotification);
+					conn.setInt(1,  id);
 							
-					int rs2 =  ps.executeUpdate();
+					long rs2 =  conn.executeUpdate();
 		
 					if(rs2 > 0) 
 						deleted = true;		
@@ -2172,49 +2077,49 @@ public class EquipmentsDAO {
 					
 					int idAux = 0;
 					
-					ps = conn.prepareStatement(notificationId);
+					conn.prepare(notificationId);
 					
-					ps.setInt(1, id);	
-					ps.setString(2, equipType+" I");
+					conn.setInt(1, id);	
+					conn.setString(2, equipType+" I");
 		
-						rs = ps.executeQuery();
+						MapResult result = conn.executeQuery();
 			
-							if(rs.isBeforeFirst()) {
-								while(rs.next()) {
+							if(result != null) {
+								for (RowResult rs : result) {
 				
 									idAux = rs.getInt(1);				
 								}
 							}
 							
 					// DELETE NOTIFICATION
-					ps = conn.prepareStatement(deleteNotification);
-					ps.setInt(1,  idAux);
+					conn.prepare(deleteNotification);
+					conn.setInt(1,  idAux);
 							
-					int res2 = ps.executeUpdate();	
+					long res2 = conn.executeUpdate();	
 					
 					if(res2 > 0) {
 						
 						// DELETE RADAR REGISTER
 						
-						ps = conn.prepareStatement(notificationId);
+						conn.prepare(notificationId);
 						
-						ps.setInt(1, id);	
-						ps.setString(2, equipType+" R");
+						conn.setInt(1, id);	
+						conn.setString(2, equipType+" R");
 			
-							rs = ps.executeQuery();
+							result = conn.executeQuery();
 				
-								if(rs.isBeforeFirst()) {
-									while(rs.next()) {
+								if(result != null) {
+									for (RowResult rs : result) {
 					
 										idAux = rs.getInt(1);				
 									}
 								}
 								
 						// DELETE NOTIFICATION
-						ps = conn.prepareStatement(deleteNotification);
-						ps.setInt(1,  idAux);
+						conn.prepare(deleteNotification);
+						conn.setInt(1,  idAux);
 												
-						int res3 =  ps.executeUpdate();
+						long res3 =  conn.executeUpdate();
 						 
 						if(res3 > 0) 
 							deleted = true;							 
@@ -2222,16 +2127,13 @@ public class EquipmentsDAO {
 				}			
 			}
 			
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_deleting"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_deleting"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 				
 		return deleted;
@@ -2258,33 +2160,28 @@ public class EquipmentsDAO {
 		
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, equip_id);
+			conn.prepare(sql);
+			conn.setString(1, equip_id);
 			
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println(sql);
 		
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result != null) {
+				for (RowResult rs : result) {
 												
 					info[0] = rs.getString(1);
 					info[1] = rs.getString(2);				  				  					
 				}
 			}
 
-		}catch (SQLException sqle) {
+		}catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));
 			
-			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			SystemLog.logErrorSQL(errorFolder.concat("error_sat_dir1"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
-		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 		return info;
 	}	

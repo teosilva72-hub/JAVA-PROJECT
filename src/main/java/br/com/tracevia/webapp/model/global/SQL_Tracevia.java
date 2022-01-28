@@ -26,8 +26,15 @@ public class SQL_Tracevia {
 	private interface SQL_Interface extends Library {
 	    boolean start(int conn);
 	    Void prepare(String query);
+	    Void prepare_ms(String query);
+	    Void prepare_my(String query);
 	    Pointer execute_json();
-	    Pointer execute();
+	    Pointer execute_query();
+	    long execute_update();
+	    void set_int(int idx, int val);
+	    void set_float(int idx, float val);
+	    void set_double(int idx, double val);
+	    void set_string(int idx, String val);
 	}
 	
 	private SQL_Interface inner;
@@ -259,6 +266,63 @@ public class SQL_Tracevia {
         	else
         		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getInt();
         }
+
+        public float getFloat(int integer) throws Exception {
+        	Row row = cols[integer - 1];
+        	if (row.type == 1)
+        		return Float.parseFloat(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
+        }
+        
+        public float getFloat(String string) throws Exception {
+        	Row row = cols[map.get(string)];
+        	if (row.type == 1)
+        		return Float.parseFloat(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
+        }
+        
+        public double getDouble(int integer) throws Exception {
+        	Row row = cols[integer - 1];
+        	if (row.type == 1)
+        		return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 8)).getDouble();
+        }
+        
+        public double getDouble(String string) throws Exception {
+        	Row row = cols[map.get(string)];
+        	if (row.type == 1)
+        		return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 8)).getDouble();
+        }
+        
+        private boolean checkBoolean(byte[] bytes) {
+        	int sum = 0;
+			for (byte b : bytes) {
+				sum += b;
+			}
+			
+			return sum != 0;
+        }
+        
+        public boolean getBoolean(int integer) throws Exception {
+        	Row row = cols[integer - 1];
+        	if (row.type == 1)
+        		return Boolean.parseBoolean(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return checkBoolean(row.getBytes());
+        }
+        
+        public boolean getBoolean(String string) throws Exception {
+        	Row row = cols[map.get(string)];
+        	if (row.type == 1)
+        		return Boolean.parseBoolean(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	else
+        		return checkBoolean(row.getBytes());
+        }
         
         public byte[] getBytes(int integer) throws Exception {
         	return cols[integer - 1].getBytes();
@@ -274,8 +338,36 @@ public class SQL_Tracevia {
 		return inner.start(conn);
 	}
 	
-	public Void prepare(String query) {
-		return inner.prepare(query);
+	public void prepare(String query) {
+		inner.prepare(query);
+	}
+	
+	public void prepare_ms(String query) {
+		inner.prepare_ms(query);
+	}
+	
+	public void prepare_my(String query) {
+		inner.prepare_my(query);
+	}
+	
+	public void setInt(int idx, int val) {
+		inner.set_int(idx, val);
+	}
+	
+	public void setFloat(int idx, float val) {
+		inner.set_float(idx, val);
+	}
+	
+	public void setDouble(int idx, double val) {
+		inner.set_double(idx, val);
+	}
+	
+	public void setBoolean(int idx, boolean val) {
+		inner.set_int(idx, val ? 1 : 0);
+	}
+	
+	public void setString(int idx, String val) {
+		inner.set_string(idx, val);
 	}
 	
 	public MapJsonResult execute_json() throws IOException {
@@ -285,9 +377,13 @@ public class SQL_Tracevia {
 		return ptr != null ? new MapJsonResult(result) : null;
 	}
 	
-	public MapResult execute() throws IOException {
-		Result result = new Result(inner.execute());
+	public MapResult executeQuery() throws IOException {
+		Result result = new Result(inner.execute_query());
 		
 		return result.to_map();
+	}
+	
+	public long executeUpdate() throws IOException {
+		return inner.execute_update();
 	}
 }

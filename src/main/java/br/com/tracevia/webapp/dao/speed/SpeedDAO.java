@@ -70,7 +70,7 @@ public class SpeedDAO {
 			
 		   conn.prepare(select);
 
-		   MapResult result = conn.execute();
+		   MapResult result = conn.executeQuery();
 
 		   if (result != null) {
 			   for (RowResult rs : result) {
