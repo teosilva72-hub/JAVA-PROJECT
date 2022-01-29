@@ -198,6 +198,22 @@ public class SQL_Tracevia {
         	this.result = result;
         }
 
+		public RowResult get(int idx) throws Exception {
+			if (idx >= result.length)
+				throw new Exception("Index out range");
+			return result[idx];
+		} 
+
+		public RowResult first() throws Exception {
+			if (result.length == 0)
+				throw new Exception("List void");
+			return result[0];
+		} 
+
+		public int len() {
+			return this.result.length;
+		}
+
 		@Override
 		public Iterator<RowResult> iterator() {
 			return Arrays.asList(result).listIterator();
