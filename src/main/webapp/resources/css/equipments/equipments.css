@@ -16,7 +16,7 @@
 }
 
 .eqp-dark {
-  padding-top: 1rem;
+  padding-top: 0rem;
   height: 50%;
 }
 
@@ -42,7 +42,7 @@
 
 .eqp-form {
 	cursor: pointer;
-	border-width: 3px !important;
+	border-width: 1px !important;
 }
 
 .list-eqp {
