@@ -2,28 +2,21 @@ package br.com.tracevia.webapp.dao.global;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import br.com.tracevia.webapp.methods.TranslationMethods;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.UserAccount;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.util.LogUtils;
 
 public class UserAccountDAO {
 
-	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
-
-	private PreparedStatement ps, ps1, ps2;
-	private ResultSet rs, rs1;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	private int id;
 	
 	// --------------------------------------------------------------------------------------------
@@ -79,11 +72,11 @@ public class UserAccountDAO {
 		try {
 			
 			String sql = "INSERT INTO users_register (user_id, date_register, creation_username, name, job_position, email, username, password)"
-					+ " values  ( ?, ?, ?, ?, ?, ?, ?, ?)";
+					+ " values  ( (SELECT Max(user_id) as usr FROM users_register as maxId) + 1, ?, ?, ?, ?, ?, ?, ?)";
 
 			String sql2 = "INSERT INTO users_permission_user (user_id, permission_id, status) values  ( ?, ?, ?)";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
 			// Criar Datetime
 
@@ -92,44 +85,28 @@ public class UserAccountDAO {
 			String dt_register = dtf.format(date);
 
 			// Execute Register
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 
-			ps1 = conn.prepareStatement("SELECT Max(user_id) as user FROM users_register;");
-			rs1 = ps1.executeQuery();
-
-			if (rs1 != null) {
-				while (rs1.next()) {
-
-					id = rs1.getInt("user") + 1;
-
-				}
-			} else
-				id = 1;
-
-			// Execute Register
-			ps = conn.prepareStatement(sql);
-
-			ps.setInt(1, id);
-			ps.setString(2, dt_register);
-			ps.setString(3, user.getCreatedBy());
-			ps.setString(4, user.getName());
-			ps.setString(5, user.getJob_position());
-			ps.setString(6, user.getEmail());
-			ps.setString(7, user.getUsername());
-			ps.setString(8, user.getPassword());
+			conn.setString(1, dt_register);
+			conn.setString(2, user.getCreatedBy());
+			conn.setString(3, user.getName());
+			conn.setString(4, user.getJob_position());
+			conn.setString(5, user.getEmail());
+			conn.setString(6, user.getUsername());
+			conn.setString(7, user.getPassword());
 
 			// System.out.println(sql);
 
-			int success = ps.executeUpdate();
+			long success = conn.executeUpdate();
 
 			if (success > 0) {
 
-				ps2 = conn.prepareStatement(sql2);
-				ps2.setInt(1, id);
-				ps2.setInt(2, user.getPermission_id());
-				ps2.setBoolean(3, user.isActiveStatus());
+				conn.prepare(sql2);
+				conn.setInt(1, id);
+				conn.setInt(2, user.getPermission_id());
+				conn.setBoolean(3, user.isActiveStatus());
 
-				int sucess2 = ps2.executeUpdate();
+				long sucess2 = conn.executeUpdate();
 
 				if (sucess2 > 0)
 					status = true;
@@ -137,18 +114,16 @@ public class UserAccountDAO {
 
 			// Caso retorno for de sucesso
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlRegisterExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlRegisterExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps);
-			ConnectionFactory.closeConnection(conn, ps1, rs1);
-			ConnectionFactory.closeConnection(conn, ps2);			
+			conn.close();		
 		}
 
 		return status;
@@ -176,43 +151,43 @@ public class UserAccountDAO {
 
 			String sql2 = "UPDATE users_permission_user SET permission_id = ?, status = ?  " + "WHERE user_id = ? ";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 					
-			ps.setString(1, usuario.getName());
-			ps.setString(2, usuario.getJob_position());
-			ps.setString(3, usuario.getEmail());
-			ps.setString(4, usuario.getUsername());
-			ps.setInt(5, Integer.parseInt(usuario.getUserID())); // Here
+			conn.setString(1, usuario.getName());
+			conn.setString(2, usuario.getJob_position());
+			conn.setString(3, usuario.getEmail());
+			conn.setString(4, usuario.getUsername());
+			conn.setInt(5, Integer.parseInt(usuario.getUserID())); // Here
 
-			int success = ps.executeUpdate();
+			long success = conn.executeUpdate();
 
 			if (success > 0) {
 
-				ps = conn.prepareStatement(sql2);
+				conn.prepare(sql2);
 
-				ps.setInt(1, usuario.getPermission_id());
-				ps.setBoolean(2, usuario.isActiveStatus());
-				ps.setInt(3, Integer.parseInt(usuario.getUserID()));
+				conn.setInt(1, usuario.getPermission_id());
+				conn.setBoolean(2, usuario.isActiveStatus());
+				conn.setInt(3, Integer.parseInt(usuario.getUserID()));
 
-				int sucess2 = ps.executeUpdate();
+				long sucess2 = conn.executeUpdate();
 
 				if (sucess2 > 0)
 					status = true;
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUpdateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUpdateExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 
 		return status;
@@ -244,15 +219,15 @@ public class UserAccountDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("sql");
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					UserAccount user = new UserAccount();
 
@@ -269,17 +244,17 @@ public class UserAccountDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlListExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlListExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return lista;
@@ -306,15 +281,15 @@ public class UserAccountDAO {
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
 					+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE pu.user_id = ? ";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
-			ps.setString(1, parametro);
+			conn.prepare(sql);
+			conn.setString(1, parametro);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 					
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					user.setUserID(rs.getString("user_id"));
 					user.setName(rs.getString("name"));
@@ -327,17 +302,17 @@ public class UserAccountDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlSearchExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlSearchExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return user;
@@ -357,7 +332,7 @@ public class UserAccountDAO {
 
 		boolean response = false;
 
-		int success = 0, success2 = 0;
+		long success = 0, success2 = 0;
 	
 		try {
 
@@ -365,38 +340,38 @@ public class UserAccountDAO {
 
 			String sql2 = "DELETE FROM users_permission_user WHERE user_id = ?";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 
-			ps.setInt(1, Integer.parseInt(parametro));
+			conn.setInt(1, Integer.parseInt(parametro));
 
-			success = ps.executeUpdate();
+			success = conn.executeUpdate();
 
 			if (success > 0) {
 
-				ps = conn.prepareStatement(sql2);
+				conn.prepare(sql2);
 
-				ps.setInt(1, Integer.parseInt(parametro));
+				conn.setInt(1, Integer.parseInt(parametro));
 
-				success2 = ps.executeUpdate();
+				success2 = conn.executeUpdate();
 
 				if (success2 > 0)
 					response = true;
 
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlDeleteExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlDeleteExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 			
 		}
 
@@ -414,31 +389,29 @@ public class UserAccountDAO {
 	 * @return verdadeiro caso seja ação realizada com sucesso
 	 */
 	public boolean validaUsuario(String usuario) {
+		boolean valid = false;
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement("SELECT username FROM users_register WHERE username = ?");
-			ps.setString(1, usuario);
-			rs = ps.executeQuery();
-			if (rs != null) {
-				while (rs.next())
-					return true;
-			}
+			conn.prepare("SELECT username FROM users_register WHERE username = ?");
+			conn.setString(1, usuario);
+			MapResult result = conn.executeQuery();
+			valid = result.hasNext();
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUserValidateExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUserValidateExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
-		return false;
+		return valid;
 	}
 	
 	// --------------------------------------------------------------------------------------------		
@@ -460,26 +433,26 @@ public class UserAccountDAO {
 
 			String sql = "UPDATE users_register SET password = ? WHERE username = ? ";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 
-			ps.setString(1, senha);
-			ps.setString(2, usuario);
+			conn.setString(1, senha);
+			conn.setString(2, usuario);
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 
 			status = true;
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlPasswordExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlPasswordExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 				
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps);
+			conn.close();
 		}
 
 		return status;
@@ -503,26 +476,26 @@ public class UserAccountDAO {
 					
 			String emailCheck = "SELECT email FROM users_register WHERE email = ? ";
 			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 						
-			ps = conn.prepareStatement(emailCheck); //CHECK EMAIL EXISTS
-			ps.setString(1, email);
+			conn.prepare(emailCheck); //CHECK EMAIL EXISTS
+			conn.setString(1, email);
 			
-			rs =  ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs.next() != false)
+			if (result.hasNext())
 			     response = true;
 			
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlEmailExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlEmailExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps);		
+			conn.close();		
 		}
 
 		return response;
@@ -546,27 +519,27 @@ public class UserAccountDAO {
 					
 			String usernameCheck = "SELECT username FROM users_register WHERE username = ? ";
 			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 						
-			ps = conn.prepareStatement(usernameCheck); //CHECK EMAIL EXISTS
-			ps.setString(1, username);
+			conn.prepare(usernameCheck); //CHECK EMAIL EXISTS
+			conn.setString(1, username);
 			
-			rs =  ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
-			if (rs.next() != false)
+			if (result.hasNext())
 			     response = true;			
 		
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			
 			StringWriter errors = new StringWriter();
 			sqle.printStackTrace(new PrintWriter(errors));	
 
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUsernameExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUsernameExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			
 		} finally {
 			
-			ConnectionFactory.closeConnection(conn, ps);		
+			conn.close();		
 		}
 
 		return response;
