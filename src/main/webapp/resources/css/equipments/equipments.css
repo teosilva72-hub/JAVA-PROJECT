@@ -16,7 +16,7 @@
 }
 
 .eqp-dark {
-  padding-top: 1rem;
+  padding-top: 0rem;
   height: 50%;
 }
 
@@ -32,7 +32,7 @@
 
 .eqp-card{
 	  background: linear-gradient(120deg, rgb(60 60 60) 0%, rgb(140 140 140) 35%, rgb(56 56 56) 100%);
-	  /* height: 40%; */
+	  height: 52%;
 }
 
 .eqp-card-details{
@@ -42,7 +42,7 @@
 
 .eqp-form {
 	cursor: pointer;
-	border-width: 3px !important;
+	border-width: 1px !important;
 }
 
 .list-eqp {

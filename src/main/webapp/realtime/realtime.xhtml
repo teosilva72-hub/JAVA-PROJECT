@@ -35,7 +35,9 @@
 	<ui:param name="SuperAdmin" value="#{ permission == 1 || permission == 6 }" />
 	<ui:param name="DMS" value="#{ loginAccount.load.en_dms }" />
 	<ui:param name="SPEED" value="#{ loginAccount.load.en_speed }" />
+	<ui:param name="CFTV" value="#{ loginAccount.load.en_cftv }" />
 	<ui:param name="VideoWall" value="#{ permission == 9 }" />
+	<ui:param name="Map" value="linear" />
 	
 	<input type="hidden" value="linear" id="interface" name="interface" />
 
@@ -76,7 +78,7 @@
 
 			
 			<!-- CFTV LIST EQUIPS TOP PAGE -->
-			 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >	
+			 <ui:fragment  rendered="#{ CFTV }" >	
 				<h:form prependId="false" id="sumIdCftv">
 					<div class="dropdown cftv-dropdown-realtime">
 						<button class="btn btn-dark dropdown-toggle" type="button"
@@ -178,10 +180,12 @@
 			</section>
 
 			<div class="context-menu">
-				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}
-				</button>
-				<button type="button" class="btn btn-dark dinamic-mouse-right window-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}
-				</button>
+				<c:if test="#{ CFTV }">
+					<button type="button" class="btn btn-secondary dinamic-mouse-right" for="cftv" onclick="settingCftv()">#{mapLabels.$label_map_equipment_settings}
+					</button>
+					<button type="button" class="btn btn-dark dinamic-mouse-right window-mouse-right" for="cftv" onclick="windowCftvRight()">#{mapLabels.$label_map_equipment_realtime_view}
+					</button>
+				</c:if>
 				<button type="button" class="btn btn-secondary dinamic-mouse-right" for="all" onclick="moreOption()"> #{mapLabels.$label_map_equipment_options} </button>
 			</div>
 
@@ -233,7 +237,7 @@
         
         <!-- ======================== CFTV SETTINGS ======================== -->
 		
-		 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
+		 <ui:fragment  rendered="#{ CFTV }" >
 			<ui:include src="/template/map-modal/cftv-settings.xhtml" />  
 		</ui:fragment>
 		<!---->
@@ -251,7 +255,7 @@
 				
 		<h:outputScript library="js/realtime" name="realtime.js?version=#{notificationsView.timestamp}"  />
 		
-		 <ui:fragment  rendered="#{loginAccount.load.en_cftv}" >
+		 <ui:fragment  rendered="#{ CFTV }" >
 			<h:outputScript library="js/map/" name="mapCftcv.js" />
 		</ui:fragment>
 			

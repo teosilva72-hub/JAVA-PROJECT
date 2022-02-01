@@ -106,6 +106,13 @@
     <version>3.2.1</version>
   </dependency>
   
+  <!-- JNA dependency -->
+  <dependency> 
+     <groupId>net.java.dev.jna</groupId>
+     <artifactId>jna</artifactId>
+     <version>5.10.0</version>
+   </dependency>
+  
   <!-- Activation Framework is used by the JavaMail(TM) API to manage MIME data -->
   <dependency>
     <groupId>javax.activation</groupId>

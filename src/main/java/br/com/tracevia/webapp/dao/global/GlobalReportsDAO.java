@@ -1,15 +1,12 @@
 package br.com.tracevia.webapp.dao.global;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import br.com.tracevia.webapp.cfg.RoadConcessionairesEnum;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.VBV;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia.MapResult;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia.RowResult;
 
 public class GlobalReportsDAO {
 	
@@ -17,10 +14,12 @@ public class GlobalReportsDAO {
 	 * @author Wellington 28/08/2020
 	 */
 	
-	private Connection conn;	
-	private PreparedStatement ps;
-	private ResultSet rs;
+	private SQL_Tracevia conn = new SQL_Tracevia();
 	private String[][] result;
+
+	GlobalReportsDAO() {
+		conn.start(1);
+	}
 			
 	 /* ************************** */
 	/* ***** GLOBAL REPORTS ***** */
@@ -46,18 +45,17 @@ public class GlobalReportsDAO {
 		result = new String[registers][fieldsNumber];
 							
 		try {
-			   //GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			   //GET CONNECTION	
 																												
 				//EXECUTE QUERY				
-				ps = conn.prepareStatement(query);
-				rs = ps.executeQuery();
+				conn.prepare(query);
+				MapResult resultMap = conn.executeQuery();
 									
 				int lin = 0;
 						
 				//RESULT IN RESULTSET	
-				  if (rs.isBeforeFirst()) {
-					  while (rs.next()) { //Linhas
+				  if (result != null) {
+					  for (RowResult rs : resultMap) { //Linhas
 						
 				       for(int col = 0; col < fieldsNumber; col++ ) { // Colunas
 				    					    	 
@@ -72,10 +70,7 @@ public class GlobalReportsDAO {
 					
 				 } else result = new String[0][0]; //CASO N�O EXISTA REGISTROS REDEFINE TAMANHO DO ARRAY
 				
-		}finally 
-		{
-			ConnectionFactory.closeConnection(conn, ps, rs);			
-		}
+		} finally {}
 		
 		return result;		
 
@@ -100,29 +95,23 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 		String endDateFormatted = dta.StringDBDateFormat(endDate);
 				        
 		try {
-			
-			 //GET CONNECTION			
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 		    
 			   // CHECK PROCEDURE EXECUTION FIRST
-				ps = conn.prepareStatement(query);					
-				ps.setString(1, startDateFormatted);
-				ps.setString(2, endDateFormatted);
-				ps.setString(3, equip);
-				rs = ps.executeQuery();
+				conn.prepare(query);					
+				conn.setString(1, startDateFormatted);
+				conn.setString(2, endDateFormatted);
+				conn.setString(3, equip);
+				MapResult resultMap = conn.executeQuery();
 				
-				if (rs != null) {
-					while (rs.next()) {
+				if (resultMap != null) {
+					for (RowResult rs : resultMap) {
 
 				     registers = rs.getInt(1);
 				     				     
 				    } 
 				 } 
 			
-		}finally 
-		{
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		}
+		} finally {}
 
 		return registers;		
 
@@ -137,29 +126,19 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 		String startDateFormatted = dta.StringDBDateFormat(startDate);
 		String endDateFormatted = dta.StringDBDateFormat(endDate);
 				        
-		try {
-			
-			 //GET CONNECTION			
-		    if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaSul.getConcessionaire()))
-		           conn = ConnectionFactory.connectToCCR();
-		    
-		    else if(RoadConcessionaire.roadConcessionaire.equals(RoadConcessionairesEnum.ViaPaulista.getConcessionaire()))
-		           conn = ConnectionFactory.connectToViaPaulista();
-		    
-		    else conn = ConnectionFactory.connectToTraceviaApp();
-																							
+		try {												
 				//EXECUTE QUERY				
-				ps = conn.prepareStatement(query);
-				ps.setString(1, startDateFormatted);
-				ps.setString(2, endDateFormatted);
-				ps.setString(3, equip);				
-				rs = ps.executeQuery();
+				conn.prepare(query);
+				conn.setString(1, startDateFormatted);
+				conn.setString(2, endDateFormatted);
+				conn.setString(3, equip);				
+				MapResult resultMap = conn.executeQuery();
 				
 				//System.out.println("QUERY: "+query);
 				//RESULT IN RESULTSET
 				
-				if (rs != null) {
-					while (rs.next()) {
+				if (resultMap != null) {
+					for (RowResult rs : resultMap) {
 						
 						VBV vbv = new VBV();
 						
@@ -211,12 +190,7 @@ public Integer GetVBVsRegisterNumbers(String query, String equip, String startDa
 				    } 
 				 }
 
-		    }finally 
-		      {
-		    	
-			ConnectionFactory.closeConnection(conn, ps, rs);
-		     
-		      }
+		    } finally {}
 
 		return lista;		
 

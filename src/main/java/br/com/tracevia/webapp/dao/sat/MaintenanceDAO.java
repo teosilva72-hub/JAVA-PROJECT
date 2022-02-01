@@ -40,7 +40,7 @@ public class MaintenanceDAO {
 		
 		// --------------------------------------------------------------------------------------------------------------
 		
-		/** Método para obter status dos equipamentos (SAT)
+		/** Mï¿½todo para obter status dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
@@ -164,7 +164,7 @@ public class MaintenanceDAO {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------------
 		
-		/** Método para obter status dos dados por faixa dos equipamentos (SAT)
+		/** Mï¿½todo para obter status dos dados por faixa dos equipamentos (SAT)
 		 * @author Wellington 13/01/2021 
 		 * @version 1.0
 		 * @since 1.0		
@@ -199,7 +199,7 @@ public class MaintenanceDAO {
 					
 			String select = "SELECT DATE_FORMAT(d.DATA_HORA,\"%Y-%m-%d\") AS data, " +
 					"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(d.DATA_HORA)- TIME_TO_SEC(d.DATA_HORA)%(15*60))),\"%H:%i\") AS intervals, d.NOME_ESTACAO 'siteId', " +
-					"d.NOME_FAIXA 'faixa', (d.VOLUME_TOTAL) 'volume' " +
+					"d.NOME_FAIXA 'faixa', (d.VOLUME_TOTAL) 'volume'" +
 					"FROM tb_dados15 d " +
 					"INNER JOIN sat_equipment eq on eq.equip_id = d.NOME_ESTACAO " +
 					"WHERE d.DATA_HORA BETWEEN DATE_SUB( ?, INTERVAL '23:59' HOUR_MINUTE) AND ? AND eq.visible = 1 " +
@@ -240,7 +240,7 @@ public class MaintenanceDAO {
 						dados.setHora(rs.getString(2));
 						dados.setSiteId(rs.getInt(3));
 						dados.setLane(rs.getInt(4));
-						dados.setVolume(rs.getInt(5));	
+						dados.setVolume(rs.getInt(5));
 																		
 						// PROCESSAR DADOS PARA FRONT END
 						

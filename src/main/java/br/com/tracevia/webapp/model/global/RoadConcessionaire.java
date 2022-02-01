@@ -423,7 +423,7 @@ public class RoadConcessionaire {
    			tableVBV = DefaultTable.tableVBV.getTable();
    			tableDados15 = DefaultTable.tableDados15.getTable();   			
    			plaque = "";
-   			mapEnabled = false;
+   			mapEnabled = true;
    			reportsLLEnabled = false;
    			ecoviasAraguaia = true;   		
    			hasNotification = true;

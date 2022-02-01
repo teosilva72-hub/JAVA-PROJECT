@@ -35,7 +35,7 @@ public class ListEquipments {
 	List<? extends Equipments> daiList; 
 	List<? extends Equipments> meteoList; 
 	List<? extends Equipments> ocrList; 
-	List<? extends Equipments> satList; 
+	List<SAT> satList; 
 	List<? extends Equipments> speedList; 
 	List<? extends Equipments> sosList; 
 	List<? extends Equipments> svList; 
@@ -91,7 +91,7 @@ public class ListEquipments {
 		return ocrList;
 	}
 
-	public List<? extends Equipments> getSatList() {
+	public List<SAT> getSatList() {
 		return satList;
 	}
 

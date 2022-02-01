@@ -59,6 +59,36 @@ $(function(){
 		////////////////////////////////////////////////////////////////
 		//window.requestAnimationFrame(g)
 	}
+
+	$('[data-toggle="popover"]').popover({
+		html : true,
+		trigger: 'hover',
+		content: function() {
+		  var content = $(this).attr("data-popover-content");
+		  return $(content).children(".popover-body").html();
+		},
+		title: function() {
+		  var title = $(this).attr("data-popover-content");
+		  return $(title).children(".popover-header").html();
+		}
+  
+	});  
+
+  	let sat = $('.sat-def[id^=sat]')
+	
+	sat.each(function(i){
+		let self = $(this) 
+		
+		quantFaixas(self, parseInt(self.attr('lanes'))); 
+		
+		if(self.attr('status') == 'true')		
+			self.find('.btn-sat').addClass('on');
+			
+			else self.find('.btn-sat').removeClass('on');
+	})
+				
+	//$('.btn-sat').addClass('on');  //status sat
+	$('.btn-battery').addClass('on'); //status battery	
 })
 
 
@@ -68,47 +98,12 @@ $(window).on('load', function () {
     $('body').delay(250).css({'overflow': 'visible'});
 })
 
-
-$(function () {
-	$('[data-toggle="popover"]').popover({
-	      html : true,
-	      trigger: 'hover',
-	      content: function() {
-	        var content = $(this).attr("data-popover-content");
-	        return $(content).children(".popover-body").html();
-	      },
-	      title: function() {
-	        var title = $(this).attr("data-popover-content");
-	        return $(title).children(".popover-header").html();
-	      }
-	
-	  	});  
-
-    let sat = $('.sat-def[id^=sat]')
-	
-	sat.each(function(i){
-		let self = $(this) 
-		
-		quantFaixas((i+1), parseInt(self.attr('lanes'))); 
-		
-		if(self.attr('status') == 'true')		
-			self.find('.btn-sat').addClass('on');
-			
-			else self.find('.btn-sat').removeClass('on');
-		
-	})
-				
-		//$('.btn-sat').addClass('on');  //status sat
-		$('.btn-battery').addClass('on'); //status battery	
-});
-
-
 function quantFaixas(sat, faixas) {
     faixas = Math.max(2, Math.min(8, faixas));
     let query = "";
     for (let i = 8; i > faixas; i--)
         query += `[row="${i}"]`;
-    $(`#sat${sat}`).find(query.replaceAll("][", "],[")).children().addClass("none");
+    sat.find(query.replaceAll("][", "],[")).children().addClass("none");
 }
 
 //$("#sat2 [col=13] [row=5] [id=30]").addClass("online") //add info sat
