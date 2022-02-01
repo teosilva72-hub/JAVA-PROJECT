@@ -3,6 +3,7 @@ package br.com.tracevia.webapp.controller.global;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -41,8 +42,8 @@ public class LoginAccountBean {
 	private UserAccount user;
 	private UserAccount login;
 	private String credentials;    
-
-	public double[][] coord = new double[2][3];    
+  
+	public HashMap<String, double[][]> coord = new HashMap<>();    
 
 	LocaleUtil locale, locale1, locale2;
 
@@ -161,8 +162,10 @@ public class LoginAccountBean {
 	}
 
 	public double[][] getCoord() {
-		coordMap();
-		return coord;
+		if (!coord.containsKey("")) {
+			coordMap();
+		}
+		return coord.get("");
 	}
 	    // --------------------------------------------------------------------------------------------
 	
@@ -590,15 +593,18 @@ public class LoginAccountBean {
      * @since 1.0    
 	 */
 	public double[][] coordMap(String name) {
-		
-		LoginAccountDAO dao = new LoginAccountDAO();
-
 		name = (name.isEmpty() ? name : "-" + name);
+		if (!coord.containsKey(name)) {
+			LoginAccountDAO dao = new LoginAccountDAO();
+			double[][] c = new double[2][3];
 
-		coord[0] = dao.getCoord("start" + name);
-		coord[1] = dao.getCoord("end" + name);
 
-		return coord;
+			c[0] = dao.getCoord("start" + name);
+			c[1] = dao.getCoord("end" + name);
+			coord.put(name, c);
+		}
+
+		return coord.get(name);
 	}
 	
 	// --------------------------------------------------------------------------------------------
