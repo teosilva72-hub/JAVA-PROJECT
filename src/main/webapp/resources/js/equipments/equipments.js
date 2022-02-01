@@ -44,6 +44,8 @@ const meteo_status = response => {
 }
 
 const change_status = (id, status, type) => {
+	 if (response.body)
+        response = JSON.parse(response.body);
 	
 } 
 
