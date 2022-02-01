@@ -273,13 +273,13 @@ const changeGenericStates = response => {
 	 var client = await getStomp();
  
 	 var on_connect = function() {
-		 if (typeof callback_states == "function")	
+		 if (typeof callback1 == "function")	
 			 client.subscribe(`/exchange/monitor/monitor`, callback1)
 			 
-		 if (typeof callback_count == "function")
+		 if (typeof callback2 == "function")
 			 client.subscribe(`/exchange/counter/counter`, callback2)
  
-		 if (typeof callback_notifications == "function")
+		 if (typeof callback3 == "function")
 			 client.subscribe(`/exchange/notification/notification`, callback3)
 				 
 	 };

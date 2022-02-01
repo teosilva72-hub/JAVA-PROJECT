@@ -23,11 +23,11 @@
 			<c:forEach items="#{listEquips.equips}" var="loadItem">
 				<ui:fragment rendered="#{loadItem.value}">
 							<div class="jumbotron col-3 eqp-dark bg-dark">
-								<div class='row'>
+								<div class='d-flex justify-content-center'>
 									<div class='col-12 p-1'>
 										<div class="eqp-card shadow rounded p-2 bg-body">
 											<div class="card card-scroll card-scrollable">
-											<c:forEach end="9" items="#{loadItem.list}" var="item" varStatus="loop">	
+											<c:forEach items="#{loadItem.list}" var="item" varStatus="loop">	
 													<div class="card-body eqp-form border-bottom p-1 bg-dark text-white">
 														<div class="row">
 															<div class="col my-auto">
@@ -44,7 +44,7 @@
 																		class="form-label list-eqp p-0 col-3 mx-auto">
 																		#{item.km}
 																	</label>
-																	<div class="card col-2 bg-danger">
+																	<div class="col-2 bg-danger">
 																	</div>
 																</div>
 															</div>
