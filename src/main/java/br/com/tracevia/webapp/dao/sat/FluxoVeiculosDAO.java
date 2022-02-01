@@ -2,24 +2,20 @@ package br.com.tracevia.webapp.dao.sat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.sat.FluxoVeiculos;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class FluxoVeiculosDAO {
 
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	String direction1, direction2; 
 		
@@ -390,17 +386,17 @@ public class FluxoVeiculosDAO {
 			
 					try {
 				
-						conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+						conn.start(1);
 			
-						ps = conn.prepareStatement(select);
-						ps.setString(1, startDate);
-						ps.setString(2, endDate);
-						ps.setString(3, equipId);
+						conn.prepare(select);
+						conn.setString(1, startDate);
+						conn.setString(2, endDate);
+						conn.setString(3, equipId);
 																	
-						rs = ps.executeQuery();
+						MapResult result = conn.executeQuery();
 												
-							if (rs.isBeforeFirst()) {
-								while (rs.next()) {
+							if (result.hasNext()) {
+								for (RowResult rs : result) {
 				
 									FluxoVeiculos veh = new FluxoVeiculos();														
 				
@@ -421,16 +417,16 @@ public class FluxoVeiculosDAO {
 								}							
 							}
 					
-					} catch (SQLException sqle) {
+					} catch (Exception sqle) {
 						
 						StringWriter errors = new StringWriter();
 						sqle.printStackTrace(new PrintWriter(errors));
 						
-						SystemLog.logErrorSQL(errorFolder.concat("error_get_vehicle"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+						SystemLog.logErrorSQL(errorFolder.concat("error_get_vehicle"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 												
 					}finally {
 						
-						ConnectionFactory.closeConnection(conn, ps);
+						conn.close();
 					
 					}
 				

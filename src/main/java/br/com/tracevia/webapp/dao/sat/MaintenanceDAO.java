@@ -2,10 +2,6 @@ package br.com.tracevia.webapp.dao.sat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -14,15 +10,14 @@ import java.util.List;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.sat.Maintenance;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class MaintenanceDAO {
 				
-		private Connection conn;			
-		private PreparedStatement ps;
-		private ResultSet rs;
+		SQL_Tracevia conn = new SQL_Tracevia();
 				
 		// --------------------------------------------------------------------------------------------------------------
 		
@@ -88,16 +83,16 @@ public class MaintenanceDAO {
 				
 				System.out.println(currentDate);
 				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn.start(1);
 				
-				ps = conn.prepareStatement(select);			
-				ps.setString(1, currentDate);		
-				ps.setString(2, currentDate);
+				conn.prepare(select);			
+				conn.setString(1, currentDate);		
+				conn.setString(2, currentDate);
 				
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						int id = rs.getInt(3);
 
 						if (map.containsKey(id)) {
@@ -147,16 +142,16 @@ public class MaintenanceDAO {
 					lista.addAll(map.values());
 				}
 
-			} catch (SQLException sqle) {
+			} catch (Exception sqle) {
 				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_get_status"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_get_status"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 								
 			} finally {
 				
-				ConnectionFactory.closeConnection(conn, ps, rs);
+				conn.close();
 			}
 
 			return lista;
@@ -208,16 +203,16 @@ public class MaintenanceDAO {
 			
 			try {
 				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn.start(1);
 					
-				ps = conn.prepareStatement(select);			
-				ps.setString(1, currentDate);		
-				ps.setString(2, currentDate);
+				conn.prepare(select);			
+				conn.setString(1, currentDate);		
+				conn.setString(2, currentDate);
 				
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 																		
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						int id = rs.getInt(3);
 
 						if (map.containsKey(id)) {
@@ -277,13 +272,13 @@ public class MaintenanceDAO {
 
 					lista.addAll(map.values());
 				}
-			} catch (SQLException sqle) {
+			} catch (Exception sqle) {
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_get_data"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_get_data"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			} finally {
-				ConnectionFactory.closeConnection(conn, ps, rs);
+				conn.close();
 			}
 
 			return lista;
