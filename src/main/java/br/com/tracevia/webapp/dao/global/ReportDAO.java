@@ -1,25 +1,19 @@
 package br.com.tracevia.webapp.dao.global;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
 public class ReportDAO {
 	
-    private Connection conn;	
-	private PreparedStatement ps;
-	private ResultSet rs;
+    SQL_Tracevia conn = new SQL_Tracevia();
 
     private boolean custom;
 
@@ -37,8 +31,6 @@ public class ReportDAO {
     	
     	localeDirection = new LocaleUtil();
     	localeDirection.getResourceBundle(LocaleUtil.LABELS_DIRECTIONS);
-        
-        conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
 
         if (columnName == null)
         	columnName = new ArrayList<>();
@@ -70,33 +62,41 @@ public class ReportDAO {
             newQuery = query.replace("@division", search.substring(2));
         }
 
-        ps = conn.prepareStatement(newQuery);
-        rs = ps.executeQuery();
-
-        if (!custom)
-            this.columnName.clear();
-
-        if (rs.isBeforeFirst()) {
-            while (rs.next()) {
-               
-            	ResultSetMetaData rsmd = rs.getMetaData();
-                int columnsNumber = rsmd.getColumnCount();
-                String[] row = new String[columnsNumber];
-                
-                for (int idx = 1; idx <= columnsNumber; idx++) {
-                    String name = rsmd.getColumnName(idx);
-                    if (!custom)
-                        this.columnName.add(name);
-
-                    String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
-                                        
-                    row[idx - 1] = value != null && value != "" ? value : "-";
-                    if (name.equals(id) && !field.contains(value))
-                        field.add(value);
+        try {
+            conn.start(1);
+    
+            conn.prepare(newQuery);
+            MapResult result = conn.executeQuery();
+    
+            if (!custom)
+                this.columnName.clear();
+    
+            if (result.hasNext()) {
+                for (RowResult rs : result) {
+                   
+                    String[] keys = rs.getKeys();
+                    int columnsNumber = keys.length;
+                    String[] row = new String[columnsNumber];
+                    
+                    for (int idx = 1; idx <= columnsNumber; idx++) {
+                        String name = keys[idx];
+                        if (!custom)
+                            this.columnName.add(name);
+    
+                        String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
+                                            
+                        row[idx - 1] = value != null && value != "" ? value : "-";
+                        if (name.equals(id) && !field.contains(value))
+                            field.add(value);
+                    }
+    
+                    lines.add(row);
                 }
-
-                lines.add(row);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
         }
 
         this.lines = lines;
@@ -115,48 +115,55 @@ public class ReportDAO {
 
             String newQuery = query.replace("@division", String.format("'%s'", division[0]));
 
-          //  System.out.println(newQuery);
-            
-            ps = conn.prepareStatement(newQuery);
-            rs = ps.executeQuery();
-    
-            if (rs.isBeforeFirst()) {
-                while (rs.next()) {
-                   
-                    ResultSetMetaData rsmd = rs.getMetaData();
-                    int columnsNumber = rsmd.getColumnCount();
-                    String[] column = new String[columnsNumber];
-                    
-                    for (int idx = 1; idx <= columnsNumber; idx++) {
-    
-                        String value = rs.getString(idx);
+            //  System.out.println(newQuery);
+            try {
+                conn.start(1);
+                
+                conn.prepare(newQuery);
+                MapResult result = conn.executeQuery();
+        
+                if (result.hasNext()) {
+                    for (RowResult rs : result) {
+                       
+                        String[] keys = rs.getKeys();
+                        int columnsNumber = keys.length;
+                        String[] column = new String[columnsNumber];
                         
-                        column[idx - 1] = value != null && value != "" ? value : "-";
+                        for (int idx = 1; idx <= columnsNumber; idx++) {
+        
+                            String value = rs.getString(idx);
+                            
+                            column[idx - 1] = value != null && value != "" ? value : "-";
+                        }
+        
+                        secondaryList.add(column);
                     }
-    
-                    secondaryList.add(column);
                 }
+                
+                secondaryLines.add(new Pair<String, List<String[]>>(division[1], secondaryList));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                conn.close();
             }
-            
-            secondaryLines.add(new Pair<String, List<String[]>>(division[1], secondaryList));
         }
         
         this.secondaryLines = secondaryLines;
     }
 
-    public List<String[]> getOtherElementTable(String table, String column) throws SQLException {
+    public List<String[]> getOtherElementTable(String table, String column) throws Exception {
         return getOtherElementTable(table, new String[]{ column, column }, "");
     }
 
-    public List<String[]> getOtherElementTable(String table, String column, String where) throws SQLException {
+    public List<String[]> getOtherElementTable(String table, String column, String where) throws Exception {
         return getOtherElementTable(table, new String[]{ column, column }, where);
     }
 
-    public List<String[]> getOtherElementTable(String table, String[] column) throws SQLException {
+    public List<String[]> getOtherElementTable(String table, String[] column) throws Exception {
         return getOtherElementTable(table, column, "");
     }
     
-    public List<String[]> getOtherElementTable(String table, String[] column, String where) throws SQLException {
+    public List<String[]> getOtherElementTable(String table, String[] column, String where) throws Exception {
     	
     	LocaleUtil locale = new LocaleUtil();
     	locale.getResourceBundle(LocaleUtil.LABELS_REPORTS);
@@ -173,22 +180,29 @@ public class ReportDAO {
         int tempSize = fieldsTemp.size();
         String query = String.format("SELECT DISTINCT %s FROM %s%s GROUP BY %1$s", select.substring(2), table, where.isEmpty() ? "" : String.format(" WHERE %s", where));
 
-        ps = conn.prepareStatement(query);
-        rs = ps.executeQuery();
-
-        if (rs.isBeforeFirst()) {
-            while (rs.next()) {
-                for (int i = 0; i < tempSize; i++) {
-                    String value = translateFilters(locale, rs.getString(i + 1));
-                    if (value == null)
-                        value = "";
-                    if ((!fieldsTemp.get(i).contains(value) && !value.isEmpty() || i > 0))
-                    	fieldsTemp.get(i).add(value);
-                    else
-                    	break;
+        try {
+            conn.start(1);
+            conn.prepare(query);
+            MapResult result = conn.executeQuery();
+    
+            if (result.hasNext()) {
+                for (RowResult rs : result) {
+                    for (int i = 0; i < tempSize; i++) {
+                        String value = translateFilters(locale, rs.getString(i + 1));
+                        if (value == null)
+                            value = "";
+                        if ((!fieldsTemp.get(i).contains(value) && !value.isEmpty() || i > 0))
+                            fieldsTemp.get(i).add(value);
+                        else
+                            break;
+                    }
+    
                 }
-
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            conn.close();
         }
         
         int size = fieldsTemp.get(0).size();

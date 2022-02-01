@@ -112,17 +112,19 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         
         public boolean getBoolean(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
-        	if (row.type == 1)
-        		return Boolean.parseBoolean(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
+        	if (row.type == 1) {
+				String value = new String(row.getBytes(), StandardCharsets.UTF_8);
+        		return Boolean.parseBoolean(value) || "1".equals(value);
+			} else
         		return checkBoolean(row.getBytes());
         }
         
         public boolean getBoolean(String string) throws Exception {
         	RowSql row = cols[map.get(string)];
-        	if (row.type == 1)
-        		return Boolean.parseBoolean(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
+        	if (row.type == 1) {
+				String value = new String(row.getBytes(), StandardCharsets.UTF_8);
+        		return Boolean.parseBoolean(value) || "1".equals(value);
+			} else
         		return checkBoolean(row.getBytes());
         }
         
@@ -133,6 +135,10 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         public byte[] getBytes(String string) throws Exception {
         	return cols[map.get(string)].getBytes();
         }
+
+		public String[] getKeys() {
+			return (String[]) map.keySet().toArray();
+		}
         
     }
 }
