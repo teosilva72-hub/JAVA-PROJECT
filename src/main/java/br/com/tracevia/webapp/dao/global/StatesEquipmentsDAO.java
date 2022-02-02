@@ -104,7 +104,8 @@ public class StatesEquipmentsDAO {
 
 			conn.start(1);
 
-			conn.prepare(select);
+			conn.prepare_my(select + " LIMIT 1");
+ 				conn.prepare_ms(select.replaceFirst("SELECT", "SELECT TOP 1"));
 			conn.setString(1, equip);
 			conn.setString(2, currentDate);
 			conn.setString(3, interval);

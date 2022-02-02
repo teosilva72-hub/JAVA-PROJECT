@@ -48,15 +48,16 @@ public class NotificationsDAO {
 
 		NotificationsCount notif = new NotificationsCount();
 
-		String query = "SELECT IFNULL(SUM(IF(battery_status = 0, 1, 0) + IF(online_status = 0, 1, 0)), 0) 'TOTAL', " +
+		String query = "SELECT IFNULL(SUM((battery_status ^ 1) + (online_status ^ 1)), 0) 'TOTAL', " +
 		// "IFNULL(SUM(IF(battery_status = 0, 1, 0)), 0) 'BATTERY', " +
-				"IFNULL(SUM(IF(online_status = 0, 1, 0)), 0) 'ONLINE' " +
+				"IFNULL(SUM(online_status ^ 1), 0) 'ONLINE' " +
 				"FROM notifications_status";
 
 		try {
 
 			conn.start(1);
-			conn.prepare(query);
+			conn.prepare_my(query);
+			conn.prepare_ms(query.replaceAll("IFNULL", "ISNULL"));
 
 			MapResult result = conn.executeQuery();
 
@@ -291,7 +292,7 @@ public class NotificationsDAO {
    	 	  
    	  boolean state = false;
    		  
-   	  String insert = "INSERT INTO notifications_history (id, equip_id, datetime_, equip_type, state_id) VALUES(null, ?, ?, ?, ?)";
+   	  String insert = "INSERT INTO notifications_history (equip_id, datetime_, equip_type, state_id) VALUES(?, ?, ?, ?)";
    	  
    	  try {
    		  

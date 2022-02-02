@@ -151,19 +151,19 @@ public class ReportDAO {
         this.secondaryLines = secondaryLines;
     }
 
-    public List<String[]> getOtherElementTable(String table, String column) throws Exception {
+    public List<String[]> getOtherElementTable(String table, String column) {
         return getOtherElementTable(table, new String[]{ column, column }, "");
     }
 
-    public List<String[]> getOtherElementTable(String table, String column, String where) throws Exception {
+    public List<String[]> getOtherElementTable(String table, String column, String where) {
         return getOtherElementTable(table, new String[]{ column, column }, where);
     }
 
-    public List<String[]> getOtherElementTable(String table, String[] column) throws Exception {
+    public List<String[]> getOtherElementTable(String table, String[] column) {
         return getOtherElementTable(table, column, "");
     }
     
-    public List<String[]> getOtherElementTable(String table, String[] column, String where) throws Exception {
+    public List<String[]> getOtherElementTable(String table, String[] column, String where) {
     	
     	LocaleUtil locale = new LocaleUtil();
     	locale.getResourceBundle(LocaleUtil.LABELS_REPORTS);

@@ -21,8 +21,9 @@ public class ResultSql extends Structure implements Structure.ByReference {
 		}
     	
     	MapResult to_map() throws IOException {
-    		MapResult map = new MapResult((ColumnsSql[]) ptr.toArray(size));
-    		ptr.clear();
+    		MapResult map = size > 0 ? new MapResult((ColumnsSql[]) ptr.toArray(size)) : new MapResult();
+    		if (ptr != null)
+    			ptr.clear();
     		this.clear();
     		return map;
     	}
@@ -37,6 +38,10 @@ public class ResultSql extends Structure implements Structure.ByReference {
             private int idx = 0;
             private int size;
 
+            MapResult() throws IOException {
+            	this.size = 0;
+            }
+            
             MapResult(ColumnsSql[] result) throws IOException {
             	this.result = result;
             	this.size = result.length;

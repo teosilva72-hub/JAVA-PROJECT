@@ -55,18 +55,20 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         
         public int getInt(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
+        	byte[] b = row.getBytes();
         	if (row.type == 1)
         		return Integer.parseInt(new String(row.getBytes(), StandardCharsets.UTF_8));
         	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getInt();
+        		return ByteBuffer.wrap(new byte[] {b[3], b[2], b[1], b[0]}).getInt();
         }
         
         public int getInt(String string) throws Exception {
         	RowSql row = cols[map.get(string)];
+        	byte[] b = row.getBytes();
         	if (row.type == 1)
         		return Integer.parseInt(new String(row.getBytes(), StandardCharsets.UTF_8));
         	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getInt();
+        		return ByteBuffer.wrap(new byte[] {b[3], b[2], b[1], b[0]}).getInt();
         }
 
         public float getFloat(int integer) throws Exception {

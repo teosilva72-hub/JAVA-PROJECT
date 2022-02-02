@@ -981,7 +981,7 @@ public class EquipmentsDAO {
 
 			MapResult result = conn.executeQuery();
 
-			if (result != null)
+			if (result.len() > 0)
 				checked = true;
 
 		} catch (Exception sqle) {
@@ -1169,15 +1169,15 @@ public class EquipmentsDAO {
 				+ " values  (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		// NOTIFICATION STATUS TABLE INSERT QUERY
-		String queryNotification = "INSERT INTO notifications_status (notifications_id, equip_id, equip_type, equip_ip, equip_name, equip_km) "
-				+ "VALUES (null, ?, ?, ?, ?, ?)";
+		String queryNotification = "INSERT INTO notifications_status (equip_id, equip_type, equip_ip, equip_name, equip_km) "
+				+ "VALUES (?, ?, ?, ?, ?)";
 
 		// DMS ACTIVE MESSAGES TABLE INSERT QUERY
 		String insertActiveMessage = "INSERT INTO dms_messages_active (equip_id, id_message, activation_username, date_time_message, id_modify, active) "
 				+ "values (?,?,?,?,?,?)";
 
 		// SAT EQUIPMENT TABLE INSERT QUERY
-		String insertFilterDirections = "INSERT INTO filter_directions(id, equip_id, lane, direction) VALUES (null,?,?,?)";
+		String insertFilterDirections = "INSERT INTO filter_directions(equip_id, lane, direction) VALUES (?,?,?)";
 
 		// -------------------------------------------------------------------------------------------------------------------------------------------------------
 

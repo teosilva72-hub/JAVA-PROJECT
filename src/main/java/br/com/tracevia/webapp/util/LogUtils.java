@@ -319,7 +319,7 @@ public class LogUtils {
 		writer.newLine();
 		writer.write(pattern.concat(sqlState));
 		writer.newLine();
-		writer.write(pattern.concat(message));
+		writer.write(pattern.concat(message != null ? message : "No detail"));
 		writer.newLine();
 		writer.write(pattern.concat(exception));
 		writer.newLine();

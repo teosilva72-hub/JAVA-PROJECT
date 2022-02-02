@@ -379,7 +379,7 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			String query = "SELECT v.id, file, GROUP_CONCAT(IF(v.id = type, c.id, NULL)) FROM gps_vehicle v INNER JOIN gps_custom c GROUP BY v.id";
+			String query = "SELECT v.id, file, GROUP_CONCAT(CASE WHEN v.id = type THEN c.id ELSE NULL END) FROM gps_vehicle v INNER JOIN gps_custom c GROUP BY v.id";
 
 			conn.start(1);
 

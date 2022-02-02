@@ -26,6 +26,7 @@ public class SQL_Tracevia {
 	    void set_float(Pointer ptr, int idx, float val);
 	    void set_double(Pointer ptr, int idx, double val);
 	    void set_string(Pointer ptr, int idx, String val);
+	    void set_null(Pointer ptr, int idx);
 	}
 	
 	private SQL_Interface inner;
@@ -77,7 +78,13 @@ public class SQL_Tracevia {
 	}
 	
 	public void setString(int idx, String val) {
-		inner.set_string(ptr_conn, idx, val);
+		if (val != null)
+			inner.set_string(ptr_conn, idx, val);
+		else inner.set_null(ptr_conn, idx);
+	}
+
+	public void setNull(int idx) {
+		inner.set_null(ptr_conn, idx);
 	}
 	
 	public MapResult executeQuery() throws IOException {
