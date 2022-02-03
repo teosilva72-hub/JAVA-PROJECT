@@ -11,10 +11,9 @@ body {
 
 @keyframes myMove {
 	from {
-			background-position: 100% 0;
-			background-repeat: repeat;
-}to {
-		background-position: 0% 0;
+		transform: translateX(-50%);
+  }to {
+    transform: translateX(0%);
 	}
 }
 

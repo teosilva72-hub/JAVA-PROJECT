@@ -2,23 +2,20 @@ package br.com.tracevia.webapp.dao.global;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.cfg.servers.Servers;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.controller.global.EstradaObjectController;
 import br.com.tracevia.webapp.controller.global.EstradaObjectController.Plaque;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 import br.com.tracevia.webapp.util.LogUtils;
 
 /**
  * Classe para obter dados para classe RoadConcessionaire via base de dados
+ * 
  * @author Wellington - 08/09/2020
  * @version 1.0
  * @since 1.0
@@ -27,107 +24,100 @@ import br.com.tracevia.webapp.util.LogUtils;
 
 public class RoadConcessionaireDAO {
 
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
-	
+	SQL_Tracevia conn = new SQL_Tracevia();
+
 	// --------------------------------------------------------------------------------------------
-	
+
 	// CLASS PATH
-		
+
 	private static String classLocation = RoadConcessionaireDAO.class.getCanonicalName();
-		
+
 	// --------------------------------------------------------------------------------------------
-		
+
 	// CLASS LOG FOLDER
-		
+
 	private static String classErrorPath = LogUtils.ERROR.concat("road_concessionaire\\");
-		
+
 	// --------------------------------------------------------------------------------------------
-	
+
 	// EXCEPTION FILENAMES
-	
+
 	private static String serverExceptionLog = classErrorPath.concat("server_exception_");
 	private static String citiesExceptionLog = classErrorPath.concat("cities_exception_");
 	private static String roadsExceptionLog = classErrorPath.concat("roads_exception_");
 	private static String modulesExceptionLog = classErrorPath.concat("modules_exception_");
 	private static String plaquesExceptionLog = classErrorPath.concat("plaques_exception_");
-		
-	// --------------------------------------------------------------------------------------------	
-	
+
+	// --------------------------------------------------------------------------------------------
+
 	// CONSTRUTOR
-	
+
 	public RoadConcessionaireDAO() {
-		
+
 		LogUtils.createLogFolder(classErrorPath);
-		
+
 	}
-	
-	// --------------------------------------------------------------------------------------------			
+
+	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para identificar a concession�ria atrav�s do endere�o de ip
+	 * 
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
 	 * @param serverAddress - endere�o de ip do servidor a ser verificado
 	 * @return o nome da concession�ria
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String IdentifyRoadConcessionarie(String serverAddress) throws Exception {
 
 		String concessionarieName = "";
-		
-		if(serverAddress.equals(Servers.ServerViaSul.getServer()))
-		  //  if(serverAddress.equals("192.168.3.195"))
-		    conn = ConnectionFactory.connectToCCR();
-		
-		else if(serverAddress.equals(Servers.ServerViaPaulista.getServer()))
-			conn = ConnectionFactory.connectToViaPaulista();
-			
-	    else conn = ConnectionFactory.connectToTraceviaApp();
-		    
+
 		try {
+			conn.start(1);
 
 			String query = "SELECT road_concessionaire FROM server_config WHERE server_address = ? ";
 
-			ps = conn.prepareStatement(query);
-			ps.setString(1, serverAddress);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			conn.setString(1, serverAddress);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					concessionarieName = rs.getString("road_concessionaire");
-					
+
 				}
 			}
-						
-		} catch (SQLException sqle) {
-			
+
+		} catch (Exception sqle) {
+
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(serverExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-					
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(serverExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
+
 		} finally {
-			
-			ConnectionFactory.closeConnection(conn, ps);
+
+			conn.close();
 		}
 
 		return concessionarieName;
 
 	}
-	
-	// --------------------------------------------------------------------------------------------		
-	
+
+	// --------------------------------------------------------------------------------------------
+
 	/**
 	 * M�todo para obter uma lista com as cidades dispon�veis
+	 * 
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
 	 * @return lista contendo o id e o nome das cidades dispon�veis
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	public ArrayList<SelectItem> cityDefinitions() throws Exception {
@@ -138,13 +128,13 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					SelectItem item = new SelectItem();
 					item.setValue(rs.getInt(1));
@@ -154,32 +144,33 @@ public class RoadConcessionaireDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(citiesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-						
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(citiesExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 
 		return city;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para obter uma lista com as estradas dispon�veis
+	 * 
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
 	 * @return lista contendo o id e o nome das estradas dispon�veis
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public ArrayList<SelectItem> roadDefinitions() throws Exception {
 
@@ -188,13 +179,13 @@ public class RoadConcessionaireDAO {
 		String query = "SELECT road_id, road_name FROM concessionaire_roads WHERE road_id <> 0";
 
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					SelectItem item = new SelectItem();
 					item.setValue(rs.getInt(1));
@@ -204,18 +195,18 @@ public class RoadConcessionaireDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(roadsExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(roadsExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
 			try {
-				ConnectionFactory.closeConnection(conn, ps, rs);
+				conn.close();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -225,16 +216,17 @@ public class RoadConcessionaireDAO {
 
 		return roads;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para obter uma lista com os m�dulos dispon�veis
+	 * 
 	 * @author Wellington 10/03/2020
 	 * @version 1.0
 	 * @since 1.0
 	 * @return lista contendo o id e o nome dos m�dulos dispon�veis
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<SelectItem> moduleDefinitions() throws Exception {
 
@@ -247,13 +239,13 @@ public class RoadConcessionaireDAO {
 			query = "SELECT module_id, module FROM tracevia_core.modules WHERE enabled = 1 "
 					+ "AND module <> 'OCC' AND MODULE <> 'VIDEOWALL' ";
 
-			conn = ConnectionFactory.connectToTraceviaCore();
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					SelectItem item = new SelectItem();
 					item.setValue(rs.getInt(1));
@@ -263,33 +255,34 @@ public class RoadConcessionaireDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(modulesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(modulesExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 
 		return modules;
 
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	/**
 	 * M�todo para obter uma lista com as placas dispon�veis
+	 * 
 	 * @author Guilherme 10/07/2021
 	 * @version 1.0
 	 * @since 1.0
 	 * @return lista atributos das placas dispon�veis
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public List<Plaque> getPlaque() throws Exception {
 
@@ -301,13 +294,13 @@ public class RoadConcessionaireDAO {
 
 			query = "SELECT km, longitude, latitude, map_posY, linear_pos_x, linear_pos_y FROM plaque_km";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					Plaque plaque = new EstradaObjectController().new Plaque();
 					plaque.setKm(rs.getInt(1));
@@ -321,17 +314,17 @@ public class RoadConcessionaireDAO {
 				}
 			}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 
@@ -346,13 +339,13 @@ public class RoadConcessionaireDAO {
 
 			String query = "SELECT id, position_x, position_y FROM map_mapping";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst())
-				while (rs.next()) {
+			if (result.hasNext())
+				for (RowResult rs : result) {
 
 					int[] point = new int[3];
 					point[0] = rs.getInt(1);
@@ -362,23 +355,23 @@ public class RoadConcessionaireDAO {
 					line.add(point);
 				}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 
 		return line;
 	}
-	
+
 	// --------------------------------------------------------------------------------------------
 
 	public List<String[]> getCarsList() {
@@ -386,15 +379,15 @@ public class RoadConcessionaireDAO {
 
 		try {
 
-			String query = "SELECT v.id, file, GROUP_CONCAT(IF(v.id = type, c.id, NULL)) FROM gps_vehicle v INNER JOIN gps_custom c GROUP BY v.id";
+			String query = "SELECT v.id, file, GROUP_CONCAT(CASE WHEN v.id = type THEN c.id ELSE NULL END) FROM gps_vehicle v INNER JOIN gps_custom c GROUP BY v.id";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
-			rs = ps.executeQuery();
+			conn.prepare(query);
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst())
-				while (rs.next()) {
+			if (result.hasNext())
+				for (RowResult rs : result) {
 
 					String[] car = new String[3];
 					car[0] = rs.getString(1);
@@ -404,17 +397,17 @@ public class RoadConcessionaireDAO {
 					cars.add(car);
 				}
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 
 			StringWriter errors = new StringWriter();
-			sqle.printStackTrace(new PrintWriter(errors));				
-										 						
-			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-			
+			sqle.printStackTrace(new PrintWriter(errors));
+
+			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.hashCode(),
+					sqle.toString(), sqle.getMessage(), errors.toString());
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 
@@ -426,40 +419,42 @@ public class RoadConcessionaireDAO {
 
 			String query = "INSERT INTO gps_custom (id, type) VALUES (?, ?)";
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(query);
+			conn.prepare(query);
 
-			ps.setString(1, id);
-			ps.setString(2, type);
+			conn.setString(1, id);
+			conn.setString(2, type);
 
-			int res = ps.executeUpdate();
+			conn.executeUpdate();
 
-		} catch (SQLException sqle) {
+		} catch (Exception sqle) {
 			try {
 				String query = "UPDATE gps_custom SET type = ? WHERE (id = ?)";
 
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn.start(1);
 
-				ps = conn.prepareStatement(query);
+				conn.prepare(query);
 
-				ps.setString(1, type);
-				ps.setString(2, id);
+				conn.setString(1, type);
+				conn.setString(2, id);
 
-				int res = ps.executeUpdate();
-			} catch (SQLException sqle2) {
+				conn.executeUpdate();
+			} catch (Exception sqle2) {
 
 				StringWriter errors = new StringWriter();
-				sqle.printStackTrace(new PrintWriter(errors));				
-				sqle2.printStackTrace(new PrintWriter(errors));				
-																	
-				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
-				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation, sqle2.getErrorCode(), sqle2.getSQLState(), sqle2.getMessage(), errors.toString());
+				sqle.printStackTrace(new PrintWriter(errors));
+				sqle2.printStackTrace(new PrintWriter(errors));
+
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation,
+						sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
+				LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(plaquesExceptionLog), classLocation,
+						sqle2.hashCode(), sqle2.toString(), sqle2.getMessage(), errors.toString());
 			}
 
 		} finally {
 
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 
 		}
 	}

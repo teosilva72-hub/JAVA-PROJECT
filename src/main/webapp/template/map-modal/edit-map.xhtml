@@ -35,7 +35,7 @@
 					    		    <ui:repeat var="eqp" value="#{equipsBean.module}" varStatus="eqpStatus">
 	  			 					  <option value="#{eqp.value}">#{eqp.label}</option>
 		       		 			   </ui:repeat>
-						  		</select><!-- SELECT -->				  		    									
+						  		</select> <!-- SELECT -->				  		    									
 							</div>
 						<div class="error-label"> <!-- ERROR DIV -->					
 						</div> <!---->
@@ -291,11 +291,11 @@
 											class="btn btn-dark form-modal-draw-button btn-all-equip" onclick="sendType();">
 											<c:choose>
 												<c:when test="#{ VideoWall }">
-												 	<f:ajax execute="@all"	listener='#{equipsBean.setAll("vw_map")}'
+												 	<f:ajax execute="@all"	listener='#{equipsBean.setAll("vw_" + Map)}'
 														onevent="onEventMapFunction"></f:ajax>
 												</c:when>
 											   <c:otherwise>
-												 <f:ajax execute="@all"	listener='#{equipsBean.setAll("map")}'
+												 <f:ajax execute="@all"	listener='#{equipsBean.setAll(Map)}'
 													onevent="onEventMapFunction"></f:ajax>
 											   </c:otherwise>
 											</c:choose>

@@ -703,7 +703,7 @@ public class EquipmentsBean implements Serializable {
 		String module = getEquipTable();
 		int width = w == "" ? 100 : Integer.parseInt(w);
 
-		dao.setWidthMap(module.equals("dms") ? "dms" : module , map, width);
+		dao.setWidthMap(module, map, width);
 
 		SessionUtil.executeScript("alertToast('"+localeMap.getStringKey("$message_map_option_all_equipment_width_updated")+"');");
 	}

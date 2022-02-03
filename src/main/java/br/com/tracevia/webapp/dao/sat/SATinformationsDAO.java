@@ -1,24 +1,19 @@
 package br.com.tracevia.webapp.dao.sat;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.sat.SAT;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class SATinformationsDAO {
 	
-	private Connection conn;		
-	protected ConnectionFactory connection = new ConnectionFactory();
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 		
 	public List<SAT> dataInfo30() throws Exception {
 			
@@ -38,43 +33,43 @@ public class SATinformationsDAO {
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
 		"CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S2', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S2' " +
@@ -87,17 +82,18 @@ public class SATinformationsDAO {
 					
 	  try {
 			
-		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    conn.start(1);
 			
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, currentDate);		
+			conn.prepare_my(select);			
+			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));			
+			conn.setString(1, currentDate);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("DATA LIST 30 SQL: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -111,9 +107,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return list;
@@ -139,43 +137,43 @@ public class SATinformationsDAO {
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
 		"CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S2', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S2' " +
@@ -188,17 +186,18 @@ public class SATinformationsDAO {
 					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  conn.start(1);
 		  
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, currentDate);		
+			conn.prepare_my(select);			
+			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));			
+			conn.setString(1, currentDate);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("DATA LIST 45 SQL : "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -212,9 +211,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return list;
@@ -242,43 +243,43 @@ public class SATinformationsDAO {
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
 		"CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S2', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S2' " +
@@ -287,23 +288,25 @@ public class SATinformationsDAO {
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
-	    "ORDER BY d.DATA_HORA ASC " +
-	    "LIMIT "+ limit +" ";
+	    "ORDER BY d.DATA_HORA ASC";
 					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  	conn.start(1);
 		  
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, currentDate);	
-			ps.setString(2, currentDate);		
+			conn.prepare_my(select + " LIMIT " + limit);
+			conn.prepare_ms(select
+				.replaceAll("IFNULL", "ISNULL")
+				.replaceFirst("SELECT", "SELECT TOP " + limit));
+			conn.setString(1, currentDate);	
+			conn.setString(2, currentDate);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("DATA LIST 08 SQL: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -317,9 +320,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return list;
@@ -344,43 +349,43 @@ public class SATinformationsDAO {
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
 		"CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S2', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S2' " +
@@ -391,18 +396,19 @@ public class SATinformationsDAO {
 	  					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  conn.start(1);
 			
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);		
+			conn.prepare_my(select);
+			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));
+			conn.setInt(1, equip);	
+			conn.setString(2, currentDate);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("DATA IND 45 SQL: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 				
 					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
@@ -413,9 +419,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return sat;
@@ -441,43 +449,43 @@ public class SATinformationsDAO {
 		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, " +
 		
 		"CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3  THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2, d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VOLUME_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VOLUME_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VOLUME_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VOLUME_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(SUM(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VOLUME_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VOLUME_TOTAL_S2', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 OR eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+		"WHEN eq.number_lanes = 5 OR eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 OR eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 1 OR d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S1', " +
 
 	    "CASE " +
-	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2, d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3 , d.VEL_MEDIA_TOTAL , NULL)), 0), 0) " +
-		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
-	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(IF(d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8, d.VEL_MEDIA_TOTAL , NULL )), 0), 0) " +
+	    "WHEN eq.number_lanes = 2 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 3 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 2 OR d.NOME_FAIXA = 3  THEN d.VEL_MEDIA_TOTAL ELSE NULL END)), 0), 0) " +
+		"WHEN eq.number_lanes = 4 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 3 OR d.NOME_FAIXA = 4 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 5 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 6 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 4 OR d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 7 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
+	    "WHEN eq.number_lanes = 8 THEN IFNULL(ROUND(AVG(CASE WHEN d.NOME_FAIXA = 5 OR d.NOME_FAIXA = 6 OR d.NOME_FAIXA = 7 OR d.NOME_FAIXA = 8 THEN d.VEL_MEDIA_TOTAL ELSE NULL END )), 0), 0) " +
 
 	    "ELSE 0 " +
 	    "END 'VEL_MEDIA_TOTAL_S2' " +
@@ -486,23 +494,26 @@ public class SATinformationsDAO {
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
 	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 		"GROUP BY d.DATA_HORA " +
-        "ORDER BY d.DATA_HORA DESC LIMIT 1 ";
+        "ORDER BY d.DATA_HORA DESC";
 	  					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  conn.start(1);
 			
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);	
-			ps.setString(3, currentDate);	
+			conn.prepare_my(select + " LIMIT 1");
+			conn.prepare_ms(select
+				.replaceAll("IFNULL", "ISNULL")
+				.replaceFirst("SELECT", "SELECT TOP 1"));
+			conn.setInt(1, equip);	
+			conn.setString(2, currentDate);	
+			conn.setString(3, currentDate);	
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("DATA 08 SQL: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 				
 					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
@@ -513,9 +524,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return sat;
@@ -551,17 +564,17 @@ public class SATinformationsDAO {
 	
 	try {
 		
-		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    conn.start(1);
 			
-			ps = conn.prepareStatement(select);				
-			ps.setString(1, currentDate);		
+			conn.prepare(select);				
+			conn.setString(1, currentDate);		
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("STATUS DATA 45 LIST: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -573,9 +586,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 	
 			return list;
@@ -605,23 +620,23 @@ public class SATinformationsDAO {
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
 				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
 				       "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
-				       "ORDER BY d.DATA_HORA ASC " +
-				       "LIMIT "+ limit +" ";
+				       "ORDER BY d.DATA_HORA ASC";
 				    		
 		try {
 			
-			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			    conn.start(1);
 				
-				ps = conn.prepareStatement(select);					
-				ps.setString(1, currentDate);	
-				ps.setString(2, currentDate);	
+				conn.prepare_my(select + " LIMIT " + limit);
+ 				conn.prepare_ms(select.replaceFirst("SELECT", "SELECT TOP " + limit));
+				conn.setString(1, currentDate);	
+				conn.setString(2, currentDate);	
 				
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 				
 				//System.out.println("STATUS 08 LIST SQL: "+select);
 				
-				if (rs != null) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						
 						SAT sat = new SAT();
 
@@ -633,9 +648,11 @@ public class SATinformationsDAO {
 					}				
 				 }			
 
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+			}finally {
+				conn.close();
+			}
 
 		
 				return list;
@@ -666,17 +683,17 @@ public class SATinformationsDAO {
 		
 		try {
 			
-			    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			    conn.start(1);
 				
-				ps = conn.prepareStatement(select);					
-				ps.setString(1, currentDate);		
+				conn.prepare(select);					
+				conn.setString(1, currentDate);		
 							
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 				
 				//System.out.println("STATUS 45 LIST SQL: "+select);
 				
-				if (rs != null) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						
 						SAT sat = new SAT();
 
@@ -688,9 +705,11 @@ public class SATinformationsDAO {
 					}				
 				 }			
 
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+			}finally {
+				conn.close();
+			}
 
 		
 				return list;
@@ -719,18 +738,18 @@ public class SATinformationsDAO {
 			      	    	  					
 	  try {
 			
-		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    conn.start(1);
 			
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);	
+			conn.prepare(select);
+			conn.setInt(1, equip);	
+			conn.setString(2, currentDate);	
 			
 			//System.out.println("STATUS IND 45 SQL: "+select);
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 						
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 				
 					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
 					sat.setStatus(rs.getInt("STATUS"));						
@@ -738,9 +757,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return sat;
@@ -768,23 +789,24 @@ public class SATinformationsDAO {
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
 			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
 			        "GROUP BY d.DATA_HORA " + 			        
-			        "ORDER BY d.DATA_HORA DESC LIMIT 1";
+			        "ORDER BY d.DATA_HORA DESC";
 			      	    	  					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  conn.start(1);
 			
-			ps = conn.prepareStatement(select);
-			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);	
-			ps.setString(3, currentDate);	
+			conn.prepare_my(select + " LIMIT 1");
+			conn.prepare_ms(select.replaceFirst("SELECT", "SELECT TOP 1"));
+			conn.setInt(1, equip);	
+			conn.setString(2, currentDate);	
+			conn.setString(3, currentDate);	
 			
 			//System.out.println("STATUS 08 IND SQL: "+select);
 						
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 						
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 				
 					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
 					sat.setStatus(rs.getInt("STATUS"));						
@@ -792,9 +814,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return sat;
@@ -811,22 +835,24 @@ public class SATinformationsDAO {
 			      	    	  					
 	  try {
 			
-		  conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		  conn.start(1);
 			
-			ps = conn.prepareStatement(select);									
-			rs = ps.executeQuery();
+			conn.prepare(select);									
+			MapResult result = conn.executeQuery();
 						
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 				
 					qtde = rs.getInt(1);									
 														
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return qtde;
@@ -866,21 +892,21 @@ public class SATinformationsDAO {
 						
 		    try {
 			
-		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    	conn.start(1);
 						
-			ps = conn.prepareStatement(select);		
-			ps.setString(1, currentDate);		
-			ps.setString(2, currentDateSub);
+			conn.prepare(select);		
+			conn.setString(1, currentDate);		
+			conn.setString(2, currentDateSub);
 			
 			//System.out.println("30Status: "+select);
 			//System.out.println("CUR: "+currentDate+"\nBEFORE: "+currentDateSub);
 					
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("30MINSTT: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -891,9 +917,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return list;		
@@ -923,20 +951,20 @@ public class SATinformationsDAO {
 				
 		    try {
 			
-		    	conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    	conn.start(1);
 			
-			ps = conn.prepareStatement(select);			
-			ps.setString(1, currentDate);		
-			ps.setString(2, currentDateSub);
+			conn.prepare(select);			
+			conn.setString(1, currentDate);		
+			conn.setString(2, currentDateSub);
 			
 			//System.out.println("CUR: "+currentDate+"\nBEFORE: "+currentDateSub);
 					
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("45 min: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					SAT sat = new SAT();
 
@@ -949,9 +977,11 @@ public class SATinformationsDAO {
 				}				
 			 }			
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return list;		
@@ -980,21 +1010,21 @@ public class SATinformationsDAO {
 						
 		    try {
 			
-		    conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+		    conn.start(1);
 			
-			ps = conn.prepareStatement(select);	
-			ps.setInt(1, equip);	
-			ps.setString(2, currentDate);		
-			ps.setString(3, currentDateSub);
+			conn.prepare(select);	
+			conn.setInt(1, equip);	
+			conn.setString(2, currentDate);		
+			conn.setString(3, currentDateSub);
 			
 		    //System.out.println("BEF: "+currentDate+"\nBEF: "+currentDateSub);
 					
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 			
 			//System.out.println("45BEFORE: "+select);
 			
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					
 					sat.setEquip_id(rs.getInt("s.EQ_ID"));					
 					sat.setStatus(rs.getInt("STATUS"));	
@@ -1002,9 +1032,11 @@ public class SATinformationsDAO {
 				}		
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 				
 		return sat;		

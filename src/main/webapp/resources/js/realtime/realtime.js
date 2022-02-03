@@ -520,61 +520,44 @@ function posEquip(equip) {
 		if (spd1 != 0) {
 			if (spd1 > 0 && spd1 < 31) {
 				fluxo1.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_red.png')",
-					animation: 'myMove 150s linear infinite',
-					'animation-direction': "reverse"
-				})
+					animation: 'myMove 150s linear infinite', 'animation-direction': "reverse"
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_red.png')
 			}
 			else if (spd1 > 30 && spd1 < 61) {
 				fluxo1.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')",
-					animation: 'myMove 60s linear infinite',
-					'animation-direction': "reverse"
-				})
+					animation: 'myMove 60s linear infinite', 'animation-direction': "reverse"
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_orange.png')
 			}
 			else if (spd1 > 60) {
 				fluxo1.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_green.png')",
-					animation: 'myMove 20s linear infinite',
-					'animation-direction': "reverse"
-				})
+					animation: 'myMove 20s linear infinite', 'animation-direction': "reverse"
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_green.png')
 			}
 		}
 		else {
-			fluxo1.css({
-				background: "url('/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')",
-				animation: 'myMove 500s linear infinite',
-				'animation-direction': "reverse"
-			})
+			fluxo1.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir1_gray.png')
 		}
 
 		//VELOCIDADE SENTIDO 2
 		if (spd2 != 0) {
 			if (spd2 > 0 && spd2 < 31) {
 				fluxo2.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_red.png')",
 					animation: 'myMove 150s linear infinite'
-				})
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_red.png')
 			}
 			else if (spd2 > 30 && spd2 < 61) {
 				fluxo2.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')",
 					animation: 'myMove 60s linear infinite'
-				})
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_orange.png')
 			}
 			else if (spd2 > 60) {
 				fluxo2.css({
-					background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_green.png')",
 					animation: 'myMove 20s linear infinite'
-
-				})
+				}).attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_green.png')
 			}
 		}
 		else {
-			fluxo2.css({
-				background: "url('/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')",
-				animation: 'myMove 500s linear infinite'
-			})
+			fluxo2.attr('src', '/resources/images/realTimeInterface/serviceLevel_dir2_gray.png')
 		}
 	}
 	

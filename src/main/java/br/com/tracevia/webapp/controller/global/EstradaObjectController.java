@@ -1,6 +1,7 @@
 package br.com.tracevia.webapp.controller.global;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -111,7 +112,7 @@ public class EstradaObjectController {
 		
 		RoadConcessionaireDAO roadDAO = new RoadConcessionaireDAO();
 		try {
-			plaque = roadDAO.getPlaque();
+			plaque = new ArrayList<>(); // roadDAO.getPlaque();
 			roadLine = roadDAO.getRoadLine();
 			cars = roadDAO.getCarsList();
 		} catch (Exception e) {

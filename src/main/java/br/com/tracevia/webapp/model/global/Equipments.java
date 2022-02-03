@@ -379,7 +379,7 @@ public class Equipments {
 	}
 
 	//BUILD SAT EQUIPMENTS
-	public List<? extends Equipments> listSatEquipments(int permission) throws Exception {
+	public List<SAT> listSatEquipments(int permission) throws Exception {
 
 		List<SAT> lista = new ArrayList<SAT>();	
 		EquipmentsDAO dao = new EquipmentsDAO();			

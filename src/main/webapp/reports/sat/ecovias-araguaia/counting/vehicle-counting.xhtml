@@ -17,12 +17,17 @@
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileName(satLabels.ecovias_araguaia_vehicle_counting_file_name)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineFileTitle(satLabels.ecovias_araguaia_vehicle_counting_title)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineSheetName('ECOVIAS ARAGUAIA')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineMultiSheet(false)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.haveChart('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineChartTitle(satLabels.ecovias_araguaia_class_title)}" />		
+		<f:viewAction onPostback="true" action="#{reportBean.defineClassSublHeader('light-heavy')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.defineModule('sat')}" />	   
 		<f:viewAction onPostback="true" action="#{reportBean.haveTotal('true')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.defineAxis(chartsLabels.$label_chart_vertical_axis_vehicles)}" />
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_dados15 t')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('NOME_ESTACAO')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, '$foreach=sat_equipment.name|equip_id@equip', satLabels.global_total_vehicles_column))}" />
@@ -30,6 +35,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DATA_HORA, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(IF(NOME_ESTACAO = $custom@equip, VOLUME_TOTAL, 0)); SUM(VOLUME_TOTAL)')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_estacao')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON q.equip_id = NOME_ESTACAO AND q.lane = t.NOME_FAIXA')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DATA_HORA')}" />
@@ -39,6 +45,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DATA_HORA', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('direction', reportsLabels.reports_select_directions, 'filter_directions.direction', true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('NOME_ESTACAO', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', true, true)}" />
 	
     </f:metadata>
@@ -69,6 +76,8 @@
 		<h:outputScript library="js/multiselect" name="define-multiselect.js" />
 		<h:outputScript library="js/reports" name="table-config.js"  /> <!-- DATA TABLE CONFIG --> 
 		<h:outputScript library="js/alert" name="alerts.js" />	<!-- ENABLE ALERTS -->
+		<h:outputScript library="js/plugins/google" name="google-charts-loader.js"  />      
+	 	<h:outputScript library="js/charts" name="chart.js" />
 	 		
 	   <!---->
 	

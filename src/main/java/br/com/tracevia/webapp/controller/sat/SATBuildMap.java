@@ -32,15 +32,15 @@ public class SATBuildMap {
 
 	@ManagedProperty("#{listEquips}")
 	private ListEquipments equips;
-	
+
 	public ListEquipments getEquips() {
 		return equips;
 	}
-	
+
 	public void setEquips(ListEquipments equips) {
 		this.equips = equips;
 	}
-	
+
 	public List<SAT> getSatListValues() {
 		return satListValues;
 	}
@@ -49,7 +49,6 @@ public class SATBuildMap {
 		return satStatus;
 	}
 
-	
 	@PostConstruct
 	public void initalize() {
 
@@ -69,28 +68,28 @@ public class SATBuildMap {
 
 				boolean pass = true;
 
-				// LISTAS										
+				// LISTAS
 
 				satListValues = new ArrayList<SAT>();
 				satStatus = new ArrayList<SAT>();
 
 				// LISTAR AUXILIARES
-				List<SAT> satListValuesAux = new ArrayList<SAT>();				
+				List<SAT> satListValuesAux = new ArrayList<SAT>();
 				List<NotificationsAlert> listStatus = new ArrayList<NotificationsAlert>();
 
 				///////////////////////////////
 				// SAT EQUIPMENTS
 				//////////////////////////////
 
-				listStatus = not.notificationStatus(NotificationType.SAT.getType());		
+				listStatus = not.notificationStatus(NotificationType.SAT.getType());
 
 				// PREENCHE LISTA COM STATUS DOS ULTIMOS 30 MINUTOS
 				// TABELA POSSUI DELAY DE 15 MINUTOS
 
 				satListValuesAux = dao.dataInterval(equips, INTERVAL_15MIN);
 
-				// START CHEKING 15 MIN 		      
-				if(!satListValuesAux.isEmpty()) {
+				// START CHEKING 15 MIN
+				if (!satListValuesAux.isEmpty()) {
 
 					// LISTA COM TODOS SATS
 					for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
@@ -101,7 +100,7 @@ public class SATBuildMap {
 						// LISTA DE SATS COM DADOS DISPONIVEIS
 						for (int r = 0; r < satListValuesAux.size(); r++) {
 
-							//COMPARA IDS ENTRE AS LISTAS
+							// COMPARA IDS ENTRE AS LISTAS
 							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 								satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
@@ -115,86 +114,97 @@ public class SATBuildMap {
 								satListValuesAux.remove(r);
 								pass = false;
 
-								if(!listStatus.get(s).isOnlineStatus())
-									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+								if (!listStatus.get(s).isOnlineStatus())
+									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+											equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(),
+											dt.currentDateTime(), true, false);
 
 								break;
 
 							} // IF CONDITION
 						} // FOR END
 
-						// CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO				
+						// CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
 						if (pass) {
 
 							// BUSCA DADOS DOS ULTIMAS 30 MINUTOS
-							satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_30MIN);
+							satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
+									INTERVAL_30MIN);
 							satListObj.setStatusInterval(30);
 
-							//SE HOUVER DADOS PREENCHE NA LISTA
+							// SE HOUVER DADOS PREENCHE NA LISTA
 							if (satListObj.getEquip_id() != 0) {
+								satListValues.add(satListObj);
+
+								if (!listStatus.get(s).isOnlineStatus())
+									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+											equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(),
+											dt.currentDateTime(), true, false);
+
+							} else {
+
+								// BUSCA DADOS DAS ULTIMAS 03 HORAS
+								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOURS);
+								satListObj.setStatusInterval(3);
+
+								// SE HOUVER DADOS PREENCHE NA LISTA
+								if (satListObj.getEquip_id() != 0) {
 									satListValues.add(satListObj);
 
-								if(!listStatus.get(s).isOnlineStatus())
-									not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+									if (!listStatus.get(s).isOnlineStatus())
+										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+												equips.getSatList().get(s).getEquip_id(),
+												NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
-							     } else {
+								} else {
 
-									//BUSCA DADOS DAS ULTIMAS 03 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOURS);
-									satListObj.setStatusInterval(3);
-		
-									//SE HOUVER DADOS PREENCHE NA LISTA
+									// BUSCA DADOS DAS ULTIMAS 06 HORAS
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
+											INTERVAL_06HOURS);
+									satListObj.setStatusInterval(6);
+
+									// SE HOUVER DADOS PREENCHE NA LISTA
 									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
-		
-										if(!listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
-		
-									 } else {
 
+										if (!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
-										//BUSCA DADOS DAS ULTIMAS 06 HORAS
-										satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
-										satListObj.setStatusInterval(6);
-	
-										//SE HOUVER DADOS PREENCHE NA LISTA
-										if (satListObj.getEquip_id() != 0) {
-											satListValues.add(satListObj);
-	
-											if(!listStatus.get(s).isOnlineStatus())
-												not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
-											
-										 } else {
-	
-											SAT satListObj1 = new SAT();
-	
-											satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
-											satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
-											satListObj1.setQuantidadeS1(0);
-											satListObj1.setQuantidadeS2(0);
-											satListObj1.setVelocidadeS1(0);
-											satListObj1.setVelocidadeS2(0);
-											satListObj1.setStatusInterval(0);
-												
-											satListValues.add(satListObj1);
-	
-											if(listStatus.get(s).isOnlineStatus())
-												not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+									} else {
 
-										} // ELSE
-									} // ELSE 
-								} // ELSE 
-							} // PASS
-						} // FOR END	
+										SAT satListObj1 = new SAT();
 
-				// --------------------------------------------------------------------------------------------------------------------------------------------	
-					
+										satListObj1.setEquip_id(equips.getSatList().get(s).getEquip_id());
+										satListObj1.setDataTime(getDataTime(equips.getSatList().get(s).getEquip_id()));
+										satListObj1.setQuantidadeS1(0);
+										satListObj1.setQuantidadeS2(0);
+										satListObj1.setVelocidadeS1(0);
+										satListObj1.setVelocidadeS2(0);
+										satListObj1.setStatusInterval(0);
+
+										satListValues.add(satListObj1);
+
+										if (listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+
+									} // ELSE
+								} // ELSE
+							} // ELSE
+						} // PASS
+					} // FOR END
+
+					// --------------------------------------------------------------------------------------------------------------------------------------------
+
 				} else {
 
-					// START CHEKING 30 MIN 			
+					// START CHEKING 30 MIN
 					satListValuesAux = dao.dataInterval(equips, INTERVAL_30MIN);
 
-					if(!satListValuesAux.isEmpty()) {
+					if (!satListValuesAux.isEmpty()) {
 
 						// LISTA COM TODOS SATS
 						for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
@@ -202,10 +212,10 @@ public class SATBuildMap {
 							SAT satListObj = new SAT();
 							pass = true; // VERIFICA SE HÃ� DADOS NA COMPARATIVO ENTRE LISTAS
 
-							//LISTA DE SATS COM DADOS DISPONIVEIS
+							// LISTA DE SATS COM DADOS DISPONIVEIS
 							for (int r = 0; r < satListValuesAux.size(); r++) {
 
-								//COMPARA IDS ENTRE AS LISTAS
+								// COMPARA IDS ENTRE AS LISTAS
 								if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
 									satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
@@ -219,44 +229,51 @@ public class SATBuildMap {
 									satListValuesAux.remove(r);
 									pass = false;
 
-									if(!listStatus.get(s).isOnlineStatus())
-										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+									if (!listStatus.get(s).isOnlineStatus())
+										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+												equips.getSatList().get(s).getEquip_id(),
+												NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 									break;
 
 								}
 							}
 
-							//CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
+							// CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
 
 							if (pass) {
 
-								//BUSCA DADOS DAS ULTIMAS 03 HORAS
-								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_03HOURS);
+								// BUSCA DADOS DAS ULTIMAS 03 HORAS
+								satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
+										INTERVAL_03HOURS);
 								satListObj.setStatusInterval(3);
 
-								//SE HOUVER DADOS PREENCHE NA LISTA
+								// SE HOUVER DADOS PREENCHE NA LISTA
 								if (satListObj.getEquip_id() != 0) {
 									satListValues.add(satListObj);
 
-									if(!listStatus.get(s).isOnlineStatus())
-										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+									if (!listStatus.get(s).isOnlineStatus())
+										not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+												equips.getSatList().get(s).getEquip_id(),
+												NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 								} else {
 
-
-									//BUSCA DADOS DAS ULTIMAS 06 HORAS
-									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
+									// BUSCA DADOS DAS ULTIMAS 06 HORAS
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
+											INTERVAL_06HOURS);
 									satListObj.setStatusInterval(6);
 
-									//SE HOUVER DADOS PREENCHE NA LISTA
+									// SE HOUVER DADOS PREENCHE NA LISTA
 									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
 
-										if(!listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+										if (!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
-									 } else {
+									} else {
 
 										SAT satListObj1 = new SAT();
 
@@ -270,11 +287,13 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+										if (listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 									} // ELSE
-								} // ELSE 					
+								} // ELSE
 							} // PASS
 						} // FOR END
 
@@ -283,7 +302,7 @@ public class SATBuildMap {
 						// START CHEKING 03 HOUR
 						satListValuesAux = dao.dataInterval(equips, INTERVAL_03HOURS);
 
-						if(!satListValuesAux.isEmpty()) {
+						if (!satListValuesAux.isEmpty()) {
 
 							// LISTA COM TODOS SATS
 							for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
@@ -291,11 +310,12 @@ public class SATBuildMap {
 								SAT satListObj = new SAT();
 								pass = true; // VERIFICA SE HÃ� DADOS NA COMPARATIVO ENTRE LISTAS
 
-								//LISTA DE SATS COM DADOS DISPONIVEIS
+								// LISTA DE SATS COM DADOS DISPONIVEIS
 								for (int r = 0; r < satListValuesAux.size(); r++) {
 
-									//COMPARA IDS ENTRE AS LISTAS
-									if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
+									// COMPARA IDS ENTRE AS LISTAS
+									if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
+											.getEquip_id()) {
 
 										satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
 										satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
@@ -308,30 +328,35 @@ public class SATBuildMap {
 										satListValuesAux.remove(r);
 										pass = false;
 
-										if(!listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+										if (!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
 										break;
 
 									}
 								}
 
-								//CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
+								// CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
 
-								if (pass) {											
+								if (pass) {
 
-									 //BUSCA DADOS DAS ULTIMAS 06 HORAS
-									 satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(), INTERVAL_06HOURS);
-									 satListObj.setStatusInterval(6);
+									// BUSCA DADOS DAS ULTIMAS 06 HORAS
+									satListObj = dao.dataIntervalSingle(equips.getSatList().get(s).getEquip_id(),
+											INTERVAL_06HOURS);
+									satListObj.setStatusInterval(6);
 
-									 //SE HOUVER DADOS PREENCHE NA LISTA
-									 if (satListObj.getEquip_id() != 0) {
+									// SE HOUVER DADOS PREENCHE NA LISTA
+									if (satListObj.getEquip_id() != 0) {
 										satListValues.add(satListObj);
 
-										if(!listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+										if (!listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
 
-									 } else {
+									} else {
 
 										SAT satListObj1 = new SAT();
 
@@ -345,19 +370,21 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+										if (listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
-								   } // ELSE
-							    } // ELSE 					
-							 } // FOR END
+									} // ELSE
+								} // ELSE
+							} // FOR END
 
 						} else {
 
-							// START CHEKING 06 HOUR 
+							// START CHEKING 06 HOUR
 							satListValuesAux = dao.dataInterval(equips, INTERVAL_06HOURS);
 
-							if(!satListValuesAux.isEmpty()) {
+							if (!satListValuesAux.isEmpty()) {
 
 								// LISTA COM TODOS SATS
 								for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
@@ -365,11 +392,12 @@ public class SATBuildMap {
 									SAT satListObj = new SAT();
 									pass = true; // VERIFICA SE HÃ� DADOS NA COMPARATIVO ENTRE LISTAS
 
-									//LISTA DE SATS COM DADOS DISPONIVEIS
+									// LISTA DE SATS COM DADOS DISPONIVEIS
 									for (int r = 0; r < satListValuesAux.size(); r++) {
 
-										//COMPARA IDS ENTRE AS LISTAS
-										if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
+										// COMPARA IDS ENTRE AS LISTAS
+										if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
+												.getEquip_id()) {
 
 											satListObj.setDataTime(satListValuesAux.get(r).getDataTime());
 											satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
@@ -382,17 +410,19 @@ public class SATBuildMap {
 											satListValuesAux.remove(r);
 											pass = false;
 
-											if(!listStatus.get(s).isOnlineStatus())
-												not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), true, false);
+											if (!listStatus.get(s).isOnlineStatus())
+												not.updateStatus(NotificationsAlarmsEnum.ONLINE.getAlarm(),
+														equips.getSatList().get(s).getEquip_id(),
+														NotificationType.SAT.getType(), dt.currentDateTime(), true,
+														false);
 
 											break;
 										}
-									 }
+									}
 
-									//CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
+									// CASO NÃO HAJA DADOS ENTRA NESSA CONDIÇÃO
 
-									if (pass) {											
-
+									if (pass) {
 
 										SAT satListObj1 = new SAT();
 
@@ -406,18 +436,22 @@ public class SATBuildMap {
 
 										satListValues.add(satListObj1);
 
-										if(listStatus.get(s).isOnlineStatus())
-											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), equips.getSatList().get(s).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+										if (listStatus.get(s).isOnlineStatus())
+											not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(),
+													equips.getSatList().get(s).getEquip_id(),
+													NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 									} // PASS END
-								} // FOR END 				
+								} // FOR END
 
-							} else intializeNullList(equips.getSatList()); // CASO NÃO EXISTA VALORES VAI INICIALIZAR COM ZEROS TODOS EQUIPAMENTOS
+							} else
+								intializeNullList(equips.getSatList()); // CASO NÃO EXISTA VALORES VAI INICIALIZAR COM
+																		// ZEROS TODOS EQUIPAMENTOS
 
-						} // ELSE END	
-					} // ELSE END				 			
-				} // FIRST ELSE CONDITION  (30 MIN)
-								  					
+						} // ELSE END
+					} // ELSE END
+				} // FIRST ELSE CONDITION (30 MIN)
+
 			} catch (IndexOutOfBoundsException ex) {
 
 				ex.printStackTrace();
@@ -430,18 +464,18 @@ public class SATBuildMap {
 		FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add(":navbarDropdown2");
 
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------
 
 	public void intializeNullList(List<? extends Equipments> satList) throws Exception {
-		
+
 		DateTimeApplication dt = new DateTimeApplication();
 		NotificationsBean not = new NotificationsBean();
 
 		for (int i = 0; i < satList.size(); i++) {
-            
+
 			SAT sat = new SAT();
-			
+
 			sat.setEquip_id(satList.get(i).getEquip_id());
 			sat.setDataTime(getDataTime(satList.get(i).getEquip_id()));
 			sat.setQuantidadeS1(0);
@@ -451,35 +485,36 @@ public class SATBuildMap {
 			sat.setStatusInterval(0);
 
 			satListValues.add(sat);
-			
-			not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(i).getEquip_id(), NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
+
+			not.updateStatus(NotificationsAlarmsEnum.OFFLINE.getAlarm(), satList.get(i).getEquip_id(),
+					NotificationType.SAT.getType(), dt.currentDateTime(), false, true);
 
 		}
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------
-	
+
 	public String getDataTime(int equipId) {
-		
+
 		DataSatDAO dao = new DataSatDAO();
 		String result = "";
-		
+
 		try {
-			
+
 			result = dao.dataTimeLastRegister(equipId);
-			
-			if(result.equals(""))
+
+			if (result.equals(""))
 				result = "00:00";
-			
+
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
-		
+
 		return result;
-		
+
 	}
-	
+
 	// ----------------------------------------------------------------------------------------------------
 
 }

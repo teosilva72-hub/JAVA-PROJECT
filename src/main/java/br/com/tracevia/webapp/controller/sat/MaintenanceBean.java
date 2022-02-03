@@ -13,6 +13,7 @@ import br.com.tracevia.webapp.dao.sat.MaintenanceDAO;
 import br.com.tracevia.webapp.model.global.Equipments;
 import br.com.tracevia.webapp.model.global.ListEquipments;
 import br.com.tracevia.webapp.model.sat.Maintenance;
+import br.com.tracevia.webapp.model.sat.SAT;
 
 @ManagedBean(name="maintenanceSatView")
 @ViewScoped
@@ -213,7 +214,7 @@ public void initializer() {
 	
   // ----------------------------------------------------------------
 	
-	public void intializeStatusNullList(List<? extends Equipments> satList) throws Exception {
+	public void intializeStatusNullList(List<SAT> satList) throws Exception {
 		
 		//DateTimeApplication dt = new DateTimeApplication();
 		//NotificationsBean not = new NotificationsBean();
@@ -232,6 +233,7 @@ public void initializer() {
 				main.setData("");
 				main.setHora("");		
 				main.setStatus(0);
+				main.setNumberLanes(satList.get(i).getNumFaixas());
 				main.setStatusZero(zeroMinStatus);
 				main.setStatusFifteen(fifteenMinStatus);
 				main.setStatusThirty(thirtyMinStatus);
