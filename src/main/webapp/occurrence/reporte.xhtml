@@ -138,19 +138,8 @@
 									</div></div></div></div>
 					
 									<!-- Final do modal Salvar -->
-						<!-- Botão Novo -->
-								<h:commandButton class=" btnConf menu" id="new" disabled="#{occurrencesBean.new_}" action="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}" onclick="bloquerTable(); fileTotalHidden()">
-								<f:ajax execute="@form"
-									render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
-											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado1 eventoEstado :eventoSentido :eventoFaixa :outrosEventos
-											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
-											    	:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoHoraFinal :acaoEndMinute :danoDescr2 :actionDescr3 :actionDescr4
-											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
-											    	:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :myFile :acaoStatus acaoData :acaoDataFinal
-											    	:trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd :descrDescr1 :descriptionBtn1 :descriptionBtn2
-											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :typeHour1 :typeHour2 :typeHour3 :typeHour4
-											    	:typeHour5 :typeHour6" />
-								</h:commandButton>
+				
+
 
 										<!-- Botão Anular -->
 								<h:commandButton id="reset" class="btn btnConf" disabled="#{occurrencesBean.reset}" value="#{occLabels.btn_anular}">

@@ -465,7 +465,7 @@ public String getLogo() {
 
 	//register occurrences
 	public void cadastroOcorrencia() throws Exception {
-		boolean sucess = false;
+		boolean vr = false; // <-- OBSERVAR
 
 	
 
@@ -550,7 +550,7 @@ public String getLogo() {
 
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
-			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
+			//sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base <-- OBSERVAR
 
 		}
 
@@ -2175,3 +2175,6 @@ public String getLogo() {
 	}	
 
 }
+
+
+
