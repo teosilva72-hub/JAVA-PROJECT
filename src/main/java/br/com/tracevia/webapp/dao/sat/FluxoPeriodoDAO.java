@@ -962,7 +962,10 @@ public class FluxoPeriodoDAO {
 			conn.start(1);
 			
 			conn.prepare_my(select);
-			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));
+			conn.prepare_ms(select
+				.replace("DATE_FORMAT", "FORMAT")
+				.replace("%Y-%m-%d", "yyyy-MM-dd")
+				.replace("IFNULL", "ISNULL"));
 			conn.setString(1, startDate);
 		    conn.setString(2, endDate);
 		    conn.setString(3, equipId);

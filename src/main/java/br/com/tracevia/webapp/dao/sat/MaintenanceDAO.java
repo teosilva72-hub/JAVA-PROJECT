@@ -85,7 +85,11 @@ public class MaintenanceDAO {
 				
 				conn.start(1);
 				
-				conn.prepare(select);			
+				conn.prepare_my(select);			
+				conn.prepare_ms(select
+					.replace("DATE_FORMAT", "FORMAT")
+					.replace("%Y-%m-%d", "yyyy-MM-dd")
+					.replace("%H:%i", "hh:mm"));			
 				conn.setString(1, currentDate);		
 				conn.setString(2, currentDate);
 				
@@ -205,7 +209,11 @@ public class MaintenanceDAO {
 				
 				conn.start(1);
 					
-				conn.prepare(select);			
+				conn.prepare_my(select);			
+				conn.prepare_ms(select
+					.replace("DATE_FORMAT", "FORMAT")
+					.replace("%Y-%m-%d", "yyyy-MM-dd")
+					.replace("%H:%i", "hh:mm"));			
 				conn.setString(1, currentDate);		
 				conn.setString(2, currentDate);
 				

@@ -75,9 +75,9 @@ public class DataSatDAO {
 			
 			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT " + limit);
  			conn.prepare_ms(select
-			 	.replaceAll("date_format", "FORMAT")
-				.replaceAll("%H:%i", "hh:mm")
-			 	.replaceAll("IFNULL", "ISNULL")
+			 	.replace("date_format", "FORMAT")
+				.replace("%H:%i", "hh:mm")
+			 	.replace("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP " + limit)
 				.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, %s, ? ", interval, time)));		
 			conn.setString(1, currentDate);		
@@ -173,9 +173,9 @@ public class DataSatDAO {
  			
  			conn.prepare_my(select.replace("$INTERVAL$", String.format(" ? , INTERVAL %s %s", time, interval)) + " LIMIT 1");
  				conn.prepare_ms(select
-					.replaceAll("date_format", "FORMAT")
-					.replaceAll("%H:%i", "hh:mm")
-					.replaceAll("IFNULL", "ISNULL")
+					.replace("date_format", "FORMAT")
+					.replace("%H:%i", "hh:mm")
+					.replace("IFNULL", "ISNULL")
 					.replaceFirst("SELECT", "SELECT TOP 1")
 					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, %s, ? ", interval, time)));
  			conn.setInt(1, equip);	
@@ -229,9 +229,9 @@ public class DataSatDAO {
  			
  			conn.prepare_my(select + " LIMIT 1");
  			conn.prepare_ms(select
-				.replaceAll("date_format", "FORMAT")
-				.replaceAll("%d/%m/%y", "dd/MM/yyyy ")
-				.replaceAll("%H:%i", "hh:mm")
+				.replace("date_format", "FORMAT")
+				.replace("%d/%m/%y", "dd/MM/yyyy ")
+				.replace("%H:%i", "hh:mm")
 				.replace("DATEDIFF(", "DATEDIFF(day, ")
 				.replace("NOW()", "GETDATE()")
 			 	.replaceFirst("SELECT", "SELECT TOP 1"));
