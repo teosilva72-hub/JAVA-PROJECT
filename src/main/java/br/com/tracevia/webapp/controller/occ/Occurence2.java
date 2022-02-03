@@ -59,7 +59,6 @@ public class Occurence2 {
 
 private OccurenceData2  data;
 private OccurenceData2 getPdf;
-private UserAccountBean userId;
 private OccurrencesDetails details;
 
 OccurencesDao2 dao;
@@ -427,8 +426,7 @@ public String getLogo() {
 			title_modal = occLabel.getStringKey("btn_salvar");
 			message_modal = occLabel.getStringKey("msg_salvar");
 
-			//Preencher Lista
-			occurrences = dao.listarOcorrencias();
+		
 
 			//initialize btns
 			edit = true;
@@ -465,7 +463,7 @@ public String getLogo() {
 
 	//register occurrences
 	public void cadastroOcorrencia() throws Exception {
-		boolean vr = false; // <-- OBSERVAR
+		boolean sucess = false;
 
 	
 
@@ -550,7 +548,7 @@ public String getLogo() {
 
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
-			//sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base <-- OBSERVAR
+			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
 
 		}
 
@@ -885,7 +883,7 @@ public String getLogo() {
 			cadastroOcorrencia();
 
 			//transformando a variavel (value) em String
-			String occNumber = (String.valueOf(value));
+			String sinistro = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
 			localPath = localPath(occNumber);

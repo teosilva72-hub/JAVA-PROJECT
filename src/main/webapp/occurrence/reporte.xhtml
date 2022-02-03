@@ -46,17 +46,17 @@
 							</h:column>
 
 							<h:column>
-								<f:facet name="header">Tipo</f:facet>
+								<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
 								<h:outputText value="#{data.type}" style="  font-size: 12px;" />
 							</h:column>
 
 							<h:column>
-								<f:facet name="header">Periodo</f:facet>
+								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
 								<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
 							</h:column>
 							
 							<h:column>
-								<f:facet class="barraTable" name="header">Causa</f:facet>
+								<f:facet class="barraTable" name="header">#{occLabels.occ_list_table_status}</f:facet>
 								<h:outputText value="#{data.state_occurrences}"
 									style="font-size: 12px;" />
 							</h:column>
@@ -68,6 +68,7 @@
 
 						</h:dataTable>
 					</div></div>
+					
 			
 					<!-- final da table -->
 	<!-- Botão para acionar modal -->
@@ -78,6 +79,7 @@
 
 
 		<!-- Modal -->
+		
  
 			<!-- Modal -->
   	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
@@ -92,26 +94,47 @@
      				 <div class="modal-body">
       					<div class="form-group col-md-11 text-center">	
        						<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
-	<!-- Botão alterar -->
-								<h:commandButton id="edit" class="btn btnConf  " disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrence2.atualizarOcorrencia}">
-									
+       						<h:commandButton class="btn btnConf" id="new"
+											disabled="#{occurrencesBean.new_}"
+											action="#{occurrencesBean.btnEnable}"
+											value="#{occLabels.btn_novo}"
+											onclick="bloquerTable(); fileTotalHidden()">
+											<f:ajax execute="@form"
+												render=":save :reset :new :occNumber :tipoEvento :origemEvento :situacaoEvento :dataInicial :horaInicial :minutoInicial unityDamage
+											    	:dataFinal :horaFinal :minutoFinal :causaProvavel :descricaoCausa :eventoKm :eventoKm :eventoEstado1 eventoEstado :eventoSentido :eventoFaixa :outrosEventos
+											    	:condLocal :condTrafego :detalCaract :interFaixa :sinalizacao :situacCond :eventoRodovia :acaoDescrOtro :actionDescr2 :actionDescr1
+											    	:tituloDescr :descrDescr :envolvTipo :envolvQuando :envolvDescr :acaoHoraFinal :acaoEndMinute :danoDescr2 :actionDescr3 :actionDescr4
+											    	:procedimentoNome :procedimentoDescr :transitoHorario :transitoMinuto :trasitoExtKm :transitoPisIntenr :danosData :damageAmount
+											    	:danoTipo :danoGravidade :danoDescr :acaoTipo :acaoInicio :acaoDuracao :acaoFim :acaoDescr :myFile :acaoStatus acaoData :acaoDataFinal
+											    	:trackDateStart :trackHourStart :trackMinuteStart :trackDateEnd :trackHourEnd :trackMinuteEnd :descrDescr1 :descriptionBtn1 :descriptionBtn2
+											    	:envolvDescr2 :involvedBtn1 :involvedBtn2 :descricaoCausa2 :causeProvavel1 :causeProvavel2 :btnUpload :typeHour1 :typeHour2 :typeHour3 :typeHour4
+											    	:typeHour5 :typeHour6" />
+										</h:commandButton>
+       						
+								<!-- Botão alterar -->
+								<h:commandButton id="edit" class="btn btnConf" 
+								disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}"
+								 onclick="bloquerTable(); " action="#{occurrence2.btnEdit}">
 								</h:commandButton>
+								
 										<!-- Botão editar -->
-								<h:commandButton id="alterar" class=" btnConf " style="display: none;" disabled="#{occurrencesBean.alterar}" value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
-									<f:passThroughAttribute name="data-toggle" value="modal" />
+								<h:commandButton id="alterar" class=" btnConf " style="display: none;"
+								 disabled="#{Occurence2.alterar}" value="#{occLabels.btn_salvar}"
+								  onclick="eventValidator(); ">
+								<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#modalEditar" />
 											<f:ajax execute="@form" render="@none" />
 								</h:commandButton>
 
 										<!-- Botão Salvar -->
-										<h:commandButton id="save" class=" btnConf " abled="#{occurrencesBean2.save}" value="#{occLabels.btn_salvar}" >
+										<h:commandButton id="save" class=" btnConf " abled="#{Occurence2.save}" value="#{occLabels.btn_salvar}" >
 									<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#modalSalvar" />
 											<f:ajax execute="@form" render="@none" />
-							
-					
-								</h:commandButton>
-										<div class="modal fade" id="modalSalvar" tabindex="-1"
+											</h:commandButton>
+											
+												<!-- Modal salvar -->
+					<div class="modal fade" id="modalSalvar" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -130,14 +153,19 @@
 										#{occLabels.occ_validation_hidden}</p>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btnConf" data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
-									<button type="submit" style="display: none" class="btn btnConf" data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
-									<h:commandButton value="#{occLabels.btn_sim}" action="#{Occurence2.cadastroOcorrencia}" class="btn btnConf" id="saveBtn"  />
-					
-				
-									</div></div></div></div>
-					
-									<!-- Final do modal Salvar -->
+									<button type="button" class="btn btnConf" data-dismiss="modal"
+										id="SaveModalExit">#{occLabels.btn_nao}</button>
+									<button type="submit" style="display: none" class="btn btnConf"
+										data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
+									<h:commandButton value="#{occLabels.btn_sim}"
+										action="#{Occurence2.atualizarOcorrencia}"
+										class="btn btnConf" id="saveBtn" onclick="cadastroOcorrencia();" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Final do modal Salvar -->
+									
 				
 
 
@@ -148,6 +176,7 @@
 											<f:ajax execute="@form" render="@none" />
 								</h:commandButton>
 							</div>
+							
 								
 
 
@@ -270,7 +299,7 @@
 			<form>
 				<div class="form-row col-md-12">
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_} </label> 
 							<input type="text" class="form-control inputDesign mb-1" id="numeroveic" value="#{Occurence2.data.numveiculo}"/> 
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
@@ -323,7 +352,7 @@
 
 
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_sinistro} </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="numeropessoa"  value="#{Occurence2.data.numcond}"/> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
