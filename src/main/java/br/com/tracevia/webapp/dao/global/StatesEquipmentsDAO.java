@@ -44,7 +44,7 @@ public class StatesEquipmentsDAO {
 		// Obter datas formatadas para os dados
 		String currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 
-		String select = "SELECT equip_id,   ROUND(CONVERT(((value_ / 1000) * 1), DECIMAL(3,1)), 1) AS value_ FROM battery_values "
+		String select = "SELECT equip_id,   ROUND(CONVERT(((value_ / 1000) * 1), 1), 1) AS value_ FROM battery_values "
 				+ "WHERE datetime_ between DATE_SUB( ? , ? ) AND ? and equip_type = ? "
 				+ "ORDER BY equip_id ASC ";
 
@@ -95,7 +95,7 @@ public class StatesEquipmentsDAO {
 		// Obter datas formatadas para os dados
 		String currentDate = dta.getCurrentDateDados15CCR(calendar, minute);
 
-		String select = "SELECT equip_id,   ROUND(CONVERT(((value_ / 1000) * 1), DECIMAL(3,1)), 1) AS value_ FROM battery_values "
+		String select = "SELECT equip_id,   ROUND(CONVERT(((value_ / 1000) * 1), 1), 1) AS value_ FROM battery_values "
 				+ "WHERE datetime_ between DATE_SUB( ? , ? ) AND ? and equip_type = ? "
 				+ "GROUP BY datetime_ "
 				+ "ORDER BY datetime_ DESC LIMIT 1";
