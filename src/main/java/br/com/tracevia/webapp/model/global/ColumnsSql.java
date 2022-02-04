@@ -45,12 +45,33 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         	this.map = map;
         }
         
-        public String getString(int integer) throws Exception {
-        	return new String(cols[integer - 1].getBytes(), StandardCharsets.UTF_8);
+        public String getString(String string) throws Exception {
+        	return getString(map.get(string) + 1);
+        }
+
+		public String getString(int integer) throws Exception {
+        	RowSql row = cols[integer - 1];
+			switch (row.type) {
+				case 1: // String
+				case 4: // Date
+				case 7: // Time
+					return new String(row.getBytes(), StandardCharsets.UTF_8);
+				case 2: // Int
+				case 3: // UInt
+					return String.valueOf(getInt(integer));
+				case 5: // Double
+					return String.valueOf(getDouble(integer));
+				case 6: // Float
+					return String.valueOf(getFloat(integer));
+				case 8: // Bytes
+					return String.valueOf(getBytes(integer));
+				default:
+					return null;
+			}
         }
         
-        public String getString(String string) throws Exception {
-        	return new String(cols[map.get(string)].getBytes(), StandardCharsets.UTF_8);
+        public int getInt(String string) throws Exception {
+			return getInt(map.get(string) + 1);
         }
         
         public int getInt(int integer) throws Exception {
@@ -62,15 +83,10 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         		return ByteBuffer.wrap(new byte[] {b[3], b[2], b[1], b[0]}).getInt();
         }
         
-        public int getInt(String string) throws Exception {
-        	RowSql row = cols[map.get(string)];
-        	byte[] b = row.getBytes();
-        	if (row.type == 1)
-        		return Integer.parseInt(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
-        		return ByteBuffer.wrap(new byte[] {b[3], b[2], b[1], b[0]}).getInt();
+        public float getFloat(String string) throws Exception {
+			return getFloat(map.get(string) + 1);
         }
-
+		
         public float getFloat(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
         	if (row.type == 1)
@@ -79,24 +95,12 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
         }
         
-        public float getFloat(String string) throws Exception {
-        	RowSql row = cols[map.get(string)];
-        	if (row.type == 1)
-        		return Float.parseFloat(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 4)).getFloat();
+        public double getDouble(String string) throws Exception {
+			return getDouble(map.get(string) + 1);
         }
-        
+
         public double getDouble(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
-        	if (row.type == 1)
-        		return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
-        	else
-        		return ByteBuffer.wrap(Arrays.copyOfRange(row.getBytes(), 0, 8)).getDouble();
-        }
-        
-        public double getDouble(String string) throws Exception {
-        	RowSql row = cols[map.get(string)];
         	if (row.type == 1)
         		return Double.parseDouble(new String(row.getBytes(), StandardCharsets.UTF_8));
         	else
@@ -112,6 +116,10 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
 			return sum != 0;
         }
         
+        public boolean getBoolean(String string) throws Exception {
+			return getBoolean(map.get(string) + 1);
+        }
+		
         public boolean getBoolean(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
         	if (row.type == 1) {
@@ -121,21 +129,12 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         		return checkBoolean(row.getBytes());
         }
         
-        public boolean getBoolean(String string) throws Exception {
-        	RowSql row = cols[map.get(string)];
-        	if (row.type == 1) {
-				String value = new String(row.getBytes(), StandardCharsets.UTF_8);
-        		return Boolean.parseBoolean(value) || "1".equals(value);
-			} else
-        		return checkBoolean(row.getBytes());
+        public byte[] getBytes(String string) throws Exception {
+			return getBytes(map.get(string) + 1);
         }
-        
+
         public byte[] getBytes(int integer) throws Exception {
         	return cols[integer - 1].getBytes();
-        }
-        
-        public byte[] getBytes(String string) throws Exception {
-        	return cols[map.get(string)].getBytes();
         }
 
 		public String[] getKeys() {

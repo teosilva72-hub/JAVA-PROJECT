@@ -59,11 +59,11 @@ public class FluxoPeriodoDAO {
 							
 		if(period.equals("15 minutes"))			
 			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', " + 					
-					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(15*60))),'%H:%i') 'INTERVALS', v.siteID 'ID', ";
+					 "DATE_FORMAT(CAST(CONCAT(HOUR(v.data), ':', MINUTE(v.data) - MINUTE(v.data) % 15, ':00') as TIME)),'%H:%i') 'INTERVALS', v.siteID 'ID', ";
 				
 		if(period.equals("01 hour"))			
 			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', " + 					
-					 "DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(60*60))),'%H') 'INTERVALS', v.siteID 'ID', ";
+					 "DATE_FORMAT(CAST(CONCAT(HOUR(v.data) - 1, ':', MINUTE(v.data), ':00') as TIME),'%H') 'INTERVALS', v.siteID 'ID', ";
 				
 		if(period.equals("24 hours"))			
 			   select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') 'DATE', ' ---- ' 'INTERVALS', v.siteID 'ID', ";			
@@ -949,10 +949,10 @@ public class FluxoPeriodoDAO {
 		// -------------------------------------------------------------------------------------------------------------------------------------
 		
 		if(period.equals("15 minutes"))			
-		   	 select += "GROUP BY DATE(v.data), SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(15*60)) ORDER BY DATE(v.data) ASC ";
+		   	 select += "GROUP BY DATE(v.data), CAST(CONCAT(HOUR(v.data), ':', MINUTE(v.data) - MINUTE(v.data) % 15, ':00') as TIME) ORDER BY DATE(v.data) ASC ";
 				
 		if(period.equals("01 hour"))			
-			 select += "GROUP BY DATE(v.data), SEC_TO_TIME(TIME_TO_SEC(v.data) - TIME_TO_SEC(v.data)%(60*60)) ORDER BY DATE(v.data) ASC";
+			 select += "GROUP BY DATE(v.data), CAST(CONCAT(HOUR(v.data) - 1, ':', MINUTE(v.data), ':00') as TIME) ORDER BY DATE(v.data) ASC";
 				
 		if(period.equals("24 hours"))			
 			 select += "GROUP BY DATE(v.data) ORDER BY DATE(v.data) ASC";		
@@ -965,6 +965,8 @@ public class FluxoPeriodoDAO {
 			conn.prepare_ms(select
 				.replace("DATE_FORMAT", "FORMAT")
 				.replace("%Y-%m-%d", "yyyy-MM-dd")
+				.replace("HOUR(", "DATEPART(HOUR, ")
+				.replace("MINUTE(", "DATEPART(MINUTE, ")
 				.replace("IFNULL", "ISNULL"));
 			conn.setString(1, startDate);
 		    conn.setString(2, endDate);
