@@ -76,7 +76,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
+	    "WHERE DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC ";
 					
@@ -84,8 +84,11 @@ public class SATinformationsDAO {
 			
 		    conn.start(1);
 			
-			conn.prepare_my(select);			
-			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));			
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 30 MINUTE"));			
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 30, ? ")
+				.replaceAll("IFNULL", "ISNULL"));			
 			conn.setString(1, currentDate);		
 						
 			MapResult result = conn.executeQuery();
@@ -180,7 +183,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
+	    "WHERE DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO " +
 	    "ORDER BY d.DATA_HORA ASC";
 					
@@ -188,8 +191,11 @@ public class SATinformationsDAO {
 			
 		  conn.start(1);
 		  
-			conn.prepare_my(select);			
-			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));			
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));			
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? ")
+				.replaceAll("IFNULL", "ISNULL"));			
 			conn.setString(1, currentDate);		
 						
 			MapResult result = conn.executeQuery();
@@ -286,7 +292,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
+	    "WHERE DATA_HORA between DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 	    "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
 	    "ORDER BY d.DATA_HORA ASC";
 					
@@ -294,8 +300,10 @@ public class SATinformationsDAO {
 			
 		  	conn.start(1);
 		  
-			conn.prepare_my(select + " LIMIT " + limit);
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT " + limit);
 			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
 				.replaceAll("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP " + limit));
 			conn.setString(1, currentDate);	
@@ -392,14 +400,17 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 ";
+	    "WHERE eq.equip_id = ? AND DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 ";
 	  					
 	  try {
 			
 		  conn.start(1);
 			
-			conn.prepare_my(select);
-			conn.prepare_ms(select.replaceAll("IFNULL", "ISNULL"));
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ? , INTERVAL 45 MINUTE"));
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? ")
+				.replaceAll("IFNULL", "ISNULL"));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);		
 						
@@ -492,7 +503,7 @@ public class SATinformationsDAO {
 				    
 	    "FROM "+RoadConcessionaire.tableDados15+" d " +
 	    "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " +
-	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
+	    "WHERE eq.equip_id = ? AND DATA_HORA between DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 AND d.VEL_MEDIA_TOTAL <> 0 " +
 		"GROUP BY d.DATA_HORA " +
         "ORDER BY d.DATA_HORA DESC";
 	  					
@@ -500,8 +511,10 @@ public class SATinformationsDAO {
 			
 		  conn.start(1);
 			
-			conn.prepare_my(select + " LIMIT 1");
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT 1");
 			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
 				.replaceAll("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP 1"));
 			conn.setInt(1, equip);	
@@ -558,7 +571,7 @@ public class SATinformationsDAO {
 				
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			        "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 30 MINUTE) AND eq.visible = 1 " +
+			        "WHERE d.DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 " +
 			        "GROUP BY d.NOME_ESTACAO " +			       
 				    "ORDER BY d.DATA_HORA";
 	
@@ -566,7 +579,11 @@ public class SATinformationsDAO {
 		
 		    conn.start(1);
 			
-			conn.prepare(select);				
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 30 MINUTE"));
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 30, ? "));				
+			conn.prepare_my(select);				
 			conn.setString(1, currentDate);		
 						
 			MapResult result = conn.executeQuery();
@@ -618,7 +635,7 @@ public class SATinformationsDAO {
 					
 		String select ="SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-				       "WHERE d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+				       "WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
 				       "GROUP BY d.NOME_ESTACAO, d.DATA_HORA " +
 				       "ORDER BY d.DATA_HORA ASC";
 				    		
@@ -626,8 +643,11 @@ public class SATinformationsDAO {
 			
 			    conn.start(1);
 				
-				conn.prepare_my(select + " LIMIT " + limit);
- 				conn.prepare_ms(select.replaceFirst("SELECT", "SELECT TOP " + limit));
+				conn.prepare_my(select
+					.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT " + limit);
+ 				conn.prepare_ms(select
+				 	.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+					 .replaceFirst("SELECT", "SELECT TOP " + limit));
 				conn.setString(1, currentDate);	
 				conn.setString(2, currentDate);	
 				
@@ -677,7 +697,7 @@ public class SATinformationsDAO {
 					
 		String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 				       "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-				       "WHERE d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 " +
+				       "WHERE d.DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 " +
 				       "GROUP BY d.NOME_ESTACAO " +
 					   "ORDER BY d.DATA_HORA ASC";
 		
@@ -685,7 +705,10 @@ public class SATinformationsDAO {
 			
 			    conn.start(1);
 				
-				conn.prepare(select);					
+				conn.prepare_my(select
+					.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));					
+				conn.prepare_ms(select
+					.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? "));
 				conn.setString(1, currentDate);		
 							
 				MapResult result = conn.executeQuery();
@@ -734,13 +757,16 @@ public class SATinformationsDAO {
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			        "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB( ? , INTERVAL 45 MINUTE) AND eq.visible = 1 ";
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA = DATE_SUB($INTERVAL$) AND eq.visible = 1 ";
 			      	    	  					
 	  try {
 			
 		    conn.start(1);
 			
-			conn.prepare(select);
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? "));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);	
 			
@@ -787,7 +813,7 @@ public class SATinformationsDAO {
 		
 	String select = "SELECT d.NOME_ESTACAO, COUNT(*) AS STATUS FROM "+RoadConcessionaire.tableDados15+" d " + 
 			        "INNER JOIN sat_equipment eq on (eq.equip_id = d.nome_estacao) " + 
-			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB( ? , INTERVAL 8 HOUR) AND ? AND eq.visible = 1 " +
+			        "WHERE eq.equip_id = ? AND d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
 			        "GROUP BY d.DATA_HORA " + 			        
 			        "ORDER BY d.DATA_HORA DESC";
 			      	    	  					
@@ -795,8 +821,11 @@ public class SATinformationsDAO {
 			
 		  conn.start(1);
 			
-			conn.prepare_my(select + " LIMIT 1");
-			conn.prepare_ms(select.replaceFirst("SELECT", "SELECT TOP 1"));
+			conn.prepare_my(select
+				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT 1");
+			conn.prepare_ms(select
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+				.replaceFirst("SELECT", "SELECT TOP 1"));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);	
 			conn.setString(3, currentDate);	

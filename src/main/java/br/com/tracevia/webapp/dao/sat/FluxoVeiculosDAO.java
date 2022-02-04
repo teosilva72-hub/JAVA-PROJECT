@@ -57,7 +57,7 @@ public class FluxoVeiculosDAO {
 			String select = " "; // initialize variable						
 
 			select = "SELECT DATE_FORMAT(v.data, '%Y-%m-%d') AS date, " +
-			"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(v.data)- TIME_TO_SEC(v.data)%(15*60))),'%H:%i') AS intervals, " +
+			"DATE_FORMAT(CAST(CONCAT(HOUR(v.data), ':', MINUTE(v.data) - MINUTE(v.data) % 15, ':00') as TIME),'%H:%i') AS intervals, " +
 					
 				 "CASE " + 
 					"WHEN eq.number_lanes = 2 THEN " + 							
@@ -393,6 +393,8 @@ public class FluxoVeiculosDAO {
 							.replace("DATE_FORMAT", "FORMAT")
 							.replace("%Y-%m-%d", "yyyy-MM-dd")
 							.replace("%H:%i", "hh:mm")
+							.replace("HOUR(", "DATEPART(HOUR, ")
+							.replace("MINUTE(", "DATEPART(MINUTE, ")
 							.replaceAll("IFNULL", "ISNULL"));
 						conn.setString(1, startDate);
 						conn.setString(2, endDate);
