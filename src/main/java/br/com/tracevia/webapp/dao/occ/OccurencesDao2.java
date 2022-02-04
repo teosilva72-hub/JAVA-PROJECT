@@ -28,10 +28,7 @@ public class OccurencesDao2 {
 			String sinistro = null;
 			
 			//script BD
-			String query = "INSERT INTO occ_data2(date, hora, pedagio, folio, report, sinistro, direcao, "
-					+ "kmregistro, kminicial, kmfinal, horaregistro, horachega, politica, "
-					+ " tipoveic, quantidade, numero, marca, tipo_veic, modelo, color, placa, telefone, nome, "
-					+ "idade, saude, motivo,observacao "
+			String query = "INSERT INTO occ_data2(occ_data2 SET date, hora, pedagio, folio, report , sinistro ,direcao, kmregistro, kminicial, kmfinal, horaregistro, horachega, politica,  tipoveic, quantidade, numero,  marca, tipo_veic, modelo, color, placa, telefone, nome, idade, saude, motivo, observacao"
 					+  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			try {
@@ -173,41 +170,16 @@ public class OccurencesDao2 {
 			}
 		
 		
-		public boolean lastUser(String id, String lastData, String user) throws Exception {
-			
-			boolean status = false;
-			
-			String query = "UPDATE occ_data2 SET lastDateUser = ?, lastUser = ? WHERE sinistro = ?";
-			DateTimeApplication dtm = new DateTimeApplication();
-			try {
-				conn = ConnectionFactory.connectToTraceviaApp();
-				ps = conn.prepareStatement(query);
-				ps.setString(1, lastData);
-				ps.setString(2, user);
-				ps.setString(3, id);
-				
-				int answer = ps.executeUpdate();
-
-				if(answer > 0) 
-					status = true;
-			}catch (SQLException alterarOcorrencia){
-				throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
-			}finally {
-				ConnectionFactory.closeConnection(conn, ps);
-			}	
-			
-			return status;
-		}
-
+	
 		
 		//m�todo atualizar ocorr�ncia 
 		public boolean atualizarOcorrencia(OccurenceData2 data) throws Exception {
 			// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 			boolean status = false;
 			//script dos atributos que ser�o atualizados as informa�oes do banco de dados
-			String query = "UPDATE occ_data SET data = ? , hora = ?, pedagio = ?, folio = ?, report = ?, " +
-					"sinistro = ?, direcao = ?, kmregistro = ?, kminicial = ?, kmfinal = ?, hrReg = ?, hrchega = ?, politica = ?, " +
-					"tipo_veic = ?, modelo = ?, cor = ?, placa = ?, telefone = ?, nome = ?, idade = ?, saude = ?, " +
+			String query = "UPDATE occ_data2 SET date = ? , hora = ?, pedagio = ?, folio = ?, report = ?, " +
+					"sinistro = ?, direcao = ?, kmregistro = ?, kminicial = ?, kmfinal = ?, horaregistro = ?, horachega = ?, politica = ?, " +
+					"tipoveic = ?, quantidade= ?, numero = ?,  marca = ? , tipo_veic = ?, modelo = ?, color = ?, placa = ?, telefone = ?, nome = ?, idade = ?, saude = ?, " +
 					"motivo = ?, observacao = ?";
 				
 			try {
@@ -432,22 +404,22 @@ public class OccurencesDao2 {
 			return status;
 			}
 		
-		public OccurenceData2 buscarOcorrenciaPorId(int id) throws Exception {
+		public OccurenceData2 buscarOcorrenciaPorId(int sinistro) throws Exception {
 
 			OccurenceData2 occ = new OccurenceData2();
 			
 			//Script dos atributos que as infor��es ser�o requisitadas
-			String query = "SELECT sinistro, data = ? , hora = ?, pedagio = ?, folio = ?, report = ?, \" +\r\n" + 
-					"sinistro = ?, direcao = ?, kmregistro = ?, kminicial = ?, kmfinal = ?, hrReg = ?, hrchega = ?, politica = ?, \" +\r\n" + 
-					"tipo_veic = ?, modelo = ?, cor = ?, placa = ?, telefone = ?, nome = ?, idade = ?, saude = ?, \" +\r\n" + 
-					"motivo = ?, observacao = ?";
+			String query = "SELECT  date, hora, pedagio, folio, report , sinistro ,"
+					+ "direcao, kmregistro, kminicial, kmfinal, horaregistro, horachega, politica,  "
+					+ "tipoveic, quantidade, numero,  marca, tipo_veic, modelo, color, placa, telefone,"
+					+ " nome, idade, saude, motivo, observacao from occ_data2";
 			DateTimeApplication dtm = new DateTimeApplication();
 
 			try {
 
 				conn = ConnectionFactory.connectToTraceviaApp();
 				ps = conn.prepareStatement(query);
-				ps.setInt(1, id);
+				ps.setInt(1, sinistro);
 				rs = ps.executeQuery();
 
 				if(rs != null) {

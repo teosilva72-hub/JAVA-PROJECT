@@ -67,171 +67,100 @@
 									</h:column>-->
 
 						</h:dataTable>
-					</div></div>
+						</div>
+					</div>
+				</div>
 					
 			
-					<!-- final da table -->
-	<!-- Botão para acionar modal -->
+							<div class="text-center">		
+	<!-- Botão modal nova ocorrencia -->
 			<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
 					Nova Ocorrencia
 			</button>
-
-
-
-		<!-- Modal -->
-		
- 
+	<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
+					Editar Ocorrencia
+			</button>
+</div>
 			<!-- Modal -->
-  	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" 
-  	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
+			<!-- Formatação e cabeçalho modal -->
+  	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
  		<div class="modal-dialog modal-xl ">
  			<div class="modal-content fundo">
       			<div class="modal-header ">
        				 <h5 class="modal-title ml-auto ">#{occLabels.occ_title_pdf}</h5>
-        				<button type="button" class="close " data-dismiss="modal" aria-label="Fechar">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
          					 <span aria-hidden="true">&times;</span>
        					 </button>
-       					 
-       					 		
-    			 </div>
-     				 <div class="modal-body">
-      					<div class="form-group col-md-11 text-center">	
-       						<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
-       							<h:commandButton class="btn btnConf" id="new" abled="#{Occurence2.new_}" action="#{Occurence2.btnEnable}"
-									value="#{occLabels.btn_novo}" onclick="()">
-											<f:ajax execute="@form"
-												render=":save :reset :new :date :hora :pedagio :folio :report :sinistro :direcao :kmregistro :kminicial :kmfinal :horaregistro :horachega :politica :tipoveic :quantidade :numero :marca :tipo_veic :modelo :color :placa :telefone :nome
-												:idade :saude :motivo :observacao" />
-										</h:commandButton>
-								<!-- Botão alterar -->
-								<h:commandButton id="edit" class="btn btnConf" 
-								disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}"
-								 onclick="bloquerTable(); " action="#{occurrence2.btnEdit}">
-								</h:commandButton>
-								
-								<!-- Botão editar -->
-								<h:commandButton id="alterar" class=" btnConf " style="display: none;"
-								 disabled="#{Occurence2.alterar}" value="#{occLabels.btn_salvar}"
-								  onclick="eventValidator(); ">
-								<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target" value="#modalEditar" />
-											<f:ajax execute="@form" render="@none" />
-								</h:commandButton>
-								
-								<div class="modal fade" id="modalEditar" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
+       			 </div>
+     
+      
+       			 <div class="modal-body">
+      				<div class="form-group col-md-11 text-center">	
+       					<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
+       				<!-- INICIO DOS MODAIS BOTOES -->
+ 
+       
+									
+	
+			<!-- Botão Salvar -->
+			<h:commandButton id="save" class=" btnConf " abled="#{Occurence2.save}" value="#{occLabels.btn_salvar}" >
+				<f:passThroughAttribute name="data-toggle" value="modal" />
+					<f:passThroughAttribute name="data-target" value="#modalSalvar" />
+						<f:ajax execute="@form" render="@none" />
+			</h:commandButton>
+						<!-- Modal salvar -->
+					<div class="modal fade" id="modalSalvar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">#{occLabels.btn_editar}</h5>
+									<h5 class="modal-title" id="exampleModalLabel">#{Occurence2.title_modal}</h5>
 								</div>
 								<div class="modal-body">
-									<p id="editModal">#{occLabels.msg_editar}</p>
-									<p>#{occLabels.msg_occ_id_p}:
-										#{occurrencesBean.data.data_number}</p>
-									<p id="editorTextModal" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden}</p>
-									<p id="editorTextModal2" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden2}</p>
-									<p id="editorTextModal3" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden3}</p>
-									<p id="editorTextModal4" style="display: none; color: red;">#{occLabels.occ_validation_hidden}</p>
+									<p id="saveModal">#{Occurence2.message_modal}</p>
 								</div>
 								<div class="modal-footer">
-									<button type="submit" class="btn btnConf" data-dismiss="modal"
-										id="editModalExit">#{occLabels.btn_nao}</button>
-									<button type="submit" style="display: none" class="btn btnConf"
-										data-dismiss="modal" id="editModalVoltar">#{occLabels.occ_btn_voltar}</button>
-									<h:commandButton value="#{occLabels.btn_sim}"
-										action="#{occurrencesBean.atualizarOcorrencia}"
-										class="btn btnConf" id="editarBtn" onclick="mostrarTab1()" />
-								</div>
-							</div>
-						</div>
-					</div>
-
-										<!-- Botão Salvar -->
-										<h:commandButton id="save" class=" btnConf " abled="#{Occurence2.save}" value="#{occLabels.btn_salvar}" >
-									<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target" value="#modalSalvar" />
-											<f:ajax execute="@form" render="@none" />
-											</h:commandButton>
-											
-												<!-- Modal salvar -->
-					<div class="modal fade" id="modalSalvar" tabindex="-1"
-						aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">#{occurrencesBean.title_modal}</h5>
-								</div>
-								<div class="modal-body">
-									<p id="saveModal">#{occurrencesBean.message_modal}</p>
-									<p id="saveTextModal" style="display: none; color: red;">
-										#{occLabels.occ_modal_Btn_Hidden}</p>
-									<p id="saveTextModal2" style="display: none; color: red;">
-										#{occLabels.occ_modal_Btn_Hidden2}</p>
-									<p id="saveTextModal3" style="display: none; color: red;">
-										#{occLabels.occ_modal_Btn_Hidden3}</p>
-									<p id="saveTextModal4" style="display: none; color: red;">
-										#{occLabels.occ_validation_hidden}</p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btnConf" data-dismiss="modal"
-										id="SaveModalExit">#{occLabels.btn_nao}</button>
-									<button type="submit" style="display: none" class="btn btnConf"
-										data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
-									<h:commandButton value="#{occLabels.btn_sim}"
-										action="#{Occurence2.atualizarOcorrencia}"
-										class="btn btnConf" id="saveBtn" onclick="cadastroOcorrencia();" />
+									<button type="button" class="btn btnConf" data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
+								
+									<h:commandButton value="#{occLabels.btn_sim}" action="#{Occurence2.cadastroOcorrencia}" class="btn btnConf" id="saveBtn"  />
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- Final do modal Salvar -->
-									
 				
-
-
-										<!-- Botão Anular -->
-								<h:commandButton id="reset" class="btn btnConf" disabled="#{occurrencesBean.reset}" value="#{occLabels.btn_anular}">
-									<f:passThroughAttribute name="data-toggle" value="modal" />
-										<f:passThroughAttribute name="data-target" value="#modalAnular" />
-											<f:ajax execute="@form" render="@none" />
-								</h:commandButton>
-							</div>
-							
-								
-
-
-
+			<!-- Botão Anular -->
 		
-				<form id="formExemplo" data-toggle="validator" role="form" class="formulario container">						
-			
+		</div>
+							
+					<!-- Inicio formulario ocorrencia -->		
+							
+		<h:form id="formExemplo" data-toggle="validator" role="form" class="formulario container">						
 			<div class="form-row col-md-12 ">
 				<div class="form-group col-md-6 text-center">
 					<label for="date" class=" fonttext mr-3 ">#{occLabels.$label_occ_reports_date}</label> 
-					<input type="date" id="date" class="inputDesign form-control col-md-4 text-center ml-3 mr-3"
-					placeholder ="mm/dd/yyyy" value="#{Occurence2.dataTeste}" />
+						<input type="date" id="date" class="inputDesign form-control col-md-4 text-center ml-3 mr-3" placeholder ="mm/dd/yyyy" value="#{Occurence2.dataTeste}" />
 				</div>
 
 				<div class="form-group col-md-6 text-center">
 					<label for="nome" class=" fonttext  ">#{occLabels.$label_occ_reports_hour}</label>
-					<input type="time" id="hour" class="inputDesign form-control text-center col-md-3 ml-3 mr-3" value="#{Occurence2.data.date}" /></div>
+						<input type="time" id="hour" class="inputDesign form-control text-center col-md-3 ml-3 mr-3" value="#{Occurence2.data.date}" /></div>
 				</div>
 			
-	
-				<div class="row mt-2">
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class="col-form-label fonttext">#{occLabels.$label_occ_reports_toll}</label>
-							<div class="col-9 ml-auto">
-								<input type="text" id="toll" class="inputDesign  form-control" value="#{Occurence2.data.pedagio}" />
-							</div>
-					</div>
+					<div class="row mt-2">
+					
+				<div class="form-group col-6 text-center row">
+					<label for="nome" class="col-form-label fonttext">#{occLabels.$label_occ_reports_toll}</label>
+						<div class="col-9 ml-auto">
+							<input type="text" id="toll" class="inputDesign  form-control" value="#{Occurence2.data.pedagio}" />
+						</div>
+				</div>
 						
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_folio}</label>
-							<div class="col-9 ml-auto">
-								<input type="text" id="folio" class="inputDesign  form-control"   value="#{Occurence2.data.folio}"/>
-							</div>
-					</div>
+				<div class="form-group col-6 text-center row">
+					<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_folio}</label>
+						<div class="col-9 ml-auto">
+							<input type="text" id="folio" class="inputDesign  form-control"   value="#{Occurence2.data.folio}"/>
+						</div>
+				</div>
 						
 					<div class="form-group col-6 text-center row">
 						<label for="nome" class=" fonttext col-form-label"> #{occLabels.$label_occ_reports_report} </label>
@@ -248,7 +177,7 @@
 					</div>
 					
 					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label fonttext  ">#{occLabels.$label_occ_reports_direction} </label>
+						<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_direction} </label>
 							<div class="col-9 ml-auto">
 								 <input type="text" id="direction" class="inputDesign form-control" value="#{Occurence2.data.direcao}" />
 							</div> 
@@ -297,9 +226,9 @@
 							</div>	
 					</div>
 					</div>
-				</form>
+				</h:form>
 
-			<form id="form1" data-toggle="validator" role="form">
+			<h:form id="form1" data-toggle="validator" role="form">
 				<div class="form-row col-md-12 mt-2">
 					<div class="form-group col-md-6 text-center">
 						<label for="textNome" class="control-label text-cente fonttext ">#{occLabels.$label_occ_vehicle_type}</label>
@@ -310,14 +239,14 @@
 
 					<div class="form-group col-md-6 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_quantity}</label>
-							 <input type="password" class="form-control inputDesign mb-1" id="quantidade" value="#{Occurence2.data.quantidade}" /> 
+							 <input type="text" class="form-control inputDesign mb-1" id="quantidade" value="#{Occurence2.data.quantidade}" /> 
 						 			<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 								 		<input id="textNome" class="form-control inputDesign mb-1" type="text" />
 					</div>
 				</div>
-			</form>
+			</h:form>
 			
-			<form>
+			<h:form>
 				<div class="form-row col-md-12">
 					<div class="form-group col-md-1 text-center">
 						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_} </label> 
@@ -447,7 +376,7 @@
 					<em for="inputAddress">#{occLabels.$label_occ_observation}</em>
 						<h:inputTextarea class="form-control textareaDesign mb-7"  rows="8" name="danoDescr" id="danoDescr"  value="#{Occurence2.data.observacao}"/>
 				</div>
-	      	 </form>
+	      	 </h:form>
 	      	 
 	      	 <div class="from-row ">
 							<!-- ALert Anexos -->
@@ -527,10 +456,9 @@
 																		<li>
 																			<h:commandLink action="#{Occurence2.deleteFile(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
 																	</ul>
-																	
-																														    <div class="modal-footer">
-      
-															</div>
+																 <div class="modal-footer">
+      														
+      														</div>
 														</div>
 													</div>
 												</div>
@@ -606,8 +534,9 @@
 																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
 																			<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-														  													
+														  				<!-- Modal -->											
 																	</ul>
+																	
 																</div>
 															</div>
 														</div>
@@ -617,16 +546,13 @@
 										</c:forEach>
 									</div>
 								</div>
-							<!-- FInal alert -->
-						</div>
-					 </div>	
-	 			 </div>
-   </div>
-      </div>
-    
-  
-    </div>
-  </div>
+							</div>
+						 </div>	
+	 				 </div>
+  			 	</div>
+     		 </div>
+      	</div>
+
 
    </ui:define>
 </ui:composition>
