@@ -1056,7 +1056,6 @@ $(function () {
 			modal.find("#bar-size").attr("from",
 				"." + $(this).attr('from'))
 
-
 		});
 });
 
