@@ -46,17 +46,17 @@
 							</h:column>
 
 							<h:column>
-								<f:facet name="header">Tipo</f:facet>
+								<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
 								<h:outputText value="#{data.type}" style="  font-size: 12px;" />
 							</h:column>
 
 							<h:column>
-								<f:facet name="header">Periodo</f:facet>
+								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
 								<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
 							</h:column>
 							
 							<h:column>
-								<f:facet class="barraTable" name="header">Causa</f:facet>
+								<f:facet class="barraTable" name="header">#{occLabels.occ_list_table_status}</f:facet>
 								<h:outputText value="#{data.state_occurrences}"
 									style="font-size: 12px;" />
 							</h:column>
@@ -68,6 +68,7 @@
 
 						</h:dataTable>
 					</div></div>
+					
 			
 					<!-- final da table -->
 	<!-- Botão para acionar modal -->
@@ -78,9 +79,11 @@
 
 
 		<!-- Modal -->
+		
  
 			<!-- Modal -->
-  	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
+  	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" 
+  	aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
  		<div class="modal-dialog modal-xl ">
  			<div class="modal-content fundo">
       			<div class="modal-header ">
@@ -88,30 +91,71 @@
         				<button type="button" class="close " data-dismiss="modal" aria-label="Fechar">
          					 <span aria-hidden="true">&times;</span>
        					 </button>
+       					 
+       					 		
     			 </div>
      				 <div class="modal-body">
       					<div class="form-group col-md-11 text-center">	
        						<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
-	<!-- Botão alterar -->
-								<h:commandButton id="edit" class="btn btnConf  " disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}" onclick="bloquerTable(); " action="#{occurrence2.atualizarOcorrencia}">
-									
+       							<h:commandButton class="btn btnConf" id="new" abled="#{Occurence2.new_}" action="#{Occurence2.btnEnable}"
+									value="#{occLabels.btn_novo}" onclick="()">
+											<f:ajax execute="@form"
+												render=":save :reset :new :date :hora :pedagio :folio :report :sinistro :direcao :kmregistro :kminicial :kmfinal :horaregistro :horachega :politica :tipoveic :quantidade :numero :marca :tipo_veic :modelo :color :placa :telefone :nome
+												:idade :saude :motivo :observacao" />
+										</h:commandButton>
+								<!-- Botão alterar -->
+								<h:commandButton id="edit" class="btn btnConf" 
+								disabled="#{occurrencesBean2.edit}" value="#{occLabels.btn_editar}"
+								 onclick="bloquerTable(); " action="#{occurrence2.btnEdit}">
 								</h:commandButton>
-										<!-- Botão editar -->
-								<h:commandButton id="alterar" class=" btnConf " style="display: none;" disabled="#{occurrencesBean.alterar}" value="#{occLabels.btn_salvar}" onclick="eventValidator(); ">
-									<f:passThroughAttribute name="data-toggle" value="modal" />
+								
+								<!-- Botão editar -->
+								<h:commandButton id="alterar" class=" btnConf " style="display: none;"
+								 disabled="#{Occurence2.alterar}" value="#{occLabels.btn_salvar}"
+								  onclick="eventValidator(); ">
+								<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#modalEditar" />
 											<f:ajax execute="@form" render="@none" />
 								</h:commandButton>
+								
+								<div class="modal fade" id="modalEditar" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">#{occLabels.btn_editar}</h5>
+								</div>
+								<div class="modal-body">
+									<p id="editModal">#{occLabels.msg_editar}</p>
+									<p>#{occLabels.msg_occ_id_p}:
+										#{occurrencesBean.data.data_number}</p>
+									<p id="editorTextModal" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden}</p>
+									<p id="editorTextModal2" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden2}</p>
+									<p id="editorTextModal3" style="display: none; color: red;">#{occLabels.occ_modal_Btn_Hidden3}</p>
+									<p id="editorTextModal4" style="display: none; color: red;">#{occLabels.occ_validation_hidden}</p>
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn btnConf" data-dismiss="modal"
+										id="editModalExit">#{occLabels.btn_nao}</button>
+									<button type="submit" style="display: none" class="btn btnConf"
+										data-dismiss="modal" id="editModalVoltar">#{occLabels.occ_btn_voltar}</button>
+									<h:commandButton value="#{occLabels.btn_sim}"
+										action="#{occurrencesBean.atualizarOcorrencia}"
+										class="btn btnConf" id="editarBtn" onclick="mostrarTab1()" />
+								</div>
+							</div>
+						</div>
+					</div>
 
 										<!-- Botão Salvar -->
-										<h:commandButton id="save" class=" btnConf " abled="#{occurrencesBean2.save}" value="#{occLabels.btn_salvar}" >
+										<h:commandButton id="save" class=" btnConf " abled="#{Occurence2.save}" value="#{occLabels.btn_salvar}" >
 									<f:passThroughAttribute name="data-toggle" value="modal" />
 										<f:passThroughAttribute name="data-target" value="#modalSalvar" />
 											<f:ajax execute="@form" render="@none" />
-							
-					
-								</h:commandButton>
-										<div class="modal fade" id="modalSalvar" tabindex="-1"
+											</h:commandButton>
+											
+												<!-- Modal salvar -->
+					<div class="modal fade" id="modalSalvar" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
@@ -130,14 +174,19 @@
 										#{occLabels.occ_validation_hidden}</p>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btnConf" data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
-									<button type="submit" style="display: none" class="btn btnConf" data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
-									<h:commandButton value="#{occLabels.btn_sim}" action="#{Occurence2.cadastroOcorrencia}" class="btn btnConf" id="saveBtn"  />
-					
-				
-									</div></div></div></div>
-					
-									<!-- Final do modal Salvar -->
+									<button type="button" class="btn btnConf" data-dismiss="modal"
+										id="SaveModalExit">#{occLabels.btn_nao}</button>
+									<button type="submit" style="display: none" class="btn btnConf"
+										data-dismiss="modal" id="saveModalVoltar">#{occLabels.occ_btn_voltar}</button>
+									<h:commandButton value="#{occLabels.btn_sim}"
+										action="#{Occurence2.atualizarOcorrencia}"
+										class="btn btnConf" id="saveBtn" onclick="cadastroOcorrencia();" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- Final do modal Salvar -->
+									
 				
 
 
@@ -148,6 +197,7 @@
 											<f:ajax execute="@form" render="@none" />
 								</h:commandButton>
 							</div>
+							
 								
 
 
@@ -270,7 +320,7 @@
 			<form>
 				<div class="form-row col-md-12">
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_} </label> 
 							<input type="text" class="form-control inputDesign mb-1" id="numeroveic" value="#{Occurence2.data.numveiculo}"/> 
 								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
@@ -323,7 +373,7 @@
 
 
 					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_number} </label> 
+						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_sinistro} </label> 
 							<input type="password" class="form-control inputDesign mb-1 " id="numeropessoa"  value="#{Occurence2.data.numcond}"/> 
 								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
 									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
