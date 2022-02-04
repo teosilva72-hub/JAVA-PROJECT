@@ -9,88 +9,90 @@ import java.util.List;
 
 import br.com.tracevia.webapp.model.speed.Speed;
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia.MapResult;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia.RowResult;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.global.RoadConcessionaire;
 import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class SpeedDAO {
-	
+
 	private Connection conn;
 	private PreparedStatement ps;
 	private ResultSet rs;
 
-   public List<Speed> Status() throws Exception {
-					
-		List<Speed> list = new ArrayList<Speed>();		
-						
+	public List<Speed> Status() throws Exception {
+
+		List<Speed> list = new ArrayList<Speed>();
+
 		String select = "SELECT equip_id, equip_name, equip_status FROM connection_monitor WHERE equip_type = 'SPEED' ";
-									
-	  try {
-			
-		   conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			
-			ps = conn.prepareStatement(select);			
-									
+
+		try {
+
+			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+
+			ps = conn.prepareStatement(select);
+
 			rs = ps.executeQuery();
-			
+
 			if (rs != null) {
 				while (rs.next()) {
-					
+
 					Speed speed = new Speed();
 
-			         speed.setEquip_id(rs.getInt("equip_id"));
-			         speed.setNome(rs.getString("equip_name"));
-			         speed.setStatus(rs.getInt("equip_status"));
-			         speed.setTable_id("speed");
-			        															
+					speed.setEquip_id(rs.getInt("equip_id"));
+					speed.setNome(rs.getString("equip_name"));
+					speed.setStatus(rs.getInt("equip_status"));
+					speed.setTable_id("speed");
+
 					list.add(speed);
-				}				
-			 }			
+				}
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
- 				
+		} finally {
+			ConnectionFactory.closeConnection(conn, ps, rs);
+		}
+
 		return list;
-		
-	}	
 
-   public List<Speed> getSpeeds() throws Exception {
+	}
 
-	   List<Speed> list = new ArrayList<Speed>();		
+	public List<Speed> getSpeeds() throws Exception {
 
-	   String select = "SELECT equip_id, name, km FROM speed_equipment WHERE visible != 0 ";
-									
-	   try {
-			
-		   SQL_Tracevia conn = new SQL_Tracevia();
-		   
-		   conn.start(1);
-			
-		   conn.prepare(select);
+		List<Speed> list = new ArrayList<Speed>();
 
-		   MapResult result = conn.executeQuery();
+		String select = "SELECT equip_id, name, km FROM speed_equipment WHERE visible != 0 ";
 
-		   if (result != null) {
-			   for (RowResult rs : result) {
+		try {
 
-				   Speed speed = new Speed();
+			SQL_Tracevia conn = new SQL_Tracevia();
 
-				   speed.setEquip_id(rs.getInt("equip_id"));
-				   speed.setNome(rs.getString("name"));
-				   speed.setKm(rs.getString("km"));
-				   speed.setTable_id("speed");
+			conn.start(1);
 
-				   list.add(speed);
-			   }
-		   }
+			conn.prepare(select);
 
-	  } catch (Exception e) {
-		  e.printStackTrace();
-	  }
+			MapResult result = conn.executeQuery();
 
-	  return list;
+			if (result != null) {
+				for (RowResult rs : result) {
 
-   }
+					Speed speed = new Speed();
+
+					speed.setEquip_id(rs.getInt("equip_id"));
+					speed.setNome(rs.getString("name"));
+					speed.setKm(rs.getString("km"));
+					speed.setTable_id("speed");
+
+					list.add(speed);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+
+	}
 }

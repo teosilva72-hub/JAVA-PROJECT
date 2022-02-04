@@ -44,7 +44,7 @@ public class LocaleUtil {
 	public static final String LABELS_SELECTION_ITEM = "bundle.labels.system.select-item.labels_select_item_";	
 	public static final String LABELS_SPEED = "bundle.labels.speed.labels_speed_";	
 	public static final String LABELS_NOTIFICATIONS = "bundle.labels.system.notifications.labels_notifications_";
-	
+	public static final String LABELS_REPORT = "bundle.labels.system.reports.messages_reports";
 	// MESSAGES RESOURCE BUNDLE
 	
 	public static final String MESSAGES_DASHBOARD = "bundle.messages.dashboard.messages_dashboard_";

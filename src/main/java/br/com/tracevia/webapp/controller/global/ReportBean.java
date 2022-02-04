@@ -272,7 +272,7 @@ public class ReportBean {
 					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1].split("\\|"), where)));
 				else
 					this.filterSearch.add(new Pair<String[], List<String[]>>(new String[]{filterSearch, nameColumn, extra1, extra2}, report.getOtherElementTable(tableName[0], tableName[1], where)));
-			} catch (SQLException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 	}
@@ -602,10 +602,10 @@ public class ReportBean {
 					query += String.format("%s as %s, ", alias[0], group);
 					if (period[1].toUpperCase().equals("DAY")) {
 						group = alias[1];
-						order = String.format("str_to_date('%s', '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1]);
+						order = String.format("str_to_date(%s, '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1]);
 					} else {
+						order = String.format("str_to_date(CONCAT(%s, %s), '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
 						group = String.format("%s, %s", alias[1], group);
-						order = String.format("str_to_date('%s %s', '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
 					}
 				} else
 					query += String.format("%s as %s, ", column, group);
@@ -693,6 +693,7 @@ public class ReportBean {
 				
 				query += String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division[1]);
 			}
+			query = String.format("SELECT * FROM (%s) compatibleQuery", query);
 
 			if (setPeriod && hasPeriod())
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);

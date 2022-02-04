@@ -2,10 +2,6 @@ package br.com.tracevia.webapp.dao.sat;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -14,15 +10,14 @@ import java.util.List;
 import br.com.tracevia.webapp.dao.global.EquipmentsDAO;
 import br.com.tracevia.webapp.log.SystemLog;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.model.sat.Maintenance;
-import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class MaintenanceDAO {
 				
-		private Connection conn;			
-		private PreparedStatement ps;
-		private ResultSet rs;
+		SQL_Tracevia conn = new SQL_Tracevia();
 				
 		// --------------------------------------------------------------------------------------------------------------
 		
@@ -74,30 +69,38 @@ public class MaintenanceDAO {
 			int min = 0;
 			int hourIndex = 0;
 							
-			String select = "SELECT DATE_FORMAT(d.DATA_HORA,\"%Y-%m-%d\") AS data, " +
-						"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(d.DATA_HORA) - TIME_TO_SEC(d.DATA_HORA)%(15*60))),\"%H:%i\") AS intervals, " +
+			String select = "SELECT DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d') AS data, " +
+						"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') AS intervals, " +
 						"d.EQ_ID 'siteId', " +
-					    "SUM(d.ONLINE_STATUS) 'Status', eq.number_lanes 'lanes' " +
+					    "SUM(d.ONLINE_STATUS) 'Status', AVG(eq.number_lanes) 'lanes' " +
 					    "FROM tb_status d " +
 						"INNER JOIN sat_equipment eq on eq.equip_id = d.EQ_ID " +
-						"WHERE d.DATA_HORA BETWEEN DATE_SUB(?, INTERVAL '23:59' HOUR_MINUTE) AND ? AND eq.visible = 1 " +
-						"GROUP BY data, intervals, siteId " +
-						"ORDER BY data ASC";
+						"WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
+						"GROUP BY DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d'), DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i'), d.EQ_ID " +
+						"ORDER BY MAX(ID) ASC";
 				
 			try {
 				
 				System.out.println(currentDate);
 				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn.start(1);
 				
-				ps = conn.prepareStatement(select);			
-				ps.setString(1, currentDate);		
-				ps.setString(2, currentDate);
+				conn.prepare_my(select
+					.replace("$INTERVAL$", " ?, INTERVAL '23:59' HOUR_MINUTE"));			
+				conn.prepare_ms(select
+					.replace("DATE_FORMAT", "FORMAT")
+					.replace("%Y-%m-%d", "yyyy-MM-dd")
+					.replace("HOUR(", "DATEPART(HOUR, ")
+					.replace("MINUTE(", "DATEPART(MINUTE, ")
+					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, %s, ? ", 24 * 60 - 1))
+					.replace("%H:%i", "hh:mm"));			
+				conn.setString(1, currentDate);		
+				conn.setString(2, currentDate);
 				
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						int id = rs.getInt(3);
 
 						if (map.containsKey(id)) {
@@ -147,16 +150,16 @@ public class MaintenanceDAO {
 					lista.addAll(map.values());
 				}
 
-			} catch (SQLException sqle) {
+			} catch (Exception sqle) {
 				
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_get_status"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_get_status"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 								
 			} finally {
 				
-				ConnectionFactory.closeConnection(conn, ps, rs);
+				conn.close();
 			}
 
 			return lista;
@@ -197,27 +200,37 @@ public class MaintenanceDAO {
 			int min = 0;
 			int hourIndex = 0;
 					
-			String select = "SELECT DATE_FORMAT(d.DATA_HORA,\"%Y-%m-%d\") AS data, " +
-					"DATE_FORMAT((SEC_TO_TIME(TIME_TO_SEC(d.DATA_HORA)- TIME_TO_SEC(d.DATA_HORA)%(15*60))),\"%H:%i\") AS intervals, d.NOME_ESTACAO 'siteId', " +
-					"d.NOME_FAIXA 'faixa', (d.VOLUME_TOTAL) 'volume'" +
+			String select = "SELECT DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d') AS data, " +
+					"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') AS intervals, d.NOME_ESTACAO 'siteId', " +
+					"d.NOME_FAIXA 'faixa', AVG(d.VOLUME_TOTAL) 'volume'" +
 					"FROM tb_dados15 d " +
 					"INNER JOIN sat_equipment eq on eq.equip_id = d.NOME_ESTACAO " +
-					"WHERE d.DATA_HORA BETWEEN DATE_SUB( ?, INTERVAL '23:59' HOUR_MINUTE) AND ? AND eq.visible = 1 " +
-					"GROUP BY data, intervals, siteId, faixa " +
-					"ORDER BY data ASC";
+					"WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
+					"GROUP BY DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d'),  " +
+					"	DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') " +
+					"	, d.NOME_ESTACAO, d.NOME_FAIXA " +
+					"ORDER BY MAX(ID_DADO) ASC";
 			
 			try {
 				
-				conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+				conn.start(1);
 					
-				ps = conn.prepareStatement(select);			
-				ps.setString(1, currentDate);		
-				ps.setString(2, currentDate);
+				conn.prepare_my(select
+					.replace("$INTERVAL$", " ?, INTERVAL '23:59' HOUR_MINUTE"));			
+				conn.prepare_ms(select
+					.replace("DATE_FORMAT", "FORMAT")
+					.replace("%Y-%m-%d", "yyyy-MM-dd")
+					.replace("HOUR(", "DATEPART(HOUR, ")
+					.replace("MINUTE(", "DATEPART(MINUTE, ")
+					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, %s, ? ", 24 * 60 - 1))
+					.replace("%H:%i", "hh:mm"));			
+				conn.setString(1, currentDate);		
+				conn.setString(2, currentDate);
 				
-				rs = ps.executeQuery();
+				MapResult result = conn.executeQuery();
 																		
-				if (rs.isBeforeFirst()) {
-					while (rs.next()) {
+				if (result.hasNext()) {
+					for (RowResult rs : result) {
 						int id = rs.getInt(3);
 
 						if (map.containsKey(id)) {
@@ -277,13 +290,13 @@ public class MaintenanceDAO {
 
 					lista.addAll(map.values());
 				}
-			} catch (SQLException sqle) {
+			} catch (Exception sqle) {
 				StringWriter errors = new StringWriter();
 				sqle.printStackTrace(new PrintWriter(errors));
 				
-				SystemLog.logErrorSQL(errorFolder.concat("error_get_data"), EquipmentsDAO.class.getCanonicalName(), sqle.getErrorCode(), sqle.getSQLState(), sqle.getMessage(), errors.toString());
+				SystemLog.logErrorSQL(errorFolder.concat("error_get_data"), EquipmentsDAO.class.getCanonicalName(), sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 			} finally {
-				ConnectionFactory.closeConnection(conn, ps, rs);
+				conn.close();
 			}
 
 			return lista;

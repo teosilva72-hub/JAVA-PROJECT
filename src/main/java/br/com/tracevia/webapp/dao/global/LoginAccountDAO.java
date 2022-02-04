@@ -5,13 +5,13 @@ import java.io.StringWriter;
 
 import br.com.tracevia.webapp.model.global.SQL_Tracevia;
 import br.com.tracevia.webapp.model.global.UserAccount;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia.MapResult;
-import br.com.tracevia.webapp.model.global.SQL_Tracevia.RowResult;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.util.LogUtils;
 
 public class LoginAccountDAO {
 
-	private SQL_Tracevia conn = new SQL_Tracevia();
+	SQL_Tracevia conn = new SQL_Tracevia();
 	
 	private static final String EMAIL_PATTERN = "[\\w\\.-]*[a-zA-Z0-9_]@[\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]";
 
@@ -43,8 +43,6 @@ public class LoginAccountDAO {
 	// CONSTRUTOR
 	
 	public LoginAccountDAO(){
-		conn.start(1);
-		
 		LogUtils.createLogFolder(classErrorPath);
 		
 	}
@@ -86,6 +84,7 @@ public class LoginAccountDAO {
 		}
 
 		try {
+			conn.start(1);
 			
 			//Verifica condições
 			if(isEmail || isUserName) {
@@ -111,6 +110,8 @@ public class LoginAccountDAO {
 
 			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlUserValidateExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 					
+		} finally {
+			conn.close();
 		}
 
 		return validation;
@@ -140,6 +141,7 @@ public class LoginAccountDAO {
 				+ "INNER JOIN users_permission p ON p.permission_id = pu.permission_id " + "WHERE r.email = ? ";
 
 		try {
+			conn.start(1);
 
 			conn.prepare(query);
 			conn.setString(1, email);
@@ -162,6 +164,8 @@ public class LoginAccountDAO {
 
 			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlEmailValidateExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 				
+		} finally {
+			conn.close();
 		}
 
 		return user;
@@ -181,6 +185,7 @@ public class LoginAccountDAO {
 	public UserAccount loginValidation(String username, String password) {
 
 		try {
+			conn.start(1);
 
 			String query = "SELECT r.username, p.permission_id, pu.status FROM users_permission_user pu "
 					+ "INNER JOIN users_register r ON r.user_id = pu.user_id "
@@ -218,6 +223,8 @@ public class LoginAccountDAO {
 			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlLoginValidateExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 		
 			
+		} finally {
+			conn.close();
 		}
 
 		return null;
@@ -239,8 +246,10 @@ public class LoginAccountDAO {
 	public boolean changePassword(String usuario, String senha, int id, String roadConcessionaire) {
 
 		boolean status = false;
-		
+	
+
 		try {
+			conn.start(1);
 
 			String sql = "UPDATE users_register SET  password = ? WHERE username = ? and user_id = ?";
 
@@ -261,6 +270,8 @@ public class LoginAccountDAO {
 
 			LogUtils.logErrorSQL(LogUtils.fileDateTimeFormatter(sqlChangePasswordExceptionLog), classLocation, sqle.hashCode(), sqle.toString(), sqle.getMessage(), errors.toString());
 					
+		} finally {
+			conn.close();
 		}
 
 		return status;
@@ -270,6 +281,7 @@ public class LoginAccountDAO {
 		double[] coord = new double[3];
 
 		try {
+			conn.start(1);
 
 			// CHECK
 			String select = "SELECT latitude, longitude, y_pos FROM map_coordinate WHERE name = ?";
@@ -288,8 +300,10 @@ public class LoginAccountDAO {
 				}
 		    }
 
-		}catch (Exception sqle) {
+		} catch (Exception sqle) {
 			System.out.println("Erro ao buscar dados " + sqle);        		    
+		} finally {
+			conn.close();
 		}
 		
 		return coord;

@@ -25,7 +25,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
@@ -46,11 +45,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
-import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
-import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
 import br.com.tracevia.webapp.util.SessionUtil;
@@ -62,7 +59,6 @@ public class Occurence2 {
 
 private OccurenceData2  data;
 private OccurenceData2 getPdf;
-private UserAccountBean userId;
 private OccurrencesDetails details;
 
 OccurencesDao2 dao;
@@ -93,21 +89,28 @@ public String getLogo() {
 	private String action, title_modal, message_modal, idUpdate;
 
 	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
-	minutePdf, secondPdf, dayPdf, hourPdf, nameUser, userName; 
+	 dayPdf,  nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
 	private File arquivos[], directory, fileWay;
 	private int bytes, total, situation, idUpload;
-	private int value, value1, value2, content, nivelUser;
+	private int value, content, nivelUser;
 	private Part file = null;
 	private Part file2 = null;
 	private ImageIcon image;
 	private int rowkey;
 	private boolean selectedRow;
 	private List<OccurenceData2> occurrences;
+	private String dataTeste;
 
 	
 
+	public String getDataTeste() {
+		return dataTeste;
+	}
+	public void setDataTeste(String dataTeste) {
+		this.dataTeste = dataTeste;
+	}
 	public boolean isEnableBtn() {
 		return enableBtn;
 	}
@@ -396,11 +399,14 @@ public String getLogo() {
 		this.listarFile = listarFile;
 	}
 
-
+	public void teste() {
+		System.out.println("Estamos aqui");
+		System.out.println(getDataTeste());
+	}
 
 	@PostConstruct
 	public void initialize() {	
-
+	
 		//input select options
 		occurrences = new ArrayList<OccurenceData2>();
 
@@ -420,8 +426,7 @@ public String getLogo() {
 			title_modal = occLabel.getStringKey("btn_salvar");
 			message_modal = occLabel.getStringKey("msg_salvar");
 
-			//Preencher Lista
-			occurrences = dao.listarOcorrencias();
+		
 
 			//initialize btns
 			edit = true;
@@ -440,7 +445,9 @@ public String getLogo() {
 			ex.printStackTrace();
 		}
 	}	
-
+	
+	
+	
 	//taking the last id from the database and passing 1 more
 	public int pegarId() throws Exception{
 
@@ -876,7 +883,7 @@ public String getLogo() {
 			cadastroOcorrencia();
 
 			//transformando a variavel (value) em String
-			String occNumber = (String.valueOf(value));
+			String sinistro = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
 			localPath = localPath(occNumber);
@@ -1940,12 +1947,7 @@ public String getLogo() {
 			int minute1 = LocalDateTime.now().getMinute();
 			int second1 = LocalDateTime.now().getSecond();
 
-			//if the variable is less than ten, I access the condition and add a zero before the minute.
-			if(day1 < 10) {dayPdf = "0"+String.valueOf(day1);}else {dayPdf = String.valueOf(day1);}
-			if(hour1 < 10) {hourPdf = "0"+String.valueOf(hour1);}else {hourPdf = String.valueOf(hour1);}
-			if(month1 < 10) {monthPdf = "0"+String.valueOf(month1);}else {monthPdf = String.valueOf(month1);}
-			if(minute1 < 10) {minutePdf = "0"+String.valueOf(minute1);}else {minutePdf = String.valueOf(minute1);}
-			if(second1 < 10) {secondPdf = "0"+String.valueOf(second1);}else {secondPdf = String.valueOf(second1);}	
+
 
 			//System.out.println("testando aqui agora: "+ day+"/"+month+"/"+year);
 			userName = (String) facesContext.getExternalContext().getSessionMap().get("user");
@@ -2171,3 +2173,6 @@ public String getLogo() {
 	}	
 
 }
+
+
+

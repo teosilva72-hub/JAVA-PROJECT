@@ -18,14 +18,14 @@ import br.com.tracevia.webapp.util.ConnectionFactory;
 
 public class OccurencesDao2 {
 	
-		private Connection conn;
-		private PreparedStatement ps;
-		private ResultSet rs;
+		private transient Connection conn;
+		private transient PreparedStatement ps;
+		private transient ResultSet rs;
 
 		//CREATE OCCURRENCE
 		public String cadastroOcorrencia ( OccurenceData2 data ) throws Exception {
 
-			String occ_number = null;
+			String sinistro = null;
 			
 			//script BD
 			String query = "INSERT INTO occ_data2(date, hora, pedagio, folio, report, sinistro, direcao, "
@@ -74,7 +74,7 @@ public class OccurencesDao2 {
 				if(res > 0) {
 					
 					//pengando o �ltimo valor do banco de dados
-					String query2 = "Select MAX(occ_number) AS last_Id  FROM occ_data2";
+					String query2 = "Select MAX(sinistro) AS last_Id  FROM occ_data2";
 
 					ps = conn.prepareStatement(query2);
 
@@ -83,7 +83,7 @@ public class OccurencesDao2 {
 					if(rs != null) {
 						while(rs.next()) {	
 							//atribuindo para a variavel occ_number o �ltimo valor do banco de dados
-							occ_number = rs.getString("last_Id");
+							sinistro= rs.getString("last_Id");
 
 						}
 					}   	 
@@ -98,7 +98,7 @@ public class OccurencesDao2 {
 				ConnectionFactory.closeConnection(conn, ps);
 			}
 			//retordo o valor do m�todo como o �ltimo id do banco de dados
-			return occ_number;
+			return sinistro ;
 
 		}
 		
@@ -141,7 +141,7 @@ public class OccurencesDao2 {
 			boolean status = false;
 			
 			//script para pegar os valores e passar valores
-			String query = "UPDATE occ_data SET editTable = ?, nameUser = ?, accessLevel = ? WHERE occ_number = ?";
+			String query = "UPDATE occ_data2 SET editTable = ? WHERE sinistro = ?";
 
 			DateTimeApplication dtm = new DateTimeApplication();
 			
@@ -177,7 +177,7 @@ public class OccurencesDao2 {
 			
 			boolean status = false;
 			
-			String query = "UPDATE occ_data2 SET lastDateUser = ?, lastUser = ? WHERE occ_number = ?";
+			String query = "UPDATE occ_data2 SET lastDateUser = ?, lastUser = ? WHERE sinistro = ?";
 			DateTimeApplication dtm = new DateTimeApplication();
 			try {
 				conn = ConnectionFactory.connectToTraceviaApp();
@@ -287,7 +287,7 @@ public class OccurencesDao2 {
 					"LEFT JOIN occ_details dt18 ON d.actionType = dt18.detail_id " + 
 					"LEFT JOIN occ_details dt19 ON d.statusAction = dt19.detail_id "  +
 					"LEFT JOIN occ_details dt20 ON d.characteristic = dt20.detail_id " +
-					"WHERE occ_number = ? ";
+					"WHERE sinistro = ? ";
 
 			try {
 
@@ -370,7 +370,7 @@ public class OccurencesDao2 {
 
 		public ArrayList<OccurenceData2> listarOcorrencias() throws Exception {
 
-			String query = "SELECT d.occ_number, dt.value_, " +
+			String query = "SELECT sinistro, dt.value_, " +
 					"CONCAT(start_date, '-', d.start_hour, ':', d.start_minute, d.typeHour1) 'datetime', " +
 					"dt1.value_, dt2.value_ FROM occ_data d " +
 					"INNER JOIN occ_details dt ON d.type = dt.detail_id " +
@@ -408,7 +408,7 @@ public class OccurencesDao2 {
 
 			boolean status = false;
 
-			String query = "UPDATE occ_data SET local_files = ? WHERE occ_number = ?";	
+			String query = "UPDATE occ_data SET local_files = ? WHERE sinistro = ?";	
 
 			try {
 
@@ -437,7 +437,7 @@ public class OccurencesDao2 {
 			OccurenceData2 occ = new OccurenceData2();
 			
 			//Script dos atributos que as infor��es ser�o requisitadas
-			String query = "SELECT occ_number, data = ? , hora = ?, pedagio = ?, folio = ?, report = ?, \" +\r\n" + 
+			String query = "SELECT sinistro, data = ? , hora = ?, pedagio = ?, folio = ?, report = ?, \" +\r\n" + 
 					"sinistro = ?, direcao = ?, kmregistro = ?, kminicial = ?, kmfinal = ?, hrReg = ?, hrchega = ?, politica = ?, \" +\r\n" + 
 					"tipo_veic = ?, modelo = ?, cor = ?, placa = ?, telefone = ?, nome = ?, idade = ?, saude = ?, \" +\r\n" + 
 					"motivo = ?, observacao = ?";
@@ -496,7 +496,7 @@ public class OccurencesDao2 {
 		
 		public int GetId() throws Exception{
 
-			String sql = "SELECT max(occ_number) FROM occ_data2";
+			String sql = "SELECT max(sinistro) FROM occ_data2";
 
 			int value = 0; 
 			
@@ -521,5 +521,8 @@ public class OccurencesDao2 {
 			return value;
 
 		}
-		
+
+
 		}
+		
+	
