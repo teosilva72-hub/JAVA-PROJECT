@@ -42,15 +42,13 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
-
-import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
-import br.com.tracevia.webapp.util.SessionUtil;
+
 
 
 @ManagedBean(name="Occurence2")
@@ -88,7 +86,7 @@ public String getLogo() {
 
 	private String action, title_modal, message_modal, idUpdate;
 
-	private String mainPath, localPath, sinistro , path, way, downloadPath, pathDownload, pathSQL, monthPdf,
+	private String mainPath, localPath, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	 dayPdf,  nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
@@ -102,6 +100,8 @@ public String getLogo() {
 	private boolean selectedRow;
 	private List<OccurenceData2> occurrences;
 	private String dataTeste;
+	private String sinistro;
+	private 
 
 	
 
@@ -416,17 +416,8 @@ public String getLogo() {
 			data = new  OccurenceData2();
 		
 			
-
-			occLabel = new LocaleUtil();
-			occLabel.getResourceBundle(LocaleUtil.LABELS_OCC);
-
-			occMessages = new LocaleUtil();
-			occMessages.getResourceBundle(LocaleUtil.MESSAGES_OCC);
-
-			title_modal = occLabel.getStringKey("btn_salvar");
-			message_modal = occLabel.getStringKey("msg_salvar");
-
-		
+			occurrences = dao.listarOcorrencias();
+	 
 
 			//initialize btns
 			edit = true;
@@ -456,21 +447,25 @@ public String getLogo() {
 		//String e = userId.getUser_id();
 		value += 1;
 		data = new OccurenceData2();
-		data.setSinistro(String.valueOf(value));
+		data.setOcc_number(String.valueOf(value));
 
 		return value;
 	}
-
-	//register occurrences
+ public void Teste() {
+	 
+	 System.out.println("testee");
+	 
+	 
+	 
+ }
+	//cadastar occurrences
 	public void cadastroOcorrencia() throws Exception {
 		boolean sucess = false;
 
-		
+		System.out.println("teste");
 
 		OccurencesDao2 dao = new OccurencesDao2();
-	setSinistro(dao.cadastroOcorrencia(data));
-		
-				//CREATE LOCAL PATH
+		sinistro= dao.cadastroOcorrencia(data);
 		localPath = localPath(sinistro);
 
 		//if id is non-null
@@ -495,6 +490,8 @@ public String getLogo() {
 		}
 
 	}
+
+	
 
 	//update occurences
 	public void atualizarOcorrencia() throws Exception {
