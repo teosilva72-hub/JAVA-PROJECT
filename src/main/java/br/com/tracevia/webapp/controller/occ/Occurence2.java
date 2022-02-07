@@ -88,7 +88,7 @@ public String getLogo() {
 
 	private String action, title_modal, message_modal, idUpdate;
 
-	private String mainPath, localPath, occNumber, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
+	private String mainPath, localPath, sinistro , path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	 dayPdf,  nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
@@ -465,74 +465,16 @@ public String getLogo() {
 	public void cadastroOcorrencia() throws Exception {
 		boolean sucess = false;
 
-	
-
-		String date = (String) SessionUtil.getParam("data");
-		String hora = (String) SessionUtil.getParam("hora");
-		String pedagio= (String) SessionUtil.getParam("toll");
-		String folio = (String) SessionUtil.getParam("folio");
-		String report = (String) SessionUtil.getParam("report");
-		String sinistro = (String) SessionUtil.getParam("sinistro");
-		String direcao = (String) SessionUtil.getParam("direction");
-		String kmregistro= (String) SessionUtil.getParam("kmregistro");
-		String kminicial = (String) SessionUtil.getParam("kminicio");
-		String kmfinal = (String) SessionUtil.getParam("kmfinal");
-		String hrReg = (String) SessionUtil.getParam("horareg");
-		String politica = (String) SessionUtil.getParam("polotica");
-		String tipo_veic = (String) SessionUtil.getParam("tipoveic");
-		String quantidade = (String) SessionUtil.getParam("quantidade");
-		String numveicul = (String) SessionUtil.getParam("numeroveic");
-		String marca = (String) SessionUtil.getParam("marca");
-		String tipo= (String) SessionUtil.getParam("tipo");
-		String modelo = (String) SessionUtil.getParam("modelo");
-		String cor = (String) SessionUtil.getParam("cor");
-		String placa = (String) SessionUtil.getParam("placa");
-		String telefone = (String) SessionUtil.getParam("telefone");
-		String numcond= (String) SessionUtil.getParam("numeropessoa");
-		String nome = (String) SessionUtil.getParam("nome");
-		String idade = (String) SessionUtil.getParam("idade");
-		String saude = (String) SessionUtil.getParam("saude");
-		String motivo = (String) SessionUtil.getParam("motivo");
-		String observacao= (String) SessionUtil.getParam("dateStart");
 		
-		System.out.println("teste");
 
-		data.setDate(date);
-		data.setHora(hora);
-		data.setPedagio(pedagio);
-		data.setFolio(folio);
-		data.setReport(report);
-		data.setSinistro(sinistro);
-		data.setDirecao(direcao);
-		data.setKmregistro(kmregistro);
-		data.setKminicial(kminicial);
-		data.setKmfinal(kmfinal);
-		data.setHrReg(hrReg);
-		data.setPolitica(politica);
-		data.setTipo_veic(tipo_veic);
-		data.setQuantidade(quantidade);
-		data.setNumveiculo(numveicul);
-		data.setMarca(marca);
-		data.setTipo(tipo);
-		data.setModelo(modelo);
-		data.setCor(cor);
-		data.setPlaca(placa);
-		data.setTelefone(telefone);
-		data.setNumcond(numcond);
-		data.setNome(nome);
-		data.setIdade(idade);
-		data.setSaude(saude);
-		data.setMotivo(motivo);
-		data.setObservacao(observacao);
-			
 		OccurencesDao2 dao = new OccurencesDao2();
-		occNumber = dao.cadastroOcorrencia(data);
+	setSinistro(dao.cadastroOcorrencia(data));
 		
 				//CREATE LOCAL PATH
-		localPath = localPath(occNumber);
+		localPath = localPath(sinistro);
 
 		//if id is non-null
-		if(occNumber != null) {
+		if(sinistro != null) {
 			//btn
 			save = true;
 			alterar = true;
@@ -548,7 +490,7 @@ public String getLogo() {
 
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
-			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
+			sucess = dao.updateFilePath(localPath, sinistro); // Update path on Data Base
 
 		}
 
@@ -886,7 +828,7 @@ public String getLogo() {
 			String sinistro = (String.valueOf(value));
 
 			//CREATE LOCAL PATH
-			localPath = localPath(occNumber);
+			localPath = localPath(sinistro);
 			createFileFolder(mainPath, localPath);	
 			//executando javascript
 			RequestContext.getCurrentInstance().execute("inputs()");
@@ -960,11 +902,11 @@ public String getLogo() {
 
 	//CREATE PATH FOR OCCURRENCE
 	//ACCORDING YEAR AND MONTH
-	public String localPath(String occ_number) {
+	public String localPath(String sinistro) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		LocalDate local = dta.localeDate();
-		path = local.getYear()+"//"+local.getMonthValue()+"//OCC_"+occ_number;
+		path = local.getYear()+"//"+local.getMonthValue()+"//OCC_"+sinistro;
 
 		return path;
 	}
@@ -2170,6 +2112,12 @@ public String getLogo() {
 			return "";
 		}
 
+	}
+	public String getSinistro() {
+		return sinistro;
+	}
+	public void setSinistro(String sinistro) {
+		this.sinistro = sinistro;
 	}	
 
 }

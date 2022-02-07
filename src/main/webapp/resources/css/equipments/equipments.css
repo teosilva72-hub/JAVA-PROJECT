@@ -8,11 +8,14 @@
 }
 
 .eqp-jumbotron {
-	position: fixed;
-	top: 65px;
-	bottom: 45px;
-	right: 15px;
-	left: 15px;
+  margin: 0 10px;
+  position: fixed;
+  padding-top: 1rem;
+  top: 65px;
+  bottom: 45px;
+  right: 5px;
+  left: 5px;
+  margin-top: 10px;
 }
 
 .eqp-dark {
