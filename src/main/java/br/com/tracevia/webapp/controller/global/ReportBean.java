@@ -45,7 +45,8 @@ public class ReportBean {
 	public String table;
 	public String idTable;
 	public List<String> columnsName = new ArrayList<>(); 
-	public List<String> searchParameters;
+	public List<String> searchParameters,
+						searchParametersMS;
 		
 	private final String dateFormat = "dd/MM/yyyy";
 	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
@@ -214,6 +215,12 @@ public class ReportBean {
 		List<String> searchParameters = Arrays.asList(parameter.replace("`", "'").split(";"));
 		
 		this.searchParameters = searchParameters;
+	}
+
+	public void setSearchParametersMS(String parameter) {
+		List<String> searchParametersMS = Arrays.asList(parameter.replace("`", "'").split(";"));
+		
+		this.searchParametersMS = searchParametersMS;
 	}
 
 	public void setDateSearch(String dateSearch, String nameColumn) {
@@ -451,6 +458,19 @@ public class ReportBean {
 				return String.format("DATE(%s)", periodColumn);
 		}
 	}
+
+	public String genPeriodMS(String[] time) {
+		switch (time[1].toUpperCase()) {
+			case "MINUTE":
+				return String.format("CAST(CONCAT(%1$s, ' ', DATEPART(HOUR, %1$s), ':', FLOOR(DATEPART(MINUTE, %1$s) / %2$s) * %2$s, ':00') as DATETIME)", periodColumn, time[0]);
+
+			case "HOUR":
+				return String.format("CAST(CONCAT(%1$s, ' ', FLOOR(DATEPART(HOUR, %1$s) / %2$s) * %2$s, ':00:00') as DATETIME)", periodColumn, time[0]);
+		
+			default:
+				return periodColumn;
+		}
+	}
 	
 	public String[] getLeft(Pair<String[], List<String>> pair) {
 		return pair.left;
@@ -519,6 +539,7 @@ public class ReportBean {
 		 // Table Fields
 		report = new ReportDAO(columnsName);
 		List<String> parameters = new ArrayList<>();
+		List<String> parametersMS = new ArrayList<>();
 		List<String> select = new ArrayList<>();
 
 		for (String column : searchParameters) {
@@ -536,6 +557,22 @@ public class ReportBean {
 					}
 			} else
 				parameters.add(column);
+		}
+		for (String column : searchParametersMS) {
+			if (column.contains("$custom")) {
+				Pattern pattern = Pattern.compile("^\\w+");
+				Matcher alias = pattern.matcher(column.split("@")[1]);
+				if (alias.find())
+					if (listArgs.containsKey(alias.group(0))) {
+						List<String> values = listArgs.get(alias.group(0));
+						for (String arg : values) {
+							String columns_replace = column.replace(String.format("$custom@%s", alias.group(0)), arg);
+	
+							parametersMS.add(String.format("%s", columns_replace));
+						}
+					}
+			} else
+				parametersMS.add(column);
 		}
 		if (extraSelect != null) {
 			for (String column : extraSelect) {
@@ -559,6 +596,7 @@ public class ReportBean {
 		}
 
 		searchParameters = parameters;					
+		searchParametersMS = parametersMS;					
 	}
 
 	// CAMPOS
@@ -578,8 +616,10 @@ public class ReportBean {
 				
 		List<String> idSearch = new ArrayList<>();		
 				
-		String group = "$period";
+		String group = "$period",
+			   groupMS = "$period";
 		String order = "";
+		String orderMS = "";
 		Date[] dateProcess = null;
 		String[] period = null;
 		setColumnsInUse(columns);
@@ -589,39 +629,80 @@ public class ReportBean {
 		String dateStart = "", dateEnd = "";
 				
 		String query = "SELECT ";
+		String queryMS = null;
+		if (searchParametersMS != null)
+			queryMS = "SELECT ";
 		for (String col : columnsTemp) {
 			String column = columns != null ? searchParameters.get(Integer.parseInt(col)) : col;
-				
+			String columnMS = null;
+			if (queryMS != null)
+				columnMS = columns != null ? searchParametersMS.get(Integer.parseInt(col)) : col;
 
 			if (!setPeriod && hasPeriod() && column.contains("$period")) {
 				period = selectedPeriod.split(",");
 				column = column.replace("$period", genPeriod(period));
+				if (columnMS != null)
+					columnMS = columnMS.replace("$period", genPeriodMS(period));
 
 				if (column.contains("@")) {
 					String[] alias = column.split("@");
+					String[] aliasMS = null;
+					if (columnMS != null)
+						aliasMS = columnMS.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
+					if (columnMS != null)
+						queryMS += String.format("%s as %s, ", aliasMS[0], groupMS);
 					if (period[1].toUpperCase().equals("DAY")) {
 						group = alias[1];
-						order = String.format("str_to_date(%s, '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1]);
+						order = String.format("STR_TO_DATE(%s, '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1]);
+						if (columnMS != null) {
+							groupMS = aliasMS[0];
+							orderMS = periodColumn;
+						}
 					} else {
-						order = String.format("str_to_date(CONCAT(%s, %s), '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
+						order = String.format("STR_TO_DATE(CONCAT(%s, %s), '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
 						group = String.format("%s, %s", alias[1], group);
+						if (columnMS != null) {
+							if (columnDate.contains("@")) {
+								String[] c = columnDate.split("@");
+								String date = searchParametersMS.get(Integer.parseInt(c[0]));
+								groupMS = String.format("%s, %s", date, aliasMS[0]);
+								orderMS = String.format("%s, %s", date, aliasMS[0]);
+							} else {
+								String date = searchParametersMS.get(Integer.parseInt(columnDate));
+								groupMS = String.format("%s, %s", date, aliasMS[0]);
+								orderMS = String.format("%s, %s", date, aliasMS[0]);
+							}
+						}
 					}
-				} else
+				} else {
 					query += String.format("%s as %s, ", column, group);
-					
+					if (columnMS != null)
+						queryMS += String.format("%s as %s, ", columnMS, groupMS);
+				}
 				selectedPeriod = period[2];
 				setPeriod = true;
-			} else
+			} else {
 				query += String.format("%s, ", column);
+				if (queryMS != null)
+					queryMS += String.format("%s, ", columnMS);
+			}
 		}
 
 		query = String.format("%s FROM %s", query.substring(0, query.length() - 2), table);
+		if (queryMS != null)
+			queryMS = String.format("%s FROM %s", queryMS.substring(0, queryMS.length() - 2), table);
 
-		if (withIndex())
+		if (withIndex()) {
 			query += String.format(" USE INDEX(%s)", useIndex);
-		if (withInnerJoin())
+			// if (queryMS != null)
+			// 	queryMS += String.format(" WITH INDEX(%s)", useIndex);
+		}
+		if (withInnerJoin()) {
 			query += String.format(" INNER JOIN %s", innerJoin);
+			if (queryMS != null)
+				queryMS += String.format(" INNER JOIN %s", innerJoin);
+		}
 
 		if (!dateSearch.isEmpty())
 			for (String[] search : dateSearch) {
@@ -638,10 +719,15 @@ public class ReportBean {
 					dateProcess = new Date[] { start, end };
 				}
 				if (!dateStart.isEmpty() || !dateEnd.isEmpty()) {
-					if (count == 0)
+					if (count == 0) {
 						query += " WHERE";
+						if (queryMS != null)
+							queryMS += " WHERE";
+					}
 
 					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
+					if (queryMS != null)
+						queryMS += String.format("%s %s BETWEEN CAST('%s' as DATE) AND CAST('%s' as DATE)", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					count++;
 				}
 			}
@@ -679,35 +765,54 @@ public class ReportBean {
 						idSearch.add(f);
 				}
 
-				if (count == 0 && !filter.isEmpty())
+				if (count == 0 && !filter.isEmpty()) {
 					query += " WHERE";
+					if (queryMS != null)
+						queryMS += " WHERE";
+				}
 
 				if (!filter.isEmpty()) {
-					query += String.format("%s %s IN (%s)", count > 0 ? " AND" : "", search.left[0], filter);
+					String f = String.format("%s %s IN (%s)", count > 0 ? " AND" : "", search.left[0], filter);
+					query += f;
+					if (queryMS != null)
+						queryMS += f;
 					count++;
 				}
 			}
 			if (isDivision()) {
-				if (count == 0)
+				if (count == 0) {
 					query += " WHERE";
+					if (queryMS != null)
+						queryMS += " WHERE";
+				}
 				
-				query += String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division[1]);
+				String f = String.format("%s %s IN (@division)", count > 0 ? " AND" : "", division[1]);
+				query += f;
+				if (queryMS != null)
+					queryMS += f;
 			}
-			query = String.format("SELECT * FROM (%s) compatibleQuery", query);
 
-			if (setPeriod && hasPeriod())
+			if (setPeriod && hasPeriod()) {
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
-			else if (orderDate != null)
-				query += String.format(" ORDER BY %s ASC", orderDate);
+				if (queryMS != null)
+					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
+			} else if (orderDate != null) {
+				String o = String.format(" ORDER BY %s ASC", orderDate);
+				query += o;
+				if (queryMS != null)
+					queryMS += o;
+			}
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
+				if (queryMS != null)
+					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
 			  System.out.println(query);
 			  
 		   // Table Fields
-		    report.getReport(query, idTable, isDivision() ? division : null);
+			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
 		    boolean hasValue = true;
 
 			if (hasColumnDate() && dateProcess != null && hasPeriod() && setPeriod)

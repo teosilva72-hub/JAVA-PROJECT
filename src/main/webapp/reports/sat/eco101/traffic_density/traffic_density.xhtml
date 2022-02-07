@@ -32,6 +32,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.traffic_density))}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); ROUND(20 * ((4 * 80) / 60) / 1000, 2)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
@@ -42,7 +43,7 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipments, 'sat_equipment.equip_id|name', false, true)}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|name', faixa, true)}" />	
+	    <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('lane', reportsLabels.reports_select_lanes, 'filter_lane.id_lane|name', false, true)}" />	
 		
     </f:metadata>
 	
