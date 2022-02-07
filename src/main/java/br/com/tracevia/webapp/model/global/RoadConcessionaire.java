@@ -624,10 +624,10 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl7 = ViaSul.NOT_ID_CLASS_7AXLES.getClasse();
 			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
 			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
-			externalImagePath += "viaSul.jpg";
-			logo = "";
-			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.webp";
-			mapUI = "";
+			externalImagePath += "";
+			logo = "/resources/images/home/eco101.webp";
+			linearMapUI = "";
+			mapUI = "/resources/images/map/eco101/eco101.webp";
 			darkMapUI = "";
 			tableVBV = ViaSulTables.ViaSulVBV.getTable();
 			tableDados15 = ViaSulTables.ViaSulDados15.getTable();
