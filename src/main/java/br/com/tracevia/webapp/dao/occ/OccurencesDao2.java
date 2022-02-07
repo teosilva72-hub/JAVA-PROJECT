@@ -24,15 +24,17 @@ public class OccurencesDao2 {
 
 		//CREATE OCCURRENCE
 		public String cadastroOcorrencia ( OccurenceData2 data ) throws Exception {
+System.out.println("aqui 1 ");
 
+System.out.println(data);
 			String sinistro = null;
 			
 			//script BD
-			String query = "INSERT INTO occ_data2(occ_data2 SET date, hora, pedagio, folio, report , sinistro ,direcao, kmregistro, kminicial, kmfinal, horaregistro, horachega, politica,  tipoveic, quantidade, numero,  marca, tipo_veic, modelo, color, placa, telefone, nome, idade, saude, motivo, observacao"
-					+  "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "INSERT INTO occ_data2 (date, hora, pedagio, folio, report, sinistro, direcao, kmregistro, kminicial, kmfinal, horaregistro, horachega, politica,  tipoveic, quantidade, numero,  marca, tipo_veic, modelo, color, placa, telefone, nome, idade, saude, motivo, observacao)"
+					+  " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			try {
-
+				System.out.println("aqui 2 ");
 				conn = ConnectionFactory.connectToTraceviaApp();
 				ps = conn.prepareStatement(query);
 				
@@ -63,7 +65,7 @@ public class OccurencesDao2 {
 				ps.setString(24, data.getIdade());
 				ps.setString(25, data.getSaude());
 				ps.setString(26, data.getMotivo());
-				ps.setString(26, data.getObservacao());
+				ps.setString(27, data.getObservacao());
 				
 			int res = ps.executeUpdate();
 			
@@ -71,7 +73,7 @@ public class OccurencesDao2 {
 				if(res > 0) {
 					
 					//pengando o �ltimo valor do banco de dados
-					String query2 = "Select MAX(sinistro) AS last_Id  FROM occ_data2";
+					String query2 = "Select MAX(occ_number) AS last_Id  FROM occ_data2";
 
 					ps = conn.prepareStatement(query2);
 
@@ -337,7 +339,8 @@ public class OccurencesDao2 {
 			ConnectionFactory.closeConnection(conn, ps, rs);
 		}
 
-		return occ;} 
+		return occ;
+		} 
 	
 
 		public ArrayList<OccurenceData2> listarOcorrencias() throws Exception {
@@ -472,7 +475,7 @@ public class OccurencesDao2 {
 
 			int value = 0; 
 			
-			//tentar
+			
 			try {
 				
 				conn = ConnectionFactory.connectToTraceviaApp();
