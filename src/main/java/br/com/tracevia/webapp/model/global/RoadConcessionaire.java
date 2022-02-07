@@ -96,6 +96,7 @@ public class RoadConcessionaire {
 	public boolean viaAmericas;	
 	public boolean viaPaulista;	
 	public boolean viaSul;	
+	public boolean eco101;	
 	public boolean hasNotification;
 			
 	// --------------------------------------------------------------------------------------------
@@ -116,6 +117,7 @@ public class RoadConcessionaire {
 		viaAmericas = false;	
 		viaPaulista = false;	
 		viaSul = false;
+		eco101 = false;
 		hasNotification = false;
 		
 	}
@@ -574,6 +576,72 @@ public class RoadConcessionaire {
 						
 		}
 
+        if(roadConcessionaire.equals(RoadConcessionairesEnum.Eco101.getConcessionaire())) {
+			
+        	classLight = ViaSul.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = ViaSul.MOTORCYCLES.getClasse();
+			classUnknown = ViaSul.UNKNOWN_CLASS.getClasse();	
+			classTrailer = ViaSul.TRAILER.getClasse();	
+			classSemiTrailer = ViaSul.SEMI_TRAILER.getClasse();
+			classBus2Axles = ViaSul.BUS_2AXLES.getClasse();	
+			classBus3Axles = ViaSul.BUS_3AXLES.getClasse();
+			classTruck2Axles = ViaSul.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = ViaSul.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = ViaSul.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = ViaSul.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = ViaSul.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = ViaSul.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = ViaSul.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = ViaSul.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = ViaSul.TRUCK_10AXLES.getClasse();	
+			
+			classCCRLight = ViaSul.CCR_LIGHT_VEHICLES.getClasse();
+			classCCRMotorcycle = ViaSul.CCR_MOTORCYCLES.getClasse();		
+			classCCRTrailer = ViaSul.CCR_TRAILER.getClasse();	
+			classCCRSemiTrailer = ViaSul.CCR_SEMI_TRAILER.getClasse();
+			classCCRTruck2Axles = ViaSul.CCR_TRUCK_2AXLES.getClasse();	
+			classCCRTruckSimple2Axles1 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_1.getClasse();				
+			classCCRTruckSimple2Axles2 = ViaSul.CCR_TRUCK_2AXLES_SIMPLE_2.getClasse();	
+			classCCRTruck3Axles = ViaSul.CCR_TRUCK_3AXLES.getClasse();		
+			classCCRTruck4Axles = ViaSul.CCR_TRUCK_4AXLES.getClasse();	
+			classCCRTruck5Axles = ViaSul.CCR_TRUCK_5AXLES.getClasse();	
+			classCCRTruck6Axles = ViaSul.CCR_TRUCK_6AXLES.getClasse();	
+			classCCRTruck7Axles = ViaSul.CCR_TRUCK_7AXLES.getClasse();	
+			classCCRTruck8Axles = ViaSul.CCR_TRUCK_8AXLES.getClasse();	
+			classCCRTruck9Axles = ViaSul.CCR_TRUCK_9AXLES.getClasse();	
+			classCCRTruck10Axles = ViaSul.CCR_TRUCK_10AXLES.getClasse();	
+			classCCRBus2Axles = ViaSul.CCR_BUS_2AXLES.getClasse();	
+			classCCRBus3Axles = ViaSul.CCR_BUS_3AXLES.getClasse();	
+			classCCRBus4Axles = ViaSul.CCR_BUS_4AXLES.getClasse();	
+			classCCRBus5Axles = ViaSul.CCR_BUS_5AXLES.getClasse();	
+			classCCRBus6Axles = ViaSul.CCR_BUS_6AXLES.getClasse();			
+			
+			classNotIdentifiedAxl2 = ViaSul.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = ViaSul.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = ViaSul.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = ViaSul.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = ViaSul.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = ViaSul.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = ViaSul.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = ViaSul.NOT_ID_CLASS_9AXLES.getClasse();
+			externalImagePath += "viaSul.jpg";
+			logo = "";
+			linearMapUI = "/resources/images/realTimeInterface/linear/via_sul.webp";
+			mapUI = "";
+			darkMapUI = "";
+			tableVBV = ViaSulTables.ViaSulVBV.getTable();
+			tableDados15 = ViaSulTables.ViaSulDados15.getTable();
+			tableStatus = ViaSulTables.ViaSulStatus.getTable();
+			tableLL = ViaSulTables.ViaSulLL.getTable();
+			tableCCR = ViaSulTables.ViaSulCCR.getTable();
+			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = true;
+			eco101 = true;
+			hasNotification = true;
+						
+		}
+
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tracevia.getConcessionaire())) {
     	   
     	  classLight = Tracevia.LIGHT_VEHICLES.getClasse();
@@ -651,6 +719,10 @@ public class RoadConcessionaire {
 
 	public boolean isViaSul() {
 		return viaSul;
+	}
+
+	public boolean isEco101() {
+		return eco101;
 	}
 
 	public boolean isHasNotification() {
