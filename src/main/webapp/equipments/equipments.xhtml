@@ -19,7 +19,7 @@
 		</ui:define>
 
 		<ui:define name="main-content">
-			<div class="row eqp-jumbotron">
+			<div class="eqp-jumbotron bg-dark px-3 row">
 			<c:forEach items="#{listEquips.equips}" var="loadItem">
 				<ui:fragment rendered="#{loadItem.value}">
 							<div class="jumbotron col-3 eqp-dark bg-dark">
@@ -44,7 +44,7 @@
 																		class="form-label list-eqp p-0 col-3 mx-auto">
 																		#{item.km}
 																	</label>
-																	<div class="col-2 bg-danger">
+																	<div class="col-3 bg-danger mx-auto">
 																	</div>
 																</div>
 															</div>

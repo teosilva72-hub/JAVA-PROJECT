@@ -231,7 +231,7 @@
 			  <div class="form-group col-md-12 select-field"> <!-- SELECT -->
 				  <span><i class="fas fa-city"></i></span> <!-- SPAN ICON -->
 				  	<span for="cities" class="valid-icon-hidden"></span> <!-- SPAN VALIDATION -->
-				 	 <select name="cities" id="cities" size="1">
+				 	 <select name="cities" id="cities">
 						<option value="">#{mapLabels.$label_map_option_select_city}</option>
 						 <ui:repeat var="city" value="#{equipsBean.cities}" varStatus="cityStatus">
 							<option value="#{city.value}">#{city.label}</option>

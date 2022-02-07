@@ -33,6 +33,10 @@
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`)); 
 		SUM((s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`)); 
 		SUM((s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`)); SUM((s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`));')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); STRING_AGG(siteID, `,`); SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); 
+		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`N`, `L`) THEN 1 ELSE 0 END); 
+		SUM(CASE WHEN (s.lenght &gt;= 0 AND s.lenght &lt; 500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 500 AND s.lenght &lt; 1000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); 
+		SUM(CASE WHEN (s.lenght &gt;= 1000 AND s.lenght &lt; 1500) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 1500 AND s.lenght &lt; 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END); SUM(CASE WHEN (s.lenght &gt;= 2000) AND f.direction IN(`S`, `O`) THEN 1 ELSE 0 END);')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />

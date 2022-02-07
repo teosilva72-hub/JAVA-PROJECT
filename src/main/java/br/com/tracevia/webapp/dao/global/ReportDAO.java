@@ -43,9 +43,10 @@ public class ReportDAO {
         
     }
 
-    public void getReport(String query, String id, String[] division) throws Exception {
+    public void getReport(String query, String forMS, String id, String[] division) throws Exception {
        
     	String newQuery = query;
+    	String newQueryMS = forMS.replace("$period", "MSperiod");
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
     	List<String[]> allOptions = new ArrayList<>();
@@ -60,12 +61,16 @@ public class ReportDAO {
             }
 
             newQuery = query.replace("@division", search.substring(2));
+            if (forMS != null)
+                newQueryMS = forMS.replace("@division", search.substring(2));
         }
 
         try {
             conn.start(1);
     
             conn.prepare(newQuery);
+            if (newQueryMS != null)
+                conn.prepare_ms(newQueryMS);
             MapResult result = conn.executeQuery();
     
             if (!custom)
@@ -103,10 +108,10 @@ public class ReportDAO {
         this.IDs = field;
 
         if (division != null)
-            this.completeSecondary(query, allOptions);
+            this.completeSecondary(query, forMS, allOptions);
     }
 
-    private void completeSecondary(String query, List<String[]> fields) throws Exception {     
+    private void completeSecondary(String query, String forMS, List<String[]> fields) throws Exception {     
     	List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
     	
         for (int index = 0; index < fields.size(); index++) {
@@ -115,11 +120,12 @@ public class ReportDAO {
 
             String newQuery = query.replace("@division", String.format("'%s'", division[0]));
 
-            //  System.out.println(newQuery);
             try {
                 conn.start(1);
                 
                 conn.prepare(newQuery);
+                if (forMS != null)
+                    conn.prepare_ms(forMS.replace("@division", String.format("'%s'", division[0])));
                 MapResult result = conn.executeQuery();
         
                 if (result.hasNext()) {

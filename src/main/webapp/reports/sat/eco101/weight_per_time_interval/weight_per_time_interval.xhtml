@@ -27,6 +27,7 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.weight_per_time_interval_quantity, satLabels.weight_per_time_interval_gross_weight))}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(1); SUM(gross)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); SUM(1); SUM(gross)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
