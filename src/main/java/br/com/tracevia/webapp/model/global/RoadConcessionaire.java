@@ -99,8 +99,9 @@ public class RoadConcessionaire {
 	public boolean viaPaulista;	
 	public boolean viaSul;	
 	public boolean eco101;	
-	public boolean hasNotification;
 	public boolean viales;
+	public boolean hasNotification;
+	
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -379,7 +380,7 @@ public class RoadConcessionaire {
 			classNotIdentifiedAxl9 = AlternativasViales.NOT_ID_CLASS_9AXLES.getClasse();	
 			externalImagePath = "";
 			logo = "/resources/images/home/viales.png";
-			linearMapUI = "";
+			linearMapUI = "/resources/images/realTimeInterface/alternativas-viales/viales-linear.webp";
 			mapUI = "/resources/images/map/alternativas-viales/viales.webp";
 			darkMapUI = "";
 			tableVBV = TraceviaTables.TraceviaVBV.getTable();
