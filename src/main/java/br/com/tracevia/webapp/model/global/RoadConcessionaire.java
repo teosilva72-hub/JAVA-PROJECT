@@ -5,6 +5,7 @@ import br.com.tracevia.webapp.cfg.tables.DefaultTable;
 import br.com.tracevia.webapp.cfg.tables.TraceviaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaPaulistaTables;
 import br.com.tracevia.webapp.cfg.tables.ViaSulTables;
+import br.com.tracevia.webapp.classes.AlternativasViales;
 import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
 import br.com.tracevia.webapp.classes.EcoviasAraguaia;
@@ -99,6 +100,7 @@ public class RoadConcessionaire {
 	public boolean viaSul;	
 	public boolean eco101;	
 	public boolean hasNotification;
+	public boolean viales;
 			
 	// --------------------------------------------------------------------------------------------
 		
@@ -347,6 +349,49 @@ public class RoadConcessionaire {
 			mapEnabled = true;
 			reportsLLEnabled = false;
 			tuxpan = true;							
+			
+		}
+       
+       if(roadConcessionaire.equals(RoadConcessionairesEnum.AlternativasViales.getConcessionaire())) {
+			
+			classLight = AlternativasViales.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = AlternativasViales.MOTORCYCLES.getClasse();
+			classUnknown = AlternativasViales.UNKNOWN_CLASS.getClasse();	
+			classTrailer = AlternativasViales.TRAILER.getClasse();	
+			classSemiTrailer = AlternativasViales.SEMI_TRAILER.getClasse();
+			classBus2Axles = AlternativasViales.BUS_2AXLES.getClasse();	
+			classBus3Axles = AlternativasViales.BUS_3AXLES.getClasse();
+			classTruck2Axles = AlternativasViales.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = AlternativasViales.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = AlternativasViales.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = AlternativasViales.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = AlternativasViales.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = AlternativasViales.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = AlternativasViales.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = AlternativasViales.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = AlternativasViales.TRUCK_10AXLES.getClasse();	
+			classNotIdentifiedAxl2 = AlternativasViales.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = AlternativasViales.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = AlternativasViales.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = AlternativasViales.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = AlternativasViales.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = AlternativasViales.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = AlternativasViales.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = AlternativasViales.NOT_ID_CLASS_9AXLES.getClasse();	
+			externalImagePath += "";
+			logo = "/resources/images/home/viales.png";
+			linearMapUI = "";
+			mapUI = "/resources/images/map/alternativas-viales/viales.webp";
+			darkMapUI = "";
+			tableVBV = TraceviaTables.TraceviaVBV.getTable();
+			tableDados15 = TraceviaTables.TraceviaDados15.getTable();
+			tableStatus = TraceviaTables.TraceviaStatus.getTable();
+			tableLL = TraceviaTables.TraceviaLL.getTable();
+			tableCCR = TraceviaTables.TraceviaCCR.getTable();
+			plaque = "";
+			mapEnabled = true;
+			reportsLLEnabled = false;
+			viales = true;							
 			
 		}
        
@@ -682,6 +727,10 @@ public class RoadConcessionaire {
 	
 	public boolean isCardel() {
 		return cardel;
+	}
+	
+	public boolean isAlternativasViales() {
+		return viales;
 	}
 
 	public boolean isTuxpan() {
