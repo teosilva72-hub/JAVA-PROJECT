@@ -101,7 +101,6 @@ public String getLogo() {
 	private List<OccurenceData2> occurrences;
 	private String dataTeste;
 	private String sinistro;
-	private 
 
 	
 

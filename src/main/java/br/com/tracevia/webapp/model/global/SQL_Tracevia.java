@@ -42,21 +42,20 @@ public class SQL_Tracevia {
 	}
 	
 	public boolean start(int conn) {
-		if (inner != null)
-			this.close();
+		this.close();
 		ptr_conn = inner.start(conn);
 		return this.isConnected();
 	}
 
 	public void close() {
-		if (inner != null) {
+		if (ptr_conn != null) {
 			inner.close(ptr_conn);
-			inner = null;
+			ptr_conn = null;
 		}
 	}
 
 	public boolean isConnected() {
-		return inner != null ? inner.is_connected(ptr_conn) : false;
+		return ptr_conn != null ? inner.is_connected(ptr_conn) : false;
 	}
 	
 	public void prepare(String query) {
