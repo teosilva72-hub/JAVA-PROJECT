@@ -35,6 +35,10 @@ public String state_occurrences;
 public Boolean editTable;
 public String nameUser;
 public String lastDateHour;
+public String save;
+public String occ_number;
+
+
 	/**
 	 * @param data
 	 * @param hora
@@ -70,7 +74,7 @@ public String lastDateHour;
 			String direcao, String kmregistro, String kminicial, String kmfinal, String hrReg, String hrchega,
 			String politica, String tipo_veic, String quantidade, String numveiculo, String marca, String tipo,
 			String modelo, String cor, String placa, String telefone, String numcond, String nome, String idade,
-			String saude, String motivo, String observacao,String state_occurrences) {
+			String saude, String motivo, String observacao,String state_occurrences,String occ_number) {
 		
 		this.date = date;
 		this.hora = hora;
@@ -100,12 +104,13 @@ public String lastDateHour;
 		this.saude = saude;
 		this.motivo = motivo;
 		this.observacao = observacao;
+		this.occ_number = occ_number;
 	}
 	
-	public OccurenceData2(String date) {
+	/*public OccurenceData2(String date) {
 		super();
 	
-	}
+	}*/
 
 	public OccurenceData2() {}
 	
@@ -320,8 +325,12 @@ public String lastDateHour;
 	public void setLastDateHour(String lastDateHour) {
 		this.lastDateHour = lastDateHour;
 	}
-
 	
-	
+	public String getOcc_number() {
+	return occ_number;
+}
 
+	public void setOcc_number(String occ_number) {
+	this.occ_number = occ_number;
+}
 }

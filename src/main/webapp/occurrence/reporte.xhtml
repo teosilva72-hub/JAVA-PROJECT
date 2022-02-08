@@ -26,439 +26,567 @@
 	<!---->
 	<ui:define name="main-content">
 		<!-- MAIN CONTENT TEMPLATE COMPONENT -->
-			
+
 		<!-- Inicio do lado direito -->
-			<div class="col-md-12 col-sm-12 colDireita">
-				<!-- Inicio da lista -->
-				<div class="tabela-occ">
-					<!-- Tabela listar -->
-					<div id="tabelaReal">
-						<h:dataTable id="occurrence-table" var="data" disabled="true"
-							value="#{occurrencesBean.occurrences}"
-							styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
-							cellspacing="0" width="50%"  headerClass="custom-table-header"
-							columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
+		<div class="col-md-12 col-sm-12 colDireita">
+			<!-- Inicio da lista -->
+			<div class="tabela-occ">
+				<!-- Tabela listar -->
+				<div id="tabelaReal">
+					<h:dataTable id="occurrence-table" var="data" disabled="true"
+						value="#{occurrencesBean.occurrences}"
+						styleClass="table table-sm custom-table table-striped table-dark table-hover text-center"
+						cellspacing="0" width="50%" headerClass="custom-table-header"
+						columnClasses="idColumn,  typeColumn, nameColumn, imageColumn, textColumn, actionColumn">
 
-							<h:column>
-								<f:facet name="header" class="text-center">ID</f:facet>
-								<h:outputText value="#{data.data_number}"
-									style=" font-size: 12px; " />
-							</h:column>
+						<h:column>
+							<f:facet name="header" class="text-center">ID</f:facet>
+							<h:outputText value="#{data.data_number}"
+								style=" font-size: 12px; " />
+						</h:column>
 
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
-								<h:outputText value="#{data.type}" style="  font-size: 12px;" />
-							</h:column>
+						<h:column>
+							<f:facet name="header">#{occLabels.occ_list_table_type}</f:facet>
+							<h:outputText value="#{data.type}" style="  font-size: 12px;" />
+						</h:column>
 
-							<h:column>
-								<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
-								<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
-							</h:column>
-							
-							<h:column>
-								<f:facet class="barraTable" name="header">#{occLabels.occ_list_table_status}</f:facet>
-								<h:outputText value="#{data.state_occurrences}"
-									style="font-size: 12px;" />
-							</h:column>
-							<!--<h:column>
+						<h:column>
+							<f:facet name="header">#{occLabels.occ_list_table_source}</f:facet>
+							<h:outputText value="#{data.date_time}" style="font-size: 10px;" />
+						</h:column>
+
+						<h:column>
+							<f:facet class="barraTable" name="header">#{occLabels.occ_list_table_status}</f:facet>
+							<h:outputText value="#{data.state_occurrences}"
+								style="font-size: 12px;" />
+						</h:column>
+						<!--<h:column>
 										<f:facet class="barraTable hidden" name="header">#{occLabels.occ_list_table_file}</f:facet>
 										<img><i class="fas fa-check fa-2x iconeListYes"></i></img>
 										<img><i class="fas fa-times fa-2x iconeListNot"></i></img>
 									</h:column>-->
 
-						</h:dataTable>
-						</div>
-					</div>
+					</h:dataTable>
 				</div>
-					
-			
-							<div class="text-center">		
-	<!-- Botão modal nova ocorrencia -->
-			<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
-					Nova Ocorrencia
-			</button>
-	<button type="button" class="btnConf2" data-toggle="modal" data-target="#Occorrencenew">
-					Editar Ocorrencia
-			</button>
-</div>
-			<!-- Modal -->
-			<!-- Formatação e cabeçalho modal -->
-  	<div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true" id="Occorrencenew">
- 		<div class="modal-dialog modal-xl ">
- 			<div class="modal-content fundo">
-      			<div class="modal-header ">
-       				 <h5 class="modal-title ml-auto ">#{occLabels.occ_title_pdf}</h5>
-        				<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-         					 <span aria-hidden="true">&times;</span>
-       					 </button>
-       			 </div>
-     
-      
-       			 <div class="modal-body">
-      				<div class="form-group col-md-11 text-center">	
-       					<div class="btn-group col-md-5  mb-3 menu" role="group" aria-label="Basic example">
-       				<!-- INICIO DOS MODAIS BOTOES -->
- 
-       
-									
-	
-			<!-- Botão Salvar -->
-			<h:commandButton id="save" class=" btnConf " abled="#{Occurence2.save}" value="#{occLabels.btn_salvar}" >
-				<f:passThroughAttribute name="data-toggle" value="modal" />
-					<f:passThroughAttribute name="data-target" value="#modalSalvar" />
-						<f:ajax execute="@form" render="@none" />
-			</h:commandButton>
-						<!-- Modal salvar -->
-					<div class="modal fade" id="modalSalvar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">#{Occurence2.title_modal}</h5>
-								</div>
-								<div class="modal-body">
-									<p id="saveModal">#{Occurence2.message_modal}</p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btnConf" data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
-								
-									<h:commandButton value="#{occLabels.btn_sim}" action="#{Occurence2.cadastroOcorrencia}" class="btn btnConf" id="saveBtn"  />
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- Final do modal Salvar -->
-				
-			<!-- Botão Anular -->
-		
+			</div>
 		</div>
-							
-					<!-- Inicio formulario ocorrencia -->		
-							
-		<h:form id="formExemplo" data-toggle="validator" role="form" class="formulario container">						
-			<div class="form-row col-md-12 ">
-				<div class="form-group col-md-6 text-center">
-					<label for="date" class=" fonttext mr-3 ">#{occLabels.$label_occ_reports_date}</label> 
-						<input type="date" id="date" class="inputDesign form-control col-md-4 text-center ml-3 mr-3" placeholder ="mm/dd/yyyy" value="#{Occurence2.dataTeste}" />
-				</div>
 
-				<div class="form-group col-md-6 text-center">
-					<label for="nome" class=" fonttext  ">#{occLabels.$label_occ_reports_hour}</label>
-						<input type="time" id="hour" class="inputDesign form-control text-center col-md-3 ml-3 mr-3" value="#{Occurence2.data.date}" /></div>
-				</div>
-			
-					<div class="row mt-2">
-					
-				<div class="form-group col-6 text-center row">
-					<label for="nome" class="col-form-label fonttext">#{occLabels.$label_occ_reports_toll}</label>
-						<div class="col-9 ml-auto">
-							<input type="text" id="toll" class="inputDesign  form-control" value="#{Occurence2.data.pedagio}" />
-						</div>
-				</div>
+
+		<div class="text-center">
+			<!-- Botão modal nova ocorrencia -->
+			<button type="button" class="btnConf2" data-toggle="modal"
+				data-target="#Occorrencenew">Nova Ocorrencia</button>
+
+		</div>
+
+		<!-- Modal -->
+		<!-- Formatação e cabeçalho modal -->
+		<div class="modal fade bd-example-modal-xl" tabindex="-1"
+			role="dialog" aria-labelledby="myExtraLargeModalLabel"
+			aria-hidden="true" id="Occorrencenew">
+			<div class="modal-dialog modal-xl ">
+				<div class="modal-content fundo">
+					<div class="modal-header ">
+						<h5 class="modal-title ml-auto ">#{occLabels.occ_title_pdf}</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Fechar">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+
+					<div class="modal-body">
+						<div class="form-group col-md-11 text-center">
+							<div class="btn-group col-md-5  mb-3 menu" role="group"
+								aria-label="Basic example">
+								<!-- INICIO DOS MODAIS BOTOES -->
+
+
+
+								
+									<!-- Botão Salvar -->
+									<h:commandButton id="save" class="btn btnConf"
+										disabled="#{Occurence2.save}" value="#{occLabels.btn_salvar}">
+										<f:passThroughAttribute name="data-toggle" value="modal" />
+										<f:passThroughAttribute name="data-target"
+											value="#modalSalvar" />
+										<f:ajax execute="@form" render="@none" />
+									</h:commandButton>
+									<!-- Modal salvar -->
+									<div class="modal fade" id="modalSalvar" tabindex="-1"
+										aria-labelledby="exampleModalLabel" aria-hidden="true">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title" id="exampleModalLabel">#{occurrencesBean.title_modal}</h5>
+												</div>
+												<div class="modal-body">
+													<p id="saveModal">#{occurrencesBean.message_modal}</p>
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btnConf"
+														data-dismiss="modal" id="SaveModalExit">#{occLabels.btn_nao}</button>
+<h:form prependId="false" id="salvar" enctype="multipart/form-data">
+													<h:commandButton value="#{occLabels.btn_sim}"
+														action="#{Occurence2.cadastroOcorrencia}" class="btn btnConf"
+														id="saveBtn" />
+														</h:form>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Final do modal Salvar -->
+
+									<!-- Botão Anular -->
+							</div>
 						
-				<div class="form-group col-6 text-center row">
-					<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_folio}</label>
-						<div class="col-9 ml-auto">
-							<input type="text" id="folio" class="inputDesign  form-control"   value="#{Occurence2.data.folio}"/>
-						</div>
-				</div>
-						
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" fonttext col-form-label"> #{occLabels.$label_occ_reports_report} </label>
-							<div class="col-9 ml-auto">
-								<input type="text" id="report" class="inputDesign  form-control"  value="#{Occurence2.data.report}" />
-							</div>
-					</div>
-					
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class="col-form-label fonttext">  #{occLabels.$label_occ_reports_sinistro}   </label>
-							<div class="col-9 ml-auto">
-								<input type="text" id="sinistro" class="inputDesign form-control"  value="#{Occurence2.data.sinistro}" />
-						</div>
-					</div>
-					
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_direction} </label>
-							<div class="col-9 ml-auto">
-								 <input type="text" id="direction" class="inputDesign form-control" value="#{Occurence2.data.direcao}" />
-							</div> 
-					</div>
-					
-					<div class="form-group col-6 text-center row"> 
-						<label for="nome" class=" col-form-label fonttext  ">#{occLabels.$label_occ_reports_km_register}</label>
-							<div class="col-9 ml-auto">
-								<input type="text" id="kmregistro" class="inputDesign form-control" value="#{Occurence2.data.kmregistro}" />
-					</div>	
-						</div>
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_km_start}</label>
-							<div class="col-9 ml-auto">
-								 <input type="text" id="kminicio" class="inputDesign form-control" value="#{Occurence2.data.kminicial}"  />
-							</div>
-					</div>
-					
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_km_final}</label> 
-							<div class="col-9 ml-auto">
-								<input type="text" id="kmfinal" class="inputDesign   form-control "  value="#{Occurence2.data.kmfinal}"/>
-							</div>	
-					</div>
-					
-				
-					
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class="col-form-label  fonttext ">#{occLabels.$label_occ_reports_hour_register} </label> 
-							<div class="col-9 ml-auto">
-								<input type="text" id="horareg" class="inputDesign  form-control "  value="#{Occurence2.data.hrReg}" />
-							</div>	
-					</div>
-					
-					<div class="form-group col-6 text-center row">
-						<label for="nome" class=" col-form-label col-3 fonttext">#{occLabels.$label_occ_reports_hour_start}</label>
-							<div class="col-9 ml-auto">
-								 <input type="text" id="horainicio" class="inputDesign  form-control " value="#{Occurence2.data.hrchega}" />
-							</div>
-						</div>
-							
-							<div class="form-group col-12 text-center row">
-						<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_politcs}</label> 
-							<div class="col-10 mx-auto">
-								<input type="text" id="polotica" class="inputDesign  form-control " value="#{Occurence2.data.politica}"/>
-							</div>	
-					</div>
-					</div>
-				</h:form>
 
-			<h:form id="form1" data-toggle="validator" role="form">
-				<div class="form-row col-md-12 mt-2">
-					<div class="form-group col-md-6 text-center">
-						<label for="textNome" class="control-label text-cente fonttext ">#{occLabels.$label_occ_vehicle_type}</label>
-							<input id="tipoveic" class="form-control inputDesign mb-1" type="text" value="#{Occurence2.data.tipo_veic}" /> 
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
+							<!-- Inicio formulario ocorrencia -->
 
-					<div class="form-group col-md-6 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_quantity}</label>
-							 <input type="text" class="form-control inputDesign mb-1" id="quantidade" value="#{Occurence2.data.quantidade}" /> 
-						 			<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-								 		<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
-				</div>
-			</h:form>
-			
-			<h:form>
-				<div class="form-row col-md-12">
-					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_} </label> 
-							<input type="text" class="form-control inputDesign mb-1" id="numeroveic" value="#{Occurence2.data.numveiculo}"/> 
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
-					
-					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_brand}  </label> 
-							<input type="text" class="form-control inputDesign mb-1 " id="marca"  value="#{Occurence2.data.marca}"/>
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-					
-					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_type} </label> 
-							<input type="text" class="form-control inputDesign mb-1" id="tipo" value="#{Occurence2.data.tipo}" /> 
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
-					
-					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_model}</label> 
-							<input type="text" class="form-control inputDesign mb-1" id="modelo" value="#{Occurence2.data.modelo}" />
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-					
-					<div class="form-group col-md-2 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_color}</label> 
-							<input type="text" class="form-control inputDesign mb1 " id="cor" value="#{Occurence2.data.cor}"/>
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
-					
-					<div class="form-group col-md-1 text-center">
-						<label for="textNome" class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_plate}</label>
-							<input id="placa" class="form-control inputDesign mb-1 " type="text" value="#{Occurence2.data.placa}" /> 
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-									<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-					</div>
-					
-					<div class="form-group col-md-1 text-center ">
-						<label for="textNome" class="control-label fonttext">#{occLabels.$label_occ_vehicle_telefone}</label> 
-							<input id="telefone" class="form-control inputDesign mb-1 " type="text"  value="#{Occurence2.data.telefone}"/>
-								<input id="textNome" class="form-control inputDesign mb-1" type="text" />
-						 			<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-				</div>
-			
-				<div class="form-row col-md-12">
+							<h:form id="formExemplo" data-toggle="validator" role="form"
+								class="formulario container">
+								<div class="form-row col-md-12 ">
+									<div class="form-group col-md-6 text-center">
+										<label for="date" class=" fonttext mr-3 ">#{occLabels.$label_occ_reports_date}</label>
+										<input type="date" id="date"
+											class="inputDesign form-control col-md-4 text-center ml-3 mr-3"
+											placeholder="mm/dd/yyyy" value="#{Occurence2.data.date}" />
+									</div>
+
+									<div class="form-group col-md-6 text-center">
+										<label for="nome" class=" fonttext  ">#{occLabels.$label_occ_reports_hour}</label>
+										<input type="time" id="hour"
+											class="inputDesign form-control text-center col-md-3 ml-3 mr-3"
+											value="#{Occurence2.data.date}" />
+									</div>
+								</div>
+
+								<div class="row mt-2">
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class="col-form-label fonttext">#{occLabels.$label_occ_reports_toll}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="toll"
+												class="inputDesign  form-control"
+												value="#{Occurence2.data.pedagio}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_folio}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="folio"
+												class="inputDesign  form-control"
+												value="#{Occurence2.data.folio}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" fonttext col-form-label">
+											#{occLabels.$label_occ_reports_report} </label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="report"
+												class="inputDesign  form-control"
+												value="#{Occurence2.data.report}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class="col-form-label fonttext">
+											#{occLabels.$label_occ_reports_sinistro} </label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="sinistro"
+												class="inputDesign form-control"
+												value="#{Occurence2.data.sinistro}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_direction}
+										</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="direction"
+												class="inputDesign form-control"
+												value="#{Occurence2.data.direcao}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" col-form-label fonttext  ">#{occLabels.$label_occ_reports_km_register}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="kmregistro"
+												class="inputDesign form-control"
+												value="#{Occurence2.data.kmregistro}" />
+										</div>
+									</div>
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_km_start}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="kminicio"
+												class="inputDesign form-control"
+												value="#{Occurence2.data.kminicial}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" col-form-label fonttext">#{occLabels.$label_occ_reports_km_final}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="kmfinal"
+												class="inputDesign   form-control "
+												value="#{Occurence2.data.kmfinal}" />
+										</div>
+									</div>
 
 
-					<div class="form-group col-md-1 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_sinistro} </label> 
-							<input type="password" class="form-control inputDesign mb-1 " id="numeropessoa"  value="#{Occurence2.data.numcond}"/> 
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-					
-					<div class="form-group col-md-4 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext ">#{occLabels.$label_occ_driver_name}  </label>
-							<input type="password" class="form-control inputDesign mb-1 " id="nome" value="#{Occurence2.data.nome}"/> 
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-					
-					<div class="form-group col-md-3 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_age}  </label> 
-							<input type="password" class="form-control inputDesign mb-1 " id="idade" value="#{Occurence2.data.idade}" />
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" /> 
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-					
-					<div class="form-group col-md-4 text-center">
-						<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_health_conditions}  </label> 
-							<input type="password" class="form-control inputDesign mb-1 " id="saude" value="#{Occurence2.data.saude}"/> 
-								<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-									<input id="textNome" class="form-control inputDesign mb-1 " type="text" />
-					</div>
-				</div>
-			
-				<div class="form-group col-md-12 text-center">
-					<label for="inputConfirm" class="control-label text-center fonttext">#{occLabels.$label_occ_accident_reason} </label>
-				</div>
-				
-				<div class="input-group form-row col-md-12 text-center mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">A</span>
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="motivo1">#{occLabels.$label_occ_accident_reason}</span>
-						 <input type="text" class="form-control inputDesign mb-1  "  aria-describedby="basic-addon1" value="#{Occurence2.data.motivo}" />
-				</div>
-				
-				<div class="input-group form-row col-md-12 text-center  mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">B</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="motivo2">#{occLabels.$label_occ_conservation_works}</span>
-						 <input type="text"	class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" value="#{Occurence2.data.motivo}" />
-				</div>
-				
-				
-				<div class="input-group form-row col-md-12 text-center  mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">C</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 " id="motivo3">#{occLabels.$label_occ_rain}</span> 
-							<input type="text" class="form-control inputDesign mb-1"  aria-describedby="basic-addon1"  value="#{Occurence2.data.motivo}"/>
-				</div>
-				
-				<div class="input-group form-row col-md-12 text-center mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 " id="basic-addon1">D</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="motivo4">#{occLabels.$label_occ_fog}</span> 
-							<input type="text" class="form-control inputDesign mb-1 " aria-describedby="basic-addon1" value="#{Occurence2.data.motivo}" />
-				</div>
-				
-				<div class="input-group form-row col-md-12 text-center mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1" id="basic-addon1">E</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1" id="motivo5">#{occLabels.$label_occ_vadalism}</span>
-							 <input type="text" class="form-control inputDesign mb-1" aria-describedby="basic-addon1"  value="#{Occurence2.data.motivo}"/>
-				</div>
-				
-				<div class="input-group form-row col-md-12 text-center mb-2">
-					<span class="input-group-addon col-md-1 form-control text-center fonttext inputDesign " id="basic-addon1">F</span> 
-						<span class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign " id="motivo6">#{occLabels.$label_occ_other}</span> 
-							<input type="text" class="form-control inputDesign " aria-describedby="basic-addon1"  value="#{Occurence2.data.motivo}"/>
-				</div>
-		
-			<div class="btn-group btn-group-sm mb-3 " role="group" aria-label="Basic example"> </div>
-				<div class="form-group col-md-12 mb-7" id="observacao">
-					<em for="inputAddress">#{occLabels.$label_occ_observation}</em>
-						<h:inputTextarea class="form-control textareaDesign mb-7"  rows="8" name="danoDescr" id="danoDescr"  value="#{Occurence2.data.observacao}"/>
-				</div>
-	      	 </h:form>
-	      	 
-	      	 <div class="from-row ">
-							<!-- ALert Anexos -->
-					<div class="alert alert-dark confAlert col-3 inputDesign2" role="alert">
-						<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
-					</div>
-					
-	
-							<!-- FInal alert Anexos -->
 
-							<!-- input file save -->
-						<div id="uploadFile1" class="form-row" style="display: none;">
-							<div class="form-group col-md-12 field" align="left">
-								<h:inputFile id="myFile" value="#{Occurence2.file}" multiple="true"  />
-									<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class="col-form-label  fonttext ">#{occLabels.$label_occ_reports_hour_register}
+										</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="horareg"
+												class="inputDesign  form-control "
+												value="#{Occurence2.data.hrReg}" />
+										</div>
+									</div>
+
+									<div class="form-group col-6 text-center row">
+										<label for="nome" class=" col-form-label col-3 fonttext">#{occLabels.$label_occ_reports_hour_start}</label>
+										<div class="col-9 ml-auto">
+											<input type="text" id="horainicio"
+												class="inputDesign  form-control "
+												value="#{Occurence2.data.hrchega}" />
+										</div>
+									</div>
+
+									<div class="form-group col-12 text-center row">
+										<label for="nome" class="col-form-label fonttext ">#{occLabels.$label_occ_reports_politcs}</label>
+										<div class="col-10 mx-auto">
+											<input type="text" id="polotica"
+												class="inputDesign  form-control "
+												value="#{Occurence2.data.politica}" />
+										</div>
+									</div>
+								</div>
+							</h:form>
+
+							<h:form id="form1" data-toggle="validator" role="form">
+								<div class="form-row col-md-12 mt-2">
+									<div class="form-group col-md-6 text-center">
+										<label for="textNome"
+											class="control-label text-cente fonttext ">#{occLabels.$label_occ_vehicle_type}</label>
+										<input id="tipoveic" class="form-control inputDesign mb-1"
+											type="text" value="#{Occurence2.data.tipo_veic}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+
+									<div class="form-group col-md-6 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_quantity}</label>
+										<input type="text" class="form-control inputDesign mb-1"
+											id="quantidade" value="#{Occurence2.data.quantidade}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+								</div>
+							</h:form>
+
+							<h:form>
+								<div class="form-row col-md-12">
+									<div class="form-group col-md-1 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_}
+										</label> <input type="text" class="form-control inputDesign mb-1"
+											id="numeroveic" value="#{Occurence2.data.numveiculo}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+
+									<div class="form-group col-md-2 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_brand}
+										</label> <input type="text" class="form-control inputDesign mb-1 "
+											id="marca" value="#{Occurence2.data.marca}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+
+									<div class="form-group col-md-2 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_type}
+										</label> <input type="text" class="form-control inputDesign mb-1"
+											id="tipo" value="#{Occurence2.data.tipo}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+
+									<div class="form-group col-md-2 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_model}</label>
+										<input type="text" class="form-control inputDesign mb-1"
+											id="modelo" value="#{Occurence2.data.modelo}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+
+									<div class="form-group col-md-2 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_color}</label>
+										<input type="text" class="form-control inputDesign mb1 "
+											id="cor" value="#{Occurence2.data.cor}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+
+									<div class="form-group col-md-1 text-center">
+										<label for="textNome"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_vehicle_plate}</label>
+										<input id="placa" class="form-control inputDesign mb-1 "
+											type="text" value="#{Occurence2.data.placa}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1" type="text" />
+									</div>
+
+									<div class="form-group col-md-1 text-center ">
+										<label for="textNome" class="control-label fonttext">#{occLabels.$label_occ_vehicle_telefone}</label>
+										<input id="telefone" class="form-control inputDesign mb-1 "
+											type="text" value="#{Occurence2.data.telefone}" /> <input
+											id="textNome" class="form-control inputDesign mb-1"
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+								</div>
+
+								<div class="form-row col-md-12">
+
+
+									<div class="form-group col-md-1 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_sinistro}
+										</label> <input type="password" class="form-control inputDesign mb-1 "
+											id="numeropessoa" value="#{Occurence2.data.numcond}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+
+									<div class="form-group col-md-4 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext ">#{occLabels.$label_occ_driver_name}
+										</label> <input type="password" class="form-control inputDesign mb-1 "
+											id="nome" value="#{Occurence2.data.nome}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+
+									<div class="form-group col-md-3 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_age}
+										</label> <input type="password" class="form-control inputDesign mb-1 "
+											id="idade" value="#{Occurence2.data.idade}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+
+									<div class="form-group col-md-4 text-center">
+										<label for="inputConfirm"
+											class="control-label text-center fonttext">#{occLabels.$label_occ_health_conditions}
+										</label> <input type="password" class="form-control inputDesign mb-1 "
+											id="saude" value="#{Occurence2.data.saude}" /> <input
+											id="textNome" class="form-control inputDesign mb-1 "
+											type="text" /> <input id="textNome"
+											class="form-control inputDesign mb-1 " type="text" />
+									</div>
+								</div>
+
+								<div class="form-group col-md-12 text-center">
+									<label for="inputConfirm"
+										class="control-label text-center fonttext">#{occLabels.$label_occ_accident_reason}
+									</label>
+								</div>
+
+								<div class="input-group form-row col-md-12 text-center mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+										id="basic-addon1">A</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+										id="motivo1">#{occLabels.$label_occ_accident_reason}</span> <input
+										type="text" class="form-control inputDesign mb-1  "
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+								<div class="input-group form-row col-md-12 text-center  mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+										id="basic-addon1">B</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+										id="motivo2">#{occLabels.$label_occ_conservation_works}</span>
+									<input type="text" class="form-control inputDesign mb-1 "
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+
+								<div class="input-group form-row col-md-12 text-center  mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 "
+										id="basic-addon1">C</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1 "
+										id="motivo3">#{occLabels.$label_occ_rain}</span> <input
+										type="text" class="form-control inputDesign mb-1"
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+								<div class="input-group form-row col-md-12 text-center mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1 "
+										id="basic-addon1">D</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+										id="motivo4">#{occLabels.$label_occ_fog}</span> <input
+										type="text" class="form-control inputDesign mb-1 "
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+								<div class="input-group form-row col-md-12 text-center mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign mb-1"
+										id="basic-addon1">E</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign mb-1"
+										id="motivo5">#{occLabels.$label_occ_vadalism}</span> <input
+										type="text" class="form-control inputDesign mb-1"
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+								<div class="input-group form-row col-md-12 text-center mb-2">
+									<span
+										class="input-group-addon col-md-1 form-control text-center fonttext inputDesign "
+										id="basic-addon1">F</span> <span
+										class="input-group-addon col-md-3 form-control  text-center fonttext inputDesign "
+										id="motivo6">#{occLabels.$label_occ_other}</span> <input
+										type="text" class="form-control inputDesign "
+										aria-describedby="basic-addon1"
+										value="#{Occurence2.data.motivo}" />
+								</div>
+
+								<div class="btn-group btn-group-sm mb-3 " role="group"
+									aria-label="Basic example"></div>
+								<div class="form-group col-md-12 mb-7" id="observacao">
+									<em for="inputAddress">#{occLabels.$label_occ_observation}</em>
+									<h:inputTextarea class="form-control textareaDesign mb-7"
+										rows="8" name="danoDescr" id="danoDescr"
+										value="#{Occurence2.data.observacao}" />
+								</div>
+							</h:form>
+
+							<div class="from-row ">
+								<!-- ALert Anexos -->
+								<div class="alert alert-dark confAlert col-3 inputDesign2"
+									role="alert">
+									<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
+								</div>
+
+
+								<!-- FInal alert Anexos -->
+
+								<!-- input file save -->
+								<div id="uploadFile1" class="form-row" style="display: none;">
+									<div class="form-group col-md-12 field" align="left">
+										<h:inputFile id="myFile" value="#{Occurence2.file}"
+											multiple="true" />
+										<p class="validatorFile" id="errorFile">#{occLabels.campo_obrigatorio}</p>
 										<br></br>
 										<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
-						 	</div>
-								<!-- BTN UPLOAD FILE -->
-							<div class="col-md-12">
-								<h:commandButton class="btn btnConf" id="btnUpload" value="#{occLabels.occ_uploadFile}" action="#{Occurence2.uploadFile}" disabled="#{Occurence2.fields}" onclick="validatorFile();" />
-							</div>
-						</div>
+									</div>
+									<!-- BTN UPLOAD FILE -->
+									<div class="col-md-12">
+										<h:commandButton class="btn btnConf" id="btnUpload"
+											value="#{occLabels.occ_uploadFile}"
+											action="#{Occurence2.uploadFile}"
+											disabled="#{Occurence2.fields}" onclick="validatorFile();" />
+									</div>
+								</div>
 
 
-							<!-- input file alterar -->
-							<div class="form-row" id="listDateFile" style="display: none;">
-								<div class="form-group col-md-9 field" align="left">
-									<h:inputFile value="#{Occurence2.file2}" id="myFile2" multiple="true" disabled="#{Occurence2.fields}" />
+								<!-- input file alterar -->
+								<div class="form-row" id="listDateFile" style="display: none;">
+									<div class="form-group col-md-9 field" align="left">
+										<h:inputFile value="#{Occurence2.file2}" id="myFile2"
+											multiple="true" disabled="#{Occurence2.fields}" />
 										<p class="validatorFile" id="errorFile2">#{occLabels.campo_obrigatorio}</p>
-											<br></br>
-												<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
+										<br></br>
+										<p class="validatorFile" id="errorFileSize2">#{occLabels.size_file}</p>
 
-								</div>
-								
-	
-								
-	
-								<!-- BTN UPDATE FILE -->
-								<div class="col-md-3">
-									<h:commandButton class="btn btnConf" id="btnUpdate" onclick="validatorFile2();" value="#{occLabels.occ_uploadFile}" action="#{Occurence2.updateFile}" disabled="#{Occurence2.fields}" />
-								</div>
-							</div>
-							
-							<div class="alert alert-dark confAlert col-3 inputDesign2" id="fileTotal" role="alert">
-								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files} (#{Occurence2.total})</h5>
-							</div>
-							
-							
+									</div>
 
-							<div class="listarFiles" id="listFiles">
-								<div class="col-md-12">
-									<!-- Array arquivos na pasta -->
-									<c:forEach items="#{Occurence2.listarFile}" var="item" id="listandoFile" varStatus="loop">
-									
+
+
+
+									<!-- BTN UPDATE FILE -->
+									<div class="col-md-3">
+										<h:commandButton class="btn btnConf" id="btnUpdate"
+											onclick="validatorFile2();"
+											value="#{occLabels.occ_uploadFile}"
+											action="#{Occurence2.updateFile}"
+											disabled="#{Occurence2.fields}" />
+									</div>
+								</div>
+
+								<div class="alert alert-dark confAlert col-3 inputDesign2"
+									id="fileTotal" role="alert">
+									<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
+										(#{Occurence2.total})</h5>
+								</div>
+
+
+
+								<div class="listarFiles" id="listFiles">
+									<div class="col-md-12">
+										<!-- Array arquivos na pasta -->
+										<c:forEach items="#{Occurence2.listarFile}" var="item"
+											id="listandoFile" varStatus="loop">
+
 											<div class="col-md-12">
 												<div class="row">
 													<!-- image file -->
-													
+
 													<!-- name file -->
 													<div class="col-md-8 text-center">
 														<span>#{occLabels.occ_name_file} </span>
-															<p class="text-center">#{item}</p>
+														<p class="text-center">#{item}</p>
 													</div>
-													
-													
+
+
 													<!-- btn delete -->
 													<div class="col-md-2">
 														<span>#{occLabels.occ_delete}</span>
-															<div class="dropdown">
-																<button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+														<div class="dropdown">
+															<button class=" dropdown-toggle" type="button"
+																id="dropdownMenuButton" data-toggle="dropdown"
+																aria-expanded="false">
 																<i class="far fa-trash-alt"></i>
-																</button>
-																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-																		<li>
-																			<a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																		<li>
-																			<h:commandLink action="#{Occurence2.deleteFile(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
-																	</ul>
-																 <div class="modal-footer">
-      														
-      														</div>
+															</button>
+															<ul class="dropdown-menu"
+																aria-labelledby="dropdownMenuButton">
+																<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																<li><h:commandLink
+																		action="#{Occurence2.deleteFile(item)}"
+																		class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+															</ul>
+															<div class="modal-footer"></div>
 														</div>
 													</div>
 												</div>
@@ -466,44 +594,56 @@
 											<hr></hr>
 										</c:forEach>
 									</div>
-								<!-- List file update -->
-								<div class="col-md-12">
-									<!-- Array arquivos na pasta -->
-									<c:forEach id="listUpdate" items="#{Occurence2.listUpdate}" var="item" varStatus="loop">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
+									<!-- List file update -->
+									<div class="col-md-12">
+										<!-- Array arquivos na pasta -->
+										<c:forEach id="listUpdate" items="#{Occurence2.listUpdate}"
+											var="item" varStatus="loop">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="row">
 
-													<!-- name file -->
-													<div class="col-md-7 text-center">
-														<span>#{occLabels.occ_name_file} </span>
-														<p class="text-center">#{item}</p>
-													</div>
+														<!-- name file -->
+														<div class="col-md-7 text-center">
+															<span>#{occLabels.occ_name_file} </span>
+															<p class="text-center">#{item}</p>
+														</div>
 
-													<!-- btn delete -->
-													<div class="col-md-1" id="updateDeleteIcon">
-														<span>#{occLabels.occ_delete}</span>
+														<!-- btn delete -->
+														<div class="col-md-1" id="updateDeleteIcon">
+															<span>#{occLabels.occ_delete}</span>
 															<div class="dropdown">
-																<button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+																<button class=" dropdown-toggle" type="button"
+																	id="dropdownMenuButton" data-toggle="dropdown"
+																	aria-expanded="false">
 																	<i class="far fa-trash-alt"></i>
 																</button>
-																<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+																<ul class="dropdown-menu"
+																	aria-labelledby="dropdownMenuButton">
 																	<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																	<li><h:commandLink disabled="#{Occurence2.fields}" action="#{occurrencesBean.deleteFileUpdate(item)}" class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
+																	<li><h:commandLink disabled="#{Occurence2.fields}"
+																			action="#{occurrencesBean.deleteFileUpdate(item)}"
+																			class="dropdown-item" href="#">#{occLabels.occ_yes}</h:commandLink></li>
 																</ul>
 															</div>
-													</div>
-													<!-- download -->
-													<div class="col-md-1">
-														<span>#{occLabels.occ_download}</span>
+														</div>
+														<!-- download -->
+														<div class="col-md-1">
+															<span>#{occLabels.occ_download}</span>
 															<div class="dropdown">
-																<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-																	<i class="fas fa-cloud-download-alt iconFile" data-toggle="tooltip" data-bs-placement="right" title="Download"></i>
+																<button class="dropdown-toggle" type="button"
+																	id="dropdownMenuButton" data-toggle="dropdown"
+																	aria-expanded="false">
+																	<i class="fas fa-cloud-download-alt iconFile"
+																		data-toggle="tooltip" data-bs-placement="right"
+																		title="Download"></i>
 																</button>
-																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																		<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-																	</ul>
+																<ul class="dropdown-menu"
+																	aria-labelledby="dropdownMenuButton">
+																	<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																	<li><h:commandLink class="dropdown-item"
+																			action="#{occurrencesBean.downloadUpdate(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+																</ul>
 															</div>
 														</div>
 													</div>
@@ -512,47 +652,55 @@
 											<hr></hr>
 										</c:forEach>
 									</div>
-								<!-- List files click table -->
-								<div class="col-md-12" id="listUpdateFileT" style="display: none;">
-									<!-- Array arquivos na pasta -->
-									<c:forEach items="#{occurrencesBean.tableFile}" var="item" varStatus="loop">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="row">
-													<div class="col-md-7 text-center">
-														<span>#{occLabels.occ_name_file} </span>
-														<p class="text-center">#{item}</p>
-													</div>
+									<!-- List files click table -->
+									<div class="col-md-12" id="listUpdateFileT"
+										style="display: none;">
+										<!-- Array arquivos na pasta -->
+										<c:forEach items="#{occurrencesBean.tableFile}" var="item"
+											varStatus="loop">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="row">
+														<div class="col-md-7 text-center">
+															<span>#{occLabels.occ_name_file} </span>
+															<p class="text-center">#{item}</p>
+														</div>
 
-													<!-- download -->
-													<div class="col-md-1">
-														<span>#{occLabels.occ_download}</span>
+														<!-- download -->
+														<div class="col-md-1">
+															<span>#{occLabels.occ_download}</span>
 															<div class="dropdown">
-																<button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-																	<i class="fas fa-cloud-download-alt iconFile" data-toggle="tooltip" data-bs-placement="right" title="Download"></i>
+																<button class="dropdown-toggle" type="button"
+																	id="dropdownMenuButton" data-toggle="dropdown"
+																	aria-expanded="false">
+																	<i class="fas fa-cloud-download-alt iconFile"
+																		data-toggle="tooltip" data-bs-placement="right"
+																		title="Download"></i>
 																</button>
-																	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-																		<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
-																			<li><h:commandLink class="dropdown-item" action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
-														  				<!-- Modal -->											
-																	</ul>
-																	
-																</div>
+																<ul class="dropdown-menu"
+																	aria-labelledby="dropdownMenuButton">
+																	<li><a class="dropdown-item" href="#">#{occLabels.occ_no}</a></li>
+																	<li><h:commandLink class="dropdown-item"
+																			action="#{occurrencesBean.downloadUpdateTable(item)}">#{occLabels.occ_yes}</h:commandLink></li>
+																	<!-- Modal -->
+																</ul>
+
 															</div>
 														</div>
 													</div>
 												</div>
+											</div>
 											<hr></hr>
 										</c:forEach>
 									</div>
 								</div>
 							</div>
-						 </div>	
-	 				 </div>
-  			 	</div>
-     		 </div>
-      	</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
-   </ui:define>
+	</ui:define>
 </ui:composition>
