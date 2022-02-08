@@ -43,9 +43,11 @@ public class ReportDAO {
         
     }
 
-    public void getReport(String query, String id, String[] division) throws Exception {
+    public void getReport(String query, String forMS, String id, String[] division) throws Exception {
        
+        int count = 0;
     	String newQuery = query;
+    	String newQueryMS = forMS.replace("$period", "MSperiod");
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
     	List<String[]> allOptions = new ArrayList<>();
@@ -60,53 +62,62 @@ public class ReportDAO {
             }
 
             newQuery = query.replace("@division", search.substring(2));
+            if (forMS != null)
+                newQueryMS = forMS.replace("@division", search.substring(2));
         }
 
-        try {
-            conn.start(1);
-    
-            conn.prepare(newQuery);
-            MapResult result = conn.executeQuery();
-    
-            if (!custom)
-                this.columnName.clear();
-    
-            if (result.hasNext()) {
-                for (RowResult rs : result) {
-                   
-                    String[] keys = rs.getKeys();
-                    int columnsNumber = keys.length;
-                    String[] row = new String[columnsNumber];
-                    
-                    for (int idx = 1; idx <= columnsNumber; idx++) {
-                        String name = keys[idx - 1];
-                        if (!custom)
-                            this.columnName.add(name);
-    
-                        String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
-                                            
-                        row[idx - 1] = value != null && value != "" ? value : "-";
-                        if (name.equals(id) && !field.contains(value))
-                            field.add(value);
+
+        do {
+            try {
+                count++;
+                if (!conn.start(count))
+                    break;
+        
+                conn.prepare(newQuery);
+                if (newQueryMS != null)
+                    conn.prepare_ms(newQueryMS);
+                MapResult result = conn.executeQuery();
+        
+                if (!custom)
+                    this.columnName.clear();
+        
+                if (result.hasNext()) {
+                    for (RowResult rs : result) {
+                       
+                        String[] keys = rs.getKeys();
+                        int columnsNumber = keys.length;
+                        String[] row = new String[columnsNumber];
+                        
+                        for (int idx = 1; idx <= columnsNumber; idx++) {
+                            String name = keys[idx];
+                            if (!custom)
+                                this.columnName.add(name);
+        
+                            String value = translateValues(rs.getString(idx)); // TO DO SPECIFIC TRANSLATIONS IN DATA PRESENTATION
+                                                
+                            row[idx - 1] = value != null && value != "" ? value : "-";
+                            if (name.equals(id) && !field.contains(value))
+                                field.add(value);
+                        }
+        
+                        lines.add(row);
                     }
-    
-                    lines.add(row);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                conn.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            conn.close();
-        }
+        } while (lines.isEmpty());
 
         this.lines = lines;
         this.IDs = field;
 
         if (division != null)
-            this.completeSecondary(query, allOptions);
+            this.completeSecondary(query, forMS, allOptions);
     }
 
-    private void completeSecondary(String query, List<String[]> fields) throws Exception {     
+    private void completeSecondary(String query, String forMS, List<String[]> fields) throws Exception {     
     	List<Pair<String, List<String[]>>> secondaryLines = new ArrayList<>();
     	
         for (int index = 0; index < fields.size(); index++) {
@@ -115,11 +126,12 @@ public class ReportDAO {
 
             String newQuery = query.replace("@division", String.format("'%s'", division[0]));
 
-            //  System.out.println(newQuery);
             try {
                 conn.start(1);
                 
                 conn.prepare(newQuery);
+                if (forMS != null)
+                    conn.prepare_ms(forMS.replace("@division", String.format("'%s'", division[0])));
                 MapResult result = conn.executeQuery();
         
                 if (result.hasNext()) {

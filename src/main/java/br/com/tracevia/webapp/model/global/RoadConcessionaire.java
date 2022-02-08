@@ -9,6 +9,7 @@ import br.com.tracevia.webapp.classes.Ausn;
 import br.com.tracevia.webapp.classes.BahiaNorte;
 import br.com.tracevia.webapp.classes.EcoviasAraguaia;
 import br.com.tracevia.webapp.classes.CardelPozaRica;
+import br.com.tracevia.webapp.classes.Eco101;
 import br.com.tracevia.webapp.classes.LitoralSul;
 import br.com.tracevia.webapp.classes.Tracevia;
 import br.com.tracevia.webapp.classes.Tuxpan;
@@ -96,6 +97,7 @@ public class RoadConcessionaire {
 	public boolean viaAmericas;	
 	public boolean viaPaulista;	
 	public boolean viaSul;	
+	public boolean eco101;	
 	public boolean hasNotification;
 			
 	// --------------------------------------------------------------------------------------------
@@ -116,6 +118,7 @@ public class RoadConcessionaire {
 		viaAmericas = false;	
 		viaPaulista = false;	
 		viaSul = false;
+		eco101 = false;
 		hasNotification = false;
 		
 	}
@@ -574,6 +577,50 @@ public class RoadConcessionaire {
 						
 		}
 
+        if(roadConcessionaire.equals(RoadConcessionairesEnum.Eco101.getConcessionaire())) {
+			
+        	classLight = Eco101.LIGHT_VEHICLES.getClasse();
+			classMotorcycle = Eco101.MOTORCYCLES.getClasse();
+			classUnknown = Eco101.UNKNOWN_CLASS.getClasse();	
+			classTrailer = Eco101.TRAILER.getClasse();	
+			classSemiTrailer = Eco101.SEMI_TRAILER.getClasse();
+			classBus2Axles = Eco101.BUS_2AXLES.getClasse();	
+			classBus3Axles = Eco101.BUS_3AXLES.getClasse();
+			classTruck2Axles = Eco101.TRUCK_2AXLES.getClasse();	
+			classTruck3Axles = Eco101.TRUCK_3AXLES.getClasse();		
+			classTruck4Axles = Eco101.TRUCK_4AXLES.getClasse();	
+			classTruck5Axles = Eco101.TRUCK_5AXLES.getClasse();	
+			classTruck6Axles = Eco101.TRUCK_6AXLES.getClasse();	
+			classTruck7Axles = Eco101.TRUCK_7AXLES.getClasse();	
+			classTruck8Axles = Eco101.TRUCK_8AXLES.getClasse();	
+			classTruck9Axles = Eco101.TRUCK_9AXLES.getClasse();	
+			classTruck10Axles = Eco101.TRUCK_10AXLES.getClasse();				
+			classNotIdentifiedAxl2 = Eco101.NOT_ID_CLASS_2AXLES.getClasse();
+			classNotIdentifiedAxl3 = Eco101.NOT_ID_CLASS_3AXLES.getClasse();
+			classNotIdentifiedAxl4 = Eco101.NOT_ID_CLASS_4AXLES.getClasse();
+			classNotIdentifiedAxl5 = Eco101.NOT_ID_CLASS_5AXLES.getClasse();
+			classNotIdentifiedAxl6 = Eco101.NOT_ID_CLASS_6AXLES.getClasse();
+			classNotIdentifiedAxl7 = Eco101.NOT_ID_CLASS_7AXLES.getClasse();
+			classNotIdentifiedAxl8 = Eco101.NOT_ID_CLASS_8AXLES.getClasse();
+			classNotIdentifiedAxl9 = Eco101.NOT_ID_CLASS_9AXLES.getClasse();
+			externalImagePath += "";
+			logo = "/resources/images/home/eco101.webp";
+			linearMapUI = "/resources/images/realTimeInterface/eco101/eco101-linear.webp";
+			mapUI = "/resources/images/map/eco101/eco101.webp";
+			darkMapUI = "";
+			tableVBV = ViaSulTables.ViaSulVBV.getTable();
+			tableDados15 = ViaSulTables.ViaSulDados15.getTable();
+			tableStatus = ViaSulTables.ViaSulStatus.getTable();
+			tableLL = ViaSulTables.ViaSulLL.getTable();
+			tableCCR = ViaSulTables.ViaSulCCR.getTable();
+			plaque = "";
+			mapEnabled = false;
+			reportsLLEnabled = true;
+			eco101 = true;
+			hasNotification = true;
+						
+		}
+
        if(roadConcessionaire.equals(RoadConcessionairesEnum.Tracevia.getConcessionaire())) {
     	   
     	  classLight = Tracevia.LIGHT_VEHICLES.getClasse();
@@ -651,6 +698,10 @@ public class RoadConcessionaire {
 
 	public boolean isViaSul() {
 		return viaSul;
+	}
+
+	public boolean isEco101() {
+		return eco101;
 	}
 
 	public boolean isHasNotification() {

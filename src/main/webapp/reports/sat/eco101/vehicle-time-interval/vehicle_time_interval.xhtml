@@ -31,12 +31,14 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 1, 2))}" />
 		<f:viewAction onPostback="true" action="#{reportBean.initiliazeSatHeader}" />
 			
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; TIMESTAMPDIFF(SECOND, t1.data, t2.data); 
-		 TIMESTAMPDIFF(SECOND, t3.data, t4.data);')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(t1.data, `%d/%m/%Y`) as sd; TIME($period)@sd; TIMESTAMPDIFF(SECOND, t1.data, t2.data); 
+		 	TIMESTAMPDIFF(SECOND, t3.data, t4.data);')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(t1.data, `dd/MM/yyyy`); CAST($period as TIME); DATEDIFF(SECOND, t1.data, t2.data); 
+			DATEDIFF(SECOND, t3.data, t4.data);')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t2 ON equip_id = t1.siteID AND q.lane = t2.siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t3 ON equip_id = t1.siteID AND q.lane = t3.siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t4 ON equip_id = t1.siteID AND q.lane = t4.siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('sat_vbv t2 ON equip_id = t1.siteID AND q.lane = t2.siteID AND 
+																		   sat_vbv t3 ON equip_id = t1.siteID AND q.lane = t3.siteID AND
+																		   sat_vbv t4 ON equip_id = t1.siteID AND q.lane = t4.siteID')}" />
 			
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
