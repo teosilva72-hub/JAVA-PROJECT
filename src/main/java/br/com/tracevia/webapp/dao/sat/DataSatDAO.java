@@ -31,7 +31,7 @@ public class DataSatDAO {
 		// Obter datas formatadas para os dados
 		currentDate = dta.getDataInterval15Min(calendar, minute);
 							
-		String select = "SELECT d.NOME_ESTACAO, d.DATA_HORA, date_format(d.DATA_HORA, '%H:%i') 'DADO_HORA', " +
+		String select = "SELECT d.NOME_ESTACAO AS ESTACAO, d.DATA_HORA, date_format(d.DATA_HORA, '%H:%i') 'DADO_HORA', " +
 			
 		"SUM(CASE " +
 			"WHEN (eq.dir_lane1 = eq.dir_lane2 AND eq.dir_lane1 = eq.dir_lane3 AND eq.dir_lane1 = eq.dir_lane4 AND d.NOME_FAIXA < 5) " +
@@ -92,7 +92,7 @@ public class DataSatDAO {
 					
 					SAT sat = new SAT();
 
-					sat.setEquip_id(rs.getInt("d.NOME_ESTACAO"));
+					sat.setEquip_id(rs.getInt("ESTACAO"));
 					sat.setDataTime(rs.getString("DADO_HORA"));
 					sat.setQuantidadeS1(rs.getInt("VOLUME_TOTAL_S1"));						
 					sat.setVelocidadeS1(rs.getInt("VEL_MEDIA_TOTAL_S1"));	

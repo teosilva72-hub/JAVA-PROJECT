@@ -674,6 +674,69 @@ public class EquipmentsDAO {
 
 		return name;
 	}
+	
+	// --------------------------------------------------------------------------------------------------------------
+
+		/**
+		 * Método para obter uma lista com os nome dos equipamentos
+		 * 
+		 * @author Wellington
+		 * @version 1.0
+		 * @since 1.0
+		 * @param modulo módulo
+		 * @param equips lista com IDs dos equipamentos
+		 * @return lista com os nomes dos equipamentos selecionados
+		 * 
+		 */
+
+		public String[] equipmentsName(String modulo, List<String> equips) {
+			
+			System.out.println(equips.size());
+
+			String[] names = new String[equips.size()];
+
+			String sql = "SELECT name FROM " + modulo + "_equipment WHERE visible = 1 AND equip_id IN(";
+			
+			for(int l = 0; l < equips.size(); l++) {
+				 sql += equips.get(l);
+				 
+				 // ADICIONA VIRGULA
+				 if(l != (equips.size() - 1))
+					 sql += ", ";				 
+			}	
+			
+			sql += ") ";
+
+			try {
+				
+				conn.start(1);
+
+				// GET CONNECTION
+				conn.prepare(sql);
+				MapResult result = conn.executeQuery();
+				
+				int i = 0;
+
+				if (result != null) {
+
+					for (RowResult rs : result) {
+
+						names[i] = rs.getString(1);
+						
+						i++; // INC
+
+					}
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				conn.close();
+			}
+
+			return names;
+		}
+
 
 	// --------------------------------------------------------------------------------------------------------------
 

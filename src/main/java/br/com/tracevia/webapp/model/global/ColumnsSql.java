@@ -138,7 +138,7 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         }
 
 		public String[] getKeys() {
-			return (String[]) map.keySet().toArray();
+			return map.keySet().toArray(new String[map.size()]);
 		}
         
     }

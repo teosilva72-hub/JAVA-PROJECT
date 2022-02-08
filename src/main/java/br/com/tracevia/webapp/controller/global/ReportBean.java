@@ -60,7 +60,7 @@ public class ReportBean {
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
-	public boolean 	isSat = false, haveTotal, multiSheet = true, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
+	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false;
 	
 	public String totalType = "standard";
 	public String 	module = "default";
@@ -392,6 +392,10 @@ public class ReportBean {
 	
 	public void defineMultiSheet(boolean multiSheet) {
 		this.multiSheet = multiSheet;
+	}
+	
+	public void defineMultiEquipTab(boolean equipSheet) {
+		this.equipSheet = equipSheet;
 	}
 	
 	public void defineCaseSensitive() {
@@ -730,6 +734,8 @@ public class ReportBean {
 			if (report.IDs.isEmpty())
 				report.IDs.addAll(idSearch);
 			
+			System.out.println(idSearch);
+			
 			// -------------------------------------------------------------------------------------
 		
 			// TABLE DINAMIC HEADER
@@ -750,7 +756,7 @@ public class ReportBean {
 			// -------------------------------------------------------------------------------------	
 				      		     						
 			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheet, classSubHeader);
 			
 			 else generateSpecialFile(model, specialName);
 		     
@@ -848,8 +854,14 @@ public class ReportBean {
 				} else {
 					d = lines[col[0]];
 				}
-	
-				Date dateReport = formatter.parse(d);
+				
+				Date dateReport;
+				
+				try {					
+					dateReport = formatter.parse(d);
+				} catch (ParseException e ) {
+					continue;
+				}
 				
 				step = calendar.getTime();
 				
