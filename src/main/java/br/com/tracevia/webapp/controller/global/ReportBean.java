@@ -462,10 +462,10 @@ public class ReportBean {
 	public String genPeriodMS(String[] time) {
 		switch (time[1].toUpperCase()) {
 			case "MINUTE":
-				return String.format("CAST(CONCAT(%1$s, ' ', DATEPART(HOUR, %1$s), ':', FLOOR(DATEPART(MINUTE, %1$s) / %2$s) * %2$s, ':00') as DATETIME)", periodColumn, time[0]);
+				return String.format("CONVERT(DATETIME, CONCAT(FORMAT(%1$s, 'dd/MM/yyyy'), ' ', DATEPART(HOUR, %1$s), ':', FLOOR(DATEPART(MINUTE, %1$s) / %2$s) * %2$s, ':00'), 103)", periodColumn, time[0]);
 
 			case "HOUR":
-				return String.format("CAST(CONCAT(%1$s, ' ', FLOOR(DATEPART(HOUR, %1$s) / %2$s) * %2$s, ':00:00') as DATETIME)", periodColumn, time[0]);
+				return String.format("CONVERT(DATETIME, CONCAT(FORMAT(%1$s, 'dd/MM/yyyy'), ' ', FLOOR(DATEPART(HOUR, %1$s) / %2$s) * %2$s, ':00:00'), 103)", periodColumn, time[0]);
 		
 			default:
 				return periodColumn;
@@ -727,7 +727,7 @@ public class ReportBean {
 
 					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					if (queryMS != null)
-						queryMS += String.format("%s %s BETWEEN CAST('%s' as DATE) AND CAST('%s' as DATE)", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
+						queryMS += String.format("%s %s BETWEEN CONVERT(DATE, '%s', 103) AND CONVERT(DATE, '%s', 103)", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					count++;
 				}
 			}
