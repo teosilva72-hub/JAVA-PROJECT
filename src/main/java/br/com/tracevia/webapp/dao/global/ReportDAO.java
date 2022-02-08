@@ -89,7 +89,7 @@ public class ReportDAO {
                         String[] row = new String[columnsNumber];
                         
                         for (int idx = 1; idx <= columnsNumber; idx++) {
-                            String name = keys[idx];
+                            String name = keys[idx - 1];
                             if (!custom)
                                 this.columnName.add(name);
         
