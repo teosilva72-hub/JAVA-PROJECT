@@ -22,8 +22,8 @@
 	    <f:viewAction onPostback="true" action="#{reportBean.isSat('true')}" />
 	
 		<!-- CALL REPORT TYPE -->
-		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setTable('VBVData')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('EquipmentID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s',
 		satLabels.global_date_column, satLabels.global_interval_column, satLabels.class_light_vehicles_column, satLabels.class_heavy_vehicles_2_axles, satLabels.class_heavy_vehicles_3_axles,
 		satLabels.class_heavy_vehicles_4_axles, satLabels.class_heavy_vehicles_5_axles, satLabels.class_heavy_vehicles_6_axles, satLabels.class_heavy_vehicles_7_axles,
@@ -34,9 +34,17 @@
 		ROUND(AVG(IF(classe = `6` OR classe = `4N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `7` OR classe = `5N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `8` OR classe = `6N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `10` OR classe = `7N`, gross, NULL )), 0);
 		ROUND(AVG(IF(classe = `11` OR classe = `8N`, gross, NULL )), 0); ROUND(AVG(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), gross, NULL )), 0)')}" />
+
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME);
+		ROUND(AVG(CASE WHEN classe = `1` OR (axlNumber &lt; 10) OR classe= `9` OR classe = `2N` OR classe = `3` OR (classe = `5` AND gross &lt;= 3650) THEN gross ELSE NULL END), 0); 
+		ROUND(AVG(CASE WHEN classe = `2` OR classe = `2A` THEN gross ELSE NULL END), 0); ROUND(AVG(CASE WHEN classe = `4` OR classe = `4A` OR classe = `3N` THEN gross ELSE NULL END), 0);
+		ROUND(AVG(CASE WHEN classe = `6` OR classe = `4N` THEN gross ELSE NULL END), 0); ROUND(AVG(CASE WHEN classe = `7` OR classe = `5N` THEN gross ELSE NULL END), 0);
+		ROUND(AVG(CASE WHEN classe = `8` OR classe = `6N` THEN gross ELSE NULL END), 0); ROUND(AVG(CASE WHEN classe = `10` OR classe = `7N` THEN gross ELSE NULL END), 0);
+		ROUND(AVG(CASE WHEN classe = `11` OR classe = `8N` THEN gross ELSE NULL END), 0); ROUND(AVG(CASE WHEN classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9) THEN gross ELSE NULL END), 0)')}" />
+		
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(5, 'MINUTE', periodsLabels.period_5_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'MINUTE', periodsLabels.period_6_minutes)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(10, 'MINUTE', periodsLabels.period_10_minutes)}" />
@@ -48,8 +56,8 @@
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('data', reportsLabels.reports_select_date, true, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('siteID', reportsLabels.reports_select_equipment, 'sat_equipment.equip_id|name', false, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipment, 'tblEquipment.EquipmentID|EquipmentName', false, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_classes, 'filter_weighing.id_weighing|name' , true, true)}" />
 
     </f:metadata>

@@ -4,8 +4,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+
+import javax.faces.context.FacesContext;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -865,8 +869,10 @@ public class ExcelUtil {
 			int dx1, int dy1, int dx2, int dy2, int resize) {
 		
 		try {
+			String current = FacesContext.getCurrentInstance().getExternalContext().getRealPath("");
+			Path path = Paths.get(current, "resources", "images", "home", logo);
 
-			InputStream my_banner_image = new FileInputStream(logo);
+			InputStream my_banner_image = new FileInputStream(path.toString());
 
 			byte[] bytes = IOUtils.toByteArray(my_banner_image);	
 
@@ -2448,7 +2454,7 @@ public class ExcelUtil {
 				    index = lin + (day * periodRange);
 			 		
 					row = sheet.getRow((short) rowIndex);	
-									
+
 					try {
 																																				
 					 if(values.get(index)[col].matches(NUMBER_REGEX))
