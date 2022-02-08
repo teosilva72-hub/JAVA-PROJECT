@@ -89,7 +89,7 @@ public class ReportDAO {
                         String[] row = new String[columnsNumber];
                         
                         for (int idx = 1; idx <= columnsNumber; idx++) {
-                            String name = keys[idx];
+                            String name = keys[idx - 1];
                             if (!custom)
                                 this.columnName.add(name);
         
@@ -306,8 +306,8 @@ public class ReportDAO {
 	// ------------------------------------------------------------------------------------
 	
 	  private String translateValues(String value) {
-		  					    	
-	    	switch (value) {
+		  				  					    	
+	    	switch (value == null ? "" : value) {
 	    	
 				case "N": return localeDirection.getStringKey("directions_north");
 				case "S": return localeDirection.getStringKey("directions_south");
@@ -330,9 +330,10 @@ public class ReportDAO {
 	    		case " < 1 minute": return localeReport.getStringKey("reports_value_less_than_1_minute");
 	    		case " > 1 minute and < 2 minutes": return localeReport.getStringKey("reports_value_between_1_and_2_minutes_option");
 	    		case " > 3 minutes": return localeReport.getStringKey("reports_value_greater_than_3_minutes_option");
-	    						    		    		
+	    			    						    		    		
 	    		default: return value;
 	    	}
+	    			  
 	    }
 	  
 	  // ------------------------------------------------------------------------------------

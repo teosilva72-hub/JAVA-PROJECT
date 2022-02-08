@@ -12,50 +12,44 @@
    <h:body>
    
    
-   					<!-- REAL TIME  -->
+   		<!-- REAL TIME  -->
 
- 						<li class="nav-item">
- 
-    					<a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link"> <!-- REALTIME MENU -->	 
-    					<i class="fas fa-road icon"></i><span class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
-						</a>
+		<li class="nav-item">
 
-						<ul class="collapse list-unstyled" id="realTimeSubmenu">  <!-- REALTIME SUBMENU -->
-						
-						<!-- REALTIME ITEM -->
-	
-						<li class="nav-item">
-						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/realtime/realtime.xhtml?faces-redirect=true')}" value="">
-						<i class="fas fa-map-signs icon-sub"></i>
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
-						</h:commandLink>
-						</li>
-				  													
-						<!---->
-						
-						<!-- QUADRO SAT -->
-	
-						<li class="nav-item">
-						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/board/sat/sat-board-map.xhtml?faces-redirect=true')}" value="">
-						<i class="fas fa-window-maximize icon-sub"></i>
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_sat_board}</span>
-						</h:commandLink>
-						</li>
-				  													
-						<!---->
-						
-						<!-- MANUTENCAO
-	
-						<li class="nav-item">
-						<h:commandLink class="nav-link" action="#{navigationController.redirectToURL('/maintenance/sat_maintenance.xhtml?faces-redirect=true')}" value="">
-						<i class="fas fa-th icon-sub"></i>
-						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_maintenance}</span>
-						</h:commandLink>
-						</li> -->
-				  													
-						<!---->
+		<a href="#realTimeSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link">
+			<!-- REALTIME MENU -->
+			<i class="fas fa-road icon"></i><span
+				class="text">#{dashboardLabels.dashboard_sidebar_menu_real_time}</span>
+		</a>
 
-						</ul></li>
+		<ul class="collapse list-unstyled" id="realTimeSubmenu">
+			<!-- REALTIME SUBMENU -->
+
+			<ui:fragment rendered="#{loginAccount.mapEnabled}">
+				<li class="nav-item">
+					<h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/map/map.xhtml?faces-redirect=true')}" value="">
+						<i class="fas fa-map-marked-alt icon-sub"></i>
+						<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_gis_map}</span>
+					</h:commandLink>
+				</li>
+			</ui:fragment>
+
+			<!-- REALTIME ITEM -->
+
+			<li class="nav-item">
+				<h:commandLink class="nav-link"
+					action="#{navigationController.redirectToURL('/realtime/realtime.xhtml?faces-redirect=true')}"
+					value="">
+					<i class="fas fa-map-signs icon-sub"></i>
+					<span class="text-sub">#{dashboardLabels.dashboard_sidebar_sub_menu_real_time_interface}</span>
+				</h:commandLink>
+			</li>
+
+			<!---->
+
+		</ul>
+	</li>
 				<!---->
 
 				<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -109,6 +103,36 @@
 						value="">
 						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
 						<span class="text-sub-item">No Translate - Peso por tempo</span>
+					</h:commandLink></li>
+				<!---->
+
+				<!-- Pesagem -->
+
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/reports/sat/eco101/weighing/weighing.xhtml')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub-item">No Translate - Peso</span>
+					</h:commandLink></li>
+				<!---->
+				
+				<!-- Tipo por classes -->
+
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/reports/sat/eco101/class/class.xhtml')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub-item">No Translate - Tipo por classes</span>
+					</h:commandLink></li>
+				<!---->
+				
+				<!-- Velocidade -->
+
+				<li class="nav-item"><h:commandLink class="nav-link"
+						action="#{navigationController.redirectToURL('/reports/sat/eco101/speed/speed.xhtml')}"
+						value="">
+						<i class="fas fa-arrow-circle-right icon-sub-item"></i>
+						<span class="text-sub-item">No Translate - Velocidade</span>
 					</h:commandLink></li>
 				<!---->
 					
