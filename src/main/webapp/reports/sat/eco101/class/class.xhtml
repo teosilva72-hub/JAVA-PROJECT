@@ -41,7 +41,7 @@
 		SUM(IF(classe = `11` OR classe = `8N`, 1, 0)); SUM(IF(classe = `E9` OR classe = `9N` OR (classe=`UC` AND axlNumber = 9), 1, 0));
 		SUM(IF(classe = `10N` OR (classe=`UC` AND axlNumber &gt;= 10), 1, 0)); SUM(1)')}" />
 
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME);
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME);
 		SUM(CASE WHEN classe = `9` THEN 1 ELSE 0 END); SUM(CASE WHEN classe = `1` OR (classe = `UC` AND axlNumber &lt; 10) OR classe = `2N` THEN 1 ELSE 0  END); 
         SUM(CASE WHEN classe = `3` THEN 1 ELSE 0 END); SUM(CASE WHEN classe = `5` THEN 1 ELSE 0 END); SUM(CASE WHEN classe = `2` OR classe = `2A` THEN 1 ELSE 0 END); SUM(CASE WHEN classe = `4` OR classe = `4A` OR classe = `3N` THEN 1 ELSE 0 END);
 		SUM(CASE WHEN classe = `6` OR classe = `4N` THEN 1 ELSE 0 END); SUM(CASE WHEN classe = `7` OR classe = `5N` THEN 1 ELSE 0 END);

@@ -731,7 +731,7 @@ public class ReportBean {
 
 					query += String.format("%s DATE(%s) BETWEEN STR_TO_DATE('%s', '%%d/%%m/%%Y') AND STR_TO_DATE('%s', '%%d/%%m/%%Y')", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					if (queryMS != null)
-						queryMS += String.format("%s %s BETWEEN CONVERT(DATE, '%s', 103) AND CONVERT(DATE, '%s', 103)", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
+						queryMS += String.format("%s %s BETWEEN CONVERT(DATE, '%s', 103) AND DATEADD(DAY, 1, CONVERT(DATE, '%s', 103))", count > 0 ? " AND" : "", search[0], dateStart, dateEnd);
 					count++;
 				}
 			}
@@ -860,10 +860,10 @@ public class ReportBean {
 			
 			// -------------------------------------------------------------------------------------	
 				      		     						
-			// if(!special)										
-		    	//model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
-		//	
-			// else generateSpecialFile(model, specialName);
+			 if(!special)										
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
+			
+			 else generateSpecialFile(model, specialName);
 		     
 		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
