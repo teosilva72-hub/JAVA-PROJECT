@@ -46,7 +46,7 @@ public class ReportBean {
 	public String idTable;
 	public List<String> columnsName = new ArrayList<>(); 
 	public List<String> searchParameters,
-						searchParametersMS;
+						searchParametersMS = new ArrayList<>();
 		
 	private final String dateFormat = "dd/MM/yyyy";
 	private final String datetimeFormat = "dd/MM/yyyy HH:mm";
@@ -634,7 +634,7 @@ public class ReportBean {
 				
 		String query = "SELECT ";
 		String queryMS = null;
-		if (searchParametersMS != null)
+		if (!searchParametersMS.isEmpty())
 			queryMS = "SELECT ";
 		for (String col : columnsTemp) {
 			String column = columns != null ? searchParameters.get(Integer.parseInt(col)) : col;
@@ -838,7 +838,7 @@ public class ReportBean {
 			
 			if (report.IDs.isEmpty())
 				report.IDs.addAll(idSearch);
-			
+							
 			System.out.println(idSearch);
 			
 			// -------------------------------------------------------------------------------------
@@ -860,10 +860,10 @@ public class ReportBean {
 			
 			// -------------------------------------------------------------------------------------	
 				      		     						
-			 if(!special)										
-		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheet, classSubHeader);
-			
-			 else generateSpecialFile(model, specialName);
+			// if(!special)										
+		    	//model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, report.IDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, classSubHeader);
+		//	
+			// else generateSpecialFile(model, specialName);
 		     
 		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    

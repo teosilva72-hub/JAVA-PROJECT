@@ -30,9 +30,9 @@
 		<!-- CALL REPORT TYPE -->
 		<f:viewAction onPostback="true" action="#{reportBean.setTable('tb_vbv')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('siteID')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, 'SITE', satLabels.speed_50_km, satLabels.speed_50km_70km, satLabels.speed_70_km_90km, satLabels.speed_90_km_120km, satLabels.speed_120_150km, satLabels.speed_over_150km, satLabels.global_total_vehicles_column))}" />
 	
-		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; siteID; SUM(speed &lt; 50); SUM(speed &gt;= 50 AND speed &lt; 70); SUM(speed &gt;= 70 AND speed &lt; 90); SUM(speed &gt;= 90 AND speed &lt; 120); SUM(speed &gt;= 120 AND speed &lt; 150); SUM(speed &gt;= 150); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = tb_vbv.lane')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_data_siteID')}" />
 	   	<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
