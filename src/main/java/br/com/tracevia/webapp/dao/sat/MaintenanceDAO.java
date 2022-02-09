@@ -70,13 +70,13 @@ public class MaintenanceDAO {
 			int hourIndex = 0;
 							
 			String select = "SELECT DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d') AS data, " +
-						"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') AS intervals, " +
+						"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as DATETIME),'%H:%i') AS intervals, " +
 						"d.EQ_ID 'siteId', " +
 					    "SUM(d.ONLINE_STATUS) 'Status', AVG(eq.number_lanes) 'lanes' " +
 					    "FROM tb_status d " +
 						"INNER JOIN sat_equipment eq on eq.equip_id = d.EQ_ID " +
 						"WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
-						"GROUP BY DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d'), DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i'), d.EQ_ID " +
+						"GROUP BY DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d'), DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as DATETIME),'%H:%i'), d.EQ_ID " +
 						"ORDER BY MAX(ID) ASC";
 				
 			try {
@@ -201,13 +201,13 @@ public class MaintenanceDAO {
 			int hourIndex = 0;
 					
 			String select = "SELECT DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d') AS data, " +
-					"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') AS intervals, d.NOME_ESTACAO 'siteId', " +
+					"DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as DATETIME),'%H:%i') AS intervals, d.NOME_ESTACAO 'siteId', " +
 					"d.NOME_FAIXA 'faixa', AVG(d.VOLUME_TOTAL) 'volume'" +
 					"FROM tb_dados15 d " +
 					"INNER JOIN sat_equipment eq on eq.equip_id = d.NOME_ESTACAO " +
 					"WHERE d.DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
 					"GROUP BY DATE_FORMAT(d.DATA_HORA,'%Y-%m-%d'),  " +
-					"	DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as TIME),'%H:%i') " +
+					"	DATE_FORMAT(CAST(CONCAT(HOUR(d.DATA_HORA), ':', MINUTE(d.DATA_HORA) - MINUTE(d.DATA_HORA) % 15, ':00') as DATETIME),'%H:%i') " +
 					"	, d.NOME_ESTACAO, d.NOME_FAIXA " +
 					"ORDER BY MAX(ID_DADO) ASC";
 			
