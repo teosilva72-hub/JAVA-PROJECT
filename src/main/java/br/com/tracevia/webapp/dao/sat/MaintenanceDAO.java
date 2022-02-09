@@ -92,7 +92,7 @@ public class MaintenanceDAO {
 					.replace("%Y-%m-%d", "yyyy-MM-dd")
 					.replace("HOUR(", "DATEPART(HOUR, ")
 					.replace("MINUTE(", "DATEPART(MINUTE, ")
-					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, %s, ? ", 24 * 60 - 1))
+					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, -%s, CONVERT(DATETIME, ?, 101) ", 24 * 60 - 1))
 					.replace("%H:%i", "hh:mm"));			
 				conn.setString(1, currentDate);		
 				conn.setString(2, currentDate);
@@ -222,7 +222,7 @@ public class MaintenanceDAO {
 					.replace("%Y-%m-%d", "yyyy-MM-dd")
 					.replace("HOUR(", "DATEPART(HOUR, ")
 					.replace("MINUTE(", "DATEPART(MINUTE, ")
-					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, %s, ? ", 24 * 60 - 1))
+					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(MINUTE, -%s, CONVERT(DATETIME, ?, 101) ", 24 * 60 - 1))
 					.replace("%H:%i", "hh:mm"));			
 				conn.setString(1, currentDate);		
 				conn.setString(2, currentDate);
