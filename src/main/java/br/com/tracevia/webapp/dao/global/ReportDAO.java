@@ -47,7 +47,7 @@ public class ReportDAO {
        
         int count = 0;
     	String newQuery = query;
-    	String newQueryMS = forMS.replace("$period", "MSperiod");
+    	String newQueryMS = forMS != null ? forMS.replace("$period", "MSperiod") : null;
     	List<String[]> lines = new ArrayList<>();
     	List<String> field = new ArrayList<>();
     	List<String[]> allOptions = new ArrayList<>();

@@ -77,8 +77,11 @@ public class ColumnsSql extends Structure implements Structure.ByReference {
         public int getInt(int integer) throws Exception {
         	RowSql row = cols[integer - 1];
         	byte[] b = row.getBytes();
-        	if (row.type == 1)
-        		return Integer.parseInt(new String(row.getBytes(), StandardCharsets.UTF_8));
+        	if (row.type == 1) {
+				String value = new String(row.getBytes(), StandardCharsets.UTF_8);
+				
+				return Integer.parseInt(value.contains(".") ? value.split("\\.")[0] : value);
+			}
         	else
         		return ByteBuffer.wrap(new byte[] {b[3], b[2], b[1], b[0]}).getInt();
         }
