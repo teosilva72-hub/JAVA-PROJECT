@@ -28,7 +28,7 @@
 				
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(siteID = $custom@equip); SUM(1)')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(data, `dd/MM/yyyy`); CAST($period as TIME); SUM(CASE WHEN siteID = $custom@equip THEN 1 ELSE 0 END); SUM(1)')}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_siteID_data')}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setUseIndex('idx_dataDesc_siteID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('data')}" />
