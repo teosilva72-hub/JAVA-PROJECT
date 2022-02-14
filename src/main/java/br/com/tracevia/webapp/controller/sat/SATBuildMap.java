@@ -98,6 +98,7 @@ public class SATBuildMap {
 							// COMPARA IDS ENTRE AS LISTAS
 							if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
+								satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 								satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 								satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 								satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -206,7 +207,7 @@ public class SATBuildMap {
 						for (int s = 0; s < equips.getSatList().size(); s++) { // FOR START
 
 							SAT satListObj = new SAT();
-							pass = true; // VERIFICA SE HÃ� DADOS NA COMPARATIVO ENTRE LISTAS
+							pass = true; // VERIFICA SE HÁ DADOS NA COMPARATIVO ENTRE LISTAS
 
 							// LISTA DE SATS COM DADOS DISPONIVEIS
 							for (int r = 0; r < satListValuesAux.size(); r++) {
@@ -214,6 +215,7 @@ public class SATBuildMap {
 								// COMPARA IDS ENTRE AS LISTAS
 								if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s).getEquip_id()) {
 
+									satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 									satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 									satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 									satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -314,6 +316,7 @@ public class SATBuildMap {
 									if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 											.getEquip_id()) {
 
+										satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 										satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 										satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 										satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());
@@ -397,6 +400,7 @@ public class SATBuildMap {
 										if (satListValuesAux.get(r).getEquip_id() == equips.getSatList().get(s)
 												.getEquip_id()) {
 
+											satListObj.setLastPackage(satListValuesAux.get(r).getLastPackage());
 											satListObj.setLastRegister(satListValuesAux.get(r).getLastRegister());
 											satListObj.setQuantidadeS1(satListValuesAux.get(r).getQuantidadeS1());
 											satListObj.setQuantidadeS2(satListValuesAux.get(r).getQuantidadeS2());

@@ -60,7 +60,7 @@ public class ReportBean {
 	
 	public String 	jsTable, jsTableScroll, chartTitle, imageName, vAxis;	
 	
-	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
+	public boolean 	isSat = false, haveTotal, multiSheet = true, equipSheetName = false, directionsOnSheet = false, isChart = false, special = false, headerInfo = false, classHead = false, caseSensitive = false,
 			groupId = false;
 	
 	public String totalType = "standard";
@@ -375,6 +375,10 @@ public class ReportBean {
 		this.sheetName = sheetName;
 	}
 	
+	public void defineDirectionsOnSheet(boolean directionsOnSheet) {
+		this.directionsOnSheet = directionsOnSheet;
+	}
+		
 	public void defineModule(String module) {
 		this.module = module;
 	}
@@ -683,7 +687,7 @@ public class ReportBean {
 						aliasMS = columnMS.split("@");
 					query += String.format("%s as %s, ", alias[0], group);
 					
-					System.out.println("ALIAS: "+alias[0]+" QUERY1: "+query);
+				//	System.out.println("ALIAS: "+alias[0]+" QUERY1: "+query);
 										
 					if (columnMS != null)
 						queryMS += String.format("%s as %s, ", aliasMS[0], groupMS);
@@ -701,7 +705,7 @@ public class ReportBean {
 						order = String.format("STR_TO_DATE(CONCAT(%s, %s), '%%d/%%m/%%Y %%H:%%i:%%s')", alias[1], group);
 						group = String.format("%s, %s", alias[1], group);
 						
-						System.out.println("QUERY2: "+query);
+						//System.out.println("QUERY2: "+query);
 						
 						if (columnMS != null) {
 							if (columnDate.contains("@")) {
@@ -718,7 +722,7 @@ public class ReportBean {
 					}
 				} else {
 					query += String.format("%s as %s, ", column, group);
-					System.out.println("QUERY3: "+query);
+				//	System.out.println("QUERY3: "+query);
 					if (columnMS != null)
 						queryMS += String.format("%s as %s, ", columnMS, groupMS);
 				}
@@ -791,7 +795,7 @@ public class ReportBean {
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
-							System.out.println(search.left[0]);
+						//	System.out.println(search.left[0]);
 							
 							if(search.left[0].equals("siteID"))
 								equipFilter = search.left[0];
@@ -818,6 +822,7 @@ public class ReportBean {
 					String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					
 					//System.out.println(String.format("%s-filter", search.left[1]));
+					
 					if (!f.isEmpty())
 						filter = String.format("%s'%s'", caseSensitive ? "BINARY " : "", f);
 					if (search.left[0].equals(idTable))
@@ -857,10 +862,10 @@ public class ReportBean {
 				if(equipSheetName)
 					group +=", "+equipFilter;
 					
-				System.out.println(group);
+				//System.out.println(group);
 				
 				query += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", group, extraGroup, orderDate != null ? orderDate + ", " : "", order);
-				System.out.println("QUERY5: "+query);
+				//System.out.println("QUERY5: "+query);
 				if (queryMS != null)
 					queryMS += String.format(" GROUP BY %s%s ORDER BY %s%s ASC", groupMS, extraGroup, orderDate != null ? orderDate + ", " : "", orderMS);
 			} else if (orderDate != null) {
@@ -872,12 +877,12 @@ public class ReportBean {
 
 			if (extraSelect != null) {
 				query = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), query, group);
-				System.out.println("QUERY6: "+query);
+				//System.out.println("QUERY6: "+query);
 				if (queryMS != null)
 					queryMS = String.format("SELECT %s FROM (%s) extraselect GROUP BY %s", String.join(",", extraSelect), queryMS, groupMS);
 			}
 			
-			System.out.println(query);
+			//System.out.println(query);
 			  
 		    // Table Fields
 			report.getReport(query, queryMS, idTable, isDivision() ? division : null);
@@ -899,11 +904,7 @@ public class ReportBean {
 					 return;
 				}				
 			}
-		
-			
-			for(String s : equipIDs)
-				System.out.println(s);
-			
+					
 		     	if (report.IDs.isEmpty())
 		     		report.IDs.addAll(idSearch);
 		
@@ -926,10 +927,10 @@ public class ReportBean {
 			
 			// -------------------------------------------------------------------------------------	
 				      		     						
-			// if(!special)										
-		    //	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, classSubHeader);
+			 if(!special)										
+		    	model.generateExcelFile(columnsInUse, report.lines, report.secondaryLines, module, equipIDs, dateStart, dateEnd, period, sheetName, fileTitle, totalType, isSat, haveTotal, multiSheet, equipSheetName, directionsOnSheet, classSubHeader);
 			
-			// else generateSpecialFile(model, specialName);
+			 else generateSpecialFile(model, specialName);
 		     
 		     SessionUtil.getExternalContext().getSessionMap().put("xlsModel", model); 		        
 		    
@@ -1081,7 +1082,7 @@ public class ReportBean {
 						//if(isEquipSheeName)
 							//model[2] = eqp[idx];
 						
-					} else {
+					} else
 						
 					//	if(!lastdate.equals(model[col[0]]))
 					//		idx++;
@@ -1132,7 +1133,7 @@ public class ReportBean {
 				//	if(isEquipSheeName)
 					//	model[2] = eqp[idx];
 					
-				} else {
+				} else
 									
 					model[col[0]] = f;
 					
