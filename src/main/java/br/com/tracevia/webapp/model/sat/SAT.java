@@ -25,7 +25,8 @@ public class SAT extends Equipments {
 	private String sentido1Abbr;
 	private String sentido2Abbr;
 	private String posicao_nivel_servico;
-	private String dataTime;
+	private String lastRegister;
+	private String lastPackage;
 						
 	public SAT(int equip_id, String table_id, String equip_type, String equip_ip, String creation_date,
 			String creation_username, String update_date, String update_username, String nome, String estrada,
@@ -35,7 +36,7 @@ public class SAT extends Equipments {
 			int quantidadeS2, int velocidadeS2, int statusInterval, String faixa1, String faixa2, String faixa3,
 			String faixa4, String faixa5, String faixa6, String faixa7, String faixa8, String qtdeFaixas,
 			String sentidos, String sentido1, String sentido2, String sentido1Abbr, String sentido2Abbr,
-			String posicao_nivel_servico, String dataTime) {
+			String posicao_nivel_servico, String lastRegister, String lastPackage) {
 		
 		super(equip_id, table_id, equip_type, equip_ip, creation_date, creation_username, update_date, update_username,
 				nome, estrada, cidade, km, linearPosX, linearPosY, mapPosX, mapPosY, mapWidth, height, linearWidth,
@@ -62,7 +63,8 @@ public class SAT extends Equipments {
 		this.sentido1Abbr = sentido1Abbr;
 		this.sentido2Abbr = sentido2Abbr;
 		this.posicao_nivel_servico = posicao_nivel_servico;
-		this.dataTime = dataTime;
+		this.lastRegister = lastRegister;
+		this.lastPackage = lastPackage;
 	}
 
 	public SAT() {
@@ -220,13 +222,20 @@ public class SAT extends Equipments {
 		this.posicao_nivel_servico = posicao_nivel_servico;
 	}
 
-	public String getDataTime() {
-		return dataTime;
+	public String getLastRegister() {
+		return lastRegister;
 	}
 
-	public void setDataTime(String dataTime) {
-		this.dataTime = dataTime;
+	public void setLastRegister(String lastRegister) {
+		this.lastRegister = lastRegister;
 	}
-	
+
+	public String getLastPackage() {
+		return lastPackage;
+	}
+
+	public void setLastPackage(String lastPackage) {
+		this.lastPackage = lastPackage;
+	}	
 			
 }

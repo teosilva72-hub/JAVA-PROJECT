@@ -690,9 +690,7 @@ public class EquipmentsDAO {
 		 */
 
 		public String[] equipmentsName(String modulo, List<String> equips) {
-			
-			System.out.println(equips.size());
-
+					
 			String[] names = new String[equips.size()];
 
 			String sql = "SELECT name FROM " + modulo + "_equipment WHERE visible = 1 AND equip_id IN(";

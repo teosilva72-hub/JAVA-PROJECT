@@ -145,7 +145,7 @@ public class ReportDAO {
         
                             String value = rs.getString(idx);
                             
-                            column[idx - 1] = value != null && value != "" ? value : "-";
+                            column[idx - 1] = value != null && value != "" ? value : "-"; // HERE
                         }
         
                         secondaryList.add(column);

@@ -508,7 +508,42 @@ public class DateTimeApplication {
 		return range;			
 
 	}
-
+	
+	// ---------------------------------------------------------------------------------------------------------------------
+	   
+	   public Integer periodRange(int periodNumber, String periodType) {
+		   
+		   int period = 0;		   
+		   
+		   if(periodNumber == 1 && periodType.equals("DAY"))
+			   period = 1;
+		   
+		   else if(periodNumber == 6 && periodType.equals("HOUR"))
+		         period = 4;
+		   
+		   else if(periodNumber == 1 && periodType.equals("HOUR"))
+			         period = 24;
+		   
+		   else if(periodNumber == 30 && periodType.equals("MINUTE"))
+		         period = 48;
+		   
+		   else if(periodNumber == 15 && periodType.equals("MINUTE"))
+		         period = 96;
+		   
+		   else if(periodNumber == 10 && periodType.equals("MINUTE"))
+		         period = 144;
+		   
+		   else if(periodNumber == 6 && periodType.equals("MINUTE"))
+		         period = 240;
+		   
+		   else if(periodNumber == 5 && periodType.equals("MINUTE"))
+		         period = 288;
+				   
+		   return period;		   
+		   
+	   }	
+	   
+	// ---------------------------------------------------------------------------------------------------------------------
 
 	public int RegistersNumbers(String startDate, String endDate, String period) {
 
@@ -983,9 +1018,9 @@ public class DateTimeApplication {
 	 */
 	public void fillEquipName(List<? extends Equipments> equip, String[][] matriz, String[] eqp, String[] siteName, int colDate, int colEquip, int lin, int range, int days, String dtInicio) { 
 
-		String da, mth; // Formatar apresenta��o
+		String da, mth; // Formatar apresentação
 
-		// dia, m�s e ano da dataInicial
+		// dia, mês e ano da dataInicial
 
 		String anoIni = dtInicio.substring(0, 4);
 		String mesIni = dtInicio.substring(5, 7);
@@ -1063,9 +1098,8 @@ public class DateTimeApplication {
 		} 		
 
 	}	// END
-
-
-	// -------------------------------------------------------------------------------------------------------------------------------------
+	
+		// -------------------------------------------------------------------------------------------------------------------------------------
 
 	//Criar o intervalo de 5 minutos
 	public void intervalo05Minutos(String[][] matriz, int col, int lin) {
