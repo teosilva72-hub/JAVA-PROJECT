@@ -74,7 +74,8 @@ public class DataSatDAO {
 	 "INNER JOIN tb_vbv v ON (v.siteID = d.nome_estacao) " +
 	 "WHERE DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 " +
 	 "GROUP BY d.DATA_HORA, d.NOME_ESTACAO " +
- 	 "ORDER BY d.NOME_ESTACAO, d.DATA_HORA ASC, v.data ASC";
+ 	// "ORDER BY d.NOME_ESTACAO, d.DATA_HORA ASC, v.data ASC";
+ 	 "ORDER BY d.DATA_HORA, d.NOME_ESTACAO DESC";
 	 
 	 try {
 			
@@ -86,7 +87,7 @@ public class DataSatDAO {
 				.replace("%H:%i", "hh:mm")
 			 	.replace("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP " + limit)
-				.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, %s, ? ", interval, time)));		
+				.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, -%s, ? ", interval, time)));		
 			conn.setString(1, currentDate);		
 			conn.setString(2, currentDate);
 			
@@ -178,7 +179,8 @@ public class DataSatDAO {
  	 "INNER JOIN tb_vbv v ON (v.siteID = d.nome_estacao) " +
  	 "WHERE eq.equip_id = ? AND DATA_HORA BETWEEN DATE_SUB($INTERVAL$) AND ? AND eq.visible = 1 "+ 
  	 "GROUP BY d.DATA_HORA " +
- 	 "ORDER BY d.DATA_HORA ASC, v.data ASC ";
+ 	 //"ORDER BY d.DATA_HORA ASC, v.data ASC ";
+ "ORDER BY d.DATA_HORA DESC";
  	 					
  	 	try {
  			
@@ -190,7 +192,7 @@ public class DataSatDAO {
 					.replace("%H:%i", "hh:mm")
 					.replace("IFNULL", "ISNULL")
 					.replaceFirst("SELECT", "SELECT TOP 1")
-					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, %s, ? ", interval, time)));
+					.replace("DATE_SUB($INTERVAL$", String.format("DATEADD(%s, -%s, ? ", interval, time)));
  			conn.setInt(1, equip);	
  			conn.setString(2, currentDate);
  			conn.setString(3, currentDate);

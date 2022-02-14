@@ -30,9 +30,9 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setIdTable('EquipmentID')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnsName(''.format('%s, %s, %s, %s, %s, %s, %s, %s', satLabels.global_date_column, satLabels.global_interval_column, satLabels.speed_20_km, satLabels.speed_20_40_km, satLabels.speed_40_60_km, satLabels.speed_60_80_km, satLabels.speed_over_80_km, satLabels.global_total_vehicles_column))}" />
 	   
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(data, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(speed &lt; 20); SUM(speed &gt;= 20 AND speed &lt; 40); SUM(speed &gt;= 40 AND speed &lt; 60); SUM(speed &gt;= 60 AND speed &lt; 80); SUM(speed &gt;= 80); SUM(1)')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); SUM(CASE WHEN speed &lt; 20 THEN 1 ELSE 0 END); SUM(CASE WHEN speed &gt;= 20 AND speed &lt; 40 THEN 1 ELSE 0 END); SUM(CASE WHEN speed &gt;= 40 AND speed &lt; 60 THEN 1 ELSE 0 END); SUM(CASE WHEN speed &gt;= 60 AND speed &lt; 80 THEN 1 ELSE 0 END); SUM(CASE WHEN speed &gt;= 80 THEN 1 ELSE 0 END); SUM(1)')}" />
-	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = siteID AND q.lane = sat_vbv_ccr.lane')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParameters('DATE_FORMAT(DateTime, `%d/%m/%Y`) as sd; TIME($period)@sd; SUM(VehicleSpeed &lt; 20); SUM(VehicleSpeed &gt;= 20 AND VehicleSpeed &lt; 40); SUM(VehicleSpeed &gt;= 40 AND VehicleSpeed &lt; 60); SUM(VehicleSpeed &gt;= 60 AND VehicleSpeed &lt; 80); SUM(VehicleSpeed &gt;= 80); SUM(1)')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setSearchParametersMS('FORMAT(DateTime, `dd/MM/yyyy`); CAST($period as TIME); SUM(CASE WHEN VehicleSpeed &lt; 20 THEN 1 ELSE 0 END) as s1; SUM(CASE WHEN VehicleSpeed &gt;= 20 AND VehicleSpeed &lt; 40 THEN 1 ELSE 0 END) as s2; SUM(CASE WHEN VehicleSpeed &gt;= 40 AND VehicleSpeed &lt; 60 THEN 1 ELSE 0 END) as s3; SUM(CASE WHEN VehicleSpeed &gt;= 60 AND VehicleSpeed &lt; 80 THEN 1 ELSE 0 END) as s4; SUM(CASE WHEN VehicleSpeed &gt;= 80 THEN 1 ELSE 0 END) as s5; SUM(1) as total')}" />
+	    <f:viewAction onPostback="true" action="#{reportBean.setInnerJoin('filter_directions q ON equip_id = EquipmentID AND q.lane = LaneOrder')}" />
 		<f:viewAction onPostback="true" action="#{reportBean.createReport()}" />
 
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriodColumn('DateTime')}" />
@@ -45,12 +45,12 @@
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(6, 'HOUR', periodsLabels.period_6_hours)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setPeriod(1, 'DAY', periodsLabels.period_day)}" />
 		
-		<f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" />
+		<!-- <f:viewAction onPostback="true" action="#{reportBean.setDivision('filter_directions, direction, direction')}" /> -->
 		<f:viewAction onPostback="true" action="#{reportBean.setColumnDate('0@1')}" />
 		
 		<f:viewAction onPostback="true" action="#{reportBean.setDateSearch('DateTime', reportsLabels.reports_select_date, true, true)}" />
 		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('EquipmentID', reportsLabels.reports_select_equipments, 'tblEquipment.EquipmentID|EquipmentName', false, true)}" />
-		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('classe', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
+		<f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('TrafficClassID', reportsLabels.reports_select_vehicles, 'filter_vehicles.id_vehicle|name' , true, true)}" />
 		<!-- <f:viewAction onPostback="true" action="#{reportBean.setFilterSearch('', 'Sentidos', 'filter_direction.id_direction|name' , true, true)}" /> -->
 			               
     </f:metadata>

@@ -81,6 +81,7 @@ public class ReportBean {
 	private ExcelTemplate model;
 	private List<String> columnsInUse = new ArrayList<>(); 
 	private List<String> columnsHeader = new ArrayList<>(); 
+	private HashMap<String, Integer> moreInterval = new HashMap<>();
 	private HashMap<String, List<String>> listArgs = new HashMap<>(); 
 	private List<String[]> dateSearch = new ArrayList<>();
 	private List<Pair<String[], List<String[]>>> filterSearch = new ArrayList<>();
@@ -239,38 +240,52 @@ public class ReportBean {
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, false);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, false, false);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory) {
-		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, mandatory);
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, mandatory, false);
+	}
+	
+	public void setFilterSearch(String filterSearch, String nameColumn, boolean multiple, boolean mandatory, boolean setInterval) {
+		setFilterSearch(filterSearch, nameColumn, String.format("%s.%s", table, filterSearch), "", multiple, mandatory, setInterval);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, "", false, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", false, false, false);
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, where, false, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, where, false, false, false);
 	}
 	
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, false, false);
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, mandatory);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, mandatory, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, boolean multiple, boolean mandatory, boolean setInterval) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, "", multiple, mandatory, setInterval);
 	}
 
 	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple) {
-		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, false);
+		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, false, false);
 	}
 
-	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory) {
+		setFilterSearch(filterSearch, nameColumn, tableWithName, where, multiple, mandatory, false);
+	}
+
+	public void setFilterSearch(String filterSearch, String nameColumn, String tableWithName, String where, boolean multiple, boolean mandatory, boolean setInterval) { // Esse metodo pode ser mais rapido do que o metodo acima, pois, te permite escolher uma tabela menor sÃ³mente com os campos necessarios
 		String[] tableName = tableWithName.split("\\.");
 			
 		String extra1 = multiple ? "multiple" : "";
 		String extra2 = mandatory ? "required" : "";
+		if (setInterval)
+			moreInterval.put(nameColumn, 0);
 		
 		if (report != null)
 			
@@ -769,7 +784,10 @@ public class ReportBean {
 				if (search.left[2].equals("multiple")) {
 					String[] filterArray = mapArray.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					String newFilter = "";
-															
+
+					if (moreInterval.containsKey(search.left[1]))
+						moreInterval.put(search.left[1], filterArray.length);
+					
 					if (filterArray != null) {						
 						for (String f : filterArray) { // HERE
 							
@@ -796,8 +814,7 @@ public class ReportBean {
 						
 						filter = newFilter.substring(2);
 					}
-				}
-				else {
+				} else {
 					String f = map.get(String.format("%s-filter", search.left[1]).replaceAll(" ", ""));
 					
 					//System.out.println(String.format("%s-filter", search.left[1]));
@@ -967,7 +984,10 @@ public class ReportBean {
 							
 		Arrays.fill(model, "0"); // HERE
 									
+		Arrays.fill(model, "0");
+		int amnt = moreInterval.values().stream().reduce(1, (x, y) -> x * y);
 		int count = 0;
+		int fill = 0;
 		List<String[]> temp;
 		int interval;
 		Date step;
@@ -1036,12 +1056,19 @@ public class ReportBean {
 				}
 				
 				step = calendar.getTime();
+
+				String f = formatter.format(step);
+				if (sep) {
+					String[] split = f.split(" ");
+					model[col[0]] = split[0];
+					model[col[1]] = split[1];
+				} else
+					model[col[0]] = f;
 				
 				int idx = 0;
 											
 				while (step.before(dateReport) && step.before(date[1])) {
-					String f = formatter.format(step);
-															
+					f = formatter.format(step);
 					if (sep) {
 						String[] split = f.split(" ");	
 						
@@ -1060,13 +1087,11 @@ public class ReportBean {
 					//		idx++;
 						
 						model[col[0]] = f;
-						
-						//if(isEquipSheeName)
-						//	model[1] = eqp[idx];
-						
-					}										
-	
-					newList.add(model.clone());
+		
+					for (int i = 0; i < amnt; i++) {
+						newList.add(model.clone());
+					}
+
 					calendar.add(interval, Integer.parseInt(period[0]));
 					step = calendar.getTime();
 					
@@ -1075,7 +1100,19 @@ public class ReportBean {
 				}
 			
 				newList.add(lines);
-				calendar.add(interval, Integer.parseInt(period[0]));
+				if (dateReport.after(step) || dateReport.equals(step)) {
+					if (fill == 0 || fill == amnt)
+						fill = 1;
+					else
+						for (; fill < amnt; fill++)
+							newList.add(model.clone());
+					calendar.add(interval, Integer.parseInt(period[0]));
+				} else
+					fill++;
+
+				if (temp.indexOf(lines) == temp.size() - 1 && fill != 0 && fill != amnt)
+					for (; fill < amnt; fill++)
+							newList.add(model.clone());
 			}
 						 	
 			step = calendar.getTime();
@@ -1099,15 +1136,10 @@ public class ReportBean {
 									
 					model[col[0]] = f;
 					
-					//if(!lastdate.equals(model[col[0]]))
-					//	idx++;
-				
-			//	if(isEquipSheeName)
-					//model[1] = eqp[idx];
-				
+				for (int i = 0; i < amnt; i++) {
+					newList.add(model.clone());
 				}
 	
-				newList.add(model.clone());
 				calendar.add(interval, Integer.parseInt(period[0]));
 				step = calendar.getTime();
 				

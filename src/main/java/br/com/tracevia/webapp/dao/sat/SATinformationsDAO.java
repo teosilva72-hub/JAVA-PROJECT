@@ -87,7 +87,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 30 MINUTE"));			
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 30, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -30, ? ")
 				.replaceAll("IFNULL", "ISNULL"));			
 			conn.setString(1, currentDate);		
 						
@@ -194,7 +194,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));			
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -45, ? ")
 				.replaceAll("IFNULL", "ISNULL"));			
 			conn.setString(1, currentDate);		
 						
@@ -303,7 +303,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT " + limit);
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, -8, ? ")
 				.replaceAll("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP " + limit));
 			conn.setString(1, currentDate);	
@@ -409,7 +409,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ? , INTERVAL 45 MINUTE"));
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -45, ? ")
 				.replaceAll("IFNULL", "ISNULL"));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);		
@@ -514,7 +514,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT 1");
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, -8, ? ")
 				.replaceAll("IFNULL", "ISNULL")
 				.replaceFirst("SELECT", "SELECT TOP 1"));
 			conn.setInt(1, equip);	
@@ -582,7 +582,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 30 MINUTE"));
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 30, ? "));				
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -30, ? "));				
 			conn.prepare_my(select);				
 			conn.setString(1, currentDate);		
 						
@@ -646,7 +646,7 @@ public class SATinformationsDAO {
 				conn.prepare_my(select
 					.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT " + limit);
  				conn.prepare_ms(select
-				 	.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+				 	.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, -8, ? ")
 					 .replaceFirst("SELECT", "SELECT TOP " + limit));
 				conn.setString(1, currentDate);	
 				conn.setString(2, currentDate);	
@@ -708,7 +708,7 @@ public class SATinformationsDAO {
 				conn.prepare_my(select
 					.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));					
 				conn.prepare_ms(select
-					.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? "));
+					.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -45, ? "));
 				conn.setString(1, currentDate);		
 							
 				MapResult result = conn.executeQuery();
@@ -766,7 +766,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 45 MINUTE"));
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, 45, ? "));
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(MINUTE, -45, ? "));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);	
 			
@@ -824,7 +824,7 @@ public class SATinformationsDAO {
 			conn.prepare_my(select
 				.replace("$INTERVAL$", " ?, INTERVAL 8 HOUR") + " LIMIT 1");
 			conn.prepare_ms(select
-				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, 8, ? ")
+				.replace("DATE_SUB($INTERVAL$", "DATEADD(HOUR, -8, ? ")
 				.replaceFirst("SELECT", "SELECT TOP 1"));
 			conn.setInt(1, equip);	
 			conn.setString(2, currentDate);	

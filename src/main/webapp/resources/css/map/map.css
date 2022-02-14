@@ -41,13 +41,17 @@ body {
 
 .grab-map {
 	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	cursor: grab;
-	cursor: -webkit-grab;
-	cursor: -moz-grab;
-	z-index: -1;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    object-fit: contain;
+    z-index: -1;
 }
 
 .grab-map:active {

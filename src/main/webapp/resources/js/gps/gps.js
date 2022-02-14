@@ -24,6 +24,7 @@ const coordToPixel = (x, y, deg, name) => {
 		s2: Number(start[1]),
 		e1: Number(end[0]),
 		e2: Number(end[1]),
+		px: map.offset().left,
 		ps: Number(start[2] / 1000 * map.height() + pad),
 		pe: Number(end[2] / 1000 * map.height() + pad),
 		x: Number(x),
@@ -71,7 +72,7 @@ const coordToPixel = (x, y, deg, name) => {
 		hypotenuse: diff.hypotenuse() / distance.hypotenuse()
 	}
 	return {
-		x: percent.hypotenuse * distance.pixel() * Math.cos(diff.radiusDiff()),
+		x: pos.px + percent.hypotenuse * distance.pixel() * Math.cos(diff.radiusDiff()),
 		y: pos.ps + percent.hypotenuse * distance.pixel() * Math.sin(diff.radiusDiff()),
 		rad: distance.radiusPixel() + diff.direction()
 	}
