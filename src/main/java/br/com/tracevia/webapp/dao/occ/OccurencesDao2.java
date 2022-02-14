@@ -23,11 +23,12 @@ public class OccurencesDao2 {
 		private transient ResultSet rs;
 
 		//CREATE OCCURRENCE
-		public String cadastroOcorrencia ( OccurenceData2 data ) throws Exception {
+		public String cadastroOcorrencia (OccurenceData2 data) throws Exception {
 System.out.println("aqui 1 ");
 
 System.out.println(data);
-			String sinistro = null;
+
+			String occ_number = null;
 			
 			//script BD
 			String query = "INSERT INTO occ_data2 (date, hora, pedagio, folio, report, sinistro, direcao, kmregistro, kminicial, kmfinal, horaregistro, horachega, politica,  tipoveic, quantidade, numero,  marca, tipo_veic, modelo, color, placa, telefone, nome, idade, saude, motivo, observacao)"
@@ -82,7 +83,8 @@ System.out.println(data);
 					if(rs != null) {
 						while(rs.next()) {	
 							//atribuindo para a variavel occ_number o �ltimo valor do banco de dados
-							sinistro= rs.getString("last_Id");
+							occ_number = rs.getString("last_Id");
+
 
 						}
 					}   	 
@@ -96,8 +98,9 @@ System.out.println(data);
 			}finally {
 				ConnectionFactory.closeConnection(conn, ps);
 			}
+
 			//retordo o valor do m�todo como o �ltimo id do banco de dados
-			return sinistro ;
+			return  occ_number;
 
 		}
 		
@@ -171,10 +174,36 @@ System.out.println(data);
 			return status;
 			}
 		
+	 public boolean lastUser(String id, String lastData, String user) throws Exception {
+			
+			boolean status = false;
+			
+			String query = "UPDATE occ_data SET lastDateUser = ?, lastUser = ? WHERE occ_number = ?";
+			DateTimeApplication dtm = new DateTimeApplication();
+			try {
+				conn = ConnectionFactory.connectToTraceviaApp();
+				ps = conn.prepareStatement(query);
+				ps.setString(1, lastData);
+				ps.setString(2, user);
+				ps.setString(3, id);
+				
+				int answer = ps.executeUpdate();
+
+				if(answer > 0) 
+					status = true;
+			}catch (SQLException alterarOcorrencia){
+				throw new Exception("Erro ao alterar dados: " + alterarOcorrencia);
+			}finally {
+				ConnectionFactory.closeConnection(conn, ps);
+			}	
+			
+			return status;
+		}
 		
 	
 		
 		//m�todo atualizar ocorr�ncia 
+
 		public boolean atualizarOcorrencia(OccurenceData2 data) throws Exception {
 			// System.out.println("DATA: "+data.getData_number()+"\nType: "+data.getAction_type());
 			boolean status = false;
@@ -215,7 +244,7 @@ System.out.println(data);
 				ps.setString(24, data.getIdade());
 				ps.setString(25, data.getSaude());
 				ps.setString(26, data.getMotivo());
-				ps.setString(26, data.getObservacao());
+				ps.setString(27, data.getObservacao());
 
 				int answer = ps.executeUpdate();
 
@@ -230,6 +259,41 @@ System.out.println(data);
 
 			return status;
 		}
+		
+		private char[] actionStartData() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		//pegando o �ltimo registro do banco de dados
+		public int GetId() throws Exception{
+
+			String sql = "SELECT max(occ_number) FROM occ_data";
+
+			int value = 0; 
+			
+			//tentar
+			try {
+				
+				conn = ConnectionFactory.connectToTraceviaApp();
+				ps = conn.prepareStatement(sql);
+				rs = ps.executeQuery();
+
+				if(rs != null) {
+					while(rs.next()) {
+
+						value = rs.getInt(1);	   			
+					}
+				}
+			}finally {
+				ConnectionFactory.closeConnection(conn, ps, rs);
+			}
+			
+			//retornando o valor do �ltimo a id para a variavel (value)
+			return value;
+
+		}
+		
 		
 		public OccurenceData2 submitPdf(int PdfGet) throws Exception {
 			TranslationMethods trad = new TranslationMethods();
@@ -315,7 +379,8 @@ System.out.println(data);
 			}
 		
 		public UserAccountBean user_id(int user) throws Exception {
-		UserAccountBean occ = new UserAccountBean();
+		
+			UserAccountBean occ = new UserAccountBean();
 		String userId = "SELECT user_id from users_register ;";
 
 		try {
@@ -468,36 +533,8 @@ System.out.println(data);
 				return occ;
 
 			}
-		
-		public int GetId() throws Exception{
-
-			String sql = "SELECT max(sinistro) FROM occ_data2";
-
-			int value = 0; 
-			
-			
-			try {
-				
-				conn = ConnectionFactory.connectToTraceviaApp();
-				ps = conn.prepareStatement(sql);
-				rs = ps.executeQuery();
-
-				if(rs != null) {
-					while(rs.next()) {
-
-						value = rs.getInt(1);	   			
-					}
-				}
-			}finally {
-				ConnectionFactory.closeConnection(conn, ps, rs);
-			}
-			
-			//retornando o valor do �ltimo a id para a variavel (value)
-			return value;
-
-		}
 
 
 		}
 		
-	
+		

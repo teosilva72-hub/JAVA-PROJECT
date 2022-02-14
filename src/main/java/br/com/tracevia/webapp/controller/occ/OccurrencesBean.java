@@ -44,9 +44,11 @@ import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import br.com.tracevia.webapp.controller.global.UserAccountBean;
+import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
 import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
+import br.com.tracevia.webapp.model.occ.OccurenceData2;
 import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
@@ -59,9 +61,18 @@ public class OccurrencesBean {
 	private OccurrencesData getPdf;
 	private UserAccountBean userId;
 	private OccurrencesDetails details;
-
-	OccurrencesDAO dao;
+	private OccurenceData2 data2;
+	OccurencesDao2 dao;
 	LocaleUtil occLabel, occMessages;
+
+	
+	
+	public OccurenceData2 getData2() {
+		return data2;
+	}
+	public void setData2(OccurenceData2 data2) {
+		this.data2 = data2;
+	}
 
 	private boolean save, edit, new_, reset, fields, enableBtn,
 	table, alterar, pdf;
