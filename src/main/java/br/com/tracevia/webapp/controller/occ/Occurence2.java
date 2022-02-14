@@ -25,6 +25,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.ServletException;
 import javax.servlet.http.Part;
 import javax.swing.ImageIcon;
@@ -42,10 +43,14 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import br.com.tracevia.webapp.controller.global.UserAccountBean;
 import br.com.tracevia.webapp.dao.occ.OccurencesDao2;
+import br.com.tracevia.webapp.dao.occ.OccurrencesDAO;
 import br.com.tracevia.webapp.methods.DateTimeApplication;
 import br.com.tracevia.webapp.methods.TranslationMethods;
 import br.com.tracevia.webapp.model.occ.OccurenceData2;
+import br.com.tracevia.webapp.model.occ.OccurrencesData;
 import br.com.tracevia.webapp.model.occ.OccurrencesDetails;
 import br.com.tracevia.webapp.util.LocaleUtil;
 
@@ -58,6 +63,7 @@ public class Occurence2 {
 private OccurenceData2  data;
 private OccurenceData2 getPdf;
 private OccurrencesDetails details;
+private UserAccountBean userId;
 
 OccurencesDao2 dao;
 LocaleUtil occLabel, occMessages;
@@ -86,7 +92,7 @@ public String getLogo() {
 
 	private String action, title_modal, message_modal, idUpdate;
 
-	private String mainPath, localPath, path, way, downloadPath, pathDownload, pathSQL, monthPdf,
+	private String mainPath, localPath, occNumber,path, way, downloadPath, pathDownload, pathSQL, monthPdf,
 	 dayPdf,  nameUser, userName; 
 	private String getFile, fileDelete, fileUpdate, pathImage, absoluteImage, imagePath;
 	private String[] listarFile, listUpdate, tableFile, imagem, FileName;
@@ -99,18 +105,8 @@ public String getLogo() {
 	private int rowkey;
 	private boolean selectedRow;
 	private List<OccurenceData2> occurrences;
-	private String dataTeste;
-	private String sinistro;
-	private 
 
-	
 
-	public String getDataTeste() {
-		return dataTeste;
-	}
-	public void setDataTeste(String dataTeste) {
-		this.dataTeste = dataTeste;
-	}
 	public boolean isEnableBtn() {
 		return enableBtn;
 	}
@@ -235,7 +231,7 @@ public String getLogo() {
 	public OccurenceData2 getData() {
 		return data;
 	}
-	public void setData( OccurenceData2 data) {
+	public void setData(OccurenceData2 data) {
 		this.data = data;
 	}
 	public OccurrencesDetails getDetails() {
@@ -243,12 +239,11 @@ public String getLogo() {
 	}
 	public void setDetails(OccurrencesDetails details) {
 		this.details = details;
-		}
-	
+	}
 	public List<OccurenceData2> getOccurrences() {
 		return occurrences;
 	}
-	
+
 	public String getAbsoluteImage() {
 		return absoluteImage;
 	}
@@ -357,8 +352,8 @@ public String getLogo() {
 	}
 	public void setMessage_modal(String message_modal) {
 		this.message_modal = message_modal;
-	}
 
+	}
 	public int getValue() {
 		return value;
 	}
@@ -392,14 +387,14 @@ public String getLogo() {
 	public void setDirectory(File directory) {
 		this.directory = directory;
 	}
+
 	public String[] getListarFile() {
 		return listarFile;
 	}
 	public void setListarFile(String[] listarFile) {
 		this.listarFile = listarFile;
 	}
-
-	public void teste() {
+public void teste() {
 		System.out.println("Estamos aqui");
 		System.out.println(getDataTeste());
 	}
@@ -465,11 +460,11 @@ public String getLogo() {
 		System.out.println("teste");
 
 		OccurencesDao2 dao = new OccurencesDao2();
-		sinistro= dao.cadastroOcorrencia(data);
-		localPath = localPath(sinistro);
+		occNumber= dao.cadastroOcorrencia(data);
+		localPath = localPath(occNumber);
 
 		//if id is non-null
-		if(sinistro != null) {
+		//if(occ_number != null) {
 			//btn
 			save = true;
 			alterar = true;
@@ -485,11 +480,11 @@ public String getLogo() {
 
 			//list occurences
 			occurrences = dao.listarOcorrencias(); // List occurrences    
-			sucess = dao.updateFilePath(localPath, sinistro); // Update path on Data Base
+			sucess = dao.updateFilePath(localPath, occNumber); // Update path on Data Base
 
 		}
 
-	}
+	
 
 	
 
@@ -502,8 +497,8 @@ public String getLogo() {
 		//passos 0 para a variavel (accessLevel) e para a variavel (updateTable) passamos false
 		// ambos os valores serão armazenados no BD a fazer a requisição
 		String nameUser = ""; int accessLevel = 0; boolean updateTable = false; 
-		System.out.println(data.getSinistro());
-		idUpdate = data.getSinistro();
+		System.out.println(data.getData_number());
+		idUpdate = data.getData_number();
 		//Passando dados definidos para o banco de dados
 		dao.editTable(updateTable, nameUser, accessLevel, data.getSinistro());
 
@@ -630,13 +625,13 @@ public String getLogo() {
 			RequestContext.getCurrentInstance().execute("displayPdf()");
 			RequestContext.getCurrentInstance().execute("listUpdateFile2()");
 
-			OccurencesDao2 dao = new OccurencesDao2();
+			OccurrencesDAO dao = new OccurrencesDAO();
 
 			//buscar dados por id
-			data = dao.buscarOcorrenciaPorId(rowkey);
+			//dataa = dao.buscarOcorrenciaPorId(rowkey);
 
 			//buscar dados pdf
-			getPdf = dao.submitPdf(rowkey);
+			//getPdf = dao.submitPdf(rowkey);
 
 			//buscar caminho dos arquivos 
 			pathSQL = data.getLocalFiles();
@@ -657,9 +652,10 @@ public String getLogo() {
 			System.out.println((timestamp.before(timestamp2)+" depois"));
 			System.out.println(data.getEditTable()+" editTable");
 		}catch(Exception ex){
-	
 
-	
+			ex.printStackTrace();
+
+		}
 		//listando arquivos quando clica na linha da tabela
 		TableFile();
 		pdf = false;
@@ -755,25 +751,6 @@ public String getLogo() {
 					new_ = false;
 					reset = true;
 					fields = true; 
-					edit = true;
-					table = true;
-
-
-					//execute js
-					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
-					RequestContext.getCurrentInstance().execute("fileTotal()");
-					
-					//senão se o nivel de acesso do usuário for igual a 1 ou igual a 6
-					//tem permissão para acessar a condição
-				}else if(nivelUser == 1 || nivelUser == 6) {
-
-					//btn
-					save = true;
-					alterar = true;
-					edit = false;
-					new_ = false;
-					reset = true;
-					fields = true; 
 
 					//execute js
 					RequestContext.getCurrentInstance().execute("hiddenBtnIcon()");
@@ -783,7 +760,7 @@ public String getLogo() {
 			}
 
 			//método não está sendo usado
-	//senão estiver selecionada a linha da tabela
+			//senão estiver selecionada a linha da tabela
 		}else {
 
 			save = true;
@@ -799,10 +776,11 @@ public String getLogo() {
 			RequestContext.getCurrentInstance().execute("msgFinishedHidden()");
 			RequestContext.getCurrentInstance().execute("listingFileBtn()");
 			RequestContext.getCurrentInstance().execute("listingFile()");
+
 		}
 		//zerando as variaveis
-		listarFile = null;}}
-	
+		listarFile = null;
+	}
 	//método novo
 	public void btnEnable() throws Exception {
 		//executando as funções javascript
@@ -2107,17 +2085,10 @@ public String getLogo() {
 
 		} catch (IOException e) {											
 			return "";
-		}
+		}}}
 
-	}
-	public String getSinistro() {
-		return sinistro;
-	}
-	public void setSinistro(String sinistro) {
-		this.sinistro = sinistro;
-	}	
 
-}
+
 
 
 
