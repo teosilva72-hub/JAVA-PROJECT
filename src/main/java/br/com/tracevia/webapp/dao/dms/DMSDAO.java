@@ -1,23 +1,18 @@
 package br.com.tracevia.webapp.dao.dms;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import br.com.tracevia.webapp.model.dms.DMS;
 import br.com.tracevia.webapp.model.dms.Messages;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 import br.com.tracevia.webapp.util.SessionUtil;
 
 public class DMSDAO {
 
-	private Connection conn;
-	protected ConnectionFactory connection = new ConnectionFactory();
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 
 	/* Quantidade de dmss reigstrados na base de dados */
 
@@ -29,14 +24,14 @@ public class DMSDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
+			if (result.hasNext()) {
 
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					count = rs.getInt(1);
 				}
@@ -45,7 +40,7 @@ public class DMSDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return count;
@@ -61,14 +56,14 @@ public class DMSDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql);
-			rs = ps.executeQuery();
+			conn.prepare(sql);
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
+			if (result.hasNext()) {
 
-				while (rs.next()) {
+				for (RowResult rs : result) {
 
 					DMS dms = new DMS();
 					MessagesDAO msg = new MessagesDAO();
@@ -101,7 +96,7 @@ public class DMSDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return lista;
@@ -115,30 +110,30 @@ public class DMSDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql1);
+			conn.prepare(sql1);
 
-			ps.setInt(1, idDMS);
+			conn.setInt(1, idDMS);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				rs.next();
+			if (result.hasNext()) {
+				RowResult rs = result.first();
 
-				ps = conn.prepareStatement(sql2);
+				conn.prepare(sql2);
 
 				if (rs.getInt("id_message") == idMSG) {
-					ps.setInt(1, 0);
-					ps.setInt(2, 1);
+					conn.setInt(1, 0);
+					conn.setInt(2, 1);
 				} else {
-					ps.setInt(1, idMSG);
-					ps.setInt(2, 0);
+					conn.setInt(1, idMSG);
+					conn.setInt(2, 0);
 				}
 
-				ps.setInt(3, idDMS);
+				conn.setInt(3, idDMS);
 
-				ps.executeUpdate();
+				conn.executeUpdate();
 
 				save_history(idDMS, idMSG);
 
@@ -149,36 +144,36 @@ public class DMSDAO {
 			e.printStackTrace();
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return success;
 	}
 
-	private void save_history(int idDMS, int idMSG) {
+	private void save_history(int idDMS, int idMSG) throws Exception {
 		String sql_update = "UPDATE dms_history SET until_date = now(), changed_by = ? WHERE equip_id = ? AND changed_by is null order by equip_id desc limit 1;";
 		String sql_select = "SELECT CONCAT(page1_1, ' ', page1_2, ' ', page1_3) as page_one, CONCAT(page2_1, ' ', page2_2, ' ', page2_3) as page_two, CONCAT(page3_1, ' ', page3_2, ' ', page3_3) as page_three, CONCAT(page4_1, ' ', page4_2, ' ', page4_3) as page_four, CONCAT(page5_1, ' ', page5_2, ' ', page5_3) as page_five FROM dms_messages_available where id_message = ?;";
 		String sql_insert = "INSERT INTO dms_history (equip_id, id_message, activation_username, define_date, page_one, page_two, page_three, page_four, page_five) VALUES (?, ?, ?, now(), ?, ?, ?, ?, ?);";
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql_update);
+			conn.prepare(sql_update);
 
-			ps.setString(1, (String) SessionUtil.getParam("user"));
-			ps.setInt(2, idDMS);
+			conn.setString(1, (String) SessionUtil.getParam("user"));
+			conn.setInt(2, idDMS);
 
-			ps.executeUpdate();
+			conn.executeUpdate();
 
-			ps = conn.prepareStatement(sql_select);
+			conn.prepare(sql_select);
 
-			ps.setInt(1, idMSG);
+			conn.setInt(1, idMSG);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				rs.next();
+			if (result.hasNext()) {
+				RowResult rs = result.first();
 
 				String page1 = rs.getString("page_one");
 				String page2 = rs.getString("page_two");
@@ -186,24 +181,24 @@ public class DMSDAO {
 				String page4 = rs.getString("page_four");
 				String page5 = rs.getString("page_five");
 
-				ps = conn.prepareStatement(sql_insert);
+				conn.prepare(sql_insert);
 
-				ps.setInt(1, idDMS);
-				ps.setInt(2, idMSG);
-				ps.setString(3, (String) SessionUtil.getParam("user"));
-				ps.setString(4, page1);
-				ps.setString(5, page2);
-				ps.setString(6, page3);
-				ps.setString(7, page4);
-				ps.setString(8, page5);
+				conn.setInt(1, idDMS);
+				conn.setInt(2, idMSG);
+				conn.setString(3, (String) SessionUtil.getParam("user"));
+				conn.setString(4, page1);
+				conn.setString(5, page2);
+				conn.setString(6, page3);
+				conn.setString(7, page4);
+				conn.setString(8, page5);
 				
-				ps.executeUpdate();
+				conn.executeUpdate();
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 	}
 
@@ -215,27 +210,27 @@ public class DMSDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(sql1);
+			conn.prepare(sql1);
 
-			ps.setInt(1, idDMS);
+			conn.setInt(1, idDMS);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst()) {
-				rs.next();
+			if (result.hasNext()) {
+				RowResult rs = result.first();
 
 				int id = rs.getInt("id_message");
 
-				ps = conn.prepareStatement(sql2);
+				conn.prepare(sql2);
 				
-				ps.setInt(1, id);
-				ps.setInt(2, 0);
+				conn.setInt(1, id);
+				conn.setInt(2, 0);
 
-				ps.setInt(3, idDMS);
+				conn.setInt(3, idDMS);
 
-				ps.executeUpdate();
+				conn.executeUpdate();
 
 				save_history(idDMS, id);
 
@@ -246,7 +241,7 @@ public class DMSDAO {
 			e.printStackTrace();
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 
 		return success;
@@ -259,31 +254,31 @@ public class DMSDAO {
 		String sql_select = "SELECT equip_id FROM dms_messages_active WHERE id_message = ?;";
 		
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 			
-			ps = conn.prepareStatement(sql);
+			conn.prepare(sql);
 			
-			ps.setInt(1, id);
-			ps.setInt(2, 0);
-			ps.setInt(3, id);
+			conn.setInt(1, id);
+			conn.setInt(2, 0);
+			conn.setInt(3, id);
 			
-			rs = ps.executeQuery();
+			conn.executeUpdate();
 
-			ps = conn.prepareStatement(sql_select); 
+			conn.prepare(sql_select); 
 
-			ps.setInt(1, id);
+			conn.setInt(1, id);
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs.isBeforeFirst())
-				while (rs.next())
+			if (result.hasNext())
+				for (RowResult rs : result)
 					save_history(rs.getInt(1), id);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			success = false;
 		} finally {
-			ConnectionFactory.closeConnection(conn, ps, rs);
+			conn.close();
 		}
 		
 		return success;

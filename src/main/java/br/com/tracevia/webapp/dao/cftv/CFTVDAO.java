@@ -1,22 +1,18 @@
 package br.com.tracevia.webapp.dao.cftv;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tracevia.webapp.model.cftv.CFTV;
 import br.com.tracevia.webapp.model.global.Equipments;
-import br.com.tracevia.webapp.model.global.RoadConcessionaire;
-import br.com.tracevia.webapp.util.ConnectionFactory;
+import br.com.tracevia.webapp.model.global.SQL_Tracevia;
+import br.com.tracevia.webapp.model.global.ColumnsSql.RowResult;
+import br.com.tracevia.webapp.model.global.ResultSql.MapResult;
 
 public class CFTVDAO {
 
-	private Connection conn;
-	private PreparedStatement ps;
-	private ResultSet rs;
+	SQL_Tracevia conn = new SQL_Tracevia();
 
 
 	public List<CFTV> Status() throws Exception {
@@ -27,14 +23,14 @@ public class CFTVDAO {
 
 		try {
 
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
+			conn.start(1);
 
-			ps = conn.prepareStatement(select);			
+			conn.prepare(select);			
 
-			rs = ps.executeQuery();
+			MapResult result = conn.executeQuery();
 
-			if (rs != null) {
-				while (rs.next()) {
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 
 					CFTV cftv = new CFTV();
 
@@ -48,7 +44,9 @@ public class CFTVDAO {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 
 		return list;
 
@@ -57,17 +55,19 @@ public class CFTVDAO {
 		Equipments list = new Equipments();	
 		String query = "SELECT MAX(equip_id) FROM cftv_equipment";
 		try {
-			conn = ConnectionFactory.useConnection(RoadConcessionaire.roadConcessionaire);
-			ps = conn.prepareStatement(query);			
-			rs = ps.executeQuery();
-			if (rs != null) {
-				while (rs.next()) {
+			conn.start(1);
+			conn.prepare(query);			
+			MapResult result = conn.executeQuery();
+			if (result.hasNext()) {
+				for (RowResult rs : result) {
 					list.setEquip_id(rs.getInt(1));
 				}				
 			}			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {ConnectionFactory.closeConnection(conn, ps, rs);}
+		}finally {
+			conn.close();
+		}
 		return list;
 	}
 }
