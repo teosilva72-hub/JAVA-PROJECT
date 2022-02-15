@@ -171,7 +171,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
-			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet) {
+			String[] dates, String[] period, List<String> equipId, int dayIndex, boolean isMultiSheet, boolean isDirectionsOnSheet) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
@@ -302,7 +302,7 @@ public class ExcelTemplate {
 		
 		if(!period.equals("")) {
 
-		// PERÃ�ODO LABEL
+		// PERÍODO LABEL
 		utilSheet.createCell(sheet, row, 6, 7);
 		utilSheet.setCellValue(sheet, row, 6, 7, localeExcel.getStringKey("excel_sheet_header_period"));
 		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 7);
@@ -373,6 +373,8 @@ public class ExcelTemplate {
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 			
 			// -------------------------------------------------------------------------------------------------------
+			
+			if(!isDirectionsOnSheet) {
 							
 			// SENTIDO LABEL
 			 utilSheet.createCell(sheet, row, 10, columns - 2);
@@ -389,6 +391,7 @@ public class ExcelTemplate {
 			
 			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
 								
+			}
 		}
 		
 		// ----------------------------------------------------------------------------------------------------------------
@@ -401,7 +404,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 
 	public void excelFileHeader(XSSFWorkbook workbook, XSSFSheet sheet, XSSFRow row, String pathLogo, String module, int columns, String fileTitle, 
-			String[] dates, String[] period, String equipId, int dayIndex) {
+			String[] dates, String[] period, String equipId, int dayIndex, boolean isDirectionsOnSheet) {
 
 		DateTimeApplication dta = new DateTimeApplication();
 		TranslationMethods tm = new TranslationMethods();
@@ -518,7 +521,7 @@ public class ExcelTemplate {
 		
 		if(!period.equals("")) {
 
-		// PERÃ�ODO LABEL
+		// PERÍODO LABEL
 		utilSheet.createCell(sheet, row, 6, 7);
 		utilSheet.setCellValue(sheet, row, 6, 7, localeExcel.getStringKey("excel_sheet_header_period"));
 		utilSheet.setCellStyle(sheet, row, centerBoldStyle, 6, 7);
@@ -589,6 +592,10 @@ public class ExcelTemplate {
 			utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 9, 2);
 			
 			// -------------------------------------------------------------------------------------------------------
+			
+			System.out.println("DIR: "+isDirectionsOnSheet);
+			
+			if(!isDirectionsOnSheet) {
 							
 			// SENTIDO LABEL
 			 utilSheet.createCell(sheet, row, 10, columns - 2);
@@ -604,6 +611,7 @@ public class ExcelTemplate {
 			else utilSheet.setCellValue(sheet, row, 10, columns - 1, satInfo.get(0).getSentidos());
 			
 			    utilSheet.setCellStyle(sheet, row, centerAlignStandardStyle, 10, columns - 1);
+			}
 								
 		}
 		
@@ -751,7 +759,7 @@ public class ExcelTemplate {
 	// ----------------------------------------------------------------------------------------------------------------
 	
 	public void generateExcelFile(List<String> columns, List<String[]> lines, List<Pair<String, List<String[]>>> secondRows, String module, List<String> equips, 
-			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, String classSubHeader) {
+			String startDate, String endDate, String[] period, String sheetName, String fileTitle, String totalType, boolean isSat, boolean isTotal, boolean isMultiSheet, boolean isEquipNameSheet, boolean isDirectionsOnSheet, String classSubHeader) {
 		
 		sheet = null;	
 		row = null;
@@ -840,14 +848,14 @@ public class ExcelTemplate {
 			
 				if(isEquipNameSheet) 
 					excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-							dates, period, equips.get(op), op);
+							dates, period, equips.get(op), op, isDirectionsOnSheet);
 								
 					else excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-							dates, period, equips, op, isMultiSheet);
+							dates, period, equips, op, isMultiSheet, isDirectionsOnSheet);
 								
 		if(module.contentEquals("sat")) {
 										
-			if(classSubHeader.equals("light-heavy")) {	
+			if(classSubHeader.equals("light-heavy")) {
 				
 				utilSheet.createRow(sheet, row, subHeaderRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, subHeaderRow, subHeaderRow);
@@ -1008,8 +1016,7 @@ public class ExcelTemplate {
 			      	// -----------------------------------------------------
 				
 		     	}
-				
-			   	
+							   	
 				// CABEÇALHO DA TABELA		
 				utilSheet.createRow(sheet, row, tableStartRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, tableStartRow, tableStartRow);
@@ -1020,8 +1027,8 @@ public class ExcelTemplate {
 				utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 				utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 						
-				//	if(isEquipNameSheet)
-			    //	utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
+				// if(isEquipNameSheet)
+			    // utilSheet.fileBodyMulti(sheet, row, columns, p.right, startCol, endCol, dataStartRow, op, interval);
 					
 				 utilSheet.fileBodySimple(sheet, row, columns, p.right, startCol, endCol, dataStartRow);
 				
@@ -1118,11 +1125,11 @@ public class ExcelTemplate {
 		
 			if(isEquipNameSheet) 
 				excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-						dates, period, equips.get(op), op);
+						dates, period, equips.get(op), op, isDirectionsOnSheet);
 			
 			
 				else excelFileHeader(workbook, sheet, row, RoadConcessionaire.externalImagePath, module, columns.size(), fileTitle,  
-						dates, period, equips, op, isMultiSheet);
+						dates, period, equips, op, isMultiSheet, isDirectionsOnSheet);
 										  	
 		// -----------------------------------------------------
 		
@@ -1190,7 +1197,7 @@ public class ExcelTemplate {
 		utilSheet.createRows(sheet, row, dataStartRow, dataEndRow);
 		utilSheet.createCells(sheet, row, startCol, endCol, dataStartRow, dataEndRow);
 										 		
-	//	utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval);
+		// utilSheet.fileBodyMulti(sheet, row, columns, lines, startCol, endCol, dataStartRow, op, interval);
 		
 		utilSheet.setCellsStyle(sheet, row, standardStyle, startCol, endCol, dataStartRow, dataEndRow);
 		
