@@ -406,15 +406,16 @@
 
 			<!-- final da table -->
 
-			<!-- final da tabela oculta -->
 		</div>
 		<!-- Final da lista -->
 
 		<div class="text-center">
 			<!-- Botão modal nova ocorrencia -->
-			<button type="button" class="btnConf2 text-center"
-				data-toggle="modal" data-target="#Occorrencenew" render="none">Nova
-				Ocorrencia</button>
+		
+				<h:commandButton id="modal1" class="btnConf2 text-center" disabled="#{occurrencesBean.btnEnable}" value="#{occLabels.btn_novo}">
+				   <f:passThroughAttribute name="data-toggle" value="modalnovo" />
+                    <f:ajax execute="@form" render="@none" />
+                                            </h:commandButton>
 
 		</div>
 
@@ -423,6 +424,10 @@
 		<div class="modal fade bd-example-modal-xl" tabindex="-1"
 			role="dialog" aria-labelledby="myExtraLargeModalLabel"
 			aria-hidden="true" id="Occorrencenew">
+		
+				
+				
+
 			<div class="modal-dialog modal-xl ">
 				<div class="modal-content fundo">
 					<div class="modal-header ">
@@ -704,15 +709,13 @@
 														<!-- Botão Novo -->
 														<h:commandButton class="btn btnConf" id="new"
 															disabled="#{occurrencesBean.new_}"
-															action="#{occurrencesBean.btnEnable}"
 															value="#{occLabels.btn_novo}"
-															onclick="bloquerTable(); fileTotalHidden()">
+															onclick="fileTotalHidden()">
 															<f:ajax execute="@form"
 																render=":save :reset :new :occNumber :date :hora :pedagio :folio
-												     :report :sinistro :direcao  :kminicial :kmfinal :horaregistro :horachega 
-												     :politica :tipeveic :quantidade :num 
-													:brand :type :model 
-													:color :plate :tel :numv :name :age :health" />
+												     :report :sinistro :direction  :kmreg :kminicio :kmfinal :hrreg :hrstart
+												     :politics :typeveic :quantveic :num 
+													:brand :type :model :color :plate :tel :numc :name :age :health :descricaoCausa" listener="#{occurrencesBean.btnEnable}" />
 														</h:commandButton>
 
 														<!-- Botão Anular -->
@@ -772,26 +775,23 @@
 
 											<div class="form-group col-md-5">
 												<em for="inputAddress2">#{occLabels.$label_occ_reports_report}</em>
-												<h:inputText value="#{occurrencesBean.data2.report}"
-													id="report" name="report" class="form-control inputDesign"
-													disabled="#{occurrencesBean.fields}" />
+												<h:inputText value=""
+													id="report" name="report" class="form-control inputDesign" disabled="#{occurrencesBean.fields}" />
 											</div>
 
 											<div class="form-group col-md-5">
 												<em for="inputAddress">#{occLabels.$label_occ_reports_sinistro}</em>
-												<h:inputText value="#{occurrencesBean.data2.sinistro}"
-													disabled="#{occurrencesBean.fields}"
-													class="form-control inputDesign" id="sinistro"
-													name="sinistro" />
+												<h:inputText value="#{OccurrencesBean.data2.sinistro}"
+													id="sinistro" name="sinistro" class="form-control inputDesign"
+													 disabled="#{occurrencesBean.fields}" />
 											</div>
 
 											<div class="form-row">
 												<div class="form-group col-md-5">
-													<em for="inputEmail4">#{occLabels.$label_occ_reports_direction}</em>
+													<em for="inputAddress">#{occLabels.$label_occ_reports_direction}</em>
 													<h:inputText value="#{occurrencesBean.data2.direcao}"
-														disabled="#{occurrencesBean.fields}"
-														class="form-control inputDesign" id="direction"
-														name="direction" />
+													id="direction" name="direction" class="form-control inputDesign" 
+														disabled="#{occurrencesBean.fields}" />
 
 												</div>
 												<div class="form-group col-md-5">
@@ -884,7 +884,6 @@
 											<div class="form-row">
 												<div class="form-group col-md-1">
 													<em for="inputAddress">#{occLabels.$label_occ_number}</em>
-
 													<h:selectOneMenu
 														value="#{occurrencesBean.data2.numveiculo}" name="num"
 														id="num" disabled="#{occurrencesBean.fields}"
@@ -952,12 +951,13 @@
 											<div class="form-row">
 												<div class="form-group col-md-1">
 													<em for="inputCity">#{occLabels.$label_occ_number}</em>
-													<h:selectOneMenu class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}"
-														value="#{occurrencesBean.data.trackEndMinute}" id="numv"
-														name="numv">
+													<h:selectOneMenu
+														value="#{occurrencesBean.data2.numcond}" name="numc"
+														id="numc" disabled="#{occurrencesBean.fields}"
+														class="form-control inputDesign">
 														<f:selectItem itemLabel="select" itemValue="" />
-														<f:selectItems value="#{occurrencesBean.data2.numcond}" />
+														<!-- falta alterar parametro -->
+														<f:selectItems value="#{occurrencesBean.horas}" />
 													</h:selectOneMenu>
 													<span style="display: none;" class="errorInputs"
 														id="errorTrack6">#{occLabels.occ_error_input}</span>
@@ -989,40 +989,12 @@
 											</div>
 
 											<!-- TIPO DANO -->
-											<div class="form-row">
-												<div class="form-group col-md-3">
-													<em for="inputEmail4">#{occLabels.occ_register_tipo_dano}</em>
-													<h:inputText
-														value="#{occurrencesBean.data2.description_title}"
-														id="danor" name="dano" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-
-												</div>
+										
 												<!-- GRAVIDADE DANO -->
 
-												<div class="form-group col-md-3">
-													<em for="inputEmail4">#{occLabels.occ_register_gravidade}</em>
-													<h:inputText
-														value="#{occurrencesBean.data.description_title}"
-														id="grav" name="grav" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
+											
 
-												</div>
-
-												<div class="form-group col-md-3">
-													<em for="inputEmail4">#{occLabels.occ_damage_unity}</em>
-													<h:inputText
-														value="#{occurrencesBean.data2.description_title}"
-														id="unity" name="unity" onclick="validatorJs();"
-														class="form-control inputDesign"
-														disabled="#{occurrencesBean.fields}" />
-
-												</div>
-
-
-											</div>
+										</div>
 
 
 
@@ -1050,9 +1022,9 @@
 											</div>
 											
 											<!-- Inicio do add File -->
-						<div>
+						<div class="form-row center">
 							<!-- ALert Anexos -->
-							<div class="alert alert-dark confAlert" role="alert">
+							<div class="alert alert-dark confAlert center" role="alert">
 								<h5 class="text-center confTextAlert">#{occLabels.occ_btn_arquivo_add}</h5>
 							</div>
 							<!-- FInal alert Anexos -->
@@ -1066,7 +1038,7 @@
 									<br></br>
 									<p class="validatorFile" id="errorFileSize">#{occLabels.size_file}</p>
 								</div>
-								<!-- BTN UPLOAD FILE -->
+								BTN UPLOAD FILE
 								<div class="col-md-12">
 									<h:commandButton class="btn btnConf" id="btnUpload"
 										value="#{occLabels.occ_uploadFile}"
@@ -1096,23 +1068,7 @@
 										disabled="#{occurrencesBean.fields}" />
 								</div>
 							</div>
-							<!-- End input file alterar -->
-
-							<!-- alert img-->
-							<!-- <a href="#" class="linkImg"><div class="alert alert-dark confAlert" id="imagem" role="alert">
-								<h5 class="text-center confTextAlert linkImg">Imagem</h5>
-							</div></a> -->
-							<!-- Edição imagem -->
-							<!--   <div>
-								<c:forEach  items="#{occurrencesBean.listarFile}" var="img" style="display: none;"
-									varStatus="loop">
-									
-										<h:graphicImage id="getPathImg" class="imageFile"
-											value="#{occurrencesBean.getImageUpload(img)}"></h:graphicImage>
-								</c:forEach>
-							</div> -->
-							<!-- final edição imagem -->
-							<!-- file total -->
+							
 							<div class="alert alert-dark confAlert" id="fileTotal"
 								role="alert">
 								<h5 class="text-center confTextAlert">#{occLabels.occ_list_files}
@@ -1275,7 +1231,7 @@
 						
 					</div>
 											<!-- Inicio descricao principal e descricao interna -->
-										</div>
+						
 
 
 									

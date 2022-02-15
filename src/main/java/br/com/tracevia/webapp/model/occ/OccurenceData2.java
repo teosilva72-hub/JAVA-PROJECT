@@ -1,5 +1,6 @@
 package br.com.tracevia.webapp.model.occ;
 
+
 public class OccurenceData2 {
 	
 public String date;
@@ -37,7 +38,7 @@ public String nameUser;
 public String lastDateHour;
 public String save;
 public String occ_number;
-public String  data_number;
+public String data_number;
 
 
 	/**
